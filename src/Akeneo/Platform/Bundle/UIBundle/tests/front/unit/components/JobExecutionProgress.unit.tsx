@@ -33,8 +33,7 @@ abstract class BaseViewMock {
   }
 }
 
-jest.mock('@akeneo-pim-community/legacy-bridge/src/bridge/react', () => ({ReactView: BaseViewMock}));
-jest.mock('oro/translator', () => (key: string, _params: any, count: number): string => {
+const translator = jest.fn().mockImplementation((key: string, _params: any, count: number): string => {
   switch (key) {
     case 'duration.days':
       return `${count} day(s)`;
@@ -46,10 +45,15 @@ jest.mock('oro/translator', () => (key: string, _params: any, count: number): st
       return `${count} second(s)`;
     case 'batch_jobs.csv_product_export.export.label':
       return 'Product export';
+    case 'pim_import_export.tracking.in_progress':
+      return `${_params.duration} left`;
     default:
       return key;
   }
 });
+
+jest.mock('@akeneo-pim-community/legacy-bridge/src/bridge/react', () => ({ReactView: BaseViewMock}));
+jest.mock('oro/translator', () => translator);
 
 const JobExecutionProgress = require('pimui/js/job/execution/progress');
 
@@ -106,19 +110,19 @@ test('it render the progress bar of one completed job step', () => {
 test('it render the progress bar of one job step in progress', () => {
   mockGetFormData.mockImplementationOnce(() => ({
     tracking: {
-      status: 'IN_PROGRESS',
+      status: 'STARTED',
       currentStep: 1,
       totalSteps: 1,
       steps: [
         {
           jobName: 'csv_product_export',
           stepName: 'export',
-          status: 'IN_PROGRESS',
+          status: 'STARTED',
           isTrackable: true,
           hasWarning: false,
           hasError: false,
-          duration: 10,
-          processedItems: 50,
+          duration: 12,
+          processedItems: 60,
           totalItems: 100,
         },
       ],
@@ -128,21 +132,51 @@ test('it render the progress bar of one job step in progress', () => {
   const component = new JobExecutionProgress(container);
   component.render();
 
-  expect(screen.getByText('pim_import_export.tracking.in_progress')).toBeInTheDocument();
-  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50');
+  // we are at 60% of the items, done in 12 seconds, we should expect 8 seconds left
+  expect(screen.getByText('8 second(s) left')).toBeInTheDocument();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '60');
 });
 
-test('it render the progress bar of one pending job step', () => {
+test('it render the progress bar of one started job step without processed items', () => {
   mockGetFormData.mockImplementationOnce(() => ({
     tracking: {
-      status: 'NOT_STARTED',
+      status: 'STARTED',
       currentStep: 1,
       totalSteps: 1,
       steps: [
         {
           jobName: 'csv_product_export',
           stepName: 'export',
-          status: 'NOT_STARTED',
+          status: 'STARTED',
+          isTrackable: true,
+          hasWarning: false,
+          hasError: false,
+          duration: 12,
+          processedItems: 0,
+          totalItems: 100,
+        },
+      ],
+    },
+  }));
+
+  const component = new JobExecutionProgress(container);
+  component.render();
+
+  expect(screen.getByText('pim_import_export.tracking.untrackable')).toBeInTheDocument();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+});
+
+test('it render the progress bar of one pending job step', () => {
+  mockGetFormData.mockImplementationOnce(() => ({
+    tracking: {
+      status: 'STARTING',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
+        {
+          jobName: 'csv_product_export',
+          stepName: 'export',
+          status: 'STARTING',
           isTrackable: true,
           hasWarning: false,
           hasError: false,
@@ -161,17 +195,46 @@ test('it render the progress bar of one pending job step', () => {
   expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
 });
 
-test('it render the progress bar of one untrackable job step', () => {
+test('it render the progress bar of one untrackable and pending job step', () => {
   mockGetFormData.mockImplementationOnce(() => ({
     tracking: {
-      status: 'NOT_STARTED',
+      status: 'STARTING',
       currentStep: 1,
       totalSteps: 1,
       steps: [
         {
           jobName: 'csv_product_export',
           stepName: 'export',
-          status: 'NOT_STARTED',
+          status: 'STARTING',
+          isTrackable: false,
+          hasWarning: false,
+          hasError: false,
+          duration: 0,
+          processedItems: 0,
+          totalItems: 0,
+        },
+      ],
+    },
+  }));
+
+  const component = new JobExecutionProgress(container);
+  component.render();
+
+  expect(screen.getByText('pim_import_export.tracking.not_started')).toBeInTheDocument();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0');
+});
+
+test('it render the progress bar of one untrackable and started job step', () => {
+  mockGetFormData.mockImplementationOnce(() => ({
+    tracking: {
+      status: 'STARTED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
+        {
+          jobName: 'csv_product_export',
+          stepName: 'export',
+          status: 'STARTED',
           isTrackable: false,
           hasWarning: false,
           hasError: false,
@@ -193,7 +256,7 @@ test('it render the progress bar of one untrackable job step', () => {
 test('it render without error the progress bar of one job step with warning', () => {
   mockGetFormData.mockImplementationOnce(() => ({
     tracking: {
-      status: 'NOT_STARTED',
+      status: 'STARTING',
       currentStep: 1,
       totalSteps: 1,
       steps: [
@@ -213,7 +276,7 @@ test('it render without error the progress bar of one job step with warning', ()
 test('it render without error the progress bar of one job step with error', () => {
   mockGetFormData.mockImplementationOnce(() => ({
     tracking: {
-      status: 'NOT_STARTED',
+      status: 'STARTING',
       currentStep: 1,
       totalSteps: 1,
       steps: [
@@ -233,7 +296,7 @@ test('it render without error the progress bar of one job step with error', () =
 test('it fallback on default job step label when missing', () => {
   mockGetFormData.mockImplementationOnce(() => ({
     tracking: {
-      status: 'NOT_STARTED',
+      status: 'STARTING',
       currentStep: 1,
       totalSteps: 1,
       steps: [

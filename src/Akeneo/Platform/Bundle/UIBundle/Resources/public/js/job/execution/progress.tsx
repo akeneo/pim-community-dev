@@ -6,7 +6,7 @@ import {ReactView} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 
 const __ = require('oro/translator');
 
-type StepExecutionStatus = 'COMPLETED' | 'NOT_STARTED' | 'IN_PROGRESS';
+type StepExecutionStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
 type StepExecutionTracking = {
   hasError: boolean;
   hasWarning: boolean;
@@ -37,17 +37,20 @@ const guessStepExecutionTrackingLevel = (step: StepExecutionTracking): Level => 
 };
 
 const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 'indeterminate' => {
-  if (!step.isTrackable) {
-    return 'indeterminate';
-  }
-
-  if (step.totalItems === 0) {
+  if (step.totalItems === 0 || !step.isTrackable) {
     switch (step.status) {
-      case 'COMPLETED':
-        return 100;
-      case 'IN_PROGRESS':
-      case 'NOT_STARTED':
+      case 'STARTING':
         return 0;
+      case 'COMPLETED':
+      case 'STOPPED':
+      case 'FAILED':
+      case 'ABANDONED':
+        return 100;
+      case 'STARTED':
+      case "STOPPING":
+      case 'UNKNOWN':
+      default:
+        return 'indeterminate';
     }
   }
 
@@ -64,17 +67,26 @@ const getStepExecutionTrackingTitle = (step: StepExecutionTracking): string => {
 };
 
 const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): string => {
-  if (!step.isTrackable) {
-    return __('pim_import_export.tracking.untrackable');
-  }
-
   switch (step.status) {
-    case 'NOT_STARTED':
+    case 'STARTING':
       return __('pim_import_export.tracking.not_started');
+    case 'STARTED':
+      if (step.totalItems === 0 || !step.isTrackable || step.processedItems === 0) {
+        return __('pim_import_export.tracking.untrackable');
+      }
+
+      const percentProcessed = Math.round((step.processedItems * 100) / step.totalItems);
+      const durationProjection = Math.round((step.duration * 100) / percentProcessed);
+      const durationLeft = durationProjection - step.duration;
+      return __('pim_import_export.tracking.in_progress', {duration: formatSecondsIntl(durationLeft)});
+    case "ABANDONED":
     case 'COMPLETED':
+    case 'FAILED':
+    case 'STOPPED':
+    case 'STOPPING':
+    case 'UNKNOWN':
+    default:
       return __('pim_import_export.tracking.completed', {duration: formatSecondsIntl(step.duration)});
-    case 'IN_PROGRESS':
-      return __('pim_import_export.tracking.in_progress', {duration: formatSecondsIntl(step.duration)});
   }
 };
 
