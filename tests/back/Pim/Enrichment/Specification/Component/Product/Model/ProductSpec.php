@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
@@ -458,6 +459,75 @@ class ProductSpec extends ObjectBehavior
     function it_can_reset_its_updated_state()
     {
         $this->cleanup();
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_a_category_is_added(CategoryInterface $category)
+    {
+        $this->cleanup();
+
+        $this->addCategory($category);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_an_already_existing_category_is_added(
+        CategoryInterface $category
+    ) {
+        $this->setCategories(new ArrayCollection([$category->getWrappedObject()]));
+        $this->cleanup();
+
+        $this->addCategory($category);
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_a_category_is_removed(CategoryInterface $category)
+    {
+        $this->setCategories(new ArrayCollection([$category->getWrappedObject()]));
+        $this->cleanup();
+
+        $this->removeCategory($category);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_a_non_existing_category_is_removed(CategoryInterface $category)
+    {
+        $this->cleanup();
+
+        $this->removeCategory($category);
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_a_group_is_added(GroupInterface $group)
+    {
+        $this->cleanup();
+
+        $this->addGroup($group);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_an_existing_group_is_added(GroupInterface $group)
+    {
+        $this->setGroups(new ArrayCollection([$group->getWrappedObject()]));
+        $this->cleanup();
+
+        $this->addGroup($group);
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_a_group_is_removed(GroupInterface $group)
+    {
+        $this->setGroups(new ArrayCollection([$group->getWrappedObject()]));
+        $this->cleanup();
+
+        $this->removeGroup($group);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_a_non_existing_group_is_removed(GroupInterface $group)
+    {
+        $this->cleanup();
+
+        $this->removeGroup($group);
         $this->wasUpdated()->shouldReturn(false);
     }
 }

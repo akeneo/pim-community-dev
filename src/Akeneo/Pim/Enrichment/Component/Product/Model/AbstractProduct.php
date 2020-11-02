@@ -365,6 +365,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
             $this->categories->add($category);
+            $this->wasUpdated = true;
         }
 
         return $this;
@@ -383,7 +384,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeCategory(BaseCategoryInterface $category)
     {
-        $this->categories->removeElement($category);
+        if (true === $this->categories->removeElement($category)) {
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
@@ -494,6 +497,7 @@ abstract class AbstractProduct implements ProductInterface
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
             $group->addProduct($this);
+            $this->wasUpdated = true;
         }
 
         return $this;
@@ -504,7 +508,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeGroup(GroupInterface $group)
     {
-        $this->groups->removeElement($group);
+        if (true === $this->groups->removeElement($group)) {
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
