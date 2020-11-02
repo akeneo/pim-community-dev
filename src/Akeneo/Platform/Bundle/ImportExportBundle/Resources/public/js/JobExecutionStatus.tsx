@@ -1,5 +1,6 @@
 import React from 'react';
 import {Badge, Level} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge/src';
 
 type JobStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
 
@@ -22,18 +23,16 @@ type JobExecutionStatusProps = {
   hasError: boolean;
 };
 
-const jobStatusLabel = (status: JobStatus, currentStep: number, totalSteps: number): string => {
-  if (status !== 'STARTING' && status !== 'STARTED') {
-    return status;
-  }
-
-  return `${status} ${currentStep}/${totalSteps}`;
-};
-
 const JobExecutionStatus = ({status, currentStep, totalSteps, hasWarning, hasError}: JobExecutionStatusProps) => {
   const level = badgeLevel(status, hasError, hasWarning);
+  const translate = useTranslate();
 
-  return <Badge level={level}>{jobStatusLabel(status, currentStep, totalSteps)}</Badge>;
+  let label = translate(`pim_import_export.job_status.${status}`);
+  if (status === 'STARTING' || status === 'STARTED') {
+    label = `${label} ${currentStep}/${totalSteps}`;
+  }
+
+  return <Badge level={level}>{label}</Badge>;
 };
 
 export default JobExecutionStatus;
