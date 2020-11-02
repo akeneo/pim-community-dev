@@ -22,12 +22,20 @@ final class DashboardKeyIndicatorsController
     {
         return new JsonResponse([
             'has_image' => [
-                'ratio' => 25.65,
+                'ratio' => 18,
                 'total' => 5641,
             ],
             'good_enrichment' => [
                 'ratio' => 35.48,
                 'total' => 15479,
+            ],
+            'values_perfect_spelling' => [
+                'ratio' => 65,
+                'total' => 6548,
+            ],
+            'attributes_perfect_spelling' => [
+                'ratio' => 91,
+                'total' => 1244,
             ],
         ]);
     }
