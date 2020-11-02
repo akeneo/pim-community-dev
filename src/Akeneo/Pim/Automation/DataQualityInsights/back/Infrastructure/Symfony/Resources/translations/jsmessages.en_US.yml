@@ -84,3 +84,7 @@ akeneo_data_quality_insights:
                             message1: Perfect spelling all over your catalog. Well done!
                             message2: "That's impressive: your products are spotless!"
                             message3: You did an amazing work getting rid of 100% of the spelling mistakes. Congratulations!
+
+    product_grid:
+        filter_label:
+            spelling_quality: Spelling quality
