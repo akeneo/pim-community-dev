@@ -91,7 +91,8 @@ final class SendBusinessEventToWebhooksHandler
                 'user_id' => $webhook->userId(),
             ],
             'business_event' => [
-                'author' => $businessEvent->author(),
+                'author' => $businessEvent->author()->name(),
+                'author_type' => $businessEvent->author()->type(),
                 'name' => $businessEvent->name(),
                 'timestamp' => $businessEvent->timestamp(),
                 'uuid' => $businessEvent->uuid(),
