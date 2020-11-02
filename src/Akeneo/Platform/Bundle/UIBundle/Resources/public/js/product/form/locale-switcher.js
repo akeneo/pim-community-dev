@@ -66,12 +66,12 @@ define([
           });
 
           if (catalogLocaleCode) {
-              defaultLocaleCode = catalogLocaleCode.code;
+            defaultLocaleCode = catalogLocaleCode.code;
           }
 
           const params = {
-              localeCode: defaultLocaleCode,
-              context: this.config.context,
+            localeCode: defaultLocaleCode,
+            context: this.config.context,
           };
 
           this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
