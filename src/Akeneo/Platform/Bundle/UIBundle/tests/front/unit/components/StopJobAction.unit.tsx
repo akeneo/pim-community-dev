@@ -17,18 +17,26 @@ afterEach(() => {
 });
 
 test('It renders the stop button correctly if the job is stoppable', () => {
-  renderWithProviders(<StopJobAction id="nice-job" isStoppable={true} refresh={jest.fn()} />);
+  renderWithProviders(<StopJobAction id="nice-job" jobLabel="Nice job" isStoppable={true} onStop={jest.fn()} />);
 
   expect(screen.getByText('pim_datagrid.action.stop.title')).toBeInTheDocument();
 });
 
 test('It does not render anything if the job is not stoppable', () => {
-  renderWithProviders(<StopJobAction id="nice-job" isStoppable={false} refresh={jest.fn()} />);
+  renderWithProviders(<StopJobAction id="nice-job" jobLabel="Nice job" isStoppable={false} onStop={jest.fn()} />);
 
   expect(screen.queryByText('pim_datagrid.action.stop.title')).not.toBeInTheDocument();
 });
 
-test('It fetches the correct route & calls the refresh handler when clicking on the stop button', async () => {
+test('It opens a Modal when clicking on the stop button', () => {
+  renderWithProviders(<StopJobAction id="nice-job" jobLabel="Nice job" isStoppable={true} onStop={jest.fn()} />);
+
+  fireEvent.click(screen.getByText('pim_datagrid.action.stop.title'));
+
+  expect(screen.getByText('pim_datagrid.action.stop.confirmation.title')).toBeInTheDocument();
+});
+
+test('It fetches the correct route & calls the refreshCollection handler when clicking on the stop button', async () => {
   const mockFetch = jest.fn().mockImplementationOnce(() =>
     Promise.resolve({
       ok: true,
@@ -38,12 +46,16 @@ test('It fetches the correct route & calls the refresh handler when clicking on 
 
   global.fetch = mockFetch;
 
-  const refresh = jest.fn();
+  const onStop = jest.fn();
 
-  renderWithProviders(<StopJobAction id="nice-job" isStoppable={true} refresh={refresh} />);
+  renderWithProviders(<StopJobAction id="nice-job" jobLabel="Nice job" isStoppable={true} onStop={onStop} />);
 
-  await fireEvent.click(screen.getByText('pim_datagrid.action.stop.title'));
+  //Opening the modal
+  fireEvent.click(screen.getByText('pim_datagrid.action.stop.title'));
+
+  //Clicking on the confirm button
+  await fireEvent.click(screen.getByText('pim_datagrid.action.stop.confirmation.ok'));
 
   expect(mockFetch).toBeCalledWith('pim_enrich_job_tracker_rest_stop');
-  expect(refresh).toBeCalledTimes(1);
+  expect(onStop).toBeCalledTimes(1);
 });
