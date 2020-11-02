@@ -25,10 +25,6 @@ use Doctrine\ORM\PersistentCollection;
  */
 class GetJobExecutionTracking
 {
-    private const TRACKING_STATUS_COMPLETED = 'COMPLETED';
-    private const TRACKING_STATUS_NOT_STARTED = 'NOT_STARTED';
-    private const TRACKING_STATUS_IN_PROGRESS = 'IN_PROGRESS';
-
     /** @var JobRegistry */
     private $jobRegistry;
 
@@ -68,7 +64,7 @@ class GetJobExecutionTracking
         $job = $this->jobRegistry->get($jobName);
 
         $jobExecutionTracking = new JobExecutionTracking();
-        $jobExecutionTracking->status = $this->getMappedStatus($jobExecution->getStatus());
+        $jobExecutionTracking->status = (string)$jobExecution->getStatus();
         $jobExecutionTracking->currentStep = count($jobExecution->getStepExecutions());
         $jobExecutionTracking->totalSteps = count($job->getSteps());
         $jobExecutionTracking->steps = $this->getStepExecutionTracking($job, $stepExecutions);
@@ -115,7 +111,7 @@ class GetJobExecutionTracking
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->jobName = $job->getName();
         $stepExecutionTracking->stepName = $step->getName();
-        $stepExecutionTracking->status = self::TRACKING_STATUS_NOT_STARTED;
+        $stepExecutionTracking->status = (string)(new BatchStatus(BatchStatus::STARTING));
         if ($step instanceof TrackableStepInterface && $step->isTrackable()) {
             $stepExecutionTracking->isTrackable = true;
         }
@@ -130,7 +126,7 @@ class GetJobExecutionTracking
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->jobName = $job->getName();
         $stepExecutionTracking->stepName = $step->getName();
-        $stepExecutionTracking->status = $this->getMappedStatus($stepExecution->getStatus());
+        $stepExecutionTracking->status = (string)$stepExecution->getStatus();
         $stepExecutionTracking->duration = $duration;
         $stepExecutionTracking->hasError = count($stepExecution->getFailureExceptions()) !== 0 || count($stepExecution->getErrors()) !== 0;
         $stepExecutionTracking->hasWarning = count($stepExecution->getWarnings()) !== 0;
@@ -144,30 +140,10 @@ class GetJobExecutionTracking
         return $stepExecutionTracking;
     }
 
-    private function getMappedStatus(BatchStatus $batchStatus): string
-    {
-        switch ($batchStatus->getValue()) {
-            case BatchStatus::STOPPING:
-            case BatchStatus::STOPPED:
-            case BatchStatus::FAILED:
-            case BatchStatus::ABANDONED:
-            case BatchStatus::UNKNOWN:
-            case BatchStatus::COMPLETED:
-                return self::TRACKING_STATUS_COMPLETED;
-            case BatchStatus::STARTING:
-                return self::TRACKING_STATUS_NOT_STARTED;
-            case BatchStatus::STARTED:
-                return self::TRACKING_STATUS_IN_PROGRESS;
-            default:
-                throw new \RuntimeException(sprintf('Batch status "%s" unsupported', $batchStatus->getValue()));
-        }
-    }
-
     private function computeDuration(StepExecution $stepExecution): int
     {
         $now = $this->clock->now();
-        $status = $this->getMappedStatus($stepExecution->getStatus());
-        if ($status === self::TRACKING_STATUS_NOT_STARTED) {
+        if ($stepExecution->getStatus()->getValue() === BatchStatus::STARTING) {
             return 0;
         }
 

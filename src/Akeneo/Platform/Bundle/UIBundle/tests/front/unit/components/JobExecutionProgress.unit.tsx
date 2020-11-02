@@ -23,10 +23,7 @@ abstract class BaseViewMock {
   abstract reactElementToMount(): JSX.Element;
 
   render() {
-    ReactDOM.render(
-      this.reactElementToMount(),
-      this.el
-    );
+    ReactDOM.render(this.reactElementToMount(), this.el);
   }
 
   getRoot() {
@@ -58,14 +55,14 @@ const JobExecutionProgress = require('pimui/js/job/execution/progress');
 
 test('it render a progress bar with the correct label of the job step', () => {
   mockGetFormData.mockImplementationOnce(() => ({
-    'tracking': {
-      'status': 'COMPLETED',
-      'currentStep': 1,
-      'totalSteps': 1,
-      'steps': [
+    tracking: {
+      status: 'COMPLETED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
         {
-          'jobName': 'csv_product_export',
-          'stepName': 'export',
+          jobName: 'csv_product_export',
+          stepName: 'export',
         },
       ],
     },
@@ -79,21 +76,21 @@ test('it render a progress bar with the correct label of the job step', () => {
 
 test('it render the progress bar of one completed job step', () => {
   mockGetFormData.mockImplementationOnce(() => ({
-    'tracking': {
-      'status': 'COMPLETED',
-      'currentStep': 1,
-      'totalSteps': 1,
-      'steps': [
+    tracking: {
+      status: 'COMPLETED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
         {
-          'jobName': 'csv_product_export',
-          'stepName': 'export',
-          'status': 'COMPLETED',
-          'isTrackable': true,
-          'hasWarning': false,
-          'hasError': false,
-          'duration': 0,
-          'processedItems': 0,
-          'totalItems': 0,
+          jobName: 'csv_product_export',
+          stepName: 'export',
+          status: 'COMPLETED',
+          isTrackable: true,
+          hasWarning: false,
+          hasError: false,
+          duration: 0,
+          processedItems: 0,
+          totalItems: 0,
         },
       ],
     },
@@ -108,21 +105,21 @@ test('it render the progress bar of one completed job step', () => {
 
 test('it render the progress bar of one job step in progress', () => {
   mockGetFormData.mockImplementationOnce(() => ({
-    'tracking': {
-      'status': 'IN_PROGRESS',
-      'currentStep': 1,
-      'totalSteps': 1,
-      'steps': [
+    tracking: {
+      status: 'IN_PROGRESS',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
         {
-          'jobName': 'csv_product_export',
-          'stepName': 'export',
-          'status': 'IN_PROGRESS',
-          'isTrackable': true,
-          'hasWarning': false,
-          'hasError': false,
-          'duration': 10,
-          'processedItems': 50,
-          'totalItems': 100,
+          jobName: 'csv_product_export',
+          stepName: 'export',
+          status: 'IN_PROGRESS',
+          isTrackable: true,
+          hasWarning: false,
+          hasError: false,
+          duration: 10,
+          processedItems: 50,
+          totalItems: 100,
         },
       ],
     },
@@ -137,21 +134,21 @@ test('it render the progress bar of one job step in progress', () => {
 
 test('it render the progress bar of one pending job step', () => {
   mockGetFormData.mockImplementationOnce(() => ({
-    'tracking': {
-      'status': 'NOT_STARTED',
-      'currentStep': 1,
-      'totalSteps': 1,
-      'steps': [
+    tracking: {
+      status: 'NOT_STARTED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
         {
-          'jobName': 'csv_product_export',
-          'stepName': 'export',
-          'status': 'NOT_STARTED',
-          'isTrackable': true,
-          'hasWarning': false,
-          'hasError': false,
-          'duration': 0,
-          'processedItems': 0,
-          'totalItems': 0,
+          jobName: 'csv_product_export',
+          stepName: 'export',
+          status: 'NOT_STARTED',
+          isTrackable: true,
+          hasWarning: false,
+          hasError: false,
+          duration: 0,
+          processedItems: 0,
+          totalItems: 0,
         },
       ],
     },
@@ -166,21 +163,21 @@ test('it render the progress bar of one pending job step', () => {
 
 test('it render the progress bar of one untrackable job step', () => {
   mockGetFormData.mockImplementationOnce(() => ({
-    'tracking': {
-      'status': 'NOT_STARTED',
-      'currentStep': 1,
-      'totalSteps': 1,
-      'steps': [
+    tracking: {
+      status: 'NOT_STARTED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
         {
-          'jobName': 'csv_product_export',
-          'stepName': 'export',
-          'status': 'NOT_STARTED',
-          'isTrackable': false,
-          'hasWarning': false,
-          'hasError': false,
-          'duration': 0,
-          'processedItems': 0,
-          'totalItems': 0,
+          jobName: 'csv_product_export',
+          stepName: 'export',
+          status: 'NOT_STARTED',
+          isTrackable: false,
+          hasWarning: false,
+          hasError: false,
+          duration: 0,
+          processedItems: 0,
+          totalItems: 0,
         },
       ],
     },
@@ -195,13 +192,13 @@ test('it render the progress bar of one untrackable job step', () => {
 
 test('it render without error the progress bar of one job step with warning', () => {
   mockGetFormData.mockImplementationOnce(() => ({
-    'tracking': {
-      'status': 'NOT_STARTED',
-      'currentStep': 1,
-      'totalSteps': 1,
-      'steps': [
+    tracking: {
+      status: 'NOT_STARTED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
         {
-          'hasWarning': true,
+          hasWarning: true,
         },
       ],
     },
@@ -215,13 +212,13 @@ test('it render without error the progress bar of one job step with warning', ()
 
 test('it render without error the progress bar of one job step with error', () => {
   mockGetFormData.mockImplementationOnce(() => ({
-    'tracking': {
-      'status': 'NOT_STARTED',
-      'currentStep': 1,
-      'totalSteps': 1,
-      'steps': [
+    tracking: {
+      status: 'NOT_STARTED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
         {
-          'hasError': true,
+          hasError: true,
         },
       ],
     },
@@ -235,14 +232,14 @@ test('it render without error the progress bar of one job step with error', () =
 
 test('it fallback on default job step label when missing', () => {
   mockGetFormData.mockImplementationOnce(() => ({
-    'tracking': {
-      'status': 'NOT_STARTED',
-      'currentStep': 1,
-      'totalSteps': 1,
-      'steps': [
+    tracking: {
+      status: 'NOT_STARTED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
         {
-          'jobName': 'csv_product_export',
-          'stepName': 'unknown_step',
+          jobName: 'csv_product_export',
+          stepName: 'unknown_step',
         },
       ],
     },
