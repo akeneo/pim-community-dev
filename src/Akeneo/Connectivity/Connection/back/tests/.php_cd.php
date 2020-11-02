@@ -28,6 +28,7 @@ $rules = [
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
 
+            'Psr\Http\Message\ResponseInterface',
             'Psr\Log\LoggerInterface',
 
             'Akeneo\Platform\Component\EventQueue',
