@@ -35,17 +35,19 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
 
     public function byFamily(ChannelCode $channelCode, LocaleCode $localeCode, FamilyCode $family, KeyIndicatorCode... $keyIndicatorCodes): array
     {
-        // TODO: Implement byFamily() method.
-        return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes);
+        $terms = [['term' => ['family.code' => strval($family)]]];
+
+        return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes, $terms);
     }
 
     public function byCategory(ChannelCode $channelCode, LocaleCode $localeCode, CategoryCode $category, KeyIndicatorCode... $keyIndicatorCodes): array
     {
-        // TODO: Implement byCategory() method.
-        return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes);
+        $terms = [['terms' => ['categories' => [strval($category)]]]];
+
+        return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes, $terms);
     }
 
-    private function executeQuery(ChannelCode $channelCode, LocaleCode $localeCode, array $keyIndicatorCodes, array $extraSearch = []): array
+    private function executeQuery(ChannelCode $channelCode, LocaleCode $localeCode, array $keyIndicatorCodes, array $extraTerms = []): array
     {
         if (empty($keyIndicatorCodes)) {
             return [];
@@ -53,13 +55,11 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
 
         $query = [
             'bool' => [
-                'must' => [
-                    [
-                        'term' => [
-                            'document_type' => ProductInterface::class
-                        ],
+                'must' => array_merge([[
+                    'term' => [
+                        'document_type' => ProductInterface::class
                     ],
-                ],
+                ]], $extraTerms),
             ],
         ];
 
