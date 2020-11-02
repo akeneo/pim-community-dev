@@ -1,5 +1,5 @@
 import React from 'react';
-import {useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Button, ButtonProps, ExportIllustration, Helper, Modal, SectionTitle, Title} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
 
@@ -12,6 +12,7 @@ type StopJobActionProps = {
 
 const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: StopJobActionProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const stopRoute = useRoute('pim_enrich_job_tracker_rest_stop', {id});
   const [isConfirmOpen, openConfirm, closeConfirm] = useToggleState(false);
 
@@ -21,7 +22,7 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
     onStop();
   };
 
-  if (!isStoppable) return null;
+  if (!isStoppable || !isGranted('pim_importexport_stop_job')) return null;
 
   return (
     <>
