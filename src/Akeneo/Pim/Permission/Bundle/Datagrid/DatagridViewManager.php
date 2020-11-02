@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\PimDataGridBundle\Manager\DatagridViewManager as BaseDatagridViewManager;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Datagrid view manager
@@ -63,6 +64,7 @@ class DatagridViewManager extends BaseDatagridViewManager
     {
         $views = parent::findPublic($alias);
 
+        Assert::isIterable($views);
         foreach ($views as $key => $view) {
             if (false === $this->authorizationChecker->isGranted(Attributes::VIEW, $view)) {
                 unset($views[$key]); /** @phpstan-ignore-line */

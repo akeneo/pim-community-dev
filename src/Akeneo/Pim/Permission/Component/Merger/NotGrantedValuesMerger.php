@@ -23,6 +23,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Merge not granted values with new values. Example:
@@ -124,6 +125,7 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
         if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
             null !== $filteredEntityWithValues->getFamilyVariant()
         ) {
+            Assert::implementsInterface($fullEntityWithValues, EntityWithFamilyVariantInterface::class);
             $originalValues = WriteValueCollection::fromCollection($fullEntityWithValues->getValuesForVariation());
             $newValues = WriteValueCollection::fromCollection($filteredEntityWithValues->getValuesForVariation());
         } else {
@@ -163,6 +165,7 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
         if (null === $user->getId()) {
             if (UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
                 return -1;

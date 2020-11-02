@@ -48,11 +48,14 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @staticvar string */
     const CONTEXT_ASSOCIATE = 'associate';
 
-    /** @var ObjectRepository */
+    /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
+
+    /** @var UserContext */
+    protected $userContext;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,

@@ -47,6 +47,7 @@ class AreGrantedAttributesValidator extends ConstraintValidator
     public function validate($attributeCodes, Constraint $constraint)
     {
         Assert::isArray($attributeCodes, 'Attribute codes should be an array of string to validate that it is granted attributes.');
+        Assert::isInstanceOf($constraint, AreGrantedAttributes::class);
         $notGrantedAttributeCodes = [];
 
         foreach ($attributeCodes as $attributeCode) {

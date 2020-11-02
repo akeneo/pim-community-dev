@@ -9,6 +9,7 @@ use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterf
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Filter granted product values belonging to the parents.
@@ -102,6 +103,7 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
         if (null === $user->getId()) {
             if (UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
                 return -1;

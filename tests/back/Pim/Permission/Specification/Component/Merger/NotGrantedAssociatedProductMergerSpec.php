@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Permission\Component\Merger;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
@@ -19,7 +20,6 @@ use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
 {
@@ -66,12 +66,12 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         AssociationInterface $XSELLForFullProduct,
         AssociationTypeInterface $associationTypeXSELLForFullProduct,
         TokenInterface $token,
-        UserInterface $user,
         ArrayCollection $productCollection,
         ArrayCollection $productModelCollection,
         \ArrayIterator $productIterator,
         \ArrayIterator $productModelIterator
     ) {
+        $user = new User();
         $productB->getId()->willReturn(1);
         $productB->getIdentifier()->willReturn('product_b');
         $productC->getId()->willReturn(2);
@@ -145,12 +145,12 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         AssociationInterface $XSELLForFullProduct,
         AssociationTypeInterface $associationTypeXSELLForFullProduct,
         TokenInterface $token,
-        UserInterface $user,
         ArrayCollection $productCollection,
         ArrayCollection $productModelCollection,
         \ArrayIterator $productIterator,
         \ArrayIterator $productModelIterator
     ) {
+        $user = new User();
         $productB->getId()->willReturn(1);
         $productB->getIdentifier()->willReturn('product_b');
         $productC->getId()->willReturn(2);
@@ -225,12 +225,12 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         AssociationInterface $XSELLForFullProduct,
         AssociationTypeInterface $associationTypeXSELLForFullProduct,
         TokenInterface $token,
-        UserInterface $user,
         ArrayCollection $productCollection,
         ArrayCollection $productModelCollection,
         \ArrayIterator $productIterator,
         \ArrayIterator $productModelIterator
     ) {
+        $user = new User();
         $productB->getId()->willReturn(1);
         $productB->getIdentifier()->willReturn('product_b');
         $productC->getId()->willReturn(2);

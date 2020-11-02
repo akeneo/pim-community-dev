@@ -47,6 +47,7 @@
 - PIM-9529: Fix translation in rule engine edit page
 - PIM-9536: Fix unexpected behaviors on drag&drop in rules edit page (calculate and concatenate actions)
 - PIM-9528: Fix asset code changed into lower case in create asset/upload asset UI
+- PIM-9537: Fix importing reference entities with wrong code fails the import
 
 ## Improvements
 
@@ -110,3 +111,21 @@
 - Change constructor of `Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\AssociationContext` to replace `IdentifiableObjectRepositoryInterface $productRepository` by `ProductRepositoryInterface $productRepository`
 - Remove `Akeneo\Pim\Enrichment\AssetManager\Bundle\Analytics\CountAssetFamilies` class
 - Remove `Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Analytics\CountReferenceEntities` class
+- Change `Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery::getGrantedItemIds()` method to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
+- Change `Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface::getGrantedProductIdentifiers()` method to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
+- Change `Akeneo\Pim\Permission\Component\Query\ProductModelCategoryAccessQueryInterface::getGrantedProductIdentifiers()` method to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
+- Change `Akeneo\Pim\Permission\Bundle\Entity\Query\ProductCategoryAccessQuery::getGrantedProductIdentifiers()` method to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
+- Change `Akeneo\Pim\Permission\Bundle\Entity\Query\ProductModelCategoryAccessQuery::getGrantedProductIdentifiers()` method to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
+- Change `Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository` to use `Akeneo\UserManagement\Component\Model\UserInterface` instead of `Symfony\Component\Security\Core\User\UserInterface`. It affects the following public and protected methods:
+    - `getGrantedChildrenIds()`
+    - `getGrantedChildrenCodes()`
+    - `getGrantedCategoryIds()`
+    - `isOwner()`
+    - `areAllCategoryCodesGranted()`
+    - `isCategoriesGranted()`
+    - `getGrantedChildrenQB()`
+- Change `Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository::getGrantedUserGroupsForEntityWithValues()` to replace `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface $entityWithValues` parameter by `Akeneo\Tool\Component\Classification\CategoryAwareInterface $entity`
+- Change `Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager::isUserGranted()` to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
+- Change `Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager::isUserGranted()` to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
+- Change constructor `Akeneo\Pim\Permission\Bundle\Voter\CategoryVoter` to replace `mixed $className` parameter by `string $className`
+- Change constructor `Akeneo\Pim\Permission\Component\Updater\Setter\GrantedCategoryFieldSetter` to replace `ObjectRepository $categoryAccessRepository` parameter by `CategoryAccessRepository $categoryAccessRepository`

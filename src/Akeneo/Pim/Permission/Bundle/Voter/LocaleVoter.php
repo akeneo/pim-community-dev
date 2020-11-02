@@ -15,9 +15,11 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Locale voter, allows to know if a locale can be edited or consulted by a user depending on his groups
@@ -98,8 +100,10 @@ class LocaleVoter extends Voter implements VoterInterface
     {
         $grantedGroups = $this->extractUserGroups($attribute, $subject);
 
+        $user = $token->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
         foreach ($grantedGroups as $group) {
-            if ($token->getUser()->hasGroup($group)) {
+            if ($user->hasGroup($group)) {
                 return true;
             }
         }

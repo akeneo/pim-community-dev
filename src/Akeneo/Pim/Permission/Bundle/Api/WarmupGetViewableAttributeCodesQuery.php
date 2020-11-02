@@ -15,8 +15,10 @@ namespace Akeneo\Pim\Permission\Bundle\Api;
 
 use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 final class WarmupGetViewableAttributeCodesQuery implements WarmupQueryCache
 {
@@ -72,8 +74,10 @@ final class WarmupGetViewableAttributeCodesQuery implements WarmupQueryCache
 
     private function getUserId(): ?int
     {
-        if ($this->tokenStorage->getToken() && $this->tokenStorage->getToken()->getUser()) {
-            return $this->tokenStorage->getToken()->getUser()->getId();
+        if ($this->tokenStorage->getToken() && $user = $this->tokenStorage->getToken()->getUser()) {
+            Assert::implementsInterface($user, UserInterface::class);
+
+            return $user->getId();
         }
 
         return null;
