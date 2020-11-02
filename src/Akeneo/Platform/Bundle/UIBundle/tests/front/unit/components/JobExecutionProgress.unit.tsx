@@ -33,7 +33,7 @@ abstract class BaseViewMock {
   }
 }
 
-const translator = jest.fn().mockImplementation((key: string, _params: any, count: number): string => {
+const translator = jest.fn().mockImplementation((key: string, params: any, count: number): string => {
   switch (key) {
     case 'duration.days':
       return `${count} day(s)`;
@@ -46,7 +46,7 @@ const translator = jest.fn().mockImplementation((key: string, _params: any, coun
     case 'batch_jobs.csv_product_export.export.label':
       return 'Product export';
     case 'pim_import_export.tracking.in_progress':
-      return `${_params.duration} left`;
+      return `${params.duration} left`;
     default:
       return key;
   }

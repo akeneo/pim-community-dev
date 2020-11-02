@@ -6,7 +6,15 @@ import {ReactView} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 
 const __ = require('oro/translator');
 
-type StepExecutionStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
+type StepExecutionStatus =
+  | 'COMPLETED'
+  | 'STARTING'
+  | 'STARTED'
+  | 'STOPPING'
+  | 'STOPPED'
+  | 'FAILED'
+  | 'ABANDONED'
+  | 'UNKNOWN';
 type StepExecutionTracking = {
   hasError: boolean;
   hasWarning: boolean;
@@ -47,7 +55,7 @@ const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 
       case 'ABANDONED':
         return 100;
       case 'STARTED':
-      case "STOPPING":
+      case 'STOPPING':
       case 'UNKNOWN':
       default:
         return 'indeterminate';
@@ -79,7 +87,7 @@ const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): str
       const durationProjection = Math.round((step.duration * 100) / percentProcessed);
       const durationLeft = durationProjection - step.duration;
       return __('pim_import_export.tracking.in_progress', {duration: formatSecondsIntl(durationLeft)});
-    case "ABANDONED":
+    case 'ABANDONED':
     case 'COMPLETED':
     case 'FAILED':
     case 'STOPPED':
