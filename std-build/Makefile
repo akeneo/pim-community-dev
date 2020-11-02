@@ -51,6 +51,7 @@ front: assets css javascript-dev
 .PHONY: database
 database:
 	$(PHP_RUN) bin/console pim:installer:db ${O}
+	$(PHP_RUN) bin/console messenger:setup-transports ${O}
 
 .PHONY: cache
 cache:

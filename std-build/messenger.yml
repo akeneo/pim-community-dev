@@ -5,7 +5,7 @@ framework:
                 dsn: doctrine://default
                 options:
                     table_name: messenger_messages
-                    auto_setup: false (ou un truc comme ça)
+                    auto_setup: false
                 serializer: pim_enrich.messenger.serializer.business_event
         routing:
             'Akeneo\Platform\Component\EventQueue\BusinessEvent': webhook
