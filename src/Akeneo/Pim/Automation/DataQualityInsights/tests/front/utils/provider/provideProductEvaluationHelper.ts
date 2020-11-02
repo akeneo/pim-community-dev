@@ -9,21 +9,25 @@ const aRate = (value: number | null = null, rank: string | null = null): Rate =>
   };
 };
 
-
-const aCriterion = (code: string = 'a_criterion', status: Status = 'done', rate: Rate|null = null, improvable_attributes: string[] = []): CriterionEvaluationResult => {
-    return {
-        code,
-        rate: rate === null ?  aRate(null, null) : rate,
-        status,
-        improvable_attributes,
-    };
+const aCriterion = (
+  code: string = 'a_criterion',
+  status: Status = 'done',
+  rate: Rate | null = null,
+  improvable_attributes: string[] = []
+): CriterionEvaluationResult => {
+  return {
+    code,
+    rate: rate === null ? aRate(null, null) : rate,
+    status,
+    improvable_attributes,
+  };
 };
 
-const anEvaluation = (rate: Rate|null = null, criteria: CriterionEvaluationResult[] = []): Evaluation => {
-    return {
-        rate: rate === null ? aRate(null, null) : rate,
-        criteria,
-    };
+const anEvaluation = (rate: Rate | null = null, criteria: CriterionEvaluationResult[] = []): Evaluation => {
+  return {
+    rate: rate === null ? aRate(null, null) : rate,
+    criteria,
+  };
 };
 
 export {aCriterion, anEvaluation, aRate};

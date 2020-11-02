@@ -46,6 +46,8 @@
 - PIM-9496: Change date format in the locale it_IT from dd/MM/yy to dd/MM/yyyy
 - PIM-9519: Fix translation key for datagrid search field
 - PIM-9517: Fix locale selector default value on localizable attributes in product exports
+- PIM-9516: Recalculate completeness after a bulk set attribute requirements on families
+- PIM-9532: Fix the family selection in mass action when a filter on label is set
 
 ## New features
 
@@ -67,6 +69,7 @@
 - PIM-9371: Disable save button when user creation form is not ready to submit
 - RAC-178: When launching a job, the notification contains a link to the job status
 - PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
+- BH-138: clear Locale cache on save
 
 # Technical Improvements
 
@@ -183,6 +186,7 @@
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController` to replace `Doctrine\ORM\EntityRepository $attributeGroupRepo` by `Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface $attributeGroupRepo`
 - Change `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface` interface to add `getWithVariants()`
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup` to replace `Doctrine\DBAL\Driver\Connection $connection` by `Doctrine\DBAL\Connection $connection`
+- Add `clearCache` method in `Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface`
 
 ### CLI commands
 

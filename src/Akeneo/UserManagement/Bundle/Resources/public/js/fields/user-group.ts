@@ -8,9 +8,9 @@ const FetcherRegistry = require('pim/fetcher-registry');
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 type InterfaceNormalizedUserGroup = {
-  meta: { default: boolean };
+  meta: {default: boolean};
   name: string;
-}
+};
 
 class UserGroupField extends BaseSelect {
   /**
@@ -21,9 +21,10 @@ class UserGroupField extends BaseSelect {
   configure() {
     return $.when(
       BaseSelect.prototype.configure.apply(this, arguments),
-      FetcherRegistry.getFetcher('user-group').fetchAll()
+      FetcherRegistry.getFetcher('user-group')
+        .fetchAll()
         .then((userGroups: InterfaceNormalizedUserGroup[]) => {
-          this.config.choices = userGroups.filter((userGroup) => {
+          this.config.choices = userGroups.filter(userGroup => {
             return userGroup.meta.default !== true;
           });
         })
@@ -33,8 +34,8 @@ class UserGroupField extends BaseSelect {
   /**
    * @param {Array} userGroups
    */
-  formatChoices(userGroups: InterfaceNormalizedUserGroup[]): { [key:string] : string } {
-    return userGroups.reduce((result: { [key:string] : string }, userGroup: InterfaceNormalizedUserGroup) => {
+  formatChoices(userGroups: InterfaceNormalizedUserGroup[]): {[key: string]: string} {
+    return userGroups.reduce((result: {[key: string]: string}, userGroup: InterfaceNormalizedUserGroup) => {
       result[userGroup.name] = userGroup.name;
 
       return result;
@@ -42,4 +43,4 @@ class UserGroupField extends BaseSelect {
   }
 }
 
-export = UserGroupField
+export = UserGroupField;

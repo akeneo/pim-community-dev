@@ -8,9 +8,9 @@ const FetcherRegistry = require('pim/fetcher-registry');
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 type InterfaceNormalizedUserRole = {
-    role: string;
-    label: string;
-}
+  role: string;
+  label: string;
+};
 
 class UserRoleField extends BaseSelect {
   /**
@@ -19,7 +19,8 @@ class UserRoleField extends BaseSelect {
   configure() {
     return $.when(
       BaseSelect.prototype.configure.apply(this, arguments),
-      FetcherRegistry.getFetcher('user-role').fetchAll()
+      FetcherRegistry.getFetcher('user-role')
+        .fetchAll()
         .then((userRoles: InterfaceNormalizedUserRole[]) => {
           this.config.choices = userRoles;
         })
@@ -29,8 +30,8 @@ class UserRoleField extends BaseSelect {
   /**
    * {@inheritdoc}
    */
-  formatChoices(userRoles: InterfaceNormalizedUserRole[]): { [key: string]: string } {
-    return userRoles.reduce((result: { [key: string]: string }, userRole: InterfaceNormalizedUserRole) => {
+  formatChoices(userRoles: InterfaceNormalizedUserRole[]): {[key: string]: string} {
+    return userRoles.reduce((result: {[key: string]: string}, userRole: InterfaceNormalizedUserRole) => {
       result[userRole.role] = userRole.label;
 
       return result;
@@ -38,4 +39,4 @@ class UserRoleField extends BaseSelect {
   }
 }
 
-export = UserRoleField
+export = UserRoleField;

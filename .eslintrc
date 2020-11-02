@@ -70,7 +70,10 @@
       2,
       {
         "words": false,
-        "nonwords": false
+        "nonwords": false,
+        "overrides": {
+          "await": true
+        }
       }
     ],
     "space-before-function-paren": [

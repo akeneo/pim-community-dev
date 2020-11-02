@@ -6,215 +6,219 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'oro/messenger',
-        'pim/i18n',
-        'pim/user-context',
-        'pim/fetcher-registry',
-        'pim/mass-edit-form/product/operation',
-        'pim/tree/associate',
-        'pim/common/property',
-        'pim/template/mass-edit/product/category'
-    ],
-    function (
-        $,
-        _,
-        __,
-        messenger,
-        i18n,
-        UserContext,
-        FetcherRegistry,
-        BaseOperation,
-        TreeAssociate,
-        propertyAccessor,
-        template
-    ) {
-        return BaseOperation.extend({
-            template: _.template(template),
-            currentTree: null,
-            categoryCache: {},
-            selectedCategories: [],
-            treePromise: null,
-            view: null,
-            trees: [],
-            events: {
-                'click .nav-tabs .tree-selector': 'changeTree',
-                'change #hidden-tree-input': 'updateModel'
-            },
+define([
+  'jquery',
+  'underscore',
+  'oro/translator',
+  'oro/messenger',
+  'pim/i18n',
+  'pim/user-context',
+  'pim/fetcher-registry',
+  'pim/mass-edit-form/product/operation',
+  'pim/tree/associate',
+  'pim/common/property',
+  'pim/template/mass-edit/product/category',
+], function (
+  $,
+  _,
+  __,
+  messenger,
+  i18n,
+  UserContext,
+  FetcherRegistry,
+  BaseOperation,
+  TreeAssociate,
+  propertyAccessor,
+  template
+) {
+  return BaseOperation.extend({
+    template: _.template(template),
+    currentTree: null,
+    categoryCache: {},
+    selectedCategories: [],
+    treePromise: null,
+    view: null,
+    trees: [],
+    events: {
+      'click .nav-tabs .tree-selector': 'changeTree',
+      'change #hidden-tree-input': 'updateModel',
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function () {
-                this.trees = [];
+    /**
+     * {@inheritdoc}
+     */
+    initialize: function () {
+      this.trees = [];
 
-                BaseOperation.prototype.initialize.apply(this, arguments);
-            },
+      BaseOperation.prototype.initialize.apply(this, arguments);
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            reset: function () {
-                this.setValue([]);
+    /**
+     * {@inheritdoc}
+     */
+    reset: function () {
+      this.setValue([]);
 
-                this.treePromise        = null;
-                this.currentTree        = null;
-                this.selectedCategories = [];
-            },
+      this.treePromise = null;
+      this.currentTree = null;
+      this.selectedCategories = [];
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (null === this.treePromise) {
-                    FetcherRegistry.getFetcher(this.config.fetcher).clear();
-                    this.treePromise = FetcherRegistry
-                        .getFetcher(this.config.fetcher)
-                        .fetchAll()
-                        .then(function (trees) {
-                        this.trees = trees;
+    /**
+     * {@inheritdoc}
+     */
+    render: function () {
+      if (null === this.treePromise) {
+        FetcherRegistry.getFetcher(this.config.fetcher).clear();
+        this.treePromise = FetcherRegistry.getFetcher(this.config.fetcher)
+          .fetchAll()
+          .then(
+            function (trees) {
+              this.trees = trees;
 
-                        if (null === this.currentTree) {
-                            this.currentTree = _.first(trees).code;
-                        }
+              if (null === this.currentTree) {
+                this.currentTree = _.first(trees).code;
+              }
 
-                        this.$el.html(this.template({
-                            i18n: i18n,
-                            locale: UserContext.get('catalogLocale'),
-                            trees: trees,
-                            currentTree: _.findWhere(trees, {code: this.currentTree}),
-                            selectedCategories: this.selectedCategories
-                        }));
+              this.$el.html(
+                this.template({
+                  i18n: i18n,
+                  locale: UserContext.get('catalogLocale'),
+                  trees: trees,
+                  currentTree: _.findWhere(trees, {code: this.currentTree}),
+                  selectedCategories: this.selectedCategories,
+                })
+              );
 
-                        this.delegateEvents();
+              this.delegateEvents();
 
-                        this.toggleContentCache();
+              this.toggleContentCache();
 
-                        return {
-                            treeAssociate: new TreeAssociate('#trees', '#hidden-tree-input', {
-                                list_categories: this.config.listRoute,
-                                children:        this.config.childrenRoute
-                            }),
-                            trees: trees
-                        };
-                    }.bind(this));
-                } else {
-                    this.toggleContentCache();
+              return {
+                treeAssociate: new TreeAssociate('#trees', '#hidden-tree-input', {
+                  list_categories: this.config.listRoute,
+                  children: this.config.childrenRoute,
+                }),
+                trees: trees,
+              };
+            }.bind(this)
+          );
+      } else {
+        this.toggleContentCache();
 
-                    this.delegateEvents();
-                }
+        this.delegateEvents();
+      }
 
-                return this;
-            },
+      return this;
+    },
 
-            /**
-             * In this method, we don't re-render the trees because select elements on several trees is hell.
-             * We simply hide or show the cache to avoid clicking on new elements during the confirm.
-             **/
-            toggleContentCache: function () {
-                if (this.readOnly) {
-                    this.$el.find('.content-cache').removeClass('AknTabContainer-contentCache--hidden');
-                } else {
-                    this.$el.find('.content-cache').addClass('AknTabContainer-contentCache--hidden');
-                }
-            },
+    /**
+     * In this method, we don't re-render the trees because select elements on several trees is hell.
+     * We simply hide or show the cache to avoid clicking on new elements during the confirm.
+     **/
+    toggleContentCache: function () {
+      if (this.readOnly) {
+        this.$el.find('.content-cache').removeClass('AknTabContainer-contentCache--hidden');
+      } else {
+        this.$el.find('.content-cache').addClass('AknTabContainer-contentCache--hidden');
+      }
+    },
 
-            /**
-             * Update the mass edit model
-             *
-             * @param {Event} event
-             */
-            updateModel: function (event) {
-                this.selectedCategories = event.target.value.split(',');
-                const selectedCategories = this.selectedCategories
-                    .filter((category) => '' !== category)
-                    .map(this.getCategoryCode.bind(this));
-                this.setValue(selectedCategories);
-            },
+    /**
+     * Update the mass edit model
+     *
+     * @param {Event} event
+     */
+    updateModel: function (event) {
+      this.selectedCategories = event.target.value.split(',');
+      const selectedCategories = this.selectedCategories
+        .filter(category => '' !== category)
+        .map(this.getCategoryCode.bind(this));
+      this.setValue(selectedCategories);
+    },
 
-            /**
-             * Update the model after dom event triggered
-             *
-             * @param {string} categories
-             */
-            setValue: function (categories) {
-                let data = this.getFormData();
+    /**
+     * Update the model after dom event triggered
+     *
+     * @param {string} categories
+     */
+    setValue: function (categories) {
+      let data = this.getFormData();
 
-                data.actions = [{
-                    field: 'categories',
-                    value: categories
-                }];
+      data.actions = [
+        {
+          field: 'categories',
+          value: categories,
+        },
+      ];
 
-                this.setData(data);
-            },
+      this.setData(data);
+    },
 
-            /**
-             * Get current value from mass edit model
-             *
-             * @return {string}
-             */
-            getValue: function () {
-                const action = _.findWhere(this.getFormData().actions, {field: 'categories'});
+    /**
+     * Get current value from mass edit model
+     *
+     * @return {string}
+     */
+    getValue: function () {
+      const action = _.findWhere(this.getFormData().actions, {field: 'categories'});
 
-                return action ? action.value : null;
-            },
+      return action ? action.value : null;
+    },
 
-            /**
-             * Change the current tree
-             *
-             * @param {Event} event
-             */
-            changeTree: function (event) {
-                this.currentTree = event.currentTarget.dataset.tree;
+    /**
+     * Change the current tree
+     *
+     * @param {Event} event
+     */
+    changeTree: function (event) {
+      this.currentTree = event.currentTarget.dataset.tree;
 
-                this.treePromise.then(function (elements) {
-                    const tree = _.findWhere(elements.trees, {code: this.currentTree});
+      this.treePromise.then(
+        function (elements) {
+          const tree = _.findWhere(elements.trees, {code: this.currentTree});
 
-                    elements.treeAssociate.switchTree(tree.id);
+          elements.treeAssociate.switchTree(tree.id);
 
-                    this.delegateEvents();
-                }.bind(this));
-            },
+          this.delegateEvents();
+        }.bind(this)
+      );
+    },
 
-            /**
-             * Fetch category code from cache
-             *
-             * @param {integer} id
-             *
-             * @returns {string}
-             */
-            getCategoryCode: function (id) {
-                if (!this.categoryCache[id]) {
-                    const $categoryElement = this.$('#node_' + id);
-                    const $rootElement     = $categoryElement.closest('.root-unselectable');
-                    this.categoryCache[id] = {
-                        code: String($categoryElement.data('code')),
-                        rootId: $rootElement.data('tree-id')
-                    };
-                }
+    /**
+     * Fetch category code from cache
+     *
+     * @param {integer} id
+     *
+     * @returns {string}
+     */
+    getCategoryCode: function (id) {
+      if (!this.categoryCache[id]) {
+        const $categoryElement = this.$('#node_' + id);
+        const $rootElement = $categoryElement.closest('.root-unselectable');
+        this.categoryCache[id] = {
+          code: String($categoryElement.data('code')),
+          rootId: $rootElement.data('tree-id'),
+        };
+      }
 
-                return this.categoryCache[id].code;
-            },
+      return this.categoryCache[id].code;
+    },
 
-            /**
-             * Checks there is at least one category selected to go to the next step
-             */
-            validate: function () {
-                const data = this.getFormData();
-                const categories = propertyAccessor.accessProperty(data, 'actions.0.value', []);
+    /**
+     * Checks there is at least one category selected to go to the next step
+     */
+    validate: function () {
+      const data = this.getFormData();
+      const categories = propertyAccessor.accessProperty(data, 'actions.0.value', []);
 
-                const hasUpdates = 0 !== categories.length;
+      const hasUpdates = 0 !== categories.length;
 
-                if (!hasUpdates) {
-                    messenger.notify('error', __(`pim_enrich.mass_edit.product.operation.${data.operation}.no_update`));
-                }
+      if (!hasUpdates) {
+        messenger.notify('error', __(`pim_enrich.mass_edit.product.operation.${data.operation}.no_update`));
+      }
 
-                return $.Deferred().resolve(hasUpdates);
-            }
-        });
-    }
-);
+      return $.Deferred().resolve(hasUpdates);
+    },
+  });
+});
