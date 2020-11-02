@@ -121,3 +121,8 @@ pim_enrich_job_tracker_view_all_jobs:
     label: pim_enrich.acl.job_tracker.view_all_jobs
     group_name: pim_enrich.acl_group.job_tracker
     enabled_at_creation: false
+
+pim_importexport_stop_job:
+    type: action
+    label: pim_enrich.acl.job_tracker.stop_job
+    group_name: pim_enrich.acl_group.job_tracker

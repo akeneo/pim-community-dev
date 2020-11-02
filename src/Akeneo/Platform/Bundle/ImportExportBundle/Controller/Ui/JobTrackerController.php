@@ -104,8 +104,9 @@ class JobTrackerController extends Controller
         $jobExecution = $this->jobExecutionRepo->find($id);
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         $isStoppable = $jobExecution->isRunning() && $job instanceof StoppableJobInterface && $job->isStoppable();
+        $isGranted = $this->securityFacade->isGranted('pim_importexport_stop_job');
 
-        if ($isStoppable) {
+        if ($isStoppable && $isGranted) {
             $this->updateJobExecutionStatus->updateByJobExecutionId($id, new BatchStatus(BatchStatus::STOPPING));
         }
 
