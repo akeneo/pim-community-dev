@@ -99,7 +99,7 @@ services:
             - '@akeneo_connectivity.connection.webhook.webhook_client'
             - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
             - '@logger'
-            - '@pim_user.manager'
+            - '@akeneo_connectivity.connection.persistence.query.get_conection_user_for_fake_subscription'
             - '%env(AKENEO_PIM_URL)%'
 
     akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:

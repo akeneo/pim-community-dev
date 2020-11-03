@@ -12,12 +12,11 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -29,14 +28,13 @@ final class SendBusinessEventToWebhooksHandler
     const FAKE_CONNECTION_CODE = 'FAKE_CONNECTION_CODE';
     const FAKE_SECRET = 'FAKE_SECRET';
     const FAKE_URL = 'FAKE_URL';
-    const ADMIN_USERNAME = 'admin';
 
     private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
     private WebhookClient $client;
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
-    private UserProviderInterface $userManager;
+    private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
     private string $pimSource;
 
     public function __construct(
@@ -45,7 +43,7 @@ final class SendBusinessEventToWebhooksHandler
         WebhookClient $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
-        UserProviderInterface $userManager,
+        GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
         string $pimSource
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
@@ -53,7 +51,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->client = $client;
         $this->builder = $builder;
         $this->logger = $logger;
-        $this->userManager = $userManager;
+        $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
         $this->pimSource = $pimSource;
     }
 
@@ -65,8 +63,12 @@ final class SendBusinessEventToWebhooksHandler
         $isFake = false;
 
         if (0 === count($webhooks)) {
-            $webhooks[] = $this->buildFakeActiveWebhook();
-            $isFake = true;
+            $userId = $this->connectionUserForFakeSubscription->execute();
+
+            if ($userId) {
+                $webhooks[] = $this->buildFakeActiveWebhook($userId);
+                $isFake = true;
+            }
         }
 
         $businessEvent = $command->businessEvent();
@@ -130,14 +132,11 @@ final class SendBusinessEventToWebhooksHandler
         }
     }
 
-    private function buildFakeActiveWebhook(): ActiveWebhook
+    private function buildFakeActiveWebhook(int $userId): ActiveWebhook
     {
-        /** @var UserInterface $systemUser */
-        $systemUser = $this->userManager->loadUserByUsername(self::ADMIN_USERNAME);
-
         return new ActiveWebhook(
             self::FAKE_CONNECTION_CODE,
-            $systemUser->getId(),
+            $userId,
             self::FAKE_SECRET,
             self::FAKE_URL
         );

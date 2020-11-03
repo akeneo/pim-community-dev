@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
@@ -21,7 +22,6 @@ use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
 use Psr\Log\NullLogger;
 use Akeneo\Platform\Component\EventQueue\Author;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -35,7 +35,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
         WebhookEventBuilder $builder,
-        UserProviderInterface $userManager
+        GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -43,7 +43,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $client,
             $builder,
             new NullLogger(),
-            $userManager,
+            $connectionUserForFakeSubscription,
             'staging.akeneo.com'
         );
     }
@@ -122,7 +122,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder,
         UserInterface $user,
-        $userManager
+        $connectionUserForFakeSubscription
     ): void {
 
         $user->getId()->willReturn(0);
@@ -136,9 +136,10 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $selectActiveWebhooksQuery->execute()->willReturn([]);
-        $userManager->loadUserByUsername(SendBusinessEventToWebhooksHandler::ADMIN_USERNAME)->shouldBeCalled()->willReturn($user);
 
-        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
+        $connectionUserForFakeSubscription->execute()->willReturn(1234);
+
+        $webhookUserAuthenticator->authenticate(1234)->shouldBeCalled();
         $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willReturn(
             new WebhookEvent(
                 'product.created',
