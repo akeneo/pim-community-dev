@@ -16,6 +16,6 @@ describe('Badge supports forwardRef', () => {
 });
 
 describe('Badge supports ...rest props', () => {
-    const {container} = render(<Badge data-my-attribute="my_value" />);
-    expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+  const {container} = render(<Badge data-my-attribute="my_value" />);
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
 });

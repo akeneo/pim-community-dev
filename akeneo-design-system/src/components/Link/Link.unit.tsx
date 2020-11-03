@@ -42,6 +42,6 @@ describe('Link supports forwardRef', () => {
 });
 
 describe('Link supports ...rest props', () => {
-    const {container} = render(<Link data-my-attribute="my_value">My link</Link>);
-    expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+  const {container} = render(<Link data-my-attribute="my_value">My link</Link>);
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
 });

@@ -77,6 +77,6 @@ describe('Checkbox supports forwardRef', () => {
 });
 
 describe('Checkbox supports ...rest props', () => {
-    const {container} = render(<Checkbox checked={false} data-my-attribute="my_value" />);
-    expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+  const {container} = render(<Checkbox checked={false} data-my-attribute="my_value" />);
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
 });
