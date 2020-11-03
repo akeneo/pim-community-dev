@@ -145,6 +145,7 @@ class GuzzleWebhookClient implements WebhookClient
             $webhookRequestLog = $logs[$index];
             $webhookRequestLog->setSuccess(true);
             $webhookRequestLog->setEndTime(microtime(true));
+            $webhookRequestLog->setResponse(null);
             $this->logger->info(
                 json_encode(
                     $webhookRequestLog->toLog()

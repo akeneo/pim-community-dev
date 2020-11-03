@@ -136,7 +136,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $selectActiveWebhooksQuery->execute()->willReturn([]);
-        $userManager->loadUserByUsername(UserInterface::SYSTEM_USER_NAME)->shouldBeCalled()->willReturn($user);
+        $userManager->loadUserByUsername(SendBusinessEventToWebhooksHandler::ADMIN_USERNAME)->shouldBeCalled()->willReturn($user);
 
         $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
         $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willReturn(

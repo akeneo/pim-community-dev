@@ -29,6 +29,7 @@ final class SendBusinessEventToWebhooksHandler
     const FAKE_CONNECTION_CODE = 'FAKE_CONNECTION_CODE';
     const FAKE_SECRET = 'FAKE_SECRET';
     const FAKE_URL = 'FAKE_URL';
+    const ADMIN_USERNAME = 'admin';
 
     private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
@@ -132,7 +133,7 @@ final class SendBusinessEventToWebhooksHandler
     private function buildFakeActiveWebhook(): ActiveWebhook
     {
         /** @var UserInterface $systemUser */
-        $systemUser = $this->userManager->loadUserByUsername(UserInterface::SYSTEM_USER_NAME);
+        $systemUser = $this->userManager->loadUserByUsername(self::ADMIN_USERNAME);
 
         return new ActiveWebhook(
             self::FAKE_CONNECTION_CODE,
