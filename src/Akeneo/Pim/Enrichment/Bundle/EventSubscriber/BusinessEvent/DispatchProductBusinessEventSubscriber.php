@@ -8,7 +8,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -21,12 +23,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 final class DispatchProductBusinessEventSubscriber implements EventSubscriberInterface
 {
+    /** @var Security */
     private $security;
+
+    /** @var NormalizerInterface */
     private $normalizer;
+
+    /** @var MessageBusInterface */
     private $messageBus;
 
-    public function __construct(Security $security, NormalizerInterface $normalizer, MessageBusInterface $messageBus)
-    {
+    public function __construct(
+        Security $security,
+        NormalizerInterface $normalizer,
+        MessageBusInterface $messageBus
+    ) {
         $this->security = $security;
         $this->normalizer = $normalizer;
         $this->messageBus = $messageBus;
@@ -48,13 +58,16 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
             return;
         }
 
-        if (null === $user = $this->security->getUser()) {
+        /** @var UserInterface $user */
+        $user = $this->security->getUser();
+
+        if (!$user) {
             // TODO: https://akeneo.atlassian.net/browse/CXP-443
             // throw new \LogicException('User should not be null.');
             return;
         }
 
-        $author = $user->getUsername();
+        $author = Author::fromUser($user);
         $data = $this->normalizeProductData($product);
 
         $message = null;
@@ -75,13 +88,16 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
             return;
         }
 
-        if (null === $user = $this->security->getUser()) {
+        /** @var UserInterface $user */
+        $user = $this->security->getUser();
+
+        if (!$user) {
             // TODO: https://akeneo.atlassian.net/browse/CXP-443
             // throw new \LogicException('User should not be null.');
             return;
         }
 
-        $author = $user->getUsername();
+        $author = Author::fromUser($user);
         $data = $this->normalizeProductData($product);
 
         $message = new ProductRemoved($author, $data);

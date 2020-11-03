@@ -7,178 +7,171 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'backbone',
-        'pim/form',
-        'pim/template/grid/mass-actions'
-    ],
-    function (
-        $,
-        _,
-        __,
-        Backbone,
-        BaseForm,
-        template
-    ) {
-        return BaseForm.extend({
-            template: _.template(template),
-            className: 'AknDefault-bottomPanel AknDefault-bottomPanel--hidden AknMassActions mass-actions',
-            collection: null,
-            count: 0,
-            events: {
-                'click .select-all': 'selectAll',
-                'click .select-none': 'selectNone',
-                'click .select-visible': 'selectVisible',
-                'click .select-button': 'toggleButton'
-            },
+define(['jquery', 'underscore', 'oro/translator', 'backbone', 'pim/form', 'pim/template/grid/mass-actions'], function (
+  $,
+  _,
+  __,
+  Backbone,
+  BaseForm,
+  template
+) {
+  return BaseForm.extend({
+    template: _.template(template),
+    className: 'AknDefault-bottomPanel AknDefault-bottomPanel--hidden AknMassActions mass-actions',
+    collection: null,
+    count: 0,
+    events: {
+      'click .select-all': 'selectAll',
+      'click .select-none': 'selectNone',
+      'click .select-visible': 'selectVisible',
+      'click .select-button': 'toggleButton',
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (meta) {
-                this.config = meta.config;
+    /**
+     * {@inheritdoc}
+     */
+    initialize: function (meta) {
+      this.config = meta.config;
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+      BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            configure() {
-                const setCollection = (collection, datagrid) => {
-                    if (null === this.collection) {
-                        this.listenTo(collection, 'backgrid:selected', this.select.bind(this));
-                    }
+    /**
+     * {@inheritdoc}
+     */
+    configure() {
+      const setCollection = (collection, datagrid) => {
+        if (null === this.collection) {
+          this.listenTo(collection, 'backgrid:selected', this.select.bind(this));
+        }
 
-                    this.collection = collection;
-                    this.datagrid = datagrid;
-                    this.updateView();
-                };
-                this.listenTo(this.getRoot(), 'grid_load:start', setCollection);
-                this.listenTo(this.getRoot(), 'grid_load:complete', setCollection);
+        this.collection = collection;
+        this.datagrid = datagrid;
+        this.updateView();
+      };
+      this.listenTo(this.getRoot(), 'grid_load:start', setCollection);
+      this.listenTo(this.getRoot(), 'grid_load:complete', setCollection);
 
-                BaseForm.prototype.configure.apply(this, arguments);
-            },
+      BaseForm.prototype.configure.apply(this, arguments);
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            render() {
-                this.$el.html(this.template({
-                    select: __('pim_datagrid.select.title'),
-                    selectAll: __('pim_common.all'),
-                    selectVisible: __('pim_datagrid.select.all_visible'),
-                    selectNone: __('pim_common.none')
-                }));
+    /**
+     * {@inheritdoc}
+     */
+    render() {
+      this.$el.html(
+        this.template({
+          select: __('pim_datagrid.select.title'),
+          selectAll: __('pim_common.all'),
+          selectVisible: __('pim_datagrid.select.all_visible'),
+          selectNone: __('pim_common.none'),
+        })
+      );
 
-                this.updateView();
+      this.updateView();
 
-                BaseForm.prototype.render.apply(this, arguments);
-            },
+      BaseForm.prototype.render.apply(this, arguments);
+    },
 
-            /**
-             * Updates the count after clicking in a single event
-             *
-             * @param {Object}  model The selected model
-             * @param {boolean} checked
-             */
-            select(model, checked) {
-                if (checked) {
-                    this.count = Math.min(this.count + 1, this.collection.state.totalRecords);
-                } else {
-                    this.count = Math.max(this.count - 1, 0);
-                }
+    /**
+     * Updates the count after clicking in a single event
+     *
+     * @param {Object}  model The selected model
+     * @param {boolean} checked
+     */
+    select(model, checked) {
+      if (checked) {
+        this.count = Math.min(this.count + 1, this.collection.state.totalRecords);
+      } else {
+        this.count = Math.max(this.count - 1, 0);
+      }
 
-                this.updateView();
-            },
+      this.updateView();
+    },
 
-            /**
-             * Updates the count after clicking in "Select all" button
-             */
-            selectAll() {
-                this.count = this.collection.state.totalRecords;
-                this.collection.trigger('backgrid:selectAll');
+    /**
+     * Updates the count after clicking in "Select all" button
+     */
+    selectAll() {
+      this.count = this.collection.state.totalRecords;
+      this.collection.trigger('backgrid:selectAll');
 
-                this.updateView();
-            },
+      this.updateView();
+    },
 
-            /**
-             * Updates the count after clicking in "Select all visible" button
-             */
-            selectVisible() {
-                if (this.count === this.collection.state.totalRecords) {
-                    this.count = 0;
-                }
-                this.collection.trigger('backgrid:selectAllVisible');
+    /**
+     * Updates the count after clicking in "Select all visible" button
+     */
+    selectVisible() {
+      if (this.count === this.collection.state.totalRecords) {
+        this.count = 0;
+      }
+      this.collection.trigger('backgrid:selectAllVisible');
 
-                this.updateView();
-            },
+      this.updateView();
+    },
 
-            /**
-             * Updates the count after clicking in "Select none" button
-             */
-            selectNone() {
-                this.count = 0;
-                this.collection.trigger('backgrid:selectNone');
+    /**
+     * Updates the count after clicking in "Select none" button
+     */
+    selectNone() {
+      this.count = 0;
+      this.collection.trigger('backgrid:selectNone');
 
-                this.updateView();
-            },
+      this.updateView();
+    },
 
-            /**
-             * Updates the count (select all or select none), regarding the current count.
-             */
-            toggleButton() {
-                if (this.count === this.collection.state.totalRecords) {
-                    this.selectNone();
-                } else {
-                    this.selectAll();
-                }
-            },
+    /**
+     * Updates the count (select all or select none), regarding the current count.
+     */
+    toggleButton() {
+      if (this.count === this.collection.state.totalRecords) {
+        this.selectNone();
+      } else {
+        this.selectAll();
+      }
+    },
 
-            /**
-             * Updates the current view.
-             *
-             * In this function, we do not use render() method because:
-             * - We need to animate this extension (with CSS)
-             * - The events of the sub extensions are lost after re-render.
-             */
-            updateView() {
-                let count = this.count;
-                if (this.datagrid) {
-                    const selectionState = this.datagrid.getSelectionState();
-                    if (!selectionState.inset) {
-                        count = this.collection.state.totalRecords - Object.keys(selectionState.selectedModels).length;
-                    }
-                }
+    /**
+     * Updates the current view.
+     *
+     * In this function, we do not use render() method because:
+     * - We need to animate this extension (with CSS)
+     * - The events of the sub extensions are lost after re-render.
+     */
+    updateView() {
+      let count = this.count;
+      if (this.datagrid) {
+        const selectionState = this.datagrid.getSelectionState();
+        if (!selectionState.inset) {
+          count = this.collection.state.totalRecords - Object.keys(selectionState.selectedModels).length;
+        }
+      }
 
-                if (count > 0) {
-                    this.$el.removeClass('AknDefault-bottomPanel--hidden');
+      if (count > 0) {
+        this.$el.removeClass('AknDefault-bottomPanel--hidden');
 
-                    if (count >= this.collection.state.totalRecords) {
-                        this.$el.find('.AknSelectButton')
-                            .removeClass('AknSelectButton--partial')
-                            .addClass('AknSelectButton--selected');
-                    } else {
-                        this.$el.find('.AknSelectButton')
-                            .removeClass('AknSelectButton--selected')
-                            .addClass('AknSelectButton--partial');
-                    }
-                } else {
-                    this.$el.addClass('AknDefault-bottomPanel--hidden');
+        if (count >= this.collection.state.totalRecords) {
+          this.$el
+            .find('.AknSelectButton')
+            .removeClass('AknSelectButton--partial')
+            .addClass('AknSelectButton--selected');
+        } else {
+          this.$el
+            .find('.AknSelectButton')
+            .removeClass('AknSelectButton--selected')
+            .addClass('AknSelectButton--partial');
+        }
+      } else {
+        this.$el.addClass('AknDefault-bottomPanel--hidden');
 
-                    this.$el.find('.AknSelectButton')
-                        .removeClass('AknSelectButton--selected')
-                        .removeClass('AknSelectButton--partial');
-                }
+        this.$el
+          .find('.AknSelectButton')
+          .removeClass('AknSelectButton--selected')
+          .removeClass('AknSelectButton--partial');
+      }
 
-                this.$el.find('.count').text(
-                    __(this.config.label, {count: count}, count)
-                );
-            }
-        });
-    }
-);
+      this.$el.find('.count').text(__(this.config.label, {count: count}, count));
+    },
+  });
+});

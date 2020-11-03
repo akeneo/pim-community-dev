@@ -1,7 +1,7 @@
-import React, {FunctionComponent} from "react";
-import Overview from "./Overview/Overview";
-import Widgets from "./Widgets/Widgets";
-import {AxesContextProvider} from "../../context/AxesContext";
+import React, {FunctionComponent} from 'react';
+import Overview from './Overview/Overview';
+import Widgets from './Widgets/Widgets';
+import {AxesContextProvider} from '../../context/AxesContext';
 import {KeyIndicators} from "./KeyIndicators/KeyIndicators";
 import {AssetCollectionIcon, EditIcon, pimTheme} from "akeneo-design-system";
 import {ThemeProvider} from "styled-components";
@@ -19,14 +19,27 @@ interface DataQualityInsightsDashboardProps {
   axes: string[];
 }
 
-const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({timePeriod, catalogLocale, catalogChannel, familyCode, categoryCode, axes}) => {
+const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
+  timePeriod,
+  catalogLocale,
+  catalogChannel,
+  familyCode,
+  categoryCode,
+  axes,
+}) => {
   return (
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
         <AxesContextProvider axes={axes}>
           <div id="data-quality-insights-activity-dashboard">
             <div className="AknSubsection">
-              <Overview catalogLocale={catalogLocale} catalogChannel={catalogChannel} timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode}/>
+              <Overview
+            catalogLocale={catalogLocale}
+            catalogChannel={catalogChannel}
+            timePeriod={timePeriod}
+            familyCode={familyCode}
+            categoryCode={categoryCode}
+          />
 
               <KeyIndicatorsProvider tips={keyIndicatorsTips}>
                 <KeyIndicators channel={catalogChannel} locale={catalogLocale} family={familyCode} category={categoryCode}>
@@ -49,13 +62,13 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({timePe
 
                 </KeyIndicators>
               </KeyIndicatorsProvider>
-              <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel}/>
+              <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
             </div>
           </div>
         </AxesContextProvider>
       </ThemeProvider>
     </DependenciesProvider>
-  )
+  );
 };
 
 export default Dashboard;
