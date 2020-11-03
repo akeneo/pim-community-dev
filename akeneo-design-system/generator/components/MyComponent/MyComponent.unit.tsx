@@ -1,12 +1,11 @@
 import React from 'react';
 import {MyComponent} from './MyComponent';
-import {render} from '../../storybook/test-util';
-import '@testing-library/jest-dom/extend-expect';
+import {render, screen} from '../../storybook/test-util';
 
 test('it renders its children properly', () => {
-  const {getByText} = render(<MyComponent>MyComponent content</MyComponent>);
+  render(<MyComponent>MyComponent content</MyComponent>);
 
-  expect(getByText('MyComponent content')).toBeInTheDocument();
+  expect(screen.getByText('MyComponent content')).toBeInTheDocument();
 });
 
 // Those tests should pass directly if you follow the contributing guide.

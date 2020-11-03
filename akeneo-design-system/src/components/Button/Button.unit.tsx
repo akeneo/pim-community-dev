@@ -60,12 +60,7 @@ describe('Button supports forwardRef', () => {
   const ref = {current: null};
 
   render(
-    <Button
-      onClick={() => {
-        // Do nothing
-      }}
-      ref={ref}
-    >
+    <Button onClick={jest.fn()} ref={ref}>
       My button
     </Button>
   );
@@ -74,12 +69,7 @@ describe('Button supports forwardRef', () => {
 
 describe('Button supports ...rest props', () => {
   const {container} = render(
-    <Button
-      onClick={() => {
-        // Do nothing
-      }}
-      data-my-attribute="my_value"
-    >
+    <Button onClick={jest.fn()} data-my-attribute="my_value">
       My button
     </Button>
   );
