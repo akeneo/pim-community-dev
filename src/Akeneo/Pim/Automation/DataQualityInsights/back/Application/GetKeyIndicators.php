@@ -51,8 +51,9 @@ final class GetKeyIndicators implements GetKeyIndicatorsInterface
         foreach ($keyIndicators as $keyIndicator) {
             Assert::isInstanceOf($keyIndicator, KeyIndicator::class);
             $formattedKeyIndicators[strval($keyIndicator->getCode())] = [
-                'ratio' => $keyIndicator->getRatioGood(),
-                'total' => $keyIndicator->getTotalGood(),
+                'ratioGood' => $keyIndicator->getRatioGood(),
+                'totalGood' => $keyIndicator->getTotalGood(),
+                'totalToImprove' => $keyIndicator->getTotalToImprove(),
             ];
         }
 
