@@ -36,6 +36,6 @@ describe('Helper supports forwardRef', () => {
 });
 
 describe('Helper supports ...rest props', () => {
-    const {container} = render(<Helper data-my-attribute="my_value">My helper</Helper>);
-    expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+  const {container} = render(<Helper data-my-attribute="my_value">My helper</Helper>);
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
 });
