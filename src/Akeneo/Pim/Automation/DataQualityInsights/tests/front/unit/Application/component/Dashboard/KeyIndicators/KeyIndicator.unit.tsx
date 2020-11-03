@@ -8,7 +8,7 @@ import {KeyIndicatorsProvider} from "@akeneo-pim-community/data-quality-insights
 test('It displays a key indicator with products to work on', () => {
   const {getByText} = renderWithAppContextHelper(
     <KeyIndicatorsProvider tips={keyIndicatorsTips}>
-      <KeyIndicator type={'has_image'} title={'My key indicator'} total={156412} ratio={22} resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}>
+      <KeyIndicator type={'has_image'} title={'My key indicator'} totalToImprove={156412} ratioGood={22} resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}>
         <span>an_icon</span>
       </KeyIndicator>
     </KeyIndicatorsProvider>
@@ -24,7 +24,7 @@ test('It displays a key indicator with products to work on', () => {
 test('It displays a key indicator with no product to work on', () => {
   const {getByText, queryByText} = renderWithAppContextHelper(
     <KeyIndicatorsProvider tips={keyIndicatorsTips}>
-      <KeyIndicator type={'good_enrichment'} title={'My key indicator'} total={0} ratio={100} resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}/>
+      <KeyIndicator type={'good_enrichment'} title={'My key indicator'} totalToImprove={0} ratioGood={100} resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}/>
     </KeyIndicatorsProvider>
   );
 

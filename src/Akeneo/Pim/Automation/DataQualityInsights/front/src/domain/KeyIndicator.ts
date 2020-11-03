@@ -1,6 +1,6 @@
 type KeyIndicator = {
-  ratio: number;
-  total: number;
+  ratioGood: number;
+  totalToImprove: number;
 }
 
 type keyIndicatorMap = {

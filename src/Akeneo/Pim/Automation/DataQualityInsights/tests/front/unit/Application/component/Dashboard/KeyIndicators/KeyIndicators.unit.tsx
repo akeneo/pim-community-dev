@@ -10,12 +10,12 @@ jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks'
 test('It displays 2 key indicators', async() => {
   useFetchKeyIndicators.mockReturnValueOnce({
     'has_image': {
-      'ratio': 25.65,
-      'total': 5000
+      'ratioGood': 25.65,
+      'totalToImprove': 5000
     },
     'good_enrichment': {
-      'ratio': 25.65,
-      'total': 5000
+      'ratioGood': 25.65,
+      'totalToImprove': 5000
     }
   });
 
@@ -39,8 +39,8 @@ test('It displays a loading when key indicators have not been loaded yet', async
 test('It displays only the key indicators for which we have data', async() => {
   useFetchKeyIndicators.mockReturnValueOnce({
     'good_enrichment': {
-      'ratio': 25.65,
-      'total': 5000
+      'ratioGood': 25.65,
+      'totalToImprove': 5000
     }
   });
 

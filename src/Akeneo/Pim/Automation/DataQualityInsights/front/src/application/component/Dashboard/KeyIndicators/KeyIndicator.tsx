@@ -12,24 +12,24 @@ import {useGetKeyIndicatorTips} from "../../../../infrastructure/hooks/Dashboard
 
 type Props = {
   type: string;
-  ratio?: number;
-  total?: number;
+  ratioGood?: number;
+  totalToImprove?: number;
   title?: string;
   resultsMessage?: string;
   followResults?: () => void;
 };
 
-const KeyIndicator: FC<Props> = ({children, type, ratio, total, title, resultsMessage, followResults}) => {
+const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, title, resultsMessage, followResults}) => {
   const translate = useTranslate();
   const tips: KeyIndicatorTips = useGetKeyIndicatorTips(type);
 
-  if (ratio === undefined || total === undefined || title === undefined) {
+  if (ratioGood === undefined || totalToImprove === undefined || title === undefined) {
     return <></>;
   }
 
-  const tip: Tip = computeTipMessage(tips, ratio);
+  const tip: Tip = computeTipMessage(tips, ratioGood);
 
-  const productsNumberToWorkOn: number = computeProductsNumberToWorkOn(total);
+  const productsNumberToWorkOn: number = computeProductsNumberToWorkOn(totalToImprove);
 
   const handleOnClickOnProductsNumber = (event: any) => {
     event.stopPropagation();
@@ -43,16 +43,16 @@ const KeyIndicator: FC<Props> = ({children, type, ratio, total, title, resultsMe
       <Icon>{children}</Icon>
       <Content>
         <ProgressBar
-          level={getProgressBarLevel(ratio)}
-          light={ratio === 0 || (ratio >= 50 && ratio < 80)}
-          percent={ratio}
-          progressLabel={Math.round(ratio) + '%'}
+          level={getProgressBarLevel(ratioGood)}
+          light={ratioGood === 0 || (ratioGood >= 50 && ratioGood < 80)}
+          percent={ratioGood}
+          progressLabel={Math.round(ratioGood) + '%'}
           size="small"
           title={translate(title)}
         />
         <Text>
           {
-            total > 0 && resultsMessage &&
+            totalToImprove > 0 && resultsMessage &&
             <TextWithLink onClickCapture={(event: any) => handleOnClickOnProductsNumber(event)} dangerouslySetInnerHTML={{
               __html: translate(
                 resultsMessage,
