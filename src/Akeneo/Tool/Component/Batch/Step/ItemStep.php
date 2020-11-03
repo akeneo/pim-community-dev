@@ -13,7 +13,8 @@ use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -23,8 +24,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ItemStep extends AbstractStep implements TrackableStepInterface
+class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /** @var ItemReaderInterface */
     protected $reader = null;
 
@@ -39,8 +42,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
 
     /** @var StepExecution */
     protected $stepExecution = null;
-
-    private LoggerInterface $logger;
 
     /**
      * @param string                   $name
@@ -58,7 +59,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
-        LoggerInterface $logger,
         $batchSize = 100
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
@@ -67,7 +67,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
         $this->processor = $processor;
         $this->writer = $writer;
         $this->batchSize = $batchSize;
-        $this->logger = $logger;
     }
 
     /**

@@ -9,7 +9,6 @@ services:
             - '@pim_connector.reader.file.csv_attribute_group'
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
-            - '@logger'
 
     pim_installer.step.fixtures_channel_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -20,7 +19,6 @@ services:
             - '@pim_connector.reader.file.csv_channel'
             - '@pim_connector.processor.denormalization.channel'
             - '@pim_connector.writer.database.channel'
-            - '@logger'
 
     pim_installer.step.fixtures_locale_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -31,7 +29,6 @@ services:
             - '@pim_connector.reader.file.csv_locale'
             - '@pim_connector.processor.denormalization.locale'
             - '@pim_connector.writer.database.locale'
-            - '@logger'
 
     pim_installer.step.fixtures_currency_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -42,7 +39,6 @@ services:
             - '@pim_connector.reader.file.csv_currency'
             - '@pim_connector.processor.denormalization.currency'
             - '@pim_connector.writer.database.currency'
-            - '@logger'
 
     pim_installer.step.fixtures_group_type_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -53,7 +49,6 @@ services:
             - '@pim_connector.reader.file.csv_group_type'
             - '@pim_connector.processor.denormalization.group_type'
             - '@pim_connector.writer.database.group_type'
-            - '@logger'
 
     pim_installer.step.fixtures_user_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -64,7 +59,6 @@ services:
             - '@pim_connector.reader.file.csv_user'
             - '@pim_connector.processor.denormalization.user'
             - '@pim_connector.writer.database.user'
-            - '@logger'
 
     pim_installer.step.fixtures_user_role_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -75,7 +69,6 @@ services:
             - '@pim_connector.reader.file.csv_user_role'
             - '@pim_connector.processor.denormalization.user_role'
             - '@pim_connector.writer.database.user_role'
-            - '@logger'
 
     pim_installer.step.fixtures_user_group_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -86,7 +79,6 @@ services:
             - '@pim_connector.reader.file.csv_user_group'
             - '@pim_connector.processor.denormalization.user_group'
             - '@pim_connector.writer.database.user_group'
-            - '@logger'
 
     pim_installer.step.fixtures_job_yml.import:
        class: '%pim_connector.step.item_step.class%'
@@ -97,4 +89,3 @@ services:
             - '@pim_connector.reader.file.yaml_job_instance'
             - '@pim_connector.processor.denormalization.job_instance'
             - '@pim_connector.writer.database.job_instance'
-            - '@logger'

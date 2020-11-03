@@ -9,7 +9,6 @@ services:
             - '@pim_connector.reader.file.csv_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
-            - '@logger'
 
     pim_connector.step.csv_attribute.export:
         class: '%pim_connector.step.item_step.class%'
@@ -20,7 +19,6 @@ services:
             - '@pim_connector.reader.database.attribute'
             - '@pim_connector.processor.normalization.attribute'
             - '@pim_connector.writer.file.csv_attribute'
-            - '@logger'
 
     pim_connector.step.xlsx_attribute.import:
         class: '%pim_connector.step.item_step.class%'
@@ -31,7 +29,6 @@ services:
             - '@pim_connector.reader.file.xlsx_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
-            - '@logger'
 
     pim_connector.step.xlsx_attribute.export:
         class: '%pim_connector.step.item_step.class%'
@@ -42,7 +39,6 @@ services:
             - '@pim_connector.reader.database.attribute'
             - '@pim_connector.processor.normalization.attribute'
             - '@pim_connector.writer.file.xlsx_attribute'
-            - '@logger'
             - 10
 
     ### Attribute option
@@ -55,7 +51,6 @@ services:
             - '@pim_connector.reader.file.xlsx_attribute_option'
             - '@pim_connector.processor.denormalization.attribute_option'
             - '@pim_connector.writer.database.attribute_option'
-            - '@logger'
 
     pim_connector.step.csv_attribute_option.import:
         class: '%pim_connector.step.item_step.class%'
@@ -66,7 +61,6 @@ services:
             - '@pim_connector.reader.file.csv_attribute_option'
             - '@pim_connector.processor.denormalization.attribute_option'
             - '@pim_connector.writer.database.attribute_option'
-            - '@logger'
 
     pim_connector.step.csv_attribute_option.export:
         class: '%pim_connector.step.item_step.class%'
@@ -77,7 +71,6 @@ services:
             - '@pim_connector.reader.database.attribute_option'
             - '@pim_connector.processor.normalization.attribute_option'
             - '@pim_connector.writer.file.csv_attribute_option'
-            - '@logger'
 
     pim_connector.step.xlsx_attribute_option.export:
         class: '%pim_connector.step.item_step.class%'
@@ -88,7 +81,6 @@ services:
             - '@pim_connector.reader.database.attribute_option'
             - '@pim_connector.processor.normalization.attribute_option'
             - '@pim_connector.writer.file.xlsx_attribute_option'
-            - '@logger'
             - 10
 
     ### Family
@@ -101,7 +93,6 @@ services:
             - '@pim_connector.reader.file.csv_family'
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
-            - '@logger'
 
     pim_connector.step.csv_family.compute_data_related_to_family_root_product_models:
         class: '%pim_connector.step.tasklet.class%'
@@ -136,7 +127,6 @@ services:
             - '@pim_connector.reader.file.csv_family_variant'
             - '@pim_connector.processor.denormalization.family_variant'
             - '@pim_connector.writer.database.family_variant'
-            - '@logger'
 
     pim_connector.step.csv_family.export:
         class: '%pim_connector.step.item_step.class%'
@@ -147,7 +137,6 @@ services:
             - '@pim_connector.reader.database.family'
             - '@pim_connector.processor.normalization.family'
             - '@pim_connector.writer.file.csv_family'
-            - '@logger'
 
     pim_connector.step.csv_family_variant.export:
         class: '%pim_connector.step.item_step.class%'
@@ -158,7 +147,6 @@ services:
             - '@pim_connector.reader.database.family_variant'
             - '@pim_connector.processor.normalization.family_variant'
             - '@pim_connector.writer.file.csv_family_variant'
-            - '@logger'
 
     pim_connector.step.xlsx_family.import:
         class: '%pim_connector.step.item_step.class%'
@@ -169,7 +157,6 @@ services:
             - '@pim_connector.reader.file.xlsx_family'
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
-            - '@logger'
 
     pim_connector.step.xlsx_family.compute_data_related_to_family_root_product_models:
         class: '%pim_connector.step.tasklet.class%'
@@ -204,7 +191,6 @@ services:
             - '@pim_connector.reader.file.xlsx_family_variant'
             - '@pim_connector.processor.denormalization.family_variant'
             - '@pim_connector.writer.database.family_variant'
-            - '@logger'
 
     pim_connector.step.xlsx_family.export:
         class: '%pim_connector.step.item_step.class%'
@@ -215,7 +201,6 @@ services:
             - '@pim_connector.reader.database.family'
             - '@pim_connector.processor.normalization.family'
             - '@pim_connector.writer.file.xlsx_family'
-            - '@logger'
             - 10
 
     pim_connector.step.xlsx_family_variant.export:
@@ -227,7 +212,6 @@ services:
             - '@pim_connector.reader.database.family_variant'
             - '@pim_connector.processor.normalization.family_variant'
             - '@pim_connector.writer.file.xlsx_family_variant'
-            - '@logger'
             - 10
 
     ### Association type
@@ -240,7 +224,6 @@ services:
             - '@pim_connector.reader.file.csv_association_type'
             - '@pim_connector.processor.denormalization.association_type'
             - '@pim_connector.writer.database.association_type'
-            - '@logger'
 
     pim_connector.step.csv_association_type.export:
         class: '%pim_connector.step.item_step.class%'
@@ -251,7 +234,6 @@ services:
             - '@pim_connector.reader.database.association_type'
             - '@pim_connector.processor.normalization.association_type'
             - '@pim_connector.writer.file.csv_association_type'
-            - '@logger'
 
     pim_connector.step.xlsx_association_type.import:
         class: '%pim_connector.step.item_step.class%'
@@ -262,7 +244,6 @@ services:
             - '@pim_connector.reader.file.xlsx_association_type'
             - '@pim_connector.processor.denormalization.association_type'
             - '@pim_connector.writer.database.association_type'
-            - '@logger'
 
     pim_connector.step.xlsx_association_type.export:
         class: '%pim_connector.step.item_step.class%'
@@ -273,7 +254,6 @@ services:
             - '@pim_connector.reader.database.association_type'
             - '@pim_connector.processor.normalization.association_type'
             - '@pim_connector.writer.file.xlsx_association_type'
-            - '@logger'
             - 10
 
     ### Attribute Group
@@ -286,7 +266,6 @@ services:
             - '@pim_connector.reader.database.attribute_group'
             - '@pim_connector.processor.normalization.attribute_group'
             - '@pim_connector.writer.file.csv_attribute_group'
-            - '@logger'
 
     pim_connector.step.xlsx_attribute_group_export.export:
         class: '%pim_connector.step.item_step.class%'
@@ -297,7 +276,6 @@ services:
             - '@pim_connector.reader.database.attribute_group'
             - '@pim_connector.processor.normalization.attribute_group'
             - '@pim_connector.writer.file.xlsx_attribute_group'
-            - '@logger'
             - 10
 
     pim_connector.step.xlsx_attribute_group_import.import:
@@ -309,7 +287,6 @@ services:
             - '@pim_connector.reader.file.xlsx_attribute_group'
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
-            - '@logger'
 
     pim_connector.step.csv_attribute_group_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -320,7 +297,6 @@ services:
             - '@pim_connector.reader.file.csv_attribute_group'
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
-            - '@logger'
 
     pim_connector.step.csv_attribute_group_import.ensure_attribute_group_order:
         class: '%pim_connector.step.tasklet.class%'
@@ -348,7 +324,6 @@ services:
             - '@pim_connector.reader.database.group_type'
             - '@pim_connector.processor.normalization.group_type'
             - '@pim_connector.writer.file.csv_group_type'
-            - '@logger'
 
     pim_connector.step.csv_group_type_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -359,7 +334,6 @@ services:
             - '@pim_connector.reader.file.csv_group_type'
             - '@pim_connector.processor.denormalization.group_type'
             - '@pim_connector.writer.database.group_type'
-            - '@logger'
 
     pim_connector.step.xlsx_group_type_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -370,7 +344,6 @@ services:
             - '@pim_connector.reader.file.xlsx_group_type'
             - '@pim_connector.processor.denormalization.group_type'
             - '@pim_connector.writer.database.group_type'
-            - '@logger'
 
     pim_connector.step.xlsx_group_type_export.export:
         class: '%pim_connector.step.item_step.class%'
@@ -381,7 +354,6 @@ services:
             - '@pim_connector.reader.database.group_type'
             - '@pim_connector.processor.normalization.group_type'
             - '@pim_connector.writer.file.xlsx_group_type'
-            - '@logger'
             - 10
 
     pim_enrich.step.set_attribute_requirements.mass_edit:
@@ -393,7 +365,6 @@ services:
             - '@pim_enrich.connector.reader.mass_edit.family'
             - '@pim_enrich.connector.processor.mass_edit.family.set_requirements'
             - '@pim_connector.writer.database.family'
-            - '@logger'
             - '%pim_job_product_batch_size%'
 
     pim_connector.step.mass_edit_family.compute_data_related_to_family_products:
