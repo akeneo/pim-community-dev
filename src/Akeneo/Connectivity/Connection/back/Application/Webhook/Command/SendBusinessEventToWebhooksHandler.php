@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
@@ -24,23 +25,17 @@ use Psr\Log\LoggerInterface;
  */
 final class SendBusinessEventToWebhooksHandler
 {
-    /** @var SelectActiveWebhooksQuery */
-    private $selectActiveWebhooksQuery;
+    const FAKE_CONNECTION_CODE = 'FAKE_CONNECTION_CODE';
+    const FAKE_SECRET = 'FAKE_SECRET';
+    const FAKE_URL = 'FAKE_URL';
 
-    /** @var WebhookUserAuthenticator */
-    private $webhookUserAuthenticator;
-
-    /** @var WebhookClient */
-    private $client;
-
-    /** @var WebhookEventBuilder */
-    private $builder;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var string */
-    private $pimSource;
+    private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
+    private WebhookUserAuthenticator $webhookUserAuthenticator;
+    private WebhookClient $client;
+    private WebhookEventBuilder $builder;
+    private LoggerInterface $logger;
+    private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
+    private string $pimSource;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -48,6 +43,7 @@ final class SendBusinessEventToWebhooksHandler
         WebhookClient $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
+        GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
         string $pimSource
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
@@ -55,6 +51,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->client = $client;
         $this->builder = $builder;
         $this->logger = $logger;
+        $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
         $this->pimSource = $pimSource;
     }
 
@@ -63,8 +60,17 @@ final class SendBusinessEventToWebhooksHandler
         $startTime = microtime(true);
 
         $webhooks = $this->selectActiveWebhooksQuery->execute();
+        $isFake = false;
+
         if (0 === count($webhooks)) {
-            return;
+            $userId = $this->connectionUserForFakeSubscription->execute();
+
+            if (null === $userId) {
+                return;
+            }
+
+            $webhooks[] = $this->buildFakeActiveWebhook($userId);
+            $isFake = true;
         }
 
         $businessEvent = $command->businessEvent();
@@ -86,12 +92,21 @@ final class SendBusinessEventToWebhooksHandler
 
         $endTimeBeforeSend = microtime(true);
 
-        $webhookEventBuildLog = new WebhookEventBuildLog(count($webhooks), $businessEvent, $startTime, $endTimeBeforeSend);
+        $webhookEventBuildLog = new WebhookEventBuildLog(
+            count($webhooks),
+            $businessEvent,
+            $startTime,
+            $endTimeBeforeSend
+        );
         if ($jsonWebhookEventBuildLog = json_encode($webhookEventBuildLog->toLog())) {
             $this->logger->info($jsonWebhookEventBuildLog);
         }
 
-        $this->client->bulkSend($requests());
+        if ($isFake) {
+            $this->client->bulkFakeSend($requests());
+        } else {
+            $this->client->bulkSend($requests());
+        }
     }
 
     private function handleError(\Throwable $error, ActiveWebhook $webhook, BusinessEventInterface $businessEvent): void
@@ -99,15 +114,33 @@ final class SendBusinessEventToWebhooksHandler
         if ($error instanceof WebhookEventDataBuilderNotFoundException) {
             $this->logger->info($error->getMessage());
         } elseif ($error instanceof EventBuildingExceptionInterface) {
-            $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog($error->getMessage(), $webhook, $businessEvent);
+            $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog(
+                $error->getMessage(),
+                $webhook,
+                $businessEvent
+            );
             if ($jsonWebhookEventDataBuilderErrorLog = json_encode($webhookEventDataBuilderErrorLog->toLog())) {
                 $this->logger->warning($jsonWebhookEventDataBuilderErrorLog);
             }
         } else {
-            $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog((string)$error, $webhook, $businessEvent);
+            $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog(
+                (string)$error,
+                $webhook,
+                $businessEvent
+            );
             if ($jsonWebhookEventDataBuilderErrorLog = json_encode($webhookEventDataBuilderErrorLog->toLog())) {
                 $this->logger->critical($jsonWebhookEventDataBuilderErrorLog);
             }
         }
+    }
+
+    private function buildFakeActiveWebhook(int $userId): ActiveWebhook
+    {
+        return new ActiveWebhook(
+            self::FAKE_CONNECTION_CODE,
+            $userId,
+            self::FAKE_SECRET,
+            self::FAKE_URL
+        );
     }
 }
