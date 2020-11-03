@@ -216,6 +216,7 @@ const compileMetrics = metrics => {
         break;
 
       default:
+        console.error(`Command "${commandName[0]}" does not exist`)
         break;
     }
   } catch (e) {

@@ -19,6 +19,6 @@ describe('MyComponent supports forwardRef', () => {
 });
 
 describe('MyComponent supports ...rest props', () => {
-    const {container} = render(<MyComponent data-my-attribute="my_value" />);
-    expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+  const {container} = render(<MyComponent data-my-attribute="my_value" />);
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
 });
