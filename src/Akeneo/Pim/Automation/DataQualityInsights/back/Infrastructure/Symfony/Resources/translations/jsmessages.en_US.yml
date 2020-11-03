@@ -50,7 +50,7 @@ akeneo_data_quality_insights:
             completeness_of_non_required_attributes:
                 recommendation: Non required attributes with missing values
             enrichment_image:
-                recommendation: Missing image
+                recommendation: Asset attribute with missing image
         axis:
             enrichment:
                 title: Enrichment
