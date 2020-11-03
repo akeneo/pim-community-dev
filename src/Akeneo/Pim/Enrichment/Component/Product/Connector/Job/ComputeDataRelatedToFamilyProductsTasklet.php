@@ -196,11 +196,6 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return CursorInterface
-     */
     private function getProductsForFamilies(array $familyCodes): CursorInterface
     {
         $pqb = $this->productQueryBuilderFactory->create();

@@ -268,7 +268,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
         try {
             return $this->reader->totalItems();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->critical('Impossible to get the total items to process from the reader.');
         }
 

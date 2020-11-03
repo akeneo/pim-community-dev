@@ -122,10 +122,8 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
 
                 $this->attributeGroupSaver->save($attributeGroup);
                 $this->updateProgressWithProcessed();
-
             } else {
                 $this->updateProgressWithSkipped();
-
             }
         }
     }
