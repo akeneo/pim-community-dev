@@ -55,3 +55,15 @@ it('it does not call onClick handler when user hit enter key on button', () => {
 
   expect(onClick).not.toBeCalled();
 });
+
+describe('Button supports forwardRef', () => {
+  const ref = {current: null};
+
+  render(<Button onClick={() => {}} ref={ref}>My button</Button>);
+  expect(ref.current).not.toBe(null);
+});
+
+describe('Button supports ...rest props', () => {
+    const {container} = render(<Button onClick={() => {}} data-my-attribute="my_value">My button</Button>);
+    expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+});
