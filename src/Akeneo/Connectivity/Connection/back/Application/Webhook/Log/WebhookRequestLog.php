@@ -14,15 +14,20 @@ use Psr\Http\Message\ResponseInterface;
 class WebhookRequestLog
 {
     private WebhookRequest $webhookRequest;
+    private array $headers;
+    private string $message = '';
+    private bool $success;
     private float $startTime;
     private ?float $endTime = null;
     private ?ResponseInterface $response;
 
     public function __construct(
         WebhookRequest $webhookRequest,
+        array $headers,
         float $startTime
     ) {
         $this->webhookRequest = $webhookRequest;
+        $this->headers = $headers;
         $this->startTime = $startTime;
     }
 
@@ -36,10 +41,23 @@ class WebhookRequestLog
         $this->response = $response;
     }
 
+    public function setMessage(string $message): void
+    {
+        $this->message = $message;
+    }
+
+    public function setSuccess(bool $success): void
+    {
+        $this->success = $success;
+    }
+
     /**
      * @return array{
      *  type: string,
- *      duration: string,
+     *  duration: int,
+     *  headers: array,
+     *  message: string,
+     *  success: bool,
      *  response: array{status_code: int}|null,
      *  event: array{
      *      uuid: string,
@@ -55,7 +73,10 @@ class WebhookRequestLog
 
         return [
             'type' => 'webhook.send_request',
-            'duration' => (string) $this->getDuration(),
+            'duration' => $this->getDuration(),
+            'headers' => $this->headers,
+            'message' => $this->message,
+            'success' => $this->success,
             'response' => $this->response ? ['status_code' => $this->response->getStatusCode()] : null,
             'event' => [
                 'uuid' => $this->webhookRequest->event()->eventId(),
@@ -66,7 +87,7 @@ class WebhookRequestLog
         ];
     }
 
-    private function getDuration(): float
+    private function getDuration(): int
     {
         if (null === $this->endTime) {
             throw new \RuntimeException();
@@ -74,6 +95,6 @@ class WebhookRequestLog
 
         $duration = $this->endTime - $this->startTime;
 
-        return round($duration * 1000);
+        return (int) round($duration * 1000);
     }
 }

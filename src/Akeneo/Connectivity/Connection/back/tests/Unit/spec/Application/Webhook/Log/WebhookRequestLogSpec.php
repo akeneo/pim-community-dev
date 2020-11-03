@@ -29,6 +29,7 @@ class WebhookRequestLogSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $webhookRequest,
+            ['Content-Type' => 'application/json'],
             1603935007.832
         );
     }
@@ -40,12 +41,18 @@ class WebhookRequestLogSpec extends ObjectBehavior
 
     public function it_returns_the_log_with_response()
     {
+        $this->setSuccess(true);
         $this->setEndTime(1603935029.121);
         $this->setResponse(new Response());
 
         $this->toLog()->shouldReturn([
             'type' => 'webhook.send_request',
-            'duration' => '21289',
+            'duration' => 21289,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'message' => '',
+            'success' => true,
             'response' => [
                 'status_code' => 200,
             ],
@@ -60,12 +67,19 @@ class WebhookRequestLogSpec extends ObjectBehavior
 
     public function it_returns_the_log_without_response()
     {
+        $this->setMessage('a message');
+        $this->setSuccess(false);
         $this->setEndTime(1603935029.121);
         $this->setResponse(null);
 
         $this->toLog()->shouldReturn([
             'type' => 'webhook.send_request',
-            'duration' => '21289',
+            'duration' => 21289,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'message' => 'a message',
+            'success' => false,
             'response' => null,
             'event' => [
                 'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',

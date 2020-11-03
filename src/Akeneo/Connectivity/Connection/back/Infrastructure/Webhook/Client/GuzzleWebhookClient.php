@@ -68,7 +68,7 @@ class GuzzleWebhookClient implements WebhookClient
                     self::HEADER_REQUEST_TIMESTAMP => $timestamp,
                 ];
 
-                $logs[] = new WebhookRequestLog($webhookRequest, microtime(true));
+                $logs[] = new WebhookRequestLog($webhookRequest, $headers, microtime(true));
 
                 $request = new Request('POST', $webhookRequest->url(), $headers, $body);
 
@@ -83,6 +83,7 @@ class GuzzleWebhookClient implements WebhookClient
             ],
             'fulfilled' => function (Response $response, int $index) use (&$logs) {
                 $webhookRequestLog = $logs[$index];
+                $webhookRequestLog->setSuccess(true);
                 $webhookRequestLog->setEndTime(microtime(true));
                 $webhookRequestLog->setResponse($response);
 
@@ -92,6 +93,8 @@ class GuzzleWebhookClient implements WebhookClient
             },
             'rejected' => function (RequestException $reason, int $index) use (&$logs) {
                 $webhookRequestLog = $logs[$index];
+                $webhookRequestLog->setMessage($reason->getMessage());
+                $webhookRequestLog->setSuccess(false);
                 $webhookRequestLog->setEndTime(microtime(true));
                 $webhookRequestLog->setResponse($reason->getResponse());
 
