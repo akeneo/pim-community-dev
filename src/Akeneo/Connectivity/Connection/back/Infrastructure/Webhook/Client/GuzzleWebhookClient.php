@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookRequestLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -52,9 +53,9 @@ class GuzzleWebhookClient implements WebhookClient
 
     public function bulkSend(iterable $webhookRequests): void
     {
-        $logContexts = [];
+        $logs = [];
 
-        $guzzleRequests = function () use (&$webhookRequests, &$logContexts) {
+        $guzzleRequests = function () use (&$webhookRequests, &$logs) {
             foreach ($webhookRequests as $webhookRequest) {
                 $body = $this->encoder->encode($webhookRequest->content(), 'json');
 
@@ -67,7 +68,7 @@ class GuzzleWebhookClient implements WebhookClient
                     self::HEADER_REQUEST_TIMESTAMP => $timestamp,
                 ];
 
-                $logContexts[] = array_merge($webhookRequest->metadata(), ['request' => ['headers' => $headers]]);
+                $logs[] = new WebhookRequestLog($webhookRequest, $headers, microtime(true));
 
                 $request = new Request('POST', $webhookRequest->url(), $headers, $body);
 
@@ -80,21 +81,26 @@ class GuzzleWebhookClient implements WebhookClient
             'options' => [
                 'timeout' => $this->config['timeout'] ?? null
             ],
-            'fulfilled' => function (Response $response, int $index) use (&$logContexts) {
-                $this->logger->info(
-                    'Webhook fulfilled',
-                    array_merge($logContexts[$index], ['response' => $response->getStatusCode()])
-                );
+            'fulfilled' => function (Response $response, int $index) use (&$logs) {
+                $webhookRequestLog = $logs[$index];
+                $webhookRequestLog->setSuccess(true);
+                $webhookRequestLog->setEndTime(microtime(true));
+                $webhookRequestLog->setResponse($response);
+
+                $this->logger->info(json_encode(
+                    $webhookRequestLog->toLog()
+                ));
             },
-            'rejected' => function (RequestException $reason, int $index) use (&$logContexts) {
-                $response = $reason->getResponse();
-                $this->logger->error(
-                    'Webhook rejected with the following reason: ' . $reason->getMessage(),
-                    array_merge(
-                        $logContexts[$index],
-                        ['response' => $response ? ['status_code' => $response->getStatusCode()] : null]
-                    )
-                );
+            'rejected' => function (RequestException $reason, int $index) use (&$logs) {
+                $webhookRequestLog = $logs[$index];
+                $webhookRequestLog->setMessage($reason->getMessage());
+                $webhookRequestLog->setSuccess(false);
+                $webhookRequestLog->setEndTime(microtime(true));
+                $webhookRequestLog->setResponse($reason->getResponse());
+
+                $this->logger->info(json_encode(
+                    $webhookRequestLog->toLog()
+                ));
             },
         ]);
 
