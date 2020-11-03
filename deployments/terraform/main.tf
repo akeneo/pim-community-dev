@@ -6,11 +6,11 @@ terraform {
 
 provider "google" {
   project = var.google_project_id
-  version = ">= 3.17.0"
+  version = ">= 3.21.0, < 4.0.0"
 }
 
 provider "helm" {
-  version = "0.10.4"
+  version = ">= 0.10.5, < 1.0.0"
   kubernetes {
     config_path = ".kubeconfig"
   }
