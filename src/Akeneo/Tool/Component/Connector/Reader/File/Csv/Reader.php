@@ -204,7 +204,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface
 
     private function initializeFileIterator(
         JobParameters $jobParameters,
-        $filePath
+        string $filePath
     ): void {
         $delimiter = $jobParameters->get('delimiter');
         $enclosure = $jobParameters->get('enclosure');

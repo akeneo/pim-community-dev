@@ -8,6 +8,7 @@ use Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrders
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -92,7 +93,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
             $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($attributeGroupItem['code']);
 
             if (null === $attributeGroup) {
-                $this->updateProgressWithProcessed();
+                $this->updateProgressWithSkipped();
 
                 continue;
             }
@@ -114,16 +115,16 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
                 $violations = $this->validator->validate($attributeGroup);
 
                 if ($violations->count() > 0) {
-                    $this->updateProgressWithProcessed();
+                    $this->updateProgressWithSkipped();
 
                     continue;
                 }
 
                 $this->attributeGroupSaver->save($attributeGroup);
-                $this->updateProgressWithSkipItem();
+                $this->updateProgressWithProcessed();
 
             } else {
-                $this->updateProgressWithProcessed();
+                $this->updateProgressWithSkipped();
 
             }
         }
@@ -131,17 +132,21 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
 
     public function totalItems(): int
     {
-        return $this->attributeGroupReader->count();
+        if ($this->attributeGroupReader instanceof TrackableItemReaderInterface) {
+            return $this->attributeGroupReader->totalItems();
+        }
+
+        return 0;
     }
 
-    private function updateProgressWithProcessed(): void
+    private function updateProgressWithSkipped(): void
     {
         $this->stepExecution->incrementSummaryInfo('skip');
         $this->stepExecution->incrementProcessedItems();
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
-    private function updateProgressWithSkipItem(): void
+    private function updateProgressWithProcessed(): void
     {
         $this->stepExecution->incrementSummaryInfo('process');
         $this->stepExecution->incrementProcessedItems();

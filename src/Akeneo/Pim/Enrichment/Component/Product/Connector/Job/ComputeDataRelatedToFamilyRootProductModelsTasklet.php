@@ -128,7 +128,6 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
             $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
             if (null === $family) {
                 $this->stepExecution->incrementSummaryInfo('skip');
-                $this->stepExecution->incrementProcessedItems();
 
                 continue;
             }

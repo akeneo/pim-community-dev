@@ -127,6 +127,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
                 }
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);
+                $this->stepExecution->incrementProcessedItems();
 
                 continue;
             }
