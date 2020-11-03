@@ -65,10 +65,12 @@ final class SendBusinessEventToWebhooksHandler
         if (0 === count($webhooks)) {
             $userId = $this->connectionUserForFakeSubscription->execute();
 
-            if ($userId) {
-                $webhooks[] = $this->buildFakeActiveWebhook($userId);
-                $isFake = true;
+            if (null === $userId) {
+                return;
             }
+
+            $webhooks[] = $this->buildFakeActiveWebhook($userId);
+            $isFake = true;
         }
 
         $businessEvent = $command->businessEvent();

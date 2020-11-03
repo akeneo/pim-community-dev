@@ -80,7 +80,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity.connection.persistence.query.get_conection_user_for_fake_subscription:
+    akeneo_connectivity.connection.persistence.query.get_connection_user_for_fake_subscription:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetConnectionUserForFakeSubscription
         arguments:
             - '@database_connection'
