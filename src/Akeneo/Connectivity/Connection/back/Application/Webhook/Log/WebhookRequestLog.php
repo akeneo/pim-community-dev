@@ -14,6 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 class WebhookRequestLog
 {
     private WebhookRequest $webhookRequest;
+    /** @var array<string, int|string> */
     private array $headers;
     private string $message = '';
     private bool $success;
@@ -21,6 +22,9 @@ class WebhookRequestLog
     private ?float $endTime = null;
     private ?ResponseInterface $response;
 
+    /**
+     * @param array<string, int|string> $headers
+     */
     public function __construct(
         WebhookRequest $webhookRequest,
         array $headers,
@@ -55,13 +59,14 @@ class WebhookRequestLog
      * @return array{
      *  type: string,
      *  duration: int,
-     *  headers: array,
+     *  headers: array<string, int|string>,
      *  message: string,
      *  success: bool,
      *  response: array{status_code: int}|null,
      *  event: array{
      *      uuid: string,
      *      author: string,
+     *      author_type: string,
      *      name: string,
      *      timestamp: int|null,
      *  },
@@ -80,7 +85,8 @@ class WebhookRequestLog
             'response' => $this->response ? ['status_code' => $this->response->getStatusCode()] : null,
             'event' => [
                 'uuid' => $this->webhookRequest->event()->eventId(),
-                'author' => $this->webhookRequest->event()->author(),
+                'author' => $this->webhookRequest->event()->author()->name(),
+                'author_type' => $this->webhookRequest->event()->author()->type(),
                 'name' => $this->webhookRequest->event()->action(),
                 'timestamp' => ($date) ? $date->getTimestamp() : null,
             ],

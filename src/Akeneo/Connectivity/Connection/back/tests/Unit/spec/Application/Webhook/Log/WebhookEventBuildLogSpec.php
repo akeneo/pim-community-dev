@@ -6,14 +6,17 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventBuildLog;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Platform\Component\EventQueue\Author;
 use PhpSpec\ObjectBehavior;
 
 class WebhookEventBuildLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
+        $author = Author::fromNameAndType('Julia', Author::TYPE_UI);
+
         $businessEvent = new ProductCreated(
-            'Julia',
+            $author,
             [],
             1603935337,
             'fe904867-9428-4d97-bfa9-7aa13c0ee0bf'
@@ -41,6 +44,7 @@ class WebhookEventBuildLogSpec extends ObjectBehavior
             'event' => [
                 'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',
                 'author' => 'Julia',
+                'author_type' => 'ui',
                 'name' => 'product.created',
                 'timestamp' => 1603935337,
             ],

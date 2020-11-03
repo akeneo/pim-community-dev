@@ -37,6 +37,7 @@ class WebhookEventBuildLog
      *  event: array{
      *      uuid: string,
      *      author: string,
+     *      author_type: string,
      *      name: string,
      *      timestamp: int,
      *  }
@@ -50,7 +51,8 @@ class WebhookEventBuildLog
             'duration' => $this->getDuration(),
             'event' => [
                 'uuid' => $this->businessEvent->uuid(),
-                'author' => $this->businessEvent->author(),
+                'author' => $this->businessEvent->author()->name(),
+                'author_type' => $this->businessEvent->author()->type(),
                 'name' => $this->businessEvent->name(),
                 'timestamp' => $this->businessEvent->timestamp(),
             ],

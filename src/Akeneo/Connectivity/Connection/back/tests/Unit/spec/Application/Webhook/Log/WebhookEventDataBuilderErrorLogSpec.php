@@ -7,12 +7,15 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Log;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventDataBuilderErrorLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Platform\Component\EventQueue\Author;
 use PhpSpec\ObjectBehavior;
 
 class WebhookEventDataBuilderErrorLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
+        $author = Author::fromNameAndType('Julia', Author::TYPE_UI);
+
         $webhook = new ActiveWebhook(
             'ecommerce',
             1,
@@ -21,7 +24,7 @@ class WebhookEventDataBuilderErrorLogSpec extends ObjectBehavior
         );
 
         $businessEvent = new ProductCreated(
-            'Julia',
+            $author,
             [],
             1603935337,
             'fe904867-9428-4d97-bfa9-7aa13c0ee0bf'
@@ -51,6 +54,7 @@ class WebhookEventDataBuilderErrorLogSpec extends ObjectBehavior
             'event' => [
                 'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',
                 'author' => 'Julia',
+                'author_type' => 'ui',
                 'name' => 'product.created',
                 'timestamp' => 1603935337,
             ],
