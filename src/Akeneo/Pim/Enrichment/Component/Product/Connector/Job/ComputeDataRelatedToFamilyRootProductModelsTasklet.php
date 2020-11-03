@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\RewindableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -208,7 +209,11 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
      */
     private function computeRootProductModelsToProcess(): int
     {
-        $this->familyReader->rewind(); // <= especially this bit here :'(
+        if (!$this->familyReader instanceof RewindableItemReaderInterface) {
+            return 0;
+        }
+
+        $this->familyReader->rewind();
 
         $familyCodes = [];
         $totalProductsToProcess = 0;

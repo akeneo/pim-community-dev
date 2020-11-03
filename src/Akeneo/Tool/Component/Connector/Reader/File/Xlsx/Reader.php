@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Xlsx;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\RewindableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -20,7 +21,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface, TrackableItemReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface, RewindableItemReaderInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;

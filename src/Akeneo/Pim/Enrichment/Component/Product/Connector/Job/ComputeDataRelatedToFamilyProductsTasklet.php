@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\RewindableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -128,7 +129,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
             $skippedProducts = [];
             $productsToSave = [];
-            $products = $this->getProductsForFamily($family);
+            $products = $this->getProductsForFamilies([$family]);
 
             foreach ($products as $product) {
                 if ($product->isVariant()) {
@@ -200,10 +201,10 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
      *
      * @return CursorInterface
      */
-    private function getProductsForFamily(FamilyInterface $family): CursorInterface
+    private function getProductsForFamilies(array $familyCodes): CursorInterface
     {
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
+        $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
 
         return $pqb->execute();
     }
@@ -216,6 +217,9 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
      */
     private function computeProductsToProcess(): int
     {
+        if (!$this->familyReader instanceof RewindableItemReaderInterface) {
+            return 0;
+        }
         $this->familyReader->rewind();
 
         $familyCodes = [];
@@ -245,18 +249,6 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
     private function countProducts(array $familyCodes): int
     {
-        $pqb = $this->productQueryBuilderFactory->create(
-            [
-                'filters' => [
-                    [
-                        'field'    => 'family',
-                        'operator' => Operators::IN_LIST,
-                        'value'    => $familyCodes
-                    ]
-                ]
-            ]
-        );
-
-        return $pqb->execute()->count();
+        return $this->getProductsForFamilies($familyCodes)->count();
     }
 }
