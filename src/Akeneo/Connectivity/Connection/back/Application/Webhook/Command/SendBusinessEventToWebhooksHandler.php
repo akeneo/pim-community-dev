@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventBuildLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventDataBuilderErrorLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -58,6 +60,8 @@ final class SendBusinessEventToWebhooksHandler
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
     {
+        $startTime = microtime(true);
+
         $webhooks = $this->selectActiveWebhooksQuery->execute();
         if (0 === count($webhooks)) {
             return;
@@ -80,31 +84,30 @@ final class SendBusinessEventToWebhooksHandler
             }
         };
 
+        $endTimeBeforeSend = microtime(true);
+
+        $webhookEventBuildLog = new WebhookEventBuildLog(count($webhooks), $businessEvent, $startTime, $endTimeBeforeSend);
+        if ($jsonWebhookEventBuildLog = json_encode($webhookEventBuildLog->toLog())) {
+            $this->logger->info($jsonWebhookEventBuildLog);
+        }
+
         $this->client->bulkSend($requests());
     }
 
     private function handleError(\Throwable $error, ActiveWebhook $webhook, BusinessEventInterface $businessEvent): void
     {
-        $context = [
-            'webhook' => [
-                'connection_code' => $webhook->connectionCode(),
-                'user_id' => $webhook->userId(),
-            ],
-            'business_event' => [
-                'author' => $businessEvent->author()->name(),
-                'author_type' => $businessEvent->author()->type(),
-                'name' => $businessEvent->name(),
-                'timestamp' => $businessEvent->timestamp(),
-                'uuid' => $businessEvent->uuid(),
-            ],
-        ];
-
         if ($error instanceof WebhookEventDataBuilderNotFoundException) {
             $this->logger->info($error->getMessage());
         } elseif ($error instanceof EventBuildingExceptionInterface) {
-            $this->logger->warning('Webhook event building failed: '.$error->getMessage(), $context);
+            $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog($error->getMessage(), $webhook, $businessEvent);
+            if ($jsonWebhookEventDataBuilderErrorLog = json_encode($webhookEventDataBuilderErrorLog->toLog())) {
+                $this->logger->warning($jsonWebhookEventDataBuilderErrorLog);
+            }
         } else {
-            $this->logger->critical((string)$error, $context);
+            $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog((string)$error, $webhook, $businessEvent);
+            if ($jsonWebhookEventDataBuilderErrorLog = json_encode($webhookEventDataBuilderErrorLog->toLog())) {
+                $this->logger->critical($jsonWebhookEventDataBuilderErrorLog);
+            }
         }
     }
 }

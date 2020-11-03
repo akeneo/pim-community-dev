@@ -49,6 +49,7 @@
 - PIM-9516: Recalculate completeness after a bulk set attribute requirements on families
 - PIM-9532: Fix the family selection in mass action when a filter on label is set
 - PIM-9535: Fix export with condition on localisable attribute does not work if selected locale is not changed
+- PIM-9542: Fix product creation if the family has a numeric code
 
 ## New features
 
