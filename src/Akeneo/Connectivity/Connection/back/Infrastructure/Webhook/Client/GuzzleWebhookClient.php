@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookRequestLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use GuzzleHttp\ClientInterface;
@@ -76,33 +77,52 @@ class GuzzleWebhookClient implements WebhookClient
             }
         };
 
-        $pool = new Pool($this->client, $guzzleRequests(), [
-            'concurrency' => $this->config['concurrency'] ?? null,
-            'options' => [
-                'timeout' => $this->config['timeout'] ?? null
-            ],
-            'fulfilled' => function (Response $response, int $index) use (&$logs) {
+        foreach ($guzzleRequests() as $index => $guzzleRequest) {
+            if (SendBusinessEventToWebhooksHandler::FAKE_URL === $guzzleRequest->getUri()) {
+                sleep(0.5);
                 $webhookRequestLog = $logs[$index];
                 $webhookRequestLog->setSuccess(true);
                 $webhookRequestLog->setEndTime(microtime(true));
-                $webhookRequestLog->setResponse($response);
-
                 $this->logger->info(json_encode(
                     $webhookRequestLog->toLog()
                 ));
-            },
-            'rejected' => function (RequestException $reason, int $index) use (&$logs) {
-                $webhookRequestLog = $logs[$index];
-                $webhookRequestLog->setMessage($reason->getMessage());
-                $webhookRequestLog->setSuccess(false);
-                $webhookRequestLog->setEndTime(microtime(true));
-                $webhookRequestLog->setResponse($reason->getResponse());
+                return;
+            }
+        }
 
-                $this->logger->info(json_encode(
-                    $webhookRequestLog->toLog()
-                ));
-            },
-        ]);
+        $pool = new Pool(
+            $this->client, $guzzleRequests(), [
+                'concurrency' => $this->config['concurrency'] ?? null,
+                'options' => [
+                    'timeout' => $this->config['timeout'] ?? null,
+                ],
+                'fulfilled' => function (Response $response, int $index) use (&$logs) {
+                    $webhookRequestLog = $logs[$index];
+                    $webhookRequestLog->setSuccess(true);
+                    $webhookRequestLog->setEndTime(microtime(true));
+                    $webhookRequestLog->setResponse($response);
+
+                    $this->logger->info(
+                        json_encode(
+                            $webhookRequestLog->toLog()
+                        )
+                    );
+                },
+                'rejected' => function (RequestException $reason, int $index) use (&$logs) {
+                    $webhookRequestLog = $logs[$index];
+                    $webhookRequestLog->setMessage($reason->getMessage());
+                    $webhookRequestLog->setSuccess(false);
+                    $webhookRequestLog->setEndTime(microtime(true));
+                    $webhookRequestLog->setResponse($reason->getResponse());
+
+                    $this->logger->info(
+                        json_encode(
+                            $webhookRequestLog->toLog()
+                        )
+                    );
+                },
+            ]
+        );
 
         $promise = $pool->promise();
         $promise->wait();
