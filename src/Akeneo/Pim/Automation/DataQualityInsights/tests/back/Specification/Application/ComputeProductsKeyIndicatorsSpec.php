@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
@@ -13,17 +13,17 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductsKeyIndicatorsSpec extends ObjectBehavior
+final class ComputeProductsKeyIndicatorsSpec extends ObjectBehavior
 {
     public function let(
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        GetProductsKeyIndicator $goodEnrichment,
-        GetProductsKeyIndicator $hasImage
+        ComputeProductsKeyIndicator $goodEnrichment,
+        ComputeProductsKeyIndicator $hasImage
     ) {
         $this->beConstructedWith($getLocalesByChannelQuery, [$goodEnrichment, $hasImage]);
     }
 
-    public function it_gives_all_the_key_indicators_for_a_given_list_of_products(
+    public function it_computes_all_the_key_indicators_for_a_given_list_of_products(
         $getLocalesByChannelQuery,
         $goodEnrichment,
         $hasImage
@@ -77,7 +77,7 @@ final class GetProductsKeyIndicatorsSpec extends ObjectBehavior
         $goodEnrichment->getName()->willReturn('good_enrichment');
         $hasImage->getName()->willReturn('has_image');
 
-        $goodEnrichment->execute($productIds)->willReturn([
+        $goodEnrichment->compute($productIds)->willReturn([
             13 => [
                 'ecommerce' => [
                     'en_US' => true,
@@ -95,7 +95,7 @@ final class GetProductsKeyIndicatorsSpec extends ObjectBehavior
             ],
         ]);
 
-        $hasImage->execute($productIds)->willReturn([
+        $hasImage->compute($productIds)->willReturn([
             13 => [
                 'ecommerce' => [
                     'en_US' => true,
@@ -106,6 +106,6 @@ final class GetProductsKeyIndicatorsSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->get($productIds)->shouldBeLike($expectedKeyIndicators);
+        $this->compute($productIds)->shouldBeLike($expectedKeyIndicators);
     }
 }

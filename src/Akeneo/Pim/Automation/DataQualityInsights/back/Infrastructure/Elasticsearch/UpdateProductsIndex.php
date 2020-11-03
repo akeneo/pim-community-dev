@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductAxesRanksQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -20,12 +20,12 @@ class UpdateProductsIndex
 
     private GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery;
 
-    private GetProductsKeyIndicators $getProductsKeyIndicators;
+    private ComputeProductsKeyIndicators $getProductsKeyIndicators;
 
     public function __construct(
         Client $esClient,
         GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
-        GetProductsKeyIndicators $getProductsKeyIndicators
+        ComputeProductsKeyIndicators $getProductsKeyIndicators
     ) {
         $this->esClient = $esClient;
         $this->getLatestProductAxesRanksQuery = $getLatestProductAxesRanksQuery;
@@ -37,7 +37,7 @@ class UpdateProductsIndex
         $productIds = array_map(fn (int $productId) => new ProductId($productId), $productIds);
 
         $productsAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds($productIds);
-        $productsKeyIndicators = $this->getProductsKeyIndicators->get($productIds);
+        $productsKeyIndicators = $this->getProductsKeyIndicators->compute($productIds);
 
         foreach ($productIds as $productId) {
             $productId = $productId->toInt();

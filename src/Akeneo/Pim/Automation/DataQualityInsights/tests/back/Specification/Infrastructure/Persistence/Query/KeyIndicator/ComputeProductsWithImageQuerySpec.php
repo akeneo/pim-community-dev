@@ -13,14 +13,14 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductsWithImageQuerySpec extends ObjectBehavior
+final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
 {
     public function let(GetEvaluationRatesByProductsAndCriterionQueryInterface $getEvaluationRatesByProductAndCriterionQuery)
     {
         $this->beConstructedWith($getEvaluationRatesByProductAndCriterionQuery);
     }
 
-    public function it_gives_products_with_image_key_indicator($getEvaluationRatesByProductAndCriterionQuery)
+    public function it_computes_products_with_image_key_indicator($getEvaluationRatesByProductAndCriterionQuery)
     {
         $productIds = [new ProductId(13), new ProductId(42), new ProductId(999)];
         $criterionCode = new CriterionCode('enrichment_has_image'); // @todo Use constant when it will be defined
@@ -42,7 +42,7 @@ final class GetProductsWithImageQuerySpec extends ObjectBehavior
             ],
         ]);
 
-        $this->execute($productIds)->shouldBeLike([
+        $this->compute($productIds)->shouldBeLike([
             13 => [
                 'ecommerce' => [
                     'en_US' => true,

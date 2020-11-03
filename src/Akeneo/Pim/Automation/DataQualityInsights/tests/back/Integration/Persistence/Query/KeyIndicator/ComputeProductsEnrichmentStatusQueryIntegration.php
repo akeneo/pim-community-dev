@@ -13,14 +13,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\GetProductsEnrichmentStatusQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsEnrichmentStatusQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductsEnrichmentStatusQueryIntegration extends DataQualityInsightsTestCase
+final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityInsightsTestCase
 {
     /** @var CriterionEvaluationRepositoryInterface */
     private $productCriterionEvaluationRepository;
@@ -32,7 +32,7 @@ final class GetProductsEnrichmentStatusQueryIntegration extends DataQualityInsig
         $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
     }
 
-    public function test_it_retrieves_products_enrichment_status()
+    public function test_it_computes_products_enrichment_status()
     {
         $this->createChannel('ecommerce', ['locales' => ['en_US', 'fr_FR']]);
         $this->createChannel('mobile', ['locales' => ['en_US']]);
@@ -54,7 +54,7 @@ final class GetProductsEnrichmentStatusQueryIntegration extends DataQualityInsig
         $productIds[] = 12346; // Unknown product
         $productIds = array_map(fn(int $productId) => new ProductId($productId), $productIds);
 
-        $productsEnrichmentStatus = $this->get(GetProductsEnrichmentStatusQuery::class)->execute($productIds);
+        $productsEnrichmentStatus = $this->get(ComputeProductsEnrichmentStatusQuery::class)->compute($productIds);
 
         $this->assertEquals($expectedProductsEnrichmentStatus, $productsEnrichmentStatus);
     }

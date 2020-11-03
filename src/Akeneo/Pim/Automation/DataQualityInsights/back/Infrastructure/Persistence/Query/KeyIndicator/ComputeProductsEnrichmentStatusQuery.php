@@ -6,7 +6,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
@@ -15,7 +16,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductsEnrichmentStatusQuery implements GetProductsKeyIndicator
+final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIndicator
 {
     private const GOOD_ENRICHMENT_RATIO = 80;
 
@@ -31,10 +32,10 @@ final class GetProductsEnrichmentStatusQuery implements GetProductsKeyIndicator
 
     public function getName(): string
     {
-        return 'good_enrichment';
+        return ProductsWithGoodEnrichment::CODE;
     }
 
-    public function execute(array $productIds): array
+    public function compute(array $productIds): array
     {
         $productIdsByFamilyId = $this->groupProductsByFamily($productIds);
 

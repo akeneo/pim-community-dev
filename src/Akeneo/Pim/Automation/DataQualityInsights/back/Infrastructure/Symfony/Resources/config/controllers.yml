@@ -19,6 +19,8 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardKeyIndicatorsController:
         public: true
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.get_key_indicators'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductAxesRatesController:
         public: true

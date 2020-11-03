@@ -17,6 +17,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -25,9 +27,17 @@ use Webmozart\Assert\Assert;
  */
 class DataQualityInsightsTestCase extends TestCase
 {
+    protected const MINIMAL_VARIANT_AXIS_CODE = 'color';
+    protected const MINIMAL_VARIANT_OPTIONS = ['red', 'blue', 'yellow', 'black', 'white'];
+
     protected function getConfiguration()
     {
         return $this->catalog->useMinimalCatalog();
+    }
+
+    protected function getRandomCode(): string
+    {
+        return Uuid::uuid4()->toString();
     }
 
     protected function deleteProductCriterionEvaluations(int $productId): void
@@ -45,7 +55,7 @@ class DataQualityInsightsTestCase extends TestCase
         if (!empty($data)) {
             $this->get('pim_catalog.updater.product')->update($product, $data);
             $errors = $this->get('pim_catalog.validator.product')->validate($product);
-            Assert::count($errors, 0, 'Invalid product');
+            Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid product', $errors));
         }
 
         $this->get('pim_catalog.saver.product')->save($product);
@@ -61,6 +71,18 @@ class DataQualityInsightsTestCase extends TestCase
         return $product;
     }
 
+    protected function createMinimalProductVariant(string $identifier, string $parent, string $axisOption, array $data = []): ProductInterface
+    {
+        Assert::oneOf($axisOption, self::MINIMAL_VARIANT_OPTIONS, 'Unknown minimal variant option');
+
+        $data['parent'] = $parent;
+        $data['values'][self::MINIMAL_VARIANT_AXIS_CODE] = [
+            ['data' => $axisOption, 'scope' => null, 'locale' => null],
+        ];
+
+        return $this->createProduct($identifier, $data);
+    }
+
     protected function createProductModel(string $code, string $familyVariant, array $data = []): ProductModelInterface
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
@@ -69,9 +91,9 @@ class DataQualityInsightsTestCase extends TestCase
             ->build();
 
         if (!empty($data)) {
-            $this->get('pim_catalog.updater.product')->update($productModel, $data);
+            $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
             $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
-            Assert::count($errors, 0, 'Invalid product model');
+            Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid product model', $errors));
         }
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
@@ -90,7 +112,7 @@ class DataQualityInsightsTestCase extends TestCase
         if (!empty($data)) {
             $this->get('pim_catalog.updater.product')->update($productModel, $data);
             $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
-            Assert::count($errors, 0, 'Invalid product model');
+            Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid sub-product model', $errors));
         }
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
@@ -105,7 +127,7 @@ class DataQualityInsightsTestCase extends TestCase
         $family = $this->get('akeneo_integration_tests.base.family.builder')->build($data);
 
         $errors = $this->get('validator')->validate($family);
-        Assert::count($errors, 0, 'Invalid family');
+        Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid family', $errors));
 
         $this->get('pim_catalog.saver.family')->save($family);
 
@@ -120,11 +142,27 @@ class DataQualityInsightsTestCase extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, $data);
 
         $errors = $this->get('validator')->validate($familyVariant);
-        Assert::count($errors, 0);
+        Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid family variant', $errors));
 
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
         return $familyVariant;
+    }
+
+    protected function createMinimalFamilyAndFamilyVariant(string $familyCode, string $familyVariantCode): void
+    {
+        $axis = $this->createSimpleSelectAttributeWithOptions(self::MINIMAL_VARIANT_AXIS_CODE, self::MINIMAL_VARIANT_OPTIONS);
+
+        $this->createFamily($familyCode, ['attributes' => [$axis->getCode()]]);
+        $this->createFamilyVariant($familyVariantCode, $familyCode, [
+            'variant_attribute_sets' => [
+                [
+                    'level' => 1,
+                    'axes' => [$axis->getCode()],
+                    'attributes' => [],
+                ],
+            ]
+        ]);
     }
 
     protected function createAttribute(string $code, array $data = []): AttributeInterface
@@ -138,6 +176,21 @@ class DataQualityInsightsTestCase extends TestCase
 
         $attribute = $this->get('akeneo_integration_tests.base.attribute.builder')->build($data, true);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        return $attribute;
+    }
+
+    protected function createSimpleSelectAttributeWithOptions(string $code, array $optionCodes): AttributeInterface
+    {
+        $attribute = $this->createAttribute($code, ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
+
+        foreach ($optionCodes as $sortOrder => $optionCode) {
+            $option = $this->get('pim_catalog.factory.attribute_option')->create();
+            $option->setCode($optionCode);
+            $option->setAttribute($attribute);
+            $option->setSortOrder($sortOrder);
+            $this->get('pim_catalog.saver.attribute_option')->save($option);
+        }
 
         return $attribute;
     }
@@ -235,7 +288,7 @@ SQL;
 
         $this->get('pim_catalog.updater.channel')->update($channel, $data);
         $errors = $this->get('validator')->validate($channel);
-        Assert::count($errors, 0, 'Invalid channel');
+        Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid channel', $errors));
 
         $this->get('pim_catalog.saver.channel')->save($channel);
 
@@ -250,5 +303,15 @@ SQL;
         )->fetchColumn();
 
         return intval($localeId);
+    }
+
+    private function formatValidationErrorMessage(string $mainMessage, ConstraintViolationListInterface $errors): string
+    {
+        $errorMessage = '';
+        foreach ($errors as $error) {
+            $errorMessage .= PHP_EOL.$error->getMessage();
+        }
+
+        return $mainMessage.$errorMessage;
     }
 }
