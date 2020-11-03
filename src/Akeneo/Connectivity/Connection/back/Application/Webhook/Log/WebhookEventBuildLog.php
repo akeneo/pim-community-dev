@@ -34,7 +34,7 @@ class WebhookEventBuildLog
      *  type: string,
  *      webhook_event_build_count: int,
  *      duration: string,
-     *  business_event: array{
+     *  event: array{
      *      uuid: string,
      *      author: string,
      *      name: string,
@@ -45,10 +45,10 @@ class WebhookEventBuildLog
     public function toLog(): array
     {
         return [
-            'type' => 'webhook.business_event_build',
+            'type' => 'webhook.event_build',
             'webhook_event_build_count' => $this->webhookEventBuildCount,
             'duration' => (string) $this->getDuration(),
-            'business_event' => [
+            'event' => [
                 'uuid' => $this->businessEvent->uuid(),
                 'author' => $this->businessEvent->author(),
                 'name' => $this->businessEvent->name(),

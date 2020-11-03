@@ -35,10 +35,10 @@ class WebhookEventBuildLogSpec extends ObjectBehavior
     public function it_returns_the_log()
     {
         $this->toLog()->shouldReturn([
-            'type' => 'webhook.business_event_build',
+            'type' => 'webhook.event_build',
             'webhook_event_build_count' => 10,
             'duration' => '21289',
-            'business_event' => [
+            'event' => [
                 'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',
                 'author' => 'Julia',
                 'name' => 'product.created',

@@ -49,7 +49,7 @@ class WebhookRequestLogSpec extends ObjectBehavior
             'response' => [
                 'status_code' => 200,
             ],
-            'business_event' => [
+            'event' => [
                 'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
                 'author' => 'Julia',
                 'name' => 'product.created',
@@ -67,7 +67,7 @@ class WebhookRequestLogSpec extends ObjectBehavior
             'type' => 'webhook.send_request',
             'duration' => '21289',
             'response' => null,
-            'business_event' => [
+            'event' => [
                 'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
                 'author' => 'Julia',
                 'name' => 'product.created',

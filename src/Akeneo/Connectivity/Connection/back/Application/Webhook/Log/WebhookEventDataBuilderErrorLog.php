@@ -35,7 +35,7 @@ class WebhookEventDataBuilderErrorLog
             connection_code: string,
      *      user_id: int,
      *  },
-     *  business_event: array{
+     *  event: array{
      *      uuid: string,
      *      author: string,
      *      name: string,
@@ -46,13 +46,13 @@ class WebhookEventDataBuilderErrorLog
     public function toLog(): array
     {
         return [
-            'type' => 'webhook.business_event_build',
+            'type' => 'webhook.event_build',
             'message' => $this->message,
             'webhook' => [
                 'connection_code' => $this->webhook->connectionCode(),
                 'user_id' => $this->webhook->userId(),
             ],
-            'business_event' => [
+            'event' => [
                 'uuid' => $this->businessEvent->uuid(),
                 'author' => $this->businessEvent->author(),
                 'name' => $this->businessEvent->name(),
