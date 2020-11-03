@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\Product\Integration;
@@ -16,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\SharedCatalog\tests\back\Utils\AuthenticateAs;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
@@ -107,7 +109,7 @@ class RaiseNotGrantedCategoryExceptionIntegration extends ApiTestCase
         $this->authenticateAs('mary');
         $this->productCreatedAndUpdatedEventDataBuilder->build(
             new ProductUpdated(
-                'ecommerce',
+                Author::fromNameAndType('mary', 'ui'),
                 $this->productNormalizer->normalize($product, 'standard')
             )
         );
@@ -121,7 +123,7 @@ class RaiseNotGrantedCategoryExceptionIntegration extends ApiTestCase
         $this->authenticateAs('mary');
         $this->productModelCreatedAndUpdatedEventDataBuilder->build(
             new ProductModelUpdated(
-                'ecommerce',
+                Author::fromNameAndType('mary', 'ui'),
                 $this->productModelNormalizer->normalize($productModel, 'standard')
             )
         );
@@ -166,7 +168,7 @@ class RaiseNotGrantedCategoryExceptionIntegration extends ApiTestCase
         $handlerStack->push($history);
 
         $message = new ProductUpdated(
-            'ecommerce',
+            Author::fromNameAndType('mary', 'ui'),
             $this->productNormalizer->normalize($product, 'standard')
         );
 
@@ -177,8 +179,7 @@ class RaiseNotGrantedCategoryExceptionIntegration extends ApiTestCase
         $this->assertCount(0, $container);
     }
 
-    public function test_that_that_no_webhook_is_sent_when_a_connection_tries_to_update_non_authorized_product_model(
-    ): void
+    public function test_that_that_no_webhook_is_sent_when_a_connection_tries_to_update_non_authorized_product_model(): void
     {
         $productModel = $this->loadProductModel();
         $erpConnection = $this->connectionLoader->createConnection('erp', 'erp', FlowType::DATA_SOURCE, false);
@@ -210,7 +211,7 @@ class RaiseNotGrantedCategoryExceptionIntegration extends ApiTestCase
         $handlerStack->push($history);
 
         $message = new ProductModelUpdated(
-            'ecommerce',
+            Author::fromNameAndType('mary', 'ui'),
             $this->productModelNormalizer->normalize($productModel, 'standard')
         );
 
