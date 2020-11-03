@@ -97,7 +97,6 @@ class ComputeDataRelatedToFamilyRootProductModelsTaskletSpec extends ObjectBehav
         $familyRepository->findOneByIdentifier('family_code')->willReturn(null);
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-        $stepExecution->incrementProcessedItems()->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalledTimes(1);
 
         $this->execute();

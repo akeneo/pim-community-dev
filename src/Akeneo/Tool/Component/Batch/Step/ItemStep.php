@@ -199,7 +199,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             return $this->processor->process($readItem);
         } catch (InvalidItemException $e) {
             $this->handleStepExecutionWarning($this->stepExecution, $this->processor, $e);
-            $this->stepExecution->incrementProcessedItems();
 
             return null;
         }
@@ -278,6 +277,9 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
     private function updateProcessedItems(int $processedItemsCount = 1): void
     {
+        if (!$this->reader instanceof TrackableItemReaderInterface) {
+            return;
+        }
         $this->stepExecution->incrementProcessedItems($processedItemsCount);
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }

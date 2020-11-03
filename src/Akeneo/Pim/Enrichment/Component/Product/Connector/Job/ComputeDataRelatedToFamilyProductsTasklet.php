@@ -129,7 +129,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
             $skippedProducts = [];
             $productsToSave = [];
-            $products = $this->getProductsForFamilies([$family]);
+            $products = $this->getProductsForFamilies([$family->getCode()]);
 
             foreach ($products as $product) {
                 if ($product->isVariant()) {

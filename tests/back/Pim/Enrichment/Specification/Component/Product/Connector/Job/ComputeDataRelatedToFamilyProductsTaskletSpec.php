@@ -247,7 +247,6 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $familyRepository->findOneByIdentifier('unkown_family')->willReturn(null);
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
-        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $productQueryBuilderFactory->create()->shouldNotBeCalled();
         $productSaver->saveAll(Argument::any())->shouldNotBeCalled();
