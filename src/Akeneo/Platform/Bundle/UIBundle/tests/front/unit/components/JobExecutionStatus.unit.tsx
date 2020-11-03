@@ -23,10 +23,7 @@ abstract class BaseViewMock {
   abstract reactElementToMount(): JSX.Element;
 
   render() {
-    ReactDOM.render(
-      this.reactElementToMount(),
-      this.el
-    );
+    ReactDOM.render(this.reactElementToMount(), this.el);
   }
 
   getRoot() {
@@ -42,14 +39,14 @@ const JobExecutionStatus = require('pimui/js/job/execution/status');
 
 test('it render a job execution status with the correct label', () => {
   getFormData.mockImplementationOnce(() => ({
-    'tracking': {
-      'status': 'COMPLETED',
-      'currentStep': 1,
-      'totalSteps': 1,
-      'steps': [
+    tracking: {
+      status: 'COMPLETED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
         {
-          'jobName': 'csv_product_export',
-          'stepName': 'export',
+          jobName: 'csv_product_export',
+          stepName: 'export',
         },
       ],
     },
