@@ -27,6 +27,7 @@ const Title = styled.div`
   text-overflow: ellipsis;
   max-width: 100%;
   flex-grow: 1;
+  margin-bottom: 4px;
 
   /* When header div is greater than 300px the flex-basic is negative, progress label is on same line */
   /* When header div is lower than 300px the flex-basic is positive, progress label is move to new line */
