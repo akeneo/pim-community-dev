@@ -39,7 +39,7 @@ class WebhookEventDataBuilderErrorLog
      *      uuid: string,
      *      author: string,
      *      name: string,
-     *      timestamp: int|null,
+     *      timestamp: int,
      *  },
      * }
      */

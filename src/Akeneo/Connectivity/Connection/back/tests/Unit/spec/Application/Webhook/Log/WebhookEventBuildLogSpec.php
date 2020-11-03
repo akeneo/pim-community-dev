@@ -37,7 +37,7 @@ class WebhookEventBuildLogSpec extends ObjectBehavior
         $this->toLog()->shouldReturn([
             'type' => 'webhook.event_build',
             'webhook_event_build_count' => 10,
-            'duration' => '21289',
+            'duration' => 21289,
             'event' => [
                 'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',
                 'author' => 'Julia',

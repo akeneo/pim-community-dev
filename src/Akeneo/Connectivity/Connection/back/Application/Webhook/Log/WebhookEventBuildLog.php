@@ -32,8 +32,8 @@ class WebhookEventBuildLog
     /**
      * @return array{
      *  type: string,
- *      webhook_event_build_count: int,
- *      duration: string,
+     * webhook_event_build_count: int,
+     * duration: int,
      *  event: array{
      *      uuid: string,
      *      author: string,
@@ -47,7 +47,7 @@ class WebhookEventBuildLog
         return [
             'type' => 'webhook.event_build',
             'webhook_event_build_count' => $this->webhookEventBuildCount,
-            'duration' => (string) $this->getDuration(),
+            'duration' => $this->getDuration(),
             'event' => [
                 'uuid' => $this->businessEvent->uuid(),
                 'author' => $this->businessEvent->author(),
@@ -57,10 +57,10 @@ class WebhookEventBuildLog
         ];
     }
 
-    private function getDuration(): float
+    private function getDuration(): int
     {
         $duration = $this->endTime - $this->startTime;
 
-        return round($duration * 1000);
+        return (int) round($duration * 1000);
     }
 }
