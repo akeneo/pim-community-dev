@@ -1,8 +1,8 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
-import { InputNumber } from '../../../../components/Inputs';
-import { AttributeConditionLine } from './AttributeConditionLine';
+import {Controller, useFormContext} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
+import {InputNumber} from '../../../../components/Inputs';
+import {AttributeConditionLine} from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
@@ -12,16 +12,16 @@ import {
   PriceCollectionAttributeOperators,
   PriceCollectionAttributeCondition,
 } from '../../../../models';
-import { Operator } from '../../../../models/Operator';
-import { useControlledFormInputCondition } from '../../hooks';
-import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
+import {Operator} from '../../../../models/Operator';
+import {useControlledFormInputCondition} from '../../hooks';
+import {useGetAttributeAtMount} from '../actions/attribute/attribute.utils';
 import {
   CurrencySelector,
   getCurrencyValidation,
 } from '../../../../components/Selectors/CurrencySelector';
-import { useActiveCurrencies } from '../../hooks/useActiveCurrencies';
-import { IndexedCurrencies } from '../../../../repositories/CurrencyRepository';
-import { Currency } from '../../../../models/Currency';
+import {useActiveCurrencies} from '../../hooks/useActiveCurrencies';
+import {IndexedCurrencies} from '../../../../repositories/CurrencyRepository';
+import {Currency} from '../../../../models/Currency';
 
 type PriceCollectionAttributeConditionLineProps = ConditionLineProps & {
   condition: PriceCollectionAttributeCondition;
@@ -37,7 +37,7 @@ const PriceCollectionAttributeConditionLine: React.FC<PriceCollectionAttributeCo
   const router = useBackboneRouter();
   const translate = useTranslate();
   const currencies = useActiveCurrencies();
-  const { watch } = useFormContext();
+  const {watch} = useFormContext();
 
   const {
     valueFormName,
@@ -62,7 +62,7 @@ const PriceCollectionAttributeConditionLine: React.FC<PriceCollectionAttributeCo
     // watch() is needed instead of getFormValue() when currencySelector is displayed before ScopeSelector
     const scopeCode = watch(scopeFormName) ?? condition.scope;
     if (scopeCode && scopes[scopeCode]) {
-      return scopes[scopeCode].currencies.map(code => ({ code }));
+      return scopes[scopeCode].currencies.map(code => ({code}));
     }
     return Object.values(currencies);
   };
@@ -137,4 +137,4 @@ const PriceCollectionAttributeConditionLine: React.FC<PriceCollectionAttributeCo
   );
 };
 
-export { PriceCollectionAttributeConditionLine };
+export {PriceCollectionAttributeConditionLine};

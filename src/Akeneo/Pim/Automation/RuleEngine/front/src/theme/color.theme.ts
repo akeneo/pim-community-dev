@@ -92,4 +92,4 @@ const color: color = {
   yellow80: '#fac365',
 };
 
-export { color };
+export {color};

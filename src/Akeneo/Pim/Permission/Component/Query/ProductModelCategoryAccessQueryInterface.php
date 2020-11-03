@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Permission\Component\Query;
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 interface ProductModelCategoryAccessQueryInterface
 {

@@ -1,8 +1,8 @@
-import { TextAttributeConditionLine } from '../../pages/EditRules/components/conditions/TextAttributeConditionLine';
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { AttributeType } from '../Attribute';
+import {TextAttributeConditionLine} from '../../pages/EditRules/components/conditions/TextAttributeConditionLine';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {AttributeType} from '../Attribute';
 import {
   createAttributeCondition,
   getAttributeConditionModule,

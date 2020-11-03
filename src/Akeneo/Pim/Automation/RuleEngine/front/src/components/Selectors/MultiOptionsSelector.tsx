@@ -9,7 +9,7 @@ import {
   AttributeOptionDataProvider,
   getAttributeOptionsByIdentifiers,
 } from '../../fetch/AttributeOptionFetcher';
-import { AttributeId } from '../../models';
+import {AttributeId} from '../../models';
 import {
   useBackboneRouter,
   useUserCatalogLocale,
@@ -35,7 +35,7 @@ const MultiOptionsSelector: React.FC<Props> = ({
 }) => {
   const router = useBackboneRouter();
   const currentCatalogLocale = useUserCatalogLocale();
-  const handleResults = (response: { results: Select2Option[] }) => {
+  const handleResults = (response: {results: Select2Option[]}) => {
     return {
       more: 20 === response.results.length,
       results: response.results,
@@ -94,4 +94,4 @@ const MultiOptionsSelector: React.FC<Props> = ({
   );
 };
 
-export { MultiOptionsSelector };
+export {MultiOptionsSelector};

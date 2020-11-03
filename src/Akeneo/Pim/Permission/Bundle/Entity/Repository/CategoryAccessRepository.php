@@ -13,14 +13,15 @@ namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Category access repository
@@ -205,14 +206,14 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     /**
      * Get the granted user groups for a product
      *
-     * @param EntityWithValuesInterface $entityWithValues the product
-     * @param string                    $accessLevel      the expected access level
+     * @param CategoryAwareInterface $entity      the product
+     * @param string                 $accessLevel the expected access level
      *
      * @return array
      */
-    public function getGrantedUserGroupsForEntityWithValues(EntityWithValuesInterface $entityWithValues, $accessLevel)
+    public function getGrantedUserGroupsForEntityWithValues(CategoryAwareInterface $entity, $accessLevel)
     {
-        $categories = $entityWithValues->getCategories();
+        $categories = $entity->getCategories();
         if (0 === count($categories)) {
             return [];
         }

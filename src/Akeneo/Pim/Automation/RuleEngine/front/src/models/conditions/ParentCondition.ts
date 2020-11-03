@@ -1,8 +1,8 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { ParentConditionLine } from '../../pages/EditRules/components/conditions/ParentConditionLine';
-import { ProductModelCode } from '../ProductModel';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {ParentConditionLine} from '../../pages/EditRules/components/conditions/ParentConditionLine';
+import {ProductModelCode} from '../ProductModel';
 
 const FIELD = 'parent';
 

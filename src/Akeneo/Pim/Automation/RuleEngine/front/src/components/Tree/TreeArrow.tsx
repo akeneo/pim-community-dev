@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Translate } from '../../dependenciesTools';
+import {Translate} from '../../dependenciesTools';
 
 const ArrowImg = styled.img`
   opacity: 0.5;
 `;
 
-type Props = { opened: boolean; translate: Translate };
+type Props = {opened: boolean; translate: Translate};
 
-const TreeArrow: React.FC<Props> = ({ opened, translate }) => {
+const TreeArrow: React.FC<Props> = ({opened, translate}) => {
   if (!opened) {
     return (
       <ArrowImg
@@ -25,4 +25,4 @@ const TreeArrow: React.FC<Props> = ({ opened, translate }) => {
   );
 };
 
-export { TreeArrow };
+export {TreeArrow};

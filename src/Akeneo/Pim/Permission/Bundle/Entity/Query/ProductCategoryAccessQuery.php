@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\Entity\Query;
 
 use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Returns the granted product depending on category access

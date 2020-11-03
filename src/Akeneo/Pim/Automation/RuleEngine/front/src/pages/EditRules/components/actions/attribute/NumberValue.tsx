@@ -1,8 +1,8 @@
 import React from 'react';
-import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
-import { InputNumber } from '../../../../../components/Inputs';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
+import {useUserCatalogLocale} from '../../../../../dependenciesTools/hooks';
+import {InputNumber} from '../../../../../components/Inputs';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
 
 const NumberValue: React.FC<InputValueProps> = ({
   id,
@@ -23,4 +23,4 @@ const NumberValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { NumberValue };
+export {NumberValue};

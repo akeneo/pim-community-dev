@@ -6,8 +6,8 @@ import {
   Select2SimpleAsyncWrapper,
   Select2Value,
 } from '../Select2Wrapper';
-import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { ProductIdentifier, ProductModelCode } from '../../models';
+import {useBackboneRouter, useTranslate} from '../../dependenciesTools/hooks';
+import {ProductIdentifier, ProductModelCode} from '../../models';
 
 type Identifier = ProductIdentifier | ProductModelCode;
 
@@ -51,7 +51,7 @@ const initSelectedIdentifiers = (
   selectedIdentifier: Identifier,
   callback: InitSelectionCallback
 ): void => {
-  callback({ id: selectedIdentifier, text: selectedIdentifier });
+  callback({id: selectedIdentifier, text: selectedIdentifier});
 };
 
 const IdentifiersSelector: React.FC<Props> = ({
@@ -100,4 +100,4 @@ const IdentifiersSelector: React.FC<Props> = ({
   );
 };
 
-export { IdentifiersSelector };
+export {IdentifiersSelector};

@@ -1,4 +1,4 @@
-import { Router } from '../../dependenciesTools';
+import {Router} from '../../dependenciesTools';
 import {
   FallbackCondition,
   FamilyCondition,

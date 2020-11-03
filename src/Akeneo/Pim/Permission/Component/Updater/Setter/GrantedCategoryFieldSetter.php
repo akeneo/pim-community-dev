@@ -11,19 +11,22 @@
 
 namespace Akeneo\Pim\Permission\Component\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AbstractFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
+use Webmozart\Assert\Assert;
 
 /**
  * Check if category is at least "viewable" to be associated to a resource
@@ -38,7 +41,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
-    /** @var ObjectRepository */
+    /** @var CategoryAccessRepository */
     private $categoryAccessRepository;
 
     /** @var TokenStorageInterface */
@@ -47,18 +50,10 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
     /** @var ObjectManager */
     private $entityManager;
 
-    /**
-     * @param FieldSetterInterface          $categoryFieldSetter
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param ObjectRepository              $categoryAccessRepository
-     * @param TokenStorageInterface         $tokenStorage
-     * @param ObjectManager                 $entityManager
-     * @param array                         $supportedFields
-     */
     public function __construct(
         FieldSetterInterface $categoryFieldSetter,
         AuthorizationCheckerInterface $authorizationChecker,
-        ObjectRepository $categoryAccessRepository,
+        CategoryAccessRepository $categoryAccessRepository,
         TokenStorageInterface $tokenStorage,
         ObjectManager $entityManager,
         array $supportedFields
@@ -138,6 +133,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
      */
     protected function areAllCategoriesVisibleOnEntity(CategoryAwareInterface $entityWithCategories)
     {
+        Assert::implementsInterface($entityWithCategories, EntityWithValuesInterface::class);
         if (null === $entityWithCategories->getId()) {
             return true;
         }
@@ -153,6 +149,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
             return true;
         }
         $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
 
         return $this->categoryAccessRepository->areAllCategoryCodesGranted(
             $user,

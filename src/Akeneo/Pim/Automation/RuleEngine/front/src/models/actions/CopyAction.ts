@@ -1,5 +1,5 @@
-import { CopyActionLine } from '../../pages/EditRules/components/actions/CopyActionLine';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
+import {CopyActionLine} from '../../pages/EditRules/components/actions/CopyActionLine';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
 
 export type CopyAction = {
   type: 'copy';

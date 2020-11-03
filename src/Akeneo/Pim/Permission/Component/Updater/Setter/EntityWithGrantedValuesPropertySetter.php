@@ -78,7 +78,7 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
         if (null === $attribute) {
             $this->propertySetter->setData($entityWithValues, $field, $data, $options);
 
-            return;
+            return $this;
         }
 
         $channelCode = $options['scope'];
@@ -102,6 +102,8 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
         $newValue = $entityWithValues->getValue($field, $localeCode, $channelCode);
 
         $this->checkEditableAttribute($attribute, $permissions, $oldValue, $newValue);
+
+        return $this;
     }
 
     /**

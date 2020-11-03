@@ -1,6 +1,6 @@
-import React from "react";
-import {useGetEditorHighlightWidgetsList} from "../../../../../../infrastructure/hooks";
-import SpellcheckWidget from "./Spellcheck/SpellcheckWidget";
+import React from 'react';
+import {useGetEditorHighlightWidgetsList} from '../../../../../../infrastructure/hooks';
+import SpellcheckWidget from './Spellcheck/SpellcheckWidget';
 
 const WidgetsList = () => {
   const widgets = useGetEditorHighlightWidgetsList();
@@ -8,9 +8,7 @@ const WidgetsList = () => {
   return (
     <>
       {widgets &&
-      Object.entries(widgets).map(([identifier, widget]) => (
-        <SpellcheckWidget key={identifier} widget={widget}/>
-      ))}
+        Object.entries(widgets).map(([identifier, widget]) => <SpellcheckWidget key={identifier} widget={widget} />)}
     </>
   );
 };

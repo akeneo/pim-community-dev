@@ -12,12 +12,12 @@ import {
   locales,
   scopes,
 } from '../../../../factories';
-import { Operator } from '../../../../../../src/models/Operator';
+import {Operator} from '../../../../../../src/models/Operator';
 import userEvent from '@testing-library/user-event';
-import { AttributeType } from '../../../../../../src/models';
-import { PriceCollectionAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/PriceCollectionAttributeConditionLine';
+import {AttributeType} from '../../../../../../src/models';
+import {PriceCollectionAttributeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/PriceCollectionAttributeConditionLine';
 
-const toRegister: { name: string; type: string }[] = [];
+const toRegister: {name: string; type: string}[] = [];
 [0, 1].forEach(lineNumber => {
   [
     'field',
@@ -72,7 +72,7 @@ const response = (request: Request) => {
           localizable: true,
           scopable: true,
           type: AttributeType.PRICE_COLLECTION,
-          labels: { en_US: 'Localizable and scopable Price', fr_FR: 'Prix' },
+          labels: {en_US: 'Localizable and scopable Price', fr_FR: 'Prix'},
         })
       )
     );
@@ -88,7 +88,7 @@ const response = (request: Request) => {
           localizable: false,
           scopable: false,
           type: AttributeType.PRICE_COLLECTION,
-          labels: { en_US: 'Price', fr_FR: 'Prix' },
+          labels: {en_US: 'Price', fr_FR: 'Prix'},
         })
       )
     );
@@ -114,8 +114,8 @@ describe('PriceCollectionAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     await waitForElementToBeRemoved(() =>
@@ -169,8 +169,8 @@ describe('PriceCollectionAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     await waitForElementToBeRemoved(() =>
@@ -206,8 +206,8 @@ describe('PriceCollectionAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     await waitForElementToBeRemoved(() =>

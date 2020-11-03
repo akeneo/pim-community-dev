@@ -1,8 +1,8 @@
-import { httpGet } from './fetch';
-import { Family } from '../models';
-import { Router } from '../dependenciesTools';
+import {httpGet} from './fetch';
+import {Family} from '../models';
+import {Router} from '../dependenciesTools';
 
-type IndexedFamilies = { [familyCode: string]: Family };
+type IndexedFamilies = {[familyCode: string]: Family};
 
 const fetchFamiliesByIdentifiers = async (
   familyIdentifiers: string[],
@@ -19,4 +19,4 @@ const fetchFamiliesByIdentifiers = async (
   return response.status === 404 ? null : await response.json();
 };
 
-export { fetchFamiliesByIdentifiers, IndexedFamilies };
+export {fetchFamiliesByIdentifiers, IndexedFamilies};

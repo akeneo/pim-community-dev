@@ -5,22 +5,22 @@ import {
   ProductIdentifier,
   ProductModelCode,
 } from '../../../../../models';
-import { AssociationTarget, Target } from '../SetAssociationsActionLine';
+import {AssociationTarget, Target} from '../SetAssociationsActionLine';
 import {
   ActionGrid,
   ActionLeftSide,
   ActionRightSide,
   ActionTitle,
 } from '../ActionLine';
-import { Label } from '../../../../../components/Labels';
-import { AssociationsGroupsSelector } from './AssociationsGroupsSelector';
-import { AssociationsIdentifiersSelector } from './AssociationsIdentifiersSelector';
+import {Label} from '../../../../../components/Labels';
+import {AssociationsGroupsSelector} from './AssociationsGroupsSelector';
+import {AssociationsIdentifiersSelector} from './AssociationsIdentifiersSelector';
 import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { AssociationTypeSwitcher } from './AssociationTypeSwitcher';
-import { EmptySourceHelper } from '../style';
+import {AssociationTypeSwitcher} from './AssociationTypeSwitcher';
+import {EmptySourceHelper} from '../style';
 
 type Props = {
   value: AssociationValue;
@@ -55,7 +55,7 @@ const AssociationTypesSelector: React.FC<Props> = ({
       (['products', 'product_models', 'groups'] as Target[]).forEach(target => {
         if (typeof value[associationTypeCode][target] !== 'undefined') {
           associationValuesArray.push([
-            { associationTypeCode, target },
+            {associationTypeCode, target},
             value[associationTypeCode][target],
           ]);
         }
@@ -117,7 +117,7 @@ const AssociationTypesSelector: React.FC<Props> = ({
   ) => {
     associationValues.delete(associationTarget);
     setAssociationValues(new Map(associationValues));
-    setCurrentAssociationTarget({ ...Array.from(associationValues.keys())[0] });
+    setCurrentAssociationTarget({...Array.from(associationValues.keys())[0]});
     onChange(formatAssociationValues());
   };
 
@@ -249,4 +249,4 @@ const AssociationTypesSelector: React.FC<Props> = ({
   );
 };
 
-export { AssociationTypesSelector };
+export {AssociationTypesSelector};

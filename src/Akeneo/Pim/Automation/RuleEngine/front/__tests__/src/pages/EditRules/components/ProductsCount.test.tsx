@@ -1,7 +1,7 @@
 import React from 'react';
-import { renderWithProviders } from '../../../../../test-utils';
-import { Status } from '../../../../../src/rules.constants';
-import { ProductsCount } from '../../../../../src/pages/EditRules/components/ProductsCount';
+import {renderWithProviders} from '../../../../../test-utils';
+import {Status} from '../../../../../src/rules.constants';
+import {ProductsCount} from '../../../../../src/pages/EditRules/components/ProductsCount';
 
 describe('ProductsCount', () => {
   test('it should render in complete mode', () => {
@@ -9,9 +9,9 @@ describe('ProductsCount', () => {
     const count = 10;
     const status = Status.COMPLETE;
     // When
-    const { getByText } = renderWithProviders(
+    const {getByText} = renderWithProviders(
       <ProductsCount count={count} status={status} />,
-      { legacy: true }
+      {legacy: true}
     );
     // Then
     expect(
@@ -23,9 +23,9 @@ describe('ProductsCount', () => {
     const count = -1;
     const status = Status.ERROR;
     // When
-    const { getByText } = renderWithProviders(
+    const {getByText} = renderWithProviders(
       <ProductsCount count={count} status={status} />,
-      { legacy: true }
+      {legacy: true}
     );
     // Then
     expect(
@@ -37,9 +37,9 @@ describe('ProductsCount', () => {
     const count = -1;
     const status = Status.PENDING;
     // When
-    const { getByText } = renderWithProviders(
+    const {getByText} = renderWithProviders(
       <ProductsCount count={count} status={status} />,
-      { legacy: true }
+      {legacy: true}
     );
     // Then
     expect(

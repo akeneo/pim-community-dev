@@ -1,6 +1,6 @@
-import { Router } from '../dependenciesTools';
-import { httpGet } from './fetch';
-import { Category, CategoryCode } from '../models/Category';
+import {Router} from '../dependenciesTools';
+import {httpGet} from './fetch';
+import {Category, CategoryCode} from '../models/Category';
 
 const fetchCategoriesByIdentifiers = async (
   categoryCodes: CategoryCode[],
@@ -14,4 +14,4 @@ const fetchCategoriesByIdentifiers = async (
   return response.status === 404 ? null : await response.json();
 };
 
-export { fetchCategoriesByIdentifiers };
+export {fetchCategoriesByIdentifiers};

@@ -17,13 +17,13 @@ const OperatorColumn = styled.span`
   height: 40px;
 `;
 
-const ValueColumn = styled.span<{ small?: boolean }>`
+const ValueColumn = styled.span<{small?: boolean}>`
   &:not(:empty) {
     display: inline-flex;
-    width: ${({ small }) => (small ? '120px' : '300px')};
+    width: ${({small}) => (small ? '120px' : '300px')};
     margin: 0 20px 0 0;
     min-height: 40px;
-    ${({ small }) => (small ? 'display: flex;' : '')};
+    ${({small}) => (small ? 'display: flex;' : '')};
   }
 `;
 
@@ -45,8 +45,8 @@ const ConditionErrorLine = styled.ul`
   &:not(:empty) {
     margin-left: 100px;
     margin-top: 15px;
-    color: ${({ theme }): string => theme.color.red100};
-    background-color: ${({ theme }): string => theme.color.red20};
+    color: ${({theme}): string => theme.color.red100};
+    background-color: ${({theme}): string => theme.color.red20};
     min-height: 44px;
     padding: 10px;
     flex-basis: 100%;
@@ -60,7 +60,7 @@ const ConditionErrorLine = styled.ul`
 
     &:before {
       content: '';
-      border-left: 1px solid ${({ theme }): string => theme.color.red100};
+      border-left: 1px solid ${({theme}): string => theme.color.red100};
       position: absolute;
       height: 22px;
       margin-left: -16px;

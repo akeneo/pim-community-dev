@@ -18,7 +18,7 @@ test('It should render the locale language with the flag', () => {
     },
   ];
 
-  const {container,getByText} = render(
+  const {container, getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
       <LocaleLabel localeCode={localeCode} locales={locales} />
     </ThemeProvider>

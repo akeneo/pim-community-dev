@@ -4,8 +4,8 @@ import {
   Select2SimpleSyncWrapper,
   Select2Value,
 } from '../Select2Wrapper';
-import { useTranslate } from '../../dependenciesTools/hooks';
-import { EntityType } from '../../models/conditions';
+import {useTranslate} from '../../dependenciesTools/hooks';
+import {EntityType} from '../../models/conditions';
 
 type Props = {
   id: string;
@@ -50,4 +50,4 @@ const EntityTypeSelector: React.FC<Props> = ({
   );
 };
 
-export { EntityTypeSelector };
+export {EntityTypeSelector};

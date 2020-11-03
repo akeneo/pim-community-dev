@@ -1,6 +1,6 @@
-import { ProductIdentifier } from './Product';
-import { ProductModelCode } from './ProductModel';
-import { GroupCode } from './Group';
+import {ProductIdentifier} from './Product';
+import {ProductModelCode} from './ProductModel';
+import {GroupCode} from './Group';
 
 export type AssociationValue = {
   [associationTypeCode: string]: {

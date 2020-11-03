@@ -1,7 +1,7 @@
 import React from 'react';
-import { renderWithProviders } from '../../../../../../test-utils';
-import { ClearAssociationsActionLine } from '../../../../../../src/pages/EditRules/components/actions/ClearAssociationsActionLine';
-import { locales, scopes } from '../../../../factories';
+import {renderWithProviders} from '../../../../../../test-utils';
+import {ClearAssociationsActionLine} from '../../../../../../src/pages/EditRules/components/actions/ClearAssociationsActionLine';
+import {locales, scopes} from '../../../../factories';
 
 describe('ClearAssociationsActionLine', () => {
   it('should display the clear associations action line', async () => {
@@ -16,7 +16,7 @@ describe('ClearAssociationsActionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(

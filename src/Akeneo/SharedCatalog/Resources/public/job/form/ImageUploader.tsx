@@ -85,7 +85,14 @@ const ImageUploader = ({image, validationErrors, onChange}: ImageUploaderProps) 
         return;
       }
 
-      if (!ALLOWED_EXTENSIONS.includes(file.name.toLowerCase().split('.').pop() || '')) {
+      if (
+        !ALLOWED_EXTENSIONS.includes(
+          file.name
+            .toLowerCase()
+            .split('.')
+            .pop() || ''
+        )
+      ) {
         setErrors(errors => [
           ...errors,
           translate('shared_catalog.branding.invalid_extension', {allowed_extensions: ALLOWED_EXTENSIONS.join(', ')}),

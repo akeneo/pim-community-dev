@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import {ThemeProvider} from 'styled-components';
 import * as akeneoTheme from '../../theme';
 import {
   generateAndRedirect,
@@ -11,20 +11,20 @@ import {
   useTranslate,
   useUserContext,
 } from '../../dependenciesTools/hooks';
-import { useDocumentEscapeKey } from '../../hooks';
-import { CrossLink } from './components/CrossLink';
-import { CreateRulesForm, FormDataInput } from './components/CreateRulesForm';
-import { httpPost } from '../../fetch';
-import { AkeneoSpinner, SmallHelper } from '../../components';
-import { Payload } from '../../rules.types';
-import { LocaleCode } from '../../models';
+import {useDocumentEscapeKey} from '../../hooks';
+import {CrossLink} from './components/CrossLink';
+import {CreateRulesForm, FormDataInput} from './components/CreateRulesForm';
+import {httpPost} from '../../fetch';
+import {AkeneoSpinner, SmallHelper} from '../../components';
+import {Payload} from '../../rules.types';
+import {LocaleCode} from '../../models';
 
 const transformFormData = (
   formData: FormDataInput,
   currentCatalogLocale: LocaleCode
 ): Payload => {
   return {
-    labels: { [currentCatalogLocale]: formData.label },
+    labels: {[currentCatalogLocale]: formData.label},
     priority: 0,
     enabled: false,
     code: formData.code,
@@ -39,7 +39,7 @@ type Props = {
   originalRuleCode?: string;
 };
 
-const CreateRules: React.FC<Props> = ({ originalRuleCode }) => {
+const CreateRules: React.FC<Props> = ({originalRuleCode}) => {
   const [pending, setPending] = React.useState(false);
   const translate = useTranslate();
   const router = useBackboneRouter();
@@ -49,7 +49,7 @@ const CreateRules: React.FC<Props> = ({ originalRuleCode }) => {
     originalRuleCode
       ? 'pimee_catalog_rule_edit'
       : 'pimee_catalog_rule_rule_index',
-    originalRuleCode ? { code: originalRuleCode } : undefined
+    originalRuleCode ? {code: originalRuleCode} : undefined
   );
   useDocumentEscapeKey(handleRulesRoute);
   const currentCatalogLocale = userContext.get('catalogLocale');
@@ -81,7 +81,7 @@ const CreateRules: React.FC<Props> = ({ originalRuleCode }) => {
       );
       redirectToUrl(
         router,
-        generateUrl(router, 'pimee_catalog_rule_edit', { code: formData.code })
+        generateUrl(router, 'pimee_catalog_rule_edit', {code: formData.code})
       );
     } else {
       setPending(false);
@@ -103,9 +103,9 @@ const CreateRules: React.FC<Props> = ({ originalRuleCode }) => {
           </div>
           <div>
             <div className='AknFullPage-titleContainer'>
-              <div className='AknFullPage-subTitle'>
-                {`${translate('pim_menu.item.rule')} /`}
-              </div>
+              <div className='AknFullPage-subTitle'>{`${translate(
+                'pim_menu.item.rule'
+              )} /`}</div>
               <div className='AknFullPage-title'>
                 {originalRuleCode
                   ? translate('pimee_catalog_rule.form.edit.duplicate.title', {
@@ -146,4 +146,4 @@ const CreateRules: React.FC<Props> = ({ originalRuleCode }) => {
   );
 };
 
-export { CreateRules };
+export {CreateRules};

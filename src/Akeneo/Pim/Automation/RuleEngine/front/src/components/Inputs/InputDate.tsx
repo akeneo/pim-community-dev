@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, InputProps } from './Input';
+import {Input, InputProps} from './Input';
 
 type InputDateType = 'date' | 'datetime-local';
 
@@ -8,7 +8,7 @@ type InputDateProps = {
 } & InputProps;
 
 const InputDate = React.forwardRef<HTMLInputElement, InputDateProps>(
-  ({ type = 'date', ...rest }, forwardedRef: React.Ref<HTMLInputElement>) => {
+  ({type = 'date', ...rest}, forwardedRef: React.Ref<HTMLInputElement>) => {
     return (
       <Input
         className='AknTextField'
@@ -22,4 +22,4 @@ const InputDate = React.forwardRef<HTMLInputElement, InputDateProps>(
 
 InputDate.displayName = 'InputDate';
 
-export { InputDate, InputDateType };
+export {InputDate, InputDateType};

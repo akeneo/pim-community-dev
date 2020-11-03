@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
+import {Select2SimpleSyncWrapper, Select2Value} from '../Select2Wrapper';
 import {
   Attribute,
   getAttributeLabel,
@@ -7,9 +7,9 @@ import {
   Scope,
   ScopeCode,
 } from '../../models';
-import { useTranslate } from '../../dependenciesTools/hooks';
-import { Translate } from '../../dependenciesTools';
-import { IndexedScopes } from '../../repositories/ScopeRepository';
+import {useTranslate} from '../../dependenciesTools/hooks';
+import {Translate} from '../../dependenciesTools';
+import {IndexedScopes} from '../../repositories/ScopeRepository';
 
 const getScopeValidation = (
   attribute: Attribute | null,
@@ -56,7 +56,7 @@ type Props = {
   allowClear: boolean;
   disabled?: boolean;
   name?: string;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {required?: string; validate?: (value: any) => string | true};
 };
 
 const ScopeSelector: React.FC<Props> = ({
@@ -118,4 +118,4 @@ const ScopeSelector: React.FC<Props> = ({
   );
 };
 
-export { getScopeValidation, ScopeSelector };
+export {getScopeValidation, ScopeSelector};

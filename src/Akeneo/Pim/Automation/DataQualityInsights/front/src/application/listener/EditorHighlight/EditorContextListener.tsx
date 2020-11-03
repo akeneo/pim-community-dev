@@ -1,6 +1,6 @@
-import React, {FunctionComponent, useEffect} from "react";
-import {HighlightsCollection, isIntersectingHighlight, WidgetElement} from "../../helper";
-import {useGetEditorHighlightPopover} from "../../../infrastructure/hooks";
+import React, {FunctionComponent, useEffect} from 'react';
+import {HighlightsCollection, isIntersectingHighlight, WidgetElement} from '../../helper';
+import {useGetEditorHighlightPopover} from '../../../infrastructure/hooks';
 
 interface EditorContextListenerProps {
   widget: WidgetElement;
@@ -18,8 +18,8 @@ const EditorContextListener: FunctionComponent<EditorContextListenerProps> = ({w
       const eventClientY = event.clientY;
 
       window.requestAnimationFrame(() => {
-        const activeHighlight = Object.values(highlights).find((highlight) =>  {
-          return isIntersectingHighlight(eventClientX, eventClientY, highlight)
+        const activeHighlight = Object.values(highlights).find(highlight => {
+          return isIntersectingHighlight(eventClientX, eventClientY, highlight);
         });
 
         if (!activeHighlight) {
@@ -28,7 +28,7 @@ const EditorContextListener: FunctionComponent<EditorContextListenerProps> = ({w
         }
 
         handleOpening(widget, activeHighlight);
-      })
+      });
     };
 
     if (editor) {

@@ -1,6 +1,6 @@
-import { Controller } from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 import React from 'react';
-import { ConditionLineProps } from './ConditionLineProps';
+import {ConditionLineProps} from './ConditionLineProps';
 import {
   MeasurementAttributeCondition,
   MeasurementAttributeOperators,
@@ -9,16 +9,16 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputCondition } from '../../hooks';
-import { Attribute } from '../../../../models';
-import { AttributeConditionLine } from './AttributeConditionLine';
-import { Operator } from '../../../../models/Operator';
-import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
+import {useControlledFormInputCondition} from '../../hooks';
+import {Attribute} from '../../../../models';
+import {AttributeConditionLine} from './AttributeConditionLine';
+import {Operator} from '../../../../models/Operator';
+import {useGetAttributeAtMount} from '../actions/attribute/attribute.utils';
 import {
   getMeasurementValidator,
   InputMeasurement,
 } from '../../../../components/Inputs';
-import { MeasurementData } from '../../../../models/Measurement';
+import {MeasurementData} from '../../../../models/Measurement';
 
 type MeasurementAttributeConditionLineProps = ConditionLineProps & {
   condition: MeasurementAttributeCondition;

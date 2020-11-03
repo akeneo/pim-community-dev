@@ -4,8 +4,8 @@ import {
   HighlightsCollection,
   MistakeElement,
   WidgetElement,
-  WidgetsCollection
-} from "../../../application/helper";
+  WidgetsCollection,
+} from '../../../application/helper';
 
 export type ProductHighlightAction = WidgetAction & WidgetElementsAction & PopoverAction;
 
@@ -29,11 +29,11 @@ export interface WidgetAction extends Action {
     widget: {
       id: string;
       content?: string;
-      analysis?: MistakeElement[],
+      analysis?: MistakeElement[];
       highlights?: HighlightElement[];
       highlightId?: string;
     };
-  }
+  };
 }
 
 interface WidgetElementsAction extends Action {
@@ -41,103 +41,106 @@ interface WidgetElementsAction extends Action {
     widgets: {
       [id: string]: WidgetElement;
     };
-  }
+  };
 }
 
 interface PopoverAction extends Action {
   payload: {
     popover: {
       isOpen?: boolean;
-      highlight?: HighlightElement|null;
+      highlight?: HighlightElement | null;
       widgetId?: string | null;
       handleOpening?(widgetId: string, highlight: HighlightElement, callback: Function): void;
       handleClosing?(callback: Function): void;
-    }
-  }
+    };
+  };
 }
 
-const INITIALIZE_WIDGETS_LIST = "INITIALIZE_WIDGETS_LIST";
+const INITIALIZE_WIDGETS_LIST = 'INITIALIZE_WIDGETS_LIST';
 export const initializeWidgetsListAction: ActionCreator<WidgetElementsAction> = (widgets: WidgetsCollection) => {
   return {
     type: INITIALIZE_WIDGETS_LIST,
     payload: {
-      widgets
-    }
+      widgets,
+    },
   };
 };
 
-const SHOW_WIDGET = "SHOW_WIDGET";
+const SHOW_WIDGET = 'SHOW_WIDGET';
 export const showWidgetAction: ActionCreator<WidgetAction> = (id: string) => {
   return {
     type: SHOW_WIDGET,
     payload: {
       widget: {
-        id
-      }
-    }
+        id,
+      },
+    },
   };
 };
 
-const ENABLE_WIDGET = "ENABLE_WIDGET";
+const ENABLE_WIDGET = 'ENABLE_WIDGET';
 export const enableWidgetAction: ActionCreator<WidgetAction> = (id: string) => {
   return {
     type: ENABLE_WIDGET,
     payload: {
       widget: {
-        id
-      }
-    }
+        id,
+      },
+    },
   };
 };
 
-const DISABLE_WIDGET = "DISABLE_WIDGET";
+const DISABLE_WIDGET = 'DISABLE_WIDGET';
 export const disableWidgetAction: ActionCreator<WidgetAction> = (id: string) => {
   return {
     type: DISABLE_WIDGET,
     payload: {
       widget: {
-        id
-      }
-    }
+        id,
+      },
+    },
   };
 };
 
-const UPDATE_WIDGET_CONTENT = "UPDATE_WIDGET_CONTENT";
+const UPDATE_WIDGET_CONTENT = 'UPDATE_WIDGET_CONTENT';
 export const updateWidgetContent: ActionCreator<WidgetAction> = (id: string, content: string) => {
   return {
     type: UPDATE_WIDGET_CONTENT,
     payload: {
       widget: {
         id,
-        content
-      }
-    }
+        content,
+      },
+    },
   };
 };
 
-const UPDATE_WIDGET_CONTENT_ANALYSIS = "UPDATE_WIDGET_CONTENT_ANALYSIS";
+const UPDATE_WIDGET_CONTENT_ANALYSIS = 'UPDATE_WIDGET_CONTENT_ANALYSIS';
 export const updateWidgetContentAnalysis: ActionCreator<WidgetAction> = (id: string, analysis: MistakeElement[]) => {
   return {
     type: UPDATE_WIDGET_CONTENT_ANALYSIS,
     payload: {
       widget: {
         id,
-        analysis
-      }
-    }
+        analysis,
+      },
+    },
   };
 };
 
-const UPDATE_WIDGET_HIGHLIGHTS = "UPDATE_WIDGET_HIGHLIGHTS";
-export const updateWidgetHighlightsAction: ActionCreator<WidgetAction> = (id: string, highlights: HighlightElement[]) => {
+const UPDATE_WIDGET_HIGHLIGHTS = 'UPDATE_WIDGET_HIGHLIGHTS';
+export const updateWidgetHighlightsAction: ActionCreator<WidgetAction> = (
+  id: string,
+  highlights: HighlightElement[]
+) => {
   return {
     type: UPDATE_WIDGET_HIGHLIGHTS,
     payload: {
       widget: {
         id,
-        highlights
-      }
-    }
+        highlights,
+      },
+    },
   };
 };
 
@@ -148,9 +151,9 @@ export const enableWidgetHighlightAction: ActionCreator<WidgetAction> = (id: str
     payload: {
       widget: {
         id,
-        highlightId
-      }
-    }
+        highlightId,
+      },
+    },
   };
 };
 
@@ -159,8 +162,8 @@ export const disableWidgetHighlightAction: ActionCreator<WidgetElementsAction> =
   return {
     type: DISABLE_WIDGET_HIGHLIGHT,
     payload: {
-      widgets: {}
-    }
+      widgets: {},
+    },
   };
 };
 
@@ -171,10 +174,10 @@ export const showPopoverAction: ActionCreator<PopoverAction> = (widgetId: string
     payload: {
       popover: {
         widgetId,
-        highlight
-      }
-    }
-  }
+        highlight,
+      },
+    },
+  };
 };
 
 const HIDE_POPOVER = 'HIDE_POPOVER';
@@ -182,9 +185,9 @@ export const hidePopoverAction: ActionCreator<PopoverAction> = () => {
   return {
     type: HIDE_POPOVER,
     payload: {
-      popover: {}
-    }
-  }
+      popover: {},
+    },
+  };
 };
 
 const INITIALIZE_POPOVER_OPENING = 'INITIALIZE_POPOVER_OPENING';
@@ -194,10 +197,10 @@ export const initializePopoverOpeningAction: ActionCreator<PopoverAction> = (han
     payload: {
       popover: {
         handleOpening,
-        handleClosing
-      }
-    }
-  }
+        handleClosing,
+      },
+    },
+  };
 };
 
 const initialPopoverState = {
@@ -213,13 +216,16 @@ const initialState: ProductEditorHighlightState = {
   popover: initialPopoverState,
 };
 
-const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction> = (previousState = {}, {type, payload}) => {
-  switch(type) {
+const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction> = (
+  previousState = {},
+  {type, payload}
+) => {
+  switch (type) {
     case INITIALIZE_WIDGETS_LIST:
       const {widgets} = payload;
       return {
         ...previousState,
-        ...widgets
+        ...widgets,
       };
 
     case SHOW_WIDGET: {
@@ -232,8 +238,8 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
         ...previousState,
         [widget.id]: {
           ...previousState[widget.id],
-          isVisible: true
-        }
+          isVisible: true,
+        },
       };
     }
 
@@ -247,8 +253,8 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
         ...previousState,
         [widget.id]: {
           ...previousState[widget.id],
-          isActive: true
-        }
+          isActive: true,
+        },
       };
     }
 
@@ -262,8 +268,8 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
         ...previousState,
         [widget.id]: {
           ...previousState[widget.id],
-          isActive: false
-        }
+          isActive: false,
+        },
       };
     }
 
@@ -277,8 +283,8 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
         ...previousState,
         [widget.id]: {
           ...previousState[widget.id],
-          content: widget.content || ''
-        }
+          content: widget.content || '',
+        },
       };
     }
 
@@ -292,8 +298,8 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
         ...previousState,
         [widget.id]: {
           ...previousState[widget.id],
-          analysis: widget.analysis || []
-        }
+          analysis: widget.analysis || [],
+        },
       };
     }
 
@@ -315,26 +321,30 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
         ...previousState,
         [widget.id]: {
           ...previousState[widget.id],
-          highlights: highlightsCollection
-        }
+          highlights: highlightsCollection,
+        },
       };
     }
 
     case ENABLE_WIDGET_HIGHLIGHT: {
       const {widget} = payload;
 
-      if (!previousState[widget.id] || !widget.highlightId || !previousState[widget.id].highlights[widget.highlightId]) {
+      if (
+        !previousState[widget.id] ||
+        !widget.highlightId ||
+        !previousState[widget.id].highlights[widget.highlightId]
+      ) {
         return previousState;
       }
 
       const previousHighlights = previousState[widget.id].highlights;
-      const highlightsCollection:HighlightsCollection = {};
+      const highlightsCollection: HighlightsCollection = {};
 
       Object.values(previousHighlights).forEach((highlight: HighlightElement) => {
         highlightsCollection[highlight.id] = {
           ...highlight,
-          isActive: (highlight.id === widget.highlightId)
-        }
+          isActive: highlight.id === widget.highlightId,
+        };
       });
 
       return {
@@ -342,8 +352,8 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
         [widget.id]: {
           ...previousState[widget.id],
           highlights: highlightsCollection,
-        }
-      }
+        },
+      };
     }
 
     case DISABLE_WIDGET_HIGHLIGHT: {
@@ -355,13 +365,13 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
         Object.values(widget.highlights).forEach((highlight: HighlightElement) => {
           highlights[highlight.id] = {
             ...highlight,
-            isActive: false
+            isActive: false,
           };
         });
 
         state[widget.id] = {
           ...widget,
-          highlights
+          highlights,
         };
       });
 
@@ -373,7 +383,7 @@ const widgetsReducer: Reducer<WidgetsState, WidgetElementsAction & WidgetAction>
   }
 };
 
-const popoverReducer: Reducer<PopoverState, PopoverAction> = (previousState =  initialPopoverState, {type, payload}) => {
+const popoverReducer: Reducer<PopoverState, PopoverAction> = (previousState = initialPopoverState, {type, payload}) => {
   switch (type) {
     case SHOW_POPOVER: {
       const {popover} = payload;
@@ -404,10 +414,13 @@ const popoverReducer: Reducer<PopoverState, PopoverAction> = (previousState =  i
   }
 };
 
-const productEditorHighlightReducer: Reducer<ProductEditorHighlightState, ProductHighlightAction> = (previousState = initialState, {type, payload}) => {
+const productEditorHighlightReducer: Reducer<ProductEditorHighlightState, ProductHighlightAction> = (
+  previousState = initialState,
+  {type, payload}
+) => {
   return {
     widgets: widgetsReducer(previousState.widgets, {type, payload}),
     popover: popoverReducer(previousState.popover, {type, payload}),
-  }
+  };
 };
 export default productEditorHighlightReducer;

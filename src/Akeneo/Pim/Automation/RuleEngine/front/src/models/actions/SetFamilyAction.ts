@@ -1,6 +1,6 @@
-import { SetFamilyActionLine } from '../../pages/EditRules/components/actions/SetFamilyActionLine';
-import { FamilyCode } from '../Family';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
+import {SetFamilyActionLine} from '../../pages/EditRules/components/actions/SetFamilyActionLine';
+import {FamilyCode} from '../Family';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
 
 export type SetFamilyAction = {
   type: 'set';

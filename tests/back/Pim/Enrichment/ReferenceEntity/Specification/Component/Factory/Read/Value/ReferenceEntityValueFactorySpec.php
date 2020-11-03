@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -75,6 +76,17 @@ final class ReferenceEntityValueFactorySpec extends ObjectBehavior
                 null,
                 null,
                 [new \stdClass()]
+            ]);
+    }
+
+    public function it_throws_an_exception_when_record_code_is_invalid()
+    {
+        $this->shouldThrow(PropertyException::class)
+            ->during('createByCheckingData', [
+                $this->getAttribute(false, false),
+                null,
+                null,
+                'an invalid record code'
             ]);
     }
 

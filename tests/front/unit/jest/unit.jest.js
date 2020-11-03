@@ -75,8 +75,8 @@ const eeConfig = {
       statements: 100,
       functions: 100,
       lines: 100,
-    }
-  }
+    },
+  },
 };
 
 module.exports = Object.assign({}, baseConfig, eeConfig);

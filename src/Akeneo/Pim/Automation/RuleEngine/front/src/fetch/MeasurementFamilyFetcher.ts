@@ -1,6 +1,6 @@
-import { Router } from '../dependenciesTools';
-import { httpGet } from './fetch';
-import { MeasurementFamily } from '../models';
+import {Router} from '../dependenciesTools';
+import {httpGet} from './fetch';
+import {MeasurementFamily} from '../models';
 
 const fetchAllMeasurementFamilies = async (
   router: Router
@@ -11,4 +11,4 @@ const fetchAllMeasurementFamilies = async (
   return await response.json();
 };
 
-export { fetchAllMeasurementFamilies };
+export {fetchAllMeasurementFamilies};

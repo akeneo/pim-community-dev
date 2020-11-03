@@ -3,9 +3,9 @@ import {
   CategoryTreeModel,
   CategoryTreeModelWithOpenBranch,
 } from '../category-tree.types';
-import { CategoryTreeNode } from './CategoryTreeNode';
-import { Category, LocaleCode, CategoryCode } from '../../../models';
-import { NodeType } from '../../Tree/tree.types';
+import {CategoryTreeNode} from './CategoryTreeNode';
+import {Category, LocaleCode, CategoryCode} from '../../../models';
+import {NodeType} from '../../Tree/tree.types';
 
 type Props = {
   categoryTree: CategoryTreeModel;
@@ -42,4 +42,4 @@ const CategoryTree: React.FC<Props> = ({
   );
 };
 
-export { CategoryTree };
+export {CategoryTree};

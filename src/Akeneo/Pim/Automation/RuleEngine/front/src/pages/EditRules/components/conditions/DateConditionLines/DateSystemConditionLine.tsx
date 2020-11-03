@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Controller } from 'react-hook-form';
+import React, {useState} from 'react';
+import {Controller} from 'react-hook-form';
 import {
   dateSystemOperators,
   DateSystemCondition,
 } from '../../../../../models/conditions';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { useControlledFormInputCondition } from '../../../hooks';
-import { Operator } from '../../../../../models/Operator';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
+import {useControlledFormInputCondition} from '../../../hooks';
+import {Operator} from '../../../../../models/Operator';
 
 import {
   createDateTypeOptions,
@@ -21,23 +21,20 @@ import {
   validateDateConditionLine,
 } from './dateConditionLines.utils';
 
-import { DateTemplateConditionLine } from './DateTemplateConditionLine';
+import {DateTemplateConditionLine} from './DateTemplateConditionLine';
 import {
   ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
 } from '../style';
-import { LineErrors } from '../../LineErrors';
-import { useDateConditionHandlers } from './dateConditionLines.hooks';
+import {LineErrors} from '../../LineErrors';
+import {useDateConditionHandlers} from './dateConditionLines.hooks';
 
 type Props = {
   condition: DateSystemCondition;
   lineNumber: number;
 };
 
-const DateSystemConditionLine: React.FC<Props> = ({
-  condition,
-  lineNumber,
-}) => {
+const DateSystemConditionLine: React.FC<Props> = ({condition, lineNumber}) => {
   const translate = useTranslate();
   const {
     fieldFormName,
@@ -112,4 +109,4 @@ const DateSystemConditionLine: React.FC<Props> = ({
   );
 };
 
-export { DateSystemConditionLine };
+export {DateSystemConditionLine};

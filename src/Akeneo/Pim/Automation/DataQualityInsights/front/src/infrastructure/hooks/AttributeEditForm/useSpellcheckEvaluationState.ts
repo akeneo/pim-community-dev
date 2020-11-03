@@ -1,6 +1,6 @@
 import {useCallback, useState} from 'react';
-import fetchSpellcheckEvaluation from "../../fetcher/AttributeEditForm/fetchSpellcheckEvaluation";
-import {useMountedState} from "../Common/useMountedState";
+import fetchSpellcheckEvaluation from '../../fetcher/AttributeEditForm/fetchSpellcheckEvaluation';
+import {useMountedState} from '../Common/useMountedState';
 
 export type LocalesSpellcheckEvaluation = {
   [locale: string]: boolean;
@@ -11,7 +11,7 @@ export type OptionsSpellcheckEvaluation = {
     count: number;
     toImprove: number;
     locales: LocalesSpellcheckEvaluation;
-  }
+  };
 };
 
 export type SpellcheckEvaluation = {
@@ -20,15 +20,15 @@ export type SpellcheckEvaluation = {
   options_count: number;
   labels: LocalesSpellcheckEvaluation;
   labels_count: number;
-}
+};
 
 export type SpellcheckEvaluationState = {
   evaluation: SpellcheckEvaluation;
   refresh: () => Promise<void>;
-}
+};
 
 export const initialSpellcheckEvaluationState = {
-  attribute: "",
+  attribute: '',
   options: {},
   options_count: 0,
   labels: {},
@@ -45,14 +45,14 @@ export const useSpellcheckEvaluationState = (attributeCode: string): SpellcheckE
   const refresh = useCallback(async () => {
     const response = fetchSpellcheckEvaluation(attributeCode);
 
-    return response.then((evaluation) => {
+    return response.then(evaluation => {
       if (isMounted()) {
         setSpellcheckEvaluation(evaluation);
       }
     });
   }, [setSpellcheckEvaluation, isMounted]);
 
-/*
+  /*
   useEffect(() => {
     refresh();
 

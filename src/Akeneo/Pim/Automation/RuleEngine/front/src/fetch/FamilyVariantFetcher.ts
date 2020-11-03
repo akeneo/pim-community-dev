@@ -1,8 +1,8 @@
-import { httpGet } from './fetch';
-import { Router } from '../dependenciesTools';
-import { FamilyVariant, FamilyVariantCode } from '../models';
+import {httpGet} from './fetch';
+import {Router} from '../dependenciesTools';
+import {FamilyVariant, FamilyVariantCode} from '../models';
 
-type IndexedFamilyVariants = { [familyVariantCode: string]: FamilyVariant };
+type IndexedFamilyVariants = {[familyVariantCode: string]: FamilyVariant};
 
 const fetchFamilyVariantsByIdentifiers = async (
   familyVariantIdentifiers: FamilyVariantCode[],
@@ -19,4 +19,4 @@ const fetchFamilyVariantsByIdentifiers = async (
   return response.status === 404 ? null : await response.json();
 };
 
-export { fetchFamilyVariantsByIdentifiers, IndexedFamilyVariants };
+export {fetchFamilyVariantsByIdentifiers, IndexedFamilyVariants};

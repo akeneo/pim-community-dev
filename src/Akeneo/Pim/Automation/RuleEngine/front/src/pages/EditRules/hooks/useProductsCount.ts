@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { httpGet } from '../../../fetch';
-import { generateUrl } from '../../../dependenciesTools/utils';
-import { Router } from '../../../dependenciesTools';
-import { Status } from '../../../rules.constants';
-import { FormData } from '../edit-rules.types';
-import { Condition } from '../../../models';
-import { formatDateLocaleTimeConditionsToBackend } from '../components/conditions/DateConditionLines/dateConditionLines.utils';
+import {useState, useEffect} from 'react';
+import {useFormContext} from 'react-hook-form';
+import {httpGet} from '../../../fetch';
+import {generateUrl} from '../../../dependenciesTools/utils';
+import {Router} from '../../../dependenciesTools';
+import {Status} from '../../../rules.constants';
+import {FormData} from '../edit-rules.types';
+import {Condition} from '../../../models';
+import {formatDateLocaleTimeConditionsToBackend} from '../components/conditions/DateConditionLines/dateConditionLines.utils';
 type CountFn = (x: CountError | CountPending | CountComplete) => void;
 
-type CountError = { value: -1; status: Status.ERROR };
-type CountPending = { value: -1; status: Status.PENDING };
-type CountComplete = { value: number; status: Status.COMPLETE };
+type CountError = {value: -1; status: Status.ERROR};
+type CountPending = {value: -1; status: Status.PENDING};
+type CountComplete = {value: number; status: Status.COMPLETE};
 
-const countError: CountError = { value: -1, status: Status.ERROR };
-const countPending: CountPending = { value: -1, status: Status.PENDING };
+const countError: CountError = {value: -1, status: Status.ERROR};
+const countPending: CountPending = {value: -1, status: Status.PENDING};
 const countComplete = (x: number): CountComplete => {
-  return { value: x, status: Status.COMPLETE };
+  return {value: x, status: Status.COMPLETE};
 };
 
 const debounceFn = (fn: any, delay: number) => {
@@ -69,7 +69,7 @@ const createProductsCountUrl = (router: Router, form: FormData) => {
 
 const useProductsCount = (router: Router, formValues: FormData) => {
   const url = createProductsCountUrl(router, formValues);
-  const { watch } = useFormContext();
+  const {watch} = useFormContext();
   const [count, setCount] = useState<CountError | CountPending | CountComplete>(
     countPending
   );
@@ -82,4 +82,4 @@ const useProductsCount = (router: Router, formValues: FormData) => {
   return count;
 };
 
-export { useProductsCount };
+export {useProductsCount};

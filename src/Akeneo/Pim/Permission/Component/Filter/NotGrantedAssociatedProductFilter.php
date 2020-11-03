@@ -12,9 +12,7 @@
 namespace Akeneo\Pim\Permission\Component\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,10 +30,10 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
-    /** @var CategoryAccessRepository */
+    /** @var ItemCategoryAccessQuery */
     private $productCategoryAccessQuery;
 
-    /** @var CategoryAccessRepository */
+    /** @var ItemCategoryAccessQuery */
     private $productModelCategoryAccessQuery;
 
     /** @var TokenStorageInterface */

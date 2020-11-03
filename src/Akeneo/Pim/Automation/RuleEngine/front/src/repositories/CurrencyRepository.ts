@@ -1,8 +1,8 @@
-import { fetchAllCurrencies } from '../fetch/CurrencyFetcher';
-import { Router } from '../dependenciesTools';
-import { Currency, CurrencyCode } from '../models/Currency';
+import {fetchAllCurrencies} from '../fetch/CurrencyFetcher';
+import {Router} from '../dependenciesTools';
+import {Currency, CurrencyCode} from '../models/Currency';
 
-type IndexedCurrencies = { [currencyCode: string]: Currency };
+type IndexedCurrencies = {[currencyCode: string]: Currency};
 let cachedCurrencies: IndexedCurrencies | undefined;
 
 const clearCurrencyRepositoryCache = () => {

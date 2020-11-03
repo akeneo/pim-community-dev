@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useTranslate } from '../../../dependenciesTools/hooks';
+import {useTranslate} from '../../../dependenciesTools/hooks';
 
 const PreviewBlock = styled.div`
   background-color: black;
@@ -11,7 +11,7 @@ const PreviewBlock = styled.div`
 
 const PreviewOption: React.FC<{
   togglePreview: () => void;
-}> = ({ togglePreview }) => {
+}> = ({togglePreview}) => {
   const translate = useTranslate();
 
   return (
@@ -25,4 +25,4 @@ const PreviewOption: React.FC<{
   );
 };
 
-export { PreviewBlock, PreviewOption };
+export {PreviewBlock, PreviewOption};

@@ -1,16 +1,16 @@
-import React, {FC, useEffect} from "react";
-import {useHighlightableContentContext} from "../../../../context/HighlightableContentContext";
+import React, {FC, useEffect} from 'react';
+import {useHighlightableContentContext} from '../../../../context/HighlightableContentContext';
 
 const DeactivateNativeSpellcheck: FC<{}> = () => {
   const {element} = useHighlightableContentContext();
 
   useEffect(() => {
     if (element) {
-      element.setAttribute("spellcheck", 'false');
+      element.setAttribute('spellcheck', 'false');
     }
   }, [element]);
 
-  return (<></>);
-}
+  return <></>;
+};
 
 export default DeactivateNativeSpellcheck;

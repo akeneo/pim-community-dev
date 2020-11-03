@@ -1,9 +1,9 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { act, renderWithProviders, screen } from '../../../../../../test-utils';
-import { Operator } from '../../../../../../src/models/Operator';
+import {act, renderWithProviders, screen} from '../../../../../../test-utils';
+import {Operator} from '../../../../../../src/models/Operator';
 import userEvent from '@testing-library/user-event';
-import { ParentConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/ParentConditionLine';
+import {ParentConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/ParentConditionLine';
 
 describe('ParentConditionLine', () => {
   beforeEach(() => {
@@ -25,9 +25,9 @@ describe('ParentConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
     ];
     renderWithProviders(
       <ParentConditionLine
@@ -36,8 +36,8 @@ describe('ParentConditionLine', () => {
         locales={[]}
         scopes={{}}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText('pimee_catalog_rule.form.edit.fields.parent')

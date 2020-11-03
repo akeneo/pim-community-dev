@@ -1,21 +1,21 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ActionLineProps } from './ActionLineProps';
+import {Controller} from 'react-hook-form';
+import {ActionLineProps} from './ActionLineProps';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { ActionTemplate } from './ActionTemplate';
-import { useControlledFormInputAction } from '../../hooks';
-import { GroupCode } from '../../../../models';
+import {ActionTemplate} from './ActionTemplate';
+import {useControlledFormInputAction} from '../../hooks';
+import {GroupCode} from '../../../../models';
 import {
   ActionGrid,
   ActionTitle,
   AknActionFormContainer,
   ActionLeftSide,
 } from './ActionLine';
-import { GroupsSelector } from '../../../../components/Selectors/GroupsSelector';
-import { getGroupsByIdentifiers } from '../../../../repositories/GroupRepository';
+import {GroupsSelector} from '../../../../components/Selectors/GroupsSelector';
+import {getGroupsByIdentifiers} from '../../../../repositories/GroupRepository';
 
 const RemoveGroupsActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
@@ -114,7 +114,7 @@ const RemoveGroupsActionLine: React.FC<ActionLineProps> = ({
                 )} ${translate('pim_common.required_label')}`}
                 currentCatalogLocale={currentCatalogLocale}
                 value={getItemsFormValue()}
-                rules={{ validate: validateGroupCodes }}
+                rules={{validate: validateGroupCodes}}
                 name={itemsFormName}
               />
             </AknActionFormContainer>
@@ -125,4 +125,4 @@ const RemoveGroupsActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { RemoveGroupsActionLine };
+export {RemoveGroupsActionLine};

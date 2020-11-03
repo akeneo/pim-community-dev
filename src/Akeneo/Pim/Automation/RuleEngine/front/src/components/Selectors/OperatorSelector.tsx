@@ -1,7 +1,7 @@
 import React from 'react';
-import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
-import { Operator } from '../../models/Operator';
-import { useTranslate } from '../../dependenciesTools/hooks';
+import {Select2SimpleSyncWrapper, Select2Value} from '../Select2Wrapper';
+import {Operator} from '../../models/Operator';
+import {useTranslate} from '../../dependenciesTools/hooks';
 
 type Props = {
   label?: string;
@@ -58,4 +58,4 @@ const OperatorSelector: React.FC<Props> = ({
   );
 };
 
-export { OperatorSelector };
+export {OperatorSelector};

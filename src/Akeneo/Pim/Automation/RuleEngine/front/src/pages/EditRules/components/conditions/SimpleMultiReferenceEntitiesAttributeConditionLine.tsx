@@ -1,22 +1,22 @@
 import React from 'react';
-import { ConditionLineProps } from './ConditionLineProps';
-import { AttributeConditionLine } from './AttributeConditionLine';
+import {ConditionLineProps} from './ConditionLineProps';
+import {AttributeConditionLine} from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
   useUserCatalogLocale,
   useUserCatalogScope,
 } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models';
-import { Operator } from '../../../../models/Operator';
+import {Attribute} from '../../../../models';
+import {Operator} from '../../../../models/Operator';
 import {
   SimpleMultiReferenceEntitiesAttributeCondition,
   SimpleMultiReferenceEntitiesAttributeOperators,
 } from '../../../../models/conditions';
-import { ReferenceEntitySelector } from '../../../../dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector';
-import { Controller } from 'react-hook-form';
-import { useControlledFormInputCondition } from '../../hooks';
-import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
+import {ReferenceEntitySelector} from '../../../../dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector';
+import {Controller} from 'react-hook-form';
+import {useControlledFormInputCondition} from '../../hooks';
+import {useGetAttributeAtMount} from '../actions/attribute/attribute.utils';
 
 type SimpleMultiReferenceEntitiesAttributeConditionLineProps = ConditionLineProps & {
   condition: SimpleMultiReferenceEntitiesAttributeCondition;

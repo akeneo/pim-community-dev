@@ -1,4 +1,4 @@
-import {useLayoutEffect, useState} from "react";
+import {useLayoutEffect, useState} from 'react';
 
 export type ElementsList = {
   [key: string]: HTMLElement;
@@ -6,7 +6,7 @@ export type ElementsList = {
 
 export type SpellcheckLabelsListState = {
   elements: ElementsList;
-}
+};
 
 const uuidV5 = require('uuid/v5');
 
@@ -17,7 +17,7 @@ const useSpellcheckLabelsListState = (renderingId: number): SpellcheckLabelsList
 
   useLayoutEffect(() => {
     const list: ElementsList = {};
-    const nodes =  document.querySelectorAll<HTMLElement>('input[id^="pim_enrich_attribute_form_label_"]');
+    const nodes = document.querySelectorAll<HTMLElement>('input[id^="pim_enrich_attribute_form_label_"]');
 
     nodes.forEach((element, key) => {
       const identifier: string = uuidV5(`element-${key}`, SPELLCHECK_ELEMENTS_UUID_NAMESPACE);
@@ -28,7 +28,7 @@ const useSpellcheckLabelsListState = (renderingId: number): SpellcheckLabelsList
   }, [renderingId]);
 
   return {
-    elements
+    elements,
   };
 };
 

@@ -3,8 +3,8 @@
  * Its difference with the fallback is that it can be have its renderer.
  * Each native condition coming from the PIM has the same fields.
  */
-import { PimConditionLine } from '../../pages/EditRules/components/conditions/PimConditionLine';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
+import {PimConditionLine} from '../../pages/EditRules/components/conditions/PimConditionLine';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
 
 type PimCondition = {
   field: string;
@@ -22,4 +22,4 @@ export const getPimConditionModule: ConditionModuleGuesser = async json => {
   return Promise.resolve(null);
 };
 
-export { PimCondition };
+export {PimCondition};

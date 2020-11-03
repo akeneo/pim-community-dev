@@ -1,16 +1,16 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ActionLineProps } from './ActionLineProps';
-import { ActionTemplate } from './ActionTemplate';
+import {Controller} from 'react-hook-form';
+import {ActionLineProps} from './ActionLineProps';
+import {ActionTemplate} from './ActionTemplate';
 import {
   ActionTitle,
   AknActionFormContainer,
   ActionLeftSide,
   ActionGrid,
 } from './ActionLine';
-import { StatusSelector } from '../../../../components/Selectors/StatusSelector';
-import { useControlledFormInputAction } from '../../hooks';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
+import {StatusSelector} from '../../../../components/Selectors/StatusSelector';
+import {useControlledFormInputAction} from '../../hooks';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
 
 const SetStatusActionLine: React.FC<ActionLineProps> = ({
   handleDelete,
@@ -92,4 +92,4 @@ const SetStatusActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { SetStatusActionLine };
+export {SetStatusActionLine};

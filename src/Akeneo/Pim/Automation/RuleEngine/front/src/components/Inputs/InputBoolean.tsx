@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Label } from '../Labels';
-import { useTranslate } from '../../dependenciesTools/hooks';
+import {Label} from '../Labels';
+import {useTranslate} from '../../dependenciesTools/hooks';
 
 type Props = {
   id?: string;

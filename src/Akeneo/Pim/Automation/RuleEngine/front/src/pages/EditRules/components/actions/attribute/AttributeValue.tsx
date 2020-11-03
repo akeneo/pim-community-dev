@@ -31,9 +31,9 @@ import {
   HelperContainer,
   InlineHelper,
 } from '../../../../../components/HelpersInfos';
-import { ActionFormContainer } from '../style';
-import { parseMeasurementValue } from '../../../../../models/Measurement';
-import { RemoveCurrencyFromPriceCollectionValue } from './RemoveCurrencyFromPriceCollectionValue';
+import {ActionFormContainer} from '../style';
+import {parseMeasurementValue} from '../../../../../models/Measurement';
+import {RemoveCurrencyFromPriceCollectionValue} from './RemoveCurrencyFromPriceCollectionValue';
 
 const MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION: AttributeType[] = [
   AttributeType.TEXT,
@@ -68,7 +68,7 @@ type InputValueProps = {
   id: string;
   attribute: Attribute;
   name: string;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {required?: string; validate?: (value: any) => string | true};
   value: any;
   label?: string;
   onChange: (value: any) => void;
@@ -136,7 +136,7 @@ type Props = {
   id: string;
   attribute?: Attribute | null;
   name: string;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {required?: string; validate?: (value: any) => string | true};
   value?: any;
   label?: string;
   onChange: (value: any) => void;

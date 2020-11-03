@@ -71,4 +71,20 @@ class NonEmptyValueConditionValidatorSpec extends ObjectBehavior
 
         $this->validate($condition, $constraint);
     }
+
+    function it_does_not_add_a_violation_if_the_operator_is_unclassified_and_the_value_is_empty(
+        ExecutionContextInterface $context,
+        NonEmptyValueCondition $constraint
+    ) {
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $condition = new Condition(
+            [
+                'field' => 'categories',
+                'operator' => Operators::UNCLASSIFIED,
+            ]
+        );
+
+        $this->validate($condition, $constraint);
+    }
 }

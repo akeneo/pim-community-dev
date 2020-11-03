@@ -35,10 +35,13 @@ class NonEmptyValueConditionValidator extends ConstraintValidator
 
         $value = $condition->value;
 
-        if (Operators::IS_EMPTY !== $condition->operator &&
-            Operators::IS_NOT_EMPTY !== $condition->operator &&
-            null === $value
-        ) {
+        $operatorsWithEmptyValue = [
+            Operators::IS_EMPTY,
+            Operators::IS_NOT_EMPTY,
+            Operators::UNCLASSIFIED,
+        ];
+
+        if (null === $value && !\in_array($condition->operator, $operatorsWithEmptyValue, true)) {
             $this->context->buildViolation($constraint->message)
                 ->setInvalidValue(null)
                 ->addViolation();

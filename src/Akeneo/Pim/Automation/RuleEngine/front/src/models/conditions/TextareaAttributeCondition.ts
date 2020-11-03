@@ -1,10 +1,10 @@
-import { Router } from '../../dependenciesTools';
-import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
-import { TextareaAttributeConditionLine } from '../../pages/EditRules/components/conditions/TextareaAttributeConditionLine';
-import { Operator } from '../Operator';
-import { ConditionFactory } from './';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { AttributeType } from '../Attribute';
+import {Router} from '../../dependenciesTools';
+import {getAttributeByIdentifier} from '../../repositories/AttributeRepository';
+import {TextareaAttributeConditionLine} from '../../pages/EditRules/components/conditions/TextareaAttributeConditionLine';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {AttributeType} from '../Attribute';
 
 const TYPE = AttributeType.TEXTAREA;
 

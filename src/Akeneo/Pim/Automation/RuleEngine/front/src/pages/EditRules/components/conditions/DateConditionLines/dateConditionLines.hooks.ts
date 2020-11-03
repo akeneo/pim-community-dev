@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 import {
   isAnEmptyOperator,
   isARangeOperator,
@@ -6,7 +6,7 @@ import {
   formatPastFutureDate,
   defaultDateTypeOperatorsValue,
 } from './dateConditionLines.utils';
-import { Operator } from '../../../../../models/Operator';
+import {Operator} from '../../../../../models/Operator';
 import {
   DateTypeOptionIds,
   isDateBetweenValue,
@@ -119,4 +119,4 @@ const useDateConditionHandlers = (
   };
 };
 
-export { useDateConditionHandlers };
+export {useDateConditionHandlers};

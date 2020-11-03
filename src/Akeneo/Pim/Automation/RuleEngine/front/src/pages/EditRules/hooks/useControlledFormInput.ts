@@ -1,10 +1,10 @@
-import { useFormContext } from 'react-hook-form';
+import {useFormContext} from 'react-hook-form';
 import get from 'lodash/get';
-import { LocaleCode, ScopeCode } from '../../../models';
-import { Operator } from '../../../models/Operator';
+import {LocaleCode, ScopeCode} from '../../../models';
+import {Operator} from '../../../models/Operator';
 
 const useControlledFormInputCondition = <T>(lineNumber: number) => {
-  const { watch, getValues, setValue, errors } = useFormContext();
+  const {watch, getValues, setValue, errors} = useFormContext();
   const formName = (name: string) =>
     `content.conditions[${lineNumber}].${name}`;
   const fieldFormName = formName('field');
@@ -72,7 +72,7 @@ const useControlledFormInputCondition = <T>(lineNumber: number) => {
 };
 
 const useControlledFormInputAction = <T>(lineNumber: number) => {
-  const { getValues, setValue, errors } = useFormContext();
+  const {getValues, setValue, errors} = useFormContext();
   const isFormFieldInError = (formName: string): boolean => {
     const actionErrors = errors?.content?.actions?.[lineNumber] || {};
     return typeof get(actionErrors, formName) === 'object';
@@ -124,4 +124,4 @@ const useControlledFormInputAction = <T>(lineNumber: number) => {
   };
 };
 
-export { useControlledFormInputCondition, useControlledFormInputAction };
+export {useControlledFormInputCondition, useControlledFormInputAction};

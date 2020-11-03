@@ -1,18 +1,18 @@
-import React, {ComponentType, FC, useEffect, useState} from "react";
-import {createPortal} from "react-dom";
+import React, {ComponentType, FC, useEffect, useState} from 'react';
+import {createPortal} from 'react-dom';
 
 type PortalProps = {
   rootElement: Element;
   containerId: string;
-}
+};
 
 export const withPortal = <P extends object>(WrappedContainer: ComponentType<P>): FC<P & PortalProps> => {
-  return (props) => {
+  return props => {
     const {rootElement, containerId} = props;
     const [container, setContainer] = useState<HTMLDivElement>();
 
     useEffect(() => {
-      const element = document.createElement("div");
+      const element = document.createElement('div');
       element.id = containerId;
       element.setAttribute('data-testid', containerId);
 
@@ -25,12 +25,8 @@ export const withPortal = <P extends object>(WrappedContainer: ComponentType<P>)
       };
     }, []);
 
-    return (
-      <>
-        {container && createPortal(<WrappedContainer {...props}/>, container)}
-      </>
-    );
-  }
+    return <>{container && createPortal(<WrappedContainer {...props} />, container)}</>;
+  };
 };
 
 export default withPortal;

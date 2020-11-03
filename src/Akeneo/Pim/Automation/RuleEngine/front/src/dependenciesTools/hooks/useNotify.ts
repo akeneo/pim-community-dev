@@ -1,5 +1,5 @@
-import { useApplicationContext } from './useApplicationContext';
-import { Notify } from '../provider/applicationDependenciesProvider.type';
+import {useApplicationContext} from './useApplicationContext';
+import {Notify} from '../provider/applicationDependenciesProvider.type';
 
 enum NotificationLevel {
   INFO = 'info',
@@ -9,7 +9,7 @@ enum NotificationLevel {
 }
 
 const useNotify = (): Notify => {
-  const { notify } = useApplicationContext();
+  const {notify} = useApplicationContext();
   if (notify) {
     return notify;
   }
@@ -18,4 +18,4 @@ const useNotify = (): Notify => {
   );
 };
 
-export { useNotify, NotificationLevel };
+export {useNotify, NotificationLevel};
