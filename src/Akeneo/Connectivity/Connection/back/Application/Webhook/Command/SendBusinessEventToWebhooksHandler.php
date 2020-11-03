@@ -61,9 +61,11 @@ final class SendBusinessEventToWebhooksHandler
         $startTime = microtime(true);
 
         $webhooks = $this->selectActiveWebhooksQuery->execute();
+        $isFake = false;
 
         if (0 === count($webhooks)) {
             $webhooks[] = $this->buildFakeActiveWebhook();
+            $isFake = true;
         }
 
         $businessEvent = $command->businessEvent();
@@ -95,7 +97,11 @@ final class SendBusinessEventToWebhooksHandler
             $this->logger->info($jsonWebhookEventBuildLog);
         }
 
-        $this->client->bulkSend($requests());
+        if ($isFake) {
+            $this->client->bulkFakeSend($requests());
+        } else {
+            $this->client->bulkSend($requests());
+        }
     }
 
     private function handleError(\Throwable $error, ActiveWebhook $webhook, BusinessEventInterface $businessEvent): void
