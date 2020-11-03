@@ -141,7 +141,7 @@ class GuzzleWebhookClient implements WebhookClient
         };
 
         foreach ($guzzleRequests() as $index => $guzzleRequest) {
-            usleep(5000);
+            usleep(500000);
             $webhookRequestLog = $logs[$index];
             $webhookRequestLog->setSuccess(true);
             $webhookRequestLog->setEndTime(microtime(true));
