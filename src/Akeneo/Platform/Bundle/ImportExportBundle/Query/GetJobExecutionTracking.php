@@ -200,7 +200,7 @@ class GetJobExecutionTracking
         $stepExecutionTracking = new StepExecutionTracking();
         $stepExecutionTracking->jobName = $jobName;
         $stepExecutionTracking->stepName = $stepExecution->getStepName();
-        $stepExecutionTracking->status = $stepExecution->getStatus();
+        $stepExecutionTracking->status = (string)$stepExecution->getStatus();
         $stepExecutionTracking->duration = $duration;
         $stepExecutionTracking->hasError = count($stepExecution->getFailureExceptions()) !== 0 || count($stepExecution->getErrors()) !== 0;
         $stepExecutionTracking->hasWarning = count($stepExecution->getWarnings()) !== 0;
