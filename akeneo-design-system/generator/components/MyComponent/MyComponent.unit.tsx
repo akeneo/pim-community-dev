@@ -10,7 +10,7 @@ test('it renders its children properly', () => {
 });
 
 // Those tests should pass directly if you follow the contributing guide.
-// If they fail, maybe you need to customize your implementation forward ref and ...rest props
+// If you add required props to your Component, these tests will fail and you will need to add these required props here as well
 describe('MyComponent supports forwardRef', () => {
   const ref = {current: null};
 
