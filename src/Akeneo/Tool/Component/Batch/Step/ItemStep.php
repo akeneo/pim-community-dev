@@ -51,8 +51,8 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
         $this->reader = $reader;
         $this->processor = $processor;
         $this->writer = $writer;
-        $this->jobStopper = $jobStopper;
         $this->batchSize = $batchSize;
+        $this->jobStopper = $jobStopper;
     }
 
     /**
@@ -128,7 +128,7 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
                 $this->getJobRepository()->updateStepExecution($stepExecution);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
-                if ($this->isStoppable && $this->jobStopper->isStopping($stepExecution)) {
+                if ($this->jobStopper->isStopping($stepExecution)) {
                     $this->jobStopper->stop($stepExecution);
 
                     break;

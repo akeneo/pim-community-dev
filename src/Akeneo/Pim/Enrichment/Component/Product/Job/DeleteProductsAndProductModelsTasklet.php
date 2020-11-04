@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
@@ -10,8 +11,6 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVa
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
-use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -28,7 +27,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
  */
 class DeleteProductsAndProductModelsTasklet implements TaskletInterface
 {
-    protected StepExecution $stepExecution;
+    protected ?StepExecution $stepExecution = null;
     protected BulkRemoverInterface $productRemover;
     protected BulkRemoverInterface $productModelRemover;
     protected ProductQueryBuilderFactoryInterface $pqbFactory;
