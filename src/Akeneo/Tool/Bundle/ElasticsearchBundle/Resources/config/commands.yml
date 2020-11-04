@@ -13,7 +13,6 @@ services:
             - '@Akeneo\Tool\Bundle\ElasticsearchBundle\GetTotalFieldsLimit'
             - '%index_hosts%'
             -
-                - '%env(APP_PRODUCT_PROPOSAL_INDEX_NAME)%'
                 - '%env(APP_PUBLISHED_PRODUCT_INDEX_NAME)%'
                 - '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
         tags:
