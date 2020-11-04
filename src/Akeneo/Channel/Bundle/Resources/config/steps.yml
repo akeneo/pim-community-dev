@@ -10,7 +10,7 @@ services:
             - '@pim_connector.processor.denormalization.locale'
             - '@pim_connector.writer.database.locale'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_locale_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -22,7 +22,7 @@ services:
             - '@pim_connector.processor.normalization.locale'
             - '@pim_connector.writer.file.csv_locale'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_locale_import.import:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -34,7 +34,7 @@ services:
             - '@pim_connector.processor.denormalization.locale'
             - '@pim_connector.writer.database.locale'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_locale_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -46,7 +46,7 @@ services:
             - '@pim_connector.processor.normalization.locale'
             - '@pim_connector.writer.file.xlsx_locale'
             - 10
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     ### Channel
     pim_connector.step.csv_channel_import.import:
@@ -59,7 +59,7 @@ services:
             - '@pim_connector.processor.denormalization.channel'
             - '@pim_connector.writer.database.channel'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_channel_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -71,7 +71,7 @@ services:
             - '@pim_connector.processor.normalization.channel'
             - '@pim_connector.writer.file.csv_channel'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_channel_import.import:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -83,7 +83,7 @@ services:
             - '@pim_connector.processor.denormalization.channel'
             - '@pim_connector.writer.database.channel'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_channel_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -95,7 +95,7 @@ services:
             - '@pim_connector.processor.normalization.channel'
             - '@pim_connector.writer.file.xlsx_channel'
             - 10
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     ### Currency
     pim_connector.step.csv_currency_import.import:
@@ -108,7 +108,7 @@ services:
             - '@pim_connector.processor.denormalization.currency'
             - '@pim_connector.writer.database.currency'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_currency_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -120,7 +120,7 @@ services:
             - '@pim_connector.processor.normalization.currency'
             - '@pim_connector.writer.file.csv_currency'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_currency_import.import:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -132,7 +132,7 @@ services:
             - '@pim_connector.processor.denormalization.currency'
             - '@pim_connector.writer.database.currency'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_currency_export.export:
         class: 'Akeneo\Tool\Component\Batch\Step\ItemStep'
@@ -144,4 +144,4 @@ services:
             - '@pim_connector.processor.normalization.currency'
             - '@pim_connector.writer.file.xlsx_currency'
             - 10
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'

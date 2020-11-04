@@ -14,9 +14,9 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
-use Akeneo\Tool\Component\Batch\Query\SqlGetJobExecutionStatus;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -28,23 +28,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ItemStep extends AbstractStep implements StoppableStepInterface
 {
-    /** @var ItemReaderInterface */
-    protected $reader = null;
-
-    /** @var ItemProcessorInterface */
-    protected $processor = null;
-
-    /** @var ItemWriterInterface */
-    protected $writer = null;
-
-    /** @var int */
-    protected $batchSize;
-
-    /** @var StepExecution */
-    protected $stepExecution = null;
-
-    /** @var bool */
-    private $stoppable = false;
+    protected ?ItemReaderInterface $reader = null;
+    protected ?ItemProcessorInterface $processor = null;
+    protected ?ItemWriterInterface $writer = null;
+    protected int $batchSize;
+    protected ?StepExecution $stepExecution = null;
+    private bool $stoppable = false;
+    private ?JobStopper $jobStopper = null;
 
     public function __construct(
         string $name,
@@ -54,14 +44,14 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
         int $batchSize = 100,
-        SqlGetJobExecutionStatus $sqlGetJobExecutionStatus = null
+        JobStopper $jobStopper = null
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
 
         $this->reader = $reader;
         $this->processor = $processor;
         $this->writer = $writer;
-        $this->sqlGetJobExecutionStatus = $sqlGetJobExecutionStatus;
+        $this->jobStopper = $jobStopper;
         $this->batchSize = $batchSize;
     }
 
@@ -138,8 +128,8 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
                 $this->getJobRepository()->updateStepExecution($stepExecution);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
-                if ($this->isStopping($stepExecution)) {
-                    $this->stop($stepExecution);
+                if ($this->isStoppable && $this->jobStopper->isStopping($stepExecution)) {
+                    $this->jobStopper->stop($stepExecution);
 
                     break;
                 }
@@ -154,8 +144,8 @@ class ItemStep extends AbstractStep implements StoppableStepInterface
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
         }
 
-        if ($this->isStopping($stepExecution)) {
-            $this->stop($stepExecution);
+        if ($this->jobStopper->isStopping($stepExecution)) {
+            $this->jobStopper->stop($stepExecution);
         }
 
         $this->flushStepElements();

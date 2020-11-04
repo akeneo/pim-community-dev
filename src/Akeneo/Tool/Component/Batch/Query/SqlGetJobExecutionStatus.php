@@ -7,7 +7,7 @@ namespace Akeneo\Tool\Component\Batch\Query;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
 
-class SqlGetJobExecutionStatus
+class SqlGetJobExecutionStatus implements GetJobExecutionStatusInterface
 {
     private Connection $connection;
 

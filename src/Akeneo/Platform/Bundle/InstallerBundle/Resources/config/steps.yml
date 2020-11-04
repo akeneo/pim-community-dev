@@ -10,7 +10,7 @@ services:
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_installer.step.fixtures_channel_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -22,7 +22,7 @@ services:
             - '@pim_connector.processor.denormalization.channel'
             - '@pim_connector.writer.database.channel'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_installer.step.fixtures_locale_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -34,7 +34,7 @@ services:
             - '@pim_connector.processor.denormalization.locale'
             - '@pim_connector.writer.database.locale'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_installer.step.fixtures_currency_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -46,7 +46,7 @@ services:
             - '@pim_connector.processor.denormalization.currency'
             - '@pim_connector.writer.database.currency'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_installer.step.fixtures_group_type_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -58,7 +58,7 @@ services:
             - '@pim_connector.processor.denormalization.group_type'
             - '@pim_connector.writer.database.group_type'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_installer.step.fixtures_user_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -70,7 +70,7 @@ services:
             - '@pim_connector.processor.denormalization.user'
             - '@pim_connector.writer.database.user'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_installer.step.fixtures_user_role_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -82,7 +82,7 @@ services:
             - '@pim_connector.processor.denormalization.user_role'
             - '@pim_connector.writer.database.user_role'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_installer.step.fixtures_user_group_csv.import:
         class: '%pim_connector.step.item_step.class%'
@@ -94,7 +94,7 @@ services:
             - '@pim_connector.processor.denormalization.user_group'
             - '@pim_connector.writer.database.user_group'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
 
     pim_installer.step.fixtures_job_yml.import:
        class: '%pim_connector.step.item_step.class%'
@@ -106,4 +106,4 @@ services:
             - '@pim_connector.processor.denormalization.job_instance'
             - '@pim_connector.writer.database.job_instance'
             - 100
-            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_batch.job.job_stopper'
