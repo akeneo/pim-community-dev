@@ -50,6 +50,7 @@
 - PIM-9532: Fix the family selection in mass action when a filter on label is set
 - PIM-9535: Fix export with condition on localisable attribute does not work if selected locale is not changed
 - PIM-9542: Fix product creation if the family has a numeric code
+- PIM-9498: Add translation for 'Mass delete products' job
 - PIM-9538: Fix sorting on rule engine list page
 
 ## New features
