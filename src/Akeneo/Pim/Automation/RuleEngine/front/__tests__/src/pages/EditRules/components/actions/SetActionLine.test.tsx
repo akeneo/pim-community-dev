@@ -6,14 +6,14 @@ import {
   renderWithProviders,
   screen,
 } from '../../../../../../test-utils';
-import { SetActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetActionLine';
+import {SetActionLine} from '../../../../../../src/pages/EditRules/components/actions/SetActionLine';
 import {
   attributeSelect2Response,
   createAttribute,
   locales,
   scopes,
 } from '../../../../factories';
-import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
+import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
 import userEvent from '@testing-library/user-event';
 
 describe('SetActionLine', () => {
@@ -38,11 +38,11 @@ describe('SetActionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.actions[0].type', type: 'custom' },
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].locale', type: 'custom' },
-      { name: 'content.actions[0].scope', type: 'custom' },
-      { name: 'content.actions[0].value', type: 'custom' },
+      {name: 'content.actions[0].type', type: 'custom'},
+      {name: 'content.actions[0].field', type: 'custom'},
+      {name: 'content.actions[0].locale', type: 'custom'},
+      {name: 'content.actions[0].scope', type: 'custom'},
+      {name: 'content.actions[0].value', type: 'custom'},
     ];
 
     fetchMock.mockResponse((request: Request) => {
@@ -67,8 +67,8 @@ describe('SetActionLine', () => {
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText(
@@ -129,7 +129,7 @@ describe('SetActionLine', () => {
               type: 'pim_catalog_simpleselect',
               localizable: true,
               scopable: true,
-              labels: { en_US: 'The brand', fr_FR: 'La marque' },
+              labels: {en_US: 'The brand', fr_FR: 'La marque'},
               code: 'brand',
             })
           )
@@ -159,11 +159,11 @@ describe('SetActionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.actions[0].type', type: 'custom' },
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].locale', type: 'custom' },
-      { name: 'content.actions[0].scope', type: 'custom' },
-      { name: 'content.actions[0].value', type: 'custom' },
+      {name: 'content.actions[0].type', type: 'custom'},
+      {name: 'content.actions[0].field', type: 'custom'},
+      {name: 'content.actions[0].locale', type: 'custom'},
+      {name: 'content.actions[0].scope', type: 'custom'},
+      {name: 'content.actions[0].value', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -174,8 +174,8 @@ describe('SetActionLine', () => {
         currentCatalogLocale={'fr_FR'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByTestId('edit-rules-action-0-value')).toHaveValue(
@@ -191,7 +191,7 @@ describe('SetActionLine', () => {
         (await screen.findByTestId('edit-rules-action-0-field')).children.length
       ).toBeGreaterThan(1);
       fireEvent.change(await screen.findByTestId('edit-rules-action-0-field'), {
-        target: { value: 'brand' },
+        target: {value: 'brand'},
       });
     });
     expect(await screen.findByTestId('edit-rules-action-0-value')).toHaveValue(

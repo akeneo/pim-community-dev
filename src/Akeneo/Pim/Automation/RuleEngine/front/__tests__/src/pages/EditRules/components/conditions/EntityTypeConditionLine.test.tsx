@@ -1,8 +1,8 @@
 import React from 'react';
-import { renderWithProviders, screen } from '../../../../../../test-utils';
-import { Operator } from '../../../../../../src/models/Operator';
-import { EntityType } from '../../../../../../src/models/conditions';
-import { EntityTypeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/EntityTypeConditionLine';
+import {renderWithProviders, screen} from '../../../../../../test-utils';
+import {Operator} from '../../../../../../src/models/Operator';
+import {EntityType} from '../../../../../../src/models/conditions';
+import {EntityTypeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/EntityTypeConditionLine';
 
 describe('EntityTypeConditionLine', () => {
   it('should display the entity_type condition line', () => {
@@ -20,9 +20,9 @@ describe('EntityTypeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -32,8 +32,8 @@ describe('EntityTypeConditionLine', () => {
         scopes={{}}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       screen.getByText('pimee_catalog_rule.form.edit.fields.entity_type.label')

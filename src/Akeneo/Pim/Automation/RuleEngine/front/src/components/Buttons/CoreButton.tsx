@@ -1,4 +1,4 @@
-import React, { ReactNode, Ref } from 'react';
+import React, {ReactNode, Ref} from 'react';
 import styled from 'styled-components';
 
 type sizeMode = 'small' | 'large';
@@ -11,20 +11,20 @@ type CoreButtonProps = {
   sizeMode?: sizeMode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const getHeight = ({ sizeMode }: CoreButtonProps): string => {
+const getHeight = ({sizeMode}: CoreButtonProps): string => {
   if (sizeMode === 'small') {
     return '24px';
   }
   return '32px';
 };
-const getLineHeight = ({ sizeMode }: CoreButtonProps): string => {
+const getLineHeight = ({sizeMode}: CoreButtonProps): string => {
   if (sizeMode === 'small') {
     return '22px';
   }
   return '30px';
 };
 
-const getPadding = ({ sizeMode }: CoreButtonProps): string => {
+const getPadding = ({sizeMode}: CoreButtonProps): string => {
   if (sizeMode === 'small') {
     return '0 10px';
   }
@@ -34,7 +34,7 @@ const getPadding = ({ sizeMode }: CoreButtonProps): string => {
 const BasicButton = styled.button<CoreButtonProps>`
   border-radius: 16px;
   cursor: pointer;
-  font-size: ${({ theme }): string => theme.fontSize.default};
+  font-size: ${({theme}): string => theme.fontSize.default};
   font-weight: 400;
   height: ${getHeight};
   line-height: ${getLineHeight};
@@ -47,7 +47,7 @@ const BasicButton = styled.button<CoreButtonProps>`
     cursor: not-allowed;
   }
   &:focus {
-    border-color: ${({ theme }): string => theme.color.blue100};
+    border-color: ${({theme}): string => theme.color.blue100};
   }
 `;
 
@@ -93,4 +93,4 @@ const CoreButton = React.forwardRef<HTMLButtonElement, CoreButtonProps>(
   }
 );
 
-export { CoreButton };
+export {CoreButton};

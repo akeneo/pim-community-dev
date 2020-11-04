@@ -22,4 +22,4 @@ const InputErrorMsg: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   );
 };
 
-export { InputErrorMsg };
+export {InputErrorMsg};

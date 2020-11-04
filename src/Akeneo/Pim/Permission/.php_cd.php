@@ -17,6 +17,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Pim\Permission\Component',
         'Symfony\Bundle\FrameworkBundle\Templating\EngineInterface',
+        'Webmozart\Assert\Assert',
         // it implements a CE query differently for permissions
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory',

@@ -7,8 +7,7 @@ export interface OverrideTabTitlesInterface {
   override(attributeCode: string): Promise<any>;
 }
 
-export default class OverrideTabTitles implements OverrideTabTitlesInterface
-{
+export default class OverrideTabTitles implements OverrideTabTitlesInterface {
   private readonly root: any;
 
   public constructor(root: any) {
@@ -16,10 +15,7 @@ export default class OverrideTabTitles implements OverrideTabTitlesInterface
   }
 
   public override(attributeCode: string): Promise<any> {
-    const tabsTitle = [
-      this.overrideLabelsTabTitle(attributeCode),
-      this.overrideLabelOptionsTabTitle(attributeCode),
-    ];
+    const tabsTitle = [this.overrideLabelsTabTitle(attributeCode), this.overrideLabelOptionsTabTitle(attributeCode)];
 
     return Promise.all(tabsTitle);
   }
@@ -29,7 +25,7 @@ export default class OverrideTabTitles implements OverrideTabTitlesInterface
       'pim-attribute-edit-form-labels-tab',
       translate('pim_common.label_translations'),
       Router.generate('akeneo_data_quality_insights_get_attribute_labels_error_count', {
-        attributeCode: attributeCode
+        attributeCode: attributeCode,
       })
     );
   }
@@ -39,7 +35,7 @@ export default class OverrideTabTitles implements OverrideTabTitlesInterface
       'pim-attribute-edit-form-choices',
       translate('pim_enrich.entity.attribute_option.short_uppercase_label'),
       Router.generate('akeneo_data_quality_insights_get_attribute_options_labels_error_count', {
-        attributeCode: attributeCode
+        attributeCode: attributeCode,
       })
     );
   }
@@ -71,7 +67,7 @@ export default class OverrideTabTitles implements OverrideTabTitlesInterface
 
     tabModule.trigger('tab:register', {
       code: tabModule.code,
-      label: errorCount > 0 ? `${title} ${errorCountLabel}` : title
+      label: errorCount > 0 ? `${title} ${errorCountLabel}` : title,
     });
   }
 }

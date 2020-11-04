@@ -5,7 +5,7 @@ export enum HighlightableElementType {
   RICHTEXT = 'richtext',
 }
 
-export const getElementType = (element: HTMLElement|null) => {
+export const getElementType = (element: HTMLElement | null) => {
   if (element === null) {
     return HighlightableElementType.UNKNOWN;
   }
@@ -18,9 +18,9 @@ export const getElementType = (element: HTMLElement|null) => {
     return HighlightableElementType.TEXT;
   }
 
-  if (element.tagName === "DIV" && element.getAttribute('contenteditable') === 'true') {
+  if (element.tagName === 'DIV' && element.getAttribute('contenteditable') === 'true') {
     return HighlightableElementType.RICHTEXT;
   }
 
   return HighlightableElementType.UNKNOWN;
-}
+};

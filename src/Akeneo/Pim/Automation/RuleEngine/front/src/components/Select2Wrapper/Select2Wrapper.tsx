@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { Label } from '../Labels';
+import React, {useEffect, useRef} from 'react';
+import {Label} from '../Labels';
 
 type Select2Option = {
   id: number | string | null;
@@ -32,7 +32,7 @@ type Select2Ajax = {
   ) => {
     search: string;
     options?: any;
-  } & { [key: string]: any };
+  } & {[key: string]: any};
   results: (
     values: any
   ) => {
@@ -54,7 +54,7 @@ type Select2GlobalProps = {
   onSelecting?: (event: any) => void;
   placeholder?: string;
   initSelection?: (
-    element: { val: any },
+    element: {val: any},
     callback: InitSelectionCallback
   ) => void;
   formatResult?: (item: Select2Option | Select2OptionGroup) => string;

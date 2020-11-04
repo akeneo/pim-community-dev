@@ -4,10 +4,10 @@ import {
   useUserCatalogLocale,
   useUserCatalogScope,
 } from '../../../../../dependenciesTools/hooks';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
-import { Label } from '../../../../../components/Labels';
-import { ReferenceEntitySelector } from '../../../../../dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
+import {Label} from '../../../../../components/Labels';
+import {ReferenceEntitySelector} from '../../../../../dependenciesTools/components/ReferenceEntity/ReferenceEntitySelector';
 
 export const parseMultiReferenceEntityValue = (value: any) => {
   if (value === '') {
@@ -49,4 +49,4 @@ const MultiReferenceEntityValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { MultiReferenceEntityValue };
+export {MultiReferenceEntityValue};

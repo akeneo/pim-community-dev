@@ -13,4 +13,4 @@ const TextBoxBlue = styled.div`
   text-transform: uppercase;
 `;
 
-export { TextBoxBlue };
+export {TextBoxBlue};

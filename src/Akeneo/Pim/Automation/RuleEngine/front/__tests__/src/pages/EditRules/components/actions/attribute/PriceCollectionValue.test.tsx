@@ -6,14 +6,14 @@ import {
   screen,
 } from '../../../../../../../test-utils';
 import userEvent from '@testing-library/user-event';
-import { createAttribute, createScope } from '../../../../../factories';
-import { AttributeType } from '../../../../../../../src/models';
-import { PriceCollectionValue } from '../../../../../../../src/pages/EditRules/components/actions/attribute/PriceCollectionValue';
-import { IndexedCurrencies } from '../../../../../../../src/repositories/CurrencyRepository';
+import {createAttribute, createScope} from '../../../../../factories';
+import {AttributeType} from '../../../../../../../src/models';
+import {PriceCollectionValue} from '../../../../../../../src/pages/EditRules/components/actions/attribute/PriceCollectionValue';
+import {IndexedCurrencies} from '../../../../../../../src/repositories/CurrencyRepository';
 
 const currencies: IndexedCurrencies = {
-  EUR: { code: 'EUR' },
-  USD: { code: 'USD' },
+  EUR: {code: 'EUR'},
+  USD: {code: 'USD'},
 };
 
 const scope = createScope({
@@ -46,7 +46,7 @@ describe('PriceCollectionValue', () => {
         attribute={priceAttribute}
         onChange={jest.fn()}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(await screen.findByText('Name')).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe('PriceCollectionValue', () => {
         onChange={jest.fn()}
         scopeCode={'ecommerce'}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(
@@ -104,19 +104,19 @@ describe('PriceCollectionValue', () => {
       <PriceCollectionValue
         id={'attribute-value-id'}
         name={'attribute-value-name'}
-        value={[{ amount: 69, currency: 'EUR' }]}
+        value={[{amount: 69, currency: 'EUR'}]}
         attribute={priceAttribute}
         onChange={onChange}
       />,
-      { all: true }
+      {all: true}
     );
 
     await act(async () => {
       userEvent.type(await screen.findByTestId('attribute-value-id-USD'), '42');
     });
     expect(onChange).toHaveBeenLastCalledWith([
-      { amount: 69, currency: 'EUR' },
-      { amount: 42, currency: 'USD' },
+      {amount: 69, currency: 'EUR'},
+      {amount: 42, currency: 'USD'},
     ]);
   });
 
@@ -134,11 +134,11 @@ describe('PriceCollectionValue', () => {
       <PriceCollectionValue
         id={'attribute-value-id'}
         name={'attribute-value-name'}
-        value={[{ amount: 69, currency: 'EUR' }]}
+        value={[{amount: 69, currency: 'EUR'}]}
         attribute={priceAttribute}
         onChange={onChange}
       />,
-      { all: true }
+      {all: true}
     );
 
     await act(async () => {

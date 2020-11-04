@@ -1,11 +1,11 @@
 import React from 'react';
-import { Operator } from '../../../../../models/actions/Calculate/Operation';
+import {Operator} from '../../../../../models/actions/Calculate/Operation';
 import {
   Select2SimpleSyncWrapper,
   Select2Value,
 } from '../../../../../components/Select2Wrapper';
-import { Translate } from '../../../../../dependenciesTools';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
+import {Translate} from '../../../../../dependenciesTools';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
 
 const buildData = (translate: Translate) =>
   Object.values(Operator).map((operator: string) => {
@@ -56,4 +56,4 @@ const CalculateOperatorSelector: React.FC<Props> = ({
   );
 };
 
-export { CalculateOperatorSelector };
+export {CalculateOperatorSelector};

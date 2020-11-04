@@ -1,6 +1,6 @@
-import EditorElement from "./EditorElement";
-import MistakeElement from "./MistakeElement";
-import {HTML_BLOCK_LEVEL_ELEMENTS_LIST, HTML_BREAKING_LINE_ELEMENTS_LIST} from "../../constant";
+import EditorElement from './EditorElement';
+import MistakeElement from './MistakeElement';
+import {HTML_BLOCK_LEVEL_ELEMENTS_LIST, HTML_BREAKING_LINE_ELEMENTS_LIST} from '../../constant';
 
 export default interface HighlightElement {
   id: string;
@@ -16,18 +16,14 @@ export interface HighlightsCollection {
 
 export const createHighlight = (id: string, mistake: MistakeElement, element: EditorElement) => {
   const mistakeClass = `AknEditorHighlight-mark--${mistake.type}`;
-  const range = getTextRange(
-    element,
-    mistake.globalOffset,
-    mistake.globalOffset + mistake.text.length
-  );
+  const range = getTextRange(element, mistake.globalOffset, mistake.globalOffset + mistake.text.length);
 
   return {
     id,
     classList: [mistakeClass],
     domRange: range,
     mistake,
-    isActive: false
+    isActive: false,
   };
 };
 
@@ -53,10 +49,7 @@ export const getTextRange = (el: EditorElement, start: number, end: number) => {
     if (
       !foundStart &&
       start >= charCount &&
-      (
-        start < endCharCount ||
-        (start === charCount && index <= (textNodes.length - 1))
-      )
+      (start < endCharCount || (start === charCount && index <= textNodes.length - 1))
     ) {
       range.setStart(textNode, start - charCount);
       foundStart = true;
@@ -80,10 +73,7 @@ export const getTextNodesIn = (node: Node): Text[] => {
 
   let nodes: Text[] = [];
   Array.from(node.childNodes).forEach((n: Node) => {
-    nodes = [
-      ...nodes,
-      ...getTextNodesIn(n),
-    ];
+    nodes = [...nodes, ...getTextNodesIn(n)];
   });
 
   if (
@@ -92,10 +82,7 @@ export const getTextNodesIn = (node: Node): Text[] => {
   ) {
     const breakingLineNode: Text = document.createTextNode('\n');
 
-    nodes = [
-      ...nodes,
-      breakingLineNode
-    ];
+    nodes = [...nodes, breakingLineNode];
   }
 
   return nodes;
@@ -108,9 +95,9 @@ export const isIntersectingHighlight = (x: number, y: number, highlight: Highlig
   const rect: DOMRect = highlight.domRange.getBoundingClientRect();
 
   return (
-    x >= (rect.left - HIGHLIGHT_INTERSECTING_MARGIN) &&
-    x <= (rect.right + HIGHLIGHT_INTERSECTING_MARGIN) &&
-    y >= (rect.top - HIGHLIGHT_INTERSECTING_MARGIN) &&
-    y <= (rect.bottom + HIGHLIGHT_INTERSECTING_MARGIN)
+    x >= rect.left - HIGHLIGHT_INTERSECTING_MARGIN &&
+    x <= rect.right + HIGHLIGHT_INTERSECTING_MARGIN &&
+    y >= rect.top - HIGHLIGHT_INTERSECTING_MARGIN &&
+    y <= rect.bottom + HIGHLIGHT_INTERSECTING_MARGIN
   );
 };

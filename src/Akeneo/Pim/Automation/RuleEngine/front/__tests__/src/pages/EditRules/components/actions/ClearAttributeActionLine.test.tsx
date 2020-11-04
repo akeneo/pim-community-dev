@@ -6,8 +6,8 @@ import {
 } from '../../../../../../test-utils';
 import React from 'react';
 import 'jest-fetch-mock';
-import { ClearAttributeActionLine } from '../../../../../../src/pages/EditRules/components/actions/ClearAttributeActionLine';
-import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
+import {ClearAttributeActionLine} from '../../../../../../src/pages/EditRules/components/actions/ClearAttributeActionLine';
+import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
 import userEvent from '@testing-library/user-event';
 import {
   attributeSelect2Response,
@@ -27,9 +27,7 @@ describe('ClearAttributeActionLine', () => {
       // attribute values
       if (request.url.includes('pim_enrich_attribute_rest_get')) {
         return Promise.resolve(
-          JSON.stringify(
-            createAttribute({ scopable: false, localizable: false })
-          )
+          JSON.stringify(createAttribute({scopable: false, localizable: false}))
         );
       }
 
@@ -49,8 +47,8 @@ describe('ClearAttributeActionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.actions[1].type', type: 'custom' },
-      { name: 'content.actions[1].field', type: 'custom' },
+      {name: 'content.actions[1].type', type: 'custom'},
+      {name: 'content.actions[1].field', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -61,8 +59,8 @@ describe('ClearAttributeActionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(
@@ -109,8 +107,8 @@ describe('ClearAttributeActionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.actions[1].type', type: 'custom' },
-      { name: 'content.actions[1].field', type: 'custom' },
+      {name: 'content.actions[1].type', type: 'custom'},
+      {name: 'content.actions[1].field', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -121,8 +119,8 @@ describe('ClearAttributeActionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText(
@@ -197,8 +195,8 @@ describe('ClearAttributeActionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.actions[1].type', type: 'custom' },
-      { name: 'content.actions[1].field', type: 'custom' },
+      {name: 'content.actions[1].type', type: 'custom'},
+      {name: 'content.actions[1].field', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -209,8 +207,8 @@ describe('ClearAttributeActionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     const attributeSelector = await screen.findByTestId(
@@ -235,7 +233,7 @@ describe('ClearAttributeActionLine', () => {
         screen.getByTestId('edit-rules-action-1-field').children.length
       ).toBeGreaterThan(1);
       fireEvent.change(await screen.findByTestId('edit-rules-action-1-field'), {
-        target: { value: 'description' },
+        target: {value: 'description'},
       });
     });
 
@@ -256,7 +254,7 @@ describe('ClearAttributeActionLine', () => {
         screen.getByTestId('edit-rules-action-1-field').children.length
       ).toBeGreaterThan(1);
       fireEvent.change(await screen.findByTestId('edit-rules-action-1-field'), {
-        target: { value: 'name' },
+        target: {value: 'name'},
       });
     });
 

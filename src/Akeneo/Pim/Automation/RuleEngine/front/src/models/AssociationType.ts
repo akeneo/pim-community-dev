@@ -4,7 +4,7 @@ export type AssociationType = {
   code: AssociationTypeCode;
   is_quantified: boolean;
   is_two_way: boolean;
-  labels: { [key: string]: string };
+  labels: {[key: string]: string};
   meta: {
     id: number;
   } & {

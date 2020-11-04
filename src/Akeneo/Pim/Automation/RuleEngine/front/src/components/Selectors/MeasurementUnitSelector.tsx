@@ -16,10 +16,10 @@ import {
   MeasurementUnitCode,
   MeasurementUnit,
 } from '../../models';
-import { getMeasurementFamilyByCode } from '../../repositories/MeasurementFamilyRepository';
-import { AkeneoSpinner } from '../AkeneoSpinner';
-import { HelperContainer, InlineHelper } from '../HelpersInfos/InlineHelper';
-import { Router, Translate } from '../../dependenciesTools';
+import {getMeasurementFamilyByCode} from '../../repositories/MeasurementFamilyRepository';
+import {AkeneoSpinner} from '../AkeneoSpinner';
+import {HelperContainer, InlineHelper} from '../HelpersInfos/InlineHelper';
+import {Router, Translate} from '../../dependenciesTools';
 
 const getUnitLabel = (
   measurementFamily: MeasurementFamily,
@@ -79,7 +79,7 @@ const getMeasurementUnitValidator = (
     return true;
   };
 
-  return { validate };
+  return {validate};
 };
 
 type Props = {
@@ -181,4 +181,4 @@ const MeasurementUnitSelector: React.FC<Props> = ({
   );
 };
 
-export { MeasurementUnitSelector, getMeasurementUnitValidator };
+export {MeasurementUnitSelector, getMeasurementUnitValidator};

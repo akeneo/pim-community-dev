@@ -6,15 +6,15 @@ import {
   renderWithProviders,
   screen,
 } from '../../../../../../../test-utils';
-import { createAttribute, createScope } from '../../../../../factories';
-import { AttributeType } from '../../../../../../../src/models';
-import { IndexedCurrencies } from '../../../../../../../src/repositories/CurrencyRepository';
-import { RemoveCurrencyFromPriceCollectionValue } from '../../../../../../../src/pages/EditRules/components/actions/attribute/RemoveCurrencyFromPriceCollectionValue';
+import {createAttribute, createScope} from '../../../../../factories';
+import {AttributeType} from '../../../../../../../src/models';
+import {IndexedCurrencies} from '../../../../../../../src/repositories/CurrencyRepository';
+import {RemoveCurrencyFromPriceCollectionValue} from '../../../../../../../src/pages/EditRules/components/actions/attribute/RemoveCurrencyFromPriceCollectionValue';
 
 const currencies: IndexedCurrencies = {
-  EUR: { code: 'EUR' },
-  JPY: { code: 'JPY' },
-  USD: { code: 'USD' },
+  EUR: {code: 'EUR'},
+  JPY: {code: 'JPY'},
+  USD: {code: 'USD'},
 };
 
 const createPriceAttribute = (scopable = false) =>
@@ -45,13 +45,13 @@ describe('RemoveCurrencyFromPriceCollectionValue', () => {
         id={'attribute-value-id'}
         name={'attribute-value-name'}
         value={[
-          { amount: 0, currency: 'JPY' },
-          { amount: 10, currency: 'USD' },
+          {amount: 0, currency: 'JPY'},
+          {amount: 10, currency: 'USD'},
         ]}
         attribute={createPriceAttribute()}
         onChange={onChange}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(
@@ -66,9 +66,9 @@ describe('RemoveCurrencyFromPriceCollectionValue', () => {
     act(() => {
       userEvent.selectOptions(currencyInput, ['EUR']);
       expect(onChange).toHaveBeenLastCalledWith([
-        { amount: 0, currency: 'EUR' },
-        { amount: 0, currency: 'JPY' },
-        { amount: 0, currency: 'USD' },
+        {amount: 0, currency: 'EUR'},
+        {amount: 0, currency: 'JPY'},
+        {amount: 0, currency: 'USD'},
       ]);
     });
   });
@@ -100,7 +100,7 @@ describe('RemoveCurrencyFromPriceCollectionValue', () => {
         onChange={onChange}
         scopeCode={'ecommerce'}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(
@@ -117,6 +117,6 @@ describe('RemoveCurrencyFromPriceCollectionValue', () => {
       userEvent.selectOptions(currencyInput, ['EUR']);
     });
 
-    expect(onChange).toHaveBeenLastCalledWith([{ amount: 0, currency: 'EUR' }]);
+    expect(onChange).toHaveBeenLastCalledWith([{amount: 0, currency: 'EUR'}]);
   });
 });

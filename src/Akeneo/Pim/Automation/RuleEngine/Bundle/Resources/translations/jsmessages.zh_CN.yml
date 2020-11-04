@@ -289,7 +289,6 @@ pimee_catalog_rule:
         date_to: 选择结束日期
         date_past: 过去的日期
         date_future: 未来的日期
-        date_present: 今天
       day: "]-Inf, 1] 天|]1, +Inf[ 天"
       week: "]-Inf, 1] 周|]1, +Inf[ 周"
       month: "]-Inf, 1] 月|]1, +Inf[ 月"

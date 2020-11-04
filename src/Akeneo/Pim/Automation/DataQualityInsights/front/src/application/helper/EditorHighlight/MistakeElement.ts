@@ -1,4 +1,3 @@
-
 export default interface MistakeElement {
   text: string;
   type: string;

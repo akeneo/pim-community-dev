@@ -14,6 +14,6 @@ const getQualityBadgeLevel = (label: string): Level => {
   }
 
   return 'tertiary';
-}
+};
 
 export {getQualityBadgeLevel};

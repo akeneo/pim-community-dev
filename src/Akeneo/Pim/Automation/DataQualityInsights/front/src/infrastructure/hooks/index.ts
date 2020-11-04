@@ -12,14 +12,14 @@ import {usePageContext} from "@akeneo-pim-community/data-quality-insights/src/in
 import useProductEvaluation
   from "@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useProductEvaluation";
 
-import useGetWidgetsList from "./EditorHighlight/useGetWidgetsList";
-import useGetEditorBoundingRect from "./EditorHighlight/useGetEditorBoundingRect";
-import useGetEditorScroll from "./EditorHighlight/useGetEditorScroll";
-import useGetHighlights from "./EditorHighlight/useGetHighlights";
-import useFetchTextAnalysis from "./EditorHighlight/Spellcheck/useFetchTextAnalysis";
-import useGetPopover from "./EditorHighlight/useGetPopover";
-import useGetWidget from "./EditorHighlight/useGetWidget";
-import useFetchIgnoreTextIssue from "./EditorHighlight/Spellcheck/useFetchIgnoreTextIssue";
+import useGetWidgetsList from './EditorHighlight/useGetWidgetsList';
+import useGetEditorBoundingRect from './EditorHighlight/useGetEditorBoundingRect';
+import useGetEditorScroll from './EditorHighlight/useGetEditorScroll';
+import useGetHighlights from './EditorHighlight/useGetHighlights';
+import useFetchTextAnalysis from './EditorHighlight/Spellcheck/useFetchTextAnalysis';
+import useGetPopover from './EditorHighlight/useGetPopover';
+import useGetWidget from './EditorHighlight/useGetWidget';
+import useFetchIgnoreTextIssue from './EditorHighlight/Spellcheck/useFetchIgnoreTextIssue';
 
 export {
   useFetchProductDataQualityEvaluation,
@@ -37,4 +37,4 @@ export {
   useGetWidget as useGetSpellcheckWidget,
   useFetchIgnoreTextIssue,
   useProductEvaluation,
-}
+};

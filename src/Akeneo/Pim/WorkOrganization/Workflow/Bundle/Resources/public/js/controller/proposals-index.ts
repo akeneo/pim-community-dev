@@ -24,20 +24,18 @@ class ProposalIndexController extends BaseController {
    * {@inheritdoc}
    */
   public renderForm(): any {
-    return FormBuilder.build('pim-proposal-index')
-      .then((form: any) => {
-        form.setElement(this.$el).render();
+    return FormBuilder.build('pim-proposal-index').then((form: any) => {
+      form.setElement(this.$el).render();
 
-        this.filterForm = FormBuilder.build('pim-proposal-index-grid-filters')
-          .then((filterForm: any) => {
-            filterForm.render();
-            filterForm.$el.insertAfter($('.AknColumn-innerTop[data-drop-zone=navigation] .AknColumn-block'));
+      this.filterForm = FormBuilder.build('pim-proposal-index-grid-filters').then((filterForm: any) => {
+        filterForm.render();
+        filterForm.$el.insertAfter($('.AknColumn-innerTop[data-drop-zone=navigation] .AknColumn-block'));
 
-            return filterForm;
-          });
-
-        return form;
+        return filterForm;
       });
+
+      return form;
+    });
   }
 
   /**

@@ -3,7 +3,7 @@
 namespace AkeneoEnterprise\Test\Acceptance\Permission\InMemory;
 
 use Akeneo\Pim\Permission\Component\Query\ProductModelCategoryAccessQueryInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 class InMemoryProductModelCategoryAccessQuery implements ProductModelCategoryAccessQueryInterface
 {

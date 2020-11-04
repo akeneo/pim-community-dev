@@ -1,7 +1,7 @@
 import React from 'react';
-import { useUserCatalogLocale } from '../../../../../dependenciesTools/hooks';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
+import {useUserCatalogLocale} from '../../../../../dependenciesTools/hooks';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
 import {
   InputTextArea,
   InputWysiwygTextArea,
@@ -33,4 +33,4 @@ const TextAreaValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { TextAreaValue };
+export {TextAreaValue};

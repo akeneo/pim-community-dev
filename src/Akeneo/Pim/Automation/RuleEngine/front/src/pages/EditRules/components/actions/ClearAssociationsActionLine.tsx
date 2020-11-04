@@ -1,16 +1,16 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ActionTemplate } from './ActionTemplate';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { ActionLineProps } from './ActionLineProps';
-import { useControlledFormInputAction } from '../../hooks';
+import {Controller} from 'react-hook-form';
+import {ActionTemplate} from './ActionTemplate';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
+import {ActionLineProps} from './ActionLineProps';
+import {useControlledFormInputAction} from '../../hooks';
 
 const ClearAssociationsActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
 }) => {
   const translate = useTranslate();
-  const { fieldFormName, typeFormName } = useControlledFormInputAction<boolean>(
+  const {fieldFormName, typeFormName} = useControlledFormInputAction<boolean>(
     lineNumber
   );
 
@@ -43,4 +43,4 @@ const ClearAssociationsActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { ClearAssociationsActionLine };
+export {ClearAssociationsActionLine};

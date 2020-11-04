@@ -1,8 +1,8 @@
-import { NotificationLevel } from '../applicationDependenciesProvider.type';
+import {NotificationLevel} from '../applicationDependenciesProvider.type';
 
 export const dependencies = {
   router: {
-    generate: jest.fn((route: string, params?: { [param: string]: any }) => {
+    generate: jest.fn((route: string, params?: {[param: string]: any}) => {
       let response = route;
       if (params) {
         response = `${response}?${JSON.stringify(params)}`;

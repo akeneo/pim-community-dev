@@ -9,20 +9,20 @@ test('It should render the attribute error validation messages for the current c
   const attributeCode = 'packshot';
   const context = {
     channel: 'ecommerce',
-    locale: 'en_US'
+    locale: 'en_US',
   };
   const errors = [
     {
       attribute: 'packshot',
       locale: 'en_US',
       message: 'Wrong packshot',
-      channel: 'ecommerce'
-    }
+      channel: 'ecommerce',
+    },
   ];
 
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <ValidationErrorCollection attributeCode={attributeCode} context={context} errors={errors}/>
+      <ValidationErrorCollection attributeCode={attributeCode} context={context} errors={errors} />
     </ThemeProvider>
   );
 
@@ -33,26 +33,26 @@ test('It should render different attribute error validation messages', () => {
   const attributeCode = 'packshot';
   const context = {
     channel: 'ecommerce',
-    locale: 'en_US'
+    locale: 'en_US',
   };
   const errors = [
     {
       attribute: 'packshot',
       locale: 'en_US',
       message: 'Wrong packshot',
-      channel: 'ecommerce'
+      channel: 'ecommerce',
     },
     {
       attribute: 'packshot',
       locale: 'en_US',
       message: 'Not a valid value',
-      channel: 'ecommerce'
-    }
+      channel: 'ecommerce',
+    },
   ];
 
   const {getByText} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <ValidationErrorCollection attributeCode={attributeCode} context={context} errors={errors}/>
+      <ValidationErrorCollection attributeCode={attributeCode} context={context} errors={errors} />
     </ThemeProvider>
   );
 
@@ -64,20 +64,20 @@ test('It should not render the attribute error validation messages when it does 
   const attributeCode = 'packshot';
   const context = {
     channel: 'mobile',
-    locale: 'fr_FR'
+    locale: 'fr_FR',
   };
   const errors = [
     {
       attribute: 'packshot',
       locale: 'en_US',
       message: 'Wrong packshot',
-      channel: 'ecommerce'
-    }
+      channel: 'ecommerce',
+    },
   ];
 
   const {container} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <ValidationErrorCollection attributeCode={attributeCode} context={context} errors={errors}/>
+      <ValidationErrorCollection attributeCode={attributeCode} context={context} errors={errors} />
     </ThemeProvider>
   );
 
@@ -88,20 +88,20 @@ test('It should not render the attribute error validation messages when the attr
   const attributeCode = 'another_asset_attribute';
   const context = {
     channel: 'ecommerce',
-    locale: 'en_US'
+    locale: 'en_US',
   };
   const errors = [
     {
       attribute: 'packshot',
       locale: 'en_US',
       message: 'Wrong packshot',
-      channel: 'ecommerce'
-    }
+      channel: 'ecommerce',
+    },
   ];
 
   const {container} = render(
     <ThemeProvider theme={akeneoTheme}>
-      <ValidationErrorCollection attributeCode={attributeCode} context={context} errors={errors}/>
+      <ValidationErrorCollection attributeCode={attributeCode} context={context} errors={errors} />
     </ThemeProvider>
   );
 

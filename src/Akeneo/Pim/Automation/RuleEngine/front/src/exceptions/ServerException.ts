@@ -8,4 +8,4 @@ class ServerException extends Error {
   }
 }
 
-export { ServerException };
+export {ServerException};

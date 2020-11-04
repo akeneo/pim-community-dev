@@ -1,7 +1,7 @@
 import {applyMiddleware, combineReducers, createStore, Store} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
-import {productEditorHighlightReducer, ProductEditorHighlightState,} from "../reducer";
+import {productEditorHighlightReducer, ProductEditorHighlightState} from '../reducer';
 import {
   catalogContextReducer,
   CatalogContextState,
@@ -14,8 +14,8 @@ import {
   ProductFamilyInformationState,
   productReducer,
   ProductState,
-} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer";
-import {ProductEditFormPageContextState} from "@akeneo-pim-community/data-quality-insights/src/application/state/PageContextState";
+} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer';
+import {ProductEditFormPageContextState} from '@akeneo-pim-community/data-quality-insights/src/application/state/PageContextState';
 
 export interface ProductEditFormState {
   catalogContext: CatalogContextState;
@@ -31,19 +31,20 @@ const composeEnhancers = composeWithDevTools({
   name: 'Akeneo PIM / Product Edit Form / Data Quality Insights / Store',
 });
 
-export const createStoreWithInitialState = (initialState = {}) => createStore(
-  combineReducers({
-    catalogContext: catalogContextReducer,
-    pageContext: pageContextReducer,
-    productEvaluation: productEvaluationReducer,
-    productAxesRates: productAxesRatesReducer,
-    families: productFamilyInformationReducer,
-    product: productReducer,
-    editorHighlight: productEditorHighlightReducer
-  }),
-  initialState,
-  composeEnhancers(applyMiddleware()),
-);
+export const createStoreWithInitialState = (initialState = {}) =>
+  createStore(
+    combineReducers({
+      catalogContext: catalogContextReducer,
+      pageContext: pageContextReducer,
+      productEvaluation: productEvaluationReducer,
+      productAxesRates: productAxesRatesReducer,
+      families: productFamilyInformationReducer,
+      product: productReducer,
+      editorHighlight: productEditorHighlightReducer,
+    }),
+    initialState,
+    composeEnhancers(applyMiddleware())
+  );
 
 const productEditFormStore: Store<any, any> = createStoreWithInitialState();
 

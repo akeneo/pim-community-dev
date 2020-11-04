@@ -10,36 +10,39 @@ const {execSync} = require('child_process');
 //The origin branch to compare to
 const originBranch = process.argv[2];
 if (undefined === originBranch) {
-    console.error('You need to pass an origin branch to this command as first argument');
+  console.error('You need to pass an origin branch to this command as first argument');
 
-    return;
+  return;
 }
 
 //The paths in the white list
 const allowedPathsCSV = process.argv[3];
 if (undefined === allowedPathsCSV) {
-    console.error('You need to pass a allowed paths to check to this command as second argument');
+  console.error('You need to pass a allowed paths to check to this command as second argument');
 
-    return;
+  return;
 }
 
 const allowedPaths = allowedPathsCSV.split(',');
-execSync(`git remote set-branches --add origin ${originBranch} 2>/dev/null && git fetch 2>/dev/null`)
+execSync(`git remote set-branches --add origin ${originBranch} 2>/dev/null && git fetch 2>/dev/null`);
 const rawModifiedFiles = execSync(`git diff --name-only origin/${originBranch}`);
-const modifiedFiles = rawModifiedFiles.toString('utf8').split('\n').filter(file => '' !== file);
+const modifiedFiles = rawModifiedFiles
+  .toString('utf8')
+  .split('\n')
+  .filter(file => '' !== file);
 
 /**
  * This method check the given path against the list of allowed paths
  */
-const isModificationAllowed = (allowedPaths) => (pathToCheck) => {
-    return !allowedPaths.some(allowedPath => pathToCheck.startsWith(allowedPath));
-}
+const isModificationAllowed = allowedPaths => pathToCheck => {
+  return !allowedPaths.some(allowedPath => pathToCheck.startsWith(allowedPath));
+};
 
 //This variable will contain the number of files that could lead to breaking things in the app
 const violationFiles = modifiedFiles.filter(isModificationAllowed(allowedPaths));
 
 if (violationFiles.length) {
-    console.log(`############################
+  console.log(`############################
 ######### Error! ###########
 ############################
 

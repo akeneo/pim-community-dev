@@ -100,7 +100,7 @@ class CategoryManager
     /**
      * Filter the filled tree to remove not granted category or branch of categories
      *
-     * @param array &$filledTree the tree
+     * @param array $filledTree the tree
      */
     protected function filterGrantedFilledTree(&$filledTree)
     {

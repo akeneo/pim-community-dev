@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
-import { Translate, Router } from '../../../../../dependenciesTools';
-import { AttributeCode, Attribute } from '../../../../../models';
+import {useEffect} from 'react';
+import {getAttributeByIdentifier} from '../../../../../repositories/AttributeRepository';
+import {Translate, Router} from '../../../../../dependenciesTools';
+import {AttributeCode, Attribute} from '../../../../../models';
 
 const validateAttribute = (translate: Translate, router: Router) => async (
   value: any

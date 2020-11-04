@@ -1,8 +1,8 @@
-import { CalculateActionLine } from '../../pages/EditRules/components/actions/CalculateActionLine';
-import { ProductField } from './ProductField';
-import { Operand, denormalizeOperand } from './Calculate/Operand';
-import { denormalizeOperation, Operation } from './Calculate/Operation';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
+import {CalculateActionLine} from '../../pages/EditRules/components/actions/CalculateActionLine';
+import {ProductField} from './ProductField';
+import {Operand, denormalizeOperand} from './Calculate/Operand';
+import {denormalizeOperation, Operation} from './Calculate/Operation';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
 
 export type CalculateAction = {
   type: 'calculate';

@@ -1,8 +1,8 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders, screen } from '../../../../../../test-utils';
-import { locales, scopes } from '../../../../factories';
-import { SetStatusActionLine } from '../../../../../../src/pages/EditRules/components/actions/SetStatusActionLine';
+import {renderWithProviders, screen} from '../../../../../../test-utils';
+import {locales, scopes} from '../../../../factories';
+import {SetStatusActionLine} from '../../../../../../src/pages/EditRules/components/actions/SetStatusActionLine';
 
 describe('SetStatusActionLine', () => {
   it('should be able to display a new set status action', async () => {
@@ -14,7 +14,7 @@ describe('SetStatusActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
       />,
-      { all: true }
+      {all: true}
     );
     expect(
       await screen.findByText(
@@ -43,9 +43,9 @@ describe('SetStatusActionLine', () => {
       },
     };
     const toRegister = [
-      { name: 'content.actions[0].field', type: 'custom' },
-      { name: 'content.actions[0].value', type: 'custom' },
-      { name: 'content.actions[0].type', type: 'custom' },
+      {name: 'content.actions[0].field', type: 'custom'},
+      {name: 'content.actions[0].value', type: 'custom'},
+      {name: 'content.actions[0].type', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -56,8 +56,8 @@ describe('SetStatusActionLine', () => {
         currentCatalogLocale={'en_US'}
         handleDelete={jest.fn()}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText(

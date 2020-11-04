@@ -1,7 +1,7 @@
 import React from 'react';
-import { useGetAttributeAtMount } from './attribute/attribute.utils';
-import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from './ActionLineProps';
+import {useGetAttributeAtMount} from './attribute/attribute.utils';
+import {ActionTemplate} from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -12,12 +12,12 @@ import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { AttributeLocaleScopeSelector } from './attribute';
-import { Attribute, AttributeType } from '../../../../models';
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
-import { useFormContext, Controller } from 'react-hook-form';
-import { useControlledFormInputAction } from '../../hooks';
-import { EmptySourceHelper } from './style';
+import {AttributeLocaleScopeSelector} from './attribute';
+import {Attribute, AttributeType} from '../../../../models';
+import {getAttributeByIdentifier} from '../../../../repositories/AttributeRepository';
+import {useFormContext, Controller} from 'react-hook-form';
+import {useControlledFormInputAction} from '../../hooks';
+import {EmptySourceHelper} from './style';
 
 const getSupportedTypes = (fromType: AttributeType) => {
   const supportedTypes = new Map<AttributeType, AttributeType[]>([
@@ -84,10 +84,10 @@ const CopyActionLine: React.FC<ActionLineProps> = ({
 }) => {
   const translate = useTranslate();
   const router = useBackboneRouter();
-  const { formName, typeFormName, getFormValue } = useControlledFormInputAction<
+  const {formName, typeFormName, getFormValue} = useControlledFormInputAction<
     string | null
   >(lineNumber);
-  const { setValue, watch } = useFormContext();
+  const {setValue, watch} = useFormContext();
   watch(formName('from_field'));
   watch(formName('to_field'));
   const [attributeSource, setAttributeSource] = React.useState<
@@ -232,4 +232,4 @@ const CopyActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { CopyActionLine };
+export {CopyActionLine};

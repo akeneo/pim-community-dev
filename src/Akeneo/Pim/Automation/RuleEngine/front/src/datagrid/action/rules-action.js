@@ -1,7 +1,6 @@
 /* global define */
-define(['oro/datagrid/mass-action'],
-function(MassAction) {
-    'use strict';
+define(['oro/datagrid/mass-action'], function(MassAction) {
+  'use strict';
 
-    return MassAction.extend();
+  return MassAction.extend();
 });

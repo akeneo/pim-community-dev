@@ -42,4 +42,4 @@ const httpDelete = (url: string) => {
   });
 };
 
-export { httpPost, httpPut, httpGet, httpDelete };
+export {httpPost, httpPut, httpGet, httpDelete};

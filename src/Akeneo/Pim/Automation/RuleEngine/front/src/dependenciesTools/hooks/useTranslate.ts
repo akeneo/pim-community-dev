@@ -1,8 +1,8 @@
-import { useApplicationContext } from './useApplicationContext';
-import { Translate } from '../provider/applicationDependenciesProvider.type';
+import {useApplicationContext} from './useApplicationContext';
+import {Translate} from '../provider/applicationDependenciesProvider.type';
 
 const useTranslate = (): Translate => {
-  const { translate } = useApplicationContext();
+  const {translate} = useApplicationContext();
   if (translate) {
     return translate;
   }
@@ -11,4 +11,4 @@ const useTranslate = (): Translate => {
   );
 };
 
-export { useTranslate };
+export {useTranslate};

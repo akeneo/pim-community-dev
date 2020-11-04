@@ -4,19 +4,14 @@
  *
  * @author Laurent Petard <laurent.petard@akeneo.com>
  */
-define(
-    [
-        'pim/product-edit-form/delete'
-    ],
-    function (Delete) {
-        return Delete.extend({
-            render: function () {
-                if (!this.getFormData().meta.is_owner) {
-                    return;
-                }
+define(['pim/product-edit-form/delete'], function(Delete) {
+  return Delete.extend({
+    render: function() {
+      if (!this.getFormData().meta.is_owner) {
+        return;
+      }
 
-                return Delete.prototype.render.apply(this, arguments);
-            }
-        });
-    }
-);
+      return Delete.prototype.render.apply(this, arguments);
+    },
+  });
+});

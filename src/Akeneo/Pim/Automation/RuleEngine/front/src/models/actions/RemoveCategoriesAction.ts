@@ -1,6 +1,6 @@
-import { RemoveCategoriesActionLine } from '../../pages/EditRules/components/actions/RemoveCategoriesActionLine';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { CategoryCode } from '../Category';
+import {RemoveCategoriesActionLine} from '../../pages/EditRules/components/actions/RemoveCategoriesActionLine';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
+import {CategoryCode} from '../Category';
 
 export type RemoveCategoriesAction = {
   type: 'remove';

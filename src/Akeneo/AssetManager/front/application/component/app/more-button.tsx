@@ -46,7 +46,7 @@ const Action = styled.li`
 `;
 
 const ButtonContainer = styled(TransparentButton)`
-    margin: 0 10px;
+  margin: 0 10px;
 `;
 
 const Button: React.FunctionComponent<{title: string; onAction: () => void}> = ({children, title, onAction}) => {

@@ -1,7 +1,7 @@
-import React, {FC, useLayoutEffect} from "react";
-import useHighlightsContainerState from "../../../../infrastructure/hooks/Common/useHighlightsContainerState";
-import {useHighlightableContentContext} from "../../../context/HighlightableContentContext";
-import {getElementType} from "../../../helper/HighlightableContent";
+import React, {FC, useLayoutEffect} from 'react';
+import useHighlightsContainerState from '../../../../infrastructure/hooks/Common/useHighlightsContainerState';
+import {useHighlightableContentContext} from '../../../context/HighlightableContentContext';
+import {getElementType} from '../../../helper/HighlightableContent';
 
 type MirrorElementProps = {};
 
@@ -20,15 +20,18 @@ const MirrorElement: FC<MirrorElementProps> = () => {
   }, [scrollPosition]);
 
   return (
-    <div ref={mirrorRef}
-         className={`AknEditorHighlight-cloned-editor AknEditorHighlight-cloned-editor--${elementType}`}
-         aria-hidden={true}
-         style={{
-           width: dimension.width,
-           height: dimension.height
-         }}
-    >{content}</div>
+    <div
+      ref={mirrorRef}
+      className={`AknEditorHighlight-cloned-editor AknEditorHighlight-cloned-editor--${elementType}`}
+      aria-hidden={true}
+      style={{
+        width: dimension.width,
+        height: dimension.height,
+      }}
+    >
+      {content}
+    </div>
   );
-}
+};
 
 export default MirrorElement;

@@ -1,4 +1,4 @@
-import {useLayoutEffect, useState} from "react";
+import {useLayoutEffect, useState} from 'react';
 
 type HighlightState = {
   position: Position;
@@ -14,7 +14,6 @@ type Dimension = {
   width: number;
   height: number;
 };
-
 
 const useHighlightState = (contentElement: Element, containerElement: Element): HighlightState => {
   const [position, setPosition] = useState<Position>({left: 0, top: 0});
@@ -32,13 +31,13 @@ const useHighlightState = (contentElement: Element, containerElement: Element): 
     setPosition({
       left: contentRect.x - containerRect.x,
       top: contentRect.y - containerRect.y,
-    })
+    });
   }, [containerElement, contentElement]);
 
   return {
     position,
-    dimension
-  }
-}
+    dimension,
+  };
+};
 
 export default useHighlightState;

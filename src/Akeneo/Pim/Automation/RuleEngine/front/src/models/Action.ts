@@ -1,4 +1,4 @@
-import { FallbackAction } from './actions/FallbackAction';
+import {FallbackAction} from './actions/FallbackAction';
 import {
   AddAction,
   AddAttributeValueAction,
@@ -42,7 +42,7 @@ import {
   createSetQuantifiedAssociationsAction,
 } from './actions';
 
-export const AvailableAddAction: { [key: string]: () => Action } = {
+export const AvailableAddAction: {[key: string]: () => Action} = {
   set_associations: createSetAssociationsAction,
   set_attribute: createSetAttributeAction,
   set_category: createSetCategoriesAction,

@@ -1,5 +1,5 @@
-import { Locale, LocaleCode } from '../../../../models';
-import { IndexedScopes } from '../../../../repositories/ScopeRepository';
+import {Locale, LocaleCode} from '../../../../models';
+import {IndexedScopes} from '../../../../repositories/ScopeRepository';
 
 type ActionLineProps = {
   lineNumber: number;
@@ -9,4 +9,4 @@ type ActionLineProps = {
   scopes: IndexedScopes;
 };
 
-export { ActionLineProps };
+export {ActionLineProps};

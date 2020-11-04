@@ -6,50 +6,51 @@ export const REMOVE_VISIBLE_ATTRIBUTE_OPTION_ACTION = 'attribute_option/remove_v
 export const addVisibleAttributeOptionAction = (option: string): VisibleAttributeOptionsAction => {
   return {
     type: ADD_VISIBLE_ATTRIBUTE_OPTION_ACTION,
-    option
-  }
-}
+    option,
+  };
+};
 export const removeVisibleAttributeOptionAction = (option: string): VisibleAttributeOptionsAction => {
   return {
     type: REMOVE_VISIBLE_ATTRIBUTE_OPTION_ACTION,
-    option
-  }
-}
+    option,
+  };
+};
 
 export type VisibleAttributeOptions = string[];
 
 export type VisibleAttributeOptionsAction = {
-    type: string;
-    option:string;
-}
+  type: string;
+  option: string;
+};
 
-export const visibleAttributeOptionsReducer: Reducer<VisibleAttributeOptions, VisibleAttributeOptionsAction> = (state, action) => {
-    switch (action.type) {
+export const visibleAttributeOptionsReducer: Reducer<VisibleAttributeOptions, VisibleAttributeOptionsAction> = (
+  state,
+  action
+) => {
+  switch (action.type) {
     case ADD_VISIBLE_ATTRIBUTE_OPTION_ACTION: {
-        const {option} = action;
+      const {option} = action;
 
-        if (state.indexOf(option) >= 0) {
-          return state;
-        }
+      if (state.indexOf(option) >= 0) {
+        return state;
+      }
 
-        return [...state, option];
+      return [...state, option];
     }
     case REMOVE_VISIBLE_ATTRIBUTE_OPTION_ACTION: {
-        const {option} = action;
-        const index = state.indexOf(option);
+      const {option} = action;
+      const index = state.indexOf(option);
 
-        if (index < 0) {
-          return state;
-        }
+      if (index < 0) {
+        return state;
+      }
 
-        state.splice(index, 1);
+      state.splice(index, 1);
 
-        return [
-          ...state
-        ];
+      return [...state];
     }
     default: {
-        return state;
+      return state;
     }
-    }
+  }
 };

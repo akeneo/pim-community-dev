@@ -13,19 +13,11 @@ beforeEach(async () => {
       const family = {
         code: 'scanners',
         labels: {
-          en_US: 'Scanners'
+          en_US: 'Scanners',
         },
         attribute_requirements: {
-          ecommerce: [
-            'color_scanning',
-            'description',
-            'name',
-            'notices',
-            'packshot',
-            'price',
-            'sku'
-          ]
-        }
+          ecommerce: ['color_scanning', 'description', 'name', 'notices', 'packshot', 'price', 'sku'],
+        },
       };
 
       interceptedRequest.respond({
@@ -42,10 +34,9 @@ it('It fetches the family', async () => {
   // It fetches a family
   const response = await page.evaluate(async () => {
     // Sometimes this test fails on circle ci. This wait should mitigate that
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    const fetchFamily =
-      require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family')
+    const fetchFamily = require('akeneopimenrichmentassetmanager/assets-collection/infrastructure/fetcher/family')
       .fetchFamily;
     const fetcherRegistry = require('pim/fetcher-registry');
     fetcherRegistry.initialize();
@@ -57,18 +48,10 @@ it('It fetches the family', async () => {
   expect(response).toEqual({
     code: 'scanners',
     labels: {
-      en_US: 'Scanners'
+      en_US: 'Scanners',
     },
     attributeRequirements: {
-      ecommerce: [
-        'color_scanning',
-        'description',
-        'name',
-        'notices',
-        'packshot',
-        'price',
-        'sku'
-      ]
-    }
+      ecommerce: ['color_scanning', 'description', 'name', 'notices', 'packshot', 'price', 'sku'],
+    },
   });
 });

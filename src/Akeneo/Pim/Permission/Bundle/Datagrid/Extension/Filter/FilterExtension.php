@@ -23,7 +23,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolverInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
-use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -41,7 +40,7 @@ class FilterExtension extends BaseFilterExtension
     /** @var UserContext */
     protected $userContext;
 
-    /** @var DatagridViewRepositoryInterface */
+    /** @var ObjectRepository */
     protected $datagridViewRepository;
 
     /** @var ObjectRepository */
@@ -54,7 +53,7 @@ class FilterExtension extends BaseFilterExtension
         AttributeRepositoryInterface $attributeRepository,
         AttributeGroupAccessRepository $accessRepository,
         UserContext $userContext,
-        DatagridViewRepositoryInterface $datagridViewRepository,
+        ObjectRepository $datagridViewRepository,
         ObjectRepository $projectRepository
     ) {
         parent::__construct($requestParams, $translator, $adapterResolver);
@@ -125,8 +124,8 @@ class FilterExtension extends BaseFilterExtension
             }
         }
 
-        $data->offsetSet('state', ['filters' => $filtersState])
-            ->offsetSet('filters', $filtersMetaData);
+        $data->offsetSet('state', ['filters' => $filtersState]);
+        $data->offsetSet('filters', $filtersMetaData);
     }
 
     /**

@@ -1,6 +1,6 @@
-import { Attribute, AttributeType } from '../../../src/models';
+import {Attribute, AttributeType} from '../../../src/models';
 
-export const createAttribute = (data: { [key: string]: any }): Attribute => {
+export const createAttribute = (data: {[key: string]: any}): Attribute => {
   return {
     code: 'name',
     type: AttributeType.TEXT,
@@ -27,7 +27,7 @@ export const createAttribute = (data: { [key: string]: any }): Attribute => {
     sort_order: 1,
     localizable: true,
     scopable: true,
-    labels: { en_US: 'Name', fr_FR: 'Nom' },
+    labels: {en_US: 'Name', fr_FR: 'Nom'},
     auto_option_sorting: null,
     is_read_only: false,
     empty_value: null,

@@ -6,9 +6,9 @@ import {
   waitForElementToBeRemoved,
 } from '../../../../../../test-utils';
 import 'jest-fetch-mock';
-import { TextareaAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/TextareaAttributeConditionLine';
-import { createAttribute, locales, scopes } from '../../../../factories';
-import { Operator } from '../../../../../../src/models/Operator';
+import {TextareaAttributeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/TextareaAttributeConditionLine';
+import {createAttribute, locales, scopes} from '../../../../factories';
+import {Operator} from '../../../../../../src/models/Operator';
 import userEvent from '@testing-library/user-event';
 
 describe('TextareaAttributeConditionLine', () => {
@@ -25,7 +25,7 @@ describe('TextareaAttributeConditionLine', () => {
           scopable: true,
         })
       ),
-      { status: 200 },
+      {status: 200},
     ]);
     const defaultValues = {
       content: {
@@ -41,10 +41,10 @@ describe('TextareaAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
-      { name: 'content.conditions[0].locale', type: 'custom' },
-      { name: 'content.conditions[0].scope', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
+      {name: 'content.conditions[0].locale', type: 'custom'},
+      {name: 'content.conditions[0].scope', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -58,8 +58,8 @@ describe('TextareaAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     await waitForElementToBeRemoved(() =>
       document.querySelector('div img[alt="pim_common.loading"]')
@@ -87,8 +87,8 @@ describe('TextareaAttributeConditionLine', () => {
 
   it('should not display the locale and scope selectors', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 },
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200},
     ]);
     const defaultValues = {
       content: {
@@ -102,8 +102,8 @@ describe('TextareaAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
     renderWithProviders(
       <TextareaAttributeConditionLine
@@ -116,8 +116,8 @@ describe('TextareaAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
       () => {
@@ -133,8 +133,8 @@ describe('TextareaAttributeConditionLine', () => {
   });
   it('handles values option appearance based on selected operator', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 },
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200},
     ]);
 
     renderWithProviders(
@@ -148,7 +148,7 @@ describe('TextareaAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true }
+      {all: true}
     );
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
       () => {
@@ -171,8 +171,8 @@ describe('TextareaAttributeConditionLine', () => {
   });
   it('displays the matching locales regarding the scope', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({ localizable: true, scopable: true })),
-      { status: 200 },
+      JSON.stringify(createAttribute({localizable: true, scopable: true})),
+      {status: 200},
     ]);
     renderWithProviders(
       <TextareaAttributeConditionLine
@@ -185,7 +185,7 @@ describe('TextareaAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true }
+      {all: true}
     );
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
       () => {

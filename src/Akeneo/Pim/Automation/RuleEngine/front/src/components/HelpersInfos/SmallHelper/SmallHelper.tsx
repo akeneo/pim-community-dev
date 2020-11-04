@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Theme as AkeneoTheme } from 'akeneo-design-system';
+import {Theme as AkeneoTheme} from 'akeneo-design-system';
 
 type Level = 'info' | 'warning' | 'error';
 
@@ -59,11 +59,11 @@ const getIcon = (level: Level | undefined) => {
   }
 };
 
-const SmallErrorHelper = styled.div<{ level: Level }>`
+const SmallErrorHelper = styled.div<{level: Level}>`
   &:not(:empty) {
     display: flex;
     align-items: center;
-    background: ${({ theme, level }) => getBackgroundColor(level, theme)};
+    background: ${({theme, level}) => getBackgroundColor(level, theme)};
     min-height: 44px;
     padding: 10px;
     margin-bottom: 4px;
@@ -74,14 +74,13 @@ type Props = {
   level?: Level;
 };
 
-export const SmallHelperText = styled.span<{ level: Level }>`
+export const SmallHelperText = styled.span<{level: Level}>`
   align-items: center;
-  border-left: 1px solid ${({ theme, level }) => getBorderColor(level, theme)};
-  color: ${({ theme, level }) => getColor(level, theme)};
-  display: flex;
+  border-left: 1px solid ${({theme, level}) => getBorderColor(level, theme)};
+  color: ${({theme, level}) => getColor(level, theme)};
   padding-left: 10px;
   a {
-    color: ${({ theme, level }) => getAnchorColor(level, theme)};
+    color: ${({theme, level}) => getAnchorColor(level, theme)};
     cursor: pointer;
     text-decoration: underline;
   }
@@ -92,7 +91,7 @@ const HelperImg = styled.img`
   padding-right: 10px;
 `;
 
-export const SmallHelper: React.FC<Props> = ({ level = 'info', children }) => {
+export const SmallHelper: React.FC<Props> = ({level = 'info', children}) => {
   if (
     (Array.isArray(children) && children.length) ||
     typeof children === 'string'

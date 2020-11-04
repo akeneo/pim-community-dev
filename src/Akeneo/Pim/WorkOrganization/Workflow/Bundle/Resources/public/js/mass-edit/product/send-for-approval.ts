@@ -20,9 +20,10 @@ interface Model {
 }
 
 class SendForApproval extends View {
-
   private template = _.template(`
-    <input type="checkbox" id="send-for-approval"> <label for="send-for-approval">${__('pimee_enrich.entity.product.module.approval.send')}</label>
+    <input type="checkbox" id="send-for-approval"> <label for="send-for-approval">${__(
+      'pimee_enrich.entity.product.module.approval.send'
+    )}</label>
   `);
 
   public events() {
@@ -31,27 +32,23 @@ class SendForApproval extends View {
         this.setData({
           actions: this.getFormData().actions.map((action: any) => ({
             ...action,
-            sendForApproval: !action.sendForApproval
-          }))
+            sendForApproval: !action.sendForApproval,
+          })),
         });
-      }
+      },
     };
   }
 
   public configure(): any {
     super.configure();
 
-    this.listenTo(
-      this.getRoot(),
-      'mass-edit:action:confirm',
-      this.onActionConfirm.bind(this)
-    );
+    this.listenTo(this.getRoot(), 'mass-edit:action:confirm', this.onActionConfirm.bind(this));
   }
 
   private async onActionConfirm() {
     const model: Model = this.getFormData();
 
-    if (! this.isOperationSupported(model.operation)) {
+    if (!this.isOperationSupported(model.operation)) {
       return;
     }
 
@@ -59,7 +56,7 @@ class SendForApproval extends View {
   }
 
   private isOperationSupported(operation: string): boolean {
-    return undefined !== SUPPORTED_OPERATIONS.find((currentOperation) => operation === currentOperation);
+    return undefined !== SUPPORTED_OPERATIONS.find(currentOperation => operation === currentOperation);
   }
 
   private renderSendForApprovalCheckbox(): void {

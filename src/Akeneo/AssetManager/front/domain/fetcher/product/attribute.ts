@@ -2,5 +2,5 @@ import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/
 import Attribute from 'akeneoassetmanager/domain/model/product/attribute';
 
 export default interface ProductAttributeFetcher {
-    fetchLinkedAssetAttributes: (assetFamilyIdentifier: AssetFamilyIdentifier) => Promise<Attribute[]>;
+  fetchLinkedAssetAttributes: (assetFamilyIdentifier: AssetFamilyIdentifier) => Promise<Attribute[]>;
 }

@@ -1,18 +1,18 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useControlledFormInputAction } from '../../../hooks';
-import { AttributePreview } from '../attribute/AttributePreview';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { ConcatenateSource } from '../../../../../models/actions';
+import {useFormContext} from 'react-hook-form';
+import {useControlledFormInputAction} from '../../../hooks';
+import {AttributePreview} from '../attribute/AttributePreview';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
+import {ConcatenateSource} from '../../../../../models/actions';
 
 type Props = {
   lineNumber: number;
 };
 
-const ConcatenatePreview: React.FC<Props> = ({ lineNumber }) => {
+const ConcatenatePreview: React.FC<Props> = ({lineNumber}) => {
   const translate = useTranslate();
-  const { watch } = useFormContext();
-  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
+  const {watch} = useFormContext();
+  const {formName} = useControlledFormInputAction<string | null>(lineNumber);
   const sources = () => watch(formName('from'));
 
   return (
@@ -42,4 +42,4 @@ const ConcatenatePreview: React.FC<Props> = ({ lineNumber }) => {
   );
 };
 
-export { ConcatenatePreview };
+export {ConcatenatePreview};

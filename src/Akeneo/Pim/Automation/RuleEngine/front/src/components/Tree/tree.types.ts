@@ -5,4 +5,4 @@ enum NodeType {
 
 const isBranch = (nodeType: NodeType) => nodeType === NodeType.BRANCH;
 
-export { isBranch, NodeType };
+export {isBranch, NodeType};

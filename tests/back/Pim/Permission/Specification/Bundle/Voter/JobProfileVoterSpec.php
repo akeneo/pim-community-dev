@@ -37,8 +37,10 @@ class JobProfileVoterSpec extends ObjectBehavior
     function it_returns_denied_access_if_user_has_no_group(
         $accessManager,
         $token,
-        JobInstance $jobProfile
+        JobInstance $jobProfile,
+        UserInterface $user
     ) {
+        $token->getUser()->willReturn($user);
         $accessManager->getEditUserGroups($jobProfile)->willReturn([]);
         $accessManager->getExecuteUserGroups($jobProfile)->willReturn([]);
 

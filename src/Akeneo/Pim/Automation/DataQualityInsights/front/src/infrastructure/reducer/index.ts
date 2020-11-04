@@ -12,7 +12,7 @@ import productEditorHighlightReducer, {
   updateWidgetContent,
   updateWidgetContentAnalysis,
   updateWidgetHighlightsAction,
-} from "./ProductEditForm/productEditorHighlightReducer";
+} from './ProductEditForm/productEditorHighlightReducer';
 
 export {
   // Spellcheck
@@ -30,4 +30,4 @@ export {
   hidePopoverAction,
   enableWidgetHighlightAction,
   disableWidgetHighlightAction,
-}
+};

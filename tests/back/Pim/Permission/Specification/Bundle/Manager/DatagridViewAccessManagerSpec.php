@@ -2,18 +2,18 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Manager;
 
-use Akeneo\Pim\Permission\Bundle\Manager\DatagridViewAccessManager;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use PhpSpec\ObjectBehavior;
-use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
+use Akeneo\Pim\Permission\Bundle\Manager\DatagridViewAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
+use PhpSpec\ObjectBehavior;
 
 class DatagridViewAccessManagerSpec extends ObjectBehavior
 {
@@ -27,8 +27,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         CategoryRepositoryInterface $categoryRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,
         CategoryAccessManager $categoryAccessManager,
-        DatagridView $view,
-        UserInterface $user
+        DatagridView $view
     ) {
         $this->beConstructedWith(
             $attributeRepository,
@@ -43,12 +42,12 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
 
     function it_does_not_grant_access_if_user_has_not_access_to_an_column(
         $view,
-        $user,
         $attributeGroupAccessManager,
         $attributeRepository,
         AttributeInterface $attribute,
         AttributeGroupInterface $group
     ) {
+        $user = new User();
         $attribute->getGroup()->willReturn($group);
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn($attribute);
         $attributeGroupAccessManager->isUserGranted($user, $group, Attributes::VIEW_ATTRIBUTES)->willReturn(false);
@@ -58,12 +57,12 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
 
     function it_does_not_grant_access_if_user_has_not_access_to_a_filter(
         $view,
-        $user,
         $attributeGroupAccessManager,
         $attributeRepository,
         AttributeInterface $attribute,
         AttributeGroupInterface $group
     ) {
+        $user = new User();
         $attribute->getGroup()->willReturn($group);
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn(null);
         $attributeRepository->findOneBy(['code' => 'filter1'])->willReturn($attribute);
@@ -74,12 +73,12 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
 
     function it_does_not_grant_access_if_user_has_not_access_to_a_category_filter(
         $view,
-        $user,
         $categoryRepository,
         $categoryAccessManager,
         $attributeRepository,
         CategoryInterface $category
     ) {
+        $user = new User();
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn(null);
         $attributeRepository->findOneBy(['code' => 'filter1'])->willReturn(null);
         $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
@@ -92,7 +91,6 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
 
     function it_grants_access(
         $view,
-        $user,
         $attributeGroupAccessManager,
         $attributeRepository,
         $categoryRepository,
@@ -101,6 +99,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         AttributeGroupInterface $group,
         CategoryInterface $category
     ) {
+        $user = new User();
         $attribute->getGroup()->willReturn($group);
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn($attribute);
         $attributeRepository->findOneBy(['code' => 'filter1'])->willReturn($attribute);

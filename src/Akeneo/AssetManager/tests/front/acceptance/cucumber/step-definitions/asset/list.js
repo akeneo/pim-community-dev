@@ -239,7 +239,7 @@ module.exports = async function(cucumber) {
 
   Then('the user should see a filtered list of assets', async function() {
     const assetList = await await getElement(this.page, 'Assets');
-    const isValid = await[
+    const isValid = await [
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
       'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
     ].reduce(async (isValid, expectedAsset) => {
@@ -250,7 +250,7 @@ module.exports = async function(cucumber) {
 
   Then('the user should see a filtered list of red assets', async function() {
     const assetList = await await getElement(this.page, 'Assets');
-    const isValid = await[
+    const isValid = await [
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
       'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
     ].reduce(async (isValid, expectedAsset) => {
@@ -261,7 +261,7 @@ module.exports = async function(cucumber) {
 
   Then('the user should see a filtered list of assets linked to paris', async function() {
     const assetList = await await getElement(this.page, 'Assets');
-    const isValid = await[
+    const isValid = await [
       'designer_dyson_01afdc3e-3ecf-4a86-85ef-e81b2d6e95fd',
       'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2',
     ].reduce(async (isValid, expectedAsset) => {
@@ -277,8 +277,8 @@ module.exports = async function(cucumber) {
     const requestContract = getRequestContract('Asset/Search/no_result_fr.json');
 
     await listenRequest(this.page, requestContract);
-    await(await await getElement(this.page, 'ChannelSwitcher')).switchChannel('mobile');
-    await(await await getElement(this.page, 'LocaleSwitcher')).switchLocale('fr_FR');
+    await (await await getElement(this.page, 'ChannelSwitcher')).switchChannel('mobile');
+    await (await await getElement(this.page, 'LocaleSwitcher')).switchLocale('fr_FR');
   });
 
   Then('the user should see an unfiltered list of assets', async function() {

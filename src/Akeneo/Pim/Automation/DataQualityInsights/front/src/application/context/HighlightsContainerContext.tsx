@@ -1,8 +1,8 @@
-import React, {createContext, FC, PropsWithChildren, useContext} from "react";
-import {HighlightsContainerState} from "../../infrastructure/hooks/Common/useHighlightsContainerState";
+import React, {createContext, FC, PropsWithChildren, useContext} from 'react';
+import {HighlightsContainerState} from '../../infrastructure/hooks/Common/useHighlightsContainerState';
 
 export type HighlightsContainerContextState = HighlightsContainerState & {
-  element: Element|null;
+  element: Element | null;
 };
 
 export const HighlightsContainerContext = createContext<HighlightsContainerContextState>({
@@ -16,13 +16,12 @@ HighlightsContainerContext.displayName = 'HighlightsContainerContext';
 
 export const useHighlightsContainerContext = (): HighlightsContainerContextState => {
   return useContext(HighlightsContainerContext);
-}
+};
 
 type ProviderProps = HighlightsContainerContextState;
-export const HighlightsContainerContextProvider: FC<PropsWithChildren<ProviderProps>> = ({children, ...initialState}) => {
-  return (
-    <HighlightsContainerContext.Provider value={initialState}>
-      {children}
-    </HighlightsContainerContext.Provider>
-  );
-}
+export const HighlightsContainerContextProvider: FC<PropsWithChildren<ProviderProps>> = ({
+  children,
+  ...initialState
+}) => {
+  return <HighlightsContainerContext.Provider value={initialState}>{children}</HighlightsContainerContext.Provider>;
+};

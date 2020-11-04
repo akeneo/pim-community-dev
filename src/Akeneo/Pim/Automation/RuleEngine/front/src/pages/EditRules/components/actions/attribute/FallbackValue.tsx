@@ -1,6 +1,6 @@
 import React from 'react';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { InputText } from '../../../../../components/Inputs';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
+import {InputText} from '../../../../../components/Inputs';
 
 type Props = {
   id: string;
@@ -48,4 +48,4 @@ const FallbackValue: React.FC<Props> = ({
   );
 };
 
-export { FallbackValue };
+export {FallbackValue};

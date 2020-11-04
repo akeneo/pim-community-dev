@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionLineProps } from '../../pages/EditRules/components/actions/ActionLineProps';
+import {ActionLineProps} from '../../pages/EditRules/components/actions/ActionLineProps';
 import {
   getAddActionModule,
   getAddAssociationsActionModule,
@@ -25,8 +25,8 @@ import {
   getSetQuantifiedAssociationsActionModule,
   getSetStatusActionModule,
 } from './';
-import { FallbackActionLine } from '../../pages/EditRules/components/actions/FallbackActionLine';
-import { Router } from '../../dependenciesTools';
+import {FallbackActionLine} from '../../pages/EditRules/components/actions/FallbackActionLine';
+import {Router} from '../../dependenciesTools';
 
 export type ActionModuleGuesser = (
   json: any,
@@ -76,4 +76,4 @@ const getActionModule: (
   return FallbackActionLine;
 };
 
-export { getActionModule };
+export {getActionModule};

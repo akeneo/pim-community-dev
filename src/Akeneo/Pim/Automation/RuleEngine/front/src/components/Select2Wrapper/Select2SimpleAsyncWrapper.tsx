@@ -18,7 +18,7 @@ type Props = Select2GlobalProps & {
 };
 
 const Select2SimpleAsyncWrapper: React.FC<Props> = props => {
-  const { onChange, ...remainingProps } = props;
+  const {onChange, ...remainingProps} = props;
 
   const handleChange = (value: Select2Value | Select2Value[]) => {
     if (onChange && !Array.isArray(value)) {
@@ -35,4 +35,4 @@ const Select2SimpleAsyncWrapper: React.FC<Props> = props => {
   );
 };
 
-export { Select2SimpleAsyncWrapper };
+export {Select2SimpleAsyncWrapper};

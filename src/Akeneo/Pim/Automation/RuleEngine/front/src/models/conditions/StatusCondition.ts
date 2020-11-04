@@ -1,7 +1,7 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { StatusConditionLine } from '../../pages/EditRules/components/conditions/StatusConditionLine';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {StatusConditionLine} from '../../pages/EditRules/components/conditions/StatusConditionLine';
 
 const FIELD = 'enabled';
 

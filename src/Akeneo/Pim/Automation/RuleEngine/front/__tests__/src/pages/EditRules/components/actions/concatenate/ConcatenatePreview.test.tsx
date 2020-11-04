@@ -1,14 +1,14 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders, screen } from '../../../../../../../test-utils';
-import { clearAttributeRepositoryCache } from '../../../../../../../src/repositories/AttributeRepository';
-import { createAttribute } from '../../../../../factories';
-import { AttributeType } from '../../../../../../../src/models';
-import { ConcatenatePreview } from '../../../../../../../src/pages/EditRules/components/actions/concatenate/ConcatenatePreview';
+import {renderWithProviders, screen} from '../../../../../../../test-utils';
+import {clearAttributeRepositoryCache} from '../../../../../../../src/repositories/AttributeRepository';
+import {createAttribute} from '../../../../../factories';
+import {AttributeType} from '../../../../../../../src/models';
+import {ConcatenatePreview} from '../../../../../../../src/pages/EditRules/components/actions/concatenate/ConcatenatePreview';
 
 jest.mock('../../../../../../../src/fetch/categoryTree.fetcher.ts');
 
-const toRegister = [{ name: '`content.actions[0].from`', type: 'custom' }];
+const toRegister = [{name: '`content.actions[0].from`', type: 'custom'}];
 
 describe('ConcatenatePreview', () => {
   beforeEach(() => {
@@ -64,8 +64,8 @@ describe('ConcatenatePreview', () => {
 
     renderWithProviders(
       <ConcatenatePreview lineNumber={0} />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(

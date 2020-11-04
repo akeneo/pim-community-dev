@@ -1,5 +1,5 @@
-import {useSelector} from "react-redux";
-import {ProductEditFormState} from "../../store";
+import {useSelector} from 'react-redux';
+import {ProductEditFormState} from '../../store';
 
 const useGetWidget = (widgetId: string | null) => {
   return useSelector((state: ProductEditFormState) => {
@@ -7,7 +7,7 @@ const useGetWidget = (widgetId: string | null) => {
       return null;
     }
 
-    return state.editorHighlight.widgets[widgetId] || null
+    return state.editorHighlight.widgets[widgetId] || null;
   });
 };
 

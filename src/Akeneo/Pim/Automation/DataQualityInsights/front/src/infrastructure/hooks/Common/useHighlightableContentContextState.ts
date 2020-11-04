@@ -1,10 +1,10 @@
-import {useCallback, useRef, useState} from "react";
-import {HighlightableContentContextState} from "../../../application/context/HighlightableContentContext";
-import useElementContent from "./useElementContent";
-import useGetContentRef from "./useGetContentRef";
+import {useCallback, useRef, useState} from 'react';
+import {HighlightableContentContextState} from '../../../application/context/HighlightableContentContext';
+import useElementContent from './useElementContent';
+import useGetContentRef from './useGetContentRef';
 
 const useHighlightableContentContextState = (element: HTMLElement): HighlightableContentContextState => {
-  const mirrorRef = useRef<HTMLDivElement|null>(null);
+  const mirrorRef = useRef<HTMLDivElement | null>(null);
 
   const {content, analyzableContent, refresh} = useElementContent(element);
   const handleGetContentRef = useGetContentRef(element, mirrorRef);
@@ -29,8 +29,8 @@ const useHighlightableContentContextState = (element: HTMLElement): Highlightabl
     isActive,
     activate: handleActivate,
     deactivate: handleDeactivate,
-    refresh
-  }
-}
+    refresh,
+  };
+};
 
 export default useHighlightableContentContextState;

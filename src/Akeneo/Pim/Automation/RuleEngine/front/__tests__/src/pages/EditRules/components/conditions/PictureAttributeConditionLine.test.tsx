@@ -1,8 +1,8 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { createAttribute, locales, scopes } from '../../../../factories';
-import { Operator } from '../../../../../../src/models/Operator';
-import { PictureAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/PictureAttributeConditionLine';
+import {createAttribute, locales, scopes} from '../../../../factories';
+import {Operator} from '../../../../../../src/models/Operator';
+import {PictureAttributeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/PictureAttributeConditionLine';
 import {
   renderWithProviders,
   screen,
@@ -18,8 +18,8 @@ describe('PictureAttributeConditionLine', () => {
 
   it('should display the locale and scope selectors', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({ localizable: true, scopable: true })),
-      { status: 200 },
+      JSON.stringify(createAttribute({localizable: true, scopable: true})),
+      {status: 200},
     ]);
 
     const defaultValues = {
@@ -36,10 +36,10 @@ describe('PictureAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
-      { name: 'content.conditions[0].locale', type: 'custom' },
-      { name: 'content.conditions[0].scope', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
+      {name: 'content.conditions[0].locale', type: 'custom'},
+      {name: 'content.conditions[0].scope', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -53,8 +53,8 @@ describe('PictureAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
@@ -83,8 +83,8 @@ describe('PictureAttributeConditionLine', () => {
 
   it('should not display the locale and scope selectors', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 },
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200},
     ]);
     const defaultValues = {
       content: {
@@ -98,8 +98,8 @@ describe('PictureAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
     renderWithProviders(
       <PictureAttributeConditionLine
@@ -112,8 +112,8 @@ describe('PictureAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
       () => {
@@ -130,8 +130,8 @@ describe('PictureAttributeConditionLine', () => {
 
   it('handles values option appearance based on selected operator', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 },
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200},
     ]);
 
     renderWithProviders(
@@ -145,7 +145,7 @@ describe('PictureAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true }
+      {all: true}
     );
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
       () => {
@@ -169,8 +169,8 @@ describe('PictureAttributeConditionLine', () => {
 
   it('displays the matching locales regarding the scope', async () => {
     fetchMock.mockResponses([
-      JSON.stringify(createAttribute({ localizable: true, scopable: true })),
-      { status: 200 },
+      JSON.stringify(createAttribute({localizable: true, scopable: true})),
+      {status: 200},
     ]);
     renderWithProviders(
       <PictureAttributeConditionLine
@@ -183,7 +183,7 @@ describe('PictureAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true }
+      {all: true}
     );
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
       () => {

@@ -27,7 +27,7 @@ export const InlineHelper = styled.div<{
   background-position: left top;
   color: ${props =>
     props.danger ? props.theme.color.red100 : props.theme.color.grey120};
-  font-size: ${({ theme }) => theme.fontSize.small};
+  font-size: ${({theme}) => theme.fontSize.small};
   line-height: 15px;
   padding-left: 26px;
   a {

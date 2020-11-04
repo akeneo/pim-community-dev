@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Entity\Query;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Returns the granted item depending on category access
@@ -38,9 +38,6 @@ class ItemCategoryAccessQuery
     }
 
     /**
-     * @param array         $items
-     * @param UserInterface $user
-     *
      * @return int[]
      */
     public function getGrantedItemIds(array $items, UserInterface $user): array

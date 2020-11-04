@@ -16,7 +16,7 @@ import {
 } from 'akeneoassetmanager/application/action/asset-family/edit';
 import {
   executeNamingConvention,
-  executeProductLinkRules
+  executeProductLinkRules,
 } from 'akeneoassetmanager/application/action/asset-family/product-link-rule';
 import {canEditAssetFamily} from 'akeneoassetmanager/application/reducer/right';
 import Ajv from 'ajv';
@@ -151,28 +151,20 @@ const SecondaryActions = ({
 
   return (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"/>
+      <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
       <div className="AknDropdown-menu AknDropdown-menu--right">
         <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
         <div>
-          {canExecuteRules &&
-            <button
-              tabIndex={-1}
-              className="AknDropdown-menuLink"
-              onClick={onExecuteRules}
-            >
+          {canExecuteRules && (
+            <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onExecuteRules}>
               {__(`pim_asset_manager.asset_family.button.execute_product_link_rules`)}
             </button>
-          }
-          {canExecuteNamingConvention &&
-            <button
-              tabIndex={-1}
-              className="AknDropdown-menuLink"
-              onClick={onExecuteNamingConvention}
-            >
+          )}
+          {canExecuteNamingConvention && (
+            <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onExecuteNamingConvention}>
               {__(`pim_asset_manager.asset_family.button.execute_naming_convention`)}
             </button>
-          }
+          )}
         </div>
       </div>
     </div>
@@ -192,8 +184,8 @@ interface DispatchProps {
 class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
   props: StateProps & DispatchProps;
   public state: {
-    isExecuteRulesModalOpen: boolean,
-    isExecuteNamingConventionModalOpen: boolean,
+    isExecuteRulesModalOpen: boolean;
+    isExecuteNamingConventionModalOpen: boolean;
   } = {
     isExecuteRulesModalOpen: false,
     isExecuteNamingConventionModalOpen: false,
@@ -293,10 +285,14 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
         )}
         {this.state.isExecuteNamingConventionModalOpen && (
           <ConfirmModal
-            titleContent={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_title')}
+            titleContent={__(
+              'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_title'
+            )}
             content={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.confirm_content')}
             cancelButtonText={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.cancel')}
-            confirmButtonText={__('pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.execute_naming_convention')}
+            confirmButtonText={__(
+              'pim_asset_manager.asset_family.product_link_rules.execute_naming_convention.execute_naming_convention'
+            )}
             onCancel={() => {
               this.setState({isExecuteNamingConventionModalOpen: false});
             }}

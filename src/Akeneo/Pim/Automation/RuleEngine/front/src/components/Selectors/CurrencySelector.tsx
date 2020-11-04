@@ -1,7 +1,7 @@
 import React from 'react';
-import { Currency, CurrencyCode } from '../../models/Currency';
-import { Select2SimpleSyncWrapper, Select2Value } from '../Select2Wrapper';
-import { useTranslate } from '../../dependenciesTools/hooks';
+import {Currency, CurrencyCode} from '../../models/Currency';
+import {Select2SimpleSyncWrapper, Select2Value} from '../Select2Wrapper';
+import {useTranslate} from '../../dependenciesTools/hooks';
 import {
   Attribute,
   AttributeType,
@@ -9,8 +9,8 @@ import {
   LocaleCode,
   ScopeCode,
 } from '../../models';
-import { Translate } from '../../dependenciesTools';
-import { IndexedCurrencies } from '../../repositories/CurrencyRepository';
+import {Translate} from '../../dependenciesTools';
+import {IndexedCurrencies} from '../../repositories/CurrencyRepository';
 
 const getCurrencyValidation = (
   attribute: Attribute,
@@ -38,7 +38,7 @@ const getCurrencyValidation = (
     if ('undefined' === typeof currencies[selectedCode]) {
       return translate(
         'pimee_catalog_rule.exceptions.unknown_or_inactive_currency',
-        { currencyCode: selectedCode }
+        {currencyCode: selectedCode}
       );
     }
     if (!availableCurrencies.some(currency => currency.code === selectedCode)) {
@@ -49,7 +49,7 @@ const getCurrencyValidation = (
           })
         : translate(
             'pimee_catalog_rule.exceptions.unknown_or_inactive_currency',
-            { currencyCode: selectedCode }
+            {currencyCode: selectedCode}
           );
     }
     return true;
@@ -66,7 +66,7 @@ type Props = {
   onChange?: (value: CurrencyCode) => void;
   allowClear?: boolean;
   disabled?: boolean;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {required?: string; validate?: (value: any) => string | true};
   containerCssClass?: string;
 };
 
@@ -119,4 +119,4 @@ const CurrencySelector: React.FC<Props> = ({
   );
 };
 
-export { CurrencySelector, getCurrencyValidation };
+export {CurrencySelector, getCurrencyValidation};

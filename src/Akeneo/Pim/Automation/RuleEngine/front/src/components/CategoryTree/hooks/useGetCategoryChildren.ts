@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
-import { NetworkLifeCycle } from './NetworkLifeCycle.types';
-import { useBackboneRouter } from '../../../dependenciesTools/hooks';
-import { fetchCategoryTreeChildren } from '../../../fetch/categoryTree.fetcher';
-import { CategoryTreeNodeModel } from '../category-tree.types';
+import {useEffect} from 'react';
+import {NetworkLifeCycle} from './NetworkLifeCycle.types';
+import {useBackboneRouter} from '../../../dependenciesTools/hooks';
+import {fetchCategoryTreeChildren} from '../../../fetch/categoryTree.fetcher';
+import {CategoryTreeNodeModel} from '../category-tree.types';
 
 const useGetCategoryChildren = (
   fnSetter: React.Dispatch<
@@ -19,7 +19,7 @@ const useGetCategoryChildren = (
       return;
     }
     const getCategoryChildren = async () => {
-      fnSetter({ status: 'PENDING', data: [] });
+      fnSetter({status: 'PENDING', data: []});
       const response = await fetchCategoryTreeChildren(
         router,
         locale,
@@ -38,4 +38,4 @@ const useGetCategoryChildren = (
   }, [categoryId, opened, locale, router, branch, fnSetter]);
 };
 
-export { useGetCategoryChildren };
+export {useGetCategoryChildren};

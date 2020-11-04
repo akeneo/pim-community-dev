@@ -1,11 +1,11 @@
 import React from 'react';
-import { RuleProductSelection } from './conditions/RuleProductSelection';
-import { Condition, Locale, LocaleCode } from '../../../models';
-import { IndexedScopes } from '../../../repositories/ScopeRepository';
-import { ActionLine } from './actions/ActionLine';
-import { Action } from '../../../models/Action';
-import { EmptySectionMessage } from './EmptySectionMessage';
-import { useTranslate } from '../../../dependenciesTools/hooks';
+import {RuleProductSelection} from './conditions/RuleProductSelection';
+import {Condition, Locale, LocaleCode} from '../../../models';
+import {IndexedScopes} from '../../../repositories/ScopeRepository';
+import {ActionLine} from './actions/ActionLine';
+import {Action} from '../../../models/Action';
+import {EmptySectionMessage} from './EmptySectionMessage';
+import {useTranslate} from '../../../dependenciesTools/hooks';
 
 type Props = {
   locales: Locale[];
@@ -74,4 +74,4 @@ const RulesBuilder: React.FC<Props> = ({
 
 RulesBuilder.displayName = 'RulesBuilder';
 
-export { RulesBuilder };
+export {RulesBuilder};

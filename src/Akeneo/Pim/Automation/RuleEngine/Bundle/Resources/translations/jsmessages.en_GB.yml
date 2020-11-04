@@ -346,7 +346,6 @@ pimee_catalog_rule:
         date_to: Choose an ending date
         date_past: Date in the past
         date_future: Date in the future
-        date_present: Today
       day: "]-Inf, 1] Day|]1, +Inf[ Days"
       week: "]-Inf, 1] Week|]1, +Inf[ Weeks"
       month: "]-Inf, 1] Month|]1, +Inf[ Months"

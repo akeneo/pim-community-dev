@@ -1,11 +1,11 @@
-import { Family, FamilyCode } from '../models';
-import { Router } from '../dependenciesTools';
+import {Family, FamilyCode} from '../models';
+import {Router} from '../dependenciesTools';
 import {
   fetchFamiliesByIdentifiers,
   IndexedFamilies,
 } from '../fetch/FamilyFetcher';
 
-const cacheFamilies: { [familyCode: string]: Family | null } = {};
+const cacheFamilies: {[familyCode: string]: Family | null} = {};
 
 const getFamiliesByIdentifiers = async (
   familyIdentifiers: FamilyCode[],
@@ -48,4 +48,4 @@ const getFamilyByIdentifier = async (
   return family[familyIdentifier];
 };
 
-export { getFamiliesByIdentifiers, getFamilyByIdentifier };
+export {getFamiliesByIdentifiers, getFamilyByIdentifier};

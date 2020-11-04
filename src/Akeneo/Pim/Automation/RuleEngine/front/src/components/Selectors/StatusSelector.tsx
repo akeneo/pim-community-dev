@@ -1,6 +1,6 @@
 import React from 'react';
-import { Select2Option, Select2SimpleSyncWrapper } from '../Select2Wrapper';
-import { useTranslate } from '../../dependenciesTools/hooks';
+import {Select2Option, Select2SimpleSyncWrapper} from '../Select2Wrapper';
+import {useTranslate} from '../../dependenciesTools/hooks';
 
 type Props = {
   id: string;
@@ -57,4 +57,4 @@ const StatusSelector: React.FC<Props> = ({
   );
 };
 
-export { StatusSelector };
+export {StatusSelector};

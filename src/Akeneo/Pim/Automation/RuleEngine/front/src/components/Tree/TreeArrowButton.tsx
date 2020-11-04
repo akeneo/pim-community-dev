@@ -7,4 +7,4 @@ const TreeArrowButton = styled.button`
   background: none;
 `;
 
-export { TreeArrowButton };
+export {TreeArrowButton};
