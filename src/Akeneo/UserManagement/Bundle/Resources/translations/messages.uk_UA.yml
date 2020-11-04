@@ -1,0 +1,131 @@
+pim_user:
+  user:
+    title: Користувач
+    fields:
+      name_prefix: Префікс імені
+      email: E-mail
+      username: Ім'я користувача
+      first_name: Ім'я
+      middle_name: По батькові
+      last_name: Прізвище
+      name_suffix: Суфікс імені
+      date_of_birth: Дата народження
+      avatar: Аватар
+      timezone: Часовий пояс
+      roles: Ролі
+      groups: Групи
+      password: Пароль
+      password_again: Повторно введіть пароль
+      product_grid_filters: Фільтри товарів
+      catalog_locale: Локаль каталогу
+      catalog_scope: Сфера каталогу
+      default_tree: Усталене дерево каталогу 
+      current_password: Поточний пароль
+      new_password: Новий пароль
+      new_password_again: Новий пароль (повторно)
+      default_grid_view:
+        none: Жоден
+      default_product_grid_view:
+        label: Усталене представлення сітки продуктів
+      ui_locale: Локаль інтерфейсу користувача
+      last_logged_in: Останнє відвідування
+      login_count: Кількість відвідувань
+      user_salt: Сіль користувача
+      created: Створено
+      updated: Оновлено
+      status: Статус
+      capabilities: Можливості
+      has_role: Має роль
+      has_group: Має групу
+      active: Активний
+      inactive: Неактивний
+    tabs:
+      general:
+        title: Загальне
+        contact_information: Контактна інформація
+      additional:
+        title: Додаткові
+      interfaces:
+        title: Інтерфейси
+      group_and_role.title: Групи та ролі
+      password.title: Пароль
+      business_unit.title: Бізнес-підрозділи
+      email_synchronization.title: Налаштування синхронізації електронної пошти
+    removed_user: Вилучений користувач
+    login:
+      username_or_email: Ім’я користувача або Email
+      remember_me: Запам'ятати мене на цьому комп'ютері
+      password_forgotten: Забули пароль?
+      log_in: Увійти
+      forgot_password: Відновити пароль
+      request: Запит
+      reset: Скинути
+      password_reset_email_sent: Користувачу надіслано email з посиланням на скидання паролю.
+      homepage: Перейти на головну сторінку
+  group:
+    tab:
+      general.title: Загальне
+      users.title: Користувачі
+  roles:
+    title: Роль
+    tab:
+      general: Загальне
+      action: Права доступу
+      users: Користувачі
+  controller:
+    group:
+      message:
+        saved: "Групу збережено"
+    role:
+      message:
+        saved: "Роль збережено"
+    user:
+      message:
+        saved: "Користувача збережено"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "Створено в"
+      updatedAt: "Оновлено в"
+    roles:
+      label: "Мітка"
+    groups:
+      name: "Ім’я"
+confirmation:
+  remove:
+    role: Ви впевнені, що ви хочете видалити цю роль?
+    user: Ви впевнені, що ви хочете видалити цього користувача?
+flash:
+  role:
+    removed: Роль успішно видалено
+  user:
+    removed: Користувача успішно видалено
+oro_security:
+  acl_group:
+    user: Користувачі
+    role: Ролі
+    group: Групи користувачів
+  acl:
+    user:
+      view: Перегляд списку користувачів
+      create: Створення користувача
+      edit: Зміна користувачів
+      delete: Видалення користувача
+    role:
+      view: Перегляд списку ролей
+      create: Створення ролі
+      edit: Зміна ролей
+      delete: Видалення ролі
+    group:
+      view: Перегляд списку груп користувача
+      create: Створення групи користувача
+      edit: Зміна груп користувача
+      delete: Видалення групи користувача
+#Security
+(default): Дозволи на сутності за промовчанням
+VIEW: Вид
+CREATE: Створити
+EDIT: Редагувати
+DELETE: Видалити
+ASSIGN: Призначити
+SHARE: Поділитися
