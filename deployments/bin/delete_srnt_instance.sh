@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -eo pipefail
 set -x
 
@@ -33,7 +34,7 @@ export KUBECONFIG=.kubeconfig
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
 echo "3 - Removing shared state files"
-if [[ $GOOGLE_PROJECT_ID == "akecld-saas-dev" ]]; then
+if [[ $GOOGLE_PROJECT_ID == "akecld-saas-dev" || $GOOGLE_PROJECT_ID == "akecld-onboarder-dev" ]]; then
         TF_BUCKET="-dev"
 fi
 echo gsutil -m rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}
@@ -59,7 +60,7 @@ if [ -n "${PD_NAME}" ]; then
 	done
 fi
 
-if [[ $GOOGLE_PROJECT_ID != "akecld-saas-dev" ]]; then
+if [[ $GOOGLE_PROJECT_ID != "akecld-saas-dev" && $GOOGLE_PROJECT_ID != "akecld-onboarder-dev" ]]; then
         echo "6 - Git persist"
         rm -rf ${NAMESPACE_PATH}
         git rm -rf --ignore-unmatch ${NAMESPACE_PATH}

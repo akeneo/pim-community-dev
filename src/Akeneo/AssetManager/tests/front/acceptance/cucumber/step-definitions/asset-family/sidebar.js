@@ -2,11 +2,8 @@ const Sidebar = require('../../decorators/asset-family/app/sidebar.decorator');
 const path = require('path');
 
 const {
-  decorators: {createElementDecorator}
-} = require(path.resolve(
-  process.cwd(),
-  './tests/front/acceptance/cucumber/test-helpers.js'
-));
+  decorators: {createElementDecorator},
+} = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
 module.exports = async function(cucumber) {
   const {Given, Then, When} = cucumber;
@@ -15,8 +12,8 @@ module.exports = async function(cucumber) {
   const config = {
     Sidebar: {
       selector: '.AknColumn',
-      decorator: Sidebar
-    }
+      decorator: Sidebar,
+    },
   };
 
   const getElement = createElementDecorator(config);

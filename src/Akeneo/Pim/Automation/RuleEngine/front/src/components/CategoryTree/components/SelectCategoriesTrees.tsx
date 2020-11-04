@@ -1,9 +1,9 @@
 import React from 'react';
-import { useMenuState, Menu, MenuItem, MenuButton } from 'reakit/Menu';
+import {useMenuState, Menu, MenuItem, MenuButton} from 'reakit/Menu';
 import styled from 'styled-components';
-import { CategoryTreeModel } from '../category-tree.types';
-import { LocaleCode } from '../../../models';
-import { useTranslate } from '../../../dependenciesTools/hooks';
+import {CategoryTreeModel} from '../category-tree.types';
+import {LocaleCode} from '../../../models';
+import {useTranslate} from '../../../dependenciesTools/hooks';
 
 const widthButtonAndContent = '150px';
 
@@ -119,4 +119,4 @@ const SelectCategoriesTrees: React.FC<Props> = ({
   );
 };
 
-export { SelectCategoriesTrees };
+export {SelectCategoriesTrees};

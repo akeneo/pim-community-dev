@@ -1,5 +1,5 @@
-import { Locale } from './Locale';
-import { CurrencyCode } from './Currency';
+import {Locale} from './Locale';
+import {CurrencyCode} from './Currency';
 
 type ScopeCode = string;
 
@@ -9,8 +9,8 @@ type Scope = {
   locales: Locale[];
   category_tree: string;
   conversion_units: string[];
-  labels: { [locale: string]: string };
+  labels: {[locale: string]: string};
   meta: any;
 };
 
-export { Scope, ScopeCode };
+export {Scope, ScopeCode};

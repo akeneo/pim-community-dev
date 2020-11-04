@@ -1,5 +1,5 @@
-import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { ClearCategoriesActionLine } from '../../pages/EditRules/components/actions/ClearCategoriesActionLine';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
+import {ClearCategoriesActionLine} from '../../pages/EditRules/components/actions/ClearCategoriesActionLine';
 
 export type ClearCategoriesAction = {
   type: 'clear';

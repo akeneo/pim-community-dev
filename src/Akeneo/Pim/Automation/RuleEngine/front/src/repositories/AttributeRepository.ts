@@ -1,11 +1,11 @@
-import { Attribute, AttributeCode } from '../models';
-import { Router } from '../dependenciesTools';
+import {Attribute, AttributeCode} from '../models';
+import {Router} from '../dependenciesTools';
 import {
   fetchAttributeByIdentifier,
   fetchAttributesByIdentifiers,
 } from '../fetch/AttributeFetcher';
 
-const cacheAttributes: { [identifier: string]: Attribute | null } = {};
+const cacheAttributes: {[identifier: string]: Attribute | null} = {};
 
 export const clearAttributeRepositoryCache = () => {
   for (const key in cacheAttributes) {
@@ -32,7 +32,7 @@ export const getAttributeByIdentifier = async (
 export const getAttributesByIdentifiers = async (
   attributeIdentifiers: AttributeCode[],
   router: Router
-): Promise<{ [identifier: string]: Attribute | null }> => {
+): Promise<{[identifier: string]: Attribute | null}> => {
   const attributeIdentifiersToGet = attributeIdentifiers.filter(
     attributeIndentifier => {
       return !Object.keys(cacheAttributes).includes(attributeIndentifier);
@@ -53,7 +53,7 @@ export const getAttributesByIdentifiers = async (
   }
 
   return attributeIdentifiers.reduce((previousValue, currentValue) => {
-    const result: { [identifier: string]: Attribute | null } = {
+    const result: {[identifier: string]: Attribute | null} = {
       ...previousValue,
     };
     result[currentValue] = cacheAttributes[currentValue];

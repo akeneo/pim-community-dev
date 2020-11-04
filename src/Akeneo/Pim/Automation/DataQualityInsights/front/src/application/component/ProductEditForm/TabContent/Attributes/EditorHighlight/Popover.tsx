@@ -1,8 +1,8 @@
-import React, {FunctionComponent, useEffect, useLayoutEffect, useRef, useState} from "react";
-import {useGetEditorHighlightPopover, useGetSpellcheckWidget} from "../../../../../../infrastructure/hooks";
-import {EditorHighlightPopoverContextListener} from "../../../../../listener";
-import SpellcheckPopoverContent from "./Spellcheck/SpellcheckPopoverContent";
-import PopoverWithPortalDecorator from "./PopoverWithPortalDecorator";
+import React, {FunctionComponent, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useGetEditorHighlightPopover, useGetSpellcheckWidget} from '../../../../../../infrastructure/hooks';
+import {EditorHighlightPopoverContextListener} from '../../../../../listener';
+import SpellcheckPopoverContent from './Spellcheck/SpellcheckPopoverContent';
+import PopoverWithPortalDecorator from './PopoverWithPortalDecorator';
 
 const POPOVER_BOTTOM_PLACEMENT_OFFSET = 2;
 const POPOVER_LEFT_PLACEMENT_OFFSET = 0;
@@ -16,17 +16,17 @@ interface PopoverStyleState {
   top?: number;
 }
 
-export interface  PopoverProps {}
+export interface PopoverProps {}
 
 const BasePopover: FunctionComponent<PopoverProps> = () => {
   const {isOpen, highlight, widgetId, handleOpening, handleClosing} = useGetEditorHighlightPopover();
   const widget = useGetSpellcheckWidget(widgetId);
   const [style, setStyle] = useState<PopoverStyleState>({});
   const popoverRef = useRef<HTMLDivElement>(null);
-  const classList = ["AknEditorHighlight-popover"];
+  const classList = ['AknEditorHighlight-popover'];
 
   if (isOpen) {
-    classList.push("AknEditorHighlight-popover--visible");
+    classList.push('AknEditorHighlight-popover--visible');
   }
 
   useLayoutEffect(() => {
@@ -38,13 +38,13 @@ const BasePopover: FunctionComponent<PopoverProps> = () => {
       const highlightRect = element.getBoundingClientRect();
 
       let topPosition = highlightRect.bottom + POPOVER_BOTTOM_PLACEMENT_OFFSET;
-      if ((highlightRect.bottom + popoverElement.clientHeight + POPOVER_TOP_PLACEMENT_MARGE) > container.clientHeight) {
-        topPosition =  highlightRect.top - POPOVER_BOTTOM_PLACEMENT_OFFSET - popoverElement.clientHeight;
+      if (highlightRect.bottom + popoverElement.clientHeight + POPOVER_TOP_PLACEMENT_MARGE > container.clientHeight) {
+        topPosition = highlightRect.top - POPOVER_BOTTOM_PLACEMENT_OFFSET - popoverElement.clientHeight;
       }
 
       let leftPosition = highlightRect.left + POPOVER_LEFT_PLACEMENT_OFFSET;
-      if ((highlightRect.left + popoverElement.clientWidth + POPOVER_RIGHT_PLACEMENT_MARGE) > container.clientWidth) {
-        leftPosition =  highlightRect.right - POPOVER_LEFT_PLACEMENT_OFFSET - popoverElement.clientWidth;
+      if (highlightRect.left + popoverElement.clientWidth + POPOVER_RIGHT_PLACEMENT_MARGE > container.clientWidth) {
+        leftPosition = highlightRect.right - POPOVER_LEFT_PLACEMENT_OFFSET - popoverElement.clientWidth;
       }
 
       setStyle({
@@ -56,22 +56,28 @@ const BasePopover: FunctionComponent<PopoverProps> = () => {
 
   useEffect(() => {
     return () => {
-      handleClosing()
+      handleClosing();
     };
   }, []);
 
   return (
     <>
-      <EditorHighlightPopoverContextListener popoverRef={popoverRef} activeHighlight={highlight} handleClosing={handleClosing}/>
+      <EditorHighlightPopoverContextListener
+        popoverRef={popoverRef}
+        activeHighlight={highlight}
+        handleClosing={handleClosing}
+      />
       {isOpen && (
-        <div ref={popoverRef}
-             className={classList.join(' ')}
-             style={style}
-             onMouseEnter={() => handleOpening(widget, highlight)}
-             onMouseLeave={() => handleClosing()}>
+        <div
+          ref={popoverRef}
+          className={classList.join(' ')}
+          style={style}
+          onMouseEnter={() => handleOpening(widget, highlight)}
+          onMouseLeave={() => handleClosing()}
+        >
           {highlight && highlight.mistake && widget && (
             <>
-              <SpellcheckPopoverContent highlight={highlight} widget={widget}/>
+              <SpellcheckPopoverContent highlight={highlight} widget={widget} />
             </>
           )}
         </div>
@@ -80,10 +86,10 @@ const BasePopover: FunctionComponent<PopoverProps> = () => {
   );
 };
 
-const Popover: FunctionComponent<PopoverProps> = (props) => {
+const Popover: FunctionComponent<PopoverProps> = props => {
   return PopoverWithPortalDecorator(BasePopover)({
     ...props,
-    containerId: CONTAINER_ELEMENT_ID
+    containerId: CONTAINER_ELEMENT_ID,
   });
 };
 

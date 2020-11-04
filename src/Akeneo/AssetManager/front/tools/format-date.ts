@@ -6,11 +6,11 @@ const formatDateForUILocale = (date: string, options?: Intl.DateTimeFormatOption
   options = {timeZone, ...options};
 
   try {
-      return new Intl.DateTimeFormat(locale, options).format(new Date(date));
+    return new Intl.DateTimeFormat(locale, options).format(new Date(date));
   } catch (error) {
     if (error instanceof RangeError) {
       return new Intl.DateTimeFormat(locale, {...options, timeZone: 'UTC', timeZoneName: 'short'}).format(
-          new Date(date)
+        new Date(date)
       );
     }
 

@@ -1,32 +1,32 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import {useFormContext} from 'react-hook-form';
 import {
   ConstantOperand,
   FieldOperand,
   Operand,
 } from '../../../../../models/actions/Calculate/Operand';
-import { useControlledFormInputAction } from '../../../hooks';
+import {useControlledFormInputAction} from '../../../hooks';
 import {
   Operation,
   Operator,
 } from '../../../../../models/actions/Calculate/Operation';
-import { AttributePreview } from '../attribute/AttributePreview';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
+import {AttributePreview} from '../attribute/AttributePreview';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
 import styled from 'styled-components';
-import { Translate } from '../../../../../dependenciesTools';
+import {Translate} from '../../../../../dependenciesTools';
 
 const UnknownValue = styled.span`
-  color: ${({ theme }): string => theme.color.red100};
+  color: ${({theme}): string => theme.color.red100};
 `;
 
-const operationViewMapping: { [key: string]: string } = {
+const operationViewMapping: {[key: string]: string} = {
   add: '+',
   subtract: '-',
   multiply: 'x',
   divide: '/',
 };
 
-const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
+const OperandView: React.FC<{operand: Operand}> = ({operand}) => {
   const fieldOperand = (operand as FieldOperand).field;
   if (fieldOperand) {
     const fieldOperand = operand as FieldOperand;
@@ -44,7 +44,7 @@ const OperandView: React.FC<{ operand: Operand }> = ({ operand }) => {
 const OperationView: React.FC<{
   operation: Operation;
   translate: Translate;
-}> = ({ operation, translate }) => {
+}> = ({operation, translate}) => {
   const getOperatorView = (operator: Operator): string | JSX.Element => {
     if ('undefined' === operationViewMapping[operator]) {
       console.error(`The ${operator} operator is unknown`);
@@ -72,7 +72,7 @@ const RecursiveOperationView: React.FC<{
   operations: Operation[];
   source: Operand;
   translate: Translate;
-}> = ({ operations, source, translate }) => {
+}> = ({operations, source, translate}) => {
   const operationsCopy = Array.from(operations);
   const lastOperation: Operation | undefined = operationsCopy.pop();
   if (!lastOperation) {
@@ -97,10 +97,10 @@ type Props = {
   lineNumber: number;
 };
 
-const CalculatePreview: React.FC<Props> = ({ lineNumber }) => {
+const CalculatePreview: React.FC<Props> = ({lineNumber}) => {
   const translate = useTranslate();
-  const { watch } = useFormContext();
-  const { formName } = useControlledFormInputAction<string | null>(lineNumber);
+  const {watch} = useFormContext();
+  const {formName} = useControlledFormInputAction<string | null>(lineNumber);
   const getFullOperationListFormValue = () =>
     watch(formName('full_operation_list'));
 
@@ -123,4 +123,4 @@ const CalculatePreview: React.FC<Props> = ({ lineNumber }) => {
   );
 };
 
-export { CalculatePreview };
+export {CalculatePreview};

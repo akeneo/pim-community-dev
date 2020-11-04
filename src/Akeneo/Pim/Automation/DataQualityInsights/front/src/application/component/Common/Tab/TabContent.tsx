@@ -1,6 +1,6 @@
-import React, {FC, useCallback, useEffect, useState} from "react";
+import React, {FC, useCallback, useEffect, useState} from 'react';
 
-import {ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT} from "../../../constant";
+import {ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT} from '../../../constant';
 
 const CURRENT_TAB_SESSION_KEY = 'current_form_tab';
 
@@ -10,54 +10,59 @@ interface TabEvent {
 
 export type TabItem = {
   id: string;
-}
+};
 
 type TabPanelsList = {
   [id: string]: TabItem;
-}
+};
 
 export type TabState = {
-  baseId: string
+  baseId: string;
   visible: boolean;
-  selectedId: string|null;
+  selectedId: string | null;
   panels: TabPanelsList;
   registerPanel: (item: any) => void;
   unregisterPanel: (id: string) => void;
 };
 
 export const useTabState = (baseId?: string): TabState => {
-  const [generatedBaseId, setGeneratedBaseId] = useState<string>("");
+  const [generatedBaseId, setGeneratedBaseId] = useState<string>('');
   const [panels, setPanels] = useState<TabPanelsList>({});
-  const [selectedId, setSelectedId]= useState<string|null>(null);
-  const [visible, setVisible]= useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [visible, setVisible] = useState<boolean>(false);
 
-  const registerPanel = useCallback((item: TabItem) => {
-    setPanels({
-      ...panels,
-      [item.id]: item,
-    })
-  }, [panels, setPanels]);
+  const registerPanel = useCallback(
+    (item: TabItem) => {
+      setPanels({
+        ...panels,
+        [item.id]: item,
+      });
+    },
+    [panels, setPanels]
+  );
 
-  const unregisterPanel = useCallback((id: string) => {
-    const newPanelsList = Object.keys(panels).reduce((list, itemId) => {
-      if (itemId === id) {
-        return list;
-      }
+  const unregisterPanel = useCallback(
+    (id: string) => {
+      const newPanelsList = Object.keys(panels).reduce((list, itemId) => {
+        if (itemId === id) {
+          return list;
+        }
 
-      return {
-        ...list,
-        [itemId]: panels[itemId]
-      }
-    }, {});
+        return {
+          ...list,
+          [itemId]: panels[itemId],
+        };
+      }, {});
 
-    setPanels(newPanelsList);
-  }, [panels, setPanels]);
+      setPanels(newPanelsList);
+    },
+    [panels, setPanels]
+  );
 
   useEffect(() => {
-    const baseIdentifier = baseId || "";
+    const baseIdentifier = baseId || '';
     setGeneratedBaseId(baseIdentifier);
   }, [baseId, setGeneratedBaseId]);
-
 
   useEffect(() => {
     const handleTabChanged = (event: CustomEvent<TabEvent>) => {
@@ -65,11 +70,10 @@ export const useTabState = (baseId?: string): TabState => {
     };
     window.addEventListener(ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT, handleTabChanged as EventListener);
 
-    return (() => {
+    return () => {
       window.removeEventListener(ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT, handleTabChanged as EventListener);
-    })
+    };
   }, []);
-
 
   useEffect(() => {
     setSelectedId(sessionStorage.getItem(CURRENT_TAB_SESSION_KEY));
@@ -78,7 +82,7 @@ export const useTabState = (baseId?: string): TabState => {
     return () => {
       setSelectedId(null);
       setVisible(false);
-    }
+    };
   }, []);
 
   return {
@@ -87,8 +91,8 @@ export const useTabState = (baseId?: string): TabState => {
     selectedId,
     visible,
     registerPanel,
-    unregisterPanel
-  }
+    unregisterPanel,
+  };
 };
 
 type TabContentProps = TabState & {
@@ -98,7 +102,7 @@ type TabContentProps = TabState & {
 const TabContent: FC<TabContentProps> = ({children, tabId, ...tabState}) => {
   const {visible, selectedId} = tabState;
 
-  return <>{(visible && selectedId && selectedId === tabId) && children}</>
+  return <>{visible && selectedId && selectedId === tabId && children}</>;
 };
 
 export default TabContent;

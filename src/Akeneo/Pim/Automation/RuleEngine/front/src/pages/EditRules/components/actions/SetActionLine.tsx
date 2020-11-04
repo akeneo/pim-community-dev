@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Controller, useFormContext } from 'react-hook-form';
-import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from './ActionLineProps';
+import {Controller, useFormContext} from 'react-hook-form';
+import {ActionTemplate} from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
 import {
   ActionGrid,
   ActionLeftSide,
@@ -15,17 +15,17 @@ import {
   isMeasurementValueFilled,
   MANAGED_ATTRIBUTE_TYPES_FOR_SET_ACTION,
 } from './attribute';
-import { Attribute, AttributeType } from '../../../../models';
+import {Attribute, AttributeType} from '../../../../models';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputAction } from '../../hooks';
+import {useControlledFormInputAction} from '../../hooks';
 import {
   useGetAttributeAtMount,
   validateAttribute,
 } from './attribute/attribute.utils';
-import { SmallHelper } from '../../../../components/HelpersInfos';
+import {SmallHelper} from '../../../../components/HelpersInfos';
 
 const SmallHelperWrapper = styled.div`
   margin: -6px 0 10px;
@@ -67,7 +67,7 @@ const SetActionLine: React.FC<ActionLineProps> = ({
     scopeFormName,
   } = useControlledFormInputAction<string>(lineNumber);
   // Watch is needed in this case to trigger a render at input
-  const { watch } = useFormContext();
+  const {watch} = useFormContext();
   watch(valueFormName);
   watch(fieldFormName);
   watch(scopeFormName);
@@ -86,7 +86,7 @@ const SetActionLine: React.FC<ActionLineProps> = ({
         name={fieldFormName}
         as={<span hidden />}
         defaultValue=''
-        rules={{ validate: validateAttribute(translate, router) }}
+        rules={{validate: validateAttribute(translate, router)}}
       />
       <Controller name={typeFormName} as={<span hidden />} defaultValue='set' />
       <Controller
@@ -176,4 +176,4 @@ const SetActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { SetActionLine };
+export {SetActionLine};

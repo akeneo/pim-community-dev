@@ -1,7 +1,7 @@
 import React from 'react';
-import { renderWithProviders, screen } from '../../../../../../test-utils';
-import { Operator } from '../../../../../../src/models/Operator';
-import { StatusConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/StatusConditionLine';
+import {renderWithProviders, screen} from '../../../../../../test-utils';
+import {Operator} from '../../../../../../src/models/Operator';
+import {StatusConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/StatusConditionLine';
 
 describe('StatusConditionLine', () => {
   it('should display the status condition line', () => {
@@ -19,9 +19,9 @@ describe('StatusConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -31,8 +31,8 @@ describe('StatusConditionLine', () => {
         scopes={{}}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(screen.getByText('pim_common.status')).toBeInTheDocument();
     const operatorSelector = screen.getByTestId('edit-rules-input-1-operator');

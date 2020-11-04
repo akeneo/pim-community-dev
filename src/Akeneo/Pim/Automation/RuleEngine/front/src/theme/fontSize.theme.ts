@@ -14,4 +14,4 @@ const fontSize: fontSize = {
   title: '28px',
 };
 
-export { fontSize };
+export {fontSize};

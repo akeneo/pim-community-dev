@@ -1,9 +1,9 @@
-import { Operator } from '../Operator';
-import { ScopeCode } from '../Scope';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { CompletenessConditionLine } from '../../pages/EditRules/components/conditions/CompletenessConditionLine';
-import { ConditionFactory } from './Condition';
-import { LocaleCode } from '../Locale';
+import {Operator} from '../Operator';
+import {ScopeCode} from '../Scope';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {CompletenessConditionLine} from '../../pages/EditRules/components/conditions/CompletenessConditionLine';
+import {ConditionFactory} from './Condition';
+import {LocaleCode} from '../Locale';
 
 const CompletenessOperators: Operator[] = [
   Operator.EQUALS,

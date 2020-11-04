@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useBackboneRouter } from '../../../dependenciesTools/hooks';
+import React, {useState} from 'react';
+import {useBackboneRouter} from '../../../dependenciesTools/hooks';
 import {
   getAllCurrencies,
   IndexedCurrencies,
@@ -29,4 +29,4 @@ const useActiveCurrencies = () => {
   return activeCurrencies;
 };
 
-export { useActiveCurrencies };
+export {useActiveCurrencies};

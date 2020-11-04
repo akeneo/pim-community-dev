@@ -5,11 +5,11 @@ import {
   Select2SimpleAsyncWrapper,
   Select2Value,
 } from '../Select2Wrapper';
-import { Router } from '../../dependenciesTools';
-import { IndexedFamilies } from '../../fetch/FamilyFetcher';
-import { getFamilyByIdentifier } from '../../repositories/FamilyRepository';
-import { Family, FamilyCode, LocaleCode } from '../../models';
-import { useBackboneRouter } from '../../dependenciesTools/hooks';
+import {Router} from '../../dependenciesTools';
+import {IndexedFamilies} from '../../fetch/FamilyFetcher';
+import {getFamilyByIdentifier} from '../../repositories/FamilyRepository';
+import {Family, FamilyCode, LocaleCode} from '../../models';
+import {useBackboneRouter} from '../../dependenciesTools/hooks';
 
 type Props = {
   label: string;
@@ -112,4 +112,4 @@ const FamilySelector: React.FC<Props> = ({
   );
 };
 
-export { FamilySelector };
+export {FamilySelector};

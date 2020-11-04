@@ -1,4 +1,4 @@
-import { FormData } from '../edit-rules.types';
+import {FormData} from '../edit-rules.types';
 
 /**
  * Before sending the form to the backend, we remove all the NULL conditions and actions, loosing their
@@ -58,4 +58,4 @@ const getErrorPath = (formData: FormData, path: string) => {
   return path;
 };
 
-export { getErrorPath };
+export {getErrorPath};

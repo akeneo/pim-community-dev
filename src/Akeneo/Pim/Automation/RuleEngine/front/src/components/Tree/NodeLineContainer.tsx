@@ -4,7 +4,7 @@ const NodeLineContainer = styled.span`
   display: flex;
   align-items: center;
   height: 40px;
-  opacity: ${(props: { opacity?: number }) => props.opacity || 1};
+  opacity: ${(props: {opacity?: number}) => props.opacity || 1};
 `;
 
-export { NodeLineContainer };
+export {NodeLineContainer};

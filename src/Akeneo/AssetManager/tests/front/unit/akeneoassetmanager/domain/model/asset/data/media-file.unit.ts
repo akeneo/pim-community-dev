@@ -27,7 +27,9 @@ describe('akeneo > asset family > domain > model > asset > data --- media-file',
   });
 
   test('I can get the media file path of a MediaFileData', () => {
-    expect(getMediaFilePath({filePath: 'rest/asset_manager/image_preview/coucou', originalFilename: 'coucou.jpg'})).toEqual('rest/asset_manager/image_preview/coucou');
+    expect(
+      getMediaFilePath({filePath: 'rest/asset_manager/image_preview/coucou', originalFilename: 'coucou.jpg'})
+    ).toEqual('rest/asset_manager/image_preview/coucou');
   });
 
   test('I can get the generated url of a MediaFileData', () => {

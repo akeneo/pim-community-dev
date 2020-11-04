@@ -1,20 +1,20 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 import {
   TextAttributeCondition,
   TextAttributeOperators,
 } from '../../../../models/conditions';
-import { ConditionLineProps } from './ConditionLineProps';
-import { InputText } from '../../../../components/Inputs';
-import { AttributeConditionLine } from './AttributeConditionLine';
+import {ConditionLineProps} from './ConditionLineProps';
+import {InputText} from '../../../../components/Inputs';
+import {AttributeConditionLine} from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models';
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
-import { useControlledFormInputCondition } from '../../hooks';
-import { Operator } from '../../../../models/Operator';
+import {Attribute} from '../../../../models';
+import {getAttributeByIdentifier} from '../../../../repositories/AttributeRepository';
+import {useControlledFormInputCondition} from '../../hooks';
+import {Operator} from '../../../../models/Operator';
 
 type TextAttributeConditionLineProps = ConditionLineProps & {
   condition: TextAttributeCondition;
@@ -72,4 +72,4 @@ const TextAttributeConditionLine: React.FC<TextAttributeConditionLineProps> = ({
   );
 };
 
-export { TextAttributeConditionLine, TextAttributeConditionLineProps };
+export {TextAttributeConditionLine, TextAttributeConditionLineProps};

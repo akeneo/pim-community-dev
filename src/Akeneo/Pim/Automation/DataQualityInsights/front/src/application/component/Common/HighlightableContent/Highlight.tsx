@@ -1,15 +1,15 @@
-import React, {FC, useLayoutEffect, useState} from "react";
+import React, {FC, useLayoutEffect, useState} from 'react';
 
-import LegacyHighlight from "../../ProductEditForm/TabContent/Attributes/EditorHighlight/Highlight";
-import {useHighlightableContentContext} from "../../../context/HighlightableContentContext";
-import {HighlightElement} from "../../../helper";
-import {useHighlightsContainerContext} from "../../../context/HighlightsContainerContext";
+import LegacyHighlight from '../../ProductEditForm/TabContent/Attributes/EditorHighlight/Highlight';
+import {useHighlightableContentContext} from '../../../context/HighlightableContentContext';
+import {HighlightElement} from '../../../helper';
+import {useHighlightsContainerContext} from '../../../context/HighlightsContainerContext';
 
 type HighlightProps = {
   highlight: HighlightElement;
 };
 
-const buildElementRect = (left: number, top: number, width: number, height: number):DOMRect => {
+const buildElementRect = (left: number, top: number, width: number, height: number): DOMRect => {
   return {
     x: left,
     y: top,
@@ -19,9 +19,9 @@ const buildElementRect = (left: number, top: number, width: number, height: numb
     height: height,
     bottom: top + height,
     right: left + width,
-    toJSON: () => ({})
+    toJSON: () => ({}),
   };
-}
+};
 
 const Highlight: FC<HighlightProps> = ({highlight}) => {
   const {content, element} = useHighlightableContentContext();
@@ -31,19 +31,11 @@ const Highlight: FC<HighlightProps> = ({highlight}) => {
 
   useLayoutEffect(() => {
     if (element !== null) {
-      setElementRect(buildElementRect(
-        position.left,
-        position.top,
-        dimension.width,
-        dimension.height,
-      ));
+      setElementRect(buildElementRect(position.left, position.top, dimension.width, dimension.height));
     }
   }, [position, dimension]);
 
-
-  return (
-    <LegacyHighlight key={highlight.id} highlight={highlight} editorRect={elementRect} content={content} />
-  )
-}
+  return <LegacyHighlight key={highlight.id} highlight={highlight} editorRect={elementRect} content={content} />;
+};
 
 export default Highlight;

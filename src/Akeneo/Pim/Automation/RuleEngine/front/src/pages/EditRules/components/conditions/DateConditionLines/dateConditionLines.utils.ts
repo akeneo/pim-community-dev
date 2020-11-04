@@ -1,6 +1,6 @@
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
-import { Operator } from '../../../../../models/Operator';
+import {Operator} from '../../../../../models/Operator';
 import {
   DateTypeOptionIds,
   DateValue,
@@ -8,8 +8,8 @@ import {
   TimePeriodOptionsIds,
   isDateBetweenValue,
 } from './dateConditionLines.type';
-import { DateAttributeOperators } from '../../../../../models/conditions';
-import { Translate } from '../../../../../dependenciesTools';
+import {DateAttributeOperators} from '../../../../../models/conditions';
+import {Translate} from '../../../../../dependenciesTools';
 
 const PRESENT_DEFAULT_VALUE = 'now';
 const PAST_DATE_DEFAULT_VALUE = '-0 day';

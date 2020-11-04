@@ -100,7 +100,7 @@ module.exports = async function(cucumber) {
 
     for (const locale in assetFamily.labels) {
       const label = assetFamily.labels[locale];
-      await(await editPage.getLocaleSwitcher()).switchLocale(locale);
+      await (await editPage.getLocaleSwitcher()).switchLocale(locale);
       const labelValue = await properties.getLabel();
       assert.strictEqual(labelValue, label);
     }

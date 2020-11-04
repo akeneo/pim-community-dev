@@ -130,8 +130,9 @@ class DatagridViewAccessManager
             return true;
         }
 
-        /** @var \Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface $category */
-        if (null === $category = $this->categoryRepository->find($categoryId)) {
+        /** @var \Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface|null $category */
+        $category = $this->categoryRepository->find($categoryId);
+        if (null === $category) {
             return false;
         }
 
@@ -143,7 +144,7 @@ class DatagridViewAccessManager
      *
      * @param DatagridView $view
      *
-     * @return int|null
+     * @return string|null
      */
     protected function getCategoryIdFromViewFilters(DatagridView $view)
     {

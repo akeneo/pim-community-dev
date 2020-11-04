@@ -1,10 +1,10 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { CategoryTree } from '../../../../../src/components/CategoryTree/components/CategoryTree';
-import { renderWithProviders, screen } from '../../../../../test-utils';
-import { Category } from '../../../../../src/models';
-import { CategoryTreeModel } from '../../../../../src/components/CategoryTree/category-tree.types';
-import { fetchCategoryTreeChildren } from '../../../../../src/fetch/categoryTree.fetcher';
+import {CategoryTree} from '../../../../../src/components/CategoryTree/components/CategoryTree';
+import {renderWithProviders, screen} from '../../../../../test-utils';
+import {Category} from '../../../../../src/models';
+import {CategoryTreeModel} from '../../../../../src/components/CategoryTree/category-tree.types';
+import {fetchCategoryTreeChildren} from '../../../../../src/fetch/categoryTree.fetcher';
 
 describe('SelectCategoriesTrees', () => {
   beforeEach(() => jest.clearAllMocks());
@@ -107,7 +107,7 @@ describe('SelectCategoriesTrees', () => {
         onSelectCategory={onSelectCategory}
         selectedCategories={selectedCategories}
       />,
-      { all: true }
+      {all: true}
     );
     // Then
     expect(screen.getByText(categoryTree.labels[locale])).toBeInTheDocument();
@@ -197,7 +197,7 @@ describe('SelectCategoriesTrees', () => {
         onSelectCategory={onSelectCategory}
         selectedCategories={selectedCategories}
       />,
-      { all: true }
+      {all: true}
     );
     expect(screen.getByText(categoryTree.labels[locale])).toBeInTheDocument();
     expect(await screen.findByText(/master catalog/i)).toBeInTheDocument();
@@ -253,7 +253,7 @@ describe('SelectCategoriesTrees', () => {
         onSelectCategory={onSelectCategory}
         selectedCategories={selectedCategories}
       />,
-      { all: true }
+      {all: true}
     );
     expect(screen.getByText(categoryTree.labels[locale])).toBeInTheDocument();
     expect(await screen.findByText(/master catalog/i)).toBeInTheDocument();

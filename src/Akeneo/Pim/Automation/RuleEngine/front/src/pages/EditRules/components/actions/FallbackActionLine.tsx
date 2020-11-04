@@ -1,15 +1,15 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from './ActionLineProps';
-import { useControlledFormInputAction } from '../../hooks';
+import {Controller, useFormContext} from 'react-hook-form';
+import {ActionTemplate} from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
+import {useControlledFormInputAction} from '../../hooks';
 
 const FallbackActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
   handleDelete,
 }) => {
-  const { watch } = useFormContext();
-  const { formName, getFormValue } = useControlledFormInputAction<boolean>(
+  const {watch} = useFormContext();
+  const {formName, getFormValue} = useControlledFormInputAction<boolean>(
     lineNumber
   );
   const getActionValues = () => watch(`content.actions[${lineNumber}]`);
@@ -46,4 +46,4 @@ const FallbackActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { FallbackActionLine };
+export {FallbackActionLine};

@@ -20,6 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Filter not granted values
@@ -97,6 +98,7 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
         if (null === $user->getId()) {
             if (UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
                 return -1;

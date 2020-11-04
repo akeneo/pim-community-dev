@@ -1,8 +1,8 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { renderWithProviders, screen } from '../../../../../../test-utils';
-import { Operator } from '../../../../../../src/models/Operator';
-import { CompletenessConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/CompletenessConditionLine';
+import {renderWithProviders, screen} from '../../../../../../test-utils';
+import {Operator} from '../../../../../../src/models/Operator';
+import {CompletenessConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/CompletenessConditionLine';
 
 describe('CompletenessConditionLine', () => {
   beforeEach(() => {
@@ -24,11 +24,11 @@ describe('CompletenessConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
-      { name: 'content.conditions[1].locale', type: 'custom' },
-      { name: 'content.conditions[1].scope', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
+      {name: 'content.conditions[1].locale', type: 'custom'},
+      {name: 'content.conditions[1].scope', type: 'custom'},
     ];
     renderWithProviders(
       <CompletenessConditionLine
@@ -37,8 +37,8 @@ describe('CompletenessConditionLine', () => {
         locales={[]}
         scopes={{}}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText('pim_common.completeness')

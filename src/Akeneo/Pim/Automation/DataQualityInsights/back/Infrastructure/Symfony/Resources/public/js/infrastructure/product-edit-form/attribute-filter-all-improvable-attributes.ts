@@ -4,7 +4,7 @@ import {
   fetchProductDataQualityEvaluation,
   fetchProductModelEvaluation,
   CriterionEvaluationResult,
-  ProductEvaluation
+  ProductEvaluation,
 } from '@akeneo-pim-community/data-quality-insights/src/index';
 
 import {get as _get, has as _has, pick as _pick, uniq as _uniq} from 'lodash';
@@ -14,21 +14,23 @@ const __ = require('oro/translator');
 const BaseForm = require('pim/form');
 const UserContext = require('pim/user-context');
 
-class AttributeFilterAllImprovableAttributes extends BaseForm
-{
+class AttributeFilterAllImprovableAttributes extends BaseForm {
   async filterValues(values: any) {
     const product = this.getFormData();
     const missing_attributes = await this.fetchProductEvaluation(product);
     const valuesToFill = _pick(values, missing_attributes);
 
-    return $.Deferred().resolve(valuesToFill).promise();
+    return $.Deferred()
+      .resolve(valuesToFill)
+      .promise();
   }
 
   async fetchProductEvaluation(product: any) {
     const scope = UserContext.get('catalogScope');
     const locale = UserContext.get('catalogLocale');
 
-    const fetcher = product.meta.model_type === 'product_model' ? fetchProductModelEvaluation : fetchProductDataQualityEvaluation;
+    const fetcher =
+      product.meta.model_type === 'product_model' ? fetchProductModelEvaluation : fetchProductDataQualityEvaluation;
 
     const data: ProductEvaluation = await fetcher(product.meta.id);
 

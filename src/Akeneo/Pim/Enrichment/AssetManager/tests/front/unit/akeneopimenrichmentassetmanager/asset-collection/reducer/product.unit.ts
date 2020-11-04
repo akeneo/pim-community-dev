@@ -243,9 +243,7 @@ test('It should filter the current values for locale specific attributes', () =>
     },
   ];
 
-  const expectedValues = [
-      values[0], values[2]
-  ];
+  const expectedValues = [values[0], values[2]];
 
   const state = {
     context: {channel: 'ecommerce', locale: 'en_US'},

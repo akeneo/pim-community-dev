@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Control, useFormContext } from 'react-hook-form';
-import { SmallHelper } from '../../../../components';
+import {Control, useFormContext} from 'react-hook-form';
+import {SmallHelper} from '../../../../components';
 import {
   AttributeType,
   Condition,
@@ -32,20 +32,20 @@ import {
   Locale,
   LocaleCode,
 } from '../../../../models/';
-import { TextBoxBlue } from '../TextBoxBlue';
-import { useProductsCount } from '../../hooks';
-import { IndexedScopes } from '../../../../repositories/ScopeRepository';
-import { ConditionLine } from './ConditionLine';
-import { ProductsCount } from '../ProductsCount';
-import { AddFieldButton } from '../../../../components/Selectors/AddFieldButton';
-import { FormData } from '../../edit-rules.types';
+import {TextBoxBlue} from '../TextBoxBlue';
+import {useProductsCount} from '../../hooks';
+import {IndexedScopes} from '../../../../repositories/ScopeRepository';
+import {ConditionLine} from './ConditionLine';
+import {ProductsCount} from '../ProductsCount';
+import {AddFieldButton} from '../../../../components/Selectors/AddFieldButton';
+import {FormData} from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { Action } from '../../../../models/Action';
-import { EmptySectionMessage } from '../EmptySectionMessage';
+import {Action} from '../../../../models/Action';
+import {EmptySectionMessage} from '../EmptySectionMessage';
 
 const Header = styled.header`
   font-weight: normal;
@@ -68,6 +68,9 @@ const LegendSrOnly = styled.legend`
 const HeaderPartContainer = styled.span`
   display: flex;
   align-items: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const TitleHeader = styled.span`
@@ -75,19 +78,19 @@ const TitleHeader = styled.span`
 `;
 
 const AddConditionContainer = styled.div`
-  border-left: 1px solid ${({ theme }) => theme.color.grey100};
+  border-left: 1px solid ${({theme}) => theme.color.grey100};
   display: flex;
   margin-left: 15px;
   padding-left: 15px;
 `;
 
-const RuleProductSelectionFieldset = styled.fieldset<{ hasActions: boolean }>`
+const RuleProductSelectionFieldset = styled.fieldset<{hasActions: boolean}>`
   padding-bottom: 20px;
   &:focus {
     outline: none;
   }
 
-  ${({ hasActions }) =>
+  ${({hasActions}) =>
     hasActions &&
     `
     background-image: url('${startImage}');
@@ -98,7 +101,7 @@ const RuleProductSelectionFieldset = styled.fieldset<{ hasActions: boolean }>`
 `;
 
 const getValuesFromFormData = (getValues: Control['getValues']): FormData =>
-  getValues({ nest: true }) as FormData;
+  getValues({nest: true}) as FormData;
 
 type Props = {
   currentCatalogLocale: LocaleCode;
@@ -120,7 +123,7 @@ const RuleProductSelection: React.FC<Props> = ({
   const translate = useTranslate();
   const router = useBackboneRouter();
 
-  const { getValues } = useFormContext();
+  const {getValues} = useFormContext();
 
   const productsCount = useProductsCount(
     router,
@@ -209,20 +212,20 @@ const RuleProductSelection: React.FC<Props> = ({
 
   const isActiveConditionField = React.useCallback(
     (fieldCode: string) => {
-      return (getValues({ nest: true })?.content?.conditions || []).some(
+      return (getValues({nest: true})?.content?.conditions || []).some(
         (condition: Condition) => {
           return (
             Object.hasOwnProperty.call(condition, 'field') &&
-            (condition as { field: string }).field === fieldCode
+            (condition as {field: string}).field === fieldCode
           );
         }
       );
     },
-    [getValues({ nest: true })?.content?.conditions]
+    [getValues({nest: true})?.content?.conditions]
   );
 
   const hasActions =
-    (getValues({ nest: true })?.content?.actions || []).filter(
+    (getValues({nest: true})?.content?.actions || []).filter(
       (action: Action) => action !== null
     ).length > 0;
 
@@ -311,4 +314,4 @@ const RuleProductSelection: React.FC<Props> = ({
 
 RuleProductSelection.displayName = 'RuleProductSelection';
 
-export { RuleProductSelection };
+export {RuleProductSelection};

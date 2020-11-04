@@ -87,13 +87,17 @@ export const ConfirmModal = ({
               <div className="AknFullPage-description">{content}</div>
             </div>
             <ButtonContainer>
-              <Button color="grey" onClick={onCancel}>{cancelButtonText}</Button>
-              <Button color="blue" onClick={onConfirm}>{confirmButtonText}</Button>
+              <Button color="grey" onClick={onCancel}>
+                {cancelButtonText}
+              </Button>
+              <Button color="blue" onClick={onConfirm}>
+                {confirmButtonText}
+              </Button>
             </ButtonContainer>
           </div>
         </div>
       </div>
-      <div className="AknFullPage-cancel cancel" onClick={onCancel}/>
+      <div className="AknFullPage-cancel cancel" onClick={onCancel} />
     </Modal>
-  )
+  );
 };

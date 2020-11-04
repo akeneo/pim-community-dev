@@ -1,7 +1,7 @@
-import { Router } from '../../dependenciesTools';
+import {Router} from '../../dependenciesTools';
 import React from 'react';
-import { ConditionLineProps } from '../../pages/EditRules/components/conditions/ConditionLineProps';
-import { FallbackConditionLine } from '../../pages/EditRules/components/conditions/FallbackConditionLine';
+import {ConditionLineProps} from '../../pages/EditRules/components/conditions/ConditionLineProps';
+import {FallbackConditionLine} from '../../pages/EditRules/components/conditions/FallbackConditionLine';
 import {
   Condition,
   getAssetCollectionAttributeConditionModule,
@@ -33,12 +33,12 @@ import {
 export type ConditionModuleGuesser = (
   json: any,
   router: Router
-) => Promise<React.FC<ConditionLineProps & { condition: Condition }> | null>;
+) => Promise<React.FC<ConditionLineProps & {condition: Condition}> | null>;
 
 const getConditionModule: (
   json: any,
   router: Router
-) => Promise<React.FC<ConditionLineProps & { condition: Condition }>> = async (
+) => Promise<React.FC<ConditionLineProps & {condition: Condition}>> = async (
   json,
   router
 ) => {
@@ -81,4 +81,4 @@ const getConditionModule: (
   return FallbackConditionLine;
 };
 
-export { getConditionModule };
+export {getConditionModule};

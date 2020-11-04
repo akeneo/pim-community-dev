@@ -1,8 +1,8 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { createAttribute, locales, scopes } from '../../../../factories';
-import { Operator } from '../../../../../../src/models/Operator';
-import { FileAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/FileAttributeConditionLine';
+import {createAttribute, locales, scopes} from '../../../../factories';
+import {Operator} from '../../../../../../src/models/Operator';
+import {FileAttributeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/FileAttributeConditionLine';
 import {
   renderWithProviders,
   screen,
@@ -26,7 +26,7 @@ describe('FileAttributeConditionLine', () => {
           type: 'pim_catalog_file',
         })
       ),
-      { status: 200 },
+      {status: 200},
     ]);
 
     const defaultValues = {
@@ -43,10 +43,10 @@ describe('FileAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
-      { name: 'content.conditions[0].locale', type: 'custom' },
-      { name: 'content.conditions[0].scope', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
+      {name: 'content.conditions[0].locale', type: 'custom'},
+      {name: 'content.conditions[0].scope', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -60,8 +60,8 @@ describe('FileAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
@@ -98,7 +98,7 @@ describe('FileAttributeConditionLine', () => {
           type: 'pim_catalog_file',
         })
       ),
-      { status: 200 },
+      {status: 200},
     ]);
     const defaultValues = {
       content: {
@@ -112,8 +112,8 @@ describe('FileAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
     renderWithProviders(
       <FileAttributeConditionLine
@@ -126,8 +126,8 @@ describe('FileAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
       () => {
@@ -152,7 +152,7 @@ describe('FileAttributeConditionLine', () => {
           type: 'pim_catalog_file',
         })
       ),
-      { status: 200 },
+      {status: 200},
     ]);
 
     renderWithProviders(
@@ -166,7 +166,7 @@ describe('FileAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true }
+      {all: true}
     );
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
       () => {
@@ -198,7 +198,7 @@ describe('FileAttributeConditionLine', () => {
           type: 'pim_catalog_file',
         })
       ),
-      { status: 200 },
+      {status: 200},
     ]);
     renderWithProviders(
       <FileAttributeConditionLine
@@ -211,7 +211,7 @@ describe('FileAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true }
+      {all: true}
     );
     await waitForElementToBeRemoved(() => document.querySelector('img')).then(
       () => {

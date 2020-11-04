@@ -1,4 +1,4 @@
-import { IndexedCurrencies } from '../../../src/repositories/CurrencyRepository';
+import {IndexedCurrencies} from '../../../src/repositories/CurrencyRepository';
 
 export const currencies: IndexedCurrencies = {
   EUR: {

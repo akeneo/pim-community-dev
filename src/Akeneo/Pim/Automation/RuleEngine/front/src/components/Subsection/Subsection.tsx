@@ -12,9 +12,9 @@ const Legend = styled.legend`
   width: 100%;
 `;
 
-type Props = { title?: string };
+type Props = {title?: string};
 
-const Subsection: React.FC<Props> = ({ children, title }) => {
+const Subsection: React.FC<Props> = ({children, title}) => {
   return (
     <div className='AknSubsection'>
       {title && <Header className='AknSubsection-title'>{title}</Header>}
@@ -23,7 +23,7 @@ const Subsection: React.FC<Props> = ({ children, title }) => {
   );
 };
 
-const FormSubsection: React.FC<Props> = ({ children, title }) => {
+const FormSubsection: React.FC<Props> = ({children, title}) => {
   return (
     <div className='AknSubsection'>
       <fieldset>
@@ -34,4 +34,4 @@ const FormSubsection: React.FC<Props> = ({ children, title }) => {
   );
 };
 
-export { Subsection, FormSubsection };
+export {Subsection, FormSubsection};

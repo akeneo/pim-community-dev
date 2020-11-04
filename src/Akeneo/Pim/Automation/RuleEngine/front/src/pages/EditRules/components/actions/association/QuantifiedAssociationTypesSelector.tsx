@@ -10,15 +10,15 @@ import {
   ActionRightSide,
   ActionTitle,
 } from '../ActionLine';
-import { Label } from '../../../../../components/Labels';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
-import { AssociationTypeSwitcher } from './AssociationTypeSwitcher';
+import {Label} from '../../../../../components/Labels';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
+import {AssociationTypeSwitcher} from './AssociationTypeSwitcher';
 import {
   QuantifiedAssociationTarget,
   QuantifiedTarget,
 } from '../SetQuantifiedAssociationsActionLine';
-import { QuantifiedAssociationsIdentifiersSelector } from './QuantifiedAssociationsIdentifiersSelector';
-import { EmptySourceHelper } from '../style';
+import {QuantifiedAssociationsIdentifiersSelector} from './QuantifiedAssociationsIdentifiersSelector';
+import {EmptySourceHelper} from '../style';
 
 type Props = {
   value: QuantifiedAssociationValue;
@@ -38,8 +38,8 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
   const [associationValues, setAssociationValues] = React.useState<
     Map<
       QuantifiedAssociationTarget,
-      | { identifier: ProductIdentifier; quantity: number }[]
-      | { identifier: ProductModelCode; quantity: number }[]
+      | {identifier: ProductIdentifier; quantity: number}[]
+      | {identifier: ProductModelCode; quantity: number}[]
     >
   >();
   const [
@@ -53,7 +53,7 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
       (['products', 'product_models'] as QuantifiedTarget[]).forEach(target => {
         if (typeof value[associationTypeCode][target] !== 'undefined') {
           associationValuesArray.push([
-            { associationTypeCode, target },
+            {associationTypeCode, target},
             value[associationTypeCode][target],
           ]);
         }
@@ -61,8 +61,8 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
     });
     const associationValues = new Map<
       QuantifiedAssociationTarget,
-      | { identifier: ProductIdentifier; quantity: number }[]
-      | { identifier: ProductModelCode; quantity: number }[]
+      | {identifier: ProductIdentifier; quantity: number}[]
+      | {identifier: ProductModelCode; quantity: number}[]
     >(associationValuesArray);
     setAssociationValues(associationValues);
     setCurrentAssociationTarget(Array.from(associationValues.keys())[0]);
@@ -116,15 +116,15 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
   ) => {
     associationValues.delete(associationTarget);
     setAssociationValues(new Map(associationValues));
-    setCurrentAssociationTarget({ ...Array.from(associationValues.keys())[0] });
+    setCurrentAssociationTarget({...Array.from(associationValues.keys())[0]});
     onChange(formatAssociationValues());
   };
 
   const handleChange = (
     associationTarget: QuantifiedAssociationTarget,
     value:
-      | { identifier: ProductIdentifier; quantity: number }[]
-      | { identifier: ProductModelCode; quantity: number }[]
+      | {identifier: ProductIdentifier; quantity: number}[]
+      | {identifier: ProductModelCode; quantity: number}[]
   ) => {
     associationValues.set(associationTarget, value);
     setAssociationValues(new Map(associationValues));
@@ -195,8 +195,10 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
                 value={
                   (associationValues.get(
                     currentAssociationTargetOrDefault() as QuantifiedAssociationTarget
-                  ) as { identifier: ProductIdentifier; quantity: number }[]) ||
-                  []
+                  ) as {
+                    identifier: ProductIdentifier;
+                    quantity: number;
+                  }[]) || []
                 }
                 onChange={productIdentifiers =>
                   handleChange(
@@ -213,8 +215,10 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
                 value={
                   (associationValues.get(
                     currentAssociationTargetOrDefault() as QuantifiedAssociationTarget
-                  ) as { identifier: ProductModelCode; quantity: number }[]) ||
-                  []
+                  ) as {
+                    identifier: ProductModelCode;
+                    quantity: number;
+                  }[]) || []
                 }
                 onChange={productModelCodes =>
                   handleChange(
@@ -243,4 +247,4 @@ const QuantifiedAssociationTypesSelector: React.FC<Props> = ({
   );
 };
 
-export { QuantifiedAssociationTypesSelector };
+export {QuantifiedAssociationTypesSelector};

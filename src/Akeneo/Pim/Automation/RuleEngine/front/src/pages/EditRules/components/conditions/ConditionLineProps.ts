@@ -1,5 +1,5 @@
-import { Locale, LocaleCode } from '../../../../models';
-import { IndexedScopes } from '../../../../repositories/ScopeRepository';
+import {Locale, LocaleCode} from '../../../../models';
+import {IndexedScopes} from '../../../../repositories/ScopeRepository';
 
 export type ConditionLineProps = {
   lineNumber: number;

@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { AkeneoSpinner } from '../AkeneoSpinner';
-import { SelectCategoriesTrees } from './components/SelectCategoriesTrees';
-import { CategoryTree } from './components/CategoryTree';
+import {AkeneoSpinner} from '../AkeneoSpinner';
+import {SelectCategoriesTrees} from './components/SelectCategoriesTrees';
+import {CategoryTree} from './components/CategoryTree';
 import {
   CategoryTreeModel,
   CategoryTreeModelWithOpenBranch,
 } from './category-tree.types';
-import { Category, CategoryCode, LocaleCode } from '../../models';
-import { NetworkLifeCycle } from './hooks/NetworkLifeCycle.types';
+import {Category, CategoryCode, LocaleCode} from '../../models';
+import {NetworkLifeCycle} from './hooks/NetworkLifeCycle.types';
 
 const ContainerCategoryTree = styled.div`
   margin: 0 20px;
@@ -68,4 +68,4 @@ const CategoryTreeFilter: React.FC<Props> = ({
   );
 };
 
-export { CategoryTreeFilter };
+export {CategoryTreeFilter};

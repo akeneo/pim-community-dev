@@ -4,9 +4,9 @@ type CategoryId = number;
 type Category = {
   code: CategoryCode;
   parent: CategoryCode;
-  labels: { [locale: string]: string };
+  labels: {[locale: string]: string};
   id: CategoryId;
   root: CategoryId;
 };
 
-export { CategoryId, CategoryCode, Category };
+export {CategoryId, CategoryCode, Category};

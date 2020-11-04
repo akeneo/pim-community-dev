@@ -1,11 +1,11 @@
-import { useApplicationContext } from './useApplicationContext';
+import {useApplicationContext} from './useApplicationContext';
 import {
   Router,
   RouteParams,
 } from '../provider/applicationDependenciesProvider.type';
 
 const useBackboneRouter = (): Router => {
-  const { router } = useApplicationContext();
+  const {router} = useApplicationContext();
   if (router) {
     return router;
   }
@@ -33,4 +33,4 @@ const generateAndRedirect = (
   return [url, handleRedirect];
 };
 
-export { generateAndRedirect, generateUrl, redirectToUrl, useBackboneRouter };
+export {generateAndRedirect, generateUrl, redirectToUrl, useBackboneRouter};

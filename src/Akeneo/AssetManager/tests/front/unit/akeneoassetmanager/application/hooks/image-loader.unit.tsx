@@ -23,7 +23,7 @@ describe('Test useImageLoader hook', () => {
 
   test('There is an url if the image is loaded', async () => {
     loadImage.mockImplementationOnce(resolveImmediatly);
-    const {result,waitForNextUpdate} = renderHook(() => useImageLoader('foo.jpg'));
+    const {result, waitForNextUpdate} = renderHook(() => useImageLoader('foo.jpg'));
     await waitForNextUpdate();
     expect(result.current).toBe('foo.jpg');
   });
@@ -31,7 +31,7 @@ describe('Test useImageLoader hook', () => {
   test('The url is cleared after some time if the new one is not loaded fast enough', async () => {
     loadImage.mockImplementationOnce(resolveImmediatly);
     let url = 'foo.jpg';
-    const {result,waitForNextUpdate,rerender} = renderHook(() => useImageLoader(url));
+    const {result, waitForNextUpdate, rerender} = renderHook(() => useImageLoader(url));
     await waitForNextUpdate();
     expect(result.current).toBe('foo.jpg');
 

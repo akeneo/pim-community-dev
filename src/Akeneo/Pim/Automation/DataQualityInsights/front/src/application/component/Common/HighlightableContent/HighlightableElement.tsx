@@ -1,11 +1,11 @@
-import React, {FC} from "react";
+import React, {FC} from 'react';
 
-import {HighlightsContextProvider} from "../../../context/HighlightsContext";
-import HighlightableContent from "./HighlightableContent";
-import {HighlightElement} from "../../../helper";
+import {HighlightsContextProvider} from '../../../context/HighlightsContext';
+import HighlightableContent from './HighlightableContent';
+import {HighlightElement} from '../../../helper';
 
 type HighlightableElementProps = {
-  element: HTMLElement|null;
+  element: HTMLElement | null;
   highlights: HighlightElement[];
   baseId: string;
 };
@@ -21,7 +21,7 @@ const HighlightableElement: FC<HighlightableElementProps> = ({children, element,
         </HighlightsContextProvider>
       )}
     </>
-  )
-}
+  );
+};
 
 export default HighlightableElement;

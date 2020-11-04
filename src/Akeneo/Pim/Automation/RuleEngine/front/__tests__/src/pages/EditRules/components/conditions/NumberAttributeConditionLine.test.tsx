@@ -1,11 +1,11 @@
 import React from 'react';
-import { renderWithProviders, screen } from '../../../../../../test-utils';
+import {renderWithProviders, screen} from '../../../../../../test-utils';
 import 'jest-fetch-mock';
-import { NumberAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/NumberAttributeConditionLine';
-import { Operator } from '../../../../../../src/models/Operator';
+import {NumberAttributeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/NumberAttributeConditionLine';
+import {Operator} from '../../../../../../src/models/Operator';
 import userEvent from '@testing-library/user-event';
-import { wait } from '@testing-library/dom';
-import { createAttribute, locales, scopes } from '../../../../factories';
+import {wait} from '@testing-library/dom';
+import {createAttribute, locales, scopes} from '../../../../factories';
 
 describe('NumberAttributeConditionLine', () => {
   afterEach(() => {
@@ -21,7 +21,7 @@ describe('NumberAttributeConditionLine', () => {
           scopable: true,
         })
       ),
-      { status: 200 },
+      {status: 200},
     ]);
     const defaultValues = {
       content: {
@@ -39,11 +39,11 @@ describe('NumberAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
-      { name: 'content.conditions[1].locale', type: 'custom' },
-      { name: 'content.conditions[1].scope', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
+      {name: 'content.conditions[1].locale', type: 'custom'},
+      {name: 'content.conditions[1].scope', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -57,8 +57,8 @@ describe('NumberAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('Nom')).toBeInTheDocument();
@@ -84,7 +84,7 @@ describe('NumberAttributeConditionLine', () => {
           scopable: false,
         })
       ),
-      { status: 200 },
+      {status: 200},
     ]);
     const defaultValues = {
       content: {
@@ -100,9 +100,9 @@ describe('NumberAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -116,8 +116,8 @@ describe('NumberAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('Nom')).toBeInTheDocument();
@@ -136,7 +136,7 @@ describe('NumberAttributeConditionLine', () => {
           scopable: false,
         })
       ),
-      { status: 200 },
+      {status: 200},
     ]);
 
     const defaultValues = {
@@ -153,9 +153,9 @@ describe('NumberAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -169,8 +169,8 @@ describe('NumberAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(await screen.findByText('Name')).toBeInTheDocument();
     const operatorSelector = screen.getByTestId('edit-rules-input-1-operator');
@@ -195,7 +195,7 @@ describe('NumberAttributeConditionLine', () => {
           scopable: true,
         })
       ),
-      { status: 200 },
+      {status: 200},
     ]);
     const defaultValues = {
       content: {
@@ -213,11 +213,11 @@ describe('NumberAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
-      { name: 'content.conditions[1].scope', type: 'custom' },
-      { name: 'content.conditions[1].locale', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
+      {name: 'content.conditions[1].scope', type: 'custom'},
+      {name: 'content.conditions[1].locale', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -234,8 +234,8 @@ describe('NumberAttributeConditionLine', () => {
         scopes={scopes}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(await screen.findByText('Name')).toBeInTheDocument();
     const operatorSelector = screen.getByTestId('edit-rules-input-1-operator');

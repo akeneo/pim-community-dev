@@ -1,6 +1,6 @@
-import { Dialog, DialogStateReturn } from 'reakit/Dialog';
+import {Dialog, DialogStateReturn} from 'reakit/Dialog';
 import React from 'react';
-import { useTranslate } from '../../dependenciesTools/hooks';
+import {useTranslate} from '../../dependenciesTools/hooks';
 
 type Props = {
   dialog: DialogStateReturn;
@@ -81,4 +81,4 @@ const AlertDialog: React.FC<Props> = ({
   );
 };
 
-export { AlertDialog };
+export {AlertDialog};

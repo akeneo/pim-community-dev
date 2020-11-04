@@ -1,7 +1,7 @@
 import React from 'react';
-import { Select2MultiSyncWrapper, Select2Value } from '../Select2Wrapper';
-import { CurrencyCode } from '../../models/Currency';
-import { useTranslate } from '../../dependenciesTools/hooks';
+import {Select2MultiSyncWrapper, Select2Value} from '../Select2Wrapper';
+import {CurrencyCode} from '../../models/Currency';
+import {useTranslate} from '../../dependenciesTools/hooks';
 
 type Props = {
   label?: string;
@@ -50,4 +50,4 @@ const CurrenciesSelector: React.FC<Props> = ({
   );
 };
 
-export { CurrenciesSelector };
+export {CurrenciesSelector};

@@ -1,14 +1,14 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { CreateRules } from '../../../../src/pages/CreateRules';
+import {CreateRules} from '../../../../src/pages/CreateRules';
 import userEvent from '@testing-library/user-event';
-import { render, screen, act, fireEvent } from '../../../../test-utils';
+import {render, screen, act, fireEvent} from '../../../../test-utils';
 
 describe('CreateRules', () => {
   it('should render the page', async () => {
     // Given nothing
     // When
-    render(<CreateRules />, { legacy: true });
+    render(<CreateRules />, {legacy: true});
     // Then
     expect(await screen.findByText('pim_menu.item.rule /')).toBeInTheDocument();
     expect(
@@ -26,7 +26,7 @@ describe('CreateRules', () => {
   it('should redirect to the rules list', async () => {
     // Given nothing
     // When
-    render(<CreateRules />, { legacy: true });
+    render(<CreateRules />, {legacy: true});
     const leaveButton = (await screen.findByTestId(
       'leave-page-button'
     )) as HTMLAnchorElement;
@@ -40,11 +40,11 @@ describe('CreateRules', () => {
     // Given
     fetchMock.once(async () => {
       return new Promise(resolve =>
-        setTimeout(() => resolve({ body: 'ok' }), 100)
+        setTimeout(() => resolve({body: 'ok'}), 100)
       );
     });
     // When
-    render(<CreateRules />, { legacy: true });
+    render(<CreateRules />, {legacy: true});
     const inputCode = (await screen.findByLabelText(
       'pim_common.code pim_common.required_label'
     )) as HTMLInputElement;
@@ -101,7 +101,7 @@ describe('CreateRules', () => {
         throw new Error(`The ${request.url} route was not expected`);
       }
       return new Promise(resolve =>
-        setTimeout(() => resolve({ body: 'ok' }), 100)
+        setTimeout(() => resolve({body: 'ok'}), 100)
       );
     });
     // When

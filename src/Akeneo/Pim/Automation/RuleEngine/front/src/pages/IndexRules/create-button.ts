@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const BaseForm = require('pimui/js/view/base');
-import { EventsHash } from 'backbone';
+import {EventsHash} from 'backbone';
 const Router = require('pim/router');
 const __ = require('oro/translator');
 
 class CreateButton extends BaseForm {
   private config: any;
 
-  constructor(options: { config: any }) {
+  constructor(options: {config: any}) {
     super({
       ...options,
       className: 'AknButton AknButtonList-item AknButton--apply',

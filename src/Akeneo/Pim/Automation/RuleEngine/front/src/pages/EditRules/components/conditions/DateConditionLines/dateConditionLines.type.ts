@@ -1,5 +1,5 @@
-import { Translate } from '../../../../../dependenciesTools';
-import { Operator } from '../../../../../models/Operator';
+import {Translate} from '../../../../../dependenciesTools';
+import {Operator} from '../../../../../models/Operator';
 
 type DateOperator =
   | Operator.IS_EMPTY
@@ -23,7 +23,7 @@ enum DateTypeOptionIds {
   NONE = 'NONE',
 }
 
-type DateTypeOption = { id: DateTypeOptionIds; text: string };
+type DateTypeOption = {id: DateTypeOptionIds; text: string};
 
 const createDateTypeOptions = (translate: Translate): DateTypeOption[] => [
   {

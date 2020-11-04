@@ -1,10 +1,10 @@
-import { Router } from '../../dependenciesTools';
+import {Router} from '../../dependenciesTools';
 import {
   CategoryTreeModel,
   CategoryTreeModelWithOpenBranch,
 } from './category-tree.types';
-import { Category } from '../../models';
-import { NetworkLifeCycle } from './hooks/NetworkLifeCycle.types';
+import {Category} from '../../models';
+import {NetworkLifeCycle} from './hooks/NetworkLifeCycle.types';
 import {
   fetchCategoryTree,
   fetchRootCategoryTrees,
@@ -19,7 +19,7 @@ const getInitCategoryTreeOpenedNode = async (
   >
 ) => {
   const selectedCategoriesIds = selectedCategories.map(category => category.id);
-  fnSetter(prev => ({ ...prev, status: 'PENDING' }));
+  fnSetter(prev => ({...prev, status: 'PENDING'}));
   let response = null;
   try {
     response = await fetchCategoryTree(
@@ -29,7 +29,7 @@ const getInitCategoryTreeOpenedNode = async (
     );
     if (response.ok) {
       const data = await response.json();
-      fnSetter(prev => ({ ...prev, status: 'COMPLETE', data }));
+      fnSetter(prev => ({...prev, status: 'COMPLETE', data}));
       return response;
     }
   } catch (e) {
@@ -42,7 +42,7 @@ const getInitCategoryTreeOpenedNode = async (
     }));
     return response;
   }
-  fnSetter(prev => ({ ...prev, status: 'COMPLETE', data: null }));
+  fnSetter(prev => ({...prev, status: 'COMPLETE', data: null}));
   return response;
 };
 
@@ -51,10 +51,10 @@ const getCategoriesTrees = async (
     React.SetStateAction<NetworkLifeCycle<CategoryTreeModel[]>>
   >
 ) => {
-  fnSetter(prev => ({ ...prev, status: 'PENDING' }));
+  fnSetter(prev => ({...prev, status: 'PENDING'}));
   const data: CategoryTreeModel[] = await fetchRootCategoryTrees();
-  fnSetter(prev => ({ ...prev, status: 'COMPLETE', data }));
+  fnSetter(prev => ({...prev, status: 'COMPLETE', data}));
   return data;
 };
 
-export { getInitCategoryTreeOpenedNode, getCategoriesTrees };
+export {getInitCategoryTreeOpenedNode, getCategoriesTrees};

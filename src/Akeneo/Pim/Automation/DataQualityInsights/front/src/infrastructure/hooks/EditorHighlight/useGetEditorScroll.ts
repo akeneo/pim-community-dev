@@ -1,6 +1,6 @@
-import {useEffect, useLayoutEffect, useState} from "react";
-import {EditorElement, isTextInput} from "../../../application/helper";
-import {useMountedState} from "../Common/useMountedState";
+import {useEffect, useLayoutEffect, useState} from 'react';
+import {EditorElement, isTextInput} from '../../../application/helper';
+import {useMountedState} from '../Common/useMountedState';
 
 const useGetEditorScroll = (editor: EditorElement) => {
   const [editorScrollTop, setEditorScrollTop] = useState<number>(0);
@@ -16,14 +16,14 @@ const useGetEditorScroll = (editor: EditorElement) => {
     let lastScrollTop = 0;
     let lastScrollLeft = 0;
     let ticking = false;
-    let requestAnimationFrameId: number|null = null;
+    let requestAnimationFrameId: number | null = null;
 
     const handleScroll = () => {
       lastScrollTop = editor.scrollTop;
       lastScrollLeft = editor.scrollLeft;
 
       if (!isMounted() || ticking) {
-        return
+        return;
       }
 
       requestAnimationFrameId = window.requestAnimationFrame(() => {
@@ -34,7 +34,7 @@ const useGetEditorScroll = (editor: EditorElement) => {
       ticking = true;
     };
 
-    editor.addEventListener("scroll", handleScroll, true);
+    editor.addEventListener('scroll', handleScroll, true);
 
     return () => {
       if (requestAnimationFrameId !== null) {
@@ -42,14 +42,13 @@ const useGetEditorScroll = (editor: EditorElement) => {
         requestAnimationFrameId = null;
       }
 
-      editor.removeEventListener("scroll", handleScroll);
+      editor.removeEventListener('scroll', handleScroll);
     };
   }, [editor.id]);
 
-
   useEffect(() => {
     let ticking = false;
-    let requestAnimationFrameId: number|null = null;
+    let requestAnimationFrameId: number | null = null;
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!isMounted() || ticking) {
@@ -59,9 +58,12 @@ const useGetEditorScroll = (editor: EditorElement) => {
       requestAnimationFrameId = window.requestAnimationFrame(() => {
         const scrollLeft = editor.scrollLeft;
         if (
-            event.key === "ArrowLeft" || event.key === "ArrowRight" ||
-            event.key === "ArrowUp" || event.key === "ArrowDown" ||
-            event.key === "Home" || event.key === "End"
+          event.key === 'ArrowLeft' ||
+          event.key === 'ArrowRight' ||
+          event.key === 'ArrowUp' ||
+          event.key === 'ArrowDown' ||
+          event.key === 'Home' ||
+          event.key === 'End'
         ) {
           setEditorScrollLeft(scrollLeft);
         }
@@ -94,11 +96,10 @@ const useGetEditorScroll = (editor: EditorElement) => {
     };
   }, [editor.id]);
 
-
   useLayoutEffect(() => {
     let ticking = false;
     let buttonPressedInEditor = false;
-    let requestAnimationFrameId: number|null = null;
+    let requestAnimationFrameId: number | null = null;
 
     const handleMouseMove = (event: MouseEvent) => {
       if (!isMounted() || !isTextInput(editor) || ticking) {
@@ -109,7 +110,7 @@ const useGetEditorScroll = (editor: EditorElement) => {
         const isEditor = event.target === editor;
 
         if (isEditor && !buttonPressedInEditor) {
-          buttonPressedInEditor = (event.buttons === 1);
+          buttonPressedInEditor = event.buttons === 1;
         }
 
         if (isEditor || buttonPressedInEditor) {
@@ -155,7 +156,7 @@ const useGetEditorScroll = (editor: EditorElement) => {
 
   return {
     editorScrollTop,
-    editorScrollLeft
+    editorScrollLeft,
   };
 };
 

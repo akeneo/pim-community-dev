@@ -1,7 +1,7 @@
-import React, {FC, useEffect} from "react";
-import {debounce} from "lodash";
+import React, {FC, useEffect} from 'react';
+import {debounce} from 'lodash';
 
-import {useHighlightableContentContext} from "../../../context/HighlightableContentContext";
+import {useHighlightableContentContext} from '../../../context/HighlightableContentContext';
 
 const CHANGE_MILLISECONDS_DELAY = 300;
 
@@ -24,7 +24,7 @@ const UpdateHighlightsOnInputChange: FC<{}> = () => {
     };
   }, [element]);
 
-  return (<></>);
-}
+  return <></>;
+};
 
 export default UpdateHighlightsOnInputChange;

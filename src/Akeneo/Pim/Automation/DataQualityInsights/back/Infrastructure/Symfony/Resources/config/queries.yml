@@ -107,7 +107,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.automation.data_quality_insights.query.product.get_missing_image_attributes_masks:
+    akeneo.pim.automation.data_quality_insights.query.product.get_enrichment_images_masks:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesMasksQuery
         arguments:
             $connection: '@database_connection'
@@ -116,7 +116,7 @@ services:
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::ASSET_COLLECTION
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::LEGACY_ASSET_COLLECTION
 
-    akeneo.pim.automation.data_quality_insights.query.product_model.get_missing_image_attributes_masks:
+    akeneo.pim.automation.data_quality_insights.query.product_model.get_enrichment_images_masks:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesProductModelMasksQuery
         arguments:
             $connection: '@database_connection'

@@ -1,6 +1,6 @@
-import { GroupCode } from '../Group';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { RemoveGroupsActionLine } from '../../pages/EditRules/components/actions/RemoveGroupsActionLine';
+import {GroupCode} from '../Group';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
+import {RemoveGroupsActionLine} from '../../pages/EditRules/components/actions/RemoveGroupsActionLine';
 
 export type RemoveGroupsAction = {
   type: 'remove';

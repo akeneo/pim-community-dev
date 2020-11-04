@@ -7,4 +7,4 @@ type Locale = {
   language: string;
 };
 
-export { Locale, LocaleCode };
+export {Locale, LocaleCode};

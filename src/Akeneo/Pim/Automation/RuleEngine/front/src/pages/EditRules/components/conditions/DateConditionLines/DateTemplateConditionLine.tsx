@@ -1,6 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, {useRef, useEffect} from 'react';
 import styled from 'styled-components';
-import { Controller } from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 import {
   useUserCatalogLocale,
   useTranslate,
@@ -18,10 +18,10 @@ import {
   isARangeOperator,
   shouldRenderPresentValue,
 } from './dateConditionLines.utils';
-import { OperatorSelector } from '../../../../../components/Selectors/OperatorSelector';
-import { Select2SimpleSyncWrapper } from '../../../../../components';
-import { DateAttributeValue } from './DateAttributeValue';
-import { useControlledFormInputCondition } from '../../..';
+import {OperatorSelector} from '../../../../../components/Selectors/OperatorSelector';
+import {Select2SimpleSyncWrapper} from '../../../../../components';
+import {DateAttributeValue} from './DateAttributeValue';
+import {useControlledFormInputCondition} from '../../..';
 import {
   DateValue,
   DateTypeOption,
@@ -29,7 +29,7 @@ import {
   DateTypeOptionIds,
   TimePeriodOptionsIds,
 } from './dateConditionLines.type';
-import { Operator } from '../../../../../models/Operator';
+import {Operator} from '../../../../../models/Operator';
 import {
   ScopeSelector,
   getScopeValidation,
@@ -38,23 +38,22 @@ import {
   LocaleSelector,
   getLocaleValidation,
 } from '../../../../../components/Selectors/LocaleSelector';
-import { Attribute, Locale } from '../../../../../models';
-import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
+import {Attribute, Locale} from '../../../../../models';
+import {IndexedScopes} from '../../../../../repositories/ScopeRepository';
 
-const ValueColumn = styled.span<{ noValueSelection?: boolean }>`
+const ValueColumn = styled.span<{noValueSelection?: boolean}>`
   &:not(:empty) {
     display: inline-flex;
-    width: ${({ noValueSelection }) => (noValueSelection ? '139px' : '300px')};
+    width: ${({noValueSelection}) => (noValueSelection ? '139px' : '300px')};
     margin: 0 20px 0 0;
     min-height: 40px;
-    ${({ noValueSelection }) => (noValueSelection ? 'display: flex;' : '')};
+    ${({noValueSelection}) => (noValueSelection ? 'display: flex;' : '')};
   }
 `;
 
-const StyledSelect2Wrapper = styled.div<{ noValueSelection?: boolean }>`
-  width: ${({ noValueSelection }) => (noValueSelection ? '100%' : '53%')};
-  padding-right: ${({ noValueSelection }) =>
-    noValueSelection ? '0px' : '20px'};
+const StyledSelect2Wrapper = styled.div<{noValueSelection?: boolean}>`
+  width: ${({noValueSelection}) => (noValueSelection ? '100%' : '53%')};
+  padding-right: ${({noValueSelection}) => (noValueSelection ? '0px' : '20px')};
 `;
 
 type Props = {
@@ -250,4 +249,4 @@ const DateTemplateConditionLine: React.FC<Props> = ({
   );
 };
 
-export { DateTemplateConditionLine };
+export {DateTemplateConditionLine};

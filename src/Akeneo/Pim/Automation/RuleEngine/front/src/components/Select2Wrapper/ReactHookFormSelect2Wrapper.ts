@@ -1,6 +1,6 @@
 import React from 'react';
-import { Select2Props, Select2Value, Select2Wrapper } from './Select2Wrapper';
-import { useFormContext } from 'react-hook-form';
+import {Select2Props, Select2Value, Select2Wrapper} from './Select2Wrapper';
+import {useFormContext} from 'react-hook-form';
 
 type Props = {
   name: string;
@@ -13,13 +13,13 @@ type Props = {
 } & Select2Props;
 
 const ReactHookFormSelect2Wrapper: React.FC<Props> = props => {
-  const { register, setValue, unregister, getValues } = useFormContext();
-  const { name, validation, value, onChange, ...remainingProps } = props;
+  const {register, setValue, unregister, getValues} = useFormContext();
+  const {name, validation, value, onChange, ...remainingProps} = props;
   const [lastKnownValue, setLastKnownValue] = React.useState<any>(value);
   const currentFormValue = getValues()[name];
 
   React.useEffect(() => {
-    register({ name }, validation);
+    register({name}, validation);
     setValue(name, lastKnownValue);
 
     return () => {
@@ -30,7 +30,7 @@ const ReactHookFormSelect2Wrapper: React.FC<Props> = props => {
   React.useEffect(() => {
     if (currentFormValue === undefined) {
       // After the save, the value was unregistered. We have to put it back.
-      register({ name }, validation);
+      register({name}, validation);
       setValue(name, lastKnownValue);
     }
   }, [currentFormValue]);
@@ -46,11 +46,11 @@ const ReactHookFormSelect2Wrapper: React.FC<Props> = props => {
   };
 
   React.useEffect(() => {
-    register({ name }, validation);
+    register({name}, validation);
   }, [validation]);
 
   React.useEffect(() => {
-    register({ name }, validation);
+    register({name}, validation);
     setValue(name, lastKnownValue);
   }, [name]);
 
@@ -61,4 +61,4 @@ const ReactHookFormSelect2Wrapper: React.FC<Props> = props => {
   });
 };
 
-export { ReactHookFormSelect2Wrapper };
+export {ReactHookFormSelect2Wrapper};

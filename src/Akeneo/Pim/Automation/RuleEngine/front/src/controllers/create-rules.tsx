@@ -1,9 +1,9 @@
 import React from 'react';
-import { ApplicationDependenciesProvider } from '../dependenciesTools';
+import {ApplicationDependenciesProvider} from '../dependenciesTools';
 import ReactController, {
   RouteParams,
 } from '../dependenciesTools/reactController/ReactController';
-import { CreateRules as CreateRulesPage } from '../pages/CreateRules';
+import {CreateRules as CreateRulesPage} from '../pages/CreateRules';
 
 class CreateRules extends ReactController {
   reactElementToMount(routeParams: RouteParams) {

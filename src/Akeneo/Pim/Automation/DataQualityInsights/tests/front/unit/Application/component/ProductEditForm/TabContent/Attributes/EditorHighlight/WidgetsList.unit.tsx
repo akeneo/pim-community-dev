@@ -1,17 +1,16 @@
-import React from "react";
-import {Provider} from "react-redux";
+import React from 'react';
+import {Provider} from 'react-redux';
 
-import {render} from "@testing-library/react";
+import {render} from '@testing-library/react';
 
-import WidgetsList
-  from "@akeneo-pim-ee/data-quality-insights/src/application/component/ProductEditForm/TabContent/Attributes/EditorHighlight/WidgetsList";
+import WidgetsList from '@akeneo-pim-ee/data-quality-insights/src/application/component/ProductEditForm/TabContent/Attributes/EditorHighlight/WidgetsList';
 import {
   createStoreWithInitialState,
-  ProductEditFormState
-} from "@akeneo-pim-ee/data-quality-insights/src/infrastructure/store/productEditFormStore";
-import {createWidget} from "@akeneo-pim-ee/data-quality-insights/src/application/helper";
+  ProductEditFormState,
+} from '@akeneo-pim-ee/data-quality-insights/src/infrastructure/store/productEditFormStore';
+import {createWidget} from '@akeneo-pim-ee/data-quality-insights/src/application/helper';
 
-beforeEach(() =>  {
+beforeEach(() => {
   jest.resetModules();
 });
 
@@ -30,70 +29,74 @@ describe('WidgetsList', () => {
         widgets: {
           'spellcheck-1': createWidget('spellcheck-1', editor1, 'attribute_textarea_editor_id', 'attribute_textarea'),
           'spellcheck-2': createWidget('spellcheck-2', editor2, 'attribute_text_editor_id', 'attribute_text'),
-          'spellcheck-3': createWidget('spellcheck-3', editor4, 'attribute_wysiwyg_text_editor_id', 'attribute_wysiwyg_text'),
-        }
-      }
+          'spellcheck-3': createWidget(
+            'spellcheck-3',
+            editor4,
+            'attribute_wysiwyg_text_editor_id',
+            'attribute_wysiwyg_text'
+          ),
+        },
+      },
     });
 
     expect(getAllByTestId(/^editor-highlight-spellcheck-.+/i).length).toBe(3);
   });
-
 });
 
 const renderComponent = (testedState: any) => {
   const state = {
     ...initialProductEditFormState,
-    ...testedState
+    ...testedState,
   };
 
   return render(
     <Provider store={createStoreWithInitialState(state)}>
-      <WidgetsList/>
+      <WidgetsList />
     </Provider>
   );
 };
 
 const initialProductEditFormState: ProductEditFormState = {
-    catalogContext: {
-      channel: '',
-      locale: '',
-    },
-    pageContext: {
-      currentTab: '',
-      attributesTabIsLoading: false,
-      attributeToImprove: null,
-    },
-    productEvaluation: {},
-    productAxesRates: {},
-    families: {},
-    product: {
-      categories: [],
-      enabled: true,
-      family: null,
-      identifier: null,
-      meta: {
-        id: null,
-        label: {},
-        level: null,
-        attributes_for_this_level: [],
-        model_type: "product",
-        variant_navigation: [],
-        family_variant: {
-          variant_attribute_sets: []
-        },
-        parent_attributes: [],
+  catalogContext: {
+    channel: '',
+    locale: '',
+  },
+  pageContext: {
+    currentTab: '',
+    attributesTabIsLoading: false,
+    attributeToImprove: null,
+  },
+  productEvaluation: {},
+  productAxesRates: {},
+  families: {},
+  product: {
+    categories: [],
+    enabled: true,
+    family: null,
+    identifier: null,
+    meta: {
+      id: null,
+      label: {},
+      level: null,
+      attributes_for_this_level: [],
+      model_type: 'product',
+      variant_navigation: [],
+      family_variant: {
+        variant_attribute_sets: [],
       },
-      created: null,
-      updated: null,
+      parent_attributes: [],
     },
-    editorHighlight: {
-      widgets: {},
-      popover: {
-        isOpen: false,
-        highlight: null,
-        widgetId: null,
-        handleOpening: () => {},
-        handleClosing: () => {},
-      },
+    created: null,
+    updated: null,
+  },
+  editorHighlight: {
+    widgets: {},
+    popover: {
+      isOpen: false,
+      highlight: null,
+      widgetId: null,
+      handleOpening: () => {},
+      handleClosing: () => {},
     },
+  },
 };

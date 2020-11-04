@@ -82,6 +82,8 @@ class ProductValueAttributeGroupRightFilter extends AbstractAuthorizationFilter 
 
             return !$this->attributeGroupAccess[$groupId];
         }
+
+        return false;
     }
 
     /**

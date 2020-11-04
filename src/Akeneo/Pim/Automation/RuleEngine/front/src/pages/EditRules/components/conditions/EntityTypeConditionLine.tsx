@@ -1,8 +1,8 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
-import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { Operator } from '../../../../models/Operator';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
+import {OperatorSelector} from '../../../../components/Selectors/OperatorSelector';
+import {Operator} from '../../../../models/Operator';
 import {
   ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
@@ -11,11 +11,11 @@ import {
   OperatorColumn,
   ValueColumn,
 } from './style';
-import { LineErrors } from '../LineErrors';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputCondition } from '../../hooks';
-import { EntityType, EntityTypeOperators } from '../../../../models/conditions';
-import { EntityTypeSelector } from '../../../../components/Selectors/EntityTypeSelector';
+import {LineErrors} from '../LineErrors';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
+import {useControlledFormInputCondition} from '../../hooks';
+import {EntityType, EntityTypeOperators} from '../../../../models/conditions';
+import {EntityTypeSelector} from '../../../../components/Selectors/EntityTypeSelector';
 
 const EntityTypeConditionLine: React.FC<ConditionLineProps> = ({
   lineNumber,
@@ -86,4 +86,4 @@ const EntityTypeConditionLine: React.FC<ConditionLineProps> = ({
   );
 };
 
-export { EntityTypeConditionLine };
+export {EntityTypeConditionLine};

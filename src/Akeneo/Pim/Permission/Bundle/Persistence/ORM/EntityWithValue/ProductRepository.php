@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Webmozart\Assert\Assert;
 
 /**
  * Decorates CE product repository to apply permissions.
@@ -167,6 +168,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getItemsFromIdentifiers(array $identifiers)
     {
+        Assert::implementsInterface($this->productRepository, CursorableRepositoryInterface::class);
         $products = $this->productRepository->getItemsFromIdentifiers($identifiers);
 
         return $this->getFilteredProducts($products);
@@ -177,6 +179,8 @@ class ProductRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
+        Assert::implementsInterface($this->productRepository, IdentifiableObjectRepositoryInterface::class);
+
         return $this->productRepository->getIdentifierProperties();
     }
 

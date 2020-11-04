@@ -1,18 +1,18 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
+import {Controller} from 'react-hook-form';
 import {
   BooleanAttributeCondition,
   BooleanAttributeOperators,
 } from '../../../../models/conditions';
-import { ConditionLineProps } from './ConditionLineProps';
-import { AttributeConditionLine } from './AttributeConditionLine';
+import {ConditionLineProps} from './ConditionLineProps';
+import {AttributeConditionLine} from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models';
-import { getAttributeByIdentifier } from '../../../../repositories/AttributeRepository';
-import { useControlledFormInputCondition } from '../../hooks';
+import {Attribute} from '../../../../models';
+import {getAttributeByIdentifier} from '../../../../repositories/AttributeRepository';
+import {useControlledFormInputCondition} from '../../hooks';
 import InputBoolean from '../../../../components/Inputs/InputBoolean';
 
 type BooleanAttributeConditionLineProps = ConditionLineProps & {
@@ -28,7 +28,7 @@ const BooleanAttributeConditionLine: React.FC<BooleanAttributeConditionLineProps
 }) => {
   const router = useBackboneRouter();
   const translate = useTranslate();
-  const { valueFormName, getValueFormValue } = useControlledFormInputCondition<
+  const {valueFormName, getValueFormValue} = useControlledFormInputCondition<
     boolean
   >(lineNumber);
   const [attribute, setAttribute] = React.useState<Attribute | null>();
@@ -61,4 +61,4 @@ const BooleanAttributeConditionLine: React.FC<BooleanAttributeConditionLineProps
   );
 };
 
-export { BooleanAttributeConditionLine, BooleanAttributeConditionLineProps };
+export {BooleanAttributeConditionLine, BooleanAttributeConditionLineProps};

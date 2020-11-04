@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Category, LocaleCode, CategoryCode } from '../../../models';
-import { useGetCategoryChildren } from '../hooks/useGetCategoryChildren';
-import { NetworkLifeCycle } from '../hooks/NetworkLifeCycle.types';
-import { NodeType, isBranch } from '../../Tree/tree.types';
+import React, {useState} from 'react';
+import {Category, LocaleCode, CategoryCode} from '../../../models';
+import {useGetCategoryChildren} from '../hooks/useGetCategoryChildren';
+import {NetworkLifeCycle} from '../hooks/NetworkLifeCycle.types';
+import {NodeType, isBranch} from '../../Tree/tree.types';
 import {
   TreeCheckbox,
   FolderIcons,
@@ -12,7 +12,7 @@ import {
   NodeContainer,
   NodeLineContainer,
 } from '../../Tree';
-import { useTranslate } from '../../../dependenciesTools/hooks';
+import {useTranslate} from '../../../dependenciesTools/hooks';
 import {
   CategoryTreeNodeModel,
   CategoryTreeModelWithOpenBranch,
@@ -155,4 +155,4 @@ const CategoryTreeNode: React.FC<Props> = ({
   );
 };
 
-export { CategoryTreeNode };
+export {CategoryTreeNode};

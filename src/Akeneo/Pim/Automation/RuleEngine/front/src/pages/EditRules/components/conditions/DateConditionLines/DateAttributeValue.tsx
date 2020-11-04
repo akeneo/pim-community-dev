@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react';
+import React, {forwardRef} from 'react';
 import styled from 'styled-components';
-import { Operator } from '../../../../../models/Operator';
+import {Operator} from '../../../../../models/Operator';
 import {
   InputDate,
   InputDateType,
@@ -23,7 +23,7 @@ import {
   isDateBetweenValue,
   isDateStandardValue,
 } from './dateConditionLines.type';
-import { Translate } from '../../../../../dependenciesTools';
+import {Translate} from '../../../../../dependenciesTools';
 
 type DateAttributeValueProps = {
   currentOperator: Operator;
@@ -80,7 +80,7 @@ const DateAttributeValue = forwardRef<
               onChange={event => handleValueChange(event, 0)}
               ref={forwardedRef}
               value={currentValue[0]}
-              style={{ marginRight: '20px' }}
+              style={{marginRight: '20px'}}
             />
             <CustomInputDate
               type={inputDateType}
@@ -141,4 +141,4 @@ const DateAttributeValue = forwardRef<
 
 DateAttributeValue.displayName = 'DateAttributeValue';
 
-export { DateAttributeValue };
+export {DateAttributeValue};

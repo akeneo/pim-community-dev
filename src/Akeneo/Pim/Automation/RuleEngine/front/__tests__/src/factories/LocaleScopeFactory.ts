@@ -1,7 +1,7 @@
-import { IndexedScopes } from '../../../src/repositories/ScopeRepository';
-import { Locale, Scope } from '../../../src/models';
+import {IndexedScopes} from '../../../src/repositories/ScopeRepository';
+import {Locale, Scope} from '../../../src/models';
 
-export const createLocale = (data: { [key: string]: any }): Locale => {
+export const createLocale = (data: {[key: string]: any}): Locale => {
   return {
     code: 'en_US',
     label: 'English (United States)',
@@ -32,14 +32,14 @@ export const locales: Locale[] = [
   },
 ];
 
-export const createScope = (data: { [key: string]: any }): Scope => {
+export const createScope = (data: {[key: string]: any}): Scope => {
   return {
     code: 'ecommerce',
     currencies: ['EUR', 'USD'],
     locales: locales,
     category_tree: 'master',
     conversion_units: [],
-    labels: { en_US: 'e-commerce' },
+    labels: {en_US: 'e-commerce'},
     meta: {},
     ...data,
   };
@@ -52,7 +52,7 @@ export const scopes: IndexedScopes = {
     locales: locales,
     category_tree: 'master',
     conversion_units: [],
-    labels: { en_US: 'e-commerce' },
+    labels: {en_US: 'e-commerce'},
     meta: {},
   },
   mobile: {
@@ -61,7 +61,7 @@ export const scopes: IndexedScopes = {
     locales: [locales[0], locales[1]],
     category_tree: 'master',
     conversion_units: [],
-    labels: { en_US: 'Mobile' },
+    labels: {en_US: 'Mobile'},
     meta: {},
   },
   print: {
@@ -70,7 +70,7 @@ export const scopes: IndexedScopes = {
     locales: [locales[0], locales[1]],
     category_tree: 'master',
     conversion_units: [],
-    labels: { en_US: 'Mobile' },
+    labels: {en_US: 'Mobile'},
     meta: {},
   },
 };

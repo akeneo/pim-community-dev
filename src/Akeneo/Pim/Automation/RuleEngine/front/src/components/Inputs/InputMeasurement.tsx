@@ -1,13 +1,13 @@
 import React from 'react';
-import { useTranslate } from '../../dependenciesTools/hooks';
-import { Attribute, MeasurementUnitCode } from '../../models';
-import { InputNumber } from './';
+import {useTranslate} from '../../dependenciesTools/hooks';
+import {Attribute, MeasurementUnitCode} from '../../models';
+import {InputNumber} from './';
 import {
   getMeasurementUnitValidator,
   MeasurementUnitSelector,
 } from '../Selectors/MeasurementUnitSelector';
 import styled from 'styled-components';
-import { Router, Translate } from '../../dependenciesTools';
+import {Router, Translate} from '../../dependenciesTools';
 import {
   isMeasurementAmountFilled,
   isMeasurementUnitFilled,
@@ -15,9 +15,9 @@ import {
   parseMeasurementValue,
 } from '../../models/Measurement';
 
-const MeasurementContainer = styled.div<{ hiddenLabel: boolean }>`
+const MeasurementContainer = styled.div<{hiddenLabel: boolean}>`
   display: flex;
-  flex-wrap: ${({ hiddenLabel }): string => (hiddenLabel ? 'nowrap' : 'wrap')};
+  flex-wrap: ${({hiddenLabel}): string => (hiddenLabel ? 'nowrap' : 'wrap')};
   width: 100%;
 
   .AknNumberField {
@@ -50,7 +50,7 @@ const getMeasurementValidator = (
     } else if (!isMeasurementUnitFilled(value)) {
       return translate('pimee_catalog_rule.exceptions.required_unit');
     } else {
-      const { validate } = getMeasurementUnitValidator(
+      const {validate} = getMeasurementUnitValidator(
         attribute,
         router,
         translate
@@ -83,10 +83,10 @@ const InputMeasurement: React.FC<Props> = ({
   const parsedValue = parseMeasurementValue(value);
 
   const handleAmountChange = (amount: number | null) => {
-    onChange({ amount, unit: parsedValue.unit });
+    onChange({amount, unit: parsedValue.unit});
   };
   const handleUnitChange = (unit: MeasurementUnitCode | null) => {
-    onChange({ amount: parsedValue.amount, unit });
+    onChange({amount: parsedValue.amount, unit});
   };
 
   return (
@@ -122,4 +122,4 @@ const InputMeasurement: React.FC<Props> = ({
 
 InputMeasurement.displayName = 'InputMeasurement';
 
-export { InputMeasurement, getMeasurementValidator };
+export {InputMeasurement, getMeasurementValidator};

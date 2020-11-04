@@ -1,8 +1,8 @@
-import React, {createContext, FC, useContext} from "react";
+import React, {createContext, FC, useContext} from 'react';
 
-import {Attribute} from "@akeneo-pim-community/data-quality-insights/src/domain";
-import {AttributeSpellcheckEvaluationContextProvider} from "./AttributeSpellcheckEvaluationContext";
-import {AttributeOptionsListContextProvider} from "./AttributeOptionsListContext";
+import {Attribute} from '@akeneo-pim-community/data-quality-insights/src/domain';
+import {AttributeSpellcheckEvaluationContextProvider} from './AttributeSpellcheckEvaluationContext';
+import {AttributeOptionsListContextProvider} from './AttributeOptionsListContext';
 
 export type AttributeEditFormContextState = {
   attribute: Attribute;
@@ -11,21 +11,21 @@ export type AttributeEditFormContextState = {
 
 export const AttributeEditFormContext = createContext<AttributeEditFormContextState>({
   attribute: {
-    code: "",
-    type: "",
-    group: "",
+    code: '',
+    type: '',
+    group: '',
     meta: {
       id: 0,
     },
   },
-  renderingId: 0
+  renderingId: 0,
 });
 
 AttributeEditFormContext.displayName = 'AttributeEditFormContext';
 
 export const useAttributeEditFormContext = (): AttributeEditFormContextState => {
   return useContext(AttributeEditFormContext);
-}
+};
 
 type ProviderProps = {
   attribute: Attribute;
@@ -36,12 +36,12 @@ export const AttributeEditFormContextProvider: FC<ProviderProps> = ({children, .
   const {attribute} = initialState;
 
   return (
-      <AttributeEditFormContext.Provider value={initialState}>
-        <AttributeOptionsListContextProvider attribute={attribute}>
-          <AttributeSpellcheckEvaluationContextProvider attribute={attribute}>
-            {children}
-          </AttributeSpellcheckEvaluationContextProvider>
-        </AttributeOptionsListContextProvider>
-      </AttributeEditFormContext.Provider>
+    <AttributeEditFormContext.Provider value={initialState}>
+      <AttributeOptionsListContextProvider attribute={attribute}>
+        <AttributeSpellcheckEvaluationContextProvider attribute={attribute}>
+          {children}
+        </AttributeSpellcheckEvaluationContextProvider>
+      </AttributeOptionsListContextProvider>
+    </AttributeEditFormContext.Provider>
   );
-}
+};
