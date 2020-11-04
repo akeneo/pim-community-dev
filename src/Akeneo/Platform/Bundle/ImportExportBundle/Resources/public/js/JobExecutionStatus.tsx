@@ -23,7 +23,7 @@ type JobExecutionStatusProps = {
   hasError: boolean;
 };
 
-const JobExecutionStatus = ({status, currentStep, totalSteps, hasWarning, hasError}: JobExecutionStatusProps) => {
+const JobExecutionStatus = ({status, currentStep, totalSteps, hasWarning, hasError, ...props}: JobExecutionStatusProps) => {
   const level = badgeLevel(status, hasError, hasWarning);
   const translate = useTranslate();
 
@@ -32,7 +32,7 @@ const JobExecutionStatus = ({status, currentStep, totalSteps, hasWarning, hasErr
     label = `${label} ${currentStep}/${totalSteps}`;
   }
 
-  return <Badge level={level}>{label}</Badge>;
+  return <Badge level={level} {...props}>{label}</Badge>;
 };
 
 export default JobExecutionStatus;

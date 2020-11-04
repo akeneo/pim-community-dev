@@ -38,6 +38,7 @@ class JobExecutionStatus extends ReactView {
         <ThemeProvider theme={pimTheme}>
           <Label>{__('pim_common.status')}</Label>
           <JobExecutionStatusBadge
+            data-test-id='job-status'
             status={tracking.status}
             currentStep={tracking.currentStep}
             totalSteps={tracking.totalSteps}

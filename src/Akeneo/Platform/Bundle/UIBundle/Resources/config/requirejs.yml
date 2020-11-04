@@ -888,7 +888,6 @@ config:
     pim/form/common/user-main-image:                     pimui/js/form/common/user-main-image
     pim/form/common/meta/created:                        pimui/js/form/common/meta/created
     pim/form/common/meta/updated:                        pimui/js/form/common/meta/updated
-    pim/form/common/meta/status:                         pimui/js/form/common/meta/status
     pim/form/common/attributes:                          pimui/js/form/common/attributes
     pim/form/common/attributes/copy:                     pimui/js/form/common/attributes/copy
     pim/form/common/attributes/copy-field:               pimui/js/form/common/attributes/copy-field
@@ -1019,7 +1018,6 @@ config:
     pim/template/form/state:                                  pimui/templates/form/state.html
     pim/template/form/meta/created:                           pimui/templates/form/meta/created.html
     pim/template/form/meta/updated:                           pimui/templates/form/meta/updated.html
-    pim/template/form/meta/status:                            pimui/templates/form/meta/status.html
     pim/template/form/meta:                                   pimui/templates/form/meta.html
     pim/template/form/tab/attributes:                         pimui/templates/form/tab/attributes.html
     pim/template/form/save-buttons:                           pimui/templates/form/save-buttons.html
