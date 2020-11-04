@@ -10,19 +10,22 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
 {
-    function let(Security $security, NormalizerInterface $normalizer, MessageBusInterface $messageBus)
-    {
+    function let(
+        Security $security,
+        NormalizerInterface $normalizer,
+        MessageBusInterface $messageBus
+    ) {
         $this->beConstructedWith($security, $normalizer, $messageBus);
     }
 
@@ -53,12 +56,15 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
         $user->getUsername()->willReturn('julia');
+        $user->isApiUser()->willReturn(false);
         $security->getUser()->willReturn($user);
 
-        $normalizer->normalize($productModel, 'standard')->willReturn([
-            'code' => 'polo_col_mao',
-            'categories' => ['a_category'],
-        ]);
+        $normalizer->normalize($productModel, 'standard')->willReturn(
+            [
+                'code' => 'polo_col_mao',
+                'categories' => ['a_category'],
+            ]
+        );
 
         $this->produceBusinessSaveEvent(new GenericEvent($productModel, ['is_new' => true]));
 
@@ -78,12 +84,15 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
         $user->getUsername()->willReturn('julia');
+        $user->isApiUser()->willReturn(false);
         $security->getUser()->willReturn($user);
 
-        $normalizer->normalize($productModel, 'standard')->willReturn([
-            'code' => 'polo_col_mao',
-            'categories' => ['a_category'],
-        ]);
+        $normalizer->normalize($productModel, 'standard')->willReturn(
+            [
+                'code' => 'polo_col_mao',
+                'categories' => ['a_category'],
+            ]
+        );
 
         $this->produceBusinessSaveEvent(new GenericEvent($productModel));
 
@@ -136,6 +145,7 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $normalizer, $messageBus);
 
         $user->getUsername()->willReturn('julia');
+        $user->isApiUser()->willReturn(false);
         $security->getUser()->willReturn($user);
 
         $normalizer->normalize($productModel, 'standard')->willReturn(
@@ -186,8 +196,7 @@ class DispatchProductModelBusinessEventSubscriberSpec extends ObjectBehavior
 
     private function getMessageBus()
     {
-        return new class () implements MessageBusInterface
-        {
+        return new class () implements MessageBusInterface {
 
             public $messages = [];
 

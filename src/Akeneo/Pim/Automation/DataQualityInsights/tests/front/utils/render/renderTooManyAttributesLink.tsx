@@ -13,5 +13,4 @@ const renderTooManyAttributesLink = (axis: string, attributes: string[], numOfAt
   return renderWithAppContextHelper(<Component />, appState);
 };
 
-
 export {renderTooManyAttributesLink};

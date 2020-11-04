@@ -35,21 +35,29 @@ const isProductEvaluationPending = (evaluation: ProductEvaluation | undefined, c
   return axisInProgress.length > 0;
 };
 
-const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> = ({children, productEvaluationFetcher}) => {
+const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> = ({
+  children, productEvaluationFetcher,
+}) => {
   const {locale, channel} = useCatalogContext();
   const productEvaluation = useFetchProductDataQualityEvaluation(productEvaluationFetcher);
   const {evaluatedGroups, allGroupsEvaluated} = useProductEvaluatedAttributeGroups();
 
   const hasEvaluation = channel && locale && !isProductEvaluationPending(productEvaluation, channel, locale);
   if (locale && channel && evaluatedGroups !== null && Object.keys(evaluatedGroups).length === 0 && !hasEvaluation) {
-    return (<NoAttributeGroups/>);
+    return <NoAttributeGroups />;
   }
 
   return (
     <>
       {locale && channel && productEvaluation && (
         <>
-          {hasEvaluation && <AttributeGroupsHelper evaluatedAttributeGroups={evaluatedGroups} allGroupsEvaluated={allGroupsEvaluated} locale={locale}/>}
+          {hasEvaluation && (
+            <AttributeGroupsHelper
+              evaluatedAttributeGroups={evaluatedGroups}
+              allGroupsEvaluated={allGroupsEvaluated}
+              locale={locale}
+            />
+          )}
           {Children.map(children, (child => {
             const element = child as ReactElement;
             if (element.type === AxisEvaluation) {
@@ -73,11 +81,17 @@ const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> 
   );
 };
 
-const DataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTabContentProps> = (props) => {
+const DataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTabContentProps> = props => {
   const {product} = props;
-  const tabName = product.meta.model_type === "product" ? PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME : PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME;
+  const tabName =
+    product.meta.model_type === 'product'
+      ? PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME
+      : PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME;
 
-  return TabContentWithPortalDecorator(BaseDataQualityInsightsTabContent, usePageContext)({
+  return TabContentWithPortalDecorator(
+    BaseDataQualityInsightsTabContent,
+    usePageContext
+  )({
     ...props,
     containerId: CONTAINER_ELEMENT_ID,
     tabName: tabName,

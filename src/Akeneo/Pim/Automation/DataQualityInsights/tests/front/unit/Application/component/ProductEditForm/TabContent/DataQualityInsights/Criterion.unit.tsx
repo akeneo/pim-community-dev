@@ -108,92 +108,97 @@ describe('Criterion for simple product', () => {
 });
 
 describe('Criterion for product model', () => {
-    test('it displays recommendation message when there are attributes to improve', () => {
-        const criterionRate = aRate(85, 'B');
-        const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, ['an_attribute']);
-        const rate = aRate();
-        const evaluation = anEvaluation(rate, [criterion]);
-        const productModel = aProductModel();
+  test('it displays recommendation message when there are attributes to improve', () => {
+    const criterionRate = aRate(85, 'B');
+    const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, ['an_attribute']);
+    const rate = aRate();
+    const evaluation = anEvaluation(rate, [criterion]);
+    const productModel = aProductModel();
 
-        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, undefined, undefined, {
-          product: productModel
-        });
-
-        expect(getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')).toBeInTheDocument();
-        expect(getByText('an_attribute')).toBeInTheDocument();
+    const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, undefined, undefined, {
+      product: productModel,
     });
+
+    expect(
+      getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')
+    ).toBeInTheDocument();
+    expect(getByText('an_attribute')).toBeInTheDocument();
+  });
 });
 
 describe('Criterion for variant product ', () => {
-    test('it displays recommendation message when there are attributes to improve', () => {
-        const criterionRate = aRate(85, 'B');
-        const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, ['an_attribute']);
-        const rate = aRate();
-        const evaluation = anEvaluation(rate, [criterion]);
-        const variantProduct = aVariantProduct();
+  test('it displays recommendation message when there are attributes to improve', () => {
+    const criterionRate = aRate(85, 'B');
+    const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, ['an_attribute']);
+    const rate = aRate();
+    const evaluation = anEvaluation(rate, [criterion]);
+    const variantProduct = aVariantProduct();
 
-        const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, undefined, undefined, {
-          product: variantProduct
-        });
-
-        expect(getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')).toBeInTheDocument();
-        expect(getByText('an_attribute')).toBeInTheDocument();
+    const {getByText} = renderCriterion('a_criterion', criterion, 'an_axis', evaluation, undefined, undefined, undefined, {
+      product: variantProduct,
     });
+
+    expect(
+      getByText('akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation' + ':')
+    ).toBeInTheDocument();
+    expect(getByText('an_attribute')).toBeInTheDocument();
+  });
 });
 
 describe('Criterion user actions', () => {
-    beforeEach(() => {
-        jest.resetAllMocks();
-        sessionStorage.clear();
-    });
+  beforeEach(() => {
+    jest.resetAllMocks();
+    sessionStorage.clear();
+  });
 
-    afterAll(() => {
-        jest.restoreAllMocks();
-    });
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
 
-    test('it handles the follow criterion action when it is defined and user clicks on the row', () => {
+  test('it handles the follow criterion action when it is defined and user clicks on the row', () => {
         const handleFollowCriterion = jest.fn();
         const isFollowingActive = jest.fn(() => true);
 
-        const criterionRate = aRate(85, 'B');
-        const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, ['an_attribute']);
-        const rate = aRate();
-        const evaluation = anEvaluation(rate, [criterion]);
-        const product = aProduct(1234);
-        const family = aFamily('a_family', 4321);
+    const criterionRate = aRate(85, 'B');
+    const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, ['an_attribute']);
+    const rate = aRate();
+    const evaluation = anEvaluation(rate, [criterion]);
+    const product = aProduct(1234);
+    const family = aFamily('a_family', 4321);
 
-        const {getByText} = renderCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, undefined, handleFollowCriterion, isFollowingActive, {
-            families: {
-                a_family: family
-            },
-            product
-        });
+    const {getByText} = renderCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, undefined, handleFollowCriterion, isFollowingActive, {
+      families: {
+        a_family: family,
+      },
+      product,
+    });
 
-        fireEvent.click(getByText('an_attribute')); // the user can click anywhere on the row
+    fireEvent.click(getByText('an_attribute')); // the user can click anywhere on the row
 
         expect(handleFollowCriterion).toHaveBeenCalledWith(criterion, family, product);
     });
 
-    test('it does not handle the follow criterion action when the action is not allowed', () => {
+  test('it does not handle the follow criterion action when the action is not allowed', () => {
         const handleFollowCriterion = jest.fn();
         const isFollowingActive = jest.fn(() => false);
+    const criterionRate = aRate(85, 'B');
+    const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, [
+      'an_attribute',
+    ]);
+    const rate = aRate();
+    const evaluation = anEvaluation(rate, [criterion]);
+    const product = aProduct(1234);
+    const family = aFamily('a_family', 4321);
 
-        const criterionRate = aRate(85, 'B');
-        const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, ['an_attribute']);
-        const rate = aRate();
-        const evaluation = anEvaluation(rate, [criterion]);
-        const product = aProduct(1234);
-        const family = aFamily('a_family', 4321);
+    const {getByText} = renderCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, undefined, handleFollowCriterion, isFollowingActive, {
+      families: {
+        a_family: family,
+      },
+      product,
+    });
 
-        const {getByText} = renderCriterion(ATTRIBUTE_SPELLING_CRITERION_CODE, criterion, 'an_axis', evaluation, undefined, handleFollowCriterion, isFollowingActive, {
-            families: {
-                a_family: family
-            },
-            product
-        });
-
-        fireEvent.click(getByText('an_attribute')); // the user can click anywhere on the row
+    fireEvent.click(getByText('an_attribute')); // the user can click anywhere on the row
 
         expect(handleFollowCriterion).not.toHaveBeenCalled();
-    });
+  });
 });

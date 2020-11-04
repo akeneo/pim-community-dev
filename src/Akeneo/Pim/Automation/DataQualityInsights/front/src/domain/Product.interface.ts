@@ -7,10 +7,9 @@ export default interface Product {
   family: string | null;
   identifier: string | null;
   meta: Meta;
-  created: string|null;
-  updated: string|null;
+  created: string | null;
+  updated: string | null;
 }
-
 
 interface Meta {
   id: number | null;
@@ -19,12 +18,12 @@ interface Meta {
   };
   level: null | number;
   attributes_for_this_level: string[];
-  model_type: "product" | "product_model";
+  model_type: 'product' | 'product_model';
   variant_navigation: VariantNavigation[];
   family_variant: {
-    variant_attribute_sets: VariantAttributeSet[]
+    variant_attribute_sets: VariantAttributeSet[];
   };
-  parent_attributes: string[],
+  parent_attributes: string[];
 }
 
 export interface VariantNavigation {

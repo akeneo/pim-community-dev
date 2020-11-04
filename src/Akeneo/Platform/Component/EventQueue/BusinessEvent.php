@@ -12,13 +12,20 @@ use Ramsey\Uuid\Uuid;
  */
 abstract class BusinessEvent implements BusinessEventInterface
 {
+    /** @var Author */
     private $author;
+
+    /** @var array */
     private $data;
+
+    /** @var int */
     private $timestamp;
+
+    /** @var string */
     private $uuid;
 
     public function __construct(
-        string $author,
+        Author $author,
         array $data,
         int $timestamp = null,
         string $uuid = null
@@ -31,7 +38,7 @@ abstract class BusinessEvent implements BusinessEventInterface
 
     abstract public function name(): string;
 
-    public function author(): string
+    public function author(): Author
     {
         return $this->author;
     }
