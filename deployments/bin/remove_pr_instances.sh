@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* environments
-for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup' | awk '{print $1}'); do
+# Namespaces are environments names, we remove only srnt-pimci* & srnt-pimup* & grth-pimci* environments
+for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup|grth-pimci' | awk '{print $1}'); do
     NS_INFO=($(kubectl get ns | grep ${NAMESPACE}))
     NAMESPACE=$(echo ${NS_INFO[0]})
     NS_STATUS=$(echo ${NS_INFO[1]})
@@ -11,8 +11,8 @@ for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup' | awk '{print 
     DELETE_INSTANCE=false
 
     # delete environments that failed (not automatically removed by circleCI)
-    # Theses environments are upgraded serenity (pimup) and aged of 1hour
-    if [[ ${NAMESPACE} == *srnt-pimup* ]]; then
+    # Theses environments are upgraded serenity (pimup) or growth edition (grth-pimci) and aged of 1hour
+    if [[ ${NAMESPACE} == *srnt-pimup* ]] || [[ ${NAMESPACE} == *grth-pimci* ]] ; then
         if [[ ${NS_AGE} == *h* ]]; then
             DELETE_INSTANCE=true
         fi
