@@ -1,0 +1,90 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Видалити
+        execute: Виконати
+      title: Правила
+      column:
+        code: Код
+        conditions: Умова
+        actions: Дія
+        impacted_product_count:
+          label: Пов'язані продукти
+          count: '{0,1}%count% пов''язаний продукт|] 1, Inf [%count% пов''язаних продуктів'
+          no_yet_calculated: Не обчислена
+      mass_edit_action:
+        impacted_product_count: Розрахувати кількість пов'язаних продуктів
+        execute: Виконати
+        delete: Видалити
+  actions:
+    type:
+      "copy": Тоді %from_field% копіюється в %to_field%
+      "copy_value": Тоді %from_field% копіюється в %to_field%
+      "set": Тоді %value% встановлюється в %field%
+      "set_value": Тоді %value% встановлюється в %field%
+      "add": Тоді %value% додається до %field%
+      "remove": Тоді %value% видаляється з %field%
+    options:
+      include_children: і його дочірні елементи
+  condition:
+    label: Якщо %field% %operator% %value%
+    operators:
+      "STARTS WITH": починається з
+      "ENDS WITH": закінчується на
+      "CONTAINS": містить
+      "DOES NOT CONTAIN": не містить
+      "EMPTY": порожньо
+      "NOT EMPTY": не є порожнім
+      "IN": у списку
+      "NOT IN": не в списку
+      "IN CHILDREN": серед нащадків
+      "NOT IN CHILDREN": не серед нащадків
+      "UNCLASSIFIED": некласифікований
+      "IN OR UNCLASSIFIED": некласифікований або у списку
+      "BETWEEN": між
+      "NOT BETWEEN": не між
+      "=": дорівнює
+      "!=": не дорівнює
+      ">": більше ніж
+      ">=": дорівнює або більше ніж
+      "<": менше ніж
+      "<=": дорівнює або менше ніж
+  acl_group:
+    rule: Правила
+  acl:
+    rule:
+      view_permissions: Перегляд правил
+      delete_permissions: Видалити правила
+      impacted_product_count_permissions: Обчислити пов'язані продукти для правил
+      execute_permissions: Виконати правила
+  attribute:
+    tab:
+      rule.title: Правила
+    grid:
+      is_smart.label: Розумний
+    acl:
+      rule.view_permissions: Перегляд правил
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: Значення цього атрибута може буди отримано з правил(а) <strong>%rule%</strong>. Це означає, що якщо умови правила діють, ваші налаштування будуть перезаписані.
+      loading.title: Завантаження...
+    history: Застосовано правило "%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: 'Під впливом правил(а):'
+  steps:
+    product_rule_definition_reader.title: Зчитувач правил продукту
+    rule_definition_processor.title: Обробник правил продукту
+    product_rule_definition_writer.title: Записувач правил продукту
+    rules_execution.title: Виконання правил
+  notification:
+    rule:
+      executed: Виконання правил завершено
+    mass_edit_rule:
+      success: Обчислення пов'язаних продуктів для правил
+      error: Під час обчислення пов'язаних продуктів для правила сталася помилка
+btn:
+  Execute rules: Виконати правила
+mass_edit_rule: Налаштування правил
+job_execution.summary.rule_calculated: Кількість правил

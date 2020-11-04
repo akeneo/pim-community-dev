@@ -9,6 +9,11 @@ Feature: Configure the SSO
     Then I should have no validation errors
 
   @acceptance-back
+  Scenario: Accept a valid configuration with URN entity ID
+    When I try to save a valid configuration with a URN
+    Then I should have no validation errors
+
+  @acceptance-back
   Scenario: Reject an empty configuration
     When I try to save an empty configuration
     Then I should have the following validation errors:
@@ -27,11 +32,11 @@ Feature: Configure the SSO
   Scenario: Reject a configuration with invalid URLs
     When I try to save a configuration with invalid URLs
     Then I should have the following validation errors:
-      | path                      | message                        |
-      | identityProviderEntityId  | This value is not a valid URL. |
-      | identityProviderSignOnUrl | This value is not a valid URL. |
-      | identityProviderLogoutUrl | This value is not a valid URL. |
-      | serviceProviderEntityId   | This value is not a valid URL. |
+      | path                      | message                               |
+      | identityProviderEntityId  | This value is not a valid URL or URN. |
+      | identityProviderSignOnUrl | This value is not a valid URL.        |
+      | identityProviderLogoutUrl | This value is not a valid URL.        |
+      | serviceProviderEntityId   | This value is not a valid URL.        |
 
   @acceptance-back
   Scenario: Reject a configuration with invalid certificates

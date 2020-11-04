@@ -21,7 +21,7 @@ class EntityIdSpec extends ObjectBehavior
     function it_rejects_an_invalid_url()
     {
         $this->beConstructedWith('jambon');
-        $this->shouldThrow(new \InvalidArgumentException('Value must be a valid URL, "jambon" given.'))
+        $this->shouldThrow(new \InvalidArgumentException('Value must be a valid URL or URN, "jambon" given.'))
             ->duringInstantiation();
     }
 
