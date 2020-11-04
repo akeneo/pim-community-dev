@@ -45,6 +45,9 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     public function save($product, array $options = [])
     {
         $this->validateProduct($product);
+        if (!$product->wasUpdated()) {
+            return;
+        }
 
         $options['unitary'] = true;
         $options['is_new'] = null === $product->getId();
@@ -57,6 +60,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+
+        $product->cleanup();
     }
 
     /**
@@ -64,14 +69,17 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
      */
     public function saveAll(array $products, array $options = [])
     {
-        if (empty($products)) {
-            return;
-        }
-
         $products = array_unique($products, SORT_REGULAR);
-
         foreach ($products as $product) {
             $this->validateProduct($product);
+        }
+
+        $products = array_values(array_filter($products, function (ProductInterface $product): bool {
+            return $product->wasUpdated();
+        }));
+
+        if (empty($products)) {
+            return;
         }
 
         $options['unitary'] = false;
@@ -105,6 +113,10 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             StorageEvents::POST_SAVE_ALL,
             new GenericEvent($products, $options)
         );
+
+        foreach ($products as $product) {
+            $product->cleanup();
+        }
     }
 
     protected function validateProduct($product)
