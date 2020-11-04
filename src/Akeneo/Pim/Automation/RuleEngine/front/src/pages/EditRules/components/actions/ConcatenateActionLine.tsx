@@ -1,8 +1,8 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from './ActionLineProps';
-import { useControlledFormInputAction } from '../../hooks';
+import {Controller, useFormContext} from 'react-hook-form';
+import {ActionTemplate} from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
+import {useControlledFormInputAction} from '../../hooks';
 import {
   Attribute,
   attributeAcceptsNewLine,
@@ -15,15 +15,15 @@ import {
   fetchAttribute,
   useGetAttributeAtMount,
 } from './attribute/attribute.utils';
-import { ActionLeftSide, ActionRightSide, ActionTitle } from './ActionLine';
+import {ActionLeftSide, ActionRightSide, ActionTitle} from './ActionLine';
 import {
   ActionFormContainer,
   LargeActionGrid,
   SelectorBlock,
   ErrorBlock,
 } from './style';
-import { AttributeSelector } from '../../../../components/Selectors/AttributeSelector';
-import { InlineHelper } from '../../../../components/HelpersInfos/InlineHelper';
+import {AttributeSelector} from '../../../../components/Selectors/AttributeSelector';
+import {InlineHelper} from '../../../../components/HelpersInfos/InlineHelper';
 import {
   getScopeValidation,
   ScopeSelector,
@@ -37,10 +37,10 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../dependenciesTools/hooks';
-import { ConcatenatePreview } from './concatenate/ConcatenatePreview';
-import { ConcatenateSourceList } from './concatenate/ConcatenateSourceList';
-import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
-import { useDialogState } from 'reakit';
+import {ConcatenatePreview} from './concatenate/ConcatenatePreview';
+import {ConcatenateSourceList} from './concatenate/ConcatenateSourceList';
+import {AlertDialog} from '../../../../components/AlertDialog/AlertDialog';
+import {useDialogState} from 'reakit';
 
 const targetAttributeTypes: AttributeType[] = [
   AttributeType.TEXT,
@@ -57,7 +57,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
   const router = useBackboneRouter();
   const currentCatalogLocale = useUserCatalogLocale();
   const removeNewLineDialog = useDialogState();
-  const { setValue, watch, getValues } = useFormContext();
+  const {setValue, watch, getValues} = useFormContext();
   const {
     formName,
     typeFormName,
@@ -167,7 +167,7 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
           // validation.
           validate: () =>
             (
-              getValues({ nest: true })?.content?.actions?.[lineNumber]?.from ||
+              getValues({nest: true})?.content?.actions?.[lineNumber]?.from ||
               []
             ).length >= 2
               ? true
@@ -314,4 +314,4 @@ const ConcatenateActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { ConcatenateActionLine };
+export {ConcatenateActionLine};

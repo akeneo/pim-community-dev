@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Dragula = require('react-dragula');
 import React from 'react';
-import { useFieldArray } from 'react-hook-form';
-import { Operation } from '../../../../../models/actions/Calculate/Operation';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
+import {useFieldArray, useFormContext} from 'react-hook-form';
+import {Operation} from '../../../../../models/actions/Calculate/Operation';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
 import {
   Attribute,
   attributeAcceptsNewLine,
@@ -11,10 +11,10 @@ import {
   AttributeType,
   Locale,
 } from '../../../../../models';
-import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
-import { useControlledFormInputAction } from '../../../hooks';
-import { AddFieldButton } from '../../../../../components/Selectors/AddFieldButton';
-import { ConcatenateSourceLine } from './ConcatenateSourceLine';
+import {IndexedScopes} from '../../../../../repositories/ScopeRepository';
+import {useControlledFormInputAction} from '../../../hooks';
+import {AddFieldButton} from '../../../../../components/Selectors/AddFieldButton';
+import {ConcatenateSourceLine} from './ConcatenateSourceLine';
 import {
   BlueGhostButton,
   GreyGhostButton,
@@ -35,15 +35,16 @@ const ConcatenateSourceList: React.FC<Props> = ({
   attributeTarget,
 }) => {
   const translate = useTranslate();
-  const { formName, isFormFieldInError } = useControlledFormInputAction<
+  const {formName, isFormFieldInError} = useControlledFormInputAction<
     string | null
   >(lineNumber);
+  const {watch} = useFormContext();
   const [
     operationLineToRemoveStack,
     setOperationLineToRemoveStack,
   ] = React.useState<number[]>([]);
 
-  const { fields, remove, move, append } = useFieldArray({
+  const {fields, remove, move, append} = useFieldArray({
     name: formName('from'),
   });
 
@@ -63,13 +64,13 @@ const ConcatenateSourceList: React.FC<Props> = ({
   };
 
   const handleAddAttribute = (attributeCode: AttributeCode) => {
-    append({ field: attributeCode });
+    append({field: attributeCode});
   };
   const handleAddText = (text: string) => {
-    append({ text });
+    append({text});
   };
   const handleAddNewLine = () => {
-    append({ new_line: null });
+    append({new_line: null});
   };
 
   const dragulaDecorator = React.useRef(null);
@@ -86,7 +87,8 @@ const ConcatenateSourceList: React.FC<Props> = ({
           sibling: HTMLElement
         ) => {
           const origin = Number(el.dataset.lineNumber);
-          let target = Number(sibling?.dataset?.lineNumber || fields.length);
+          const fields: [] = watch(formName('from')) ?? [];
+          let target = Number(sibling?.dataset?.lineNumber ?? fields.length);
           if (target > origin) {
             target--;
           }
@@ -206,4 +208,4 @@ const ConcatenateSourceList: React.FC<Props> = ({
   );
 };
 
-export { ConcatenateSourceList };
+export {ConcatenateSourceList};

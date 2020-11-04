@@ -1,6 +1,6 @@
-import {HighlightsCollection} from "./HighlightElement";
-import EditorElement, {getEditorContent, isEditableContent, isTextArea, isTextInput} from "./EditorElement";
-import MistakeElement from "./MistakeElement";
+import {HighlightsCollection} from './HighlightElement';
+import EditorElement, {getEditorContent, isEditableContent, isTextArea, isTextInput} from './EditorElement';
+import MistakeElement from './MistakeElement';
 
 export default interface WidgetElement {
   id: string;
@@ -8,8 +8,8 @@ export default interface WidgetElement {
   editorId: string;
   attribute: string;
   content: string;
-  analysis: MistakeElement[],
-  highlights: HighlightsCollection,
+  analysis: MistakeElement[];
+  highlights: HighlightsCollection;
   isVisible: boolean;
   isActive: boolean;
   isTextArea: boolean;
@@ -21,7 +21,7 @@ export interface WidgetsCollection {
   [id: string]: WidgetElement;
 }
 
-export const createWidget = (identifier: string, editor: EditorElement, editorId: string|null, attribute: string) => {
+export const createWidget = (identifier: string, editor: EditorElement, editorId: string | null, attribute: string) => {
   return {
     id: identifier,
     editor: editor,
@@ -34,7 +34,7 @@ export const createWidget = (identifier: string, editor: EditorElement, editorId
     isEditableContent: isEditableContent(editor),
     content: getEditorContent(editor),
     analysis: [],
-    highlights: {}
+    highlights: {},
   } as WidgetElement;
 };
 

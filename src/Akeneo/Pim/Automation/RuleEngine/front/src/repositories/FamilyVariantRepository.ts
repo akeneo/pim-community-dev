@@ -1,6 +1,6 @@
-import { FamilyCode } from '../models';
-import { Router } from '../dependenciesTools';
-import { FamilyVariant, FamilyVariantCode } from '../models/FamilyVariant';
+import {FamilyCode} from '../models';
+import {Router} from '../dependenciesTools';
+import {FamilyVariant, FamilyVariantCode} from '../models/FamilyVariant';
 import {
   fetchFamilyVariantsByIdentifiers,
   IndexedFamilyVariants,
@@ -58,4 +58,4 @@ const getFamilyVariantByIdentifier = async (
   return familyVariant[familyVariantIdentifier];
 };
 
-export { getFamilyVariantsByIdentifiers, getFamilyVariantByIdentifier };
+export {getFamilyVariantsByIdentifiers, getFamilyVariantByIdentifier};

@@ -1,10 +1,10 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { DateAttributeConditionLine } from '../../../../../../../src/pages/EditRules/components/conditions/DateConditionLines';
-import { createAttribute, locales, scopes } from '../../../../../factories';
-import { Operator } from '../../../../../../../src/models/Operator';
-import { render, screen, act } from '../../../../../../../test-utils';
-import { DateTypeOptionIds } from '../../../../../../../src/pages/EditRules/components/conditions/DateConditionLines/dateConditionLines.type';
+import {DateAttributeConditionLine} from '../../../../../../../src/pages/EditRules/components/conditions/DateConditionLines';
+import {createAttribute, locales, scopes} from '../../../../../factories';
+import {Operator} from '../../../../../../../src/models/Operator';
+import {render, screen, act} from '../../../../../../../test-utils';
+import {DateTypeOptionIds} from '../../../../../../../src/pages/EditRules/components/conditions/DateConditionLines/dateConditionLines.type';
 
 describe('DateAttributeConditionLine', () => {
   beforeEach(() => {
@@ -14,8 +14,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: true, scopable: true })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: true, scopable: true})),
+      {status: 200}
     );
 
     render(
@@ -30,7 +30,7 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true }
+      {all: true}
     );
     // When
     const operator = await screen.findByTestId(
@@ -55,8 +55,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     const defaultValues = {
@@ -71,8 +71,8 @@ describe('DateAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -87,8 +87,8 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale={'en_US'}
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
     // When
     const operator = await screen.findByTestId(
@@ -111,8 +111,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     const defaultValues = {
@@ -127,8 +127,8 @@ describe('DateAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -143,8 +143,8 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
     // When
     const operator = await screen.findByTestId(
@@ -175,8 +175,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     const defaultValues = {
@@ -191,8 +191,8 @@ describe('DateAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -207,8 +207,8 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -227,8 +227,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     render(
@@ -243,7 +243,7 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true }
+      {all: true}
     );
 
     // When
@@ -292,8 +292,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     const defaultValues = {
@@ -308,8 +308,8 @@ describe('DateAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -324,8 +324,8 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -338,8 +338,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     const defaultValues = {
@@ -354,8 +354,8 @@ describe('DateAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -370,8 +370,8 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -384,8 +384,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     const defaultValues = {
@@ -400,8 +400,8 @@ describe('DateAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -416,8 +416,8 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -438,8 +438,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     const defaultValues = {
@@ -454,8 +454,8 @@ describe('DateAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -470,8 +470,8 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // When
@@ -493,8 +493,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     render(
@@ -509,7 +509,7 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true }
+      {all: true}
     );
 
     // When
@@ -532,8 +532,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     render(
@@ -548,7 +548,7 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true }
+      {all: true}
     );
 
     // When
@@ -571,8 +571,8 @@ describe('DateAttributeConditionLine', () => {
     // Given
     // Mock the call to getAttributeByIdentifier in the component
     fetchMock.mockResponse(
-      JSON.stringify(createAttribute({ localizable: false, scopable: false })),
-      { status: 200 }
+      JSON.stringify(createAttribute({localizable: false, scopable: false})),
+      {status: 200}
     );
 
     const defaultValues = {
@@ -587,8 +587,8 @@ describe('DateAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
     ];
 
     render(
@@ -603,8 +603,8 @@ describe('DateAttributeConditionLine', () => {
         lineNumber={0}
         currentCatalogLocale='en_US'
       />,
-      { all: true },
-      { toRegister, defaultValues }
+      {all: true},
+      {toRegister, defaultValues}
     );
 
     // Then

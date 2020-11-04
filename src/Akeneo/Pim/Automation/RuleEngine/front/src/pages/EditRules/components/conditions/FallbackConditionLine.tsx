@@ -1,13 +1,11 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
-import { useControlledFormInputCondition } from '../../hooks';
+import {Controller, useFormContext} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
+import {useControlledFormInputCondition} from '../../hooks';
 
-const FallbackConditionLine: React.FC<ConditionLineProps> = ({
-  lineNumber,
-}) => {
-  const { watch } = useFormContext();
-  const { formName, getFormValue } = useControlledFormInputCondition<boolean>(
+const FallbackConditionLine: React.FC<ConditionLineProps> = ({lineNumber}) => {
+  const {watch} = useFormContext();
+  const {formName, getFormValue} = useControlledFormInputCondition<boolean>(
     lineNumber
   );
   const getConditionValues = () => watch(`content.conditions[${lineNumber}]`);
@@ -27,4 +25,4 @@ const FallbackConditionLine: React.FC<ConditionLineProps> = ({
   );
 };
 
-export { FallbackConditionLine };
+export {FallbackConditionLine};

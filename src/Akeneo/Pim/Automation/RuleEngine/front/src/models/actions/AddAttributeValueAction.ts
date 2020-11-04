@@ -1,6 +1,6 @@
-import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { AddAttributeValueActionLine } from '../../pages/EditRules/components/actions/AddAttributeValueActionLine';
+import {ProductField} from './ProductField';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
+import {AddAttributeValueActionLine} from '../../pages/EditRules/components/actions/AddAttributeValueActionLine';
 
 export type AddAttributeValueAction = {
   type: 'add';

@@ -31,11 +31,7 @@ class CategoryVoter extends Voter implements VoterInterface
     /** @var string */
     protected $className;
 
-    /**
-     * @param CategoryAccessManager $accessManager
-     * @param                       $className
-     */
-    public function __construct(CategoryAccessManager $accessManager, $className)
+    public function __construct(CategoryAccessManager $accessManager, string $className)
     {
         $this->accessManager = $accessManager;
         $this->className = $className;

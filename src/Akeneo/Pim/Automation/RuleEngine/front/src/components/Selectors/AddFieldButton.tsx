@@ -1,7 +1,7 @@
 import React from 'react';
-import { Select2Wrapper } from '../Select2Wrapper';
-import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { AttributeType } from '../../models';
+import {Select2Wrapper} from '../Select2Wrapper';
+import {useBackboneRouter, useTranslate} from '../../dependenciesTools/hooks';
+import {AttributeType} from '../../models';
 
 type AddConditionAttribute = {
   id: string;
@@ -71,7 +71,7 @@ const AddFieldButton: React.FC<Props> = ({
     return {
       more: fieldCount >= 20,
       results: result.map(group => {
-        return { ...group, disabled: true };
+        return {...group, disabled: true};
       }),
     };
   };
@@ -115,4 +115,4 @@ const AddFieldButton: React.FC<Props> = ({
   );
 };
 
-export { AddFieldButton };
+export {AddFieldButton};

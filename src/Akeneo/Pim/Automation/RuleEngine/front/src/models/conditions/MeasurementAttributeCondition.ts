@@ -1,12 +1,12 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
 import {
   createAttributeCondition,
   getAttributeConditionModule,
 } from './AbstractAttributeCondition';
-import { AttributeType } from '../Attribute';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { MeasurementAttributeConditionLine } from '../../pages/EditRules/components/conditions/MeasurementAttributeConditionLine';
+import {AttributeType} from '../Attribute';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {MeasurementAttributeConditionLine} from '../../pages/EditRules/components/conditions/MeasurementAttributeConditionLine';
 
 const MeasurementAttributeOperators = [
   Operator.EQUALS,

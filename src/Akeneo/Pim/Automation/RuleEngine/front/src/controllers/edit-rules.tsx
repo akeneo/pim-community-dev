@@ -1,10 +1,10 @@
 import React from 'react';
-import { ApplicationDependenciesProvider } from '../dependenciesTools';
+import {ApplicationDependenciesProvider} from '../dependenciesTools';
 import ReactController, {
   RouteParams,
 } from '../dependenciesTools/reactController/ReactController';
-import { EditRules as EditRulesPage } from '../pages/EditRules';
-import { dependencies } from '../dependenciesTools/provider/dependencies';
+import {EditRules as EditRulesPage} from '../pages/EditRules';
+import {dependencies} from '../dependenciesTools/provider/dependencies';
 
 class EditRules extends ReactController {
   private isDirty = false;

@@ -14,7 +14,7 @@ module.exports = async function(cucumber) {
     answerPermissionList,
     answerAssetFamilyDetails,
     answerAssetList,
-    answerAssetAttributes
+    answerAssetAttributes,
   } = require('../helpers/fetchers');
 
   const {grantAllAcls} = require('../helpers/acl.js');

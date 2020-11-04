@@ -12,8 +12,8 @@ import {
   Select2SimpleSyncWrapper,
   Select2Value,
 } from '../Select2Wrapper';
-import { useTranslate } from '../../dependenciesTools/hooks';
-import { Translate } from '../../dependenciesTools';
+import {useTranslate} from '../../dependenciesTools/hooks';
+import {Translate} from '../../dependenciesTools';
 
 const getLocaleValidation = (
   attribute: Attribute | null,
@@ -40,7 +40,7 @@ const getLocaleValidation = (
       if (!locales.some(locale => locale.code === localeCode)) {
         return translate(
           'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
-          { localeCode }
+          {localeCode}
         );
       }
       if (!availableLocales.some(locale => locale.code === localeCode)) {
@@ -52,7 +52,7 @@ const getLocaleValidation = (
         } else if (!attribute.scopable) {
           return translate(
             'pimee_catalog_rule.exceptions.unknown_or_inactive_locale',
-            { localeCode }
+            {localeCode}
           );
         }
       }
@@ -78,7 +78,7 @@ type Props = {
   allowClear?: boolean;
   disabled?: boolean;
   name?: string;
-  validation?: { required?: string; validate?: (value: any) => string | true };
+  validation?: {required?: string; validate?: (value: any) => string | true};
   placeholder?: string;
   containerCssClass?: string;
   displayAsCode?: boolean;
@@ -162,4 +162,4 @@ const LocaleSelector: React.FC<Props> = ({
   );
 };
 
-export { getLocaleValidation, LocaleSelector };
+export {getLocaleValidation, LocaleSelector};

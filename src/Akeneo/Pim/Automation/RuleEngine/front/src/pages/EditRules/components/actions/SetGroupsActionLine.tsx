@@ -1,9 +1,9 @@
 import React from 'react';
-import { ActionLineProps } from './ActionLineProps';
-import { Controller } from 'react-hook-form';
-import { useControlledFormInputAction } from '../../hooks';
-import { GroupCode } from '../../../../models';
-import { ActionTemplate } from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
+import {Controller} from 'react-hook-form';
+import {useControlledFormInputAction} from '../../hooks';
+import {GroupCode} from '../../../../models';
+import {ActionTemplate} from './ActionTemplate';
 import {
   useTranslate,
   useBackboneRouter,
@@ -14,8 +14,8 @@ import {
   AknActionFormContainer,
   ActionLeftSide,
 } from './ActionLine';
-import { GroupsSelector } from '../../../../components/Selectors/GroupsSelector';
-import { getGroupsByIdentifiers } from '../../../../repositories/GroupRepository';
+import {GroupsSelector} from '../../../../components/Selectors/GroupsSelector';
+import {getGroupsByIdentifiers} from '../../../../repositories/GroupRepository';
 
 export const SetGroupsActionLine: React.FC<ActionLineProps> = ({
   lineNumber,
@@ -116,7 +116,7 @@ export const SetGroupsActionLine: React.FC<ActionLineProps> = ({
                 )} ${translate('pim_common.required_label')}`}
                 currentCatalogLocale={currentCatalogLocale}
                 value={getValueFormValue()}
-                rules={{ validate: validateGroupCodes }}
+                rules={{validate: validateGroupCodes}}
                 name={valueFormName}
               />
             </AknActionFormContainer>

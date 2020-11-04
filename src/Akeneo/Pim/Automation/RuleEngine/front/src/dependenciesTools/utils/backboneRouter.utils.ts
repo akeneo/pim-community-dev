@@ -22,4 +22,4 @@ const generateAndRedirect = (
   return [url, handleRedirect];
 };
 
-export { generateUrl, generateAndRedirect, redirectToUrl };
+export {generateUrl, generateAndRedirect, redirectToUrl};

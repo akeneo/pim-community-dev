@@ -1,15 +1,15 @@
-import {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {debounce} from "lodash";
-import {ProductEditFormState} from "../../store";
+import {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {debounce} from 'lodash';
+import {ProductEditFormState} from '../../store';
 import {
   disableWidgetHighlightAction,
   enableWidgetHighlightAction,
   hidePopoverAction,
   initializePopoverOpeningAction,
-  showPopoverAction
-} from "../../reducer";
-import {HighlightElement, WidgetElement} from "../../../application/helper";
+  showPopoverAction,
+} from '../../reducer';
+import {HighlightElement, WidgetElement} from '../../../application/helper';
 
 const OPENING_MILLISECONDS_DELAY = 50;
 const CLOSING_MILLISECONDS_DELAY = 500;

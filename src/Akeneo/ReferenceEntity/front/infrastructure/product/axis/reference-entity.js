@@ -45,11 +45,11 @@ define([
 
         initSelect2.init($select2, select2Configuration);
 
-        const onChange = (event) => {
+        const onChange = event => {
           event.stopImmediatePropagation();
           this.errors = [];
           this.updateModel(this.getFieldValue($select2));
-        }
+        };
 
         $select2.on('change', onChange);
       });
@@ -115,13 +115,12 @@ define([
             ajax: ajaxConfig,
             initSelection: (element, callback) => {
               const initialValue = element.val();
-              recordFetcher.fetch(
-                  ReferenceEntityIdentifier.create(attribute.reference_data_name),
-                  RecordCode.create(initialValue)
-                ).then(result => {
+              recordFetcher
+                .fetch(ReferenceEntityIdentifier.create(attribute.reference_data_name), RecordCode.create(initialValue))
+                .then(result => {
                   callback(this.formatItem(result.record.normalize()));
                 });
-              },
+            },
             multiple: false,
             placeholder: __('pim_reference_entity.record.selector.no_value'),
             placeholderOption: '',

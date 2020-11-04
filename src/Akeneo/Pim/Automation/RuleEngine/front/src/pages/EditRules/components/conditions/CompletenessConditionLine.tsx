@@ -1,6 +1,6 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
 import {
   ConditionLineErrorsContainer,
   ConditionLineFormAndErrorsContainer,
@@ -11,16 +11,16 @@ import {
   ScopeColumn,
   ValueColumn,
 } from './style';
-import { OperatorSelector } from '../../../../components/Selectors/OperatorSelector';
-import { CompletenessOperators } from '../../../../models/conditions';
-import { useControlledFormInputCondition } from '../../hooks';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { Operator } from '../../../../models/Operator';
-import { InputNumberWithHelper } from '../../../../components/Inputs';
-import { LineErrors } from '../LineErrors';
-import { ScopeSelector } from '../../../../components/Selectors/ScopeSelector';
-import { LocaleSelector } from '../../../../components/Selectors/LocaleSelector';
-import { Locale } from '../../../../models';
+import {OperatorSelector} from '../../../../components/Selectors/OperatorSelector';
+import {CompletenessOperators} from '../../../../models/conditions';
+import {useControlledFormInputCondition} from '../../hooks';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
+import {Operator} from '../../../../models/Operator';
+import {InputNumberWithHelper} from '../../../../components/Inputs';
+import {LineErrors} from '../LineErrors';
+import {ScopeSelector} from '../../../../components/Selectors/ScopeSelector';
+import {LocaleSelector} from '../../../../components/Selectors/LocaleSelector';
+import {Locale} from '../../../../models';
 
 const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
   lineNumber,
@@ -140,4 +140,4 @@ const CompletenessConditionLine: React.FC<ConditionLineProps> = ({
   );
 };
 
-export { CompletenessConditionLine };
+export {CompletenessConditionLine};

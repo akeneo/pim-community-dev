@@ -43,7 +43,7 @@ class CategoryAccessAnalyticProvider implements DataCollectorInterface
      */
     public function collect()
     {
-        $result = (int) $this->entityManager->createQueryBuilder('a')
+        $result = (int) $this->entityManager->createQueryBuilder()
             ->select('COUNT(DISTINCT a.category)')
             ->from($this->entityName, 'a')
             ->innerJoin('a.userGroup', 'g')

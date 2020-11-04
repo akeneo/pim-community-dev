@@ -26,4 +26,4 @@ const CrossLink: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement>> = ({
   );
 };
 
-export { CrossLink };
+export {CrossLink};

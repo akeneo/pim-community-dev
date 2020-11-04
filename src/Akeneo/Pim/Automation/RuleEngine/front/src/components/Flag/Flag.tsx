@@ -18,7 +18,7 @@ type Props = {
   flagDescription: string;
 };
 
-const Flag: React.FC<Props> = ({ locale, flagDescription }) => {
+const Flag: React.FC<Props> = ({locale, flagDescription}) => {
   const extractFlagFromLocale = (locale: string): string => {
     const region = locale.split('_')[locale.split('_').length - 1];
 
@@ -32,4 +32,4 @@ const Flag: React.FC<Props> = ({ locale, flagDescription }) => {
   );
 };
 
-export { Flag };
+export {Flag};

@@ -1,12 +1,12 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
 import {
   createAttributeCondition,
   getAttributeConditionModule,
 } from './AbstractAttributeCondition';
-import { AttributeType } from '../Attribute';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { FileAttributeConditionLine } from '../../pages/EditRules/components/conditions/FileAttributeConditionLine';
+import {AttributeType} from '../Attribute';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {FileAttributeConditionLine} from '../../pages/EditRules/components/conditions/FileAttributeConditionLine';
 
 const FileAttributeOperators = [
   Operator.EQUALS,

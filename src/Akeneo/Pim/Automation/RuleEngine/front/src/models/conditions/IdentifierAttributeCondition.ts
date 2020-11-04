@@ -1,13 +1,13 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
 import {
   createAttributeCondition,
   getAttributeConditionModule,
 } from './AbstractAttributeCondition';
-import { AttributeType } from '../Attribute';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { IdentifierAttributeConditionLine } from '../../pages/EditRules/components/conditions/IdentifierAttributeConditionLine';
-import { Identifier } from '../../components/Selectors/IdentifiersSelector';
+import {AttributeType} from '../Attribute';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {IdentifierAttributeConditionLine} from '../../pages/EditRules/components/conditions/IdentifierAttributeConditionLine';
+import {Identifier} from '../../components/Selectors/IdentifiersSelector';
 
 const IdentifierAttributeOperators = [
   Operator.STARTS_WITH,

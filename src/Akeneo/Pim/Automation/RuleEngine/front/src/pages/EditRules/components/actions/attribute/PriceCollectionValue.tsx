@@ -4,19 +4,19 @@ import {
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
 import {
   getAllCurrencies,
   getCurrenciesByCode,
   IndexedCurrencies,
 } from '../../../../../repositories/CurrencyRepository';
-import { Label } from '../../../../../components/Labels';
-import { CurrencyCode } from '../../../../../models/Currency';
-import { InputNumberWithHelper } from '../../../../../components/Inputs/InputNumberWithHelper';
-import { getScopeByCode } from '../../../../../repositories/ScopeRepository';
+import {Label} from '../../../../../components/Labels';
+import {CurrencyCode} from '../../../../../models/Currency';
+import {InputNumberWithHelper} from '../../../../../components/Inputs/InputNumberWithHelper';
+import {getScopeByCode} from '../../../../../repositories/ScopeRepository';
 
-type PriceCollectionData = { amount: number; currency: CurrencyCode }[];
+type PriceCollectionData = {amount: number; currency: CurrencyCode}[];
 
 const parsePriceCollectionValue: (
   value: any
@@ -28,7 +28,7 @@ const parsePriceCollectionValue: (
         Object.prototype.hasOwnProperty.call(price, 'amount') &&
         Object.prototype.hasOwnProperty.call(price, 'currency')
       ) {
-        result.push({ amount: price.amount, currency: price.currency });
+        result.push({amount: price.amount, currency: price.currency});
       }
     });
   }
@@ -111,7 +111,7 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
       }
     } else if (amount !== '') {
       // Add new price
-      newValue.push({ amount: Number(amount), currency });
+      newValue.push({amount: Number(amount), currency});
     }
     onChange(newValue);
   };
@@ -145,4 +145,4 @@ const PriceCollectionValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { PriceCollectionValue, parsePriceCollectionValue };
+export {PriceCollectionValue, parsePriceCollectionValue};

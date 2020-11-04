@@ -5,7 +5,7 @@ import EditorElement, {
   isTextArea,
   isTextInput,
   replaceContentFromRange,
-} from "@akeneo-pim-ee/data-quality-insights/src/application/helper/EditorHighlight/EditorElement";
+} from '@akeneo-pim-ee/data-quality-insights/src/application/helper/EditorHighlight/EditorElement';
 
 beforeEach(() => {
   jest.resetModules();
@@ -113,29 +113,31 @@ describe('EditorElement', () => {
   });
 
   describe('convertHtmlContent', () => {
-    test("it converts HTML content into a well formatted plain text content", () => {
+    test('it converts HTML content into a well formatted plain text content', () => {
       expect(convertHtmlContent('')).toEqual('');
 
-      const htmlContent = "<p><span>My</span> <span>text</span></p>\n<p><span>My<br></span> <span title=\"My title\">text©</span></p><p><span>Mon</span> <span>texte accentué</span></p>";
-      const expectedContent = "My text\nMy\n text©\nMon texte accentué\n";
+      const htmlContent =
+        '<p><span>My</span> <span>text</span></p>\n<p><span>My<br></span> <span title="My title">text©</span></p><p><span>Mon</span> <span>texte accentué</span></p>';
+      const expectedContent = 'My text\nMy\n text©\nMon texte accentué\n';
       expect(convertHtmlContent(htmlContent)).toEqual(expectedContent);
     });
-    test("it does not convert content that should be HTML but does not contain HTML tags", () => {
-      const htmlContent = "Length: Short\nLining: 100% polyester\nModel: Model is 179 cm and wears a size 36\nCervical Shape: Deep V-neck\nTotal length: 88 cm in size 36\nAdditional Info: zip, lined\nHandle Type: Sleeveless\nComposition: 100% nylon\nCare instructions: hand wash";
+    test('it does not convert content that should be HTML but does not contain HTML tags', () => {
+      const htmlContent =
+        'Length: Short\nLining: 100% polyester\nModel: Model is 179 cm and wears a size 36\nCervical Shape: Deep V-neck\nTotal length: 88 cm in size 36\nAdditional Info: zip, lined\nHandle Type: Sleeveless\nComposition: 100% nylon\nCare instructions: hand wash';
       expect(convertHtmlContent(htmlContent)).toEqual(htmlContent);
     });
   });
 
   describe('replaceContentFromRange', () => {
     test('it returns new content with replaced element', () => {
-      expect(replaceContentFromRange( 'Hello world!', 'test', 6, 11)).toEqual('Hello test!');
+      expect(replaceContentFromRange('Hello world!', 'test', 6, 11)).toEqual('Hello test!');
 
       // weird cases
-      expect(replaceContentFromRange( 'Hello world!', 'test', 11, 6)).toEqual('Hello worldtestworld!');
-      expect(replaceContentFromRange( 'Hello world!', 'test', 15, 6)).toEqual('Hello world!testworld!');
-      expect(replaceContentFromRange( 'Hello world!', 'test', 15, 12)).toEqual('Hello world!test');
-      expect(replaceContentFromRange( 'Hello world!', 'test', -2, -6)).toEqual('testHello world!');
-      expect(replaceContentFromRange( 'Hello world!', 'test', 0, 0)).toEqual('testHello world!');
+      expect(replaceContentFromRange('Hello world!', 'test', 11, 6)).toEqual('Hello worldtestworld!');
+      expect(replaceContentFromRange('Hello world!', 'test', 15, 6)).toEqual('Hello world!testworld!');
+      expect(replaceContentFromRange('Hello world!', 'test', 15, 12)).toEqual('Hello world!test');
+      expect(replaceContentFromRange('Hello world!', 'test', -2, -6)).toEqual('testHello world!');
+      expect(replaceContentFromRange('Hello world!', 'test', 0, 0)).toEqual('testHello world!');
     });
   });
 });

@@ -7,4 +7,4 @@ type FamilyVariant = {
   };
 };
 
-export { FamilyVariant, FamilyVariantCode };
+export {FamilyVariant, FamilyVariantCode};

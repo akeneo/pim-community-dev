@@ -1,4 +1,4 @@
-import { denormalizeOperand, Operand } from './Operand';
+import {denormalizeOperand, Operand} from './Operand';
 
 export enum Operator {
   ADD = 'add',

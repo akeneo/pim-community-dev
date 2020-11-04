@@ -27,9 +27,9 @@ import EditionAsset, {getEditionAssetCompleteness} from 'akeneoassetmanager/doma
 import {MainMediaThumbnail} from 'akeneoassetmanager/application/component/asset/edit/main-media-thumbnail';
 import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/action/asset-family/router';
 import {formatDateForUILocale} from 'akeneoassetmanager/tools/format-date';
-import {Label} from "akeneoassetmanager/application/component/app/label";
-import styled from "styled-components";
-import {saveAndExecuteNamingConvention} from "akeneoassetmanager/application/action/asset/save-and-execute-naming-convention";
+import {Label} from 'akeneoassetmanager/application/component/app/label';
+import styled from 'styled-components';
+import {saveAndExecuteNamingConvention} from 'akeneoassetmanager/application/action/asset/save-and-execute-naming-convention';
 const securityContext = require('pim/security-context');
 
 interface StateProps {
@@ -88,30 +88,34 @@ class AssetEditView extends React.Component<EditProps> {
     this.setState({isDeleteModalOpen: false});
   };
 
-  private getSecondaryActions = (canDelete: boolean, canExecuteNamingConvention: boolean, onSaveAndExecuteNamingConvention: () => void ): JSX.Element | JSX.Element[] | null => {
+  private getSecondaryActions = (
+    canDelete: boolean,
+    canExecuteNamingConvention: boolean,
+    onSaveAndExecuteNamingConvention: () => void
+  ): JSX.Element | JSX.Element[] | null => {
     if (!canDelete && !canExecuteNamingConvention) {
       return null;
     }
 
     return (
-        <div className="AknSecondaryActions AknDropdown AknButtonList-item">
-          <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"/>
-          <div className="AknDropdown-menu AknDropdown-menu--right">
-            <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
-            <div>
-              {canExecuteNamingConvention && (
-                  <button className="AknDropdown-menuLink" onClick={onSaveAndExecuteNamingConvention}>
-                    {__('pim_asset_manager.asset.button.save_and_execute_naming_convention')}
-                  </button>
-              )}
-              {canDelete && (
-                  <button className="AknDropdown-menuLink" onClick={() => this.setState({isDeleteModalOpen: true})}>
-                    {__('pim_asset_manager.asset.button.delete')}
-                  </button>
-              )}
-            </div>
+      <div className="AknSecondaryActions AknDropdown AknButtonList-item">
+        <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
+        <div className="AknDropdown-menu AknDropdown-menu--right">
+          <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+          <div>
+            {canExecuteNamingConvention && (
+              <button className="AknDropdown-menuLink" onClick={onSaveAndExecuteNamingConvention}>
+                {__('pim_asset_manager.asset.button.save_and_execute_naming_convention')}
+              </button>
+            )}
+            {canDelete && (
+              <button className="AknDropdown-menuLink" onClick={() => this.setState({isDeleteModalOpen: true})}>
+                {__('pim_asset_manager.asset.button.delete')}
+              </button>
+            )}
           </div>
         </div>
+      </div>
     );
   };
 
@@ -177,9 +181,11 @@ class AssetEditView extends React.Component<EditProps> {
                           </div>
                           <div className="AknTitleContainer-actionsContainer AknButtonList">
                             {this.getSecondaryActions(
-                                this.props.rights.asset.delete,
-                                this.props.rights.asset.executeNamingConventions,
-                                () => {this.props.events.onSaveAndExecuteNamingConvention(this.props.asset)}
+                              this.props.rights.asset.delete,
+                              this.props.rights.asset.executeNamingConventions,
+                              () => {
+                                this.props.events.onSaveAndExecuteNamingConvention(this.props.asset);
+                              }
                             )}
                             {this.props.rights.asset.edit ? (
                               <div className="AknTitleContainer-rightButton">
@@ -220,13 +226,12 @@ class AssetEditView extends React.Component<EditProps> {
                     </div>
                     <div>
                       <span>
-                      {completeness.hasRequiredAttribute() ? (
-                          <CompletenessLabel completeness={completeness} />
-                      ) : null}
+                        {completeness.hasRequiredAttribute() ? <CompletenessLabel completeness={completeness} /> : null}
                       </span>
                       <span>
                         <DateLabel>
-                           {__('pim_asset_manager.asset.created_at')}: {formatDateForUILocale(this.props.context.createdAt, {
+                          {__('pim_asset_manager.asset.created_at')}:{' '}
+                          {formatDateForUILocale(this.props.context.createdAt, {
                             year: 'numeric',
                             month: 'numeric',
                             day: 'numeric',
@@ -236,13 +241,14 @@ class AssetEditView extends React.Component<EditProps> {
                         </DateLabel>
                         |
                         <DateLabel>
-                         {__('pim_asset_manager.asset.updated_at')}: {formatDateForUILocale(this.props.context.updatedAt, {
-                          year: 'numeric',
-                          month: 'numeric',
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: 'numeric',
-                        })}
+                          {__('pim_asset_manager.asset.updated_at')}:{' '}
+                          {formatDateForUILocale(this.props.context.updatedAt, {
+                            year: 'numeric',
+                            month: 'numeric',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                          })}
                         </DateLabel>
                       </span>
                     </div>

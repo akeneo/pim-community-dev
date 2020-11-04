@@ -1,6 +1,6 @@
-import { SetActionLine } from '../../pages/EditRules/components/actions/SetActionLine';
-import { ProductField } from './ProductField';
-import { ActionModuleGuesser } from './ActionModuleGuesser';
+import {SetActionLine} from '../../pages/EditRules/components/actions/SetActionLine';
+import {ProductField} from './ProductField';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
 
 export type SetAction = {
   type: 'set';

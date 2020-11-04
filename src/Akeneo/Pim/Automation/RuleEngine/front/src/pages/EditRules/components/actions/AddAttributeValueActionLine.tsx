@@ -1,13 +1,13 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { ActionTemplate } from './ActionTemplate';
-import { ActionLineProps } from './ActionLineProps';
+import {Controller, useFormContext} from 'react-hook-form';
+import {ActionTemplate} from './ActionTemplate';
+import {ActionLineProps} from './ActionLineProps';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { Attribute } from '../../../../models';
-import { useControlledFormInputAction } from '../../hooks';
+import {Attribute} from '../../../../models';
+import {useControlledFormInputAction} from '../../hooks';
 import {
   useGetAttributeAtMount,
   validateAttribute,
@@ -47,7 +47,7 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
     getFieldFormValue,
   } = useControlledFormInputAction<string[]>(lineNumber);
   // Watch is needed in this case to trigger a render at input
-  const { watch } = useFormContext();
+  const {watch} = useFormContext();
   watch(itemsFormName);
   watch(fieldFormName);
 
@@ -65,7 +65,7 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
         name={fieldFormName}
         as={<span hidden />}
         defaultValue=''
-        rules={{ validate: validateAttribute(translate, router) }}
+        rules={{validate: validateAttribute(translate, router)}}
       />
       <Controller name={typeFormName} as={<span hidden />} defaultValue='add' />
       <Controller
@@ -145,4 +145,4 @@ const AddAttributeValueActionLine: React.FC<ActionLineProps> = ({
   );
 };
 
-export { AddAttributeValueActionLine };
+export {AddAttributeValueActionLine};

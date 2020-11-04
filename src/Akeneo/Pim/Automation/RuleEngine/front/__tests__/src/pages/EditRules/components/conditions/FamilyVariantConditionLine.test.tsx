@@ -1,18 +1,18 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { act, renderWithProviders, screen } from '../../../../../../test-utils';
-import { Operator } from '../../../../../../src/models/Operator';
+import {act, renderWithProviders, screen} from '../../../../../../test-utils';
+import {Operator} from '../../../../../../src/models/Operator';
 import userEvent from '@testing-library/user-event';
-import { FamilyVariantConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/FamilyVariantConditionLine';
+import {FamilyVariantConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/FamilyVariantConditionLine';
 
 const familyVariantsPayload = {
   clothing_by_size: {
     code: 'clothing_by_size',
-    labels: { en_US: 'Clothing by size', fr_FR: 'Vêtements par taille' },
+    labels: {en_US: 'Clothing by size', fr_FR: 'Vêtements par taille'},
   },
   clothing_by_color: {
     code: 'clothing_by_color',
-    labels: { en_US: 'Clothing by color', fr_FR: 'Vêtements par couleur' },
+    labels: {en_US: 'Clothing by color', fr_FR: 'Vêtements par couleur'},
   },
 };
 
@@ -44,9 +44,9 @@ describe('FamilyVariantConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
     ];
     renderWithProviders(
       <FamilyVariantConditionLine
@@ -55,8 +55,8 @@ describe('FamilyVariantConditionLine', () => {
         locales={[]}
         scopes={{}}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
     expect(
       await screen.findByText(

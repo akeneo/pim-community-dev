@@ -1,5 +1,5 @@
-import { ActionModuleGuesser } from './ActionModuleGuesser';
-import { SetStatusActionLine } from '../../pages/EditRules/components/actions/SetStatusActionLine';
+import {ActionModuleGuesser} from './ActionModuleGuesser';
+import {SetStatusActionLine} from '../../pages/EditRules/components/actions/SetStatusActionLine';
 
 export type SetStatusAction = {
   type: 'set';

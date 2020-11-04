@@ -3,10 +3,10 @@ import {
   useUserCatalogLocale,
   useUserCatalogScope,
 } from '../../../../../dependenciesTools/hooks';
-import { InputValueProps } from './AttributeValue';
-import { getAttributeLabel } from '../../../../../models';
-import { Label } from '../../../../../components/Labels';
-import { AssetSelector } from '../../../../../dependenciesTools/components/AssetManager/AssetSelector';
+import {InputValueProps} from './AttributeValue';
+import {getAttributeLabel} from '../../../../../models';
+import {Label} from '../../../../../components/Labels';
+import {AssetSelector} from '../../../../../dependenciesTools/components/AssetManager/AssetSelector';
 
 export const parseAssetCollectionValue = (value: any) => {
   if (value === '') {
@@ -43,4 +43,4 @@ const AssetCollectionValue: React.FC<InputValueProps> = ({
   );
 };
 
-export { AssetCollectionValue };
+export {AssetCollectionValue};

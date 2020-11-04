@@ -1,3 +1,3 @@
 export default interface analyzeSpellingInterface {
-  (content: string,locale: string): void;
+  (content: string, locale: string): void;
 }

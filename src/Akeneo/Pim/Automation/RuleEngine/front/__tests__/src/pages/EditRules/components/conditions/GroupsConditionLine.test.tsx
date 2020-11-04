@@ -1,10 +1,10 @@
 import 'jest-fetch-mock';
 import React from 'react';
-import { act, renderWithProviders, screen } from '../../../../../../test-utils';
+import {act, renderWithProviders, screen} from '../../../../../../test-utils';
 import userEvent from '@testing-library/user-event';
-import { GroupsConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/GroupsConditionLine';
-import { Operator } from '../../../../../../src/models/Operator';
-import { clearGroupRepositoryCache } from '../../../../../../src/repositories/GroupRepository';
+import {GroupsConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/GroupsConditionLine';
+import {Operator} from '../../../../../../src/models/Operator';
+import {clearGroupRepositoryCache} from '../../../../../../src/repositories/GroupRepository';
 
 describe('GroupsConditionLine', () => {
   beforeEach(() => {
@@ -21,8 +21,8 @@ describe('GroupsConditionLine', () => {
         return Promise.resolve(
           JSON.stringify({
             results: [
-              { id: 'tshirts', text: 'T-shirts' },
-              { id: 'winter', text: 'Winter' },
+              {id: 'tshirts', text: 'T-shirts'},
+              {id: 'winter', text: 'Winter'},
             ],
           })
         );
@@ -43,9 +43,9 @@ describe('GroupsConditionLine', () => {
       },
     };
     const toRegister = [
-      { name: 'content.conditions[1].field', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
+      {name: 'content.conditions[1].field', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -55,8 +55,8 @@ describe('GroupsConditionLine', () => {
         scopes={{}}
         currentCatalogLocale={'fr_FR'}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(

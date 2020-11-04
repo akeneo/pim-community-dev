@@ -6,8 +6,10 @@ namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Connector\Writer\F
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\FlatFileHeader;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\File\GenerateFlatHeadersFromAttributeCodesInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Benoit Jacquemont <benoit@akeneo.com>
@@ -45,7 +47,9 @@ final class GenerateHeadersFromAttributeCodes implements GenerateFlatHeadersFrom
         string $channelCode,
         array $localeCodes
     ): array {
-        $userId = $this->tokenStorage->getToken()->getUser()->getId();
+        $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
+        $userId = $user->getId();
 
         if (null === $userId) {
             return ($this->generateHeadersWithoutPermission)($attributeCodes, $channelCode, $localeCodes);

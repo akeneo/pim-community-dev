@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NodeType, isBranch } from './tree.types';
-import { Translate } from '../../dependenciesTools';
+import {NodeType, isBranch} from './tree.types';
+import {Translate} from '../../dependenciesTools';
 
 const FolderImg = styled.img`
   padding: 0 5px;
@@ -57,4 +57,4 @@ const FolderIcons: React.FC<Props> = ({
   );
 };
 
-export { FolderIcons };
+export {FolderIcons};

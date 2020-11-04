@@ -1,16 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import { VisuallyHidden } from 'reakit/VisuallyHidden';
-import { usePopoverState, Popover, PopoverDisclosure } from 'reakit/Popover';
-import { ValueColumn } from '../../pages/EditRules/components/conditions/style';
-import { CategoryTreeFilter } from '../CategoryTree/CategoryTreeFilter';
-import { Category, CategoryCode, LocaleCode } from '../../models';
-import { NetworkLifeCycle } from '../CategoryTree/hooks/NetworkLifeCycle.types';
+import {VisuallyHidden} from 'reakit/VisuallyHidden';
+import {usePopoverState, Popover, PopoverDisclosure} from 'reakit/Popover';
+import {ValueColumn} from '../../pages/EditRules/components/conditions/style';
+import {CategoryTreeFilter} from '../CategoryTree/CategoryTreeFilter';
+import {Category, CategoryCode, LocaleCode} from '../../models';
+import {NetworkLifeCycle} from '../CategoryTree/hooks/NetworkLifeCycle.types';
 import {
   CategoryTreeModelWithOpenBranch,
   CategoryTreeModel,
 } from '../CategoryTree/category-tree.types';
-import { useTranslate } from '../../dependenciesTools/hooks';
+import {useTranslate} from '../../dependenciesTools/hooks';
 
 const InputCategory = styled(ValueColumn)`
   position: relative;
@@ -143,4 +143,4 @@ const CategoriesSelector: React.FC<Props> = ({
   );
 };
 
-export { CategoriesSelector };
+export {CategoriesSelector};

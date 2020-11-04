@@ -74,7 +74,7 @@ module.exports = async function(cucumber) {
 
     await listenRequest(this.page, attributeRequestContract);
 
-return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
+    return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
   });
 
   Given('the user asks for the list of linked product without any asset family attribute', async function() {
@@ -86,7 +86,7 @@ return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
 
     await listenRequest(this.page, attributeRequestContract);
 
-return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
+    return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
   });
 
   Given('the user asks for the list of linked product without any linked product', async function() {
@@ -98,7 +98,7 @@ return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
 
     await listenRequest(this.page, attributeRequestContract);
 
-return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
+    return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
   });
 
   Given('the user should see the list of products linked to the asset', async function() {
@@ -220,10 +220,10 @@ return await loadEditAsset.apply(this, ['Asset/Edit/details_ok.json']);
     const editPage = await await getElement(this.page, 'Edit');
     const enrich = await editPage.getEnrich();
 
-    await(await editPage.getChannelSwitcher()).switchChannel('mobile');
+    await (await editPage.getChannelSwitcher()).switchChannel('mobile');
     for (let locale in asset.labels) {
       const label = asset.labels[locale];
-      await(await editPage.getLocaleSwitcher()).switchLocale(locale);
+      await (await editPage.getLocaleSwitcher()).switchLocale(locale);
       const labelValue = await await enrich.getLabel();
       assert.strictEqual(labelValue, label);
     }

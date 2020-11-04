@@ -47,7 +47,7 @@ const ManageOptionModal = async (nodeElement, createElementDecorator, page) => {
     }
 
     return true;
-  }
+  };
 
   const getOptionCodeValue = async code => {
     const codeInput = await nodeElement.$(`tr[data-code="${code}"] input[name="code"]`);

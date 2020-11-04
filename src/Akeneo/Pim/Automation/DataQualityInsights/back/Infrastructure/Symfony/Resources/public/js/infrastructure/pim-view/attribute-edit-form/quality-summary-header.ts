@@ -1,11 +1,10 @@
-import {ATTRIBUTE_EDIT_FORM_UPDATED} from "@akeneo-pim-ee/data-quality-insights/src/application/constant";
+import {ATTRIBUTE_EDIT_FORM_UPDATED} from '@akeneo-pim-ee/data-quality-insights/src/application/constant';
 
 const BaseView = require('pimui/js/view/base');
 const __ = require('oro/translator');
 const Router = require('pim/router');
 
 class QualitySummaryHeader extends BaseView {
-
   public configure() {
     window.addEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, () => {
       this.render();
@@ -15,15 +14,18 @@ class QualitySummaryHeader extends BaseView {
   }
 
   public render() {
-    const url = Router.generate('akeneo_data_quality_insights_get_number_of_products_impacted_by_attribute_spelling_mistakes', {
-      attributeCode: this.getFormData().code
-    })
+    const url = Router.generate(
+      'akeneo_data_quality_insights_get_number_of_products_impacted_by_attribute_spelling_mistakes',
+      {
+        attributeCode: this.getFormData().code,
+      }
+    );
 
     $.ajax({
       url: url,
       type: 'GET',
     }).then(impactedProductsNumber => {
-      if(impactedProductsNumber === 0) {
+      if (impactedProductsNumber === 0) {
         this.$el.html('');
 
         return;

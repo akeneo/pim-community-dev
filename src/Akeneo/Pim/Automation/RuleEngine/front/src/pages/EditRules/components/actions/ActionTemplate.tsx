@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { RedGhostButton, SmallHelper } from '../../../../components';
-import { TextBoxBlue } from '../TextBoxBlue';
-import { VisuallyHidden } from 'reakit/VisuallyHidden';
-import { AlertDialog } from '../../../../components/AlertDialog/AlertDialog';
-import { createComponent } from 'reakit-system';
-import { useDialogDisclosure, useDialogState } from 'reakit';
-import { useTranslate } from '../../../../dependenciesTools/hooks';
-import { LineErrors } from '../LineErrors';
+import {RedGhostButton, SmallHelper} from '../../../../components';
+import {TextBoxBlue} from '../TextBoxBlue';
+import {VisuallyHidden} from 'reakit/VisuallyHidden';
+import {AlertDialog} from '../../../../components/AlertDialog/AlertDialog';
+import {createComponent} from 'reakit-system';
+import {useDialogDisclosure, useDialogState} from 'reakit';
+import {useTranslate} from '../../../../dependenciesTools/hooks';
+import {LineErrors} from '../LineErrors';
 
 const StyledHeader = styled.header`
   font-weight: normal;
@@ -93,4 +93,4 @@ const ActionTemplate: React.FC<Props> = ({
 
 ActionTemplate.displayName = 'ActionTemplate';
 
-export { ActionTemplate };
+export {ActionTemplate};

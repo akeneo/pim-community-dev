@@ -18,8 +18,10 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Locale controller for configuration
@@ -59,7 +61,9 @@ class LocaleController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $request->getSession()->getFlashBag()->add('success', $this->translator->trans('flash.locale.updated'));
+                $session = $request->getSession();
+                Assert::isInstanceOf($session, Session::class);
+                $session->getFlashBag()->add('success', $this->translator->trans('flash.locale.updated'));
 
                 return new JsonResponse(
                     [

@@ -1,7 +1,5 @@
-import React, {FC} from "react";
+import React, {FC} from 'react';
 
-const Separator: FC = () => (
-  <hr />
-);
+const Separator: FC = () => <hr />;
 
 export default Separator;

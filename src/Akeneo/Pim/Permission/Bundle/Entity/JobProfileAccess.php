@@ -114,6 +114,6 @@ class JobProfileAccess implements JobProfileAccessInterface
     {
         $this->editJobProfile = $editJobProfile;
 
-        return $this->editJobProfile;
+        return $this;
     }
 }

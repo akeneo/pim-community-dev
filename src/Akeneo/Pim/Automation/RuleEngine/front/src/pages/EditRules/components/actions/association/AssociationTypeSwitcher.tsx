@@ -1,14 +1,14 @@
 import React from 'react';
-import { AddAssociationTypeButton } from './AddAssociationTypeButton';
-import { AssociationTarget } from '../SetAssociationsActionLine';
-import { AssociationType, AssociationTypeCode } from '../../../../../models';
+import {AddAssociationTypeButton} from './AddAssociationTypeButton';
+import {AssociationTarget} from '../SetAssociationsActionLine';
+import {AssociationType, AssociationTypeCode} from '../../../../../models';
 import {
   useBackboneRouter,
   useTranslate,
   useUserCatalogLocale,
 } from '../../../../../dependenciesTools/hooks';
-import { QuantifiedAssociationTarget } from '../SetQuantifiedAssociationsActionLine';
-import { getAssociationTypesFromQuantified } from '../../../../../repositories/AssociationTypeRepository';
+import {QuantifiedAssociationTarget} from '../SetQuantifiedAssociationsActionLine';
+import {getAssociationTypesFromQuantified} from '../../../../../repositories/AssociationTypeRepository';
 
 type Props = {
   associationValues: Map<AssociationTarget | QuantifiedAssociationTarget, any>;
@@ -70,7 +70,7 @@ const AssociationTypeSwitcher: React.FC<Props> = ({
 
   const isCurrentAssociationTargetOrDefault: (
     associationTarget: AssociationTarget
-  ) => boolean = ({ associationTypeCode, target }) => {
+  ) => boolean = ({associationTypeCode, target}) => {
     return (
       !!currentAssociationTarget &&
       currentAssociationTarget.associationTypeCode === associationTypeCode &&
@@ -101,7 +101,7 @@ const AssociationTypeSwitcher: React.FC<Props> = ({
                 <span className='AknBadgedSelector-helper'>
                   {translate(
                     `pimee_catalog_rule.form.edit.actions.set_associations.counts.${associationTarget.target}`,
-                    { count: value.length },
+                    {count: value.length},
                     value.length
                   )}
                 </span>
@@ -134,4 +134,4 @@ const AssociationTypeSwitcher: React.FC<Props> = ({
   );
 };
 
-export { AssociationTypeSwitcher };
+export {AssociationTypeSwitcher};

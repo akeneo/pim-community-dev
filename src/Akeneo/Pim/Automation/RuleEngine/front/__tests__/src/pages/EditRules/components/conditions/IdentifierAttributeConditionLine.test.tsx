@@ -7,11 +7,11 @@ import {
   screen,
 } from '../../../../../../test-utils';
 import userEvent from '@testing-library/user-event';
-import { IdentifierAttributeCondition } from '../../../../../../src/models/conditions';
-import { Operator } from '../../../../../../src/models/Operator';
-import { createAttribute, locales, scopes } from '../../../../factories';
-import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
-import { IdentifierAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/IdentifierAttributeConditionLine';
+import {IdentifierAttributeCondition} from '../../../../../../src/models/conditions';
+import {Operator} from '../../../../../../src/models/Operator';
+import {createAttribute, locales, scopes} from '../../../../factories';
+import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
+import {IdentifierAttributeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/IdentifierAttributeConditionLine';
 
 describe('IdentifierAttributeConditionLine', () => {
   beforeEach(() => {
@@ -52,7 +52,7 @@ describe('IdentifierAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true }
+      {all: true}
     );
 
     expect(await screen.findByText('SKU')).toBeInTheDocument();
@@ -86,9 +86,9 @@ describe('IdentifierAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -99,8 +99,8 @@ describe('IdentifierAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('SKU')).toBeInTheDocument();
@@ -136,9 +136,9 @@ describe('IdentifierAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[1].value', type: 'custom' },
-      { name: 'content.conditions[1].operator', type: 'custom' },
-      { name: 'content.conditions[1].value', type: 'custom' },
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
     ];
 
     renderWithProviders(
@@ -149,8 +149,8 @@ describe('IdentifierAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('SKU')).toBeInTheDocument();
@@ -181,7 +181,7 @@ describe('IdentifierAttributeConditionLine', () => {
 
     act(() => {
       fireEvent.change(screen.getByTestId('edit-rules-input-1-value-text'), {
-        target: { value: 'toto' },
+        target: {value: 'toto'},
       });
       userEvent.selectOptions(inputOperator, Operator.CONTAINS);
     });

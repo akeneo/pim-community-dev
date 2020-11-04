@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import BaseView = require("pimui/js/view/base");
-import * as _ from "underscore";
+import BaseView = require('pimui/js/view/base');
+import * as _ from 'underscore';
 
-const __ = require("oro/translator");
-const FetcherRegistry = require("pim/fetcher-registry");
-const Routing = require("routing");
-const UserContext = require("pim/user-context");
+const __ = require('oro/translator');
+const FetcherRegistry = require('pim/fetcher-registry');
+const Routing = require('routing');
+const UserContext = require('pim/user-context');
 
-const pendingTemplate = require("teamwork-assistant/templates/widget/project-completeness-data-pending");
-const template = require("teamwork-assistant/templates/widget/project-completeness-data");
+const pendingTemplate = require('teamwork-assistant/templates/widget/project-completeness-data-pending');
+const template = require('teamwork-assistant/templates/widget/project-completeness-data');
 
 interface Config {
   labels: {
@@ -61,8 +61,8 @@ class ProjectCompletenessData extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: Config }) {
-    super({ ...options, className: "AknProjectWidget-boxes" });
+  constructor(options: {config: Config}) {
+    super({...options, className: 'AknProjectWidget-boxes'});
 
     this.config = options.config;
   }
@@ -79,73 +79,61 @@ class ProjectCompletenessData extends BaseView {
     const data = this.getFormData();
     let contributorUsername = null;
 
-    if (this.getFormModel().has("currentContributorUsername")) {
+    if (this.getFormModel().has('currentContributorUsername')) {
       contributorUsername = data.currentContributorUsername;
     }
 
-    const displayLinks = _.contains(
-      [UserContext.get("username"), null],
-      contributorUsername
-    );
+    const displayLinks = _.contains([UserContext.get('username'), null], contributorUsername);
 
     const noContributor = null === contributorUsername;
-    const isOwner =
-      data.currentProject.owner.username === UserContext.get("username");
+    const isOwner = data.currentProject.owner.username === UserContext.get('username');
 
-    const urls: { [status: string]: string } = {};
-    _.each(["todo", "inprogress", "done"], status => {
-      urls[status] = Routing.generate("teamwork_assistant_project_show", {
+    const urls: {[status: string]: string} = {};
+    _.each(['todo', 'inprogress', 'done'], status => {
+      urls[status] = Routing.generate('teamwork_assistant_project_show', {
         identifier: data.currentProjectCode,
-        status:
-          noContributor && isOwner ? "owner-" + status : "contributor-" + status
+        status: noContributor && isOwner ? 'owner-' + status : 'contributor-' + status,
       });
     });
 
-    this.pollCompleteness(data.currentProjectCode, contributorUsername).then(
-      completeness =>
-        this.$el.html(
-          this.template({
-            completeness,
-            todoLabel: __(this.config.labels.todo),
-            inProgressLabel: __(this.config.labels.inProgress),
-            displayProductsLabel: __(this.config.labels.displayProducts),
-            ratioTodoLabel: __(this.config.labels.ratioTodo),
-            ratioInProgressLabel: __(this.config.labels.ratioInProgress),
-            ratioDoneLabel: __(this.config.labels.ratioDone),
-            doneLabel: __(this.config.labels.done),
-            displayLinks: displayLinks,
-            urls: urls
-          })
-        )
+    this.pollCompleteness(data.currentProjectCode, contributorUsername).then(completeness =>
+      this.$el.html(
+        this.template({
+          completeness,
+          todoLabel: __(this.config.labels.todo),
+          inProgressLabel: __(this.config.labels.inProgress),
+          displayProductsLabel: __(this.config.labels.displayProducts),
+          ratioTodoLabel: __(this.config.labels.ratioTodo),
+          ratioInProgressLabel: __(this.config.labels.ratioInProgress),
+          ratioDoneLabel: __(this.config.labels.ratioDone),
+          doneLabel: __(this.config.labels.done),
+          displayLinks: displayLinks,
+          urls: urls,
+        })
+      )
     );
 
     return this;
   }
 
-  /** 
+  /**
    * Poll the project completeness every POLLING_RATE seconds, until the property
    * 'is_completeness_computed' return 'true' then resolve the Completeness.
    */
-  private pollCompleteness(
-    currentProjectCode: string,
-    contributorUsername: string
-  ): Promise<Completeness> {
+  private pollCompleteness(currentProjectCode: string, contributorUsername: string): Promise<Completeness> {
     const POLLING_RATE = 5000;
 
     clearTimeout(this.pollCompletenessTimeoutID);
 
     const fetchCompleteness = (resolve: (completeness: Completeness) => void) =>
-      FetcherRegistry.getFetcher("project")
+      FetcherRegistry.getFetcher('project')
         .getCompleteness(currentProjectCode, contributorUsername)
         .then((completeness: Completeness) => {
           if (true === completeness.is_completeness_computed) {
             return resolve(completeness);
           }
 
-          this.pollCompletenessTimeoutID = setTimeout(
-            () => fetchCompleteness(resolve),
-            POLLING_RATE
-          );
+          this.pollCompletenessTimeoutID = setTimeout(() => fetchCompleteness(resolve), POLLING_RATE);
         });
 
     return new Promise(fetchCompleteness);

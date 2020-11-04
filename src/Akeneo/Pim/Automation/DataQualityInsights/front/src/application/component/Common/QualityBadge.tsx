@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Badge} from 'akeneo-design-system';
-import {getQualityBadgeLevel} from "../../helper";
+import {getQualityBadgeLevel} from '../../helper';
 
 const translate = require('oro/translator');
 
@@ -14,6 +14,6 @@ const QualityBadge: FC<QualityBadgeProps> = ({label}) => {
       {translate(`akeneo_data_quality_insights.attribute_grid.quality.${label}`)}
     </Badge>
   );
-}
+};
 
 export default QualityBadge;

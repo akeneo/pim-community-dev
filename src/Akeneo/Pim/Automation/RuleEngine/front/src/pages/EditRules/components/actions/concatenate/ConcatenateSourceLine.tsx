@@ -1,13 +1,13 @@
 import React from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { Locale } from '../../../../../models';
-import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
-import { useControlledFormInputAction } from '../../../hooks';
-import { useTranslate } from '../../../../../dependenciesTools/hooks';
+import {Controller, useFormContext} from 'react-hook-form';
+import {Locale} from '../../../../../models';
+import {IndexedScopes} from '../../../../../repositories/ScopeRepository';
+import {useControlledFormInputAction} from '../../../hooks';
+import {useTranslate} from '../../../../../dependenciesTools/hooks';
 import styled from 'styled-components';
-import { AttributePropertiesSelector } from '../attribute/AttributePropertiesSelector';
-import { ConcatenateSource } from '../../../../../models/actions';
-import { InputText } from '../../../../../components/Inputs';
+import {AttributePropertiesSelector} from '../attribute/AttributePropertiesSelector';
+import {ConcatenateSource} from '../../../../../models/actions';
+import {InputText} from '../../../../../components/Inputs';
 
 const DeleteButton = styled.button`
   border: none;
@@ -36,10 +36,16 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
   removeOperation,
 }) => {
   const translate = useTranslate();
-  const { formName, isFormFieldInError } = useControlledFormInputAction<
-    string | null
-  >(lineNumber);
-  const { setValue, watch } = useFormContext();
+  const {
+    formName,
+    getFormValue,
+    isFormFieldInError,
+  } = useControlledFormInputAction<string | null>(lineNumber);
+  const {setValue, watch} = useFormContext();
+
+  const getText = () =>
+    getFormValue(formName(`${baseFormName}.text`)) ?? source.text;
+  watch(formName(`${baseFormName}.text`));
 
   return (
     <li
@@ -67,9 +73,7 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
               <Controller
                 as={<span hidden />}
                 name={formName(`${baseFormName}.text`)}
-                defaultValue={
-                  watch(formName(`${baseFormName}.text`)) ?? source.text
-                }
+                defaultValue={getText()}
               />
               <label
                 className={`AknInputSizer${
@@ -79,13 +83,9 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
                     ? 'AknInputSizer--error'
                     : ''
                 }`}
-                data-value={
-                  watch(formName(`${baseFormName}.text`)) ?? source.text
-                }>
+                data-value={getText()}>
                 <InputText
-                  defaultValue={
-                    watch(formName(`${baseFormName}.text`)) ?? source.text
-                  }
+                  defaultValue={getText()}
                   className={'AknInputSizer-input'}
                   data-testid={`edit-rules-action-operation-list-${operationLineNumber}-text`}
                   hiddenLabel={true}
@@ -131,4 +131,4 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
   );
 };
 
-export { ConcatenateSourceLine };
+export {ConcatenateSourceLine};

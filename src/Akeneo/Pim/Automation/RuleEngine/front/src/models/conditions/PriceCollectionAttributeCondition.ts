@@ -1,12 +1,12 @@
-import { Operator } from '../Operator';
-import { ConditionFactory } from './Condition';
-import { ConditionModuleGuesser } from './ConditionModuleGuesser';
-import { AttributeType } from '../Attribute';
+import {Operator} from '../Operator';
+import {ConditionFactory} from './Condition';
+import {ConditionModuleGuesser} from './ConditionModuleGuesser';
+import {AttributeType} from '../Attribute';
 import {
   createAttributeCondition,
   getAttributeConditionModule,
 } from './AbstractAttributeCondition';
-import { PriceCollectionAttributeConditionLine } from '../../pages/EditRules/components/conditions/PriceCollectionAttributeConditionLine';
+import {PriceCollectionAttributeConditionLine} from '../../pages/EditRules/components/conditions/PriceCollectionAttributeConditionLine';
 
 const PriceCollectionAttributeOperators = [
   Operator.EQUALS,
@@ -39,7 +39,10 @@ const createPriceCollectionAttributeCondition: ConditionFactory = async (
     router,
     [AttributeType.PRICE_COLLECTION],
     Operator.IS_EMPTY,
-    { amount: '', currency: '' }
+    {
+      amount: '',
+      currency: '',
+    }
   );
 };
 

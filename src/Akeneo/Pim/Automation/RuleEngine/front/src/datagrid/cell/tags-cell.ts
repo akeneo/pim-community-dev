@@ -28,7 +28,7 @@ class TagsCell extends StringCell {
   }
 
   static getClassName = (actionType: string): string => {
-    const colors: { [key: string]: string } = {
+    const colors: {[key: string]: string} = {
       add: 'green',
       calculate: 'darkPurple',
       clear: 'red',

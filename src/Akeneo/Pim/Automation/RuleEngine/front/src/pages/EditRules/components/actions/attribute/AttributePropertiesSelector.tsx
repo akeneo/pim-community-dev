@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import React, {useEffect} from 'react';
+import {Controller, useFormContext} from 'react-hook-form';
 import {
   Attribute,
   AttributeCode,
@@ -22,19 +22,19 @@ import {
   getLocaleValidation,
   LocaleSelector,
 } from '../../../../../components/Selectors/LocaleSelector';
-import { IndexedScopes } from '../../../../../repositories/ScopeRepository';
+import {IndexedScopes} from '../../../../../repositories/ScopeRepository';
 import {
   CurrencySelector,
   getCurrencyValidation,
 } from '../../../../../components/Selectors/CurrencySelector';
-import { IndexedCurrencies } from '../../../../../repositories/CurrencyRepository';
-import { Currency, CurrencyCode } from '../../../../../models/Currency';
-import { useActiveCurrencies } from '../../../hooks/useActiveCurrencies';
-import { Router } from '../../../../../dependenciesTools';
-import { getAttributeByIdentifier } from '../../../../../repositories/AttributeRepository';
+import {IndexedCurrencies} from '../../../../../repositories/CurrencyRepository';
+import {Currency, CurrencyCode} from '../../../../../models/Currency';
+import {useActiveCurrencies} from '../../../hooks/useActiveCurrencies';
+import {Router} from '../../../../../dependenciesTools';
+import {getAttributeByIdentifier} from '../../../../../repositories/AttributeRepository';
 import get from 'lodash/get';
-import { validateAttribute } from './attribute.utils';
-import { DateFormatSelector } from '../../../../../components/Selectors/DateFormatSelector';
+import {validateAttribute} from './attribute.utils';
+import {DateFormatSelector} from '../../../../../components/Selectors/DateFormatSelector';
 
 type Props = {
   baseFormName: string;
@@ -54,7 +54,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   isCurrencyRequired,
 }) => {
   const translate = useTranslate();
-  const { watch, errors, setValue } = useFormContext();
+  const {watch, errors, setValue} = useFormContext();
   const currentCatalogLocale = useUserCatalogLocale();
   const router = useBackboneRouter();
   const currencies = useActiveCurrencies();
@@ -87,7 +87,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     }
     const scopeCode = watch(scopeFormName);
     if (scopeCode && scopes[scopeCode]) {
-      return scopes[scopeCode].currencies.map(code => ({ code }));
+      return scopes[scopeCode].currencies.map(code => ({code}));
     }
     return [];
   };
@@ -127,7 +127,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
           as={<input type='hidden' />}
           name={fieldFormName}
           defaultValue={attributeCode}
-          rules={{ validate: validateAttribute(translate, router) }}
+          rules={{validate: validateAttribute(translate, router)}}
         />
         <span
           className={
@@ -309,4 +309,4 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   );
 };
 
-export { AttributePropertiesSelector };
+export {AttributePropertiesSelector};

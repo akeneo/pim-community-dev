@@ -1,11 +1,10 @@
-import React, {FC} from "react";
-import useGetSpellcheckHighlights
-  from "../../../../../infrastructure/hooks/Common/Spellcheck/useGetSpellcheckHighlights";
-import HighlightableElement from "../HighlightableElement";
-import DeactivateNativeSpellcheck from "./DeactivateNativeSpellcheck";
-import DeactivateGrammarlySpellcheck from "./DeactivateGrammarlySpellcheck";
-import {useSpellcheckContentContext} from "../../../../context/Spellcheck/SpellcheckContentContext";
-import DeactivateNativeAutocomplete from "./DeactivateNativeAutocomplete";
+import React, {FC} from 'react';
+import useGetSpellcheckHighlights from '../../../../../infrastructure/hooks/Common/Spellcheck/useGetSpellcheckHighlights';
+import HighlightableElement from '../HighlightableElement';
+import DeactivateNativeSpellcheck from './DeactivateNativeSpellcheck';
+import DeactivateGrammarlySpellcheck from './DeactivateGrammarlySpellcheck';
+import {useSpellcheckContentContext} from '../../../../context/Spellcheck/SpellcheckContentContext';
+import DeactivateNativeAutocomplete from './DeactivateNativeAutocomplete';
 
 const DEFAULT_BASE_ID = 'spellcheck';
 

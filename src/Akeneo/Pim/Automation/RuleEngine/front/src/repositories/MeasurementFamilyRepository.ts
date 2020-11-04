@@ -1,8 +1,8 @@
-import { fetchAllMeasurementFamilies } from '../fetch/MeasurementFamilyFetcher';
-import { Router } from '../dependenciesTools';
-import { MeasurementFamily, MeasurementFamilyCode } from '../models';
+import {fetchAllMeasurementFamilies} from '../fetch/MeasurementFamilyFetcher';
+import {Router} from '../dependenciesTools';
+import {MeasurementFamily, MeasurementFamilyCode} from '../models';
 
-type IndexedMeasurementFamilies = { [code: string]: MeasurementFamily };
+type IndexedMeasurementFamilies = {[code: string]: MeasurementFamily};
 let cachedMeasurementFamilies: IndexedMeasurementFamilies | null;
 
 const clearMeasurementFamilyRepositoryCache = () => {

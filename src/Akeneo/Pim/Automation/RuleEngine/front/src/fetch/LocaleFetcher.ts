@@ -1,6 +1,6 @@
-import { Router } from '../dependenciesTools';
-import { httpGet } from './fetch';
-import { Locale } from '../models';
+import {Router} from '../dependenciesTools';
+import {httpGet} from './fetch';
+import {Locale} from '../models';
 
 const fetchActivatedLocales = async (router: Router): Promise<Locale[]> => {
   const url = router.generate('pim_enrich_locale_rest_index', {
@@ -11,4 +11,4 @@ const fetchActivatedLocales = async (router: Router): Promise<Locale[]> => {
   return await response.json();
 };
 
-export { fetchActivatedLocales };
+export {fetchActivatedLocales};

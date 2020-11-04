@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import { VisuallyHidden } from 'reakit/VisuallyHidden';
-import { usePopoverState, Popover, PopoverDisclosure } from 'reakit/Popover';
-import { Category, CategoryCode, LocaleCode } from '../../models';
+import {VisuallyHidden} from 'reakit/VisuallyHidden';
+import {usePopoverState, Popover, PopoverDisclosure} from 'reakit/Popover';
+import {Category, CategoryCode, LocaleCode} from '../../models';
 import {
   CategoryTreeModel,
   CategoryTreeModelWithOpenBranch,
 } from '../CategoryTree/category-tree.types';
-import { useBackboneRouter, useTranslate } from '../../dependenciesTools/hooks';
-import { CategoryTree } from '../CategoryTree/components/CategoryTree';
-import { AkeneoSpinner } from '../AkeneoSpinner';
-import { getInitCategoryTreeOpenedNode } from '../CategoryTree/category-tree.getters';
-import { NetworkLifeCycle } from '../CategoryTree/hooks/NetworkLifeCycle.types';
+import {useBackboneRouter, useTranslate} from '../../dependenciesTools/hooks';
+import {CategoryTree} from '../CategoryTree/components/CategoryTree';
+import {AkeneoSpinner} from '../AkeneoSpinner';
+import {getInitCategoryTreeOpenedNode} from '../CategoryTree/category-tree.getters';
+import {NetworkLifeCycle} from '../CategoryTree/hooks/NetworkLifeCycle.types';
 
 const ContainerCategoryTree = styled.div`
   margin: 10px 20px;
@@ -27,7 +27,7 @@ const InputCategory = styled.div`
 const CategoryArtifact = styled.div`
   z-index: 2;
   margin-bottom: 5px;
-  color: ${({ theme }): string => theme.color.grey120};
+  color: ${({theme}): string => theme.color.grey120};
   padding-left: 14px;
 `;
 
@@ -193,4 +193,4 @@ const CategorySelector: React.FC<Props> = ({
   );
 };
 
-export { CategorySelector };
+export {CategorySelector};

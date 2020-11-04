@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Flag } from '../Flag/Flag';
-import { Label } from './Label';
+import {Flag} from '../Flag/Flag';
+import {Label} from './Label';
 
 const DivLabelWithFLag = styled.div`
   align-items: center;
@@ -32,4 +32,4 @@ const FlagLabel: React.FC<Props> = ({
   );
 };
 
-export { FlagLabel };
+export {FlagLabel};

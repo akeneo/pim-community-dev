@@ -11,9 +11,9 @@ import {
   getAttributeLabel,
   LocaleCode,
 } from '../../models';
-import { Router } from '../../dependenciesTools';
-import { useBackboneRouter } from '../../dependenciesTools/hooks';
-import { getAttributeByIdentifier } from '../../repositories/AttributeRepository';
+import {Router} from '../../dependenciesTools';
+import {useBackboneRouter} from '../../dependenciesTools/hooks';
+import {getAttributeByIdentifier} from '../../repositories/AttributeRepository';
 
 type AttributeResult = {
   id: string;
@@ -103,7 +103,7 @@ const AttributeSelector: React.FC<Props> = ({
       return {
         more: fieldCount >= 20,
         results: result.map(group => {
-          return { ...group, disabled: true };
+          return {...group, disabled: true};
         }),
       };
     };
@@ -163,4 +163,4 @@ const AttributeSelector: React.FC<Props> = ({
   );
 };
 
-export { AttributeSelector };
+export {AttributeSelector};

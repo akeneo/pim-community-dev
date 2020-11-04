@@ -1,6 +1,6 @@
 import React from 'react';
 import 'jest-fetch-mock';
-import { EditRules } from '../../../../src/pages/EditRules/';
+import {EditRules} from '../../../../src/pages/EditRules/';
 import userEvent from '@testing-library/user-event';
 import {
   act,
@@ -9,10 +9,10 @@ import {
   waitForElementToBeRemoved,
   screen,
 } from '../../../../test-utils';
-import { Scope } from '../../../../src/models';
-import { clearCategoryRepositoryCache } from '../../../../src/repositories/CategoryRepository';
-import { clearAttributeRepositoryCache } from '../../../../src/repositories/AttributeRepository';
-import { dependencies } from '../../../../src/dependenciesTools/provider/dependencies';
+import {Scope} from '../../../../src/models';
+import {clearCategoryRepositoryCache} from '../../../../src/repositories/CategoryRepository';
+import {clearAttributeRepositoryCache} from '../../../../src/repositories/AttributeRepository';
+import {dependencies} from '../../../../src/dependenciesTools/provider/dependencies';
 
 const ruleDefinitionCode = 'my_code';
 
@@ -22,7 +22,7 @@ const ruleDefinitionPayload = {
   type: 'product',
   priority: 0,
   enabled: true,
-  content: { actions: [], conditions: [] },
+  content: {actions: [], conditions: []},
   labels: {
     en_US: 'My code',
   },
@@ -98,17 +98,17 @@ describe('EditRules', () => {
   it('should submit the form with the input data from rule properties', async () => {
     // Given
     fetchMock.mockResponses(
-      [JSON.stringify(ruleDefinitionPayload), { status: 200 }],
-      [JSON.stringify(localesPayload), { status: 200 }],
-      [JSON.stringify(scopesPayload), { status: 200 }]
+      [JSON.stringify(ruleDefinitionPayload), {status: 200}],
+      [JSON.stringify(localesPayload), {status: 200}],
+      [JSON.stringify(scopesPayload), {status: 200}]
     );
     fetchMock.mockResponse(() => {
       return new Promise(resolve =>
-        setTimeout(() => resolve({ body: 'ok' }), 1000)
+        setTimeout(() => resolve({body: 'ok'}), 1000)
       );
     });
     // When
-    const { getByTestId, findByTestId, findByText, findByLabelText } = render(
+    const {getByTestId, findByTestId, findByText, findByLabelText} = render(
       <EditRules
         ruleDefinitionCode={ruleDefinitionCode}
         setIsDirty={setIsDirty}
@@ -167,7 +167,7 @@ describe('EditRules', () => {
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
     // When
-    const { findByText, findByLabelText } = render(
+    const {findByText, findByLabelText} = render(
       <EditRules
         ruleDefinitionCode={ruleDefinitionCode}
         setIsDirty={setIsDirty}
@@ -219,7 +219,7 @@ describe('EditRules', () => {
     });
 
     // When
-    const { findByLabelText, findByText, findByTestId } = render(
+    const {findByLabelText, findByText, findByTestId} = render(
       <EditRules
         ruleDefinitionCode={ruleDefinitionCode}
         setIsDirty={setIsDirty}
@@ -239,7 +239,7 @@ describe('EditRules', () => {
     fireEvent.change(
       await findByLabelText('pimee_catalog_rule.form.edit.add_conditions'),
       {
-        target: { value: 'family' },
+        target: {value: 'family'},
       }
     );
     expect(await findByText('Family')).toBeInTheDocument();
@@ -255,7 +255,7 @@ describe('EditRules', () => {
         )
       ) {
         return Promise.resolve(
-          JSON.stringify({ ...ruleDefinitionPayload, enabled: false })
+          JSON.stringify({...ruleDefinitionPayload, enabled: false})
         );
       } else if (
         request.url.includes(
@@ -320,7 +320,7 @@ describe('EditRules', () => {
     });
 
     // When
-    const { findByLabelText } = render(
+    const {findByLabelText} = render(
       <EditRules
         ruleDefinitionCode={ruleDefinitionCode}
         setIsDirty={setIsDirty}
@@ -340,7 +340,7 @@ describe('EditRules', () => {
     fireEvent.change(
       await findByLabelText('pimee_catalog_rule.form.edit.actions.add_action'),
       {
-        target: { value: 'set_family' },
+        target: {value: 'set_family'},
       }
     );
     await waitForElementToBeRemoved(() =>
@@ -360,7 +360,7 @@ describe('EditRules', () => {
           'pimee_enrich_rule_definition_get?%7B%22ruleCode%22:%22inexisting_rule%22%7D'
         )
       ) {
-        return Promise.resolve({ status: 404 });
+        return Promise.resolve({status: 404});
       } else if (
         request.url.includes(
           'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
@@ -374,7 +374,7 @@ describe('EditRules', () => {
       throw new Error(`The "${request.url}" url is not mocked.`);
     });
     // When
-    const { findByText } = render(
+    const {findByText} = render(
       <EditRules
         ruleDefinitionCode='inexisting_rule'
         setIsDirty={setIsDirty}
@@ -395,7 +395,7 @@ describe('EditRules', () => {
           'pimee_enrich_rule_definition_get?%7B%22ruleCode%22:%22malformed_rule%22%7D'
         )
       ) {
-        return Promise.resolve(JSON.stringify({ foo: 'bar' }));
+        return Promise.resolve(JSON.stringify({foo: 'bar'}));
       } else if (
         request.url.includes(
           'pim_enrich_locale_rest_index?%7B%22activated%22:true%7D'
@@ -410,7 +410,7 @@ describe('EditRules', () => {
     });
 
     // When
-    const { findByText } = render(
+    const {findByText} = render(
       <EditRules ruleDefinitionCode='malformed_rule' setIsDirty={setIsDirty} />,
       {
         legacy: true,

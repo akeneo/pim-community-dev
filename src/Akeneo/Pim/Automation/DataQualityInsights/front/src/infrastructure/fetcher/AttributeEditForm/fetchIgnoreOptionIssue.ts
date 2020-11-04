@@ -4,12 +4,14 @@ const ROUTE_NAME = 'akeneo_data_quality_insights_attribute_option_check_text_ign
 
 const fetchIgnoreOptionIssue = async (word: string, locale: string, attributeCode: string, optionCode: string) => {
   await fetch(Routing.generate(ROUTE_NAME), {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Accept": "application/json"
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Accept: 'application/json',
     },
-    body: `word=${encodeURIComponent(word)}&locale=${encodeURIComponent(locale)}&attribute_code=${encodeURIComponent(attributeCode)}&option_code=${encodeURIComponent(optionCode)}`
+    body: `word=${encodeURIComponent(word)}&locale=${encodeURIComponent(locale)}&attribute_code=${encodeURIComponent(
+      attributeCode
+    )}&option_code=${encodeURIComponent(optionCode)}`,
   });
 
   return [];

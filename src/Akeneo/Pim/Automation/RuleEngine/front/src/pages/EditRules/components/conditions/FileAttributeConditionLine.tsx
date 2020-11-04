@@ -1,20 +1,20 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { ConditionLineProps } from './ConditionLineProps';
+import {Controller} from 'react-hook-form';
+import {ConditionLineProps} from './ConditionLineProps';
 import {
   FileAttributeCondition,
   Attribute,
   FileAttributeOperators,
 } from '../../../../models';
-import { AttributeConditionLine } from './AttributeConditionLine';
+import {AttributeConditionLine} from './AttributeConditionLine';
 import {
   useBackboneRouter,
   useTranslate,
 } from '../../../../dependenciesTools/hooks';
-import { useControlledFormInputCondition } from '../../hooks';
-import { Operator } from '../../../../models/Operator';
-import { InputText } from '../../../../components';
-import { useGetAttributeAtMount } from '../actions/attribute/attribute.utils';
+import {useControlledFormInputCondition} from '../../hooks';
+import {Operator} from '../../../../models/Operator';
+import {InputText} from '../../../../components';
+import {useGetAttributeAtMount} from '../actions/attribute/attribute.utils';
 
 type FileAttributeConditionLineProps = ConditionLineProps & {
   condition: FileAttributeCondition;
@@ -70,4 +70,4 @@ const FileAttributeConditionLine: React.FC<FileAttributeConditionLineProps> = ({
   );
 };
 
-export { FileAttributeConditionLine, FileAttributeConditionLineProps };
+export {FileAttributeConditionLine, FileAttributeConditionLineProps};

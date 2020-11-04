@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { VisuallyHidden } from 'reakit/VisuallyHidden';
-import { Translate } from '../../dependenciesTools';
+import {VisuallyHidden} from 'reakit/VisuallyHidden';
+import {Translate} from '../../dependenciesTools';
 
 const CheckboxButton = styled.button`
   width: 24px;
@@ -15,7 +15,7 @@ const CheckboxButton = styled.button`
 `;
 
 const CheckboxSelectedButton = styled(CheckboxButton)`
-  background-color: ${({ theme }) => theme.color.blue100};
+  background-color: ${({theme}) => theme.color.blue100};
   background-image: url(/bundles/pimui/images/icon-checkwhite.svg);
 `;
 
@@ -25,7 +25,7 @@ type Props = {
   translate: Translate;
 };
 
-const TreeCheckbox: React.FC<Props> = ({ onClick, selected, translate }) => {
+const TreeCheckbox: React.FC<Props> = ({onClick, selected, translate}) => {
   if (selected) {
     return (
       <CheckboxSelectedButton type='button' onClick={onClick}>
@@ -44,4 +44,4 @@ const TreeCheckbox: React.FC<Props> = ({ onClick, selected, translate }) => {
   );
 };
 
-export { TreeCheckbox };
+export {TreeCheckbox};

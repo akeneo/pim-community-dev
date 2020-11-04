@@ -1,5 +1,5 @@
-import React, {FC, useEffect} from "react";
-import {useHighlightableContentContext} from "../../../context/HighlightableContentContext";
+import React, {FC, useEffect} from 'react';
+import {useHighlightableContentContext} from '../../../context/HighlightableContentContext';
 
 type ActiveHighlightsOnIntersectionProps = {
   options?: IntersectionObserverInit;
@@ -9,8 +9,8 @@ const ActiveHighlightsOnIntersection: FC<ActiveHighlightsOnIntersectionProps> = 
   const {element, activate, deactivate} = useHighlightableContentContext();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(function (entries) {
-      entries.forEach((entry) => {
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
           activate();
         } else {
@@ -31,7 +31,7 @@ const ActiveHighlightsOnIntersection: FC<ActiveHighlightsOnIntersectionProps> = 
     };
   }, [element, activate, deactivate]);
 
-  return (<></>);
-}
+  return <></>;
+};
 
 export default ActiveHighlightsOnIntersection;

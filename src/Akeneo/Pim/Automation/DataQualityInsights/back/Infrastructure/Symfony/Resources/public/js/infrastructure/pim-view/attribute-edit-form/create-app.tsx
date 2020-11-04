@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {AttributeCreateFormApp,} from 'akeneodataqualityinsights-react';
+import {AttributeCreateFormApp} from 'akeneodataqualityinsights-react';
 import {ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT} from 'akeneodataqualityinsights-react/application/constant';
 
 import BaseView from 'pimui/js/view/base';
@@ -11,9 +11,13 @@ class DataQualityInsightsApp extends BaseView {
 
   public configure() {
     this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', (tab: string) => {
-      window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT, {detail: {
-        currentTab: tab,
-      }}));
+      window.dispatchEvent(
+        new CustomEvent(ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT, {
+          detail: {
+            currentTab: tab,
+          },
+        })
+      );
     });
 
     return super.configure();

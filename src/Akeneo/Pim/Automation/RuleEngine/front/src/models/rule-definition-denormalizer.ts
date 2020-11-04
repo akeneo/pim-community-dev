@@ -1,9 +1,9 @@
-import { RuleDefinition } from './RuleDefinition';
-import { Router } from '../dependenciesTools';
-import { getAttributesByIdentifiers } from '../repositories/AttributeRepository';
+import {RuleDefinition} from './RuleDefinition';
+import {Router} from '../dependenciesTools';
+import {getAttributesByIdentifiers} from '../repositories/AttributeRepository';
 
 const extractFieldIdentifiers = (json: any): string[] => {
-  const indexedFieldIdentifiers: { [identifier: string]: boolean } = {};
+  const indexedFieldIdentifiers: {[identifier: string]: boolean} = {};
 
   const conditions = json.content?.conditions ?? [];
   if (Array.isArray(conditions)) {
@@ -65,4 +65,4 @@ const denormalize = async function(
   };
 };
 
-export { denormalize };
+export {denormalize};

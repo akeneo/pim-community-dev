@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   ActionGrid,
   ActionLeftSide,
   ActionRightSide,
   ActionTitle,
 } from './ActionLine';
-import { Select2Wrapper } from '../../../../components/Select2Wrapper';
-import { CategoryTreeModel } from '../../../../components/CategoryTree/category-tree.types';
-import { CategorySelector } from '../../../../components/Selectors/CategorySelector';
+import {Select2Wrapper} from '../../../../components/Select2Wrapper';
+import {CategoryTreeModel} from '../../../../components/CategoryTree/category-tree.types';
+import {CategorySelector} from '../../../../components/Selectors/CategorySelector';
 import {
   Category,
   CategoryCode,
@@ -22,19 +22,19 @@ import {
   getCategoriesByIdentifiers,
   getCategoryByIdentifier,
 } from '../../../../repositories/CategoryRepository';
-import { NetworkLifeCycle } from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
-import { getCategoriesTrees } from '../../../../components/CategoryTree/category-tree.getters';
-import { Controller } from 'react-hook-form';
-import { SmallHelper } from '../../../../components/HelpersInfos/SmallHelper';
+import {NetworkLifeCycle} from '../../../../components/CategoryTree/hooks/NetworkLifeCycle.types';
+import {getCategoriesTrees} from '../../../../components/CategoryTree/category-tree.getters';
+import {Controller} from 'react-hook-form';
+import {SmallHelper} from '../../../../components/HelpersInfos/SmallHelper';
 import InputBoolean from '../../../../components/Inputs/InputBoolean';
 import styled from 'styled-components';
-import { Label } from '../../../../components/Labels';
+import {Label} from '../../../../components/Labels';
 import {
   HelperContainer,
   InlineHelper,
 } from '../../../../components/HelpersInfos/InlineHelper';
-import { useControlledFormInputAction } from '../../hooks';
-import { useFormContext } from 'react-hook-form';
+import {useControlledFormInputAction} from '../../hooks';
+import {useFormContext} from 'react-hook-form';
 
 const SelectorBlock = styled.div`
   margin-bottom: 15px;
@@ -69,10 +69,10 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   const router = useBackboneRouter();
   const [categories, setCategories] = React.useState<
     NetworkLifeCycle<Category[]>
-  >({ status: 'PENDING' });
+  >({status: 'PENDING'});
   const [categoryTrees, setCategoriesTrees] = useState<
     NetworkLifeCycle<CategoryTreeModel[]>
-  >({ status: 'PENDING' });
+  >({status: 'PENDING'});
   const [currentCategoryTree, setCurrentCategoryTree] = useState<
     CategoryTreeModel
   >();
@@ -84,10 +84,8 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   const [unexistingCategoryCodes, setUnexistingCategoryCodes] = React.useState<
     CategoryCode[]
   >([]);
-  const { isFormFieldInError } = useControlledFormInputAction<string>(
-    lineNumber
-  );
-  const { clearError } = useFormContext();
+  const {isFormFieldInError} = useControlledFormInputAction<string>(lineNumber);
+  const {clearError} = useFormContext();
 
   /**
    * Initialize the main object for this component. This object is a Map, having
@@ -127,7 +125,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
           unexistingCategoryCodes.push(categoryCode);
         }
       });
-      setCategories({ status: 'COMPLETE', data: existingCategories });
+      setCategories({status: 'COMPLETE', data: existingCategories});
       setUnexistingCategoryCodes(unexistingCategoryCodes);
     });
     getCategoriesTrees(setCategoriesTrees);
@@ -299,7 +297,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
           <SmallHelper level='error' key={unexistingCategoryCode}>
             {translate(
               'pimee_catalog_rule.exceptions.unknown_categories',
-              { categoryCodes: unexistingCategoryCode },
+              {categoryCodes: unexistingCategoryCode},
               1
             )}
             &nbsp;
@@ -335,7 +333,7 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                 return unexistingCategoryCodes.length
                   ? translate(
                       'pimee_catalog_rule.exceptions.unknown_categories',
-                      { categoryCodes: unexistingCategoryCodes.join(', ') },
+                      {categoryCodes: unexistingCategoryCodes.join(', ')},
                       unexistingCategoryCodes.length
                     )
                   : true;
@@ -530,4 +528,4 @@ const ActionCategoriesSelector: React.FC<Props> = ({
   );
 };
 
-export { ActionCategoriesSelector };
+export {ActionCategoriesSelector};

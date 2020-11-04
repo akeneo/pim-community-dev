@@ -1,8 +1,8 @@
-import { Group, GroupCode } from '../models';
-import { Router } from '../dependenciesTools';
-import { fetchGroupsByIdentifiers } from '../fetch/GroupFetcher';
+import {Group, GroupCode} from '../models';
+import {Router} from '../dependenciesTools';
+import {fetchGroupsByIdentifiers} from '../fetch/GroupFetcher';
 
-const cachedGroups: { [groupCode: string]: Group | null } = {};
+const cachedGroups: {[groupCode: string]: Group | null} = {};
 
 export const clearGroupRepositoryCache = () => {
   for (const key in cachedGroups) {
@@ -12,8 +12,8 @@ export const clearGroupRepositoryCache = () => {
 
 const getCachedGroups = (
   groupCodes: GroupCode[]
-): { [groupCode: string]: Group | null } => {
-  const results: { [groupCode: string]: Group | null } = {};
+): {[groupCode: string]: Group | null} => {
+  const results: {[groupCode: string]: Group | null} = {};
   Object.keys(cachedGroups)
     .filter(key => groupCodes.includes(key))
     .forEach((groupCode: string) => {
@@ -26,7 +26,7 @@ const getCachedGroups = (
 export const getGroupsByIdentifiers = async (
   groupIdentifiers: GroupCode[],
   router: Router
-): Promise<{ [groupCode: string]: Group | null }> => {
+): Promise<{[groupCode: string]: Group | null}> => {
   const results = getCachedGroups(groupIdentifiers);
   const groupIdentifiersToFetch: GroupCode[] = groupIdentifiers.filter(
     key => !Object.keys(cachedGroups).includes(key)

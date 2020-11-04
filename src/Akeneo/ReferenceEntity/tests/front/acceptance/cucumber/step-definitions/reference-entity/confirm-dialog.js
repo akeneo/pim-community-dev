@@ -2,11 +2,8 @@ const Edit = require('../../decorators/reference-entity/edit.decorator');
 const path = require('path');
 
 const {
-  decorators: {createElementDecorator}
-} = require(path.resolve(
-  process.cwd(),
-  './tests/front/acceptance/cucumber/test-helpers.js'
-));
+  decorators: {createElementDecorator},
+} = require(path.resolve(process.cwd(), './tests/front/acceptance/cucumber/test-helpers.js'));
 
 module.exports = async function(cucumber) {
   const {Then} = cucumber;
@@ -15,8 +12,8 @@ module.exports = async function(cucumber) {
   const config = {
     Edit: {
       selector: '.AknDefault-contentWithColumn',
-      decorator: Edit
-    }
+      decorator: Edit,
+    },
   };
 
   const getElement = createElementDecorator(config);
@@ -57,7 +54,7 @@ module.exports = async function(cucumber) {
     assert.strictEqual(isUpdated, true);
   });
 
-  Then('the user shouldn\'t be notified that modification have been made', async function() {
+  Then("the user shouldn't be notified that modification have been made", async function() {
     const editPage = await getElement(this.page, 'Edit');
     const isSaved = await editPage.isSaved();
 

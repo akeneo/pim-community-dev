@@ -7,16 +7,16 @@ import {
   waitForElementToBeRemoved,
 } from '../../../../../../test-utils';
 import userEvent from '@testing-library/user-event';
-import { MeasurementAttributeCondition } from '../../../../../../src/models/conditions';
-import { Operator } from '../../../../../../src/models/Operator';
+import {MeasurementAttributeCondition} from '../../../../../../src/models/conditions';
+import {Operator} from '../../../../../../src/models/Operator';
 import {
   createAttribute,
   locales,
   measurementFamiliesResponse,
   scopes,
 } from '../../../../factories';
-import { MeasurementAttributeConditionLine } from '../../../../../../src/pages/EditRules/components/conditions/MeasurementAttributeConditionLine';
-import { clearAttributeRepositoryCache } from '../../../../../../src/repositories/AttributeRepository';
+import {MeasurementAttributeConditionLine} from '../../../../../../src/pages/EditRules/components/conditions/MeasurementAttributeConditionLine';
+import {clearAttributeRepositoryCache} from '../../../../../../src/repositories/AttributeRepository';
 
 describe('MeasurementAttributeConditionLine', () => {
   beforeEach(() => {
@@ -54,10 +54,10 @@ describe('MeasurementAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
-      { name: 'content.conditions[0].locale', type: 'custom' },
-      { name: 'content.conditions[0].scope', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
+      {name: 'content.conditions[0].locale', type: 'custom'},
+      {name: 'content.conditions[0].scope', type: 'custom'},
     ];
     const defaultValues = {
       content: {
@@ -84,8 +84,8 @@ describe('MeasurementAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('Weight')).toBeInTheDocument();
@@ -135,10 +135,10 @@ describe('MeasurementAttributeConditionLine', () => {
     };
 
     const toRegister = [
-      { name: 'content.conditions[0].value', type: 'custom' },
-      { name: 'content.conditions[0].operator', type: 'custom' },
-      { name: 'content.conditions[0].locale', type: 'custom' },
-      { name: 'content.conditions[0].scope', type: 'custom' },
+      {name: 'content.conditions[0].value', type: 'custom'},
+      {name: 'content.conditions[0].operator', type: 'custom'},
+      {name: 'content.conditions[0].locale', type: 'custom'},
+      {name: 'content.conditions[0].scope', type: 'custom'},
     ];
     const defaultValues = {
       content: {
@@ -159,8 +159,8 @@ describe('MeasurementAttributeConditionLine', () => {
         locales={locales}
         scopes={scopes}
       />,
-      { all: true },
-      { defaultValues, toRegister }
+      {all: true},
+      {defaultValues, toRegister}
     );
 
     expect(await screen.findByText('Weight')).toBeInTheDocument();

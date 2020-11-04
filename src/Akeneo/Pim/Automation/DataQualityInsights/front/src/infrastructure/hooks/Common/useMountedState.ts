@@ -2,7 +2,7 @@ import {useCallback, useEffect, useRef} from 'react';
 
 type MountedState = {
   isMounted(): boolean;
-}
+};
 
 export const useMountedState = (): MountedState => {
   const mountedRef = useRef<boolean>(false);
@@ -20,6 +20,6 @@ export const useMountedState = (): MountedState => {
   }, []);
 
   return {
-    isMounted
+    isMounted,
   };
 };
