@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Structure\Component\Reader\Database\MassEdit;
 
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -14,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface
+class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -24,6 +25,9 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
 
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
+
+    /** @var bool */
+    private $firstRead = true;
 
     /**
      * @param FamilyRepositoryInterface $familyRepository
@@ -41,11 +45,14 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
         if (null === $this->families) {
             $filters = $this->getConfiguredFilters();
             $this->families = $this->getFamilies($filters);
-        } else {
+        }
+
+        if (false === $this->firstRead) {
             $this->families->next();
         }
 
         $family = $this->families->current();
+        $this->firstRead = false;
 
         if (null !== $family) {
             $this->stepExecution->incrementSummaryInfo('read');
@@ -60,6 +67,13 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    public function initialize()
+    {
+        $filters = $this->getConfiguredFilters();
+        $this->families = $this->getFamilies($filters);
+        $this->firstRead = true;
     }
 
     /**

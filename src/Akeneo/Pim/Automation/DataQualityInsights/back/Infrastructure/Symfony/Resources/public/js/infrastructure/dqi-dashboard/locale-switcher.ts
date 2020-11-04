@@ -1,4 +1,4 @@
-import * as _ from "underscore";
+import * as _ from 'underscore';
 import {EventsHash} from 'backbone';
 
 const $ = require('jquery');
@@ -14,8 +14,7 @@ interface Locale {
   language: string;
 }
 
-class LocaleSwitcher extends BaseForm
-{
+class LocaleSwitcher extends BaseForm {
   private template = _.template(template);
 
   private locales: Locale[] = [];
@@ -30,19 +29,18 @@ class LocaleSwitcher extends BaseForm
     };
   }
 
-  configure () {
+  configure() {
     return $.when(
       BaseForm.prototype.configure.apply(this, arguments),
-      this.fetchLocales()
-        .then((locales: Locale[]) => {
-          this.locales = locales;
-          const currentLocaleCode = UserContext.get('catalogLocale');
-          let currentLocale = this.locales.find((locale: Locale) => locale.code === currentLocaleCode);
-          if (undefined === currentLocale) {
-            [currentLocale] = this.locales;
-            UserContext.set('catalogLocale', currentLocale.code);
-          }
-        })
+      this.fetchLocales().then((locales: Locale[]) => {
+        this.locales = locales;
+        const currentLocaleCode = UserContext.get('catalogLocale');
+        let currentLocale = this.locales.find((locale: Locale) => locale.code === currentLocaleCode);
+        if (undefined === currentLocale) {
+          [currentLocale] = this.locales;
+          UserContext.set('catalogLocale', currentLocale.code);
+        }
+      })
     );
   }
 
@@ -57,18 +55,18 @@ class LocaleSwitcher extends BaseForm
         i18n: i18n,
         displayInline: false,
         displayLabel: true,
-        label: __('pim_enrich.entity.locale.uppercase_label')
+        label: __('pim_enrich.entity.locale.uppercase_label'),
       })
     );
 
     return this;
   }
 
-  changeLocale (event: any) {
+  changeLocale(event: any) {
     UserContext.set('catalogLocale', event.currentTarget.dataset.locale);
     this.getRoot().trigger('pim_enrich:form:locale_switcher:change', {
       localeCode: event.currentTarget.dataset.locale,
-      context: "base_product"
+      context: 'base_product',
     });
     this.render();
   }

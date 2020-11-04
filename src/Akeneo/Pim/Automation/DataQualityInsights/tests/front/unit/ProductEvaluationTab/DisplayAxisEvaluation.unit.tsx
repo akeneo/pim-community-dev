@@ -13,7 +13,7 @@ jest.mock('pim/user-context');
 
 window.dispatchEvent = jest.fn();
 
-beforeEach(() =>  {
+beforeEach(() => {
   jest.resetModules();
 });
 
@@ -26,15 +26,35 @@ describe('Product evaluation tab', () => {
     assertAxisGradingInProgressMessageIsDisplayed(getByText);
     assertAxisErrorMessageIsNotDisplayed(queryByText);
     assertAllAxisCriteriaAreDisplayed(queryAllByTestId);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.axis_grading_in_progress', 1, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.error.axis_error', 0, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.success.criterion', 1, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.grading_in_progress', 1, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.error.criterion_error', 0, queryAllByText);
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.axis_grading_in_progress',
+      1,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.error.axis_error',
+      0,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.success.criterion',
+      1,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.grading_in_progress',
+      1,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.error.criterion_error',
+      0,
+      queryAllByText
+    );
     assertExpectedMessageNumber('N/A', 1, queryAllByText);
 
     expect(getAllByTestId('dqiAttributeWithRecommendation').length).toBe(3);
-    expect(getAllByTestId('dqiAttributeWithRecommendation')[0].childNodes[0].textContent).toBe("picture");
+    expect(getAllByTestId('dqiAttributeWithRecommendation')[0].childNodes[0].textContent).toBe('picture');
     expect(getAllByTestId('dqiAttributeWithRecommendation')[1].childNodes[0].textContent).toBe('Product description');
     expect(getAllByTestId('dqiAttributeWithRecommendation')[2].childNodes[0].textContent).toBe('Product description');
 
@@ -47,11 +67,31 @@ describe('Product evaluation tab', () => {
     assertAxisGradingInProgressMessageIsNotDisplayed(queryByText);
     assertAxisErrorMessageIsDisplayed(getByText);
     assertAllAxisCriteriaAreDisplayed(queryAllByTestId);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.axis_grading_in_progress', 0, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.error.axis_error', 1, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.success.criterion', 1, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.grading_in_progress', 1, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.error.criterion_error', 1, queryAllByText);
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.axis_grading_in_progress',
+      0,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.error.axis_error',
+      1,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.success.criterion',
+      1,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.grading_in_progress',
+      1,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.error.criterion_error',
+      1,
+      queryAllByText
+    );
     assertExpectedMessageNumber('N/A', 1, queryAllByText);
 
     expect(getAllByTestId('dqiAttributeWithRecommendation').length).toBe(1);
@@ -66,16 +106,38 @@ describe('Product evaluation tab', () => {
     assertAxisGradingInProgressMessageIsNotDisplayed(queryByText);
     assertAxisErrorMessageIsNotDisplayed(queryByText);
     assertAllAxisCriteriaAreDisplayed(queryAllByTestId);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.axis_grading_in_progress', 0, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.error.axis_error', 0, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.success.criterion', 4, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.grading_in_progress', 0, queryAllByText);
-    assertExpectedMessageNumber('akeneo_data_quality_insights.product_evaluation.messages.error.criterion_error', 0, queryAllByText);
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.axis_grading_in_progress',
+      0,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.error.axis_error',
+      0,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.success.criterion',
+      4,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.grading_in_progress',
+      0,
+      queryAllByText
+    );
+    assertExpectedMessageNumber(
+      'akeneo_data_quality_insights.product_evaluation.messages.error.criterion_error',
+      0,
+      queryAllByText
+    );
     assertExpectedMessageNumber('N/A', 1, queryAllByText);
 
     expect(queryAllByTestId('dqiAttributeWithRecommendation').length).toBe(0);
 
-    const allAttributesLink = queryByText('akeneo_data_quality_insights.product_evaluation.axis.consistency.attributes_link');
+    const allAttributesLink = queryByText(
+      'akeneo_data_quality_insights.product_evaluation.axis.consistency.attributes_link'
+    );
     expect(allAttributesLink).toBeFalsy();
   });
 
@@ -113,7 +175,7 @@ function assertExpectedMessageNumber(criteriaStatus: string, expectedNumber: num
   expect(queryAllByText(criteriaStatus).length).toBe(expectedNumber);
 }
 
-function assertAllAttributesLinkClickSendsAnEvent(queryByText, axis:string, expectedAttributeCodes: string[]) {
+function assertAllAttributesLinkClickSendsAnEvent(queryByText, axis: string, expectedAttributeCodes: string[]) {
   const events = {
     consistency: DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
     enrichment: DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
@@ -122,7 +184,7 @@ function assertAllAttributesLinkClickSendsAnEvent(queryByText, axis:string, expe
   const allAttributesLink = queryByText(`akeneo_data_quality_insights.product_evaluation.axis.${axis}.attributes_link`);
   expect(allAttributesLink).toBeTruthy();
   fireEvent.click(allAttributesLink);
-  const customEvents = window.dispatchEvent.mock.calls.filter((event) => event[0].constructor.name === 'CustomEvent')[0];
+  const customEvents = window.dispatchEvent.mock.calls.filter(event => event[0].constructor.name === 'CustomEvent')[0];
   expect(customEvents.length).toBe(1);
   expect(customEvents[0].type).toBe(events[axis]);
   expect(customEvents[0].detail.attributes).toMatchObject(expectedAttributeCodes);
@@ -131,106 +193,106 @@ function assertAllAttributesLinkClickSendsAnEvent(queryByText, axis:string, expe
 const evaluation1: Evaluation = {
   criteria: [
     {
-      status: "in_progress",
-      code: "consistency_spelling",
+      status: 'in_progress',
+      code: 'consistency_spelling',
       improvable_attributes: [],
       rate: {
         rank: null,
         value: null,
-      }
+      },
     },
     {
-      status: "done",
-      code: "consistency_textarea_lowercase_words",
-      improvable_attributes: ["description", "picture"],
+      status: 'done',
+      code: 'consistency_textarea_lowercase_words',
+      improvable_attributes: ['description', 'picture'],
       rate: {
-        rank: "C",
+        rank: 'C',
         value: 76,
-      }
+      },
     },
     {
-      status: "done",
-      code: "consistency_textarea_uppercase_words",
-      improvable_attributes: ["description"],
+      status: 'done',
+      code: 'consistency_textarea_uppercase_words',
+      improvable_attributes: ['description'],
       rate: {
-        rank: "A",
+        rank: 'A',
         value: 95,
-      }
+      },
     },
     {
-      status: "done",
-      code: "consistency_text_title_formatting",
+      status: 'done',
+      code: 'consistency_text_title_formatting',
       improvable_attributes: [],
       rate: {
-        rank: "A",
+        rank: 'A',
         value: 100,
-      }
+      },
     },
     {
-      status: "not_applicable",
-      code: "not_applicable_criterion",
+      status: 'not_applicable',
+      code: 'not_applicable_criterion',
       improvable_attributes: [],
       rate: {
         rank: null,
         value: null,
-      }
+      },
     },
   ],
   rate: {
-    rank: "B",
+    rank: 'B',
     value: 85,
   },
 };
 const evaluation2: Evaluation = {
   criteria: [
     {
-      status: "in_progress",
-      code: "consistency_spelling",
+      status: 'in_progress',
+      code: 'consistency_spelling',
       improvable_attributes: [],
       rate: {
         rank: null,
         value: null,
-      }
+      },
     },
     {
-      status: "error",
-      code: "consistency_textarea_lowercase_words",
+      status: 'error',
+      code: 'consistency_textarea_lowercase_words',
       improvable_attributes: [],
       rate: {
         rank: null,
         value: null,
-      }
+      },
     },
     {
-      status: "done",
-      code: "consistency_textarea_uppercase_words",
-      improvable_attributes: ["description"],
+      status: 'done',
+      code: 'consistency_textarea_uppercase_words',
+      improvable_attributes: ['description'],
       rate: {
-        rank: "A",
+        rank: 'A',
         value: 95,
-      }
+      },
     },
     {
-      status: "done",
-      code: "consistency_text_title_formatting",
+      status: 'done',
+      code: 'consistency_text_title_formatting',
       improvable_attributes: [],
       rate: {
-        rank: "A",
+        rank: 'A',
         value: 100,
-      }
+      },
     },
     {
-      status: "not_applicable",
-      code: "not_applicable_criterion",
+      status: 'not_applicable',
+      code: 'not_applicable_criterion',
       improvable_attributes: [],
       rate: {
         rank: null,
         value: null,
-      }
+      },
     },
   ],
   rate: {
-    rank: "B",
+    rank: 'B',
     value: 85,
   },
 };
@@ -238,53 +300,53 @@ const evaluation2: Evaluation = {
 const evaluation3: Evaluation = {
   criteria: [
     {
-      status: "done",
-      code: "consistency_spelling",
+      status: 'done',
+      code: 'consistency_spelling',
       improvable_attributes: [],
       rate: {
-        rank: "A",
+        rank: 'A',
         value: 100,
-      }
+      },
     },
     {
-      status: "done",
-      code: "consistency_textarea_lowercase_words",
+      status: 'done',
+      code: 'consistency_textarea_lowercase_words',
       improvable_attributes: [],
       rate: {
-        rank: "A",
+        rank: 'A',
         value: 100,
-      }
+      },
     },
     {
-      status: "done",
-      code: "consistency_textarea_uppercase_words",
+      status: 'done',
+      code: 'consistency_textarea_uppercase_words',
       improvable_attributes: [],
       rate: {
-        rank: "A",
+        rank: 'A',
         value: 100,
-      }
+      },
     },
     {
-      status: "done",
-      code: "consistency_text_title_formatting",
+      status: 'done',
+      code: 'consistency_text_title_formatting',
       improvable_attributes: [],
       rate: {
-        rank: "A",
+        rank: 'A',
         value: 100,
-      }
+      },
     },
     {
-      status: "not_applicable",
-      code: "not_applicable_criterion",
+      status: 'not_applicable',
+      code: 'not_applicable_criterion',
       improvable_attributes: [],
       rate: {
         rank: null,
         value: null,
-      }
+      },
     },
   ],
   rate: {
-    rank: "A",
+    rank: 'A',
     value: 100,
   },
 };
@@ -292,26 +354,26 @@ const evaluation3: Evaluation = {
 const evaluation4: Evaluation = {
   criteria: [
     {
-      status: "done",
-      code: "completeness_of_non_required_attributes",
+      status: 'done',
+      code: 'completeness_of_non_required_attributes',
       improvable_attributes: ['weight', 'power_requirements'],
       rate: {
-        rank: "E",
+        rank: 'E',
         value: 20,
-      }
+      },
     },
     {
-      status: "done",
-      code: "completeness_of_required_attributes",
+      status: 'done',
+      code: 'completeness_of_required_attributes',
       improvable_attributes: ['power_requirements'],
       rate: {
-        rank: "E",
+        rank: 'E',
         value: 50,
-      }
+      },
     },
   ],
   rate: {
-    rank: "E",
+    rank: 'E',
     value: 35,
   },
 };

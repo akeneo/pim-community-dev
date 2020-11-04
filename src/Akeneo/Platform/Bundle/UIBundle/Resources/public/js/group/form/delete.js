@@ -8,7 +8,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(['pim/form/common/delete', 'pim/remover/group'], function (DeleteForm, GroupRemover) {
-    return DeleteForm.extend({
-        remover: GroupRemover
-    });
+  return DeleteForm.extend({
+    remover: GroupRemover,
+  });
 });

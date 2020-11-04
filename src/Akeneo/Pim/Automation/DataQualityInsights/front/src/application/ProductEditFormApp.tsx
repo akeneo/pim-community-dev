@@ -30,12 +30,15 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
       <Provider store={productEditFormStore}>
         <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
         <PageContextListener />
-        <ProductContextListener product={product} productFetcher={fetchProduct}/>
+        <ProductContextListener product={product} productFetcher={fetchProduct} />
 
-        <AttributesTabContent product={product}/>
+        <AttributesTabContent product={product} />
 
         <AxesContextProvider axes={['enrichment']}>
-          <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductDataQualityEvaluation}>
+          <DataQualityInsightsTabContent
+            product={product}
+            productEvaluationFetcher={fetchProductDataQualityEvaluation}
+          >
             <AxisEvaluation axis={'enrichment'}>
               <Criterion code={'completeness_of_required_attributes'}>
                 <Icon type={EditIcon}/>

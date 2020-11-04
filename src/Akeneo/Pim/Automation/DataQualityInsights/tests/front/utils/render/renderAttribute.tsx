@@ -13,5 +13,4 @@ const renderAttribute = (code: string, label: string, separator: ReactElement | 
   return renderWithAppContextHelper(<Component />, appState);
 };
 
-
 export {renderAttribute};

@@ -1,6 +1,6 @@
 import React, {isValidElement, ReactNode, Ref} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getBrandColor, getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 
 const Container = styled.div`
@@ -66,7 +66,7 @@ const Information = React.forwardRef<HTMLDivElement, InformationProps>(
 );
 
 const HighlightTitle = styled.span<AkeneoThemedProps>`
-  color: ${getBrandColor()};
+  color: ${getColor('brand', 100)};
 `;
 
 export {Information, HighlightTitle};
