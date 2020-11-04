@@ -15,6 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateTotalFieldsLimitCommand extends Command
 {
+    protected static $defaultName = 'akeneo:elasticsearch:update-total-fields-limit';
+
     private ClientRegistry $esClientsRegistry;
 
     private GetTotalFieldsLimit $getTotalFieldsLimit;
@@ -35,11 +37,6 @@ class UpdateTotalFieldsLimitCommand extends Command
         $this->getTotalFieldsLimit = $getTotalFieldsLimit;
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts;
         $this->indexesToUpdate = $indexesToUpdate;
-    }
-
-    protected function configure()
-    {
-        $this->setName('akeneo:elasticsearch:update-total-fields-limit');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
