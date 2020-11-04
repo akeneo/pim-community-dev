@@ -1,22 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from "react";
-import {
-  Dashboard,
-  DashboardHelper,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY
-} from '@akeneo-pim-community/data-quality-insights/src/index';
-
-interface SectionConfig {
-  align: string;
-}
-interface LocaleEvent {
-  localeCode: string;
-}
-interface ScopeEvent {
-  scopeCode: string;
-}
+import {Dashboard, DashboardHelper} from '@akeneo-pim-community/data-quality-insights/src/index';
 
 const UserContext = require('pim/user-context');
 const BaseDashboard = require('akeneo/data-quality-insights/view/dqi-dashboard/base-dashboard');

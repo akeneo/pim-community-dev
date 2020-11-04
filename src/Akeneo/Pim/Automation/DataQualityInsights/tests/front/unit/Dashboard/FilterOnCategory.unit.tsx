@@ -7,6 +7,7 @@ import fetchCategoryTrees from '@akeneo-pim-community/data-quality-insights/src/
 import fetchCategoryChildren from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryChildren';
 import CategoryFilter from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Overview/Filters/CategoryFilter';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '@akeneo-pim-community/data-quality-insights/src';
+import {renderDashboardWithProvider} from "../../utils/render/renderDashboardWithProvider";
 
 const UserContext = require('pim/user-context');
 
@@ -26,7 +27,7 @@ describe('Dashboard > filter on category', () => {
     fetchCategoryTrees.mockResolvedValue(categoryTrees);
     fetchCategoryChildren.mockResolvedValueOnce(masterChildren).mockResolvedValueOnce(cameraChildren);
 
-    const {getByTestId, getByText, baseElement} = render(<CategoryFilter categoryCode={null} />);
+    const {getByTestId, getByText, baseElement} = renderDashboardWithProvider(<CategoryFilter categoryCode={null} />);
 
     await openCategoryFilterModal(getByTestId);
     await navigateToDigitalCamerasCategory(getByText, getByTestId);
