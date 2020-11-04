@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookRequestLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use GuzzleHttp\ClientInterface;
@@ -76,35 +77,80 @@ class GuzzleWebhookClient implements WebhookClient
             }
         };
 
-        $pool = new Pool($this->client, $guzzleRequests(), [
-            'concurrency' => $this->config['concurrency'] ?? null,
-            'options' => [
-                'timeout' => $this->config['timeout'] ?? null
-            ],
-            'fulfilled' => function (Response $response, int $index) use (&$logs) {
-                $webhookRequestLog = $logs[$index];
-                $webhookRequestLog->setSuccess(true);
-                $webhookRequestLog->setEndTime(microtime(true));
-                $webhookRequestLog->setResponse($response);
+        $pool = new Pool(
+            $this->client, $guzzleRequests(), [
+                'concurrency' => $this->config['concurrency'] ?? null,
+                'options' => [
+                    'timeout' => $this->config['timeout'] ?? null,
+                ],
+                'fulfilled' => function (Response $response, int $index) use (&$logs) {
+                    $webhookRequestLog = $logs[$index];
+                    $webhookRequestLog->setSuccess(true);
+                    $webhookRequestLog->setEndTime(microtime(true));
+                    $webhookRequestLog->setResponse($response);
 
-                $this->logger->info(json_encode(
-                    $webhookRequestLog->toLog()
-                ));
-            },
-            'rejected' => function (RequestException $reason, int $index) use (&$logs) {
-                $webhookRequestLog = $logs[$index];
-                $webhookRequestLog->setMessage($reason->getMessage());
-                $webhookRequestLog->setSuccess(false);
-                $webhookRequestLog->setEndTime(microtime(true));
-                $webhookRequestLog->setResponse($reason->getResponse());
+                    $this->logger->info(
+                        json_encode(
+                            $webhookRequestLog->toLog()
+                        )
+                    );
+                },
+                'rejected' => function (RequestException $reason, int $index) use (&$logs) {
+                    $webhookRequestLog = $logs[$index];
+                    $webhookRequestLog->setMessage($reason->getMessage());
+                    $webhookRequestLog->setSuccess(false);
+                    $webhookRequestLog->setEndTime(microtime(true));
+                    $webhookRequestLog->setResponse($reason->getResponse());
 
-                $this->logger->info(json_encode(
-                    $webhookRequestLog->toLog()
-                ));
-            },
-        ]);
+                    $this->logger->info(
+                        json_encode(
+                            $webhookRequestLog->toLog()
+                        )
+                    );
+                },
+            ]
+        );
 
         $promise = $pool->promise();
         $promise->wait();
+    }
+
+    public function bulkFakeSend(iterable $webhookRequests): void
+    {
+        $logs = [];
+
+        $guzzleRequests = function () use (&$webhookRequests, &$logs) {
+            foreach ($webhookRequests as $webhookRequest) {
+                $body = $this->encoder->encode($webhookRequest->content(), 'json');
+
+                $timestamp = time();
+                $signature = Signature::createSignature($webhookRequest->secret(), $body, $timestamp);
+
+                $headers = [
+                    'Content-Type' => 'application/json',
+                    self::HEADER_REQUEST_SIGNATURE => $signature,
+                    self::HEADER_REQUEST_TIMESTAMP => $timestamp,
+                ];
+
+                $logs[] = new WebhookRequestLog($webhookRequest, $headers, microtime(true));
+
+                $request = new Request('POST', $webhookRequest->url(), $headers, $body);
+
+                yield $request;
+            }
+        };
+
+        foreach ($guzzleRequests() as $index => $guzzleRequest) {
+            usleep(500000);
+            $webhookRequestLog = $logs[$index];
+            $webhookRequestLog->setSuccess(true);
+            $webhookRequestLog->setEndTime(microtime(true));
+            $webhookRequestLog->setResponse(null);
+            $this->logger->info(
+                json_encode(
+                    $webhookRequestLog->toLog()
+                )
+            );
+        }
     }
 }
