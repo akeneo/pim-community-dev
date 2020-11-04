@@ -9,9 +9,12 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -21,8 +24,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ItemStep extends AbstractStep implements TrackableStepInterface
+class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /** @var ItemReaderInterface */
     protected $reader = null;
 
@@ -96,7 +101,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
 
     public function isTrackable(): bool
     {
-        return true; // @TODO validate reader is trackable
+        return $this->reader instanceof TrackableItemReaderInterface;
     }
 
     /**
@@ -109,6 +114,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
 
         $this->initializeStepElements($stepExecution);
 
+        if ($this->isTrackable()) {
+            $stepExecution->setTotalItems($this->getCountFromTrackableItemReader());
+        }
+
         while (true) {
             try {
                 $readItem = $this->reader->read();
@@ -117,6 +126,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
                 }
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);
+                $this->updateProcessedItems();
 
                 continue;
             }
@@ -134,7 +144,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
                     $itemsToWrite = [];
                 }
 
-                $this->getJobRepository()->updateStepExecution($stepExecution);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
             }
@@ -205,6 +214,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
         } catch (InvalidItemException $e) {
             $this->handleStepExecutionWarning($this->stepExecution, $this->writer, $e);
         }
+        $this->updateProcessedItems(count($processedItems));
     }
 
     /**
@@ -248,5 +258,29 @@ class ItemStep extends AbstractStep implements TrackableStepInterface
             'processor' => $this->processor,
             'writer'    => $this->writer
         ];
+    }
+
+    private function getCountFromTrackableItemReader(): int
+    {
+        if (!$this->reader instanceof TrackableItemReaderInterface) {
+            throw new \RuntimeException('The reader should implement TrackableItemReaderInterface');
+        }
+
+        try {
+            return $this->reader->totalItems();
+        } catch (\Exception $e) {
+            $this->logger->critical('Impossible to get the total items to process from the reader.');
+        }
+
+        return 0;
+    }
+
+    private function updateProcessedItems(int $processedItemsCount = 1): void
+    {
+        if (!$this->reader instanceof TrackableItemReaderInterface) {
+            return;
+        }
+        $this->stepExecution->incrementProcessedItems($processedItemsCount);
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 }

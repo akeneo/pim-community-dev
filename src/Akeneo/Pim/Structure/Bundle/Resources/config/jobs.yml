@@ -65,6 +65,7 @@ services:
                 - '@pim_connector.step.csv_attribute_group_import.ensure_attribute_group_order'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
     pim_connector.job.csv_attribute_export:
         class: '%pim_connector.job.simple_job.class%'
         arguments:

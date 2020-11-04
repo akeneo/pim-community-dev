@@ -24,6 +24,26 @@ class ReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
+    function it_returns_the_count_of_item_without_header(
+        FileIteratorFactory $fileIteratorFactory,
+        FileIteratorInterface $fileIterator,
+        JobParameters $jobParameters,
+        StepExecution $stepExecution
+    ) {
+        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filePath')->willReturn($filePath);
+        $fileIterator->valid()->willReturn(true, true, true, false);
+        $fileIterator->current()->willReturn(null);
+        $fileIterator->rewind()->shouldBeCalled();
+        $fileIterator->next()->shouldBeCalled();
+        $fileIteratorFactory->create($filePath)->willReturn($fileIterator);
+
+        /** Expect 2 items, even there is 3 lines because the first one (the header) is ignored */
+        $this->totalItems()->shouldReturn(2);
+    }
+
     function it_reads_csv_file(
         $fileIteratorFactory,
         $converter,
@@ -104,6 +124,30 @@ class ReaderSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(InvalidItemFromViolationsException::class)->during('read');
+    }
+
+    function it_rewinds_the_reader(
+        $fileIteratorFactory,
+        $stepExecution,
+        FileIteratorInterface $fileIterator,
+        JobParameters $jobParameters
+    ) {
+        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('filePath')->willReturn($filePath);
+
+        $fileIteratorFactory->create($filePath, [
+            'reader_options' => [
+                'fieldDelimiter' => ';',
+                'fieldEnclosure' => '"',
+            ]
+        ])->willReturn($fileIterator);
+        $fileIterator->rewind()->shouldBeCalled();
+
+        $this->rewind();
     }
 
     private function getPath()
