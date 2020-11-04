@@ -15,15 +15,18 @@ interface AxisEvaluationProps {
 }
 
 const isAxisInError = (criteria: CriterionEvaluationResult[]) => {
-  return criteria
-    .filter((criterionEvaluation: CriterionEvaluationResult) => criterionEvaluation.status === CRITERION_ERROR)
-    .length > 0;
+  return (
+    criteria.filter((criterionEvaluation: CriterionEvaluationResult) => criterionEvaluation.status === CRITERION_ERROR)
+      .length > 0
+  );
 };
 
 const isAxisGradingInProgress = (criteria: CriterionEvaluationResult[]) => {
-  return criteria
-    .filter((criterionEvaluation: CriterionEvaluationResult) => criterionEvaluation.status === CRITERION_IN_PROGRESS)
-    .length > 0;
+  return (
+    criteria.filter(
+      (criterionEvaluation: CriterionEvaluationResult) => criterionEvaluation.status === CRITERION_IN_PROGRESS
+    ).length > 0
+  );
 };
 
 const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluationPlaceholder, axis}) => {
@@ -39,8 +42,8 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluat
     <div className='AknSubsection AxisEvaluationContainer'>
       <AxisHeader evaluation={evaluation} axis={axis}/>
 
-      { axisHasError && (<AxisError/>) }
-      { axisGradingInProgress && !axisHasError && (<AxisGradingInProgress/>) }
+      {axisHasError && <AxisError />}
+      {axisGradingInProgress && !axisHasError && <AxisGradingInProgress />}
 
       {Children.map(children, ((child) => {
         const element = child as ReactElement;
@@ -60,7 +63,7 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluat
         return child;
       }))}
     </div>
-  )
+  );
 };
 
 export default AxisEvaluation;

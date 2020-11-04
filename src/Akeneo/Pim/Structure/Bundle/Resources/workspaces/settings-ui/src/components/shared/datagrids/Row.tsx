@@ -4,7 +4,6 @@ import {useDataGridState} from '../../../hooks';
 import {AfterDropRowHandler} from '../providers';
 import {DraggableRowWrapper} from './DraggableRowWrapper';
 
-
 type RowClickHandler<T> = (data: T) => void;
 
 type Props<T> = {
@@ -23,17 +22,12 @@ const Row = <T extends {}>({children, index = 0, data, handleDrop, handleClick}:
       ref={rowRef}
       isDragged={isDragged(data)}
       onClick={() => {
-        if (handleClick !== undefined)  {
+        if (handleClick !== undefined) {
           handleClick(data);
         }
       }}
     >
-      <DraggableRowWrapper
-        index={index}
-        data={data}
-        rowRef={rowRef}
-        handleDrop={handleDrop ? handleDrop : () => {}}
-      >
+      <DraggableRowWrapper index={index} data={data} rowRef={rowRef} handleDrop={handleDrop ? handleDrop : () => {}}>
         {React.Children.map(children, element => (
           <TableCell>{element}</TableCell>
         ))}

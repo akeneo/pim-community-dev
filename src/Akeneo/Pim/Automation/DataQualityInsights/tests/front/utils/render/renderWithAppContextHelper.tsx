@@ -6,7 +6,6 @@ import {Provider} from 'react-redux';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-
 import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
 
 const renderWithAppContextHelper = (ui: ReactElement, appState = {}) => {

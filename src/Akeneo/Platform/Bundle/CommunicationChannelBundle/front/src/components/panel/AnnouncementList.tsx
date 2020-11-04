@@ -21,10 +21,7 @@ const AnnouncementList = ({campaign, panelIsClosed}: ListAnnouncementProps) => {
   const __ = useTranslate();
   const containerRef = useRef<HTMLUListElement | null>(null);
   const scrollableElement = null !== containerRef.current ? containerRef.current.parentElement : null;
-  const [announcementResponse, handleFetchingResults] = useInfiniteScroll(
-    fetchAnnouncements,
-    scrollableElement
-  );
+  const [announcementResponse, handleFetchingResults] = useInfiniteScroll(fetchAnnouncements, scrollableElement);
   const handleHasNewAnnouncements = useHasNewAnnouncements();
   const handleAddViewedAnnouncements = useAddViewedAnnouncements();
 

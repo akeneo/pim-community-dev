@@ -24,18 +24,22 @@ interface ProductModelEditFormAppProps {
   product: Product;
 }
 
-const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> = ({product, catalogChannel, catalogLocale}) => {
+const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> = ({
+  product,
+  catalogChannel,
+  catalogLocale,
+}) => {
   return (
     <ThemeProvider theme={pimTheme}>
       <Provider store={productEditFormStore}>
         <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
         <PageContextListener />
-        <ProductContextListener product={product} productFetcher={fetchProductModel}/>
+        <ProductContextListener product={product} productFetcher={fetchProductModel} />
 
-        <AttributesTabContent product={product}/>
+        <AttributesTabContent product={product} />
 
         <AxesContextProvider axes={['enrichment']}>
-          <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation}>
+          <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation} >
             <AxisEvaluation axis={'enrichment'}>
               <Criterion code={'completeness_of_required_attributes'} />
               <Criterion code={'completeness_of_non_required_attributes'} />

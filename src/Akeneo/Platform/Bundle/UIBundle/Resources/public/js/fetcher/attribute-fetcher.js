@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, BaseFetcher, Routing) {
+define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, BaseFetcher, Routing) {
   return BaseFetcher.extend({
     identifierPromise: null,
     fetchByTypesPromises: [],
@@ -10,12 +10,12 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
      *
      * @return {Promise}
      */
-    getIdentifierAttribute: function() {
+    getIdentifierAttribute: function () {
       if (null === this.identifierPromise) {
         this.identifierPromise = $.Deferred();
 
         return this.fetchByTypes([this.options.identifier_type]).then(
-          function(attributes) {
+          function (attributes) {
             if (attributes.length > 0) {
               this.identifierPromise.resolve(attributes[0]).promise();
 
@@ -37,7 +37,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
      *
      * @return {Promise}
      */
-    fetchByTypes: function(attributeTypes, useCache = true) {
+    fetchByTypes: function (attributeTypes, useCache = true) {
       var cacheKey = attributeTypes.sort().join('');
 
       if (!_.has(this.fetchByTypesPromises, cacheKey) || !useCache) {
@@ -56,14 +56,14 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
      *
      * {@inheritdoc}
      */
-    getJSON: function(url, parameters) {
+    getJSON: function (url, parameters) {
       return $.post(Routing.generate(url), parameters, null, 'json');
     },
 
     /**
      * {@inheritdoc}
      */
-    clear: function() {
+    clear: function () {
       BaseFetcher.prototype.clear.apply(this, arguments);
 
       this.fetchByTypesPromises = [];

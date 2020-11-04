@@ -20,4 +20,4 @@ export {
   usePageContext,
   useProductEvaluation,
   useProductEvaluatedAttributeGroups,
-}
+};
