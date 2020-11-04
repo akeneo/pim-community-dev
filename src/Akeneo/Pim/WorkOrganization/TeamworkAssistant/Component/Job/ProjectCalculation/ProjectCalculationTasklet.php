@@ -84,7 +84,7 @@ class ProjectCalculationTasklet implements TaskletInterface
             $this->calculationStep->execute($product, $project);
             $this->stepExecution->incrementSummaryInfo('processed_products');
 
-            if (self::PRODUCT_BATCH_SIZE <= ++$handledProductsCount && $this->cacheClearer) {
+            if (self::PRODUCT_BATCH_SIZE <= ++$handledProductsCount) {
                 $this->projectSaver->save($project);
                 $this->cacheClearer->clear();
                 $project = $this->projectRepository->findOneByIdentifier($projectCode);
