@@ -141,3 +141,6 @@
 - Change `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft` to remove `getAttributes()` method
 - Change `Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface::findUserEntityWithValuesDraft()` to return `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface` instead of `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface`
 - Change constructor `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\EnsureUserCanBeDeletedSubscriber` to make the parameter `IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery` not null
+- Update `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct` to:
+    - remove the `setFamilyId()`, `setProductModel()` and `getProductModel()` methods
+    - remove the `$categoryIds` public property a,d the `$familyId`, `$groupIds` and `$productModel` protected properties
