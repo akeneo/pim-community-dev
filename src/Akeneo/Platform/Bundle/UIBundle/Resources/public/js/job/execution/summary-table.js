@@ -27,18 +27,14 @@ define(
              * @param event
              */
             toggleDisplayWarning: function (event) {
-                var stepIndex = event.currentTarget.dataset.stepIndex;
-                var warningIndex = event.currentTarget.dataset.warningIndex;
-                if (this.expandedWarnings[stepIndex]) {
-                    if (this.expandedWarnings[stepIndex].includes(parseInt(warningIndex))) {
-                        const warningIndexToRemove = this.expandedWarnings[stepIndex].indexOf(parseInt(warningIndex));
-                        this.expandedWarnings[stepIndex].splice(warningIndexToRemove, 1);
-                    } else {
-                        this.expandedWarnings[stepIndex].push(parseInt(warningIndex));
-                    }
-                } else {
-                    this.expandedWarnings[stepIndex] = [parseInt(warningIndex)];
-                }
+                const stepIndex = parseInt(event.currentTarget.dataset.stepIndex);
+                const warningIndex = parseInt(event.currentTarget.dataset.warningIndex);
+
+                this.expandedWarnings[stepIndex] = this.expandedWarnings[stepIndex] || [];
+
+                this.expandedWarnings[stepIndex] = this.expandedWarnings[stepIndex].includes(warningIndex) ?
+                    this.expandedWarnings[stepIndex].filter(index => index !== warningIndex) :
+                    [...this.expandedWarnings[stepIndex], warningIndex];
                 this.render();
             },
 
