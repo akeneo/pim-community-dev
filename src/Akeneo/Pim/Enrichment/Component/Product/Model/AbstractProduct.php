@@ -29,7 +29,7 @@ abstract class AbstractProduct implements ProductInterface
     protected $id;
 
     /** @var array */
-    protected $rawValues;
+    protected array $rawValues;
 
     /** @var \DateTime */
     protected $created;
@@ -51,7 +51,7 @@ abstract class AbstractProduct implements ProductInterface
     protected $categories;
 
     /** @var bool $enabled */
-    protected $enabled = true;
+    protected bool $enabled = true;
 
     /** @var Collection */
     protected $groups;
@@ -157,7 +157,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function addValue(ValueInterface $value)
     {
-        $this->values->add($value);
+        if (true === $this->values->add($value)) {
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
@@ -167,7 +169,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeValue(ValueInterface $value)
     {
-        $this->values->remove($value);
+        if (true === $this->values->remove($value)) {
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
@@ -292,6 +296,19 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setValues(WriteValueCollection $values)
     {
+        $formerValues = WriteValueCollection::fromCollection($this->values ?? new WriteValueCollection());
+        foreach ($formerValues as $formerValue) {
+            $matching = $values->getSame($formerValue);
+            if (null === $matching || !$formerValue->isEqual($matching)) {
+                $this->wasUpdated = true;
+            }
+        }
+        foreach ($values as $value) {
+            $matching = $formerValues->getSame($value);
+            if (null === $matching) {
+                $this->wasUpdated = true;
+            }
+        }
         $this->values = $values;
 
         return $this;

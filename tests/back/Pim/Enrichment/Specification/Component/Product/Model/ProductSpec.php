@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -94,16 +96,22 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
     }
 
-    function it_has_not_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
-    {
+    function it_has_not_attribute_in_family(
+        AttributeInterface $attribute,
+        FamilyInterface $family,
+        ArrayCollection $attributes
+    ) {
         $attributes->contains($attribute)->willReturn(false);
         $family->getAttributes()->willReturn($attributes);
         $this->setFamily($family);
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
     }
 
-    function it_has_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
-    {
+    function it_has_attribute_in_family(
+        AttributeInterface $attribute,
+        FamilyInterface $family,
+        ArrayCollection $attributes
+    ) {
         $attributes->contains($attribute)->willReturn(true);
         $family->getAttributes()->willReturn($attributes);
         $this->setFamily($family);
@@ -116,8 +124,10 @@ class ProductSpec extends ObjectBehavior
     }
 
     function it_is_attribute_editable_with_family_containing_attribute(
-        AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
-    {
+        AttributeInterface $attribute,
+        FamilyInterface $family,
+        ArrayCollection $familyAttributes
+    ) {
         $familyAttributes->contains($attribute)->willReturn(true);
         $family->getAttributes()->willReturn($familyAttributes);
         $this->setFamily($family);
@@ -125,16 +135,21 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeEditable($attribute)->shouldReturn(true);
     }
 
-    function it_is_not_attribute_removable_if_attribute_is_an_identifier(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
-    {
+    function it_is_not_attribute_removable_if_attribute_is_an_identifier(
+        AttributeInterface $attribute,
+        FamilyInterface $family,
+        ArrayCollection $familyAttributes
+    ) {
         $attribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
 
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }
 
     function it_is_not_attribute_removable_with_family_containing_attribute(
-        AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
-    {
+        AttributeInterface $attribute,
+        FamilyInterface $family,
+        ArrayCollection $familyAttributes
+    ) {
         $familyAttributes->contains($attribute)->willReturn(true);
         $family->getAttributes()->willReturn($familyAttributes);
 
@@ -147,50 +162,21 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeRemovable($attribute)->shouldReturn(true);
     }
 
-    function it_gets_the_label_of_the_product_without_specified_scope(
-        FamilyInterface $family,
-        AttributeInterface $attributeAsLabel,
-        WriteValueCollection $values,
-        ValueInterface $nameValue,
-        ValueInterface $identifier
-    ) {
-        $identifier->getData()->willReturn('shovel');
-        $identifier->getAttributeCode()->willReturn('name');
-
-        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $attributeAsLabel->getCode()->willReturn('name');
-        $attributeAsLabel->isLocalizable()->willReturn(true);
-        $attributeAsLabel->isScopable()->willReturn(true);
-
-        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
-
-        $nameValue->getData()->willReturn('Petit outil agricole authentique');
-
-        $this->setFamily($family);
-        $this->setValues($values);
-        $this->setIdentifier('shovel');
-
-        $this->getLabel('fr_FR')->shouldReturn('Petit outil agricole authentique');
-    }
-
     function it_gets_the_label_regardless_of_the_specified_scope_if_the_attribute_as_label_is_not_scopable(
         FamilyInterface $family,
-        AttributeInterface $attributeAsLabel,
-        WriteValueCollection $values,
-        ValueInterface $nameValue,
-        ValueInterface $identifier
+        AttributeInterface $attributeAsLabel
     ) {
-        $identifier->getData()->willReturn('shovel');
-        $identifier->getAttributeCode()->willReturn('name');
-
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
 
-        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
-
-        $nameValue->getData()->willReturn('Petit outil agricole authentique');
+        $values = new WriteValueCollection(
+            [
+                ScalarValue::value('sku', 'shovel'),
+                ScalarValue::localizableValue('name', 'Petit outil agricole authentique', 'fr_FR'),
+            ]
+        );
 
         $this->setFamily($family);
         $this->setValues($values);
@@ -201,22 +187,19 @@ class ProductSpec extends ObjectBehavior
 
     function it_gets_the_label_if_the_scope_is_specified_and_the_attribute_as_label_is_scopable(
         FamilyInterface $family,
-        AttributeInterface $attributeAsLabel,
-        WriteValueCollection $values,
-        ValueInterface $nameValue,
-        ValueInterface $identifier
+        AttributeInterface $attributeAsLabel
     ) {
-        $identifier->getData()->willReturn('shovel');
-        $identifier->getAttributeCode()->willReturn('name');
-
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(true);
 
-        $values->getByCodes('name', 'mobile', 'fr_FR')->willReturn($nameValue);
-
-        $nameValue->getData()->willReturn('Petite pelle');
+        $values = new WriteValueCollection(
+            [
+                ScalarValue::value('sku', 'shovel'),
+                ScalarValue::scopableLocalizableValue('name', 'Petite pelle', 'mobile', 'fr_FR'),
+            ]
+        );
 
         $this->setFamily($family);
         $this->setValues($values);
@@ -227,7 +210,6 @@ class ProductSpec extends ObjectBehavior
 
     function it_gets_the_identifier_as_label_if_there_is_no_family(
         AttributeInterface $attributeAsLabel,
-        WriteValueCollection $values,
         ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
@@ -236,7 +218,7 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
 
         $this->setFamily(null);
-        $this->setValues($values);
+        $this->setValues(new WriteValueCollection());
         $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
@@ -245,7 +227,6 @@ class ProductSpec extends ObjectBehavior
     function it_gets_the_identifier_as_label_if_there_is_no_attribute_as_label(
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
-        WriteValueCollection $values,
         ValueInterface $identifier
     ) {
         $family->getAttributeAsLabel()->willReturn(null);
@@ -256,7 +237,7 @@ class ProductSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
 
         $this->setFamily($family);
-        $this->setValues($values);
+        $this->setValues(new WriteValueCollection());
         $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
@@ -264,49 +245,14 @@ class ProductSpec extends ObjectBehavior
 
     function it_gets_the_identifier_as_label_if_the_label_value_is_null(
         FamilyInterface $family,
-        AttributeInterface $attributeAsLabel,
-        WriteValueCollection $values,
-        ValueInterface $nameValue,
-        ValueInterface $identifier
+        AttributeInterface $attributeAsLabel
     ) {
-        $identifier->getData()->willReturn('shovel');
-        $identifier->getAttributeCode()->willReturn('name');
-
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
 
-        $values->getByCodes('name', null, 'fr_FR')->willReturn(null);
-
         $this->setFamily($family);
-        $this->setValues($values);
-        $this->setIdentifier('shovel');
-
-        $this->getLabel('fr_FR')->shouldReturn('shovel');
-    }
-
-    function it_gets_the_identifier_as_label_if_the_label_value_data_is_empty(
-        FamilyInterface $family,
-        AttributeInterface $attributeAsLabel,
-        WriteValueCollection $values,
-        ValueInterface $nameValue,
-        ValueInterface $identifier
-    ) {
-        $identifier->getData()->willReturn('shovel');
-        $identifier->getAttributeCode()->willReturn('name');
-
-        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $attributeAsLabel->getCode()->willReturn('name');
-        $attributeAsLabel->isLocalizable()->willReturn(true);
-        $attributeAsLabel->isScopable()->willReturn(false);
-
-        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
-
-        $nameValue->getData()->willReturn(null);
-
-        $this->setFamily($family);
-        $this->setValues($values);
         $this->setIdentifier('shovel');
 
         $this->getLabel('fr_FR')->shouldReturn('shovel');
@@ -315,14 +261,20 @@ class ProductSpec extends ObjectBehavior
     function it_gets_the_image_of_the_product(
         FamilyInterface $family,
         AttributeInterface $attributeAsImage,
-        WriteValueCollection $values,
         ValueInterface $pictureValue
     ) {
         $attributeAsImage->getCode()->willReturn('picture');
-
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
 
-        $values->getByCodes('picture', null, null)->willReturn($pictureValue);
+        $pictureValue->getAttributeCode()->willReturn('picture');
+        $pictureValue->getScopeCode()->willReturn(null);
+        $pictureValue->getLocaleCode()->willReturn(null);
+
+        $values = new WriteValueCollection(
+            [
+                $pictureValue->getWrappedObject(),
+            ]
+        );
 
         $this->setFamily($family);
         $this->setValues($values);
@@ -340,6 +292,7 @@ class ProductSpec extends ObjectBehavior
         FamilyInterface $family
     ) {
         $family->getAttributeAsImage()->willReturn(null);
+
         $this->setFamily($family);
 
         $this->getImage()->shouldReturn(null);
@@ -347,13 +300,13 @@ class ProductSpec extends ObjectBehavior
 
     function it_gets_no_image_if_the_value_of_image_is_empty(
         FamilyInterface $family,
-        AttributeInterface $attributeAsImage,
-        WriteValueCollection $values
+        AttributeInterface $attributeAsImage
     ) {
         $attributeAsImage->getCode()->willReturn('picture');
 
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
-        $values->getByCodes('picture', null, null)->willReturn(null);
+
+        $values = new WriteValueCollection();
 
         $this->setFamily($family);
         $this->setValues($values);
@@ -372,17 +325,17 @@ class ProductSpec extends ObjectBehavior
         $this->isVariant()->shouldReturn(true);
     }
 
-    function it_has_the_values_of_the_variation(
-        WriteValueCollection $valueCollection
-    ) {
+    function it_has_the_values_of_the_variation()
+    {
+        $valueCollection = new WriteValueCollection();
         $this->setValues($valueCollection);
 
         $this->getValuesForVariation()->shouldBeLike($valueCollection);
     }
 
-    function it_has_values_when_it_is_not_variant(
-        WriteValueCollection $valueCollection
-    ) {
+    function it_has_values_when_it_is_not_variant()
+    {
+        $valueCollection = new WriteValueCollection();
         $this->setValues($valueCollection);
         $this->setParent(null);
 
@@ -390,45 +343,34 @@ class ProductSpec extends ObjectBehavior
     }
 
     function it_has_values_of_its_parent_when_it_is_variant(
-        WriteValueCollection $valueCollection,
         ProductModelInterface $productModel,
-        WriteValueCollection $parentValuesCollection,
         \Iterator $iterator,
         ValueInterface $value,
-        AttributeInterface $valueAttribute,
-        ValueInterface $otherValue,
-        AttributeInterface $otherValueAttribute
+        ValueInterface $otherValue
     ) {
-        $this->setValues($valueCollection);
-        $this->setParent($productModel);
-
-        $valueCollection->toArray()->willReturn([$value]);
-
-        $valueAttribute->getCode()->willReturn('value');
-        $valueAttribute->isUnique()->willReturn(false);
         $value->getAttributeCode()->willReturn('value');
         $value->getScopeCode()->willReturn(null);
         $value->getLocaleCode()->willReturn(null);
 
-        $otherValueAttribute->getCode()->willReturn('otherValue');
-        $otherValueAttribute->isUnique()->willReturn(false);
+        $valueCollection = new WriteValueCollection([$value->getWrappedObject()]);
+        $this->setValues($valueCollection);
+        $this->setParent($productModel);
+
         $otherValue->getAttributeCode()->willReturn('otherValue');
         $otherValue->getScopeCode()->willReturn(null);
         $otherValue->getLocaleCode()->willReturn(null);
+        $parentValuesCollection = new WriteValueCollection([$otherValue->getWrappedObject()]);
 
         $productModel->getParent()->willReturn(null);
         $productModel->getValuesForVariation()->willReturn($parentValuesCollection);
-        $parentValuesCollection->getIterator()->willreturn($iterator);
-        $iterator->rewind()->shouldBeCalled();
-        $iterator->valid()->willReturn(true, false);
-        $iterator->current()->willReturn($otherValue);
-        $iterator->next()->shouldBeCalled();
 
         $values = $this->getValues();
-        $values->toArray()->shouldBeLike([
-            'value-<all_channels>-<all_locales>' => $value,
-            'otherValue-<all_channels>-<all_locales>' => $otherValue
-        ]);
+        $values->toArray()->shouldBeLike(
+            [
+                'value-<all_channels>-<all_locales>' => $value,
+                'otherValue-<all_channels>-<all_locales>' => $otherValue,
+            ]
+        );
     }
 
     function it_has_a_variation_level(ProductModelInterface $productModel)
@@ -642,5 +584,102 @@ class ProductSpec extends ObjectBehavior
 
         $this->setFamilyVariant($familyVariant);
         $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_a_value_is_added()
+    {
+        $this->cleanup();
+        $this->addValue(ScalarValue::value('name', 'My great product'));
+
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_a_value_fails_to_be_added()
+    {
+        $this->addValue(ScalarValue::value('name', 'My great product'));
+        $this->cleanup();
+
+        $this->addValue(ScalarValue::value('name', 'Another name'));
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_a_value_is_removed()
+    {
+        $value = ScalarValue::value('name', 'My great product');
+        $this->addValue($value);
+        $this->cleanup();
+
+        $this->removeValue($value);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_a_value_fails_to_be_removed()
+    {
+        $this->cleanup();
+        $this->removeValue(ScalarValue::value('name', 'My great product'));
+
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_setting_new_values()
+    {
+        $this->cleanup();
+        $this->setValues(
+            new WriteValueCollection(
+                [
+                    ScalarValue::value('name', 'My great product'),
+                ]
+            )
+        );
+
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_updated_when_setting_a_new_value()
+    {
+        $this->addValue(ScalarValue::value('name', 'My great product'));
+        $this->cleanup();
+
+        $this->setValues(
+            new WriteValueCollection(
+                [
+                    ScalarValue::value('name', 'Another name for my great product'),
+                ]
+            )
+        );
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_setting_the_same_values()
+    {
+        $this->addValue(ScalarValue::value('name', 'My great product'));
+        $this->addValue(OptionValue::scopableLocalizableValue('color', 'red', 'ecommerce', 'en_US'));
+        $this->cleanup();
+
+        $this->setValues(
+            new WriteValueCollection(
+                [
+                    ScalarValue::value('name', 'My great product'),
+                    OptionValue::scopableLocalizableValue('color', 'red', 'ecommerce', 'en_US'),
+                ]
+            )
+        );
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_updated_when_removing_a_value()
+    {
+        $this->addValue(ScalarValue::value('name', 'My great product'));
+        $this->addValue(OptionValue::scopableLocalizableValue('color', 'red', 'ecommerce', 'en_US'));
+        $this->cleanup();
+
+        $this->setValues(
+            new WriteValueCollection(
+                [
+                    OptionValue::scopableLocalizableValue('color', 'red', 'ecommerce', 'en_US'),
+                ]
+            )
+        );
+        $this->wasUpdated()->shouldReturn(true);
     }
 }
