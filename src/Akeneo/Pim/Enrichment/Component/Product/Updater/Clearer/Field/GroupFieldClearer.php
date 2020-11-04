@@ -43,6 +43,8 @@ final class GroupFieldClearer implements ClearerInterface
             sprintf('The clearer does not handle the "%s" property.', $property)
         );
 
-        $entity->getGroups()->clear();
+        foreach ($entity->getGroups() as $group) {
+            $group->removeProduct($entity);
+        };
     }
 }

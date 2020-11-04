@@ -371,10 +371,6 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getCategories()
     {
-        if (!$this->isVariant()) {
-            return $this->categories;
-        }
-
         $categories = new ArrayCollection($this->categories->toArray());
 
         return $this->getAllCategories($this, $categories);
@@ -537,7 +533,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getGroups()
     {
-        return $this->groups;
+        return new ArrayCollection($this->groups->toArray());
     }
 
     /**
@@ -745,7 +741,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValuesForVariation(): WriteValueCollection
     {
-        return $this->values;
+        return WriteValueCollection::fromCollection($this->values);
     }
 
     /**
