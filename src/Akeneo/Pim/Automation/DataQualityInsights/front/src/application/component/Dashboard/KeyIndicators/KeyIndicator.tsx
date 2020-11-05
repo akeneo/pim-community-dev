@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {useTranslate} from "@akeneo-pim-community/legacy-bridge";
+import {useTranslate, useUserContext} from "@akeneo-pim-community/legacy-bridge";
 import styled from "styled-components";
 import {ProgressBar} from "./ProgressBar";
 import {
@@ -9,6 +9,7 @@ import {
 } from "../../../helper/Dashboard/KeyIndicator";
 import {Tip, KeyIndicatorTips} from "../../../../domain";
 import {useGetKeyIndicatorTips} from "../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips";
+import {useDashboardContext} from "../../../context/DashboardContext";
 
 type Props = {
   type: string;
@@ -16,12 +17,14 @@ type Props = {
   totalToImprove?: number;
   title?: string;
   resultsMessage?: string;
-  followResults?: () => void;
+  followResults?: (channelCode: string, localeCode: string, familyCode: string|null, categoryId: string|null, rootCategoryId: string|null) => void;
 };
 
 const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, title, resultsMessage, followResults}) => {
   const translate = useTranslate();
   const tips: KeyIndicatorTips = useGetKeyIndicatorTips(type);
+  const userContext = useUserContext();
+  const {category, familyCode} = useDashboardContext();
 
   if (ratioGood === undefined || totalToImprove === undefined || title === undefined) {
     return <></>;
@@ -34,7 +37,7 @@ const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, tit
   const handleOnClickOnProductsNumber = (event: any) => {
     event.stopPropagation();
     if (event.target.tagName === 'BUTTON' && followResults) {
-      followResults();
+      followResults(userContext.get('catalogScope'), userContext.get('catalogLocale'), familyCode, category?.id || null, category?.rootCategoryId || null);
     }
   };
 
