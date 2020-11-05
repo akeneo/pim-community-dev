@@ -18,6 +18,11 @@ class UrlSpec extends ObjectBehavior
         $this->beConstructedWith('http://www.jambon.com/');
     }
 
+    function it_accepts_a_valid_urn()
+    {
+        $this->beConstructedWith('urn:oasis:names:specification:docbook:dtd:xml:4.1.2');
+    }
+
     function it_rejects_an_invalid_url()
     {
         $this->beConstructedWith('jambon');

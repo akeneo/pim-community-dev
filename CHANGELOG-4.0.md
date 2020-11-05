@@ -1,5 +1,46 @@
 # 4.0.x
 
+# 4.0.68 (2020-10-30)
+
+## Bug fixes:
+
+- PIM-9525: Fix memory leak during project calculation
+- PIM-9534: Fix product link rules for scopable/localizable asset collection attributes
+
+# 4.0.67 (2020-10-28)
+
+# 4.0.66 (2020-10-23)
+
+## Bug fixes:
+
+- PIM-9509: SSO Identity Provider should accept URNs
+
+## Bug fixes:
+
+- PIM-9510: Fix asset collection attributes that couldn't be added in the "Add attributes values" mass action
+
+# 4.0.65 (2020-10-19)
+
+## Improvements
+
+- PIM-9506-4.0: Make "image" the default media type for media link asset attributes
+
+# 4.0.64 (2020-10-09)
+
+## Bug fixes:
+
+- PIM-9492-4.0: [Backport] PIM-9109: Fix SSO not working behind reverse proxy.
+
+# 4.0.63 (2020-10-08)
+
+# 4.0.62 (2020-10-07)
+
+# 4.0.61 (2020-10-02)
+
+## Bug fixes
+
+- PIM-9488: Fix not used variable during webpack run
+
 # 4.0.60 (2020-09-30)
 
 - PIM-9467: Check for asset family existence is now case sensitive
