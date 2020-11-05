@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Message;
 
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -14,10 +16,16 @@ use PhpSpec\ObjectBehavior;
  */
 class ProductUpdatedSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(UserInterface $user): void
     {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(true);
+
+        $author = Author::fromUser($user->getWrappedObject());
         $this->beConstructedWith(
-            'author',
+            $author,
             ['data'],
             1598968800,
             '123e4567-e89b-12d3-a456-426614174000'
@@ -39,9 +47,14 @@ class ProductUpdatedSpec extends ObjectBehavior
         $this->name()->shouldReturn('product.updated');
     }
 
-    public function it_returns_the_author(): void
+    public function it_returns_the_author_name(): void
     {
-        $this->author()->shouldReturn('author');
+        $this->author()->name()->shouldReturn('julia');
+    }
+
+    public function it_returns_the_author_type(): void
+    {
+        $this->author()->type()->shouldReturn('api');
     }
 
     public function it_returns_the_data(): void
