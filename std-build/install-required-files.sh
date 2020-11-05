@@ -37,7 +37,7 @@ cp $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/pa
 cp $DEV_DISTRIB_DIR/config/packages/prod_onprem_paas/oneup_flysystem.yml $STANDARD_DISTRIB_DIR/config/packages/dev/
 
 # Partners are most likely to develop and deploy using classic synfony message queuing
-cp $DEV_DISTRIB_DIR/std-build/messenger.yml $STANDARD_DISTRIB_DIR/config/packages/dev/
+cp $DEV_DISTRIB_DIR/config/packages/prod_onprem_paas/messenger.yml $STANDARD_DISTRIB_DIR/config/packages/dev/
 
 # We need a console and FPM entrypoint
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
