@@ -14,7 +14,9 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface as PimFilterDatasourceAdapterInterface;
 use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * ProductDraft filter utility
@@ -49,6 +51,7 @@ class ProductDraftFilterUtility extends BaseFilterUtility
         if ($ds instanceof FilterProductDatasourceAdapterInterface) {
             $ds->getProductQueryBuilder()->addFilter($field, $operator, $value);
         } else {
+            Assert::implementsInterface($ds, PimFilterDatasourceAdapterInterface::class);
             $this->repository->applyFilter($ds->getQueryBuilder(), $field, $operator, $value);
         }
     }

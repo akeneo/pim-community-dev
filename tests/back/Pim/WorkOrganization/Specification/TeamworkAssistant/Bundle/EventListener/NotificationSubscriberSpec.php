@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\NotificationSubscriber;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvent;
@@ -16,7 +17,6 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectCo
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class NotificationSubscriberSpec extends ObjectBehavior
 {

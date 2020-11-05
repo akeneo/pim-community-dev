@@ -13,31 +13,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Persistence\Query\IsUserOwnerOfProjectsQuery;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\IsUserLinkedToProjectsQueryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Query\IsUserOwnerOfProjectsQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class EnsureUserCanBeDeletedSubscriber implements EventSubscriberInterface
 {
-    /** @var IsUserLinkedToProjectsQueryInterface */
-    private $isUserLinkedToProjectQuery;
-    /** @var IsUserOwnerOfProjectsQuery */
-    private $isUserOwnerOfProjectsQuery;
+    private IsUserLinkedToProjectsQueryInterface $isUserLinkedToProjectQuery;
+    private IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery;
 
-    /**
-     * TODO: remove null default value for IsUserOwnerOfProjectsQueryInterface on master
-     */
     public function __construct(
         IsUserLinkedToProjectsQueryInterface $isUserLinkedToProjectQuery,
-        IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery = null
+        IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery
     ) {
         $this->isUserLinkedToProjectQuery = $isUserLinkedToProjectQuery;
         $this->isUserOwnerOfProjectsQuery = $isUserOwnerOfProjectsQuery;
@@ -55,8 +49,7 @@ class EnsureUserCanBeDeletedSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (null !== $this->isUserOwnerOfProjectsQuery
-            && true === $this->isUserOwnerOfProjectsQuery->execute($user->getId())) {
+        if (true === $this->isUserOwnerOfProjectsQuery->execute($user->getId())) {
             throw new UserCannotBeDeletedException('teamwork_assistant.user.deletion.user_is_project_owner');
         }
 

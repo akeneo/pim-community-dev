@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer;
+use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\GetPublishedProductCompletenesses;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
@@ -25,6 +26,7 @@ use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
@@ -107,6 +109,7 @@ class PublishedProductNormalizer implements NormalizerInterface, NormalizerAware
         }
 
         $translation = $family->getTranslation($locale);
+        Assert::implementsInterface($translation, FamilyTranslationInterface::class);
 
         return $this->getLabel($family->getCode(), $translation->getLabel());
     }
