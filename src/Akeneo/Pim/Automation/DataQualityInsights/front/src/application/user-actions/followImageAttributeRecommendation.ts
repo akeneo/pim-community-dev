@@ -3,6 +3,7 @@ import {
   FollowAttributeRecommendationHandler
 } from "@akeneo-pim-community/data-quality-insights/src/application/user-actions"
 import {Attribute, Family} from "@akeneo-pim-community/data-quality-insights/src/domain"
+import {DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS} from "../../domain";
 
 const router = require('pim/router');
 
@@ -24,7 +25,12 @@ const followImageAttributeRecommendation: FollowAttributeRecommendationHandler =
     return
   }
 
-  localStorage.setItem('akeneo.asset_manager.grid.current_asset_family', attribute.reference_data_name as string);
-  router.redirectToRoute('akeneo_asset_manager_asset_family_index');
+  window.dispatchEvent(
+    new CustomEvent(DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS, {
+      detail: {
+        code: attributeCode,
+      },
+    })
+  );
 };
 export {followImageAttributeRecommendation};

@@ -1,0 +1,3 @@
+const DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS = 'data-quality:product:edit_assets';
+
+export {DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS}

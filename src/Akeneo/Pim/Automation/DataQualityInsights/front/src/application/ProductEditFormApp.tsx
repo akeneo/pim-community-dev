@@ -18,6 +18,11 @@ import {Recommendation} from "@akeneo-pim-community/data-quality-insights/src/ap
 import {AxisRatesOverviewPortal} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm';
 import {fetchProductDataQualityEvaluation} from '@akeneo-pim-community/data-quality-insights/src';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
+import {isSuccess} from "@akeneo-pim-community/data-quality-insights/src/application/helper";
+import {
+  CRITERION_DONE,
+  CRITERION_NOT_APPLICABLE
+} from "@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface";
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {
@@ -54,8 +59,8 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
             <AxisEvaluation axis={'enrichment'}>
               <Criterion code={'completeness_of_non_required_attributes'}/>
               <Criterion code={'completeness_of_required_attributes'}/>
-              <Criterion code={'missing_image_attribute'} followAttributeRecommendation={followImageAttributeRecommendation}>
-                <Recommendation supports={(criterion => criterion.improvable_attributes.length === 0)}>
+              <Criterion code={'enrichment_image'} followAttributeRecommendation={followImageAttributeRecommendation}>
+                <Recommendation supports={criterion => criterion.status === CRITERION_NOT_APPLICABLE || (criterion.status === CRITERION_DONE && !isSuccess(criterion.rate) && criterion.improvable_attributes.length === 0)}>
                   <span className="NotApplicableAttribute">{translate('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}</span>
                 </Recommendation>
               </Criterion>

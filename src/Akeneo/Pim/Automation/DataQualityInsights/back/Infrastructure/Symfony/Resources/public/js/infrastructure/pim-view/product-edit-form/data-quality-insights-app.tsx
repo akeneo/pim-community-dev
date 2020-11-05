@@ -17,6 +17,7 @@ import {
   PRODUCT_MODEL_LEVEL_CHANGED,
   PRODUCT_TAB_CHANGED,
 } from '@akeneo-pim-community/data-quality-insights/src';
+import {DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS} from "@akeneo-pim-ee/data-quality-insights/src/domain";
 
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
@@ -93,6 +94,10 @@ class DataQualityInsightsApp extends BaseView {
       }
     );
 
+    window.addEventListener(DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS, (() => {
+      this.redirectToProductAssetsEdition();
+    }) as EventListener);
+
     this.listenTo(this.getRoot(), 'column-tab:select-tab', ({target}: TabEvent) => {
       window.dispatchEvent(
         new CustomEvent(PRODUCT_TAB_CHANGED, {
@@ -144,15 +149,28 @@ class DataQualityInsightsApp extends BaseView {
     const tab =
       productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_ATTRIBUTES_TAB_NAME : PRODUCT_ATTRIBUTES_TAB_NAME;
 
+    this.changeTab(tab);
+  }
+
+  public redirectToProductAssetsEdition() {
+    const productData = this.getFormData();
+    const tab =
+      productData.meta.model_type === 'product_model' ? 'pimee-product-model-edit-form-assets' : 'pim-product-edit-form-assets';
+
+    this.changeTab(tab);
+  }
+
+
+  private changeTab(tabName: string): void {
     this.getRoot().trigger('column-tab:change-tab', {
       currentTarget: {
         dataset: {
-          tab: tab,
+          tab: tabName,
         },
       },
       target: {
         dataset: {
-          tab: tab,
+          tab: tabName,
         },
       },
     });
