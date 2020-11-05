@@ -149,6 +149,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+
     public function testListCategoriesWithCount()
     {
         $categories = $this->getStandardizedCategories();

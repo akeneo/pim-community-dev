@@ -1,0 +1,350 @@
+pim_notification:
+  types:
+    settings: Ang mga setting
+flash:
+  comment:
+    create:
+      success: Ang iyong komento ay matagumpay na nailikha.
+    delete:
+      success: Ang iyong komento ay matagumpay na nabura.
+    reply:
+      success: Ang iyong kasagutan ay matagumpay na nailikha.
+pim_enrich.entity.product:
+  label: produkto
+  uppercase_label: Produkto
+  plural_label: Ang mga produkto
+  flash:
+    update:
+      success: Ang produkto ay matagumpay na nai-update.
+      fail: Ang produkto ay hindi maaaring mai-update.
+      fields_not_ready: "Ang produkto ay hindi mai-save sa ngayon. Ang mga sumusunod na mga field ay hindi pa handa: {{ fields }}"
+      already_in_upload: Ang isang file ay handa ng i-upload para sa attribute na ito sa lokal "{{ locale }}" at skop "{{ scope }}"
+    delete:
+      success: Ang mga produkto ay matagumpay na natanggal.
+      fail: Ang produkto ay hindi matatanggal.
+    create:
+      success: Ang produkto ay matagumpay na nalikha
+      fail: Walang katangian ang na i-configure bilang isang tagakilala ng produkto o wala kang karapatan na i-edit ito.
+  module:
+    create:
+      subtitle: Lumikha ng produkto
+      title: Pumili ng iyong aksyon
+      choose_family: Pumili ng pamilya
+      choose_family_variant: Pumili ng baryante ng pamilya
+    variant_navigation:
+      common: Karaniwan
+    status:
+      enabled: Pinagana
+      disabled: Hindi pinagana
+    download_pdf:
+      label: PDF
+    copy:
+      label: Ihambing / Isalin
+      select: Pumili
+      all_visible: Makikita lahat
+      copy: Kopya
+    history:
+      version: Bersyon
+      author: May-akda
+      logged_at: Naka-log sa
+      from: Galing sa
+      modified: Binago
+      old_value: Lumang halaga
+      new_value: Bagong halaga
+    meta:
+      updated: Huling update
+      groups: Mga pangkat
+    show_group:
+      title: Grupo {{ group }}
+      view_group: Tingnan ang grupo
+      more_products: '{{ count }} mas maraming mga produkto...'
+    attribute:
+      remove_optional: Alisin ang katangiang ito
+      locale_specific_unavailable: Ang lokal na tiyak na field ay hindi magagamit sa locale na ito
+      locale_unavailable: Itong localizable na field ay hindi available para sa locale '{{ locale }}' at tsanel '{{ channel }}'
+      add_attribute_option: Dagdagan ang pagpipilian ng katangian
+      add_option: Magdagdag ng pagpipilian
+    completeness:
+      title: Pagkakakumpleto
+      complete: Kumpleto
+      no_family: Walang pamilyang natukoy. Pakiusap magtukoy ng isang pamilya para kalkulahin ang pagkokompleto ng produktong ito.
+      no_completeness: Binago mo ang pamilya ng produkto. Pakiusap i-save muna para ma kalkula ang pagkaka-kompleto para sa bagong pamilya.
+    sequential_edit:
+      item_limit: Tanging ang unang 1000 na mga bagay lamang ang ipapakita dito sa sunod-sunod na edit ({{ count }} pinili)
+      empty: Ang iyong napili ay walang laman, mangyaring palitan ang iyong pamantayan sa paghahanap
+      save_and_next: E-save at susunod
+      save_and_finish: E-save at tapusin
+    associations:
+      title: Mga asosasyon
+      none_exist: Walang uri ng asosasyon ang umiiral.
+      show_products: Ipakita ang mga produkto
+      show_groups: Ipakita ang mga grupo
+      number_of_associations: "{{ productCount }} na (mga) produkto, {{ productModelCount }} na (mga) modelo ng produkto at {{ groupCount }} na (mga) produkto"
+      association_type_selector: Ang uri ng asosasyon
+      target: Ang target
+      manage: Magdagdag {{ associationType }} ng mga asosasyon
+      manage_description: Piliin ang mga produkto na nais mong isali sa mga kasalukuyang produkto
+      add_associations: Magdadgdag ng mga asosasyon
+    attribute_filter:
+      display: Ipakita
+      all: Lahat ng mga katangian
+      missing_required: Lahat ng mga nawawalang kinakailangan na mga katangian
+    change_family:
+      title: Baguhin ang produkto ng pamilya
+      merge_attributes: Ang mga kasalukuyang katangian ay ipagsasama sa mga nasa bagong pamilya.
+      keep_attributes: Walang mga katangian ang tatanggalin.
+      change_family_to: Baguhin ang pamilya sa
+      empty_selection: Pumili ng pamilya
+    basket:
+      title: Basket
+      empty_basket: Walang laman ang basket
+    delete:
+      confirm: Ikaw ba ay sigurado na gusto kong burahin itong produkto?
+    comment:
+      post: Magdagdag ng bagong komento
+      reply: Sumagot
+      title: Mga komento
+      empty: Walang komento sa ngayon
+      header_comment: '{{ user }} ay nagkomento sa produkto'
+      header_reply: '{{ user }} ay sumagot sa komento'
+      delete_confirm: Sigurado ka bang gusto mong burahin ang komentong ito?
+      removed_author: Tanggalin ang gumagamit
+pim_enrich.entity.product_model:
+  uppercase_label: Modelo ng produkto
+  plural_label: Mga modelo ng produkto
+  flash:
+    create:
+      success: Matagumpay na nalikha ang modelo ng produkto
+      product_model_added: Ang modelo ng produkto ay matagumpay na naidagdag sa modelo ng produkto
+      variant_product_added: Ang baryante ng produkto ay matagumpay na naidagdag sa mga modelo ng produkto
+    update:
+      success: Ang modelo sa produktong ito ay matagumpay na naupdate. Ang pagkakumpleto ng mga baryante ng produkto ay kakalkulahin muli.
+      fail: Ang modelo ng produkto ay hindi pwedeng ma-update.
+      fields_not_ready: "Ang modelo ng produkto ay hindi pwedeng mai-save sa ngayon. ang sumusunod na mga field ay hindi pa handa: {{ fields }}"
+    delete:
+      success: Ang modelo ng produkto ay matagumpay na natanggal.
+  choose: Pumili ng modelo ng produkto
+  property:
+    family_variant: Baryant
+  module:
+    create:
+      title: Lumikha ng modelo ng produkto
+      content: Ang modelo ng produkto ay nagtitipon ng mga variant ng produkto at minamadali ang pagpapayaman ng kanilang magkatulad na mga pag-aari.
+    attribute:
+      read_only_parent_attribute_from_common: Itong katangian ay pwedeng ma update sa karaniwang mga katangian.
+      read_only_parent_attribute_from_model: "Itong katangian na ito ay pwedeng i-update sa mga katangian sa pamamagitan ng {{ axes }}"
+    variant_axis:
+      create: Magdagdag ng bago
+      create_label: "Dagdagan ng bagong {{ axes }}"
+      required_label: '(variant axis)'
+    delete:
+      confirm: Sigurado ka bang gusto mong tanggalin ang modelo ng produkto na ito? Ang lahat ng mga bata, mga modelo ng produkto at iba pang mga produkto, ay matatangal rin.
+pim_enrich.entity.group:
+  label: Pangkat
+  flash:
+    update:
+      success: Ang grupo ay matagumpay na nai-update.
+      fail: Ang grupo ay hindi maaaring ma-update.
+      fields_not_ready: "Ang grupo ay hindi ma-save sa ngayon. Ang mga sumusunod na field ay hindi pa handa: {{ fields }}"
+    create:
+      success: Ang grupo ay matagumpay na nalikha
+    delete:
+      success: Ang grupo ay matagumpay na inalis
+      fail: Hindi maaaring tanggalin ang grupo na ito
+  module:
+    create:
+      button: Lumikha ng grupo
+    delete:
+      confirm: Sigurado ka ba na gusto mong burahin ang grupo na ito?
+pim_enrich.entity.category:
+  label: kategorya
+  uppercase_label: Kategorya
+  plural_label: Ang mga kategorya
+pim_enrich.export.product:
+  data:
+    title: Salain ang mga produkto
+  structure:
+    title: Salain ang mga data
+  filter:
+    channel:
+      help: Ang tsanel ay tumutukoy sa saklaw para sa mga halaga ng mga produkto, ang lokal ay ginagamit para pumili ng data, at ang puno ay ginagamit para pumili ng mga produkto.
+    locales:
+      help: "Ang lokal ay tumutukoy sa naisalokal na produktong halaga para sa eksport. Hal: tanging ang produktong impormasyon ay naka pranses."
+    attributes:
+      label: "{0}Lahat ng mga attribute|{1}Isang attribute ang napili|]1,Inf[{{ count }} na mga attribute ang napili"
+      help: "Piliin ang impormasyon ng produkto na iluluwas. Hal: mga teknikal na katangian lamang."
+      empty: Lahat ng attribute ay i-aangkat
+      modal:
+        title: Pagpili ng katangian
+    attributes_selector:
+      attributes: "Magsaliksik sa {{ itemsCount }} mga katangian"
+      selected: "Mga napiling katangian"
+      clear: Malinaw
+      all_group: Lahat na mga grupo
+      empty_selection: Lahat ng attribute ay i-aangkat
+      description: Piliin ang impormasyon ng produkto na i-aangkat
+    family:
+      title: Pamilya
+      help: "Piliin ang mga produkto na iluluwas base sa kanilang pamilya. Hal: I-luwas lamang ang mga sapatos at mga damit."
+      operators:
+        IN: Nasa listahan
+        "NOT IN": Wala sa listahan
+        EMPTY: Mga produkto na walang pamilya
+        "NOT EMPTY": Mga produkto na may pamilya
+      empty_selection: Ang mga pamilya ay walang kondisyon
+    updated:
+      title: Kondisyon ng oras
+      operators:
+        ALL: Walang kondisyon sa petsa
+        "SINCE LAST N DAYS": Ang na-update na mga produkto ay higit sa huli ng n mga araw (e.g. 6)
+        ">": Ang na-update na mga produkto mula sa petsang ito
+        "SINCE LAST JOB": Mga produktong nai-update simula sa huling pag-eksport
+    enabled:
+      title: Katayuan
+      help: "Piliin ang mga produkto na iluluwas base sa kanilang katayuan. Hal: Iluwas ang mga produkto anuman ang kanilang katayuan."
+      value:
+        enabled: Pinagana
+        disabled: Hindi pinagana
+    completeness:
+      title: Pagkakakumpleto
+      help: Piliin ang mga produkto na iluluwas base sa kanilang pagiging kumpleto.
+      operators:
+        ALL: Walang kondisyon sa pagkaka-kompleto
+        ">=": Kumpleto sa hindi bababa sa isang piniling lokal
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Kumpleto sa lahat ng piniling mga lokal
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Kumpleto sa hindi bababa sa isang piniling lokal
+        LOWER THAN ON ALL LOCALES: Hindi kompleto sa lahat ng piniling mga lokal
+      empty_selection: Pumili ng isang pamilya
+    category:
+      title: Kategorya
+      help: Gamitin ang mga kategorya ng produkto na nasa puno (tinukoy ng tsanel na nasa itaas) upang piliin ang mga produkto para sa eksport
+    identifier:
+      title: Tagatukoy
+      help: Gamitin ang taga-kilatis ng produkto para lumuwas hiniwalay ng kuwit, puwang o putol na mga linya
+    string:
+      operators:
+        ALL: Lahat
+    select:
+      operators:
+        IN: Nasa listahan
+    date:
+      operators:
+        BETWEEN: Sa pagitang ng
+        NOT BETWEEN: Ay hindi sa pagitan ng
+  global_settings:
+    title: Mga global na setting
+pim_enrich.mass_edit.product:
+  title: Malalaking aksyon ng mga produkto
+  step:
+    select:
+      label: Pumili ng produkto
+    choose:
+      title: Malalaking aksyon ng mga produkto
+    configure:
+      label: I-configure
+    confirm:
+      label: Kumpirmahin
+    launched:
+      label: Ang malaking aksyon na "{{ operation }}" ay inilunsad. Maaabisuhan ka kapag natapos na ito.
+  operation:
+    common:
+      select_attributes: Pumili ng mga katangian
+    change_status:
+      label: Magpalit ng estado
+      description: Ang mga napiling produkto ay papaganahin o hindi papaganahin.
+      field: Para paganahin
+    edit_common:
+      description: Tanging ang mga attribute na nabibilang sa pamilya nga mga napiling produkto lamang ang maaaring i-edit na may sumusunod na datavpara sa {{ locale }} lokal at sa {{ scope }} tsanel.
+    change_family:
+      label: Palitan ang pamilya
+      description: Ang pamilya ng mga napiling produkto ay babaguhin para sa napiling pamilya
+    add_to_group:
+      label: Isali sa mga grupo
+      description: Piliin ang mga grupo kung saan idadagdag ang mga napiling produkto
+      field: Mga pangkat
+    add_to_category:
+      label: Idagdag sa mga kategorya
+      description: Ang mga produkto ay uuriin sa mga sumusunod na kategorya, ang umiiral na pag-uuri ay tinatago.
+    move_to_category:
+      label: Ilipat sa pagitan ng mga kategorya
+      description: Ang mga produkto ay uuriin sa mga sumusunod na kategorya, ang umiiral na pag-uuri ay nawala.
+    remove_from_category:
+      label: Alisin mula sa mga kategorya
+      description: Ang mga nailipat na mga produkto ay mula sa mga sumusunod na mga kategorya.
+    add_to_existing_product_model:
+      label: Idagdag sa isang umiiral na modelo ng produkto
+      description: Ang modelo ng produkto na napili ay titipon sa mga produkto at papapayagan ang pagpapayaman ng kanilang magkatulad na mga katangian.
+    associate_to_product_and_product_model:
+      description: Ang mga produkto na napili sa grid ay iuugnay sa mga napiling produkto at mga modelong produkto para sa napiling uri ng asosasyon
+      validate: Mangyaring dagdagan ng asosasyon bago tumuloy sa sunod na hakbang
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Mga bulk na aksyon
+    quick_export:
+      label: Mabilis na pag-export
+  mass_action:
+    delete:
+      confirm_content: Ikaw ba ay siguradong gusto mong tanggalin ang napiling mga produkto?
+      success: Ang mga napiling produkto ay matagumpay na naitanggal.
+    quick_export:
+      csv_all: CSV (Lahat ng mga attribute)
+      csv_grid_context: CSV (Grid ng konteksto)
+      xlsx_all: Excel (Lahat ng mga attribute)
+      xlsx_grid_context: Excel (Grid ng konteksto)
+    mass_edit: Maraming mga aksyon
+    sequential_edit: Pagkakasunud-sunod na pag-edit
+    selected:
+      family: napiling mga pamilya
+      product: mga napiling resulta
+  view_selector:
+    view: Mga pananaw
+  actions:
+    edit_product_attributes: I-edit ang mga attribute ng produkto
+    classify_product: Ang produkto ay uriin
+    delete_product: Tanggalin ang produkto
+    change_status: Magpalit ng estado
+    toggle_status: Ang toggle na estado
+    other: Ibang mga aksyon
+  empty_results:
+    associated_product:
+      hint: Walang mga nakaugnay na mga produkto
+      subHint: 'I-click ang pindutang "Magdagdag ng mga asosasyon" para i-ugnay itong produkto'
+  filters:
+    label: Mga filter
+    system: Systema
+batch_jobs:
+  add_product_value:
+    label: Magdagdag ng halaga ng produkto
+    perform.label: Magdagdag ng halaga ng produkto
+  add_to_category:
+    label: Idagdag sa kategorya
+    perform.label: Idagdag sa kategorya
+  add_to_existing_product_model:
+    label: Idagdag sa isang umiiral na modelo ng produkto
+    perform.label: Idagdag sa isang umiiral na modelo ng produkto
+  csv_product_grid_context_quick_export:
+    quick_export.label: Mabilisang pagluwas ng mga grid na konteksto ng produkto ng Csv
+    quick_export_product_model.label: Mabilisang pagluwas ng grid na conteksto ng modelo ng produkto ng CSV
+    perform.label: Mabilisang pagluwas ng grid na konteksto ng produkto ng Csv
+  csv_product_quick_export:
+    quick_export.label: Mabilisan na pag-export sa Csv na produkto
+    quick_export_product_model.label: Mabilisang pagluwas ng modelo ng produkto ng CSV
+    perform.label: Mabilisan na pag-export sa Csv na produkto
+  edit_common_attributes:
+    label: I-edit ang mga attribute
+    perform.label: Baguhin ang mga attributes
+    clean.label: Linisin ang mga files para sa mga katangian
+    cleaner.label: Linisin ang mga files para sa mga katangian
+  move_to_category:
+    label: Ilipat sa kategorya
+    perform.label: Ilipat sa kategorya
+  update_product_value:
+    label: Mag-update sa halaga ng produkto
+    perform.label: Mag-update sa halaga ng produkto
+  remove_from_category:
+    label: Tanggalin mula sa kategorya
+    perform.label: Tanggalin mula sa kategorya
+  set_attribute_requirements:
+    label: Itakda ang mga katangian na mga kinakailangan
+    perform.label: Magtakda ng mga katangian na kinakailangan
