@@ -10,9 +10,13 @@ if [[ ${INSTANCE_NAME} == "" ]]; then
         echo "ERR : You must choose an instance name for the instance to delete"
         exit 9
 fi
+if [[ ${PRODUCT_TYPE} == "" ]]; then
+        echo "ERR : You must choose a product type for the instance to delete"
+        exit 9
+fi
 
 #
-PFID="srnt-${INSTANCE_NAME}"
+PFID="${PRODUCT_TYPE}-${INSTANCE_NAME}"
 GOOGLE_PROJECT_ID="${GOOGLE_PROJECT_ID:-akecld-saas-dev}"
 GOOGLE_CLUSTER_ZONE="${GOOGLE_CLUSTER_ZONE:-europe-west3-a}"
 NAMESPACE_PATH=$(pwd)
