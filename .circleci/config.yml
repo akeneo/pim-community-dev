@@ -931,15 +931,21 @@ workflows:
                     - checkout
 
   hourly_cleanup:
-      triggers:
-          - schedule:
-                cron: "0 * * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
+      # triggers:
+      #     - schedule:
+      #           cron: "0 * * * *"
+      #           filters:
+      #               branches:
+      #                   only:
+      #                       - master
 
       jobs:
+          - ready_to_build?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
           - checkout
           - delete_pr_environments_hourly:
                 requires:
