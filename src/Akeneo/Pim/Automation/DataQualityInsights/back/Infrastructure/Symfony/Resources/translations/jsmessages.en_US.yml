@@ -49,8 +49,8 @@ akeneo_data_quality_insights:
                 recommendation: Required attributes with missing values
             completeness_of_non_required_attributes:
                 recommendation: Non required attributes with missing values
-            missing_image_attribute:
-                recommendation: Missing image
+            enrichment_image:
+                recommendation: Asset attribute with missing image
         axis:
             enrichment:
                 title: Enrichment
@@ -69,7 +69,7 @@ akeneo_data_quality_insights:
                 title: Sorry, we were unable to calculate your Quality score.
                 subtitle: "The quality score cannot be calculated: none of the attribute groups of this product are activated."
                 help_center_link: Learn how data quality insights can help you improve your data quality in our help center.
-            add_image_attribute_recommendation: To improve your data quality, you should filled your product with at least one image.
+            add_image_attribute_recommendation: To improve your data quality, you should fill your product with at least one image.
 
     product_edit_form:
         attribute_filter:

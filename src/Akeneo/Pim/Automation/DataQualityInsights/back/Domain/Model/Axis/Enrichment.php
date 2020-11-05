@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AxisCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -22,8 +25,15 @@ final class Enrichment implements Axis
     public const AXIS_CODE = 'enrichment';
 
     public const CRITERIA_CODES = [
-        'completeness_of_required_attributes',
-        'completeness_of_non_required_attributes',
+        EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
+        EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
+        EvaluateImageEnrichment::CRITERION_CODE
+    ];
+
+    public const CRITERIA_COEFFICIENTS = [
+        EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE => 2,
+        EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE => 1,
+        EvaluateImageEnrichment::CRITERION_CODE => 2,
     ];
 
     /** @var AxisCode */
@@ -52,6 +62,6 @@ final class Enrichment implements Axis
 
     public function getCriterionCoefficient(CriterionCode $criterionCode): int
     {
-        return 1;
+        return self::CRITERIA_COEFFICIENTS[strval($criterionCode)] ?? 1;
     }
 }
