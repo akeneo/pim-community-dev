@@ -74,6 +74,7 @@
 - PIM-9371: Disable save button when user creation form is not ready to submit
 - RAC-178: When launching a job, the notification contains a link to the job status
 - PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
+- BH-138: clear Locale cache on save
 
 # Technical Improvements
 
@@ -81,6 +82,7 @@
 - CPM-38: Upgrade Symfony to 4.4.15
 - CPM-33: Upgrade node to 12.19
 - CPM-33: Upgrade npm to 6.14
+- PIM-9452: Add a command to update the ElasticSearch indexes max fields limit
 
 ## Classes
 
@@ -190,6 +192,7 @@
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController` to replace `Doctrine\ORM\EntityRepository $attributeGroupRepo` by `Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface $attributeGroupRepo`
 - Change `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface` interface to add `getWithVariants()`
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup` to replace `Doctrine\DBAL\Driver\Connection $connection` by `Doctrine\DBAL\Connection $connection`
+- Add `clearCache` method in `Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface`
 
 ### CLI commands
 
