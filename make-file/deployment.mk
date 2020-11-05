@@ -108,6 +108,20 @@ delete:
 		INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_srnt_instance.sh ;\
 	fi
 
+.PHONY: delete-growth
+delete-growth:
+	PFID=grth-$(INSTANCE_NAME)
+	INSTANCE_DIR=$(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
+		cd $(INSTANCE_DIR) ;\
+		echo "Destroying $(INSTANCE_DIR) ..." ;\
+		INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_grth_instance.sh ;\
+	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
+		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
+		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
+		INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_grth_instance.sh ;\
+	fi
+
 .PHONY: create-ci-release-files
 create-ci-release-files: create-ci-values create-pim-main-tf
 

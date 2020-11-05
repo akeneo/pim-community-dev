@@ -42,5 +42,8 @@ for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup|grth-pimci' | a
         if [[ ${NAMESPACE} == *srnt* ]] ; then
             INSTANCE_NAME=${INSTANCE_NAME} make delete-serenity
         fi
+        if [[ ${NAMESPACE} == *grth* ]] ; then
+            INSTANCE_NAME=${INSTANCE_NAME} make delete-growth
+        fi
     fi
 done
