@@ -4,19 +4,19 @@ set -eo pipefail
 set -x
 
 # How to:
-#  cd /Terraform/dir/path ; PRODUCT_TYPE=$(PRODUCT_TYPE) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/delete_instance.sh
+#  cd /Terraform/dir/path ; TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/delete_instance.sh
 
 if [[ ${INSTANCE_NAME} == "" ]]; then
         echo "ERR : You must choose an instance name for the instance to delete"
         exit 9
 fi
-if [[ ${PRODUCT_TYPE} == "" ]]; then
+if [[ ${TYPE} == "" ]]; then
         echo "ERR : You must choose a product type for the instance to delete"
         exit 9
 fi
 
 #
-PFID="${PRODUCT_TYPE}-${INSTANCE_NAME}"
+PFID="${TYPE}-${INSTANCE_NAME}"
 GOOGLE_PROJECT_ID="${GOOGLE_PROJECT_ID:-akecld-saas-dev}"
 GOOGLE_CLUSTER_ZONE="${GOOGLE_CLUSTER_ZONE:-europe-west3-a}"
 NAMESPACE_PATH=$(pwd)

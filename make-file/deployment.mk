@@ -5,8 +5,8 @@ SHELL := /bin/bash
 
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?= $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG)
-PRODUCT_TYPE ?= srnt
-PFID ?= $(PRODUCT_TYPE)-$(INSTANCE_NAME)
+TYPE ?= srnt
+PFID ?= $(TYPE)-$(INSTANCE_NAME)
 CI ?= false
 ACTIVATE_MONITORING ?= true
 
@@ -106,11 +106,11 @@ delete:
 	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
 		cd $(INSTANCE_DIR) ;\
 		echo "Destroying $(INSTANCE_DIR) ..." ;\
-		PRODUCT_TYPE=$(PRODUCT_TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
+		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
 	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
 		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
 		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
-		PRODUCT_TYPE=$(PRODUCT_TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
+		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
 	fi
 
 .PHONY: create-ci-release-files
