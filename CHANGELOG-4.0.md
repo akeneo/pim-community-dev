@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.69 (2020-11-05)
+
 ## Bug fixes:
 
 - PIM-9547: Fix SqlFindPropertyAccessibleAsset performance
