@@ -54,10 +54,10 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /** @var array */
     protected $rawValues;
 
-    /** @var \DateTime $created */
+    /** @var \DateTime */
     protected $created;
 
-    /** @var \DateTime $updated */
+    /** @var \DateTime */
     protected $updated;
 
     /**
@@ -67,29 +67,17 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
      */
     protected $values;
 
-    /** @var FamilyInterface $family */
+    /** @var FamilyInterface|null */
     protected $family;
-
-    /** @var int */
-    protected $familyId;
-
-    /** @var ProductModelInterface $productModel */
-    protected $productModel;
 
     /** @var Collection $categories */
     protected $categories;
 
-    /** @var array */
-    public $categoryIds = [];
-
-    /** @var bool $enabled */
+    /** @var bool */
     protected $enabled = true;
 
-    /** @var Collection $groups */
+    /** @var Collection */
     protected $groups;
-
-    /** @var array */
-    protected $groupIds = [];
 
     /** @var Collection $associations */
     protected $associations;
@@ -97,10 +85,10 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /** @var string */
     protected $identifier;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     protected $uniqueData;
 
-    /** @var ProductModelInterface $parent */
+    /** @var ProductModelInterface|null */
     protected $parent;
 
     /** @var FamilyVariantInterface */
@@ -247,20 +235,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
      */
     public function setFamily(FamilyInterface $family = null)
     {
-        if (null !== $family) {
-            $this->familyId = $family->getId();
-        }
         $this->family = $family;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFamilyId($familyId)
-    {
-        $this->familyId = $familyId;
 
         return $this;
     }
@@ -270,25 +245,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
      */
     public function getFamilyId()
     {
-        return $this->familyId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductModel(): ?ProductModelInterface
-    {
-        return $this->productModel;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProductModel(ProductModelInterface $productModel): ProductInterface
-    {
-        $this->productModel = $productModel;
-
-        return $this;
+        return $this->family ? $this->family->getId() : null;
     }
 
     /**
