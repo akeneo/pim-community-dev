@@ -4,7 +4,7 @@ set -eo pipefail
 set -x
 
 # How to:
-#  cd /Terraform/dir/path ; INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/delete_instance.sh
+#  cd /Terraform/dir/path ; PRODUCT_TYPE=$(PRODUCT_TYPE) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/delete_instance.sh
 
 if [[ ${INSTANCE_NAME} == "" ]]; then
         echo "ERR : You must choose an instance name for the instance to delete"
