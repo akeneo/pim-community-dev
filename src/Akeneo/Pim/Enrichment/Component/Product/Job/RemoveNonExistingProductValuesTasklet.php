@@ -104,7 +104,7 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
 
         foreach ($batchIdentifiers as $identifiers) {
             $products = $this->productRepository->getItemsFromIdentifiers($identifiers);
-            $this->productSaver->saveAll($products);
+            $this->productSaver->saveAll($products, ['force_save' => true]);
 
             $productModels = $this->productModelRepository->getItemsFromIdentifiers($identifiers);
             $this->productModelSaver->saveAll($productModels);
