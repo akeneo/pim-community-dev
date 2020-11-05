@@ -164,7 +164,6 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_attribute_option.export'
             - true
         tags:
