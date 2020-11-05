@@ -4,7 +4,7 @@ set -eo pipefail
 set -x
 
 # How to:
-#  cd /Terraform/dir/path ; INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/delete_grth_instance.sh
+#  cd /Terraform/dir/path ; INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/delete_instance.sh
 
 if [[ ${INSTANCE_NAME} == "" ]]; then
         echo "ERR : You must choose an instance name for the instance to delete"
@@ -12,7 +12,7 @@ if [[ ${INSTANCE_NAME} == "" ]]; then
 fi
 
 #
-PFID="grth-${INSTANCE_NAME}"
+PFID="srnt-${INSTANCE_NAME}"
 GOOGLE_PROJECT_ID="${GOOGLE_PROJECT_ID:-akecld-saas-dev}"
 GOOGLE_CLUSTER_ZONE="${GOOGLE_CLUSTER_ZONE:-europe-west3-a}"
 NAMESPACE_PATH=$(pwd)
@@ -24,7 +24,7 @@ tmpfile=$(mktemp)
 cat main.tf.json | jq -r '.module.pim.force_destroy_storage =true' > $tmpfile ; cat $tmpfile > main.tf.json ; rm $tmpfile
 #(cat main.tf.json | jq -r '.module."storage-backup".google_storage_backup_force_destroy =true' ) | sponge main.tf.json
 terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_file.kubeconfig
-terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.google_storage_bucket.grth_bucket
+terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.google_storage_bucket.srnt_bucket
 #terraform apply -target=module.storage-backup.google_storage_bucket.storage_backup
 
 echo "2 - removing deployment and terraform resources"

@@ -8,9 +8,11 @@ for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup|grth-pimci' | a
     NS_AGE=$(echo ${NS_INFO[2]})
     if [[ ${NAMESPACE} == *srnt* ]] ; then
         INSTANCE_NAME=$(echo ${NS_INFO[0]//srnt-/})
+        PRODUCT_TYPE="srnt"
     fi
     if [[ ${NAMESPACE} == *grth* ]] ; then
         INSTANCE_NAME=$(echo ${NS_INFO[0]//grth-/})
+        PRODUCT_TYPE="grth"
     fi
 
     DELETE_INSTANCE=false
@@ -39,11 +41,6 @@ for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup|grth-pimci' | a
     if [ $DELETE_INSTANCE = true ]; then
         echo "---[TODELETE] namespace ${NAMESPACE} with status ${NS_STATUS} since ${NS_AGE} (instance_name=${INSTANCE_NAME})"
         gsutil rm gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/${NAMESPACE}/default.tflock || true
-        if [[ ${NAMESPACE} == *srnt* ]] ; then
-            INSTANCE_NAME=${INSTANCE_NAME} make delete-serenity
-        fi
-        if [[ ${NAMESPACE} == *grth* ]] ; then
-            INSTANCE_NAME=${INSTANCE_NAME} make delete-growth
-        fi
+        PRODUCT_TYPE=${PRODUCT_TYPE} INSTANCE_NAME=${INSTANCE_NAME} make delete-instance
     fi
 done
