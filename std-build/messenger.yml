@@ -5,7 +5,18 @@ framework:
                 dsn: doctrine://default
                 options:
                     table_name: messenger_messages
-                    auto_setup: false
+                    queue_name: default
+                    redeliver_timeout: 3600
+                    auto_setup: true
+                serializer: pim_enrich.messenger.serializer.business_event
+
+            business_event:
+                dsn: doctrine://default
+                options:
+                    table_name: messenger_messages
+                    queue_name: default
+                    redeliver_timeout: 3600
+                    auto_setup: true
                 serializer: pim_enrich.messenger.serializer.business_event
         routing:
-            'Akeneo\Platform\Component\EventQueue\BusinessEvent': webhook
+            'Akeneo\Platform\Component\EventQueue\BusinessEvent': business_event
