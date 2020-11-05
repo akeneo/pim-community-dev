@@ -18,10 +18,10 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/job-
     events: {
       'click .data': 'toggleDisplayWarning',
     },
-            expandedWarnings: {},
+    expandedWarnings: {},
 
     /**
-     * Display or hide a warning details
+     * Display or hide warning details
      * @param event
      */
     toggleDisplayWarning: function (event) {
@@ -30,26 +30,26 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/job-
 
       this.expandedWarnings[stepIndex] = this.expandedWarnings[stepIndex] || [];
 
-                this.expandedWarnings[stepIndex] = this.expandedWarnings[stepIndex].includes(warningIndex) ?
-                    this.expandedWarnings[stepIndex].filter(index => index !== warningIndex) :
-                    [...this.expandedWarnings[stepIndex], warningIndex];
-                this.render();
-            },
+      this.expandedWarnings[stepIndex] = this.expandedWarnings[stepIndex].includes(warningIndex)
+        ? this.expandedWarnings[stepIndex].filter(index => index !== warningIndex)
+        : [...this.expandedWarnings[stepIndex], warningIndex];
+      this.render();
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+    /**
+     * {@inheritdoc}
+     */
+    initialize: function (config) {
+      this.config = config.config;
+      BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
     /**
      * {@inheritdoc}
      */
     configure: function () {
       this.expandedWarnings = {};
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },
@@ -70,8 +70,9 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/job-
           failures: model.failures,
           id: model.meta.id,
           translateStepExecutionLabel: this.translateStepExecutionLabel,
-                    expandedWarnings: this.expandedWarnings
-                }));
+          expandedWarnings: this.expandedWarnings,
+        })
+      );
 
       return this;
     },
