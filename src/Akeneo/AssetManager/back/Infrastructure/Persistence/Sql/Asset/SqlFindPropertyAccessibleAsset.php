@@ -21,6 +21,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifier
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\PropertyAccessibleAsset\PropertyAccessibleAssetHydrator;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -49,7 +50,7 @@ class SqlFindPropertyAccessibleAsset implements FindPropertyAccessibleAssetInter
 
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): ?PropertyAccessibleAsset
     {
-        $result = $this->fetchResult($assetCode);
+        $result = $this->fetchResult($assetFamilyIdentifier, $assetCode);
 
         if (empty($result)) {
             return null;
@@ -58,7 +59,7 @@ class SqlFindPropertyAccessibleAsset implements FindPropertyAccessibleAssetInter
         return $this->hydrateAsset($result);
     }
 
-    private function fetchResult(AssetCode $assetCode): array
+    private function fetchResult(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): array
     {
         $query = <<<SQL
         SELECT
@@ -66,9 +67,10 @@ class SqlFindPropertyAccessibleAsset implements FindPropertyAccessibleAssetInter
             asset.asset_family_identifier,
             asset.value_collection
         FROM akeneo_asset_manager_asset AS asset
-        WHERE asset.code = :code;
+        WHERE asset.asset_family_identifier = :family_identifier AND asset.code = :code;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
+            'family_identifier' => (string) $assetFamilyIdentifier,
             'code' => (string) $assetCode,
         ]);
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
@@ -79,7 +81,7 @@ SQL;
 
     private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier
     {
-        $normalizedAssetFamilyIdentifier = Type::getType(Type::STRING)->convertToPHPValue(
+        $normalizedAssetFamilyIdentifier = Type::getType(Types::STRING)->convertToPHPValue(
             $result['asset_family_identifier'],
             $this->sqlConnection->getDatabasePlatform()
         );
