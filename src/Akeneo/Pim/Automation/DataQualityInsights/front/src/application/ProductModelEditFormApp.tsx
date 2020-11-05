@@ -15,6 +15,8 @@ import {Criterion, Icon} from './component/ProductEditForm/TabContent/DataQualit
 import {Recommendation} from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
 import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from '../domain/Evaluation.interface';
 import {isSuccess} from './helper';
+import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from "../domain/Evaluation.interface";
+import {isSuccess} from "./helper";
 
 const translate = require('oro/translator');
 

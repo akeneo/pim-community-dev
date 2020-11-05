@@ -1,0 +1,136 @@
+pim_user:
+  user:
+    title: 用戶
+    fields:
+      name_prefix: 姓名前綴
+      email: 電子郵件
+      username: 用戶名
+      first_name: 名字
+      middle_name: 中間名
+      last_name: 姓氏
+      name_suffix: 姓名後綴
+      phone: 電話
+      date_of_birth: 出生日期
+      avatar: 大頭貼
+      timezone: 時區
+      roles: 角色
+      groups: 分組
+      password: 密碼
+      password_again: 重新輸入密碼
+      product_grid_filters: 商品網格篩選
+      catalog_locale: 目錄區域
+      catalog_scope: 目錄範圍
+      default_tree: 默認目錄
+      current_password: 當前密碼
+      new_password: 新密碼
+      new_password_again: 新密碼 （再次輸入）
+      default_grid_view:
+        none: 無
+      default_product_grid_view:
+        label: 默認產品網格視圖
+      ui_locale: UI 區域
+      last_logged_in: 上次登入
+      login_count: 登入次數
+      user_salt: 用戶鹽值
+      created: 已創建
+      updated: 已更新
+      status: 狀態
+      capabilities: 性能
+      has_role: 有角色
+      has_group: 有分組
+      active: 激活
+      inactive: 未激活
+    tabs:
+      general:
+        title: 一般
+        basic_information: 基本資訊
+        contact_information: 聯絡資訊 
+      additional:
+        title: 附加
+      additional_data:
+        title: 附加數據
+      interfaces:
+        title: 介面
+      group_and_role.title: 分組和角色
+      password.title: 密碼
+      business_unit.title: 業務單位
+      email_synchronization.title: 郵件同步設定
+    removed_user: 已移除的用戶
+    login:
+      username_or_email: 用戶名或電子郵件
+      remember_me: 在這台電腦上記住我
+      password_forgotten: 忘記密碼？
+      log_in: 登入
+      forgot_password: 忘記密碼
+      request: 請求
+      password_reset: 重設密碼
+      reset: 重設
+      password_reset_email_sent: 已向該用戶發送重設密碼郵件。
+      homepage: 轉到主頁
+  group:
+    tab:
+      general.title: 一般
+      users.title: 用戶
+  roles:
+    title: 身份
+    tab:
+      general: 一般
+      action: 權限
+      users: 用戶
+  controller:
+    group:
+      message:
+        saved: "分組已儲存"
+    role:
+      message:
+        saved: "角色已存儲"
+    user:
+      message:
+        saved: "用戶已存儲"
+pim_datagrid:
+  columns:
+    user:
+      createdAt: "創建於"
+      updatedAt: "更新於"
+    roles:
+      label: "標籤"
+    groups:
+      name: "名稱"
+confirmation:
+  remove:
+    role: 確定刪除該角色？
+    user: 確定刪除該用戶？
+flash:
+  role:
+    removed: 成功刪除角色
+  user:
+    removed: 成功刪除用戶
+oro_security:
+  acl_group:
+    user: 用戶
+    role: 角色
+    group: 用戶分組
+  acl:
+    user:
+      view: 列表用戶
+      create: 創建用戶
+      edit: 編輯用戶
+      delete: 移除用戶
+    role:
+      view: 列表角色
+      create: 創建角色
+      edit: 編輯角色
+      delete: 刪除角色
+    group:
+      view: 列表用戶分組
+      create: 創建用戶分組
+      edit: 列表用戶分組
+      delete: 移除用戶分組
+#Security
+(default): 默認實體許可
+VIEW: 查看
+CREATE: 創建
+EDIT: 編輯
+DELETE: 刪除
+ASSIGN: 分配
+SHARE: 分享

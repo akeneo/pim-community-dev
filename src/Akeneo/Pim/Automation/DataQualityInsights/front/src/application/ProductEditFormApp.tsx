@@ -17,6 +17,11 @@ import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from '../domain/Evaluation.int
 import {isSuccess} from './helper';
 
 const translate = require('oro/translator');
+import {Recommendation} from "./component/ProductEditForm/TabContent/DataQualityInsights/Recommendation";
+import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from "../domain/Evaluation.interface";
+import {isSuccess} from "./helper";
+
+const translate = require('oro/translator');
 
 interface ProductEditFormAppProps {
   catalogChannel: string;

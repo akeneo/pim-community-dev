@@ -132,6 +132,9 @@ jobs:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project
           - run:
+                name: No legacy translation format
+                command: make find-legacy-translations
+          - run:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
