@@ -29,7 +29,9 @@ datagrid:
                     hasError: boolean
             warning:
                 label: Warnings
-                frontendType: label
+                template: PimImportExportBundle:Property:warning.html.twig
+                type: twig
+                frontend_type: html
                 data_name: warningCount
             actions:
                 label: ~
