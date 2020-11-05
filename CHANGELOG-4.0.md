@@ -3,6 +3,7 @@
 ## Bug fixes:
 
 - PIM-9547: Fix SqlFindPropertyAccessibleAsset performance
+- PIM-9546: [Backport] PIM-9528: Fix asset code changed into lower case in create asset/upload asset UI
 
 # 4.0.68 (2020-10-30)
 
