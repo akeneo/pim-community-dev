@@ -12,6 +12,8 @@ import {AxesContextProvider} from "@akeneo-pim-community/data-quality-insights/s
 import {keyIndicatorsTips} from "@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicatorsTips";
 import {KeyIndicatorsProvider} from "@akeneo-pim-community/data-quality-insights/src/application/context/KeyIndicatorsContext";
 import {EEKeyIndicatorsTips} from "../../helper/Dashboard/EEKeyIndicatorsTips";
+import {redirectToProductGridFilteredByKeyIndicator} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/ProductGridRouter";
+import {DashboardContextProvider} from "@akeneo-pim-community/data-quality-insights/src/application/context/DashboardContext";
 
 interface DataQualityInsightsDashboardProps {
   timePeriod: string;
@@ -27,49 +29,60 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({timePe
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
         <AxesContextProvider axes={axes}>
-          <div id="data-quality-insights-activity-dashboard">
-            <div className="AknSubsection">
-              <Overview catalogLocale={catalogLocale} catalogChannel={catalogChannel} timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode}/>
+          <DashboardContextProvider>
+            <div id="data-quality-insights-activity-dashboard">
+              <div className="AknSubsection">
+                <Overview catalogLocale={catalogLocale} catalogChannel={catalogChannel} timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode}/>
 
-              <KeyIndicatorsProvider tips={{...EEKeyIndicatorsTips, ...keyIndicatorsTips}}>
-                <KeyIndicators channel={catalogChannel} locale={catalogLocale} family={familyCode} category={categoryCode}>
-                  <KeyIndicator
-                    type="has_image"
-                    title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.has_image.title'}
-                    resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
-                  >
-                    <AssetCollectionIcon/>
-                  </KeyIndicator>
+                <KeyIndicatorsProvider tips={{...EEKeyIndicatorsTips, ...keyIndicatorsTips}}>
+                  <KeyIndicators channel={catalogChannel} locale={catalogLocale} family={familyCode} category={categoryCode}>
+                    <KeyIndicator
+                      type="has_image"
+                      title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.has_image.title'}
+                      resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
+                      followResults={(channelCode: string, localeCode: string, familyCode: string|null, categoryId: string|null, rootCategoryId: string|null) => {
+                        redirectToProductGridFilteredByKeyIndicator('data_quality_insights_images_quality', channelCode, localeCode, familyCode, categoryId, rootCategoryId);
+                      }}
+                    >
+                      <AssetCollectionIcon/>
+                    </KeyIndicator>
 
-                  <KeyIndicator
-                    type="values_perfect_spelling"
-                    title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.values_perfect_spelling.title'}
-                    resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
-                  >
-                    <EditIcon/>
-                  </KeyIndicator>
+                    <KeyIndicator
+                      type="values_perfect_spelling"
+                      title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.values_perfect_spelling.title'}
+                      resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
+                      followResults={(channelCode: string, localeCode: string, familyCode: string|null, categoryId: string|null, rootCategoryId: string|null) => {
+                        redirectToProductGridFilteredByKeyIndicator('data_quality_insights_spelling_quality', channelCode, localeCode, familyCode, categoryId, rootCategoryId);
+                      }}
+                    >
+                      <EditIcon/>
+                    </KeyIndicator>
 
-                  <KeyIndicator
-                    type="good_enrichment"
-                    title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.good_enrichment.title'}
-                    resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
-                  >
-                    <EditIcon/>
-                  </KeyIndicator>
+                    <KeyIndicator
+                      type="good_enrichment"
+                      title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.good_enrichment.title'}
+                      resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
+                      followResults={(channelCode: string, localeCode: string, familyCode: string|null, categoryId: string|null, rootCategoryId: string|null) => {
+                        redirectToProductGridFilteredByKeyIndicator('data_quality_insights_enrichment_quality', channelCode, localeCode, familyCode, categoryId, rootCategoryId);
+                      }}
+                    >
+                      <EditIcon/>
+                    </KeyIndicator>
 
-                  <KeyIndicator
-                    type="attributes_perfect_spelling"
-                    title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.attributes_perfect_spelling.title'}
-                    resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.attributes_to_work_on'}
-                  >
-                    <SettingsIcon/>
-                  </KeyIndicator>
-                </KeyIndicators>
-              </KeyIndicatorsProvider>
+                    <KeyIndicator
+                      type="attributes_perfect_spelling"
+                      title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.attributes_perfect_spelling.title'}
+                      resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.attributes_to_work_on'}
+                    >
+                      <SettingsIcon/>
+                    </KeyIndicator>
+                  </KeyIndicators>
+                </KeyIndicatorsProvider>
 
-              <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel}/>
+                <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel}/>
+              </div>
             </div>
-          </div>
+          </DashboardContextProvider>
         </AxesContextProvider>
       </ThemeProvider>
     </DependenciesProvider>
