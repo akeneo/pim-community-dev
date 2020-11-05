@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Batch\Job;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Query\GetJobExecutionStatusInterface;
 
-class JobStopper
+final class JobStopper
 {
     private JobRepositoryInterface $jobRepository;
     private GetJobExecutionStatusInterface $getJobExecutionStatus;
 
-    public function __construct(JobRepositoryInterface $jobRepository, GetJobExecutionStatusInterface $getJobExecutionStatus)
-    {
+    public function __construct(
+        JobRepositoryInterface $jobRepository,
+        GetJobExecutionStatusInterface $getJobExecutionStatus
+    ) {
         $this->jobRepository = $jobRepository;
         $this->getJobExecutionStatus = $getJobExecutionStatus;
     }
@@ -19,8 +23,8 @@ class JobStopper
     public function isStopping(StepExecution $stepExecution): bool
     {
         return BatchStatus::STOPPING === $this->getJobExecutionStatus->getByJobExecutionId(
-                $stepExecution->getJobExecution()->getId()
-            )->getValue();
+            $stepExecution->getJobExecution()->getId()
+        )->getValue();
     }
 
     public function stop(StepExecution $stepExecution): void
