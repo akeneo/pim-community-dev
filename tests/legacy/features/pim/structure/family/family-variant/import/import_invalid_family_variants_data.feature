@@ -22,7 +22,7 @@ Feature: Create valid variants of family through CSV import
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
     Then there should be 10 family variants
-    And I should see the text "Status: Completed"
+    And I should see job execution status "COMPLETED"
     And I should see the text "skipped 1"
     And I should see the text "Field \"family\" must be filled"
     And the invalid data file of "csv_catalog_modeling_family_variant_import" should contain:
