@@ -48,6 +48,9 @@
     "box/spout": {
         "version": "v2.7.2"
     },
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99"
+    },
     "composer/semver": {
         "version": "1.5.0"
     },
@@ -268,6 +271,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "jean85/pretty-package-versions": {
+        "version": "1.5.1"
+    },
     "justinrainbow/json-schema": {
         "version": "5.2.9"
     },
@@ -322,6 +328,12 @@
     "mcustiel/power-route": {
         "version": "v3.0.1"
     },
+    "migrify/migrify-kernel": {
+        "version": "0.3.52"
+    },
+    "migrify/php-config-printer": {
+        "version": "0.3.52"
+    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
@@ -331,8 +343,23 @@
     "myclabs/deep-copy": {
         "version": "1.9.3"
     },
+    "nette/finder": {
+        "version": "v2.5.2"
+    },
+    "nette/robot-loader": {
+        "version": "v3.3.1"
+    },
+    "nette/utils": {
+        "version": "v3.1.3"
+    },
+    "nikic/php-parser": {
+        "version": "v4.10.2"
+    },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
+    },
+    "ondram/ci-detector": {
+        "version": "3.5.1"
     },
     "oneup/flysystem-bundle": {
         "version": "3.0",
@@ -382,8 +409,14 @@
     "phpspec/prophecy": {
         "version": "1.8.1"
     },
+    "phpstan/phpdoc-parser": {
+        "version": "0.4.9"
+    },
     "phpstan/phpstan": {
         "version": "0.11.16"
+    },
+    "phpstan/phpstan-phpunit": {
+        "version": "0.12.16"
     },
     "phpstan/phpstan-symfony": {
         "version": "0.11.6"
@@ -442,6 +475,9 @@
     "psr/log": {
         "version": "1.1.0"
     },
+    "psr/simple-cache": {
+        "version": "1.0.1"
+    },
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
@@ -474,6 +510,9 @@
     },
     "react/stream": {
         "version": "v1.1.1"
+    },
+    "rector/rector": {
+        "version": "0.8.48"
     },
     "ringcentral/psr7": {
         "version": "1.3.0"
@@ -918,6 +957,30 @@
     },
     "symfony/yaml": {
         "version": "v4.3.4"
+    },
+    "symplify/autowire-array-parameter": {
+        "version": "8.3.48"
+    },
+    "symplify/composer-json-manipulator": {
+        "version": "8.3.48"
+    },
+    "symplify/console-color-diff": {
+        "version": "8.3.48"
+    },
+    "symplify/easy-testing": {
+        "version": "8.3.48"
+    },
+    "symplify/package-builder": {
+        "version": "8.3.48"
+    },
+    "symplify/set-config-resolver": {
+        "version": "8.3.48"
+    },
+    "symplify/smart-file-system": {
+        "version": "8.3.48"
+    },
+    "symplify/symplify-kernel": {
+        "version": "8.3.48"
     },
     "theseer/tokenizer": {
         "version": "1.1.3"
