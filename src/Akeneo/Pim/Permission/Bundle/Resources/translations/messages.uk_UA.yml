@@ -1,0 +1,96 @@
+pimee_enrich.acl.locale.edit_permissions: Керування правами доступу локалі
+pimee_enrich.acl.category.edit_permissions: Керування правами доступу категорії
+pimee_enrich.acl.attribute_group.edit_permissions: Керування правами доступу групи атрибутів
+pimee_importexport.acl.export_profile.edit_permissions: Керування правами доступу профілю експорту
+pimee_importexport.acl.import_profile.edit_permissions: Керування правами доступу профілю імпорту
+pimee_enrich.groups.label: Групи власників
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Редагувати атрибути
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Додати значення продукту з правами доступу
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Оновити значення продукту з правами доступу
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Видалити значення продукту з правами доступу
+edit_common_attributes_with_permission: Редагувати атрибути з правами доступу
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Редагувати атрибути з правами доступу
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Кількість користувацьких доступів до локалі
+    nb_custom_category_accesses: Кількість користувацьких доступів до категорії
+    nb_custom_attribute_group_accesses: Кількість користувацьких доступів до групи атрибутів
+job_profile.permissions:
+  execute.label: Дозволено виконувати профіль процесу
+  edit.label: Дозволено редагувати профіль процесу
+pim_title.locale:
+  edit: "Локалі %locale.code% |Редагувати"
+attribute group.permissions:
+  view.label: Дозволено переглядати атрибути
+  view.help: Дозволити перегляд продуктів в цій групі атрибутів
+  edit.label: Дозволена зміна атрибутів
+  edit.help: Дозволити редагування атрибутів в цій групі атрибутів
+  no_access_to_attributes: Ви не маєте прав доступу до атрибутів цього продукту. Будь ласка, зверніться до адміністратора.
+category.permissions:
+  view.label: Дозволено переглядати товари
+  view.help: Дозволити перегляд продуктів в цій категорії
+  edit.label: Дозволено редагувавання товарів
+  edit.help: Дозволити редагування продуктів в цій категорії (передбачає права на перегляд)
+  own.label: Дозволено володіти продуктами
+  own.help: Дозволено публікувати, знімати з публікації, класифікувати, асоціювати та писати огляди продуктів в цій категорії (передбачає права на зміни)
+  no_access_to_products: Ви не маєте прав доступу до продуктів в деревах категоріїй. Будь ласка, зверніться до вашого адміністратора
+  apply_on_children.label: Застосувати зміни до нащадків
+  apply_on_children.help: Копіювання змін прав доступу на всіх нащадків, при цьому існуючі права на нащадків зберігаються
+locale.permissions:
+  no_access_to_products: Ви не маєте прав доступу до даних продукту в жодній локалі. Будь ласка, зверніться до вашого адміністратора
+flash.locale.updated: Локаль і права доступу були оновлені
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Ви не маєте прав на зміну продуктів «%identifiers%».
+      page_title: Продукти
+      page_subtitle: Масове редагування (1 продукт)|Масове редагування (%count% продуктів)
+      title: Виберіть операцію
+      subtitle: Виберіть операцію, яку ви хочете виконати для вибраного продукту|Виберіть операцію, яку ви хочете виконати для вибраних %count% продуктів
+      confirm: Ви маєте намір оновити продукт наступною інформацією, будь ласка, підтвердіть. |Ви маєте намір оновити %count% продуктів наступною інформацією, будь ласка, підтвердіть.
+      steps:
+        first: Виберіть продукти
+        second: Виберіть операцію
+        third: Налаштування
+        fourth: Підтвердження
+    publish:
+      message:
+        error: Ви не власник продукту, ви не можете опублікувати його.
+        warning: Ви не власник всіх вибраних продуктів. Ви не можете опублікувати продукти «%notGranted%».
+      not_editable: Ви не маєте прав на зміну продуктів «%identifiers%».
+    unpublish:
+      message:
+        error: Ви не власник продукту, ви не можете зняти його з публікації.
+        warning: Ви не власник всіх вибраних продуктів. Ви не можете зняти продукти «%notGranted%» з публікації.
+        info: '%nbProducts% вибраних продуктів буде знято з публікації.'
+      not_editable: Ви не маєте прав на зміну продуктів «%identifiers%».
+    classify:
+      message:
+        error: Ви не власник продукту, ви не можете класифікувати його.
+        warning: Ви не власник всіх вибраних продуктів. Ви не можете класифікувати продукти «%notGranted%».
+    edit_common_attributes:
+      message:
+        error: Ви не власник продукту, ви не можете редагувати його.
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Права доступу
+  acl.product_ownership.title: Володіння
+  attributes:
+    empty: порожньо
+  category:
+    tab:
+      permission:
+        title: Права доступу
+  groups:
+    label: групи власників
+    empty: порожньо
+add_product_value_with_permission_and_rules:
+  steps.perform: Додати значення продукту
+update_product_value_with_permission_and_rules:
+  steps.perform: Оновити значення продукту
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Редагувати атрибути
+  steps.edit_common_attributes_processor.title: Редагувати атрибути
+pim_enrich_attribute_form:
+  isReadOnly: Лише для читання

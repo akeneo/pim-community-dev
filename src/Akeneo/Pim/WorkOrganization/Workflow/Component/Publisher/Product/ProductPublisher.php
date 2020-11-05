@@ -19,6 +19,7 @@ use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Product publisher.
@@ -90,6 +91,7 @@ class ProductPublisher implements PublisherInterface
 
         $familyCode = null !== $object->getFamily() ? $object->getFamily()->getCode() : null;
         $publishedProduct = $this->productBuilder->createProduct($object->getIdentifier(), $familyCode);
+        Assert::implementsInterface($publishedProduct, PublishedProductInterface::class);
         $this->productUpdater->update($publishedProduct, $standardProduct);
         $publishedProduct->setOriginalProduct($object);
         $this->setVersion($object, $publishedProduct);

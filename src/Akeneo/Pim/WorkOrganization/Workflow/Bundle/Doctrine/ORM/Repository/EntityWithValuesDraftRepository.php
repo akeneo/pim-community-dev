@@ -19,10 +19,12 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface as AkeneoUserInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -32,7 +34,7 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
     /**
      * {@inheritdoc}
      */
-    public function findUserEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesInterface
+    public function findUserEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesDraftInterface
     {
         return $this->findOneBy(
             [
@@ -180,8 +182,6 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
 
     /**
      * {@inheritdoc}
-     *
-     * @return UserInterface[]
      */
     public function findBySearch($search = null, array $options = [])
     {
@@ -207,10 +207,9 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     */
     protected function createApprovableByUserQueryBuilder(UserInterface $user): QueryBuilder
     {
+        Assert::implementsInterface($user, AkeneoUserInterface::class);
         $qb = $this->createQueryBuilder('entity_with_values_draft');
 
         return $qb

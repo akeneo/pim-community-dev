@@ -93,5 +93,7 @@ class IndexPublishedProductCommand extends Command
         $message = sprintf('<info>%d published products indexed</info>', $totalElements);
 
         $output->writeln($message);
+
+        return 0;
     }
 }

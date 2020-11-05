@@ -59,19 +59,35 @@ pim_reference_entity:
         success: Uprawnienia odniesienia obiektu zostały pomyślnie zaktualizowane.
   record:
     validation:
+      code:
+        pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
+        should_be_unique: 'Ten kod już istnieje dla innego zasobu.'
       text:
         incompatible_with_regular_expression: 'Wprowadź tekst, który spełnia warunki wyrażenia regularnego: "{{ %regular_expression%}}"'
         invalid_email: 'Wprowadź adres e-mail: xxxxx@xx.xx'
         invalid_url: 'Wprowadź adres URL: http(s)://xxxx.XXX'
+    no_data:
+      title: Brak zasobów dla {{ entityLabel }}
+      subtitle: Kliknij przycisk "Dodaj nowe", aby utworzyć pierwszy zasób
     no_result:
+      title: Brak wyników odpowiadających kryteriom wyszukiwania
       subtitle: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
+    selector:
+      no_value: Kliknij tutaj, aby wybrać opcję.
+    error:
+      value: Ups, wydaje się, że wyświetlanie pola "{{ fieldName }}" nie powiodło się. Zobacz konsolę deweloperską, aby uzyskać więcej informacji.
     button:
       save: Zapisz
       create: Dodaj nowy
       delete: Skasuj
+      delete_all: Usuń wszystkie rekordy
       back: Powrót do listy
     product:
+      dropdown:
+        attribute: Atrybut produktu
       title: Produkty
+      no_attribute:
+        link: Utwórz nowy atrybut produktu
       not_enough_items:
         button: Zobacz wszystkie produkty
     enrich:

@@ -44,7 +44,7 @@ class ProjectAnalyticProvider implements DataCollectorInterface
      */
     public function collect()
     {
-        $value = (int) $this->entityManager->createQueryBuilder('p')
+        $value = (int) $this->entityManager->createQueryBuilder()
             ->from($this->entityName, 'p')
             ->select('count(p.id)')
             ->getQuery()

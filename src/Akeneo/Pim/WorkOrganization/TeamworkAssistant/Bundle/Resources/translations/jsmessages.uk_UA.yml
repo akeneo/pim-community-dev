@@ -1,0 +1,66 @@
+teamwork_assistant:
+  common:
+    required: Обов’язково
+    warning: Не хвилюйтеся, процес обчислення за проектом може зайняти деякий час, тому ваш проект може з'явитися не одразу.
+  grid:
+    view_selector:
+      create: Створити проект
+      edit: Редагувати проект
+      remove: Видалити проект
+      create_from_view: Створити проект з цього представлення
+      start_new_project: Почати новий проект
+      confirmation:
+        remove: Ви дійсно бажаєте видалити цей проект?
+      projects: Проекти
+  project:
+    label: Ім’я
+    locale: Локаль
+    label_maxlength: Надто довге значення. Ліміт складає максимум {{ max }} символів.
+    description: Опис
+    due_date: Дата виконання
+    due_date_past: Не можна обрати минулу дату.
+    leaving_scope: Ви залишаєте межі видимості проекту.
+  edit_project_modal:
+    saved: Проект збережений.
+    title: Редагувати проект
+  create_project_modal:
+    saved: Проект був збережений, ви будете повідомлені, коли обчислення буде завершене.
+  widget:
+    no_project: У вас немає поточного проекту
+    no_project_create: створити новий проект
+    description: Опис
+    due_date: Дата виконання
+    todo: ЗРОБИТИ
+    in_progress: ТРИВАЄ
+    done: ГОТОВО
+    all_contributors: Всі учасники
+    display_products: Показати продукти
+    placeholder:
+      contributor_selector: Пошук учасника
+      project_selector: Пошук проекту
+    completeness:
+      to_start: СТАРТ ПРОДУКТІВ
+      in_progress: ПРОДУКТИ В ПРОЦЕСІ ВИКОНАННЯ
+      done: ПРОДУКТИ ЗАВЕРШЕНІ
+pim_datagrid:
+  view_selector:
+    project: Проекти
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Помічник по команді
+        project_calculation: Помічник по команді
+batch_jobs:
+  project_calculation:
+    project_calculation.label: Підрахунок статистики проекту
+    prepare_project_calculation.label: Підготовка до підрахунку статистики проекту
+    clean_contributor_group.label: Перевірити доступи користувачів на локалі проекту
+  refresh_project_completeness_calculation:
+    label: Оновити повноту заповнення проекту
+    refresh_project_completeness_calculation.label: Оновити повноту заповнення проекту
+pim_notification:
+  types:
+    project_created: Новий проект для вас
+    project_finished: Проект завершений
+    project_calculation: Підрахунок статистики проекту

@@ -15,6 +15,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProductRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -60,7 +62,9 @@ class ProductRepository implements ProductRepositoryInterface
             $productQueryBuilder->addFilter($productFiler['field'], $productFiler['operator'], $productFiler['value']);
         }
 
-        $categoriesCodes = $this->getAllViewableCategoryCodes->forGroupIds($project->getOwner()->getGroupsIds());
+        $owner = $project->getOwner();
+        Assert::implementsInterface($owner, UserInterface::class);
+        $categoriesCodes = $this->getAllViewableCategoryCodes->forGroupIds($owner->getGroupsIds());
 
         $productQueryBuilder->addFilter('categories', 'IN OR UNCLASSIFIED', $categoriesCodes, ['type_checking' => false]);
         $productQueryBuilder->addFilter('family', 'NOT EMPTY', null);

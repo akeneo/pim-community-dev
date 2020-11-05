@@ -41,7 +41,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
-        Serializer $serializer,
+        NormalizerInterface $chainedNormalizer,
         TokenInterface $token
     ) {
         $tokenStorage->getToken()->willReturn($token);
@@ -57,7 +57,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             $missingRequiredAttributesCalculator,
             $missingRequiredAttributesNormalizer
         );
-        $this->setSerializer($serializer);
+        $this->setNormalizer($chainedNormalizer);
     }
 
     function it_is_a_product_normalizer()
@@ -80,7 +80,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         CategoryAccessRepository $categoryAccessRepo,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductRepositoryInterface $productRepository,
-        Serializer $serializer
+        NormalizerInterface $chainedNormalizer
     ) {
         $product = new Product();
         $product->setId(42);
@@ -92,7 +92,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $version = new Version(PublishedProduct::class, 25, 'julia');
         $publishedProduct->setVersion($version);
         $publishedManager->findPublishedProductByOriginalId(42)->willReturn($publishedProduct);
-        $serializer->normalize($version, 'internal_api', [])->willReturn(['normalized_published_product_version']);
+        $chainedNormalizer->normalize($version, 'internal_api', [])
+            ->willReturn(['normalized_published_product_version']);
 
         $ownerGroups = [
             [
@@ -102,7 +103,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ];
         $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS)
                            ->willReturn($ownerGroups);
-        $serializer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
+        $chainedNormalizer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
 
         $normalizer->normalize($product, 'standard', [])->willReturn(['normalized_working_copy']);
         $normalizer->normalize($product, 'internal_api', [])->willReturn(
@@ -143,7 +144,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator,
         MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer,
-        Serializer $serializer,
+        NormalizerInterface $chainedNormalizer,
         TokenInterface $token,
         EntityWithValuesDraftInterface $productDraft
     ) {
@@ -168,7 +169,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ];
         $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS)
                            ->willReturn($ownerGroups);
-        $serializer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
+        $chainedNormalizer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
 
         $normalizer->normalize($product, 'standard', [])->willReturn(['normalized_working_copy']);
         $normalizer->normalize($product, 'internal_api', [])->willReturn(
@@ -216,7 +217,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         CategoryAccessRepository $categoryAccessRepo,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductRepositoryInterface $productRepository,
-        Serializer $serializer
+        NormalizerInterface $chainedNormalizer
     ) {
         $product = new Product();
         $product->setId(42);
@@ -234,7 +235,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ];
         $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS)
                            ->willReturn($ownerGroups);
-        $serializer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
+        $chainedNormalizer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
 
         $normalizer->normalize($product, 'standard', [])->willReturn(['normalized_working_copy']);
         $normalizer->normalize($product, 'internal_api', [])->willReturn(

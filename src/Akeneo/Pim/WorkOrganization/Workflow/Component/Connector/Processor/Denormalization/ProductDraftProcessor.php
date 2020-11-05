@@ -13,6 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Den
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Builder\EntityWithValuesDraftBuilderInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\PimUserDraftSourceFactory;
@@ -27,6 +28,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Product draft import processor, allows to,
@@ -110,6 +112,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
             }
         }
 
+        Assert::implementsInterface($product, ProductInterface::class);
         if (!$product->isVariant() && isset($item['parent']) && '' === trim($item['parent'])) {
             unset($item['parent']);
         }
@@ -152,12 +155,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
         return $entityWithValues;
     }
 
-    /**
-     * @param EntityWithValuesInterface $entityWithValues
-     *
-     * @return EntityWithValuesInterface|null
-     */
-    protected function getProductDraft(EntityWithValuesInterface $entityWithValues): ?EntityWithValuesInterface
+    protected function getProductDraft(EntityWithValuesInterface $entityWithValues): ?EntityWithValuesDraftInterface
     {
         return $this->productDraftRepo->findUserEntityWithValuesDraft($entityWithValues, $this->getUsername());
     }

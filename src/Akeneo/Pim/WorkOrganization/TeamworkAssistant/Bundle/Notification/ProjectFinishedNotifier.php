@@ -17,7 +17,8 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\Project
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Notify User for project finished.
@@ -60,7 +61,9 @@ class ProjectFinishedNotifier implements ProjectNotifierInterface
     ) {
         $projectStatus = $this->projectStatusRepository->findProjectStatus($project, $user);
         if ($projectCompleteness->isComplete() && !$projectStatus->isComplete()) {
-            $userLocale = $project->getOwner()->getUiLocale();
+            $owner = $project->getOwner();
+            Assert::implementsInterface($owner, UserInterface::class);
+            $userLocale = $owner->getUiLocale();
             $formattedDate = $this->datePresenter->present(
                 $project->getDueDate(),
                 ['locale' => $userLocale->getCode()]

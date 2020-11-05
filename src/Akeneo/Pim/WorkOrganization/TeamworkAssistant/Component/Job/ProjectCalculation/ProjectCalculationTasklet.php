@@ -15,6 +15,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCalculati
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -26,6 +27,8 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
  */
 class ProjectCalculationTasklet implements TaskletInterface
 {
+    private const PRODUCT_BATCH_SIZE = 1000;
+
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
@@ -38,31 +41,24 @@ class ProjectCalculationTasklet implements TaskletInterface
     /** @var SaverInterface */
     protected $projectSaver;
 
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
-
     /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @param ProductRepositoryInterface            $productRepository
-     * @param IdentifiableObjectRepositoryInterface $projectRepository
-     * @param CalculationStepInterface              $calculationStep
-     * @param SaverInterface                        $projectSaver
-     * @param ObjectDetacherInterface               $objectDetacher
-     */
+    /** @var EntityManagerClearerInterface */
+    protected $cacheClearer;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $calculationStep,
         SaverInterface $projectSaver,
-        ObjectDetacherInterface $objectDetacher
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->productRepository = $productRepository;
         $this->projectRepository = $projectRepository;
         $this->calculationStep = $calculationStep;
         $this->projectSaver = $projectSaver;
-        $this->objectDetacher = $objectDetacher;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -83,12 +79,21 @@ class ProjectCalculationTasklet implements TaskletInterface
         $project = $this->projectRepository->findOneByIdentifier($projectCode);
         $products = $this->productRepository->findByProject($project);
 
+        $handledProductsCount = 0;
         foreach ($products as $product) {
             $this->calculationStep->execute($product, $project);
-            $this->objectDetacher->detach($product);
             $this->stepExecution->incrementSummaryInfo('processed_products');
+
+            if (self::PRODUCT_BATCH_SIZE <= ++$handledProductsCount) {
+                $this->projectSaver->save($project);
+                $this->cacheClearer->clear();
+                $project = $this->projectRepository->findOneByIdentifier($projectCode);
+                $handledProductsCount = 0;
+            }
         }
 
-        $this->projectSaver->save($project);
+        if ($handledProductsCount > 0) {
+            $this->projectSaver->save($project);
+        }
     }
 }

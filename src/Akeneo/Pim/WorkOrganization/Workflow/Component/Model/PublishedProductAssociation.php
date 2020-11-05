@@ -14,6 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Model;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Webmozart\Assert\Assert;
 
 /**
  * Association entity
@@ -27,6 +28,7 @@ class PublishedProductAssociation extends AbstractAssociation implements Publish
      */
     public function getProductModels(): Collection
     {
+        Assert::implementsInterface($this->owner, PublishedProductInterface::class);
         $originalProductAssociation = $this->owner->getOriginalProduct()->getAssociationForType($this->associationType);
         if (null !== $originalProductAssociation) {
             return $originalProductAssociation->getProductModels();

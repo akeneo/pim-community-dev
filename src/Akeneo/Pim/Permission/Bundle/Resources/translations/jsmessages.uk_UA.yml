@@ -1,0 +1,48 @@
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        is_read_only: Лише для читання
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Група <strong>{{ group }}</strong> буде <strong> {{ permission }}</strong> в цій категорії
+      revoke: Група <strong>{{ group }}</strong> не буде <strong> {{ permission }}</strong> в цій категорії
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Група <strong>{{ group }}</strong> буде <strong> {{ permission }}</strong> в цій локалі
+      revoke: Група <strong>{{ group }}</strong> не буде <strong> {{ permission }}</strong> в цій локалі
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Група <strong>{{ group }}</strong> буде <strong> {{ permission }}</strong> в цій групі атрибутів
+      revoke: Група <strong>{{ group }}</strong> не буде <strong> {{ permission }}</strong> в цій групі атрибутів
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Група {{ group }} буде доступна для групи атрибутів {{ permission }}
+      view: Дозволено переглядати атрибути
+      edit: Дозволена зміна атрибутів
+      removed: Група {{ group }} не буде доступна для групи атрибутів {{ permission }}
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Група {{ group }} буде доступна для робочого профілю {{ permission }}
+      execute: Дозволено виконувати профіль процесу
+      edit: Дозволено редагувати профіль процесу
+      removed: Група {{ group }} не буде доступна для робочого профілю {{ permission }}
+batch_jobs:
+  add_product_value_with_permission_and_rules:
+    label: Додати значення продукту з перевіркою прав доступу & застосуванням правил
+    perform.label: Додати значення продукту
+  update_product_value_with_permission_and_rules:
+    label: Оновити значення продукту з перевіркою прав доступу & застосуванням правил
+    perform.label: Оновити значення продукту
+  remove_product_value_with_permission_and_rules:
+    label: Видалити значення продукту з перевіркою прав доступу & застосуванням правил
+    perform.label: Видалити значення продукту
+  edit_common_attributes_with_permission_and_rules:
+    label: Редагувати атрибути з перевіркою прав доступу & застосуванням правил
+    perform.label: Редагувати атрибути
+    cleaner.label: Очистити тимчасові файли
