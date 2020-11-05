@@ -1,0 +1,17 @@
+Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Entity\AttributeLocaleQuality:
+    type: entity
+    table: pimee_dqi_attribute_locale_quality
+    id:
+        attributeCode:
+            column: attribute_code
+            type: string
+            length: 100
+        locale:
+            column: locale
+            type: string
+            length: 20
+    fields:
+        quality:
+            column: quality
+            type: string
+            length: 20
