@@ -771,6 +771,7 @@ jobs:
                   echo export CE_COMMIT_HASH=$CE_COMMIT_HASH > persisted_env_vars
                   echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
                   echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> persisted_env_vars
+                  exit 1
           - persist_to_workspace:
               root: ~/
               paths:
@@ -900,24 +901,32 @@ workflows:
                     - test_upgrade_from_last_release
 
   growth_edition_release:
-      triggers:
-          - schedule:
-                cron: "0 4 * * *"
+      # triggers:
+      #     - schedule:
+      #           cron: "0 4 * * *"
+      #           filters:
+      #               branches:
+      #                   only:
+      #                       - master
+      jobs:
+          - ready_to_build?:
+                type: approval
                 filters:
                     branches:
-                        only:
-                            - master
-      jobs:
-           - checkout
-           - prepare_growth_edition:
+                        ignore:
+                            - "master"
+          - checkout:
                 requires:
-                    - checkout
-           - test_deploy:
-                requires:
-                    - prepare_growth_edition
-           - release_growth_edition:
-                    requires:
-                        - test_deploy
+                    - ready_to_build?
+          - prepare_growth_edition:
+              requires:
+                  - checkout
+          - test_deploy:
+              requires:
+                  - prepare_growth_edition
+          # - release_growth_edition:
+          #         requires:
+          #             - test_deploy
 
   nightly_deployments:
       triggers:
