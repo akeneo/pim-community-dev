@@ -10,7 +10,6 @@ framework:
                     topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
                 retry_strategy:
                     max_retries: 0
-                serializer: pim_enrich.messenger.serializer.business_event
 
             # Consumers
 
@@ -22,7 +21,3 @@ framework:
                     subscription_name: '%env(PUBSUB_SUBSCRIPTION_WEBHOOK)%'
                 retry_strategy:
                     max_retries: 0
-                serializer: pim_enrich.messenger.serializer.business_event
-
-        routing:
-            'Akeneo\Platform\Component\EventQueue\BusinessEvent': business_event
