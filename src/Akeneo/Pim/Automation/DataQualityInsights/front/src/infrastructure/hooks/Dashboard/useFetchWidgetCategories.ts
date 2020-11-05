@@ -1,9 +1,8 @@
 import {useEffect, useState} from 'react';
-import fetchWidgetCategories from "../../fetcher/Dashboard/fetchWidgetCategories";
-import {Category} from "../../../domain";
+import fetchWidgetCategories from '../../fetcher/Dashboard/fetchWidgetCategories';
+import {Category} from '../../../domain';
 
 const useFetchWidgetCategories = (channel: string, locale: string, categories: Category[]) => {
-
   const [widgetCategories, setWidgetCategories] = useState({});
 
   useEffect(() => {

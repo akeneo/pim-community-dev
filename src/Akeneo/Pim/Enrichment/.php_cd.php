@@ -115,6 +115,10 @@ $rules = [
 
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
+
+        // CXP-415 : Author
+        'Akeneo\Platform\Component\EventQueue\Author',
+
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',

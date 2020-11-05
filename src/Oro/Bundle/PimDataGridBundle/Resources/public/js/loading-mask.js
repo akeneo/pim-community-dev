@@ -9,59 +9,47 @@
  */
 
 /* global define */
-define(
-    [
-        'jquery',
-        'underscore',
-        'backbone',
-        'oro/translator'
-    ], function(
-        $,
-        _,
-        Backbone,
-        __
-    ) {
+define(['jquery', 'underscore', 'backbone', 'oro/translator'], function ($, _, Backbone, __) {
+  return Backbone.View.extend({
+    /** @property {Boolean} */
+    displayed: false,
 
-    return Backbone.View.extend({
-        /** @property {Boolean} */
-        displayed: false,
+    /** @property {String} */
+    className: 'AknLoadingMask loading-mask',
 
-        /** @property {String} */
-        className: 'AknLoadingMask loading-mask',
+    /**
+     * Show loading mask
+     *
+     * @return {*}
+     */
+    show: function () {
+      this.$el.show();
+      this.displayed = true;
 
-        /**
-         * Show loading mask
-         *
-         * @return {*}
-         */
-        show: function() {
-            this.$el.show();
-            this.displayed = true;
+      return this;
+    },
 
-            return this;
-        },
+    /**
+     * Hide loading mask
+     *
+     * @return {*}
+     */
+    hide: function () {
+      this.$el.hide();
+      this.displayed = false;
 
-        /**
-         * Hide loading mask
-         *
-         * @return {*}
-         */
-        hide: function() {
-            this.$el.hide();
-            this.displayed = false;
+      return this;
+    },
 
-            return this;
-        },
+    /**
+     * Render loading mask
+     *
+     * @return {*}
+     */
+    render: function () {
+      this.hide();
 
-        /**
-         * Render loading mask
-         *
-         * @return {*}
-         */
-        render: function() {
-            this.hide();
-
-            return this;
-        }
-    });
+      return this;
+    },
+  });
 });

@@ -1,0 +1,59 @@
+pim_analytics:
+  new_patch_available: 有可用的新補丁
+  system_config:
+    group:
+      notification.title: 通知
+      version_update.title: 版本更新
+    form:
+      version_update.label: 新版本通知
+      version_update.tooltip: 向遠程服務器發送請求以檢索有關新補丁發布的信息
+  system_info:
+    title: 系統資訊
+    download: TXT
+  info_type:
+    pim_edition: 版本
+    pim_version: 版本
+    pim_storage_driver: 存儲
+    pim_environment: 環境
+    pim_install_time: 安裝時間
+    registered_bundles: 已登記包
+    nb_channels: 渠道數量
+    nb_products: 產品數量
+    nb_product_models: 產品型號數量
+    nb_variant_products: 產品變量數量
+    nb_family_variants: 品類變量數量
+    nb_attributes: 屬性數量
+    nb_scopable_attributes: 適用屬性數量
+    nb_localizable_attributes: 可本地化屬性數量
+    nb_scopable_localizable_attributes: 可本地化和適用屬性數量
+    nb_useable_as_grid_filter_attributes: 可作為界面篩選器使用的屬性數量
+    avg_percentage_scopable_attributes_per_family: 每個品類可適用屬性的平均百分比（％）
+    avg_percentage_localizable_attributes_per_family: 每個品類可本地化屬性的平均百分比（％）
+    avg_percentage_scopable_localizable_attributes_per_family: 每個品類可本地化和適用屬性的平均百分比（％）
+    avg_number_attributes_per_family: 每個品類的屬性數量
+    nb_locales: 區域數量
+    nb_families: 品類數量
+    nb_users: 用戶數量
+    nb_categories: 類別數量
+    nb_category_trees: 類別目錄數量
+    max_category_in_one_category: 一個類別中的類別最大數量
+    max_category_levels: 類別等級最大數量
+    nb_product_values: 產品值數量
+    avg_product_values_by_product: 按產品劃分的平均產品價值數量
+    avg_product_values_by_family: 按品類劃分的平均潛在產品價值數量
+    max_product_values_by_family: 按品類劃分的最大潛在產品價值數量
+    pim_storage_version: 存儲版本
+    os_version: OS版本
+    php_version: PHP版本
+    mysql_version: MySQL版本
+    mariadb_version: MariaDB 版本
+    mongodb_version: MongoDB 版本
+    server_version: 主機版本
+    php_extensions: PHP功能擴展
+    email_domains: 關聯的郵箱域名
+  acl:
+    system_info:
+      index: 系統資訊
+pim_menu:
+  item:
+    system_info: 系統資訊

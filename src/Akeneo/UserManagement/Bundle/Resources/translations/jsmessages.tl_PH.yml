@@ -1,0 +1,66 @@
+pim_title:
+  pim_user_index: Mga gumamit
+  pim_user_role_index: Mga tungkulin
+  pim_user_group_index: Mga grupo
+  oro_config_configuration_system: Kumpigurasyon
+  pim_user_security_login: I-login
+  pim_user_reset_request: Nakalimutang password
+confirmation:
+  remove:
+    user: Sigurado ka bang gusto mong burahin ang gumagamit nito?
+    group: Sigurado ka ba na gusto mong burahin ang grupo na ito?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Sigurado ka bang gusto mong burahin ang gumagamit nito?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Username
+        name_prefix: Pangalan ng prefix
+        first_name: Pangalan
+        middle_name: Gitnang pangalan
+        last_name: Apelyido
+        name_suffix: Pangalan ng suffix
+        avatar: Avatar
+        email: Email
+        catalog_locale: Katalog lokal
+        catalog_scope: Katalog ng scope
+        default_tree: Default puno
+        default_asset_tree: Naka-default na puno ng asset
+        product_grid_filters: Produkto ng grid ng mga filter
+        current_password: Kasalukuyang password
+        new_password: Bagong password
+        new_password_repeat: Bagong password (ulit)
+        password: Password
+        ui_locale: UI lokal
+        timezone: Timezone
+        default_product_grid_view: E-default ng tingnan ang grid ng produkto
+        default_published_product_grid_view: Ang default na nailathala na tanaw na grid ng produkto #EE Only
+        proposals_to_review_notification: Kung ang bagong panukala para suriin #EE Only
+        proposals_state_notifications: Kung ang panukala ay tinanggap o tinanggihan #EE Only
+      module:
+        create:
+          button: Lumikha ng gumagamit
+        delete:
+          confirm: Sigurado ka bang gusto mong burahin ang gumagamit nito?
+        update:
+          additional: Karagdagan
+          password: Password
+          interfaces: Mga interface
+          notifications: Mga notipikasyon #TODO EE Only
+    role:
+      plural_label: Mga tungkulin
+      module:
+        create:
+          button: Lumikha ng tungkulin
+        delete:
+          confirm: Sigurado ka bang gusto mong burahin ang tungkulin na ito?
+    group:
+      plural_label: Mga grupo
+      module:
+        create:
+          button: Lumikha ng grupo

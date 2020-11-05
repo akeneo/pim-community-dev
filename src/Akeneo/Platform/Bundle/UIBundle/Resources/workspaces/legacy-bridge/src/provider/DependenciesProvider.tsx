@@ -22,7 +22,7 @@ const DependenciesProvider: FC = ({children}) => {
     translate: dependencies.translate,
     user: dependencies.user,
     viewBuilder: dependencies.viewBuilder,
-    mediator: dependencies.mediator
+    mediator: dependencies.mediator,
   };
 
   return <DependenciesContext.Provider value={value}>{children}</DependenciesContext.Provider>;

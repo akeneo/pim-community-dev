@@ -10,8 +10,8 @@ const UserContext = require('pim/user-context');
  */
 type InterfaceNormalizedCategory = {
   code: string;
-  labels: { [key:string] : string };
-}
+  labels: {[key: string]: string};
+};
 
 class CategoryTree extends BaseSelect {
   /**
@@ -20,7 +20,8 @@ class CategoryTree extends BaseSelect {
   configure() {
     return $.when(
       BaseSelect.prototype.configure.apply(this, arguments),
-      FetcherRegistry.getFetcher('category').fetchAll()
+      FetcherRegistry.getFetcher('category')
+        .fetchAll()
         .then((categories: InterfaceNormalizedCategory[]) => {
           this.config.choices = categories;
         })
@@ -30,8 +31,8 @@ class CategoryTree extends BaseSelect {
   /**
    * @{inheritdoc}
    */
-  formatChoices(categories: InterfaceNormalizedCategory[]): { [key:string] : string } {
-    return categories.reduce((result: { [key:string] : string }, category: InterfaceNormalizedCategory) => {
+  formatChoices(categories: InterfaceNormalizedCategory[]): {[key: string]: string} {
+    return categories.reduce((result: {[key: string]: string}, category: InterfaceNormalizedCategory) => {
       const label = category.labels[UserContext.get('catalogLocale')];
       result[category.code] = label !== undefined ? label : '[' + category.code + ']';
 

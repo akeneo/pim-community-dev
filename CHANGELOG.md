@@ -46,6 +46,12 @@
 - PIM-9496: Change date format in the locale it_IT from dd/MM/yy to dd/MM/yyyy
 - PIM-9519: Fix translation key for datagrid search field
 - PIM-9517: Fix locale selector default value on localizable attributes in product exports
+- PIM-9516: Recalculate completeness after a bulk set attribute requirements on families
+- PIM-9532: Fix the family selection in mass action when a filter on label is set
+- PIM-9535: Fix export with condition on localisable attribute does not work if selected locale is not changed
+- PIM-9542: Fix product creation if the family has a numeric code
+- PIM-9498: Add translation for 'Mass delete products' job
+- PIM-9538: Fix sorting on rule engine list page
 - PIM-9499: Fix warning display when a job is running with warnings
 
 ## New features

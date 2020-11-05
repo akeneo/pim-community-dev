@@ -8,7 +8,11 @@ export const weeklyCallback = (lastDayOfWeek: string) => {
   const startDate = new Date(lastDayOfWeek);
   startDate.setDate(startDate.getDate() - 6);
 
-  return new Intl.DateTimeFormat(uiLocale.replace('_', '-')).format(startDate) + ' - ' + new Intl.DateTimeFormat(uiLocale.replace('_', '-')).format(endDate);
+  return (
+    new Intl.DateTimeFormat(uiLocale.replace('_', '-')).format(startDate) +
+    ' - ' +
+    new Intl.DateTimeFormat(uiLocale.replace('_', '-')).format(endDate)
+  );
 };
 
 export const dailyCallback = (_: string, index: number) => {
@@ -18,8 +22,5 @@ export const dailyCallback = (_: string, index: number) => {
 export const monthlyCallback = (date: string) => {
   const uiLocale = UserContext.get('uiLocale');
 
-  return new Intl.DateTimeFormat(
-    uiLocale.replace('_', '-'),
-    {month: "long", year: "numeric"}
-  ).format(new Date(date));
+  return new Intl.DateTimeFormat(uiLocale.replace('_', '-'), {month: 'long', year: 'numeric'}).format(new Date(date));
 };
