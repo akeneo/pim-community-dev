@@ -45,11 +45,16 @@ const guessStepExecutionTrackingLevel = (step: StepExecutionTracking): Level => 
 };
 
 const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 'indeterminate' => {
+  if (step.status === 'STARTING') {
+    return 0;
+  }
+
+  if (step.status === 'COMPLETED') {
+    return 100;
+  }
+
   if (step.totalItems === 0 || !step.isTrackable) {
     switch (step.status) {
-      case 'STARTING':
-        return 0;
-      case 'COMPLETED':
       case 'STOPPED':
       case 'FAILED':
       case 'ABANDONED':
