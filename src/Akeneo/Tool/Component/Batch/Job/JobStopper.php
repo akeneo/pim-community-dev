@@ -7,7 +7,7 @@ namespace Akeneo\Tool\Component\Batch\Job;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Query\GetJobExecutionStatusInterface;
 
-final class JobStopper
+class JobStopper
 {
     private JobRepositoryInterface $jobRepository;
     private GetJobExecutionStatusInterface $getJobExecutionStatus;
