@@ -128,7 +128,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
             }
 
             $batchCount++;
-
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
                 $itemsToWrite[] = $processedItem;
@@ -140,6 +139,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
                     $itemsToWrite = [];
                 }
 
+                $this->updateProcessedItems($batchCount);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
                 if ($this->jobStopper->isStopping($stepExecution)) {
@@ -155,6 +155,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         }
 
         if ($batchCount > 0) {
+            $this->updateProcessedItems($batchCount);
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
         }
 
@@ -219,7 +220,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         } catch (InvalidItemException $e) {
             $this->handleStepExecutionWarning($this->stepExecution, $this->writer, $e);
         }
-        $this->updateProcessedItems(count($processedItems));
     }
 
     /**
@@ -274,7 +274,9 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         try {
             return $this->reader->totalItems();
         } catch (\Exception $e) {
-            $this->logger->critical('Impossible to get the total items to process from the reader.');
+            if ($this->logger) {
+                $this->logger->critical('Impossible to get the total items to process from the reader.');
+            }
         }
 
         return 0;
@@ -282,9 +284,6 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
     private function updateProcessedItems(int $processedItemsCount = 1): void
     {
-        if (!$this->reader instanceof TrackableItemReaderInterface) {
-            return;
-        }
         $this->stepExecution->incrementProcessedItems($processedItemsCount);
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
