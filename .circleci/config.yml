@@ -775,6 +775,10 @@ jobs:
               root: ~/
               paths:
                 - project
+          - run:
+              name: Remove growth env
+              command: TYPE=grth make delete-instance
+              when: on_fail
 
   release_growth_edition:
       environment:
