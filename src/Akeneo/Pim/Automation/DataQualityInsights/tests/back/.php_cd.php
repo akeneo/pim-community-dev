@@ -118,6 +118,10 @@ $rules = [
             'Doctrine\ORM\EntityManager',
             'Symfony\Component\Process',
 
+            //Necessary for the Dashboard
+            'Akeneo\Tool\Component\Classification\Model\CategoryInterface',
+            'Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface',
+
             //Security
             'Oro\Bundle\SecurityBundle\SecurityFacade',
 

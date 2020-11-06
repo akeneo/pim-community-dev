@@ -24,3 +24,4 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_catalog.repository.category'

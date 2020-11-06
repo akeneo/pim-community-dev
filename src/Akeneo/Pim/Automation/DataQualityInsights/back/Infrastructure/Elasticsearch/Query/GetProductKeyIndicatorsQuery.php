@@ -13,6 +13,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCod
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -23,9 +25,12 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
 {
     private Client $esClient;
 
-    public function __construct(Client $esClient)
+    private CategoryRepositoryInterface $categoryRepository;
+
+    public function __construct(Client $esClient, CategoryRepositoryInterface $categoryRepository)
     {
         $this->esClient = $esClient;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function all(ChannelCode $channelCode, LocaleCode $localeCode, KeyIndicatorCode... $keyIndicatorCodes): array
@@ -42,7 +47,11 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
 
     public function byCategory(ChannelCode $channelCode, LocaleCode $localeCode, CategoryCode $category, KeyIndicatorCode... $keyIndicatorCodes): array
     {
-        $terms = [['terms' => ['categories' => [strval($category)]]]];
+        $categoryCode = strval($category);
+        $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+        $categoryChildren = $category instanceof CategoryInterface ? $this->categoryRepository->getAllChildrenCodes($category) : [];
+
+        $terms = [['terms' => ['categories' => array_merge([$categoryCode], $categoryChildren)]]];
 
         return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes, $terms);
     }
