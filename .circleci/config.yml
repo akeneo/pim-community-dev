@@ -896,7 +896,7 @@ workflows:
                     - test_upgrade_from_last_release
 
   growth_edition_release:
-      # triggers:
+      # triggerss:
       #     - schedule:
       #           cron: "0 4 * * *"
       #           filters:
