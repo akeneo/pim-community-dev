@@ -3,8 +3,9 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
+use PHPUnit\Framework\TestCase;
 
-class PrivilegeCollectionTypeTest extends \PHPUnit_Framework_TestCase
+class PrivilegeCollectionTypeTest extends TestCase
 {
     /** @var PrivilegeCollectionType */
     protected $formType;

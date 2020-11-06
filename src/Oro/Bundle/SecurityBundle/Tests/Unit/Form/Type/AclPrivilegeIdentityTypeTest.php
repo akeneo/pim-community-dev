@@ -4,8 +4,9 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeIdentityType;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
+use PHPUnit\Framework\TestCase;
 
-class AclPrivilegeIdentityTypeTest extends \PHPUnit_Framework_TestCase
+class AclPrivilegeIdentityTypeTest extends TestCase
 {
     /** @var AclPrivilegeIdentityType */
     protected $formType;

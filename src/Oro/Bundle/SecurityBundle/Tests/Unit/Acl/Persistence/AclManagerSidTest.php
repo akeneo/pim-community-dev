@@ -4,8 +4,9 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Persistence;
 
 use Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
+use PHPUnit\Framework\TestCase;
 
-class AclManagerSidTest extends \PHPUnit_Framework_TestCase
+class AclManagerSidTest extends TestCase
 {
     /** @var AclSidManager */
     private $manager;

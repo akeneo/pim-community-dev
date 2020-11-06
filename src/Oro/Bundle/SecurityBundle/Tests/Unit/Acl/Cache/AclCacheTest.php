@@ -2,8 +2,9 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Cache;
 
 use Oro\Bundle\SecurityBundle\Acl\Cache\AclCache;
+use PHPUnit\Framework\TestCase;
 
-class AclCacheTest extends \PHPUnit_Framework_TestCase
+class AclCacheTest extends TestCase
 {
     /** @var AclCache */
     protected $aclCache;

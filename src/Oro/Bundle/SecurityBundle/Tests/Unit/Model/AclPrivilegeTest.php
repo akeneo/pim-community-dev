@@ -6,8 +6,9 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
+use PHPUnit\Framework\TestCase;
 
-class AclPrivilegeTest extends \PHPUnit_Framework_TestCase
+class AclPrivilegeTest extends TestCase
 {
     public function testGettersAndSetters()
     {

@@ -6,6 +6,7 @@ namespace Oro\Bundle\PimDataGridBundle\tests\Integration\Query\Sql;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group ce

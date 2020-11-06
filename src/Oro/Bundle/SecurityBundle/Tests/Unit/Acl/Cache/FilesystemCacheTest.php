@@ -1,8 +1,9 @@
 <?php
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Cache;
+use PHPUnit\Framework\TestCase;
 
-class FilesystemCacheTest extends \PHPUnit_Framework_TestCase
+class FilesystemCacheTest extends TestCase
 {
     /**
      * @dataProvider getFilenameProvider

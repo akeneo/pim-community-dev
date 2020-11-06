@@ -4,8 +4,9 @@ namespace Oro\Bundle\ConfigBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Parser;
+use PHPUnit\Framework\TestCase;
 
-class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
+class OroConfigExtensionTest extends TestCase
 {
     /**
      * @var ContainerBuilder

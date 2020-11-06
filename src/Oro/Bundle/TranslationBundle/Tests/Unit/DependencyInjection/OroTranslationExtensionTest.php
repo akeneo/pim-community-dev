@@ -4,8 +4,9 @@ namespace Oro\Bundle\TranslationBundle\Tests\Unit\DependencyInjection;
 
 use Oro\Bundle\TranslationBundle\DependencyInjection\OroTranslationExtension;
 use Symfony\Component\DependencyInjection\Definition;
+use PHPUnit\Framework\TestCase;
 
-class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
+class OroTranslationExtensionTest extends TestCase
 {
     /**
      * @var array

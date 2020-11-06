@@ -5,8 +5,9 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Metadata;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor as AclAnnotationAncestor;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
+use PHPUnit\Framework\TestCase;
 
-class AclAnnotationStorageTest extends \PHPUnit_Framework_TestCase
+class AclAnnotationStorageTest extends TestCase
 {
     /**
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)

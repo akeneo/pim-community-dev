@@ -8,8 +8,9 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
+use PHPUnit\Framework\TestCase;
 
-class AcceptorTest extends \PHPUnit_Framework_TestCase
+class AcceptorTest extends TestCase
 {
     /** @var DatagridConfiguration */
     protected $config;
@@ -23,7 +24,7 @@ class AcceptorTest extends \PHPUnit_Framework_TestCase
         $this->acceptor = new Acceptor($this->config);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->config);
         unset($this->acceptor);

@@ -12,8 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use PHPUnit\Framework\TestCase;
 
-class ControllerListenerTest extends \PHPUnit_Framework_TestCase
+class ControllerListenerTest extends TestCase
 {
     protected $className = TestDomainObject::class;
     protected $methodName = 'getId';

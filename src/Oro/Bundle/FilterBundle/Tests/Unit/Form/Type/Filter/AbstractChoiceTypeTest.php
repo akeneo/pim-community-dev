@@ -6,8 +6,9 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use PHPUnit\Framework\TestCase;
 
-class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
+class AbstractChoiceTypeTest extends TestCase
 {
     const TRANSLATION_PREFIX = 'trans_';
 
@@ -34,7 +35,7 @@ class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->translator);
         unset($this->instance);

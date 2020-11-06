@@ -3,8 +3,9 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Model;
 
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
+use PHPUnit\Framework\TestCase;
 
-class AclPrivilegeIdentityTest extends \PHPUnit_Framework_TestCase
+class AclPrivilegeIdentityTest extends TestCase
 {
     public function testAclPrivilegeIdentity()
     {

@@ -3,8 +3,9 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Metadata;
 
 use Oro\Bundle\SecurityBundle\Metadata\ActionMetadata;
+use PHPUnit\Framework\TestCase;
 
-class ActionMetadataTest extends \PHPUnit_Framework_TestCase
+class ActionMetadataTest extends TestCase
 {
     /** @var ActionMetadata */
     protected $metadata;

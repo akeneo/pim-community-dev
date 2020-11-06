@@ -3,8 +3,9 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Annotation;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use PHPUnit\Framework\TestCase;
 
-class AclTest extends \PHPUnit_Framework_TestCase
+class AclTest extends TestCase
 {
     public function testAnnotation()
     {

@@ -3,8 +3,9 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\ObjectLabelType;
+use PHPUnit\Framework\TestCase;
 
-class ObjectLabelTypeTest extends \PHPUnit_Framework_TestCase
+class ObjectLabelTypeTest extends TestCase
 {
     /** @var ObjectLabelType */
     protected $formType;

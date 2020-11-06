@@ -4,8 +4,9 @@ namespace Oro\Bundle\SecurityBundle\Tests\Twig;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension;
+use PHPUnit\Framework\TestCase;
 
-class OroSecurityExtensionTest extends \PHPUnit_Framework_TestCase
+class OroSecurityExtensionTest extends TestCase
 {
     /**
      * @var OroSecurityExtension
@@ -26,7 +27,7 @@ class OroSecurityExtensionTest extends \PHPUnit_Framework_TestCase
         $this->twigExtension = new OroSecurityExtension($this->securityFacade);
     }
 
-    protected function tearDown()
+    protected function tearDown() : void
     {
         unset($this->securityFacade);
         unset($this->twigExtension);

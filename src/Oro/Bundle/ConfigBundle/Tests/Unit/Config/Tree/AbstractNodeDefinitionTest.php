@@ -3,8 +3,9 @@
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config\Tree;
 
 use Oro\Bundle\ConfigBundle\Config\Tree\AbstractNodeDefinition;
+use PHPUnit\Framework\TestCase;
 
-class AbstractNodeDefinitionTest extends \PHPUnit_Framework_TestCase
+class AbstractNodeDefinitionTest extends TestCase
 {
     const TEST_NAME = 'testNodeName';
     const TEST_PRIORITY = 255;
@@ -20,7 +21,7 @@ class AbstractNodeDefinitionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->node);
     }

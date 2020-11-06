@@ -11,11 +11,13 @@ use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository;
 use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Yaml\Yaml;
+use PHPUnit\Framework\TestCase;
 
-class ConfigManagerTest extends \PHPUnit_Framework_TestCase
+class ConfigManagerTest extends TestCase
 {
     /**
      * @var ConfigManager

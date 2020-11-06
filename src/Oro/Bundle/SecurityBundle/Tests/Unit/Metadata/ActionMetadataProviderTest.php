@@ -6,8 +6,9 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Oro\Bundle\SecurityBundle\Metadata\ActionMetadata;
 use Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider;
+use PHPUnit\Framework\TestCase;
 
-class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
+class ActionMetadataProviderTest extends TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $cache;

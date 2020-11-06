@@ -10,8 +10,9 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\Extension\Configuration;
 use Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\Extension\SomeExtension;
+use PHPUnit\Framework\TestCase;
 
-class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
+class AbstractExtensionTest extends TestCase
 {
     /** @var ExtensionVisitorInterface */
     protected $extension;
@@ -21,7 +22,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension = new SomeExtension();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->extension);
     }

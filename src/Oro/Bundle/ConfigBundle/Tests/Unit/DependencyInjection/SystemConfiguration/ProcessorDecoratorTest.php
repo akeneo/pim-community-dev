@@ -3,8 +3,9 @@
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\DependencyInjection\SystemConfiguration;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
+use PHPUnit\Framework\TestCase;
 
-class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
+class ProcessorDecoratorTest extends TestCase
 {
     /** @var ProcessorDecorator */
     protected $processor;
@@ -14,7 +15,7 @@ class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
         $this->processor = new ProcessorDecorator();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->processor);
     }

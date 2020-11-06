@@ -6,8 +6,9 @@ use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeIdentityType;
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
 use Oro\Bundle\SecurityBundle\Form\Type\PermissionCollectionType;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use PHPUnit\Framework\TestCase;
 
-class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
+class AclPrivilegeTypeTest extends TestCase
 {
     /** @var AclPrivilegeType */
     protected $formType;

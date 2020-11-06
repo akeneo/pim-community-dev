@@ -11,8 +11,9 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
+use PHPUnit\Framework\TestCase;
 
-class CountCalculatorTest extends \PHPUnit_Framework_TestCase
+class CountCalculatorTest extends TestCase
 {
     const TEST_COUNT = 42;
 

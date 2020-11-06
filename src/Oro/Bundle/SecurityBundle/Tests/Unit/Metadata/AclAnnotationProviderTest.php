@@ -6,8 +6,9 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoaderInterface;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
+use PHPUnit\Framework\TestCase;
 
-class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
+class AclAnnotationProviderTest extends TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $cache;

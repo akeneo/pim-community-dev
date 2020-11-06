@@ -4,8 +4,9 @@ namespace Oro\Bundle\TranslationBundle\Tests\Unit\DependencyInjection;
 
 use Oro\Bundle\TranslationBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Processor;
+use PHPUnit\Framework\TestCase;
 
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends TestCase
 {
     /**
      * @dataProvider dataProviderConfigTree

@@ -11,12 +11,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     // here we can define, what sets of rules will be applied
     $parameters = $containerConfigurator->parameters();
     $parameters->set(Option::SETS, [SetList::CODE_QUALITY, SetList::SYMFONY_44]);
-
-    // register single rule
-    $services = $containerConfigurator->services();
-    $services->set(TypedPropertyRectorAlias::class);
     $parameters->set(Option::PHP_VERSION_FEATURES, '7.4');
-
+    $parameters->set(Option::EXCLUDE_PATHS, ['src/Oro']);
+    // register single rule
     $services = $containerConfigurator->services();
     $services->set(ClosureToArrowFunctionRector::class);
     $services->set(TypedPropertyRectorAlias::class);

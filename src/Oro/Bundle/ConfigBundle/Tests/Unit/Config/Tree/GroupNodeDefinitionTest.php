@@ -2,8 +2,9 @@
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config\Tree;
 
 use Oro\Bundle\ConfigBundle\Config\Tree\GroupNodeDefinition;
+use PHPUnit\Framework\TestCase;
 
-class GroupNodeDefinitionTest extends \PHPUnit_Framework_TestCase
+class GroupNodeDefinitionTest extends TestCase
 {
     const TEST_NAME = 'testNodeName';
     const TEST_LEVEL = 2;

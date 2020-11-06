@@ -3,8 +3,9 @@
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Twig;
 
 use Oro\Bundle\FilterBundle\Twig\AbstractExtension;
+use PHPUnit\Framework\TestCase;
 
-class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
+class AbstractExtensionTestCase extends TestCase
 {
     /**
      * Testing class name
@@ -39,7 +40,7 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
         $this->extension = new $className(self::TEST_TEMPLATE_NAME);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->extension);
     }

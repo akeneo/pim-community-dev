@@ -18,11 +18,12 @@ use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
+class AclPrivilegeRepositoryTest extends TestCase
 {
     /** @var AclPrivilegeRepository */
     private $repository;

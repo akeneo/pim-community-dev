@@ -9,8 +9,9 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Provider\ChainConfigurationProvider;
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider;
 use Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver;
+use PHPUnit\Framework\TestCase;
 
-class ManagerTest extends \PHPUnit_Framework_TestCase
+class ManagerTest extends TestCase
 {
     const TEST_NAME = 'testGrid';
 
@@ -51,7 +52,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager = new Manager($chainConfigProvider, $this->builder, $this->requestParams);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->builder);
         unset($this->resolver);

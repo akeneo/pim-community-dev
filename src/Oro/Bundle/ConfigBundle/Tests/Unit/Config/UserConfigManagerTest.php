@@ -7,8 +7,9 @@ use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use PHPUnit\Framework\TestCase;
 
-class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
+class UserConfigManagerTest extends TestCase
 {
     /**
      * @var UserConfigManager

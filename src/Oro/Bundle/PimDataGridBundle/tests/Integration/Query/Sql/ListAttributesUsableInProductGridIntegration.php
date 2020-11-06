@@ -7,6 +7,7 @@ namespace Oro\Bundle\PimDataGridBundle\tests\integration\Query\Sql;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;
 use Oro\Bundle\PimDataGridBundle\Query\ListAttributesUseableInProductGrid;
+use PHPUnit\Framework\TestCase;
 
 class ListAttributesUsableInProductGridIntegration extends TestCase
 {

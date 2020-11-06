@@ -3,10 +3,11 @@
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config\Tree;
 
 use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
+class FieldNodeDefinitionTest extends TestCase
 {
     const TEST_NAME = 'testNodeName';
     const TEST_TYPE = 'text';

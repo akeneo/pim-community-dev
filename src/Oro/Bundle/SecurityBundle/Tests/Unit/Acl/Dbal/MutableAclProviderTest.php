@@ -6,8 +6,9 @@ use Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
+use PHPUnit\Framework\TestCase;
 
-class MutableAclProviderTest extends \PHPUnit_Framework_TestCase
+class MutableAclProviderTest extends TestCase
 {
     /** @var MutableAclProvider */
     private $provider;

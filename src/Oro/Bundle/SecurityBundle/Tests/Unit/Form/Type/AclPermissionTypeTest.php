@@ -4,8 +4,9 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\AclPermissionType;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use PHPUnit\Framework\TestCase;
 
-class AclPermissionTypeTest extends \PHPUnit_Framework_TestCase
+class AclPermissionTypeTest extends TestCase
 {
     /** @var AclPermissionType */
     protected $formType;

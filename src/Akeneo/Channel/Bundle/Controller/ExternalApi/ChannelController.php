@@ -35,38 +35,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ChannelController
 {
-    /** @var ApiResourceRepositoryInterface */
-    protected $repository;
+    protected \Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface $repository;
 
-    /** @var NormalizerInterface */
-    protected $normalizer;
+    protected \Symfony\Component\Serializer\Normalizer\NormalizerInterface $normalizer;
 
-    /** @var PaginatorInterface */
-    protected $paginator;
+    protected \Akeneo\Tool\Component\Api\Pagination\PaginatorInterface $paginator;
 
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
+    protected \Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface $parameterValidator;
 
-    /** @var SimpleFactoryInterface */
-    protected $factory;
+    protected \Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface $factory;
 
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
+    protected \Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface $updater;
 
-    /** @var ValidatorInterface */
-    protected $validator;
+    protected \Symfony\Component\Validator\Validator\ValidatorInterface $validator;
 
-    /** @var RouterInterface */
-    protected $router;
+    protected \Symfony\Component\Routing\RouterInterface $router;
 
-    /** @var SaverInterface */
-    protected $saver;
+    protected \Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $saver;
 
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
+    protected \Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse $partialUpdateStreamResource;
 
-    /** @var array */
-    protected $apiConfiguration;
+    protected array $apiConfiguration;
 
     /**
      * @param ApiResourceRepositoryInterface $repository
@@ -163,7 +152,7 @@ class ChannelController
             'item_route_name'  => 'pim_api_channel_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
+        $count = $request->query->getBoolean('with_count') ? $this->repository->count() : null;
         $paginatedChannels = $this->paginator->paginate(
             $this->normalizer->normalize($channels, 'external_api'),
             $parameters,
@@ -198,9 +187,7 @@ class ChannelController
 
         $this->saver->save($channel);
 
-        $response = $this->getResponse($channel, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($channel, Response::HTTP_CREATED);
     }
 
     /**
@@ -237,9 +224,8 @@ class ChannelController
         $this->saver->save($channel);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($channel, $status);
 
-        return $response;
+        return $this->getResponse($channel, $status);
     }
 
     /**
@@ -254,9 +240,8 @@ class ChannelController
     public function partialUpdateListAction(Request $request)
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
-        return $response;
+        return $this->partialUpdateStreamResource->streamResponse($resource);
     }
 
     /**
@@ -273,9 +258,7 @@ class ChannelController
     {
         return array_filter(
             array_merge($channel->getConversionUnits(), $data['conversion_units']),
-            function ($value) {
-                return null !== $value && '' !== $value;
-            }
+            fn($value) => null !== $value && '' !== $value
         );
     }
 

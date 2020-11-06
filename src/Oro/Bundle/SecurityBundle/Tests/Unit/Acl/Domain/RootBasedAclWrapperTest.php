@@ -5,8 +5,9 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 use Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclWrapper;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
+use PHPUnit\Framework\TestCase;
 
-class RootBasedAclWrapperTest extends \PHPUnit_Framework_TestCase
+class RootBasedAclWrapperTest extends TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $acl;

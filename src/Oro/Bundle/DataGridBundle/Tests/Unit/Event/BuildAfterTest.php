@@ -4,8 +4,10 @@ namespace Oro\Bundle\DataGridBundle\Tests\Unit\Event;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 
-class BuildAfterTest extends \PHPUnit_Framework_TestCase
+class BuildAfterTest extends TestCase
 {
     public function testEventCreation()
     {

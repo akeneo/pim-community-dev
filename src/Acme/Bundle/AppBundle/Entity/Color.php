@@ -14,35 +14,25 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
  */
 class Color extends AbstractReferenceData implements ReferenceDataInterface
 {
-    /** @var string */
-    protected $name;
+    protected ?string $name = null;
 
-    /** @var string */
-    protected $hex;
+    protected ?string $hex = null;
 
-    /** @var int */
-    protected $red;
+    protected ?int $red = null;
 
-    /** @var int */
-    protected $green;
+    protected ?int $green = null;
 
-    /** @var int */
-    protected $blue;
+    protected ?int $blue = null;
 
-    /** @var int */
-    protected $hue;
+    protected ?int $hue = null;
 
-    /** @var int */
-    protected $hslSaturation;
+    protected ?int $hslSaturation = null;
 
-    /** @var int */
-    protected $light;
+    protected ?int $light = null;
 
-    /** @var int */
-    protected $hsvSaturation;
+    protected ?int $hsvSaturation = null;
 
-    /** @var int */
-    protected $value;
+    protected ?int $value = null;
 
     /**
      * @return string

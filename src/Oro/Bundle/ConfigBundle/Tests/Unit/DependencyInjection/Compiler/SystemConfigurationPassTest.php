@@ -4,8 +4,9 @@ namespace Oro\Bundle\ConfigBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\Compiler\SystemConfigurationPass;
 use Oro\Bundle\ConfigBundle\Tests\Unit\Fixtures\TestBundle;
+use PHPUnit\Framework\TestCase;
 
-class SystemConfigurationPassTest extends \PHPUnit_Framework_TestCase
+class SystemConfigurationPassTest extends TestCase
 {
     /** @var SystemConfigurationPass */
     protected $compiler;
@@ -20,7 +21,7 @@ class SystemConfigurationPassTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()->getMock();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->compiler);
         unset($this->container);

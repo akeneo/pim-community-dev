@@ -4,8 +4,9 @@ namespace Oro\Bundle\TranslationBundle\Tests\Unit\Controller;
 
 use Oro\Bundle\TranslationBundle\Controller\Controller;
 use Oro\Bundle\TranslationBundle\Translation\Translator;
+use PHPUnit\Framework\TestCase;
 
-class ControllerTest extends \PHPUnit_Framework_TestCase
+class ControllerTest extends TestCase
 {
     protected $translations = [
         'jsmessages' => [

@@ -7,8 +7,9 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Oro\Bundle\ConfigBundle\Entity\Config;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository;
+use PHPUnit\Framework\TestCase;
 
-class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
+class ConfigRepositoryTest extends TestCase
 {
     /**
      * @var ConfigRepository

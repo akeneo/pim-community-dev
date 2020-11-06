@@ -6,8 +6,9 @@ use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityRetrievalStrategy;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
+use PHPUnit\Framework\TestCase;
 
-class ObjectIdentityRetrievalStrategyTest extends \PHPUnit_Framework_TestCase
+class ObjectIdentityRetrievalStrategyTest extends TestCase
 {
     public function testGetObjectIdentityWithString()
     {

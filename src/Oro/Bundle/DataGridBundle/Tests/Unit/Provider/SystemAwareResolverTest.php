@@ -3,8 +3,9 @@
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Provider;
 
 use Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver;
+use PHPUnit\Framework\TestCase;
 
-class SystemAwareResolverTest extends \PHPUnit_Framework_TestCase
+class SystemAwareResolverTest extends TestCase
 {
     /** @var SystemAwareResolver */
     protected $resolver;

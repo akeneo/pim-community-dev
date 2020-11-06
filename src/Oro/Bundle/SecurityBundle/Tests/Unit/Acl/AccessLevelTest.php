@@ -3,8 +3,9 @@
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use PHPUnit\Framework\TestCase;
 
-class AccessLevelTest extends \PHPUnit_Framework_TestCase
+class AccessLevelTest extends TestCase
 {
     public function testConstantValues()
     {

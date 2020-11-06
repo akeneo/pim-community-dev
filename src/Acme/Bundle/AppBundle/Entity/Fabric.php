@@ -14,11 +14,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
  */
 class Fabric extends AbstractReferenceData implements ReferenceDataInterface
 {
-    /** @var string */
-    protected $name;
+    protected ?string $name = null;
 
-    /** @var int */
-    protected $alternativeName;
+    protected ?int $alternativeName = null;
 
     /**
      * @return string

@@ -4,8 +4,9 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject;
+use PHPUnit\Framework\TestCase;
 
-class ObjectIdAccessorTest extends \PHPUnit_Framework_TestCase
+class ObjectIdAccessorTest extends TestCase
 {
     public function testGetIdPrefersInterfaceOverGetId()
     {

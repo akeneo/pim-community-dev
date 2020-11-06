@@ -8,8 +8,9 @@ use Oro\Bundle\SecurityBundle\Annotation\Loader\AclYamlConfigLoader;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\Classes\ConfigController;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\TestBundle;
+use PHPUnit\Framework\TestCase;
 
-class AclAnnotationLoadersTest extends \PHPUnit_Framework_TestCase
+class AclAnnotationLoadersTest extends TestCase
 {
     public function setUp(): void
     {

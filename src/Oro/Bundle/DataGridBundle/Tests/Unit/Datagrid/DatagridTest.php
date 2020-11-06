@@ -7,8 +7,9 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
+use PHPUnit\Framework\TestCase;
 
-class DatagridTest extends \PHPUnit_Framework_TestCase
+class DatagridTest extends TestCase
 {
     const TEST_NAME = 'testName';
 
@@ -25,7 +26,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->grid = new Datagrid(self::TEST_NAME, $this->acceptor);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->acceptor);
         unset($this->grid);

@@ -13,8 +13,9 @@ use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\DatagridClass;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use PHPUnit\Framework\TestCase;
 
-class BuilderTest extends \PHPUnit_Framework_TestCase
+class BuilderTest extends TestCase
 {
     const TEST_DATASOURCE_TYPE = 'array';
     const TEST_DATAGRID_NAME = 'testGrid';
@@ -40,7 +41,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()->getMock();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unset($this->eventDispatcher);
         unset($this->securityFacade);

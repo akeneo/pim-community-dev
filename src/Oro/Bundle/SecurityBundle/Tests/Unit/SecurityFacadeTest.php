@@ -7,8 +7,9 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use PHPUnit\Framework\TestCase;
 
-class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
+class SecurityFacadeTest extends TestCase
 {
     /**
      * @var SecurityFacade

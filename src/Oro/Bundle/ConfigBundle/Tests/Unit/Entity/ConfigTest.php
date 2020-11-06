@@ -5,8 +5,9 @@ namespace Oro\Bundle\ConfigBundle\Tests\Unit\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\ConfigBundle\Entity\Config;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
+use PHPUnit\Framework\TestCase;
 
-class ConfigTest extends \PHPUnit_Framework_TestCase
+class ConfigTest extends TestCase
 {
     /**
      * @var Config

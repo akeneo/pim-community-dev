@@ -6,8 +6,9 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter;
+use PHPUnit\Framework\TestCase;
 
-class AclVoterTest extends \PHPUnit_Framework_TestCase
+class AclVoterTest extends TestCase
 {
     public function testVote()
     {

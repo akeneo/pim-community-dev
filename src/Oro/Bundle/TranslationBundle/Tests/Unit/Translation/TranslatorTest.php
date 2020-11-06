@@ -6,8 +6,9 @@ use Oro\Bundle\TranslationBundle\Translation\Translator;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\MessageSelector;
+use PHPUnit\Framework\TestCase;
 
-class TranslatorTest extends \PHPUnit_Framework_TestCase
+class TranslatorTest extends TestCase
 {
     protected $messages = [
         'fr' => [

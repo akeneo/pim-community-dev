@@ -5,8 +5,9 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Persistence;
 use Oro\Bundle\SecurityBundle\Acl\Extension\NullAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use PHPUnit\Framework\TestCase;
 
-class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
+class AceManipulationHelperTest extends TestCase
 {
     /** @var AceManipulationHelper */
     private $manipulator;

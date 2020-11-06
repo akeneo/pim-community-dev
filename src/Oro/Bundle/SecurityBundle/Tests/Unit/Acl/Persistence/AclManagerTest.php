@@ -12,11 +12,12 @@ use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class AclManagerTest extends \PHPUnit_Framework_TestCase
+class AclManagerTest extends TestCase
 {
     /** @var AclManager */
     private $manager;
