@@ -33,7 +33,7 @@ class SorterExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(DatagridConfiguration $config): bool
     {
         $columns = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
@@ -43,7 +43,7 @@ class SorterExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(DatagridConfiguration $config): void
     {
         $this->validateConfiguration(
             new Configuration(),
@@ -54,17 +54,13 @@ class SorterExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource): void
     {
         $sorters = $this->getSortersToApply($config);
         foreach ($sorters as $definition) {
             list($direction, $sorter) = $definition;
             $sortKey = $sorter['data_name'];
-            if (isset($sorter['sorter']) && $sorter['sorter'] !== null) {
-                $sorterAlias = $sorter['sorter'];
-            } else {
-                $sorterAlias = 'field';
-            }
+            $sorterAlias = isset($sorter['sorter']) && $sorter['sorter'] !== null ? $sorter['sorter'] : 'field';
             if (!isset($this->sorters[$sorterAlias])) {
                 throw new \LogicException(
                     sprintf(
@@ -82,7 +78,7 @@ class SorterExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data): void
     {
         $multisort = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
         $sorters = $this->getSorters($config);
@@ -96,7 +92,7 @@ class SorterExtension extends AbstractExtension
         }
 
         $extraSorters = array_diff(array_keys($sorters), $proceed);
-        if (count($extraSorters)) {
+        if (count($extraSorters) > 0) {
             throw new \LogicException(
                 sprintf('Could not found column(s) "%s" for sorting', implode(', ', $extraSorters))
             );
@@ -117,7 +113,7 @@ class SorterExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // should visit after all extensions
         return -250;
@@ -127,24 +123,18 @@ class SorterExtension extends AbstractExtension
      * Retrieve and prepare list of sorters
      *
      * @param DatagridConfiguration $config
-     *
-     * @return array
      */
-    protected function getSorters(DatagridConfiguration $config)
+    protected function getSorters(DatagridConfiguration $config): array
     {
-        $sorters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
-
-        return $sorters;
+        return $config->offsetGetByPath(Configuration::COLUMNS_PATH);
     }
 
     /**
      * Prepare sorters array
      *
      * @param DatagridConfiguration $config
-     *
-     * @return array
      */
-    protected function getSortersToApply(DatagridConfiguration $config)
+    protected function getSortersToApply(DatagridConfiguration $config): array
     {
         $result = [];
 
@@ -175,10 +165,8 @@ class SorterExtension extends AbstractExtension
      * Normalize user input
      *
      * @param string $direction
-     *
-     * @return string
      */
-    protected function normalizeDirection($direction)
+    protected function normalizeDirection(string $direction): string
     {
         switch (true) {
             case in_array($direction, [self::DIRECTION_ASC, self::DIRECTION_DESC], true):
@@ -201,7 +189,7 @@ class SorterExtension extends AbstractExtension
      *
      * @return $this
      */
-    public function addSorter($name, SorterInterface $sorter)
+    public function addSorter(string $name, SorterInterface $sorter): self
     {
         $this->sorters[$name] = $sorter;
 

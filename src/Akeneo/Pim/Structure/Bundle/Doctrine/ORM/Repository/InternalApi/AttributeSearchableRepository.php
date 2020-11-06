@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,7 +27,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
      * @param EntityManagerInterface $entityManager
      * @param string                 $entityName
      */
-    public function __construct(EntityManagerInterface $entityManager, $entityName)
+    public function __construct(EntityManagerInterface $entityManager, string $entityName)
     {
         $this->entityManager = $entityManager;
         $this->entityName = $entityName;
@@ -37,7 +38,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
      *
      * @return AttributeInterface[]
      */
-    public function findBySearch($search = null, array $options = [])
+    public function findBySearch(string $search = null, array $options = []): array
     {
         $qb = $this->findBySearchQb($search, $options);
 
@@ -46,10 +47,8 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
 
     /**
      * @param array $options
-     *
-     * @return array
      */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(
@@ -103,10 +102,8 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
     /**
      * @param string $search
      * @param array  $options
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    protected function findBySearchQb($search, array $options)
+    protected function findBySearchQb(string $search, array $options): QueryBuilder
     {
         //TODO: refactor on master because this is exactly the same that FamilySearchableRepository
         //TODO: and should be put in Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository

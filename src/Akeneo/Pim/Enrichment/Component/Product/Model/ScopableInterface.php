@@ -16,14 +16,12 @@ interface ScopableInterface
      *
      * @return string $scope
      */
-    public function getScope();
+    public function getScope(): string;
 
     /**
      * Set used scope
      *
      * @param string $scope
-     *
-     * @return ScopableInterface
      */
-    public function setScope($scope);
+    public function setScope(string $scope): \Akeneo\Pim\Enrichment\Component\Product\Model\ScopableInterface;
 }

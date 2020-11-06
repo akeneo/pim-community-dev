@@ -24,19 +24,17 @@ class VersionExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('version', [$this, 'version']),
+            new \Twig_SimpleFunction('version', fn() => $this->version()),
         ];
     }
 
     /**
      * Returns the current version
-     *
-     * @return string
      */
-    public function version()
+    public function version(): string
     {
         return $this->versionProvider->getFullVersion();
     }

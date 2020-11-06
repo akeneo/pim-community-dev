@@ -20,7 +20,7 @@ interface CollectionFilterInterface
      *
      * @return mixed
      */
-    public function filterCollection($collection, $type, array $options = []);
+    public function filterCollection($collection, string $type, array $options = []);
 
     /**
      * Checks whether the given collection is supported for filtering by this filter
@@ -28,8 +28,6 @@ interface CollectionFilterInterface
      * @param mixed  $collection The collection to filter
      * @param string $type       The type of objects in the collection
      * @param array  $options    The filter options
-     *
-     * @return bool
      */
-    public function supportsCollection($collection, $type, array $options = []);
+    public function supportsCollection($collection, string $type, array $options = []): bool;
 }

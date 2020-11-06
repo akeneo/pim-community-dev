@@ -17,7 +17,7 @@ class ObjectIdAccessor
      * @throws InvalidDomainObjectException
      * @return int|string
      */
-    public function getId($domainObject)
+    public function getId(object $domainObject)
     {
         if ($domainObject instanceof DomainObjectInterface) {
             return $domainObject->getObjectIdentifier();

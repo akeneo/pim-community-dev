@@ -17,15 +17,12 @@ class RenderLayoutExtension extends AbstractExtension
      */
     const SUFFIX = '_js';
 
-    /**
-     * @return array
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction(
                 'oro_filter_render_filter_javascript',
-                [$this, 'renderFilterJavascript'],
+                fn(\Twig_Environment $environment, FormView $formView) => $this->renderFilterJavascript($environment, $formView),
                 $this->defaultFunctionOptions
             ),
         ];
@@ -63,15 +60,12 @@ class RenderLayoutExtension extends AbstractExtension
         return '';
     }
 
-    /**
-     * @return array
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new \Twig_SimpleFilter(
                 'oro_filter_choices',
-                [$this, 'getChoices']
+                fn(array $choices) => $this->getChoices($choices)
             )
         ];
     }
@@ -80,10 +74,8 @@ class RenderLayoutExtension extends AbstractExtension
      * Convert array of choice views to plain array
      *
      * @param array $choices
-     *
-     * @return array
      */
-    public function getChoices(array $choices)
+    public function getChoices(array $choices): array
     {
         $result = [];
         foreach ($choices as $choice) {

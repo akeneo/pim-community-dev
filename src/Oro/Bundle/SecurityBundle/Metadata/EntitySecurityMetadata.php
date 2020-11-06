@@ -40,7 +40,7 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
      * @param string $label
      * @param string[] $permissions
      */
-    public function __construct($securityType = '', $className = '', $group = '', $label = '', $permissions = [])
+    public function __construct(string $securityType = '', string $className = '', string $group = '', string $label = '', array $permissions = [])
     {
         $this->securityType = $securityType;
         $this->className = $className;
@@ -51,10 +51,8 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
 
     /**
      * Gets the security type
-     *
-     * @return string
      */
-    public function getSecurityType()
+    public function getSecurityType(): string
     {
         return $this->securityType;
     }
@@ -64,7 +62,7 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
      *
      * @return string
      */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }
@@ -74,7 +72,7 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
      *
      * @return string
      */
-    public function getGroup()
+    public function getGroup(): string
     {
         return $this->group;
     }
@@ -84,7 +82,7 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
      *
      * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
@@ -99,7 +97,7 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
      *
      * @return string[]
      */
-    public function getPermissions()
+    public function getPermissions(): array
     {
         return $this->permissions;
     }
@@ -107,7 +105,7 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize(
             [
@@ -123,7 +121,7 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         list(
             $this->securityType,

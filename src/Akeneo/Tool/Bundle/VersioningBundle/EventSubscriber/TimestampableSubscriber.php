@@ -33,7 +33,7 @@ class TimestampableSubscriber implements EventSubscriber
      *
      * @return string[]
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return ['prePersist'];
     }
@@ -41,7 +41,7 @@ class TimestampableSubscriber implements EventSubscriber
     /**
      * @param LifecycleEventArgs $args
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args): void
     {
         $version = $args->getObject();
 

@@ -17,7 +17,7 @@ class TagRepository extends SearchableRepository implements TagRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -25,7 +25,7 @@ class TagRepository extends SearchableRepository implements TagRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier): ?object
     {
         return $this->findOneBy(['code' => $identifier]);
     }
@@ -35,7 +35,7 @@ class TagRepository extends SearchableRepository implements TagRepositoryInterfa
      *
      * @return string[]
      */
-    public function findAllCodes()
+    public function findAllCodes(): array
     {
         $queryBuilder = $this->createQueryBuilder('t');
         $queryBuilder->select('t.id, t.code');
@@ -50,10 +50,7 @@ class TagRepository extends SearchableRepository implements TagRepositoryInterfa
         return $codes;
     }
 
-    /**
-     * @return string
-     */
-    protected function getAlias()
+    protected function getAlias(): string
     {
         return 'tag';
     }

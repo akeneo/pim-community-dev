@@ -18,5 +18,5 @@ interface LocaleProviderInterface
      *
      * @return LocaleInterface[]
      */
-    public function getLocales();
+    public function getLocales(): array;
 }

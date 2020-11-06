@@ -41,13 +41,12 @@ class JobParametersValidator
      * @return ConstraintViolationListInterface A list of constraint violations. If the
      *                                          list is empty, validation succeeded.
      */
-    public function validate(JobInterface $job, JobParameters $jobParameters, $groups = null)
+    public function validate(JobInterface $job, JobParameters $jobParameters, array $groups = null): \Symfony\Component\Validator\ConstraintViolationListInterface
     {
         $provider = $this->registry->get($job);
         $collection = $provider->getConstraintCollection();
         $parameters = $jobParameters->all();
-        $errors = $this->validator->validate($parameters, $collection, $groups);
 
-        return $errors;
+        return $this->validator->validate($parameters, $collection, $groups);
     }
 }

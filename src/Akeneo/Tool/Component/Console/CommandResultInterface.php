@@ -13,13 +13,7 @@ namespace Akeneo\Tool\Component\Console;
  */
 interface CommandResultInterface
 {
-    /**
-     * @return array
-     */
-    public function getCommandOutput();
+    public function getCommandOutput(): array;
 
-    /**
-     * @return int
-     */
-    public function getCommandStatus();
+    public function getCommandStatus(): int;
 }

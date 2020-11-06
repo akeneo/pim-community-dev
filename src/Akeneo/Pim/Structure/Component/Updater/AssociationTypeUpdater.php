@@ -33,7 +33,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($associationType, array $data, array $options = [])
+    public function update(object $associationType, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$associationType instanceof AssociationTypeInterface) {
             throw InvalidObjectException::objectExpected(
@@ -57,7 +57,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
      *
      * @throws UnknownPropertyException
      */
-    protected function setData(AssociationTypeInterface $associationType, $field, $data)
+    protected function setData(AssociationTypeInterface $associationType, string $field, $data): void
     {
         if ('code' === $field) {
             $associationType->setCode($data);
@@ -79,7 +79,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDataType($field, $data)
+    protected function validateDataType(string $field, $data): void
     {
         if ('labels' === $field) {
             if (!is_array($data)) {

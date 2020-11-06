@@ -40,7 +40,7 @@ class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInt
     /**
      * {@inheritdoc}
      */
-    public function normalize($data, $format = null, array $context = [])
+    public function normalize($data, $format = null, array $context = []): array
     {
         $result = [];
 
@@ -64,7 +64,7 @@ class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInt
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return 'datagrid' === $format && $data instanceof WriteValueCollection;
     }

@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\ORM\Query;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\ParameterTypeInferer;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Query\Parser;
@@ -16,10 +18,9 @@ class QueryCountCalculator
      * Calculates total count of query records
      *
      * @param Query $query
-     * @param \Doctrine\Common\Collections\ArrayCollection|array|null $parameters Query parameters.
-     * @return integer
+     * @param ArrayCollection|array|null $parameters Query parameters.
      */
-    public static function calculateCount(Query $query, $parameters = null)
+    public static function calculateCount(Query $query, $parameters = null): int
     {
         /** @var QueryCountCalculator $instance */
         $instance = new static();
@@ -30,10 +31,9 @@ class QueryCountCalculator
      * Calculates total count of query records
      *
      * @param Query $query
-     * @param \Doctrine\Common\Collections\ArrayCollection|array|null $parameters Query parameters.
-     * @return integer
+     * @param ArrayCollection|array|null $parameters Query parameters.
      */
-    public function getCount(Query $query, $parameters = null)
+    public function getCount(Query $query, $parameters = null): int
     {
         if (!empty($parameters)) {
             $query = clone $query;
@@ -57,10 +57,9 @@ class QueryCountCalculator
     /**
      * @param Query                              $query
      * @param array                              $paramMappings
-     * @throws \Doctrine\ORM\Query\QueryException
-     * @return array
+     * @throws QueryException
      */
-    protected function processParameterMappings(Query $query, $paramMappings)
+    protected function processParameterMappings(Query $query, array $paramMappings): array
     {
         $sqlParams = [];
         $types = [];
@@ -76,7 +75,7 @@ class QueryCountCalculator
             $value = $query->processParameterValue($parameter->getValue());
             $type = ($parameter->getValue() === $value)
                 ? $parameter->getType()
-                : Query\ParameterTypeInferer::inferType($value);
+                : ParameterTypeInferer::inferType($value);
 
             foreach ($paramMappings[$key] as $position) {
                 $types[$position] = $type;
@@ -86,16 +85,16 @@ class QueryCountCalculator
             $value = [$value];
             $countValue = count($value);
 
-            for ($i = 0, $l = count($sqlPositions); $i < $l; $i++) {
+            foreach (array_keys($sqlPositions) as $i) {
                 $sqlParams[$sqlPositions[$i]] = $value[($i % $countValue)];
             }
         }
 
-        if (count($sqlParams) != count($types)) {
+        if (count($sqlParams) !== count($types)) {
             throw QueryException::parameterTypeMissmatch();
         }
 
-        if ($sqlParams) {
+        if ($sqlParams !== []) {
             ksort($sqlParams);
             $sqlParams = array_values($sqlParams);
 

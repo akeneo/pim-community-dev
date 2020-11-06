@@ -21,20 +21,15 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AttributeInterface $attribute)
+    public function supportAttribute(AttributeInterface $attribute): bool
     {
-        return in_array(
-            $attribute->getType(),
-            [
-                AttributeTypes::PRICE_COLLECTION,
-            ]
-        );
+        return $attribute->getType() == AttributeTypes::PRICE_COLLECTION;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AttributeInterface $attribute)
+    public function guessConstraints(AttributeInterface $attribute): array
     {
         $notDecimalGuesser = new NotDecimalGuesser();
         $rangeGuesser = new RangeGuesser();

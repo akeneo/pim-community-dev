@@ -53,7 +53,7 @@ class OffsetHalPaginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function paginate(array $items, array $parameters, $count)
+    public function paginate(array $items, array $parameters, ?int $count): array
     {
         try {
             $parameters = $this->resolver->resolve($parameters);
@@ -107,10 +107,8 @@ class OffsetHalPaginator implements PaginatorInterface
      * @param string $routeName
      * @param array  $parameters
      * @param string $linkName
-     *
-     * @return Link
      */
-    protected function createLink($routeName, array $parameters, $linkName)
+    protected function createLink(string $routeName, array $parameters, string $linkName): Link
     {
         $url = $this->router->generate($routeName, $parameters, UrlGeneratorInterface::ABSOLUTE_URL);
 
@@ -122,10 +120,8 @@ class OffsetHalPaginator implements PaginatorInterface
      *
      * @param string $routeName
      * @param array  $parameters
-     *
-     * @return Link
      */
-    protected function createFirstLink($routeName, array $parameters)
+    protected function createFirstLink(string $routeName, array $parameters): Link
     {
         $parameters['page'] = 1;
 
@@ -141,7 +137,7 @@ class OffsetHalPaginator implements PaginatorInterface
      *
      * @return Link|null return either a link to the next page or null if there is not a next page
      */
-    protected function createNextLink($routeName, array $parameters, $items)
+    protected function createNextLink(string $routeName, array $parameters, array $items): ?Link
     {
         if (count($items) < (int) $parameters['limit']) {
             return null;
@@ -160,7 +156,7 @@ class OffsetHalPaginator implements PaginatorInterface
      *
      * @return Link|null return either a link to the previous page or null if there is not a previous page
      */
-    protected function createPreviousLink($routeName, array $parameters)
+    protected function createPreviousLink(string $routeName, array $parameters): ?Link
     {
         $currentPage = $parameters['page'];
 

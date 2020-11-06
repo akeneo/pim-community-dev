@@ -65,7 +65,7 @@ class ProductAttributeFilter implements AttributeFilterInterface
         }
 
         if (array_key_exists('values', $standardProduct) && is_array($standardProduct['values'])) {
-            foreach ($standardProduct['values'] as $code => $value) {
+            foreach (array_keys($standardProduct['values']) as $code) {
                 if (null === $this->attributeRepository->findOneByIdentifier($code)) {
                     throw UnknownPropertyException::unknownProperty($code);
                 }
@@ -96,12 +96,9 @@ class ProductAttributeFilter implements AttributeFilterInterface
             return $this->keepOnlyAttributes($standardProduct, $attributes);
         }
 
-        if (isset($standardProduct['family'])) {
-            if (null !== $family = $this->familyRepository->findOneByIdentifier($standardProduct['family'])) {
-                $attributes = $family->getAttributes();
-
-                return $this->keepOnlyAttributes($standardProduct, $attributes);
-            }
+        if (isset($standardProduct['family']) && null !== $family = $this->familyRepository->findOneByIdentifier($standardProduct['family'])) {
+            $attributes = $family->getAttributes();
+            return $this->keepOnlyAttributes($standardProduct, $attributes);
         }
 
         return $standardProduct;
@@ -115,11 +112,9 @@ class ProductAttributeFilter implements AttributeFilterInterface
      */
     private function keepOnlyAttributes(array $flatProduct, Collection $attributesToKeep): array
     {
-        $attributeCodesToKeep = $attributesToKeep->map(function (AttributeInterface $attribute) {
-            return $attribute->getCode();
-        })->toArray();
+        $attributeCodesToKeep = $attributesToKeep->map(fn(AttributeInterface $attribute) => $attribute->getCode())->toArray();
 
-        foreach ($flatProduct['values'] as $attributeName => $value) {
+        foreach (array_keys($flatProduct['values']) as $attributeName) {
             if (!in_array($attributeName, $attributeCodesToKeep)) {
                 unset($flatProduct['values'][$attributeName]);
             }

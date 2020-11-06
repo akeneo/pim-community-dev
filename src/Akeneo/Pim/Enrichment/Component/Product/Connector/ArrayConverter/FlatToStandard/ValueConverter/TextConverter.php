@@ -27,13 +27,9 @@ class TextConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, string $value): array
     {
-        if ('' !== $value) {
-            $data = (string) $value;
-        } else {
-            $data = null;
-        }
+        $data = '' !== $value ? (string) $value : null;
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],

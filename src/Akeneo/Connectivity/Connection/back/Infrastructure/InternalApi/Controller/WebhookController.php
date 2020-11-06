@@ -76,7 +76,7 @@ class WebhookController
   
     public function update(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 

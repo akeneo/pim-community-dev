@@ -41,11 +41,11 @@ class AttributeExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('datetime_presenter', [$this, 'datetimePresenter'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('date_presenter', [$this, 'datePresenter'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('datetime_presenter', fn($date) => $this->datetimePresenter($date), ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('date_presenter', fn($date) => $this->datePresenter($date), ['is_safe' => ['html']]),
         ];
     }
 
@@ -53,10 +53,8 @@ class AttributeExtension extends \Twig_Extension
      * Present a datetime
      *
      * @param string $date
-     *
-     * @return string
      */
-    public function datetimePresenter($date)
+    public function datetimePresenter(string $date): string
     {
         return $this->datetimePresenter->present($date, ['locale' => $this->localeResolver->getCurrentLocale()]);
     }
@@ -65,10 +63,8 @@ class AttributeExtension extends \Twig_Extension
      * Present a date
      *
      * @param string $date
-     *
-     * @return string
      */
-    public function datePresenter($date)
+    public function datePresenter(string $date): string
     {
         return $this->datePresenter->present($date, ['locale' => $this->localeResolver->getCurrentLocale()]);
     }

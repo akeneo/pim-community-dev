@@ -36,7 +36,7 @@ final class AttributeOptionDoesNotExist implements DocumentationBuilderInterface
      */
     public function buildDocumentation($constraintViolation): DocumentationCollection
     {
-        if (false === $this->support($constraintViolation)) {
+        if (!$this->support($constraintViolation)) {
             throw new \InvalidArgumentException('Parameter $constraintViolation is not supported.');
         }
 

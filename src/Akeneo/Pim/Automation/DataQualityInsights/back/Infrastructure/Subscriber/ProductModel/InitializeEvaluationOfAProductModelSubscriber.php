@@ -55,7 +55,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
         $this->consolidateAxesRates = $consolidateAxesRates;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_SAVE => 'onPostSave',
@@ -77,13 +77,13 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
             return;
         }
 
-        $productModelId = intval($subject->getId());
+        $productModelId = (int) $subject->getId();
         $this->initializeProductModelCriteria($productModelId);
         $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productModelId]);
         $this->consolidateAxesRates->consolidate([$productModelId]);
     }
 
-    private function initializeProductModelCriteria($productModelId)
+    private function initializeProductModelCriteria($productModelId): void
     {
         try {
             $this->createProductModelCriteriaEvaluations->createAll([new ProductId($productModelId)]);

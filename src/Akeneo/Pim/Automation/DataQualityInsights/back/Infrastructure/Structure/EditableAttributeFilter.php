@@ -22,7 +22,7 @@ class EditableAttributeFilter extends \FilterIterator
         parent::__construct(new \ArrayIterator($attributes));
     }
 
-    public function accept()
+    public function accept(): bool
     {
         $attribute = $this->getInnerIterator()->current();
 

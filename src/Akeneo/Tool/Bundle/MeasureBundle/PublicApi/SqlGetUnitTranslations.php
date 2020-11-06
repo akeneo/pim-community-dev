@@ -11,7 +11,7 @@ class SqlGetUnitTranslations
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -28,14 +28,13 @@ FROM akeneo_measurement am, JSON_TABLE(am.units,
 ) AS unit_labels
 WHERE am.code = :measurementFamilyCode;
 SQL;
-        $rows = $this->connection->executeQuery(
+
+        return $this->connection->executeQuery(
             $sql,
             [
                 'labelPath' => sprintf('$.labels.%s', $localeCode),
                 'measurementFamilyCode' => $measurementFamilyCode
             ]
         )->fetchAll(\PDO::FETCH_KEY_PAIR);
-
-        return $rows;
     }
 }

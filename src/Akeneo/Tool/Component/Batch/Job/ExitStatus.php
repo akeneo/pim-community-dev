@@ -71,7 +71,7 @@ class ExitStatus
      * @param integer $exitCode        Code for the exit status
      * @param string  $exitDescription Description of the exit status
      */
-    public function __construct($exitCode = self::UNKNOWN, $exitDescription = "")
+    public function __construct(int $exitCode = self::UNKNOWN, string $exitDescription = "")
     {
         $this->exitCode = $exitCode;
         $this->exitDescription = $exitDescription;
@@ -82,17 +82,15 @@ class ExitStatus
      *
      * @return the exit code.
      */
-    public function getExitCode()
+    public function getExitCode(): int
     {
         return $this->exitCode;
     }
 
     /**
      * Getter for the exit description (defaults to blank)
-     *
-     * @return string
      */
-    public function getExitDescription()
+    public function getExitDescription(): string
     {
         return $this->exitDescription;
     }
@@ -100,16 +98,10 @@ class ExitStatus
     /**
      * Set the current status
      * @param integer $exitCode
-     *
-     * @return ExitStatus
      */
-    public function setExitCode($exitCode)
+    public function setExitCode(int $exitCode): self
     {
-        if ($exitCode > self::UNKNOWN) {
-            $this->exitCode = self::UNKNOWN;
-        } else {
-            $this->exitCode = $exitCode;
-        }
+        $this->exitCode = $exitCode > self::UNKNOWN ? self::UNKNOWN : $exitCode;
 
         return $this;
     }
@@ -136,7 +128,7 @@ class ExitStatus
      *
      * @return ExitStatus a new {@link ExitStatus} combining the current value and the argument provided.
      */
-    public function logicalAnd(ExitStatus $status)
+    public function logicalAnd(ExitStatus $status): self
     {
         if ($status != null) {
             $this->addExitDescription($status->exitDescription);
@@ -155,7 +147,7 @@ class ExitStatus
      *
      * @return 1,0,-1 according to the severity and exit code
      */
-    public function compareTo(ExitStatus $status)
+    public function compareTo(ExitStatus $status): int
     {
         if ($status->severity() > $this->severity()) {
             return -1;
@@ -198,7 +190,7 @@ class ExitStatus
      *
      * @return boolean true if the exit code is "EXECUTING" or "UNKNOWN"
      */
-    public function isRunning()
+    public function isRunning(): bool
     {
         return ((self::EXECUTING ===  $this->exitCode) || (self::UNKNOWN === $this->exitCode));
     }
@@ -213,13 +205,13 @@ class ExitStatus
      *
      * @return ExitStatus a new {@link ExitStatus} with the same properties but a new exit description
      */
-    public function addExitDescription($description)
+    public function addExitDescription(string $description): self
     {
         if ($description instanceof \Exception) {
             $description = $description->getTraceAsString();
         }
 
-        if (!empty($description) && $this->exitDescription != $description) {
+        if (!empty($description) && $this->exitDescription !== $description) {
             if (!empty($this->exitDescription)) {
                 $this->exitDescription .= ';';
             }

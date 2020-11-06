@@ -2,6 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraints;
@@ -18,7 +21,7 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AttributeInterface $attribute)
+    public function supportAttribute(AttributeInterface $attribute): bool
     {
         return true;
     }
@@ -26,20 +29,20 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AttributeInterface $attribute)
+    public function guessConstraints(AttributeInterface $attribute): array
     {
         $constraints = [];
 
         if ($attribute->isRequired()) {
-            $constraints[] = new Constraints\NotBlank();
+            $constraints[] = new NotBlank();
         }
 
         switch ($attribute->getBackendType()) {
             case AttributeTypes::BACKEND_TYPE_DATE:
-                $constraints[] = new Constraints\Date();
+                $constraints[] = new Date();
                 break;
             case AttributeTypes::BACKEND_TYPE_DATETIME:
-                $constraints[] = new Constraints\DateTime();
+                $constraints[] = new DateTime();
                 break;
         }
 

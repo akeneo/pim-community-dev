@@ -26,7 +26,7 @@ class ListChildrenCategoriesWithCountIncludingSubCategories implements Query\Lis
      * @param Connection $connection
      * @param Client     $client
      */
-    public function __construct(Connection $connection, Client $client)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, Client $client)
     {
         $this->connection = $connection;
         $this->client = $client;
@@ -284,10 +284,6 @@ SQL;
             ]
         )->fetchAll();
 
-        $ids = array_map(function ($row) {
-            return (int) $row['id'];
-        }, $rows);
-
-        return $ids;
+        return array_map(fn($row) => (int) $row['id'], $rows);
     }
 }

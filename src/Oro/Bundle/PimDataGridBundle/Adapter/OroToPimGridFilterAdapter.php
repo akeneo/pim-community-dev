@@ -31,7 +31,7 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function adapt(array $parameters)
+    public function adapt(array $parameters): array
     {
         if (self::PRODUCT_GRID_NAME === $parameters['gridName']) {
             $filters = $this->massActionDispatcher->getRawFilters($parameters);

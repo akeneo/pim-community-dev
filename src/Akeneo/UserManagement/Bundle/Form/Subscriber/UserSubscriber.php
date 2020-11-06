@@ -38,14 +38,14 @@ class UserSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
         ];
     }
 
-    public function preSetData(FormEvent $event)
+    public function preSetData(FormEvent $event): void
     {
         /* @var $entity UserInterface */
         $entity = $event->getData();
@@ -86,13 +86,11 @@ class UserSubscriber implements EventSubscriberInterface
      * Returns true if passed user is currently authenticated
      *
      * @param  \Akeneo\UserManagement\Component\Model\UserInterface $user
-     *
-     * @return bool
      */
-    protected function isCurrentUser(UserInterface $user)
+    protected function isCurrentUser(UserInterface $user): bool
     {
         $token = $this->tokenStorage->getToken();
-        $currentUser = $token ? $token->getUser() : null;
+        $currentUser = $token !== null ? $token->getUser() : null;
         if ($user->getId() && is_object($currentUser)) {
             return $currentUser->getId() == $user->getId();
         }

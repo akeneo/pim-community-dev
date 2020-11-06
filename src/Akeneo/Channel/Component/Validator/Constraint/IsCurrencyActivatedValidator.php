@@ -16,7 +16,7 @@ class IsCurrencyActivatedValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($currency, Constraint $constraint)
+    public function validate($currency, Constraint $constraint): void
     {
         if (null === $currency) {
             return;

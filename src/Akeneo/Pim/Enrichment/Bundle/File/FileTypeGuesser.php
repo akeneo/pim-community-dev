@@ -41,7 +41,7 @@ class FileTypeGuesser implements FileTypeGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guess($mimeType)
+    public function guess(string $mimeType): string
     {
         foreach ($this->typesMapping as $fileType => $mappedTypes) {
             foreach ($mappedTypes as $mappedType) {
@@ -49,10 +49,8 @@ class FileTypeGuesser implements FileTypeGuesserInterface
                     return $fileType;
                 }
 
-                if ($discrete = strstr($mappedType, '/*', true)) {
-                    if (strstr($mimeType, '/', true) === $discrete) {
-                        return $fileType;
-                    }
+                if (($discrete = strstr($mappedType, '/*', true)) && strstr($mimeType, '/', true) === $discrete) {
+                    return $fileType;
                 }
             }
         }

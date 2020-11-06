@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Validation\Common;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -15,7 +19,7 @@ class LabelCollectionValidator extends ConstraintValidator
      * @param mixed $labels The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($labels, Constraint $constraint)
+    public function validate($labels, Constraint $constraint): void
     {
         if (empty($labels)) {
             return;
@@ -35,9 +39,9 @@ class LabelCollectionValidator extends ConstraintValidator
     private function validateLocaleCode(ValidatorInterface $validator, $localeCode): void
     {
         $violations = $validator->validate($localeCode, [
-            new Constraints\NotBlank(),
-            new Constraints\Type(['type' => 'string']),
-            new Constraints\Length(['max' => 100])
+            new NotBlank(),
+            new Type(['type' => 'string']),
+            new Length(['max' => 100])
         ]);
 
         if ($violations->count() > 0) {
@@ -55,9 +59,9 @@ class LabelCollectionValidator extends ConstraintValidator
     private function validateLabelForLocale(ValidatorInterface $validator, string $label, string $localeCode): void
     {
         $violations = $validator->validate($label, [
-            new Constraints\NotNull(),
-            new Constraints\Type(['type' => 'string']),
-            new Constraints\Length(['max' => 100]),
+            new NotNull(),
+            new Type(['type' => 'string']),
+            new Length(['max' => 100]),
         ]);
 
         if ($violations->count() > 0) {

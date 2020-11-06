@@ -21,7 +21,7 @@ class DatagridViewNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         return [
             'id'             => (int) $object->getId(),
@@ -37,7 +37,7 @@ class DatagridViewNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof DatagridView && in_array($format, $this->supportedFormat);
     }

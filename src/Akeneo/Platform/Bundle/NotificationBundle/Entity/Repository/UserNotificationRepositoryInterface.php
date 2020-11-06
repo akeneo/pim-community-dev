@@ -18,10 +18,8 @@ interface UserNotificationRepositoryInterface extends ObjectRepository
      * Returns the number of user notifications the user hasn't viewed
      *
      * @param UserInterface $user
-     *
-     * @return int
      */
-    public function countUnreadForUser(UserInterface $user);
+    public function countUnreadForUser(UserInterface $user): int;
 
     /**
      * Marks user notifications as viewed
@@ -29,5 +27,5 @@ interface UserNotificationRepositoryInterface extends ObjectRepository
      * @param UserInterface $user The user
      * @param int|null      $id   If null all notifications will be marked as viewed
      */
-    public function markAsViewed(UserInterface $user, $id);
+    public function markAsViewed(UserInterface $user, ?int $id);
 }

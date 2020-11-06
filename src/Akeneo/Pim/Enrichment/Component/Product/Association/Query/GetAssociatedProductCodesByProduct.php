@@ -15,8 +15,6 @@ interface GetAssociatedProductCodesByProduct
      *
      * @param int $productId
      * @param AssociationInterface $association
-     *
-     * @return array
      */
-    public function getCodes(int $productId, AssociationInterface $association);
+    public function getCodes(int $productId, AssociationInterface $association): array;
 }

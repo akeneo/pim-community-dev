@@ -20,7 +20,7 @@ class ReferenceDataRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findBySearch($search = null, array $options = [])
+    public function findBySearch(string $search = null, array $options = []): array
     {
         if (null !== $labelProperty = $this->getReferenceDataLabelProperty()) {
             $selectDql = sprintf(
@@ -76,7 +76,7 @@ class ReferenceDataRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -84,7 +84,7 @@ class ReferenceDataRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier): ?object
     {
         return $this->findOneBy(['code' => $identifier]);
     }
@@ -92,7 +92,7 @@ class ReferenceDataRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findCodesByIdentifiers(array $referenceDataCodes)
+    public function findCodesByIdentifiers(array $referenceDataCodes): array
     {
         return $this->createQueryBuilder($this->getAlias())
             ->select($this->getAlias() . '.code')
@@ -104,10 +104,8 @@ class ReferenceDataRepository extends EntityRepository implements
 
     /**
      * Alias of the repository
-     *
-     * @return string
      */
-    protected function getAlias()
+    protected function getAlias(): string
     {
         return 'rd';
     }
@@ -117,7 +115,7 @@ class ReferenceDataRepository extends EntityRepository implements
      *
      * @return string|null
      */
-    private function getReferenceDataLabelProperty()
+    private function getReferenceDataLabelProperty(): ?string
     {
         $referenceDataClass = $this->getEntityName();
 

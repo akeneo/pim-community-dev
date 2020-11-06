@@ -30,7 +30,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function isApplicable($gridName)
+    public function isApplicable(string $gridName): bool
     {
         return isset($this->rawConfiguration[$gridName]);
     }
@@ -38,7 +38,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfiguration($gridName)
+    public function getConfiguration(string $gridName): DatagridConfiguration
     {
         if (!isset($this->rawConfiguration[$gridName])) {
             throw new \RuntimeException(sprintf('A configuration for "%s" datagrid was not found.', $gridName));

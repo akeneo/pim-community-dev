@@ -60,10 +60,9 @@ class JobExecutionController
      *
      * @param int $id
      *
-     * @return Response
      * @throws FileNotFoundException
      */
-    public function downloadLogFileAction($id)
+    public function downloadLogFileAction(int $id): Response
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
@@ -91,10 +90,8 @@ class JobExecutionController
      * @param int    $id
      * @param string $archiver
      * @param string $key
-     *
-     * @return StreamedResponse
      */
-    public function downloadFilesAction($id, $archiver, $key)
+    public function downloadFilesAction(int $id, string $archiver, string $key): StreamedFileResponse
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 

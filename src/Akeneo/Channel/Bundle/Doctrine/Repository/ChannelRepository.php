@@ -19,7 +19,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
         if (null === $orderBy) {
             $orderBy = ['code' => 'ASC'];
@@ -31,7 +31,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = null)
+    public function findOneBy(array $criteria, array $orderBy = null): ?object
     {
         if (null === $orderBy) {
             $orderBy = ['code' => 'ASC'];
@@ -57,7 +57,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getChannelCodes()
+    public function getChannelCodes(): array
     {
         $qb = $this->createQueryBuilder('c');
         $qb->select('c.code')->orderBy('c.code');
@@ -75,7 +75,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getFullChannels()
+    public function getFullChannels(): array
     {
         return $this
             ->createQueryBuilder('ch')
@@ -90,7 +90,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getChannelCountUsingCurrency(CurrencyInterface $currency)
+    public function getChannelCountUsingCurrency(CurrencyInterface $currency): int
     {
         return (int) $this->createQueryBuilder('c')
                 ->select('count(c.id)')
@@ -104,7 +104,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['code' => $code]);
     }
@@ -112,7 +112,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -120,7 +120,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getLabelsIndexedByCode($localeCode)
+    public function getLabelsIndexedByCode(string $localeCode): array
     {
         $qb = $this->createQueryBuilder('c');
         $qb->leftJoin('c.translations', 'tr', 'WITH', 'tr.locale = :userLocaleCode');

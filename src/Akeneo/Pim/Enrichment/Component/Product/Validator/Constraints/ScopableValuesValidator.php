@@ -27,7 +27,7 @@ class ScopableValuesValidator extends ConstraintValidator
         $this->channelRepository = $channelRepository;
     }
 
-    public function validate($values, Constraint $constraint)
+    public function validate($values, Constraint $constraint): void
     {
         if (!$constraint instanceof ScopableValues) {
             throw new UnexpectedTypeException($constraint, ScopableValues::class);

@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -46,7 +48,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -54,7 +56,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -62,7 +64,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): GroupTypeInterface
     {
         $this->code = $code;
 
@@ -72,7 +74,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getGroups()
+    public function getGroups(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->groups;
     }
@@ -90,7 +92,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 
@@ -100,7 +102,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->translations;
     }
@@ -108,7 +110,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null): ?GroupTypeTranslationInterface
+    public function getTranslation(?string $locale = null): AbstractTranslation
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {
@@ -132,7 +134,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): TranslatableInterface
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -144,7 +146,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): TranslatableInterface
     {
         $this->translations->removeElement($translation);
 
@@ -154,7 +156,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslationFQCN()
+    public function getTranslationFQCN(): string
     {
         return GroupTypeTranslation::class;
     }
@@ -162,9 +164,9 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
-        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+        $translated = $this->getTranslation() !== null ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
@@ -172,7 +174,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): GroupTypeInterface
     {
         $this->getTranslation()->setLabel($label);
 
@@ -182,7 +184,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->code;
     }

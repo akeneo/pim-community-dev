@@ -31,7 +31,7 @@ class UniqueValuesSet
     /**
      * Reset the set
      */
-    public function reset()
+    public function reset(): void
     {
         $this->uniqueValues = [];
     }

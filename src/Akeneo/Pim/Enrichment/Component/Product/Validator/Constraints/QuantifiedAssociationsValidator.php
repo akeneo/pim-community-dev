@@ -45,7 +45,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
         $this->findNonExistingProductModelCodesQuery = $findNonExistingProductModelCodesQuery;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$value instanceof QuantifiedAssociationCollection) {
             throw new UnexpectedTypeException($value, QuantifiedAssociationCollection::class);
@@ -134,9 +134,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
     private function validateProductsExist(array $quantifiedLinks, string $propertyPath): void
     {
         $productIdentifiers = array_map(
-            function ($quantifiedLink) {
-                return $quantifiedLink['identifier'];
-            },
+            fn($quantifiedLink) => $quantifiedLink['identifier'],
             $quantifiedLinks
         );
 
@@ -158,9 +156,7 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
     private function validateProductModelsExist(array $quantifiedLinks, string $propertyPath): void
     {
         $productModelCodes = array_map(
-            function ($quantifiedLink) {
-                return $quantifiedLink['identifier'];
-            },
+            fn($quantifiedLink) => $quantifiedLink['identifier'],
             $quantifiedLinks
         );
 
@@ -179,9 +175,9 @@ class QuantifiedAssociationsValidator extends ConstraintValidator
 
     private function validateAssociationQuantity($quantity, string $propertyPath): void
     {
-        if (!preg_match('/^[0-9]{1,10}$/', $quantity)
-            || intval($quantity) < self::MIN_QUANTITY
-            || intval($quantity) > self::MAX_QUANTITY) {
+        if (!preg_match('/^\d{1,10}$/', $quantity)
+            || (int) $quantity < self::MIN_QUANTITY
+            || (int) $quantity > self::MAX_QUANTITY) {
             $this->context->buildViolation(
                 QuantifiedAssociationsConstraint::INVALID_QUANTITY_MESSAGE,
                 [

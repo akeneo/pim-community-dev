@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
@@ -128,11 +129,10 @@ class AttributeOptionController
      *
      * @throws NotFoundHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_attribute_option_list")
      */
-    public function getAction(Request $request, $attributeCode, $code)
+    public function getAction(Request $request, string $attributeCode, string $code): JsonResponse
     {
         $attribute = $this->getAttribute($attributeCode);
         $this->isAttributeSupportingOptions($attribute);
@@ -159,11 +159,10 @@ class AttributeOptionController
      *
      * @throws HttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_attribute_option_list")
      */
-    public function listAction(Request $request, $attributeCode)
+    public function listAction(Request $request, string $attributeCode): JsonResponse
     {
         $attribute = $this->getAttribute($attributeCode);
         $this->isAttributeSupportingOptions($attribute);
@@ -199,7 +198,7 @@ class AttributeOptionController
             'item_route_name'     => 'pim_api_attribute_option_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->attributeOptionsRepository->count($criteria) : null;
+        $count = $request->query->getBoolean('with_count') ? $this->attributeOptionsRepository->count($criteria) : null;
         $paginatedAttributeOptions = $this->paginator->paginate(
             $this->normalizer->normalize($attributeOptions, 'external_api'),
             $parameters,
@@ -215,11 +214,10 @@ class AttributeOptionController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_attribute_option_edit")
      */
-    public function createAction(Request $request, $attributeCode)
+    public function createAction(Request $request, string $attributeCode): Response
     {
         $attribute = $this->getAttribute($attributeCode);
 
@@ -234,9 +232,7 @@ class AttributeOptionController
 
         $this->saver->save($attributeOption);
 
-        $response = $this->getResponse($attribute, $attributeOption, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($attribute, $attributeOption, Response::HTTP_CREATED);
     }
 
     /**
@@ -246,11 +242,10 @@ class AttributeOptionController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_attribute_option_edit")
      */
-    public function partialUpdateAction(Request $request, $attributeCode, $code)
+    public function partialUpdateAction(Request $request, string $attributeCode, string $code): Response
     {
         $attribute = $this->getAttribute($attributeCode);
 
@@ -273,25 +268,22 @@ class AttributeOptionController
         $this->saver->save($attributeOption);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($attribute, $attributeOption, $status);
 
-        return $response;
+        return $this->getResponse($attribute, $attributeOption, $status);
     }
 
     /**
      * @param Request $request
      * @param string  $attributeCode
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_attribute_option_edit")
      */
-    public function partialUpdateListAction(Request $request, string $attributeCode): Response
+    public function partialUpdateListAction(Request $request, string $attributeCode): StreamedResponse
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource, ['attributeCode' => $attributeCode]);
 
-        return $response;
+        return $this->partialUpdateStreamResource->streamResponse($resource, ['attributeCode' => $attributeCode]);
     }
 
     /**
@@ -300,10 +292,8 @@ class AttributeOptionController
      * @param string $attributeCode
      *
      * @throws NotFoundHttpException
-     *
-     * @return AttributeInterface
      */
-    protected function getAttribute($attributeCode)
+    protected function getAttribute(string $attributeCode): \Akeneo\Pim\Structure\Component\Model\AttributeInterface
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
         if (null === $attribute) {
@@ -320,7 +310,7 @@ class AttributeOptionController
      *
      * @throws NotFoundHttpException
      */
-    protected function isAttributeSupportingOptions(AttributeInterface $attribute)
+    protected function isAttributeSupportingOptions(AttributeInterface $attribute): void
     {
         $attributeType = $attribute->getType();
         if (!in_array($attributeType, $this->supportedAttributeTypes)) {
@@ -340,10 +330,8 @@ class AttributeOptionController
      * @param string $content content of a request to decode
      *
      * @throws BadRequestHttpException
-     *
-     * @return array
      */
-    protected function getDecodedContent($content)
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -363,7 +351,7 @@ class AttributeOptionController
      *
      * @throws DocumentedHttpException
      */
-    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, $data, $anchor)
+    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, array $data, string $anchor): void
     {
         try {
             $this->updater->update($attributeOption, $data);
@@ -384,7 +372,7 @@ class AttributeOptionController
      *
      * @throws ViolationHttpException
      */
-    protected function validateAttributeOption(AttributeOptionInterface $attributeOption)
+    protected function validateAttributeOption(AttributeOptionInterface $attributeOption): void
     {
         $violations = $this->validator->validate($attributeOption);
         if (0 !== $violations->count()) {
@@ -398,10 +386,8 @@ class AttributeOptionController
      * @param AttributeInterface       $attribute
      * @param AttributeOptionInterface $attributeOption
      * @param int                      $status
-     *
-     * @return Response
      */
-    protected function getResponse(AttributeInterface $attribute, AttributeOptionInterface $attributeOption, $status)
+    protected function getResponse(AttributeInterface $attribute, AttributeOptionInterface $attributeOption, int $status): Response
     {
         $response = new Response(null, $status);
         $route = $this->router->generate(
@@ -435,7 +421,7 @@ class AttributeOptionController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function validateCodeConsistency($attributeCode, $optionCode, array $data, $isCreation)
+    protected function validateCodeConsistency(string $attributeCode, ?string $optionCode, array $data, bool $isCreation): void
     {
         if ($isCreation && array_key_exists('attribute', $data) && $attributeCode !== $data['attribute']) {
             throw new UnprocessableEntityHttpException(

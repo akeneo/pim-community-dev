@@ -36,7 +36,7 @@ class AddToExistingProductModelProcessor extends AbstractProcessor
     /**
      * {@inheritdoc}
      */
-    public function process($product)
+    public function process($product): ?\Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
     {
         $actions = $this->getConfiguredActions();
         $parentProductModelCode = $actions[0]['value'];

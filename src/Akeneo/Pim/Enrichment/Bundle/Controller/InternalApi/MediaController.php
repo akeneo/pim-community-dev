@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
@@ -31,7 +32,7 @@ class MediaController
     /** @var FileStorer */
     private $fileStorer;
 
-    public function __construct(ValidatorInterface $validator, PathGeneratorInterface $pathGenerator, FileStorer $fileStorer)
+    public function __construct(ValidatorInterface $validator, PathGeneratorInterface $pathGenerator, FileStorerInterface $fileStorer)
     {
         $this->validator = $validator;
         $this->pathGenerator = $pathGenerator;
@@ -51,7 +52,7 @@ class MediaController
             return new RedirectResponse('/');
         }
 
-        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile */
+        /** @var UploadedFile $uploadedFile */
         $uploadedFile = $request->files->get('file');
         $violations = $this->validator->validate($uploadedFile);
 

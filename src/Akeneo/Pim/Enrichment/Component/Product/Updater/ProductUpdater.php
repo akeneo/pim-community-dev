@@ -154,7 +154,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      *      },
      * }
      */
-    public function update($product, array $data, array $options = []): ProductUpdater
+    public function update(object $product, array $data, array $options = []): \Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface
     {
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
@@ -257,12 +257,10 @@ class ProductUpdater implements ObjectUpdaterInterface
             return $associations;
         }
 
-        $associations = $this->parentAssociationsFilter->filterParentAssociations(
+        return $this->parentAssociationsFilter->filterParentAssociations(
             $associations,
             $parentAssociations
         );
-
-        return $associations;
     }
 
     protected function filterQuantifiedAssociationsFromAncestors(

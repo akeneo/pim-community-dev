@@ -24,17 +24,15 @@ interface CategoryInterface extends
 {
     /**
      * Predicate to know if this category has product(s) linked
-     *
-     * @return bool
      */
-    public function hasProducts();
+    public function hasProducts(): bool;
 
     /**
      * Get products for this category node
      *
      * @return ProductInterface[]
      */
-    public function getProducts();
+    public function getProducts(): array;
 
     /**
      * Predicate to know if this category has product model(s) linked

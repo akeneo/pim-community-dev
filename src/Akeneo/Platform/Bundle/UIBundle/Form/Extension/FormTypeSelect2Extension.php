@@ -20,7 +20,7 @@ class FormTypeSelect2Extension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if (array_key_exists('select2', $options)) {
             if (isset($view->vars['attr']['class'])) {
@@ -34,7 +34,7 @@ class FormTypeSelect2Extension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefined(['select2']);
     }
@@ -42,7 +42,7 @@ class FormTypeSelect2Extension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return FormType::class;
     }

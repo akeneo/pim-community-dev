@@ -17,7 +17,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     /**
      * {@inheritdoc}
      */
-    protected function getParametersMapping()
+    protected function getParametersMapping(): array
     {
         return [
             UserInterface::class => 'pim_user.entity.user.class',

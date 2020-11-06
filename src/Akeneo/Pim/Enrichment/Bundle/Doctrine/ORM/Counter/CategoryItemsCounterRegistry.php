@@ -17,7 +17,7 @@ class CategoryItemsCounterRegistry implements CategoryItemsCounterRegistryInterf
     /**
      * {@inheritdoc}
      */
-    public function register(CategoryItemsCounterInterface $categoryItemsCounter, $type)
+    public function register(CategoryItemsCounterInterface $categoryItemsCounter, string $type): self
     {
         self::$categoryItemsCounter[$type] = $categoryItemsCounter;
 
@@ -27,7 +27,7 @@ class CategoryItemsCounterRegistry implements CategoryItemsCounterRegistryInterf
     /**
      * {@inheritdoc}
      */
-    public function get($name)
+    public function get(string $name): CategoryItemsCounterInterface
     {
         return self::$categoryItemsCounter[$name];
     }

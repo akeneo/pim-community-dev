@@ -35,9 +35,8 @@ final class NonExistentFileValueFilter implements NonExistentValuesFilter
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
     {
         $filteredFiles = $this->filterByType($onGoingFilteredRawValues, AttributeTypes::FILE);
-        $filteredImagesAndFiles = $this->filterByType($filteredFiles, AttributeTypes::IMAGE);
 
-        return $filteredImagesAndFiles;
+        return $this->filterByType($filteredFiles, AttributeTypes::IMAGE);
     }
 
     private function filterByType(OnGoingFilteredRawValues $onGoingFilteredRawValues, string $type): OnGoingFilteredRawValues

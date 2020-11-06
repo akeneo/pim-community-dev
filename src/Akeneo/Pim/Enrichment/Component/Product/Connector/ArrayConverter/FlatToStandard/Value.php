@@ -111,7 +111,7 @@ class Value implements ArrayConverterInterface
      *      }]
      * }
      */
-    public function convert(array $values, array $options = [])
+    public function convert(array $values, array $options = []): array
     {
         $mergedValues = $this->columnsMerger->merge($values);
         $convertedValues = [];
@@ -129,10 +129,8 @@ class Value implements ArrayConverterInterface
      * @param string $value
      *
      * @throws \LogicException
-     *
-     * @return array
      */
-    protected function convertValue($column, $value)
+    protected function convertValue(string $column, string $value): array
     {
         $attributeFieldInfo = $this->attrFieldExtractor->extractColumnInfo($column);
 
@@ -161,21 +159,15 @@ class Value implements ArrayConverterInterface
      *
      * @param array $item   The item in which we add the element
      * @param array $value  The structured value to add to the item
-     *
-     * @return array
      */
-    protected function mergeValueToItem(array $item, array $value)
+    protected function mergeValueToItem(array $item, array $value): array
     {
         if (empty($value)) {
             return $item;
         }
 
         foreach ($value as $code => $data) {
-            if (array_key_exists($code, $item)) {
-                $item[$code] = array_merge_recursive($item[$code], $data);
-            } else {
-                $item[$code] = $data;
-            }
+            $item[$code] = array_key_exists($code, $item) ? array_merge_recursive($item[$code], $data) : $data;
         }
 
         return $item;

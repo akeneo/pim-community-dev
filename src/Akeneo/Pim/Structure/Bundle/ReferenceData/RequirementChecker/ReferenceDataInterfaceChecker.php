@@ -22,7 +22,7 @@ class ReferenceDataInterfaceChecker implements CheckerInterface
     /** @var string */
     protected $failure;
 
-    public function __construct($referenceDataInterface)
+    public function __construct(string $referenceDataInterface)
     {
         $this->interface = $referenceDataInterface;
     }
@@ -30,7 +30,7 @@ class ReferenceDataInterfaceChecker implements CheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function check(ReferenceDataConfigurationInterface $configuration)
+    public function check(ReferenceDataConfigurationInterface $configuration): bool
     {
         $this->model = $configuration->getClass();
         $reflection = new \ReflectionClass($this->model);
@@ -51,7 +51,7 @@ class ReferenceDataInterfaceChecker implements CheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return sprintf('Reference data models must implement "%s".', $this->interface);
     }
@@ -59,7 +59,7 @@ class ReferenceDataInterfaceChecker implements CheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function getFailure()
+    public function getFailure(): string
     {
         return $this->failure;
     }
@@ -67,7 +67,7 @@ class ReferenceDataInterfaceChecker implements CheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isBlockingOnFailure()
+    public function isBlockingOnFailure(): bool
     {
         return false;
     }

@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ConfigPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $processor = new Processor();
         $settings = [];
@@ -32,7 +32,7 @@ class ConfigPass implements CompilerPassInterface
 
         $taggedServices = $container->findTaggedServiceIds('oro_config.manager');
 
-        foreach ($taggedServices as $id => $attributes) {
+        foreach (array_keys($taggedServices) as $id) {
             $container
                 ->getDefinition($id)
                 ->addArgument($settings);

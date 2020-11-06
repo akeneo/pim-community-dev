@@ -23,7 +23,7 @@ class DatagridViewType extends AbstractType
     /**
      * @param string $dataClass
      */
-    public function __construct($dataClass)
+    public function __construct(string $dataClass)
     {
         $this->dataClass = $dataClass;
     }
@@ -31,7 +31,7 @@ class DatagridViewType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('label', TextType::class, ['required' => true])
@@ -42,7 +42,7 @@ class DatagridViewType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -54,7 +54,7 @@ class DatagridViewType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_datagrid_view';
     }

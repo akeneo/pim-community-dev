@@ -86,7 +86,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    public function process($item): ?\Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
     {
         $itemHasStatus = isset($item['enabled']);
         if (!isset($item['enabled'])) {
@@ -113,7 +113,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             throw $this->skipItemAndReturnException($item, $e->getMessage(), $e);
         }
 
-        if (false === $itemHasStatus && null !== $product->getId()) {
+        if (!$itemHasStatus && null !== $product->getId()) {
             unset($filteredItem['enabled']);
         }
 
@@ -172,10 +172,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /**
      * @param ProductInterface $product
      * @param array            $filteredItem
-     *
-     * @return array
      */
-    protected function filterIdenticalData(ProductInterface $product, array $filteredItem)
+    protected function filterIdenticalData(ProductInterface $product, array $filteredItem): array
     {
         return $this->productFilter->filter($product, $filteredItem);
     }
@@ -185,7 +183,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      *
      * @return string|null
      */
-    protected function getIdentifier(array $item)
+    protected function getIdentifier(array $item): ?string
     {
         return isset($item['identifier']) ? $item['identifier'] : null;
     }
@@ -197,7 +195,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     protected function getFamilyCode(array $item): string
     {
-        if (key_exists('family', $item)) {
+        if (array_key_exists('family', $item)) {
             return $item['family'];
         }
 
@@ -219,10 +217,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      * create any products before to associate them
      *
      * @param array $item
-     *
-     * @return array
      */
-    protected function filterItemData(array $item)
+    protected function filterItemData(array $item): array
     {
         foreach ($this->repository->getIdentifierProperties() as $identifierProperty) {
             unset($item['values'][$identifierProperty]);
@@ -240,7 +236,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      *
      * @throws PropertyException
      */
-    protected function updateProduct(ProductInterface $product, array $filteredItem)
+    protected function updateProduct(ProductInterface $product, array $filteredItem): void
     {
         $this->updater->update($product, $filteredItem);
     }
@@ -249,10 +245,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      * @param ProductInterface $product
      *
      * @throws \InvalidArgumentException
-     *
-     * @return ConstraintViolationListInterface
      */
-    protected function validateProduct(ProductInterface $product)
+    protected function validateProduct(ProductInterface $product): ConstraintViolationListInterface
     {
         return $this->validator->validate($product);
     }
@@ -263,7 +257,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      *
      * @param ProductInterface $product
      */
-    protected function detachProduct(ProductInterface $product)
+    protected function detachProduct(ProductInterface $product): void
     {
         $this->detacher->detach($product);
     }

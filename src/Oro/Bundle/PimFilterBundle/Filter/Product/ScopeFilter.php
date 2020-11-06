@@ -52,7 +52,7 @@ class ScopeFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function init($name, array $params)
+    public function init(string $name, array $params): void
     {
         parent::init($name, $params);
         // TODO : useful ? I would expect that it's configured in datasource itself
@@ -62,7 +62,7 @@ class ScopeFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $channelCode = $this->parseData($data);
         if (!$channelCode) {
@@ -77,7 +77,7 @@ class ScopeFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $metadata = parent::getMetadata();
 
@@ -91,7 +91,7 @@ class ScopeFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return ScopeFilterType::class;
     }

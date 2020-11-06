@@ -15,9 +15,8 @@ class ConfigValueRepository extends EntityRepository
      *
      * @param integer $configId
      * @param array   $removed
-     * @return array
      */
-    public function removeValues($configId, $removed)
+    public function removeValues(int $configId, array $removed): void
     {
         $builder = $this->getEntityManager()->createQueryBuilder();
 
@@ -44,7 +43,7 @@ class ConfigValueRepository extends EntityRepository
      *
      * @return string|null
      */
-    public function getSectionForEntityAndScope($section, $entityName, $scopeId)
+    public function getSectionForEntityAndScope(string $section, string $entityName, int $scopeId): ?string
     {
         return $this->createQueryBuilder('v')
             ->leftJoin('v.config', 'c')

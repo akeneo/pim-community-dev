@@ -33,7 +33,7 @@ class CategoryType extends AbstractType
      * @param string $dataClass
      * @param string $translationDataClass
      */
-    public function __construct($dataClass, $translationDataClass)
+    public function __construct(string $dataClass, string $translationDataClass)
     {
         $this->dataClass = $dataClass;
         $this->translationDataClass = $translationDataClass;
@@ -42,7 +42,7 @@ class CategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -62,7 +62,7 @@ class CategoryType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      */
-    protected function addLabelField(FormBuilderInterface $builder)
+    protected function addLabelField(FormBuilderInterface $builder): void
     {
         $builder->add(
             'label',
@@ -79,7 +79,7 @@ class CategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -91,7 +91,7 @@ class CategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_category';
     }
@@ -101,7 +101,7 @@ class CategoryType extends AbstractType
      *
      * @param EventSubscriberInterface $subscriber
      */
-    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    public function addEventSubscriber(EventSubscriberInterface $subscriber): void
     {
         $this->subscribers[] = $subscriber;
     }

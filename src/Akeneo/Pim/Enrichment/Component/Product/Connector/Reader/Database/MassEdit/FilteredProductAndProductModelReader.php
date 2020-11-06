@@ -135,10 +135,8 @@ class FilteredProductAndProductModelReader implements
     /**
      * Returns the filters from the configuration.
      * The parameters can be in the 'filters' root node, or in filters data node (e.g. for export).
-     *
-     * @return array
      */
-    private function getConfiguredFilters(): array
+    private function getConfiguredFilters(): ?array
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
@@ -160,9 +158,7 @@ class FilteredProductAndProductModelReader implements
             }, $filters);
         }
 
-        return array_filter($filters, function ($filter) {
-            return count($filter) > 0;
-        });
+        return array_filter($filters, fn($filter) => count($filter) > 0);
     }
 
     /**
@@ -205,15 +201,13 @@ class FilteredProductAndProductModelReader implements
             }
 
             if ($entity instanceof ProductModelInterface) {
-                if ($this->stepExecution) {
-                    if (!$this->readChildren) {
-                        $warning = 'This bulk action doesn\'t support Product models entities yet.';
-                        $this->stepExecution->addWarning(
-                            $warning,
-                            [],
-                            new DataInvalidItem(['code' => $entity->getCode()])
-                        );
-                    }
+                if ($this->stepExecution && !$this->readChildren) {
+                    $warning = 'This bulk action doesn\'t support Product models entities yet.';
+                    $this->stepExecution->addWarning(
+                        $warning,
+                        [],
+                        new DataInvalidItem(['code' => $entity->getCode()])
+                    );
                 }
 
                 $entity = null;

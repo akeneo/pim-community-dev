@@ -47,9 +47,8 @@ class ActionMetadataProvider
      * Checks whether an action with the given name is defined.
      *
      * @param  string $actionName The entity class name
-     * @return bool
      */
-    public function isKnownAction($actionName)
+    public function isKnownAction(string $actionName): bool
     {
         $this->ensureMetadataLoaded();
 
@@ -61,7 +60,7 @@ class ActionMetadataProvider
      *
      * @return ActionMetadata[]
      */
-    public function getActions()
+    public function getActions(): array
     {
         $this->ensureMetadataLoaded();
 
@@ -71,7 +70,7 @@ class ActionMetadataProvider
     /**
      * Warms up the cache
      */
-    public function warmUpCache()
+    public function warmUpCache(): void
     {
         $this->ensureMetadataLoaded();
     }
@@ -79,7 +78,7 @@ class ActionMetadataProvider
     /**
      * Clears the cache
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         if ($this->cache) {
             $this->cache->delete(self::CACHE_KEY);
@@ -90,7 +89,7 @@ class ActionMetadataProvider
     /**
      * Makes sure that metadata are loaded
      */
-    protected function ensureMetadataLoaded()
+    protected function ensureMetadataLoaded(): void
     {
         if ($this->localCache === null) {
             $data = null;

@@ -42,7 +42,7 @@ class EntityTypeFilter extends AbstractFieldFilter implements FieldFilterInterfa
      * @throws InvalidArgumentException
      * @throws InvalidPropertyTypeException
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
+    public function addFieldFilter(string $field, string $operator, $value, string $locale = null, string $channel = null, array $options = []): FieldFilterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');

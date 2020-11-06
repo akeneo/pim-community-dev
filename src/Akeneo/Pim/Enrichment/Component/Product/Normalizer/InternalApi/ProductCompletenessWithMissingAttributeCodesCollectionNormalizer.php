@@ -247,12 +247,10 @@ class ProductCompletenessWithMissingAttributeCodesCollectionNormalizer
         foreach ($completenesses as $completeness) {
             $normalizedCompletenesses[$completeness->localeCode()] = [
                 'completeness' => $this->normalizer->normalize($completeness, 'internal_api'),
-                'missing' => array_map(function ($attributeCode) use ($localeCodes, $attributeLabels) {
-                    return [
-                        'code'   => $attributeCode,
-                        'labels' => $this->normalizeAttributeLabels($attributeLabels, $attributeCode, $localeCodes),
-                    ];
-                }, $completeness->missingAttributeCodes()),
+                'missing' => array_map(fn($attributeCode) => [
+                    'code'   => $attributeCode,
+                    'labels' => $this->normalizeAttributeLabels($attributeLabels, $attributeCode, $localeCodes),
+                ], $completeness->missingAttributeCodes()),
                 'label' => $this->getLocaleName($completeness->localeCode()),
             ];
         }

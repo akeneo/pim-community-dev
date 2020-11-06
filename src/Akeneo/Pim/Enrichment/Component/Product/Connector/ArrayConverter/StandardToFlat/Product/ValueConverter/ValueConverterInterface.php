@@ -15,18 +15,14 @@ interface ValueConverterInterface
      * Does the converter supports the attribute
      *
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function supportsAttribute(AttributeInterface $attribute);
+    public function supportsAttribute(AttributeInterface $attribute): bool;
 
     /**
      * Converts a value
      *
      * @param string $attributeCode
      * @param mixed  $data
-     *
-     * @return array
      */
-    public function convert($attributeCode, $data);
+    public function convert(string $attributeCode, $data): array;
 }

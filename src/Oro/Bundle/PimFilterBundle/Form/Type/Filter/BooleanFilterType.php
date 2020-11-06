@@ -25,7 +25,7 @@ class BooleanFilterType extends AbstractChoiceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
@@ -33,7 +33,7 @@ class BooleanFilterType extends AbstractChoiceType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceFilterType::class;
     }
@@ -41,7 +41,7 @@ class BooleanFilterType extends AbstractChoiceType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $fieldChoices = [
             $this->translator->trans('oro.filter.form.label_type_yes') => self::TYPE_YES,

@@ -61,7 +61,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -69,7 +69,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): void
     {
         while (true) {
             try {
@@ -98,11 +98,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
                 $rangeOrders = range(min($ordersEqualsOrSuperior), max($ordersEqualsOrSuperior));
                 $availableOrders = array_diff($rangeOrders, $ordersEqualsOrSuperior);
 
-                if (!empty($availableOrders)) {
-                    $nextAvailableOrder = current($availableOrders);
-                } else {
-                    $nextAvailableOrder = max($ordersEqualsOrSuperior) + 1;
-                }
+                $nextAvailableOrder = !empty($availableOrders) ? current($availableOrders) : max($ordersEqualsOrSuperior) + 1;
 
                 $attributeGroup->setSortOrder($nextAvailableOrder);
                 $violations = $this->validator->validate($attributeGroup);

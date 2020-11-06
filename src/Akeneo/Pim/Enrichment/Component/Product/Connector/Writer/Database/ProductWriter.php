@@ -43,7 +43,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         foreach ($items as $item) {
             $this->incrementCount($item);
@@ -55,7 +55,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -63,7 +63,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $realTimeVersioning = $jobParameters->get('realTimeVersioning');
@@ -73,7 +73,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     /**
      * @param ProductInterface $product
      */
-    protected function incrementCount(ProductInterface $product)
+    protected function incrementCount(ProductInterface $product): void
     {
         if ($product->getId()) {
             $this->stepExecution->incrementSummaryInfo('process');

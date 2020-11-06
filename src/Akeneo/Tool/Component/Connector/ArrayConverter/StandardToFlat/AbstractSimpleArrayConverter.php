@@ -17,7 +17,7 @@ abstract class AbstractSimpleArrayConverter implements ArrayConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $convertedItem = [];
 
@@ -36,5 +36,5 @@ abstract class AbstractSimpleArrayConverter implements ArrayConverterInterface
      *
      * @return array the converted item
      */
-    abstract protected function convertProperty($property, $data, array $convertedItem, array $options);
+    abstract protected function convertProperty(string $property, $data, array $convertedItem, array $options): array;
 }

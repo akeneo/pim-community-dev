@@ -42,7 +42,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->registerSetters($container);
         $this->registerCopiers($container);
@@ -53,7 +53,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function registerSetters(ContainerBuilder $container)
+    protected function registerSetters(ContainerBuilder $container): void
     {
         $registry = $container->getDefinition(self::SETTER_REGISTRY);
         $setters = $container->findTaggedServiceIds(self::SETTER_TAG);
@@ -66,7 +66,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function registerCopiers(ContainerBuilder $container)
+    protected function registerCopiers(ContainerBuilder $container): void
     {
         $registry = $container->getDefinition(self::COPIER_REGISTRY);
         $copiers = $container->findTaggedServiceIds(self::COPIER_TAG);
@@ -79,7 +79,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function registerAdders(ContainerBuilder $container)
+    protected function registerAdders(ContainerBuilder $container): void
     {
         $registry = $container->getDefinition(self::ADDER_REGISTRY);
         $adders = $container->findTaggedServiceIds(self::ADDER_TAG);
@@ -92,7 +92,7 @@ class RegisterProductUpdaterPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function registerRemovers(ContainerBuilder $container)
+    protected function registerRemovers(ContainerBuilder $container): void
     {
         $registry = $container->getDefinition(self::REMOVER_REGISTRY);
         $removers = $container->findTaggedServiceIds(self::REMOVER_TAG);

@@ -32,7 +32,7 @@ class SetJobExecutionLogFileSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::BEFORE_JOB_EXECUTION => 'setJobExecutionLogFile',
@@ -44,7 +44,7 @@ class SetJobExecutionLogFileSubscriber implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function setJobExecutionLogFile(JobExecutionEvent $event)
+    public function setJobExecutionLogFile(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
         $jobExecution->setLogFile(

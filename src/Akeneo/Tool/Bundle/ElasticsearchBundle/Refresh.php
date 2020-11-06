@@ -23,41 +23,29 @@ final class Refresh
     /**
      * @param string $type
      */
-    private function __construct($type)
+    private function __construct(string $type)
     {
         $this->type = $type;
     }
 
-    /**
-     * @return Refresh
-     */
-    public static function enable()
+    public static function enable(): Refresh
     {
         return new self(Refresh::ENABLE);
     }
 
-    /**
-     * @return Refresh
-     */
-    public static function disabled()
+    public static function disabled(): Refresh
     {
         @trigger_error('The '.__FUNCTION__.' function is deprecated and will be removed in a future version.', E_USER_DEPRECATED);
 
         return self::disable();
     }
 
-    /**
-     * @return Refresh
-     */
-    public static function disable()
+    public static function disable(): Refresh
     {
         return new self(Refresh::DISABLE);
     }
 
-    /**
-     * @return Refresh
-     */
-    public static function waitFor()
+    public static function waitFor(): Refresh
     {
         return new self(Refresh::WAIT_FOR);
     }

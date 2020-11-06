@@ -25,17 +25,15 @@ class LinkedProductsNormalizer
     public function normalize(Rows $rows, string $channelCode, string $localeCode): array
     {
         return array_map(
-            function (Row $row) use ($channelCode, $localeCode) {
-                return [
-                    'id'                             => $row->technicalId(),
-                    'identifier'                     => $row->identifier(),
-                    'label'                          => $row->label(),
-                    'document_type'                  => $row->documentType(),
-                    'image'                          => $this->imageNormalizer->normalize($row->image(), $localeCode, $channelCode),
-                    'completeness'                   => $row->completeness(),
-                    'variant_product_completenesses' => $this->getChildrenCompleteness($row),
-                ];
-            },
+            fn(Row $row) => [
+                'id'                             => $row->technicalId(),
+                'identifier'                     => $row->identifier(),
+                'label'                          => $row->label(),
+                'document_type'                  => $row->documentType(),
+                'image'                          => $this->imageNormalizer->normalize($row->image(), $localeCode, $channelCode),
+                'completeness'                   => $row->completeness(),
+                'variant_product_completenesses' => $this->getChildrenCompleteness($row),
+            ],
             $rows->rows()
         );
     }

@@ -35,7 +35,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
+    public function addFieldFilter(string $field, string $operator, $value, string $locale = null, string $channel = null, array $options = []): FieldFilterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
@@ -56,7 +56,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkValue($property, $operator, $value)
+    protected function checkValue(string $property, string $operator, $value): void
     {
         if (Operators::IN_LIST === $operator || Operators::NOT_IN_LIST === $operator) {
             FieldFilterHelper::checkArray($property, $value, self::class);
@@ -72,7 +72,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
      * @param string $operator
      * @param mixed  $value
      */
-    protected function applyFilter($field, $operator, $value)
+    protected function applyFilter(string $field, string $operator, $value): void
     {
         switch ($operator) {
             case Operators::STARTS_WITH:

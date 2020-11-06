@@ -124,10 +124,8 @@ class AttributeGroupController
      * Search attribute group collection
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function searchAction(Request $request)
+    public function searchAction(Request $request): JsonResponse
     {
         $applyFilters = $request->request->getBoolean('apply_filters', true);
 
@@ -157,10 +155,8 @@ class AttributeGroupController
     /**
      * Get attribute group collection.
      * We should spilt the search and index action in two controllers to handle rights properly.
-     *
-     * @return JsonResponse
      */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $attributeGroups = $this->attributeGroupRepo->findAll();
 
@@ -178,10 +174,8 @@ class AttributeGroupController
      * Get a single attribute group
      *
      * @param string $identifier
-     *
-     * @return JsonResponse
      */
-    public function getAction(string $identifier)
+    public function getAction(string $identifier): JsonResponse
     {
         $attributeGroup = $this->attributeGroupRepo->findOneByIdentifier($identifier);
 
@@ -245,7 +239,7 @@ class AttributeGroupController
      *
      * @AclAncestor("pim_enrich_attributegroup_edit")
      */
-    public function postAction(Request $request, $identifier)
+    public function postAction(Request $request, string $identifier)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -333,11 +327,10 @@ class AttributeGroupController
      *
      * @param string $identifier
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_enrich_attributegroup_remove")
      */
-    public function removeAction(Request $request, $identifier)
+    public function removeAction(Request $request, string $identifier): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new JsonResponse(
@@ -380,7 +373,7 @@ class AttributeGroupController
             $options['limit'] = SearchableRepositoryInterface::FETCH_LIMIT;
         }
 
-        if (0 > intval($options['limit'])) {
+        if (0 > (int) $options['limit']) {
             $options['limit'] = null;
         }
 

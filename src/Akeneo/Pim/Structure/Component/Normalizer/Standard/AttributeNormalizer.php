@@ -44,7 +44,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
      *
      * @param AttributeInterface $attribute
      */
-    public function normalize($attribute, $format = null, array $context = [])
+    public function normalize($attribute, $format = null, array $context = []): array
     {
         $normalizedProperties = [];
         foreach ($this->properties as $property) {
@@ -93,7 +93,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeInterface && 'standard' === $format;
     }

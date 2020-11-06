@@ -117,10 +117,8 @@ class AttributeOptionController
      *
      * @param Request $request
      * @param int     $identifier
-     *
-     * @return JsonResponse
      */
-    public function getAction(Request $request, $identifier)
+    public function getAction(Request $request, int $identifier): JsonResponse
     {
         $query  = $request->query;
         $search = $query->get('search');
@@ -150,11 +148,10 @@ class AttributeOptionController
      *
      * @param int $attributeId
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function indexAction($attributeId)
+    public function indexAction(int $attributeId): JsonResponse
     {
         $attribute = $this->findAttributeOr404($attributeId);
 
@@ -173,7 +170,7 @@ class AttributeOptionController
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function createAction(Request $request, $attributeId)
+    public function createAction(Request $request, int $attributeId)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -200,7 +197,7 @@ class AttributeOptionController
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function updateAction(Request $request, $attributeOptionId)
+    public function updateAction(Request $request, int $attributeOptionId)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -223,7 +220,7 @@ class AttributeOptionController
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function deleteAction(Request $request, $attributeOptionId)
+    public function deleteAction(Request $request, int $attributeOptionId)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -256,7 +253,7 @@ class AttributeOptionController
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function updateSortingAction(Request $request, $attributeId)
+    public function updateSortingAction(Request $request, int $attributeId)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -278,10 +275,8 @@ class AttributeOptionController
      *
      * @param AttributeOptionInterface $attributeOption
      * @param array                    $data
-     *
-     * @return JsonResponse
      */
-    protected function manageFormSubmission(AttributeOptionInterface $attributeOption, array $data = [])
+    protected function manageFormSubmission(AttributeOptionInterface $attributeOption, array $data = []): JsonResponse
     {
         $form = $this->formFactory->createNamed('option', AttributeOptionType::class, $attributeOption);
 
@@ -302,10 +297,8 @@ class AttributeOptionController
      * Parse form errors and return as an object
      *
      * @param FormInterface $form
-     *
-     * @return array
      */
-    protected function getFormErrors($form)
+    protected function getFormErrors(\Symfony\Component\Form\FormInterface $form): array
     {
         $errors = [];
 
@@ -328,15 +321,13 @@ class AttributeOptionController
      * @param int $id The id of the attribute
      *
      * @throws NotFoundHttpException
-     *
-     * @return AttributeInterface
      */
-    protected function findAttributeOr404($id)
+    protected function findAttributeOr404(int $id): ?object
     {
         try {
             $result = $this->attributeRepository->find($id);
         } catch (EntityNotFoundException $e) {
-            throw new NotFoundHttpException($e->getMessage());
+            throw new NotFoundHttpException($e->getMessage(), $e);
         }
 
         return $result;
@@ -348,15 +339,13 @@ class AttributeOptionController
      * @param int $id The id of the attribute option
      *
      * @throws NotFoundHttpException
-     *
-     * @return AttributeOptionInterface
      */
-    protected function findAttributeOptionOr404($id)
+    protected function findAttributeOptionOr404(int $id): ?object
     {
         try {
             $result = $this->optionRepository->find($id);
         } catch (EntityNotFoundException $e) {
-            throw new NotFoundHttpException($e->getMessage());
+            throw new NotFoundHttpException($e->getMessage(), $e);
         }
 
         return $result;

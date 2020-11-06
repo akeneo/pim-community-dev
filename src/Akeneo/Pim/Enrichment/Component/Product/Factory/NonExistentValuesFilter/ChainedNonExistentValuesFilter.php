@@ -58,18 +58,15 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
         /** @var OnGoingFilteredRawValues $result */
         $result = array_reduce(
             $this->iterableToArray($this->nonExistentValueFilters),
-            function (OnGoingFilteredRawValues $onGoingFilteredRawValues, NonExistentValuesFilter $obsoleteValuesFilter): OnGoingFilteredRawValues {
-                return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
-            },
+            fn(OnGoingFilteredRawValues $onGoingFilteredRawValues, NonExistentValuesFilter $obsoleteValuesFilter): OnGoingFilteredRawValues => $obsoleteValuesFilter->filter($onGoingFilteredRawValues),
             $onGoingFilteredRawValues
         );
 
         $filteredRawValuesCollectionIndexedByType = $result->addFilteredValuesIndexedByType($result->nonFilteredRawValuesCollectionIndexedByType());
         $filteredRawValuesCollection = $this->emptyValuesCleaner->cleanAllValues($filteredRawValuesCollectionIndexedByType->toRawValueCollection());
         $filteredRawValuesCollection = $this->removeValuesWithNonExistentLocaleChannel($filteredRawValuesCollection);
-        $filteredRawValuesCollection = $this->addIdentifiersWithOnlyUnknownAttributes($rawValuesCollection, $filteredRawValuesCollection);
 
-        return $filteredRawValuesCollection;
+        return $this->addIdentifiersWithOnlyUnknownAttributes($rawValuesCollection, $filteredRawValuesCollection);
     }
 
     private function iterableToArray(iterable $iterable): array
@@ -92,7 +89,7 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
         return $filteredRawValuesCollection + $emptyRawValuesCollection;
     }
 
-    private function removeValuesWithNonExistentLocaleChannel(array $rawValuesCollection)
+    private function removeValuesWithNonExistentLocaleChannel(array $rawValuesCollection): array
     {
         $filteredRawValuesCollection = [];
 

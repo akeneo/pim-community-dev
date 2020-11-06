@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Datasource\Orm;
 
+use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr;
 use Oro\Bundle\FilterBundle\Datasource\ExpressionBuilderInterface;
 
@@ -33,15 +34,15 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function comparison($x, $operator, $y, $withParam = false)
+    public function comparison($x, string $operator, $y, bool $withParam = false): Comparison
     {
-        return new Expr\Comparison($x, $operator, $withParam ? ':' . $y : $y);
+        return new Comparison($x, $operator, $withParam ? ':' . $y : $y);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function eq($x, $y, $withParam = false)
+    public function eq($x, $y, bool $withParam = false)
     {
         return $this->expr->eq($x, $withParam ? ':' . $y : $y);
     }
@@ -49,7 +50,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function neq($x, $y, $withParam = false)
+    public function neq($x, $y, bool $withParam = false)
     {
         return $this->expr->neq($x, $withParam ? ':' . $y : $y);
     }
@@ -57,7 +58,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function lt($x, $y, $withParam = false)
+    public function lt($x, $y, bool $withParam = false)
     {
         return $this->expr->lt($x, $withParam ? ':' . $y : $y);
     }
@@ -65,7 +66,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function lte($x, $y, $withParam = false)
+    public function lte($x, $y, bool $withParam = false)
     {
         return $this->expr->lte($x, $withParam ? ':' . $y : $y);
     }
@@ -73,7 +74,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function gt($x, $y, $withParam = false)
+    public function gt($x, $y, bool $withParam = false)
     {
         return $this->expr->gt($x, $withParam ? ':' . $y : $y);
     }
@@ -81,7 +82,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function gte($x, $y, $withParam = false)
+    public function gte($x, $y, bool $withParam = false)
     {
         return $this->expr->gte($x, $withParam ? ':' . $y : $y);
     }
@@ -97,7 +98,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function in($x, $y, $withParam = false)
+    public function in(string $x, $y, bool $withParam = false)
     {
         return $this->expr->in($x, $withParam ? ':' . $y : $y);
     }
@@ -105,7 +106,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function notIn($x, $y, $withParam = false)
+    public function notIn(string $x, $y, bool $withParam = false)
     {
         return $this->expr->notIn($x, $withParam ? ':' . $y : $y);
     }
@@ -113,7 +114,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function isNull($x)
+    public function isNull(string $x)
     {
         return $this->expr->isNull($x);
     }
@@ -121,7 +122,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function isNotNull($x)
+    public function isNotNull(string $x)
     {
         return $this->expr->isNotNull($x);
     }
@@ -129,7 +130,7 @@ class OrmExpressionBuilder implements ExpressionBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function like($x, $y, $withParam = false)
+    public function like(string $x, $y, bool $withParam = false)
     {
         return $this->expr->like($x, $withParam ? ':' . $y : $y);
     }

@@ -40,7 +40,7 @@ class FamilyVariantFilter extends AbstractFieldFilter implements FieldFilterInte
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
+    public function addFieldFilter(string $field, string $operator, $value, string $locale = null, string $channel = null, array $options = []): FieldFilterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
@@ -98,7 +98,7 @@ class FamilyVariantFilter extends AbstractFieldFilter implements FieldFilterInte
      *
      * @throws ObjectNotFoundException
      */
-    protected function checkValue($field, $values)
+    protected function checkValue(string $field, $values): void
     {
         FieldFilterHelper::checkArray($field, $values, static::class);
 

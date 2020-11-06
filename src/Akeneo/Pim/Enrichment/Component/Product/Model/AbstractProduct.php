@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
@@ -106,7 +107,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId($id): ProductInterface
     {
         $this->id = $id;
 
@@ -116,7 +117,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreated()
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
@@ -124,7 +125,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created): TimestampableInterface
     {
         $this->created = $created;
 
@@ -134,7 +135,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getUpdated()
+    public function getUpdated(): \DateTime
     {
         return $this->updated;
     }
@@ -142,7 +143,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated): TimestampableInterface
     {
         $this->updated = $updated;
 
@@ -152,7 +153,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addValue(ValueInterface $value)
+    public function addValue(ValueInterface $value): EntityWithValuesInterface
     {
         $this->values->add($value);
 
@@ -162,7 +163,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeValue(ValueInterface $value)
+    public function removeValue(ValueInterface $value): EntityWithValuesInterface
     {
         $this->values->remove($value);
 
@@ -180,7 +181,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
+    public function getValue(string $attributeCode, string $localeCode = null, string $scopeCode = null): ValueInterface
     {
         $value = $this->values->getByCodes($attributeCode, $scopeCode, $localeCode);
         if (null !== $value) {
@@ -197,7 +198,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getRawValues()
+    public function getRawValues(): array
     {
         return $this->rawValues;
     }
@@ -205,7 +206,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setRawValues(array $rawValues)
+    public function setRawValues(array $rawValues): EntityWithValuesInterface
     {
         $this->rawValues = $rawValues;
 
@@ -231,7 +232,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setFamily(FamilyInterface $family = null)
+    public function setFamily(FamilyInterface $family = null): ProductInterface
     {
         $this->family = $family;
 
@@ -241,15 +242,15 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getFamilyId()
+    public function getFamilyId(): int
     {
-        return $this->family ? $this->family->getId() : null;
+        return $this->family !== null ? $this->family->getId() : null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
@@ -267,7 +268,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues(): WriteValueCollection
+    public function getValues(): \Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection
     {
         if (!$this->isVariant()) {
             return $this->values;
@@ -281,7 +282,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(WriteValueCollection $values)
+    public function setValues(WriteValueCollection $values): EntityWithValuesInterface
     {
         $this->values = $values;
 
@@ -291,7 +292,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getImage()
+    public function getImage(): ?ValueInterface
     {
         if (null === $this->family) {
             return null;
@@ -309,7 +310,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel($locale = null, $scope = null)
+    public function getLabel(string $locale = null, string $scope = null): string
     {
         $identifier = (string) $this->getIdentifier();
 
@@ -343,7 +344,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getCategories()
+    public function getCategories(): ArrayCollection
     {
         if (!$this->isVariant()) {
             return $this->categories;
@@ -357,7 +358,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addCategory(BaseCategoryInterface $category)
+    public function addCategory(BaseCategoryInterface $category): self
     {
         if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
             $this->categories->add($category);
@@ -377,7 +378,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeCategory(BaseCategoryInterface $category)
+    public function removeCategory(BaseCategoryInterface $category): self
     {
         $this->categories->removeElement($category);
 
@@ -387,7 +388,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getCategoryCodes()
+    public function getCategoryCodes(): array
     {
         $codes = [];
         foreach ($this->getCategories() as $category) {
@@ -401,7 +402,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getGroupCodes()
+    public function getGroupCodes(): array
     {
         $codes = [];
         foreach ($this->getGroups() as $group) {
@@ -423,7 +424,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
@@ -431,7 +432,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): ProductInterface
     {
         $this->enabled = $enabled;
 
@@ -441,7 +442,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInFamily(AttributeInterface $attribute)
+    public function hasAttributeInFamily(AttributeInterface $attribute): bool
     {
         return null !== $this->family && $this->family->getAttributes()->contains($attribute);
     }
@@ -449,35 +450,26 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function isAttributeRemovable(AttributeInterface $attribute)
+    public function isAttributeRemovable(AttributeInterface $attribute): bool
     {
         if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
             return false;
         }
-
-        if ($this->hasAttributeInFamily($attribute)) {
-            return false;
-        }
-
-        return true;
+        return !$this->hasAttributeInFamily($attribute);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isAttributeEditable(AttributeInterface $attribute)
+    public function isAttributeEditable(AttributeInterface $attribute): bool
     {
-        if (!$this->hasAttributeInFamily($attribute)) {
-            return false;
-        }
-
-        return true;
+        return $this->hasAttributeInFamily($attribute);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getGroups()
+    public function getGroups(): \Doctrine\Common\Collections\Collection
     {
         return $this->groups;
     }
@@ -485,7 +477,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addGroup(GroupInterface $group)
+    public function addGroup(GroupInterface $group): ProductInterface
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -498,7 +490,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeGroup(GroupInterface $group)
+    public function removeGroup(GroupInterface $group): ProductInterface
     {
         $this->groups->removeElement($group);
 
@@ -549,7 +541,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociations()
+    public function getAssociations(): \Doctrine\Common\Collections\Collection
     {
         return $this->associations;
     }
@@ -557,12 +549,11 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllAssociations()
+    public function getAllAssociations(): \Doctrine\Common\Collections\Collection
     {
         $associations = new ArrayCollection($this->associations->toArray());
-        $allAssociations = $this->getAncestryAssociations($this, $associations);
 
-        return $allAssociations;
+        return $this->getAncestryAssociations($this, $associations);
     }
 
     /**
@@ -576,7 +567,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
+    public function getAssociationForTypeCode(string $typeCode): ?AssociationInterface
     {
         foreach ($this->associations as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
@@ -600,25 +591,20 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->getIdentifier();
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getUniqueData()
+    public function getUniqueData(): ArrayCollection
     {
         return $this->uniqueData;
     }
 
     /**
      * @param ProductUniqueDataInterface $uniqueData
-     *
-     * @return ProductInterface
      */
-    public function addUniqueData(ProductUniqueDataInterface $uniqueData)
+    public function addUniqueData(ProductUniqueDataInterface $uniqueData): ProductInterface
     {
         $this->uniqueData->add($uniqueData);
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator;
 
+use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationParametersValidator;
@@ -21,7 +22,7 @@ final class ValidatePagination
     private $paginationParametersValidator;
 
     public function __construct(
-        PaginationParametersValidator $paginationParametersValidator
+        ParameterValidatorInterface $paginationParametersValidator
     ) {
         $this->paginationParametersValidator = $paginationParametersValidator;
     }

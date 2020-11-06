@@ -60,8 +60,5 @@ abstract class AbstractReader implements ItemReaderInterface, InitializableInter
         $this->isExecuted = false;
     }
 
-    /**
-     * @return \ArrayIterator
-     */
-    abstract protected function getResults();
+    abstract protected function getResults(): \ArrayIterator;
 }

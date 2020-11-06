@@ -18,7 +18,7 @@ class Datagrid implements DatagridInterface
     /** @var Acceptor */
     protected $acceptor;
 
-    public function __construct($name, Acceptor $acceptor)
+    public function __construct(string $name, Acceptor $acceptor)
     {
         $this->name = $name;
         $this->setAcceptor($acceptor);
@@ -27,7 +27,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -35,7 +35,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function getData()
+    public function getData(): ResultsIterableObject
     {
         /** @var array $rows */
         $rows = $this->getAcceptedDatasource()->getResults();
@@ -49,7 +49,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function getMetadata()
+    public function getMetadata(): MetadataIterableObject
     {
         $data = MetadataIterableObject::createNamed($this->getName(), []);
         $this->acceptor->acceptMetadata($data);
@@ -60,7 +60,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function setDatasource(DatasourceInterface $source)
+    public function setDatasource(DatasourceInterface $source): DatagridInterface
     {
         $this->datasource = $source;
 
@@ -70,7 +70,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function getDatasource()
+    public function getDatasource(): \Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface
     {
         return $this->datasource;
     }
@@ -78,7 +78,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function getAcceptedDatasource()
+    public function getAcceptedDatasource(): \Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface
     {
         $this->acceptor->acceptDatasource($this->getDatasource());
 
@@ -88,7 +88,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function getAcceptor()
+    public function getAcceptor(): \Oro\Bundle\DataGridBundle\Extension\Acceptor
     {
         return $this->acceptor;
     }
@@ -96,7 +96,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function setAcceptor(Acceptor $acceptor)
+    public function setAcceptor(Acceptor $acceptor): DatagridInterface
     {
         $this->acceptor = $acceptor;
 

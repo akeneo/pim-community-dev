@@ -24,7 +24,7 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface, ItemPro
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): self
     {
         $this->stepExecution = $stepExecution;
 
@@ -63,7 +63,7 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface, ItemPro
     /**
      * @return array|null
      */
-    protected function getConfiguredActions()
+    protected function getConfiguredActions(): ?array
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 

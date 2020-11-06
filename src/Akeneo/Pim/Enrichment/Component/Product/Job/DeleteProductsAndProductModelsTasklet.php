@@ -202,9 +202,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     {
         return count($products) + $this->countVariantProducts->forProductModelCodes(
             array_map(
-                function (ProductModelInterface $productModel) {
-                    return $productModel->getCode();
-                },
+                fn(ProductModelInterface $productModel) => $productModel->getCode(),
                 $productModels
             )
         );
@@ -219,9 +217,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     {
         return $this->countProductModelsAndChildrenProductModels->forProductModelCodes(
             array_map(
-                function (ProductModelInterface $productModel) {
-                    return $productModel->getCode();
-                },
+                fn(ProductModelInterface $productModel) => $productModel->getCode(),
                 $productModels
             )
         );
@@ -247,9 +243,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     private function filterProducts(array $entities): array
     {
         return array_values(
-            array_filter($entities, function ($item) {
-                return $item instanceof ProductInterface;
-            })
+            array_filter($entities, fn($item) => $item instanceof ProductInterface)
         );
     }
 
@@ -263,9 +257,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
     private function filterProductModels(array $entities): array
     {
         return array_values(
-            array_filter($entities, function ($item) {
-                return $item instanceof ProductModelInterface;
-            })
+            array_filter($entities, fn($item) => $item instanceof ProductModelInterface)
         );
     }
 }

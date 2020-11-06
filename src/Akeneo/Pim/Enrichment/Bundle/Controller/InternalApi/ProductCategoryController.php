@@ -49,10 +49,8 @@ class ProductCategoryController
      * @param string $id
      *
      * @AclAncestor("pim_enrich_product_categories_view")
-     *
-     * @return JsonResponse
      */
-    public function listAction($id)
+    public function listAction(string $id): JsonResponse
     {
         $product = $this->findProductOr404($id);
         $trees = $this->productCategoryRepository->getItemCountByTree($product);
@@ -69,10 +67,8 @@ class ProductCategoryController
      * @param string $id the product id
      *
      * @throws NotFoundHttpException
-     *
-     * @return ProductInterface
      */
-    protected function findProductOr404($id)
+    protected function findProductOr404(string $id): object
     {
         $product = $this->productRepository->find($id);
 
@@ -87,10 +83,8 @@ class ProductCategoryController
 
     /**
      * @param array $trees
-     *
-     * @return array
      */
-    protected function buildTrees(array $trees)
+    protected function buildTrees(array $trees): array
     {
         $result = [];
 
@@ -112,10 +106,8 @@ class ProductCategoryController
 
     /**
      * @param ProductInterface $product
-     *
-     * @return array
      */
-    protected function buildCategories(ProductInterface $product)
+    protected function buildCategories(ProductInterface $product): array
     {
         $result = [];
 

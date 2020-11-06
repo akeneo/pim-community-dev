@@ -17,7 +17,7 @@ class ColumnsMapper
      *
      * @return array mapped row
      */
-    public function map(array $row, array $mapping)
+    public function map(array $row, array $mapping): array
     {
         if (empty($mapping)) {
             return $row;

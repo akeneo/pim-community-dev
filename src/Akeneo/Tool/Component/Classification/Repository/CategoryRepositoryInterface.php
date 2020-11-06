@@ -28,7 +28,7 @@ interface CategoryRepositoryInterface extends
      *
      * @return Collection of categories
      */
-    public function getCategoriesByIds(array $categoryIds = []);
+    public function getCategoriesByIds(array $categoryIds = []): \Doctrine\Common\Collections\Collection;
 
     /**
      * Get a collection of categories based on the array of code provided
@@ -37,16 +37,14 @@ interface CategoryRepositoryInterface extends
      *
      * @return Collection of categories
      */
-    public function getCategoriesByCodes(array $categoryCodes = []);
+    public function getCategoriesByCodes(array $categoryCodes = []): \Doctrine\Common\Collections\Collection;
 
     /**
      * Get a tree filled with children and their parents
      *
      * @param array $parentsIds parent ids
-     *
-     * @return array
      */
-    public function getTreeFromParents(array $parentsIds);
+    public function getTreeFromParents(array $parentsIds): array;
 
     /**
      * Shortcut to get all children ids
@@ -56,7 +54,7 @@ interface CategoryRepositoryInterface extends
      *
      * @return integer[]
      */
-    public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false);
+    public function getAllChildrenIds(CategoryInterface $parent, bool $includeNode = false): array;
 
     /**
      * Shortcut to get all children codes
@@ -66,33 +64,27 @@ interface CategoryRepositoryInterface extends
      *
      * @return string[]
      */
-    public function getAllChildrenCodes(CategoryInterface $parent, $includeNode = false);
+    public function getAllChildrenCodes(CategoryInterface $parent, bool $includeNode = false): array;
 
     /**
      * Return the categories IDs from their codes. The categories are not hydrated.
      *
      * @param array $codes
-     *
-     * @return array
      */
-    public function getCategoryIdsByCodes(array $codes);
+    public function getCategoryIdsByCodes(array $codes): array;
 
     /**
      * Get children from a parent id
      *
      * @param int $parentId
-     *
-     * @return ArrayCollection
      */
-    public function getChildrenByParentId($parentId);
+    public function getChildrenByParentId(int $parentId): ArrayCollection;
 
     /**
      * @param CategoryInterface $parent
      * @param array             $grantedCategoryIds
-     *
-     * @return array
      */
-    public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = []);
+    public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = []): array;
 
     /**
      * Get children tree from a parent id.
@@ -102,10 +94,8 @@ interface CategoryRepositoryInterface extends
      *
      * @param int  $parentId
      * @param bool $selectNodeId
-     *
-     * @return array
      */
-    public function getChildrenTreeByParentId($parentId, $selectNodeId = false, array $grantedCategoryIds = []);
+    public function getChildrenTreeByParentId(int $parentId, bool $selectNodeId = false, array $grantedCategoryIds = []): array;
 
     /**
      * Based on the Gedmo\Tree\RepositoryUtils\buildTreeArray, but with
@@ -114,10 +104,8 @@ interface CategoryRepositoryInterface extends
      * nodes of depth D+1 to the last node of depth D.)
      *
      * @param array $nodes Must be sorted by increasing depth
-     *
-     * @return array
      */
-    public function buildTreeNode(array $nodes);
+    public function buildTreeNode(array $nodes): array;
 
     /**
      * Get the Tree path of Nodes by given $node
@@ -126,38 +114,29 @@ interface CategoryRepositoryInterface extends
      *
      * @return array - list of Nodes in path
      */
-    public function getPath($node);
+    public function getPath(object $node): array;
 
-    /**
-     * @return array
-     */
-    public function getTrees();
+    public function getTrees(): array;
 
     /**
      * Get trees of granted categories
      *
      * @param array $grantedCategoryIds
-     *
-     * @return array
      */
-    public function getGrantedTrees(array $grantedCategoryIds = []);
+    public function getGrantedTrees(array $grantedCategoryIds = []): array;
 
     /**
      * Check if a parent node is an ancestor of a child node
      *
      * @param CategoryInterface $parentNode
      * @param CategoryInterface $childNode
-     *
-     * @return bool
      */
-    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode);
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode): bool;
 
     /**
      * Return the categories sorted by tree and ordered
-     *
-     * @return array
      */
-    public function getOrderedAndSortedByTreeCategories();
+    public function getOrderedAndSortedByTreeCategories(): array;
 
     /**
      * Provides a tree filled up to the categories provided, with all their ancestors
@@ -169,7 +148,7 @@ interface CategoryRepositoryInterface extends
      *
      * @return array Multi-dimensional array representing the tree
      */
-    public function getFilledTree(CategoryInterface $root, Collection $categories);
+    public function getFilledTree(CategoryInterface $root, Collection $categories): array;
 
     /**
      * @see Gedmo\Tree\Entity\Repository

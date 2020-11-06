@@ -88,19 +88,15 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
      */
     private function filterEmptyPricesAndMeasurements(string $attributeType, $data)
     {
-        if (AttributeTypes::METRIC === $attributeType) {
-            if (is_array($data) && array_key_exists('amount', $data) && null === $data['amount']) {
-                return null;
-            }
+        if (AttributeTypes::METRIC === $attributeType && (is_array($data) && array_key_exists('amount', $data) && null === $data['amount'])) {
+            return null;
         }
 
-        if (AttributeTypes::PRICE_COLLECTION === $attributeType) {
-            if (is_array($data)) {
-                foreach ($data as $index => $price) {
-                    // if the "amount" key does not exist, we don't filter it to let the ValueFactory throw an exception
-                    if (is_array($price) && array_key_exists('amount', $price) && null === $price['amount']) {
-                        unset($data[$index]);
-                    }
+        if (AttributeTypes::PRICE_COLLECTION === $attributeType && is_array($data)) {
+            foreach ($data as $index => $price) {
+                // if the "amount" key does not exist, we don't filter it to let the ValueFactory throw an exception
+                if (is_array($price) && array_key_exists('amount', $price) && null === $price['amount']) {
+                    unset($data[$index]);
                 }
             }
         }

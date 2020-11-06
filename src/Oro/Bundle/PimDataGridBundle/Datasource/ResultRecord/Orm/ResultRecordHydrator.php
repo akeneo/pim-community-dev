@@ -17,7 +17,7 @@ class ResultRecordHydrator implements HydratorInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate($qb, array $options = [])
+    public function hydrate($qb, array $options = []): array
     {
         $records = [];
         foreach ($qb->getQuery()->execute() as $record) {

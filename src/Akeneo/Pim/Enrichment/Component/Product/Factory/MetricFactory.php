@@ -35,7 +35,7 @@ class MetricFactory
      * @param MeasureManager   $measureManager
      * @param string           $metricClass
      */
-    public function __construct(MeasureConverter $measureConverter, MeasureManager $measureManager, $metricClass)
+    public function __construct(MeasureConverter $measureConverter, MeasureManager $measureManager, string $metricClass)
     {
         $this->measureConverter = $measureConverter;
         $this->measureManager = $measureManager;
@@ -53,10 +53,8 @@ class MetricFactory
      * @param string $family
      * @param string $unit
      * @param double $data
-     *
-     * @return MetricInterface
      */
-    public function createMetric($family, $unit, $data)
+    public function createMetric(string $family, string $unit, float $data): MetricInterface
     {
         try {
             $baseData = null !== $data ?
@@ -68,19 +66,15 @@ class MetricFactory
 
         $baseUnit = $this->getBaseUnit($family);
 
-        $metric = new $this->metricClass($family, $unit, $data, $baseUnit, $baseData);
-
-        return $metric;
+        return new $this->metricClass($family, $unit, $data, $baseUnit, $baseData);
     }
 
     /**
      * Returns the standard unit of a metric family.
      *
      * @param string $family
-     *
-     * @return string
      */
-    protected function getBaseUnit($family)
+    protected function getBaseUnit(string $family): string
     {
         return $this->measureManager->getStandardUnitForFamily($family);
     }

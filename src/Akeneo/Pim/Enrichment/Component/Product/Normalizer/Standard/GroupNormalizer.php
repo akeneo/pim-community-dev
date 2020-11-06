@@ -27,7 +27,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /**
      * {@inheritdoc}
      */
-    public function normalize($group, $format = null, array $context = [])
+    public function normalize($group, $format = null, array $context = []): array
     {
         return [
             'code'   => $group->getCode(),
@@ -39,7 +39,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof GroupInterface && 'standard' === $format;
     }

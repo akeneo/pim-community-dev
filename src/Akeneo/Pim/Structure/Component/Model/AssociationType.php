@@ -2,6 +2,9 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -54,7 +57,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -62,7 +65,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId(int $id): AssociationTypeInterface
     {
         $this->id = $id;
 
@@ -72,7 +75,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -80,7 +83,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): AssociationTypeInterface
     {
         $this->code = $code;
 
@@ -90,7 +93,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreated()
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
@@ -98,7 +101,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created): TimestampableInterface
     {
         $this->created = $created;
 
@@ -108,7 +111,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getUpdated()
+    public function getUpdated(): \DateTime
     {
         return $this->updated;
     }
@@ -116,7 +119,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated): TimestampableInterface
     {
         $this->updated = $updated;
 
@@ -126,7 +129,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 
@@ -136,7 +139,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->translations;
     }
@@ -144,7 +147,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null): ?AssociationTypeTranslationInterface
+    public function getTranslation(?string $locale = null): AbstractTranslation
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {
@@ -168,7 +171,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): TranslatableInterface
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -180,7 +183,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): TranslatableInterface
     {
         $this->translations->removeElement($translation);
 
@@ -190,7 +193,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslationFQCN()
+    public function getTranslationFQCN(): string
     {
         return AssociationTypeTranslation::class;
     }
@@ -198,9 +201,9 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
-        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+        $translated = $this->getTranslation() !== null ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
@@ -208,7 +211,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): AssociationTypeInterface
     {
         $this->getTranslation()->setLabel($label);
 
@@ -226,7 +229,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->code;
     }

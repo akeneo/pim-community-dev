@@ -20,44 +20,36 @@ class AclPrivilegeIdentity
      * @param string|null $id
      * @param string|null $name
      */
-    public function __construct($id = null, $name = null)
+    public function __construct(?string $id = null, ?string $name = null)
     {
         $this->id = $id;
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
      * @param  string               $id
-     * @return AclPrivilegeIdentity
      */
-    public function setId($id)
+    public function setId(string $id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * @param  string               $name
-     * @return AclPrivilegeIdentity
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 

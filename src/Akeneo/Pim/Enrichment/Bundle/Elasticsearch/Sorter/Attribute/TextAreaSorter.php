@@ -14,7 +14,7 @@ class TextAreaSorter extends AbstractAttributeSorter
     /**
      * {@inheritdoc}
      */
-    protected function getAttributePathSuffix()
+    protected function getAttributePathSuffix(): string
     {
         return 'preprocessed';
     }

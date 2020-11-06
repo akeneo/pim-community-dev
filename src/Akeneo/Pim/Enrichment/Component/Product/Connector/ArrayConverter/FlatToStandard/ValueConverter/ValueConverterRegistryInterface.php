@@ -15,15 +15,11 @@ interface ValueConverterRegistryInterface
      * Register a converter.
      *
      * @param ValueConverterInterface $converter
-     *
-     * @return ValueConverterRegistry
      */
-    public function register(ValueConverterInterface $converter);
+    public function register(ValueConverterInterface $converter): ValueConverterRegistry;
 
     /**
      * @param string $attributeType
-     *
-     * @return ValueConverterInterface|null
      */
-    public function getConverter($attributeType);
+    public function getConverter(string $attributeType): ?\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface;
 }

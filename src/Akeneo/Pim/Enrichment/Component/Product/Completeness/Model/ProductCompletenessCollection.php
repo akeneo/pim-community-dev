@@ -29,7 +29,7 @@ final class ProductCompletenessCollection implements \IteratorAggregate, \Counta
         return $this->productId;
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->completenesses);
     }

@@ -27,7 +27,7 @@ class RegisterFlatToStandardConverterPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->registerConverters($container);
     }
@@ -35,7 +35,7 @@ class RegisterFlatToStandardConverterPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function registerConverters(ContainerBuilder $container)
+    protected function registerConverters(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(static::CONVERTER_REGISTRY)) {
             return;

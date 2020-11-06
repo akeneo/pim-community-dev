@@ -22,7 +22,7 @@ final class GetAllFamilyCodesQuery implements GetAllFamilyCodesQueryInterface
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -35,8 +35,6 @@ SQL;
 
         $statement = $this->connection->executeQuery($query);
 
-        return array_map(function ($row) {
-            return new FamilyCode($row['code']);
-        }, $statement->fetchAll(\PDO::FETCH_ASSOC));
+        return array_map(fn($row) => new FamilyCode($row['code']), $statement->fetchAll(\PDO::FETCH_ASSOC));
     }
 }

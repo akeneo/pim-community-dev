@@ -21,7 +21,7 @@ class ArrayReader implements ItemReaderInterface
      *
      * @return $this
      */
-    public function setItems(array $items)
+    public function setItems(array $items): self
     {
         $this->items = $items;
 

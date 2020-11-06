@@ -35,10 +35,8 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
      * Get the file path in which to write the data
      *
      * @param array $placeholders
-     *
-     * @return string
      */
-    public function getPath(array $placeholders = [])
+    public function getPath(array $placeholders = []): string
     {
         $parameters = $this->stepExecution->getJobParameters();
         $filePath = $parameters->get('filePath');
@@ -72,10 +70,8 @@ abstract class AbstractFileWriter implements ItemWriterInterface, StepExecutionA
      * Replace [^A-Za-z0-9\.] from a string by '_'
      *
      * @param string $value
-     *
-     * @return string
      */
-    protected function sanitize($value)
+    protected function sanitize(string $value): ?string
     {
         return preg_replace('#[^A-Za-z0-9\.]#', '_', $value);
     }

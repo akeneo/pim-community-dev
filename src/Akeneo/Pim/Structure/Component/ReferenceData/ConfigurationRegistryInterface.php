@@ -16,42 +16,32 @@ interface ConfigurationRegistryInterface
     /**
      * @param ReferenceDataConfigurationInterface $configuration
      * @param string                              $name
-     *
-     * @return ConfigurationRegistryInterface
      */
-    public function register(ReferenceDataConfigurationInterface $configuration, $name);
+    public function register(ReferenceDataConfigurationInterface $configuration, string $name): \Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 
     /**
      * @param array  $configuration
      * @param string $name
-     *
-     * @return ConfigurationRegistryInterface
      */
-    public function registerRaw(array $configuration, $name);
+    public function registerRaw(array $configuration, string $name): \Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 
     /**
      * @param string $name
-     *
-     * @return ReferenceDataConfigurationInterface
      */
-    public function get($name);
+    public function get(string $name): \Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 
     /**
      * @param string $name
-     *
-     * @return bool
      */
-    public function has($name);
+    public function has(string $name): bool;
 
     /**
      * @return ReferenceDataConfigurationInterface[]
      */
-    public function all();
+    public function all(): array;
 
     /**
      * @param string $name
-     *
-     * @return ConfigurationRegistryInterface
      */
-    public function unregister($name);
+    public function unregister(string $name): \Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 }

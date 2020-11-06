@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -33,7 +34,7 @@ class EntityWithValuesFieldFilter implements FilterInterface
      */
     public function __construct(
         NormalizerInterface $normalizer,
-        ComparatorRegistry $comparatorRegistry,
+        ComparatorRegistryInterface $comparatorRegistry,
         array $entityFields
     ) {
         $this->normalizer = $normalizer;

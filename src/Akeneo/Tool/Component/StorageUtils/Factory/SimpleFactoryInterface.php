@@ -11,8 +11,5 @@ namespace Akeneo\Tool\Component\StorageUtils\Factory;
  */
 interface SimpleFactoryInterface
 {
-    /**
-     * @return object
-     */
-    public function create();
+    public function create(): object;
 }

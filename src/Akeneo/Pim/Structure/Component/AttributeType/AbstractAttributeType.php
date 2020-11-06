@@ -24,7 +24,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * @param string $backendType the backend type
      */
-    public function __construct($backendType)
+    public function __construct(string $backendType)
     {
         $this->backendType = $backendType;
     }
@@ -32,7 +32,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getBackendType()
+    public function getBackendType(): string
     {
         return $this->backendType;
     }
@@ -40,7 +40,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function isUnique()
+    public function isUnique(): bool
     {
         return false;
     }

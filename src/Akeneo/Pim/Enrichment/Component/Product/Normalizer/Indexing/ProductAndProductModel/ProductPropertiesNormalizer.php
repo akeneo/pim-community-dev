@@ -68,7 +68,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
      *
      * @var ProductInterface $product
      */
-    public function normalize($product, $format = null, array $context = [])
+    public function normalize($product, $format = null, array $context = []): array
     {
         if (!$this->normalizer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
@@ -172,7 +172,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface
             && ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
@@ -199,13 +199,11 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
             $ancestorsLabels = $this->getAncestorsLabels($product);
         }
 
-        $ancestors = [
+        return [
             'ids' => $ancestorsIds,
             'codes' => $ancestorsCodes,
             'labels' => $ancestorsLabels,
         ];
-
-        return $ancestors;
     }
 
     /**
@@ -226,10 +224,8 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
 
     /**
      * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     *
-     * @return array
      */
-    private function getAncestorsCodes(EntityWithFamilyVariantInterface $entityWithFamilyVariant)
+    private function getAncestorsCodes(EntityWithFamilyVariantInterface $entityWithFamilyVariant): array
     {
         $ancestorsCodes = [];
         while (null !== $parent = $entityWithFamilyVariant->getParent()) {

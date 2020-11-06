@@ -22,15 +22,11 @@ interface PermissionGrantingStrategyContextInterface
 
     /**
      * Gets the security token from a context
-     *
-     * @return TokenInterface
      */
-    public function getSecurityToken();
+    public function getSecurityToken(): TokenInterface;
 
     /**
      * Gets the ACL extension responsible to process the current object
-     *
-     * @return AclExtensionInterface
      */
-    public function getAclExtension();
+    public function getAclExtension(): AclExtensionInterface;
 }

@@ -22,7 +22,7 @@ final class HasUpToDateProductModelEvaluationQuery implements HasUpToDateEvaluat
     /** @var Connection */
     private $dbConnection;
 
-    public function __construct(Connection $dbConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
     }
@@ -40,9 +40,7 @@ final class HasUpToDateProductModelEvaluationQuery implements HasUpToDateEvaluat
             return [];
         }
 
-        $productIds = array_map(function (ProductId $productId) {
-            return $productId->toInt();
-        }, $productIds);
+        $productIds = array_map(fn(ProductId $productId) => $productId->toInt(), $productIds);
 
         $query = <<<SQL
 SELECT product_model.id
@@ -69,8 +67,6 @@ SQL;
             return [];
         }
 
-        return array_map(function ($resultRow) {
-            return new ProductId(intval($resultRow['id']));
-        }, $result);
+        return array_map(fn($resultRow) => new ProductId((int) $resultRow['id']), $result);
     }
 }

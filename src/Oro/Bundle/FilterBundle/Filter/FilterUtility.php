@@ -17,12 +17,12 @@ class FilterUtility
     const DATA_NAME_KEY = 'data_name';
     const FORM_OPTIONS_KEY = 'options';
 
-    public function getParamMap()
+    public function getParamMap(): array
     {
         return [self::FRONTEND_TYPE_KEY => self::TYPE_KEY];
     }
 
-    public function getExcludeParams()
+    public function getExcludeParams(): array
     {
         return [self::DATA_NAME_KEY, self::FORM_OPTIONS_KEY];
     }
@@ -32,7 +32,7 @@ class FilterUtility
      *
      * @param mixed $value
      */
-    public function applyFilter(FilterDatasourceAdapterInterface $ds, string $field, string $operator, $value)
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, string $field, string $operator, $value): void
     {
         throw new \RuntimeException('Not implemented. Use your own FilterUtility to implement this method.');
     }

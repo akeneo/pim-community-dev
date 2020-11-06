@@ -84,9 +84,7 @@ final class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTre
 
         return \array_filter(
             $jobInstances,
-            function (JobInstance $jobInstance) use ($channelCode) {
-                return $jobInstance->getRawParameters()['filters']['structure']['scope'] === $channelCode;
-            }
+            fn(JobInstance $jobInstance) => $jobInstance->getRawParameters()['filters']['structure']['scope'] === $channelCode
         );
     }
 

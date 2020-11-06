@@ -25,7 +25,7 @@ class IdentifierResultCursor implements CursorInterface, ResultAwareInterface
     /** @var ElasticsearchResult */
     private $result;
 
-    public function __construct(array $identifiers, int $totalCount, ElasticsearchResult $result)
+    public function __construct(array $identifiers, int $totalCount, ResultInterface $result)
     {
         $this->identifiers = new \ArrayIterator($identifiers);
         $this->totalCount = $totalCount;
@@ -35,7 +35,7 @@ class IdentifierResultCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return $this->totalCount;
     }
@@ -59,7 +59,7 @@ class IdentifierResultCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->identifiers->next();
     }
@@ -67,7 +67,7 @@ class IdentifierResultCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->identifiers->rewind();
     }
@@ -75,7 +75,7 @@ class IdentifierResultCursor implements CursorInterface, ResultAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->identifiers->valid();
     }

@@ -23,7 +23,7 @@ interface AssociationTypeRepositoryInterface extends IdentifiableObjectRepositor
      *
      * @return AssociationTypeInterface[]
      */
-    public function findMissingAssociationTypes(EntityWithAssociationsInterface $entity);
+    public function findMissingAssociationTypes(EntityWithAssociationsInterface $entity): array;
 
     /**
      * Return the number of association types

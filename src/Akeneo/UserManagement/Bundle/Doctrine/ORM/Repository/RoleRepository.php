@@ -21,7 +21,7 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['role'];
     }
@@ -29,7 +29,7 @@ class RoleRepository extends EntityRepository implements RoleRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['role' => $code]);
     }

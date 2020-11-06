@@ -107,8 +107,6 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
             $values = $this->filter->filterCollection($values, $filterType, $context);
         }
 
-        $data = $this->standardNormalizer->normalize($values, $format, $context);
-
-        return $data;
+        return $this->standardNormalizer->normalize($values, $format, $context);
     }
 }

@@ -49,7 +49,7 @@ final class OnGoingFilteredRawValues
         $this->nonFilteredRawValuesCollectionIndexedByType = $nonFilteredRawValuesCollectionByType;
     }
 
-    public static function fromNonFilteredValuesCollectionIndexedByType(array $nonFilteredValuesCollectionIndexedByType)
+    public static function fromNonFilteredValuesCollectionIndexedByType(array $nonFilteredValuesCollectionIndexedByType): OnGoingFilteredRawValues
     {
         return new self([], $nonFilteredValuesCollectionIndexedByType);
     }
@@ -59,7 +59,7 @@ final class OnGoingFilteredRawValues
         $result = [];
 
         foreach ($attributeTypes as $attributeType) {
-            $result = $result + ($this->nonFilteredRawValuesCollectionIndexedByType[$attributeType] ?? []);
+            $result += $this->nonFilteredRawValuesCollectionIndexedByType[$attributeType] ?? [];
         }
 
         return $result;

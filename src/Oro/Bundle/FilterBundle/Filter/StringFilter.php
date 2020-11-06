@@ -12,7 +12,7 @@ class StringFilter extends AbstractFilter
     /**
      * {@inheritDoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -25,14 +25,12 @@ class StringFilter extends AbstractFilter
         switch ($operator) {
             case Operators::IS_EMPTY:
                 $expression = $ds->expr()->orX(
-                    $ds->expr()->isNull($this->get(FilterUtility::DATA_NAME_KEY)),
-                    $ds->expr()->eq($this->get(FilterUtility::DATA_NAME_KEY), $parameterName, true)
+                    $ds->expr()->isNull($this->get(FilterUtility::DATA_NAME_KEY))
                 );
                 break;
             case Operators::IS_NOT_EMPTY:
                 $expression = $ds->expr()->andX(
-                    $ds->expr()->isNotNull($this->get(FilterUtility::DATA_NAME_KEY)),
-                    $ds->expr()->neq($this->get(FilterUtility::DATA_NAME_KEY), $parameterName, true)
+                    $ds->expr()->isNotNull($this->get(FilterUtility::DATA_NAME_KEY))
                 );
                 break;
             default:
@@ -53,7 +51,7 @@ class StringFilter extends AbstractFilter
     /**
      * {@inheritDoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return TextFilterType::class;
     }
@@ -89,10 +87,8 @@ class StringFilter extends AbstractFilter
      * Get operator string
      *
      * @param int $type
-     *
-     * @return string
      */
-    protected function getOperator($type)
+    protected function getOperator(int $type): string
     {
         $operatorTypes = [
             TextFilterType::TYPE_CONTAINS     => Operators::IS_LIKE,
@@ -112,10 +108,8 @@ class StringFilter extends AbstractFilter
      * Return value format depending on comparison type
      *
      * @param $comparisonType
-     *
-     * @return string
      */
-    protected function getFormatByComparisonType($comparisonType)
+    protected function getFormatByComparisonType($comparisonType): string
     {
         // for other than listed comparison types - use default format
         switch ($comparisonType) {

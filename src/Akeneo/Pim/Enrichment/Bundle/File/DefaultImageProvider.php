@@ -46,7 +46,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getImageUrl($fileType, $filter)
+    public function getImageUrl(string $fileType, string $filter): string
     {
         $fileKey = sprintf('%s_default_image', $fileType);
         if (!$this->cacheManager->isStored($fileKey, $filter)) {
@@ -67,10 +67,8 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      * @param string $fileType
      *
      * @throws \InvalidArgumentException
-     *
-     * @return Binary
      */
-    protected function getImageBinary($fileType)
+    protected function getImageBinary(string $fileType): Binary
     {
         if (isset($this->defaultImages[$fileType])) {
             $image = $this->defaultImages[$fileType];
@@ -86,7 +84,7 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      *
      * @param OptionsResolver $resolver
      */
-    protected function configureDefaultImagesOptions(OptionsResolver $resolver)
+    protected function configureDefaultImagesOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['path', 'mime_type', 'extension']);
     }

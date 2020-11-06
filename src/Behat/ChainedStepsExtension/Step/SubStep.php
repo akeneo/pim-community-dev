@@ -41,17 +41,15 @@ abstract class SubStep extends StepNode
      *
      * @param string $language
      */
-    public function setLanguage($language)
+    public function setLanguage(string $language)
     {
         $this->language = $language;
     }
 
     /**
      * Returns language.
-     *
-     * @return string
      */
-    public function getLanguage()
+    public function getLanguage(): string
     {
         return $this->language;
     }

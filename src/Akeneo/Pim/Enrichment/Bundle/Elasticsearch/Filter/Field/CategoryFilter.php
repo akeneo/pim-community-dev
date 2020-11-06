@@ -39,16 +39,14 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
+    public function addFieldFilter(string $field, string $operator, $value, string $locale = null, string $channel = null, array $options = []): FieldFilterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
 
-        if ($operator !== Operators::UNCLASSIFIED) {
-            if (!isset($options['type_checking']) || $options['type_checking']) {
-                $this->checkValue($field, $value);
-            }
+        if ($operator !== Operators::UNCLASSIFIED && (!isset($options['type_checking']) || $options['type_checking'])) {
+            $this->checkValue($field, $value);
         }
 
         switch ($operator) {
@@ -138,7 +136,7 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
      * @param mixed  $values
      * @throws ObjectNotFoundException
      */
-    protected function checkValue($field, $values): void
+    protected function checkValue(string $field, $values): void
     {
         FieldFilterHelper::checkArray($field, $values, static::class);
 
@@ -160,7 +158,7 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
      *
      * @return integer[]
      */
-    protected function getAllChildrenCodes(array $categoryCodes)
+    protected function getAllChildrenCodes(array $categoryCodes): array
     {
         $allChildrenCodes = [];
         foreach ($categoryCodes as $categoryCode) {

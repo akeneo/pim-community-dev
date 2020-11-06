@@ -45,7 +45,7 @@ final class PrepareProductsCriteriaEvaluationTasklet implements TaskletInterface
         $this->createMissingCriteriaEvaluations();
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }

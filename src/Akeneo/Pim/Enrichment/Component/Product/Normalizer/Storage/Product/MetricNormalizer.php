@@ -29,7 +29,7 @@ class MetricNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function normalize($metric, $format = null, array $context = [])
+    public function normalize($metric, $format = null, array $context = []): array
     {
         $rawMetric = $this->stdNormalizer->normalize($metric, $format, $context);
 
@@ -43,7 +43,7 @@ class MetricNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof MetricInterface && 'storage' === $format;
     }

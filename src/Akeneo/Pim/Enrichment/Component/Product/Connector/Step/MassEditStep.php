@@ -27,7 +27,7 @@ class MassEditStep extends AbstractStep
      * @param TemporaryFileCleaner     $cleaner
      */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         TemporaryFileCleaner $cleaner
@@ -39,7 +39,7 @@ class MassEditStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    protected function doExecute(StepExecution $stepExecution)
+    protected function doExecute(StepExecution $stepExecution): void
     {
         $this->cleaner->setStepExecution($stepExecution);
         $this->cleaner->execute();
@@ -50,7 +50,7 @@ class MassEditStep extends AbstractStep
         return $this->cleaner;
     }
 
-    public function setCleaner(TemporaryFileCleaner $cleaner): MassEditStep
+    public function setCleaner(TemporaryFileCleaner $cleaner): self
     {
         $this->cleaner = $cleaner;
 

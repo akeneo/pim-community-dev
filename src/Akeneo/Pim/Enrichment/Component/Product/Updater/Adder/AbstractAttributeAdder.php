@@ -38,7 +38,7 @@ abstract class AbstractAttributeAdder implements AttributeAdderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(AttributeInterface $attribute)
+    public function supports(AttributeInterface $attribute): bool
     {
         return $this->supportsAttribute($attribute);
     }
@@ -46,7 +46,7 @@ abstract class AbstractAttributeAdder implements AttributeAdderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function supportsAttribute(AttributeInterface $attribute): bool
     {
         return in_array($attribute->getType(), $this->supportedTypes);
     }

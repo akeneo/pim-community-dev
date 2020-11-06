@@ -53,10 +53,8 @@ class ConfigValue
 
     /**
      * Get id
-     *
-     * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -66,17 +64,14 @@ class ConfigValue
      *
      * @return $this
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -85,10 +80,8 @@ class ConfigValue
      * Set config
      *
      * @param string $config
-     *
-     * @return Config
      */
-    public function setConfig($config)
+    public function setConfig(string $config): self
     {
         $this->config = $config;
 
@@ -97,10 +90,8 @@ class ConfigValue
 
     /**
      * Get config
-     *
-     * @return string
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -110,17 +101,14 @@ class ConfigValue
      *
      * @return $this
      */
-    public function setValue($value)
+    public function setValue(string $value): self
     {
         $this->value = $value;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -130,17 +118,14 @@ class ConfigValue
      *
      * @return $this
      */
-    public function setSection($section)
+    public function setSection(string $section): self
     {
         $this->section = $section;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSection()
+    public function getSection(): string
     {
         return $this->section;
     }

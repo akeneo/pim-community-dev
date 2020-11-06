@@ -15,10 +15,8 @@ interface ComparatorInterface
      * Whether or not the class supports comparison
      *
      * @param string $data
-     *
-     * @return bool
      */
-    public function supports($data);
+    public function supports(string $data): bool;
 
     /**
      * Get the changes between a normalized product value instance and the updated data

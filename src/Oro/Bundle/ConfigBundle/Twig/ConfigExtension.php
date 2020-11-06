@@ -21,10 +21,10 @@ class ConfigExtension extends \Twig_Extension
      *
      * @return array An array of functions
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('oro_config_value', [$this, 'getUserValue']),
+            new \Twig_SimpleFunction('oro_config_value', fn($name) => $this->getUserValue($name)),
         ];
     }
 
@@ -33,7 +33,7 @@ class ConfigExtension extends \Twig_Extension
      *
      * @return mixed
      */
-    public function getUserValue($name)
+    public function getUserValue(string $name)
     {
         return $this->userConfigManager->get($name);
     }

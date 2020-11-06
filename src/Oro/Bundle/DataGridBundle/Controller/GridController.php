@@ -19,10 +19,8 @@ class GridController extends Controller
 
     /**
      * @param string $gridName
-     *
-     * @return JsonResponse
      */
-    public function get($gridName)
+    public function get($gridName): JsonResponse
     {
         $grid = $this->manager->getDatagrid($gridName);
         $result = $grid->getData();

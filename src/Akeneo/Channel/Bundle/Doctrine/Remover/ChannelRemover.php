@@ -47,7 +47,7 @@ class ChannelRemover implements RemoverInterface
         EventDispatcherInterface $eventDispatcher,
         ChannelRepositoryInterface $channelRepository,
         TranslatorInterface $translator,
-        $entityClass
+        string $entityClass
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
@@ -59,7 +59,7 @@ class ChannelRemover implements RemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($object, array $options = [])
+    public function remove($object, array $options = []): void
     {
         $this->validateObject($object);
 
@@ -80,7 +80,7 @@ class ChannelRemover implements RemoverInterface
      *
      * @throws \LogicException
      */
-    private function validateObject($object)
+    private function validateObject($object): void
     {
         if (!$object instanceof $this->entityClass) {
             throw new \InvalidArgumentException(

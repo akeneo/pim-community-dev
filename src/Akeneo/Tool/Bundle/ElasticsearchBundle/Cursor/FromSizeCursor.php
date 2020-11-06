@@ -45,9 +45,9 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
-        $pageSize,
-        $limit,
-        $from = 0
+        int $pageSize,
+        int $limit,
+        int $from = 0
     ) {
         $this->esClient = $esClient;
         $this->repository = $repository;
@@ -62,7 +62,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->from += count($this->items);
@@ -76,7 +76,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
      *
      * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-from-size.html}
      */
-    protected function getNextIdentifiers(array $esQuery)
+    protected function getNextIdentifiers(array $esQuery): array
     {
         $size = ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
         $esQuery['size'] = $size;
@@ -110,7 +110,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->from = $this->initialFrom;
         $this->to = $this->from + $this->limit;

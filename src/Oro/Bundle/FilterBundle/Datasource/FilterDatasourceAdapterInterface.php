@@ -17,7 +17,7 @@ interface FilterDatasourceAdapterInterface
      *                            For an example for ORM datasource it means that a restriction should be added
      *                            to the HAVING part of a query.
      */
-    public function addRestriction($restriction, $condition, $isComputed = false);
+    public function addRestriction($restriction, string $condition, bool $isComputed = false);
 
     /**
      * Specifies a grouping over the results of a data source.
@@ -37,10 +37,8 @@ interface FilterDatasourceAdapterInterface
 
     /**
      * Gets an expression builder object used for object-oriented construction of datasource restrictions
-     *
-     * @return ExpressionBuilderInterface
      */
-    public function expr();
+    public function expr(): ExpressionBuilderInterface;
 
     /**
      * Sets a parameter for a data source being constructed.
@@ -49,13 +47,12 @@ interface FilterDatasourceAdapterInterface
      * @param mixed          $value The parameter value.
      * @param string|null    $type  The parameter type.
      */
-    public function setParameter($key, $value, $type = null);
+    public function setParameter($key, $value, ?string $type = null);
 
     /**
      * Generates unique parameter name
      *
      * @param string $filterName A filter name
-     * @return string
      */
-    public function generateParameterName($filterName);
+    public function generateParameterName(string $filterName): string;
 }

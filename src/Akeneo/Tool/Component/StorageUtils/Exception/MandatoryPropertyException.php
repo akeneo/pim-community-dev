@@ -45,7 +45,7 @@ class MandatoryPropertyException extends PropertyException
      *
      * @return MandatoryPropertyException
      */
-    public static function mandatoryProperty($propertyName, $className)
+    public static function mandatoryProperty(string $propertyName, string $className)
     {
         return new static(
             $propertyName,
@@ -57,10 +57,7 @@ class MandatoryPropertyException extends PropertyException
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }

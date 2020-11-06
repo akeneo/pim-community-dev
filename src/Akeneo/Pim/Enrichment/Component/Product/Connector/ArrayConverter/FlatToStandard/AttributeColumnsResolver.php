@@ -46,10 +46,7 @@ class AttributeColumnsResolver
         $this->valuesResolver = $valuesResolver;
     }
 
-    /**
-     * @return string
-     */
-    public function resolveIdentifierField()
+    public function resolveIdentifierField(): string
     {
         if (empty($this->identifierField)) {
             $this->identifierField = $this->attributeRepository->getIdentifierCode();
@@ -58,10 +55,7 @@ class AttributeColumnsResolver
         return $this->identifierField;
     }
 
-    /**
-     * @return array
-     */
-    public function resolveAttributeColumns()
+    public function resolveAttributeColumns(): array
     {
         if (empty($this->attributesFields)) {
             // TODO: Put a Cursor to avoid a findAll on attributes (╯°□°)╯︵ ┻━┻
@@ -84,10 +78,8 @@ class AttributeColumnsResolver
      *
      * @param array $value
      * @param array $currencyCodes
-     *
-     * @return array
      */
-    protected function resolveAttributeField(array $value, array $currencyCodes)
+    protected function resolveAttributeField(array $value, array $currencyCodes): array
     {
         $field = $this->resolveFlatAttributeName($value['attribute'], $value['locale'], $value['scope']);
 
@@ -120,10 +112,8 @@ class AttributeColumnsResolver
      * @param string $attributeCode
      * @param string $localeCode
      * @param string $scopeCode
-     *
-     * @return string
      */
-    public function resolveFlatAttributeName($attributeCode, $localeCode, $scopeCode)
+    public function resolveFlatAttributeName(string $attributeCode, string $localeCode, string $scopeCode): string
     {
         $field = $attributeCode;
 

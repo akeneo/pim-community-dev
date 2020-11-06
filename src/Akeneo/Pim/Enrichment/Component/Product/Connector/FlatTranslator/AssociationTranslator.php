@@ -51,9 +51,8 @@ class AssociationTranslator
     public function translate(string $columnName, array $values, string $locale, string $channel): array
     {
         $translations = $this->getTranslations($values, $columnName, $locale, $channel);
-        $result = $this->doTranslate($values, $translations);
 
-        return $result;
+        return $this->doTranslate($values, $translations);
     }
 
     private function getTranslations(array $values, string $columnName, string $locale, string $channel): array

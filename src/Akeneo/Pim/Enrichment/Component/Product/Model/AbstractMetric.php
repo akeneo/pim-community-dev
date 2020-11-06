@@ -33,7 +33,7 @@ abstract class AbstractMetric implements MetricInterface
      * @param string $baseUnit
      * @param float  $baseData
      */
-    public function __construct($family, $unit, $data, $baseUnit, $baseData)
+    public function __construct(string $family, string $unit, float $data, string $baseUnit, float $baseData)
     {
         $this->family = $family;
         $this->unit = $unit;
@@ -45,7 +45,7 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): float
     {
         return $this->data;
     }
@@ -53,7 +53,7 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * {@inheritdoc}
      */
-    public function getUnit()
+    public function getUnit(): string
     {
         return $this->unit;
     }
@@ -61,7 +61,7 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * {@inheritdoc}
      */
-    public function getBaseData()
+    public function getBaseData(): float
     {
         return $this->baseData;
     }
@@ -69,7 +69,7 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * {@inheritdoc}
      */
-    public function getBaseUnit()
+    public function getBaseUnit(): string
     {
         return $this->baseUnit;
     }
@@ -77,7 +77,7 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * {@inheritdoc}
      */
-    public function getFamily()
+    public function getFamily(): string
     {
         return $this->family;
     }
@@ -85,7 +85,7 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * {@inheritdoc}
      */
-    public function isEqual(MetricInterface $metric)
+    public function isEqual(MetricInterface $metric): bool
     {
         return $metric->getData() === $this->data && $metric->getUnit() === $this->unit;
     }
@@ -95,7 +95,7 @@ abstract class AbstractMetric implements MetricInterface
      */
     public function __toString()
     {
-        return join(' ', array_filter([
+        return implode(' ', array_filter([
             $this->data !== null ? sprintf('%.4F', $this->data) : null,
             $this->unit
         ]));

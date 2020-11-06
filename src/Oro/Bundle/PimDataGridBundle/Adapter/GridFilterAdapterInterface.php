@@ -14,9 +14,8 @@ interface GridFilterAdapterInterface
     /**
      * @param array $parameters
      *
-     * @return array
      *
      * Converter is also eligible
      */
-    public function adapt(array $parameters);
+    public function adapt(array $parameters): array;
 }

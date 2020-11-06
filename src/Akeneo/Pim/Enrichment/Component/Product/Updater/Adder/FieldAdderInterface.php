@@ -25,14 +25,12 @@ interface FieldAdderInterface extends AdderInterface
      *
      * @throws PropertyException
      */
-    public function addFieldData($product, $field, $data, array $options = []);
+    public function addFieldData($product, string $field, $data, array $options = []);
 
     /**
      * Supports the field
      *
      * @param string $field
-     *
-     * @return bool
      */
-    public function supportsField($field);
+    public function supportsField(string $field): bool;
 }

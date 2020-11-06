@@ -18,7 +18,7 @@ final class GetGroupAssociationsByProductIdentifiers
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -35,9 +35,7 @@ final class GetGroupAssociationsByProductIdentifiers
             return [];
         }
 
-        $productIdentifiers = (function (string ...$identifiers) {
-            return $identifiers;
-        })(... $productIdentifiers);
+        $productIdentifiers = (fn(string ...$identifiers) => $identifiers)(... $productIdentifiers);
 
         $query = <<<SQL
 SELECT

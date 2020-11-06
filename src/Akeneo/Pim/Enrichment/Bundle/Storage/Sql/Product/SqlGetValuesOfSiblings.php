@@ -24,7 +24,7 @@ final class SqlGetValuesOfSiblings implements GetValuesOfSiblings
     /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
-    public function __construct(Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
     {
         $this->connection = $connection;
         $this->valueCollectionFactory = $valueCollectionFactory;
@@ -69,9 +69,7 @@ SQL;
             $rawValues = json_decode($row['raw_values'], true) ?? [];
 
             if (!empty($attributeCodesToFilter)) {
-                $rawValues = array_filter($rawValues, function (string $attributeCode) use ($attributeCodesToFilter) {
-                    return in_array($attributeCode, $attributeCodesToFilter);
-                }, ARRAY_FILTER_USE_KEY);
+                $rawValues = array_filter($rawValues, fn(string $attributeCode) => in_array($attributeCode, $attributeCodesToFilter), ARRAY_FILTER_USE_KEY);
             }
 
             $valuesOfSiblings[$row['identifier']] = $this->valueCollectionFactory->createFromStorageFormat(

@@ -10,7 +10,7 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
     /** @var int */
     protected $level = 0;
 
-    public function __construct($name, $definition = [], $children = [])
+    public function __construct(string $name, $definition = [], array $children = [])
     {
         parent::__construct($name, $definition);
         $this->children = $children;
@@ -23,7 +23,7 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
      *
      * @return $this
      */
-    public function setLevel($level)
+    public function setLevel(int $level): self
     {
         $this->level = $level;
 
@@ -32,10 +32,8 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
 
     /**
      * Getter for nesting level
-     *
-     * @return int
      */
-    public function getLevel()
+    public function getLevel(): int
     {
         return $this->level;
     }
@@ -43,7 +41,7 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
     /**
      * {@inheritDoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->children);
     }
@@ -51,7 +49,7 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
     /**
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         $this->resort();
 
@@ -61,17 +59,15 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
     /**
      * {@inheritDoc}
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return !$this->children;
     }
 
     /**
      * Returns first child
-     *
-     * @return AbstractNodeDefinition
      */
-    public function first()
+    public function first(): AbstractNodeDefinition
     {
         $this->resort();
 
@@ -80,25 +76,19 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
 
     /**
      * Resort children array
-     *
-     * @return void
      */
-    public function resort()
+    public function resort(): void
     {
         usort(
             $this->children,
-            function (AbstractNodeDefinition $a, AbstractNodeDefinition $b) {
-                return $a->getPriority() > $b->getPriority() ? -1 : 1;
-            }
+            fn(AbstractNodeDefinition $a, AbstractNodeDefinition $b) => $a->getPriority() > $b->getPriority() ? -1 : 1
         );
     }
 
     /**
      * Retrieve block config from group node definition
-     *
-     * @return array
      */
-    public function toBlockConfig()
+    public function toBlockConfig(): array
     {
         return [
             $this->getName() => array_intersect_key(
@@ -110,10 +100,8 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
 
     /**
      * Returns needed definition values to view
-     *
-     * @return array
      */
-    public function toViewData()
+    public function toViewData(): array
     {
         return array_intersect_key($this->definition, array_flip(['title', 'priority', 'description', 'icon']));
     }

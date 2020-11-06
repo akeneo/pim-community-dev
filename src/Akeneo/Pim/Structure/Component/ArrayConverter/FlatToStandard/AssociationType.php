@@ -50,7 +50,7 @@ class AssociationType implements ArrayConverterInterface
      *      'is_quantified' => false,
      * ]
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $this->fieldChecker->checkFieldsPresence($item, ['code']);
         $this->fieldChecker->checkFieldsFilling($item, ['code']);
@@ -72,10 +72,8 @@ class AssociationType implements ArrayConverterInterface
      * @param array  $convertedItem
      * @param string $field
      * @param mixed  $data
-     *
-     * @return array
      */
-    protected function convertField($convertedItem, $field, $data)
+    protected function convertField(array $convertedItem, string $field, $data): array
     {
         if (false !== strpos($field, 'label-', 0)) {
             $labelTokens = explode('-', $field);

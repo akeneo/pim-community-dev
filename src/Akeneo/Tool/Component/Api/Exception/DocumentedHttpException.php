@@ -29,10 +29,7 @@ class DocumentedHttpException extends UnprocessableEntityHttpException
         $this->href = $href;
     }
 
-    /**
-     * @return string
-     */
-    public function getHref()
+    public function getHref(): string
     {
         return $this->href;
     }

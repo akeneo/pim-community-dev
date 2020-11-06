@@ -27,7 +27,7 @@ class AverageMaxLocalizableAttributesPerFamily implements AverageMaxQuery
      * @param Connection $connection
      * @param int $limit
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, int $limit)
     {
         $this->connection = $connection;
         $this->limit = $limit;
@@ -50,8 +50,7 @@ class AverageMaxLocalizableAttributesPerFamily implements AverageMaxQuery
             ) as attr;
 SQL;
         $result = $this->connection->query($sql)->fetch();
-        $volume = new AverageMaxVolumes((int) $result['max'], (int) $result['average'], $this->limit, self::VOLUME_NAME);
 
-        return $volume;
+        return new AverageMaxVolumes((int) $result['max'], (int) $result['average'], $this->limit, self::VOLUME_NAME);
     }
 }

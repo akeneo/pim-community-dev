@@ -62,11 +62,10 @@ class CurrencyController
      *
      * @throws NotFoundHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_currency_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $currency = $this->repository->findOneByIdentifier($code);
         if (null === $currency) {
@@ -83,11 +82,10 @@ class CurrencyController
      *
      * @throws UnprocessableEntityHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_currency_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -117,7 +115,7 @@ class CurrencyController
             'item_route_name'  => 'pim_api_currency_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
+        $count = $request->query->getBoolean('with_count') ? $this->repository->count() : null;
         $paginatedCurrencies = $this->paginator->paginate(
             $this->normalizer->normalize($currencies, 'external_api'),
             $parameters,

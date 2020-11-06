@@ -25,14 +25,12 @@ interface FieldRemoverInterface extends RemoverInterface
      *
      * @throws PropertyException
      */
-    public function removeFieldData($product, $field, $data, array $options = []);
+    public function removeFieldData($product, string $field, $data, array $options = []);
 
     /**
      * Supports the field
      *
      * @param string $field
-     *
-     * @return bool
      */
-    public function supportsField($field);
+    public function supportsField(string $field): bool;
 }

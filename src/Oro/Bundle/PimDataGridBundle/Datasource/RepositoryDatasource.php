@@ -42,7 +42,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     /**
      * {@inheritdoc}
      */
-    public function process(DatagridInterface $grid, array $config)
+    public function process(DatagridInterface $grid, array $config): void
     {
         $this->qb = $this->repository->createDatagridQueryBuilder();
 
@@ -56,7 +56,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -64,7 +64,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     /**
      * {@inheritdoc}
      */
-    public function setParameters($parameters)
+    public function setParameters(array $parameters): ParameterizableInterface
     {
         $this->parameters += $parameters;
         if ($this->qb instanceof QueryBuilder) {
@@ -77,7 +77,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     /**
      * {@inheritdoc}
      */
-    public function getResults()
+    public function getResults(): array
     {
         return $this->hydrator->hydrate($this->qb);
     }
@@ -85,7 +85,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     /**
      * {@inheritdoc}
      */
-    public function getQueryBuilder()
+    public function getQueryBuilder(): \Doctrine\ORM\QueryBuilder
     {
         return $this->qb;
     }
@@ -93,7 +93,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     /**
      * {@inheritdoc}
      */
-    public function getRepository()
+    public function getRepository(): \Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface
     {
         return $this->repository;
     }
@@ -101,7 +101,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     /**
      * {@inheritdoc}
      */
-    public function getMassActionRepository()
+    public function getMassActionRepository(): void
     {
         throw new \LogicException("No need to implement this method, design flaw in interface!");
     }
@@ -109,7 +109,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     /**
      * {@inheritdoc}
      */
-    public function setMassActionRepository(MassActionRepositoryInterface $massActionRepository)
+    public function setMassActionRepository(MassActionRepositoryInterface $massActionRepository): void
     {
         throw new \LogicException("No need to implement this method, design flaw in interface!");
     }
@@ -117,7 +117,7 @@ class RepositoryDatasource implements DatasourceInterface, ParameterizableInterf
     /**
      * {@inheritdoc}
      */
-    public function setHydrator(HydratorInterface $hydrator)
+    public function setHydrator(HydratorInterface $hydrator): DatasourceInterface
     {
         throw new \LogicException("No need to implement this method, design flaw in interface!");
     }

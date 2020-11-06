@@ -35,7 +35,7 @@ class FQCNResolver
      *
      * @return string|null
      */
-    public function getFQCN($entityType)
+    public function getFQCN(string $entityType): ?string
     {
         try {
             $className = $this->container->getParameter(

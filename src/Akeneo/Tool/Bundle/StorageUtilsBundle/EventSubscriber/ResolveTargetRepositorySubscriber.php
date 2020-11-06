@@ -22,7 +22,7 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'loadClassMetadata'
@@ -35,7 +35,7 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
      * @param string $object
      * @param string $newRepository
      */
-    public function addResolveTargetRepository($object, $newRepository)
+    public function addResolveTargetRepository(string $object, string $newRepository): void
     {
         static::$resolveTargetRepo[ltrim($object)] = $newRepository;
     }
@@ -45,7 +45,7 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
      *
      * @param LoadClassMetadataEventArgs $args
      */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $args)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $args): void
     {
         $classMetadata = $args->getClassMetadata();
         $className = $classMetadata->getName();

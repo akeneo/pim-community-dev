@@ -18,14 +18,10 @@ class ProcessorDecorator
 
     /**
      * @param array $data
-     *
-     * @return array
      */
-    public function process(array $data)
+    public function process(array $data): array
     {
-        $result = $this->getProcessor()->process($this->getConfigurationTree()->buildTree(), $data);
-
-        return $result;
+        return $this->getProcessor()->process($this->getConfigurationTree()->buildTree(), $data);
     }
 
     /**
@@ -33,10 +29,8 @@ class ProcessorDecorator
      *
      * @param array $source
      * @param array $newData
-     *
-     * @return array
      */
-    public function merge($source, $newData)
+    public function merge(array $source, array $newData): array
     {
         // prevent key isset and is_array checks
         $source = array_merge($this->getEmptyFinalArray(), $source);
@@ -66,37 +60,29 @@ class ProcessorDecorator
 
     /**
      * Returns empty array representation of valid config structure
-     *
-     * @return array
      */
-    protected function getEmptyFinalArray()
+    protected function getEmptyFinalArray(): array
     {
-        $result = [
+        return [
             self::ROOT => array_fill_keys(
                 [self::GROUPS_NODE, self::FIELDS_ROOT, self::TREE_ROOT],
                 []
             )
         ];
-
-        return $result;
     }
 
     /**
      * Getter for processor
-     *
-     * @return Processor
      */
-    protected function getProcessor()
+    protected function getProcessor(): \Symfony\Component\Config\Definition\Processor
     {
         return $this->processor ? : new Processor();
     }
 
     /**
      * Getter for configuration tree
-     *
-     * @return TreeBuilder
      */
-    protected function getConfigurationTree()
+    protected function getConfigurationTree(): TreeBuilder
     {
         $tree = new TreeBuilder();
 
@@ -110,14 +96,11 @@ class ProcessorDecorator
         return $tree;
     }
 
-    /**
-     * @return NodeDefinition
-     */
-    protected function getGroupsNode()
+    protected function getGroupsNode(): NodeDefinition
     {
         $builder = new TreeBuilder();
 
-        $node = $builder->root(self::GROUPS_NODE)
+        return $builder->root(self::GROUPS_NODE)
             ->prototype('array')
                 ->children()
                     ->scalarNode('title')->isRequired()->end()
@@ -126,18 +109,13 @@ class ProcessorDecorator
                     ->integerNode('priority')->end()
                 ->end()
             ->end();
-
-        return $node;
     }
 
-    /**
-     * @return NodeDefinition
-     */
-    protected function getFieldsNode()
+    protected function getFieldsNode(): NodeDefinition
     {
         $builder = new TreeBuilder();
 
-        $node = $builder->root(self::FIELDS_ROOT)
+        return $builder->root(self::FIELDS_ROOT)
             ->prototype('array')
                 ->children()
                     ->scalarNode('type')->isRequired()->end()
@@ -148,18 +126,13 @@ class ProcessorDecorator
                     ->integerNode('priority')->end()
                 ->end()
             ->end();
-
-        return $node;
     }
 
-    /**
-     * @return NodeDefinition
-     */
-    protected function getTreeNode()
+    protected function getTreeNode(): NodeDefinition
     {
         $builder = new TreeBuilder();
 
-        $node = $builder->root(self::TREE_ROOT)
+        return $builder->root(self::TREE_ROOT)
             ->prototype('array')
                 ->prototype('array')
                     ->children()
@@ -172,7 +145,5 @@ class ProcessorDecorator
                     ->end()
                 ->end()
             ->end();
-
-        return $node;
     }
 }

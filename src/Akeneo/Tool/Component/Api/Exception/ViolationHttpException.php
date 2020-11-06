@@ -34,10 +34,7 @@ class ViolationHttpException extends UnprocessableEntityHttpException
         $this->violations = $violations;
     }
 
-    /**
-     * @return ConstraintViolationListInterface
-     */
-    public function getViolations()
+    public function getViolations(): string
     {
         return $this->violations;
     }

@@ -19,14 +19,12 @@ interface CategoryItemsCounterRegistryInterface
      *
      * @return mixed
      */
-    public function register(CategoryItemsCounterInterface $categoryItemsCounter, $type);
+    public function register(CategoryItemsCounterInterface $categoryItemsCounter, string $type);
 
     /**
      * Get category item counter extension
      *
      * @param string $name
-     *
-     * @return CategoryItemsCounterInterface
      */
-    public function get($name);
+    public function get(string $name): \Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 }

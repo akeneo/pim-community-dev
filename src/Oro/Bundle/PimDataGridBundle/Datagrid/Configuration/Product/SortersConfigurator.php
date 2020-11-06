@@ -35,7 +35,7 @@ class SortersConfigurator implements ConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(DatagridConfiguration $configuration)
+    public function configure(DatagridConfiguration $configuration): void
     {
         $this->configuration = $configuration;
         $this->addAttributeSorters();
@@ -45,7 +45,7 @@ class SortersConfigurator implements ConfiguratorInterface
     /**
      * Add sorters for attributes used as columns
      */
-    protected function addAttributeSorters()
+    protected function addAttributeSorters(): void
     {
         $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
@@ -72,16 +72,14 @@ class SortersConfigurator implements ConfiguratorInterface
                 );
             }
 
-            if ($columnExists && $attributeTypeConf && $attributeTypeConf['column']) {
-                if (isset($attributeTypeConf['sorter'])) {
-                    $this->configuration->offsetSetByPath(
-                        sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
-                        [
-                            PropertyInterface::DATA_NAME_KEY => $attributeCode,
-                            'sorter'                         => $attributeTypeConf['sorter']
-                        ]
-                    );
-                }
+            if ($columnExists && $attributeTypeConf && $attributeTypeConf['column'] && isset($attributeTypeConf['sorter'])) {
+                $this->configuration->offsetSetByPath(
+                    sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
+                    [
+                        PropertyInterface::DATA_NAME_KEY => $attributeCode,
+                        'sorter'                         => $attributeTypeConf['sorter']
+                    ]
+                );
             }
         }
     }
@@ -89,17 +87,16 @@ class SortersConfigurator implements ConfiguratorInterface
     /**
      * Remove extra sorters, ie, sorters defined in datagrid.yml but columns are not displayed
      */
-    protected function removeExtraSorters()
+    protected function removeExtraSorters(): void
     {
         $displayedColumns = $this->configuration->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY));
-        $columnsCodes = array_keys($displayedColumns);
         $sorters = $this->configuration->offsetGetByPath(sprintf('%s', OrmSorterConfiguration::COLUMNS_PATH));
 
         if (!empty($sorters)) {
             $sortersCodes = array_keys($sorters);
 
             foreach ($sortersCodes as $sorterCode) {
-                if (!in_array($sorterCode, $columnsCodes)) {
+                if (!array_key_exists($sorterCode, $displayedColumns)) {
                     unset($sorters[$sorterCode]);
                 }
             }

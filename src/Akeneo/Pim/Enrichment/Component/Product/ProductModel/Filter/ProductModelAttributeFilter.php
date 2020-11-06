@@ -54,7 +54,7 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
     public function filter(array $standardProductModel): array
     {
         if (array_key_exists('values', $standardProductModel) && is_array($standardProductModel['values'])) {
-            foreach ($standardProductModel['values'] as $code => $value) {
+            foreach (array_keys($standardProductModel['values']) as $code) {
                 if (null === $this->attributeRepository->findOneByIdentifier($code)) {
                     throw UnknownPropertyException::unknownProperty($code);
                 }
@@ -111,14 +111,12 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
      */
     private function keepOnlyAttributes(array $flatProductModel, Collection $attributesToKeep): array
     {
-        foreach ($flatProductModel['values'] as $attributeName => $value) {
+        foreach (array_keys($flatProductModel['values']) as $attributeName) {
             $shortAttributeName = explode('-', (string) $attributeName);
             $shortAttributeName = $shortAttributeName[0];
 
             $keepedAttributeCodes = $attributesToKeep->exists(
-                function ($key, AttributeInterface $attribute) use ($shortAttributeName) {
-                    return $attribute->getCode() === $shortAttributeName;
-                }
+                fn($key, AttributeInterface $attribute) => $attribute->getCode() === $shortAttributeName
             );
 
             if (!$keepedAttributeCodes) {

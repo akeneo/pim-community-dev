@@ -26,14 +26,14 @@ class ContentSecurityPolicyExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('js_nonce', [$this, 'getScriptNonce']),
+            new \Twig_SimpleFunction('js_nonce', fn() => $this->getScriptNonce()),
         ];
     }
 
-    public function getScriptNonce()
+    public function getScriptNonce(): string
     {
         return $this->scriptNonceGenerator->getGeneratedNonce();
     }

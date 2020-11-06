@@ -35,9 +35,7 @@ final class LRUCachedGetAttributes implements GetAttributes
             return [];
         }
 
-        $fetchNonFoundAttributeCodes = function (array $attributesNotFound): array {
-            return $this->getAttributes->forCodes($attributesNotFound);
-        };
+        $fetchNonFoundAttributeCodes = fn(array $attributesNotFound): array => $this->getAttributes->forCodes($attributesNotFound);
 
         return $this->cache->getForKeys($attributeCodes, $fetchNonFoundAttributeCodes);
     }
@@ -49,9 +47,7 @@ final class LRUCachedGetAttributes implements GetAttributes
      */
     public function forCode(string $attributeCode): ?Attribute
     {
-        $fetchNonFoundAttributeCodes = function (string $attributeCode): ?Attribute {
-            return $this->getAttributes->forCode($attributeCode);
-        };
+        $fetchNonFoundAttributeCodes = fn(string $attributeCode): ?Attribute => $this->getAttributes->forCode($attributeCode);
 
         return $this->cache->getForKey($attributeCode, $fetchNonFoundAttributeCodes);
     }

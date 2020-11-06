@@ -23,7 +23,7 @@ class UpdateExtension extends \Twig_Extension
     /** @var VersionProviderInterface */
     private $versionProvider;
 
-    public function __construct(ConfigManager $configManager, VersionProviderInterface $versionProvider, $updateServerUrl)
+    public function __construct(ConfigManager $configManager, VersionProviderInterface $versionProvider, string $updateServerUrl)
     {
         $this->configManager = $configManager;
         $this->versionProvider = $versionProvider;
@@ -33,28 +33,23 @@ class UpdateExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('is_last_patch_enabled', [$this, 'isLastPatchEnabled']),
-            new \Twig_SimpleFunction('get_update_server_url', [$this, 'getUpdateServerUrl']),
+            new \Twig_SimpleFunction('is_last_patch_enabled', fn() => $this->isLastPatchEnabled()),
+            new \Twig_SimpleFunction('get_update_server_url', fn() => $this->getUpdateServerUrl()),
         ];
     }
 
     /**
      * Indicates if the last patch should be fetched from update server
-     *
-     * @return bool
      */
-    public function isLastPatchEnabled()
+    public function isLastPatchEnabled(): bool
     {
         return !$this->versionProvider->isSaaSVersion() && $this->configManager->get('pim_analytics.version_update');
     }
 
-    /**
-     * @return string
-     */
-    public function getUpdateServerUrl()
+    public function getUpdateServerUrl(): string
     {
         return $this->updateServerUrl;
     }

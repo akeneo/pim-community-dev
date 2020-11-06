@@ -43,7 +43,7 @@ class NumberFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -71,7 +71,7 @@ class NumberFilter extends OroNumberFilter
      *
      * @return string
      */
-    public function getOperator($type)
+    public function getOperator(int $type): string
     {
         $operatorTypes = [
             NumberFilterType::TYPE_EQUAL         => Operators::EQUALS,
@@ -113,7 +113,7 @@ class NumberFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $attribute = $this->getAttribute();
         $metadata = parent::getMetadata();

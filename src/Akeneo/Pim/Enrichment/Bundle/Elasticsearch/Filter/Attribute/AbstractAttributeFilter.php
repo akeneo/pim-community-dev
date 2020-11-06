@@ -37,7 +37,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeTypes()
+    public function getAttributeTypes(): array
     {
         return $this->supportedAttributeTypes;
     }
@@ -45,7 +45,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function supportsAttribute(AttributeInterface $attribute): bool
     {
         return in_array($attribute->getType(), $this->supportedAttributeTypes);
     }
@@ -53,7 +53,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsOperator($operator)
+    public function supportsOperator(string $operator): bool
     {
         return in_array($operator, $this->supportedOperators);
     }
@@ -61,7 +61,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getOperators()
+    public function getOperators(): array
     {
         return $this->supportedOperators;
     }
@@ -69,7 +69,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function setQueryBuilder($searchQueryBuilder)
+    public function setQueryBuilder(\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder $searchQueryBuilder)
     {
         if (!$searchQueryBuilder instanceof SearchQueryBuilder) {
             throw new \InvalidArgumentException(
@@ -89,7 +89,7 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function checkLocaleAndChannel(AttributeInterface $attribute, $locale, $channel)
+    protected function checkLocaleAndChannel(AttributeInterface $attribute, string $locale, string $channel)
     {
         try {
             $this->filterValidator->validateLocaleForAttribute($attribute->getCode(), $locale);
@@ -111,10 +111,8 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $channel
-     *
-     * @return string
      */
-    protected function getAttributePath(AttributeInterface $attribute, $locale, $channel)
+    protected function getAttributePath(AttributeInterface $attribute, string $locale, string $channel): string
     {
         $locale = (null === $locale) ? '<all_locales>' : $locale;
         $channel = (null === $channel) ? '<all_channels>' : $channel;

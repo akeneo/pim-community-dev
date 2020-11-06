@@ -40,7 +40,7 @@ class SystemInfoCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Displays Akeneo PIM system information');
@@ -49,20 +49,19 @@ class SystemInfoCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $systemInfoStyle = new SystemInfoStyle($input, $output);
 
         $systemInfoStyle->title($this->translator->trans('pim_analytics.system_info.title'));
         $systemInfoStyle->table([], $this->formatCollectedData($this->translator, $this->getCollectedData()));
+        return 0;
     }
 
     /**
      * Gets all the collected data from the system.
-     *
-     * @return array
      */
-    protected function getCollectedData()
+    protected function getCollectedData(): array
     {
         return $this->chainedDataCollector->collect('system_info_report');
     }
@@ -72,10 +71,8 @@ class SystemInfoCommand extends Command
      *
      * @param TranslatorInterface $translator
      * @param array               $collectedData
-     *
-     * @return array
      */
-    protected function formatCollectedData(TranslatorInterface $translator, array $collectedData)
+    protected function formatCollectedData(TranslatorInterface $translator, array $collectedData): array
     {
         $formattedData = [];
 

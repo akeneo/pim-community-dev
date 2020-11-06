@@ -46,7 +46,7 @@ class PagerExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(DatagridConfiguration $config): bool
     {
         return true;
     }
@@ -54,7 +54,7 @@ class PagerExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource): void
     {
         $defaultPerPage = $config->offsetGetByPath(ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
 
@@ -69,7 +69,7 @@ class PagerExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function visitResult(DatagridConfiguration $config, ResultsIterableObject $result)
+    public function visitResult(DatagridConfiguration $config, ResultsIterableObject $result): void
     {
         $result->offsetAddToArray('options', [self::TOTAL_PARAM => $this->getPager($config)->getNbResults()]);
     }
@@ -77,7 +77,7 @@ class PagerExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data): void
     {
         $defaultPerPage = $config->offsetGetByPath(ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
 
@@ -94,7 +94,7 @@ class PagerExtension extends AbstractExtension
      *
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -300;
     }
@@ -107,7 +107,7 @@ class PagerExtension extends AbstractExtension
      *
      * @return mixed
      */
-    protected function getOr($paramName, $default = null)
+    protected function getOr(string $paramName, $default = null)
     {
         $pagerParameters = $this->requestParams->get(self::PAGER_ROOT_PARAM);
 
@@ -116,10 +116,8 @@ class PagerExtension extends AbstractExtension
 
     /**
      * @param DatagridConfiguration $config
-     *
-     * @return PagerInterface
      */
-    protected function getPager(DatagridConfiguration $config)
+    protected function getPager(DatagridConfiguration $config): PagerInterface
     {
         return $this->pagerResolver->getPager($config->getName());
     }

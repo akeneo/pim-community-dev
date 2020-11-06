@@ -20,25 +20,21 @@ class AclPermission
      * @param string|null $name
      * @param int|null    $accessLevel Can be any AccessLevel::*_LEVEL
      */
-    public function __construct($name = null, $accessLevel = null)
+    public function __construct(?string $name = null, ?int $accessLevel = null)
     {
         $this->name = $name;
         $this->accessLevel = $accessLevel;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * @param  string        $name
-     * @return AclPermission
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -47,19 +43,16 @@ class AclPermission
 
     /**
      * Can be any AccessLevel::*_LEVEL
-     *
-     * @return int
      */
-    public function getAccessLevel()
+    public function getAccessLevel(): int
     {
         return $this->accessLevel;
     }
 
     /**
      * @param  int           $accessLevel Can be any AccessLevel::*_LEVEL
-     * @return AclPermission
      */
-    public function setAccessLevel($accessLevel)
+    public function setAccessLevel(int $accessLevel): self
     {
         $this->accessLevel = $accessLevel;
 

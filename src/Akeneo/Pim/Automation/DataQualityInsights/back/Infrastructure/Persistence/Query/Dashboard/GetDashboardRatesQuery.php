@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\DashboardRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetDashboardRatesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
@@ -29,12 +30,12 @@ final class GetDashboardRatesQuery implements GetDashboardRatesQueryInterface
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db)
     {
         $this->db = $db;
     }
 
-    public function byCatalog(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
+    public function byCatalog(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?DashboardRates
     {
         $sql = <<<'SQL'
 SELECT rates
@@ -47,7 +48,7 @@ SQL;
         return $this->buildResult($stmt, $channel, $locale, $timePeriod);
     }
 
-    public function byCategory(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, CategoryCode $category): ?Read\DashboardRates
+    public function byCategory(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, CategoryCode $category): ?DashboardRates
     {
         $sql = <<<'SQL'
 SELECT rates
@@ -64,7 +65,7 @@ SQL;
         return $this->buildResult($stmt, $channel, $locale, $timePeriod);
     }
 
-    public function byFamily(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, FamilyCode $family): ?Read\DashboardRates
+    public function byFamily(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, FamilyCode $family): ?DashboardRates
     {
         $sql = <<<'SQL'
 SELECT rates
@@ -81,13 +82,13 @@ SQL;
         return $this->buildResult($stmt, $channel, $locale, $timePeriod);
     }
 
-    private function buildResult(ResultStatement $stmt, ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
+    private function buildResult(ResultStatement $stmt, ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?DashboardRates
     {
         $result = $stmt->fetchColumn(0);
         if ($result === null || $result === false) {
             return null;
         }
 
-        return new Read\DashboardRates(json_decode($result, true), $channel, $locale, $timePeriod);
+        return new DashboardRates(json_decode($result, true), $channel, $locale, $timePeriod);
     }
 }

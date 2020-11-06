@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionApplicability;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
 interface EvaluateCriterionApplicabilityInterface
 {
-    public function evaluateApplicability(ProductValuesCollection $productValues): Write\CriterionApplicability;
+    public function evaluateApplicability(ProductValuesCollection $productValues): CriterionApplicability;
 
     public function getCode(): CriterionCode;
 }

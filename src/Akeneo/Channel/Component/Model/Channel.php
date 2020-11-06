@@ -2,6 +2,8 @@
 
 namespace Akeneo\Channel\Component\Model;
 
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
@@ -58,7 +60,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -67,10 +69,8 @@ class Channel implements ChannelInterface
      * Set id
      *
      * @param int $id
-     *
-     * @return Channel
      */
-    public function setId($id)
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -80,7 +80,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -88,7 +88,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): ChannelInterface
     {
         $this->code = $code;
 
@@ -98,7 +98,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 
@@ -108,7 +108,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null)
+    public function getTranslation(?string $locale = null): AbstractTranslation
     {
         $locale = $locale ? $locale : $this->locale;
         if (null === $locale) {
@@ -132,7 +132,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->translations;
     }
@@ -140,9 +140,9 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): TranslatableInterface
     {
-        if (!$this->translations->contains($translation)) {
+        if ($this->translations->contains($translation) === []) {
             $this->translations->add($translation);
         }
 
@@ -152,7 +152,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): TranslatableInterface
     {
         $this->translations->removeElement($translation);
 
@@ -162,7 +162,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslationFQCN()
+    public function getTranslationFQCN(): string
     {
         return ChannelTranslation::class;
     }
@@ -170,7 +170,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
 
@@ -180,7 +180,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): ChannelInterface
     {
         $this->getTranslation()->setLabel($label);
 
@@ -190,7 +190,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCategory()
+    public function getCategory(): \Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
     {
         return $this->category;
     }
@@ -198,7 +198,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function setCategory(CategoryInterface $category)
+    public function setCategory(CategoryInterface $category): ChannelInterface
     {
         if ($this->category === null) {
             $this->category = $category;
@@ -218,7 +218,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrencies()
+    public function getCurrencies(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->currencies;
     }
@@ -226,7 +226,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function setCurrencies(array $currencies)
+    public function setCurrencies(array $currencies): void
     {
         foreach ($this->currencies as $currency) {
             if (!in_array($currency, $currencies)) {
@@ -242,7 +242,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function addCurrency(CurrencyInterface $currency)
+    public function addCurrency(CurrencyInterface $currency): ChannelInterface
     {
         if (!$this->hasCurrency($currency)) {
             $this->currencies[] = $currency;
@@ -254,7 +254,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeCurrency(CurrencyInterface $currency)
+    public function removeCurrency(CurrencyInterface $currency): ChannelInterface
     {
         $this->currencies->removeElement($currency);
 
@@ -264,7 +264,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocales()
+    public function getLocales(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->locales;
     }
@@ -272,19 +272,17 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocaleCodes()
+    public function getLocaleCodes(): array
     {
         return $this->locales->map(
-            function ($locale) {
-                return $locale->getCode();
-            }
+            fn($locale) => $locale->getCode()
         )->toArray();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setLocales(array $locales)
+    public function setLocales(array $locales): void
     {
         foreach ($this->locales as $locale) {
             if (!in_array($locale, $locales)) {
@@ -300,7 +298,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function addLocale(LocaleInterface $locale)
+    public function addLocale(LocaleInterface $locale): ChannelInterface
     {
         if (!$this->hasLocale($locale)) {
             $this->locales[] = $locale;
@@ -313,7 +311,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeLocale(LocaleInterface $locale)
+    public function removeLocale(LocaleInterface $locale): ChannelInterface
     {
         $this->locales->removeElement($locale);
         $locale->removeChannel($this);
@@ -324,7 +322,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function hasLocale(LocaleInterface $locale)
+    public function hasLocale(LocaleInterface $locale): bool
     {
         return $this->locales->contains($locale);
     }
@@ -332,7 +330,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function hasCurrency(CurrencyInterface $currency)
+    public function hasCurrency(CurrencyInterface $currency): bool
     {
         return $this->currencies->contains($currency);
     }
@@ -340,7 +338,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function setConversionUnits(array $conversionUnits)
+    public function setConversionUnits(array $conversionUnits): ChannelInterface
     {
         $this->conversionUnits = $conversionUnits;
 
@@ -350,7 +348,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getConversionUnits()
+    public function getConversionUnits(): array
     {
         return $this->conversionUnits;
     }
@@ -366,7 +364,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->code;
     }

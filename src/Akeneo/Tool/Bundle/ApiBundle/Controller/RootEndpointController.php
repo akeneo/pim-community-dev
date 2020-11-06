@@ -28,10 +28,8 @@ class RootEndpointController
 
     /**
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function getAction(Request $request)
+    public function getAction(Request $request): JsonResponse
     {
         $routes = $this->router->getRouteCollection();
 

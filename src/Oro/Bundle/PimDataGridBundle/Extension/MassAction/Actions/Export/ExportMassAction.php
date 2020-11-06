@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export;
 
+use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WidgetMassAction;
 
@@ -23,7 +24,7 @@ class ExportMassAction extends WidgetMassAction implements ExportMassActionInter
     /**
      * {@inheritdoc}
      */
-    public function setOptions(ActionConfiguration $options)
+    public function setOptions(ActionConfiguration $options): ActionInterface
     {
         $options['frontend_type'] = 'export';
 
@@ -45,7 +46,7 @@ class ExportMassAction extends WidgetMassAction implements ExportMassActionInter
     /**
      * Add method to assert required route parameters
      */
-    protected function assertHasRequiredOptions()
+    protected function assertHasRequiredOptions(): void
     {
         parent::assertHasRequiredOptions();
 
@@ -57,7 +58,7 @@ class ExportMassAction extends WidgetMassAction implements ExportMassActionInter
      *
      * @throws \LogicException
      */
-    protected function assertRequiredRouteParameters()
+    protected function assertRequiredRouteParameters(): void
     {
         foreach ($this->requiredRouteParams as $requiredRouteParam) {
             if (!isset($this->options['route_parameters'][$requiredRouteParam])) {
@@ -75,7 +76,7 @@ class ExportMassAction extends WidgetMassAction implements ExportMassActionInter
     /**
      * {@inheritdoc}
      */
-    public function getExportContext()
+    public function getExportContext(): array
     {
         return $this->options['context'];
     }

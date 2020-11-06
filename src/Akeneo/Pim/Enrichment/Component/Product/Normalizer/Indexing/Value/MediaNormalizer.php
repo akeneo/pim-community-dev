@@ -19,7 +19,7 @@ class MediaNormalizer extends AbstractProductValueNormalizer implements Normaliz
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof MediaValueInterface && (
                 $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
@@ -34,7 +34,7 @@ class MediaNormalizer extends AbstractProductValueNormalizer implements Normaliz
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedData(ValueInterface $value)
+    protected function getNormalizedData(ValueInterface $value): ?array
     {
         $data = $value->getData();
 

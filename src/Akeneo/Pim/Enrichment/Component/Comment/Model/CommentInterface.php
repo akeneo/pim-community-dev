@@ -15,104 +15,61 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 interface CommentInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): int;
 
     /**
      * @param string $resourceId
-     *
-     * @return CommentInterface
      */
-    public function setResourceId($resourceId);
+    public function setResourceId(string $resourceId): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 
-    /**
-     * @return string
-     */
-    public function getResourceId();
+    public function getResourceId(): string;
 
     /**
      * @param string $resourceName
-     *
-     * @return CommentInterface
      */
-    public function setResourceName($resourceName);
+    public function setResourceName(string $resourceName): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 
-    /**
-     * @return string
-     */
-    public function getResourceName();
+    public function getResourceName(): string;
 
     /**
      * @param UserInterface $author
-     *
-     * @return CommentInterface
      */
-    public function setAuthor(UserInterface $author);
+    public function setAuthor(UserInterface $author): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 
-    /**
-     * @return UserInterface
-     */
-    public function getAuthor();
+    public function getAuthor(): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param string $body
-     *
-     * @return CommentInterface
      */
-    public function setBody($body);
+    public function setBody(string $body): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 
-    /**
-     * @return string
-     */
-    public function getBody();
+    public function getBody(): string;
 
     /**
      * @param \DateTime $createdAt
-     *
-     * @return CommentInterface
      */
-    public function setCreatedAt(\DateTime $createdAt);
+    public function setCreatedAt(\DateTime $createdAt): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt();
+    public function getCreatedAt(): \DateTime;
 
     /**
      * @param CommentInterface $parent
-     *
-     * @return CommentInterface
      */
-    public function setParent(CommentInterface $parent);
+    public function setParent(CommentInterface $parent): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 
-    /**
-     * @return CommentInterface
-     */
-    public function getParent();
+    public function getParent(): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 
     /**
      * @param \DateTime $repliedAt
-     *
-     * @return CommentInterface
      */
-    public function setRepliedAt(\DateTime $repliedAt);
+    public function setRepliedAt(\DateTime $repliedAt): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 
-    /**
-     * @return \DateTime
-     */
-    public function getRepliedAt();
+    public function getRepliedAt(): \DateTime;
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getChildren();
+    public function getChildren(): \Doctrine\Common\Collections\ArrayCollection;
 
     /**
      * @param ArrayCollection $children
-     *
-     * @return CommentInterface
      */
-    public function setChildren(ArrayCollection $children);
+    public function setChildren(ArrayCollection $children): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 }

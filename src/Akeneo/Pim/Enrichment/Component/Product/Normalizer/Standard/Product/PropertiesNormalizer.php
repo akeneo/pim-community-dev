@@ -49,7 +49,7 @@ class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMeth
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = [])
+    public function normalize($product, $format = null, array $context = []): array
     {
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
@@ -74,7 +74,7 @@ class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMeth
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && 'standard' === $format;
     }
@@ -93,14 +93,12 @@ class PropertiesNormalizer implements NormalizerInterface, CacheableSupportsMeth
      *
      * @return ArrayCollection
      */
-    private function normalizeValues(WriteValueCollection $values, $format, array $context = [])
+    private function normalizeValues(WriteValueCollection $values, string $format, array $context = [])
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);
         }
 
-        $data = $this->normalizer->normalize($values, $format, $context);
-
-        return $data;
+        return $this->normalizer->normalize($values, $format, $context);
     }
 }

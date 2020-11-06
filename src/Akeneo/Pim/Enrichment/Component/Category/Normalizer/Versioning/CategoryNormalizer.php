@@ -40,24 +40,21 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
      * {@inheritdoc}
      *
      * @param CategoryInterface $category
-     *
-     * @return array
      */
-    public function normalize($category, $format = null, array $context = [])
+    public function normalize($category, $format = null, array $context = []): array
     {
         $standardCategory = $this->standardNormalizer->normalize($category, 'standard', $context);
         $flatCategory = $standardCategory;
 
         unset($flatCategory['labels']);
-        $flatCategory += $this->translationNormalizer->normalize($standardCategory['labels'], 'flat', $context);
 
-        return $flatCategory;
+        return $flatCategory + $this->translationNormalizer->normalize($standardCategory['labels'], 'flat', $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof CategoryInterface && in_array($format, $this->supportedFormats);
     }

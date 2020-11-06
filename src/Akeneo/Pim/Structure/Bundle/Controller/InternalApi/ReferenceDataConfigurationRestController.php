@@ -33,10 +33,8 @@ class ReferenceDataConfigurationRestController
 
     /**
      * Get the reference data configuration
-     *
-     * @return JsonResponse
      */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $referenceConfig = $this->registry->all();
 

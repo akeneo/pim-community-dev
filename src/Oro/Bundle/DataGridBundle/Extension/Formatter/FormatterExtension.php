@@ -26,7 +26,7 @@ class FormatterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(DatagridConfiguration $config): bool
     {
         $columns = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
         $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
@@ -41,7 +41,7 @@ class FormatterExtension extends AbstractExtension
      *
      * @param DatagridConfiguration $config
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(DatagridConfiguration $config): void
     {
         $columns = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
         $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
@@ -58,7 +58,7 @@ class FormatterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitResult(DatagridConfiguration $config, ResultsIterableObject $result)
+    public function visitResult(DatagridConfiguration $config, ResultsIterableObject $result): void
     {
         $rows = (array)$result->offsetGetOr('data', []);
 
@@ -96,7 +96,7 @@ class FormatterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data): void
     {
         // get only columns here because columns will be represented on frontend
         $columns = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
@@ -120,7 +120,7 @@ class FormatterExtension extends AbstractExtension
      * @param string            $name
      * @param PropertyInterface $property
      */
-    public function registerProperty($name, PropertyInterface $property)
+    public function registerProperty(string $name, PropertyInterface $property): void
     {
         $this->properties[$name] = $property;
     }
@@ -129,14 +129,10 @@ class FormatterExtension extends AbstractExtension
      * Returns prepared property object
      *
      * @param PropertyConfiguration $config
-     *
-     * @return PropertyInterface
      */
-    protected function getPropertyObject(PropertyConfiguration $config)
+    protected function getPropertyObject(PropertyConfiguration $config): \Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface
     {
-        $property = $this->properties[$config->offsetGet(Configuration::TYPE_KEY)]->init($config);
-
-        return $property;
+        return $this->properties[$config->offsetGet(Configuration::TYPE_KEY)]->init($config);
     }
 
     /**
@@ -144,10 +140,8 @@ class FormatterExtension extends AbstractExtension
      *
      * @param array  $config
      * @param string $type
-     *
-     * @return array
      */
-    protected function validateConfigurationByType($config, $type)
+    protected function validateConfigurationByType(array $config, string $type): array
     {
         $registeredTypes = array_keys($this->properties);
         $configuration = new Configuration($registeredTypes, $type);

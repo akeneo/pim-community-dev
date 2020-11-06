@@ -54,7 +54,7 @@ class ProductDatasource extends Datasource
     /**
      * {@inheritdoc}
      */
-    public function getResults()
+    public function getResults(): array
     {
         $attributeIdsToDisplay = $this->getConfiguration('displayed_attribute_ids');
         $attributes = $this->getConfiguration('attributes_configuration');
@@ -82,10 +82,7 @@ class ProductDatasource extends Datasource
         return $rows;
     }
 
-    /**
-     * @return ProductQueryBuilderInterface
-     */
-    public function getProductQueryBuilder()
+    public function getProductQueryBuilder(): \Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface
     {
         return $this->pqb;
     }
@@ -96,7 +93,7 @@ class ProductDatasource extends Datasource
      *
      * @return Datasource
      */
-    protected function initializeQueryBuilder($method, array $config = [])
+    protected function initializeQueryBuilder(string $method, array $config = []): \Oro\Bundle\PimDataGridBundle\Datasource\Datasource
     {
         $factoryConfig['repository_parameters'] = $config;
         $factoryConfig['repository_method'] = $method;
@@ -138,12 +135,10 @@ class ProductDatasource extends Datasource
             'document_type'    => null,
         ];
 
-        $normalizedItem = array_merge(
+        return array_merge(
             $defaultNormalizedItem,
             $this->normalizer->normalize($item, 'datagrid', $context)
         );
-
-        return $normalizedItem;
     }
 
     /**

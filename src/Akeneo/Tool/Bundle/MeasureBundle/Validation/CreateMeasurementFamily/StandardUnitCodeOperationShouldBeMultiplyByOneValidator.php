@@ -18,7 +18,7 @@ class StandardUnitCodeOperationShouldBeMultiplyByOneValidator extends Constraint
     /**
      * @param CreateMeasurementFamilyCommand $saveMeasurementFamily
      */
-    public function validate($saveMeasurementFamily, Constraint $constraint)
+    public function validate($saveMeasurementFamily, Constraint $constraint): void
     {
         $standardUnit = $this->standardUnit($saveMeasurementFamily);
         $hasOneOperation = 1 === \count($standardUnit['convert_from_standard']);
@@ -39,7 +39,7 @@ class StandardUnitCodeOperationShouldBeMultiplyByOneValidator extends Constraint
     /**
      * @param CreateMeasurementFamilyCommand $saveMeasurementFamily
      */
-    private function standardUnit($saveMeasurementFamily): array
+    private function standardUnit(\Akeneo\Tool\Bundle\MeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand $saveMeasurementFamily): array
     {
         foreach ($saveMeasurementFamily->units as $unit) {
             if ($saveMeasurementFamily->standardUnitCode === $unit['code']) {

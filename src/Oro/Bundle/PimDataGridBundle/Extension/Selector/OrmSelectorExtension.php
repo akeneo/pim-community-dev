@@ -46,7 +46,7 @@ class OrmSelectorExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(DatagridConfiguration $config): bool
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
@@ -61,7 +61,7 @@ class OrmSelectorExtension extends AbstractExtension
      *
      * @return $this
      */
-    public function addSelector($name, SelectorInterface $selector)
+    public function addSelector(string $name, SelectorInterface $selector): self
     {
         $this->selectors[$name] = $selector;
 
@@ -71,7 +71,7 @@ class OrmSelectorExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function visitDatasource(DatagridConfiguration $config, OroDatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, OroDatasourceInterface $datasource): void
     {
         $selectors = $this->getSelectorsToApply($config);
         foreach ($selectors as $selector) {
@@ -82,17 +82,15 @@ class OrmSelectorExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return -400;
     }
 
     /**
      * @param string $datasource
-     *
-     * @return OrmSelectorExtension
      */
-    public function addEligibleDatasource($datasource)
+    public function addEligibleDatasource(string $datasource): self
     {
         $this->eligibleDatasource[] = $datasource;
 
@@ -106,7 +104,7 @@ class OrmSelectorExtension extends AbstractExtension
      *
      * @return SelectorInterface[]
      */
-    protected function getSelectorsToApply(DatagridConfiguration $config)
+    protected function getSelectorsToApply(DatagridConfiguration $config): array
     {
         $selectors = [];
         $columnsConfig = $config->offsetGetByPath(

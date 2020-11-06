@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Query;
@@ -16,7 +17,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
+class SqlGetConnectorProductsWithOptions implements GetConnectorProducts
 {
     /** @var Query\GetConnectorProducts */
     private $getConnectorProducts;
@@ -25,8 +26,8 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
     private $connection;
 
     public function __construct(
-        Query\GetConnectorProducts $getConnectorProducts,
-        Connection $connection
+        GetConnectorProducts $getConnectorProducts,
+        \Doctrine\DBAL\Driver\Connection $connection
     ) {
         $this->getConnectorProducts = $getConnectorProducts;
         $this->connection = $connection;
@@ -60,14 +61,12 @@ class SqlGetConnectorProductsWithOptions implements Query\GetConnectorProducts
         $optionCodes = $this->getOptionCodes($connectorProducts);
         $optionWithLabels = $this->getOptionWithLabels($optionCodes);
 
-        return array_map(function (ConnectorProduct $product) use ($optionWithLabels) {
-            return $product->buildLinkedData($optionWithLabels);
-        }, $connectorProducts);
+        return array_map(fn(ConnectorProduct $product) => $product->buildLinkedData($optionWithLabels), $connectorProducts);
     }
 
     /**
      * @param array $connectorProducts
-     * @return array{'attribute_code': int, 'option_code': mixed|string}
+     * @return array{attribute_code:int, option_code:mixed|string}
      */
     private function getOptionCodes(array $connectorProducts): array
     {

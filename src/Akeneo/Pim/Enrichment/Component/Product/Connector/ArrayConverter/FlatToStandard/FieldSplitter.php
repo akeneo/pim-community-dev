@@ -19,10 +19,8 @@ class FieldSplitter extends BaseFieldSplitter
      * '10 METER' => ['10', 'METER']
      *
      * @param string $value Raw value
-     *
-     * @return array
      */
-    public function splitUnitValue($value)
+    public function splitUnitValue(string $value): array
     {
         return '' === $value ? [] : explode(AttributeColumnInfoExtractor::UNIT_SEPARATOR, $value);
     }
@@ -33,10 +31,8 @@ class FieldSplitter extends BaseFieldSplitter
      * 'boots, sandals' => ['boots', 'sandals']
      *
      * @param string $value Raw value
-     *
-     * @return array
      */
-    public function splitCollection($value)
+    public function splitCollection(string $value): array
     {
         $tokens = [];
         if ('' !== $value) {
@@ -58,7 +54,7 @@ class FieldSplitter extends BaseFieldSplitter
      *
      * @return array
      */
-    public function splitPrices($value)
+    public function splitPrices(string $value)
     {
         $prices = [];
         if ('' !== $value) {

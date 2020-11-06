@@ -33,7 +33,7 @@ class RemoveEvent extends GenericEvent
      *
      * @return mixed
      */
-    public function getSubjectId()
+    public function getSubjectId(): int
     {
         return $this->subjectId;
     }

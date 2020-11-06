@@ -30,7 +30,7 @@ class JobRegistry
      *
      * @throws DuplicatedJobException
      */
-    public function register(JobInterface $job, $jobType, $connector)
+    public function register(JobInterface $job, string $jobType, string $connector): void
     {
         if (isset($this->jobs[$job->getName()])) {
             throw new DuplicatedJobException(
@@ -47,7 +47,7 @@ class JobRegistry
      * @TODO RAC-267
      * @deprecated
      */
-    public function remove($jobName, $jobType, $connector)
+    public function remove($jobName, $jobType, $connector): void
     {
         if (!isset($this->jobs[$jobName])) {
             throw new \InvalidArgumentException(
@@ -65,10 +65,8 @@ class JobRegistry
      * @param string $jobName
      *
      * @throws UndefinedJobException
-     *
-     * @return JobInterface
      */
-    public function get($jobName)
+    public function get(string $jobName): \Akeneo\Tool\Component\Batch\Job\JobInterface
     {
         if (!isset($this->jobs[$jobName])) {
             throw new UndefinedJobException(
@@ -82,7 +80,7 @@ class JobRegistry
     /**
      * @return JobInterface[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->jobs;
     }
@@ -91,10 +89,8 @@ class JobRegistry
      * @param string $jobType
      *
      * @throws UndefinedJobException
-     *
-     * @return JobInterface
      */
-    public function allByType($jobType)
+    public function allByType(string $jobType): array
     {
         if (!isset($this->jobsByType[$jobType])) {
             throw new UndefinedJobException(
@@ -112,7 +108,7 @@ class JobRegistry
      *
      * @return JobInterface[]
      */
-    public function allByTypeGroupByConnector($jobType)
+    public function allByTypeGroupByConnector(string $jobType): array
     {
         if (!isset($this->jobsByTypeGroupByConnector[$jobType])) {
             throw new UndefinedJobException(
@@ -126,7 +122,7 @@ class JobRegistry
     /**
      * @return string[]
      */
-    public function getConnectors()
+    public function getConnectors(): array
     {
         return array_keys($this->jobsByConnector);
     }

@@ -19,7 +19,7 @@ final class GetDescendentCategoryCodes
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -33,7 +33,8 @@ final class GetDescendentCategoryCodes
             AND category.rgt < :parent_category_right
             AND category.root = :parent_category_root;
 SQL;
-        $rows = $this->connection->executeQuery(
+
+        return $this->connection->executeQuery(
             $sql,
             [
                 'parent_category_left'  => $parentCategory->getLeft(),
@@ -41,7 +42,5 @@ SQL;
                 'parent_category_root'  => $parentCategory->getRoot(),
             ]
         )->fetchAll(\PDO::FETCH_COLUMN);
-
-        return $rows;
     }
 }

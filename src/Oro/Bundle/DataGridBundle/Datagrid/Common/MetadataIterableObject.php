@@ -12,10 +12,8 @@ class MetadataIterableObject extends IterableObject
 
     /**
      * Default metadata array
-     *
-     * @return array
      */
-    protected static function getDefaultMetadata()
+    protected static function getDefaultMetadata(): array
     {
         return [
             self::REQUIRED_MODULES_KEY => [],
@@ -26,7 +24,7 @@ class MetadataIterableObject extends IterableObject
     /**
      * {@inheritDoc}
      */
-    public static function createNamed($name, array $params)
+    public static function createNamed(string $name, array $params): self
     {
         $params = self::getDefaultMetadata();
         $params[self::OPTIONS_KEY][self::GRID_NAME_KEY] = $name;
@@ -37,7 +35,7 @@ class MetadataIterableObject extends IterableObject
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         if (!isset($this[self::OPTIONS_KEY][self::GRID_NAME_KEY])) {
             throw new \LogicException("Trying to get name of unnamed object");

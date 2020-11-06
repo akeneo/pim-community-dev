@@ -20,8 +20,6 @@ interface DatasourceInterface
 
     /**
      * Returns data extracted via datasource
-     *
-     * @return array
      */
-    public function getResults();
+    public function getResults(): array;
 }

@@ -54,8 +54,6 @@ final class DashboardWidgetCategoriesController
             throw new \InvalidArgumentException('The list of categories must be an array');
         }
 
-        return array_map(function ($categoryCode) {
-            return new CategoryCode($categoryCode);
-        }, $requestCategories);
+        return array_map(fn($categoryCode) => new CategoryCode($categoryCode), $requestCategories);
     }
 }

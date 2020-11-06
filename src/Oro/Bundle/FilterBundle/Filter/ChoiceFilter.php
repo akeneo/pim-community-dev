@@ -15,7 +15,7 @@ class ChoiceFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return ChoiceFilterType::class;
     }
@@ -23,7 +23,7 @@ class ChoiceFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -48,7 +48,7 @@ class ChoiceFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $formView = $this->getForm()->createView();
         $fieldView = $formView->children['value'];
@@ -122,10 +122,8 @@ class ChoiceFilter extends AbstractFilter
      * Get operator string
      *
      * @param int $type
-     *
-     * @return string
      */
-    protected function getOperator($type)
+    protected function getOperator(int $type): string
     {
         $operatorTypes = [
             ChoiceFilterType::TYPE_CONTAINS     => Operators::IN_LIST,

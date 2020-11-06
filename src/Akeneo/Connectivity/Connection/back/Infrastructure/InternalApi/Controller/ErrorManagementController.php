@@ -40,8 +40,6 @@ class ErrorManagementController
      */
     public function normalizeBusinessErrors(array $businessErrors): array
     {
-        return array_map(function (BusinessError $businessError) {
-            return $businessError->normalize();
-        }, $businessErrors);
+        return array_map(fn(BusinessError $businessError) => $businessError->normalize(), $businessErrors);
     }
 }

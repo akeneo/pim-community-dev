@@ -18,7 +18,7 @@ class CommentRepository extends EntityRepository implements CommentRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getComments($resourceName, $resourceId)
+    public function getComments(string $resourceName, $resourceId): array
     {
         return $this->findBy(
             ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'parent' => null],

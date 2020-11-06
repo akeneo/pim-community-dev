@@ -11,10 +11,11 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  */
 class EntitiesToIdsTransformer extends EntityToIdTransformer
 {
+    public $propertyAccessor;
     /**
      * {@inheritdoc}
      */
-    public function transform($value)
+    public function transform($value): array
     {
         if (null === $value || [] === $value) {
             return [];
@@ -36,7 +37,7 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?object
     {
         if (!is_array($value) && !$value instanceof \Traversable) {
             throw new UnexpectedTypeException($value, 'array');
@@ -60,9 +61,8 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
      *
      * @param array $ids
      * @throws UnexpectedTypeException if query builder callback returns invalid type
-     * @return array
      */
-    protected function loadEntitiesByIds(array $ids)
+    protected function loadEntitiesByIds(array $ids): array
     {
         $repository = $this->em->getRepository($this->className);
         if ($this->queryBuilderCallback) {

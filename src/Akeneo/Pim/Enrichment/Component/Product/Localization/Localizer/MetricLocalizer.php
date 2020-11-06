@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer;
 
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Akeneo\Tool\Component\Localization\Localizer\NumberLocalizer;
 
 /**
@@ -16,7 +17,7 @@ class MetricLocalizer extends NumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function validate($metric, $attributeCode, array $options = [])
+    public function validate($metric, string $attributeCode, array $options = []): ?ConstraintViolationListInterface
     {
         if (!isset($metric['amount'])) {
             return null;

@@ -2,6 +2,9 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -81,7 +84,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -89,7 +92,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId(int $id): AttributeGroupInterface
     {
         $this->id = $id;
 
@@ -99,7 +102,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -107,7 +110,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): AttributeGroupInterface
     {
         $this->code = $code;
 
@@ -117,7 +120,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getSortOrder()
+    public function getSortOrder(): int
     {
         return $this->sortOrder;
     }
@@ -125,7 +128,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setSortOrder($sortOrder)
+    public function setSortOrder(string $sortOrder): AttributeGroupInterface
     {
         $this->sortOrder = $sortOrder;
 
@@ -135,7 +138,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreated()
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
@@ -143,7 +146,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created): TimestampableInterface
     {
         $this->created = $created;
 
@@ -153,7 +156,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getUpdated()
+    public function getUpdated(): \DateTime
     {
         return $this->updated;
     }
@@ -161,7 +164,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated): TimestampableInterface
     {
         $this->updated = $updated;
 
@@ -171,7 +174,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttribute(AttributeInterface $attribute)
+    public function addAttribute(AttributeInterface $attribute): AttributeGroupInterface
     {
         $this->attributes[] = $attribute;
         $attribute->setGroup($this);
@@ -182,7 +185,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAttribute(AttributeInterface $attribute)
+    public function removeAttribute(AttributeInterface $attribute): AttributeGroupInterface
     {
         $this->attributes->removeElement($attribute);
         $attribute->setGroup(null);
@@ -193,7 +196,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributes()
+    public function getAttributes(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->attributes;
     }
@@ -201,7 +204,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttribute(AttributeInterface $attribute)
+    public function hasAttribute(AttributeInterface $attribute): bool
     {
         return $this->attributes->contains($attribute);
     }
@@ -209,7 +212,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getMaxAttributeSortOrder()
+    public function getMaxAttributeSortOrder(): int
     {
         $max = 0;
         foreach ($this->getAttributes() as $att) {
@@ -222,7 +225,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 
@@ -232,7 +235,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->translations;
     }
@@ -240,7 +243,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null): ?AttributeGroupTranslationInterface
+    public function getTranslation(?string $locale = null): AbstractTranslation
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {
@@ -264,7 +267,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): TranslatableInterface
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -276,7 +279,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): TranslatableInterface
     {
         $this->translations->removeElement($translation);
 
@@ -286,7 +289,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslationFQCN()
+    public function getTranslationFQCN(): string
     {
         return AttributeGroupTranslation::class;
     }
@@ -294,9 +297,9 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
-        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+        $translated = $this->getTranslation() !== null ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['. $this->getCode() .']';
     }
@@ -304,7 +307,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): AttributeGroupInterface
     {
         $this->getTranslation()->setLabel($label);
 
@@ -314,7 +317,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->code;
     }

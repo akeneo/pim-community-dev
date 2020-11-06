@@ -40,7 +40,7 @@ class StoreFileCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument('file', InputArgument::REQUIRED)
@@ -51,7 +51,7 @@ class StoreFileCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $filePath = $input->getArgument('file');
         if (!is_file($filePath)) {
@@ -84,10 +84,8 @@ class StoreFileCommand extends Command
 
     /**
      * @param string $storageFsAlias
-     *
-     * @return bool
      */
-    protected function hasFileSystem($storageFsAlias)
+    protected function hasFileSystem(string $storageFsAlias): bool
     {
         try {
             $this->mountManager->getFilesystem($storageFsAlias);

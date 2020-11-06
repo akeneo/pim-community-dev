@@ -26,7 +26,7 @@ class DompdfBuilder implements PdfBuilderInterface
     /**
      * @param string $rootDir
      */
-    public function __construct($rootDir)
+    public function __construct(string $rootDir)
     {
         $this->rootDir = $rootDir;
     }
@@ -34,7 +34,7 @@ class DompdfBuilder implements PdfBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildPdfOutput($htmlInput)
+    public function buildPdfOutput(string $htmlInput): string
     {
         $this->render($htmlInput);
 
@@ -48,7 +48,7 @@ class DompdfBuilder implements PdfBuilderInterface
      *
      * @throws \LogicException
      */
-    protected function render($html)
+    protected function render(string $html): void
     {
         $this->dompdf = new Dompdf([
             'isRemoteEnabled' => true,
@@ -59,10 +59,8 @@ class DompdfBuilder implements PdfBuilderInterface
 
     /**
      * Get the raw pdf output
-     *
-     * @return string
      */
-    protected function output()
+    protected function output(): ?string
     {
         return $this->dompdf->output();
     }

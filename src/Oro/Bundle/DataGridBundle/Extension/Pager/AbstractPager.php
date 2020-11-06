@@ -23,24 +23,20 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param integer $maxPerPage Number of records to display per page
      */
-    public function __construct($maxPerPage = 10)
+    public function __construct(int $maxPerPage = 10)
     {
         $this->setMaxPerPage($maxPerPage);
     }
 
     /**
      * Returns an array of results on the given page.
-     *
-     * @return array
      */
-    abstract public function getResults();
+    abstract public function getResults(): array;
 
     /**
      * Returns the number of results.
-     *
-     * @return integer
      */
-    public function getNbResults()
+    public function getNbResults(): int
     {
         return (int)$this->nbResults;
     }
@@ -50,7 +46,7 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param integer $nb
      */
-    protected function setNbResults($nb)
+    protected function setNbResults(int $nb)
     {
         $this->nbResults = $nb;
     }
@@ -60,7 +56,7 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param integer $page
      */
-    protected function setLastPage($page)
+    protected function setLastPage(int $page)
     {
         $this->lastPage = $page;
 
@@ -71,10 +67,8 @@ abstract class AbstractPager implements PagerInterface
 
     /**
      * Returns the current page.
-     *
-     * @return integer
      */
-    public function getPage()
+    public function getPage(): int
     {
         return $this->page;
     }
@@ -84,13 +78,13 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param integer $page
      */
-    public function setPage($page)
+    public function setPage(int $page): void
     {
-        $this->page = intval($page);
+        $this->page = (int) $page;
 
         if ($this->page <= 0) {
             // set first page, which depends on a maximum set
-            $this->page = $this->getMaxPerPage() ? 1 : 0;
+            $this->page = $this->getMaxPerPage() !== 0 ? 1 : 0;
         }
     }
 
@@ -99,7 +93,7 @@ abstract class AbstractPager implements PagerInterface
      *
      * @return integer
      */
-    public function getMaxPerPage()
+    public function getMaxPerPage(): int
     {
         return $this->maxPerPage;
     }
@@ -109,22 +103,20 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param integer $max
      */
-    public function setMaxPerPage($max)
+    public function setMaxPerPage(int $max): void
     {
         if ($max > 0) {
             $this->maxPerPage = $max;
             if ($this->page == 0) {
                 $this->page = 1;
             }
+        } elseif ($max == 0) {
+            $this->maxPerPage = 0;
+            $this->page = 0;
         } else {
-            if ($max == 0) {
-                $this->maxPerPage = 0;
-                $this->page = 0;
-            } else {
-                $this->maxPerPage = 1;
-                if ($this->page == 0) {
-                    $this->page = 1;
-                }
+            $this->maxPerPage = 1;
+            if ($this->page == 0) {
+                $this->page = 1;
             }
         }
     }

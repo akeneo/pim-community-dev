@@ -27,7 +27,7 @@ class AverageMaxProductValuesPerFamily implements AverageMaxQuery
      * @param Connection $connection
      * @param int $limit
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, int $limit)
     {
         $this->connection = $connection;
         $this->limit = $limit;
@@ -74,8 +74,7 @@ class AverageMaxProductValuesPerFamily implements AverageMaxQuery
             ) as a
 SQL;
         $result = $this->connection->query($sql)->fetch();
-        $volume = new AverageMaxVolumes((int) $result['max'], (int) $result['average'], $this->limit, self::VOLUME_NAME);
 
-        return $volume;
+        return new AverageMaxVolumes((int) $result['max'], (int) $result['average'], $this->limit, self::VOLUME_NAME);
     }
 }

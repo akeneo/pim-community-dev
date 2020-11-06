@@ -38,7 +38,7 @@ class AddUserSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             BuildVersionEvents::PRE_BUILD => 'preBuild',
@@ -47,10 +47,8 @@ class AddUserSubscriber implements EventSubscriberInterface
 
     /**
      * @param BuildVersionEvent $event
-     *
-     * @return BuildVersionEvent
      */
-    public function preBuild(BuildVersionEvent $event)
+    public function preBuild(BuildVersionEvent $event): \Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent
     {
         if (null === $this->tokenStorage) {
             return $event;

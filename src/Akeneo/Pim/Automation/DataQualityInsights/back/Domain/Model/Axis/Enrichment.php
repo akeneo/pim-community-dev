@@ -35,9 +35,7 @@ final class Enrichment implements Axis
     public function __construct()
     {
         $this->code = new AxisCode(self::AXIS_CODE);
-        $this->criteriaCodes = array_map(function ($criterion) {
-            return new CriterionCode($criterion);
-        }, self::CRITERIA_CODES);
+        $this->criteriaCodes = array_map(fn($criterion) => new CriterionCode($criterion), self::CRITERIA_CODES);
     }
 
     public function getCode(): AxisCode

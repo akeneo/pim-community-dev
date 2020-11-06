@@ -17,17 +17,13 @@ interface FilterProviderInterface
      * Get the Filter for the given element
      *
      * @param mixed $element
-     *
-     * @return string
      */
-    public function getFilters($element);
+    public function getFilters($element): string;
 
     /**
      * Does the Filter provider support the element
      *
      * @param mixed $element
-     *
-     * @return bool
      */
-    public function supports($element);
+    public function supports($element): bool;
 }

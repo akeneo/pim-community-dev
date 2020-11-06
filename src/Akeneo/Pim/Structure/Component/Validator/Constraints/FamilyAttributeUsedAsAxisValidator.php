@@ -62,9 +62,7 @@ class FamilyAttributeUsedAsAxisValidator extends ConstraintValidator
         FamilyVariantInterface $familyVariant
     ): array {
         $attributeCodesUsedAsAxis = $familyVariant->getAxes()->map(
-            function (AttributeInterface $attribute) {
-                return $attribute->getCode();
-            }
+            fn(AttributeInterface $attribute) => $attribute->getCode()
         )->toArray();
 
         return array_diff($attributeCodesUsedAsAxis, $family->getAttributeCodes());

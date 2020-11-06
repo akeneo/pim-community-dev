@@ -14,10 +14,7 @@ abstract class PropertyException extends \LogicException
     /** @var string */
     protected $propertyName;
 
-    /**
-     * @return string
-     */
-    public function getPropertyName()
+    public function getPropertyName(): string
     {
         return $this->propertyName;
     }

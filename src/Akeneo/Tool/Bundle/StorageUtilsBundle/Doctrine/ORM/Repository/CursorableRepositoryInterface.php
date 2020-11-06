@@ -13,8 +13,6 @@ interface CursorableRepositoryInterface
 {
     /**
      * @param array $ids of the entities
-     *
-     * @return array
      */
-    public function findByIds(array $ids);
+    public function findByIds(array $ids): array;
 }

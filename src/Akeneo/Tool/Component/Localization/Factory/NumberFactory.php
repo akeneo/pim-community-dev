@@ -26,10 +26,8 @@ class NumberFactory
      * Creates a number formatter according to options and with predefined formats.
      *
      * @param array $options
-     *
-     * @return \NumberFormatter
      */
-    public function create(array $options)
+    public function create(array $options): \NumberFormatter
     {
         $options = $this->resolve($options);
 
@@ -46,10 +44,8 @@ class NumberFactory
      * Resolve the options for the factory instances.
      *
      * @param array $options
-     *
-     * @return array
      */
-    protected function resolve(array $options)
+    protected function resolve(array $options): array
     {
         $options = array_merge(
             [

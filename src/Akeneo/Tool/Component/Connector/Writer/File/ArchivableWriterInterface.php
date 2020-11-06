@@ -16,8 +16,6 @@ interface ArchivableWriterInterface
      * array(
      *     '/full/path/to/the/file' => 'path/relative/to/the/export/directory'
      * )
-     *
-     * @return array
      */
-    public function getWrittenFiles();
+    public function getWrittenFiles(): array;
 }

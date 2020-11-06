@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -45,7 +46,7 @@ class EntityWithValuesFilter implements FilterInterface
      */
     public function __construct(
         NormalizerInterface $normalizer,
-        ComparatorRegistry $comparatorRegistry,
+        ComparatorRegistryInterface $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
         FilterInterface $productFieldFilter,
         array $entityFields
@@ -82,9 +83,8 @@ class EntityWithValuesFilter implements FilterInterface
         }
 
         $productFieldsFilter = $this->productFieldFilter->filter($entity, $fields);
-        $result = $this->mergeValueToResult($result, $productFieldsFilter);
 
-        return $result;
+        return $this->mergeValueToResult($result, $productFieldsFilter);
     }
 
     /**
@@ -137,7 +137,7 @@ class EntityWithValuesFilter implements FilterInterface
      *
      * @return array
      */
-    protected function getOriginalAttribute(array $originalValues, array $attribute, $code): array
+    protected function getOriginalAttribute(array $originalValues, array $attribute, string $code): array
     {
         $key = $this->buildKey($attribute, $code);
 
@@ -191,11 +191,7 @@ class EntityWithValuesFilter implements FilterInterface
     protected function mergeValueToResult(array $collection, array $value): array
     {
         foreach ($value as $code => $data) {
-            if (array_key_exists($code, $collection)) {
-                $collection[$code] = array_merge_recursive($collection[$code], $data);
-            } else {
-                $collection[$code] = $data;
-            }
+            $collection[$code] = array_key_exists($code, $collection) ? array_merge_recursive($collection[$code], $data) : $data;
         }
 
         return $collection;
@@ -207,7 +203,7 @@ class EntityWithValuesFilter implements FilterInterface
      *
      * @return string
      */
-    protected function buildKey(array $data, $code): string
+    protected function buildKey(array $data, string $code): string
     {
         return sprintf('%s-%s-%s', $code, $data['locale'], $data['scope']);
     }

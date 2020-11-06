@@ -85,9 +85,9 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
         EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
-        $locale,
-        $scope
-    ) {
+        string $locale,
+        string $scope
+    ): void {
         $value = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
         if (null !== $value) {
             $data = $this->addNewPrices($value->getData(), $data);
@@ -105,14 +105,10 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
      *
      * @param PriceCollectionInterface $previousPrices
      * @param array                    $newPrices
-     *
-     * @return array
      */
-    protected function addNewPrices(PriceCollectionInterface $previousPrices, array $newPrices)
+    protected function addNewPrices(PriceCollectionInterface $previousPrices, array $newPrices): array
     {
-        $newCurrencies = array_filter(array_map(function (array $price): ?string {
-            return $price['currency'] ?? null;
-        }, $newPrices));
+        $newCurrencies = array_filter(array_map(fn(array $price): ?string => $price['currency'] ?? null, $newPrices));
 
         $standardizedPreviousPrices = [];
         foreach ($previousPrices as $previousPrice) {

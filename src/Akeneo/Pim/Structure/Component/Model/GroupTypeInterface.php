@@ -17,49 +17,39 @@ interface GroupTypeInterface extends TranslatableInterface, ReferableInterface
 {
     /**
      * Get the id
-     *
-     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Get code
      *
      * @return string $code
      */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * Set code
      *
      * @param string $code
-     *
-     * @return GroupTypeInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 
     /**
      * Get groups
-     *
-     * @return ArrayCollection
      */
-    public function getGroups();
+    public function getGroups(): ArrayCollection;
 
     /**
      * Get label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * Set label
      *
      * @param string $label
-     *
-     * @return GroupTypeInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 
     /**
      * Returns the code

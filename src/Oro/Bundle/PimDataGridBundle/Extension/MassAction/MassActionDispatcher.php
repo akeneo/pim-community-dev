@@ -67,10 +67,8 @@ class MassActionDispatcher
      * Dispatch datagrid mass action
      *
      * @param array $parameters
-     *
-     * @return MassActionResponseInterface
      */
-    public function dispatch(array $parameters)
+    public function dispatch(array $parameters): MassActionResponseInterface
     {
         $parameters = $this->prepareMassActionParameters($parameters);
 
@@ -86,10 +84,8 @@ class MassActionDispatcher
      * If Inset is defined, it returns filter on entity ids, else it returns all applied filters on the grid
      *
      * @param array $parameters
-     *
-     * @return array
      */
-    public function getRawFilters(array $parameters)
+    public function getRawFilters(array $parameters): array
     {
         $parameters = $this->prepareMassActionParameters($parameters);
         $datagrid = $parameters['datagrid'];
@@ -115,16 +111,10 @@ class MassActionDispatcher
         }
 
         foreach ($filters as &$filter) {
-            if (isset($filter['context'])) {
-                $filter['context'] = array_merge($filter['context'], $contextParams);
-            } else {
-                $filter['context'] = $contextParams;
-            }
+            $filter['context'] = isset($filter['context']) ? array_merge($filter['context'], $contextParams) : $contextParams;
         }
 
-        $filters = $this->convertParentFieldIfAllRowsAreSelected($filters);
-
-        return $filters;
+        return $this->convertParentFieldIfAllRowsAreSelected($filters);
     }
 
     /**
@@ -133,10 +123,8 @@ class MassActionDispatcher
      * @param array $parameters
      *
      * @throws \LogicException
-     *
-     * @return array
      */
-    protected function prepareMassActionParameters(array $parameters)
+    protected function prepareMassActionParameters(array $parameters): array
     {
         $inset = $this->prepareInsetParameter($parameters);
         $values = $this->prepareValuesParameter($parameters);
@@ -180,30 +168,24 @@ class MassActionDispatcher
 
     /**
      * @param array $parameters
-     *
-     * @return bool
      */
-    protected function prepareInsetParameter(array $parameters)
+    protected function prepareInsetParameter(array $parameters): bool
     {
         return isset($parameters['inset']) ? $parameters['inset'] : true;
     }
 
     /**
      * @param array $parameters
-     *
-     * @return array
      */
-    protected function prepareValuesParameter(array $parameters)
+    protected function prepareValuesParameter(array $parameters): array
     {
         return isset($parameters['values']) ? $parameters['values'] : [];
     }
 
     /**
      * @param array $parameters
-     *
-     * @return array
      */
-    protected function prepareFiltersParameter(array $parameters)
+    protected function prepareFiltersParameter(array $parameters): array
     {
         return isset($parameters['filters']) ? $parameters['filters'] : [];
     }
@@ -213,13 +195,11 @@ class MassActionDispatcher
      *
      * @param DatagridInterface   $datagrid
      * @param MassActionInterface $massAction
-     *
-     * @return MassActionResponseInterface
      */
     protected function performMassAction(
         DatagridInterface $datagrid,
         MassActionInterface $massAction
-    ) {
+    ): MassActionResponseInterface {
         $handler = $this->getMassActionHandler($massAction);
 
         return $handler->handle($datagrid, $massAction);
@@ -233,14 +213,12 @@ class MassActionDispatcher
      *
      * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
      */
-    protected function getMassActionByName($massActionName, DatagridInterface $datagrid)
+    protected function getMassActionByName(string $massActionName, DatagridInterface $datagrid)
     {
         $massAction = null;
         $extensions = array_filter(
             $datagrid->getAcceptor()->getExtensions(),
-            function (ExtensionVisitorInterface $extension) {
-                return $extension instanceof MassActionExtension;
-            }
+            fn(ExtensionVisitorInterface $extension) => $extension instanceof MassActionExtension
         );
 
         /** @var MassActionExtension|bool $extension */
@@ -262,15 +240,12 @@ class MassActionDispatcher
      * Get mass action handler from handler registry
      *
      * @param MassActionInterface $massAction
-     *
-     * @return MassActionHandlerInterface
      */
-    protected function getMassActionHandler(MassActionInterface $massAction)
+    protected function getMassActionHandler(MassActionInterface $massAction): MassActionHandlerInterface
     {
         $handlerAlias = $massAction->getOptions()->offsetGet('handler');
-        $handler = $this->handlerRegistry->getHandler($handlerAlias);
 
-        return $handler;
+        return $this->handlerRegistry->getHandler($handlerAlias);
     }
 
     /**
@@ -279,11 +254,10 @@ class MassActionDispatcher
      * @param string $actionName
      * @param string $datagridName
      *
-     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
      *
      * TODO: Need some clean up and optimization
      */
-    public function getMassActionByNames($actionName, $datagridName)
+    public function getMassActionByNames(string $actionName, string $datagridName): \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
     {
         $datagrid = $this->manager->getDatagrid($datagridName);
 

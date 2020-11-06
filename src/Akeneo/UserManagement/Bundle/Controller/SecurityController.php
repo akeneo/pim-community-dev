@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -42,7 +43,7 @@ class SecurityController extends Controller
     /**
      * @Template("PimUserBundle:Security:login.html.twig")
      */
-    public function login()
+    public function login(): array
     {
         // get the login error if there is one
         $error = $this->authenticationUtils->getLastAuthenticationError();
@@ -61,7 +62,7 @@ class SecurityController extends Controller
         ];
     }
 
-    public function check()
+    public function check(): void
     {
         throw new \RuntimeException(
             'You must configure the check path to be handled by the firewall ' .
@@ -69,12 +70,12 @@ class SecurityController extends Controller
         );
     }
 
-    public function logout()
+    public function logout(): void
     {
         throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
     }
 
-    public function logoutRedirect()
+    public function logoutRedirect(): RedirectResponse
     {
         return $this->redirect($this->logoutUrlGenerator->getLogoutUrl());
     }

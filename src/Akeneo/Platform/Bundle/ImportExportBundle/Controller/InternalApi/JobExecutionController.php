@@ -57,10 +57,8 @@ class JobExecutionController
      * Get jobs
      *
      * @param $identifier
-     *
-     * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction($identifier): JsonResponse
     {
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {

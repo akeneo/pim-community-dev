@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Manager;
 
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -38,7 +39,7 @@ class UserManager implements UserProviderInterface
      * @param ObjectManager           $om             Object manager
      * @param EncoderFactoryInterface $encoderFactory
      */
-    public function __construct($class, ObjectManager $om, EncoderFactoryInterface $encoderFactory)
+    public function __construct(string $class, ObjectManager $om, EncoderFactoryInterface $encoderFactory)
     {
         $this->class = $class;
         $this->om = $om;
@@ -52,7 +53,7 @@ class UserManager implements UserProviderInterface
      * @param  bool                  $flush Whether to flush the changes (default true)
      * @throws \RuntimeException
      */
-    public function updateUser(SecurityUserInterface $user, $flush = true)
+    public function updateUser(SecurityUserInterface $user, bool $flush = true): void
     {
         $this->updatePassword($user);
 
@@ -80,7 +81,7 @@ class UserManager implements UserProviderInterface
      *
      * @param UserInterface $user
      */
-    public function updatePassword(UserInterface $user)
+    public function updatePassword(UserInterface $user): void
     {
         if (0 !== strlen($password = $user->getPlainPassword())) {
             $encoder = $this->getEncoder($user);
@@ -93,7 +94,7 @@ class UserManager implements UserProviderInterface
      *
      * @param SecurityUserInterface $user
      */
-    public function deleteUser(SecurityUserInterface $user)
+    public function deleteUser(SecurityUserInterface $user): void
     {
         $this->getStorageManager()->remove($user);
         $this->getStorageManager()->flush();
@@ -105,17 +106,15 @@ class UserManager implements UserProviderInterface
      * @param  array $criteria
      * @return SecurityUserInterface
      */
-    public function findUserBy(array $criteria)
+    public function findUserBy(array $criteria): ?object
     {
         return $this->getRepository()->findOneBy($criteria);
     }
 
     /**
      * Returns a collection with all user instances
-     *
-     * @return \Traversable
      */
-    public function findUsers()
+    public function findUsers(): array
     {
         return $this->getRepository()->findAll();
     }
@@ -126,7 +125,7 @@ class UserManager implements UserProviderInterface
      * @param  string $email
      * @return SecurityUserInterface
      */
-    public function findUserByEmail($email)
+    public function findUserByEmail(string $email): SecurityUserInterface
     {
         return $this->findUserBy(['email' => $email]);
     }
@@ -137,7 +136,7 @@ class UserManager implements UserProviderInterface
      * @param  string $username
      * @return SecurityUserInterface
      */
-    public function findUserByUsername($username)
+    public function findUserByUsername(string $username): SecurityUserInterface
     {
         return $this->findUserBy(['username' => $username]);
     }
@@ -148,7 +147,7 @@ class UserManager implements UserProviderInterface
      * @param  string $usernameOrEmail
      * @return SecurityUserInterface
      */
-    public function findUserByUsernameOrEmail($usernameOrEmail)
+    public function findUserByUsernameOrEmail(string $usernameOrEmail): SecurityUserInterface
     {
         if (filter_var($usernameOrEmail, FILTER_VALIDATE_EMAIL)) {
             return $this->findUserByEmail($usernameOrEmail);
@@ -163,7 +162,7 @@ class UserManager implements UserProviderInterface
      * @param  string $token
      * @return SecurityUserInterface
      */
-    public function findUserByConfirmationToken($token)
+    public function findUserByConfirmationToken(string $token): SecurityUserInterface
     {
         return $this->findUserBy(['confirmationToken' => $token]);
     }
@@ -173,7 +172,7 @@ class UserManager implements UserProviderInterface
      *
      * @param SecurityUserInterface $user
      */
-    public function reloadUser(SecurityUserInterface $user)
+    public function reloadUser(SecurityUserInterface $user): void
     {
         $this->getStorageManager()->refresh($user);
     }
@@ -190,7 +189,7 @@ class UserManager implements UserProviderInterface
      * @throws UsernameNotFoundException if user could not be reloaded
      * @return SecurityUserInterface
      */
-    public function refreshUser(SecurityUserInterface $user)
+    public function refreshUser(SecurityUserInterface $user): SecurityUserInterface
     {
         $class = $this->getClass();
 
@@ -222,7 +221,7 @@ class UserManager implements UserProviderInterface
      * @throws UsernameNotFoundException if user not found
      * @return SecurityUserInterface
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($username): SecurityUserInterface
     {
         $user = $this->findUserByUsername($username);
 
@@ -235,10 +234,8 @@ class UserManager implements UserProviderInterface
 
     /**
      * Returns the user's fully qualified class name.
-     *
-     * @return string
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
@@ -246,22 +243,20 @@ class UserManager implements UserProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return $class === $this->getClass();
     }
 
-    protected function getEncoder(UserInterface $user)
+    protected function getEncoder(UserInterface $user): PasswordEncoderInterface
     {
         return $this->encoderFactory->getEncoder($user);
     }
 
     /**
      * Returns basic query instance to get collection with all user instances
-     *
-     * @return QueryBuilder
      */
-    public function getListQuery()
+    public function getListQuery(): QueryBuilder
     {
         return $this->getStorageManager()
             ->createQueryBuilder()
@@ -272,18 +267,13 @@ class UserManager implements UserProviderInterface
 
     /**
      * Return related repository
-     *
-     * @return ObjectRepository
      */
-    public function getRepository()
+    public function getRepository(): ObjectRepository
     {
         return $this->getStorageManager()->getRepository($this->getClass());
     }
 
-    /**
-     * @return ObjectManager
-     */
-    public function getStorageManager()
+    public function getStorageManager(): \Doctrine\Common\Persistence\ObjectManager
     {
         return $this->om;
     }

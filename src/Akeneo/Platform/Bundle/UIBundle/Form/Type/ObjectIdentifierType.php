@@ -22,7 +22,7 @@ class ObjectIdentifierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return HiddenType::class;
     }
@@ -30,7 +30,7 @@ class ObjectIdentifierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_object_identifier';
     }
@@ -38,7 +38,7 @@ class ObjectIdentifierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addViewTransformer(
             new EntityToIdentifierTransformer(
@@ -55,7 +55,7 @@ class ObjectIdentifierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefined([
@@ -71,8 +71,6 @@ class ObjectIdentifierType extends AbstractType
                 'identifier'         => 'id',
             ])
             ->setAllowedValues('multiple', [true, false])
-            ->setAllowedValues('repository', function ($repository) {
-                return $repository instanceof ObjectRepository;
-            });
+            ->setAllowedValues('repository', fn($repository) => $repository instanceof ObjectRepository);
     }
 }

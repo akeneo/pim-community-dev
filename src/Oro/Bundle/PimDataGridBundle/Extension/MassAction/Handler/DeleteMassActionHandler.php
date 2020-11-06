@@ -60,7 +60,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
+    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction): MassActionResponse
     {
         // dispatch pre handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
@@ -92,10 +92,8 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      *
      * @param MassActionInterface $massAction
      * @param int                 $countRemoved
-     *
-     * @return MassActionResponse
      */
-    protected function getResponse(MassActionInterface $massAction, $countRemoved = 0)
+    protected function getResponse(MassActionInterface $massAction, int $countRemoved = 0): MassActionResponse
     {
         $responseMessage = $massAction->getOptions()->offsetGetByPath(
             '[messages][success]',

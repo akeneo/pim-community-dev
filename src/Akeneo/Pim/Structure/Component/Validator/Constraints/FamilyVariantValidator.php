@@ -51,7 +51,7 @@ class FamilyVariantValidator extends ConstraintValidator
             $validateAttributesSets = false;
         }
 
-        if (true === $validateAttributesSets) {
+        if ($validateAttributesSets) {
             $this->validateAxesAttributes($familyVariant);
             $this->validateAttributes($familyVariant);
             $this->validateNumberOfLevelAndAxis($familyVariant);

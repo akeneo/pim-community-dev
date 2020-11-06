@@ -20,14 +20,14 @@ class MetricNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function normalize($metric, $format = null, array $context = [])
+    public function normalize($metric, $format = null, array $context = []): array
     {
         $amount = $metric->getData();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
         if (null !== $amount && is_numeric($amount) && isset($context['is_decimals_allowed'])) {
-            $amount = $context['is_decimals_allowed']
+            $amount = $context['is_decimals_allowed'] !== []
                 ? number_format($amount, static::DECIMAL_PRECISION, '.', '') : (int) $amount;
         }
 
@@ -47,7 +47,7 @@ class MetricNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof MetricInterface && 'standard' === $format;
     }

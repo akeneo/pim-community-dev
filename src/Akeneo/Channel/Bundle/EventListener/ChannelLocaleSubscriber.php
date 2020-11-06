@@ -54,7 +54,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE => 'removeChannel',
@@ -65,7 +65,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     /**
      * @param GenericEvent $event
      */
-    public function removeChannel(GenericEvent $event)
+    public function removeChannel(GenericEvent $event): void
     {
         $channel = $event->getSubject();
 
@@ -89,7 +89,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     /**
      * @param GenericEvent $event
      */
-    public function updateChannel(GenericEvent $event)
+    public function updateChannel(GenericEvent $event): void
     {
         $channel = $event->getSubject();
 
@@ -110,9 +110,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     {
         $oldLocales = $this->repository->getDeletedLocalesForChannel($channel);
         $oldLocalesCodes = array_map(
-            function (LocaleInterface $locale) {
-                return $locale->getCode();
-            },
+            fn(LocaleInterface $locale) => $locale->getCode(),
             $oldLocales
         );
         $updatedLocales = [];

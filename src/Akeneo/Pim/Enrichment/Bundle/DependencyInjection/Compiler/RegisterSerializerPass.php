@@ -26,7 +26,7 @@ class RegisterSerializerPass implements CompilerPassInterface
     /**
      * @param string $serializerServiceId
      */
-    public function __construct($serializerServiceId)
+    public function __construct(string $serializerServiceId)
     {
         $this->serializerServiceId = $serializerServiceId;
     }
@@ -34,7 +34,7 @@ class RegisterSerializerPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition($this->serializerServiceId)) {
             throw new \LogicException(
@@ -61,7 +61,7 @@ class RegisterSerializerPass implements CompilerPassInterface
      *
      * @return Reference[]
      */
-    protected function findAndSortTaggedServices($tagName, ContainerBuilder $container)
+    protected function findAndSortTaggedServices(string $tagName, ContainerBuilder $container): array
     {
         $services = $container->findTaggedServiceIds($tagName);
 

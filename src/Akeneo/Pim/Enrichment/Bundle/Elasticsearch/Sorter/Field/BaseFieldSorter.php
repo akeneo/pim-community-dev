@@ -33,7 +33,7 @@ class BaseFieldSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function setQueryBuilder($searchQueryBuilder)
+    public function setQueryBuilder(\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder $searchQueryBuilder): void
     {
         if (!$searchQueryBuilder instanceof SearchQueryBuilder) {
             throw new \InvalidArgumentException(
@@ -47,7 +47,7 @@ class BaseFieldSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
+    public function addFieldSorter(string $field, string $direction, string $locale = null, string $channel = null): FieldSorterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the sorter.');
@@ -84,7 +84,7 @@ class BaseFieldSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsField($field)
+    public function supportsField(string $field): bool
     {
         return in_array($field, $this->supportedFields);
     }

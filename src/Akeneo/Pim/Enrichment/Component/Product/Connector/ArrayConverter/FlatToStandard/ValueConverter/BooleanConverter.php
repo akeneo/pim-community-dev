@@ -27,7 +27,7 @@ class BooleanConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, string $value): array
     {
         if (in_array($value, ['1', '0'])) {
             $data = (bool) $value;

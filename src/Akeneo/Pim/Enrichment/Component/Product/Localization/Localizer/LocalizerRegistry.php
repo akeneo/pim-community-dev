@@ -17,7 +17,7 @@ class LocalizerRegistry implements LocalizerRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(LocalizerInterface $localizer)
+    public function register(LocalizerInterface $localizer): self
     {
         $this->localizers[] = $localizer;
 
@@ -28,10 +28,8 @@ class LocalizerRegistry implements LocalizerRegistryInterface
      * Get a localizer supported by value
      *
      * @param string $value
-     *
-     * @return LocalizerInterface|null
      */
-    public function getLocalizer($value)
+    public function getLocalizer(string $value): ?LocalizerInterface
     {
         foreach ($this->localizers as $localizer) {
             if ($localizer->supports($value)) {

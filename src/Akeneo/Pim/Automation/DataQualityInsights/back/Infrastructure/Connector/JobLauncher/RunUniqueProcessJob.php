@@ -56,7 +56,7 @@ final class RunUniqueProcessJob
         $this->projectDir = $projectDir;
     }
 
-    public function run(string $jobName, \Closure $buildJobParameters)
+    public function run(string $jobName, \Closure $buildJobParameters): void
     {
         $jobInstance = $this->getJobInstance($jobName);
 
@@ -116,7 +116,7 @@ final class RunUniqueProcessJob
         $this->logger->info($process->getIncrementalOutput());
 
         $errors = $process->getIncrementalErrorOutput();
-        if ($errors) {
+        if ($errors !== '') {
             $this->logger->error($errors);
         }
     }
@@ -139,7 +139,7 @@ final class RunUniqueProcessJob
         // In case of an old job execution that has not been marked as failed.
         if ($jobExecutionRunning->getUpdatedTime() < new \DateTime(self::OUTDATED_JOB_EXECUTION_TIME)) {
             $this->logger->info('Job execution "{job_id}" is outdated: let\'s mark it has failed.', ['message' => 'job_execution_outdated', 'job_id' => $jobExecutionRunning->getId()]);
-            $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage(intval($jobExecutionRunning->getId()), []);
+            $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage((int) $jobExecutionRunning->getId(), []);
             $this->executionManager->markAsFailed($jobExecutionMessage);
         }
 

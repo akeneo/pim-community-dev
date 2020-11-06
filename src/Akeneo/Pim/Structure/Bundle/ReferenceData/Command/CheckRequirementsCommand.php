@@ -47,7 +47,7 @@ class CheckRequirementsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Check the requirements of the reference data configuration');
@@ -75,7 +75,7 @@ class CheckRequirementsCommand extends Command
     /**
      * @return CheckerInterface[]
      */
-    protected function getCheckers()
+    protected function getCheckers(): array
     {
         $checkers = [];
         $checkers[] = new ReferenceDataNameChecker();
@@ -94,7 +94,7 @@ class CheckRequirementsCommand extends Command
         CheckerInterface $checker,
         ReferenceDataConfigurationInterface $configuration,
         OutputInterface $output
-    ) {
+    ): void {
         if ($checker->check($configuration)) {
             $output->write('<info>[OK]</info>    ');
             $output->writeln($checker->getDescription());

@@ -22,7 +22,7 @@ final class GetProductModelIdsToEvaluateQuery implements GetProductIdsToEvaluate
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db)
     {
         $this->db = $db;
     }
@@ -41,7 +41,7 @@ SQL;
 
         $productIds = [];
         while ($productId = $stmt->fetchColumn()) {
-            $productIds[] = intval($productId);
+            $productIds[] = (int) $productId;
 
             if (count($productIds) >= $bulkSize) {
                 yield $productIds;

@@ -25,10 +25,8 @@ class AddLocaleListener implements EventSubscriber
 
     /**
      * Specifies the list of events to listen
-     *
-     * @return array
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'postLoad'
@@ -38,7 +36,7 @@ class AddLocaleListener implements EventSubscriber
     /**
      * @param string $locale
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): void
     {
         $this->locale = $locale;
     }
@@ -48,7 +46,7 @@ class AddLocaleListener implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
 

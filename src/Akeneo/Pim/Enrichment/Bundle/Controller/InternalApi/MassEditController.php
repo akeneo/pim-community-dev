@@ -60,10 +60,8 @@ class MassEditController
      * Get filters from datagrid request
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function getFilterAction(Request $request)
+    public function getFilterAction(Request $request): JsonResponse
     {
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->filterAdapter->adapt($parameters);
@@ -81,10 +79,8 @@ class MassEditController
      * Launch mass edit action
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function launchAction(Request $request)
+    public function launchAction(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 

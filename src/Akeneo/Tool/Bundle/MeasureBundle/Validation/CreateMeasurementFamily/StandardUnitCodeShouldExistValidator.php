@@ -19,7 +19,7 @@ class StandardUnitCodeShouldExistValidator extends ConstraintValidator
 {
     private const PROPERTY_PATH = 'standard_unit_code';
 
-    public function validate($createMeasurementFamilyCommand, Constraint $constraint)
+    public function validate($createMeasurementFamilyCommand, Constraint $constraint): void
     {
         if (!$createMeasurementFamilyCommand instanceof CreateMeasurementFamilyCommand) {
             throw new \LogicException(

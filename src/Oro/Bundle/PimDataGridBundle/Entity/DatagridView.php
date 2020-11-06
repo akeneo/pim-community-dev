@@ -39,20 +39,16 @@ class DatagridView
 
     /**
      * Indicates whether a view can be seen by users who don't own it
-     *
-     * @return bool
      */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return $this->type === self::TYPE_PUBLIC;
     }
 
     /**
      * Get id
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -61,10 +57,8 @@ class DatagridView
      * Set label
      *
      * @param string $label
-     *
-     * @return DatagridView
      */
-    public function setLabel($label)
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
@@ -73,10 +67,8 @@ class DatagridView
 
     /**
      * Get label
-     *
-     * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
@@ -85,10 +77,8 @@ class DatagridView
      * Set type
      *
      * @param string $type
-     *
-     * @return DatagridView
      */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -97,10 +87,8 @@ class DatagridView
 
     /**
      * Get type
-     *
-     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -109,10 +97,8 @@ class DatagridView
      * Set owner
      *
      * @param UserInterface $owner
-     *
-     * @return DatagridView
      */
-    public function setOwner(UserInterface $owner)
+    public function setOwner(UserInterface $owner): self
     {
         $this->owner = $owner;
 
@@ -121,10 +107,8 @@ class DatagridView
 
     /**
      * Get owner
-     *
-     * @return UserInterface
      */
-    public function getOwner()
+    public function getOwner(): \Akeneo\UserManagement\Component\Model\UserInterface
     {
         return $this->owner;
     }
@@ -133,10 +117,8 @@ class DatagridView
      * Set datagrid alias
      *
      * @param string $datagridAlias
-     *
-     * @return DatagridView
      */
-    public function setDatagridAlias($datagridAlias)
+    public function setDatagridAlias(string $datagridAlias): self
     {
         $this->datagridAlias = $datagridAlias;
 
@@ -145,10 +127,8 @@ class DatagridView
 
     /**
      * Get datagrid alias
-     *
-     * @return string
      */
-    public function getDatagridAlias()
+    public function getDatagridAlias(): string
     {
         return $this->datagridAlias;
     }
@@ -157,10 +137,8 @@ class DatagridView
      * Set columns
      *
      * @param array $columns
-     *
-     * @return DatagridView
      */
-    public function setColumns(array $columns)
+    public function setColumns(array $columns): self
     {
         $this->columns = $columns;
 
@@ -169,10 +147,8 @@ class DatagridView
 
     /**
      * Get columns
-     *
-     * @return array
      */
-    public function getColumns()
+    public function getColumns(): array
     {
         return $this->columns;
     }
@@ -181,10 +157,8 @@ class DatagridView
      * Set column order
      *
      * @param string $order
-     *
-     * @return DatagridView
      */
-    public function setOrder($order)
+    public function setOrder(string $order): self
     {
         $this->columns = empty($order) ? [] : explode(',', $order);
 
@@ -193,10 +167,8 @@ class DatagridView
 
     /**
      * Get column order
-     *
-     * @return string
      */
-    public function getOrder()
+    public function getOrder(): string
     {
         return implode(',', $this->columns);
     }
@@ -205,10 +177,8 @@ class DatagridView
      * Set filters
      *
      * @param string $filters
-     *
-     * @return DatagridView
      */
-    public function setFilters($filters)
+    public function setFilters(string $filters): self
     {
         $this->filters = $filters;
 
@@ -217,10 +187,8 @@ class DatagridView
 
     /**
      * Get filters
-     *
-     * @return string
      */
-    public function getFilters()
+    public function getFilters(): string
     {
         return $this->filters;
     }

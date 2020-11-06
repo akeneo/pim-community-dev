@@ -31,57 +31,45 @@ class AclPrivilege
         $this->permissions = new ArrayCollection();
     }
 
-    /**
-     * @return AclPrivilegeIdentity
-     */
-    public function getIdentity()
+    public function getIdentity(): \Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity
     {
         return $this->identity;
     }
 
     /**
      * @param  AclPrivilegeIdentity $identity
-     * @return AclPrivilege
      */
-    public function setIdentity($identity)
+    public function setIdentity(\Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity $identity): self
     {
         $this->identity = $identity;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getGroup()
+    public function getGroup(): string
     {
         return $this->group;
     }
 
     /**
      * @param  string       $group
-     * @return AclPrivilege
      */
-    public function setGroup($group)
+    public function setGroup(string $group): self
     {
         $this->group = $group;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getExtensionKey()
+    public function getExtensionKey(): string
     {
         return $this->extensionKey;
     }
 
     /**
      * @param  string       $extensionKey
-     * @return AclPrivilege
      */
-    public function setExtensionKey($extensionKey)
+    public function setExtensionKey(string $extensionKey): self
     {
         $this->extensionKey = $extensionKey;
 
@@ -91,24 +79,20 @@ class AclPrivilege
     /**
      * @return AclPermission[]|ArrayCollection
      */
-    public function getPermissions()
+    public function getPermissions(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->permissions;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasPermissions()
+    public function hasPermissions(): bool
     {
         return !$this->permissions->isEmpty();
     }
 
     /**
      * @param  AclPermission $permission
-     * @return AclPrivilege
      */
-    public function addPermission(AclPermission $permission)
+    public function addPermission(AclPermission $permission): self
     {
         $this->permissions->set($permission->getName(), $permission);
 
@@ -119,7 +103,7 @@ class AclPrivilege
      * @param AclPermission $permission
      * @return $this
      */
-    public function removePermission(AclPermission $permission)
+    public function removePermission(AclPermission $permission): self
     {
         $this->permissions->removeElement($permission);
 
@@ -128,17 +112,13 @@ class AclPrivilege
 
     /**
      * @param  string $name
-     * @return bool
      */
-    public function hasPermission($name)
+    public function hasPermission(string $name): bool
     {
         return $this->permissions->containsKey($name);
     }
 
-    /**
-     * @return int
-     */
-    public function getPermissionCount()
+    public function getPermissionCount(): int
     {
         return $this->permissions->count();
     }

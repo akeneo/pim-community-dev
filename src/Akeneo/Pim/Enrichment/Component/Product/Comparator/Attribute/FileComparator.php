@@ -33,7 +33,7 @@ class FileComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($type)
+    public function supports(string $type): bool
     {
         return in_array($type, $this->types);
     }
@@ -79,7 +79,7 @@ class FileComparator implements ComparatorInterface
      *
      * @return null|string
      */
-    protected function getHashFile($filePath = null)
+    protected function getHashFile(string $filePath = null)
     {
         return null !== $filePath ? sha1_file($filePath) : null;
     }

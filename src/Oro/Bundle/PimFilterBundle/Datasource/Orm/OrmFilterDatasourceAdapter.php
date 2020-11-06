@@ -18,6 +18,10 @@ class OrmFilterDatasourceAdapter extends OroOrmFilterDatasourceAdapter implement
     FilterDatasourceAdapterInterface
 {
     /**
+     * @var null
+     */
+    public $expressionBuilder;
+    /**
      * Constructor
      *
      * @param DatasourceInterface $datasource
@@ -32,10 +36,8 @@ class OrmFilterDatasourceAdapter extends OroOrmFilterDatasourceAdapter implement
      * Return value format depending on comparison type
      *
      * @param string $comparisonType
-     *
-     * @return string
      */
-    public function getFormatByComparisonType($comparisonType)
+    public function getFormatByComparisonType(string $comparisonType): string
     {
         switch ($comparisonType) {
             case TextFilterType::TYPE_STARTS_WITH:

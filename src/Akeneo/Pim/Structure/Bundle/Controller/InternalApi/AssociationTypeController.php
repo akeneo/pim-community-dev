@@ -82,10 +82,7 @@ class AssociationTypeController
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $associationTypes = $this->associationTypeRepo->findAll();
 
@@ -96,10 +93,8 @@ class AssociationTypeController
 
     /**
      * @param string $identifier
-     *
-     * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction(string $identifier): JsonResponse
     {
         $associationType = $this->getAssociationTypeOr404($identifier);
 
@@ -116,7 +111,7 @@ class AssociationTypeController
      *
      * @AclAncestor("pim_enrich_associationtype_edit")
      */
-    public function postAction(Request $request, $identifier)
+    public function postAction(Request $request, string $identifier)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -159,7 +154,7 @@ class AssociationTypeController
      *
      * @AclAncestor("pim_enrich_associationtype_remove")
      */
-    public function removeAction(Request $request, $code)
+    public function removeAction(Request $request, string $code)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -178,10 +173,8 @@ class AssociationTypeController
      * @param string $code
      *
      * @throws NotFoundHttpException
-     *
-     * @return AssociationTypeInterface
      */
-    protected function getAssociationTypeOr404(string $code)
+    protected function getAssociationTypeOr404(string $code): AssociationTypeInterface
     {
         $associationType = $this->associationTypeRepo->findOneByIdentifier($code);
         if (null === $associationType) {

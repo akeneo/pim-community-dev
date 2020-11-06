@@ -41,20 +41,16 @@ class InvalidItemException extends \Exception
 
     /**
      * Get message parameters
-     *
-     * @return array
      */
-    public function getMessageParameters()
+    public function getMessageParameters(): array
     {
         return $this->messageParameters;
     }
 
     /**
      * Get the invalid item
-     *
-     * @return InvalidItemInterface
      */
-    public function getItem()
+    public function getItem(): \Akeneo\Tool\Component\Batch\Item\InvalidItemInterface
     {
         return $this->item;
     }

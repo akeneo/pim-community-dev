@@ -19,32 +19,24 @@ interface ProductRepositoryInterface extends ObjectRepository
      * Get available attribute ids from a product ids list
      *
      * @param array $productIds
-     *
-     * @return array
      */
-    public function getAvailableAttributeIdsToExport(array $productIds);
+    public function getAvailableAttributeIdsToExport(array $productIds): array;
 
     /**
      * @param string $identifier
-     *
-     * @return ProductInterface|null
      */
-    public function findOneByIdentifier($identifier);
+    public function findOneByIdentifier(string $identifier): ?ProductInterface;
 
     /**
      * @param GroupInterface $group
      * @param int            $maxResults
-     *
-     * @return array
      */
-    public function getProductsByGroup(GroupInterface $group, $maxResults);
+    public function getProductsByGroup(GroupInterface $group, int $maxResults): array;
 
     /**
      * @param GroupInterface $group
-     *
-     * @return int
      */
-    public function getProductCountByGroup(GroupInterface $group);
+    public function getProductCountByGroup(GroupInterface $group): int;
 
     /**
      * Return the number of existing products
@@ -58,10 +50,8 @@ interface ProductRepositoryInterface extends ObjectRepository
      *
      * @param mixed  $productId
      * @param string $attributeCode
-     *
-     * @return bool
      */
-    public function hasAttributeInFamily($productId, $attributeCode);
+    public function hasAttributeInFamily($productId, string $attributeCode): bool;
 
     /**
      * Get products after the one provided. Mainly used to iterate through

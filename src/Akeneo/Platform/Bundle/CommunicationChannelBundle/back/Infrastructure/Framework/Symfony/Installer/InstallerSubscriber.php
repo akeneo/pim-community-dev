@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\CommunicationChannel\Infrastructure\Framework\Symfony\Installer\Query\CreateViewedAnnouncementsTableQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -18,12 +19,12 @@ class InstallerSubscriber implements EventSubscriberInterface
 {
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_DB_CREATE => ['createCommunicationChannelTable'],

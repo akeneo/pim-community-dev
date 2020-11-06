@@ -23,84 +23,67 @@ interface FamilyInterface extends
 {
     /**
      * Get id
-     *
-     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Get code
      *
      * @return string $code
      */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * Set code
      *
      * @param string $code
-     *
-     * @return FamilyInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
     /**
      * Add attribute
      *
      * @param AttributeInterface $attribute
-     *
-     * @return FamilyInterface
      */
-    public function addAttribute(AttributeInterface $attribute);
+    public function addAttribute(AttributeInterface $attribute): \Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
     /**
      * Remove attribute
      *
      * @param AttributeInterface $attribute
-     *
-     * @return FamilyInterface
      */
-    public function removeAttribute(AttributeInterface $attribute);
+    public function removeAttribute(AttributeInterface $attribute): \Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
     /**
      * Get attributes
      *
      * @return AttributeInterface[]|Collection
      */
-    public function getAttributes();
+    public function getAttributes(): \Doctrine\Common\Collections\Collection;
 
     /**
      * Get attribute codes
      *
      * @return string[]
      */
-    public function getAttributeCodes();
+    public function getAttributeCodes(): array;
 
     /**
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function hasAttribute(AttributeInterface $attribute);
+    public function hasAttribute(AttributeInterface $attribute): bool;
 
     /**
      * @param string $attributeCode
-     *
-     * @return bool
      */
-    public function hasAttributeCode($attributeCode);
+    public function hasAttributeCode(string $attributeCode): bool;
 
     /**
      * @param AttributeInterface $attributeAsLabel
-     *
-     * @return FamilyInterface
      */
-    public function setAttributeAsLabel(AttributeInterface $attributeAsLabel);
+    public function setAttributeAsLabel(AttributeInterface $attributeAsLabel): \Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
-    /**
-     * @return AttributeInterface|null
-     */
-    public function getAttributeAsLabel();
+    public function getAttributeAsLabel(): ?\Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * @param AttributeInterface|null $attributeAsImage
@@ -109,81 +92,63 @@ interface FamilyInterface extends
      */
     public function setAttributeAsImage(?AttributeInterface $attributeAsImage): FamilyInterface;
 
-    /**
-     * @return AttributeInterface
-     */
-    public function getAttributeAsImage(): ?AttributeInterface;
+    public function getAttributeAsImage(): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Add attribute requirement
      *
      * @param AttributeRequirementInterface $requirement
-     *
-     * @return FamilyInterface
      */
-    public function addAttributeRequirement(AttributeRequirementInterface $requirement);
+    public function addAttributeRequirement(AttributeRequirementInterface $requirement): \Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
     /**
      * Remove attribute requirement
      *
      * @param AttributeRequirementInterface $requirement
-     *
-     * @return FamilyInterface
      */
-    public function removeAttributeRequirement(AttributeRequirementInterface $requirement);
+    public function removeAttributeRequirement(AttributeRequirementInterface $requirement): \Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
     /**
      * Set attributes requirements
      *
      * @param AttributeRequirementInterface[] $requirements
-     *
-     * @return FamilyInterface
      */
-    public function setAttributeRequirements(array $requirements);
+    public function setAttributeRequirements(array $requirements): \Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
     /**
      * Get attribute requirements
      *
      * @return AttributeRequirementInterface[]
      */
-    public function getAttributeRequirements();
+    public function getAttributeRequirements(): array;
 
     /**
      * Get grouped attributes
      *
      * @return AttributeInterface[]
      */
-    public function getGroupedAttributes();
+    public function getGroupedAttributes(): array;
 
     /**
      * Get label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * Set label
      *
      * @param string $label
-     *
-     * @return FamilyInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
     /**
      * Get attribute requirement key
      *
      * @param AttributeRequirementInterface $requirement
-     *
-     * @return string
      */
-    public function getAttributeRequirementKey(AttributeRequirementInterface $requirement);
+    public function getAttributeRequirementKey(AttributeRequirementInterface $requirement): string;
 
-    /**
-     * @return array
-     */
-    public function getAttributeAsLabelChoices();
+    public function getAttributeAsLabelChoices(): array;
 
     /**
      * @return Collection

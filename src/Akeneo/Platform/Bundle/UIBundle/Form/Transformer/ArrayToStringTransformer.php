@@ -21,7 +21,7 @@ class ArrayToStringTransformer implements DataTransformerInterface
      * @param string $delimiter
      * @param string $filterUniqueValues
      */
-    public function __construct($delimiter, $filterUniqueValues)
+    public function __construct(string $delimiter, string $filterUniqueValues)
     {
         $this->delimiter = $delimiter;
         $this->filterUniqueValues = $filterUniqueValues;
@@ -30,7 +30,7 @@ class ArrayToStringTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value)
+    public function transform($value): string
     {
         if (null === $value || [] === $value) {
             return '';
@@ -46,7 +46,7 @@ class ArrayToStringTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): array
     {
         if (null === $value || '' === $value) {
             return [];
@@ -63,15 +63,10 @@ class ArrayToStringTransformer implements DataTransformerInterface
      * Transforms string to array
      *
      * @param string $stringValue
-     * @return array
      */
-    private function transformStringToArray($stringValue)
+    private function transformStringToArray(string $stringValue): array
     {
-        if (trim($this->delimiter)) {
-            $separator = trim($this->delimiter);
-        } else {
-            $separator = $this->delimiter;
-        }
+        $separator = trim($this->delimiter) !== '' ? trim($this->delimiter) : $this->delimiter;
         $arrayValue = explode($separator, $stringValue);
         return $this->filterArrayValue($arrayValue);
     }
@@ -80,15 +75,10 @@ class ArrayToStringTransformer implements DataTransformerInterface
      * Transforms array to string
      *
      * @param array $arrayValue
-     * @return string
      */
-    private function transformArrayToString(array $arrayValue)
+    private function transformArrayToString(array $arrayValue): string
     {
-        if (trim($this->delimiter)) {
-            $separator = trim($this->delimiter);
-        } else {
-            $separator = $this->delimiter;
-        }
+        $separator = trim($this->delimiter) !== '' ? trim($this->delimiter) : $this->delimiter;
         return implode($separator, $this->filterArrayValue($arrayValue));
     }
 
@@ -96,11 +86,10 @@ class ArrayToStringTransformer implements DataTransformerInterface
      * Trims all elements and apply unique filter if needed
      *
      * @param array $arrayValue
-     * @return array
      */
-    private function filterArrayValue(array $arrayValue)
+    private function filterArrayValue(array $arrayValue): array
     {
-        if ($this->filterUniqueValues) {
+        if ($this->filterUniqueValues !== '') {
             $arrayValue = array_unique($arrayValue);
         }
         $arrayValue = array_filter(array_map('trim', $arrayValue));

@@ -17,7 +17,7 @@ class FileInfoRepository extends EntityRepository implements FileInfoRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['key'];
     }
@@ -25,7 +25,7 @@ class FileInfoRepository extends EntityRepository implements FileInfoRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier): ?object
     {
         return $this->findOneBy(['key' => $identifier]);
     }

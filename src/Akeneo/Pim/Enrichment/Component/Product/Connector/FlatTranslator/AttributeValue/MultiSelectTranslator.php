@@ -68,9 +68,7 @@ class MultiSelectTranslator implements FlatAttributeValueTranslatorInterface
             }
             $optionCodes = explode(',', $value);
             $currentOptionKeys = array_map(
-                function ($optionCode) use ($attributeCode) {
-                    return sprintf('%s.%s', $attributeCode, $optionCode);
-                },
+                fn($optionCode) => sprintf('%s.%s', $attributeCode, $optionCode),
                 $optionCodes
             );
 

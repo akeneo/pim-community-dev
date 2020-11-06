@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ShouldNotContainDuplicatedUnitsValidator extends ConstraintValidator
 {
-    public function validate($units, Constraint $constraint)
+    public function validate($units, Constraint $constraint): void
     {
         $unitCodes = $this->unitCodes($units);
         if ($this->hasDuplicates($unitCodes)) {
@@ -26,14 +26,10 @@ class ShouldNotContainDuplicatedUnitsValidator extends ConstraintValidator
 
     private function unitCodes(array $units): array
     {
-        $unitCodes = array_map(
-            function (array $unit) {
-                return $unit['code'];
-            },
+        return array_map(
+            fn(array $unit) => $unit['code'],
             $units
         );
-
-        return $unitCodes;
     }
 
     private function hasDuplicates(array $unitCodes): bool

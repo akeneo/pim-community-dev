@@ -36,20 +36,12 @@ final class CriterionRateCollection implements \IteratorAggregate
 
     public function toArrayInt(): array
     {
-        return array_map(function ($ratesPerLocale) {
-            return array_map(function ($rate) {
-                return $rate->toInt();
-            }, $ratesPerLocale);
-        }, $this->rates);
+        return array_map(fn($ratesPerLocale) => array_map(fn($rate) => $rate->toInt(), $ratesPerLocale), $this->rates);
     }
 
     public function toArrayString(): array
     {
-        return array_map(function ($ratesPerLocale) {
-            return array_map(function ($rate) {
-                return strval($rate);
-            }, $ratesPerLocale);
-        }, $this->rates);
+        return array_map(fn($ratesPerLocale) => array_map(fn($rate) => strval($rate), $ratesPerLocale), $this->rates);
     }
 
     public static function fromArray(array $rawRates): self
@@ -58,7 +50,7 @@ final class CriterionRateCollection implements \IteratorAggregate
         foreach ($rawRates as $channel => $ratesPerLocale) {
             $channelCode = new ChannelCode($channel);
             foreach ($ratesPerLocale as $locale => $rate) {
-                $rates->addRate($channelCode, new LocaleCode($locale), new Rate(intval($rate)));
+                $rates->addRate($channelCode, new LocaleCode($locale), new Rate((int) $rate));
             }
         }
 

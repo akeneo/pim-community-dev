@@ -47,7 +47,7 @@ final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE  => 'storeCategoryCodesToRemove',
@@ -55,7 +55,7 @@ final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
         ];
     }
 
-    public function storeCategoryCodesToRemove(GenericEvent $event)
+    public function storeCategoryCodesToRemove(GenericEvent $event): void
     {
         if (!$event->getSubject() instanceof CategoryInterface) {
             return;
@@ -68,7 +68,7 @@ final class UpdateIndexesOnCategoryDeletion implements EventSubscriberInterface
         $this->categoryCodesToRemove[] = $parentCategory->getCode();
     }
 
-    public function updateIndexes(GenericEvent $event)
+    public function updateIndexes(GenericEvent $event): void
     {
         if (!$event->getSubject() instanceof CategoryInterface) {
             return;

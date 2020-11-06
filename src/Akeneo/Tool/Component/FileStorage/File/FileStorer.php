@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\FileStorage\File;
 
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
@@ -50,7 +51,7 @@ class FileStorer implements FileStorerInterface
     /**
      * {@inheritdoc}
      */
-    public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
+    public function store(\SplFileInfo $localFile, string $destFsAlias, bool $deleteRawFile = false): FileInfoInterface
     {
         if (!is_file($localFile->getPathname())) {
             throw new InvalidFile(sprintf('The file "%s" does not exist.', $localFile->getPathname()));
@@ -85,13 +86,13 @@ class FileStorer implements FileStorerInterface
             throw new FileTransferException($error, $e->getCode(), $e);
         }
 
-        if (false === $isFileWritten) {
+        if (!$isFileWritten) {
             throw new FileTransferException($error);
         }
 
         $this->saver->save($file);
 
-        if (true === $deleteRawFile) {
+        if ($deleteRawFile) {
             $this->deleteRawFile($localFile);
         }
 
@@ -103,7 +104,7 @@ class FileStorer implements FileStorerInterface
      *
      * @throws FileRemovalException
      */
-    protected function deleteRawFile(\SplFileInfo $file)
+    protected function deleteRawFile(\SplFileInfo $file): void
     {
         $filesystem = new Filesystem();
 

@@ -29,8 +29,8 @@ class DatasourceAdapterResolver implements DatasourceAdapterResolverInterface
      * @param string $productOrmAdapter
      */
     public function __construct(
-        $ormAdapter,
-        $productOrmAdapter
+        string $ormAdapter,
+        string $productOrmAdapter
     ) {
         $this->ormAdapter = $ormAdapter;
         $this->productOrmAdapter = $productOrmAdapter;

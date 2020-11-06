@@ -59,7 +59,7 @@ class GroupHandler
     /**
      * {@inheritdoc}
      */
-    public function process($group)
+    public function process($group): bool
     {
         $this->form->setData($group);
 
@@ -80,7 +80,7 @@ class GroupHandler
      *
      * @param GroupInterface $group
      */
-    protected function onSuccess(GroupInterface $group)
+    protected function onSuccess(GroupInterface $group): void
     {
         $options = ['copy_values_to_products' => true];
         $this->groupSaver->save($group, $options);

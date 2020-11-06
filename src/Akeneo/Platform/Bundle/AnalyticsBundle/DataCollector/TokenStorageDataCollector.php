@@ -28,13 +28,11 @@ class TokenStorageDataCollector implements DataCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function collect()
+    public function collect(): array
     {
         $userId = null;
-        if (null !== $token = $this->tokenStorage->getToken()) {
-            if (is_object($user = $token->getUser())) {
-                $userId = $user->getId();
-            }
+        if (null !== $token = $this->tokenStorage->getToken() && is_object($user = $token->getUser())) {
+            $userId = $user->getId();
         }
 
         return ['pim_user_id' => $userId];

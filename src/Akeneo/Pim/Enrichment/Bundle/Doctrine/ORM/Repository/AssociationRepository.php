@@ -19,7 +19,7 @@ class AssociationRepository extends EntityRepository implements AssociationRepos
     /**
      * {@inheritdoc}
      */
-    public function findByProductAndOwnerIds(ProductInterface $product, array $ownerIds)
+    public function findByProductAndOwnerIds(ProductInterface $product, array $ownerIds): array
     {
         $qb = $this->createQueryBuilder('pa');
 

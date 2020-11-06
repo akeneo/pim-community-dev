@@ -31,9 +31,7 @@ class ElasticsearchBusinessErrorRepository implements BusinessErrorRepository
         }
 
         $code = (string) $connectionCode;
-        $documents = array_map(function (BusinessError $businessError) use ($code) {
-            return array_merge(['connection_code' => $code], $businessError->normalize());
-        }, $businessErrors);
+        $documents = array_map(fn(BusinessError $businessError) => array_merge(['connection_code' => $code], $businessError->normalize()), $businessErrors);
 
         $this->errorClient->bulkIndexes($documents);
     }

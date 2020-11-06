@@ -18,7 +18,7 @@ class AsynchronousCriterionEvaluationsFilterIterator extends \FilterIterator
     private const ASYNCHRONOUS_CRITERION_CODES = [
     ];
 
-    public function accept()
+    public function accept(): bool
     {
         $criterionEvaluation = $this->getInnerIterator()->current();
 

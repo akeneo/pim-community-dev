@@ -30,7 +30,7 @@ class BaseViewElement implements ViewElementInterface
      * @param string $template
      * @param array  $parameters
      */
-    public function __construct($alias, $template, array $parameters = [])
+    public function __construct(string $alias, string $template, array $parameters = [])
     {
         $this->alias = $alias;
         $this->template = $template;
@@ -40,7 +40,7 @@ class BaseViewElement implements ViewElementInterface
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return $this->alias;
     }
@@ -48,7 +48,7 @@ class BaseViewElement implements ViewElementInterface
     /**
      * {@inheritdoc}
      */
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return $this->template;
     }
@@ -56,7 +56,7 @@ class BaseViewElement implements ViewElementInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters(array $context = [])
+    public function getParameters(array $context = []): array
     {
         return $this->parameters;
     }
@@ -64,7 +64,7 @@ class BaseViewElement implements ViewElementInterface
     /**
      * {@inheritdoc}
      */
-    public function isVisible(array $context = [])
+    public function isVisible(array $context = []): bool
     {
         foreach ($this->visibilityCheckers as $item) {
             list($checker, $config) = $item;
@@ -79,7 +79,7 @@ class BaseViewElement implements ViewElementInterface
     /**
      * {@inheritdoc}
      */
-    public function addVisibilityChecker(VisibilityCheckerInterface $checker, array $config = [])
+    public function addVisibilityChecker(VisibilityCheckerInterface $checker, array $config = []): ViewElementInterface
     {
         $this->visibilityCheckers[] = [$checker, $config];
 
@@ -89,7 +89,7 @@ class BaseViewElement implements ViewElementInterface
     /**
      * {@inheritdoc}
      */
-    public function setVisibilityCheckers(array $checkers)
+    public function setVisibilityCheckers(array $checkers): ViewElementInterface
     {
         $this->visibilityCheckers = $checkers;
 

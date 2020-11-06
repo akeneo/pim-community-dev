@@ -25,7 +25,7 @@ class FamilyVariantRepository implements DatagridRepositoryInterface
      * @param EntityManagerInterface $entityManager
      * @param string                 $entityName
      */
-    public function __construct(EntityManagerInterface $entityManager, $entityName)
+    public function __construct(EntityManagerInterface $entityManager, string $entityName)
     {
         $this->entityManager = $entityManager;
         $this->entityName = $entityName;
@@ -34,7 +34,7 @@ class FamilyVariantRepository implements DatagridRepositoryInterface
     /**
      * @param array $parameters
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function createDatagridQueryBuilder($parameters = []): QueryBuilder
     {

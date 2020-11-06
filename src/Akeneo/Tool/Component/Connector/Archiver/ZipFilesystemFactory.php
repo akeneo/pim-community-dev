@@ -17,10 +17,8 @@ class ZipFilesystemFactory
      * Create a Zip filesystem configured with the given path
      *
      * @param string $absolutePath
-     *
-     * @return Filesystem
      */
-    public function createZip($absolutePath)
+    public function createZip(string $absolutePath): Filesystem
     {
         if (!is_dir(dirname($absolutePath))) {
             throw new \InvalidArgumentException(sprintf('The provided path "%s" is not a valid directory', $absolutePath));

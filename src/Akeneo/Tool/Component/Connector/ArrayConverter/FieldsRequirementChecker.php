@@ -22,10 +22,10 @@ class FieldsRequirementChecker
      *
      * @throws StructureArrayConversionException
      */
-    public function checkFieldsPresence(array $item, array $fields)
+    public function checkFieldsPresence(array $item, array $fields): void
     {
         foreach ($fields as $field) {
-            if (!in_array($field, array_keys($item))) {
+            if (!array_key_exists($field, $item)) {
                 throw new StructureArrayConversionException(
                     sprintf(
                         'Field "%s" is expected, provided fields are "%s"',
@@ -45,7 +45,7 @@ class FieldsRequirementChecker
      *
      * @throws DataArrayConversionException
      */
-    public function checkFieldsFilling(array $item, array $fields)
+    public function checkFieldsFilling(array $item, array $fields): void
     {
         foreach ($fields as $field) {
             if ('' == $item[$field]) {

@@ -166,7 +166,7 @@ class ProductModelController
         $productModel = $this->productModelRepository->findOneByIdentifier($identifier);
         $cantView = $this->objectFilter->filterObject($productModel, 'pim.internal_api.product.view');
 
-        if (null === $productModel || true === $cantView) {
+        if (null === $productModel || $cantView) {
             throw new NotFoundHttpException(
                 sprintf('Product model with identifier "%s" could not be found.', $identifier)
             );
@@ -189,9 +189,7 @@ class ProductModelController
         $productModelIdentifiers = explode(',', $request->get('identifiers'));
         $productModels = $this->productModelRepository->findByIdentifiers($productModelIdentifiers);
 
-        $normalizedProductModels = array_map(function ($productModel) {
-            return $this->normalizeProductModel($productModel);
-        }, $productModels);
+        $normalizedProductModels = array_map(fn($productModel) => $this->normalizeProductModel($productModel), $productModels);
 
         return new JsonResponse($normalizedProductModels);
     }
@@ -318,7 +316,7 @@ class ProductModelController
         $search = $request->query->get('search');
         $options = $request->query->get('options');
         $familyVariantCode = $options['family_variant'];
-        $page = intval($options['page']) - 1;
+        $page = (int) $options['page'] - 1;
         $familyVariant = $this->getFamilyVariant($familyVariantCode);
 
         $productModels = $this->productModelRepository->searchLastLevelByCode(
@@ -337,10 +335,8 @@ class ProductModelController
      * Returns all the product models (sub and root) of a family variant
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function listFamilyVariantProductModels(Request $request)
+    public function listFamilyVariantProductModels(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $search = trim($request->query->get('search'));
         $options = $request->query->get('options');
@@ -362,7 +358,7 @@ class ProductModelController
      *
      * @return Response
      */
-    public function removeAction(Request $request, $id): Response
+    public function removeAction(Request $request, int $id): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -466,10 +462,8 @@ class ProductModelController
      * @param string $id the product id
      *
      * @throws NotFoundHttpException
-     *
-     * @return ProductModelInterface
      */
-    protected function findProductModelOr404($id): ProductModelInterface
+    protected function findProductModelOr404(string $id): object
     {
         $productModel = $this->productModelRepository->find($id);
         $productModel = $this->objectFilter->filterObject($productModel, 'pim.internal_api.product.view') ? null : $productModel;

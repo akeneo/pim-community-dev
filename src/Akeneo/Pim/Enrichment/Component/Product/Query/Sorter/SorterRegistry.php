@@ -22,7 +22,7 @@ class SorterRegistry implements SorterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(SorterInterface $sorter)
+    public function register(SorterInterface $sorter): void
     {
         if ($sorter instanceof FieldSorterInterface) {
             $this->fieldSorters[] = $sorter;
@@ -35,7 +35,7 @@ class SorterRegistry implements SorterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldSorter($field)
+    public function getFieldSorter(string $field): ?SorterInterface
     {
         foreach ($this->fieldSorters as $sorter) {
             if ($sorter->supportsField($field)) {
@@ -49,7 +49,7 @@ class SorterRegistry implements SorterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeSorter(AttributeInterface $attribute)
+    public function getAttributeSorter(AttributeInterface $attribute): ?SorterInterface
     {
         foreach ($this->attributeSorters as $sorter) {
             if ($sorter->supportsAttribute($attribute)) {

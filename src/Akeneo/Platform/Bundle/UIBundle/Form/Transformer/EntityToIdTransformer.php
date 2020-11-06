@@ -17,6 +17,10 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 class EntityToIdTransformer implements DataTransformerInterface
 {
     /**
+     * @var \Symfony\Component\PropertyAccess\PropertyAccessor|mixed
+     */
+    public $propertyAccessor;
+    /**
      * @var EntityManager
      */
     protected $em;
@@ -48,7 +52,7 @@ class EntityToIdTransformer implements DataTransformerInterface
      * @param callable $queryBuilderCallback
      * @throws UnexpectedTypeException When $queryBuilderCallback is set and not callable
      */
-    public function __construct(EntityManager $em, $className, $property = null, $queryBuilderCallback = null)
+    public function __construct(EntityManager $em, string $className, ?string $property = null, callable $queryBuilderCallback = null)
     {
         $this->em = $em;
         $this->className = $className;
@@ -72,7 +76,7 @@ class EntityToIdTransformer implements DataTransformerInterface
      * @throws FormException When entity has composite key
      * @return string
      */
-    protected function getIdPropertyPathFromEntityManager(EntityManager $em, $className)
+    protected function getIdPropertyPathFromEntityManager(EntityManager $em, string $className)
     {
         $meta = $em->getClassMetadata($className);
         try {
@@ -103,7 +107,7 @@ class EntityToIdTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?object
     {
         if (!$value) {
             return null;

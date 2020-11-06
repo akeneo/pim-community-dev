@@ -18,7 +18,7 @@ class IdentifiableModelTransformerFactory
     /**
      * @param string $className Transformer class to create
      */
-    public function __construct($className)
+    public function __construct(string $className)
     {
         $this->className = $className;
     }
@@ -28,10 +28,8 @@ class IdentifiableModelTransformerFactory
      *
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param array                                 $options
-     *
-     * @return DataTransformerInterface
      */
-    public function create(IdentifiableObjectRepositoryInterface $repository, array $options)
+    public function create(IdentifiableObjectRepositoryInterface $repository, array $options): DataTransformerInterface
     {
         return new $this->className($repository, $options);
     }

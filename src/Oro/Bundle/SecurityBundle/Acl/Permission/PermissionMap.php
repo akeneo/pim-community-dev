@@ -29,7 +29,7 @@ class PermissionMap implements PermissionMapInterface
     /**
      * {@inheritDoc}
      */
-    public function getMasks($permission, $object)
+    public function getMasks($permission, $object): array
     {
         return $this->extensionSelector
             ->select($object)
@@ -39,7 +39,7 @@ class PermissionMap implements PermissionMapInterface
     /**
      * {@inheritDoc}
      */
-    public function contains($permission)
+    public function contains($permission): bool
     {
         foreach ($this->extensionSelector->all() as $extension) {
             if ($extension->hasMasks(empty($permission) ? $extension->getDefaultPermission() : $permission)) {

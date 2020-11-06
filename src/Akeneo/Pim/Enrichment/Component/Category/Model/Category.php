@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Model;
 
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -52,7 +54,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasProducts()
+    public function hasProducts(): bool
     {
         return $this->products->count() !== 0;
     }
@@ -60,17 +62,15 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getProducts()
+    public function getProducts(): array
     {
         return $this->products;
     }
 
     /**
      * Get products count
-     *
-     * @return int
      */
-    public function getProductsCount()
+    public function getProductsCount(): int
     {
         return $this->products->count();
     }
@@ -93,10 +93,8 @@ class Category extends BaseCategory implements CategoryInterface
 
     /**
      * Get created date
-     *
-     * @return \DateTime
      */
-    public function getCreated()
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
@@ -104,7 +102,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 
@@ -114,7 +112,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null): ?CategoryTranslationInterface
+    public function getTranslation(?string $locale = null): AbstractTranslation
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {
@@ -138,7 +136,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->translations;
     }
@@ -146,7 +144,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): TranslatableInterface
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -158,7 +156,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): TranslatableInterface
     {
         $this->translations->removeElement($translation);
 
@@ -168,14 +166,14 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslationFQCN()
+    public function getTranslationFQCN(): string
     {
         return CategoryTranslation::class;
     }
 
     public function getLabel(): string
     {
-        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
+        $translated = ($this->getTranslation() !== null) ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
@@ -184,10 +182,8 @@ class Category extends BaseCategory implements CategoryInterface
      * Set label
      *
      * @param string $label
-     *
-     * @return CategoryInterface
      */
-    public function setLabel($label)
+    public function setLabel(string $label): self
     {
         $this->getTranslation()->setLabel($label);
 
@@ -197,7 +193,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * Returns the channels linked to the category
      */
-    public function getChannels(): Collection
+    public function getChannels(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->channels;
     }
@@ -213,7 +209,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->code;
     }

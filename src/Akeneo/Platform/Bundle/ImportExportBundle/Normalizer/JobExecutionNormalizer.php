@@ -39,7 +39,7 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         if (!$this->serializer instanceof NormalizerInterface) {
             throw new \RuntimeException(
@@ -52,9 +52,7 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
 
         return [
             'failures'       => array_map(
-                function ($exception) {
-                    return $this->translator->trans($exception['message'], $exception['messageParameters']);
-                },
+                fn($exception) => $this->translator->trans($exception['message'], $exception['messageParameters']),
                 $object->getFailureExceptions()
             ),
             'stepExecutions' => $this->normalizeStepExecutions($object->getStepExecutions(), $format, $context),
@@ -75,10 +73,8 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
      * @param array|Traversable $stepExecutions
      * @param string            $format
      * @param array             $context
-     *
-     * @return array
      */
-    protected function normalizeStepExecutions($stepExecutions, $format, array $context)
+    protected function normalizeStepExecutions(iterable $stepExecutions, string $format, array $context): array
     {
         $result = [];
         foreach ($stepExecutions as $stepExecution) {
@@ -91,7 +87,7 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof JobExecution;
     }

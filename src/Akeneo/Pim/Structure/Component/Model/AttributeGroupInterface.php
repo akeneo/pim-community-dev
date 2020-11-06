@@ -23,143 +23,108 @@ interface AttributeGroupInterface extends
 {
     /**
      * Get id
-     *
-     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Set id
      *
      * @param int $id
-     *
-     * @return AttributeGroupInterface
      */
-    public function setId($id);
+    public function setId(int $id): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
     /**
      * Get code
-     *
-     * @return string
      */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * Set code
      *
      * @param string $code
-     *
-     * @return AttributeGroupInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
     /**
      * Get sort order
-     *
-     * @return int
      */
-    public function getSortOrder();
+    public function getSortOrder(): int;
 
     /**
      * Set sort order
      *
      * @param string $sortOrder
-     *
-     * @return AttributeGroupInterface
      */
-    public function setSortOrder($sortOrder);
+    public function setSortOrder(string $sortOrder): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
     /**
      * Get created
-     *
-     * @return \DateTime
      */
-    public function getCreated();
+    public function getCreated(): \DateTime;
 
     /**
      * Set created datetime
      *
      * @param \DateTime $created
-     *
-     * @return AttributeGroupInterface
      */
-    public function setCreated($created);
+    public function setCreated(\DateTime $created): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
     /**
      * Get updated datetime
-     *
-     * @return \DateTime
      */
-    public function getUpdated();
+    public function getUpdated(): \DateTime;
 
     /**
      * Set updated datetime
      *
      * @param \DateTime $updated
-     *
-     * @return AttributeGroupInterface
      */
-    public function setUpdated($updated);
+    public function setUpdated(\DateTime $updated): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
     /**
      * Add attributes
      *
      * @param AttributeInterface $attribute
-     *
-     * @return AttributeGroupInterface
      */
-    public function addAttribute(AttributeInterface $attribute);
+    public function addAttribute(AttributeInterface $attribute): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
     /**
      * Remove attributes
      *
      * @param AttributeInterface $attribute
-     *
-     * @return AttributeGroupInterface
      */
-    public function removeAttribute(AttributeInterface $attribute);
+    public function removeAttribute(AttributeInterface $attribute): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
     /**
      * Get attributes
-     *
-     * @return ArrayCollection
      */
-    public function getAttributes();
+    public function getAttributes(): ArrayCollection;
 
     /**
      * Check if the group has an attribute
      *
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function hasAttribute(AttributeInterface $attribute);
+    public function hasAttribute(AttributeInterface $attribute): bool;
 
-    /**
-     * @return int
-     */
-    public function getMaxAttributeSortOrder();
+    public function getMaxAttributeSortOrder(): int;
 
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale);
+    public function setLocale(string $locale);
 
     /**
      * Get label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * Set label
      *
      * @param string $label
-     *
-     * @return AttributeGroupInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
     /**
      * Returns the label of the attribute group

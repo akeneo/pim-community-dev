@@ -51,14 +51,10 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
-        $products = array_filter($items, function ($item) {
-            return $item instanceof ProductInterface;
-        });
-        $productModels = array_filter($items, function ($item) {
-            return $item instanceof ProductModelInterface;
-        });
+        $products = array_filter($items, fn($item) => $item instanceof ProductInterface);
+        $productModels = array_filter($items, fn($item) => $item instanceof ProductModelInterface);
 
         array_walk($items, function ($item) {
             $this->incrementCount($item);
@@ -71,7 +67,7 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -79,7 +75,7 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $realTimeVersioning = $jobParameters->get('realTimeVersioning');
@@ -89,7 +85,7 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
     /**
      * @param EntityWithFamilyInterface $entity
      */
-    protected function incrementCount(EntityWithFamilyInterface $entity)
+    protected function incrementCount(EntityWithFamilyInterface $entity): void
     {
         if ($entity->getId()) {
             $this->stepExecution->incrementSummaryInfo('process');

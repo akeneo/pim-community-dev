@@ -34,7 +34,7 @@ class CsvEncoder implements EncoderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsEncoding($format)
+    public function supportsEncoding($format): bool
     {
         return self::FORMAT === $format;
     }
@@ -42,7 +42,7 @@ class CsvEncoder implements EncoderInterface
     /**
      * {@inheritdoc}
      */
-    public function encode($data, $format, array $context = [])
+    public function encode($data, $format, array $context = []): string
     {
         if (!is_array($data)) {
             throw new \InvalidArgumentException(
@@ -84,7 +84,7 @@ class CsvEncoder implements EncoderInterface
      *
      * @throws \RuntimeException
      */
-    protected function initializeContext(array $context)
+    protected function initializeContext(array $context): void
     {
         $context = array_merge($this->getDefaultContext(), $context);
 
@@ -103,10 +103,8 @@ class CsvEncoder implements EncoderInterface
 
     /**
      * Get a default context for the csv encoder
-     *
-     * @return array
      */
-    protected function getDefaultContext()
+    protected function getDefaultContext(): array
     {
         return [
             'delimiter'     => ';',
@@ -122,7 +120,7 @@ class CsvEncoder implements EncoderInterface
      * @param string $delimiter
      * @param string $enclosure
      */
-    private function encodeHeader($data, $output, $delimiter, $enclosure)
+    private function encodeHeader(array $data, $output, string $delimiter, string $enclosure): void
     {
         $this->write($output, array_keys($data), $delimiter, $enclosure);
         $this->hasHeader = true;
@@ -134,7 +132,7 @@ class CsvEncoder implements EncoderInterface
      * @param string $delimiter
      * @param string $enclosure
      */
-    private function write($output, $entry, $delimiter, $enclosure)
+    private function write($output, array $entry, string $delimiter, string $enclosure): void
     {
         fputcsv($output, $entry, $delimiter, $enclosure);
     }
@@ -156,10 +154,8 @@ class CsvEncoder implements EncoderInterface
     /**
      * @param array $data
      * @param array $columns
-     *
-     * @return array
      */
-    private function normalizeColumns(array $data, array $columns)
+    private function normalizeColumns(array $data, array $columns): array
     {
         foreach ($data as $key => $item) {
             $data[$key] = array_merge($columns, $item);
@@ -170,10 +166,8 @@ class CsvEncoder implements EncoderInterface
 
     /**
      * @param array $data
-     *
-     * @return array
      */
-    private function getColumns(array $data)
+    private function getColumns(array $data): array
     {
         $columns = [];
 
@@ -191,7 +185,7 @@ class CsvEncoder implements EncoderInterface
      *
      * @throws \InvalidArgumentException
      */
-    private function checkHasStringKeys(array $data)
+    private function checkHasStringKeys(array $data): void
     {
         if (empty($data)) {
             return;

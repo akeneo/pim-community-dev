@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Bundle\Doctrine\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
@@ -20,7 +21,7 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
     {
         if (null === $orderBy) {
             $orderBy = ['code' => 'ASC'];
@@ -32,7 +33,7 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = null)
+    public function findOneBy(array $criteria, array $orderBy = null): ?object
     {
         if (null === $orderBy) {
             $orderBy = ['code' => 'ASC'];
@@ -44,7 +45,7 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getActivatedLocales()
+    public function getActivatedLocales(): array
     {
         $qb = $this->getActivatedLocalesQB();
 
@@ -54,7 +55,7 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getActivatedLocaleCodes()
+    public function getActivatedLocaleCodes(): array
     {
         $qb = $this->getActivatedLocalesQB();
         $qb->select('l.code');
@@ -72,7 +73,7 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getActivatedLocalesQB()
+    public function getActivatedLocalesQB(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('l');
         $qb->where($qb->expr()->eq('l.activated', true))
@@ -84,12 +85,10 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getDeletedLocalesForChannel(ChannelInterface $channel)
+    public function getDeletedLocalesForChannel(ChannelInterface $channel): array
     {
         $currentLocaleIds = array_map(
-            function (LocaleInterface $locale) {
-                return $locale->getId();
-            },
+            fn(LocaleInterface $locale) => $locale->getId(),
             $channel->getLocales()->toArray()
         );
 
@@ -106,7 +105,7 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['code' => $code]);
     }
@@ -114,7 +113,7 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -122,15 +121,14 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function countAllActivated()
+    public function countAllActivated(): int
     {
         $countQb = $this->createQueryBuilder('l');
-        $count = $countQb
+
+        return $countQb
             ->select('COUNT(l.id)')
             ->where($countQb->expr()->eq('l.activated', true))
             ->getQuery()
             ->getSingleScalarResult();
-
-        return $count;
     }
 }

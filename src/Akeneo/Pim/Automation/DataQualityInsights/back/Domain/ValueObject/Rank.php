@@ -45,7 +45,7 @@ final class Rank implements \JsonSerializable
 
     public static function fromString(string $code): self
     {
-        $value = intval(str_replace('rank_', '', $code));
+        $value = (int) str_replace('rank_', '', $code);
 
         return new self($value, $code);
     }
@@ -78,7 +78,7 @@ final class Rank implements \JsonSerializable
         return $this->code;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): string
     {
         return $this->code;
     }

@@ -21,7 +21,7 @@ abstract class AbstractTranslation
      *
      * @return int $id
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -30,10 +30,8 @@ abstract class AbstractTranslation
      * Set locale
      *
      * @param string $locale
-     *
-     * @return AbstractTranslation
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): self
     {
         $this->locale = $locale;
 
@@ -45,7 +43,7 @@ abstract class AbstractTranslation
      *
      * @return string $locale
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }
@@ -54,10 +52,8 @@ abstract class AbstractTranslation
      * Set foreignKey
      *
      * @param string $foreignKey
-     *
-     * @return AbstractTranslation
      */
-    public function setForeignKey($foreignKey)
+    public function setForeignKey(string $foreignKey): self
     {
         $this->foreignKey = $foreignKey;
 
@@ -69,7 +65,7 @@ abstract class AbstractTranslation
      *
      * @return string $foreignKey
      */
-    public function getForeignKey()
+    public function getForeignKey(): string
     {
         return $this->foreignKey;
     }

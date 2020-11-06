@@ -21,10 +21,8 @@ class FieldFilterHelper
      * Get field code part
      *
      * @param string $field
-     *
-     * @return string
      */
-    public static function getCode($field)
+    public static function getCode(string $field): string
     {
         $fieldData = explode('.', $field);
 
@@ -36,10 +34,8 @@ class FieldFilterHelper
      *
      * @param string $field
      * @param string $default
-     *
-     * @return string
      */
-    public static function getProperty($field, $default = 'code')
+    public static function getProperty(string $field, string $default = 'code'): string
     {
         $fieldData = explode('.', $field);
 
@@ -50,10 +46,8 @@ class FieldFilterHelper
      * Test if the field has a property
      *
      * @param string $field
-     *
-     * @return bool
      */
-    public static function hasProperty($field)
+    public static function hasProperty(string $field): bool
     {
         return strpos($field, '.') !== false;
     }
@@ -67,7 +61,7 @@ class FieldFilterHelper
      *
      * @throws InvalidPropertyTypeException
      */
-    public static function checkArray($field, $value, $className)
+    public static function checkArray(string $field, $value, string $className): void
     {
         if (!is_array($value)) {
             throw InvalidPropertyTypeException::arrayExpected(static::getCode($field), $className, $value);
@@ -84,7 +78,7 @@ class FieldFilterHelper
      * @param string $className
      *
      */
-    public static function checkDateTime($field, $value, $format, $dateMessageFormat, $className)
+    public static function checkDateTime(string $field, $value, string $format, string $dateMessageFormat, string $className): void
     {
         if ($value instanceof \DateTimeInterface) {
             return;
@@ -115,7 +109,7 @@ class FieldFilterHelper
      *
      * @throws InvalidPropertyTypeException
      */
-    public static function checkString($field, $value, $className)
+    public static function checkString(string $field, $value, string $className): void
     {
         if (!is_string($value)) {
             throw InvalidPropertyTypeException::stringExpected($field, $className, $value);
@@ -131,7 +125,7 @@ class FieldFilterHelper
      *
      * @throws InvalidPropertyTypeException
      */
-    public static function checkIdentifier($field, $value, $className)
+    public static function checkIdentifier(string $field, $value, string $className): void
     {
         $invalidIdField = static::hasProperty($field) && static::getProperty($field) === 'id' && !is_numeric($value);
         if ($invalidIdField) {

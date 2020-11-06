@@ -227,7 +227,7 @@ final class Row
     /**
      * @return null|string
      */
-    public function familyCode(): ?string
+    public function familyCode(): string
     {
         return $this->familyCode;
     }
@@ -243,7 +243,7 @@ final class Row
     /**
      * @return bool|null
      */
-    public function enabled(): ?bool
+    public function enabled(): bool
     {
         return $this->enabled;
     }

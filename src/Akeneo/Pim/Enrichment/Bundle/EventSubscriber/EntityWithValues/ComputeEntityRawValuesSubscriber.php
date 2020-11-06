@@ -44,7 +44,7 @@ final class ComputeEntityRawValuesSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [StorageEvents::PRE_SAVE => 'computeRawValues'];
     }
@@ -54,7 +54,7 @@ final class ComputeEntityRawValuesSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function computeRawValues(GenericEvent $event)
+    public function computeRawValues(GenericEvent $event): void
     {
         $subject = $event->getSubject();
         if (!$subject instanceof EntityWithValuesInterface) {

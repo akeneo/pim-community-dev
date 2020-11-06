@@ -11,10 +11,8 @@ interface DatagridInterface
 {
     /**
      * Returns datagrid name
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Set grid datasource
@@ -23,28 +21,22 @@ interface DatagridInterface
      *
      * @return $this
      */
-    public function setDatasource(DatasourceInterface $source);
+    public function setDatasource(DatasourceInterface $source): self;
 
     /**
      * Returns datasource object
-     *
-     * @return DatasourceInterface
      */
-    public function getDatasource();
+    public function getDatasource(): \Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
     /**
      * Returns datasource object accepted by extensions
-     *
-     * @return DatasourceInterface
      */
-    public function getAcceptedDatasource();
+    public function getAcceptedDatasource(): \Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
     /**
      * Getter for acceptor object
-     *
-     * @return Acceptor
      */
-    public function getAcceptor();
+    public function getAcceptor(): \Oro\Bundle\DataGridBundle\Extension\Acceptor;
 
     /**
      * Setter for acceptor object
@@ -53,7 +45,7 @@ interface DatagridInterface
      *
      * @return $this
      */
-    public function setAcceptor(Acceptor $acceptor);
+    public function setAcceptor(Acceptor $acceptor): self;
 
     /**
      * Converts datasource into the result array
@@ -61,16 +53,12 @@ interface DatagridInterface
      *    'results' => converted source
      *    ....      => some additional info added by extensions
      * )
-     *
-     * @return ResultsIterableObject
      */
-    public function getData();
+    public function getData(): ResultsIterableObject;
 
     /**
      * Retrieve metadata from all extensions
      * Metadata needed to create view layer
-     *
-     * @return MetadataIterableObject
      */
-    public function getMetadata();
+    public function getMetadata(): MetadataIterableObject;
 }

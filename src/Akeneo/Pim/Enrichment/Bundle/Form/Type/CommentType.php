@@ -35,7 +35,7 @@ class CommentType extends AbstractType
      * @param TranslatorInterface        $translator
      * @param string                     $dataClass
      */
-    public function __construct(CommentRepositoryInterface $repository, TranslatorInterface $translator, $dataClass)
+    public function __construct(CommentRepositoryInterface $repository, TranslatorInterface $translator, string $dataClass)
     {
         $this->repository = $repository;
         $this->translator = $translator;
@@ -45,7 +45,7 @@ class CommentType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $placeholder = (true === $options['is_reply']) ? 'pim_enrich.entity.product.module.comment.reply' : 'pim_enrich.entity.product.module.comment.post';
         $placeholder = $this->translator->trans($placeholder);
@@ -74,7 +74,7 @@ class CommentType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -87,7 +87,7 @@ class CommentType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_comment_comment';
     }

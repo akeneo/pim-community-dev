@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Persistence;
 
+use Doctrine\DBAL\DBALException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LabelCollection;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
@@ -30,7 +31,7 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
     /** @var MeasurementFamily[] */
     private $measurementFamilyCache = [];
 
-    public function __construct(Connection $sqlConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $sqlConnection)
     {
         $this->sqlConnection = $sqlConnection;
     }
@@ -53,7 +54,7 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
         return $this->measurementFamilyCache[$measurementFamilyCode->normalize()];
     }
 
-    public function save(MeasurementFamily $measurementFamily)
+    public function save(MeasurementFamily $measurementFamily): void
     {
         $updateSql = <<<SQL
     INSERT INTO akeneo_measurement
@@ -109,7 +110,7 @@ SQL;
         $this->measurementFamilyCache = [];
     }
 
-    public function deleteByCode(MeasurementFamilyCode $measurementFamilyCode)
+    public function deleteByCode(MeasurementFamilyCode $measurementFamilyCode): void
     {
         $sql = <<<SQL
     DELETE FROM akeneo_measurement
@@ -146,14 +147,12 @@ SQL;
         $labels = json_decode($normalizedLabels, true);
         $standardUnit = Type::getType(Type::STRING)->convertToPhpValue($standardUnit, $platform);
         //TODO check Type:JSON
-        $units = array_map(function (array $normalizedUnit) {
-            return $this->hydrateUnit(
-                $normalizedUnit['code'],
-                $normalizedUnit['labels'],
-                $normalizedUnit['convert_from_standard'],
-                $normalizedUnit['symbol']
-            );
-        }, json_decode($normalizedUnits, true));
+        $units = array_map(fn(array $normalizedUnit) => $this->hydrateUnit(
+            $normalizedUnit['code'],
+            $normalizedUnit['labels'],
+            $normalizedUnit['convert_from_standard'],
+            $normalizedUnit['symbol']
+        ), json_decode($normalizedUnits, true));
 
         return MeasurementFamily::create(
             MeasurementFamilyCode::fromString($code),
@@ -163,7 +162,7 @@ SQL;
         );
     }
 
-    private function hydrateUnit(string $code, array $normalizedLabels, array $convertFromStandard, string $symbol)
+    private function hydrateUnit(string $code, array $normalizedLabels, array $convertFromStandard, string $symbol): Unit
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
@@ -187,7 +186,7 @@ SQL;
     /**
      * @return array
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function loadAssetFamiliesIndexByCodes(): array
     {
@@ -215,7 +214,7 @@ SQL;
         return $measurementFamiliesIndexByCodes;
     }
 
-    private function loadAssetFamily(MeasurementFamilyCode $measurementFamilyCode): ?MeasurementFamily
+    private function loadAssetFamily(MeasurementFamilyCode $measurementFamilyCode): MeasurementFamily
     {
         $sql = <<<SQL
     SELECT

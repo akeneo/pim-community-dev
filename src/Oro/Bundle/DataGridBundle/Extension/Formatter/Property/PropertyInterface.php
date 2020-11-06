@@ -37,7 +37,7 @@ interface PropertyInterface
      *
      * @return $this
      */
-    public function init(PropertyConfiguration $params);
+    public function init(PropertyConfiguration $params): self;
 
     /**
      * Get field value from data
@@ -50,8 +50,6 @@ interface PropertyInterface
 
     /**
      * Returns field metadata
-     *
-     * @return array
      */
-    public function getMetadata();
+    public function getMetadata(): array;
 }

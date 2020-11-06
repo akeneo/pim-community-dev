@@ -12,7 +12,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
  */
 class LegacyMeasurementAdapter
 {
-    public function adapts(MeasurementFamily $measurementFamily)
+    public function adapts(MeasurementFamily $measurementFamily): array
     {
         $normalizedMeasurementFamily = $measurementFamily->normalize();
 
@@ -39,10 +39,8 @@ class LegacyMeasurementAdapter
 
     private function adaptOperations(array $unit): array
     {
-        return array_map(function (array $operation) {
-            return [
-                $operation['operator'] => $operation['value']
-            ];
-        }, $unit['convert_from_standard']);
+        return array_map(fn(array $operation) => [
+            $operation['operator'] => $operation['value']
+        ], $unit['convert_from_standard']);
     }
 }

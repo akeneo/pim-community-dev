@@ -29,7 +29,7 @@ class FilterRoutesSubscriber implements EventSubscriberInterface
         $this->featureFlags = $featureFlags;
     }
 
-    public function filterRoutesFromDisabledFeatureFlags(ControllerEvent $event)
+    public function filterRoutesFromDisabledFeatureFlags(ControllerEvent $event): void
     {
         if (!$event->getRequest()->attributes->has(static::FEATURE_KEY)) {
             return;
@@ -47,7 +47,7 @@ class FilterRoutesSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER => 'filterRoutesFromDisabledFeatureFlags',

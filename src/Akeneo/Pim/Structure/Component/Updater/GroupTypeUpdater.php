@@ -28,7 +28,7 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
      *     ]
      * ]
      */
-    public function update($groupType, array $data, array $options = [])
+    public function update(object $groupType, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$groupType instanceof GroupTypeInterface) {
             throw InvalidObjectException::objectExpected(
@@ -49,7 +49,7 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
      * @param string             $field
      * @param mixed              $data
      */
-    protected function setData(GroupTypeInterface $groupType, $field, $data)
+    protected function setData(GroupTypeInterface $groupType, string $field, $data): void
     {
         switch ($field) {
           case 'code':

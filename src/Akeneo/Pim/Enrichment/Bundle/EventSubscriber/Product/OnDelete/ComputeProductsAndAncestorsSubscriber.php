@@ -64,11 +64,9 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
         if (!is_array($products) || !is_array($event->getSubjectId())) {
             return;
         }
-        $products = array_filter($products, function ($product) {
-            return $product instanceof ProductInterface
-                // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-                && get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
-        });
+        $products = array_filter($products, fn($product) => $product instanceof ProductInterface
+            // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+            && !$product instanceof \Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct);
 
         if (!empty($products)) {
             $this->productAndAncestorsIndexer->removeFromProductIdsAndReindexAncestors(

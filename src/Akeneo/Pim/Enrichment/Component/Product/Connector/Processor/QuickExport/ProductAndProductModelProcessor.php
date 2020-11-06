@@ -87,7 +87,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /**
      * {@inheritdoc}
      */
-    public function process($entityWithValues)
+    public function process($entityWithValues): array
     {
         $this->initSecurityContext($this->stepExecution);
 
@@ -153,19 +153,15 @@ class ProductAndProductModelProcessor extends AbstractProcessor
      *
      * @param array $product
      * @param array $selectedProperties
-     *
-     * @return array
      */
-    protected function filterProperties(array $product, array $selectedProperties)
+    protected function filterProperties(array $product, array $selectedProperties): array
     {
         $propertiesToExport = [];
         foreach ($product as $codeProperty => $property) {
             if ('values' === $codeProperty) {
                 $propertiesToExport['values'] = array_filter(
                     $property,
-                    function ($attributeCode) use ($selectedProperties) {
-                        return in_array($attributeCode, $selectedProperties);
-                    }, ARRAY_FILTER_USE_KEY
+                    fn($attributeCode) => in_array($attributeCode, $selectedProperties), ARRAY_FILTER_USE_KEY
                 );
             } elseif (in_array($codeProperty, $selectedProperties) || 'identifier' === $codeProperty) {
                 $propertiesToExport[$codeProperty] = $property;
@@ -179,10 +175,8 @@ class ProductAndProductModelProcessor extends AbstractProcessor
      * Are there properties to filters ?
      *
      * @param JobParameters $parameters
-     *
-     * @return bool
      */
-    protected function areAttributesToFilter(JobParameters $parameters)
+    protected function areAttributesToFilter(JobParameters $parameters): bool
     {
         return null !== $parameters->get('selected_properties');
     }
@@ -191,16 +185,14 @@ class ProductAndProductModelProcessor extends AbstractProcessor
      * @param JobParameters $parameters
      *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
-    protected function getNormalizerContext(JobParameters $parameters)
+    protected function getNormalizerContext(JobParameters $parameters): array
     {
         if (!$parameters->has('scope')) {
             throw new \InvalidArgumentException('No channel found');
         }
 
-        $normalizerContext = [
+        return [
             'channels'     => [$parameters->get('scope')],
             'locales'      => $parameters->has('selected_locales') ?
                 $parameters->get('selected_locales') :
@@ -210,18 +202,14 @@ class ProductAndProductModelProcessor extends AbstractProcessor
                 'pim.transform.product_value.structured.quick_export'
             ]
         ];
-
-        return $normalizerContext;
     }
 
     /**
      * Get locale codes for a channel
      *
      * @param string $channelCode
-     *
-     * @return array
      */
-    protected function getLocaleCodes($channelCode)
+    protected function getLocaleCodes(string $channelCode): array
     {
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
@@ -233,7 +221,7 @@ class ProductAndProductModelProcessor extends AbstractProcessor
      *
      * @param StepExecution $stepExecution
      */
-    protected function initSecurityContext(StepExecution $stepExecution)
+    protected function initSecurityContext(StepExecution $stepExecution): void
     {
         $username = $stepExecution->getJobExecution()->getUser();
         $user = $this->userProvider->loadUserByUsername($username);
@@ -247,10 +235,8 @@ class ProductAndProductModelProcessor extends AbstractProcessor
      *
      * @param WriteValueCollection $values
      * @param array                    $selectedAttributes
-     *
-     * @return WriteValueCollection
      */
-    protected function filterValues(WriteValueCollection $values, array $selectedAttributes)
+    protected function filterValues(WriteValueCollection $values, array $selectedAttributes): \Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection
     {
         return $values->filter(function ($productValue) use ($selectedAttributes) {
             $attributeCode = $productValue->getAttributeCode();

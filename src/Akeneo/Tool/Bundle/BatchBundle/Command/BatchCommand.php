@@ -108,7 +108,7 @@ class BatchCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription(
@@ -146,7 +146,7 @@ class BatchCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $noLog = $input->getOption('no-log');
 
@@ -268,7 +268,7 @@ class BatchCommand extends Command
             $exitCode = self::EXIT_ERROR_CODE;
         }
 
-        return $exitCode;
+        return (int) $exitCode;
     }
 
     /**
@@ -278,7 +278,7 @@ class BatchCommand extends Command
      * @param array[]         $exceptions
      * @param boolean         $verbose
      */
-    protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose)
+    protected function writeExceptions(OutputInterface $output, array $exceptions, bool $verbose): void
     {
         foreach ($exceptions as $exception) {
             $output->write(
@@ -326,9 +326,8 @@ class BatchCommand extends Command
         $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
 
         $rawParameters = array_merge($rawParameters, $config);
-        $jobParameters = $this->jobParametersFactory->create($job, $rawParameters);
 
-        return $jobParameters;
+        return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
     /**
@@ -382,7 +381,7 @@ class BatchCommand extends Command
      *
      * @return array
      */
-    private function decodeConfiguration($data): array
+    private function decodeConfiguration(string $data): array
     {
         $config = json_decode($data, true);
 

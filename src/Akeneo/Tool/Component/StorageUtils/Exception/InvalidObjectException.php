@@ -37,7 +37,7 @@ class InvalidObjectException extends \LogicException
      *
      * @return InvalidObjectException
      */
-    public static function objectExpected($objectClassName, $expectedClassName)
+    public static function objectExpected(string $objectClassName, string $expectedClassName)
     {
         return new static(
             $objectClassName,
@@ -50,18 +50,12 @@ class InvalidObjectException extends \LogicException
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getObjectClassName()
+    public function getObjectClassName(): string
     {
         return $this->objectClassName;
     }
 
-    /**
-     * @return string
-     */
-    public function getExpectedClassName()
+    public function getExpectedClassName(): string
     {
         return $this->expectedClassName;
     }

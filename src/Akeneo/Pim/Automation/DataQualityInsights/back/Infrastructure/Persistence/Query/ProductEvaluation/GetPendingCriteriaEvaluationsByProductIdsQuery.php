@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetPendingCriteriaEvaluationsByProductIdsQueryInterface;
@@ -32,7 +34,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPending
     /** @var string */
     private $tableName;
 
-    public function __construct(Connection $dbConnection, Clock $clock, string $tableName)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbConnection, Clock $clock, string $tableName)
     {
         $this->dbConnection = $dbConnection;
         $this->clock = $clock;
@@ -71,7 +73,7 @@ SQL;
 
         $productsCriteriaEvaluations = [];
         while ($resultRow = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $productId = new ProductId(intval($resultRow['product_id']));
+            $productId = new ProductId((int) $resultRow['product_id']);
             $criteria = json_decode($resultRow['criteria']);
             $productsCriteriaEvaluations[$productId->toInt()] = $this->hydrateProductCriteriaEvaluations($productId, $criteria);
         }
@@ -79,13 +81,13 @@ SQL;
         return $productsCriteriaEvaluations;
     }
 
-    private function hydrateProductCriteriaEvaluations(ProductId $productId, array $criteria): Write\CriterionEvaluationCollection
+    private function hydrateProductCriteriaEvaluations(ProductId $productId, array $criteria): CriterionEvaluationCollection
     {
-        $productCriteriaEvaluations = new Write\CriterionEvaluationCollection();
+        $productCriteriaEvaluations = new CriterionEvaluationCollection();
         $pendingStatus = CriterionEvaluationStatus::pending();
 
         foreach ($criteria as $criterion) {
-            $productCriteriaEvaluations->add(new Write\CriterionEvaluation(
+            $productCriteriaEvaluations->add(new CriterionEvaluation(
                 new CriterionCode($criterion),
                 $productId,
                 $pendingStatus

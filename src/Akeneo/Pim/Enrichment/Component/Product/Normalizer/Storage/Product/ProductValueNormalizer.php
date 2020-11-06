@@ -29,7 +29,7 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function normalize($value, $format = null, array $context = [])
+    public function normalize($value, $format = null, array $context = []): array
     {
         $stdValue = $this->stdNormalizer->normalize($value, $format, $context);
 
@@ -46,7 +46,7 @@ class ProductValueNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ValueInterface && 'storage' === $format;
     }

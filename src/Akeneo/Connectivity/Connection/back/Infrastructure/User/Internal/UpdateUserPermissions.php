@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\User\Internal;
 
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\UpdateUserPermissionsInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -34,8 +36,8 @@ final class UpdateUserPermissions implements UpdateUserPermissionsInterface
 
     public function __construct(
         UserManager $userManager,
-        RoleRepository $roleRepository,
-        GroupRepository $groupRepository,
+        RoleRepositoryInterface $roleRepository,
+        GroupRepositoryInterface $groupRepository,
         ObjectUpdaterInterface $userUpdater
     ) {
         $this->userManager = $userManager;

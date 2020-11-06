@@ -33,7 +33,7 @@ class AclConfigurationPass implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->configureAclExtensionSelector($container);
         $this->configureDefaultAclProvider($container);
@@ -44,7 +44,7 @@ class AclConfigurationPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function configureAclExtensionSelector(ContainerBuilder $container)
+    protected function configureAclExtensionSelector(ContainerBuilder $container): void
     {
         if ($container->hasDefinition(self::ACL_EXTENSION_SELECTOR)) {
             $selectorDef = $container->getDefinition(self::ACL_EXTENSION_SELECTOR);
@@ -58,7 +58,7 @@ class AclConfigurationPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function configureDefaultAclProvider(ContainerBuilder $container)
+    protected function configureDefaultAclProvider(ContainerBuilder $container): void
     {
         if ($container->hasDefinition(self::DEFAULT_ACL_PROVIDER)) {
             $providerDef = $container->getDefinition(self::DEFAULT_ACL_PROVIDER);
@@ -76,7 +76,7 @@ class AclConfigurationPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function configureDefaultAclCache(ContainerBuilder $container)
+    protected function configureDefaultAclCache(ContainerBuilder $container): void
     {
         if ($container->hasDefinition(self::DEFAULT_ACL_CACHE)) {
             $cacheDef = $container->getDefinition(self::DEFAULT_ACL_CACHE);
@@ -92,7 +92,7 @@ class AclConfigurationPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function configureDefaultAclVoter(ContainerBuilder $container)
+    protected function configureDefaultAclVoter(ContainerBuilder $container): void
     {
         if ($container->hasDefinition(self::DEFAULT_ACL_VOTER)) {
             $voterDef = $container->getDefinition(self::DEFAULT_ACL_VOTER);
@@ -134,9 +134,8 @@ class AclConfigurationPass implements CompilerPassInterface
      * Load ACL extensions and sort them by priority.
      *
      * @param  ContainerBuilder $container
-     * @return array
      */
-    protected function loadAclExtensions(ContainerBuilder $container)
+    protected function loadAclExtensions(ContainerBuilder $container): array
     {
         $extensions = [];
         foreach ($container->findTaggedServiceIds(self::ACL_EXTENSION_TAG) as $id => $attributes) {
@@ -152,17 +151,13 @@ class AclConfigurationPass implements CompilerPassInterface
         }
         usort(
             $extensions,
-            function ($a, $b) {
-                return $a['priority'] == $b['priority']
-                    ? 0
-                    : ($a['priority'] < $b['priority']) ? -1 : 1;
-            }
+            fn($a, $b) => $a['priority'] == $b['priority']
+                ? 0
+                : ($a['priority'] < $b['priority']) ? -1 : 1
         );
 
         return array_map(
-            function ($el) {
-                return $el['id'];
-            },
+            fn($el) => $el['id'],
             $extensions
         );
     }

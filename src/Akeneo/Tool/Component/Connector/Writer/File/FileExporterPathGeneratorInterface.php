@@ -17,5 +17,5 @@ interface FileExporterPathGeneratorInterface
      *
      * @return string the export path of the file
      */
-    public function generate($object, array $options = []);
+    public function generate($object, array $options = []): string;
 }

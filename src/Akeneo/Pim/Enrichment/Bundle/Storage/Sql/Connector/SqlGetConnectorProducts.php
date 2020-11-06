@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetGroupAssociationsByProductIdentifiers;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductAssociationsByProductIdentifiers;
@@ -25,7 +26,7 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetConnectorProducts implements Query\GetConnectorProducts
+class SqlGetConnectorProducts implements GetConnectorProducts
 {
     /** @var GetValuesAndPropertiesFromProductIdentifiers */
     private $getValuesAndPropertiesFromProductIdentifiers;
@@ -87,9 +88,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         ?array $localesToFilterOn
     ): ConnectorProductList {
         $result = $pqb->execute();
-        $identifiers = array_map(function (IdentifierResult $identifier) {
-            return $identifier->getIdentifier();
-        }, iterator_to_array($result));
+        $identifiers = array_map(fn(IdentifierResult $identifier) => $identifier->getIdentifier(), iterator_to_array($result));
 
         $products = $this->fromProductIdentifiers($identifiers, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn);
 

@@ -14,7 +14,7 @@ class OroDataGridBundle extends Bundle
     /**
      * {@inheritDoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ConfigurationPass());
         $container->addCompilerPass(new FormattersPass());

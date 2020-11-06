@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters;
 
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
@@ -23,12 +25,12 @@ final class PeriodicTasksParameters implements ConstraintCollectionProviderInter
     public const DATE_FIELD = 'date';
     public const DATE_FORMAT = 'Y-m-d H:i:s';
 
-    public function getConstraintCollection(): Constraints\Collection
+    public function getConstraintCollection(): Collection
     {
-        $dateConstraint = new Constraints\DateTime();
+        $dateConstraint = new DateTime();
         $dateConstraint->format = self::DATE_FORMAT;
 
-        return new Constraints\Collection(
+        return new Collection(
             [
                 'fields' => [
                     self::DATE_FIELD => $dateConstraint,
@@ -44,7 +46,7 @@ final class PeriodicTasksParameters implements ConstraintCollectionProviderInter
         ];
     }
 
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return $job->getName() === 'data_quality_insights_periodic_tasks';
     }

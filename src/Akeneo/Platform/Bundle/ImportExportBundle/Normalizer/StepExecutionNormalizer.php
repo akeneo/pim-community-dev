@@ -39,7 +39,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
     /**
      * {@inheritdoc}
      */
-    public function normalize($stepExecution, $format = null, array $context = [])
+    public function normalize($stepExecution, $format = null, array $context = []): array
     {
         $normalizedWarnings = $this->normalizeWarnings($stepExecution->getWarnings(), $context);
 
@@ -57,9 +57,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
             'warnings'  => $normalizedWarnings,
             'errors'    => $stepExecution->getErrors(),
             'failures'  => array_map(
-                function ($failure) {
-                    return $this->translator->trans($failure['message'], $failure['messageParameters']);
-                },
+                fn($failure) => $this->translator->trans($failure['message'], $failure['messageParameters']),
                 $stepExecution->getFailureExceptions()
             ),
         ];
@@ -68,7 +66,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof StepExecution;
     }
@@ -83,10 +81,8 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
      *
      * @param Collection $warnings
      * @param array      $context
-     *
-     * @return array
      */
-    protected function normalizeWarnings(Collection $warnings, array $context = [])
+    protected function normalizeWarnings(Collection $warnings, array $context = []): array
     {
         $result = [];
         $selectedWarnings = [];
@@ -111,10 +107,8 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
      * Normalizes the summary
      *
      * @param array $summary
-     *
-     * @return array
      */
-    protected function normalizeSummary(array $summary)
+    protected function normalizeSummary(array $summary): array
     {
         $result = [];
         foreach ($summary as $key => $value) {
@@ -129,10 +123,8 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
      * Normalizes the status
      *
      * @param int $status
-     *
-     * @return string
      */
-    protected function normalizeStatus($status)
+    protected function normalizeStatus(int $status): string
     {
         $status = sprintf('pim_import_export.batch_status.%d', $status);
 

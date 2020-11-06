@@ -30,17 +30,17 @@ final class FilterValues
 
     public function filterByLocaleCodes(array $localeCodesToFilterOn): self
     {
-        return new static($this->channelCodeToKeep, $localeCodesToFilterOn, $this->attributeCodesToKeep);
+        return new self($this->channelCodeToKeep, $localeCodesToFilterOn, $this->attributeCodesToKeep);
     }
 
     public function filterByChannelCode(string $channelCodeToFilterOn): self
     {
-        return new static($channelCodeToFilterOn, $this->localeCodesToKeep, $this->attributeCodesToKeep);
+        return new self($channelCodeToFilterOn, $this->localeCodesToKeep, $this->attributeCodesToKeep);
     }
 
     public function filterByAttributeCodes(array $attributeCodesToKeep): self
     {
-        return new static($this->channelCodeToKeep, $this->localeCodesToKeep, $attributeCodesToKeep);
+        return new self($this->channelCodeToKeep, $this->localeCodesToKeep, $attributeCodesToKeep);
     }
 
     public function execute(array $standardFormatValues): array
@@ -51,24 +51,16 @@ final class FilterValues
 
         foreach ($standardFormatValues as &$values) {
             if ([] !== $this->localeCodesToKeep) {
-                $values = array_filter($values, function (array $value): bool {
-                    return null === $value['locale'] || in_array($value['locale'], $this->localeCodesToKeep, true);
-                });
+                $values = array_filter($values, fn(array $value): bool => null === $value['locale'] || in_array($value['locale'], $this->localeCodesToKeep, true));
             }
 
             if ('' !== $this->channelCodeToKeep) {
-                $values = array_filter($values, function (array $value): bool {
-                    return null === $value['scope'] || $value['scope'] === $this->channelCodeToKeep;
-                });
+                $values = array_filter($values, fn(array $value): bool => null === $value['scope'] || $value['scope'] === $this->channelCodeToKeep);
             }
 
             $values = array_values($values);
         }
 
-        $standardFormatValues = array_filter($standardFormatValues, function ($value) :bool {
-            return [] !== $value;
-        });
-
-        return $standardFormatValues;
+        return array_filter($standardFormatValues, fn($value): bool => [] !== $value);
     }
 }

@@ -36,7 +36,7 @@ class ParentFieldSetter extends AbstractFieldSetter
     /**
      * {@inheritdoc}
      */
-    public function setFieldData($product, $field, $data, array $options = []): void
+    public function setFieldData($product, string $field, $data, array $options = []): void
     {
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(

@@ -18,7 +18,7 @@ class ReferenceDataUniqueCodeChecker extends AbstractReferenceDataUniqueCodeChec
     /**
      * {@inheritdoc}
      */
-    protected function getCodeFieldMapping($referenceDataClass)
+    protected function getCodeFieldMapping(string $referenceDataClass): array
     {
         $metadata = $this->om->getClassMetadata($referenceDataClass);
         Assert::isInstanceOf($metadata, ClassMetadataInfo::class);

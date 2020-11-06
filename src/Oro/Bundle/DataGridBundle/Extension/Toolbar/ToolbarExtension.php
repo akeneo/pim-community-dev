@@ -21,7 +21,7 @@ class ToolbarExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(DatagridConfiguration $config): bool
     {
         return true;
     }
@@ -29,7 +29,7 @@ class ToolbarExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(DatagridConfiguration $config): void
     {
         $options = $config->offsetGetByPath(self::TOOLBAR_OPTION_PATH, []);
         // validate configuration and pass default values back to config
@@ -40,7 +40,7 @@ class ToolbarExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data): void
     {
         /**
          * Default toolbar options

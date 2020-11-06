@@ -27,7 +27,7 @@ class CountProductValues implements CountQuery
      * @param Connection $connection
      * @param int        $limit
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, int $limit)
     {
         $this->connection = $connection;
         $this->limit = $limit;
@@ -44,8 +44,6 @@ class CountProductValues implements CountQuery
 SQL;
         $result = $this->connection->query($sql)->fetch();
 
-        $volume = new CountVolume((int) $result['sum_product_values'], $this->limit, self::VOLUME_NAME);
-
-        return $volume;
+        return new CountVolume((int) $result['sum_product_values'], $this->limit, self::VOLUME_NAME);
     }
 }

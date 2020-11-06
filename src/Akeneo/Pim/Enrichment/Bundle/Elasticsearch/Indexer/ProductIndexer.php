@@ -70,9 +70,7 @@ class ProductIndexer implements ProductIndexerInterface
                 $productIdentifiersChunk
             );
             $normalizedProductProjections = array_map(
-                function (ElasticsearchProductProjection $elasticsearchProductProjection) {
-                    return $elasticsearchProductProjection->toArray();
-                },
+                fn(ElasticsearchProductProjection $elasticsearchProductProjection) => $elasticsearchProductProjection->toArray(),
                 $elasticsearchProductProjections
             );
 
@@ -98,9 +96,7 @@ class ProductIndexer implements ProductIndexerInterface
     public function removeFromProductIds(array $productIds): void
     {
         $this->productAndProductModelClient->bulkDelete(array_map(
-            function ($productId) {
-                return self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId;
-            },
+            fn($productId) => self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId,
             $productIds
         ));
     }

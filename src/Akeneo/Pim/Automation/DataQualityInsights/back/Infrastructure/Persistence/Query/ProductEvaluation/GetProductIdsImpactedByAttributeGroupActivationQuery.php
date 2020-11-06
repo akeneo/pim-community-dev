@@ -18,7 +18,7 @@ final class GetProductIdsImpactedByAttributeGroupActivationQuery implements GetP
     /** @var Connection */
     private $dbConnection;
 
-    public function __construct(Connection $dbConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
     }
@@ -43,7 +43,7 @@ SQL;
 
         $productIds = [];
         while ($productId = $stmt->fetchColumn()) {
-            $productIds[] = new ProductId(intval($productId));
+            $productIds[] = new ProductId((int) $productId);
 
             if (count($productIds) >= $bulkSize) {
                 yield $productIds;

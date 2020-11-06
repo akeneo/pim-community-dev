@@ -42,7 +42,7 @@ class PropertyAdder implements PropertyAdderInterface
     /**
      * {@inheritdoc}
      */
-    public function addData($product, $field, $data, array $options = [])
+    public function addData(object $product, string $field, $data, array $options = []): PropertyAdderInterface
     {
         if (!$product instanceof EntityWithValuesInterface) {
             throw InvalidObjectException::objectExpected(
@@ -73,10 +73,8 @@ class PropertyAdder implements PropertyAdderInterface
 
     /**
      * @param string $code
-     *
-     * @return AttributeInterface|null
      */
-    protected function getAttribute($code)
+    protected function getAttribute(string $code): ?AttributeInterface
     {
         return $this->attributeRepository->findOneByIdentifier($code);
     }

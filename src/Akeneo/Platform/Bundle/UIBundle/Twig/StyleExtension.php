@@ -14,10 +14,10 @@ class StyleExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('highlight', [$this, 'highlight'])
+            new \Twig_SimpleFilter('highlight', fn($content) => $this->highlight($content))
         ];
     }
 
@@ -25,10 +25,8 @@ class StyleExtension extends \Twig_Extension
      * Return a string wrapper in a span with a specific class
      *
      * @param string $content
-     *
-     * @return string
      */
-    public function highlight($content)
+    public function highlight(string $content): string
     {
         return sprintf('<span class="AknRule-attribute">%s</span>', $content);
     }

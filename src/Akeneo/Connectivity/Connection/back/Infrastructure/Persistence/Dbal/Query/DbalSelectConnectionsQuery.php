@@ -18,7 +18,7 @@ class DbalSelectConnectionsQuery implements SelectConnectionsQuery
     /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }

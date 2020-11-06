@@ -50,7 +50,7 @@ class MetricAttributeCopier extends AbstractAttributeCopier
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         array $options = []
-    ) {
+    ): void {
         $options = $this->resolver->resolve($options);
         $fromLocale = $options['from_locale'];
         $toLocale = $options['to_locale'];
@@ -90,11 +90,11 @@ class MetricAttributeCopier extends AbstractAttributeCopier
         EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        $fromLocale,
-        $toLocale,
-        $fromScope,
-        $toScope
-    ) {
+        string $fromLocale,
+        string $toLocale,
+        string $fromScope,
+        string $toScope
+    ): void {
         $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         $fromData = (null !== $fromValue) ?
             $this->normalizer->normalize($fromValue, 'standard')['data'] :

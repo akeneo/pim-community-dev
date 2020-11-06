@@ -25,42 +25,36 @@ interface FilterRegistryInterface
      *
      * @param string $code     the field or the attribute code
      * @param string $operator supported operator
-     *
-     * @return FilterInterface|null
      */
-    public function getFilter($code, $operator);
+    public function getFilter(string $code, string $operator): ?\Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FilterInterface;
 
     /**
      * Get the field filter
      *
      * @param string $field     the field
      * @param string $operator  supported operator
-     *
-     * @return FieldFilterInterface|null
      */
-    public function getFieldFilter($field, $operator);
+    public function getFieldFilter(string $field, string $operator): ?FieldFilterInterface;
 
     /**
      * Get the attribute filter
      *
      * @param AttributeInterface $attribute
      * @param string             $operator  supported operator
-     *
-     * @return AttributeFilterInterface|null
      */
-    public function getAttributeFilter(AttributeInterface $attribute, $operator);
+    public function getAttributeFilter(AttributeInterface $attribute, string $operator): ?AttributeFilterInterface;
 
     /**
      * Returns all field filters
      *
      * @return FieldFilterInterface[]
      */
-    public function getFieldFilters();
+    public function getFieldFilters(): array;
 
     /**
      * Returns all attribute filters
      *
      * @return AttributeFilterInterface[]
      */
-    public function getAttributeFilters();
+    public function getAttributeFilters(): array;
 }

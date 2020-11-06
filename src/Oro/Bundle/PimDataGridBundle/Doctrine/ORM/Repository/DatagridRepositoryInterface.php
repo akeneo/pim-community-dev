@@ -13,8 +13,5 @@ use Doctrine\ORM\QueryBuilder;
  */
 interface DatagridRepositoryInterface
 {
-    /**
-     * @return QueryBuilder
-     */
-    public function createDatagridQueryBuilder();
+    public function createDatagridQueryBuilder(): QueryBuilder;
 }

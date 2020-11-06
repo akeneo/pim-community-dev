@@ -55,10 +55,8 @@ class UpdateProductValueProcessor extends AbstractProcessor
      * Validate the product
      *
      * @param ProductInterface|ProductModelInterface $product
-     *
-     * @return bool
      */
-    protected function isProductValid($product)
+    protected function isProductValid($product): bool
     {
         $violations = $this->validator->validate($product);
         $this->addWarningMessage($violations, $product);
@@ -72,7 +70,7 @@ class UpdateProductValueProcessor extends AbstractProcessor
      * @param ProductInterface|ProductModelInterface $product
      * @param array                                  $actions
      */
-    protected function setData($product, array $actions)
+    protected function setData($product, array $actions): void
     {
         foreach ($actions as $action) {
             $this->propertySetter->setData($product, $action['field'], $action['value']);

@@ -24,7 +24,7 @@ class FamilyTranslation extends AbstractTranslation implements FamilyTranslation
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): FamilyTranslationInterface
     {
         $this->label = $label;
 
@@ -34,7 +34,7 @@ class FamilyTranslation extends AbstractTranslation implements FamilyTranslation
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }

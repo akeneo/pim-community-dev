@@ -21,7 +21,7 @@ class EnrichmentFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $filterDatasource, $data)
+    public function apply(FilterDatasourceAdapterInterface $filterDatasource, $data): bool
     {
         $filterValue = $data['value'] ?? null;
 

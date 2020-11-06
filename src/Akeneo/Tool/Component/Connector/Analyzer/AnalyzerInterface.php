@@ -19,8 +19,6 @@ interface AnalyzerInterface
     /**
      * Analyze a datasource and returns statistics about its content
      * @param ItemReaderInterface $reader
-     *
-     * @return array
      */
-    public function analyze(ItemReaderInterface $reader);
+    public function analyze(ItemReaderInterface $reader): array;
 }

@@ -24,7 +24,7 @@ class RegisterNotificationFactoryPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->registerFactories($container);
     }
@@ -34,7 +34,7 @@ class RegisterNotificationFactoryPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
-    protected function registerFactories(ContainerBuilder $container)
+    protected function registerFactories(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(self::NOTIFICATION_FACTORY_REGISTRY)) {
             return;
@@ -56,7 +56,7 @@ class RegisterNotificationFactoryPass implements CompilerPassInterface
      *
      * @return Reference[]
      */
-    protected function findAndSortTaggedServices($tagName, ContainerBuilder $container)
+    protected function findAndSortTaggedServices(string $tagName, ContainerBuilder $container): array
     {
         $services = $container->findTaggedServiceIds($tagName);
 

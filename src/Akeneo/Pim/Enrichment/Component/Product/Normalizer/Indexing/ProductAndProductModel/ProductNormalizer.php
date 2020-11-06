@@ -46,7 +46,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = [])
+    public function normalize($product, $format = null, array $context = []): array
     {
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
 
@@ -60,7 +60,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format &&
             $data instanceof ProductInterface;
@@ -96,9 +96,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
             $attributes = $this->attributesProvider->getAttributes($parent);
             $attributeCodes = array_map(
-                function (AttributeInterface $attribute) {
-                    return $attribute->getCode();
-                },
+                fn(AttributeInterface $attribute) => $attribute->getCode(),
                 $attributes
             );
             $ancestorsAttributesCodes = array_merge($ancestorsAttributesCodes, $attributeCodes);
@@ -133,9 +131,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $familyAttributesCodes = [];
         if ($product->isVariant()) {
             $familyAttributes = $this->attributesProvider->getAttributes($product);
-            $familyAttributesCodes = array_map(function (AttributeInterface $attribute) {
-                return $attribute->getCode();
-            }, $familyAttributes);
+            $familyAttributesCodes = array_map(fn(AttributeInterface $attribute) => $attribute->getCode(), $familyAttributes);
         } elseif (null !== $product->getFamily()) {
             $familyAttributesCodes = $product->getFamily()->getAttributeCodes();
         }

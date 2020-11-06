@@ -55,28 +55,22 @@ final class RanksDistributionCollection implements \IteratorAggregate
 
     public function __construct(array $axisChannelLocaleRanksDistributions)
     {
-        $this->axisChannelLocaleRanksDistributions = $this->mapRanksDistributions(function (array $ranksDistribution) {
-            return new RanksDistribution($ranksDistribution);
-        }, $axisChannelLocaleRanksDistributions);
+        $this->axisChannelLocaleRanksDistributions = $this->mapRanksDistributions(fn(array $ranksDistribution) => new RanksDistribution($ranksDistribution), $axisChannelLocaleRanksDistributions);
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->axisChannelLocaleRanksDistributions);
     }
 
     public function toArray(): array
     {
-        return $this->mapRanksDistributions(function (RanksDistribution $ranksDistribution) {
-            return $ranksDistribution->toArray();
-        }, $this->axisChannelLocaleRanksDistributions);
+        return $this->mapRanksDistributions(fn(RanksDistribution $ranksDistribution) => $ranksDistribution->toArray(), $this->axisChannelLocaleRanksDistributions);
     }
 
     public function getAverageRanks(): array
     {
-        return $this->mapRanksDistributions(function (RanksDistribution $ranksDistribution) {
-            return $ranksDistribution->getAverageRank();
-        }, $this->axisChannelLocaleRanksDistributions);
+        return $this->mapRanksDistributions(fn(RanksDistribution $ranksDistribution) => $ranksDistribution->getAverageRank(), $this->axisChannelLocaleRanksDistributions);
     }
 
     private function mapRanksDistributions(callable $callback, array $axisChannelLocaleRanksDistributions): array

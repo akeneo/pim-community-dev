@@ -37,8 +37,6 @@ interface AttributeCopierInterface extends CopierInterface
      *
      * @param AttributeInterface                                       $fromAttribute
      * @param AttributeInterface $toAttribute
-     *
-     * @return bool
      */
-    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute);
+    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute): bool;
 }

@@ -57,7 +57,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function expected($message, $className)
+    public static function expected(string $message, string $className)
     {
         return new static(
             null,
@@ -75,7 +75,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function valueNotEmptyExpected($propertyName, $className)
+    public static function valueNotEmptyExpected(string $propertyName, string $className)
     {
         $message = 'Property "%s" does not expect an empty value.';
 
@@ -99,7 +99,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function validEntityCodeExpected($propertyName, $key, $because, $className, $propertyValue)
+    public static function validEntityCodeExpected(string $propertyName, string $key, string $because, string $className, string $propertyValue)
     {
         $message = 'Property "%s" expects a valid %s. %s, "%s" given.';
 
@@ -122,7 +122,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function dateExpected($propertyName, $format, $className, $propertyValue)
+    public static function dateExpected(string $propertyName, string $format, string $className, string $propertyValue)
     {
         $message = 'Property "%s" expects a string with the format "%s" as data, "%s" given.';
 
@@ -144,7 +144,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function validDateExpected($propertyName, $className, $propertyValue)
+    public static function validDateExpected(string $propertyName, string $className, string $propertyValue)
     {
         $message = 'Property "%s" expects a valid date as data, "%s" given.';
 
@@ -167,7 +167,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function validGroupTypeExpected($propertyName, $because, $className, $propertyValue)
+    public static function validGroupTypeExpected(string $propertyName, string $because, string $className, string $propertyValue)
     {
         $message = 'Property "%s" expects a valid group type. %s, "%s" given.';
 
@@ -190,7 +190,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function validGroupExpected($propertyName, $because, $className, $propertyValue)
+    public static function validGroupExpected(string $propertyName, string $because, string $className, string $propertyValue)
     {
         $message = 'Property "%s" expects a valid group. %s, "%s" given.';
 
@@ -212,7 +212,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function dataExpected($propertyName, $data, $className)
+    public static function dataExpected(string $propertyName, string $data, string $className)
     {
         $message = 'Property "%s" expects %s.';
 
@@ -234,7 +234,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function validPathExpected($propertyName, $className, $propertyValue)
+    public static function validPathExpected(string $propertyName, string $className, string $propertyValue)
     {
         $message = 'Property "%s" expects a valid pathname as data, "%s" given.';
 
@@ -256,7 +256,7 @@ class InvalidPropertyException extends PropertyException
      *
      * @return InvalidPropertyException
      */
-    public static function expectedFromPreviousException($propertyName, $className, \Exception $exception)
+    public static function expectedFromPreviousException(string $propertyName, string $className, \Exception $exception)
     {
         return new static(
             $propertyName,
@@ -268,18 +268,12 @@ class InvalidPropertyException extends PropertyException
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getPropertyValue()
+    public function getPropertyValue(): string
     {
         return $this->propertyValue;
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }

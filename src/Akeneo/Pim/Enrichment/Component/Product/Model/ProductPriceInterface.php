@@ -18,24 +18,20 @@ interface ProductPriceInterface
 
     /**
      * Gets the price amount.
-     *
-     * @return float
      */
-    public function getData();
+    public function getData(): float;
 
     /**
      * Gets the used currency.
      *
      * @return string $currency
      */
-    public function getCurrency();
+    public function getCurrency(): string;
 
     /**
      * Checks if the price is equal to another one.
      *
      * @param ProductPriceInterface $price
-     *
-     * @return bool
      */
-    public function isEqual(ProductPriceInterface $price);
+    public function isEqual(ProductPriceInterface $price): bool;
 }

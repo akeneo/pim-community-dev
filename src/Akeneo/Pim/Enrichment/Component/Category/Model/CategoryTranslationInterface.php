@@ -17,15 +17,11 @@ interface CategoryTranslationInterface extends TranslationInterface
      * Set label
      *
      * @param string $label
-     *
-     * @return CategoryTranslationInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
 
     /**
      * Get the label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 }

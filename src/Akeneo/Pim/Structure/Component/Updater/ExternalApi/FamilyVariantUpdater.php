@@ -35,7 +35,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
      *
      * @throws PropertyException
      */
-    public function update($familyVariant, array $data, array $options = []): ObjectUpdaterInterface
+    public function update(object $familyVariant, array $data, array $options = []): \Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface
     {
         if (isset($data['family'])) {
             throw UnknownPropertyException::unknownProperty('family');

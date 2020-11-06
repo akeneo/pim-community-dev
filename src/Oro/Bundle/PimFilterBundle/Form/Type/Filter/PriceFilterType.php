@@ -39,7 +39,7 @@ class PriceFilterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
@@ -47,7 +47,7 @@ class PriceFilterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return NumberFilterType::class;
     }
@@ -55,7 +55,7 @@ class PriceFilterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -66,24 +66,21 @@ class PriceFilterType extends AbstractType
      * Create currencies options list
      *
      * @param array $options
-     *
-     * @return array
      */
-    protected function createCurrencyOptions(array $options)
+    protected function createCurrencyOptions(array $options): array
     {
         $result = ['required' => false];
         if ($options['currency_choices']) {
             $result['choices'] = $options['currency_choices'];
         }
-        $result = array_merge($result, $options['currency_options']);
 
-        return $result;
+        return array_merge($result, $options['currency_options']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -101,7 +98,7 @@ class PriceFilterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         parent::buildView($view, $form, $options);
 

@@ -26,7 +26,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
     /**
      * {@inheritdoc}
      */
-    public function normalize($elements, $format = null, array $context = [])
+    public function normalize($elements, $format = null, array $context = []): array
     {
         $normalizedElements = [];
 
@@ -40,7 +40,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return ($data instanceof \Traversable || is_array($data)) && in_array($format, $this->supportedFormat);
     }
@@ -53,7 +53,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
     /**
      * {@inheritdoc}
      */
-    public function setSerializer(SerializerInterface $serializer)
+    public function setSerializer(SerializerInterface $serializer): void
     {
         $this->serializer = $serializer;
     }

@@ -15,17 +15,13 @@ interface RemovingOptionsResolverInterface
      * Resolve options for a single remove
      *
      * @param array $options
-     *
-     * @return array
      */
-    public function resolveRemoveOptions(array $options);
+    public function resolveRemoveOptions(array $options): array;
 
     /**
      * Resolve options for a bulk remove
      *
      * @param array $options
-     *
-     * @return array
      */
-    public function resolveRemoveAllOptions(array $options);
+    public function resolveRemoveAllOptions(array $options): array;
 }

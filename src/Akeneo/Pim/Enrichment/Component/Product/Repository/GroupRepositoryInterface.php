@@ -24,8 +24,6 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
      * @param int    $collectionId
      * @param string $search
      * @param array  $options
-     *
-     * @return array
      */
-    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = []);
+    public function getOptions(string $dataLocale, int $collectionId = null, string $search = '', array $options = []): array;
 }

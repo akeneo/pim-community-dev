@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\PimDataGridBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
@@ -27,7 +28,7 @@ class ClientRepository extends EntityRepository implements DatagridRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('cl');
 

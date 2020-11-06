@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\EntityWithQuantifiedAssociationTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
@@ -91,7 +92,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -135,7 +136,7 @@ class ProductModel implements ProductModelInterface
      * We have to trick a little bit before saving the value in database, by setting the raw value to an object, it
      * will be saved as {} and avoid issues with JSON_MERGE.
      */
-    public function setRawValues(array $rawValues): ProductModelInterface
+    public function setRawValues(array $rawValues): EntityWithValuesInterface
     {
         if ([] === $rawValues) {
             $rawValues = (object) [];
@@ -148,7 +149,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getValues(): WriteValueCollection
+    public function getValues(): \Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection
     {
         $values = WriteValueCollection::fromCollection($this->values);
 
@@ -166,7 +167,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(WriteValueCollection $values)
+    public function setValues(WriteValueCollection $values): EntityWithValuesInterface
     {
         $this->values = $values;
 
@@ -176,7 +177,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getValue($attributeCode, $localeCode = null, $scopeCode = null): ?ValueInterface
+    public function getValue(string $attributeCode, string $localeCode = null, string $scopeCode = null): ValueInterface
     {
         $result = $this->values->getByCodes($attributeCode, $scopeCode, $localeCode);
         if (null !== $result) {
@@ -193,7 +194,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addValue(ValueInterface $value): ProductModelInterface
+    public function addValue(ValueInterface $value): EntityWithValuesInterface
     {
         $this->values->add($value);
 
@@ -203,7 +204,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeValue(ValueInterface $value): ProductModelInterface
+    public function removeValue(ValueInterface $value): EntityWithValuesInterface
     {
         $this->values->remove($value);
 
@@ -229,7 +230,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreated(): \DateTimeInterface
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
@@ -237,7 +238,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreated($created): ProductModelInterface
+    public function setCreated(\DateTime $created): TimestampableInterface
     {
         $this->created = $created;
 
@@ -247,7 +248,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getUpdated(): \DateTimeInterface
+    public function getUpdated(): \DateTime
     {
         return $this->updated;
     }
@@ -255,7 +256,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setUpdated($updated): ProductModelInterface
+    public function setUpdated(\DateTime $updated): TimestampableInterface
     {
         $this->updated = $updated;
 
@@ -265,7 +266,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCategories(): Collection
+    public function getCategories(): ArrayCollection
     {
         $categories = new ArrayCollection($this->categories->toArray());
 
@@ -307,9 +308,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getCategoryCodes(): array
     {
-        $codes = $this->getCategories()->map(function (CategoryInterface $category) {
-            return $category->getCode();
-        })->toArray();
+        $codes = $this->getCategories()->map(fn(CategoryInterface $category) => $category->getCode())->toArray();
 
         sort($codes);
 
@@ -399,7 +398,7 @@ class ProductModel implements ProductModelInterface
      */
     public function hasProductModels(): bool
     {
-        return false === $this->getProductModels()->isEmpty();
+        return !$this->getProductModels()->isEmpty();
     }
 
     /**
@@ -547,7 +546,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociations()
+    public function getAssociations(): \Doctrine\Common\Collections\Collection
     {
         return $this->associations;
     }
@@ -563,7 +562,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
+    public function getAssociationForTypeCode(string $typeCode): ?AssociationInterface
     {
         foreach ($this->associations as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
@@ -595,13 +594,11 @@ class ProductModel implements ProductModelInterface
     /**
      * @param EntityWithFamilyVariantInterface $entity
      * @param WriteValueCollection  $valueCollection
-     *
-     * @return WriteValueCollection
      */
     private function getAllValues(
         EntityWithFamilyVariantInterface $entity,
         WriteValueCollection $valueCollection
-    ) {
+    ): \Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection {
         $parent = $entity->getParent();
 
         if (null === $parent) {
@@ -618,13 +615,11 @@ class ProductModel implements ProductModelInterface
     /**
      * @param EntityWithFamilyVariantInterface $entity
      * @param Collection                       $categoryCollection
-     *
-     * @return Collection
      */
     private function getAllCategories(
         EntityWithFamilyVariantInterface $entity,
         Collection $categoryCollection
-    ) {
+    ): \Doctrine\Common\Collections\Collection {
         $parent = $entity->getParent();
 
         if (null === $parent) {
@@ -667,12 +662,11 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllAssociations()
+    public function getAllAssociations(): \Doctrine\Common\Collections\Collection
     {
         $associations = new ArrayCollection($this->associations->toArray());
-        $allAssociations = $this->getAncestryAssociations($this, $associations);
 
-        return $allAssociations;
+        return $this->getAncestryAssociations($this, $associations);
     }
 
     /**

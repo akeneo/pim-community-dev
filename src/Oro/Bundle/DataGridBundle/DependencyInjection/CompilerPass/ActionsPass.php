@@ -13,7 +13,7 @@ class ActionsPass implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         /**
          * Find and add available action types to action extension

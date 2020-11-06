@@ -20,7 +20,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if (array_key_exists('help', $options)) {
             $view->vars['help'] = $options['help'];
@@ -34,7 +34,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefined(['help', 'info']);
     }
@@ -42,7 +42,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return FormType::class;
     }

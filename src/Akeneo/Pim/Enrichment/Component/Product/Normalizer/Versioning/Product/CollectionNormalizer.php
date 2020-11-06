@@ -28,7 +28,7 @@ class CollectionNormalizer implements NormalizerInterface, NormalizerAwareInterf
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof Collection && in_array($format, $this->supportedFormats);
     }
@@ -41,7 +41,7 @@ class CollectionNormalizer implements NormalizerInterface, NormalizerAwareInterf
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         $result = [];
         foreach ($object as $item) {

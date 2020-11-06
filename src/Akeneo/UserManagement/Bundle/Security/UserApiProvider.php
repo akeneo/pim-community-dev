@@ -45,7 +45,7 @@ class UserApiProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): object
     {
         $userClass = ClassUtils::getClass($user);
         if (!$this->supportsClass($userClass)) {
@@ -63,7 +63,7 @@ class UserApiProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsClass($class)
+    public function supportsClass($class): bool
     {
         return is_subclass_of($class, 'Akeneo\UserManagement\Component\Model\UserInterface');
     }

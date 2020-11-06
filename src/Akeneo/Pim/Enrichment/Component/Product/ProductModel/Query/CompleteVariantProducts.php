@@ -98,7 +98,7 @@ class CompleteVariantProducts
                 $completenesses[$channel][$locale] = 0;
             }
 
-            $completenesses[$channel][$locale] = $completenesses[$channel][$locale] + $completeness['complete'];
+            $completenesses[$channel][$locale] += $completeness['complete'];
         }
 
         return $completenesses;

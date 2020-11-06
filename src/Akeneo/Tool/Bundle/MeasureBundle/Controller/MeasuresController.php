@@ -30,10 +30,7 @@ class MeasuresController
         $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily = $isThereAtLeastOneAttributeConfiguredWithMeasurementFamily;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $normalizedMeasurementFamilies = array_map(function (MeasurementFamily $family) {
             $normalizedMeasurementFamily = $family->normalize();

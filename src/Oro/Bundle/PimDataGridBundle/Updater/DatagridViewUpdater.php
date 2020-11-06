@@ -31,7 +31,7 @@ class DatagridViewUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($datagridView, array $data, array $options = [])
+    public function update(object $datagridView, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$datagridView instanceof DatagridView) {
             throw InvalidObjectException::objectExpected(
@@ -54,7 +54,7 @@ class DatagridViewUpdater implements ObjectUpdaterInterface
      * @param string       $field
      * @param mixed        $value
      */
-    protected function setData(DatagridView $datagridView, $field, $value)
+    protected function setData(DatagridView $datagridView, string $field, $value): void
     {
         switch ($field) {
             case 'label':

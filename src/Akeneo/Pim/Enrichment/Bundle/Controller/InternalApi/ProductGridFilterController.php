@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -49,7 +50,7 @@ class ProductGridFilterController
      * @param Translator                    $translator
      */
     public function __construct(
-        Manager $datagridManager,
+        ManagerInterface $datagridManager,
         TokenStorageInterface $tokenStorage,
         SearchableRepositoryInterface $attributeSearchRepository,
         NormalizerInterface $lightAttributeNormalizer,
@@ -72,10 +73,8 @@ class ProductGridFilterController
      * - an attribute useable_as_grid_filter
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         $options = $request->get(
             'options',
@@ -105,13 +104,11 @@ class ProductGridFilterController
             $options
         );
 
-        $normalizedAttributes = array_map(function ($attribute) {
-            return $this->lightAttributeNormalizer->normalize(
-                $attribute,
-                'internal_api',
-                ['locale' => $this->userContext->getUiLocaleCode()]
-            );
-        }, $attributes);
+        $normalizedAttributes = array_map(fn($attribute) => $this->lightAttributeNormalizer->normalize(
+            $attribute,
+            'internal_api',
+            ['locale' => $this->userContext->getUiLocaleCode()]
+        ), $attributes);
 
         return new JsonResponse(array_merge($systemFilters, $normalizedAttributes));
     }
@@ -123,15 +120,13 @@ class ProductGridFilterController
      * @param string|null $search
      * @param int         $limit
      * @param int         $page
-     *
-     * @return array
      */
     private function getSystemFilters(
         string $locale,
         ?string $search = '',
         int $limit = SearchableRepositoryInterface::FETCH_LIMIT,
         int $page = 1
-    ) {
+    ): array {
         if (null === $search) {
             $search = '';
         }

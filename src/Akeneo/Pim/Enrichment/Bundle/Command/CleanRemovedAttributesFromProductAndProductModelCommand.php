@@ -56,7 +56,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Removes all values of deleted attributes on all products and product models');
@@ -160,7 +160,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
      * @param string $env
      * @param string $rootDir
      */
-    private function launchCleanTask(array $productIds, string $env, string $rootDir)
+    private function launchCleanTask(array $productIds, string $env, string $rootDir): void
     {
         $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:product:refresh', sprintf('--env=%s', $env), implode(',', $productIds)]);
         $process->setTimeout(null);

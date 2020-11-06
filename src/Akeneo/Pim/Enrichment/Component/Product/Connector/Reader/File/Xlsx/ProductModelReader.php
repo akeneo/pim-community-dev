@@ -54,10 +54,7 @@ class ProductModelReader extends Reader implements FileReaderInterface
         return $data;
     }
 
-    /**
-     * @return array
-     */
-    protected function getArrayConverterOptions()
+    protected function getArrayConverterOptions(): array
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 

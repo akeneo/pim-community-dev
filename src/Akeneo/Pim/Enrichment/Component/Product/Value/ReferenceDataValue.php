@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
@@ -28,7 +29,7 @@ class ReferenceDataValue extends AbstractValue implements ReferenceDataValueInte
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): ReferenceDataInterface
     {
         return $this->data;
     }

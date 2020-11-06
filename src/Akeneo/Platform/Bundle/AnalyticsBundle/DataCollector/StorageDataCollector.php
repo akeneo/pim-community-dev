@@ -20,7 +20,7 @@ class StorageDataCollector implements DataCollectorInterface
     /**
      * @param Connection $connection
      */
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -28,7 +28,7 @@ class StorageDataCollector implements DataCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function collect()
+    public function collect(): array
     {
         return ['mysql_version' => $this->connection->getWrappedConnection()->getAttribute(\PDO::ATTR_SERVER_VERSION)];
     }

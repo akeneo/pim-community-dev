@@ -22,5 +22,5 @@ interface PropertyClearerInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function clear($object, string $property, array $options = []): void;
+    public function clear(object $object, string $property, array $options = []): void;
 }

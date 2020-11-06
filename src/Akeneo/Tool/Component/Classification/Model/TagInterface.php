@@ -18,13 +18,8 @@ interface TagInterface
 
     /**
      * @param string $code
-     *
-     * @return TagInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Tool\Component\Classification\Model\TagInterface;
 
-    /**
-     * @return string
-     */
-    public function getCode();
+    public function getCode(): string;
 }

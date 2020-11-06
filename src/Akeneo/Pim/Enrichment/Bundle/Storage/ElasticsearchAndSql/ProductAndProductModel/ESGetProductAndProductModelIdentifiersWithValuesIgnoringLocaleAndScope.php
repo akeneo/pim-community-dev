@@ -72,9 +72,7 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
                 break;
             }
 
-            $identifiers = array_map(function (array $hit) {
-                return $hit['_source']['identifier'];
-            }, $hits);
+            $identifiers = array_map(fn(array $hit) => $hit['_source']['identifier'], $hits);
             yield $identifiers;
 
             $lastResult = end($hits);

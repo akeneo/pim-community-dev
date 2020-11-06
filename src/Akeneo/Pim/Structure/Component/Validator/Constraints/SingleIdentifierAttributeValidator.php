@@ -37,7 +37,7 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
      *
      * @throws \Exception
      */
-    public function validate($attribute, Constraint $constraint)
+    public function validate($attribute, Constraint $constraint): void
     {
         if (!$constraint instanceof SingleIdentifierAttribute) {
             throw new UnexpectedTypeException($constraint, SingleIdentifierAttribute::class);

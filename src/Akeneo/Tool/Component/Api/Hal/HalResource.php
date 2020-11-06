@@ -42,10 +42,8 @@ class HalResource
 
     /**
      * Get the array of embedded list of resources.
-     *
-     * @return array
      */
-    public function getEmbedded()
+    public function getEmbedded(): array
     {
         return $this->embedded;
     }
@@ -55,17 +53,15 @@ class HalResource
      *
      * @return Link[]
      */
-    public function getLinks()
+    public function getLinks(): array
     {
         return $this->links;
     }
 
     /**
      * Get the data.
-     *
-     * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -83,8 +79,8 @@ class HalResource
      *     '_embedded' => [
      *         'items' => [
      *           [
-     *               '_links' => [
-     *                   'self' => [
+     *               '_links'       => [
+     *                   'self'     => [
      *                       'href' => 'http://akeneo.com/api/resource/id',
      *                   ],
      *                   'other' => [
@@ -96,10 +92,8 @@ class HalResource
      *         ],
      *     ],
      * ]
-     *
-     * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $data = [];
 
@@ -109,11 +103,7 @@ class HalResource
         }
 
         foreach ($this->data as $key => $value) {
-            if (isset($data[$key]) && is_array($value)) {
-                $data[$key] = array_merge($data[$key], $value);
-            } else {
-                $data[$key] = $value;
-            }
+            $data[$key] = isset($data[$key]) && is_array($value) ? array_merge($data[$key], $value) : $value;
         }
 
         foreach ($this->embedded as $rel => $embedded) {
@@ -127,10 +117,8 @@ class HalResource
      * Normalize a list of embedded resources into an array.
      *
      * @param Resource[] $embeddedItems list of embedded resource
-     *
-     * @return array
      */
-    protected function normalizeEmbedded(array $embeddedItems)
+    protected function normalizeEmbedded(array $embeddedItems): array
     {
         $data = [];
         foreach ($embeddedItems as $embeddedItem) {
@@ -144,10 +132,8 @@ class HalResource
      * Normalize the links into an array.
      *
      * @param Link[] $links list of links
-     *
-     * @return array
      */
-    protected function normalizeLinks(array $links)
+    protected function normalizeLinks(array $links): array
     {
         $data = [];
         foreach ($links as $link) {
@@ -162,7 +148,7 @@ class HalResource
      *
      * @param Link $link
      */
-    protected function addLink(Link $link)
+    protected function addLink(Link $link): void
     {
         $this->links[] = $link;
     }
@@ -173,7 +159,7 @@ class HalResource
      * @param string      $key      key of the list
      * @param HalResource $resource resource to add
      */
-    protected function addEmbedded($key, HalResource $resource)
+    protected function addEmbedded(string $key, HalResource $resource): void
     {
         $this->embedded[$key][] = $resource;
     }
@@ -184,7 +170,7 @@ class HalResource
      * @param string     $key       key of the list
      * @param Resource[] $resources array of resources
      */
-    protected function setEmbedded($key, array $resources)
+    protected function setEmbedded(string $key, array $resources): void
     {
         $this->embedded[$key] = [];
 

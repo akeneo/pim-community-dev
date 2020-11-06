@@ -65,15 +65,12 @@ class RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber implements Even
      */
     private function getFamilyVariantsAttributeCodes(FamilyVariantInterface $familyVariant): array
     {
-        $getAttributeCodeFunction = function (AttributeInterface $attribute) {
-            return $attribute->getCode();
-        };
-        $familyVariantAttributesCodes = array_merge(
+        $getAttributeCodeFunction = fn(AttributeInterface $attribute) => $attribute->getCode();
+
+        return array_merge(
             $familyVariant->getAttributes()->map($getAttributeCodeFunction)->toArray(),
             $familyVariant->getAxes()->map($getAttributeCodeFunction)->toArray()
         );
-
-        return $familyVariantAttributesCodes;
     }
 
     /**

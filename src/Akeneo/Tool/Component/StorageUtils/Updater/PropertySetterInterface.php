@@ -20,8 +20,6 @@ interface PropertySetterInterface
      * @param array  $options  Options to pass to the setter
      *
      * @throws \InvalidArgumentException
-     *
-     * @return PropertySetterInterface
      */
-    public function setData($object, $property, $data, array $options = []);
+    public function setData(object $object, string $property, $data, array $options = []): \Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 }

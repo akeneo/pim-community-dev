@@ -20,7 +20,7 @@ class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
     /**
      * @param array $tag tag of the repositories
      */
-    public function __construct($tag)
+    public function __construct(array $tag)
     {
         $this->tag = $tag;
     }
@@ -28,7 +28,7 @@ class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->resolveTargetRepositories($container);
     }
@@ -38,7 +38,7 @@ class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
-    protected function resolveTargetRepositories(ContainerBuilder $container)
+    protected function resolveTargetRepositories(ContainerBuilder $container): void
     {
         $definition = $container->findDefinition('akeneo_storage_utils.event_subscriber.resolve_target_repository');
         foreach ($this->getParametersMapping($container) as $repositoryClass => $objectClass) {
@@ -62,7 +62,7 @@ class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
      *
      * @return string[]
      */
-    protected function getParametersMapping(ContainerBuilder $container)
+    protected function getParametersMapping(ContainerBuilder $container): array
     {
         $repositoryIds = $container->findTaggedServiceIds($this->tag);
 
@@ -83,10 +83,8 @@ class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      * @param string           $parameter
-     *
-     * @return string
      */
-    protected function resolveParameter(ContainerBuilder $container, $parameter)
+    protected function resolveParameter(ContainerBuilder $container, string $parameter): string
     {
         return $container->getParameterBag()->resolveValue($parameter);
     }

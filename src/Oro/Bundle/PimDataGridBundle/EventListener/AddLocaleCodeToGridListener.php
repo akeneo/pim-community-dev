@@ -36,7 +36,7 @@ class AddLocaleCodeToGridListener
      *
      * @param BuildAfter $event
      */
-    public function onBuildAfter(BuildAfter $event)
+    public function onBuildAfter(BuildAfter $event): void
     {
         $datagrid = $event->getDatagrid();
         $datasource = $datagrid->getDatasource();

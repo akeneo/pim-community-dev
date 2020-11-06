@@ -24,47 +24,37 @@ interface JobRepositoryInterface
      *
      * @param JobInstance   $job
      * @param JobParameters $jobParameters
-     *
-     * @return JobExecution
      */
-    public function createJobExecution(JobInstance $job, JobParameters $jobParameters);
+    public function createJobExecution(JobInstance $job, JobParameters $jobParameters): \Akeneo\Tool\Component\Batch\Model\JobExecution;
 
     /**
      * Update a JobExecution
      *
      * @param JobExecution $jobExecution
-     *
-     * @return JobExecution
      */
-    public function updateJobExecution(JobExecution $jobExecution);
+    public function updateJobExecution(JobExecution $jobExecution): \Akeneo\Tool\Component\Batch\Model\JobExecution;
 
     /**
      * Update a StepExecution
      *
      * @param StepExecution $stepExecution
-     *
-     * @return StepExecution
      */
-    public function updateStepExecution(StepExecution $stepExecution);
+    public function updateStepExecution(StepExecution $stepExecution): \Akeneo\Tool\Component\Batch\Model\StepExecution;
 
     /**
      * Get the last job execution
      *
      * @param JobInstance $jobInstance
      * @param int         $status
-     *
-     * @return JobExecution|null
      */
-    public function getLastJobExecution(JobInstance $jobInstance, $status);
+    public function getLastJobExecution(JobInstance $jobInstance, int $status): ?\Akeneo\Tool\Component\Batch\Model\JobExecution;
 
     /**
      * Get purgeables jobs executions
      *
      * @param integer $days
-     *
-     * @return array
      */
-    public function findPurgeables($days);
+    public function findPurgeables(int $days): array;
 
     /**
      * Remove jobs executions

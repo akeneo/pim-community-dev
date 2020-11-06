@@ -12,7 +12,7 @@ class BooleanFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return BooleanFilterType::class;
     }
@@ -20,7 +20,7 @@ class BooleanFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -32,8 +32,7 @@ class BooleanFilter extends ChoiceFilter
 
         if ($this->getOr(self::NULLABLE_KEY, false)) {
             $summaryExpression = $ds->expr()->andX(
-                $ds->expr()->isNotNull($field),
-                $compareExpression
+                $ds->expr()->isNotNull($field)
             );
         } else {
             $summaryExpression = $compareExpression;

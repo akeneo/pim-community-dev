@@ -17,15 +17,11 @@ interface AttributeGroupTranslationInterface extends TranslationInterface
      * Set label
      *
      * @param string $label
-     *
-     * @return AttributeGroupTranslationInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface;
 
     /**
      * Get the label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 }

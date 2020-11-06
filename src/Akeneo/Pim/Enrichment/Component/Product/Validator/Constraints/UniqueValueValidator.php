@@ -56,7 +56,7 @@ class UniqueValueValidator extends ConstraintValidator
      *
      * @see \Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser\UniqueValueGuesser
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueValue) {
             throw new UnexpectedTypeException($constraint, UniqueValue::class);
@@ -99,10 +99,8 @@ class UniqueValueValidator extends ConstraintValidator
     /**
      * @param ValueInterface   $value
      * @param ProductInterface $product
-     *
-     * @return bool
      */
-    protected function alreadyExists(ValueInterface $value, ProductInterface $product)
+    protected function alreadyExists(ValueInterface $value, ProductInterface $product): bool
     {
         return $this->repository->uniqueDataExistsInAnotherProduct($value, $product);
     }
@@ -112,11 +110,9 @@ class UniqueValueValidator extends ConstraintValidator
      *
      * @param ValueInterface   $value
      * @param ProductInterface $product
-     *
-     * @return bool
      */
-    protected function hasAlreadyValidatedTheSameValue(ValueInterface $value, ProductInterface $product)
+    protected function hasAlreadyValidatedTheSameValue(ValueInterface $value, ProductInterface $product): bool
     {
-        return false === $this->uniqueValuesSet->addValue($value, $product);
+        return !$this->uniqueValuesSet->addValue($value, $product);
     }
 }

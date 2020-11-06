@@ -117,10 +117,8 @@ class FamilyController
      * Get the family collection
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $options = $request->query->get('options', ['limit' => 20, 'expanded' => 1]);
         $expanded = !isset($options['expanded']) || $options['expanded'] === 1;
@@ -149,10 +147,8 @@ class FamilyController
      * Get a single family
      *
      * @param int $identifier
-     *
-     * @return JsonResponse
      */
-    public function getAction(Request $request, $identifier)
+    public function getAction(Request $request, int $identifier): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $family = $this->getFamily($identifier);
         $applyFilters = $request->query->getBoolean('apply_filters', true);
@@ -171,10 +167,8 @@ class FamilyController
      *
      * @param Request $request
      * @param string  $code
-     *
-     * @return Response
      */
-    public function putAction(Request $request, $code)
+    public function putAction(Request $request, string $code): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -201,7 +195,7 @@ class FamilyController
      *
      * @return Response
      */
-    public function removeAction(Request $request, $code)
+    public function removeAction(Request $request, string $code)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -233,9 +227,7 @@ class FamilyController
         $family = $this->getFamily($code);
         $allowedTypes = FamilyVariant::getAvailableAxesAttributeTypes();
 
-        $availableAxes = $family->getAttributes()->filter(function (AttributeInterface $attribute) use ($allowedTypes) {
-            return in_array($attribute->getType(), $allowedTypes);
-        });
+        $availableAxes = $family->getAttributes()->filter(fn(AttributeInterface $attribute) => in_array($attribute->getType(), $allowedTypes));
 
         $normalizedAvailableAttributes = [];
         foreach ($availableAxes as $availableAxis) {
@@ -249,10 +241,8 @@ class FamilyController
      * Gets family
      *
      * @param string $code
-     *
-     * @return FamilyInterface
      */
-    protected function getFamily(string $code): FamilyInterface
+    protected function getFamily(string $code): object
     {
         $family = $this->familyRepository->findOneBy(['code' => $code]);
 
@@ -282,15 +272,11 @@ class FamilyController
         $data = json_decode($request->getContent(), true);
 
         if (!$this->securityFacade->isGranted('pim_enrich_family_edit_properties')) {
-            $data = array_filter($data, function ($value, $key) {
-                return !in_array($key, $this->propertiesFields);
-            });
+            $data = array_filter($data, fn($value, $key) => !in_array($key, $this->propertiesFields));
         }
 
         if (!$this->securityFacade->isGranted('pim_enrich_family_edit_attributes')) {
-            $data = array_filter($data, function ($value, $key) {
-                return !in_array($key, $this->attributeFields);
-            });
+            $data = array_filter($data, fn($value, $key) => !in_array($key, $this->attributeFields));
         }
 
         $this->updater->update($family, $data);

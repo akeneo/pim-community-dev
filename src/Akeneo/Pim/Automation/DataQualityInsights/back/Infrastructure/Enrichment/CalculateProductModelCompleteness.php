@@ -23,7 +23,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProdu
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 
-class CalculateProductModelCompleteness implements \Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface
+class CalculateProductModelCompleteness implements CalculateProductCompletenessInterface
 {
     /** @var GetCompletenessProductMasks */
     private $getCompletenessProductMasks;

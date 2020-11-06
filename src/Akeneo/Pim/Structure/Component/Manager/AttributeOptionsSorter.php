@@ -33,7 +33,7 @@ class AttributeOptionsSorter
      * @param AttributeInterface $attribute
      * @param array              $sorting
      */
-    public function updateSorting(AttributeInterface $attribute, array $sorting = [])
+    public function updateSorting(AttributeInterface $attribute, array $sorting = []): void
     {
         foreach ($attribute->getOptions() as $option) {
             if (isset($sorting[$option->getId()])) {

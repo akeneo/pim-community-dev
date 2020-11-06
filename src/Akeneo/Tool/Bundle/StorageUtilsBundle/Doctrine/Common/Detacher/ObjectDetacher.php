@@ -37,7 +37,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     /**
      * {@inheritdoc}
      */
-    public function detach($object)
+    public function detach(object $object): void
     {
         $visited = [];
         $this->objectManager->detach($object);
@@ -47,7 +47,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
     /**
      * {@inheritdoc}
      */
-    public function detachAll(array $objects)
+    public function detachAll(array $objects): void
     {
         foreach ($objects as $object) {
             $this->detach($object);
@@ -60,7 +60,7 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      * @param mixed $entity  The entity to be detached
      * @param array $visited Array of already detached entities
      */
-    protected function doDetachScheduled($entity, array &$visited)
+    protected function doDetachScheduled($entity, array &$visited): void
     {
         $oid = spl_object_hash($entity);
         if (isset($visited[$oid])) {
@@ -91,15 +91,13 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      * @param mixed $entity  The entity to be detached
      * @param array $visited Array of already detached entities
      */
-    protected function cascadeDetachScheduled($entity, array &$visited)
+    protected function cascadeDetachScheduled($entity, array &$visited): void
     {
         $class = $this->objectManager->getClassMetadata(ClassUtils::getClass($entity));
 
         $associationMappings = array_filter(
             $class->associationMappings,
-            function ($assoc) {
-                return $assoc['isCascadeDetach'];
-            }
+            fn($assoc) => $assoc['isCascadeDetach']
         );
 
         foreach ($associationMappings as $assoc) {
@@ -129,14 +127,10 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      * ScheduledForDirtyCheck getter
      *
      * @param UnitOfWork $uow
-     *
-     * @return array
      */
-    protected function &getScheduledForDirtyCheck(UnitOfWork $uow)
+    protected function &getScheduledForDirtyCheck(UnitOfWork $uow): array
     {
-        $closure = \Closure::bind(function &($uow) {
-            return $uow->scheduledForDirtyCheck;
-        }, null, $uow);
+        $closure = \Closure::bind(fn&($uow) => $uow->scheduledForDirtyCheck, null, $uow);
 
         return $closure($uow);
     }

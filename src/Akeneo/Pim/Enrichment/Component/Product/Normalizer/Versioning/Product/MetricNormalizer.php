@@ -26,7 +26,7 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof MetricInterface && in_array($format, $this->supportedFormats);
     }
@@ -41,7 +41,7 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
      *
      * @param MetricInterface $object
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         $context = $this->resolveContext($context);
         $decimalsAllowed = !array_key_exists('decimals_allowed', $context) || true === $context['decimals_allowed'];
@@ -67,7 +67,7 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
     /**
      * {@inheritdoc}
      */
-    public function doNormalize($object, $format = null, array $context = [])
+    public function doNormalize(object $object, string $format = null, array $context = [])
     {
         Assert::implementsInterface($object, MetricInterface::class);
 
@@ -80,10 +80,8 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
      * @param MetricInterface $metric
      * @param bool            $withUnit
      * @param bool            $decimalsAllowed
-     *
-     * @return string
      */
-    public function getMetricData(MetricInterface $metric, $withUnit, $decimalsAllowed = true)
+    public function getMetricData(MetricInterface $metric, bool $withUnit, bool $decimalsAllowed = true): string
     {
         $data = $metric->getData();
         if (null === $data || '' === $data) {
@@ -104,18 +102,15 @@ class MetricNormalizer extends AbstractValueDataNormalizer implements CacheableS
      * Merge default format option with context
      *
      * @param array $context
-     *
-     * @return array
      */
-    protected function resolveContext(array $context = [])
+    protected function resolveContext(array $context = []): array
     {
         $context = array_merge(['metric_format' => self::MULTIPLE_FIELDS_FORMAT], $context);
 
         if (!in_array($context['metric_format'], [self::MULTIPLE_FIELDS_FORMAT, self::SINGLE_FIELD_FORMAT])) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Value "%s" of "metric_format" context value is not allowed ' .
-                    '(allowed values: "%s, %s"',
+                    'Value "%s" of "metric_format" context value is not allowed (allowed values: "%s, %s"',
                     $context['metric_format'],
                     self::SINGLE_FIELD_FORMAT,
                     self::MULTIPLE_FIELDS_FORMAT

@@ -52,20 +52,16 @@ class Config
 
     /**
      * Get id
-     *
-     * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get entity
-     *
-     * @return string
      */
-    public function getEntity()
+    public function getEntity(): string
     {
         return $this->scopedEntity;
     }
@@ -74,10 +70,8 @@ class Config
      * Set entity
      *
      * @param  string $entity
-     *
-     * @return Config
      */
-    public function setEntity($entity)
+    public function setEntity(string $entity): self
     {
         $this->scopedEntity = $entity;
 
@@ -86,10 +80,8 @@ class Config
 
     /**
      * Get record id
-     *
-     * @return integer
      */
-    public function getRecordId()
+    public function getRecordId(): int
     {
         return $this->recordId;
     }
@@ -98,10 +90,8 @@ class Config
      * Set record id
      *
      * @param  integer $recordId
-     *
-     * @return Config
      */
-    public function setRecordId($recordId)
+    public function setRecordId(int $recordId): self
     {
         $this->recordId = $recordId;
 
@@ -113,7 +103,7 @@ class Config
      *
      * @return array Entity related settings
      */
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
@@ -122,7 +112,7 @@ class Config
      * @param $values
      * @return $this
      */
-    public function setValues($values)
+    public function setValues(array $values): self
     {
         $this->values = $values;
 
@@ -132,9 +122,7 @@ class Config
     public function getOrCreateValue($section, $key)
     {
         $value = $this->getValues()->filter(
-            function (ConfigValue $item) use ($key, $section) {
-                return $item->getName() == $key && $item->getSection() == $section;
-            }
+            fn(ConfigValue $item) => $item->getName() == $key && $item->getSection() == $section
         );
 
         if ($value->first() === false) {

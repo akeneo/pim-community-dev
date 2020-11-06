@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Action\Actions;
 
+use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 class AjaxAction extends AbstractAction
 {
     /**
@@ -12,7 +13,7 @@ class AjaxAction extends AbstractAction
     /**
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): ActionConfiguration
     {
         $options = parent::getOptions();
 

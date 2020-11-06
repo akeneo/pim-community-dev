@@ -41,7 +41,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($category, array $data, array $options = [])
+    public function update(object $category, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$category instanceof CategoryInterface) {
             throw InvalidObjectException::objectExpected(
@@ -67,7 +67,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDataType($field, $data)
+    protected function validateDataType(string $field, $data): void
     {
         if ('labels' === $field) {
             if (!is_array($data)) {
@@ -101,10 +101,10 @@ class CategoryUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyException
      * @throws UnknownPropertyException
      */
-    protected function setData(CategoryInterface $category, $field, $data)
+    protected function setData(CategoryInterface $category, string $field, $data): void
     {
         if ('labels' === $field) {
-            foreach ($data as $localeCode => $label) {
+            foreach (array_keys($data) as $localeCode) {
                 $category->setLocale($localeCode);
             }
         } elseif ('parent' === $field) {
@@ -124,7 +124,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function updateParent(CategoryInterface $category, $data)
+    protected function updateParent(CategoryInterface $category, string $data): void
     {
         if (null === $data || '' === $data) {
             $category->setParent(null);

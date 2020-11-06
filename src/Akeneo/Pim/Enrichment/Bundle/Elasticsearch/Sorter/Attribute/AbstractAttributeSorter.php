@@ -45,7 +45,7 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
      *
      * About "unmapped_type", see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-sort.html#_ignoring_unmapped_fields
      */
-    public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $channel = null)
+    public function addAttributeSorter(AttributeInterface $attribute, string $direction, string $locale = null, string $channel = null): AttributeSorterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the sorter.');
@@ -94,7 +94,7 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function supportsAttribute(AttributeInterface $attribute): bool
     {
         return in_array($attribute->getType(), $this->supportedAttributeTypes);
     }
@@ -102,7 +102,7 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function setQueryBuilder($searchQueryBuilder)
+    public function setQueryBuilder(\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder $searchQueryBuilder)
     {
         if (!$searchQueryBuilder instanceof SearchQueryBuilder) {
             throw new \InvalidArgumentException(
@@ -119,10 +119,8 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $channel
-     *
-     * @return string
      */
-    protected function getAttributePath(AttributeInterface $attribute, $locale, $channel)
+    protected function getAttributePath(AttributeInterface $attribute, string $locale, string $channel): string
     {
         $locale = (null === $locale) ? '<all_locales>' : $locale;
         $channel = (null === $channel) ? '<all_channels>' : $channel;
@@ -139,7 +137,7 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function checkLocaleAndChannel(AttributeInterface $attribute, $locale, $channel)
+    protected function checkLocaleAndChannel(AttributeInterface $attribute, string $locale, string $channel)
     {
         try {
             $this->attrValidatorHelper->validateLocale($attribute, $locale);

@@ -26,7 +26,7 @@ class ListProductGridAvailableColumnGroups implements ListProductGridAvailableCo
      * @param Connection                     $connection
      * @param ConfigurationProviderInterface $configurationProvider
      */
-    public function __construct(Connection $connection, ConfigurationProviderInterface $configurationProvider)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, ConfigurationProviderInterface $configurationProvider)
     {
         $this->connection = $connection;
         $this->configurationProvider = $configurationProvider;

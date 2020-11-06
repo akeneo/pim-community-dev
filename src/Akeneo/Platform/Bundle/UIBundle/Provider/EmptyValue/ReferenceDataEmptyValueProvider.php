@@ -16,7 +16,7 @@ class ReferenceDataEmptyValueProvider implements EmptyValueProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getEmptyValue($attribute)
+    public function getEmptyValue($attribute): string
     {
         return 'pim_reference_data_multiselect' === $attribute->getType() ? [] : null;
     }
@@ -24,7 +24,7 @@ class ReferenceDataEmptyValueProvider implements EmptyValueProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($element)
+    public function supports($element): bool
     {
         return $element instanceof AttributeInterface &&
             null !== $element->getReferenceDataName() &&

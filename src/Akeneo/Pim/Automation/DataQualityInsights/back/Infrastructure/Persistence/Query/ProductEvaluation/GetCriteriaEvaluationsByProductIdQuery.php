@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
@@ -35,14 +38,14 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
     /** @var string */
     private $tableName;
 
-    public function __construct(Connection $db, Clock $clock, string $tableName)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db, Clock $clock, string $tableName)
     {
         $this->db = $db;
         $this->clock = $clock;
         $this->tableName = $tableName;
     }
 
-    public function execute(ProductId $productId): Read\CriterionEvaluationCollection
+    public function execute(ProductId $productId): CriterionEvaluationCollection
     {
         $criterionEvaluationTable = $this->tableName;
 
@@ -63,11 +66,11 @@ SQL;
             ['product_id' => \PDO::PARAM_INT]
         )->fetchAll(FetchMode::ASSOCIATIVE);
 
-        $criteriaEvaluations = new Read\CriterionEvaluationCollection();
+        $criteriaEvaluations = new CriterionEvaluationCollection();
         foreach ($rows as $rawCriterionEvaluation) {
-            $criteriaEvaluations->add(new Read\CriterionEvaluation(
+            $criteriaEvaluations->add(new CriterionEvaluation(
                 new CriterionCode($rawCriterionEvaluation['criterion_code']),
-                new ProductId(intval($rawCriterionEvaluation['product_id'])),
+                new ProductId((int) $rawCriterionEvaluation['product_id']),
                 null !== $rawCriterionEvaluation['evaluated_at'] ? $this->clock->fromString($rawCriterionEvaluation['evaluated_at']) : null,
                 new CriterionEvaluationStatus($rawCriterionEvaluation['status']),
                 $this->hydrateCriterionEvaluationResult($rawCriterionEvaluation['result']),
@@ -77,7 +80,7 @@ SQL;
         return $criteriaEvaluations;
     }
 
-    private function hydrateCriterionEvaluationResult($rawResult): ?Read\CriterionEvaluationResult
+    private function hydrateCriterionEvaluationResult($rawResult): ?CriterionEvaluationResult
     {
         if (null === $rawResult) {
             return null;
@@ -87,6 +90,6 @@ SQL;
         $rates = ChannelLocaleRateCollection::fromArrayInt($rawResult['rates'] ?? []);
         $status = CriterionEvaluationResultStatusCollection::fromArrayString($rawResult['status'] ?? []);
 
-        return new Read\CriterionEvaluationResult($rates, $status, $rawResult['data'] ?? []);
+        return new CriterionEvaluationResult($rates, $status, $rawResult['data'] ?? []);
     }
 }

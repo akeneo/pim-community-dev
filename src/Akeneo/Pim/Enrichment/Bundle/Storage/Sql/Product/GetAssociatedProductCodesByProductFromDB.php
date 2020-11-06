@@ -13,7 +13,7 @@ final class GetAssociatedProductCodesByProductFromDB implements GetAssociatedPro
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -21,7 +21,7 @@ final class GetAssociatedProductCodesByProductFromDB implements GetAssociatedPro
     /**
      * {@inheritdoc}
      */
-    public function getCodes(int $productId, AssociationInterface $association)
+    public function getCodes(int $productId, AssociationInterface $association): array
     {
         $associationTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_product_model_association' : 'pim_catalog_association';
         $associationProductTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_association_product_model_to_product' : 'pim_catalog_association_product';

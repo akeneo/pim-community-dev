@@ -55,7 +55,7 @@ class JobExecutionMessageHydrator
         $updatedTime = Type::getType(Type::DATETIME)->convertToPhpValue($row['updated_time'], $platform);
         $consumer = Type::getType(Type::STRING)->convertToPhpValue($row['consumer'], $platform);
 
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessageFromDatabase(
+        return JobExecutionMessage::createJobExecutionMessageFromDatabase(
             $id,
             $jobExecutionId,
             $consumer,
@@ -63,8 +63,6 @@ class JobExecutionMessageHydrator
             $updatedTime,
             $options
         );
-
-        return $jobExecutionMessage;
     }
 
     /**

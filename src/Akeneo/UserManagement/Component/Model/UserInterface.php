@@ -25,10 +25,8 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
 
     /**
      * Get entity class name.
-     *
-     * @return string
      */
-    public function getClass();
+    public function getClass(): string;
 
     /**
      * Returns the user unique id.
@@ -57,144 +55,105 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      *
      * @return null|\DateTime
      */
-    public function getPasswordRequestedAt();
+    public function getPasswordRequestedAt(): ?\DateTime;
 
     /**
      * Gets the last login time.
-     *
-     * @return \DateTime
      */
-    public function getLastLogin();
+    public function getLastLogin(): \DateTime;
 
     /**
      * Gets login count number.
-     *
-     * @return int
      */
-    public function getLoginCount();
+    public function getLoginCount(): int;
 
     /**
      * Get user created date/time
-     *
-     * @return \DateTime
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): \DateTime;
 
     /**
      * Get user last update date/time
-     *
-     * @return \DateTime
      */
-    public function getUpdatedAt();
+    public function getUpdatedAt(): \DateTime;
 
     /**
      * @param int $ttl
-     *
-     * @return bool
      */
-    public function isPasswordRequestNonExpired($ttl);
+    public function isPasswordRequestNonExpired(int $ttl): bool;
 
     /**
      * @param int $id
      *
      * @return mixed
      */
-    public function setId($id);
+    public function setId(int $id);
 
     /**
      * @param string $username New username
-     *
-     * @return UserInterface
      */
-    public function setUsername($username);
+    public function setUsername(string $username): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param string $email New email value
-     *
-     * @return UserInterface
      */
-    public function setEmail($email);
+    public function setEmail(string $email): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param string $firstName [optional] New first name value. Null by default.
-     *
-     * @return UserInterface
      */
-    public function setFirstName($firstName = null);
+    public function setFirstName(string $firstName = null): \Akeneo\UserManagement\Component\Model\UserInterface;
 
-    /**
-     * @return string
-     */
-    public function getFirstName();
+    public function getFirstName(): string;
 
     /**
      * @param  string $lastName [optional] New last name value. Null by default.
-     *
-     * @return UserInterface
      */
-    public function setLastName($lastName = null);
+    public function setLastName(string $lastName = null): \Akeneo\UserManagement\Component\Model\UserInterface;
 
-    /**
-     * @return string
-     */
-    public function getLastName();
+    public function getLastName(): string;
 
     /**
      * Set middle name
      *
      * @param string $middleName
      */
-    public function setMiddleName($middleName);
+    public function setMiddleName(string $middleName);
 
-    /**
-     * @return string
-     */
-    public function getMiddleName();
+    public function getMiddleName(): string;
 
     /**
      * Set name prefix
      *
      * @param string $namePrefix
      */
-    public function setNamePrefix($namePrefix);
+    public function setNamePrefix(string $namePrefix);
 
-    /**
-     * @return string
-     */
-    public function getNameSuffix();
+    public function getNameSuffix(): string;
 
-    /**
-     * @return string
-     */
-    public function getNamePrefix();
+    public function getNamePrefix(): string;
 
     /**
      * Set name suffix
      *
      * @param string $nameSuffix
      */
-    public function setNameSuffix($nameSuffix);
+    public function setNameSuffix(string $nameSuffix);
 
     /**
      * Get full name with prefix, first, middle, last suffix names
-     *
-     * @return string
      */
-    public function getFullName();
+    public function getFullName(): string;
 
     /**
      * @param  string $image [optional] New image file name. Null by default.
-     *
-     * @return UserInterface
      */
-    public function setImage($image = null);
+    public function setImage(string $image = null): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param  UploadedFile $imageFile
-     *
-     * @return UserInterface
      */
-    public function setImageFile(UploadedFile $imageFile);
+    public function setImageFile(UploadedFile $imageFile): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @return FileInfoInterface|null
@@ -208,91 +167,71 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
 
     /**
      * @param  bool $enabled User state
-     *
-     * @return UserInterface
      */
-    public function setEnabled($enabled);
+    public function setEnabled(bool $enabled): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param string $salt
-     *
-     * @return UserInterface
      */
-    public function setSalt($salt);
+    public function setSalt(string $salt): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param  string $password New encoded password
-     *
-     * @return UserInterface
      */
-    public function setPassword($password);
+    public function setPassword(string $password): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param  string $password New password as plain string
-     *
-     * @return UserInterface
      */
-    public function setPlainPassword($password);
+    public function setPlainPassword(string $password): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * Set confirmation token.
      *
      * @param  string $token
-     *
-     * @return UserInterface
      */
-    public function setConfirmationToken($token);
+    public function setConfirmationToken(string $token): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param  \DateTime $time [optional] New password request time. Null by default.
-     *
-     * @return UserInterface
      */
-    public function setPasswordRequestedAt(\DateTime $time = null);
+    public function setPasswordRequestedAt(\DateTime $time = null): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param  \DateTime $time New login time
-     *
-     * @return UserInterface
      */
-    public function setLastLogin(\DateTime $time);
+    public function setLastLogin(\DateTime $time): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param  int $count New login count value
-     *
-     * @return UserInterface
      */
-    public function setLoginCount($count);
+    public function setLoginCount(int $count): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param \DateTime $createdAt
      *
      * @return $this
      */
-    public function setCreatedAt(\DateTime $createdAt);
+    public function setCreatedAt(\DateTime $createdAt): self;
 
     /**
      * @param \DateTime $updatedAt
      *
      * @return $this
      */
-    public function setUpdatedAt($updatedAt);
+    public function setUpdatedAt(\DateTime $updatedAt): self;
 
     /**
      * Returns the true Collection of Roles.
-     *
-     * @return Collection
      */
-    public function getRolesCollection();
+    public function getRolesCollection(): \Doctrine\Common\Collections\Collection;
 
     /**
      * Pass a string, get the desired Role object or null
      *
      * @param  string $roleName Role name
-     *
-     * @return Role|null
      */
-    public function getRole($roleName);
+    public function getRole(string $roleName): ?\Akeneo\UserManagement\Component\Model\Role;
 
     /**
      * Never use this to check if this user has access to anything!
@@ -304,19 +243,15 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @param  Role|string $role
      *
      * @throws \InvalidArgumentException
-     *
-     * @return boolean
      */
-    public function hasRole($role);
+    public function hasRole($role): bool;
 
     /**
      * Adds a Role to the Collection.
      *
      * @param  Role $role
-     *
-     * @return UserInterface
      */
-    public function addRole(Role $role);
+    public function addRole(Role $role): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * Remove the Role object from collection
@@ -334,10 +269,8 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @param  array|Collection $roles Array of Role objects
      *
      * @throws \InvalidArgumentException
-     *
-     * @return UserInterface
      */
-    public function setRoles($roles);
+    public function setRoles(\Doctrine\Common\Collections\Collection $roles): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * Directly set the Collection of Roles.
@@ -345,69 +278,52 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @param  Collection $collection
      *
      * @throws \InvalidArgumentException
-     *
-     * @return UserInterface
      */
-    public function setRolesCollection(Collection $collection);
+    public function setRolesCollection(Collection $collection): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * Gets the groups granted to the user
-     *
-     * @return Collection
      */
-    public function getGroups();
+    public function getGroups(): \Doctrine\Common\Collections\Collection;
 
-    /**
-     * @return array
-     */
-    public function getGroupNames();
+    public function getGroupNames(): array;
 
     /**
      * @param  string $name
-     *
-     * @return bool
      */
-    public function hasGroup($name);
+    public function hasGroup(string $name): bool;
 
     /**
      * @param  GroupInterface $group
-     *
-     * @return UserInterface
      */
-    public function addGroup(GroupInterface $group);
+    public function addGroup(GroupInterface $group): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param  GroupInterface $group
-     *
-     * @return UserInterface
      */
-    public function removeGroup(GroupInterface $group);
+    public function removeGroup(GroupInterface $group): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param GroupInterface[] $groups
-     *
-     * @return UserInterface
      */
-    public function setGroups(array $groups);
+    public function setGroups(array $groups): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * Get groups ids
-     *
-     * @return array
      */
-    public function getGroupsIds();
+    public function getGroupsIds(): array;
 
     /**
      * @return string|null
      */
-    public function getImagePath();
+    public function getImagePath(): ?string;
 
     /**
      * Generate unique confirmation token
      *
      * @return string Token value
      */
-    public function generateToken();
+    public function generateToken(): string;
 
     /**
      * Pre persist event listener
@@ -419,98 +335,64 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      */
     public function preUpdate();
 
-    /**
-     * @return LocaleInterface
-     */
-    public function getCatalogLocale();
+    public function getCatalogLocale(): \Akeneo\Channel\Component\Model\LocaleInterface;
 
     /**
      * @param LocaleInterface $catalogLocale
-     *
-     * @return UserInterface
      */
-    public function setCatalogLocale(LocaleInterface $catalogLocale);
+    public function setCatalogLocale(LocaleInterface $catalogLocale): \Akeneo\UserManagement\Component\Model\UserInterface;
 
-    /**
-     * @return LocaleInterface
-     */
-    public function getUiLocale();
+    public function getUiLocale(): \Akeneo\Channel\Component\Model\LocaleInterface;
 
     /**
      * @param LocaleInterface $uiLocale
-     *
-     * @return UserInterface
      */
-    public function setUiLocale(LocaleInterface $uiLocale);
+    public function setUiLocale(LocaleInterface $uiLocale): \Akeneo\UserManagement\Component\Model\UserInterface;
 
-    /**
-     * @return ChannelInterface
-     */
-    public function getCatalogScope();
+    public function getCatalogScope(): \Akeneo\Channel\Component\Model\ChannelInterface;
 
     /**
      * @param ChannelInterface $catalogScope
-     *
-     * @return UserInterface
      */
-    public function setCatalogScope(ChannelInterface $catalogScope);
+    public function setCatalogScope(ChannelInterface $catalogScope): \Akeneo\UserManagement\Component\Model\UserInterface;
 
-    /**
-     * @return CategoryInterface
-     */
-    public function getDefaultTree();
+    public function getDefaultTree(): \Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
     /**
      * @param array $productGridFilters
-     *
-     * @return UserInterface
      */
-    public function setProductGridFilters(array $productGridFilters = []);
+    public function setProductGridFilters(array $productGridFilters = []): \Akeneo\UserManagement\Component\Model\UserInterface;
 
-    /**
-     * @return array
-     */
-    public function getProductGridFilters();
+    public function getProductGridFilters(): array;
 
     /**
      * @param CategoryInterface $defaultTree
-     *
-     * @return UserInterface
      */
-    public function setDefaultTree(CategoryInterface $defaultTree);
+    public function setDefaultTree(CategoryInterface $defaultTree): \Akeneo\UserManagement\Component\Model\UserInterface;
 
-    /**
-     * @return bool
-     */
-    public function isEmailNotifications();
+    public function isEmailNotifications(): bool;
     /**
      * @param bool $emailNotifications
-     *
-     * @return UserInterface
      */
-    public function setEmailNotifications($emailNotifications);
+    public function setEmailNotifications(bool $emailNotifications): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @param string the view alias
-     *
-     * @return DatagridView|null
      */
-    public function getDefaultGridView($alias);
+    public function getDefaultGridView($alias): ?DatagridView;
 
     /**
      * Get all default datagrid views
      *
      * @return DatagridView[]
      */
-    public function getDefaultGridViews();
+    public function getDefaultGridViews(): array;
 
     /**
      * @param string            $alias
      * @param DatagridView|null $defaultGridView
-     *
-     * @return UserInterface
      */
-    public function setDefaultGridView($alias, $defaultGridView);
+    public function setDefaultGridView(string $alias, ?DatagridView $defaultGridView): \Akeneo\UserManagement\Component\Model\UserInterface;
 
     /**
      * @return null|string

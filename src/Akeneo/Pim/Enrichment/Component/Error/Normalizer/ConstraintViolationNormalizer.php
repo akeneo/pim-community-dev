@@ -51,7 +51,7 @@ class ConstraintViolationNormalizer extends ViolationNormalizer
 
         if (isset($context['product'])) {
             $product = $context['product'];
-            if (false === $product instanceof ProductInterface) {
+            if (!$product instanceof ProductInterface) {
                 throw new \LogicException(
                     sprintf('Context property "product" should be an instance of %s', ProductInterface::class)
                 );

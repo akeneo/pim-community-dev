@@ -22,14 +22,12 @@ class AddUniqueAttributes
     /**
      * @param FamilyVariantInterface $familyVariant
      */
-    public function addToFamilyVariant(FamilyVariantInterface $familyVariant)
+    public function addToFamilyVariant(FamilyVariantInterface $familyVariant): void
     {
         $familyUniqueAttributes = $this->getFamilyUniqueAttributes($familyVariant->getFamily());
 
         $familyVariantAttributeCodes = $familyVariant->getAttributes()->map(
-            function (AttributeInterface $attribute) {
-                return $attribute->getCode();
-            }
+            fn(AttributeInterface $attribute) => $attribute->getCode()
         )->toArray();
 
         $bottomAttributeSet = $familyVariant->getVariantAttributeSet($familyVariant->getNumberOfLevel());

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\UIBundle\Http;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -29,7 +30,7 @@ class FormAuthenticationEntryPoint implements AuthenticationEntryPointInterface
      * @param string              $loginPath  The path to the login form
      * @param bool                $useForward Whether to forward or redirect to the login form
      */
-    public function __construct(HttpKernelInterface $kernel, HttpUtils $httpUtils, $loginPath, $useForward = false)
+    public function __construct(HttpKernelInterface $kernel, HttpUtils $httpUtils, string $loginPath, bool $useForward = false)
     {
         $this->httpKernel = $kernel;
         $this->httpUtils = $httpUtils;
@@ -40,7 +41,7 @@ class FormAuthenticationEntryPoint implements AuthenticationEntryPointInterface
     /**
      * {@inheritdoc}
      */
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null): RedirectResponse
     {
         if ($this->useForward) {
             //This is the added code

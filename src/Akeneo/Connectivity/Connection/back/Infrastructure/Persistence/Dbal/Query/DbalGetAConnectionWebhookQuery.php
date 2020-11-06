@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnectionWebhookQuery;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -17,7 +18,7 @@ class DbalGetAConnectionWebhookQuery implements GetAConnectionWebhookQuery
     /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }

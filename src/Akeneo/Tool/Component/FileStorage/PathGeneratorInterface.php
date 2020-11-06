@@ -22,15 +22,11 @@ interface PathGeneratorInterface
      *      'path_name' => '2/f/d/4/2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_i_s_the___file.txt'
      *
      * @param \SplFileInfo $file
-     *
-     * @return array
      */
-    public function generate(\SplFileInfo $file);
+    public function generate(\SplFileInfo $file): array;
 
     /**
      * @param string $fileName
-     *
-     * @return string
      */
-    public function generateUuid($fileName);
+    public function generateUuid(string $fileName): string;
 }

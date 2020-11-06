@@ -68,7 +68,7 @@ class ConfigureProductGridListener
      *
      * @throws \LogicException
      */
-    public function buildBefore(BuildBefore $event)
+    public function buildBefore(BuildBefore $event): void
     {
         $datagridConfig = $event->getConfig();
 
@@ -79,34 +79,22 @@ class ConfigureProductGridListener
         $this->getFiltersConfigurator()->configure($datagridConfig);
     }
 
-    /**
-     * @return ConfiguratorInterface
-     */
-    protected function getContextConfigurator()
+    protected function getContextConfigurator(): \Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ContextConfigurator
     {
         return $this->contextConfigurator;
     }
 
-    /**
-     * @return ConfiguratorInterface
-     */
-    protected function getColumnsConfigurator()
+    protected function getColumnsConfigurator(): \Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator
     {
         return $this->columnsConfigurator;
     }
 
-    /**
-     * @return ConfiguratorInterface
-     */
-    protected function getSortersConfigurator()
+    protected function getSortersConfigurator(): \Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\SortersConfigurator
     {
         return $this->sortersConfigurator;
     }
 
-    /**
-     * @return ConfiguratorInterface
-     */
-    protected function getFiltersConfigurator()
+    protected function getFiltersConfigurator(): \Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface
     {
         return $this->filtersConfigurator;
     }

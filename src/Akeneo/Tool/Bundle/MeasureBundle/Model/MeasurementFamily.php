@@ -54,9 +54,7 @@ class MeasurementFamily
             'labels' => $this->labels->normalize(),
             'standard_unit_code' => $this->standardUnitCode->normalize(),
             'units' => array_map(
-                function (Unit $unit) {
-                    return $unit->normalize();
-                },
+                fn(Unit $unit) => $unit->normalize(),
                 $this->units
             )
         ];
@@ -91,9 +89,7 @@ class MeasurementFamily
     private function assertNoDuplicatedUnits(array $units): void
     {
         $normalizedUnitCodes = array_map(
-            function (Unit $unit) {
-                return $unit->code()->normalize();
-            },
+            fn(Unit $unit) => $unit->code()->normalize(),
             $units
         );
         Assert::uniqueValues($normalizedUnitCodes);
@@ -114,9 +110,7 @@ class MeasurementFamily
     {
         $unit = current(array_filter(
             $units,
-            function (Unit $unit) use ($standardUnitCode) {
-                return $standardUnitCode->equals($unit->code());
-            }
+            fn(Unit $unit) => $standardUnitCode->equals($unit->code())
         ));
 
         if (!$unit) {

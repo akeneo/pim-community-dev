@@ -25,7 +25,7 @@ class AddUsernameToGridListener
         $this->securityFacade = $securityFacade;
     }
 
-    public function onBuildAfter(BuildAfter $event)
+    public function onBuildAfter(BuildAfter $event): void
     {
         if ($this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs')) {
             return;

@@ -31,7 +31,7 @@ class FiltersConfigurator implements ConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(DatagridConfiguration $configuration)
+    public function configure(DatagridConfiguration $configuration): void
     {
         $attributes = $configuration->offsetGet(self::SOURCE_KEY)[self::USEABLE_ATTRIBUTES_KEY];
         $attributes = ($attributes === null) ? [] : $attributes;
@@ -57,7 +57,7 @@ class FiltersConfigurator implements ConfiguratorInterface
             }
 
             $filterConfig = $attributeTypeConf['filter'];
-            $filterConfig = $filterConfig + [
+            $filterConfig += [
                 ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
                 'label'                             => $attribute['label'],
                 'enabled'                           => (AttributeTypes::IDENTIFIER === $attributeType),
@@ -88,7 +88,7 @@ class FiltersConfigurator implements ConfiguratorInterface
      *
      * @param array &$filters
      */
-    protected function sortFilters(&$filters)
+    protected function sortFilters(array &$filters): void
     {
         uasort(
             $filters,

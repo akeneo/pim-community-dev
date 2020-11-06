@@ -27,7 +27,7 @@ class PrimaryKeyEncrypter
      * @param string $initializationVector secret added to the key to encrypt/decrypt data,
      *                                     it will be truncated at 16 bytes if too long and left padded with 0
      */
-    public function __construct($method, $key, $initializationVector)
+    public function __construct(string $method, string $key, string $initializationVector)
     {
         $this->method = $method;
         $this->key = $key;
@@ -42,7 +42,7 @@ class PrimaryKeyEncrypter
      *
      * @return string
      */
-    public function encrypt($primaryKey)
+    public function encrypt(string $primaryKey)
     {
         return openssl_encrypt($primaryKey, $this->method, $this->key, 0, $this->initializationVector);
     }
@@ -54,7 +54,7 @@ class PrimaryKeyEncrypter
      *
      * @return string
      */
-    public function decrypt($primaryKey)
+    public function decrypt(string $primaryKey)
     {
         return openssl_decrypt($primaryKey, $this->method, $this->key, 0, $this->initializationVector);
     }

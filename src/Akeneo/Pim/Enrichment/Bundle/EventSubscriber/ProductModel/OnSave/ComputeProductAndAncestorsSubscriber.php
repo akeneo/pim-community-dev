@@ -77,9 +77,7 @@ final class ComputeProductAndAncestorsSubscriber implements EventSubscriberInter
         }
 
         $this->computeAndIndexFromProductModelCodes(array_map(
-            function (ProductModelInterface $productModel) {
-                return $productModel->getCode();
-            },
+            fn(ProductModelInterface $productModel) => $productModel->getCode(),
             $productModels
         ));
     }

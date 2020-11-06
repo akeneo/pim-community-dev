@@ -47,7 +47,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = [])
+    public function normalize($product, $format = null, array $context = []): array
     {
         if (!$this->normalizer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
@@ -81,7 +81,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && 'datagrid' === $format;
     }
@@ -94,10 +94,8 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /**
      * @param ProductInterface $product
      * @param string           $locale
-     *
-     * @return string
      */
-    protected function getFamilyLabel(ProductInterface $product, $locale)
+    protected function getFamilyLabel(ProductInterface $product, string $locale): ?string
     {
         $family = $product->getFamily();
         if (null === $family) {
@@ -112,10 +110,8 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /**
      * @param ProductInterface $product
      * @param string           $locale
-     *
-     * @return string
      */
-    protected function getGroupsLabels(ProductInterface $product, $locale)
+    protected function getGroupsLabels(ProductInterface $product, string $locale): string
     {
         $groups = [];
         foreach ($product->getGroups() as $group) {
@@ -141,16 +137,14 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $locale = current($context['locales']);
         $completeness = $completenesses->getCompletenessForChannelAndLocale($channel, $locale);
 
-        return $completeness ? $completeness->ratio() : null;
+        return $completeness !== null ? $completeness->ratio() : null;
     }
 
     /**
      * @param string      $code
      * @param string|null $value
-     *
-     * @return string
      */
-    protected function getLabel($code, $value = null)
+    protected function getLabel(string $code, ?string $value = null): string
     {
         return '' === $value || null === $value ? sprintf('[%s]', $code) : $value;
     }
@@ -161,7 +155,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @return array|null
      */
-    protected function normalizeImage(?ValueInterface $data, array $context = [])
+    protected function normalizeImage(?ValueInterface $data, array $context = []): ?array
     {
         return $this->imageNormalizer->normalize(
             $data,
@@ -179,15 +173,13 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @return array
      */
-    private function normalizeValues(WriteValueCollection $values, $format, array $context = [])
+    private function normalizeValues(WriteValueCollection $values, string $format, array $context = [])
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);
         }
 
-        $data = $this->normalizer->normalize($values, $format, $context);
-
-        return $data;
+        return $this->normalizer->normalize($values, $format, $context);
     }
 
     /**

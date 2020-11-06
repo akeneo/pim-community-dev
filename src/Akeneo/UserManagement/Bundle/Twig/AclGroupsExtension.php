@@ -19,7 +19,7 @@ class AclGroupsExtension extends \Twig_Extension
     /**
      * @param array $bundles
      */
-    public function __construct($bundles)
+    public function __construct(array $bundles)
     {
         $this->bundles = $bundles;
     }
@@ -27,11 +27,11 @@ class AclGroupsExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('acl_groups', [$this, 'getAclGroups']),
-            new \Twig_SimpleFunction('acl_group_names', [$this, 'getAclGroupNames']),
+            new \Twig_SimpleFunction('acl_groups', fn() => $this->getAclGroups()),
+            new \Twig_SimpleFunction('acl_group_names', fn() => $this->getAclGroupNames()),
         ];
     }
 
@@ -40,7 +40,7 @@ class AclGroupsExtension extends \Twig_Extension
      *
      * @return string[]
      */
-    public function getAclGroups()
+    public function getAclGroups(): array
     {
         $config = $this->getConfig();
 
@@ -52,17 +52,14 @@ class AclGroupsExtension extends \Twig_Extension
      *
      * @return string[]
      */
-    public function getAclGroupNames()
+    public function getAclGroupNames(): array
     {
         $config = $this->getConfig();
 
         return array_keys($config);
     }
 
-    /**
-     * @return array
-     */
-    protected function getConfig()
+    protected function getConfig(): array
     {
         $config = [];
         foreach ($this->bundles as $class) {
@@ -81,23 +78,18 @@ class AclGroupsExtension extends \Twig_Extension
      * If no order is defined for a group, it will be added after the others
      *
      * @param array $config
-     *
-     * @return array
      */
-    protected function getSortedGroups($config)
+    protected function getSortedGroups(array $config): array
     {
         $groups = $this->getGroups($config);
-        $groups = $this->sortGroups($groups);
 
-        return $groups;
+        return $this->sortGroups($groups);
     }
 
     /**
      * @param array $config
-     *
-     * @return array
      */
-    protected function getGroups(array $config)
+    protected function getGroups(array $config): array
     {
         $groups = [];
         foreach ($config as $groupName => $groupConfig) {
@@ -114,12 +106,10 @@ class AclGroupsExtension extends \Twig_Extension
 
     /**
      * @param array $groups
-     *
-     * @return array
      */
-    protected function sortGroups(array $groups)
+    protected function sortGroups(array $groups): array
     {
-        foreach ($groups as $permissionGroup => $group) {
+        foreach (array_keys($groups) as $permissionGroup) {
             usort(
                 $groups[$permissionGroup],
                 function ($first, $second) {

@@ -28,7 +28,7 @@ abstract class AbstractItemCategoryRepository implements
      * @param EntityManager $em
      * @param string        $entityName
      */
-    public function __construct(EntityManager $em, $entityName)
+    public function __construct(EntityManager $em, string $entityName)
     {
         $this->em = $em;
         $this->entityName = $entityName;
@@ -66,7 +66,7 @@ abstract class AbstractItemCategoryRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getItemCountByTree($item)
+    public function getItemCountByTree($item): array
     {
         $config = $this->getMappingConfig($item);
 
@@ -95,7 +95,7 @@ abstract class AbstractItemCategoryRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getItemsCountInCategory(array $categoryIds = [])
+    public function getItemsCountInCategory(array $categoryIds = []): int
     {
         if (empty($categoryIds)) {
             return 0;
@@ -126,7 +126,7 @@ abstract class AbstractItemCategoryRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true)
+    public function applyFilterByCategoryIds($qb, array $categoryIds, bool $include = true)
     {
         $rootAlias = $qb->getRootAlias();
         $filterCatIds = uniqid('filterCatIds');
@@ -177,10 +177,8 @@ abstract class AbstractItemCategoryRepository implements
      *
      * @param array  $itemCounts
      * @param string $categoryClass
-     *
-     * @return array
      */
-    protected function buildItemCountByTree(array $itemCounts, $categoryClass)
+    protected function buildItemCountByTree(array $itemCounts, string $categoryClass): array
     {
         $trees = [];
         foreach ($itemCounts as $itemCount) {
@@ -197,10 +195,8 @@ abstract class AbstractItemCategoryRepository implements
      * Get mapping information to build SQL query
      *
      * @param $item
-     *
-     * @return array
      */
-    protected function getMappingConfig($item)
+    protected function getMappingConfig($item): array
     {
         $itemMetadata = $this->em->getClassMetadata(ClassUtils::getClass($item));
 
@@ -218,7 +214,7 @@ abstract class AbstractItemCategoryRepository implements
     /**
      * @param mixed $qb
      */
-    protected function joinQueryBuilderOnCategories($qb)
+    protected function joinQueryBuilderOnCategories($qb): void
     {
         $joins = $qb->getDqlPart('join');
         $rootAlias = $qb->getRootAlias();

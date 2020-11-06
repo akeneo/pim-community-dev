@@ -17,7 +17,7 @@ class Registry
     /** @var FeatureFlag[] */
     private $flags = [];
 
-    public function add(string $feature, FeatureFlag $flag)
+    public function add(string $feature, FeatureFlag $flag): void
     {
         $this->flags[$feature] = $flag;
     }

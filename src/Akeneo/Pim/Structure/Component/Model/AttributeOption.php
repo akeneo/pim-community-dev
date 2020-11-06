@@ -51,7 +51,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -59,7 +59,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId(int $id): AttributeOptionInterface
     {
         $this->id = $id;
 
@@ -69,7 +69,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttribute()
+    public function getAttribute(): \Akeneo\Pim\Structure\Component\Model\AttributeInterface
     {
         return $this->attribute;
     }
@@ -77,7 +77,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttribute(AttributeInterface $attribute = null)
+    public function setAttribute(AttributeInterface $attribute = null): AttributeOptionInterface
     {
         $this->attribute = $attribute;
 
@@ -87,7 +87,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptionValues()
+    public function getOptionValues(): \ArrayAccess
     {
         return $this->optionValues;
     }
@@ -95,7 +95,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }
@@ -103,7 +103,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): AttributeOptionInterface
     {
         $this->locale = $locale;
 
@@ -113,7 +113,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setSortOrder($sortOrder)
+    public function setSortOrder(string $sortOrder): AttributeOptionInterface
     {
         if ($sortOrder !== null) {
             $this->sortOrder = $sortOrder;
@@ -125,7 +125,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getSortOrder()
+    public function getSortOrder(): int
     {
         return $this->sortOrder;
     }
@@ -133,7 +133,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): AttributeOptionInterface
     {
         $this->code = (string) $code;
 
@@ -143,7 +143,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -163,7 +163,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         if (null === $this->code) {
             return null;
@@ -175,7 +175,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation()
+    public function getTranslation(): AttributeOptionValueInterface
     {
         $value = $this->getOptionValue();
 
@@ -191,7 +191,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function addOptionValue(AttributeOptionValueInterface $value)
+    public function addOptionValue(AttributeOptionValueInterface $value): AttributeOptionInterface
     {
         $this->optionValues[] = $value;
         $value->setOption($this);
@@ -202,7 +202,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function removeOptionValue(AttributeOptionValueInterface $value)
+    public function removeOptionValue(AttributeOptionValueInterface $value): AttributeOptionInterface
     {
         $this->optionValues->removeElement($value);
 
@@ -212,7 +212,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptionValue()
+    public function getOptionValue(): AttributeOptionValueInterface
     {
         $locale = $this->locale;
         $values = $this->optionValues->filter(

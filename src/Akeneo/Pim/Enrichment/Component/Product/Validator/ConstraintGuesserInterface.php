@@ -18,10 +18,8 @@ interface ConstraintGuesserInterface
      * Tells whether or not the constraint guesser supports the given attribute type
      *
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function supportAttribute(AttributeInterface $attribute);
+    public function supportAttribute(AttributeInterface $attribute): bool;
 
     /**
      * Guess the constraints for the given attribute
@@ -30,5 +28,5 @@ interface ConstraintGuesserInterface
      *
      * @return Constraint[]
      */
-    public function guessConstraints(AttributeInterface $attribute);
+    public function guessConstraints(AttributeInterface $attribute): array;
 }

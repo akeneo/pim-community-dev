@@ -21,7 +21,7 @@ class ChainedUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAction($action)
+    public function supportAction(string $action): bool
     {
         return true;
     }
@@ -29,7 +29,7 @@ class ChainedUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(EntityManager $em, $entity, $action)
+    public function guessUpdates(EntityManager $em, object $entity, string $action): array
     {
         $updates = [];
 
@@ -48,7 +48,7 @@ class ChainedUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function addUpdateGuesser(UpdateGuesserInterface $guesser)
+    public function addUpdateGuesser(UpdateGuesserInterface $guesser): void
     {
         $this->guessers[] = $guesser;
     }

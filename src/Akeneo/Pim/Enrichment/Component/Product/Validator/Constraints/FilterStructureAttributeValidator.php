@@ -33,7 +33,7 @@ class FilterStructureAttributeValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($attributes, Constraint $constraint)
+    public function validate($attributes, Constraint $constraint): void
     {
         if (!$constraint instanceof FilterStructureAttribute) {
             throw new UnexpectedTypeException($constraint, FilterStructureAttribute::class);

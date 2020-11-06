@@ -43,25 +43,23 @@ class DateTimeNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /**
      * {@inheritdoc}
      */
-    public function normalize($date, $format = null, array $context = [])
+    public function normalize($date, $format = null, array $context = []): string
     {
         $stdProductValue = $this->standardNormalizer->normalize($date, 'standard', $context);
 
-        $stdProductValue = $this->presenter->present(
+        return $this->presenter->present(
             $stdProductValue,
             [
                 'locale'   => $this->userContext->getUiLocaleCode(),
                 'timezone' => $this->userContext->getUserTimezone(),
             ]
         );
-
-        return $stdProductValue;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof \DateTimeInterface && 'datagrid' === $format;
     }

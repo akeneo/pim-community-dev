@@ -24,14 +24,14 @@ class AddSortersPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $extension = $container->getDefinition(self::SORTER_EXTENSION_ID);
 
         $filters = $container->findTaggedServiceIds(self::TAG_NAME);
         foreach ($filters as $serviceId => $tags) {
             $tagAttrs = reset($tags);
-            if (isset($tagAttrs['type']) === false) {
+            if (!isset($tagAttrs['type'])) {
                 throw new \InvalidArgumentException(
                     sprintf('The service %s must be configured with a type attribute', $serviceId)
                 );

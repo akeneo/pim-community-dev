@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector;
 
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetGroupAssociationsByProductModelCodes;
@@ -24,7 +25,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlGetConnectorProductModels implements Query\GetConnectorProductModels
+final class SqlGetConnectorProductModels implements GetConnectorProductModels
 {
     /** @var GetValuesAndPropertiesFromProductModelCodes */
     private $getValuesAndPropertiesFromProductModelCodes;
@@ -82,9 +83,7 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
     ): ConnectorProductModelList {
         $result = $productQueryBuilder->execute();
         $productModelCodes = array_map(
-            function (IdentifierResult $identifier) {
-                return $identifier->getIdentifier();
-            },
+            fn(IdentifierResult $identifier) => $identifier->getIdentifier(),
             iterator_to_array($result)
         );
 

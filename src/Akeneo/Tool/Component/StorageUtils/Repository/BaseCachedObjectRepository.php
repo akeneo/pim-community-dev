@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\StorageUtils\Repository;
 
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 /**
  * Interface to find one object by identifier (from cache if already fetched)
  *
@@ -29,7 +30,7 @@ class BaseCachedObjectRepository implements CachedObjectRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier)
     {
         if (!array_key_exists($identifier, $this->objectsCache)) {
             $this->objectsCache[$identifier] = $this->repository->findOneByIdentifier($identifier);
@@ -41,7 +42,7 @@ class BaseCachedObjectRepository implements CachedObjectRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return $this->repository->getIdentifierProperties();
     }
@@ -49,7 +50,7 @@ class BaseCachedObjectRepository implements CachedObjectRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function clear()
+    public function clear(): EntityManagerClearerInterface
     {
         $this->objectsCache = [];
 

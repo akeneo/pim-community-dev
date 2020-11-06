@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -46,13 +47,13 @@ class IdFilter extends AbstractFieldFilter
      * {@inheritdoc}
      */
     public function addFieldFilter(
-        $attribute,
-        $operator,
+        string $attribute,
+        string $operator,
         $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): FieldFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -61,9 +62,7 @@ class IdFilter extends AbstractFieldFilter
 
         if (is_array($value)) {
             $value = array_map(
-                function ($value) {
-                    return (string) $this->prefix.$value;
-                },
+                fn($value) => (string) $this->prefix.$value,
                 $value
             );
         } else {
@@ -124,7 +123,7 @@ class IdFilter extends AbstractFieldFilter
      * @param string $operator
      * @param mixed  $value
      */
-    protected function checkValue($operator, $value)
+    protected function checkValue(string $operator, $value): void
     {
         if (in_array($operator, [Operators::EQUALS, Operators::NOT_EQUAL])) {
             FieldFilterHelper::checkString('id', $value, static::class);

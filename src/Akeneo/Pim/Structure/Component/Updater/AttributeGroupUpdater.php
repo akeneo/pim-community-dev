@@ -62,7 +62,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
      *     ]
      * ]
      */
-    public function update($attributeGroup, array $data, array $options = [])
+    public function update(object $attributeGroup, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$attributeGroup instanceof AttributeGroupInterface) {
             throw InvalidObjectException::objectExpected(
@@ -88,7 +88,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDataType($field, $data)
+    protected function validateDataType(string $field, $data): void
     {
         if (in_array($field, ['labels', 'attributes'])) {
             if (!is_array($data)) {
@@ -121,7 +121,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setData($attributeGroup, $field, $data)
+    protected function setData(\Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface $attributeGroup, string $field, $data): void
     {
         if ('code' == $field) {
             $attributeGroup->setCode($data);
@@ -145,7 +145,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setAttributes(AttributeGroupInterface $attributeGroup, array $data)
+    protected function setAttributes(AttributeGroupInterface $attributeGroup, array $data): void
     {
         if (AttributeGroup::DEFAULT_GROUP_CODE === $attributeGroup->getCode()) {
             return;

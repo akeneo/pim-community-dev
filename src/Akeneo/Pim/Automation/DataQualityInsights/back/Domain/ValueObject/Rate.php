@@ -45,7 +45,7 @@ final class Rate
         return $this->toLetter();
     }
 
-    public function toLetter()
+    public function toLetter(): string
     {
         return Rank::fromRate($this)->toLetter();
     }

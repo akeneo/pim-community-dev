@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -40,7 +42,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addFilter($field, $operator, $value, array $context = [])
+    public function addFilter(string $field, string $operator, $value, array $context = []): \Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface
     {
         return $this->pqb->addFilter($field, $operator, $value, $context);
     }
@@ -48,7 +50,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addSorter($field, $direction, array $context = [])
+    public function addSorter(string $field, string $direction, array $context = []): \Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface
     {
         return $this->pqb->addSorter($field, $direction, $context);
     }
@@ -56,7 +58,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getRawFilters()
+    public function getRawFilters(): array
     {
         return $this->pqb->getRawFilters();
     }
@@ -64,7 +66,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getQueryBuilder()
+    public function getQueryBuilder(): SearchQueryBuilder
     {
         return $this->pqb->getQueryBuilder();
     }
@@ -72,7 +74,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function setQueryBuilder($queryBuilder)
+    public function setQueryBuilder($queryBuilder): \Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface
     {
         return $this->pqb->setQueryBuilder($queryBuilder);
     }
@@ -80,7 +82,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): CursorInterface
     {
         if ($this->shouldFilterOnlyOnProducts()) {
             $this->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
@@ -106,9 +108,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     private function shouldFilterOnlyOnProducts(): bool
     {
-        $hasStatusFilter = $this->hasRawFilter('field', 'enabled');
-
-        return $hasStatusFilter;
+        return $this->hasRawFilter('field', 'enabled');
     }
 
     /**
@@ -159,9 +159,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
     {
         return !empty(array_filter(
             $this->getRawFilters(),
-            function ($filter) use ($filterProperty, $value) {
-                return $value === $filter[$filterProperty];
-            }
+            fn($filter) => $value === $filter[$filterProperty]
         ));
     }
 
@@ -172,16 +170,12 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     private function hasFilterOnCategoryWhichImplyAggregation(): bool
     {
-        $hasFilter = !empty(array_filter(
+        return !empty(array_filter(
             $this->getRawFilters(),
-            function (array $filter) {
-                return 'field' === $filter['type'] &&
-                    'categories' === $filter['field'] &&
-                    (Operators::IN_LIST === $filter['operator'] || Operators::IN_CHILDREN_LIST === $filter['operator']);
-            }
+            fn(array $filter) => 'field' === $filter['type'] &&
+                'categories' === $filter['field'] &&
+                (Operators::IN_LIST === $filter['operator'] || Operators::IN_CHILDREN_LIST === $filter['operator'])
         ));
-
-        return $hasFilter;
     }
 
     /**

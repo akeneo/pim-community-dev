@@ -57,7 +57,7 @@ class FixtureJobLoader
      *
      * @throws \Exception
      */
-    public function loadJobInstances(string $catalogPath, array $replacePaths = [])
+    public function loadJobInstances(string $catalogPath, array $replacePaths = []): void
     {
         $jobInstances = $this->jobInstancesBuilder->build();
         $configuredJobInstances = $this->configureJobInstances($catalogPath, $jobInstances, $replacePaths);
@@ -67,7 +67,7 @@ class FixtureJobLoader
     /**
      * Deletes all the fixtures job
      */
-    public function deleteJobInstances()
+    public function deleteJobInstances(): void
     {
         $jobInstances = $this->jobInstanceRepository->findBy(['type' => static::JOB_TYPE]);
         $this->jobInstanceRemover->removeAll($jobInstances);
@@ -78,11 +78,9 @@ class FixtureJobLoader
      *
      * @return JobInstance[]
      */
-    public function getLoadedJobInstances()
+    public function getLoadedJobInstances(): array
     {
-        $jobs = $this->jobInstanceRepository->findBy(['type' => self::JOB_TYPE]);
-
-        return $jobs;
+        return $this->jobInstanceRepository->findBy(['type' => self::JOB_TYPE]);
     }
 
     /**

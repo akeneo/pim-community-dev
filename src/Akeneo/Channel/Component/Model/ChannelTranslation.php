@@ -22,7 +22,7 @@ class ChannelTranslation extends AbstractTranslation implements ChannelTranslati
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): ChannelTranslationInterface
     {
         $this->label = $label;
 
@@ -32,7 +32,7 @@ class ChannelTranslation extends AbstractTranslation implements ChannelTranslati
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }

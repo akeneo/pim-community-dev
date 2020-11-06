@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\PimDataGridBundle\Query\Sql;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Connection;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
@@ -26,7 +27,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
      * @param Connection                     $connection
      * @param ConfigurationProviderInterface $configurationProvider
      */
-    public function __construct(Connection $connection, ConfigurationProviderInterface $configurationProvider)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, ConfigurationProviderInterface $configurationProvider)
     {
         $this->connection = $connection;
         $this->configurationProvider = $configurationProvider;
@@ -94,9 +95,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
         }
 
         if ('' !== $searchOnLabel) {
-            $systemColumns = array_filter($systemColumns, function ($property) use ($searchOnLabel) {
-                return false !== stripos($property['label'], $searchOnLabel);
-            });
+            $systemColumns = array_filter($systemColumns, fn($property) => false !== stripos($property['label'], $searchOnLabel));
         }
 
         return $systemColumns;
@@ -111,7 +110,7 @@ class ListProductGridAvailableColumns implements ListProductGridAvailableColumns
      *
      * @return array
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function fetchAttributesAsColumn(string $locale, int $limit, int $offset, string $groupCode, string $searchOnLabel): array
     {

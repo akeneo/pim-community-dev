@@ -25,10 +25,7 @@ class JobExecutionEvent extends Event implements EventInterface
         $this->jobExecution = $jobExecution;
     }
 
-    /**
-     * @return JobExecution
-     */
-    public function getJobExecution()
+    public function getJobExecution(): \Akeneo\Tool\Component\Batch\Model\JobExecution
     {
         return $this->jobExecution;
     }

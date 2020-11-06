@@ -181,11 +181,10 @@ class FamilyVariantController
      * @param Request $request
      * @param string  $familyVariantCode
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_enrich_family_variant_remove")
      */
-    public function removeAction(Request $request, string $familyVariantCode)
+    public function removeAction(Request $request, string $familyVariantCode): \Symfony\Component\HttpFoundation\JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new JsonResponse(['message' => 'An error occurred.', 'global' => true], Response::HTTP_BAD_REQUEST);
@@ -213,10 +212,8 @@ class FamilyVariantController
      * Gets familyVariant using its code
      *
      * @param string $code
-     *
-     * @return FamilyVariantInterface
      */
-    protected function getFamilyVariant(string $code): FamilyVariantInterface
+    protected function getFamilyVariant(string $code): object
     {
         $familyVariant = $this->familyVariantRepository->findOneBy(['code' => $code]);
 

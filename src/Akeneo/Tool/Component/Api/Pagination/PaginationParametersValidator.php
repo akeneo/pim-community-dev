@@ -27,7 +27,7 @@ class PaginationParametersValidator implements ParameterValidatorInterface
     /**
      * {@inheritdoc}
      */
-    public function validate(array $parameters, array $options = [])
+    public function validate(array $parameters, array $options = []): void
     {
         if (!isset($parameters['pagination_type'])) {
             $parameters['pagination_type'] = PaginationTypes::OFFSET;
@@ -56,7 +56,7 @@ class PaginationParametersValidator implements ParameterValidatorInterface
      *
      * @throws PaginationParametersException
      */
-    protected function validatePage(array $parameters)
+    protected function validatePage(array $parameters): void
     {
         if (!isset($parameters['page'])) {
             return;
@@ -74,7 +74,7 @@ class PaginationParametersValidator implements ParameterValidatorInterface
      *
      * @throws PaginationParametersException
      */
-    protected function validateLimit(array $parameters)
+    protected function validateLimit(array $parameters): void
     {
         if (!isset($parameters['limit'])) {
             return;
@@ -97,7 +97,7 @@ class PaginationParametersValidator implements ParameterValidatorInterface
      *
      * @throws PaginationParametersException
      */
-    protected function validateWithCount(array $parameters)
+    protected function validateWithCount(array $parameters): void
     {
         if (!isset($parameters['with_count'])) {
             return;
@@ -118,11 +118,9 @@ class PaginationParametersValidator implements ParameterValidatorInterface
      * It's more restrictive than is_numeric because it does not accept float values.
      *
      * @param string|int $parameter
-     *
-     * @return bool
      */
-    protected function isInteger($parameter)
+    protected function isInteger($parameter): bool
     {
-        return strval($parameter) === strval(intval($parameter));
+        return strval($parameter) === strval((int) $parameter);
     }
 }

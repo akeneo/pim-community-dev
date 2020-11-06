@@ -75,7 +75,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function normalize($family, $format = null, array $context = array())
+    public function normalize($family, $format = null, array $context = array()): array
     {
         $fullAttributes = array_key_exists('full_attributes', $context)
             && true === $context['full_attributes'];
@@ -122,7 +122,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($family, $format = null)
+    public function supportsNormalization($family, $format = null): bool
     {
         return $family instanceof FamilyInterface &&
             in_array($format, $this->supportedFormats);
@@ -139,10 +139,8 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      * @param FamilyInterface $family
      * @param boolean         $fullAttributes
      * @param array           $context
-     *
-     * @return array
      */
-    protected function normalizeAttributes(FamilyInterface $family, $fullAttributes, $context)
+    protected function normalizeAttributes(FamilyInterface $family, bool $fullAttributes, array $context): array
     {
         $attributes = $this->attributeRepository->findAttributesByFamily($family);
 
@@ -170,10 +168,8 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      *
      * @param array $requirements
      * @param bool  $fullAttributes
-     *
-     * @return array
      */
-    protected function normalizeRequirements($requirements, $fullAttributes)
+    protected function normalizeRequirements(array $requirements, bool $fullAttributes): array
     {
         $result = [];
 
@@ -187,9 +183,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
                 );
             }
 
-            $result[$channel] = array_map(function ($attribute) {
-                return $attribute->getCode();
-            }, $attributes);
+            $result[$channel] = array_map(fn($attribute) => $attribute->getCode(), $attributes);
         }
 
         return $result;
@@ -222,10 +216,6 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      */
     private function getAttributeAxisCodesForFamilyVariant(FamilyVariantInterface $familyVariant): array
     {
-        $attributesAxisCodes = array_map(function ($attribute) {
-            return $attribute->getCode();
-        }, $familyVariant->getAxes()->toArray());
-
-        return $attributesAxisCodes;
+        return array_map(fn($attribute) => $attribute->getCode(), $familyVariant->getAxes()->toArray());
     }
 }

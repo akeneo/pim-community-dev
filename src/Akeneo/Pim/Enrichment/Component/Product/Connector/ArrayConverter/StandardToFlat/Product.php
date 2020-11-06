@@ -29,7 +29,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     /**
      * {@inheritdoc}
      */
-    protected function convertProperty($property, $data, array $convertedItem, array $options)
+    protected function convertProperty(string $property, $data, array $convertedItem, array $options): array
     {
         switch ($property) {
             case 'associations':
@@ -57,7 +57,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 break;
             case 'values':
                 foreach ($data as $code => $attribute) {
-                    $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
+                    $convertedItem += $this->valueConverter->convertAttribute($code, $attribute);
                 }
                 break;
             case 'identifier':
@@ -65,7 +65,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'updated':
                 break;
             default:
-                $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($property, $data);
+                $convertedItem += $this->valueConverter->convertAttribute($property, $data);
         }
 
         return $convertedItem;
@@ -76,10 +76,8 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
      *
      * @param mixed $data
      * @param array $convertedItem
-     *
-     * @return array
      */
-    protected function convertGroups($data, array $convertedItem)
+    protected function convertGroups($data, array $convertedItem): array
     {
         if (!array_key_exists('groups', $convertedItem)) {
             $convertedItem['groups'] = '';

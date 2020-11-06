@@ -66,7 +66,7 @@ class AddAttributeValueProcessor extends AbstractProcessor
     /**
      * {@inheritdoc}
      */
-    public function process($entity)
+    public function process($entity): ?\Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface
     {
         $actions = $this->getConfiguredActions();
 

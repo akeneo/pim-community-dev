@@ -30,18 +30,7 @@ class WebhookEventBuildLog
     }
 
     /**
-     * @return array{
-     *  type: string,
-     * webhook_event_build_count: int,
-     * duration: int,
-     *  event: array{
-     *      uuid: string,
-     *      author: string,
-     *      author_type: string,
-     *      name: string,
-     *      timestamp: int,
-     *  }
-     * }
+     * @return array{type:string,  webhook_event_build_count:int, duration:int, event:array{uuid:string, author:string, author_type:string, name:string,  timestamp:int}}
      */
     public function toLog(): array
     {

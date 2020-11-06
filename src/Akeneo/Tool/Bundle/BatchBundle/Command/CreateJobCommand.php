@@ -68,7 +68,7 @@ class CreateJobCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Create a job instance')
@@ -83,7 +83,7 @@ class CreateJobCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $connector = $input->getArgument('connector');
         $jobName = $input->getArgument('job');
@@ -150,10 +150,8 @@ class CreateJobCommand extends Command
 
     /**
      * @param ConstraintViolationListInterface $errors
-     *
-     * @return string
      */
-    protected function getErrorMessages(ConstraintViolationListInterface $errors)
+    protected function getErrorMessages(ConstraintViolationListInterface $errors): string
     {
         $errorsStr = '';
 

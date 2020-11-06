@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Comment\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 /**
  * Comment repository interface
  *
@@ -19,7 +21,7 @@ interface CommentRepositoryInterface
      * @param string     $resourceName
      * @param int|string $resourceId
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface[]
+     * @return ArrayCollection|CommentInterface[]
      */
-    public function getComments($resourceName, $resourceId);
+    public function getComments(string $resourceName, $resourceId);
 }

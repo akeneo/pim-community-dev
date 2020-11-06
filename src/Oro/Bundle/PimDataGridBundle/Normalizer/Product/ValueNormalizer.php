@@ -31,15 +31,13 @@ class ValueNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
      */
     public function normalize($entity, $format = null, array $context = [])
     {
-        $stdProductValue = $this->standardNormalizer->normalize($entity, 'standard', $context);
-
-        return $stdProductValue;
+        return $this->standardNormalizer->normalize($entity, 'standard', $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ValueInterface && 'datagrid' === $format;
     }

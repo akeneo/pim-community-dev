@@ -20,7 +20,7 @@ class GroupSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserEvents::PRE_DELETE_GROUP => 'preDeleteGroup',
@@ -33,7 +33,7 @@ class GroupSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function preDeleteGroup(GenericEvent $event)
+    public function preDeleteGroup(GenericEvent $event): void
     {
         $this->checkDefaultGroup($event);
     }
@@ -43,7 +43,7 @@ class GroupSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function preUpdateGroup(GenericEvent $event)
+    public function preUpdateGroup(GenericEvent $event): void
     {
         $this->checkDefaultGroup($event);
     }
@@ -55,7 +55,7 @@ class GroupSubscriber implements EventSubscriberInterface
      *
      * @throws \Exception
      */
-    protected function checkDefaultGroup(GenericEvent $event)
+    protected function checkDefaultGroup(GenericEvent $event): void
     {
         /** @var GroupInterface $group */
         $group = $event->getSubject();

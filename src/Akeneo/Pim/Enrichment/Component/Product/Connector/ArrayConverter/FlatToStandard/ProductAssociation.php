@@ -58,22 +58,19 @@ class ProductAssociation implements ArrayConverterInterface
      *      }
      * }
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $convertedItem = $this->productConverter->convert($item, $options);
-        $filteredItem = $this->filter($convertedItem);
 
-        return $filteredItem;
+        return $this->filter($convertedItem);
     }
 
     /**
      * Filters the item to keep only association related fields
      *
      * @param array $item
-     *
-     * @return array
      */
-    protected function filter(array $item)
+    protected function filter(array $item): array
     {
         $expectedFields = ['identifier', 'associations', 'quantified_associations'];
         foreach (array_keys($item) as $fieldName) {

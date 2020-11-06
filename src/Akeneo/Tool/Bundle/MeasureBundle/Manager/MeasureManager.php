@@ -28,15 +28,13 @@ class MeasureManager
      *
      * @return array the measure symbols
      */
-    public function getUnitSymbolsForFamily($family)
+    public function getUnitSymbolsForFamily(string $family): array
     {
         $familyConfig = $this->getFamilyConfig($family);
         $unitsConfig = $familyConfig['units'];
 
         return array_map(
-            function ($unit) {
-                return $unit['symbol'];
-            },
+            fn($unit) => $unit['symbol'],
             $unitsConfig
         );
     }
@@ -46,10 +44,8 @@ class MeasureManager
      *
      * @param string $unitSymbol the unit symbol to check
      * @param string $family     the measure family
-     *
-     * @return bool
      */
-    public function unitSymbolExistsInFamily($unitSymbol, $family)
+    public function unitSymbolExistsInFamily(string $unitSymbol, string $family): bool
     {
         return in_array($unitSymbol, $this->getUnitSymbolsForFamily($family));
     }
@@ -59,10 +55,8 @@ class MeasureManager
      *
      * @param string $unitCode the unit code to check
      * @param string $family   the measure family
-     *
-     * @return bool
      */
-    public function unitCodeExistsInFamily($unitCode, $family)
+    public function unitCodeExistsInFamily(string $unitCode, string $family): bool
     {
         return in_array($unitCode, $this->getUnitCodesForFamily($family));
     }
@@ -71,10 +65,8 @@ class MeasureManager
      * Get standard unit for a measure family
      *
      * @param string $family
-     *
-     * @return string
      */
-    public function getStandardUnitForFamily($family)
+    public function getStandardUnitForFamily(string $family): string
     {
         $familyConfig = $this->getFamilyConfig($family);
 
@@ -88,7 +80,7 @@ class MeasureManager
      *
      * @return array the measure units code
      */
-    public function getUnitCodesForFamily($family)
+    public function getUnitCodesForFamily(string $family): array
     {
         $familyConfig = $this->getFamilyConfig($family);
 
@@ -101,9 +93,8 @@ class MeasureManager
      * @param string $family
      *
      * @throws \InvalidArgumentException
-     * @return array
      */
-    protected function getFamilyConfig($family)
+    protected function getFamilyConfig(string $family): array
     {
         $families = $this->legacyMeasurementProvider->getMeasurementFamilies();
         if (!isset($families[$family])) {

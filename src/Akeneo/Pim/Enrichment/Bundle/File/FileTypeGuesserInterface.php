@@ -15,8 +15,6 @@ interface FileTypeGuesserInterface
      * Return the type (defined in Akeneo\Pim\Enrichment\Bundle\File\FileTypes) corresponding to the specified MIME type
      *
      * @param string $mimeType
-     *
-     * @return string
      */
-    public function guess($mimeType);
+    public function guess(string $mimeType): string;
 }

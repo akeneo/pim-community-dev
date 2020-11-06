@@ -25,8 +25,6 @@ interface SearchableRepositoryInterface
      *
      * @param string $search
      * @param array  $options
-     *
-     * @return array
      */
-    public function findBySearch($search = null, array $options = []);
+    public function findBySearch(string $search = null, array $options = []): array;
 }

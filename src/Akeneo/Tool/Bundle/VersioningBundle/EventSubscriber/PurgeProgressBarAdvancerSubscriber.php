@@ -26,7 +26,7 @@ class PurgeProgressBarAdvancerSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [PurgeVersionEvents::PRE_ADVISEMENT  => 'advanceProgressbar'];
     }
@@ -36,7 +36,7 @@ class PurgeProgressBarAdvancerSubscriber implements EventSubscriberInterface
      *
      * @param PreAdvisementVersionEvent $preAdvisementVersionEvent
      */
-    public function advanceProgressBar(PreAdvisementVersionEvent $preAdvisementVersionEvent)
+    public function advanceProgressBar(PreAdvisementVersionEvent $preAdvisementVersionEvent): void
     {
         if (null !== $this->progressBar) {
             $this->progressBar->advance();
@@ -46,7 +46,7 @@ class PurgeProgressBarAdvancerSubscriber implements EventSubscriberInterface
     /**
      * @param ProgressBar $progressBar
      */
-    public function setProgressBar(ProgressBar $progressBar)
+    public function setProgressBar(ProgressBar $progressBar): void
     {
         $this->progressBar = $progressBar;
     }

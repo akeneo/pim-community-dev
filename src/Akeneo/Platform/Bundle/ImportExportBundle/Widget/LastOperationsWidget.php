@@ -25,7 +25,7 @@ class LastOperationsWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'last_operations';
     }
@@ -33,7 +33,7 @@ class LastOperationsWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return 'PimImportExportBundle:Widget:last_operations.html.twig';
     }
@@ -41,7 +41,7 @@ class LastOperationsWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return [];
     }
@@ -49,7 +49,7 @@ class LastOperationsWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->fetcher->fetch();
     }

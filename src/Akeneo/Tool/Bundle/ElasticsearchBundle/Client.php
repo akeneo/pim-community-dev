@@ -54,7 +54,7 @@ class Client
         ClientBuilder $builder,
         Loader $configurationLoader,
         array $hosts,
-        $indexName,
+        string $indexName,
         string $idPrefix = ''
     ) {
         $this->builder = $builder;
@@ -76,7 +76,7 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
      */
-    public function index($id, array $body, Refresh $refresh = null)
+    public function index(string $id, array $body, Refresh $refresh = null): array
     {
         $params = [
             'index' => $this->indexName,
@@ -111,7 +111,7 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
      */
-    public function bulkIndexes($documents, $keyAsId = null, Refresh $refresh = null)
+    public function bulkIndexes(array $documents, ?string $keyAsId = null, Refresh $refresh = null): array
     {
         $params = [];
         $paramsComputedSize = 0;
@@ -181,7 +181,7 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_get_a_document}
      */
-    public function get($id)
+    public function get(string $id): array
     {
         $params = [
             'index' => $this->indexName,
@@ -196,7 +196,7 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_search_for_a_document}
      */
-    public function search(array $body)
+    public function search(array $body): array
     {
         $params = [
             'index' => $this->indexName,
@@ -241,7 +241,7 @@ class Client
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_a_document}
      */
-    public function delete($id)
+    public function delete(string $id): array
     {
         $params = [
             'index' => $this->indexName,
@@ -253,10 +253,8 @@ class Client
 
     /**
      * @param $documentIds
-     *
-     * @return array
      */
-    public function bulkDelete($documentIds)
+    public function bulkDelete($documentIds): array
     {
         $params = [];
 
@@ -275,7 +273,7 @@ class Client
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_an_index}
      */
-    public function deleteIndex()
+    public function deleteIndex(): array
     {
         $indices = $this->client->indices();
         $indexName = $this->indexName;
@@ -290,7 +288,7 @@ class Client
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_create_an_index}
      */
-    public function createIndex()
+    public function createIndex(): array
     {
         $configuration = $this->configurationLoader->load();
         $body = $configuration->buildAggregated();
@@ -322,7 +320,7 @@ class Client
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html}
      */
-    public function refreshIndex()
+    public function refreshIndex(): array
     {
         return $this->client->indices()->refresh(['index' => $this->indexName]);
     }
@@ -344,7 +342,7 @@ class Client
      *
      * @throws IndexationException
      */
-    private function throwIndexationExceptionFromResponse(array $response)
+    private function throwIndexationExceptionFromResponse(array $response): void
     {
         foreach ($response['items'] as $item) {
             if (isset($item['index']['error'])) {

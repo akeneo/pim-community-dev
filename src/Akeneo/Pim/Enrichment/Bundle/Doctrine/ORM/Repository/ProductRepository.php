@@ -24,7 +24,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getItemsFromIdentifiers(array $identifiers)
+    public function getItemsFromIdentifiers(array $identifiers): array
     {
         $qb = $this->createQueryBuilder('p')
             ->where('p.identifier IN (:identifiers)')
@@ -39,7 +39,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['identifier'];
     }
@@ -47,7 +47,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier): ?ProductInterface
     {
         return $this->findOneBy(['identifier' => $identifier]);
     }
@@ -55,7 +55,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAvailableAttributeIdsToExport(array $productIds)
+    public function getAvailableAttributeIdsToExport(array $productIds): array
     {
         $qb = $this->createQueryBuilder('p');
         $qb
@@ -77,32 +77,28 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getProductsByGroup(GroupInterface $group, $maxResults)
+    public function getProductsByGroup(GroupInterface $group, int $maxResults): array
     {
-        $products = $this
+        return $this
             ->createQueryBuilder('p')
             ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
             ->setParameter('group', $group)
             ->getQuery()
             ->setMaxResults($maxResults)
             ->execute();
-
-        return $products;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getProductCountByGroup(GroupInterface $group)
+    public function getProductCountByGroup(GroupInterface $group): int
     {
-        $count = $this->createQueryBuilder('p')
+        return $this->createQueryBuilder('p')
             ->select('COUNT(p)')
             ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
             ->setParameter('group', $group)
             ->getQuery()
             ->getSingleScalarResult();
-
-        return $count;
     }
 
     /**
@@ -121,7 +117,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInFamily($productId, $attributeCode)
+    public function hasAttributeInFamily($productId, string $attributeCode): bool
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->leftJoin('p.family', 'f')

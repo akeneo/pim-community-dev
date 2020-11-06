@@ -38,7 +38,7 @@ class ConfigurationController
     public function __construct(
         ConfigManager $configManager,
         FileLocator $fileLocator,
-        $loadingMessagesFile,
+        string $loadingMessagesFile,
         array $options = []
     ) {
         $this->configManager = $configManager;
@@ -51,10 +51,8 @@ class ConfigurationController
      * Get the current configuration
      *
      * @AclAncestor("oro_config_system")
-     *
-     * @return JsonResponse
      */
-    public function getAction()
+    public function getAction(): JsonResponse
     {
         $data = [];
 
@@ -81,10 +79,8 @@ class ConfigurationController
      * Set the current configuration
      *
      * @AclAncestor("oro_config_system")
-     *
-     * @return JsonResponse
      */
-    public function postAction(Request $request)
+    public function postAction(Request $request): JsonResponse
     {
         $this->configManager->save(json_decode($request->getContent(), true));
 

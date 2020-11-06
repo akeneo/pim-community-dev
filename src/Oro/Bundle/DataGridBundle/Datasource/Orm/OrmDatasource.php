@@ -28,7 +28,7 @@ class OrmDatasource implements DatasourceInterface
     /**
      * {@inheritDoc}
      */
-    public function process(DatagridInterface $grid, array $config)
+    public function process(DatagridInterface $grid, array $config): void
     {
         $queryConfig = array_intersect_key($config, array_flip(['query']));
 
@@ -41,7 +41,7 @@ class OrmDatasource implements DatasourceInterface
     /**
      * @return ResultRecordInterface[]
      */
-    public function getResults()
+    public function getResults(): array
     {
         $results = $this->qb->getQuery()->execute();
         $rows = [];
@@ -54,10 +54,8 @@ class OrmDatasource implements DatasourceInterface
 
     /**
      * Returns query builder
-     *
-     * @return QueryBuilder
      */
-    public function getQueryBuilder()
+    public function getQueryBuilder(): \Doctrine\ORM\QueryBuilder
     {
         return $this->qb;
     }
@@ -69,7 +67,7 @@ class OrmDatasource implements DatasourceInterface
      *
      * @return $this
      */
-    public function setQueryBuilder(QueryBuilder $qb)
+    public function setQueryBuilder(QueryBuilder $qb): self
     {
         $this->qb = $qb;
 

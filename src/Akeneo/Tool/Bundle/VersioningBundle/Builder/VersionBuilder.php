@@ -39,16 +39,14 @@ class VersionBuilder
      * @param string       $author
      * @param Version|null $previousVersion
      * @param string|null  $context
-     *
-     * @return Version
      */
-    public function buildVersion($versionable, $author, Version $previousVersion = null, $context = null)
+    public function buildVersion(object $versionable, string $author, Version $previousVersion = null, ?string $context = null): \Akeneo\Tool\Component\Versioning\Model\Version
     {
         $resourceName = ClassUtils::getClass($versionable);
         $resourceId = $versionable->getId();
 
-        $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
-        $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];
+        $versionNumber = $previousVersion !== null ? $previousVersion->getVersion() + 1 : 1;
+        $oldSnapshot = $previousVersion !== null ? $previousVersion->getSnapshot() : [];
 
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
         $snapshot = $this->normalizer->normalize($versionable, 'flat', []);
@@ -70,10 +68,8 @@ class VersionBuilder
      * @param string      $author
      * @param array       $changeset
      * @param string|null $context
-     *
-     * @return Version
      */
-    public function createPendingVersion($versionable, $author, array $changeset, $context = null)
+    public function createPendingVersion(object $versionable, string $author, array $changeset, ?string $context = null): \Akeneo\Tool\Component\Versioning\Model\Version
     {
         $version = $this->versionFactory->create(
             ClassUtils::getClass($versionable),
@@ -91,13 +87,11 @@ class VersionBuilder
      *
      * @param Version      $pending
      * @param Version|null $previousVersion
-     *
-     * @return Version
      */
-    public function buildPendingVersion(Version $pending, Version $previousVersion = null)
+    public function buildPendingVersion(Version $pending, Version $previousVersion = null): \Akeneo\Tool\Component\Versioning\Model\Version
     {
-        $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
-        $oldSnapshot = $previousVersion ? $previousVersion->getSnapshot() : [];
+        $versionNumber = $previousVersion !== null ? $previousVersion->getVersion() + 1 : 1;
+        $oldSnapshot = $previousVersion !== null ? $previousVersion->getSnapshot() : [];
 
         $modification = $pending->getChangeset();
         $snapshot = $modification + $oldSnapshot;
@@ -115,10 +109,8 @@ class VersionBuilder
      *
      * @param array $oldSnapshot
      * @param array $newSnapshot
-     *
-     * @return array
      */
-    protected function buildChangeset(array $oldSnapshot, array $newSnapshot)
+    protected function buildChangeset(array $oldSnapshot, array $newSnapshot): array
     {
         return $this->filterChangeset($this->mergeSnapshots($oldSnapshot, $newSnapshot));
     }
@@ -128,34 +120,26 @@ class VersionBuilder
      *
      * @param array $oldSnapshot
      * @param array $newSnapshot
-     *
-     * @return array
      */
-    protected function mergeSnapshots(array $oldSnapshot, array $newSnapshot)
+    protected function mergeSnapshots(array $oldSnapshot, array $newSnapshot): array
     {
         $localNewSnapshot = array_map(
-            function ($newItem) {
-                return ['new' => $newItem];
-            },
+            fn($newItem) => ['new' => $newItem],
             $newSnapshot
         );
 
         $localOldSnapshot = array_map(
-            function ($oldItem) {
-                return ['old' => $oldItem];
-            },
+            fn($oldItem) => ['old' => $oldItem],
             $oldSnapshot
         );
 
         $mergedSnapshot = array_replace_recursive($localNewSnapshot, $localOldSnapshot);
 
         return array_map(
-            function ($mergedItem) {
-                return [
-                    'old' => array_key_exists('old', $mergedItem) ? $mergedItem['old'] : '',
-                    'new' => array_key_exists('new', $mergedItem) ? $mergedItem['new'] : ''
-                ];
-            },
+            fn($mergedItem) => [
+                'old' => array_key_exists('old', $mergedItem) ? $mergedItem['old'] : '',
+                'new' => array_key_exists('new', $mergedItem) ? $mergedItem['new'] : ''
+            ],
             $mergedSnapshot
         );
     }
@@ -164,16 +148,12 @@ class VersionBuilder
      * Filter changeset to remove values that are the same
      *
      * @param array $changeset
-     *
-     * @return array
      */
-    protected function filterChangeset(array $changeset)
+    protected function filterChangeset(array $changeset): array
     {
         return array_filter(
             $changeset,
-            function ($item) {
-                return $this->hasValueChanged($item['old'], $item['new']);
-            }
+            fn($item) => $this->hasValueChanged($item['old'], $item['new'])
         );
     }
 
@@ -201,7 +181,7 @@ class VersionBuilder
      *
      * @return bool|null True if the date has changed, False otherwise. Null if the comparison can't be done.
      */
-    private function hasLegacyDateChanged($old, $new)
+    private function hasLegacyDateChanged($old, $new): ?bool
     {
         if (!is_string($old) || !is_string($new)) {
             return null;

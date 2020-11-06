@@ -66,9 +66,9 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
         EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         array $optionCodes,
-        $locale,
-        $scope
-    ) {
+        string $locale,
+        string $scope
+    ): void {
         $optionsValue = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
         if (null !== $optionsValue) {

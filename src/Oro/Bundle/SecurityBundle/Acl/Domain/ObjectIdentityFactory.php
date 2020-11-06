@@ -36,9 +36,8 @@ class ObjectIdentityFactory
      * @param ObjectIdentity|string $oidOrExtensionKey Can be ObjectIdentity or string:
      *              ObjectIdentity: The object identity the root identity should be constructed for
      *              string: The ACL extension key
-     * @return ObjectIdentity
      */
-    public function root($oidOrExtensionKey)
+    public function root($oidOrExtensionKey): \Symfony\Component\Security\Acl\Domain\ObjectIdentity
     {
         if ($oidOrExtensionKey instanceof ObjectIdentity) {
             $oidOrExtensionKey = $this->extensionSelector
@@ -57,9 +56,8 @@ class ObjectIdentityFactory
      *
      * @param ObjectIdentity $oid
      * @throws InvalidAclException
-     * @return ObjectIdentity
      */
-    public function underlying(ObjectIdentity $oid)
+    public function underlying(ObjectIdentity $oid): \Symfony\Component\Security\Acl\Domain\ObjectIdentity
     {
         if ($oid->getIdentifier() === self::ROOT_IDENTITY_TYPE
             || $oid->getIdentifier() === ($extensionKey = $this->extensionSelector->select($oid)->getExtensionKey())
@@ -83,9 +81,8 @@ class ObjectIdentityFactory
      *
      * @param mixed $val An domain object, object identity descriptor (id:type) or ACL annotation
      * @throws InvalidDomainObjectException
-     * @return ObjectIdentity
      */
-    public function get($val)
+    public function get($val): \Symfony\Component\Security\Acl\Domain\ObjectIdentity
     {
         try {
             $result = $this->extensionSelector

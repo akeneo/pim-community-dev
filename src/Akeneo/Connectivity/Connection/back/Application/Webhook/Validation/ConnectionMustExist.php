@@ -21,7 +21,7 @@ class ConnectionMustExist extends Constraint
         return self::PROPERTY_CONSTRAINT;
     }
 
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'connection_must_exist';
     }

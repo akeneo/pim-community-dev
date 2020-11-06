@@ -35,7 +35,7 @@ class AddContextSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::BEFORE_JOB_EXECUTION => 'addContext'
@@ -47,7 +47,7 @@ class AddContextSubscriber implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function addContext(JobExecutionEvent $event)
+    public function addContext(JobExecutionEvent $event): void
     {
         $jobInstance = $event->getJobExecution()->getJobInstance();
         if ($jobInstance->getType() === JobInstance::TYPE_IMPORT) {

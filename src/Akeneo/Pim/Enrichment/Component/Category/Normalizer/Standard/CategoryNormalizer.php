@@ -28,7 +28,7 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /**
      * {@inheritdoc}
      */
-    public function normalize($category, $format = null, array $context = [])
+    public function normalize($category, $format = null, array $context = []): array
     {
         return [
             'code'   => $category->getCode(),
@@ -40,7 +40,7 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof CategoryInterface && 'standard' === $format;
     }

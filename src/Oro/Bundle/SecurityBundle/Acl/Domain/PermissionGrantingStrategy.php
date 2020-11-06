@@ -35,7 +35,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      *
      * @param AuditLoggerInterface $auditLogger
      */
-    public function setAuditLogger(AuditLoggerInterface $auditLogger)
+    public function setAuditLogger(AuditLoggerInterface $auditLogger): void
     {
         $this->auditLogger = $auditLogger;
     }
@@ -45,7 +45,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      *
      * @param ServiceLink $contextLink The link to a service implementing PermissionGrantingStrategyContextInterface
      */
-    public function setContext(ServiceLink $contextLink)
+    public function setContext(ServiceLink $contextLink): void
     {
         $this->contextLink = $contextLink;
     }
@@ -54,9 +54,8 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      * Gets context this strategy is working in
      *
      * @throws \RuntimeException
-     * @return PermissionGrantingStrategyContextInterface
      */
-    protected function getContext()
+    protected function getContext(): object
     {
         if ($this->contextLink === null) {
             throw new \RuntimeException('The context link is not set.');
@@ -68,7 +67,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     /**
      * {@inheritDoc}
      */
-    public function isGranted(AclInterface $acl, array $masks, array $sids, $administrativeMode = false)
+    public function isGranted(AclInterface $acl, array $masks, array $sids, $administrativeMode = false): bool
     {
         $result = null;
 
@@ -102,7 +101,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     /**
      * {@inheritDoc}
      */
-    public function isFieldGranted(AclInterface $acl, $field, array $masks, array $sids, $administrativeMode = false)
+    public function isFieldGranted(AclInterface $acl, $field, array $masks, array $sids, $administrativeMode = false): bool
     {
         $result = null;
 
@@ -167,8 +166,8 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
         array $aces,
         array $masks,
         array $sids,
-        $administrativeMode
-    ) {
+        bool $administrativeMode
+    ): ?bool {
         $triggeredAce = null;
         $triggeredMask = 0;
         $result = false;
@@ -245,7 +244,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      * @throws \RuntimeException if the ACE strategy is not supported
      * @return bool
      */
-    protected function isAceApplicable($requiredMask, EntryInterface $ace, AclInterface $acl)
+    protected function isAceApplicable(int $requiredMask, EntryInterface $ace, AclInterface $acl)
     {
         $extension = $this->getContext()->getAclExtension();
         $aceMask = $ace->getMask();

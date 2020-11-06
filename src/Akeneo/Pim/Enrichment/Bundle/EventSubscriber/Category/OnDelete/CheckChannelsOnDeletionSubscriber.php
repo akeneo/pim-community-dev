@@ -32,7 +32,7 @@ final class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterfac
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE => 'checkChannels'
@@ -46,7 +46,7 @@ final class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterfac
      *
      * @throws ConflictHttpException
      */
-    public function checkChannels(GenericEvent $event)
+    public function checkChannels(GenericEvent $event): void
     {
         $subject = $event->getSubject();
 

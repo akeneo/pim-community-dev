@@ -24,7 +24,7 @@ final class InitializeJobs
     /** @var Connection */
     private $db;
 
-    public function __construct(ObjectRepository $jobInstanceRepository, Connection $db)
+    public function __construct(ObjectRepository $jobInstanceRepository, \Doctrine\DBAL\Driver\Connection $db)
     {
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->db = $db;

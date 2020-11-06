@@ -31,7 +31,7 @@ final class GetProductAxesRatesController
     public function __invoke(string $productId): JsonResponse
     {
         try {
-            $productId = new ProductId(intval($productId));
+            $productId = new ProductId((int) $productId);
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }

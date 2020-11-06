@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM;
 
+use Akeneo\Tool\Component\Versioning\Model\Version;
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
@@ -25,7 +27,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getLogEntries($resourceName, $resourceId)
+    public function getLogEntries(string $resourceName, string $resourceId): ?array
     {
         return $this->findBy(
             ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
@@ -36,7 +38,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getOldestLogEntry($resourceName, $resourceId, $pending = false)
+    public function getOldestLogEntry(string $resourceName, string $resourceId, bool $pending = false): ?Version
     {
         return $this->getOneLogEntry($resourceName, $resourceId, $pending, 'asc');
     }
@@ -44,7 +46,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getNewestLogEntry($resourceName, $resourceId, $pending = false)
+    public function getNewestLogEntry(string $resourceName, string $resourceId, bool $pending = false): ?Version
     {
         return $this->getOneLogEntry($resourceName, $resourceId, $pending, 'desc');
     }
@@ -52,7 +54,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getNewestLogEntryForRessources($resourceNames)
+    public function getNewestLogEntryForRessources(array $resourceNames): ?array
     {
         return $this->findOneBy(['resourceName' => $resourceNames], ['loggedAt' => 'desc'], 1);
     }
@@ -60,17 +62,15 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getPendingVersions($limit = null)
+    public function getPendingVersions(int $limit = null): ?array
     {
         return $this->findBy(['pending' => true], ['version' => 'asc'], $limit);
     }
 
     /**
      * Get total pending versions count
-     *
-     * @return int
      */
-    public function getPendingVersionsCount()
+    public function getPendingVersionsCount(): int
     {
         $qb = $this->createQueryBuilder('v')
             ->select('COUNT(v.id)')
@@ -81,10 +81,8 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
 
     /**
      * @param array $parameters
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createDatagridQueryBuilder(array $parameters = [])
+    public function createDatagridQueryBuilder(array $parameters = []): QueryBuilder
     {
         $userNameExpr = "CONCAT(CONCAT(CONCAT(u.firstName, ' '), CONCAT(u.lastName, ' - ')), u.email)";
         $removedUserNameExpr = "CONCAT(v.author, ' - Removed user')";
@@ -160,7 +158,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findByIds(array $versionIds)
+    public function findByIds(array $versionIds): array
     {
         if (empty($versionIds)) {
             throw new \InvalidArgumentException('Array must contain at least one version id');
@@ -176,7 +174,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getNewestVersionIdForResource($resourceName, $resourceId)
+    public function getNewestVersionIdForResource(string $resourceName, int $resourceId): ?int
     {
         $qb = $this->createQueryBuilder('v');
         $qb->select('v.id')
@@ -202,7 +200,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * @param CursorFactoryInterface $cursorFactory
      */
-    public function setCursorFactory(CursorFactoryInterface $cursorFactory)
+    public function setCursorFactory(CursorFactoryInterface $cursorFactory): void
     {
         $this->cursorFactory = $cursorFactory;
     }
@@ -215,9 +213,9 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      * @param bool|null $pending
      * @param string    $sort
      *
-     * @return \Akeneo\Tool\Component\Versioning\Model\Version|null
+     * @return Version|null
      */
-    protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
+    protected function getOneLogEntry(string $resourceName, string $resourceId, ?bool $pending, string $sort): ?object
     {
         $criteria = ['resourceId' => $resourceId, 'resourceName' => $resourceName];
         if (null !== $pending) {

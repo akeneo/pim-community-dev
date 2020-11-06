@@ -28,7 +28,7 @@ class CountUsers implements CountQuery
      * @param Connection $connection
      * @param int $limit
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, int $limit)
     {
         $this->connection = $connection;
         $this->limit = $limit;
@@ -46,8 +46,7 @@ WHERE oro_user.user_type = :type
 SQL;
 
         $result = $this->connection->executeQuery($sql, ['type' => User::TYPE_USER])->fetch();
-        $volume = new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
 
-        return $volume;
+        return new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
     }
 }

@@ -19,7 +19,7 @@ class DbalConnectionRepository implements ConnectionRepository
     /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }

@@ -44,7 +44,7 @@ class AttributeConverter implements AttributeConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convertToDefaultFormats(array $items, array $options = [])
+    public function convertToDefaultFormats(array $items, array $options = []): array
     {
         $this->violations = new ConstraintViolationList();
         $this->cacheAttributeTypeByCodes(array_keys($items));
@@ -72,7 +72,7 @@ class AttributeConverter implements AttributeConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function getViolations()
+    public function getViolations(): \Symfony\Component\Validator\ConstraintViolationListInterface
     {
         return $this->violations;
     }
@@ -130,7 +130,7 @@ class AttributeConverter implements AttributeConverterInterface
      *     }]
      *     [...]
      */
-    public function convertToLocalizedFormats(array $items, array $options = [])
+    public function convertToLocalizedFormats(array $items, array $options = []): array
     {
         $this->cacheAttributeTypeByCodes(array_keys($items));
 
@@ -156,10 +156,8 @@ class AttributeConverter implements AttributeConverterInterface
      * @param array              $item
      * @param array              $options
      * @param string             $path
-     *
-     * @return array
      */
-    protected function convertToDefaultFormat(LocalizerInterface $localizer, array $item, array $options, $path)
+    protected function convertToDefaultFormat(LocalizerInterface $localizer, array $item, array $options, string $path): array
     {
         $violations = $localizer->validate($item['data'], $path, $options);
         if (null !== $violations && $violations->count() > 0) {
@@ -176,10 +174,8 @@ class AttributeConverter implements AttributeConverterInterface
      *
      * @param array  $data
      * @param string $attributeCode
-     *
-     * @return string
      */
-    protected function buildPropertyPath(array $data, $attributeCode)
+    protected function buildPropertyPath(array $data, string $attributeCode): string
     {
         $channelCode = isset($data['scope']) && '' !== $data['scope'] ? $data['scope'] : '<all_channels>';
         $localeCode = isset($data['locale']) && '' !== $data['locale'] ? $data['locale'] : '<all_locales>';
@@ -190,7 +186,7 @@ class AttributeConverter implements AttributeConverterInterface
     /**
      * @param array $codes
      */
-    private function cacheAttributeTypeByCodes(array $codes)
+    private function cacheAttributeTypeByCodes(array $codes): void
     {
         $codesToFetch = array_diff($codes, array_keys($this->attributeTypeByCodes));
 

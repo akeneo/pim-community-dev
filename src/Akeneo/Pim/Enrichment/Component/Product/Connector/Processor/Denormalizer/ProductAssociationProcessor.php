@@ -70,7 +70,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    public function process($item): ?\Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
     {
         if (!$this->hasAssociationToImport($item)) {
             $this->stepExecution->incrementSummaryInfo('product_skipped_no_associations');
@@ -128,10 +128,8 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     /**
      * @param ProductInterface $product
      * @param array            $item
-     *
-     * @return array
      */
-    protected function filterIdenticalData(ProductInterface $product, array $item)
+    protected function filterIdenticalData(ProductInterface $product, array $item): array
     {
         return $this->productAssocFilter->filter($product, $item);
     }
@@ -142,7 +140,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
      *
      * @throws PropertyException
      */
-    protected function updateProduct(ProductInterface $product, array $item)
+    protected function updateProduct(ProductInterface $product, array $item): void
     {
         $this->updater->update($product, $item);
     }
@@ -167,7 +165,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     /**
      * @throws \InvalidArgumentException
      */
-    protected function validateProductAssociations(ProductInterface $product): ConstraintViolationListInterface
+    protected function validateProductAssociations(ProductInterface $product): ConstraintViolationList
     {
         $violations = new ConstraintViolationList();
         $associations = $product->getAssociations();
@@ -193,7 +191,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
      *
      * @param ProductInterface $product
      */
-    protected function detachProduct(ProductInterface $product)
+    protected function detachProduct(ProductInterface $product): void
     {
         $this->detacher->detach($product);
     }

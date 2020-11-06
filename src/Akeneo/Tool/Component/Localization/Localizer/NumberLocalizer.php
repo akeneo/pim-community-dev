@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Localization\Localizer;
 
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormat;
 use Prophecy\Exception\Doubler\InterfaceNotFoundException;
@@ -97,7 +98,7 @@ class NumberLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function validate($number, $attributeCode, array $options = [])
+    public function validate($number, string $attributeCode, array $options = []): ?ConstraintViolationListInterface
     {
         if (null === $number || ''  === $number || is_int($number) || is_float($number)) {
             return null;
@@ -120,17 +121,15 @@ class NumberLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports(string $attributeType): bool
     {
         return in_array($attributeType, $this->attributeTypes);
     }
 
     /**
      * @param string $number
-     *
-     * @return array
      */
-    protected function getMatchesNumber($number)
+    protected function getMatchesNumber(string $number): array
     {
         preg_match('|\d+((?P<decimal>\D+)\d+)?|', $number, $matches);
 
@@ -139,10 +138,8 @@ class NumberLocalizer implements LocalizerInterface
 
     /**
      * @param array $options
-     *
-     * @return array
      */
-    protected function getOptions(array $options)
+    protected function getOptions(array $options): array
     {
         if (isset($options['decimal_separator']) || isset($options['locale'])) {
             return $options;

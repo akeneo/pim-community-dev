@@ -34,7 +34,7 @@ class JobInstancesConfigurator
      * @throws \Exception
      * @return JobInstance[]
      */
-    public function configureJobInstancesWithInstallerData(string $catalogPath, array $jobInstances)
+    public function configureJobInstancesWithInstallerData(string $catalogPath, array $jobInstances): array
     {
         $installerDataPath = $this->pathProvider->getFixturesPath($catalogPath);
         if (!is_dir($installerDataPath)) {
@@ -72,7 +72,7 @@ class JobInstancesConfigurator
      * @throws \Exception
      * @return JobInstance[]
      */
-    public function configureJobInstancesWithReplacementPaths(array $jobInstances, array $replacePaths)
+    public function configureJobInstancesWithReplacementPaths(array $jobInstances, array $replacePaths): array
     {
         $counter = 0;
 

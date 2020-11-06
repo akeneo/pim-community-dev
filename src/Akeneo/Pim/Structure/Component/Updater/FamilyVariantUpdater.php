@@ -59,7 +59,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($familyVariant, array $data, array $options = []): ObjectUpdaterInterface
+    public function update(object $familyVariant, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$familyVariant instanceof FamilyVariantInterface) {
             throw InvalidObjectException::objectExpected(
@@ -167,7 +167,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                         );
                     }
 
-                    if (!is_integer($attributeSetData['level'])) {
+                    if (!is_int($attributeSetData['level'])) {
                         throw InvalidPropertyTypeException::integerExpected(
                             sprintf('%s" in the property "%s', 'level', $field),
                             static::class,

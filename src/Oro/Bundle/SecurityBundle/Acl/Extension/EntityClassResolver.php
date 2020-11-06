@@ -37,7 +37,7 @@ class EntityClassResolver
      *
      * @return string The full class name
      */
-    public function getEntityClass($entityName)
+    public function getEntityClass(string $entityName): string
     {
         $parts = explode(':', $entityName);
         if (count($parts) <= 1) {
@@ -59,10 +59,8 @@ class EntityClassResolver
      * Checks if the given class is real entity class
      *
      * @param string $className
-     *
-     * @return bool
      */
-    public function isEntity($className)
+    public function isEntity(string $className): bool
     {
         return (!is_null($this->doctrine->getManagerForClass($className)));
     }

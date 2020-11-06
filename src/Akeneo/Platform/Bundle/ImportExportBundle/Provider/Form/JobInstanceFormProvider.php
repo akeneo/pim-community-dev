@@ -20,7 +20,7 @@ class JobInstanceFormProvider implements FormProviderInterface
     /**
      * @param array $formConfig
      */
-    public function __construct($formConfig)
+    public function __construct(array $formConfig)
     {
         $this->formConfig = $formConfig;
     }

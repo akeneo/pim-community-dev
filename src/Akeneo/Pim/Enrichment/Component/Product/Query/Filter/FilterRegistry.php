@@ -34,7 +34,7 @@ class FilterRegistry implements FilterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(FilterInterface $filter)
+    public function register(FilterInterface $filter): void
     {
         if ($filter instanceof FieldFilterInterface) {
             $this->fieldFilters[] = $filter;
@@ -47,7 +47,7 @@ class FilterRegistry implements FilterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFilter($code, $operator)
+    public function getFilter(string $code, string $operator): ?FilterInterface
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => FieldFilterHelper::getCode($code)]);
 
@@ -61,7 +61,7 @@ class FilterRegistry implements FilterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldFilter($field, $operator)
+    public function getFieldFilter(string $field, string $operator): ?FieldFilterInterface
     {
         foreach ($this->fieldFilters as $filter) {
             if ($filter->supportsField($field) && $filter->supportsOperator($operator)) {
@@ -75,7 +75,7 @@ class FilterRegistry implements FilterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeFilter(AttributeInterface $attribute, $operator)
+    public function getAttributeFilter(AttributeInterface $attribute, string $operator): ?AttributeFilterInterface
     {
         foreach ($this->attributeFilters as $filter) {
             if ($filter->supportsAttribute($attribute) && $filter->supportsOperator($operator)) {
@@ -89,7 +89,7 @@ class FilterRegistry implements FilterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldFilters()
+    public function getFieldFilters(): array
     {
         return $this->fieldFilters;
     }
@@ -97,7 +97,7 @@ class FilterRegistry implements FilterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeFilters()
+    public function getAttributeFilters(): array
     {
         return $this->attributeFilters;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ApiAggregatorForProductPostSaveEventSubscriber;
@@ -309,7 +310,7 @@ class ProductController
             $product = $connectorProductsQuery->fromProductIdentifier($code, $user->getId());
             $this->eventDispatcher->dispatch(new ReadProductsEvent([$product->id()]));
         } catch (ObjectNotFoundException $e) {
-            throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $code));
+            throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $code), $e);
         }
 
         $normalizedProduct = $this->connectorProductNormalizer->normalizeConnectorProduct($product);
@@ -324,7 +325,7 @@ class ProductController
      * @throws NotFoundHttpException
      *
      */
-    public function deleteAction($code): Response
+    public function deleteAction(string $code): Response
     {
         $product = $this->productRepository->findOneByIdentifier($code);
         if (null === $product) {
@@ -375,9 +376,7 @@ class ProductController
         $this->validateProduct($product);
         $this->saver->save($product);
 
-        $response = $this->getResponse($product, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($product, Response::HTTP_CREATED);
     }
 
     /**
@@ -388,7 +387,7 @@ class ProductController
      * @throws HttpException
      *
      */
-    public function partialUpdateAction(Request $request, $code): Response
+    public function partialUpdateAction(Request $request, string $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -427,7 +426,7 @@ class ProductController
             try {
                 $product = $this->addParent->to($product, (string) $data['parent']);
             } catch (\InvalidArgumentException $exception) {
-                throw new UnprocessableEntityHttpException($exception->getMessage());
+                throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
             }
             $isCreation = true;
         }
@@ -439,9 +438,8 @@ class ProductController
         $this->saver->save($product);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($product, $status);
 
-        return $response;
+        return $this->getResponse($product, $status);
     }
 
     /**
@@ -449,16 +447,16 @@ class ProductController
      *
      * @param Request $request
      *
-     * @return Response
      * @throws HttpException
      *
      */
-    public function partialUpdateListAction(Request $request): Response
+    public function partialUpdateListAction(Request $request): StreamedResponse
     {
         $this->warmupQueryCache->fromRequest($request);
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductPostSave->activate();
-        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
+
+        return $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
             try {
                 $this->apiAggregatorForProductPostSave->dispatchAllEvents();
             } catch (\Throwable $exception) {
@@ -468,8 +466,6 @@ class ProductController
             }
             $this->apiAggregatorForProductPostSave->deactivate();
         });
-
-        return $response;
     }
 
     /**
@@ -481,7 +477,7 @@ class ProductController
      * @throws BadRequestHttpException
      *
      */
-    protected function getDecodedContent($content): array
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -750,10 +746,10 @@ class ProductController
             $queryParameters['search_scope'] = $query->searchChannelCode;
         }
         if (null !== $query->localeCodes) {
-            $queryParameters['locales'] = join(',', $query->localeCodes);
+            $queryParameters['locales'] = implode(',', $query->localeCodes);
         }
         if (null !== $query->attributeCodes) {
-            $queryParameters['attributes'] = join(',', $query->attributeCodes);
+            $queryParameters['attributes'] = implode(',', $query->attributeCodes);
         }
 
         if (PaginationTypes::OFFSET === $query->paginationType) {
@@ -767,13 +763,12 @@ class ProductController
             ];
 
             $count = $query->withCountAsBoolean() ? $connectorProductList->totalNumberOfProducts() : null;
-            $paginatedProducts = $this->offsetPaginator->paginate(
+
+            return $this->offsetPaginator->paginate(
                 $this->connectorProductNormalizer->normalizeConnectorProductList($connectorProductList),
                 $paginationParameters,
                 $count
             );
-
-            return $paginatedProducts;
         } else {
             $connectorProducts = $connectorProductList->connectorProducts();
             $lastProduct = end($connectorProducts);
@@ -789,13 +784,11 @@ class ProductController
                 'item_identifier_key' => 'identifier',
             ];
 
-            $paginatedProducts = $this->searchAfterPaginator->paginate(
+            return $this->searchAfterPaginator->paginate(
                 $this->connectorProductNormalizer->normalizeConnectorProductList($connectorProductList),
                 $parameters,
                 null
             );
-
-            return $paginatedProducts;
         }
     }
 }

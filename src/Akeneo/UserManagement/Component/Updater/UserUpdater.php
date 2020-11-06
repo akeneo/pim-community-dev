@@ -114,7 +114,7 @@ class UserUpdater implements ObjectUpdaterInterface
      *     'tree': 'master'
      * }
      */
-    public function update($user, array $data, array $options = [])
+    public function update(object $user, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$user instanceof UserInterface) {
             throw InvalidObjectException::objectExpected(
@@ -143,7 +143,7 @@ class UserUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setData(UserInterface $user, $field, $data)
+    protected function setData(UserInterface $user, string $field, $data): void
     {
         switch ($field) {
             case 'username':
@@ -257,10 +257,8 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param string        $code
      *
      * @throws InvalidPropertyException
-     *
-     * @return CategoryInterface
      */
-    protected function findCategory($code)
+    protected function findCategory(string $code): CategoryInterface
     {
         $category = $this->categoryRepository->findOneByIdentifier($code);
 
@@ -282,10 +280,8 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param string $code
      *
      * @throws InvalidPropertyException
-     *
-     * @return DatagridView|null
      */
-    protected function findDefaultGridView($alias, $code): ?DatagridView
+    protected function findDefaultGridView(string $alias, string $code): ?object
     {
         if ($code === '') {
             return null;
@@ -315,10 +311,8 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param string $code
      *
      * @throws InvalidPropertyException
-     *
-     * @return LocaleInterface
      */
-    protected function findLocale($field, $code)
+    protected function findLocale(string $field, string $code): LocaleInterface
     {
         $locale = $this->localeRepository->findOneByIdentifier($code);
 
@@ -339,10 +333,8 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param string $code
      *
      * @throws InvalidPropertyException
-     *
-     * @return ChannelInterface|null
      */
-    protected function findChannel($code)
+    protected function findChannel(string $code): ?ChannelInterface
     {
         $channel = $this->channelRepository->findOneByIdentifier($code);
 
@@ -363,10 +355,8 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param string $code
      *
      * @throws InvalidPropertyException
-     *
-     * @return Role
      */
-    protected function findRole($code)
+    protected function findRole(string $code): Role
     {
         $role = $this->roleRepository->findOneByIdentifier($code);
 
@@ -387,10 +377,8 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param string $code
      *
      * @throws InvalidPropertyException
-     *
-     * @return GroupInterface
      */
-    protected function findGroup($code)
+    protected function findGroup(string $code): GroupInterface
     {
         $group = $this->groupRepository->findOneByIdentifier($code);
 
@@ -415,7 +403,7 @@ class UserUpdater implements ObjectUpdaterInterface
      * @throws FileTransferException
      * @throws \Exception
      */
-    private function setAvatar($user, $data)
+    private function setAvatar($user, $data): void
     {
         $fileInfo = null;
 

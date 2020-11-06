@@ -57,7 +57,7 @@ class RefreshCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Version any updated entities')
@@ -79,7 +79,7 @@ class RefreshCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $noDebug = $input->getOption('no-debug');
         if (!$noDebug) {
@@ -92,7 +92,7 @@ class RefreshCommand extends Command
         if ($totalPendings === 0) {
             $output->writeln('<info>Versioning is already up to date.</info>');
 
-            return;
+            return 0;
         }
 
         $progress = new ProgressBar($output, $totalPendings);
@@ -114,7 +114,7 @@ class RefreshCommand extends Command
                 $previousVersion = isset($previousVersions[$key]) ? $previousVersions[$key] : null;
                 $version = $this->createVersion($pending, $previousVersion);
 
-                if ($version) {
+                if ($version !== null) {
                     $previousVersions[$key] = $version;
                 }
 
@@ -130,6 +130,7 @@ class RefreshCommand extends Command
         }
         $progress->finish();
         $output->writeln(sprintf('<info>%d created versions.</info>', $totalPendings));
+        return 0;
     }
 
     /**
@@ -142,7 +143,7 @@ class RefreshCommand extends Command
     {
         $version = $this->versionManager->buildPendingVersion($version, $previousVersion);
 
-        if ($version->getChangeset()) {
+        if ($version->getChangeset() !== []) {
             $this->entityManager->persist($version);
             $this->entityManager->flush($version);
 

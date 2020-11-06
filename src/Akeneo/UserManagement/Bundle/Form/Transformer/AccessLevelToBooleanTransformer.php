@@ -23,13 +23,13 @@ class AccessLevelToBooleanTransformer implements DataTransformerInterface
             return '';
         }
 
-        return $value === AccessLevel::SYSTEM_LEVEL ? true : false;
+        return $value === AccessLevel::SYSTEM_LEVEL;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?int
     {
         if ('' === $value) {
             return null;

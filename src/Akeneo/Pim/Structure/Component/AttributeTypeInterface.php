@@ -14,22 +14,16 @@ interface AttributeTypeInterface
 {
     /**
      * Get name
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Get backend type
-     *
-     * @return string
      */
-    public function getBackendType();
+    public function getBackendType(): string;
 
     /**
      * Is unique
-     *
-     * @return bool
      */
-    public function isUnique();
+    public function isUnique(): bool;
 }

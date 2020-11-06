@@ -20,7 +20,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 
 final class EnrichmentSorter extends BaseFieldSorter
 {
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
+    public function addFieldSorter(string $field, string $direction, string $locale = null, string $channel = null): FieldSorterInterface
     {
         $field = sprintf('rates.enrichment.%s.%s', $channel, $locale);
 

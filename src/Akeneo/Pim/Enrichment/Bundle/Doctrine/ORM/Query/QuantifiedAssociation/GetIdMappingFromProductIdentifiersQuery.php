@@ -17,7 +17,7 @@ class GetIdMappingFromProductIdentifiersQuery implements GetIdMappingFromProduct
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }

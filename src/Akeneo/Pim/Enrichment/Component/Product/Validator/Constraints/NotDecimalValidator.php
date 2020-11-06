@@ -20,7 +20,7 @@ class NotDecimalValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof NotDecimal) {
             throw new UnexpectedTypeException($constraint, NotDecimal::class);

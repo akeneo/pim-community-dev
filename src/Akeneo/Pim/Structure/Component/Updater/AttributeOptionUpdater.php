@@ -47,7 +47,7 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
      *     }
      * }
      */
-    public function update($attributeOption, array $data, array $options = [])
+    public function update(object $attributeOption, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$attributeOption instanceof AttributeOptionInterface) {
             throw InvalidObjectException::objectExpected(
@@ -73,7 +73,7 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDataType($field, $data)
+    protected function validateDataType(string $field, $data): void
     {
         if ('labels' === $field) {
             if (!is_array($data)) {
@@ -106,7 +106,7 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setData(AttributeOptionInterface $attributeOption, $field, $data)
+    protected function setData(AttributeOptionInterface $attributeOption, string $field, $data): void
     {
         if ('code' === $field && $attributeOption->getId() === null) {
             $attributeOption->setCode($data);
@@ -147,13 +147,9 @@ class AttributeOptionUpdater implements ObjectUpdaterInterface
 
     /**
      * @param string $code
-     *
-     * @return AttributeInterface|null
      */
-    protected function findAttribute($code)
+    protected function findAttribute(string $code): ?AttributeInterface
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-
-        return $attribute;
+        return $this->attributeRepository->findOneByIdentifier($code);
     }
 }

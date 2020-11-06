@@ -16,7 +16,7 @@ class FileNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /**
      * {@inheritdoc}
      */
-    public function normalize($file, $format = null, array $context = [])
+    public function normalize($file, $format = null, array $context = []): array
     {
         return [
             'code'              => $file->getKey(),
@@ -30,7 +30,7 @@ class FileNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof FileInfoInterface && 'standard' === $format;
     }

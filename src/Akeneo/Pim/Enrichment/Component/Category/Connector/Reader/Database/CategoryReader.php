@@ -34,7 +34,7 @@ class CategoryReader extends AbstractReader implements
     /**
      * {@inheritdoc}
      */
-    protected function getResults()
+    protected function getResults(): \ArrayIterator
     {
         return new \ArrayIterator($this->repository->getOrderedAndSortedByTreeCategories());
     }

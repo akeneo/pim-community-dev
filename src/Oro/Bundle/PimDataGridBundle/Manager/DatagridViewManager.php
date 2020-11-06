@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Manager;
 
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
@@ -31,7 +32,7 @@ class DatagridViewManager
      */
     public function __construct(
         EntityRepository $repository,
-        DatagridManager $datagridManager
+        ManagerInterface $datagridManager
     ) {
         $this->repository = $repository;
         $this->datagridManager = $datagridManager;
@@ -41,10 +42,8 @@ class DatagridViewManager
      * Returns all public views
      *
      * @param string $alias
-     *
-     * @return DatagridView
      */
-    public function findPublic($alias)
+    public function findPublic(string $alias): array
     {
         return $this->repository->findBy(
             [
@@ -59,14 +58,12 @@ class DatagridViewManager
      *
      * @param string $alias
      * @param bool   $displayedColumns
-     *
-     * @return array
      */
-    public function getColumnChoices($alias, $displayedColumns = false)
+    public function getColumnChoices(string $alias, bool $displayedColumns = false): array
     {
         $choices = [];
 
-        $path = (true === $displayedColumns) ?
+        $path = ($displayedColumns) ?
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY) :
             sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
 

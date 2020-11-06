@@ -57,8 +57,8 @@ class StreamResourceResponse
         HttpKernelInterface $httpKernel,
         UniqueValuesSet $uniqueValuesSet,
         array $configuration,
-        $controllerName,
-        $identifierKey
+        string $controllerName,
+        string $identifierKey
     ) {
         $this->httpKernel = $httpKernel;
         $this->uniqueValuesSet = $uniqueValuesSet;
@@ -73,10 +73,8 @@ class StreamResourceResponse
      * @param null|callable $postResponseCallable inject callable to execute after output response flushing
      *
      * @throws HttpException
-     *
-     * @return StreamedResponse
      */
-    public function streamResponse($resource, array $uriParameters = [], callable $postResponseCallable = null)
+    public function streamResponse($resource, array $uriParameters = [], callable $postResponseCallable = null): StreamedResponse
     {
         $response = new StreamedResponse();
         $response->headers->set('Content-Type', static::CONTENT_TYPE);
@@ -158,7 +156,7 @@ class StreamResourceResponse
      *
      * @throws HttpException
      */
-    protected function checkLineNumberInInput($resource)
+    protected function checkLineNumberInInput($resource): void
     {
         $maxNumberResources = $this->configuration['input']['max_resources_number'];
 
@@ -188,14 +186,13 @@ class StreamResourceResponse
      *
      * @return Response A Response instance
      */
-    public function forward($uriParameters, $content)
+    public function forward(array $uriParameters, string $content): \Symfony\Component\HttpFoundation\Response
     {
         $parameters = array_merge(['_controller' => $this->controllerName], $uriParameters);
         $subRequest = new Request([], [], $parameters, [], [], [], $content);
         $subRequest->setRequestFormat('json');
-        $response = $this->httpKernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
 
-        return $response;
+        return $this->httpKernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }
 
     /**
@@ -231,7 +228,7 @@ class StreamResourceResponse
      *
      * @throws HttpException
      */
-    protected function checkLineLength($line, $resource)
+    protected function checkLineLength(string $line, $resource): void
     {
         $bufferSize = $this->configuration['input']['buffer_size'];
 
@@ -255,7 +252,7 @@ class StreamResourceResponse
      * @param array $content
      * @param int   $lineNumber
      */
-    protected function flushOutputBuffer($content, $lineNumber)
+    protected function flushOutputBuffer(array $content, int $lineNumber): void
     {
         $jsonContent = 1 === $lineNumber ? json_encode($content) : PHP_EOL . json_encode($content);
 
@@ -270,7 +267,7 @@ class StreamResourceResponse
      * Do note that is not possible to close all the output buffers before flushing the data,
      * because it's needed for the tests.
      */
-    protected function ensureOutputBufferingIsStarted()
+    protected function ensureOutputBufferingIsStarted(): void
     {
         if (0 === ob_get_level()) {
             ob_start();

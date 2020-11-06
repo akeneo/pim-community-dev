@@ -55,7 +55,7 @@ class Cursor extends AbstractCursor
     public function __construct(
         QueryBuilder $queryBuilder,
         EntityManager $entityManager,
-        $pageSize
+        int $pageSize
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->entityManager = $entityManager;
@@ -66,7 +66,7 @@ class Cursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         parent::next();
         $this->entity = $this->getNextEntity();
@@ -75,7 +75,7 @@ class Cursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): object
     {
         return $this->entity;
     }
@@ -83,7 +83,7 @@ class Cursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         if (null === $this->count) {
             $this->count = count($this->getEntitiesIds());
@@ -95,7 +95,7 @@ class Cursor extends AbstractCursor
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
         $this->currentPage = 0;
@@ -105,10 +105,8 @@ class Cursor extends AbstractCursor
 
     /**
      * Get ids of entities from the QueryBuilder
-     *
-     * @return array
      */
-    protected function getEntitiesIds()
+    protected function getEntitiesIds(): array
     {
         if (null === $this->entitiesIds) {
             $rootAlias = current($this->queryBuilder->getRootAliases());
@@ -132,20 +130,15 @@ class Cursor extends AbstractCursor
         return $this->entitiesIds;
     }
 
-    /**
-     * @return int
-     */
-    protected function getOffSet()
+    protected function getOffSet(): int
     {
         return $this->pageSize * $this->currentPage;
     }
 
     /**
      * @throws LogicException
-     *
-     * @return CursorableRepositoryInterface
      */
-    protected function getRepository()
+    protected function getRepository(): \Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface
     {
         if (null === $this->repository) {
             $entityClass = current($this->queryBuilder->getDQLPart('from'))->getFrom();
@@ -187,10 +180,8 @@ class Cursor extends AbstractCursor
 
     /**
      * Get next entities batch from DB
-     *
-     * @return \ArrayIterator
      */
-    protected function getNextEntitiesPage()
+    protected function getNextEntitiesPage(): ?\ArrayIterator
     {
         $entities = null;
         $currentIds = array_slice($this->getEntitiesIds(), $this->getOffSet(), $this->pageSize);

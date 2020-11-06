@@ -96,15 +96,12 @@ class JobExecutionMessage
     /**
      * @return null|int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
-    public function getJobExecutionId(): ?int
+    public function getJobExecutionId(): int
     {
         return $this->jobExecutionId;
     }
@@ -112,17 +109,15 @@ class JobExecutionMessage
     /**
      * @return null|string
      */
-    public function getConsumer(): ?string
+    public function getConsumer(): string
     {
         return $this->consumer;
     }
 
     /**
      * @param string $consumer
-     *
-     * @return JobExecutionMessage
      */
-    public function consumedBy(string $consumer): JobExecutionMessage
+    public function consumedBy(string $consumer): self
     {
         $this->consumer = $consumer;
 
@@ -140,7 +135,7 @@ class JobExecutionMessage
     /**
      * @return null|\DateTime
      */
-    public function getUpdatedTime(): ?\DateTime
+    public function getUpdatedTime(): \DateTime
     {
         return $this->updatedTime;
     }

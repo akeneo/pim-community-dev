@@ -40,28 +40,25 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
      * {@inheritdoc}
      *
      * @param AssociationTypeInterface $associationType
-     *
-     * @return array
      */
-    public function normalize($associationType, $format = null, array $context = [])
+    public function normalize($associationType, $format = null, array $context = []): array
     {
         $standardAssociationType = $this->standardNormalizer->normalize($associationType, 'standard', $context);
         $flatAssociationType = $standardAssociationType;
 
         unset($flatAssociationType['labels']);
-        $flatAssociationType += $this->translationNormalizer->normalize(
+
+        return $flatAssociationType + $this->translationNormalizer->normalize(
             $standardAssociationType['labels'],
             'flat',
             $context
         );
-
-        return $flatAssociationType;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AssociationTypeInterface && in_array($format, $this->supportedFormats);
     }

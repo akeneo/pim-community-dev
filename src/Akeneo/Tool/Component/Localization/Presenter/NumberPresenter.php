@@ -32,7 +32,7 @@ class NumberPresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function present($value, array $options = [])
+    public function present($value, array $options = []): string
     {
         if (!is_numeric($value)) {
             return $value;
@@ -51,7 +51,7 @@ class NumberPresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports(string $attributeType): bool
     {
         return in_array($attributeType, $this->attributeTypes);
     }

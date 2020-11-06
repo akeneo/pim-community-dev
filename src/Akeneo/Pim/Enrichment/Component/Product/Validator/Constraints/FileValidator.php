@@ -39,7 +39,7 @@ class FileValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof File) {
             throw new UnexpectedTypeException($constraint, File::class);
@@ -58,7 +58,7 @@ class FileValidator extends ConstraintValidator
      * @param FileInfoInterface $fileInfo   The file that should be validated
      * @param File              $constraint The constraint for the validation
      */
-    protected function validateFileExtension(FileInfoInterface $fileInfo, File $constraint)
+    protected function validateFileExtension(FileInfoInterface $fileInfo, File $constraint): void
     {
         if (empty($constraint->allowedExtensions)) {
             return;
@@ -78,10 +78,10 @@ class FileValidator extends ConstraintValidator
      * @param FileInfoInterface $fileInfo
      * @param File              $constraint
      */
-    protected function validateFileSize(FileInfoInterface $fileInfo, File $constraint)
+    protected function validateFileSize(FileInfoInterface $fileInfo, File $constraint): void
     {
         // comes from Symfony\Component\Validator\Constraints\FileValidator
-        if ($constraint->maxSize) {
+        if ($constraint->maxSize !== 0) {
             $limitInBytes = $constraint->maxSize;
 
             if ($fileInfo->getSize() > $limitInBytes) {
@@ -105,7 +105,7 @@ class FileValidator extends ConstraintValidator
      * Convert the limit to the smallest possible number
      * (i.e. try "MB", then "kB", then "bytes")
      */
-    protected function factorizeSizes($size, $limit, $binaryFormat)
+    protected function factorizeSizes($size, $limit, $binaryFormat): array
     {
         if ($binaryFormat) {
             $coef = BaseFileValidator::MIB_BYTES;
@@ -141,10 +141,8 @@ class FileValidator extends ConstraintValidator
     /**
      * @param double $double
      * @param int    $numberOfDecimals
-     *
-     * @return bool
      */
-    protected static function moreDecimalsThan($double, $numberOfDecimals)
+    protected static function moreDecimalsThan(float $double, int $numberOfDecimals): bool
     {
         return strlen((string)$double) > strlen(round($double, $numberOfDecimals));
     }
@@ -153,7 +151,7 @@ class FileValidator extends ConstraintValidator
      * @param FileInfoInterface $fileInfo
      * @param File              $constraint
      */
-    private function validateMimeType(FileInfoInterface $fileInfo, File $constraint)
+    private function validateMimeType(FileInfoInterface $fileInfo, File $constraint): void
     {
         if (empty($constraint->allowedExtensions)) {
             return;

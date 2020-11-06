@@ -51,7 +51,7 @@ class FlatFileIterator implements FileIteratorInterface
      * @throws UnsupportedTypeException
      * @throws FileNotFoundException
      */
-    public function __construct($type, $filePath, array $options = [])
+    public function __construct(string $type, string $filePath, array $options = [])
     {
         $this->type = $type;
         $this->filePath = $filePath;
@@ -83,7 +83,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->rows->rewind();
     }
@@ -109,7 +109,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->rows->next();
     }
@@ -125,7 +125,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->rows->valid();
     }
@@ -133,7 +133,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function getDirectoryPath()
+    public function getDirectoryPath(): string
     {
         if (null === $this->archivePath) {
             return $this->fileInfo->getPath();
@@ -161,7 +161,7 @@ class FlatFileIterator implements FileIteratorInterface
     /**
      * {@inheritdoc}
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
@@ -171,7 +171,7 @@ class FlatFileIterator implements FileIteratorInterface
      *
      * @throws \RuntimeException When archive cannot be opened or extracted or does not contain exactly one file file
      */
-    protected function extractZipArchive()
+    protected function extractZipArchive(): void
     {
         $archive = new \ZipArchive();
 
@@ -216,7 +216,7 @@ class FlatFileIterator implements FileIteratorInterface
      *
      * @throws \InvalidArgumentException
      */
-    protected function setReaderOptions(array $readerOptions = [])
+    protected function setReaderOptions(array $readerOptions = []): void
     {
         foreach ($readerOptions as $name => $option) {
             $setter = 'set' . ucfirst($name);

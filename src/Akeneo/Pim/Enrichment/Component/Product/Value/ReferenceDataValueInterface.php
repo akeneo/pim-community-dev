@@ -14,8 +14,5 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  */
 interface ReferenceDataValueInterface extends ValueInterface
 {
-    /**
-     * @return ReferenceDataInterface
-     */
-    public function getData();
+    public function getData(): ReferenceDataInterface;
 }

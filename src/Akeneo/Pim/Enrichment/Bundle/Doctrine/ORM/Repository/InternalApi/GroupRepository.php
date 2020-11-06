@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Join;
 use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityManager;
@@ -36,7 +38,7 @@ class GroupRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findTranslatedLabels(array $options = [])
+    public function findTranslatedLabels(array $options = []): array
     {
         $queryBuilder = $this->createQueryBuilder('g')
             ->select('g.id')
@@ -57,7 +59,7 @@ class GroupRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('g');
 
@@ -72,8 +74,8 @@ class GroupRepository extends EntityRepository implements
 
         $qb
             ->innerJoin('g.type', 'type')
-            ->leftJoin('g.translations', 'translation', Expr\Join::WITH, 'translation.locale = :localeCode')
-            ->leftJoin('type.translations', 'typeTrans', Expr\Join::WITH, 'typeTrans.locale = :localeCode')
+            ->leftJoin('g.translations', 'translation', Join::WITH, 'translation.locale = :localeCode')
+            ->leftJoin('type.translations', 'typeTrans', Join::WITH, 'typeTrans.locale = :localeCode')
         ;
 
         $qb->distinct(true);

@@ -42,7 +42,7 @@ class LogArchiver implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'archive'

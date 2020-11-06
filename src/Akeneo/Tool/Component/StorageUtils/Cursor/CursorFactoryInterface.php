@@ -16,8 +16,6 @@ interface CursorFactoryInterface
      *
      * @param mixed $queryBuilder Query builder
      * @param array $options      Options to build cursor
-     *
-     * @return CursorInterface
      */
-    public function createCursor($queryBuilder, array $options = []);
+    public function createCursor($queryBuilder, array $options = []): CursorInterface;
 }

@@ -69,9 +69,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
             $elasticsearchProductModelProjections =
                 $this->getElasticsearchProductModelProjection->fromProductModelCodes($productModelCodesChunk);
             $normalizedProductModelProjections = array_map(
-                function (ElasticsearchProductModelProjection $elasticsearchProductModelProjection) {
-                    return $elasticsearchProductModelProjection->toArray();
-                },
+                fn(ElasticsearchProductModelProjection $elasticsearchProductModelProjection) => $elasticsearchProductModelProjection->toArray(),
                 $elasticsearchProductModelProjections
             );
 
@@ -102,9 +100,7 @@ class ProductModelIndexer implements ProductModelIndexerInterface
         }
 
         $indexIdentifiers = array_map(
-            function ($productModelId) {
-                return self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $productModelId;
-            },
+            fn($productModelId) => self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $productModelId,
             $productModelIds
         );
 

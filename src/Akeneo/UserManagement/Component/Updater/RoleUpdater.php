@@ -39,7 +39,7 @@ class RoleUpdater implements ObjectUpdaterInterface
      *     'label': 'Administrator',
      * }
      */
-    public function update($role, array $data, array $options = [])
+    public function update(object $role, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$role instanceof RoleInterface) {
             throw InvalidObjectException::objectExpected(
@@ -65,7 +65,7 @@ class RoleUpdater implements ObjectUpdaterInterface
      *
      * @throws \InvalidArgumentException
      */
-    protected function setData(RoleInterface $role, $field, $data)
+    protected function setData(RoleInterface $role, string $field, $data): void
     {
         switch ($field) {
             case 'role':
@@ -84,7 +84,7 @@ class RoleUpdater implements ObjectUpdaterInterface
      *
      * @param RoleInterface $role
      */
-    protected function loadAcls(RoleInterface $role)
+    protected function loadAcls(RoleInterface $role): void
     {
         if (User::ROLE_ANONYMOUS === $role->getRole()) {
             return;

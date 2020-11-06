@@ -19,17 +19,15 @@ interface AclExtensionInterface
      * @param mixed $id An id of an object to test
      * @return bool true if this class is valid ACL extension for the given object; otherwise, false
      */
-    public function supports($type, $id);
+    public function supports(string $type, $id): bool;
 
     /**
      * Gets a string which is identifies this ACL extension.
      * The key must correspond the following criteria:
      *     - each ACL extension must have an unique key
      *     - all characters in the key must be lowercase.
-     *
-     * @return string
      */
-    public function getExtensionKey();
+    public function getExtensionKey(): string;
 
     /**
      * Checks if the given bitmask is valid for the given object.
@@ -41,15 +39,14 @@ interface AclExtensionInterface
      * @param string|null $permission If null checks all permissions; otherwise, check only the given permission
      * @throws InvalidAclMaskException
      */
-    public function validateMask($mask, $object, $permission = null);
+    public function validateMask(int $mask, $object, ?string $permission = null);
 
     /**
      * Constructs an ObjectIdentity for the given object
      *
      * @param mixed $val A domain object, object identity descriptor (id:type) or ACL annotation
-     * @return ObjectIdentity
      */
-    public function getObjectIdentity($val);
+    public function getObjectIdentity($val): \Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
     /**
      * Gets the new instance of the mask builder which can be used to build permission bitmask
@@ -61,9 +58,8 @@ interface AclExtensionInterface
      * a permission name the required mask builder supports.
      *
      * @param string $permission
-     * @return MaskBuilder
      */
-    public function getMaskBuilder($permission);
+    public function getMaskBuilder(string $permission): MaskBuilder;
 
     /**
      * Gets all mask builders supported this ACL extension
@@ -74,15 +70,14 @@ interface AclExtensionInterface
      *
      * @return MaskBuilder[]
      */
-    public function getAllMaskBuilders();
+    public function getAllMaskBuilders(): array;
 
     /**
      * Gets a human-readable representation of the given mask
      *
      * @param int $mask
-     * @return string
      */
-    public function getMaskPattern($mask);
+    public function getMaskPattern(int $mask): string;
 
     /**
      * Returns an array of bitmasks for the given permission.
@@ -92,15 +87,14 @@ interface AclExtensionInterface
      * @param string $permission
      * @return array may return null if permission/object combination is not supported
      */
-    public function getMasks($permission);
+    public function getMasks(string $permission): array;
 
     /**
      * Determines whether the ACL extension contains the given permission
      *
      * @param string $permission
-     * @return bool
      */
-    public function hasMasks($permission);
+    public function hasMasks(string $permission): bool;
 
     /**
      * Adapts the given mask to use with the given object.
@@ -111,7 +105,7 @@ interface AclExtensionInterface
      * @param mixed $object
      * @return int The ACE mask without redundant bits
      */
-    public function adaptRootMask($rootMask, $object);
+    public function adaptRootMask(int $rootMask, $object): int;
 
     /**
      * Remove all bits except service ones from the given mask
@@ -123,7 +117,7 @@ interface AclExtensionInterface
      * @param int $mask
      * @return int The mask without service bits
      */
-    public function getServiceBits($mask);
+    public function getServiceBits(int $mask): int;
 
     /**
      * Remove service bits from the given mask
@@ -135,7 +129,7 @@ interface AclExtensionInterface
      * @param int $mask
      * @return int The mask without service bits
      */
-    public function removeServiceBits($mask);
+    public function removeServiceBits(int $mask): int;
 
     /**
      * Gets the access level for one permission encoded in the given mask.
@@ -148,7 +142,7 @@ interface AclExtensionInterface
      * @param string $permission
      * @return int Can be one of AccessLevel::*_LEVEL constants
      */
-    public function getAccessLevel($mask, $permission = null);
+    public function getAccessLevel(int $mask, string $permission = null): int;
 
     /**
      * Gets all permissions supported by this ACL extension
@@ -162,7 +156,7 @@ interface AclExtensionInterface
      *                      or only permissions are set in the given mask.
      * @return string[]
      */
-    public function getPermissions($mask = null, $setOnly = false);
+    public function getPermissions(?int $mask = null, bool $setOnly = false): array;
 
     /**
      * Gets all permissions allowed for a domain object represented by te given object identity.
@@ -170,24 +164,22 @@ interface AclExtensionInterface
      * @param ObjectIdentity $oid
      * @return string[]
      */
-    public function getAllowedPermissions(ObjectIdentity $oid);
+    public function getAllowedPermissions(ObjectIdentity $oid): array;
 
     /**
      * Gets default permission.
      * If ACL extension supports only one permission then this permission is default one.
      * If ACL extension supports several permissions and there is no default permission
      * this method must return empty string.
-     *
-     * @return string
      */
-    public function getDefaultPermission();
+    public function getDefaultPermission(): string;
 
     /**
      * Gets all types of domain objects or resources supported by this ACL extension.
      *
      * @return AclClassInfo[]
      */
-    public function getClasses();
+    public function getClasses(): array;
 
     /**
      * Determines whether the access to the given domain object is granted
@@ -199,7 +191,6 @@ interface AclExtensionInterface
      * @param int $triggeredMask The triggered mask
      * @param mixed $object
      * @param TokenInterface $securityToken
-     * @return bool
      */
-    public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken);
+    public function decideIsGranting(int $triggeredMask, $object, TokenInterface $securityToken): bool;
 }

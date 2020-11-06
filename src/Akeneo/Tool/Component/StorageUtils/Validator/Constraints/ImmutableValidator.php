@@ -39,7 +39,7 @@ class ImmutableValidator extends ConstraintValidator
      * @param object     $entity
      * @param Constraint $constraint
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
         $originalData = $this->em->getUnitOfWork()->getOriginalEntityData($entity);
         $accessor = PropertyAccess::createPropertyAccessor();

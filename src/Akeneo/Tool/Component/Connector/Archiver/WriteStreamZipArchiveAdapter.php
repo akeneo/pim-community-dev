@@ -10,7 +10,7 @@ class WriteStreamZipArchiveAdapter extends ZipArchiveAdapter
     /**
      * {@inheritdoc}
      */
-    public function writeStream($path, $resource, Config $config)
+    public function writeStream($path, $resource, Config $config): bool
     {
         $location = $this->applyPathPrefix($path);
 

@@ -32,10 +32,8 @@ class JobExecutionManager
     /**
      * Check if the given JoExecution is still running using his PID
      * @param JobExecution $jobExecution
-     *
-     * @return bool
      */
-    public function checkRunningStatus(JobExecution $jobExecution)
+    public function checkRunningStatus(JobExecution $jobExecution): bool
     {
         if (BatchStatus::STARTING !== $jobExecution->getStatus()->getValue() &&
             $jobExecution->getExitStatus()->isRunning()
@@ -49,12 +47,10 @@ class JobExecutionManager
     /**
      * Test if the process is still running
      * @param JobExecution $jobExecution
-     *
-     * @return bool
      */
-    protected function processIsRunning(JobExecution $jobExecution)
+    protected function processIsRunning(JobExecution $jobExecution): bool
     {
-        $pid = intval($jobExecution->getPid());
+        $pid = (int) $jobExecution->getPid();
 
         if ($pid <= 0) {
             throw new \InvalidArgumentException('The job execution PID is not valid');
@@ -69,7 +65,7 @@ class JobExecutionManager
      * Mark a job execution as failed
      * @param JobExecution $jobExecution
      */
-    public function markAsFailed(JobExecution $jobExecution)
+    public function markAsFailed(JobExecution $jobExecution): void
     {
         $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
         $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED));

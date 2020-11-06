@@ -20,7 +20,7 @@ final class SqlGetRequiredAttributesMasks implements GetRequiredAttributesMasks
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -86,9 +86,7 @@ SQL;
             ['familyCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
-        $families = array_map(function (array $row): string {
-            return $row['family_code'];
-        }, $rows);
+        $families = array_map(fn(array $row): string => $row['family_code'], $rows);
 
         $nonExistingFamilyCodes = array_diff($familyCodes, $families);
         if (count($nonExistingFamilyCodes) > 0) {

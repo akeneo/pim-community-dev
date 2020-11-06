@@ -32,17 +32,15 @@ class BuildBefore extends Event implements GridEventInterface
     /**
      * {@inheritDoc}
      */
-    public function getDatagrid()
+    public function getDatagrid(): \Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface
     {
         return $this->datagrid;
     }
 
     /**
      * Getter for datagrid config
-     *
-     * @return DatagridConfiguration
      */
-    public function getConfig()
+    public function getConfig(): \Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration
     {
         return $this->config;
     }

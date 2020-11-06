@@ -42,7 +42,7 @@ class OptionsValueWithLinkedData extends AbstractValue implements OptionsValueIn
     /**
      * @return array|null
      */
-    public function getLinkedData(): ?array
+    public function getLinkedData(): array
     {
         return $this->linkedData;
     }

@@ -39,7 +39,7 @@ final class LocalizableValuesValidator extends ConstraintValidator
      * @param object     $values
      * @param Constraint $constraint
      */
-    public function validate($values, Constraint $constraint)
+    public function validate($values, Constraint $constraint): void
     {
         if (!$constraint instanceof LocalizableValues) {
             throw new UnexpectedTypeException($constraint, LocalizableValues::class);
@@ -50,9 +50,7 @@ final class LocalizableValuesValidator extends ConstraintValidator
         }
 
         $localizableValues = $values->filter(
-            function (ValueInterface $value): bool {
-                return $value->isLocalizable();
-            }
+            fn(ValueInterface $value): bool => $value->isLocalizable()
         );
 
         $attributes = $this->getAttributes->forCodes($localizableValues->getAttributeCodes());

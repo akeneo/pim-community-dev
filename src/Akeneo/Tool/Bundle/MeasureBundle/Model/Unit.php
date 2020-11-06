@@ -48,9 +48,7 @@ final class Unit
             'code' => $this->code->normalize(),
             'labels' => $this->labels->normalize(),
             'convert_from_standard' => array_map(
-                function (Operation $operation) {
-                    return $operation->normalize();
-                },
+                fn(Operation $operation) => $operation->normalize(),
                 $this->convertFromStandard
             ),
             'symbol' => $this->symbol,

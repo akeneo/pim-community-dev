@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class UnitsMustBeIndexedByCodeValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof UnitsMustBeIndexedByCode) {
             throw new UnexpectedTypeException($constraint, UnitsMustBeIndexedByCode::class);

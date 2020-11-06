@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 interface CriterionEvaluationRepositoryInterface
 {
-    public function create(Write\CriterionEvaluationCollection $criteriaEvaluations): void;
+    public function create(CriterionEvaluationCollection $criteriaEvaluations): void;
 
-    public function update(Write\CriterionEvaluationCollection $criteriaEvaluations): void;
+    public function update(CriterionEvaluationCollection $criteriaEvaluations): void;
 
     public function deleteUnknownProductsEvaluations(): void;
 }

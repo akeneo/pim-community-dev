@@ -71,7 +71,7 @@ class DeleteMeasurementFamilyAction
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function createDeleteMeasurementFamilyCommand(string $code)
+    private function createDeleteMeasurementFamilyCommand(string $code): DeleteMeasurementFamilyCommand
     {
         $deleteMeasurementFamilyCommand = new DeleteMeasurementFamilyCommand();
         $deleteMeasurementFamilyCommand->code = $code;
@@ -81,7 +81,7 @@ class DeleteMeasurementFamilyAction
 
     private function validateDeleteMeasurementFamilyCommand(
         DeleteMeasurementFamilyCommand $deleteMeasurementFamilyCommand
-    ) {
+    ): void {
         $violations = $this->validator->validate($deleteMeasurementFamilyCommand);
 
         if (count($violations) > 0) {
@@ -94,7 +94,7 @@ class DeleteMeasurementFamilyAction
      */
     private function handleDeleteMeasurementFamilyCommand(
         DeleteMeasurementFamilyCommand $deleteMeasurementFamilyCommand
-    ) {
+    ): void {
         $this->deleteMeasurementFamilyHandler->handle($deleteMeasurementFamilyCommand);
     }
 }

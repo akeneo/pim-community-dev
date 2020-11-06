@@ -23,7 +23,7 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     /**
      * {@inheritDoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(DatagridConfiguration $config): void
     {
     }
 
@@ -51,7 +51,7 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     /**
      * {@inheritDoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // default priority if not overridden by child
         return 0;
@@ -61,11 +61,9 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
      * Validate configuration
      *
      * @param ConfigurationInterface      $configuration
-     * @param                             $config
-     *
-     * @return array
+     * @param $config
      */
-    protected function validateConfiguration(ConfigurationInterface $configuration, $config)
+    protected function validateConfiguration(ConfigurationInterface $configuration, $config): array
     {
         $processor = new Processor();
         return $processor->processConfiguration(
@@ -76,10 +74,8 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
 
     /**
      * Getter for request parameters object
-     *
-     * @return RequestParameters
      */
-    protected function getRequestParams()
+    protected function getRequestParams(): \Oro\Bundle\DataGridBundle\Datagrid\RequestParameters
     {
         return $this->requestParams;
     }

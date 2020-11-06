@@ -21,7 +21,7 @@ class GetLastOperations implements GetLastOperationsInterface
     /** @var NotVisibleJobsRegistry */
     private $notVisibleJobs;
 
-    public function __construct(Connection $connection, NotVisibleJobsRegistry $notVisibleJobs)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, NotVisibleJobsRegistry $notVisibleJobs)
     {
         $this->connection = $connection;
         $this->notVisibleJobs = $notVisibleJobs;

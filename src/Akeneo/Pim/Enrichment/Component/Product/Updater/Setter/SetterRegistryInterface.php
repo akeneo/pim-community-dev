@@ -17,35 +17,27 @@ interface SetterRegistryInterface
      * Register a setter
      *
      * @param SetterInterface $setter
-     *
-     * @return SetterRegistryInterface
      */
-    public function register(SetterInterface $setter);
+    public function register(SetterInterface $setter): \Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface;
 
     /**
      * Get a setter compatible with the given property
      *
      * @param string $property
-     *
-     * @return SetterInterface
      */
-    public function getSetter($property);
+    public function getSetter(string $property): \Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 
     /**
      * Get the field setter
      *
      * @param string $field the field
-     *
-     * @return FieldSetterInterface|null
      */
-    public function getFieldSetter($field);
+    public function getFieldSetter(string $field): ?FieldSetterInterface;
 
     /**
      * Get the attribute setter
      *
      * @param AttributeInterface $attribute
-     *
-     * @return AttributeSetterInterface|null
      */
-    public function getAttributeSetter(AttributeInterface $attribute);
+    public function getAttributeSetter(AttributeInterface $attribute): ?AttributeSetterInterface;
 }

@@ -23,7 +23,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeComparator($attributeType)
+    public function getAttributeComparator(string $attributeType): ComparatorInterface
     {
         foreach ($this->getComparators(self::COMPARATOR_ATTRIBUTE) as $comparator) {
             if ($comparator->supports($attributeType)) {
@@ -43,7 +43,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeComparator(ComparatorInterface $comparator, $priority)
+    public function addAttributeComparator(ComparatorInterface $comparator, int $priority): void
     {
         $this->comparators[self::COMPARATOR_ATTRIBUTE][$priority][] = $comparator;
     }
@@ -51,7 +51,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldComparator($field)
+    public function getFieldComparator(string $field): ComparatorInterface
     {
         foreach ($this->getComparators(self::COMPARATOR_FIELD) as $comparator) {
             if ($comparator->supports($field)) {
@@ -61,8 +61,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
 
         throw new \LogicException(
             sprintf(
-                'Cannot compare value of field "%s". ' .
-                'Please check that a comparator exists for such field.',
+                'Cannot compare value of field "%s". Please check that a comparator exists for such field.',
                 $field
             )
         );
@@ -71,7 +70,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldComparator(ComparatorInterface $comparator, $priority)
+    public function addFieldComparator(ComparatorInterface $comparator, int $priority): void
     {
         $this->comparators[self::COMPARATOR_FIELD][$priority][] = $comparator;
     }
@@ -83,7 +82,7 @@ class ComparatorRegistry implements ComparatorRegistryInterface
      *
      * @return ComparatorInterface[]
      */
-    protected function getComparators($type)
+    protected function getComparators(string $type): array
     {
         $comparators = [];
         foreach ($this->comparators[$type] as $groupedComparators) {

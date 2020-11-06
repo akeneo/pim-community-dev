@@ -35,7 +35,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->values;
     }
@@ -83,7 +83,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function contains(ValueInterface $value)
+    public function contains(ValueInterface $value): bool
     {
         return in_array($value, $this->values, true);
     }
@@ -91,12 +91,12 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getValues()
+    public function getValues(): array
     {
         return array_values($this->values);
     }
 
-    public function getAttributeCodes()
+    public function getAttributeCodes(): array
     {
         return $this->attributeCodes;
     }
@@ -104,7 +104,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->values);
     }
@@ -112,7 +112,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return empty($this->values);
     }
@@ -120,7 +120,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->values);
     }
@@ -128,7 +128,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function filter(\Closure $filterBy)
+    public function filter(\Closure $filterBy): \Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection
     {
         $filteredValues = array_filter($this->values, $filterBy);
 
@@ -138,7 +138,7 @@ final class ReadValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function map(\Closure $mapFunction)
+    public function map(\Closure $mapFunction): \Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection
     {
         $transformedValues = array_map($mapFunction, $this->values);
 

@@ -52,7 +52,7 @@ class PurgeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Purge versions of entities, except first and last versions.')
@@ -92,7 +92,7 @@ class PurgeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function interact(InputInterface $input, OutputInterface $output)
+    public function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getOption('more-than-days') && null !== $input->getOption('less-than-days')) {
             throw new InvalidArgumentException(
@@ -144,7 +144,7 @@ class PurgeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $noDebug = $input->getOption('no-debug');
         if (!$noDebug) {
@@ -193,10 +193,11 @@ class PurgeCommand extends Command
             if (!$helper->ask($input, $output, $question)) {
                 $output->writeln('Abort purge operation.');
 
-                return;
+                return 0;
             }
         }
 
         $this->versionPurger->purge($purgeOptions, $output);
+        return 0;
     }
 }

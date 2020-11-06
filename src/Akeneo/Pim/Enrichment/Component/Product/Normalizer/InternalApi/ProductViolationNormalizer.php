@@ -35,7 +35,7 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
     /**
      * {@inheritdoc}
      */
-    public function normalize($violation, $format = null, array $context = [])
+    public function normalize($violation, $format = null, array $context = []): array
     {
         $propertyPath = $violation->getPropertyPath();
 
@@ -100,7 +100,7 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return in_array($format, $this->supportedFormats) && $data instanceof ConstraintViolationInterface;
     }

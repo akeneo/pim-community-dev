@@ -33,7 +33,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
      * @param object                            $attributeOption
      * @param AttributeTypeForOption|Constraint $constraint
      */
-    public function validate($attributeOption, Constraint $constraint)
+    public function validate($attributeOption, Constraint $constraint): void
     {
         if (!$constraint instanceof AttributeTypeForOption) {
             throw new UnexpectedTypeException($constraint, AttributeTypeForOption::class);
@@ -58,7 +58,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
         AttributeTypeForOption $constraint,
         AttributeOptionInterface $option,
         array $authorizedTypes
-    ) {
+    ): void {
         $this->context
             ->buildViolation(
                 $constraint->invalidAttributeMessage,

@@ -20,7 +20,7 @@ class AttributeOptionNormalizer extends BaseNormalizer
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormats);
     }
@@ -28,7 +28,7 @@ class AttributeOptionNormalizer extends BaseNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         if (array_key_exists('field_name', $context)) {
             return [
@@ -38,9 +38,8 @@ class AttributeOptionNormalizer extends BaseNormalizer
 
         $attributeOption = $this->normalizeAttributeOption($object, $format, $context);
         unset($attributeOption['labels']);
-        $attributeOption += $this->normalizeLabels($object, $context);
 
-        return $attributeOption;
+        return $attributeOption + $this->normalizeLabels($object, $context);
     }
 
     private function normalizeAttributeOption($object, ?string $format, array $context): array
@@ -51,7 +50,7 @@ class AttributeOptionNormalizer extends BaseNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLabels(AttributeOptionInterface $entity, $context): array
+    protected function normalizeLabels(AttributeOptionInterface $entity, array $context): array
     {
         $labels = [];
         $locales = isset($context['locales']) ? $context['locales'] : [];

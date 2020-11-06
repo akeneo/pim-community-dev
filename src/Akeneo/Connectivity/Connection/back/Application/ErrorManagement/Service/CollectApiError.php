@@ -60,7 +60,7 @@ class CollectApiError
         DomainErrorInterface $error,
         ?ProductInterface $product
     ): void {
-        if (false === $this->isConnectionCollectable()) {
+        if (!$this->isConnectionCollectable()) {
             return;
         }
 
@@ -76,7 +76,7 @@ class CollectApiError
         ConstraintViolationListInterface $constraintViolationList,
         ProductInterface $product
     ): void {
-        if (false === $this->isConnectionCollectable()) {
+        if (!$this->isConnectionCollectable()) {
             return;
         }
 
@@ -89,7 +89,7 @@ class CollectApiError
 
     public function collectFromTechnicalError(\Throwable $error): void
     {
-        if (false === $this->isConnectionCollectable()) {
+        if (!$this->isConnectionCollectable()) {
             return;
         }
 
@@ -139,7 +139,7 @@ class CollectApiError
         }
 
         if (
-            false === $this->connectionContext->isCollectable() ||
+            !$this->connectionContext->isCollectable() ||
             FlowType::DATA_SOURCE !== (string) $connection->flowType()
         ) {
             return false;

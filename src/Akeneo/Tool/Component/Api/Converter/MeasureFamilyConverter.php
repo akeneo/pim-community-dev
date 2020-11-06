@@ -18,25 +18,22 @@ class MeasureFamilyConverter implements ArrayConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
-        $convertedItem = [
+        return [
             'code'     => $item['family_code'],
             'standard' => $item['units']['standard'],
             'units'    => $this->convertUnits($item['units']),
         ];
-
-        return $convertedItem;
     }
 
     /**
      * @param array $units
      *
-     * @return array
      *
      * @throws \Exception
      */
-    protected function convertUnits(array $units)
+    protected function convertUnits(array $units): array
     {
         if (!array_key_exists('units', $units)) {
             return [];

@@ -25,7 +25,7 @@ class FileIteratorFactory
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($className, $type)
+    public function __construct(string $className, string $type)
     {
         $interface = '\Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface';
         if (!is_subclass_of($className, $interface)) {
@@ -41,10 +41,8 @@ class FileIteratorFactory
      *
      * @param string $filePath
      * @param array  $options
-     *
-     * @return FileIteratorInterface
      */
-    public function create($filePath, array $options = [])
+    public function create(string $filePath, array $options = []): FileIteratorInterface
     {
         return new $this->className($this->type, $filePath, $options);
     }

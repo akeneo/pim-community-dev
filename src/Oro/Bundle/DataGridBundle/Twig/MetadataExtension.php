@@ -9,6 +9,10 @@ use Twig_SimpleFunction;
 class MetadataExtension extends Twig_Extension
 {
     /**
+     * @var \Oro\Bundle\DataGridBundle\Datagrid\MetadataParser|mixed
+     */
+    public $metadataParser;
+    /**
      * @param ContainerInterface $container
      */
     public function __construct(MetadataParser $metadataParser)
@@ -19,7 +23,7 @@ class MetadataExtension extends Twig_Extension
     /**
      * {@inheritDoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new Twig_SimpleFunction('oro_datagrid_data', [$this->metadataParser, 'getGridData']),

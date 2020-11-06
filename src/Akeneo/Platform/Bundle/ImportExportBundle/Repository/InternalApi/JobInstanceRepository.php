@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
@@ -27,7 +28,7 @@ class JobInstanceRepository extends EntityRepository implements DatagridReposito
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('j');
         $qb

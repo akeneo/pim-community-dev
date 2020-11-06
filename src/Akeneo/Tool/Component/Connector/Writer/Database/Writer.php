@@ -41,7 +41,7 @@ class Writer implements ItemWriterInterface, StepExecutionAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function write(array $objects)
+    public function write(array $objects): void
     {
         $this->incrementCount($objects);
         $this->bulkSaver->saveAll($objects);
@@ -51,7 +51,7 @@ class Writer implements ItemWriterInterface, StepExecutionAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -59,7 +59,7 @@ class Writer implements ItemWriterInterface, StepExecutionAwareInterface
     /**
      * @param array $objects
      */
-    protected function incrementCount(array $objects)
+    protected function incrementCount(array $objects): void
     {
         foreach ($objects as $object) {
             if ($object->getId()) {

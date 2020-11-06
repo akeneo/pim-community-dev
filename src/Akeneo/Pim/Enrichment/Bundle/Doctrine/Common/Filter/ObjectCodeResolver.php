@@ -37,9 +37,8 @@ class ObjectCodeResolver
      * @param AttributeInterface $attribute
      *
      * @throws ObjectNotFoundException
-     * @return array
      */
-    public function getCodesFromIds($entityName, array $ids, AttributeInterface $attribute = null)
+    public function getCodesFromIds(string $entityName, array $ids, AttributeInterface $attribute = null): array
     {
         if (!isset($this->fieldMapping[$entityName])) {
             throw new \InvalidArgumentException(sprintf('The class %s cannot be found', $entityName));
@@ -74,7 +73,7 @@ class ObjectCodeResolver
      * @param string $entityName
      * @param string $className
      */
-    public function addFieldMapping($entityName, $className)
+    public function addFieldMapping(string $entityName, string $className): void
     {
         $this->fieldMapping[$entityName] = $className;
     }

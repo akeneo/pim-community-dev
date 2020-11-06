@@ -16,7 +16,7 @@ class PlaceholderTokenParser extends \Twig_TokenParser
      * @param array  $placeholders Array with placeholders
      * @param string $wrapClassName Wrapper css class
      */
-    public function __construct(array $placeholders, $wrapClassName)
+    public function __construct(array $placeholders, string $wrapClassName)
     {
         $this->placeholders = $placeholders;
         $this->wrapClassName = $wrapClassName;
@@ -54,7 +54,7 @@ class PlaceholderTokenParser extends \Twig_TokenParser
     /**
      * {@inheritDoc}
      */
-    public function getTag()
+    public function getTag(): string
     {
         return 'placeholder';
     }

@@ -24,7 +24,7 @@ class AttributeGroupTranslation extends AbstractTranslation implements Attribute
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): AttributeGroupTranslationInterface
     {
         $this->label = $label;
 
@@ -34,7 +34,7 @@ class AttributeGroupTranslation extends AbstractTranslation implements Attribute
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }

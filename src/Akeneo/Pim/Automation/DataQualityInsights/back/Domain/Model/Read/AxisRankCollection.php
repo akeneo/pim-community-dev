@@ -34,9 +34,7 @@ final class AxisRankCollection implements \IteratorAggregate
 
     public function toArrayInt(): array
     {
-        return array_map(function (ChannelLocaleRankCollection $ranks) {
-            return $ranks->toArrayInt();
-        }, $this->axesRanks);
+        return array_map(fn(ChannelLocaleRankCollection $ranks) => $ranks->toArrayInt(), $this->axesRanks);
     }
 
     public function getIterator(): \Iterator

@@ -12,7 +12,7 @@ class FindNonExistingProductIdentifiersQuery implements FindNonExistingProductId
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -33,8 +33,6 @@ SQL;
             ['product_identifiers' => Connection::PARAM_STR_ARRAY]
         )->fetchAll(\PDO::FETCH_COLUMN);
 
-        $nonExistingProductIdentifiers = array_values(array_diff($productIdentifiers, $results));
-
-        return $nonExistingProductIdentifiers;
+        return array_values(array_diff($productIdentifiers, $results));
     }
 }

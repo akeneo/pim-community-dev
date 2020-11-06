@@ -27,13 +27,9 @@ class SimpleSelectConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, string $value): array
     {
-        if ('' === $value) {
-            $value = null;
-        } else {
-            $value = (string) $value;
-        }
+        $value = '' === $value ? null : (string) $value;
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],

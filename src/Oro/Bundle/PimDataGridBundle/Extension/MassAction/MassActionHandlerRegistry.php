@@ -24,7 +24,7 @@ class MassActionHandlerRegistry
      *
      * @throws \LogicException
      */
-    public function addHandler($alias, MassActionHandlerInterface $handler)
+    public function addHandler(string $alias, MassActionHandlerInterface $handler): void
     {
         if (isset($this->handlers[$alias])) {
             throw new \LogicException(
@@ -41,10 +41,8 @@ class MassActionHandlerRegistry
      * @param string $alias
      *
      * @throws \LogicException
-     *
-     * @return MassActionHandlerInterface
      */
-    public function getHandler($alias)
+    public function getHandler(string $alias): \Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface
     {
         if (!isset($this->handlers[$alias])) {
             throw new \LogicException(sprintf('"%s" alias is unknown', $alias));

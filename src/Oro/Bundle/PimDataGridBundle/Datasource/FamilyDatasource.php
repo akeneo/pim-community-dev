@@ -48,7 +48,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(DatagridInterface $grid, array $config)
+    public function process(DatagridInterface $grid, array $config): void
     {
         $this->qb = $this->repository->createDatagridQueryBuilder();
         $grid->setDatasource(clone $this);
@@ -57,7 +57,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -65,7 +65,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function setParameters($parameters)
+    public function setParameters(array $parameters): ParameterizableInterface
     {
         $this->parameters += $parameters;
 
@@ -79,7 +79,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getResults()
+    public function getResults(): array
     {
         return $this->hydrator->hydrate($this->qb);
     }
@@ -87,7 +87,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getQueryBuilder()
+    public function getQueryBuilder(): \Doctrine\ORM\QueryBuilder
     {
         return $this->qb;
     }
@@ -95,7 +95,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getRepository()
+    public function getRepository(): void
     {
         throw new \LogicException("No need to implement this method, design flaw in interface!");
     }
@@ -103,7 +103,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getMassActionRepository()
+    public function getMassActionRepository(): \Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface
     {
         return $this->massRepository;
     }
@@ -111,7 +111,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function setMassActionRepository(MassActionRepositoryInterface $massActionRepository)
+    public function setMassActionRepository(MassActionRepositoryInterface $massActionRepository): void
     {
         throw new \LogicException("No need to implement this method, design flaw in interface!");
     }
@@ -119,7 +119,7 @@ class FamilyDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function setHydrator(HydratorInterface $hydrator)
+    public function setHydrator(HydratorInterface $hydrator): DatasourceInterface
     {
         $this->hydrator = $hydrator;
     }

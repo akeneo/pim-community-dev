@@ -129,7 +129,7 @@ DESC
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->isInteractive()) {
             $this->gatherArgumentsForNonInteractiveMode($input);
@@ -172,9 +172,10 @@ DESC
         $this->userSaver->save($user);
 
         $output->writeln(sprintf("<info>User %s has been created.</info>", $this->username));
+        return 0;
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $output->writeln("Please enter the user's information below.");
 

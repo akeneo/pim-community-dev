@@ -34,7 +34,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($category, array $data, array $options = [])
+    public function update(object $category, array $data, array $options = []): \Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface
     {
         $this->categoryUpdater->update($category, $data, $options);
 

@@ -18,7 +18,7 @@ interface CategoryAwareInterface
     /**
      * @return ArrayCollection of CategoryInterface
      */
-    public function getCategories();
+    public function getCategories(): \Doctrine\Common\Collections\ArrayCollection;
 
     /**
      * @param CategoryInterface $category
@@ -36,10 +36,8 @@ interface CategoryAwareInterface
 
     /**
      * Get a string with categories linked to the entity
-     *
-     * @return array
      */
-    public function getCategoryCodes();
+    public function getCategoryCodes(): array;
 
     /**
      * @param Collection $categories

@@ -37,12 +37,12 @@ final class RemoveEvaluationsWithoutProductTasklet implements TaskletInterface
         $this->logger = $logger;
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
 
-    public function execute()
+    public function execute(): void
     {
         try {
             $this->productCriterionEvaluationRepository->deleteUnknownProductsEvaluations();

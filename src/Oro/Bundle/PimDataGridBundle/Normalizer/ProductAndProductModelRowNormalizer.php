@@ -38,7 +38,7 @@ class ProductAndProductModelRowNormalizer implements NormalizerInterface, Normal
     /**
      * {@inheritdoc}
      */
-    public function normalize($row, $format = null, array $context = [])
+    public function normalize($row, $format = null, array $context = []): array
     {
         Assert::isInstanceOf($this->normalizer, NormalizerInterface::class);
         Assert::isInstanceOf($row, Row::class);
@@ -72,7 +72,7 @@ class ProductAndProductModelRowNormalizer implements NormalizerInterface, Normal
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof Row && 'datagrid' === $format;
     }

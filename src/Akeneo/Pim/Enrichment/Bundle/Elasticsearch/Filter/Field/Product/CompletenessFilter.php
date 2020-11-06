@@ -50,7 +50,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
+    public function addFieldFilter(string $field, string $operator, $value, string $locale = null, string $channel = null, array $options = []): FieldFilterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
@@ -255,7 +255,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      * @throws InvalidPropertyTypeException
      * @throws InvalidPropertyException
      */
-    protected function checkChannelAndValue($field, $channel, $value)
+    protected function checkChannelAndValue(string $field, string $channel, $value): void
     {
         if (!is_numeric($value)) {
             throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
@@ -278,7 +278,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkOptions($field, array $options)
+    protected function checkOptions(string $field, array $options): void
     {
         if (!array_key_exists('locales', $options)) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
@@ -302,10 +302,8 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
      * @param string $code
      *
      * @throws ObjectNotFoundException
-     *
-     * @return ChannelInterface
      */
-    protected function getChannelByCode($code)
+    protected function getChannelByCode(string $code): ChannelInterface
     {
         $channel = $this->channelRepository->findOneByIdentifier($code);
         if (null === $channel) {

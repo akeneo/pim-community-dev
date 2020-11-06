@@ -19,7 +19,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
     /** @var Connection */
     private $dbConnection;
 
-    public function __construct(Connection $dbConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
     }
@@ -30,7 +30,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         $stmtRootProductModels = $this->executeQueryToRetrieveImpactedRootProductModels($updatedSince);
 
         while ($productModelId = $stmtRootProductModels->fetchColumn()) {
-            $productModelIds[] = new ProductId(intval($productModelId));
+            $productModelIds[] = new ProductId((int) $productModelId);
             if (count($productModelIds) >= $bulkSize) {
                 yield $productModelIds;
                 $productModelIds = [];
@@ -40,7 +40,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         $stmtSubProductModels = $this->executeQueryToRetrieveImpactedSubProductModels($updatedSince);
 
         while ($productModelId = $stmtSubProductModels->fetchColumn()) {
-            $productModelIds[] = new ProductId(intval($productModelId));
+            $productModelIds[] = new ProductId((int) $productModelId);
             if (count($productModelIds) >= $bulkSize) {
                 yield $productModelIds;
                 $productModelIds = [];

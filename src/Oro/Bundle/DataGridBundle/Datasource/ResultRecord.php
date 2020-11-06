@@ -27,7 +27,7 @@ class ResultRecord implements ResultRecordInterface
                     $arrayData[$name] = $value;
                 }
             }
-            if ($arrayData) {
+            if ($arrayData !== []) {
                 $this->valueContainers[] = $arrayData;
             }
         } elseif (is_object($data)) {
@@ -44,7 +44,7 @@ class ResultRecord implements ResultRecordInterface
      * @throws \LogicException When cannot get value
      * @return mixed
      */
-    public function getValue($name)
+    public function getValue(string $name)
     {
         foreach ($this->valueContainers as $data) {
             if (is_array($data)) {
@@ -100,7 +100,7 @@ class ResultRecord implements ResultRecordInterface
      *
      * @return object|null
      */
-    public function getRootEntity()
+    public function getRootEntity(): ?object
     {
         if (array_key_exists(0, $this->valueContainers) && is_object($this->valueContainers[0])) {
             return $this->valueContainers[0];

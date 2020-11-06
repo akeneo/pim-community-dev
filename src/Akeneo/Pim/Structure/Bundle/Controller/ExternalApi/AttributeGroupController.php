@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -100,11 +101,10 @@ class AttributeGroupController
      *
      * @throws NotFoundHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_attribute_group_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $attributeGroup = $this->repository->findOneByIdentifier($code);
         if (null === $attributeGroup) {
@@ -121,11 +121,10 @@ class AttributeGroupController
      *
      * @throws UnprocessableEntityHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_attribute_group_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -163,7 +162,7 @@ class AttributeGroupController
             'item_route_name'  => 'pim_api_attribute_group_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
+        $count = $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedAttributeGroups = $this->paginator->paginate(
             $this->normalizer->normalize($attributeGroups, 'external_api'),
             $parameters,
@@ -179,11 +178,10 @@ class AttributeGroupController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_attribute_group_edit")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -193,9 +191,7 @@ class AttributeGroupController
 
         $this->saver->save($attributeGroup);
 
-        $response = $this->getResponse($attributeGroup, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($attributeGroup, Response::HTTP_CREATED);
     }
 
     /**
@@ -204,11 +200,10 @@ class AttributeGroupController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_attribute_group_edit")
      */
-    public function partialUpdateAction(Request $request, $code)
+    public function partialUpdateAction(Request $request, string $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -228,9 +223,8 @@ class AttributeGroupController
         $this->saver->save($attributeGroup);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($attributeGroup, $status);
 
-        return $response;
+        return $this->getResponse($attributeGroup, $status);
     }
 
     /**
@@ -238,16 +232,14 @@ class AttributeGroupController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_attribute_group_edit")
      */
-    public function partialUpdateListAction(Request $request)
+    public function partialUpdateListAction(Request $request): StreamedResponse
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
-        return $response;
+        return $this->partialUpdateStreamResource->streamResponse($resource);
     }
 
     /**
@@ -256,10 +248,8 @@ class AttributeGroupController
      * @param string $content content of a request to decode
      *
      * @throws BadRequestHttpException
-     *
-     * @return array
      */
-    protected function getDecodedContent($content)
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -279,7 +269,7 @@ class AttributeGroupController
      *
      * @throws DocumentedHttpException
      */
-    protected function updateAttributeGroup(AttributeGroupInterface $attributeGroup, array $data, $anchor)
+    protected function updateAttributeGroup(AttributeGroupInterface $attributeGroup, array $data, string $anchor): void
     {
         try {
             $this->updater->update($attributeGroup, $data);
@@ -300,7 +290,7 @@ class AttributeGroupController
      *
      * @throws ViolationHttpException
      */
-    protected function validateAttributeGroup(AttributeGroupInterface $attributeGroup)
+    protected function validateAttributeGroup(AttributeGroupInterface $attributeGroup): void
     {
         $violations = $this->validator->validate($attributeGroup);
         if (0 !== $violations->count()) {
@@ -319,7 +309,7 @@ class AttributeGroupController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function validateCodeConsistency($code, array $data)
+    protected function validateCodeConsistency(string $code, array $data): void
     {
         if (array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(
@@ -337,10 +327,8 @@ class AttributeGroupController
      *
      * @param AttributeGroupInterface $attributeGroup
      * @param int                     $status
-     *
-     * @return Response
      */
-    protected function getResponse(AttributeGroupInterface $attributeGroup, $status)
+    protected function getResponse(AttributeGroupInterface $attributeGroup, int $status): Response
     {
         $response = new Response(null, $status);
         $url = $this->router->generate(

@@ -173,11 +173,7 @@ final class FlatFileHeader
 
         if ($this->usesCurrencies) {
             foreach ($prefixes as $prefix) {
-                if ($this->isScopable) {
-                    $currencyCodesToUse = $this->channelCurrencyCodes;
-                } else {
-                    $currencyCodesToUse = $this->allCurrencyCodes;
-                }
+                $currencyCodesToUse = $this->isScopable ? $this->channelCurrencyCodes : $this->allCurrencyCodes;
                 foreach ($currencyCodesToUse as $currencyCode) {
                     $headers[] = sprintf('%s-%s', $prefix, $currencyCode);
                 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
+use Doctrine\DBAL\DBALException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 
@@ -36,7 +37,7 @@ final class ProductModelImagesFromCodes
     /** @var WriteValueCollectionFactory */
     private $valueCollectionFactory;
 
-    public function __construct(Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
     {
         $this->connection = $connection;
         $this->valueCollectionFactory = $valueCollectionFactory;
@@ -56,7 +57,7 @@ final class ProductModelImagesFromCodes
     {
         $codesPerImageLevel = $this->codesPerImageLevel($codes);
 
-        $images = array_replace_recursive(
+        return array_replace_recursive(
             $this->getImagesFromCurrentOrParentProductModel(
                 $codesPerImageLevel['image_in_current_or_parent_product_model'],
                 $channelCode,
@@ -73,8 +74,6 @@ final class ProductModelImagesFromCodes
                 $localeCode
             )
         );
-
-        return $images;
     }
 
     /**
@@ -86,14 +85,13 @@ final class ProductModelImagesFromCodes
      *
      * @param array $codes
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      * @return array
      *              [
      *                'image_in_current_or_parent_product_model' => ['product_model_1']
      *                'image_in_sub_product_model' => ['product_model_2']
      *                'image_in_variant_product' => ['product_model_3']
      *              ]
-     *
      */
     private function codesPerImageLevel(array $codes): array
     {
@@ -220,7 +218,7 @@ SQL;
      * @param string $channelCode
      * @param string $localeCode
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      * @return array
      */
     private function getImagesFromSubProductModel(array $codes, string $channelCode, string $localeCode): array
@@ -301,7 +299,7 @@ SQL;
      * @param string $channelCode
      * @param string $localeCode
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      * @return array
      */
     private function getImagesFromVariantProduct(array $codes, string $channelCode, string $localeCode): array

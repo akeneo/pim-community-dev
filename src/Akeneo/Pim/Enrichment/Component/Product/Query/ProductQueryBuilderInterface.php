@@ -24,10 +24,8 @@ interface ProductQueryBuilderInterface
      * @param array  $context  the filter context, used for locale and scope
      *
      * @throws \LogicException
-     *
-     * @return ProductQueryBuilderInterface
      */
-    public function addFilter($field, $operator, $value, array $context = []);
+    public function addFilter(string $field, string $operator, $value, array $context = []): \Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
     /**
      * Sort by field
@@ -37,40 +35,30 @@ interface ProductQueryBuilderInterface
      * @param array  $context   the sorter context, used for locale and scope
      *
      * @throws \LogicException
-     *
-     * @return ProductQueryBuilderInterface
      */
-    public function addSorter($field, $direction, array $context = []);
+    public function addSorter(string $field, string $direction, array $context = []): \Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
     /**
      * Returns applied filters
-     *
-     * @return array
      */
-    public function getRawFilters();
+    public function getRawFilters(): array;
 
     /**
      * Get query builder
      *
      * @throws \LogicException in case the query builder has not been configured
-     *
-     * @return SearchQueryBuilder
      */
-    public function getQueryBuilder();
+    public function getQueryBuilder(): SearchQueryBuilder;
 
     /**
      * Set query builder
      *
      * @param mixed $queryBuilder
-     *
-     * @return ProductQueryBuilderInterface
      */
-    public function setQueryBuilder($queryBuilder);
+    public function setQueryBuilder($queryBuilder): \Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 
     /**
      * Executes a query
-     *
-     * @return CursorInterface
      */
-    public function execute();
+    public function execute(): CursorInterface;
 }

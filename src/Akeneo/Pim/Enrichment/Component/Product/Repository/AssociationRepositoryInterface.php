@@ -22,5 +22,5 @@ interface AssociationRepositoryInterface
      *
      * @return AssociationInterface[]
      */
-    public function findByProductAndOwnerIds(ProductInterface $product, array $ownerIds);
+    public function findByProductAndOwnerIds(ProductInterface $product, array $ownerIds): array;
 }

@@ -39,7 +39,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
      *
      * Expected data input format : ["category_code"]
      */
-    public function setFieldData($entity, $field, $data, array $options = [])
+    public function setFieldData($entity, string $field, $data, array $options = []): void
     {
         if (!$entity instanceof CategoryAwareInterface) {
             throw InvalidObjectException::objectExpected($entity, EntityWithValuesInterface::class);
@@ -75,7 +75,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
@@ -99,13 +99,9 @@ class CategoryFieldSetter extends AbstractFieldSetter
 
     /**
      * @param string $categoryCode
-     *
-     * @return CategoryInterface
      */
-    protected function getCategory($categoryCode)
+    protected function getCategory(string $categoryCode): CategoryInterface
     {
-        $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
-
-        return $category;
+        return $this->categoryRepository->findOneByIdentifier($categoryCode);
     }
 }

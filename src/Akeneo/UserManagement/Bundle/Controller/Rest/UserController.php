@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -100,7 +101,7 @@ class UserController
         SimpleFactoryInterface $factory,
         UserPasswordEncoderInterface $encoder,
         EventDispatcherInterface $eventDispatcher,
-        Session $session,
+        SessionInterface $session,
         ObjectManager $objectManager,
         RemoverInterface $remover,
         NumberFactory $numberFactory,
@@ -125,10 +126,7 @@ class UserController
         $this->securityFacade = $securityFacade;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function getCurrentAction()
+    public function getCurrentAction(): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $token = $this->tokenStorage->getToken();
         $user = null !== $token ? $token->getUser() : null;
@@ -172,7 +170,7 @@ class UserController
      *
      * @AclAncestor("pim_user_user_edit")
      */
-    public function postAction(Request $request, $identifier): Response
+    public function postAction(Request $request, int $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -221,7 +219,7 @@ class UserController
         return $this->updateUser($user, $data);
     }
 
-    protected function update(UserInterface $user, ?string $previousUsername = null)
+    protected function update(UserInterface $user, ?string $previousUsername = null): \Akeneo\UserManagement\Component\Model\UserInterface
     {
         $this->eventDispatcher->dispatch(
             UserEvent::POST_UPDATE,
@@ -311,7 +309,7 @@ class UserController
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function getUserOr404($identifier): UserInterface
+    private function getUserOr404($identifier): object
     {
         $user = $this->repository->findOneBy(['id' => $identifier]);
 
@@ -374,10 +372,8 @@ class UserController
 
     /**
      * @param array $data
-     *
-     * @return ConstraintViolationListInterface
      */
-    private function validatePasswordCreate(array $data): ConstraintViolationListInterface
+    private function validatePasswordCreate(array $data): ConstraintViolationList
     {
         $violations = [];
 
@@ -392,7 +388,7 @@ class UserController
         return new ConstraintViolationList($violations);
     }
 
-    private function validatePassword(UserInterface $user, $data): ConstraintViolationListInterface
+    private function validatePassword(UserInterface $user, $data): ConstraintViolationList
     {
         $violations = [];
         if (

@@ -13,39 +13,24 @@ use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
  */
 interface CurrencyInterface extends ReferableInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): int;
 
-    /**
-     * @return string
-     */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * @param string $code
-     *
-     * @return CurrencyInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Channel\Component\Model\CurrencyInterface;
 
-    /**
-     * @return bool
-     */
-    public function isActivated();
+    public function isActivated(): bool;
 
     /**
      * @param bool $activated
-     *
-     * @return CurrencyInterface
      */
-    public function setActivated($activated);
+    public function setActivated(bool $activated): \Akeneo\Channel\Component\Model\CurrencyInterface;
 
     /**
      * Toggle activation
-     *
-     * @return CurrencyInterface
      */
-    public function toggleActivation();
+    public function toggleActivation(): \Akeneo\Channel\Component\Model\CurrencyInterface;
 }

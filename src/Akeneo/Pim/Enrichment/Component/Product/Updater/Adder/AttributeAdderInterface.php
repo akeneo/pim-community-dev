@@ -36,8 +36,6 @@ interface AttributeAdderInterface extends AdderInterface
      * Supports the attribute
      *
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function supportsAttribute(AttributeInterface $attribute);
+    public function supportsAttribute(AttributeInterface $attribute): bool;
 }

@@ -22,14 +22,14 @@ class RegisterLocalizersPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(self::LOCALIZATION_LOCALIZER_REGISTRY)) {
             return;
         }
         $definition = $container->getDefinition(self::LOCALIZATION_LOCALIZER_REGISTRY);
 
-        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER_TAG) as $id => $tags) {
+        foreach (array_keys($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER_TAG)) as $id) {
             $definition->addMethodCall('register', [new Reference($id)]);
         }
     }

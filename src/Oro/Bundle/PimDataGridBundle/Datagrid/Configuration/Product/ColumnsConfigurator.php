@@ -52,7 +52,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(DatagridConfiguration $configuration)
+    public function configure(DatagridConfiguration $configuration): void
     {
         $this->configuration = $configuration;
         $this->preparePropertiesColumns();
@@ -65,7 +65,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
     /**
      * Prepare properties columns, ie, the static columns defined in datagrid.yml
      */
-    protected function preparePropertiesColumns()
+    protected function preparePropertiesColumns(): void
     {
         $this->propertiesColumns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
@@ -87,7 +87,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
     /**
      * Prepare dynamic columns, ie columns for attributes
      */
-    protected function prepareAttributesColumns()
+    protected function prepareAttributesColumns(): void
     {
         $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
@@ -110,7 +110,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
             if ($attributeTypeConf && $attributeTypeConf['column']) {
                 $columnConfig = $attributeTypeConf['column'];
-                $columnConfig = $columnConfig + [
+                $columnConfig += [
                     'label'      => $attribute['label'],
                     'order'      => $attribute['sortOrder'],
                     'group'      => $attribute['group'],
@@ -123,16 +123,14 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
         uasort(
             $this->attributesColumns,
-            function ($col1, $col2) {
-                return strcmp($col1['label'], $col2['label']);
-            }
+            fn($col1, $col2) => strcmp($col1['label'], $col2['label'])
         );
     }
 
     /**
      * Sort the columns
      */
-    protected function sortColumns()
+    protected function sortColumns(): void
     {
         $userColumns = $this->configuration->offsetGetByPath(
             sprintf(self::SOURCE_PATH, self::DISPLAYED_COLUMNS_KEY)
@@ -157,7 +155,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
     /**
      * Add columns to datagrid configuration
      */
-    protected function addColumns()
+    protected function addColumns(): void
     {
         $this->configuration->offsetSetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY),
@@ -170,7 +168,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
         );
     }
 
-    private function prepareOtherColumns()
+    private function prepareOtherColumns(): void
     {
         $otherColumns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::OTHER_COLUMNS_KEY)

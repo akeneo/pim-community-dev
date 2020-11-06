@@ -54,18 +54,14 @@ class JobInstancesBuilder
      *
      * @return JobInstance[]
      */
-    public function build()
+    public function build(): array
     {
         $rawJobs = $this->readOrderedRawJobData();
-        $jobInstances = $this->buildJobInstances($rawJobs);
 
-        return $jobInstances;
+        return $this->buildJobInstances($rawJobs);
     }
 
-    /**
-     * @return array
-     */
-    protected function readOrderedRawJobData()
+    protected function readOrderedRawJobData(): array
     {
         $rawJobs = [];
         $fileLocator = $this->getFileLocator();
@@ -102,7 +98,7 @@ class JobInstancesBuilder
      *
      * @return JobInstance[]
      */
-    protected function buildJobInstances(array $rawJobs)
+    protected function buildJobInstances(array $rawJobs): array
     {
         $processor = $this->getJobInstanceProcessor();
         $jobInstances = [];
@@ -115,10 +111,7 @@ class JobInstancesBuilder
         return $jobInstances;
     }
 
-    /**
-     * @return FileLocator
-     */
-    protected function getFileLocator()
+    protected function getFileLocator(): \Symfony\Component\Config\FileLocator
     {
         return $this->fileLocator;
     }
@@ -126,15 +119,12 @@ class JobInstancesBuilder
     /**
      * @return YamlReader
      */
-    protected function getYamlReader()
+    protected function getYamlReader(): \Akeneo\Tool\Component\Connector\Reader\File\Yaml\Reader
     {
         return $this->yamlReader;
     }
 
-    /**
-     * @return ItemProcessorInterface
-     */
-    protected function getJobInstanceProcessor()
+    protected function getJobInstanceProcessor(): \Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface
     {
         return $this->jobInstanceProcessor;
     }

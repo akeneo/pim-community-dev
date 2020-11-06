@@ -40,14 +40,14 @@ class PrepareEvaluationsCommand extends Command
         $this->featureFlag = $featureFlag;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('pim:data-quality-insights:prepare-evaluations')
             ->setDescription('Prepare the evaluations of products and structure');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('Data Quality Insights feature is disabled');

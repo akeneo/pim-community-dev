@@ -24,7 +24,7 @@ class DateTimeNormalizer extends AbstractValueDataNormalizer implements Cacheabl
     /**
      * @param string $format see http://www.php.net/date
      */
-    public function __construct($format = 'c')
+    public function __construct(string $format = 'c')
     {
         $this->format = $format;
     }
@@ -32,7 +32,7 @@ class DateTimeNormalizer extends AbstractValueDataNormalizer implements Cacheabl
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof \DateTime && in_array($format, $this->supportedFormats);
     }
@@ -45,7 +45,7 @@ class DateTimeNormalizer extends AbstractValueDataNormalizer implements Cacheabl
     /**
      * {@inheritdoc}
      */
-    protected function doNormalize($object, $format = null, array $context = [])
+    protected function doNormalize(object $object, string $format = null, array $context = [])
     {
         $context = $this->resolveContext($context);
 
@@ -56,10 +56,8 @@ class DateTimeNormalizer extends AbstractValueDataNormalizer implements Cacheabl
      * Merge default format option with context
      *
      * @param array $context
-     *
-     * @return array
      */
-    protected function resolveContext(array $context = [])
+    protected function resolveContext(array $context = []): array
     {
         return array_merge(['format' => $this->format], $context);
     }

@@ -28,8 +28,8 @@ interface FieldCopierInterface extends CopierInterface
     public function copyFieldData(
         EntityWithValuesInterface $fromEntityWithValues,
         EntityWithValuesInterface $toEntityWithValues,
-        $fromField,
-        $toField,
+        string $fromField,
+        string $toField,
         array $options = []
     );
 
@@ -38,8 +38,6 @@ interface FieldCopierInterface extends CopierInterface
      *
      * @param string $fromField
      * @param string $toField
-     *
-     * @return bool
      */
-    public function supportsFields($fromField, $toField);
+    public function supportsFields(string $fromField, string $toField): bool;
 }

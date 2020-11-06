@@ -79,7 +79,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *     },
      * }
      */
-    public function setFieldData($entity, $field, $data, array $options = [])
+    public function setFieldData($entity, string $field, $data, array $options = []): void
     {
         if (!$entity instanceof EntityWithValuesInterface) {
             throw InvalidObjectException::objectExpected($entity, EntityWithValuesInterface::class);
@@ -266,7 +266,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *
      * @param EntityWithAssociationsInterface $entity
      */
-    protected function addMissingAssociations(EntityWithAssociationsInterface $entity)
+    protected function addMissingAssociations(EntityWithAssociationsInterface $entity): void
     {
         $this->missingAssociationAdder->addMissingAssociations($entity);
     }
@@ -279,7 +279,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
@@ -303,7 +303,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
+    protected function checkAssociationData(string $field, array $data, string $assocTypeCode, $items): void
     {
         if (!is_array($items) || !is_string($assocTypeCode) ||
             (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']))
@@ -346,7 +346,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkAssociationItems($field, $assocTypeCode, array $data, array $items)
+    protected function checkAssociationItems(string $field, string $assocTypeCode, array $data, array $items): void
     {
         foreach ($items as $code) {
             if (!is_string($code)) {

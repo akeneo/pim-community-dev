@@ -35,7 +35,7 @@ class CreateConnectionCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Creates a new connection')
@@ -74,13 +74,13 @@ class CreateConnectionCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $code = $input->getArgument('code');
         $label = $input->getOption('label') ?? $code;
         $flowType = $input->getOption('flow-type');
         $auditable = /* --auditable */ null === $input->getOption('auditable')
-            || /* --auditable=true|false */ false !== filter_var($input->getOption('auditable'), FILTER_VALIDATE_BOOLEAN);
+            || /* --auditable=true|false */ filter_var($input->getOption('auditable'), FILTER_VALIDATE_BOOLEAN);
 
         try {
             $command = new CreationCommand($code, $label, $flowType, $auditable);

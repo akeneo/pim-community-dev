@@ -44,7 +44,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      *
      * @return $this
      */
-    public static function createNamed($name, array $params)
+    public static function createNamed(string $name, array $params)
     {
         $params[self::NAME_KEY] = $name;
 
@@ -56,9 +56,8 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      * throws exception if current object is unnamed
      *
      * @throws \LogicException
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         if (!isset($this[self::NAME_KEY])) {
             throw new \LogicException("Trying to get name of unnamed object");
@@ -73,10 +72,8 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      *
      * @param array $keys
      * @param array $excludeKeys
-     *
-     * @return array
      */
-    public function toArray(array $keys = [], array $excludeKeys = [])
+    public function toArray(array $keys = [], array $excludeKeys = []): array
     {
         $params = $this->params;
 
@@ -94,7 +91,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->params);
     }
@@ -102,7 +99,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->params[$offset]);
     }
@@ -123,7 +120,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      *
      * @return mixed
      */
-    public function offsetGetOr($offset, $default = null)
+    public function offsetGetOr(string $offset, $default = null)
     {
         return isset($this[$offset]) ? $this[$offset] : $default;
     }
@@ -136,7 +133,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      *
      * @return mixed
      */
-    public function offsetGetByPath($path, $default = null)
+    public function offsetGetByPath(string $path, $default = null)
     {
         return $this->accessor->getValue($this, $path) ? : $default;
     }
@@ -144,7 +141,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): self
     {
         $this->params[$offset] = $value;
 
@@ -159,7 +156,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      *
      * @return $this
      */
-    public function offsetSetByPath($path, $value)
+    public function offsetSetByPath(string $path, $value): self
     {
         $this->accessor->setValue($this->params, $path, $value);
 
@@ -169,7 +166,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): self
     {
         unset($this->params[$offset]);
 
@@ -183,7 +180,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      *
      * @return $this
      */
-    public function merge(array $params)
+    public function merge(array $params): self
     {
         $this->params = array_merge($this->params, $params);
 
@@ -198,7 +195,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      *
      * @return $this
      */
-    public function offsetAddToArray($offset, array $value)
+    public function offsetAddToArray(string $offset, array $value): self
     {
         $this[$offset] = isset($this[$offset]) && is_array($this[$offset]) ? $this[$offset] : [];
         $this[$offset] = array_merge($this[$offset], $value);
@@ -214,7 +211,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      *
      * @return $this
      */
-    public function offsetAddToArrayByPath($path, array $value)
+    public function offsetAddToArrayByPath(string $path, array $value): self
     {
         $oldValue = $this->offsetGetByPath($path, []);
         $this->offsetSetByPath($path, array_merge($oldValue, $value));
@@ -229,7 +226,7 @@ class IterableObject implements \ArrayAccess, \IteratorAggregate
      *
      * @return $this
      */
-    public function validateConfiguration(ConfigurationInterface $configuration)
+    public function validateConfiguration(ConfigurationInterface $configuration): self
     {
         $processor = new Processor();
         $this->params = $processor->processConfiguration($configuration, $this->toArray());

@@ -45,7 +45,7 @@ class Job implements JobInterface
      * @param StepInterface[]          $steps
      */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         array $steps = []
@@ -59,10 +59,8 @@ class Job implements JobInterface
 
     /**
      * Get the job's name
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -72,7 +70,7 @@ class Job implements JobInterface
      *
      * @return array steps
      */
-    public function getSteps()
+    public function getSteps(): array
     {
         return $this->steps;
     }
@@ -85,7 +83,7 @@ class Job implements JobInterface
      *
      * @return StepInterface the Step
      */
-    public function getStep($stepName)
+    public function getStep(string $stepName)
     {
         foreach ($this->steps as $step) {
             if ($step->getName() == $stepName) {
@@ -101,7 +99,7 @@ class Job implements JobInterface
      *
      * @return array the step names
      */
-    public function getStepNames()
+    public function getStepNames(): array
     {
         $names = [];
         foreach ($this->steps as $step) {
@@ -115,10 +113,8 @@ class Job implements JobInterface
      * Public getter for the {@link JobRepositoryInterface} that is needed to manage the
      * state of the batch meta domain (jobs, steps, executions) during the life
      * of a job.
-     *
-     * @return JobRepositoryInterface
      */
-    public function getJobRepository()
+    public function getJobRepository(): \Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface
     {
         return $this->jobRepository;
     }
@@ -144,7 +140,7 @@ class Job implements JobInterface
      * The working directory is created in the temporary filesystem. Its pathname is placed in the JobExecutionContext
      * via the key {@link \Akeneo\Tool\Component\Batch\Job\JobInterface::WORKING_DIRECTORY_PARAMETER}
      */
-    final public function execute(JobExecution $jobExecution)
+    final public function execute(JobExecution $jobExecution): void
     {
         try {
             $workingDirectory = $this->createWorkingDirectory();
@@ -217,7 +213,7 @@ class Job implements JobInterface
      *
      * @throws JobInterruptedException
      */
-    protected function doExecute(JobExecution $jobExecution)
+    protected function doExecute(JobExecution $jobExecution): void
     {
         /* @var StepExecution $stepExecution */
         $stepExecution = null;
@@ -248,10 +244,8 @@ class Job implements JobInterface
      * @param JobExecution  $jobExecution Job execution
      *
      * @throws JobInterruptedException
-     *
-     * @return StepExecution
      */
-    protected function handleStep(StepInterface $step, JobExecution $jobExecution)
+    protected function handleStep(StepInterface $step, JobExecution $jobExecution): StepExecution
     {
         if ($jobExecution->isStopping()) {
             throw new JobInterruptedException("JobExecution interrupted.");
@@ -283,7 +277,7 @@ class Job implements JobInterface
      * @param string       $eventName    Name of the event
      * @param JobExecution $jobExecution Object to store job execution
      */
-    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
+    private function dispatchJobExecutionEvent(string $eventName, JobExecution $jobExecution): void
     {
         $event = new JobExecutionEvent($jobExecution);
         $this->dispatch($eventName, $event);
@@ -295,7 +289,7 @@ class Job implements JobInterface
      * @param string $eventName Name of the event
      * @param Event  $event     Event object
      */
-    private function dispatch($eventName, Event $event)
+    private function dispatch(string $eventName, Event $event): void
     {
         $this->eventDispatcher->dispatch($eventName, $event);
     }
@@ -308,7 +302,7 @@ class Job implements JobInterface
      *
      * @return ExitStatus an {@link ExitStatus}
      */
-    private function getDefaultExitStatusForFailure(\Exception $e)
+    private function getDefaultExitStatusForFailure(\Exception $e): \Akeneo\Tool\Component\Batch\Job\ExitStatus
     {
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
@@ -330,7 +324,7 @@ class Job implements JobInterface
      *
      * @return an {@link ExitStatus}
      */
-    private function updateStatus(JobExecution $jobExecution, $status)
+    private function updateStatus(JobExecution $jobExecution, string $status): void
     {
         $jobExecution->setStatus(new BatchStatus($status));
     }
@@ -340,7 +334,7 @@ class Job implements JobInterface
      *
      * @return string the working directory path
      */
-    private function createWorkingDirectory()
+    private function createWorkingDirectory(): string
     {
         $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('akeneo_batch_') . DIRECTORY_SEPARATOR;
         try {
@@ -358,7 +352,7 @@ class Job implements JobInterface
      *
      * @param string $directory
      */
-    private function deleteWorkingDirectory($directory)
+    private function deleteWorkingDirectory(string $directory): void
     {
         if ($this->filesystem->exists($directory)) {
             $this->filesystem->remove($directory);

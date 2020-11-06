@@ -24,7 +24,7 @@ class KeepLastVersionPurgerAdvisor implements VersionPurgerAdvisorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(PurgeableVersionList $versionList)
+    public function supports(PurgeableVersionList $versionList): bool
     {
         return true;
     }

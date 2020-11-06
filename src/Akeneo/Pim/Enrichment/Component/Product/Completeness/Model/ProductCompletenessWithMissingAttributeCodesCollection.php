@@ -29,7 +29,7 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
         return $this->productId;
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->completenesses);
     }
@@ -46,7 +46,7 @@ final class ProductCompletenessWithMissingAttributeCodesCollection implements \I
         return $this->completenesses[$key] ?? null;
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->completenesses);
     }

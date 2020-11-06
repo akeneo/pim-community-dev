@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class ShouldNotBeTwoWayAndQuantifiedValidator extends ConstraintValidator
 {
-    public function validate($associationType, Constraint $constraint)
+    public function validate($associationType, Constraint $constraint): void
     {
         if (!$constraint instanceof ShouldNotBeTwoWayAndQuantified) {
             throw new UnexpectedTypeException($constraint, ShouldNotBeTwoWayAndQuantified::class);

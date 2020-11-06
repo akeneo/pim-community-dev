@@ -55,9 +55,9 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         CursorableRepositoryInterface $productRepository,
         CursorableRepositoryInterface $productModelRepository,
         array $esQuery,
-        $pageSize,
-        $limit,
-        $from = 0
+        int $pageSize,
+        int $limit,
+        int $from = 0
     ) {
         $this->esClient = $esClient;
         $this->productRepository = $productRepository;
@@ -73,7 +73,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->from += count($this->items);
@@ -85,7 +85,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->from = $this->initialFrom;
         $this->to = $this->from + $this->limit;

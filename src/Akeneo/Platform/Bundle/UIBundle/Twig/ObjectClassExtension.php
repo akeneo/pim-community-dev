@@ -16,10 +16,10 @@ class ObjectClassExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('class', array($this, 'getClass')),
+            new \Twig_SimpleFilter('class', fn($entity) => $this->getClass($entity)),
         ];
     }
 
@@ -27,10 +27,8 @@ class ObjectClassExtension extends \Twig_Extension
      * Get entity class name
      *
      * @param object $entity
-     *
-     * @return string
      */
-    public function getClass($entity)
+    public function getClass(object $entity): string
     {
         return ClassUtils::getClass($entity);
     }

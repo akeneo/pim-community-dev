@@ -57,7 +57,7 @@ class AddVersionListener
     /**
      * @param OnFlushEventArgs $args
      */
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         $em = $args->getEntityManager();
         $uow = $em->getUnitOfWork();
@@ -86,7 +86,7 @@ class AddVersionListener
     /**
      * @param PostFlushEventArgs $args
      */
-    public function postFlush(PostFlushEventArgs $args)
+    public function postFlush(PostFlushEventArgs $args): void
     {
         $this->processVersionableEntities();
     }
@@ -94,7 +94,7 @@ class AddVersionListener
     /**
      * Process the entities to be versioned
      */
-    protected function processVersionableEntities()
+    protected function processVersionableEntities(): void
     {
         foreach ($this->versionableEntities as $versionable) {
             $oid = $this->getObjectHash($versionable);
@@ -105,7 +105,7 @@ class AddVersionListener
         $versionedCount = count($this->versionableEntities);
         $this->versionableEntities = [];
 
-        if ($versionedCount) {
+        if ($versionedCount !== 0) {
             $this->versionManager->getObjectManager()->flush();
             $this->detachVersions();
         }
@@ -114,7 +114,7 @@ class AddVersionListener
     /**
      * @param object $versionable
      */
-    protected function createVersion($versionable)
+    protected function createVersion(object $versionable): void
     {
         $changeset = [];
         if (!$this->versionManager->isRealTimeVersioning()) {
@@ -135,7 +135,7 @@ class AddVersionListener
      * @param EntityManager $em
      * @param object        $entity
      */
-    protected function checkScheduledUpdate($em, $entity)
+    protected function checkScheduledUpdate(\Doctrine\ORM\EntityManager $em, object $entity): void
     {
         $pendings = $this->updateGuesser
             ->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
@@ -151,7 +151,7 @@ class AddVersionListener
      * @param EntityManager $em
      * @param object        $entity
      */
-    protected function checkScheduledCollection($em, $entity)
+    protected function checkScheduledCollection(\Doctrine\ORM\EntityManager $em, object $entity): void
     {
         $pendings = $this->updateGuesser
             ->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_UPDATE_COLLECTION);
@@ -167,7 +167,7 @@ class AddVersionListener
      * @param EntityManager $em
      * @param object        $entity
      */
-    protected function checkScheduledDeletion($em, $entity)
+    protected function checkScheduledDeletion(\Doctrine\ORM\EntityManager $em, object $entity): void
     {
         $pendings = $this->updateGuesser
             ->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_DELETE);
@@ -182,7 +182,7 @@ class AddVersionListener
      *
      * @param object $versionable
      */
-    protected function addPendingVersioning($versionable)
+    protected function addPendingVersioning(object $versionable): void
     {
         $oid = $this->getObjectHash($versionable);
         if (!isset($this->versionableEntities[$oid]) && !in_array($oid, $this->versionedEntities)) {
@@ -195,11 +195,11 @@ class AddVersionListener
      *
      * @param Version $version
      */
-    protected function computeChangeSet(Version $version)
+    protected function computeChangeSet(Version $version): void
     {
         $om = $this->versionManager->getObjectManager();
 
-        if ($version->getChangeset()) {
+        if ($version->getChangeset() !== []) {
             $om->persist($version);
             $om->getUnitOfWork()->computeChangeSet($om->getClassMetadata(ClassUtils::getClass($version)), $version);
         } else {
@@ -212,10 +212,8 @@ class AddVersionListener
      * versions of a same object during a request
      *
      * @param object $object
-     *
-     * @return string
      */
-    protected function getObjectHash($object)
+    protected function getObjectHash(object $object): string
     {
         return sprintf(
             '%s#%s',
@@ -227,7 +225,7 @@ class AddVersionListener
     /**
      * Clear versions know to this subscribler from the object manager
      */
-    protected function detachVersions()
+    protected function detachVersions(): void
     {
         $om = $this->versionManager->getObjectManager();
 

@@ -17,7 +17,7 @@ class SimpleFactory implements SimpleFactoryInterface
     /**
      * @param string $class
      */
-    public function __construct($class)
+    public function __construct(string $class)
     {
         $this->class = $class;
     }
@@ -25,7 +25,7 @@ class SimpleFactory implements SimpleFactoryInterface
     /**
      * @return mixed
      */
-    public function create()
+    public function create(): object
     {
         return new $this->class();
     }

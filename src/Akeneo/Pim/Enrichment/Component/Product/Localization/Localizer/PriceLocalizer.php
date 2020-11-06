@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer;
 
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Akeneo\Tool\Component\Localization\Localizer\NumberLocalizer;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -17,7 +18,7 @@ class PriceLocalizer extends NumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function validate($prices, $attributeCode, array $options = [])
+    public function validate($prices, string $attributeCode, array $options = []): ?ConstraintViolationListInterface
     {
         $violations = new ConstraintViolationList();
         foreach ($prices as $price) {

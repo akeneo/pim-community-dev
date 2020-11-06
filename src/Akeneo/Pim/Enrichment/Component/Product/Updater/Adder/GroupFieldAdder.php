@@ -37,7 +37,7 @@ class GroupFieldAdder extends AbstractFieldAdder
      *
      * Expected data input format : ["group_code"]
      */
-    public function addFieldData($product, $field, $data, array $options = [])
+    public function addFieldData($product, string $field, $data, array $options = []): void
     {
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
@@ -78,7 +78,7 @@ class GroupFieldAdder extends AbstractFieldAdder
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(

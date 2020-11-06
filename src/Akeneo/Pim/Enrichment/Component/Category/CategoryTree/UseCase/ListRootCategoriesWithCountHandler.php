@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
 
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query\ListRootCategoriesWithCountIncludingSubCategories;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query\ListRootCategoriesWithCountNotIncludingSubCategories;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -36,8 +38,8 @@ class ListRootCategoriesWithCountHandler
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
         UserContext $userContext,
-        Query\ListRootCategoriesWithCountIncludingSubCategories $listAndCountIncludingSubCategories,
-        Query\ListRootCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
+        ListRootCategoriesWithCountIncludingSubCategories $listAndCountIncludingSubCategories,
+        ListRootCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->userContext = $userContext;
@@ -63,7 +65,7 @@ class ListRootCategoriesWithCountHandler
         }
         $rootCategoryIdToExpand = $categorySelectedAsFilter->getRoot();
 
-        $rootCategories = $query->countIncludingSubCategories() ?
+        return $query->countIncludingSubCategories() ?
             $this->listAndCountIncludingSubCategories->list(
                 $query->translationLocaleCode(),
                 $query->userId(),
@@ -74,7 +76,5 @@ class ListRootCategoriesWithCountHandler
                 $query->userId(),
                 $rootCategoryIdToExpand
             );
-
-        return $rootCategories;
     }
 }

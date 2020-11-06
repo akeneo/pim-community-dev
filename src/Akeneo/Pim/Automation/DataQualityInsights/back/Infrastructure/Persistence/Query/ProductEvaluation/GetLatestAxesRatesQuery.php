@@ -28,7 +28,7 @@ final class GetLatestAxesRatesQuery implements GetLatestAxesRatesQueryInterface
     /** @var string */
     private $tableName;
 
-    public function __construct(Connection $db, string $tableName)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db, string $tableName)
     {
         $this->db = $db;
         $this->tableName = $tableName;
@@ -68,9 +68,7 @@ SQL;
 
         $rawAxesRates = json_decode($result['rates'], true);
         foreach ($rawAxesRates as $axis => $rawRates) {
-            $axisRates = ChannelLocaleRateCollection::fromNormalizedRates($rawRates, function ($rawRate) {
-                return $rawRate['value'];
-            });
+            $axisRates = ChannelLocaleRateCollection::fromNormalizedRates($rawRates, fn($rawRate) => $rawRate['value']);
             $axesRates->add(new AxisCode($axis), $axisRates);
         }
 

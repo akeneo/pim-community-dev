@@ -27,7 +27,7 @@ class DateConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, string $value): array
     {
         if ($value instanceof \DateTimeInterface) {
             $data = $value->format('c');

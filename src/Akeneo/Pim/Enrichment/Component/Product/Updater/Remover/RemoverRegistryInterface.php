@@ -17,35 +17,27 @@ interface RemoverRegistryInterface
      * Register a remover
      *
      * @param RemoverInterface $remover
-     *
-     * @return RemoverRegistryInterface
      */
-    public function register(RemoverInterface $remover);
+    public function register(RemoverInterface $remover): \Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverRegistryInterface;
 
     /**
      * Get a remover compatible with the given property
      *
      * @param string $property
-     *
-     * @return RemoverInterface
      */
-    public function getRemover($property);
+    public function getRemover(string $property): \Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverInterface;
 
     /**
      * Get the field remover
      *
      * @param string $field the field
-     *
-     * @return FieldRemoverInterface|null
      */
-    public function getFieldRemover($field);
+    public function getFieldRemover(string $field): ?FieldRemoverInterface;
 
     /**
      * Get the attribute remover
      *
      * @param AttributeInterface $attribute
-     *
-     * @return AttributeRemoverInterface|null
      */
-    public function getAttributeRemover(AttributeInterface $attribute);
+    public function getAttributeRemover(AttributeInterface $attribute): ?AttributeRemoverInterface;
 }

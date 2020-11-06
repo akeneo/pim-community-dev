@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 /**
  * Resolves the repository given a reference data type
  *
@@ -13,8 +14,6 @@ interface ReferenceDataRepositoryResolverInterface
 {
     /**
      * @param string $referenceDataType
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    public function resolve($referenceDataType);
+    public function resolve(string $referenceDataType): ObjectRepository;
 }

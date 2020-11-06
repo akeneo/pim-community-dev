@@ -34,9 +34,7 @@ class IndexProductRates
 
     public function execute(array $productIds): void
     {
-        $productIds = array_map(function ($productId) {
-            return new ProductId($productId);
-        }, $productIds);
+        $productIds = array_map(fn($productId) => new ProductId($productId), $productIds);
 
         $productsAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds($productIds);
 

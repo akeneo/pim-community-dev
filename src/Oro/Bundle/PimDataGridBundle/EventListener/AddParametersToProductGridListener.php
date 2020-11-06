@@ -35,11 +35,11 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      * @param RequestStack      $requestStack   Request
      */
     public function __construct(
-        $paramNames,
+        array $paramNames,
         RequestParameters $requestParams,
         CatalogContext $catalogContext,
         UserContext $userContext,
-        $isEditMode = false,
+        bool $isEditMode = false,
         RequestStack $requestStack
     ) {
         parent::__construct($paramNames, $requestParams, $isEditMode);
@@ -60,7 +60,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
     /**
      * @return array
      */
-    protected function prepareParameters()
+    protected function prepareParameters(): array
     {
         $queryParameters = parent::prepareParameters();
 
@@ -79,10 +79,8 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      * Get datalocale from parent's parameters, fallback on request parameters to deal with the mass edit case
      *
      * @param array $queryParameters
-     *
-     * @return string
      */
-    protected function getLocale($queryParameters)
+    protected function getLocale(array $queryParameters): string
     {
         $dataLocale = null;
         if (isset($queryParameters['dataLocale'])) {

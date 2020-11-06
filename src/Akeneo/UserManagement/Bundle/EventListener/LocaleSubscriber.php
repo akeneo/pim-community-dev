@@ -47,7 +47,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     /**
      * @param GenericEvent $event
      */
-    public function onPostUpdate(GenericEvent $event)
+    public function onPostUpdate(GenericEvent $event): void
     {
         $user = $event->getSubject();
 
@@ -61,7 +61,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     /**
      * @param GetResponseEvent $event
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
         $locale = $this->getLocale($request);
@@ -74,7 +74,7 @@ class LocaleSubscriber implements EventSubscriberInterface
     /**
      * @param InteractiveLoginEvent $event
      */
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $user = $event->getAuthenticationToken()->getUser();
 
@@ -82,10 +82,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getCode());
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             UserEvent::POST_UPDATE => [['onPostUpdate']],
@@ -99,7 +96,7 @@ class LocaleSubscriber implements EventSubscriberInterface
      *
      * @return string|null
      */
-    protected function getLocale(Request $request)
+    protected function getLocale(Request $request): ?string
     {
         return null !== $request->getSession() && null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();

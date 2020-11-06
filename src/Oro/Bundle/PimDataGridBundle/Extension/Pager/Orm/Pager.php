@@ -28,7 +28,7 @@ class Pager extends AbstractPager implements PagerInterface
      * @param int          $maxPerPage
      * @param QueryBuilder $qb
      */
-    public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
+    public function __construct(int $maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
         parent::__construct($maxPerPage);
@@ -39,17 +39,14 @@ class Pager extends AbstractPager implements PagerInterface
      *
      * @return $this
      */
-    public function setQueryBuilder(QueryBuilder $qb)
+    public function setQueryBuilder(QueryBuilder $qb): self
     {
         $this->qb = $qb;
 
         return $this;
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    public function getQueryBuilder()
+    public function getQueryBuilder(): \Doctrine\ORM\QueryBuilder
     {
         return $this->qb;
     }
@@ -57,7 +54,7 @@ class Pager extends AbstractPager implements PagerInterface
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
         $this->setNbResults($this->computeNbResult());
 
@@ -82,7 +79,7 @@ class Pager extends AbstractPager implements PagerInterface
     /**
      * {@inheritdoc}
      */
-    public function computeNbResult()
+    public function computeNbResult(): int
     {
         $qb = clone $this->getQueryBuilder();
 

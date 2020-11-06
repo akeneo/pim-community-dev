@@ -95,10 +95,8 @@ class DatagridViewController
      *
      * @param Request $request
      * @param string  $alias
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request, $alias)
+    public function indexAction(Request $request, string $alias): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
@@ -142,7 +140,7 @@ class DatagridViewController
      *
      * @return JsonResponse|NotFoundHttpException
      */
-    public function getAction($identifier)
+    public function getAction(string $identifier): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $view = $this->datagridViewRepo->find($identifier);
         if (null === $view) {
@@ -173,7 +171,7 @@ class DatagridViewController
      *
      * @return Response
      */
-    public function saveAction(Request $request, $alias)
+    public function saveAction(Request $request, string $alias)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -204,7 +202,7 @@ class DatagridViewController
 
         $violations = $this->validator->validate($datagridView);
 
-        if ($violations->count()) {
+        if ($violations->count() !== 0) {
             $messages = [];
             foreach ($violations as $violation) {
                 $messages[] = $this->translator->trans($violation->getMessage());
@@ -234,7 +232,7 @@ class DatagridViewController
      *
      * @return Response
      */
-    public function removeAction(Request $request, $identifier)
+    public function removeAction(Request $request, string $identifier)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -261,10 +259,8 @@ class DatagridViewController
      * Eg.: ['sku', 'name', 'brand']
      *
      * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function defaultViewColumnsAction($alias)
+    public function defaultViewColumnsAction(string $alias): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $columns = $this->datagridViewManager->getDefaultColumns($alias);
 
@@ -276,10 +272,8 @@ class DatagridViewController
      * Response data is in Json format.
      *
      * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function getUserDefaultDatagridViewAction($alias)
+    public function getUserDefaultDatagridViewAction(string $alias): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $view = $user->getDefaultGridView($alias);
@@ -295,10 +289,8 @@ class DatagridViewController
      * List available datagrid columns
      *
      * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function listColumnsAction($alias)
+    public function listColumnsAction(string $alias): \Symfony\Component\HttpFoundation\JsonResponse
     {
         return new JsonResponse($this->datagridViewManager->getColumnChoices($alias));
     }

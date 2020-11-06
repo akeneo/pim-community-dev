@@ -77,7 +77,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && 'external_api' === $format;
     }
@@ -89,10 +89,8 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
     /**
      * @param array  $values
-     *
-     * @return array
      */
-    protected function addDownloadLink(array $values)
+    protected function addDownloadLink(array $values): array
     {
         foreach ($values as $index => $value) {
             if (null !== $value['data']) {

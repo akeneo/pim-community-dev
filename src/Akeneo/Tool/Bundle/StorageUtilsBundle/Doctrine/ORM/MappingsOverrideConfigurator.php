@@ -26,7 +26,7 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
     /**
      * {@inheritdoc}
      */
-    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration)
+    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration): ClassMetadata
     {
         if (!$metadata instanceof ClassMetadataInfo) {
             throw new \InvalidArgumentException(
@@ -59,7 +59,7 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
      * @param ClassMetadataInfo $metadata
      * @param Configuration     $configuration
      */
-    protected function setAssociationMappings(ClassMetadataInfo $metadata, Configuration $configuration)
+    protected function setAssociationMappings(ClassMetadataInfo $metadata, Configuration $configuration): void
     {
         $supportedClasses = $configuration->getMetadataDriverImpl()->getAllClassNames();
 
@@ -86,7 +86,7 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
      *
      * @param ClassMetadataInfo $metadata
      */
-    protected function unsetAssociationMappings(ClassMetadataInfo $metadata)
+    protected function unsetAssociationMappings(ClassMetadataInfo $metadata): void
     {
         foreach ($metadata->getAssociationMappings() as $key => $value) {
             if ($this->hasRelation($value['type'])) {
@@ -97,10 +97,8 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
 
     /**
      * @param $type
-     *
-     * @return bool
      */
-    protected function hasRelation($type)
+    protected function hasRelation($type): bool
     {
         return in_array(
             $type,

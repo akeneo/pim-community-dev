@@ -51,7 +51,7 @@ class CategoryFilter extends NumberFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -95,7 +95,7 @@ class CategoryFilter extends NumberFilter
      *
      * @return bool has been applied
      */
-    protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
+    protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, array $data): bool
     {
         return true;
     }
@@ -108,7 +108,7 @@ class CategoryFilter extends NumberFilter
      *
      * @return bool has been applied
      */
-    protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
+    protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, array $data): bool
     {
         $tree = $this->categoryRepo->find($data['treeId']);
         if ($tree) {
@@ -128,7 +128,7 @@ class CategoryFilter extends NumberFilter
      *
      * @return bool has been applied
      */
-    protected function applyFilterByCategory(FilterDatasourceAdapterInterface $ds, $data)
+    protected function applyFilterByCategory(FilterDatasourceAdapterInterface $ds, array $data): bool
     {
         $category = $this->categoryRepo->find($data['categoryId']);
 
@@ -152,7 +152,7 @@ class CategoryFilter extends NumberFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return CategoryFilterType::class;
     }

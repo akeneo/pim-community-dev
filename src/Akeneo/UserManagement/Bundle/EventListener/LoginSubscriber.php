@@ -15,7 +15,7 @@ class LoginSubscriber
         $this->userManager = $userManager;
     }
 
-    public function onLogin(InteractiveLoginEvent $event)
+    public function onLogin(InteractiveLoginEvent $event): void
     {
         $user = $event->getAuthenticationToken()->getUser();
 

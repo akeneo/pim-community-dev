@@ -13,12 +13,12 @@ class FixArrayToStringListener implements EventSubscriberInterface
     /**
      * @param string $delimiter
      */
-    public function __construct($delimiter)
+    public function __construct(string $delimiter)
     {
         $this->delimiter = $delimiter;
     }
 
-    public function preBind(FormEvent $event)
+    public function preBind(FormEvent $event): void
     {
         $value = $event->getData();
         if (is_array($value)) {
@@ -26,7 +26,7 @@ class FixArrayToStringListener implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [FormEvents::PRE_SUBMIT => 'preBind'];
     }

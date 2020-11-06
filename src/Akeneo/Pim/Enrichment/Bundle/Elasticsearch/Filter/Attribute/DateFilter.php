@@ -22,7 +22,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
 {
     const DATETIME_FORMAT = 'Y-m-d';
     const HUMAN_DATETIME_FORMAT = "yyyy-mm-dd";
-    const RELATIVE_DATE_FORMAT = '/^(now|[+-][0-9]+\s?(day|week|month|year)s?)$/';
+    const RELATIVE_DATE_FORMAT = '/^(now|[+-]\d+\s?(day|week|month|year)s?)$/';
 
     public function __construct(
         ElasticsearchFilterValidator $filterValidator,
@@ -39,12 +39,12 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): AttributeFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -189,7 +189,7 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
      * @param string $field
      * @param string|array|\DateTimeInterface $value
      */
-    protected function checkValue($operator, $field, $value)
+    protected function checkValue(string $operator, string $field, $value): void
     {
         switch ($operator) {
             case Operators::EQUALS:
@@ -242,10 +242,8 @@ class DateFilter extends AbstractAttributeFilter implements AttributeFilterInter
     /**
      * @param string $field
      * @param string|\DateTimeInterface $value
-     *
-     * @return string
      */
-    protected function getFormattedDate($field, $value)
+    protected function getFormattedDate(string $field, $value): string
     {
         $dateTime = $value;
 

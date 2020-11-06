@@ -13,8 +13,6 @@ interface CursorableRepositoryInterface
 {
     /**
      * @param array $identifiers
-     *
-     * @return array
      */
-    public function getItemsFromIdentifiers(array $identifiers);
+    public function getItemsFromIdentifiers(array $identifiers): array;
 }

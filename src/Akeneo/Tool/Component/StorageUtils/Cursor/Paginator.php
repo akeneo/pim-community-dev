@@ -30,7 +30,7 @@ class Paginator implements PaginatorInterface
      * @param CursorInterface $cursor
      * @param int             $pageSize
      */
-    public function __construct(CursorInterface $cursor, $pageSize)
+    public function __construct(CursorInterface $cursor, int $pageSize)
     {
         $this->cursor = $cursor;
         $this->pageSize = $pageSize;
@@ -40,7 +40,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPageSize()
+    public function getPageSize(): int
     {
         return $this->pageSize;
     }
@@ -48,7 +48,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function setPageSize($pageSize)
+    public function setPageSize($pageSize): PaginatorInterface
     {
         $this->pageSize = $pageSize;
 
@@ -58,7 +58,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPageNumber()
+    public function getPageNumber(): int
     {
         return $this->pageNumber;
     }
@@ -66,7 +66,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): array
     {
         return $this->pageData;
     }
@@ -74,7 +74,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if ($this->valid()) {
             $this->pageNumber++;
@@ -87,7 +87,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): ?int
     {
         if ($this->valid()) {
             return $this->pageNumber;
@@ -99,7 +99,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->pageNumber < $this->count();
     }
@@ -107,7 +107,7 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->cursor->rewind();
         $this->pageNumber = 0;
@@ -117,9 +117,9 @@ class Paginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
-        return intval(ceil($this->cursor->count() / $this->pageSize));
+        return (int) ceil($this->cursor->count() / $this->pageSize);
     }
 
     /**

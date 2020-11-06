@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Bundle\Doctrine\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -17,7 +18,7 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getActivatedCurrencies()
+    public function getActivatedCurrencies(): array
     {
         $qb = $this->getActivatedCurrenciesQB();
 
@@ -27,7 +28,7 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getActivatedCurrencyCodes()
+    public function getActivatedCurrencyCodes(): array
     {
         $qb = $this->getActivatedCurrenciesQB();
         $qb->select('c.code');
@@ -45,7 +46,7 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['code' => $code]);
     }
@@ -53,7 +54,7 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -61,7 +62,7 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
     /**
      * {@inheritdoc}
      */
-    protected function getActivatedCurrenciesQB()
+    protected function getActivatedCurrenciesQB(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c');
         $qb->where($qb->expr()->eq('c.activated', true))

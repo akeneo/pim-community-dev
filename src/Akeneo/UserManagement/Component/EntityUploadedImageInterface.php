@@ -10,35 +10,26 @@ interface EntityUploadedImageInterface
      * Set image name.
      *
      * @param  string $image
-     * @return object
      */
-    public function setImage($image);
+    public function setImage(string $image): object;
 
     /**
      * Get image name.
-     *
-     * @return object
      */
-    public function getImage();
+    public function getImage(): object;
 
     /**
      * Unset image file.
-     *
-     * @return object
      */
-    public function unsetImageFile();
+    public function unsetImageFile(): object;
 
     /**
      * Get uploaded file.
-     *
-     * @return UploadedFile
      */
-    public function getImageFile();
+    public function getImageFile(): UploadedFile;
 
     /**
      * Get upload dir.
-     *
-     * @return string
      */
-    public function getUploadDir();
+    public function getUploadDir(): string;
 }

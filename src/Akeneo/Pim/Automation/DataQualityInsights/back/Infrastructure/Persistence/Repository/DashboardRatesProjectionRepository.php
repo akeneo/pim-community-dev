@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -99,12 +101,12 @@ final class DashboardRatesProjectionRepository implements DashboardRatesProjecti
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db)
     {
         $this->db = $db;
     }
 
-    public function save(Write\DashboardRatesProjection $ratesProjection): void
+    public function save(DashboardRatesProjection $ratesProjection): void
     {
         $query = <<<SQL
 INSERT INTO pim_data_quality_insights_dashboard_rates_projection (type, code, rates)
@@ -121,7 +123,7 @@ SQL;
         $this->saveAverageRanks($ratesProjection);
     }
 
-    public function purgeRates(Write\DashboardPurgeDateCollection $purgeDates): void
+    public function purgeRates(DashboardPurgeDateCollection $purgeDates): void
     {
         $pathsToRemove = [];
 
@@ -144,7 +146,7 @@ SQL;
         $this->db->executeQuery($query);
     }
 
-    private function saveAverageRanks(Write\DashboardRatesProjection $ratesProjection): void
+    private function saveAverageRanks(DashboardRatesProjection $ratesProjection): void
     {
         $query = <<<SQL
 UPDATE pim_data_quality_insights_dashboard_rates_projection

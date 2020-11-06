@@ -47,7 +47,7 @@ class MetricConverter
      * @param EntityWithValuesInterface $entityWithValues
      * @param ChannelInterface          $channel
      */
-    public function convert(EntityWithValuesInterface $entityWithValues, ChannelInterface $channel)
+    public function convert(EntityWithValuesInterface $entityWithValues, ChannelInterface $channel): void
     {
         $channelUnits = $channel->getConversionUnits();
         foreach ($entityWithValues->getValues() as $value) {

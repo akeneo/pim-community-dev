@@ -27,7 +27,7 @@ class CategoryRepository extends NestedTreeRepository implements TranslatedLabel
     /**
      * {@inheritdoc}
      */
-    public function findTranslatedLabels(array $options = [])
+    public function findTranslatedLabels(array $options = []): array
     {
         $query = $this->childrenQueryBuilder(null, true, 'created', 'DESC')
             ->select('node.code')

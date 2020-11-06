@@ -56,10 +56,8 @@ class DefaultViewDataTransformer implements DataTransformerInterface
         foreach ($types as $type) {
             $field = 'default_' . str_replace('-', '_', $type['datagridAlias']) . '_view';
 
-            if (property_exists($value, $field)) {
-                if ($value->getDefaultGridView($type['datagridAlias']) !== $value->$field) {
-                    $value->setDefaultGridView($type['datagridAlias'], $value->$field);
-                }
+            if (property_exists($value, $field) && $value->getDefaultGridView($type['datagridAlias']) !== $value->$field) {
+                $value->setDefaultGridView($type['datagridAlias'], $value->$field);
             }
         }
 

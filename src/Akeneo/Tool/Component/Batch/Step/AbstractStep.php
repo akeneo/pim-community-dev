@@ -41,7 +41,7 @@ abstract class AbstractStep implements StepInterface
      * @param JobRepositoryInterface   $jobRepository
      */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository
     ) {
@@ -50,10 +50,7 @@ abstract class AbstractStep implements StepInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @return JobRepositoryInterface
-     */
-    public function getJobRepository()
+    public function getJobRepository(): \Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface
     {
         return $this->jobRepository;
     }
@@ -61,7 +58,7 @@ abstract class AbstractStep implements StepInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -157,7 +154,7 @@ abstract class AbstractStep implements StepInterface
      *
      * @return ExitStatus {@link ExitStatus}
      */
-    private function getDefaultExitStatusForFailure(\Exception $e)
+    private function getDefaultExitStatusForFailure(\Exception $e): \Akeneo\Tool\Component\Batch\Job\ExitStatus
     {
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
@@ -176,7 +173,7 @@ abstract class AbstractStep implements StepInterface
      * @param string        $eventName     Name of the event
      * @param StepExecution $stepExecution Step object
      */
-    protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
+    protected function dispatchStepExecutionEvent(string $eventName, StepExecution $stepExecution)
     {
         $event = new StepExecutionEvent($stepExecution);
         $this->dispatch($eventName, $event);
@@ -190,7 +187,7 @@ abstract class AbstractStep implements StepInterface
      * @param array  $reasonParameters
      * @param InvalidItemInterface  $item
      */
-    protected function dispatchInvalidItemEvent($class, $reason, array $reasonParameters, InvalidItemInterface $item)
+    protected function dispatchInvalidItemEvent(string $class, string $reason, array $reasonParameters, InvalidItemInterface $item)
     {
         $event = new InvalidItemEvent($item, $class, $reason, $reasonParameters);
         $this->dispatch(EventInterface::INVALID_ITEM, $event);
@@ -202,7 +199,7 @@ abstract class AbstractStep implements StepInterface
      * @param string $eventName Name of the event
      * @param Event  $event     Event object
      */
-    private function dispatch($eventName, Event $event)
+    private function dispatch(string $eventName, Event $event)
     {
         $this->eventDispatcher->dispatch($eventName, $event);
     }

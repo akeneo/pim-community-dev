@@ -29,7 +29,7 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
     /**
      * {@inheritdoc}
      */
-    protected function convertProperty($property, $data, array $convertedItem, array $options)
+    protected function convertProperty(string $property, $data, array $convertedItem, array $options): array
     {
         switch ($property) {
             case 'associations':
@@ -48,7 +48,7 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
                 break;
             case 'values':
                 foreach ($data as $code => $attribute) {
-                    $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
+                    $convertedItem += $this->valueConverter->convertAttribute($code, $attribute);
                 }
                 break;
             case 'created':
@@ -87,10 +87,8 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
      *
      * @param array $data
      * @param array $convertedItem
-     *
-     * @return array
      */
-    protected function convertAssociations(array $data, array $convertedItem)
+    protected function convertAssociations(array $data, array $convertedItem): array
     {
         foreach ($data as $assocName => $associations) {
             foreach ($associations as $assocType => $entities) {

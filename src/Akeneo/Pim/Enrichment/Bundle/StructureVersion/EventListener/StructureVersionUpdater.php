@@ -33,7 +33,7 @@ class StructureVersionUpdater implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_SAVE => 'onPostSave',
@@ -42,7 +42,7 @@ class StructureVersionUpdater implements EventSubscriberInterface
     }
 
 
-    public function onPostSave(GenericEvent $event)
+    public function onPostSave(GenericEvent $event): void
     {
         $subject = $event->getSubject();
 
@@ -59,7 +59,7 @@ class StructureVersionUpdater implements EventSubscriberInterface
         }
     }
 
-    public function onPostSaveAll(GenericEvent $event)
+    public function onPostSaveAll(GenericEvent $event): void
     {
         $subject = current($event->getSubject());
 

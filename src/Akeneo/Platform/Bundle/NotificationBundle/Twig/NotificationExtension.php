@@ -35,19 +35,17 @@ class NotificationExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('notification_count', [$this, 'countNotifications'])
+            new \Twig_SimpleFunction('notification_count', fn() => $this->countNotifications())
         ];
     }
 
     /**
      * Return the number of unread notifications for the currently logged in user
-     *
-     * @return int
      */
-    public function countNotifications()
+    public function countNotifications(): int
     {
         $user = $this->userContext->getUser();
 

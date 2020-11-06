@@ -25,7 +25,7 @@ final class GetLatestProductAxesRanksQuery implements GetLatestProductAxesRanksQ
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db)
     {
         $this->db = $db;
     }
@@ -36,9 +36,7 @@ final class GetLatestProductAxesRanksQuery implements GetLatestProductAxesRanksQ
             return [];
         }
 
-        $productIds = array_map(function (ProductId $productId) {
-            return $productId->toInt();
-        }, $productIds);
+        $productIds = array_map(fn(ProductId $productId) => $productId->toInt(), $productIds);
 
         $query = <<<SQL
 SELECT product_id, JSON_OBJECTAGG(axis_code, rates) AS rates
@@ -63,7 +61,7 @@ SQL;
 
         $productAxesRanks = [];
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $productId = intval($row['product_id']);
+            $productId = (int) $row['product_id'];
             $axesRanks = json_decode($row['rates'], true);
             $productAxesRanks[$productId] = $this->hydrateAxesRanks($axesRanks);
         }
@@ -75,9 +73,7 @@ SQL;
     {
         $axesRanks = new AxisRankCollection();
         foreach ($rawAxesRanks as $axis => $rawRanks) {
-            $axisRanks = ChannelLocaleRankCollection::fromNormalizedRanks($rawRanks, function ($rawRank) {
-                return $rawRank['rank'];
-            });
+            $axisRanks = ChannelLocaleRankCollection::fromNormalizedRanks($rawRanks, fn($rawRank) => $rawRank['rank']);
             $axesRanks->add(new AxisCode($axis), $axisRanks);
         }
 

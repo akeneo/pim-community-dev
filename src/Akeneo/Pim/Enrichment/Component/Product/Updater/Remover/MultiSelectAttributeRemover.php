@@ -61,10 +61,10 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
     protected function removeOptions(
         EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
-        $optionCodes,
-        $locale,
-        $scope
-    ) {
+        array $optionCodes,
+        ?string $locale,
+        ?string $scope
+    ): void {
         $value = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
         if (null !== $value) {
@@ -93,7 +93,7 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function checkData(AttributeInterface $attribute, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(

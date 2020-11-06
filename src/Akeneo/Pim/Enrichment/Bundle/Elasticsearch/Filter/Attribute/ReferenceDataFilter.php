@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
@@ -31,7 +32,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
 
     public function __construct(
         ElasticsearchFilterValidator $filterValidator,
-        ReferenceDataRepositoryResolver $referenceDataRepositoryResolver,
+        ReferenceDataRepositoryResolverInterface $referenceDataRepositoryResolver,
         ConfigurationRegistryInterface $registry,
         array $supportedAttributeTypes = [],
         array $supportedOperators = []
@@ -48,12 +49,12 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $values,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): AttributeFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -142,15 +143,13 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
      *
      * @return bool
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function supportsAttribute(AttributeInterface $attribute): bool
     {
         $referenceDataName = $attribute->getReferenceDataName();
 
-        $isRegistredReferenceData = null !== $referenceDataName &&
+        return null !== $referenceDataName &&
             !empty($referenceDataName) &&
             $this->registry->has($attribute->getReferenceDataName());
-
-        return $isRegistredReferenceData;
     }
 
     /**
@@ -161,7 +160,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
      *
      * @throws InvalidPropertyException
      */
-    protected function checkValue(AttributeInterface $attribute, $values)
+    protected function checkValue(AttributeInterface $attribute, $values): void
     {
         FieldFilterHelper::checkArray($attribute->getCode(), $values, static::class);
 
@@ -173,9 +172,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         Assert::implementsInterface($referenceDataRepository, ReferenceDataRepositoryInterface::class);
         $existingReferenceData =  $referenceDataRepository->findCodesByIdentifiers($values);
         $referenceDataCodes = array_map(
-            function ($referenceData) {
-                return $referenceData['code'];
-            },
+            fn($referenceData) => $referenceData['code'],
             $existingReferenceData
         );
 

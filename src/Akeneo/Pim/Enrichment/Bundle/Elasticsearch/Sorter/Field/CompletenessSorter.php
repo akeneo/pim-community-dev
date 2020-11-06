@@ -21,7 +21,7 @@ class CompletenessSorter extends BaseFieldSorter
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
+    public function addFieldSorter(string $field, string $direction, string $locale = null, string $channel = null): FieldSorterInterface
     {
         $this->checkLocaleAndChannel($locale, $channel);
 
@@ -38,7 +38,7 @@ class CompletenessSorter extends BaseFieldSorter
      *
      * @throws InvalidPropertyException
      */
-    protected function checkLocaleAndChannel($locale, $channel)
+    protected function checkLocaleAndChannel(string $locale, string $channel): void
     {
         if (null === $locale) {
             throw InvalidPropertyException::valueNotEmptyExpected('locale', static::class);

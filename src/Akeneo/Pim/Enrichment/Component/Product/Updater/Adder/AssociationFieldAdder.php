@@ -69,7 +69,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *     },
      * }
      */
-    public function addFieldData($product, $field, $data, array $options = [])
+    public function addFieldData($product, string $field, $data, array $options = []): void
     {
         $this->checkData($field, $data);
         $this->missingAssociationAdder->addMissingAssociations($product);
@@ -84,7 +84,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *
      * @throws InvalidPropertyException
      */
-    protected function addProductsAndGroupsToAssociations($product, $data)
+    protected function addProductsAndGroupsToAssociations($product, $data): void
     {
         foreach ($data as $typeCode => $items) {
             $association = $product->getAssociationForTypeCode($typeCode);
@@ -109,7 +109,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *
      * @throws InvalidPropertyException
      */
-    protected function addAssociatedProducts(AssociationInterface $association, $productsIdentifiers)
+    protected function addAssociatedProducts(AssociationInterface $association, array $productsIdentifiers): void
     {
         foreach ($productsIdentifiers as $productIdentifier) {
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
@@ -132,7 +132,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *
      * @throws InvalidPropertyException
      */
-    protected function addAssociatedProductModels(AssociationInterface $association, $productModelsIdentifiers)
+    protected function addAssociatedProductModels(AssociationInterface $association, array $productModelsIdentifiers): void
     {
         foreach ($productModelsIdentifiers as $productModelIdentifier) {
             $associatedProductModel = $this->productModelRepository->findOneByIdentifier($productModelIdentifier);
@@ -155,7 +155,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *
      * @throws InvalidPropertyException
      */
-    protected function addAssociatedGroups(AssociationInterface $association, $groupsCodes)
+    protected function addAssociatedGroups(AssociationInterface $association, array $groupsCodes): void
     {
         foreach ($groupsCodes as $groupCode) {
             $associatedGroup = $this->groupRepository->findOneByIdentifier($groupCode);
@@ -180,7 +180,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
@@ -204,7 +204,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
+    protected function checkAssociationData(string $field, array $data, string $assocTypeCode, $items): void
     {
         if (!is_array($items) || !is_string($assocTypeCode) ||
             (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']))) {
@@ -246,7 +246,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkAssociationItems($field, $assocTypeCode, array $data, array $items)
+    protected function checkAssociationItems(string $field, string $assocTypeCode, array $data, array $items): void
     {
         foreach ($items as $code) {
             if (!is_string($code)) {

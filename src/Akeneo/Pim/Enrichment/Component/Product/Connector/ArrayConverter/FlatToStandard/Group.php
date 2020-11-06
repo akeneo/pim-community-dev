@@ -58,7 +58,7 @@ class Group implements ArrayConverterInterface
      *     ],
      * ]
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $this->validate($item);
         $convertedItem = ['labels' => []];
@@ -78,7 +78,7 @@ class Group implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function convertField($convertedItem, $field, $data)
+    protected function convertField(array $convertedItem, string $field, $data)
     {
         if (false !== strpos($field, 'label-', 0)) {
             $labelTokens = explode('-', $field);
@@ -99,7 +99,7 @@ class Group implements ArrayConverterInterface
     /**
      * @param array $item
      */
-    protected function validate(array $item)
+    protected function validate(array $item): void
     {
         $this->fieldChecker->checkFieldsPresence($item, ['code', 'type']);
         $this->fieldChecker->checkFieldsFilling($item, ['code', 'type']);
@@ -112,7 +112,7 @@ class Group implements ArrayConverterInterface
      *
      * @throws StructureArrayConversionException
      */
-    protected function validateAuthorizedFields(array $item, array $authorizedFields)
+    protected function validateAuthorizedFields(array $item, array $authorizedFields): void
     {
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
         foreach ($localeCodes as $code) {

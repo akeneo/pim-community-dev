@@ -81,15 +81,13 @@ class ConnectionController
         $connections = $this->fetchConnectionsHandler->query();
 
         return new JsonResponse(
-            array_map(function (Connection $connection) {
-                return $connection->normalize();
-            }, $connections)
+            array_map(fn(Connection $connection) => $connection->normalize(), $connections)
         );
     }
 
     public function create(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -116,7 +114,7 @@ class ConnectionController
 
     public function get(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -132,7 +130,7 @@ class ConnectionController
 
     public function update(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -167,7 +165,7 @@ class ConnectionController
 
     public function delete(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -183,7 +181,7 @@ class ConnectionController
 
     public function regenerateSecret(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 
@@ -199,7 +197,7 @@ class ConnectionController
 
     public function regeneratePassword(Request $request): JsonResponse
     {
-        if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
+        if (!$this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
             throw new AccessDeniedException();
         }
 

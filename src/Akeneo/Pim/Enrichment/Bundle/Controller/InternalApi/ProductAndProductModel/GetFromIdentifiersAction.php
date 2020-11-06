@@ -102,9 +102,8 @@ class GetFromIdentifiersAction
             $localeCode
         );
         $this->checkQuery($getRowsQueryParameters);
-        $rows = ($this->fetchProductAndProductModelRows)($getRowsQueryParameters);
 
-        return $rows;
+        return ($this->fetchProductAndProductModelRows)($getRowsQueryParameters);
     }
 
     private function checkQuery(FetchProductAndProductModelRowsParameters $getRowsQueryParameters): void

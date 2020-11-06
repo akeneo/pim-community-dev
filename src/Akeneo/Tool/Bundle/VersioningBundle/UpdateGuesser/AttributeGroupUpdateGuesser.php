@@ -17,7 +17,7 @@ class AttributeGroupUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAction($action)
+    public function supportAction(string $action): bool
     {
         return $action === UpdateGuesserInterface::ACTION_UPDATE_ENTITY;
     }
@@ -25,13 +25,13 @@ class AttributeGroupUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(EntityManager $em, $entity, $action)
+    public function guessUpdates(EntityManager $em, object $entity, string $action): array
     {
         $pendings = [];
         if ($entity instanceof AttributeInterface) {
             $pendings[] = $entity;
             $changeset = $em->getUnitOfWork()->getEntityChangeSet($entity);
-            if ($changeset && in_array('group', array_keys($changeset))) {
+            if ($changeset && array_key_exists('group', $changeset)) {
                 $groupChangeset = $changeset['group'];
                 if (isset($groupChangeset[0]) && $groupChangeset[0]) {
                     $pendings[] = $groupChangeset[0];

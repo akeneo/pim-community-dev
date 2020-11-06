@@ -21,14 +21,12 @@ class CountVolumeNormalizer
      */
     public function normalize(CountVolume $data): array
     {
-        $data = [
+        return [
             $data->getVolumeName() => [
                 'value' => $data->getVolume(),
                 'has_warning' => $data->hasWarning(),
                 'type' => self::VOLUME_TYPE
             ]
         ];
-
-        return $data;
     }
 }

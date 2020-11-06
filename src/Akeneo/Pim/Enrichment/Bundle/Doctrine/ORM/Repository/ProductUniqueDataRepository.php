@@ -20,7 +20,7 @@ class ProductUniqueDataRepository extends EntityRepository implements ProductUni
     /**
      * {@inheritdoc}
      */
-    public function uniqueDataExistsInAnotherProduct(ValueInterface $value, ProductInterface $product)
+    public function uniqueDataExistsInAnotherProduct(ValueInterface $value, ProductInterface $product): bool
     {
         $queryBuilder = $this->createQueryBuilder('ud')
             ->select('COUNT(ud)')

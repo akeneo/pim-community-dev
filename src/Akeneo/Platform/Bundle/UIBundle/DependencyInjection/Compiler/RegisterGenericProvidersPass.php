@@ -34,7 +34,7 @@ class RegisterGenericProvidersPass implements CompilerPassInterface
      * @param ReferenceFactory $factory
      * @param string           $providerType
      */
-    public function __construct(ReferenceFactory $factory, $providerType)
+    public function __construct(ReferenceFactory $factory, string $providerType)
     {
         $this->factory = $factory;
         $this->providerType = $providerType;
@@ -43,7 +43,7 @@ class RegisterGenericProvidersPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(sprintf(static::REGISTRY_ID, $this->providerType))) {
             return;

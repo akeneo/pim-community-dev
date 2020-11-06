@@ -48,7 +48,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     /**
      * {@inheritdoc}
      */
-    public function configure(DatagridConfiguration $configuration)
+    public function configure(DatagridConfiguration $configuration): void
     {
         $this->configuration = $configuration;
         $this->preparePropertiesColumns();
@@ -65,25 +65,20 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         return $this->requestStack->getCurrentRequest();
     }
 
-    /**
-     * @return GroupInterface
-     */
-    protected function getGroup()
+    protected function getGroup(): ?object
     {
         $groupId = $this->getRequest()->get('id', null);
         if (!$groupId) {
             $groupId = $this->requestParams->get('currentGroup', null);
         }
 
-        $group = $this->groupRepository->find($groupId);
-
-        return $group;
+        return $this->groupRepository->find($groupId);
     }
 
     /**
      * Sort the columns
      */
-    protected function sortColumns()
+    protected function sortColumns(): void
     {
         $inGroupColumn = [];
         if (isset($this->propertiesColumns['in_group'])) {

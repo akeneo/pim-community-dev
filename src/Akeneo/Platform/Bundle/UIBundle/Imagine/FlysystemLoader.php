@@ -65,7 +65,7 @@ class FlysystemLoader implements LoaderInterface
      *
      * @return Binary|null|string
      */
-    protected function retrieveContentFileFromVfs($path)
+    protected function retrieveContentFileFromVfs(string $path)
     {
         $content = null;
         $mimeType = null;
@@ -113,7 +113,7 @@ class FlysystemLoader implements LoaderInterface
      *
      * @return Binary|string
      */
-    protected function retrieveContentFileFromLocal($path)
+    protected function retrieveContentFileFromLocal(string $path)
     {
         $content = file_get_contents($path);
         $mimeType = MimeTypeGuesser::getInstance()->guess($path);

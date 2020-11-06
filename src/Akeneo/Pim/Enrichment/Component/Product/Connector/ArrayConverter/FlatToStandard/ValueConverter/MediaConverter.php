@@ -27,7 +27,7 @@ class MediaConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, string $value): array
     {
         $data = '' !== $value ? $value : null;
 

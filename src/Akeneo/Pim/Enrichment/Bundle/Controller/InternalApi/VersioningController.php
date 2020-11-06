@@ -55,7 +55,7 @@ class VersioningController
      *
      * @return JSONResponse
      */
-    public function getAction($entityType, $entityId)
+    public function getAction(string $entityType, string $entityId): JsonResponse
     {
         return new JsonResponse(
             $this->normalizer->normalize(

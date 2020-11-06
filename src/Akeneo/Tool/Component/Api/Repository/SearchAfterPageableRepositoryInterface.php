@@ -29,8 +29,6 @@ interface SearchAfterPageableRepositoryInterface
      * @param int   $limit    number of elements to get
      * @param array $from     columns to start the research from.
      *                        It should have the same number of columns that in the from.
-     *
-     * @return array
      */
-    public function searchAfterIdentifier(array $criteria, array $orders, int $limit, array $from = []);
+    public function searchAfterIdentifier(array $criteria, array $orders, int $limit, array $from = []): array;
 }

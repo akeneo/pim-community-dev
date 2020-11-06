@@ -32,7 +32,7 @@ class CurrencyDisablingSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [StorageEvents::PRE_SAVE => 'checkChannelLink'];
     }
@@ -44,7 +44,7 @@ class CurrencyDisablingSubscriber implements EventSubscriberInterface
      *
      * @throws LinkedChannelException
      */
-    public function checkChannelLink(GenericEvent $event)
+    public function checkChannelLink(GenericEvent $event): void
     {
         $object = $event->getSubject();
 

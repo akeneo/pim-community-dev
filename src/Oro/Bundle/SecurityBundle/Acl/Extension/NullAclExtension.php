@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
+use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
@@ -16,7 +17,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($type, $id)
+    public function supports(string $type, $id): bool
     {
         throw new \LogicException('Not supported by NullAclExtension.');
     }
@@ -24,7 +25,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtensionKey()
+    public function getExtensionKey(): string
     {
         throw new \LogicException('Not supported by NullAclExtension.');
     }
@@ -32,7 +33,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function validateMask($mask, $object, $permission = null)
+    public function validateMask(int $mask, $object, ?string $permission = null): void
     {
         throw new InvalidAclMaskException('Not supported by NullAclExtension.');
     }
@@ -40,7 +41,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentity($val)
+    public function getObjectIdentity($val): ObjectIdentity
     {
         throw new InvalidDomainObjectException('Not supported by NullAclExtension.');
     }
@@ -48,7 +49,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getMaskBuilder($permission)
+    public function getMaskBuilder(string $permission): MaskBuilder
     {
         throw new \LogicException('Not supported by NullAclExtension.');
     }
@@ -56,7 +57,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllMaskBuilders()
+    public function getAllMaskBuilders(): array
     {
         throw new \LogicException('Not supported by NullAclExtension.');
     }
@@ -64,7 +65,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getMaskPattern($mask)
+    public function getMaskPattern(int $mask): string
     {
         return 'NullAclExtension: ' . $mask;
     }
@@ -72,7 +73,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getMasks($permission)
+    public function getMasks(string $permission): array
     {
         return null;
     }
@@ -80,7 +81,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasMasks($permission)
+    public function hasMasks(string $permission): bool
     {
         return false;
     }
@@ -88,7 +89,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function adaptRootMask($rootMask, $object)
+    public function adaptRootMask(int $rootMask, $object): int
     {
         return $rootMask;
     }
@@ -96,7 +97,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getServiceBits($mask)
+    public function getServiceBits(int $mask): int
     {
         return 0;
     }
@@ -104,7 +105,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function removeServiceBits($mask)
+    public function removeServiceBits(int $mask): int
     {
         return $mask;
     }
@@ -112,7 +113,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAccessLevel($mask, $permission = null)
+    public function getAccessLevel(int $mask, string $permission = null): int
     {
         return AccessLevel::UNKNOWN;
     }
@@ -120,7 +121,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getPermissions($mask = null, $setOnly = false)
+    public function getPermissions(?int $mask = null, bool $setOnly = false): array
     {
         return [];
     }
@@ -128,7 +129,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllowedPermissions(ObjectIdentity $oid)
+    public function getAllowedPermissions(ObjectIdentity $oid): array
     {
         return [];
     }
@@ -136,7 +137,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultPermission()
+    public function getDefaultPermission(): string
     {
         return '';
     }
@@ -144,7 +145,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getClasses()
+    public function getClasses(): array
     {
         return [];
     }
@@ -152,7 +153,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken)
+    public function decideIsGranting(int $triggeredMask, $object, TokenInterface $securityToken): bool
     {
         return true;
     }

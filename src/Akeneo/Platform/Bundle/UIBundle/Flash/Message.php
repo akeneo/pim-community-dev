@@ -21,7 +21,7 @@ class Message
      * @param string $template
      * @param array  $parameters
      */
-    public function __construct($template, array $parameters = [])
+    public function __construct(string $template, array $parameters = [])
     {
         $this->template = $template;
         $this->parameters = $parameters;
@@ -32,17 +32,15 @@ class Message
      *
      * @param string $template
      */
-    public function setTemplate($template)
+    public function setTemplate(string $template): void
     {
         $this->template = $template;
     }
 
     /**
      * Get the template
-     *
-     * @return string
      */
-    public function getTemplate()
+    public function getTemplate(): string
     {
         return $this->template;
     }
@@ -52,17 +50,15 @@ class Message
      *
      * @param array $parameters
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;
     }
 
     /**
      * Get the parameters
-     *
-     * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }

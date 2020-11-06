@@ -54,7 +54,7 @@ class OroTranslationDumpCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Dumps oro js-translations')
@@ -75,7 +75,7 @@ class OroTranslationDumpCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $locales = $input->getArgument('locale');
         $locales = null === $locales ? [$this->defaultLocale] : explode(', ', $locales);
@@ -105,5 +105,6 @@ class OroTranslationDumpCommand extends Command
                 throw new \RuntimeException('Unable to write file ' . $target);
             }
         }
+        return 0;
     }
 }

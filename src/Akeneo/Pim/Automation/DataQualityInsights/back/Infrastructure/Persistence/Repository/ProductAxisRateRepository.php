@@ -53,7 +53,7 @@ final class ProductAxisRateRepository implements ProductAxisRateRepositoryInterf
     /** @var string */
     private $tableName;
 
-    public function __construct(Connection $db, string $tableName)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db, string $tableName)
     {
         $this->db = $db;
         $this->tableName = $tableName;
@@ -117,12 +117,10 @@ SQL;
 
     private function formatRates(ChannelLocaleRateCollection $rates): string
     {
-        $formattedRates = $rates->mapWith(function (Rate $rate) {
-            return [
-                'rank' => Rank::fromRate($rate)->toInt(),
-                'value' => $rate->toInt(),
-            ];
-        });
+        $formattedRates = $rates->mapWith(fn(Rate $rate) => [
+            'rank' => Rank::fromRate($rate)->toInt(),
+            'value' => $rate->toInt(),
+        ]);
 
         return json_encode($formattedRates);
     }

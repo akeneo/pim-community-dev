@@ -28,7 +28,7 @@ class UrlProperty extends AbstractProperty
     /**
      * {@inheritdoc}
      */
-    public function getRawValue(ResultRecordInterface $record)
+    public function getRawValue(ResultRecordInterface $record): string
     {
         $route = $this->router->generate(
             $this->get(self::ROUTE_KEY),
@@ -43,10 +43,8 @@ class UrlProperty extends AbstractProperty
      * Get route parameters from record
      *
      * @param ResultRecordInterface $record
-     *
-     * @return array
      */
-    protected function getParameters(ResultRecordInterface $record)
+    protected function getParameters(ResultRecordInterface $record): array
     {
         $result = [];
         foreach ($this->getOr(self::PARAMS_KEY, []) as $name => $dataKey) {

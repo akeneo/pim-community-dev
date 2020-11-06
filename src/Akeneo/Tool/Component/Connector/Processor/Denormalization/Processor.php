@@ -121,10 +121,8 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
      * Validates the processed entity.
      *
      * @param mixed $entity
-     *
-     * @return ConstraintViolationListInterface
      */
-    protected function validate($entity)
+    protected function validate($entity): ConstraintViolationListInterface
     {
         return $this->validator->validate($entity);
     }
@@ -133,7 +131,7 @@ class Processor extends AbstractProcessor implements ItemProcessorInterface, Ste
      * @param string $itemIdentifier
      * @param mixed  $processedItem
      */
-    protected function saveProcessedItemInStepExecutionContext(string $itemIdentifier, $processedItem)
+    protected function saveProcessedItemInStepExecutionContext(string $itemIdentifier, $processedItem): void
     {
         $executionContext = $this->stepExecution->getExecutionContext();
         $processedItemsBatch = $executionContext->get('processed_items_batch') ?? [];

@@ -17,7 +17,7 @@ class User extends AbstractSimpleArrayConverter implements ArrayConverterInterfa
     /**
      * {@inheritdoc}
      */
-    protected function convertProperty($property, $data, array $convertedItem, array $options)
+    protected function convertProperty(string $property, $data, array $convertedItem, array $options): array
     {
         switch ($property) {
             case 'enabled':

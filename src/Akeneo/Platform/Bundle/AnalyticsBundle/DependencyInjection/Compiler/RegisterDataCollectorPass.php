@@ -21,7 +21,7 @@ class RegisterDataCollectorPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(static::REGISTRY_ID)) {
             return;

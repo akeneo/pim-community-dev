@@ -13,10 +13,8 @@ interface IdentifiableObjectRepositoryInterface
 {
     /**
      * Returns an array containing the name of the unique identifier properties
-     *
-     * @return array
      */
-    public function getIdentifierProperties();
+    public function getIdentifierProperties(): array;
 
     /**
      * Find an object by its identifier
@@ -25,5 +23,5 @@ interface IdentifiableObjectRepositoryInterface
      *
      * @return mixed
      */
-    public function findOneByIdentifier($identifier);
+    public function findOneByIdentifier(string $identifier);
 }

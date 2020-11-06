@@ -14,75 +14,51 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 interface LocaleInterface extends ReferableInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): int;
 
     /**
      * @param int $id
-     *
-     * @return LocaleInterface
      */
-    public function setId($id);
+    public function setId(int $id): \Akeneo\Channel\Component\Model\LocaleInterface;
 
-    /**
-     * @return string
-     */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * @param string $code
-     *
-     * @return LocaleInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Channel\Component\Model\LocaleInterface;
 
     /**
      * @return string|null
      */
-    public function getLanguage();
+    public function getLanguage(): ?string;
 
     /**
      * @return string|null
      */
-    public function getName();
+    public function getName(): ?string;
 
-    /**
-     * @return bool
-     */
-    public function isActivated();
+    public function isActivated(): bool;
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getChannels();
+    public function getChannels(): \Doctrine\Common\Collections\ArrayCollection;
 
     /**
      * @param ChannelInterface $channel
-     *
-     * @return bool
      */
-    public function hasChannel(ChannelInterface $channel);
+    public function hasChannel(ChannelInterface $channel): bool;
 
     /**
      * @param ArrayCollection $channels
-     *
-     * @return LocaleInterface
      */
-    public function setChannels($channels);
+    public function setChannels(\Doctrine\Common\Collections\ArrayCollection $channels): \Akeneo\Channel\Component\Model\LocaleInterface;
 
     /**
      * @param ChannelInterface $channel
-     *
-     * @return LocaleInterface
      */
-    public function addChannel(ChannelInterface $channel);
+    public function addChannel(ChannelInterface $channel): \Akeneo\Channel\Component\Model\LocaleInterface;
 
     /**
      * @param ChannelInterface $channel
-     *
-     * @return LocaleInterface
      */
-    public function removeChannel(ChannelInterface $channel);
+    public function removeChannel(ChannelInterface $channel): \Akeneo\Channel\Component\Model\LocaleInterface;
 }

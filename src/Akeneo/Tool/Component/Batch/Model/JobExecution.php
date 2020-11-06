@@ -98,20 +98,15 @@ class JobExecution
     {
         $this->id = null;
 
-        if ($this->stepExecutions) {
-            $this->stepExecutions = clone $this->stepExecutions;
-        }
+        $this->stepExecutions = clone $this->stepExecutions;
 
-        if ($this->executionContext) {
-            $this->executionContext = clone $this->executionContext;
-        }
+        $this->executionContext = clone $this->executionContext;
     }
 
     /**
      * Get Id
-     * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -121,7 +116,7 @@ class JobExecution
      *
      * @return ExecutionContext with its attributes
      */
-    public function getExecutionContext()
+    public function getExecutionContext(): \Akeneo\Tool\Component\Batch\Item\ExecutionContext
     {
         return $this->executionContext;
     }
@@ -130,10 +125,8 @@ class JobExecution
      * Sets the {@link ExecutionContext} for this execution
      *
      * @param ExecutionContext $executionContext the attributes
-     *
-     * @return JobExecution
      */
-    public function setExecutionContext(ExecutionContext $executionContext)
+    public function setExecutionContext(ExecutionContext $executionContext): self
     {
         $this->executionContext = $executionContext;
 
@@ -145,7 +138,7 @@ class JobExecution
      *
      * @return \DateTime the time that this execution ended
      */
-    public function getEndTime()
+    public function getEndTime(): \DateTime
     {
         return $this->endTime;
     }
@@ -154,10 +147,8 @@ class JobExecution
      * Sets the time that this execution ended
      *
      * @param \DateTime $endTime the time that this execution ended
-     *
-     * @return JobExecution
      */
-    public function setEndTime(\DateTime $endTime)
+    public function setEndTime(\DateTime $endTime): self
     {
         $this->endTime = $endTime;
 
@@ -169,7 +160,7 @@ class JobExecution
      *
      * @return \DateTime the time this execution started
      */
-    public function getStartTime()
+    public function getStartTime(): \DateTime
     {
         return $this->startTime;
     }
@@ -178,10 +169,8 @@ class JobExecution
      * Sets the time this execution started
      *
      * @param \DateTime $startTime the time this execution started
-     *
-     * @return JobExecution
      */
-    public function setStartTime(\DateTime $startTime)
+    public function setStartTime(\DateTime $startTime): self
     {
         $this->startTime = $startTime;
 
@@ -192,7 +181,7 @@ class JobExecution
      *
      * @return \DateTime the time this execution has been created
      */
-    public function getCreateTime()
+    public function getCreateTime(): \DateTime
     {
         return $this->createTime;
     }
@@ -201,10 +190,8 @@ class JobExecution
      * Sets the time this execution has been created
      *
      * @param \DateTime $createTime the time this execution has been created
-     *
-     * @return JobExecution
      */
-    public function setCreateTime(\DateTime $createTime)
+    public function setCreateTime(\DateTime $createTime): self
     {
         $this->createTime = $createTime;
 
@@ -216,7 +203,7 @@ class JobExecution
      *
      * @return \DateTime time this execution has been updated
      */
-    public function getUpdatedTime()
+    public function getUpdatedTime(): \DateTime
     {
         return $this->updatedTime;
     }
@@ -225,10 +212,8 @@ class JobExecution
      * Sets the time this execution has been updated
      *
      * @param \DateTime $updatedTime the time this execution has been updated
-     *
-     * @return JobExecution
      */
-    public function setUpdatedTime(\DateTime $updatedTime)
+    public function setUpdatedTime(\DateTime $updatedTime): self
     {
         $this->updatedTime = $updatedTime;
 
@@ -240,7 +225,7 @@ class JobExecution
       *
       * @return \DateTime time this execution has been health checked
       */
-    public function getHealthCheckTime(): ?\DateTime
+    public function getHealthCheckTime(): \DateTime
     {
         return $this->healthCheckTime;
     }
@@ -249,10 +234,8 @@ class JobExecution
      * Sets the time this execution has been health checked
      *
      * @param \DateTime $healthCheckTime the time this execution has been health checked
-     *
-     * @return JobExecution
      */
-    public function setHealthcheckTime(\DateTime $healthCheckTime): JobExecution
+    public function setHealthcheckTime(\DateTime $healthCheckTime): self
     {
         $this->healthCheckTime= $healthCheckTime;
 
@@ -261,10 +244,8 @@ class JobExecution
 
     /**
      * Returns the process identifier of the batch job
-     *
-     * @return integer
      */
-    public function getPid()
+    public function getPid(): int
     {
         return $this->pid;
     }
@@ -273,10 +254,8 @@ class JobExecution
      * Sets the process identifier of the batch job
      *
      * @param integer $pid
-     *
-     * @return JobExecution
      */
-    public function setPid($pid)
+    public function setPid(int $pid): self
     {
         $this->pid = $pid;
 
@@ -288,7 +267,7 @@ class JobExecution
      *
      * @return string|null
      */
-    public function getUser()
+    public function getUser(): ?string
     {
         return $this->user;
     }
@@ -297,10 +276,8 @@ class JobExecution
      * Sets the user who launched the job
      *
      * @param string $user
-     *
-     * @return JobExecution
      */
-    public function setUser($user)
+    public function setUser(string $user): self
     {
         $this->user = $user;
 
@@ -312,7 +289,7 @@ class JobExecution
      *
      * @return BatchStatus the current status of this step
      */
-    public function getStatus()
+    public function getStatus(): \Akeneo\Tool\Component\Batch\Job\BatchStatus
     {
         return new BatchStatus($this->status);
     }
@@ -321,10 +298,8 @@ class JobExecution
      * Sets the current status of this step
      *
      * @param BatchStatus $status the current status of this step
-     *
-     * @return JobExecution
      */
-    public function setStatus(BatchStatus $status)
+    public function setStatus(BatchStatus $status): self
     {
         $this->status = $status->getValue();
 
@@ -337,10 +312,8 @@ class JobExecution
      * that they don't overwrite a failed status with an successful one.
      *
      * @param mixed $status the new status value
-     *
-     * @return JobExecution
      */
-    public function upgradeStatus($status)
+    public function upgradeStatus($status): self
     {
         $newBatchStatus = $this->getStatus();
         $newBatchStatus->upgradeTo($status);
@@ -351,10 +324,8 @@ class JobExecution
 
     /**
      * @param ExitStatus $exitStatus
-     *
-     * @return JobExecution
      */
-    public function setExitStatus(ExitStatus $exitStatus)
+    public function setExitStatus(ExitStatus $exitStatus): self
     {
         $this->exitStatus = $exitStatus;
         $this->exitCode = $exitStatus->getExitCode();
@@ -366,7 +337,7 @@ class JobExecution
     /**
      * @return ExitStatus exitCode
      */
-    public function getExitStatus()
+    public function getExitStatus(): ?\Akeneo\Tool\Component\Batch\Job\ExitStatus
     {
         if ($this->exitStatus === null && $this->exitCode !== null) {
             $this->exitStatus = new ExitStatus($this->exitCode);
@@ -380,7 +351,7 @@ class JobExecution
      *
      * @return ArrayCollection|StepExecution[] the step executions that were registered
      */
-    public function getStepExecutions()
+    public function getStepExecutions(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->stepExecutions;
     }
@@ -392,21 +363,17 @@ class JobExecution
      *
      * @return StepExecution the created stepExecution
      */
-    public function createStepExecution($stepName)
+    public function createStepExecution($stepName): \Akeneo\Tool\Component\Batch\Model\StepExecution
     {
-        $stepExecution = new StepExecution($stepName, $this);
-
-        return $stepExecution;
+        return new StepExecution($stepName, $this);
     }
 
     /**
      * Add a step executions to job's step execution
      *
      * @param StepExecution $stepExecution
-     *
-     * @return JobExecution
      */
-    public function addStepExecution(StepExecution $stepExecution)
+    public function addStepExecution(StepExecution $stepExecution): self
     {
         $this->stepExecutions[] = $stepExecution;
 
@@ -420,7 +387,7 @@ class JobExecution
      *
      * @return bool if the end time is null
      */
-    public function isRunning()
+    public function isRunning(): bool
     {
         return $this->getStatus()->isRunning();
     }
@@ -430,7 +397,7 @@ class JobExecution
      * stop.
      * @return bool if the status is BatchStatus::STOPPING
      */
-    public function isStopping()
+    public function isStopping(): bool
     {
         return $this->status == BatchStatus::STOPPING;
     }
@@ -438,10 +405,8 @@ class JobExecution
     /**
      * Signal the JobExecution to stop. Iterates through the associated
      * StepExecution, calling StepExecution::setTerminateOnly().
-     *
-     * @return JobExecution
      */
-    public function stop()
+    public function stop(): self
     {
         /** @var StepExecution $stepExecution */
         foreach ($this->stepExecutions as $stepExecution) {
@@ -456,7 +421,7 @@ class JobExecution
      * Get failure exceptions
      * @return mixed
      */
-    public function getFailureExceptions()
+    public function getFailureExceptions(): array
     {
         return $this->failureExceptions;
     }
@@ -464,10 +429,8 @@ class JobExecution
     /**
      * Add a failure exception
      * @param \Exception $e
-     *
-     * @return JobExecution
      */
-    public function addFailureException(\Exception $e)
+    public function addFailureException(\Exception $e): self
     {
         $this->failureExceptions[] = [
             'class'             => get_class($e),
@@ -486,7 +449,7 @@ class JobExecution
      *
      * @return array containing all exceptions causing failure for this JobExecution.
      */
-    public function getAllFailureExceptions()
+    public function getAllFailureExceptions(): array
     {
         $allExceptions = $this->failureExceptions;
 
@@ -502,10 +465,8 @@ class JobExecution
      * Set the associated job
      *
      * @param JobInstance $jobInstance The job instance to associate the JobExecution to
-     *
-     * @return JobExecution
      */
-    public function setJobInstance(JobInstance $jobInstance)
+    public function setJobInstance(JobInstance $jobInstance): self
     {
         $this->jobInstance = $jobInstance;
         $this->jobInstance->addJobExecution($this);
@@ -518,17 +479,15 @@ class JobExecution
      *
      * @return JobInstance The job to which the JobExecution is associated
      */
-    public function getJobInstance()
+    public function getJobInstance(): \Akeneo\Tool\Component\Batch\Model\JobInstance
     {
         return $this->jobInstance;
     }
 
     /**
      * Get the associated jobInstance label
-     *
-     * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->jobInstance->getLabel();
     }
@@ -537,10 +496,8 @@ class JobExecution
      * Set the log file
      *
      * @param string $logFile
-     *
-     * @return JobExecution
      */
-    public function setLogFile($logFile)
+    public function setLogFile(string $logFile): self
     {
         $this->logFile = $logFile;
 
@@ -549,10 +506,8 @@ class JobExecution
 
     /**
      * Get the log file
-     *
-     * @return string
      */
-    public function getLogFile()
+    public function getLogFile(): string
     {
         return $this->logFile;
     }
@@ -590,7 +545,7 @@ class JobExecution
      *
      * @return string Date formatted
      */
-    public static function formatDate(\DateTime $date = null, $format = \DateTime::ATOM)
+    public static function formatDate(\DateTime $date = null, string $format = \DateTime::ATOM): string
     {
         $formattedDate = '';
 
@@ -603,10 +558,8 @@ class JobExecution
 
     /**
      * @param JobParameters $jobParameters
-     *
-     * @return JobExecution
      */
-    public function setJobParameters(JobParameters $jobParameters): JobExecution
+    public function setJobParameters(JobParameters $jobParameters): self
     {
         $this->jobParameters = $jobParameters;
         $this->rawParameters = $jobParameters->all();
@@ -614,10 +567,7 @@ class JobExecution
         return $this;
     }
 
-    /**
-     * @return JobParameters
-     */
-    public function getJobParameters(): ?JobParameters
+    public function getJobParameters(): \Akeneo\Tool\Component\Batch\Job\JobParameters
     {
         return $this->jobParameters;
     }

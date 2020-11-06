@@ -18,21 +18,17 @@ interface FilterInterface
      *
      * @param SearchQueryBuilder $queryBuilder
      */
-    public function setQueryBuilder($queryBuilder);
+    public function setQueryBuilder(\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder $queryBuilder);
 
     /**
      * This filter supports the operator
      *
      * @param string $operator
-     *
-     * @return bool
      */
-    public function supportsOperator($operator);
+    public function supportsOperator(string $operator): bool;
 
     /**
      * Filter operators
-     *
-     * @return array
      */
-    public function getOperators();
+    public function getOperators(): array;
 }

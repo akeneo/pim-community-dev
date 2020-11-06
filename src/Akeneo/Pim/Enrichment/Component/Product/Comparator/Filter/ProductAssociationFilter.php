@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\ProductNormalizer;
@@ -28,7 +29,7 @@ class ProductAssociationFilter implements FilterInterface
     public function __construct(
         NormalizerInterface $associationsNormalizer,
         NormalizerInterface $quantifiedAssociationsNormalizer,
-        ComparatorRegistry $comparatorRegistry
+        ComparatorRegistryInterface $comparatorRegistry
     ) {
         $this->associationsNormalizer = $associationsNormalizer;
         $this->quantifiedAssociationsNormalizer = $quantifiedAssociationsNormalizer;

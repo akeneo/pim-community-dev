@@ -79,10 +79,8 @@ class ChannelController
 
     /**
      * Lists all channels
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): JsonResponse
     {
         $channels = $this->channelRepository->findAll();
         $filterLocales = $request->query->getBoolean('filter_locales', true);
@@ -102,10 +100,8 @@ class ChannelController
      * @param string $identifier
      *
      * @throws HttpExceptionInterface
-     *
-     * @return JsonResponse
      */
-    public function getAction(Request $request, $identifier)
+    public function getAction(Request $request, string $identifier): JsonResponse
     {
         $channel = $this->getChannel($identifier);
         $filterLocales = $request->query->getBoolean('filter_locales', true);
@@ -158,7 +154,7 @@ class ChannelController
      *
      * @return Response
      */
-    public function putAction(Request $request, $code)
+    public function putAction(Request $request, string $code)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -180,7 +176,7 @@ class ChannelController
      * @return Response
      * @throws HttpExceptionInterface
      */
-    public function removeAction(Request $request, $code)
+    public function removeAction(Request $request, string $code)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -204,7 +200,7 @@ class ChannelController
      *
      * @return ChannelInterface
      */
-    protected function getChannel($code)
+    protected function getChannel($code): object
     {
         $channel = $this->channelRepository->findOneBy(
             [
@@ -228,10 +224,8 @@ class ChannelController
      * @throws \LogicException
      * @throws PropertyException
      * @throws \InvalidArgumentException
-     *
-     * @return JsonResponse
      */
-    protected function saveChannel($channel, $request)
+    protected function saveChannel($channel, \Symfony\Component\HttpFoundation\Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $this->updater->update($channel, $data);

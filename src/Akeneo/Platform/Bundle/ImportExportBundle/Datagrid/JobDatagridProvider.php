@@ -30,40 +30,32 @@ class JobDatagridProvider
 
     /**
      * Return filter choices for the job column of import grids
-     *
-     * @return array
      */
-    public function getExportJobChoices()
+    public function getExportJobChoices(): array
     {
         return $this->getJobChoices('export');
     }
 
     /**
      * Return filter choices for the job column of export grids
-     *
-     * @return array
      */
-    public function getImportJobChoices()
+    public function getImportJobChoices(): array
     {
         return $this->getJobChoices('import');
     }
 
     /**
      * Return filter choices for the connector column of import grids
-     *
-     * @return array
      */
-    public function getExportConnectorChoices()
+    public function getExportConnectorChoices(): array
     {
         return $this->getConnectorChoices('export');
     }
 
     /**
      * Return filter choices for the connector column of export grids
-     *
-     * @return array
      */
-    public function getImportConnectorChoices()
+    public function getImportConnectorChoices(): array
     {
         return $this->getConnectorChoices('import');
     }
@@ -72,10 +64,8 @@ class JobDatagridProvider
      * Return filter choices for the job column
      *
      * @param string $type
-     *
-     * @return array
      */
-    protected function getJobChoices($type)
+    protected function getJobChoices(string $type): array
     {
         $choices = [];
         $jobs = $this->registry->allByType($type);
@@ -85,9 +75,7 @@ class JobDatagridProvider
         }
         asort($choices);
 
-        $choices = array_flip($choices);
-
-        return $choices;
+        return array_flip($choices);
     }
 
     /**
@@ -97,7 +85,7 @@ class JobDatagridProvider
      *
      * @return array
      */
-    protected function getConnectorChoices($type)
+    protected function getConnectorChoices(string $type)
     {
         $connectors = $this->registry->getConnectors();
 

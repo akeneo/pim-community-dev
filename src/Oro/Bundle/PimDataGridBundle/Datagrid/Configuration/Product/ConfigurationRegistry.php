@@ -28,7 +28,7 @@ class ConfigurationRegistry
     /**
      * @param array $configurations
      */
-    public function setConfigurations($configurations)
+    public function setConfigurations(array $configurations): void
     {
         $this->configurations = $configurations;
     }
@@ -37,10 +37,8 @@ class ConfigurationRegistry
      * Check if registry has a configuration for this attribute type
      *
      * @param string $attributeType the type
-     *
-     * @return bool
      */
-    public function hasConfiguration($attributeType)
+    public function hasConfiguration(string $attributeType): bool
     {
         return isset($this->configurations[$attributeType]);
     }
@@ -52,7 +50,7 @@ class ConfigurationRegistry
      *
      * @return array
      */
-    public function getConfiguration($attributeType)
+    public function getConfiguration(string $attributeType)
     {
         if ($this->hasConfiguration($attributeType)) {
             return $this->configurations[$attributeType];

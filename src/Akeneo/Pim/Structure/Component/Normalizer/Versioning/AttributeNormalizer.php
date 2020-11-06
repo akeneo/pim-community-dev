@@ -47,7 +47,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function normalize($attribute, $format = null, array $context = [])
+    public function normalize($attribute, $format = null, array $context = []): array
     {
         $standardAttribute = $this->standardNormalizer->normalize($attribute, 'standard', $context);
 
@@ -72,7 +72,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
     }
@@ -94,9 +94,8 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
         foreach ($options as $option) {
             $data[] = 'Code:' . $option->getCode();
         }
-        $options = implode(self::GROUP_SEPARATOR, $data);
 
-        return $options;
+        return implode(self::GROUP_SEPARATOR, $data);
     }
 
     private function normalizeTranslations(array $labels, array $context): array

@@ -85,15 +85,15 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
                 $continueToEvaluateProductModels = $evaluationCount > 0;
             }
 
-            if ($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false) {
+            if (!$continueToEvaluateProducts && !$continueToEvaluateProductModels) {
                 sleep(60);
                 $continueToEvaluateProducts = true;
                 $continueToEvaluateProductModels = true;
             }
-        } while ($this->isTimeboxReached($startTime) === false);
+        } while (!$this->isTimeboxReached($startTime));
     }
 
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -134,11 +134,6 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     {
         $actualTime = time();
         $timeSpentFromBegining = $actualTime - $startTime;
-
-        if ($timeSpentFromBegining >= self::TIMEBOX_IN_SECONDS_ALLOWED) {
-            return true;
-        }
-
-        return false;
+        return $timeSpentFromBegining >= self::TIMEBOX_IN_SECONDS_ALLOWED;
     }
 }

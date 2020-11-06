@@ -17,7 +17,7 @@ interface TagAwareInterface
     /**
      * @return ArrayCollection of TagInterface
      */
-    public function getTags();
+    public function getTags(): \Doctrine\Common\Collections\ArrayCollection;
 
     /**
      * @param TagInterface $tag
@@ -35,8 +35,6 @@ interface TagAwareInterface
 
     /**
      * Get a string with tags linked to the entity
-     *
-     * @return array
      */
-    public function getTagCodes();
+    public function getTagCodes(): array;
 }

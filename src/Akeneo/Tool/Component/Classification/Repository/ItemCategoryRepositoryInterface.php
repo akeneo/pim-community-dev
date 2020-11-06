@@ -20,16 +20,14 @@ interface ItemCategoryRepositoryInterface
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'itemCount'=>integer
      */
-    public function getItemCountByTree($item);
+    public function getItemCountByTree($item): array;
 
     /**
      * Count items linked to category ids
      *
      * @param array $categoryIds
-     *
-     * @return int
      */
-    public function getItemsCountInCategory(array $categoryIds = []);
+    public function getItemsCountInCategory(array $categoryIds = []): int;
 
     /**
      * Return categories linked to an item

@@ -24,7 +24,7 @@ class Group implements GroupInterface
     /**
      * @param string $name [optional] Group name
      */
-    public function __construct($name = '')
+    public function __construct(string $name = '')
     {
         $this->name = $name;
         $this->roles = new ArrayCollection();
@@ -33,7 +33,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -41,7 +41,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -49,7 +49,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -79,7 +79,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getRole($roleName): ?RoleInterface
+    public function getRole(string $roleName): ?RoleInterface
     {
         /** @var $role Role */
         foreach ($this->getRoles() as $role) {
@@ -133,7 +133,7 @@ class Group implements GroupInterface
                 sprintf('$role must be an instance of %s or a string', Group::class)
             );
         }
-        if ($roleObject) {
+        if ($roleObject !== null) {
             $this->roles->removeElement($roleObject);
         }
     }
@@ -141,7 +141,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setRoles($roles): void
+    public function setRoles(Collection $roles): void
     {
         if ($roles instanceof Collection) {
             $this->roles->clear();

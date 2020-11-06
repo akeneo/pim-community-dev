@@ -31,7 +31,7 @@ class ChannelValidator extends ChoiceValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Channel) {
             throw new UnexpectedTypeException($constraint, Channel::class);

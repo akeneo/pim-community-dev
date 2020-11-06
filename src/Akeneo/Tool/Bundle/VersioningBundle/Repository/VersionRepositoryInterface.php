@@ -22,7 +22,7 @@ interface VersionRepositoryInterface
      *
      * @return Version[]|null
      */
-    public function getLogEntries($resourceName, $resourceId);
+    public function getLogEntries(string $resourceName, string $resourceId): ?array;
 
     /**
      * Returns oldest (first) version for a resource
@@ -30,10 +30,8 @@ interface VersionRepositoryInterface
      * @param string $resourceName
      * @param string $resourceId
      * @param bool   $pending
-     *
-     * @return Version|null
      */
-    public function getOldestLogEntry($resourceName, $resourceId, $pending);
+    public function getOldestLogEntry(string $resourceName, string $resourceId, bool $pending): ?Version;
 
     /**
      * Returns newest (last) version for a resource
@@ -41,10 +39,8 @@ interface VersionRepositoryInterface
      * @param string $resourceName
      * @param string $resourceId
      * @param bool   $pending
-     *
-     * @return Version|null
      */
-    public function getNewestLogEntry($resourceName, $resourceId, $pending = false);
+    public function getNewestLogEntry(string $resourceName, string $resourceId, bool $pending = false): ?Version;
 
     /**
      * Returns newest (last) version for an array of ressources
@@ -53,7 +49,7 @@ interface VersionRepositoryInterface
      *
      * @return array|null
      */
-    public function getNewestLogEntryForRessources($resourceNames);
+    public function getNewestLogEntryForRessources(array $resourceNames): ?array;
 
     /**
      * Returns pending versions
@@ -62,14 +58,12 @@ interface VersionRepositoryInterface
      *
      * @return Version[]|null
      */
-    public function getPendingVersions($limit = null);
+    public function getPendingVersions(int $limit = null): ?array;
 
     /**
      * Get total pending versions count
-     *
-     * @return int
      */
-    public function getPendingVersionsCount();
+    public function getPendingVersionsCount(): int;
 
     /**
      * Find Version entities by a set of criteria
@@ -78,10 +72,8 @@ interface VersionRepositoryInterface
      * @param array|null $orderBy
      * @param int|null   $limit
      * @param int|null   $offset
-     *
-     * @return array
      */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+    public function findBy(array $criteria, array $orderBy = null, ?int $limit = null, ?int $offset = null): array;
 
     /**
      * @deprecated Will be removed in 4.0
@@ -102,5 +94,5 @@ interface VersionRepositoryInterface
      *
      * @return int|null
      */
-    public function getNewestVersionIdForResource($resourceName, $resourceId);
+    public function getNewestVersionIdForResource(string $resourceName, int $resourceId): ?int;
 }

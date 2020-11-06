@@ -36,7 +36,7 @@ class InGroupSorter extends BaseFieldSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface
+    public function addFieldSorter(string $field, string $direction, string $locale = null, string $channel = null): FieldSorterInterface
     {
         $groupId = str_replace('in_group_', '', $field);
 
@@ -91,7 +91,7 @@ class InGroupSorter extends BaseFieldSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsField($field)
+    public function supportsField(string $field): bool
     {
         return (strpos($field, 'in_group_') !== false);
     }

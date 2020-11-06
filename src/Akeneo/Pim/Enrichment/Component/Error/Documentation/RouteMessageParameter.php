@@ -34,7 +34,7 @@ class RouteMessageParameter implements MessageParameterInterface
         }
         $this->route = $route;
         foreach ($routeParameters as $key => $parameter) {
-            if (!is_string($key) || !(is_string($parameter) || is_numeric($parameter))) {
+            if (!is_string($key) || !is_string($parameter) && !is_numeric($parameter)) {
                 throw new \InvalidArgumentException(sprintf(
                     '$routeParameter argument from "%s" class must be an associative array of string.',
                     self::class

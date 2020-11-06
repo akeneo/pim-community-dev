@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityManager;
@@ -35,7 +36,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findTranslatedLabels(array $options = [])
+    public function findTranslatedLabels(array $options = []): array
     {
         $queryBuilder = $this->createQueryBuilder('a')
             ->select('a.code')
@@ -70,7 +71,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('a');
         $rootAlias = $qb->getRootAlias();

@@ -28,17 +28,11 @@ class PriceConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(array $attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, string $value): array
     {
-        if ('' !== $value) {
-            $data = $this->fieldSplitter->splitPrices($value);
-        } else {
-            $data = [];
-        }
+        $data = '' !== $value ? $this->fieldSplitter->splitPrices($value) : [];
 
-        $data = array_map(function ($priceValue) use ($attributeFieldInfo) {
-            return $this->convertPrice($priceValue, $attributeFieldInfo['attribute']);
-        }, $data);
+        $data = array_map(fn($priceValue) => $this->convertPrice($priceValue, $attributeFieldInfo['attribute']), $data);
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],
@@ -50,10 +44,8 @@ class PriceConverter extends AbstractValueConverter
     /**
      * @param string             $value
      * @param AttributeInterface $attribute
-     *
-     * @return array
      */
-    protected function convertPrice($value, AttributeInterface $attribute)
+    protected function convertPrice(string $value, AttributeInterface $attribute): array
     {
         if ('' === $value) {
             $priceValue = null;

@@ -31,7 +31,7 @@ class ProductModelRepository extends EntityRepository implements IdentifiableObj
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return $this->productModelRepository->getIdentifierProperties();
     }
@@ -39,7 +39,7 @@ class ProductModelRepository extends EntityRepository implements IdentifiableObj
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier)
     {
         return $this->productModelRepository->findOneByIdentifier($identifier);
     }

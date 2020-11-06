@@ -14,13 +14,7 @@ use Akeneo\Tool\Component\Batch\Job\JobInterface;
  */
 interface DefaultValuesProviderInterface
 {
-    /**
-     * @return array
-     */
-    public function getDefaultValues();
+    public function getDefaultValues(): array;
 
-    /**
-     * @return boolean
-     */
-    public function supports(JobInterface $job);
+    public function supports(JobInterface $job): bool;
 }

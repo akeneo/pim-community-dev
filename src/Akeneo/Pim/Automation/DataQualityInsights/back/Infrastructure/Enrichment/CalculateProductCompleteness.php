@@ -22,7 +22,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 
-final class CalculateProductCompleteness implements \Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface
+final class CalculateProductCompleteness implements CalculateProductCompletenessInterface
 {
     /** @var GetProductIdentifierFromProductIdQueryInterface */
     private $getProductIdentifierFromProductIdQuery;

@@ -63,7 +63,7 @@ final class ApiAggregatorForProductModelPostSaveEventSubscriber implements Event
         $this->isActivated = false;
     }
 
-    public function batchEvents(GenericEvent $event)
+    public function batchEvents(GenericEvent $event): void
     {
         $productModel = $event->getSubject();
         $unitary = $event->getArguments()['unitary'] ?? false;

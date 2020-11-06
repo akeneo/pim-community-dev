@@ -20,12 +20,10 @@ interface CurrencyRepositoryInterface extends IdentifiableObjectRepositoryInterf
      *
      * @return CurrencyInterface[]
      */
-    public function getActivatedCurrencies();
+    public function getActivatedCurrencies(): array;
 
     /**
      * Return an array of currency codes
-     *
-     * @return array
      */
-    public function getActivatedCurrencyCodes();
+    public function getActivatedCurrencyCodes(): array;
 }

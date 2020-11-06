@@ -18,7 +18,7 @@ final class GetCategoryCodesByProductIdentifiers
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -28,9 +28,7 @@ final class GetCategoryCodesByProductIdentifiers
      */
     public function fetchCategoryCodes(array $identifiers): array
     {
-        $identifiers = (function (string ...$identifier) {
-            return $identifier;
-        })(... $identifiers);
+        $identifiers = (fn(string ...$identifier) => $identifier)(... $identifiers);
 
         $results = [];
 

@@ -142,10 +142,8 @@ class MediaFileController
      * @param string  $code
      *
      * @throws HttpException
-     *
-     * @return JsonResponse
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $media = $this->mediaRepository->findOneByIdentifier(urldecode($code));
         if (null === $media || FileStorage::CATALOG_STORAGE_ALIAS !== $media->getStorage()) {
@@ -161,10 +159,8 @@ class MediaFileController
      * @param Request $request
      *
      * @throws HttpException
-     *
-     * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -190,7 +186,7 @@ class MediaFileController
             'item_route_name'  => 'pim_api_media_file_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->mediaRepository->count($criteria) : null;
+        $count = $request->query->getBoolean('with_count') ? $this->mediaRepository->count($criteria) : null;
 
         $paginatedMedias = $this->paginator->paginate(
             $this->normalizer->normalize($medias, 'external_api'),
@@ -209,7 +205,7 @@ class MediaFileController
      *
      * @return StreamedFileResponse
      */
-    public function downloadAction(Request $request, $code)
+    public function downloadAction(Request $request, string $code)
     {
         $filename = urldecode($code);
 
@@ -243,10 +239,8 @@ class MediaFileController
      * @param Request $request
      *
      * @throws HttpException
-     *
-     * @return Response
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         if ($request->request->has('product') && $request->request->has('product_model')) {
             throw new UnprocessableEntityHttpException('You should give either a "product" or a "product_model" key.');
@@ -299,10 +293,8 @@ class MediaFileController
      * @param Request $request
      *
      * @throws HttpException
-     *
-     * @return Response
      */
-    protected function createProductMedia(Request $request)
+    protected function createProductMedia(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $productInfos = $this->getProductDecodedContent($request->request->get('product'));
         $product = $this->productRepository->findOneByIdentifier($productInfos['identifier']);
@@ -419,10 +411,8 @@ class MediaFileController
      * @param FileBag $files
      *
      * @throws HttpException
-     *
-     * @return FileInfoInterface
      */
-    protected function storeFile(FileBag $files)
+    protected function storeFile(FileBag $files): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface
     {
         if (!$files->has('file')) {
             throw new UnprocessableEntityHttpException('Property "file" is required.');
@@ -453,7 +443,7 @@ class MediaFileController
      *
      * @return array
      */
-    protected function getProductDecodedContent($content): array
+    protected function getProductDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
         if (null === $decodedContent) {
@@ -477,7 +467,7 @@ class MediaFileController
      *
      * @return array
      */
-    protected function getProductModelDecodedContent($content): array
+    protected function getProductModelDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
         if (null === $decodedContent) {

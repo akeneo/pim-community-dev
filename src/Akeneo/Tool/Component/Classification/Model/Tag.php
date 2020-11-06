@@ -20,7 +20,7 @@ class Tag implements TagInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -28,7 +28,7 @@ class Tag implements TagInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): TagInterface
     {
         $this->code = $code;
 
@@ -38,7 +38,7 @@ class Tag implements TagInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }

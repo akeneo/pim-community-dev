@@ -21,8 +21,6 @@ interface ObjectUpdaterInterface
      * @param array  $options The options to use
      *
      * @throws PropertyException
-     *
-     * @return ObjectUpdaterInterface
      */
-    public function update($object, array $data, array $options = []);
+    public function update(object $object, array $data, array $options = []): \Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 }

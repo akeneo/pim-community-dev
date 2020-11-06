@@ -24,17 +24,13 @@ interface SorterRegistryInterface
      * Get the field sorter
      *
      * @param string $field the field
-     *
-     * @return SorterInterface|null
      */
-    public function getFieldSorter($field);
+    public function getFieldSorter(string $field): ?\Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterInterface;
 
     /**
      * Get the attribute sorter
      *
      * @param AttributeInterface $attribute
-     *
-     * @return SorterInterface|null
      */
-    public function getAttributeSorter(AttributeInterface $attribute);
+    public function getAttributeSorter(AttributeInterface $attribute): ?\Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterInterface;
 }

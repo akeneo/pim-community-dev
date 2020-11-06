@@ -55,7 +55,7 @@ class AssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Install assets for Akeneo PIM')
@@ -66,7 +66,7 @@ class AssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->commandExecutor = new CommandExecutor(
             $input,
@@ -78,7 +78,7 @@ class AssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Akeneo PIM assets</info>');
 
@@ -99,7 +99,7 @@ class AssetsCommand extends Command
                 $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
                 $output->writeln('');
 
-                return $e->getCode();
+                return (int) $e->getCode();
             }
         }
 
@@ -118,13 +118,10 @@ class AssetsCommand extends Command
 
         $this->eventDispatcher->dispatch(InstallerEvents::POST_ASSETS_DUMP, $event);
 
-        return $this;
+        return (int) $this;
     }
 
-    /**
-     * @return string
-     */
-    protected function getWebDir()
+    protected function getWebDir(): string
     {
         return $this->rootDir.'/../public/';
     }
@@ -134,7 +131,7 @@ class AssetsCommand extends Command
      *
      * @param string[] $directories
      */
-    protected function cleanDirectories($directories)
+    protected function cleanDirectories(array $directories): void
     {
         foreach ($directories as $directory) {
             if ($this->filesystem->exists($directory)) {

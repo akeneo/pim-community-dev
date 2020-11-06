@@ -21,7 +21,7 @@ class RendererRegistry
      *
      * @param RendererInterface $renderer
      */
-    public function addRenderer(RendererInterface $renderer)
+    public function addRenderer(RendererInterface $renderer): void
     {
         $this->renderers[] = $renderer;
     }
@@ -34,10 +34,8 @@ class RendererRegistry
      * @param array  $context
      *
      * @throws RendererRequiredException
-     *
-     * @return string
      */
-    public function render($object, $format, $context)
+    public function render($object, string $format, array $context): string
     {
         foreach ($this->renderers as $renderer) {
             if ($renderer->supports($object, $format)) {

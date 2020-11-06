@@ -2,6 +2,8 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormView;
 use Akeneo\UserManagement\Bundle\Form\Type\AclRoleType;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -46,7 +48,7 @@ class AclRoleHandler
      * @param array        $privilegeConfig
      * @param RequestStack $requestStack
      */
-    public function __construct(FormFactory $formFactory, array $privilegeConfig, RequestStack $requestStack)
+    public function __construct(FormFactoryInterface $formFactory, array $privilegeConfig, RequestStack $requestStack)
     {
         $this->formFactory = $formFactory;
         $this->privilegeConfig = $privilegeConfig;
@@ -56,7 +58,7 @@ class AclRoleHandler
     /**
      * @param AclManager $aclManager
      */
-    public function setAclManager(AclManager $aclManager)
+    public function setAclManager(AclManager $aclManager): void
     {
         $this->aclManager = $aclManager;
     }
@@ -64,7 +66,7 @@ class AclRoleHandler
     /**
      * @param ObjectManager $manager
      */
-    public function setEntityManager(ObjectManager $manager)
+    public function setEntityManager(ObjectManager $manager): void
     {
         $this->manager = $manager;
     }
@@ -73,10 +75,8 @@ class AclRoleHandler
      * Create form for role manipulation
      *
      * @param Role $role
-     *
-     * @return FormInterface
      */
-    public function createForm(Role $role)
+    public function createForm(Role $role): \Symfony\Component\Form\FormInterface
     {
         foreach ($this->privilegeConfig as $configName => $config) {
             $this->privilegeConfig[$configName]['permissions'] = $this->aclManager
@@ -96,10 +96,8 @@ class AclRoleHandler
      * Save role
      *
      * @param Role $role
-     *
-     * @return bool
      */
-    public function process(Role $role)
+    public function process(Role $role): bool
     {
         if (in_array($this->getRequest()->getMethod(), ['POST', 'PUT'])) {
             $this->form->handleRequest($this->getRequest());
@@ -127,10 +125,8 @@ class AclRoleHandler
 
     /**
      * Create form view for current form
-     *
-     * @return \Symfony\Component\Form\FormView
      */
-    public function createView()
+    public function createView(): FormView
     {
         return $this->form->createView();
     }
@@ -146,7 +142,7 @@ class AclRoleHandler
     /**
      * @param Role $role
      */
-    protected function setRolePrivileges(Role $role)
+    protected function setRolePrivileges(Role $role): void
     {
         /** @var ArrayCollection $privileges */
         $privileges = $this->aclManager->getPrivilegeRepository()->getPrivileges($this->aclManager->getSid($role));
@@ -169,10 +165,10 @@ class AclRoleHandler
     /**
      * @param Role $role
      */
-    protected function processPrivileges(Role $role)
+    protected function processPrivileges(Role $role): void
     {
         $formPrivileges = [];
-        foreach ($this->privilegeConfig as $fieldName => $config) {
+        foreach (array_keys($this->privilegeConfig) as $fieldName) {
             $privileges = $this->form->get($fieldName)->getData();
             $formPrivileges = array_merge($formPrivileges, $privileges);
         }
@@ -186,15 +182,11 @@ class AclRoleHandler
     /**
      * @param ArrayCollection $privileges
      * @param array           $rootIds
-     *
-     * @return ArrayCollection
      */
-    protected function filterPrivileges(ArrayCollection $privileges, array $rootIds)
+    protected function filterPrivileges(ArrayCollection $privileges, array $rootIds): \Doctrine\Common\Collections\ArrayCollection
     {
         return $privileges->filter(
-            function ($entry) use ($rootIds) {
-                return in_array($entry->getExtensionKey(), $rootIds);
-            }
+            fn($entry) => in_array($entry->getExtensionKey(), $rootIds)
         );
     }
 
@@ -205,7 +197,7 @@ class AclRoleHandler
      * @param UserInterface[] $appendUsers
      * @param UserInterface[] $removeUsers
      */
-    protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)
+    protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers): void
     {
         $this->appendUsers($entity, $appendUsers);
         $this->removeUsers($entity, $removeUsers);
@@ -219,7 +211,7 @@ class AclRoleHandler
      * @param Role            $role
      * @param UserInterface[] $users
      */
-    protected function appendUsers(Role $role, array $users)
+    protected function appendUsers(Role $role, array $users): void
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {
@@ -234,7 +226,7 @@ class AclRoleHandler
      * @param Role            $role
      * @param UserInterface[] $users
      */
-    protected function removeUsers(Role $role, array $users)
+    protected function removeUsers(Role $role, array $users): void
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {

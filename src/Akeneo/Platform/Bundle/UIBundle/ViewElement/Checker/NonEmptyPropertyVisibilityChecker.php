@@ -17,7 +17,7 @@ class NonEmptyPropertyVisibilityChecker implements VisibilityCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isVisible(array $config = [], array $context = [])
+    public function isVisible(array $config = [], array $context = []): bool
     {
         if (!isset($config['property'])) {
             throw new \InvalidArgumentException('The "property" should be provided in the configuration.');

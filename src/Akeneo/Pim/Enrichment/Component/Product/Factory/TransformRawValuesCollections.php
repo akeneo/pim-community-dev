@@ -58,8 +58,6 @@ final class TransformRawValuesCollections
             }
         }
 
-        $attributes = $this->getAttributes->forCodes(array_values(array_unique($attributeCodes)));
-
-        return $attributes;
+        return $this->getAttributes->forCodes(array_values(array_unique($attributeCodes)));
     }
 }

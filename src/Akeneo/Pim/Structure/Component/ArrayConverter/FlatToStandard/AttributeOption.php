@@ -61,7 +61,7 @@ class AttributeOption implements ArrayConverterInterface
      *     }
      * }
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $this->validate($item);
         $convertedItem = ['labels' => []];
@@ -87,7 +87,7 @@ class AttributeOption implements ArrayConverterInterface
      *
      * @throws StructureArrayConversionException
      */
-    protected function validate(array $item)
+    protected function validate(array $item): void
     {
         $requiredFields = ['attribute', 'code'];
 

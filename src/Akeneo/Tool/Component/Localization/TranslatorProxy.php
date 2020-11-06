@@ -27,7 +27,7 @@ class TranslatorProxy
     /**
      * {@inheritdoc}
      */
-    public function trans($value, array $options = [])
+    public function trans($value, array $options = []): string
     {
         $parameters = isset($options['parameters']) ? $options['parameters'] : [];
         $domain = isset($options['domain']) ? $options['domain'] : null;

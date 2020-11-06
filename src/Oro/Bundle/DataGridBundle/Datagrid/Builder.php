@@ -38,8 +38,8 @@ class Builder
     protected $securityFacade;
 
     public function __construct(
-        $baseDatagridClass,
-        $acceptorClass,
+        string $baseDatagridClass,
+        string $acceptorClass,
         EventDispatcherInterface $eventDispatcher,
         SecurityFacade $securityFacade
     ) {
@@ -53,10 +53,8 @@ class Builder
      * Create, configure and build datagrid
      *
      * @param DatagridConfiguration $config
-     *
-     * @return DatagridInterface
      */
-    public function build(DatagridConfiguration $config)
+    public function build(DatagridConfiguration $config): \Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface
     {
         $class = $config->offsetGetByPath(self::BASE_DATAGRID_CLASS_PATH, $this->baseDatagridClass);
         $name = $config->getName();
@@ -98,7 +96,7 @@ class Builder
      *
      * @return $this
      */
-    public function registerDatasource($type, DatasourceInterface $dataSource)
+    public function registerDatasource(string $type, DatasourceInterface $dataSource): self
     {
         $this->dataSources[$type] = $dataSource;
 
@@ -113,7 +111,7 @@ class Builder
      *
      * @return $this
      */
-    public function registerExtension(ExtensionVisitorInterface $extension)
+    public function registerExtension(ExtensionVisitorInterface $extension): self
     {
         $this->extensions[] = $extension;
 
@@ -129,7 +127,7 @@ class Builder
      *
      * @throws \RuntimeException
      */
-    protected function buildDataSource(DatagridInterface $grid, DatagridConfiguration $config)
+    protected function buildDataSource(DatagridInterface $grid, DatagridConfiguration $config): void
     {
         $sourceType = $config->offsetGetByPath(self::DATASOURCE_TYPE_PATH, false);
         if (!$sourceType) {
@@ -152,10 +150,8 @@ class Builder
      * Checks if an access to a resource is granted or not
      *
      * @param string $aclResource An ACL annotation id or "permission;descriptor"
-     *
-     * @return bool
      */
-    protected function isResourceGranted($aclResource)
+    protected function isResourceGranted(string $aclResource): bool
     {
         $delimiter = strpos($aclResource, ';');
         if ($delimiter) {

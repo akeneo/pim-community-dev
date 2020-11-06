@@ -23,7 +23,7 @@ class ValidDateRangeValidator extends ConstraintValidator
      *
      * @throws \Exception
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
         if (!$constraint instanceof ValidDateRange) {
             throw new UnexpectedTypeException($constraint, ValidDateRange::class);
@@ -44,12 +44,10 @@ class ValidDateRangeValidator extends ConstraintValidator
                 ->addViolation();
         }
 
-        if ($min instanceof \DateTime && $max instanceof \DateTime) {
-            if ($min->getTimestamp() >= $max->getTimestamp()) {
-                $this->context->buildViolation($constraint->message)
-                    ->atPath('dateMax')
-                    ->addViolation();
-            }
+        if ($min instanceof \DateTime && $max instanceof \DateTime && $min->getTimestamp() >= $max->getTimestamp()) {
+            $this->context->buildViolation($constraint->message)
+                ->atPath('dateMax')
+                ->addViolation();
         }
     }
 
@@ -57,15 +55,9 @@ class ValidDateRangeValidator extends ConstraintValidator
      * Check if the date/time/datetime is valid based on the rules defined in the entity
      *
      * @param mixed $date
-     *
-     * @return bool
      */
-    protected function isDateValid($date)
+    protected function isDateValid($date): bool
     {
-        if (!$date || $date instanceof \DateTime) {
-            return true;
-        }
-
-        return false;
+        return !$date || $date instanceof \DateTime;
     }
 }

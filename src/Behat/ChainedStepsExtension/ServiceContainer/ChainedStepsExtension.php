@@ -24,7 +24,7 @@ class ChainedStepsExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigKey()
+    public function getConfigKey(): string
     {
         return 'chained_steps';
     }
@@ -32,21 +32,21 @@ class ChainedStepsExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize(ExtensionManager $extensionManager)
+    public function initialize(ExtensionManager $extensionManager): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure(ArrayNodeDefinition $builder)
+    public function configure(ArrayNodeDefinition $builder): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function load(ContainerBuilder $container, array $config)
+    public function load(ContainerBuilder $container, array $config): void
     {
         $definition = new Definition(SubStepTester::class, array(
             new Reference(TesterExtension::STEP_TESTER_ID),
@@ -58,7 +58,7 @@ class ChainedStepsExtension implements ExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
     }
 }

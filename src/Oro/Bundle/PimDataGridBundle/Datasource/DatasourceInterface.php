@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Datasource;
 
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface as OroDatasourceInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
@@ -18,13 +19,12 @@ interface DatasourceInterface extends OroDatasourceInterface
     /**
      * Get the query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder
      *
      * @deprecated you should avoid this method, it's a design flaw, still used by,
      *  `Oro\Bundle\PimDataGridBundle\Extension\MassAction\MassActionDispatcher`,
      *  `Oro\Bundle\PimDataGridBundle\Extension\Selector\OrmSelectorExtension`
      */
-    public function getQueryBuilder();
+    public function getQueryBuilder(): QueryBuilder;
 
     /**
      * Get repository
@@ -64,7 +64,6 @@ interface DatasourceInterface extends OroDatasourceInterface
      *
      * @param HydratorInterface $hydrator
      *
-     * @return DatasourceInterface
      *
      * @deprecated you should avoid this method, it's a design flaw, it allows the change the hydration mode in several
      * actions, for instance, still in used by,
@@ -75,5 +74,5 @@ interface DatasourceInterface extends OroDatasourceInterface
      * Hydration mode may be passed (or not) as argument of $datasource->getResults(); to avoid to change the hydration
      * before to call the getResults() method
      */
-    public function setHydrator(HydratorInterface $hydrator);
+    public function setHydrator(HydratorInterface $hydrator): \Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
 }

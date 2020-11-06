@@ -24,24 +24,20 @@ interface FieldFilterInterface extends FilterInterface
      * @param array        $options  the filter options
      *
      * @throws PropertyException
-     *
-     * @return FieldFilterInterface
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = []);
+    public function addFieldFilter(string $field, string $operator, $value, string $locale = null, string $channel = null, array $options = []): \Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 
     /**
      * This filter supports the field
      *
      * @param string $field
-     *
-     * @return bool
      */
-    public function supportsField($field);
+    public function supportsField(string $field): bool;
 
     /**
      * Returns supported fields
      *
      * @return string[]|array
      */
-    public function getFields();
+    public function getFields(): array;
 }

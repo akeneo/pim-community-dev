@@ -44,7 +44,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, NormalizerAwareI
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         $optionsValues = $context['onlyActivatedLocales'] ?
             $this->ensureEmptyOptionValues($object->getOptionValues()) :
@@ -62,7 +62,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, NormalizerAwareI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormat);
     }
@@ -76,10 +76,8 @@ class AttributeOptionNormalizer implements NormalizerInterface, NormalizerAwareI
      * Ensure that there is an option for all activated locales
      *
      * @param Collection $optionValues
-     *
-     * @return Collection
      */
-    protected function ensureEmptyOptionValues(Collection $optionValues)
+    protected function ensureEmptyOptionValues(Collection $optionValues): \Doctrine\Common\Collections\Collection
     {
         $activeLocales = $this->getActiveLocales();
         $usedLocales = [];
@@ -103,10 +101,8 @@ class AttributeOptionNormalizer implements NormalizerInterface, NormalizerAwareI
 
     /**
      * Get cached active locales
-     *
-     * @return array
      */
-    protected function getActiveLocales()
+    protected function getActiveLocales(): array
     {
         if (!$this->activeLocales) {
             $this->activeLocales = $this->localeRepository->getActivatedLocales();

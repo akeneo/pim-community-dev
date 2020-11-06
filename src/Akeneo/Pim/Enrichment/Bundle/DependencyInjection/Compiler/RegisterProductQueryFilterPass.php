@@ -32,7 +32,7 @@ class RegisterProductQueryFilterPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $registryTag = sprintf('pim_catalog.query.filter.%s_registry', $this->type);
 
@@ -57,7 +57,7 @@ class RegisterProductQueryFilterPass implements CompilerPassInterface
      *
      * @return Reference[]
      */
-    private function findAndSortTaggedServices($tagName, ContainerBuilder $container): array
+    private function findAndSortTaggedServices(string $tagName, ContainerBuilder $container): array
     {
         $services = $container->findTaggedServiceIds($tagName);
 

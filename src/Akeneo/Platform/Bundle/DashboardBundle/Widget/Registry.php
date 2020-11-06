@@ -20,7 +20,7 @@ class Registry
      * @param WidgetInterface $widget
      * @param int             $position
      */
-    public function add(WidgetInterface $widget, $position)
+    public function add(WidgetInterface $widget, int $position): void
     {
         if (!isset($this->widgets[$position])) {
             $this->widgets[$position] = $widget;
@@ -37,7 +37,7 @@ class Registry
      *
      * @return null|WidgetInterface
      */
-    public function get($alias)
+    public function get(string $alias)
     {
         foreach ($this->widgets as $widget) {
             if ($widget->getAlias() === $alias) {
@@ -53,7 +53,7 @@ class Registry
      *
      * @return WidgetInterface[]
      */
-    public function getAll()
+    public function getAll(): array
     {
         return $this->widgets;
     }

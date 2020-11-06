@@ -17,10 +17,8 @@ abstract class AbstractNotificationFactory implements NotificationFactoryInterfa
      * Return the job execution status
      *
      * @param JobExecution $jobExecution
-     *
-     * @return string
      */
-    protected function getJobStatus(JobExecution $jobExecution)
+    protected function getJobStatus(JobExecution $jobExecution): string
     {
         if ($jobExecution->getStatus()->isUnsuccessful()) {
             $status = 'error';

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor;
 
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
@@ -35,8 +36,8 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     public function __construct(
         Client $searchEngine,
         CursorableRepositoryInterface $cursorableRepository,
-        $cursorClassName,
-        $pageSize
+        string $cursorClassName,
+        int $pageSize
     ) {
         $this->searchEngine = $searchEngine;
         $this->cursorClassName = $cursorClassName;
@@ -47,7 +48,7 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createCursor($queryBuilder, array $options = [])
+    public function createCursor($queryBuilder, array $options = []): CursorInterface
     {
         $options = $this->resolveOptions($options);
 
@@ -63,10 +64,8 @@ class FromSizeCursorFactory implements CursorFactoryInterface
 
     /**
      * @param array $options
-     *
-     * @return array
      */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefined(
@@ -86,8 +85,6 @@ class FromSizeCursorFactory implements CursorFactoryInterface
         $resolver->setAllowedTypes('limit', 'int');
         $resolver->setAllowedTypes('from', 'int');
 
-        $options = $resolver->resolve($options);
-
-        return $options;
+        return $resolver->resolve($options);
     }
 }

@@ -19,7 +19,7 @@ final class SqlGetProductCompletenesses implements GetProductCompletenesses
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -40,14 +40,12 @@ SQL;
         $rows = $this->connection->executeQuery($sql, ['productId' => $productId])->fetchAll();
 
         return new ProductCompletenessCollection($productId, array_map(
-            function (array $row): ProductCompleteness {
-                return new ProductCompleteness(
-                    $row['channel_code'],
-                    $row['locale_code'],
-                    (int)$row['required_count'],
-                    (int)$row['missing_count']
-                );
-            },
+            fn(array $row): ProductCompleteness => new ProductCompleteness(
+                $row['channel_code'],
+                $row['locale_code'],
+                (int)$row['required_count'],
+                (int)$row['missing_count']
+            ),
             $rows
         ));
     }

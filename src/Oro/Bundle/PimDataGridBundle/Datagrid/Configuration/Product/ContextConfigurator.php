@@ -89,7 +89,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(DatagridConfiguration $configuration)
+    public function configure(DatagridConfiguration $configuration): void
     {
         $this->configuration = $configuration;
         $this->addProductStorage();
@@ -113,10 +113,8 @@ class ContextConfigurator implements ConfiguratorInterface
 
     /**
      * @param string $key the configuration key
-     *
-     * @return string
      */
-    protected function getSourcePath($key)
+    protected function getSourcePath(string $key): string
     {
         return sprintf(self::SOURCE_PATH, $key);
     }
@@ -124,7 +122,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Inject used product storage in the datagrid configuration
      */
-    protected function addProductStorage()
+    protected function addProductStorage(): void
     {
         $path = $this->getSourcePath(self::PRODUCT_STORAGE_KEY);
         $this->configuration->offsetSetByPath($path, 'doctrine/orm');
@@ -133,7 +131,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Inject current locale code in the datagrid configuration
      */
-    protected function addLocaleCode()
+    protected function addLocaleCode(): void
     {
         $localeCode = $this->getCurrentLocaleCode();
         $path = $this->getSourcePath(self::DISPLAYED_LOCALE_KEY);
@@ -143,7 +141,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Inject current scope code in the datagrid configuration
      */
-    protected function addScopeCode()
+    protected function addScopeCode(): void
     {
         $scopeCode = $this->getCurrentScopeCode();
         $path = $this->getSourcePath(self::DISPLAYED_SCOPE_KEY);
@@ -153,7 +151,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Inject current group id in the datagrid configuration
      */
-    protected function addCurrentGroupId()
+    protected function addCurrentGroupId(): void
     {
         $groupId = $this->getProductGroupId();
         $path = $this->getSourcePath(self::CURRENT_GROUP_ID_KEY);
@@ -163,7 +161,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Inject current association type id in the datagrid configuration
      */
-    protected function addAssociationTypeId()
+    protected function addAssociationTypeId(): void
     {
         $path = $this->getSourcePath(self::ASSOCIATION_TYPE_ID_KEY);
         $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
@@ -178,7 +176,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Inject current product in the datagrid configuration
      */
-    protected function addCurrentProduct()
+    protected function addCurrentProduct(): void
     {
         $path = $this->getSourcePath(self::CURRENT_PRODUCT_KEY);
         $id = $this->requestParams->get('product', null);
@@ -190,7 +188,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Inject requested repository parameters in the datagrid configuration
      */
-    protected function addRepositoryParameters()
+    protected function addRepositoryParameters(): void
     {
         $path = $this->getSourcePath(self::REPOSITORY_PARAMETERS_KEY);
         $repositoryParams = $this->configuration->offsetGetByPath($path, null);
@@ -207,11 +205,11 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Inject displayed columns in the datagrid configuration
      */
-    protected function addDisplayedColumnCodes()
+    protected function addDisplayedColumnCodes(): void
     {
         $userColumns = $this->getUserGridColumns();
 
-        if ($userColumns) {
+        if ($userColumns !== []) {
             $path = $this->getSourcePath(self::DISPLAYED_COLUMNS_KEY);
             $this->configuration->offsetSetByPath($path, $userColumns);
         }
@@ -219,10 +217,8 @@ class ContextConfigurator implements ConfiguratorInterface
 
     /**
      * Get current locale from datagrid parameters, then request parameters, then user config
-     *
-     * @return string
      */
-    protected function getCurrentLocaleCode()
+    protected function getCurrentLocaleCode(): string
     {
         $dataLocale = $this->requestParams->get('dataLocale', null);
         if (!$dataLocale) {
@@ -238,7 +234,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @return int|null
      */
-    protected function getProductGroupId()
+    protected function getProductGroupId(): ?int
     {
         $productGroupId = null;
         if (null !== $productGroup = $this->getRequest()->get('group', null)) {
@@ -253,10 +249,8 @@ class ContextConfigurator implements ConfiguratorInterface
 
     /**
      * Get current scope from datagrid parameters, then user config
-     *
-     * @return string
      */
-    protected function getCurrentScopeCode()
+    protected function getCurrentScopeCode(): string
     {
         $filterValues = $this->requestParams->get('_filter');
         $currentScopeCode = null;
@@ -289,7 +283,7 @@ class ContextConfigurator implements ConfiguratorInterface
      *
      * @return string[]
      */
-    protected function getUserGridColumns()
+    protected function getUserGridColumns(): array
     {
         $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
 
@@ -303,7 +297,7 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * Inject requested _per_page parameters in the datagrid configuration
      */
-    protected function addPaginationConfig()
+    protected function addPaginationConfig(): void
     {
         $pager = $this->requestParams->get(PagerExtension::PAGER_ROOT_PARAM);
 

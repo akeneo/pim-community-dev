@@ -73,7 +73,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         $this->familyCodes = [];
         $this->hasItems = false;
@@ -84,7 +84,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $this->hasItems = true;
         foreach ($items as $item) {
@@ -143,7 +143,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    protected function getWriterConfiguration()
+    protected function getWriterConfiguration(): array
     {
         return ['type' => 'xlsx'];
     }
@@ -151,7 +151,7 @@ class ProductWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    protected function getItemIdentifier(array $product)
+    protected function getItemIdentifier(array $product): string
     {
         return $product['identifier'];
     }

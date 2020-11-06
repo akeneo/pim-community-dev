@@ -78,13 +78,11 @@ class FamilyVariantNormalizer implements NormalizerInterface, CacheableSupportsM
      */
     private function normalizeVariantAttributeSets(Collection $variantAttributeSets): array
     {
-        return $variantAttributeSets->map(function (VariantAttributeSetInterface $variantAttributeSet) {
-            return [
-                'level' => $variantAttributeSet->getLevel(),
-                'axes' => $this->normalizeAttributes($variantAttributeSet->getAxes()),
-                'attributes' => $this->normalizeAttributes($variantAttributeSet->getAttributes()),
-            ];
-        })->toArray();
+        return $variantAttributeSets->map(fn(VariantAttributeSetInterface $variantAttributeSet) => [
+            'level' => $variantAttributeSet->getLevel(),
+            'axes' => $this->normalizeAttributes($variantAttributeSet->getAxes()),
+            'attributes' => $this->normalizeAttributes($variantAttributeSet->getAttributes()),
+        ])->toArray();
     }
 
     /**
@@ -96,8 +94,6 @@ class FamilyVariantNormalizer implements NormalizerInterface, CacheableSupportsM
      */
     private function normalizeAttributes(Collection $attributes): array
     {
-        return $attributes->map(function (AttributeInterface $attribute) {
-            return $attribute->getCode();
-        })->toArray();
+        return $attributes->map(fn(AttributeInterface $attribute) => $attribute->getCode())->toArray();
     }
 }

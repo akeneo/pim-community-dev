@@ -19,7 +19,7 @@ class VersionFactory
     /**
      * @param string $versionClass
      */
-    public function __construct($versionClass)
+    public function __construct(string $versionClass)
     {
         $this->versionClass = $versionClass;
     }
@@ -31,10 +31,8 @@ class VersionFactory
      * @param  mixed   $resourceId
      * @param  string  $author
      * @param  mixed   $context
-     *
-     * @return Version
      */
-    public function create($resourceName, $resourceId, $author, $context = null)
+    public function create(string $resourceName, $resourceId, string $author, $context = null): Version
     {
         return new $this->versionClass($resourceName, $resourceId, $author, $context);
     }

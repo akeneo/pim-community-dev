@@ -37,7 +37,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
     /**
      * @inheritDoc
      */
-    public function validate($saveMeasurementFamily, Constraint $constraint)
+    public function validate($saveMeasurementFamily, Constraint $constraint): void
     {
         $isMeasureFamilyLockedForUpdates = $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily
             ->execute($saveMeasurementFamily->code);
@@ -69,7 +69,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
             $measurementFamily,
             $saveMeasurementFamily
         );
-        if ($unitsBeingUpdated) {
+        if ($unitsBeingUpdated !== []) {
             $this->context->buildViolation(
                 WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUnits::MEASUREMENT_FAMILY_OPERATION_UPDATE_NOT_ALLOWED,
                 [
@@ -85,14 +85,10 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
     {
         $normalizedMeasurementFamily = $measurementFamily->normalize();
         $actualUnitCodes = array_map(
-            function (array $unit) {
-                return $unit['code'];
-            },
+            fn(array $unit) => $unit['code'],
             $normalizedMeasurementFamily['units']
         );
-        $unitCodesToUpdate = array_map(function (array $unit) {
-            return $unit['code'];
-        }, $saveMeasurementFamily->units);
+        $unitCodesToUpdate = array_map(fn(array $unit) => $unit['code'], $saveMeasurementFamily->units);
 
         return array_diff($actualUnitCodes, $unitCodesToUpdate);
     }
@@ -121,9 +117,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
         foreach ($saveMeasurementFamily->units as $unit) {
             $unitCode = $unit['code'];
             $serializedOperations = array_map(
-                function (array $unit) {
-                    return json_encode($unit);
-                },
+                fn(array $unit) => json_encode($unit),
                 $unit['convert_from_standard']
             );
             $operationsPerUnit[$unitCode] = $serializedOperations;
@@ -139,9 +133,7 @@ class WhenUsedInAProductAttributeShouldBeAbleToUpdateOnlyLabelsAndSymbolAndAddUn
         foreach ($normalizedUnits as $unit) {
             $unitCode = $unit['code'];
             $serializedOperations = array_map(
-                function (array $unit) {
-                    return json_encode($unit);
-                }, $unit['convert_from_standard']);
+                fn(array $unit) => json_encode($unit), $unit['convert_from_standard']);
             $operationsPerUnit[$unitCode] = $serializedOperations;
         }
 

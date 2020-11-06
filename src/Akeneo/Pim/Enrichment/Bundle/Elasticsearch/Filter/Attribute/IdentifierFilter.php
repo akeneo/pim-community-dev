@@ -40,12 +40,12 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): AttributeFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -65,7 +65,7 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkValue($property, $operator, $value)
+    protected function checkValue(string $property, string $operator, $value): void
     {
         if (Operators::IN_LIST === $operator || Operators::NOT_IN_LIST === $operator) {
             FieldFilterHelper::checkArray($property, $value, self::class);
@@ -77,7 +77,7 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function supportsAttribute(AttributeInterface $attribute): bool
     {
         return in_array($attribute->getType(), $this->supportedAttributeTypes);
     }
@@ -85,7 +85,7 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
     /**
      * {@inheritdoc}
      */
-    public function getAttributeTypes()
+    public function getAttributeTypes(): array
     {
         return $this->supportedAttributeTypes;
     }
@@ -97,7 +97,7 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
      * @param string             $operator
      * @param string|array       $value
      */
-    protected function applyFilter(AttributeInterface $attribute, string $operator, $value)
+    protected function applyFilter(AttributeInterface $attribute, string $operator, $value): void
     {
         $attributePath = $this->getAttributePath($attribute, null, null);
         switch ($operator) {

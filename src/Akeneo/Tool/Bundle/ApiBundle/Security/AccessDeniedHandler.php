@@ -23,7 +23,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(Request $request, AccessDeniedException $exception)
+    public function handle(Request $request, AccessDeniedException $exception): JsonResponse
     {
         return new JsonResponse(
             [
@@ -34,7 +34,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
         );
     }
 
-    protected function getMessage(Request $request, AccessDeniedException $exception)
+    protected function getMessage(Request $request, AccessDeniedException $exception): string
     {
         if ($exception instanceof OroAccessDeniedException) {
             $actionName = 'GET' === $request->getMethod() ? 'list' : 'create or update';

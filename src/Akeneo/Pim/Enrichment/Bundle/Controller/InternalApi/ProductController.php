@@ -187,10 +187,8 @@ class ProductController
      * @param string $id Product id
      *
      * @throws NotFoundHttpException If product is not found or the user cannot see it
-     *
-     * @return JsonResponse
      */
-    public function getAction($id)
+    public function getAction(string $id): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $product = $this->findProductOr404($id);
 
@@ -258,7 +256,7 @@ class ProductController
      *
      * @return Response
      */
-    public function postAction(Request $request, $id)
+    public function postAction(Request $request, string $id)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -272,7 +270,7 @@ class ProductController
         try {
             $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
         } catch (ObjectNotFoundException $e) {
-            throw new BadRequestHttpException();
+            throw new BadRequestHttpException($e);
         }
         $this->updateProduct($product, $data);
 
@@ -306,7 +304,7 @@ class ProductController
      *
      * @return Response
      */
-    public function removeAction(Request $request, $id)
+    public function removeAction(Request $request, int $id)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -336,7 +334,7 @@ class ProductController
      *
      * @return Response
      */
-    public function removeAttributeAction(Request $request, $id, $attributeId)
+    public function removeAttributeAction(Request $request, string $id, string $attributeId)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -369,10 +367,8 @@ class ProductController
      * @param string $id the product id
      *
      * @throws NotFoundHttpException
-     *
-     * @return ProductInterface
      */
-    protected function findProductOr404($id)
+    protected function findProductOr404(string $id): object
     {
         $product = $this->productRepository->find($id);
 
@@ -391,10 +387,8 @@ class ProductController
      * @param int $id the attribute id
      *
      * @throws NotFoundHttpException
-     *
-     * @return AttributeInterface
      */
-    protected function findAttributeOr404($id)
+    protected function findAttributeOr404(int $id): object
     {
         $attribute = $this->attributeRepository->find($id);
 
@@ -413,7 +407,7 @@ class ProductController
      * @param ProductInterface $product
      * @param array            $data
      */
-    protected function updateProduct(ProductInterface $product, array $data)
+    protected function updateProduct(ProductInterface $product, array $data): void
     {
         $values = $this->productValueConverter->convert($data['values']);
 

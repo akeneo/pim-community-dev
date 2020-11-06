@@ -61,12 +61,12 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): AttributeFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -232,7 +232,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      * @throws InvalidPropertyTypeException
      * @throws InvalidPropertyException
      */
-    protected function checkAmount(AttributeInterface $attribute, $data)
+    protected function checkAmount(AttributeInterface $attribute, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
@@ -263,7 +263,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
      * @throws InvalidPropertyTypeException
      * @throws InvalidPropertyException
      */
-    protected function checkCurrency(AttributeInterface $attribute, $data)
+    protected function checkCurrency(AttributeInterface $attribute, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);

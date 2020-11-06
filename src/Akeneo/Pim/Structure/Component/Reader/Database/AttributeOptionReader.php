@@ -34,7 +34,7 @@ class AttributeOptionReader extends AbstractReader implements
     /**
      * {@inheritdoc}
      */
-    protected function getResults()
+    protected function getResults(): \ArrayIterator
     {
         return new \ArrayIterator($this->repository->findBy([], ['attribute' => 'ASC', 'sortOrder' => 'ASC']));
     }

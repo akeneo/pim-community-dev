@@ -22,9 +22,9 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($comment, $format = null, array $context = [])
+    public function normalize($comment, $format = null, array $context = []): array
     {
-        $data = [
+        return [
             'id'           => $comment->getId(),
             'resourceName' => $comment->getResourceName(),
             'resourceId'   => $comment->getResourceId(),
@@ -34,14 +34,12 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
             'replied'      => $this->normalizer->normalize($comment->getRepliedAt(), 'standard', $context),
             'replies'      => $this->normalizeChildren($comment->getChildren()->toArray(), $context),
         ];
-
-        return $data;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof CommentInterface && $format === 'standard';
     }
@@ -56,10 +54,8 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @param array $children
      * @param array $context
-     *
-     * @return array
      */
-    protected function normalizeChildren(array $children, array $context = [])
+    protected function normalizeChildren(array $children, array $context = []): array
     {
         $comments = [];
         foreach ($children as $child) {
@@ -69,7 +65,7 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
         return $comments;
     }
 
-    private function normalizeAuthor(Commentinterface $comment): array
+    private function normalizeAuthor(CommentInterface $comment): array
     {
         if (null === $comment->getAuthor()) {
             return [

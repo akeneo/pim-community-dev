@@ -24,7 +24,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(Connection $connection, LoggerInterface $logger)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, LoggerInterface $logger)
     {
         $this->connection = $connection;
         $this->logger = $logger;
@@ -60,9 +60,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
 
         $deleteAndInsertFunction = function () use ($productCompletenessCollections, $localeIdsFromCode, $channelIdsFromCode) {
-            $productIds = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
-                return $productCompletenessCollection->productId();
-            }, $productCompletenessCollections));
+            $productIds = array_unique(array_map(fn(ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) => $productCompletenessCollection->productId(), $productCompletenessCollections));
 
             $this->connection->executeQuery(
                 'DELETE FROM pim_catalog_completeness WHERE product_id IN (:product_ids)',
@@ -145,7 +143,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
     {
         $retry = 0;
         $isError = true;
-        while (true === $isError) {
+        while ($isError) {
             try {
                 $this->connection->transactional($function);
 

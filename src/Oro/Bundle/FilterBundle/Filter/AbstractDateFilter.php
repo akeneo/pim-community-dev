@@ -15,7 +15,7 @@ abstract class AbstractDateFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -112,10 +112,8 @@ abstract class AbstractDateFilter extends AbstractFilter
 
     /**
      * @param $data
-     *
-     * @return bool
      */
-    protected function isValidData($data)
+    protected function isValidData($data): bool
     {
         if (!is_array($data) || !array_key_exists('value', $data) || !is_array($data['value'])) {
             return false;
@@ -129,13 +127,8 @@ abstract class AbstractDateFilter extends AbstractFilter
         if (isset($data['value']['start']) && !$data['value']['start'] instanceof \DateTime) {
             return false;
         }
-
         // check end date
-        if (isset($data['value']['end']) && !$data['value']['end'] instanceof \DateTime) {
-            return false;
-        }
-
-        return true;
+        return !(isset($data['value']['end']) && !$data['value']['end'] instanceof \DateTime);
     }
 
     /**
@@ -149,21 +142,21 @@ abstract class AbstractDateFilter extends AbstractFilter
      * @param string                           $fieldName ,
      */
     protected function applyFilterBetween(
-        $ds,
-        $dateStartValue,
-        $dateEndValue,
-        $startDateParameterName,
-        $endDateParameterName,
-        $fieldName
+        \Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface $ds,
+        string $dateStartValue,
+        string $dateEndValue,
+        string $startDateParameterName,
+        string $endDateParameterName,
+        string $fieldName
     ) {
-        if ($dateStartValue) {
+        if ($dateStartValue !== '') {
             $this->applyFilterToClause(
                 $ds,
                 $ds->expr()->gte($fieldName, $startDateParameterName, true)
             );
         }
 
-        if ($dateEndValue) {
+        if ($dateEndValue !== '') {
             $this->applyFilterToClause(
                 $ds,
                 $ds->expr()->lte($fieldName, $endDateParameterName, true)
@@ -181,11 +174,11 @@ abstract class AbstractDateFilter extends AbstractFilter
      * @param bool                             $isLess less/more mode, true if 'less than', false if 'more than'
      */
     protected function applyFilterLessMore(
-        $ds,
+        \Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface $ds,
         $dateValue,
         $dateParameterName,
-        $fieldName,
-        $isLess
+        string $fieldName,
+        bool $isLess
     ) {
         if ($dateValue) {
             $expr = $isLess
@@ -206,20 +199,19 @@ abstract class AbstractDateFilter extends AbstractFilter
      * @param string                           $fieldName
      */
     protected function applyFilterNotBetween(
-        $ds,
-        $dateStartValue,
-        $dateEndValue,
-        $startDateParameterName,
-        $endDateParameterName,
-        $fieldName
+        \Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface $ds,
+        string $dateStartValue,
+        string $dateEndValue,
+        string $startDateParameterName,
+        string $endDateParameterName,
+        string $fieldName
     ) {
         if ($dateStartValue || $dateEndValue) {
             $expr = null;
-            if ($dateStartValue) {
-                if ($dateEndValue) {
+            if ($dateStartValue !== '') {
+                if ($dateEndValue !== '') {
                     $expr = $ds->expr()->orX(
-                        $ds->expr()->lt($fieldName, $startDateParameterName, true),
-                        $ds->expr()->gt($fieldName, $endDateParameterName, true)
+                        $ds->expr()->lt($fieldName, $startDateParameterName, true)
                     );
                 } else {
                     $expr = $ds->expr()->lt($fieldName, $startDateParameterName, true);
@@ -244,12 +236,12 @@ abstract class AbstractDateFilter extends AbstractFilter
      *
      */
     protected function applyDependingOnType(
-        $type,
-        $ds,
-        $dateStartValue,
-        $dateEndValue,
-        $startDateParameterName,
-        $endDateParameterName,
+        int $type,
+        \Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface $ds,
+        string $dateStartValue,
+        string $dateEndValue,
+        string $startDateParameterName,
+        string $endDateParameterName,
         $fieldName
     ) {
         switch ($type) {
@@ -298,7 +290,7 @@ abstract class AbstractDateFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $formView = $this->getForm()->createView();
 

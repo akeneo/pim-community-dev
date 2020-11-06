@@ -27,7 +27,7 @@ class ProductValuesNormalizer implements NormalizerInterface, CacheableSupportsM
     /**
      * {@inheritdoc}
      */
-    public function normalize($data, $format = null, array $context = [])
+    public function normalize($data, $format = null, array $context = []): array
     {
         $result = [];
 
@@ -42,7 +42,7 @@ class ProductValuesNormalizer implements NormalizerInterface, CacheableSupportsM
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return 'standard' === $format && ($data instanceof WriteValueCollection || $data instanceof ReadValueCollection);
     }

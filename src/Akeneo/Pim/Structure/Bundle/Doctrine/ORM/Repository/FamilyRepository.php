@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -22,7 +23,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
+    public function getFullRequirementsQB(FamilyInterface $family, string $localeCode): QueryBuilder
     {
         $repository = $this->getEntityManager()->getRepository(AttributeRequirement::class);
         Assert::isInstanceOf($repository, AttributeRequirementRepositoryInterface::class);
@@ -73,7 +74,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null)
+    public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null): array
     {
         $qb = $this->createQueryBuilder('f')
             ->select('f')
@@ -98,7 +99,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     /**
      * {@inheritdoc}*
      */
-    public function findByIds(array $familyIds)
+    public function findByIds(array $familyIds): array
     {
         if (empty($familyIds)) {
             throw new \InvalidArgumentException('Array must contain at least one family id');
@@ -114,7 +115,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['code' => $code]);
     }
@@ -122,7 +123,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -130,7 +131,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     /**
      * {@inheritdoc}
      */
-    public function hasAttribute($id, $attributeCode)
+    public function hasAttribute(int $id, string $attributeCode): bool
     {
         $queryBuilder = $this->createQueryBuilder('f')
             ->select(1)

@@ -25,7 +25,7 @@ class RegisterRendererPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $registryId = static::REGISTRY_ID;
 
@@ -46,10 +46,8 @@ class RegisterRendererPass implements CompilerPassInterface
      * Get tagged renderer services ordered by priority
      *
      * @param ContainerBuilder $container
-     *
-     * @return array
      */
-    protected function getServicesByPriority(ContainerBuilder $container)
+    protected function getServicesByPriority(ContainerBuilder $container): array
     {
         $priorities = [];
         foreach ($container->findTaggedServiceIds(static::RENDERER_TAG) as $serviceId => $tags) {

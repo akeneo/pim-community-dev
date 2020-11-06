@@ -11,7 +11,7 @@ class NumberFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return NumberFilterType::class;
     }
@@ -19,7 +19,7 @@ class NumberFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -59,10 +59,8 @@ class NumberFilter extends AbstractFilter
      * Get operator string
      *
      * @param int $type
-     *
-     * @return string
      */
-    public function getOperator($type)
+    public function getOperator(int $type): string
     {
         $operatorTypes = [
             NumberFilterType::TYPE_EQUAL         => Operators::EQUALS,
@@ -78,7 +76,7 @@ class NumberFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $metadata = parent::getMetadata();
 
@@ -97,10 +95,8 @@ class NumberFilter extends AbstractFilter
      * Since we don't build the view anymore for the metadata, we need this logic here.
      *
      * @param string $dataType
-     *
-     * @return array
      */
-    protected function getFormatterOptions($dataType)
+    protected function getFormatterOptions(string $dataType): array
     {
         $formatterOptions = [];
 

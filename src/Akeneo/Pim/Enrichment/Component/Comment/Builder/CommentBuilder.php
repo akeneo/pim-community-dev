@@ -24,15 +24,12 @@ class CommentBuilder
     /**
      * @param string $className
      */
-    public function __construct($className)
+    public function __construct(string $className)
     {
         $this->className = $className;
     }
 
-    /**
-     * @return CommentInterface
-     */
-    public function newInstance()
+    public function newInstance(): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         return new $this->className();
     }
@@ -40,10 +37,8 @@ class CommentBuilder
     /**
      * @param CommentSubjectInterface $subject
      * @param UserInterface           $user
-     *
-     * @return CommentInterface
      */
-    public function buildComment(CommentSubjectInterface $subject, UserInterface $user)
+    public function buildComment(CommentSubjectInterface $subject, UserInterface $user): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $now = new \DateTime();
 
@@ -61,10 +56,8 @@ class CommentBuilder
 
     /**
      * @param UserInterface $user
-     *
-     * @return CommentInterface
      */
-    public function buildCommentWithoutSubject(UserInterface $user)
+    public function buildCommentWithoutSubject(UserInterface $user): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $now = new \DateTime();
 
@@ -81,10 +74,8 @@ class CommentBuilder
     /**
      * @param CommentInterface $comment
      * @param UserInterface    $user
-     *
-     * @return CommentInterface
      */
-    public function buildReply(CommentInterface $comment, UserInterface $user)
+    public function buildReply(CommentInterface $comment, UserInterface $user): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $now = new \DateTime();
 

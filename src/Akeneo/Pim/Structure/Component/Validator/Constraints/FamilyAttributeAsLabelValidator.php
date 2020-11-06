@@ -24,7 +24,7 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($family, Constraint $constraint)
+    public function validate($family, Constraint $constraint): void
     {
         if (!$constraint instanceof FamilyAttributeAsLabel) {
             throw new UnexpectedTypeException($constraint, FamilyAttributeAsLabel::class);
@@ -51,10 +51,8 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
 
     /**
      * @param FamilyInterface $family
-     *
-     * @return bool
      */
-    protected function doesAttributeAsLabelBelongToFamily(FamilyInterface $family)
+    protected function doesAttributeAsLabelBelongToFamily(FamilyInterface $family): bool
     {
         $attributeAsLabel = $family->getAttributeAsLabel();
         if (null === $attributeAsLabel) {
@@ -66,10 +64,8 @@ class FamilyAttributeAsLabelValidator extends ConstraintValidator
 
     /**
      * @param FamilyInterface $family
-     *
-     * @return bool
      */
-    protected function isAttributeAsLabelTypeValid(FamilyInterface $family)
+    protected function isAttributeAsLabelTypeValid(FamilyInterface $family): bool
     {
         $attributeAsLabel = $family->getAttributeAsLabel();
         if (null === $attributeAsLabel) {

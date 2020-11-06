@@ -35,10 +35,8 @@ class ProductValueConverter
     /**
      * @param string $attributeCode
      * @param mixed  $data
-     *
-     * @return array
      */
-    public function convertAttribute($attributeCode, $data)
+    public function convertAttribute(string $attributeCode, $data): array
     {
         $attribute = $this->attributeRepo->findOneByIdentifier($attributeCode);
         $converter = $this->converterRegistry->getConverter($attribute);

@@ -31,7 +31,7 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
         if (!$entity instanceof EntityWithFamilyVariantInterface) {
             throw new UnexpectedTypeException($entity, EntityWithFamilyVariantInterface::class);
@@ -49,11 +49,9 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
         // model that extends another sub product model. Else the validator thinks it's a variant product (as it will
         // be on the 3 level sub_product_model_2 -> sub_product_model_1 -> root_product_model) and will return the axes
         // on the 3 level.
-        if ($entity instanceof ProductModelInterface && null !== $entity->getParent()) {
-            if (null !== $entity->getParent()->getParent() ||
-                1 === (int) $entity->getParent()->getFamilyVariant()->getNumberOfLevel()) {
-                return;
-            }
+        if ($entity instanceof ProductModelInterface && null !== $entity->getParent() && (null !== $entity->getParent()->getParent() ||
+            1 === (int) $entity->getParent()->getFamilyVariant()->getNumberOfLevel())) {
+            return;
         }
 
         $axes = $this->axesProvider->getAxes($entity);

@@ -20,7 +20,7 @@ class ChainedFilter implements CollectionFilterInterface, ObjectFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filterCollection($collection, $type, array $options = [])
+    public function filterCollection($collection, string $type, array $options = [])
     {
         if (isset($this->collectionFilters[$type])) {
             foreach ($this->collectionFilters[$type] as $filter) {
@@ -40,7 +40,7 @@ class ChainedFilter implements CollectionFilterInterface, ObjectFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsCollection($collection, $type, array $options = [])
+    public function supportsCollection($collection, string $type, array $options = []): bool
     {
         return false;
     }
@@ -48,7 +48,7 @@ class ChainedFilter implements CollectionFilterInterface, ObjectFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filterObject($view, $type, array $options = [])
+    public function filterObject($view, string $type, array $options = []): bool
     {
         if (isset($this->objectFilters[$type])) {
             foreach ($this->objectFilters[$type] as $filter) {
@@ -66,7 +66,7 @@ class ChainedFilter implements CollectionFilterInterface, ObjectFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsObject($collection, $type, array $options = [])
+    public function supportsObject($collection, string $type, array $options = []): bool
     {
         return false;
     }
@@ -77,7 +77,7 @@ class ChainedFilter implements CollectionFilterInterface, ObjectFilterInterface
      * @param CollectionFilterInterface $filter The filter to add
      * @param string                    $type   The filter type
      */
-    public function addCollectionFilter(CollectionFilterInterface $filter, $type)
+    public function addCollectionFilter(CollectionFilterInterface $filter, string $type): void
     {
         $this->collectionFilters[$type][] = $filter;
     }
@@ -88,7 +88,7 @@ class ChainedFilter implements CollectionFilterInterface, ObjectFilterInterface
      * @param ObjectFilterInterface $filter The filter to add
      * @param string                $type   The filter type
      */
-    public function addObjectFilter(ObjectFilterInterface $filter, $type)
+    public function addObjectFilter(ObjectFilterInterface $filter, string $type): void
     {
         $this->objectFilters[$type][] = $filter;
     }

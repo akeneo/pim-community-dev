@@ -22,7 +22,7 @@ class AverageMaxVolumesNormalizer
      */
     public function normalize(AverageMaxVolumes $data): array
     {
-        $data = [
+        return [
             $data->getVolumeName() => [
                 'value' => [
                     'average' => $data->getAverageVolume(),
@@ -32,7 +32,5 @@ class AverageMaxVolumesNormalizer
                 'type' => self::VOLUME_TYPE
             ]
         ];
-
-        return $data;
     }
 }

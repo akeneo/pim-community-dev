@@ -44,7 +44,7 @@ class ActionAclVoter extends Voter implements VoterInterface
      * @param VoterInterface $baseAclVoter
      * @param string         $oidType
      */
-    public function __construct(VoterInterface $baseAclVoter, $oidType)
+    public function __construct(VoterInterface $baseAclVoter, string $oidType)
     {
         $this->baseAclVoter = $baseAclVoter;
         $this->oidType = $oidType;
@@ -53,7 +53,7 @@ class ActionAclVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attribute, $subject)
+    public function supports($attribute, $subject): bool
     {
         return $this->oidType === $attribute;
     }
@@ -77,7 +77,7 @@ class ActionAclVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): int
     {
         $oid = new ObjectIdentity(static::OID_IDENTIFIER, $attribute);
 

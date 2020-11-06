@@ -23,7 +23,7 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
     /**
      * {@inheritdoc}
      */
-    public function write($items, array $options = [])
+    public function write($items, array $options = []): void
     {
         foreach ($items as $item) {
             if (isset($options['withHeader']) && $options['withHeader']) {
@@ -38,17 +38,15 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return $this->count;
     }
 
     /**
      * Return the headers of every columns
-     *
-     * @return array
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
@@ -58,7 +56,7 @@ class FlatItemBuffer extends JSONFileBuffer implements BufferInterface, \Countab
      *
      * @param array $keys
      */
-    public function addToHeaders(array $keys)
+    public function addToHeaders(array $keys): void
     {
         $headers = array_merge($this->headers, $keys);
         $headers = array_unique($headers);

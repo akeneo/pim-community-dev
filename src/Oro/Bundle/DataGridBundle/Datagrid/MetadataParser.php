@@ -31,7 +31,7 @@ class MetadataParser
 
     public function __construct(
         FragmentHandler $fragmentHandler,
-        Manager $manager,
+        ManagerInterface $manager,
         RequestParameters $requestParams,
         RouterInterface $router
     ) {
@@ -63,10 +63,8 @@ class MetadataParser
      *
      * @param string            $name
      * @param array             $params
-     *
-     * @return string
      */
-    public function getGridData(string $name, array $params = []): string
+    public function getGridData(string $name, array $params = []): ?string
     {
         return $this->fragmentHandler->render($this->generateUrl($name, $params));
     }

@@ -14,7 +14,7 @@ class DeleteAction extends AbstractAction
     /**
      * @param ActionConfiguration $options
      */
-    public function setOptions(ActionConfiguration $options)
+    public function setOptions(ActionConfiguration $options): ActionInterface
     {
         if (!isset($options['confirmation'])) {
             $options['confirmation'] = true;

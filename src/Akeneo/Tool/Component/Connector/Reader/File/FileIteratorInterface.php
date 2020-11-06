@@ -13,15 +13,11 @@ interface FileIteratorInterface extends \Iterator
 {
     /**
      * Get directory path. Can be the path of extracted zip archive or directory file path
-     *
-     * @return string
      */
-    public function getDirectoryPath();
+    public function getDirectoryPath(): string;
 
     /**
      * Returns file headers
-     *
-     * @return array
      */
-    public function getHeaders();
+    public function getHeaders(): array;
 }

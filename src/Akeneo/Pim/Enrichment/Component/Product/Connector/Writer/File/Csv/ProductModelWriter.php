@@ -26,7 +26,7 @@ class ProductModelWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    protected function getWriterConfiguration()
+    protected function getWriterConfiguration(): array
     {
         $parameters = $this->stepExecution->getJobParameters();
 
@@ -41,7 +41,7 @@ class ProductModelWriter extends AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    protected function getItemIdentifier(array $productModel)
+    protected function getItemIdentifier(array $productModel): string
     {
         return $productModel['code'];
     }

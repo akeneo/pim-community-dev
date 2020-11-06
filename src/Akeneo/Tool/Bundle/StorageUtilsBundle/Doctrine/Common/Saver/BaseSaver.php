@@ -36,7 +36,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        $savedClass
+        string $savedClass
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
@@ -46,7 +46,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($object, array $options = [])
+    public function save($object, array $options = []): void
     {
         $this->validateObject($object);
 
@@ -65,7 +65,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $objects, array $options = [])
+    public function saveAll(array $objects, array $options = []): void
     {
         if (empty($objects)) {
             return;
@@ -75,9 +75,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $options));
 
-        $areObjectsNew = array_map(function ($object) {
-            return null === $object->getId();
-        }, $objects);
+        $areObjectsNew = array_map(fn($object) => null === $object->getId(), $objects);
 
         foreach ($objects as $i => $object) {
             $this->validateObject($object);
@@ -105,7 +103,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
     /**
      * @param $object
      */
-    protected function validateObject($object)
+    protected function validateObject($object): void
     {
         if (!$object instanceof $this->savedClass) {
             throw new \InvalidArgumentException(

@@ -19,16 +19,12 @@ final class UnknownAttribute implements DocumentationBuilderInterface
 {
     public function support($object): bool
     {
-        if ($object instanceof UnknownAttributeException) {
-            return true;
-        }
-
-        return false;
+        return $object instanceof UnknownAttributeException;
     }
 
     public function buildDocumentation($object): DocumentationCollection
     {
-        if (false === $this->support($object)) {
+        if (!$this->support($object)) {
             throw new \InvalidArgumentException('Parameter $object is not supported.');
         }
 

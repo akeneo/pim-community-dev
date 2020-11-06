@@ -40,7 +40,7 @@ class ListJobsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('List the existing job instances')
@@ -56,7 +56,7 @@ class ListJobsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $criteria = [];
         $type = $input->getOption('type');
@@ -67,15 +67,14 @@ class ListJobsCommand extends Command
             ->findBy($criteria, ['type' => 'asc', 'code' => 'asc']);
         $table = $this->buildTable($jobs, $output);
         $table->render($output);
+        return 0;
     }
 
     /**
      * @param array           $jobs
      * @param OutputInterface $output
-     *
-     * @return \Symfony\Component\Console\Helper\HelperInterface
      */
-    protected function buildTable(array $jobs, OutputInterface $output)
+    protected function buildTable(array $jobs, OutputInterface $output): Table
     {
         $rows = [];
         foreach ($jobs as $job) {

@@ -47,7 +47,7 @@ class Currency implements CurrencyInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -56,10 +56,8 @@ class Currency implements CurrencyInterface
      * Set id
      *
      * @param int $id
-     *
-     * @return Currency
      */
-    public function setId($id)
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -69,7 +67,7 @@ class Currency implements CurrencyInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -77,7 +75,7 @@ class Currency implements CurrencyInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): CurrencyInterface
     {
         $this->code = $code;
 
@@ -87,7 +85,7 @@ class Currency implements CurrencyInterface
     /**
      * {@inheritdoc}
      */
-    public function isActivated()
+    public function isActivated(): bool
     {
         return $this->activated;
     }
@@ -95,7 +93,7 @@ class Currency implements CurrencyInterface
     /**
      * {@inheritdoc}
      */
-    public function toggleActivation()
+    public function toggleActivation(): CurrencyInterface
     {
         $this->activated = !$this->activated;
 
@@ -105,7 +103,7 @@ class Currency implements CurrencyInterface
     /**
      * {@inheritdoc}
      */
-    public function setActivated($activated)
+    public function setActivated(bool $activated): CurrencyInterface
     {
         $this->activated = $activated;
 
@@ -115,7 +113,7 @@ class Currency implements CurrencyInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->code;
     }

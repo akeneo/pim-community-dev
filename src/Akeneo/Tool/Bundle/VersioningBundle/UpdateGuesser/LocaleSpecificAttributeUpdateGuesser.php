@@ -19,7 +19,7 @@ class LocaleSpecificAttributeUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAction($action)
+    public function supportAction(string $action): bool
     {
         return $action === UpdateGuesserInterface::ACTION_UPDATE_COLLECTION;
     }
@@ -27,7 +27,7 @@ class LocaleSpecificAttributeUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(EntityManager $em, $entity, $action)
+    public function guessUpdates(EntityManager $em, object $entity, string $action): array
     {
         $pendings = [];
         if ($entity instanceof PersistentCollection

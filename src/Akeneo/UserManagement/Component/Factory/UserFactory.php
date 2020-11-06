@@ -74,7 +74,7 @@ class UserFactory implements SimpleFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create()
+    public function create(): object
     {
         $user = new $this->userClass();
         if (null !== $uiLocale = $this->getDefaultUiLocale()) {
@@ -96,9 +96,7 @@ class UserFactory implements SimpleFactoryInterface
             $user->addRole($role);
         }
 
-        return array_reduce($this->defaultProperties, function ($user, DefaultProperty $defaultProperty) {
-            return $defaultProperty->mutate($user);
-        }, $user);
+        return array_reduce($this->defaultProperties, fn($user, DefaultProperty $defaultProperty) => $defaultProperty->mutate($user), $user);
     }
 
     /**
@@ -117,7 +115,7 @@ class UserFactory implements SimpleFactoryInterface
     /**
      * @return LocaleInterface|null when we install the pim
      */
-    private function getDefaultUiLocale(): ?LocaleInterface
+    private function getDefaultUiLocale(): ?object
     {
         return $this->localeRepository->findOneBy(['code' => UiLocaleProvider::MAIN_LOCALE]);
     }
@@ -125,7 +123,7 @@ class UserFactory implements SimpleFactoryInterface
     /**
      * @return ChannelInterface|null when we install the pim
      */
-    private function getDefaultCatalogScope(): ?ChannelInterface
+    private function getDefaultCatalogScope(): ?object
     {
         return $this->channelRepository->findOneBy([]);
     }

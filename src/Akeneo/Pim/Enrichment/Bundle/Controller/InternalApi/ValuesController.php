@@ -120,10 +120,8 @@ class ValuesController
      * Remove all violations related to identifier
      *
      * @param ConstraintViolationListInterface $violations
-     *
-     * @return ConstraintViolationListInterface
      */
-    protected function removeIdentifierViolations(ConstraintViolationListInterface $violations)
+    protected function removeIdentifierViolations(ConstraintViolationListInterface $violations): \Symfony\Component\Validator\ConstraintViolationListInterface
     {
         $identifierPath = sprintf('values[%s-<all_channels>-<all_locales>]', $this->attributeRepository->getIdentifierCode());
         foreach ($violations as $offset => $violation) {

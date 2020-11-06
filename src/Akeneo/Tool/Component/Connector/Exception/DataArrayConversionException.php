@@ -34,10 +34,7 @@ class DataArrayConversionException extends ArrayConversionException
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * @return ConstraintViolationListInterface
-     */
-    public function getViolations()
+    public function getViolations(): \Symfony\Component\Validator\ConstraintViolationListInterface
     {
         return $this->violations;
     }

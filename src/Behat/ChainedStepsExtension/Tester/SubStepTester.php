@@ -10,6 +10,8 @@
 
 namespace Behat\ChainedStepsExtension\Tester;
 
+use Behat\Testwork\Tester\Setup\Setup;
+use Behat\Testwork\Tester\Setup\Teardown;
 use Behat\Behat\Tester\Result\ExecutedStepResult;
 use Behat\Behat\Tester\Result\StepResult;
 use Behat\Behat\Tester\StepTester;
@@ -31,7 +33,7 @@ class SubStepTester implements StepTester
     /**
      * {@inheritdoc}
      */
-    public function setUp(Environment $env, FeatureNode $feature, StepNode $step, $skip)
+    public function setUp(Environment $env, FeatureNode $feature, StepNode $step, $skip): Setup
     {
         return $this->baseTester->setUp($env, $feature, $step, $skip);
     }
@@ -59,12 +61,12 @@ class SubStepTester implements StepTester
     /**
      * {@inheritdoc}
      */
-    public function tearDown(Environment $env, FeatureNode $feature, StepNode $step, $skip, StepResult $result)
+    public function tearDown(Environment $env, FeatureNode $feature, StepNode $step, $skip, StepResult $result): Teardown
     {
         return $this->baseTester->tearDown($env, $feature, $step, $skip, $result);
     }
 
-    private function supportsResult(CallResult $result)
+    private function supportsResult(CallResult $result): bool
     {
         $return = $result->getReturn();
 
@@ -85,7 +87,7 @@ class SubStepTester implements StepTester
         return true;
     }
 
-    private function runChainedSteps(Environment $env, FeatureNode $feature, ExecutedStepResult $result, $skip)
+    private function runChainedSteps(Environment $env, FeatureNode $feature, ExecutedStepResult $result, $skip): StepResult
     {
         $callResult = $result->getCallResult();
         $steps = $callResult->getReturn();

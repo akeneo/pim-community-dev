@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregatorForProductModelPostSaveEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
@@ -188,7 +189,7 @@ class ProductModelController
 
             $productModel = $this->getConnectorProductModels->fromProductModelCode($code, $user->getId());
         } catch (ObjectNotFoundException $e) {
-            throw new NotFoundHttpException(sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code));
+            throw new NotFoundHttpException(sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code), $e);
         }
 
         return new JsonResponse(
@@ -212,9 +213,7 @@ class ProductModelController
         $this->validateProductModel($productModel);
         $this->saver->save($productModel);
 
-        $response = $this->getResponse($productModel, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($productModel, Response::HTTP_CREATED);
     }
 
     /**
@@ -225,7 +224,7 @@ class ProductModelController
      *
      * @return Response
      */
-    public function partialUpdateAction(Request $request, $code): Response
+    public function partialUpdateAction(Request $request, string $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
         $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
@@ -243,9 +242,8 @@ class ProductModelController
         $this->saver->save($productModel);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($productModel, $status);
 
-        return $response;
+        return $this->getResponse($productModel, $status);
     }
 
     /**
@@ -313,20 +311,18 @@ class ProductModelController
      * Product models are saved 1 by 1, but we batch events in order to improve performances.
      *
      * @param Request $request
-     * @return Response
      * @throws HttpException
      */
-    public function partialUpdateListAction(Request $request): Response
+    public function partialUpdateListAction(Request $request): StreamedResponse
     {
         $this->warmupQueryCache->fromRequest($request);
         $resource = $request->getContent(true);
         $this->apiAggregatorForProductModelPostSave->activate();
-        $response = $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
+
+        return $this->partialUpdateStreamResource->streamResponse($resource, [], function () {
             $this->apiAggregatorForProductModelPostSave->dispatchAllEvents();
             $this->apiAggregatorForProductModelPostSave->deactivate();
         });
-
-        return $response;
     }
 
     protected function getNormalizerOptions(ListProductModelsQuery $query): array
@@ -360,7 +356,7 @@ class ProductModelController
      *
      * @return array
      */
-    protected function getDecodedContent($content): array
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -478,10 +474,10 @@ class ProductModelController
             $queryParameters['search_scope'] = $query->searchChannelCode;
         }
         if (null !== $query->localeCodes) {
-            $queryParameters['locales'] = join(',', $query->localeCodes);
+            $queryParameters['locales'] = implode(',', $query->localeCodes);
         }
         if (null !== $query->attributeCodes) {
-            $queryParameters['attributes'] = join(',', $query->attributeCodes);
+            $queryParameters['attributes'] = implode(',', $query->attributeCodes);
         }
 
         if (PaginationTypes::OFFSET === $query->paginationType) {

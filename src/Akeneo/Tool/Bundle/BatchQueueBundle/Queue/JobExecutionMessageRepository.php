@@ -43,7 +43,7 @@ class JobExecutionMessageRepository
     /**
      * @param JobExecutionMessage $jobExecutionMessage
      */
-    public function createJobExecutionMessage(JobExecutionMessage $jobExecutionMessage)
+    public function createJobExecutionMessage(JobExecutionMessage $jobExecutionMessage): void
     {
         $sql = <<<SQL
 INSERT INTO akeneo_batch_job_execution_queue (job_execution_id, options, consumer, create_time, updated_time)
@@ -214,8 +214,6 @@ SQL;
         $stmt->execute();
         $data = $stmt->fetch();
 
-        $code = $data['code'] ?? null;
-
-        return $code;
+        return $data['code'] ?? null;
     }
 }

@@ -43,9 +43,7 @@ final class AscendantCategories implements AscendantCategoriesInterface
                 ->where('product_model.id = :id')
                 ->setParameter(':id', $entity->getId());
 
-            $result = array_map(function ($id) {
-                return intval($id['id']);
-            }, $queryBuilder->getQuery()->getResult());
+            $result = array_map(fn($id) => (int) $id['id'], $queryBuilder->getQuery()->getResult());
         } elseif ($entity instanceof ProductInterface && $entity->isVariant()) {
             $queryBuilder
                 ->select('category.id AS id, parent_category.id AS parent_id')
@@ -58,11 +56,11 @@ final class AscendantCategories implements AscendantCategoriesInterface
                 ->setParameter(':id', $entity->getId());
 
             foreach ($queryBuilder->getQuery()->getResult() as $resultItem) {
-                if (!in_array(intval($resultItem['id']), $result)) {
-                    $result[] = intval($resultItem['id']);
+                if (!in_array((int) $resultItem['id'], $result)) {
+                    $result[] = (int) $resultItem['id'];
                 }
-                if (null !== $resultItem['parent_id'] && !in_array(intval($resultItem['parent_id']), $result)) {
-                    $result[] = intval($resultItem['parent_id']);
+                if (null !== $resultItem['parent_id'] && !in_array((int) $resultItem['parent_id'], $result)) {
+                    $result[] = (int) $resultItem['parent_id'];
                 }
             }
         }

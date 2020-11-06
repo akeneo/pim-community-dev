@@ -32,7 +32,7 @@ class InvalidItemEvent extends Event implements EventInterface
      * @param string                $reason
      * @param array                 $reasonParameters
      */
-    public function __construct(InvalidItemInterface $item, $class, $reason, array $reasonParameters)
+    public function __construct(InvalidItemInterface $item, string $class, string $reason, array $reasonParameters)
     {
         $this->item = $item;
         $this->class = $class;
@@ -42,40 +42,32 @@ class InvalidItemEvent extends Event implements EventInterface
 
     /**
      * Get the class which encountered the invalid item
-     *
-     * @return string
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
 
     /**
      * Get the reason why the item is invalid
-     *
-     * @return string
      */
-    public function getReason()
+    public function getReason(): string
     {
         return $this->reason;
     }
 
     /**
      * Get the reason parameters
-     *
-     * @return array
      */
-    public function getReasonParameters()
+    public function getReasonParameters(): array
     {
         return $this->reasonParameters;
     }
 
     /**
      * Get the invalid item
-     *
-     * @return InvalidItemInterface
      */
-    public function getItem()
+    public function getItem(): \Akeneo\Tool\Component\Batch\Item\InvalidItemInterface
     {
         return $this->item;
     }

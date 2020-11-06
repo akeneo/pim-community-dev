@@ -43,7 +43,7 @@ class IdEncoder
             self::PRODUCT_MODEL_TYPE;
 
         return [
-            'id'   => intval(str_replace($type . '_', '', $encodedId)),
+            'id'   => (int) str_replace($type . '_', '', $encodedId),
             'type' => $type,
         ];
     }

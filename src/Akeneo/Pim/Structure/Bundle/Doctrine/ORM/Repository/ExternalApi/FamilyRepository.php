@@ -37,7 +37,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
         return $this->familyRepository->getIdentifierProperties();
     }
 
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier)
     {
         return $this->familyRepository->findOneByIdentifier($identifier);
     }
@@ -49,10 +49,8 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
      * @param array $orders
      * @param int   $limit
      * @param int   $offset
-     *
-     * @return array
      */
-    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset)
+    public function searchAfterOffset(array $searchFilters, array $orders, int $limit, int $offset): array
     {
         $qb = $this->createQueryBuilder('r');
         $qb = $this->addFilters($qb, $searchFilters);
@@ -150,11 +148,10 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 ])
             ]),
         ];
-        $availableSearchFilters = array_keys($constraints);
 
         $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
-            if (!in_array($property, $availableSearchFilters)) {
+            if (!array_key_exists($property, $constraints)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
                     implode(', ', $availableSearchFilters),

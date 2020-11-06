@@ -19,7 +19,7 @@ class PricesPresenter extends NumberPresenter
      * Presents a structured price set to be readable. If locale option is set, the prices are formatted according to
      * the locale. If no locale option is set, the default is the price amount then the currency symbol.
      */
-    public function present($prices, array $options = [])
+    public function present($prices, array $options = []): string
     {
         if ('' === $prices || null === $prices) {
             return $prices;
@@ -57,10 +57,8 @@ class PricesPresenter extends NumberPresenter
      *
      * @param string $price
      * @param string $versionedAttribute
-     *
-     * @return array
      */
-    protected function getStructuredPrice($price, $versionedAttribute)
+    protected function getStructuredPrice(string $price, string $versionedAttribute): array
     {
         $parts = preg_split('/-/', $versionedAttribute);
         $currency = end($parts);
@@ -74,10 +72,8 @@ class PricesPresenter extends NumberPresenter
      *
      * @param \NumberFormatter $numberFormatter
      * @param array            $price
-     *
-     * @return string
      */
-    protected function getPrice(\NumberFormatter $numberFormatter, array $price)
+    protected function getPrice(\NumberFormatter $numberFormatter, array $price): string
     {
         if (!isset($price['amount'])) {
             return '';

@@ -20,7 +20,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
     /**
      * {@inheritdoc}
      */
-    public function getArchives(JobExecution $jobExecution)
+    public function getArchives(JobExecution $jobExecution): array
     {
         $directory = dirname($this->getRelativeArchivePath($jobExecution));
         $archives = [];
@@ -35,7 +35,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
     /**
      * {@inheritdoc}
      */
-    public function getArchive(JobExecution $jobExecution, $key)
+    public function getArchive(JobExecution $jobExecution, string $key)
     {
         $archives = $this->getArchives($jobExecution);
 
@@ -52,10 +52,8 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
      * Get the relative archive path in the file system
      *
      * @param JobExecution $jobExecution
-     *
-     * @return string
      */
-    protected function getRelativeArchivePath(JobExecution $jobExecution)
+    protected function getRelativeArchivePath(JobExecution $jobExecution): string
     {
         $jobInstance = $jobExecution->getJobInstance();
 

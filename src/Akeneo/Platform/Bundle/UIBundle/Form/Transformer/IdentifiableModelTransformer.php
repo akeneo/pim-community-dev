@@ -45,7 +45,7 @@ class IdentifiableModelTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (true === $this->multiple) {
+        if ($this->multiple) {
             if (!is_array($identifier)) {
                 throw new UnexpectedTypeException($identifier, 'array');
             }
@@ -96,7 +96,7 @@ class IdentifiableModelTransformer implements DataTransformerInterface
         return $propertyAccessor->getValue($model, $identifierProperty);
     }
 
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'multiple' => false,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
@@ -61,7 +62,7 @@ class PublishJobToQueue
     public function __construct(
         string $jobInstanceClass,
         string $kernelEnv,
-        DoctrineJobRepository $jobRepository,
+        JobRepositoryInterface $jobRepository,
         ValidatorInterface $validator,
         JobRegistry $jobRegistry,
         JobParametersFactory $jobParametersFactory,
@@ -111,7 +112,7 @@ class PublishJobToQueue
             $options['email'] = $email;
         }
 
-        if (true === $noLog) {
+        if ($noLog) {
             $options['no-log'] = true;
         }
 
@@ -139,9 +140,8 @@ class PublishJobToQueue
         $rawParameters = $jobInstance->getRawParameters();
 
         $rawParameters = array_merge($rawParameters, $config);
-        $jobParameters = $this->jobParametersFactory->create($job, $rawParameters);
 
-        return $jobParameters;
+        return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
     private function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void

@@ -46,7 +46,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -54,7 +54,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId(int $id): FileInfoInterface
     {
         $this->id = $id;
 
@@ -64,7 +64,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function getOriginalFilename()
+    public function getOriginalFilename(): string
     {
         return $this->originalFilename;
     }
@@ -72,7 +72,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setOriginalFilename($originalFilename)
+    public function setOriginalFilename(string $originalFilename): FileInfoInterface
     {
         $this->originalFilename = $originalFilename;
 
@@ -82,7 +82,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         return $this->mimeType;
     }
@@ -90,7 +90,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setMimeType($mimeType)
+    public function setMimeType(string $mimeType): FileInfoInterface
     {
         $this->mimeType = $mimeType;
 
@@ -100,7 +100,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
@@ -108,7 +108,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setSize($size)
+    public function setSize(int $size): FileInfoInterface
     {
         $this->size = $size;
 
@@ -118,7 +118,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return $this->extension;
     }
@@ -126,7 +126,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setExtension($extension)
+    public function setExtension(string $extension): FileInfoInterface
     {
         $this->extension = $extension;
 
@@ -136,7 +136,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function getHash()
+    public function getHash(): string
     {
         return $this->hash;
     }
@@ -144,7 +144,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setHash($hash)
+    public function setHash(string $hash): FileInfoInterface
     {
         $this->hash = $hash;
 
@@ -154,7 +154,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function getStorage()
+    public function getStorage(): string
     {
         return $this->storage;
     }
@@ -162,7 +162,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setStorage($storage)
+    public function setStorage(string $storage): FileInfoInterface
     {
         $this->storage = $storage;
 
@@ -172,7 +172,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -180,7 +180,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setKey($key)
+    public function setKey(string $key): FileInfoInterface
     {
         $this->key = $key;
 
@@ -190,7 +190,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function getUploadedFile()
+    public function getUploadedFile(): \Symfony\Component\HttpFoundation\File\UploadedFile
     {
         return $this->uploadedFile;
     }
@@ -198,7 +198,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setUploadedFile(UploadedFile $uploadedFile = null)
+    public function setUploadedFile(UploadedFile $uploadedFile = null): ?FileInfoInterface
     {
         $this->uploadedFile = $uploadedFile;
 
@@ -208,7 +208,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function setRemoved($removed)
+    public function setRemoved(bool $removed): FileInfoInterface
     {
         $this->removed = $removed;
 
@@ -218,7 +218,7 @@ class FileInfo implements FileInfoInterface
     /**
      * {@inheritdoc}
      */
-    public function isRemoved()
+    public function isRemoved(): bool
     {
         return $this->removed;
     }

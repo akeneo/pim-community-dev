@@ -70,7 +70,7 @@ class MailNotifier implements Notifier
     /**
      * @param string $recipientEmail
      */
-    public function setRecipientEmail($recipientEmail): self
+    public function setRecipientEmail(string $recipientEmail): self
     {
         $this->recipientEmail = $recipientEmail;
 
@@ -80,7 +80,7 @@ class MailNotifier implements Notifier
     /**
      * {@inheritdoc}
      */
-    public function notify(JobExecution $jobExecution)
+    public function notify(JobExecution $jobExecution): void
     {
         if (null === $email = $this->getEmail()) {
             return;
@@ -111,7 +111,7 @@ class MailNotifier implements Notifier
      */
     private function getEmail()
     {
-        if ($this->recipientEmail) {
+        if ($this->recipientEmail !== '') {
             return $this->recipientEmail;
         }
 

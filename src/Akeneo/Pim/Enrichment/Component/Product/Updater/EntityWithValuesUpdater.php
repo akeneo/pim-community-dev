@@ -35,7 +35,7 @@ class EntityWithValuesUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($entityWithValues, array $values, array $options = [])
+    public function update(object $entityWithValues, array $values, array $options = []): ObjectUpdaterInterface
     {
         if (!$entityWithValues instanceof EntityWithValuesInterface) {
             throw InvalidObjectException::objectExpected(
@@ -56,7 +56,7 @@ class EntityWithValuesUpdater implements ObjectUpdaterInterface
      * @param EntityWithValuesInterface $entityWithValues
      * @param array                     $values
      */
-    protected function updateEntityWithValues(EntityWithValuesInterface $entityWithValues, array $values)
+    protected function updateEntityWithValues(EntityWithValuesInterface $entityWithValues, array $values): void
     {
         foreach ($values as $code => $value) {
             foreach ($value as $data) {
@@ -73,7 +73,7 @@ class EntityWithValuesUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkValuesData($entityWithValues)
+    protected function checkValuesData($entityWithValues): void
     {
         if (!is_array($entityWithValues)) {
             throw InvalidPropertyTypeException::arrayExpected('values', static::class, $entityWithValues);

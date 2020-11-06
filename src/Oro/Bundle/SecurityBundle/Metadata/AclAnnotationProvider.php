@@ -44,7 +44,7 @@ class AclAnnotationProvider
      *
      * @param AclAnnotationLoaderInterface $loader
      */
-    public function addLoader(AclAnnotationLoaderInterface $loader)
+    public function addLoader(AclAnnotationLoaderInterface $loader): void
     {
         $this->loaders[] = $loader;
     }
@@ -55,7 +55,7 @@ class AclAnnotationProvider
      * @param  string             $id
      * @return AclAnnotation|null AclAnnotation object or null if ACL annotation was not found
      */
-    public function findAnnotationById($id)
+    public function findAnnotationById(string $id): ?Acl
     {
         $this->ensureAnnotationsLoaded();
 
@@ -69,7 +69,7 @@ class AclAnnotationProvider
      * @param  string|null        $method
      * @return AclAnnotation|null AclAnnotation object or null if ACL annotation was not found
      */
-    public function findAnnotation($class, $method = null)
+    public function findAnnotation(string $class, ?string $method = null): ?Acl
     {
         $this->ensureAnnotationsLoaded();
 
@@ -81,9 +81,8 @@ class AclAnnotationProvider
      *
      * @param  string      $class
      * @param  string|null $method
-     * @return bool
      */
-    public function hasAnnotation($class, $method = null)
+    public function hasAnnotation(string $class, ?string $method = null): bool
     {
         $this->ensureAnnotationsLoaded();
 
@@ -96,7 +95,7 @@ class AclAnnotationProvider
      * @param  string|null     $type The annotation type
      * @return AclAnnotation[]
      */
-    public function getAnnotations($type = null)
+    public function getAnnotations(?string $type = null): array
     {
         $this->ensureAnnotationsLoaded();
 
@@ -109,7 +108,7 @@ class AclAnnotationProvider
      * @param  string $class
      * @return bool   true if the class is protected; otherwise, false
      */
-    public function isProtectedClass($class)
+    public function isProtectedClass(string $class): bool
     {
         $this->ensureAnnotationsLoaded();
 
@@ -123,7 +122,7 @@ class AclAnnotationProvider
      * @param  string $method
      * @return bool   true if the method is protected; otherwise, false
      */
-    public function isProtectedMethod($class, $method)
+    public function isProtectedMethod(string $class, string $method): bool
     {
         $this->ensureAnnotationsLoaded();
 
@@ -133,7 +132,7 @@ class AclAnnotationProvider
     /**
      * Warms up the cache
      */
-    public function warmUpCache()
+    public function warmUpCache(): void
     {
         $this->ensureAnnotationsLoaded();
     }
@@ -141,7 +140,7 @@ class AclAnnotationProvider
     /**
      * Clears the cache
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         if ($this->cache) {
             $this->cache->delete(self::CACHE_KEY);
@@ -151,9 +150,8 @@ class AclAnnotationProvider
 
     /**
      * @param  array                $bundleDirectories
-     * @return AclAnnotationStorage
      */
-    public function getBundleAnnotations(array $bundleDirectories)
+    public function getBundleAnnotations(array $bundleDirectories): \Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage
     {
         $data = new AclAnnotationStorage();
         foreach ($this->loaders as $loader) {
@@ -164,7 +162,7 @@ class AclAnnotationProvider
         return $data;
     }
 
-    protected function ensureAnnotationsLoaded()
+    protected function ensureAnnotationsLoaded(): void
     {
         if ($this->storage === null) {
             $data = null;

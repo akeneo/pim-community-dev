@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductAxisRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
@@ -50,7 +51,7 @@ class ConsolidateAxesRates
         $this->axisRegistry = $axisRegistry;
     }
 
-    public function consolidate(array $productIds)
+    public function consolidate(array $productIds): void
     {
         $currentDateTime = $this->clock->getCurrentTime();
         $productsAxesRates = [];
@@ -59,7 +60,7 @@ class ConsolidateAxesRates
             $productId = new ProductId($productId);
             $criteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
             foreach ($this->axisRegistry->all() as $axis) {
-                $productsAxesRates[] = new Write\ProductAxisRates(
+                $productsAxesRates[] = new ProductAxisRates(
                     $axis->getCode(),
                     $productId,
                     $currentDateTime,

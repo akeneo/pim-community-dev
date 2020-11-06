@@ -33,7 +33,7 @@ class BaseFieldProvider implements FieldProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getField($attribute)
+    public function getField($attribute): string
     {
         return $this->fields[$attribute->getType()];
     }
@@ -41,9 +41,9 @@ class BaseFieldProvider implements FieldProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($element)
+    public function supports($element): bool
     {
         return $element instanceof AttributeInterface &&
-            in_array($element->getType(), array_keys($this->fields));
+            array_key_exists($element->getType(), $this->fields);
     }
 }

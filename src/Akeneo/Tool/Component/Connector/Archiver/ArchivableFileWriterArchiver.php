@@ -43,7 +43,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function archive(JobExecution $jobExecution)
+    public function archive(JobExecution $jobExecution): void
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -82,7 +82,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * Put the generated zip file to the archive destination location
      */
-    protected function archiveZip(JobExecution $jobExecution, string $localZipPath, string $destName)
+    protected function archiveZip(JobExecution $jobExecution, string $localZipPath, string $destName): void
     {
         $destPath = strtr(
             $this->getRelativeArchivePath($jobExecution),
@@ -104,7 +104,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'archive';
     }
@@ -113,10 +113,8 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      * Verify if the writer is usable or not
      *
      * @param ItemWriterInterface $writer
-     *
-     * @return bool
      */
-    protected function isWriterUsable(ItemWriterInterface $writer)
+    protected function isWriterUsable(ItemWriterInterface $writer): bool
     {
         return $writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1;
     }
@@ -125,10 +123,8 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      * Check if the job execution is supported
      *
      * @param JobExecution $jobExecution
-     *
-     * @return bool
      */
-    public function supports(JobExecution $jobExecution)
+    public function supports(JobExecution $jobExecution): bool
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {

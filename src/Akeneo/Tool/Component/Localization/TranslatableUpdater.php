@@ -19,7 +19,7 @@ class TranslatableUpdater
      * @param TranslatableInterface $object
      * @param array                 $data
      */
-    public function update(TranslatableInterface $object, array $data)
+    public function update(TranslatableInterface $object, array $data): void
     {
         foreach ($data as $localeCode => $label) {
             $object->setLocale($localeCode);

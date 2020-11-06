@@ -17,18 +17,14 @@ class ProductQueryBuilderFromSizeOptionsResolver implements ProductQueryBuilderO
     /**
      * {@inheritdoc}
      */
-    public function resolve(array $options)
+    public function resolve(array $options): array
     {
         $resolver = $this->createOptionsResolver();
-        $options = $resolver->resolve($options);
 
-        return $options;
+        return $resolver->resolve($options);
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    protected function createOptionsResolver()
+    protected function createOptionsResolver(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefined(['locale', 'scope', 'limit', 'from', 'with_document_type_facet']);

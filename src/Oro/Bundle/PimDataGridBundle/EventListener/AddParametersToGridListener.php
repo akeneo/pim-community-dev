@@ -43,7 +43,7 @@ class AddParametersToGridListener
      * @param RequestParameters $requestParams Request params
      * @param bool              $isEditMode    Whether or not to add data_in, data_not_in params to query
      */
-    public function __construct($paramNames, RequestParameters $requestParams, $isEditMode = false, $isQueryParam = false)
+    public function __construct(array $paramNames, RequestParameters $requestParams, bool $isEditMode = false, bool $isQueryParam = false)
     {
         $this->paramNames    = $paramNames;
         $this->requestParams = $requestParams;
@@ -56,7 +56,7 @@ class AddParametersToGridListener
      *
      * @param BuildAfter $event
      */
-    public function onBuildAfter(BuildAfter $event)
+    public function onBuildAfter(BuildAfter $event): void
     {
         $datasource = $event->getDatagrid()->getDatasource();
         if ($datasource instanceof ParameterizableInterface) {
@@ -65,10 +65,7 @@ class AddParametersToGridListener
         }
     }
 
-    /**
-     * @return array
-     */
-    protected function prepareParameters()
+    protected function prepareParameters(): array
     {
         $queryParameters = [];
         foreach ($this->paramNames as $paramName) {

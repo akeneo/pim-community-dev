@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -113,11 +114,10 @@ class AssociationTypeController
      *
      * @throws NotFoundHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_association_type_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $associationType = $this->repository->findOneByIdentifier($code);
         if (null === $associationType) {
@@ -134,11 +134,10 @@ class AssociationTypeController
      *
      * @throws UnprocessableEntityHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_association_type_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -168,7 +167,7 @@ class AssociationTypeController
             'item_route_name'  => 'pim_api_association_type_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count() : null;
+        $count = $request->query->getBoolean('with_count') ? $this->repository->count() : null;
         $paginatedAssociationTypes = $this->paginator->paginate(
             $this->normalizer->normalize($associationTypes, 'external_api'),
             $parameters,
@@ -184,11 +183,10 @@ class AssociationTypeController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_association_type_edit")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -198,9 +196,7 @@ class AssociationTypeController
 
         $this->saver->save($associationType);
 
-        $response = $this->getResponse($associationType, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($associationType, Response::HTTP_CREATED);
     }
 
     /**
@@ -209,11 +205,10 @@ class AssociationTypeController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_association_type_edit")
      */
-    public function partialUpdateAction(Request $request, $code)
+    public function partialUpdateAction(Request $request, string $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -233,9 +228,8 @@ class AssociationTypeController
         $this->saver->save($associationType);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($associationType, $status);
 
-        return $response;
+        return $this->getResponse($associationType, $status);
     }
 
     /**
@@ -243,16 +237,14 @@ class AssociationTypeController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_association_type_edit")
      */
-    public function partialUpdateListAction(Request $request)
+    public function partialUpdateListAction(Request $request): StreamedResponse
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
-        return $response;
+        return $this->partialUpdateStreamResource->streamResponse($resource);
     }
 
     /**
@@ -261,10 +253,8 @@ class AssociationTypeController
      * @param string $content content of a request to decode
      *
      * @throws BadRequestHttpException
-     *
-     * @return array
      */
-    protected function getDecodedContent($content)
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -284,7 +274,7 @@ class AssociationTypeController
      *
      * @throws DocumentedHttpException
      */
-    protected function updateAssociationType(AssociationTypeInterface $associationType, array $data, $anchor)
+    protected function updateAssociationType(AssociationTypeInterface $associationType, array $data, string $anchor): void
     {
         try {
             $this->updater->update($associationType, $data);
@@ -305,7 +295,7 @@ class AssociationTypeController
      *
      * @throws ViolationHttpException
      */
-    protected function validateAssociationType(AssociationTypeInterface $associationType)
+    protected function validateAssociationType(AssociationTypeInterface $associationType): void
     {
         $violations = $this->validator->validate($associationType);
         if (0 !== $violations->count()) {
@@ -318,10 +308,8 @@ class AssociationTypeController
      *
      * @param AssociationTypeInterface $associationType
      * @param int                      $status
-     *
-     * @return Response
      */
-    protected function getResponse(AssociationTypeInterface $associationType, $status)
+    protected function getResponse(AssociationTypeInterface $associationType, int $status): Response
     {
         $response = new Response(null, $status);
         $url = $this->router->generate(
@@ -345,7 +333,7 @@ class AssociationTypeController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function validateCodeConsistency($code, array $data)
+    protected function validateCodeConsistency(string $code, array $data): void
     {
         if (array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(

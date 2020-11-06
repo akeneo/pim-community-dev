@@ -29,10 +29,8 @@ class SystemAwareResolver implements ContainerAwareInterface
     /**
      * @param string $datagridName
      * @param array  $datagridDefinition
-     *
-     * @return array
      */
-    public function resolve($datagridName, $datagridDefinition)
+    public function resolve(string $datagridName, array $datagridDefinition): array
     {
         foreach ($datagridDefinition as $key => $val) {
             if (is_array($val)) {
@@ -78,7 +76,7 @@ class SystemAwareResolver implements ContainerAwareInterface
      *
      * @return string
      */
-    protected function resolveSystemCall($datagridName, $key, $val)
+    protected function resolveSystemCall(string $datagridName, string $key, string $val)
     {
         // resolve only scalar value, if it's not - value was already resolved
         // this can happen in case of extended grid definitions
@@ -106,11 +104,7 @@ class SystemAwareResolver implements ContainerAwareInterface
                 }
                 if (defined("$class::$method")) {
                     $_val = constant("$class::$method");
-                    if (is_string($_val)) {
-                        $val = str_replace($match[0], $_val, $val);
-                    } else {
-                        $val = $_val;
-                    }
+                    $val = is_string($_val) ? str_replace($match[0], $_val, $val) : $_val;
                 }
                 break;
             // service method call @service->method, @service->method(argument), @service->method(@other.service->method)
@@ -136,7 +130,7 @@ class SystemAwareResolver implements ContainerAwareInterface
      *
      * @api
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
@@ -147,7 +141,7 @@ class SystemAwareResolver implements ContainerAwareInterface
      *
      * @return mixed
      */
-    protected function executeMethod($expression, array $optionsArguments = [])
+    protected function executeMethod(string $expression, array $optionsArguments = [])
     {
         preg_match(static::SERVICE_METHOD, $expression, $matches);
         $service = $matches[1];
@@ -159,11 +153,7 @@ class SystemAwareResolver implements ContainerAwareInterface
 
             $newArguments = [];
             foreach ($arguments as $argument) {
-                if (0 === strpos(trim($argument), '@')) {
-                    $newArguments[] = $this->executeMethod($argument);
-                } else {
-                    $newArguments[] = $argument;
-                }
+                $newArguments[] = 0 === strpos(trim($argument), '@') ? $this->executeMethod($argument) : $argument;
             }
 
             $arguments = array_merge($newArguments, $optionsArguments);

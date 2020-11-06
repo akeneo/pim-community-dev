@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditErrorTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
@@ -24,13 +25,13 @@ class InstallSubscriber implements EventSubscriberInterface
     private $dbalConnection;
     private $fixturesLoader;
 
-    public function __construct(DbalConnection $dbalConnection, FixturesLoader $fixturesLoader)
+    public function __construct(Connection $dbalConnection, FixturesLoader $fixturesLoader)
     {
         $this->dbalConnection = $dbalConnection;
         $this->fixturesLoader = $fixturesLoader;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_DB_CREATE => 'createConnectionsTable',

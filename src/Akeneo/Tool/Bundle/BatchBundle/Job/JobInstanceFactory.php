@@ -19,7 +19,7 @@ class JobInstanceFactory
     /**
      * @param string $jobInstanceClass
      */
-    public function __construct($jobInstanceClass)
+    public function __construct(string $jobInstanceClass)
     {
         $this->jobInstanceClass = $jobInstanceClass;
     }
@@ -28,10 +28,8 @@ class JobInstanceFactory
      * Create a job instance
      *
      * @param string $type
-     *
-     * @return JobInstance
      */
-    public function createJobInstance($type = null)
+    public function createJobInstance(string $type = null): JobInstance
     {
         return new $this->jobInstanceClass(null, $type);
     }

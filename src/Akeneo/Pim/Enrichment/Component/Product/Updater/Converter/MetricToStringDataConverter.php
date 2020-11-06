@@ -28,7 +28,7 @@ final class MetricToStringDataConverter implements ValueDataConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
+    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute): string
     {
         Assert::isInstanceOf($sourceValue->getData(), MetricInterface::class);
 

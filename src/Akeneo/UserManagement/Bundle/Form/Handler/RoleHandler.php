@@ -47,7 +47,7 @@ class RoleHandler
      * @param  Role $entity
      * @return bool True on successfull processing, false otherwise
      */
-    public function process(Role $entity)
+    public function process(Role $entity): bool
     {
         $this->form->setData($entity);
 
@@ -74,7 +74,7 @@ class RoleHandler
      * @param \Akeneo\UserManagement\Component\Model\UserInterface[] $appendUsers
      * @param UserInterface[]                           $removeUsers
      */
-    protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)
+    protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers): void
     {
         $this->appendUsers($entity, $appendUsers);
         $this->removeUsers($entity, $removeUsers);
@@ -88,7 +88,7 @@ class RoleHandler
      * @param Role            $role
      * @param UserInterface[] $users
      */
-    protected function appendUsers(Role $role, array $users)
+    protected function appendUsers(Role $role, array $users): void
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {
@@ -103,7 +103,7 @@ class RoleHandler
      * @param Role           $role
      * @param UserInterface[] $users
      */
-    protected function removeUsers(Role $role, array $users)
+    protected function removeUsers(Role $role, array $users): void
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {

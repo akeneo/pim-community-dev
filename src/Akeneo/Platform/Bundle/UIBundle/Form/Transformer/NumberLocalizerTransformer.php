@@ -35,10 +35,8 @@ class NumberLocalizerTransformer implements DataTransformerInterface
      * Return the number provided. Do nothing because number is still formatted by denormalizer
      *
      * @param string $number
-     *
-     * @return string
      */
-    public function transform($number)
+    public function transform($number): string
     {
         return $this->localizer->localize($number, $this->options);
     }
@@ -51,10 +49,8 @@ class NumberLocalizerTransformer implements DataTransformerInterface
      * @param string $number
      *
      * @throws TransformationFailedException
-     *
-     * @return string
      */
-    public function reverseTransform($number)
+    public function reverseTransform($number): string
     {
         $violations = $this->localizer->validate($number, 'code', $this->options);
 

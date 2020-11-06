@@ -35,7 +35,7 @@ class Attribute implements ArrayConverterInterface
      *
      * Converts flat csv array to standard structured array:
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $this->fieldChecker->checkFieldsPresence($item, ['code']);
         $this->fieldChecker->checkFieldsFilling($item, ['code']);
@@ -53,10 +53,8 @@ class Attribute implements ArrayConverterInterface
      * @param array  $booleanFields
      * @param mixed  $data
      * @param array  $convertedItem
-     *
-     * @return array
      */
-    protected function convertFields($field, $booleanFields, $data, $convertedItem)
+    protected function convertFields(string $field, array $booleanFields, $data, array $convertedItem): array
     {
         if (false !== strpos($field, 'label-', 0)) {
             $labelTokens = explode('-', $field);

@@ -38,7 +38,7 @@ class StructuredAttributeOptionNormalizer extends AttributeOptionNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         $optionsValues = $context['onlyActivatedLocales'] ?
             $this->ensureEmptyOptionValues($object->getOptionValues()) :
@@ -56,10 +56,8 @@ class StructuredAttributeOptionNormalizer extends AttributeOptionNormalizer
      * Normalize and return given options values
      *
      * @param Collection $optionsValues
-     *
-     * @return array
      */
-    protected function normalizeOptionsValues($optionsValues)
+    protected function normalizeOptionsValues(\Doctrine\Common\Collections\Collection $optionsValues): array
     {
         $normalizedLabels = [];
         foreach ($optionsValues as $optionsValue) {

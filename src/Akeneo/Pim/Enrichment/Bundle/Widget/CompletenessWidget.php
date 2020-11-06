@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Widget;
 
+use Akeneo\Pim\Enrichment\Component\FollowUp\Query\GetCompletenessPerChannelAndLocaleInterface;
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\FollowUp\GetCompletenessPerChannelAndLocale;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -28,7 +29,7 @@ class CompletenessWidget implements WidgetInterface
      */
     public function __construct(
         UserContext $userContext,
-        GetCompletenessPerChannelAndLocale $completenessWidgetQuery
+        GetCompletenessPerChannelAndLocaleInterface $completenessWidgetQuery
     ) {
         $this->userContext      = $userContext;
         $this->completenessWidgetQuery = $completenessWidgetQuery;

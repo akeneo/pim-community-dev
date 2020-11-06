@@ -89,7 +89,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
             // even when an empty collection is passed
             if ('prices' === $backendType && $data instanceof Collection && $data->isEmpty()) {
                 $result = [];
-            } elseif ('options' === $backendType && $data instanceof Collection && $data->isEmpty() === false) {
+            } elseif ('options' === $backendType && $data instanceof Collection && !$data->isEmpty()) {
                 $data = $this->sortOptions($data, $attribute);
                 $context['field_name'] = $fieldName;
                 $result = $this->normalizer->normalize($data, $format, $context);
@@ -121,7 +121,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ValueInterface && in_array($format, $this->supportedFormats);
     }
@@ -135,10 +135,8 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
      * Normalize the field name for values
      *
      * @param ValueInterface $value
-     *
-     * @return string
      */
-    protected function getFieldName(ValueInterface $value)
+    protected function getFieldName(ValueInterface $value): string
     {
         // TODO : should be extracted
         $suffix = '';
@@ -173,10 +171,8 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
      * Sort the collection of options by their defined sort order in the attribute
      *
      * @param Collection $optionsCollection
-     *
-     * @return Collection
      */
-    protected function sortOptions(Collection $optionsCollection, AttributeInterface $attribute)
+    protected function sortOptions(Collection $optionsCollection, AttributeInterface $attribute): ArrayCollection
     {
         $options = [];
         foreach ($optionsCollection as $optionCode) {
@@ -194,8 +190,7 @@ class ValueNormalizer implements NormalizerInterface, NormalizerAwareInterface, 
                 return $sort !== 0 ?? $first->getCode() - $second->getCode();
             }
         );
-        $sortedCollection = new ArrayCollection($options);
 
-        return $sortedCollection;
+        return new ArrayCollection($options);
     }
 }

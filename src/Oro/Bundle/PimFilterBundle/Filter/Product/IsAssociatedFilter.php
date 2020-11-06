@@ -57,7 +57,7 @@ class IsAssociatedFilter extends BooleanFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -74,10 +74,7 @@ class IsAssociatedFilter extends BooleanFilter
         return true;
     }
 
-    /**
-     * @return AssociationTypeInterface
-     */
-    protected function getAssociationType()
+    protected function getAssociationType(): ?object
     {
         $params = $this->extractor->getDatagridParameter(RequestParameters::ADDITIONAL_PARAMETERS, []);
         $associationTypeId = isset($params['associationType']) ? $params['associationType'] : null;
@@ -86,41 +83,33 @@ class IsAssociatedFilter extends BooleanFilter
             $associationTypeId = $this->extractor->getDatagridParameter('associationType');
         }
 
-        if (!$associationTypeId) {
+        if ($associationTypeId === '') {
             throw new \LogicException('The current association type must be configured');
         }
 
-        $associationType = $this->assocTypeRepository->findOneBy(['id' => $associationTypeId]);
-
-        return $associationType;
+        return $this->assocTypeRepository->findOneBy(['id' => $associationTypeId]);
     }
 
-    /**
-     * @return ProductInterface
-     */
-    protected function getCurrentProduct()
+    protected function getCurrentProduct(): ?object
     {
         $productId = $this->extractor->getDatagridParameter('product');
-        if (!$productId) {
+        if ($productId === '') {
             throw new \LogicException('The current product type must be configured');
         }
-        $product = $this->productRepository->find($productId);
 
-        return $product;
+        return $this->productRepository->find($productId);
     }
 
     /**
      * @param ProductInterface         $product
      * @param AssociationTypeInterface $type
-     *
-     * @return array
      */
-    protected function getAssociatedProductIds(ProductInterface $product, AssociationTypeInterface $type)
+    protected function getAssociatedProductIds(ProductInterface $product, AssociationTypeInterface $type): array
     {
         $productIds = [];
         $association = $product->getAssociationForType($type);
 
-        if ($association) {
+        if ($association !== null) {
             foreach ($association->getProducts() as $product) {
                 $productIds[] = (string) $product->getId();
             }

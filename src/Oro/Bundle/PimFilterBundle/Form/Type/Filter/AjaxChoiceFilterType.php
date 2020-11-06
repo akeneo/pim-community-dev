@@ -26,7 +26,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
@@ -34,7 +34,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceFilterType::class;
     }
@@ -42,7 +42,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
         $builder->add('type', $options['operator_type'], ['choices' => $this->getOperatorChoices($options)]);
@@ -53,7 +53,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -71,7 +71,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['choices'] = $view->children['valueChoices']->vars['choices'];
         $view->vars['preload_choices'] = $options['preload_choices'];
@@ -89,7 +89,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
      *
      * @return array
      */
-    protected function getOperatorChoices($options)
+    protected function getOperatorChoices(array $options)
     {
         $operatorChoices = [strtolower(Operators::IN_LIST)];
 

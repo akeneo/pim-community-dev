@@ -4,25 +4,16 @@ namespace Oro\Bundle\DataGridBundle\Extension\MassAction;
 
 interface MassActionResponseInterface
 {
-    /**
-     * @return boolean
-     */
-    public function isSuccessful();
+    public function isSuccessful(): bool;
 
-    /**
-     * @return array
-     */
-    public function getOptions();
+    public function getOptions(): array;
 
-    /**
-     * @return string
-     */
-    public function getMessage();
+    public function getMessage(): string;
 
     /**
      * @param string $name
      *
      * @return mixed
      */
-    public function getOption($name);
+    public function getOption(string $name);
 }

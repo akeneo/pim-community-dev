@@ -66,7 +66,7 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_ajax_entity';
     }
@@ -74,7 +74,7 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return HiddenType::class;
     }
@@ -82,7 +82,7 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addViewTransformer($this->getTransformer($options));
     }
@@ -90,7 +90,7 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['class']);
         $resolver->setDefined(['locale', 'url']);
@@ -130,7 +130,7 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if ($options['multiple']) {
             $view->vars['attr']['data-multiple'] = 'multiple';
@@ -152,10 +152,8 @@ class AjaxEntityType extends AbstractType
      * Returns the transformer options
      *
      * @param array $options
-     *
-     * @return array
      */
-    protected function getTransformerOptions(array $options)
+    protected function getTransformerOptions(array $options): array
     {
         $transformerOptions = $options['transformer_options'];
         $transformerOptions['class'] = $options['class'];
@@ -170,10 +168,8 @@ class AjaxEntityType extends AbstractType
      * Returns the list route parameters
      *
      * @param Options $options
-     *
-     * @return array
      */
-    protected function getRouteParameters(Options $options)
+    protected function getRouteParameters(Options $options): array
     {
         $parameters = $options['route_parameters'];
         $parameters['class'] = $options['class'];
@@ -188,10 +184,8 @@ class AjaxEntityType extends AbstractType
      * Returns the form type's transformer
      *
      * @param array $options
-     *
-     * @return DataTransformerInterface
      */
-    protected function getTransformer(array $options)
+    protected function getTransformer(array $options): DataTransformerInterface
     {
         return $this->transformerFactory->create($this->getTransformerOptions($options));
     }

@@ -13,20 +13,16 @@ interface ExtensionVisitorInterface
      * Checks if extensions should be applied to grid
      *
      * @param DatagridConfiguration $config
-     *
-     * @return bool
      */
-    public function isApplicable(DatagridConfiguration $config);
+    public function isApplicable(DatagridConfiguration $config): bool;
 
     /**
      * Process configuration object
      * Validation and passing default values goes here
      *
      * @param DatagridConfiguration $config
-     *
-     * @return void
      */
-    public function processConfigs(DatagridConfiguration $config);
+    public function processConfigs(DatagridConfiguration $config): void;
 
     /**
      * Apply changes provided by applied extensions on datasource
@@ -61,8 +57,6 @@ interface ExtensionVisitorInterface
     /**
      * Returns priority needed for applying
      * Format from -255 to 255
-     *
-     * @return int
      */
-    public function getPriority();
+    public function getPriority(): int;
 }

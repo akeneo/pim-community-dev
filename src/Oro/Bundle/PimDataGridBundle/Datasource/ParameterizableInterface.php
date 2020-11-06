@@ -11,15 +11,10 @@ namespace Oro\Bundle\PimDataGridBundle\Datasource;
  */
 interface ParameterizableInterface
 {
-    /**
-     * @return array
-     */
-    public function getParameters();
+    public function getParameters(): array;
 
     /**
      * @param array $parameters
-     *
-     * @return ParameterizableInterface
      */
-    public function setParameters($parameters);
+    public function setParameters(array $parameters): \Oro\Bundle\PimDataGridBundle\Datasource\ParameterizableInterface;
 }

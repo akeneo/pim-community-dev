@@ -48,13 +48,13 @@ class ItemStep extends AbstractStep
      * @param integer                  $batchSize
      */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
-        $batchSize = 100
+        int $batchSize = 100
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
 
@@ -66,30 +66,24 @@ class ItemStep extends AbstractStep
 
     /**
      * Get reader
-     *
-     * @return ItemReaderInterface
      */
-    public function getReader()
+    public function getReader(): \Akeneo\Tool\Component\Batch\Item\ItemReaderInterface
     {
         return $this->reader;
     }
 
     /**
      * Get processor
-     *
-     * @return ItemProcessorInterface
      */
-    public function getProcessor()
+    public function getProcessor(): \Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface
     {
         return $this->processor;
     }
 
     /**
      * Get writer
-     *
-     * @return ItemWriterInterface
      */
-    public function getWriter()
+    public function getWriter(): \Akeneo\Tool\Component\Batch\Item\ItemWriterInterface
     {
         return $this->writer;
     }
@@ -97,7 +91,7 @@ class ItemStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function doExecute(StepExecution $stepExecution)
+    public function doExecute(StepExecution $stepExecution): void
     {
         $itemsToWrite = [];
         $batchCount = 0;
@@ -149,7 +143,7 @@ class ItemStep extends AbstractStep
     /**
      * @param StepExecution $stepExecution
      */
-    protected function initializeStepElements(StepExecution $stepExecution)
+    protected function initializeStepElements(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
         foreach ($this->getStepElements() as $element) {
@@ -165,7 +159,7 @@ class ItemStep extends AbstractStep
     /**
      * Flushes step elements
      */
-    public function flushStepElements()
+    public function flushStepElements(): void
     {
         foreach ($this->getStepElements() as $element) {
             if ($element instanceof FlushableInterface) {
@@ -193,7 +187,7 @@ class ItemStep extends AbstractStep
     /**
      * @param array $processedItems
      */
-    protected function write($processedItems)
+    protected function write(array $processedItems): void
     {
         try {
             $this->writer->write($processedItems);
@@ -213,7 +207,7 @@ class ItemStep extends AbstractStep
         StepExecution $stepExecution,
         $element,
         InvalidItemException $e
-    ) {
+    ): void {
         $warning = new Warning(
             $stepExecution,
             $e->getMessage(),
@@ -233,10 +227,8 @@ class ItemStep extends AbstractStep
 
     /**
      * Get the configurable step elements
-     *
-     * @return array
      */
-    protected function getStepElements()
+    protected function getStepElements(): array
     {
         return [
             'reader'    => $this->reader,

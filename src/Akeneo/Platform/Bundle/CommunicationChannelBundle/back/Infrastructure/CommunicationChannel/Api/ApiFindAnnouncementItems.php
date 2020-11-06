@@ -47,9 +47,7 @@ final class ApiFindAnnouncementItems implements FindAnnouncementItemsInterface
         }
         $content = json_decode((string) $response->getBody(), true)['data'];
 
-        return array_map(function ($announcement) {
-            return $this->getAnnouncementItem($announcement);
-        }, array_values($content));
+        return array_map(fn($announcement) => $this->getAnnouncementItem($announcement), array_values($content));
     }
 
     private function getAnnouncementItem(array $announcement): AnnouncementItem

@@ -23,7 +23,7 @@ class LightEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -31,7 +31,7 @@ class LightEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'light_entity';
     }
@@ -39,7 +39,7 @@ class LightEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addViewTransformer(
             new EntityToIdentifierTransformer(
@@ -56,7 +56,7 @@ class LightEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefined([
@@ -68,11 +68,7 @@ class LightEntityType extends AbstractType
                 'repository_options' => [],
                 'identifier'         => 'code',
             ])
-            ->setNormalizer('choices', function (Options $options, $value) {
-                return $options['repository']->findTranslatedLabels($options['repository_options']);
-            })
-            ->setAllowedValues('repository', function ($repository) {
-                return $repository instanceof TranslatedLabelsProviderInterface;
-            });
+            ->setNormalizer('choices', fn(Options $options, $value) => $options['repository']->findTranslatedLabels($options['repository_options']))
+            ->setAllowedValues('repository', fn($repository) => $repository instanceof TranslatedLabelsProviderInterface);
     }
 }

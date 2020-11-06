@@ -18,7 +18,7 @@ class AkeneoBatchQueueBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $mappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Tool\Component\BatchQueue\Queue'

@@ -14,7 +14,7 @@ class ReferenceDataSimpleSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'pim_reference_data_simpleselect';
     }

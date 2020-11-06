@@ -35,7 +35,7 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): ?int
     {
         if ($this->valid()) {
             return $this->position;
@@ -47,7 +47,7 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->position < $this->count();
     }

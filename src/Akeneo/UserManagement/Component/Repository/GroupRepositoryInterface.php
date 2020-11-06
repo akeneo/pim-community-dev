@@ -16,5 +16,5 @@ interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface
      *
      * @return null|object
      */
-    public function getDefaultUserGroup();
+    public function getDefaultUserGroup(): ?object;
 }

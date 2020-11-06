@@ -23,7 +23,7 @@ class RegisterStandardToFlatConverterPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(static::CONVERTER_REGISTRY)) {
             return;
@@ -42,7 +42,7 @@ class RegisterStandardToFlatConverterPass implements CompilerPassInterface
      * @param string[]   $tags
      * @param string     $serviceId
      */
-    protected function registerConverter(Definition $registry, array $tags, $serviceId)
+    protected function registerConverter(Definition $registry, array $tags, string $serviceId): void
     {
         foreach ($tags as $tag) {
             $priority = isset($tag['priority']) ? (int)$tag['priority'] : static::DEFAULT_PRIORITY;

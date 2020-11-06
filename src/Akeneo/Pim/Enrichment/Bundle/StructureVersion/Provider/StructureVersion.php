@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\Provider;
 
+use Doctrine\DBAL\Connection;
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -31,7 +32,7 @@ class StructureVersion implements StructureVersionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getStructureVersion()
+    public function getStructureVersion(): ?int
     {
         $sql = <<<'SQL'
 SELECT last_update
@@ -45,7 +46,7 @@ SQL;
         $stmt = $connection->executeQuery(
             $sql,
             ['resource_names' => $this->resourceNames],
-            ['resource_names' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+            ['resource_names' => Connection::PARAM_STR_ARRAY]
         );
 
         $loggedAt = $stmt->fetch(\PDO::FETCH_ASSOC)['last_update'];
@@ -62,7 +63,7 @@ SQL;
      *
      * @param string $resourceName
      */
-    public function addResource($resourceName)
+    public function addResource(string $resourceName): void
     {
         if (!in_array($resourceName, $this->resourceNames)) {
             $this->resourceNames[] = $resourceName;

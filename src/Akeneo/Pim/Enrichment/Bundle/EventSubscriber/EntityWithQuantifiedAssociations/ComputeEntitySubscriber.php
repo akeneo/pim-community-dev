@@ -40,7 +40,7 @@ final class ComputeEntitySubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [StorageEvents::PRE_SAVE => 'computeRawQuantifiedAssociations'];
     }
@@ -50,7 +50,7 @@ final class ComputeEntitySubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function computeRawQuantifiedAssociations(GenericEvent $event)
+    public function computeRawQuantifiedAssociations(GenericEvent $event): void
     {
         $subject = $event->getSubject();
         if (!$subject instanceof EntityWithQuantifiedAssociationsInterface) {

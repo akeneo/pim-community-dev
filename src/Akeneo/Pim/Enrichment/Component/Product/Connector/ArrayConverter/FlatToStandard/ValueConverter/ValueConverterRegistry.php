@@ -20,7 +20,7 @@ class ValueConverterRegistry implements ValueConverterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(ValueConverterInterface $converter)
+    public function register(ValueConverterInterface $converter): \Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterRegistry
     {
         $this->converters[] = $converter;
 
@@ -30,7 +30,7 @@ class ValueConverterRegistry implements ValueConverterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getConverter($attributeType)
+    public function getConverter(string $attributeType): ?ValueConverterInterface
     {
         if (isset($this->convertersByAttributeType[$attributeType])) {
             return $this->convertersByAttributeType[$attributeType];

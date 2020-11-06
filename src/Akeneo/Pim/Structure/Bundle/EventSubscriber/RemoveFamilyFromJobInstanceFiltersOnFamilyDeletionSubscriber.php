@@ -34,7 +34,7 @@ class RemoveFamilyFromJobInstanceFiltersOnFamilyDeletionSubscriber implements Ev
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_REMOVE => 'removeDeletedFamilyFromExportJobInstancesFilters',

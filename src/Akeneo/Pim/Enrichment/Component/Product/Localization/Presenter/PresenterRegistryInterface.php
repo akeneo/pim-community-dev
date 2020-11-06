@@ -21,41 +21,33 @@ interface PresenterRegistryInterface
      * @param PresenterInterface $presenter
      * @param string             $type
      */
-    public function register(PresenterInterface $presenter, $type);
+    public function register(PresenterInterface $presenter, string $type);
 
     /**
      * Get the first presenter supporting an attribute code
      *
      * @param string $code
-     *
-     * @return PresenterInterface|null
      */
-    public function getPresenterByAttributeCode($code);
+    public function getPresenterByAttributeCode(string $code): ?\Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 
     /**
      * Get the first presenter supporting an attribute type
      *
      * @param string $attributeType
-     *
-     * @return PresenterInterface|null
      */
-    public function getPresenterByAttributeType($attributeType);
+    public function getPresenterByAttributeType(string $attributeType): ?\Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 
     /**
      * Get the first presenter supporting a field code
      *
      * @param string $code
-     *
-     * @return PresenterInterface|null
      */
-    public function getPresenterByFieldCode($code);
+    public function getPresenterByFieldCode(string $code): ?\Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 
     /**
      * Get the first presenter supporting an attribute option
      *
      * @param string $optionName
-     *
-     * @return PresenterInterface|null
      */
-    public function getAttributeOptionPresenter($optionName);
+    public function getAttributeOptionPresenter(string $optionName): ?\Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 }

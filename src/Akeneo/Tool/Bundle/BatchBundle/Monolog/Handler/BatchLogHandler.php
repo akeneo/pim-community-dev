@@ -45,10 +45,8 @@ class BatchLogHandler extends StreamHandler
 
     /**
      * Get the filename of the log file
-     *
-     * @return string
      */
-    public function getFilename()
+    public function getFilename(): ?string
     {
         return $this->url;
     }
@@ -56,7 +54,7 @@ class BatchLogHandler extends StreamHandler
     /**
      * @param string $subDirectory
      */
-    public function setSubDirectory($subDirectory)
+    public function setSubDirectory(string $subDirectory): void
     {
         $this->url = $this->getRealPath($this->generateLogFilename(), $subDirectory);
     }
@@ -67,11 +65,10 @@ class BatchLogHandler extends StreamHandler
      * @param string $filename
      * @param string $subDirectory
      *
-     * @return string
      *
      * @deprecated
      */
-    private function getRealPath($filename, $subDirectory = null)
+    private function getRealPath(string $filename, string $subDirectory = null): string
     {
         if (null !== $subDirectory) {
             return sprintf('%s/%s/%s', $this->logDir, $subDirectory, $filename);
@@ -83,7 +80,7 @@ class BatchLogHandler extends StreamHandler
     /**
      * {@inheritdoc}
      */
-    public function write(array $record)
+    public function write(array $record): void
     {
         if (null === $this->url) {
             $this->url = $this->getRealPath($this->generateLogFilename());
@@ -98,10 +95,8 @@ class BatchLogHandler extends StreamHandler
 
     /**
      * Generates a random filename
-     *
-     * @return string
      */
-    private function generateLogFilename()
+    private function generateLogFilename(): string
     {
         return sprintf('batch_%s.log', sha1(uniqid(rand(), true)));
     }

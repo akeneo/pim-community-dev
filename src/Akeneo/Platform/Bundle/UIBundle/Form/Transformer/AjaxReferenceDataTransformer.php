@@ -83,10 +83,8 @@ class AjaxReferenceDataTransformer implements DataTransformerInterface
      * Returns the labels corresponding to the given value
      *
      * @param mixed $value
-     *
-     * @return array
      */
-    public function getOptions($value)
+    public function getOptions($value): ?array
     {
         if ($this->options['multiple']) {
             $options = [];

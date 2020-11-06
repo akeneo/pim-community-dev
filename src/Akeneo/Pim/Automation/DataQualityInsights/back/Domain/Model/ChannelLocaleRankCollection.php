@@ -40,17 +40,13 @@ final class ChannelLocaleRankCollection
 
         $rankCollection->ranks = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
             $normalizedRanks,
-            function ($normalizedRank) use ($getNormalizedRankValue) {
-                return Rank::fromInt(intval($getNormalizedRankValue($normalizedRank)));
-            });
+            fn($normalizedRank) => Rank::fromInt((int) $getNormalizedRankValue($normalizedRank)));
 
         return $rankCollection;
     }
 
     public function toArrayInt(): array
     {
-        return $this->ranks->mapWith(function (Rank $rank) {
-            return $rank->toInt();
-        });
+        return $this->ranks->mapWith(fn(Rank $rank) => $rank->toInt());
     }
 }

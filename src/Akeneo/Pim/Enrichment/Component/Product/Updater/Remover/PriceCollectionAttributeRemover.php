@@ -85,9 +85,9 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
         EntityWithValuesInterface $entityWithValues,
         AttributeInterface $attribute,
         $data,
-        $locale,
-        $scope
-    ) {
+        string $locale,
+        string $scope
+    ): void {
         $productValue = $entityWithValues->getValue($attribute->getCode(), $locale, $scope);
 
         $currencyToRemove = [];
@@ -117,7 +117,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * @throws InvalidPropertyTypeException
      * @throws InvalidPropertyException
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function checkData(AttributeInterface $attribute, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(

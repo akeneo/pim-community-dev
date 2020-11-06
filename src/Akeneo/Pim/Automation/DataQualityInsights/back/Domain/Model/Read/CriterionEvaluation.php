@@ -64,7 +64,7 @@ final class CriterionEvaluation
         return $this->productId;
     }
 
-    public function getEvaluatedAt(): ?\DateTimeImmutable
+    public function getEvaluatedAt(): \DateTimeImmutable
     {
         return $this->evaluatedAt;
     }

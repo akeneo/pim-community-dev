@@ -29,7 +29,7 @@ class BundlesDataCollector implements DataCollectorInterface
      *
      * Collect the list of registered bundles
      */
-    public function collect()
+    public function collect(): array
     {
         $bundles = $this->bundles;
         natsort($bundles);

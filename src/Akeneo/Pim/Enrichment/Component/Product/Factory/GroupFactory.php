@@ -27,7 +27,7 @@ class GroupFactory implements SimpleFactoryInterface
      */
     public function __construct(
         GroupTypeRepositoryInterface $groupTypeRepository,
-        $groupClass
+        string $groupClass
     ) {
         $this->groupClass = $groupClass;
         $this->groupTypeRepository = $groupTypeRepository;
@@ -36,7 +36,7 @@ class GroupFactory implements SimpleFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create()
+    public function create(): object
     {
         return new $this->groupClass();
     }
@@ -45,10 +45,8 @@ class GroupFactory implements SimpleFactoryInterface
      * Create and configure a group instance
      *
      * @param string $groupTypeCode
-     *
-     * @return GroupInterface
      */
-    public function createGroup($groupTypeCode = null)
+    public function createGroup(string $groupTypeCode = null): object
     {
         $group = $this->create();
 

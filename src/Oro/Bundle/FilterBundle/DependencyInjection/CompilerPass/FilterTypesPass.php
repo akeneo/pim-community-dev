@@ -14,7 +14,7 @@ class FilterTypesPass implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         /**
          * Find and add available filters to extension

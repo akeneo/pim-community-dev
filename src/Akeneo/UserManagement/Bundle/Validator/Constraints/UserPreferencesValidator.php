@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Validator\Constraints;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -17,10 +18,10 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate the user preferences
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      * @param Constraint                              $constraint
      */
-    public function validate($user, Constraint $constraint)
+    public function validate($user, Constraint $constraint): void
     {
         $this->validateCatalogLocale($user, $constraint);
         $this->validateCatalogScope($user, $constraint);
@@ -30,10 +31,10 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate catalog locale
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      * @param Constraint                              $constraint
      */
-    protected function validateCatalogLocale($user, Constraint $constraint)
+    protected function validateCatalogLocale(UserInterface $user, Constraint $constraint): void
     {
         if (is_callable([$user, 'getCatalogLocale'])) {
             $locale = $user->getCatalogLocale();
@@ -50,26 +51,24 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate catalog Scope
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      * @param Constraint                              $constraint
      */
-    protected function validateCatalogScope($user, Constraint $constraint)
+    protected function validateCatalogScope(UserInterface $user, Constraint $constraint): void
     {
-        if (is_callable([$user, 'getCatalogScope'])) {
-            if (!$user->getCatalogScope()) {
-                $this->context->buildViolation($constraint->missingScopeMsg)
-                    ->addViolation();
-            }
+        if (is_callable([$user, 'getCatalogScope']) && !$user->getCatalogScope()) {
+            $this->context->buildViolation($constraint->missingScopeMsg)
+                ->addViolation();
         }
     }
 
     /**
      * Validate default tree
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      * @param Constraint                              $constraint
      */
-    protected function validateDefaultTree($user, Constraint $constraint)
+    protected function validateDefaultTree(UserInterface $user, Constraint $constraint): void
     {
         if (is_callable([$user, 'getDefaultTree'])) {
             $tree = $user->getDefaultTree();

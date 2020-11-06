@@ -34,7 +34,7 @@ class RemoverRegistry implements RemoverRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(RemoverInterface $remover)
+    public function register(RemoverInterface $remover): RemoverRegistryInterface
     {
         if ($remover instanceof FieldRemoverInterface) {
             $this->fieldRemovers[] = $remover;
@@ -49,14 +49,10 @@ class RemoverRegistry implements RemoverRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getRemover($property)
+    public function getRemover(string $property): RemoverInterface
     {
         $attribute = $this->getAttribute($property);
-        if (null !== $attribute) {
-            $remover = $this->getAttributeRemover($attribute);
-        } else {
-            $remover = $this->getFieldRemover($property);
-        }
+        $remover = null !== $attribute ? $this->getAttributeRemover($attribute) : $this->getFieldRemover($property);
 
         return $remover;
     }
@@ -64,7 +60,7 @@ class RemoverRegistry implements RemoverRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldRemover($field)
+    public function getFieldRemover(string $field): ?FieldRemoverInterface
     {
         foreach ($this->fieldRemovers as $remover) {
             if ($remover->supportsField($field)) {
@@ -78,7 +74,7 @@ class RemoverRegistry implements RemoverRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeRemover(AttributeInterface $attribute)
+    public function getAttributeRemover(AttributeInterface $attribute): ?AttributeRemoverInterface
     {
         foreach ($this->attributeRemovers as $remover) {
             if ($remover->supportsAttribute($attribute)) {
@@ -91,10 +87,8 @@ class RemoverRegistry implements RemoverRegistryInterface
 
     /**
      * @param string $code
-     *
-     * @return AttributeInterface|null
      */
-    protected function getAttribute($code)
+    protected function getAttribute(string $code): ?AttributeInterface
     {
         return $this->attributeRepository->findOneByIdentifier($code);
     }

@@ -135,8 +135,6 @@ class VariantAttributeSet implements VariantAttributeSetInterface
 
     private function containsAttribute(Collection $attributes, AttributeInterface $attribute): bool
     {
-        return $attributes->exists(function ($key, $element) use ($attribute) {
-            return $element->getCode() === $attribute->getCode();
-        });
+        return $attributes->exists(fn($key, $element) => $element->getCode() === $attribute->getCode());
     }
 }

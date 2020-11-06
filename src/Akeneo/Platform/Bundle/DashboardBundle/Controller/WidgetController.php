@@ -35,10 +35,8 @@ class WidgetController
 
     /**
      * Renders dashboard widgets
-     *
-     * @return Response
      */
-    public function listAction()
+    public function listAction(): Response
     {
         $output = '';
         $widgets = $this->widgetRegistry->getAll();
@@ -54,10 +52,8 @@ class WidgetController
      * Return data for a widget
      *
      * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function dataAction($alias)
+    public function dataAction(string $alias): JsonResponse
     {
         $widget = $this->widgetRegistry->get($alias);
 
@@ -70,10 +66,8 @@ class WidgetController
      * Returns a rendered widget template
      *
      * @param WidgetInterface $widget
-     *
-     * @return string
      */
-    protected function renderWidget(WidgetInterface $widget)
+    protected function renderWidget(WidgetInterface $widget): string
     {
         return $this->templating->render($widget->getTemplate(), $widget->getParameters());
     }

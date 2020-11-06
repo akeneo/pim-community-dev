@@ -65,7 +65,7 @@ final class CriterionEvaluation
         $this->result = $criterionApplicability->getEvaluationResult();
         $this->status = CriterionEvaluationStatus::pending();
 
-        if (false === $criterionApplicability->isApplicable()) {
+        if (!$criterionApplicability->isApplicable()) {
             $this->evaluatedAt = new \DateTimeImmutable();
             $this->status = CriterionEvaluationStatus::done();
         }
@@ -97,7 +97,7 @@ final class CriterionEvaluation
         return $this->productId;
     }
 
-    public function getEvaluatedAt(): ?\DateTimeImmutable
+    public function getEvaluatedAt(): \DateTimeImmutable
     {
         return $this->evaluatedAt;
     }
@@ -112,7 +112,7 @@ final class CriterionEvaluation
         return $this->status->isPending();
     }
 
-    public function getResult(): ?CriterionEvaluationResult
+    public function getResult(): \Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult
     {
         return $this->result;
     }

@@ -28,7 +28,7 @@ class UserNotification implements UserNotificationInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -36,7 +36,7 @@ class UserNotification implements UserNotificationInterface
     /**
      * {@inheritdoc}
      */
-    public function setNotification(NotificationInterface $notification)
+    public function setNotification(NotificationInterface $notification): UserNotificationInterface
     {
         $this->notification = $notification;
 
@@ -46,7 +46,7 @@ class UserNotification implements UserNotificationInterface
     /**
      * {@inheritdoc}
      */
-    public function getNotification()
+    public function getNotification(): \Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface
     {
         return $this->notification;
     }
@@ -54,7 +54,7 @@ class UserNotification implements UserNotificationInterface
     /**
      * {@inheritdoc}
      */
-    public function setUser(UserInterface $user)
+    public function setUser(UserInterface $user): UserNotificationInterface
     {
         $this->user = $user;
 
@@ -64,7 +64,7 @@ class UserNotification implements UserNotificationInterface
     /**
      * {@inheritdoc}
      */
-    public function getUser()
+    public function getUser(): \Symfony\Component\Security\Core\User\UserInterface
     {
         return $this->user;
     }
@@ -72,7 +72,7 @@ class UserNotification implements UserNotificationInterface
     /**
      * {@inheritdoc}
      */
-    public function setViewed($viewed)
+    public function setViewed(bool $viewed): UserNotificationInterface
     {
         $this->viewed = $viewed;
 
@@ -82,7 +82,7 @@ class UserNotification implements UserNotificationInterface
     /**
      * {@inheritdoc}
      */
-    public function isViewed()
+    public function isViewed(): bool
     {
         return $this->viewed;
     }

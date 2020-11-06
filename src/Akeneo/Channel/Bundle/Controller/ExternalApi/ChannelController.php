@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -102,11 +103,10 @@ class ChannelController
      *
      * @throws NotFoundHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_channel_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $channel = $this->repository->findOneByIdentifier($code);
         if (null === $channel) {
@@ -123,11 +123,10 @@ class ChannelController
      *
      * @throws UnprocessableEntityHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_channel_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -168,11 +167,10 @@ class ChannelController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_channel_edit")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -196,11 +194,10 @@ class ChannelController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_channel_edit")
      */
-    public function partialUpdateAction(Request $request, $code)
+    public function partialUpdateAction(Request $request, string $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -233,11 +230,10 @@ class ChannelController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_channel_edit")
      */
-    public function partialUpdateListAction(Request $request)
+    public function partialUpdateListAction(Request $request): StreamedResponse
     {
         $resource = $request->getContent(true);
 
@@ -254,7 +250,7 @@ class ChannelController
      *
      * @return array
      */
-    private function mergeAndFilterConversionUnits($channel, $data): array
+    private function mergeAndFilterConversionUnits(\Akeneo\Channel\Component\Model\ChannelInterface $channel, array $data): array
     {
         return array_filter(
             array_merge($channel->getConversionUnits(), $data['conversion_units']),
@@ -268,10 +264,8 @@ class ChannelController
      * @param string $content content of a request to decode
      *
      * @throws BadRequestHttpException
-     *
-     * @return array
      */
-    protected function getDecodedContent($content)
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -291,7 +285,7 @@ class ChannelController
      *
      * @throws DocumentedHttpException
      */
-    protected function updateChannel(ChannelInterface $channel, array $data, $anchor)
+    protected function updateChannel(ChannelInterface $channel, array $data, string $anchor): void
     {
         try {
             $this->updater->update($channel, $data);
@@ -312,7 +306,7 @@ class ChannelController
      *
      * @throws ViolationHttpException
      */
-    protected function validateChannel(ChannelInterface $channel)
+    protected function validateChannel(ChannelInterface $channel): void
     {
         $violations = $this->validator->validate($channel);
         if (0 !== $violations->count()) {
@@ -325,10 +319,8 @@ class ChannelController
      *
      * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      * @param int                                              $status
-     *
-     * @return Response
      */
-    protected function getResponse(ChannelInterface $channel, $status)
+    protected function getResponse(ChannelInterface $channel, int $status): Response
     {
         $response = new Response(null, $status);
         $url = $this->router->generate(
@@ -352,7 +344,7 @@ class ChannelController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function validateCodeConsistency($code, array $data)
+    protected function validateCodeConsistency(string $code, array $data): void
     {
         if (array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(

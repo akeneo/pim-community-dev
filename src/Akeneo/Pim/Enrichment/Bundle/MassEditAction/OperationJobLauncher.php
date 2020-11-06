@@ -50,7 +50,7 @@ class OperationJobLauncher
      *
      * @throws NotFoundResourceException
      */
-    public function launch(BatchableOperationInterface $operation)
+    public function launch(BatchableOperationInterface $operation): void
     {
         $jobInstanceCode = $operation->getJobInstanceCode();
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier($jobInstanceCode);

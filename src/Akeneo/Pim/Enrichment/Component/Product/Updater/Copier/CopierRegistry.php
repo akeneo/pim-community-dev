@@ -34,7 +34,7 @@ class CopierRegistry implements CopierRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(CopierInterface $copier)
+    public function register(CopierInterface $copier): CopierRegistryInterface
     {
         if ($copier instanceof FieldCopierInterface) {
             $this->fieldCopiers[] = $copier;
@@ -49,7 +49,7 @@ class CopierRegistry implements CopierRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getCopier($fromProperty, $toProperty)
+    public function getCopier(string $fromProperty, string $toProperty): CopierInterface
     {
         $fromAttribute = $this->getAttribute($fromProperty);
         $toAttribute = $this->getAttribute($toProperty);
@@ -65,7 +65,7 @@ class CopierRegistry implements CopierRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldCopier($fromField, $toField)
+    public function getFieldCopier(string $fromField, string $toField): FieldCopierInterface
     {
         foreach ($this->fieldCopiers as $copier) {
             if ($copier->supportsFields($fromField, $toField)) {
@@ -79,7 +79,7 @@ class CopierRegistry implements CopierRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeCopier(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
+    public function getAttributeCopier(AttributeInterface $fromAttribute, AttributeInterface $toAttribute): AttributeCopierInterface
     {
         foreach ($this->attributeCopiers as $copier) {
             if ($copier->supportsAttributes($fromAttribute, $toAttribute)) {
@@ -92,10 +92,8 @@ class CopierRegistry implements CopierRegistryInterface
 
     /**
      * @param string $code
-     *
-     * @return AttributeInterface|null
      */
-    protected function getAttribute($code)
+    protected function getAttribute(string $code): ?AttributeInterface
     {
         return $this->attributeRepository->findOneByIdentifier($code);
     }

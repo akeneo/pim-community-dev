@@ -33,7 +33,7 @@ class LocaleNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function normalize($locale, $format = null, array $context = [])
+    public function normalize($locale, $format = null, array $context = []): array
     {
         return [
             'code'     => $locale->getCode(),
@@ -46,7 +46,7 @@ class LocaleNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof LocaleInterface && in_array($format, $this->supportedFormats);
     }
@@ -61,10 +61,8 @@ class LocaleNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      *
      * @param string $code        the code of the locale to translate
      * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
-     *
-     * @return string
      */
-    private function getLocaleLabel($code, $translateIn = null)
+    private function getLocaleLabel(string $code, string $translateIn = null): string
     {
         $translateIn = $translateIn ?: $this->userContext->getUiLocale()->getCode();
 

@@ -15,10 +15,8 @@ interface ComparatorRegistryInterface
      * @param string $attributeType
      *
      * @throws \LogicException
-     *
-     * @return ComparatorInterface
      */
-    public function getAttributeComparator($attributeType);
+    public function getAttributeComparator(string $attributeType): \Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 
     /**
      * Add a comparator for attribute to the chain of comparators
@@ -26,16 +24,14 @@ interface ComparatorRegistryInterface
      * @param ComparatorInterface $comparator
      * @param int                 $priority
      */
-    public function addAttributeComparator(ComparatorInterface $comparator, $priority);
+    public function addAttributeComparator(ComparatorInterface $comparator, int $priority);
 
     /**
      * @param string $field
      *
      * @throws \LogicException
-     *
-     * @return ComparatorInterface
      */
-    public function getFieldComparator($field);
+    public function getFieldComparator(string $field): \Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
 
     /**
      * Add a comparator for product's field to the chain of comparators
@@ -43,5 +39,5 @@ interface ComparatorRegistryInterface
      * @param ComparatorInterface $comparator
      * @param int                 $priority
      */
-    public function addFieldComparator(ComparatorInterface $comparator, $priority);
+    public function addFieldComparator(ComparatorInterface $comparator, int $priority);
 }

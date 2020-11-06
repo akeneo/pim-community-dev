@@ -76,7 +76,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function normalize($version, $format = null, array $context = [])
+    public function normalize($version, $format = null, array $context = []): array
     {
         $context = array_merge($context, ['locale' => $this->translator->getLocale()]);
 
@@ -103,7 +103,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof Version && in_array($format, $this->supportedFormats);
     }
@@ -115,10 +115,8 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
     /**
      * @param string $author
-     *
-     * @return string
      */
-    protected function normalizeAuthor($author)
+    protected function normalizeAuthor(string $author): string
     {
         if (!isset($this->authorCache[$author])) {
             $user = $this->userManager->findUserByUsername($author);
@@ -141,10 +139,8 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      *
      * @param array $changeset
      * @param array $context
-     *
-     * @return array
      */
-    protected function convertChangeset(array $changeset, array $context)
+    protected function convertChangeset(array $changeset, array $context): array
     {
         $attributeCodes = [];
         foreach (array_keys($changeset) as $valueHeader) {

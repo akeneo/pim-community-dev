@@ -17,7 +17,7 @@ class ValueConverterRegistry
     /**
      * {@inheritdoc}
      */
-    public function register(ValueConverterInterface $converter, $priority)
+    public function register(ValueConverterInterface $converter, $priority): self
     {
         $priority = (int)$priority;
         if (!isset($this->converters[$priority])) {
@@ -33,10 +33,8 @@ class ValueConverterRegistry
 
     /**
      * @param AttributeInterface $attribute
-     *
-     * @return ValueConverterInterface|null
      */
-    public function getConverter(AttributeInterface $attribute)
+    public function getConverter(AttributeInterface $attribute): ?ValueConverterInterface
     {
         foreach ($this->converters as $converter) {
             if ($converter->supportsAttribute($attribute)) {

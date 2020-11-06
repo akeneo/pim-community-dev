@@ -59,7 +59,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
         FileIteratorFactory $fileIteratorFactory,
         FilesystemInterface $filesystem,
         DefaultValuesProviderInterface $defaultValuesProvider,
-        $invalidItemFileFormat
+        string $invalidItemFileFormat
     ) {
         $this->collector = $collector;
         $this->writer = $writer;
@@ -74,7 +74,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      *
      * Re-parse the imported file and write into a new one the invalid lines.
      */
-    public function archive(JobExecution $jobExecution)
+    public function archive(JobExecution $jobExecution): void
     {
         if (empty($this->collector->getInvalidItems())) {
             return;
@@ -105,9 +105,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
 
                 $readItem = $this->removeDataWithEmptyHeaders($headers, $readItem);
 
-                $headers = array_filter($headers, function (string $columnName) {
-                    return '' !== trim($columnName);
-                });
+                $headers = array_filter($headers, fn(string $columnName) => '' !== trim($columnName));
 
                 $invalidItem = array_combine($headers, array_slice($readItem, 0, count($headers)));
                 if (false !== $invalidItem) {
@@ -141,7 +139,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function supports(JobExecution $jobExecution)
+    public function supports(JobExecution $jobExecution): bool
     {
         if ($jobExecution->getJobParameters()->has('invalid_items_file_format')) {
             return $this->invalidItemFileFormat === $jobExecution->getJobParameters()->get('invalid_items_file_format');
@@ -201,10 +199,8 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
      * The returned FileIteratorInterface instance should be position on the first item of the file.
      *
      * @param JobParameters $jobParameters
-     *
-     * @return FileIteratorInterface
      */
-    abstract protected function getInputFileIterator(JobParameters $jobParameters);
+    abstract protected function getInputFileIterator(JobParameters $jobParameters): FileIteratorInterface;
 
     /**
      * Get the final invalid data filename
@@ -213,9 +209,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
 
     private function removeDataWithEmptyHeaders(array $headers, array $readItem): array
     {
-        $emptyHeaderKeys = array_keys(array_filter($headers, function (string $columnName) {
-            return '' === trim($columnName);
-        }));
+        $emptyHeaderKeys = array_keys(array_filter($headers, fn(string $columnName) => '' === trim($columnName)));
 
         foreach ($emptyHeaderKeys as $key) {
             unset($readItem[$key]);

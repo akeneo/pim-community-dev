@@ -22,12 +22,10 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
      * {@inheritdoc}
      *
      * @param JobInstance $jobInstance
-     *
-     * @return array
      */
-    public function normalize($jobInstance, $format = null, array $context = [])
+    public function normalize($jobInstance, $format = null, array $context = []): array
     {
-        $results = [
+        return [
             'code'          => $jobInstance->getCode(),
             'job_name'      => $jobInstance->getJobName(),
             'label'         => $jobInstance->getLabel(),
@@ -35,14 +33,12 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
             'type'          => $jobInstance->getType(),
             'configuration' => json_encode($jobInstance->getRawParameters()),
         ];
-
-        return $results;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof JobInstance && in_array($format, $this->supportedFormats);
     }

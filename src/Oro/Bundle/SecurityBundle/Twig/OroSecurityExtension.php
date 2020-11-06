@@ -24,10 +24,10 @@ class OroSecurityExtension extends \Twig_Extension
      *
      * @return array An array of functions
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('resource_granted', [$this, 'checkResourceIsGranted']),
+            new \Twig_SimpleFunction('resource_granted', fn($attributes, $object = null) => $this->checkResourceIsGranted($attributes, $object)),
         ];
     }
 
@@ -37,10 +37,8 @@ class OroSecurityExtension extends \Twig_Extension
      * @param string|string[] $attributes Can be a role name(s), permission name(s), an ACL annotation id
      *                                    or something else, it depends on registered security voters
      * @param mixed $object A domain object, object identity or object identity descriptor (id:type)
-     *
-     * @return bool
      */
-    public function checkResourceIsGranted($attributes, $object = null)
+    public function checkResourceIsGranted($attributes, $object = null): bool
     {
         return $this->securityFacade->isGranted($attributes, $object);
     }

@@ -21,7 +21,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['name'];
     }
@@ -29,7 +29,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['name' => $code]);
     }
@@ -39,27 +39,23 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      *
      * @return null|object
      */
-    public function getDefaultUserGroup()
+    public function getDefaultUserGroup(): ?object
     {
         return $this->findOneByIdentifier(User::GROUP_DEFAULT);
     }
 
     /**
      * Find all groups but the default one
-     *
-     * @return array
      */
-    public function findAllButDefault()
+    public function findAllButDefault(): array
     {
         return $this->getAllButDefaultQB()->getQuery()->getResult();
     }
 
     /**
      * Create a QB to find all groups but the default one
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getAllButDefaultQB()
+    public function getAllButDefaultQB(): QueryBuilder
     {
         return $this->createQueryBuilder('g')
             ->where('g.name <> :all')
@@ -70,10 +66,8 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      * Get user query builder
      *
      * @param  GroupInterface $group
-     *
-     * @return QueryBuilder
      */
-    public function getUserQueryBuilder(GroupInterface $group)
+    public function getUserQueryBuilder(GroupInterface $group): QueryBuilder
     {
         return $this->_em->createQueryBuilder()
             ->select('u')

@@ -18,7 +18,7 @@ class AttributeOptionValueNormalizer implements NormalizerInterface, CacheableSu
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         return [
             'id'     => $object->getId(),
@@ -30,7 +30,7 @@ class AttributeOptionValueNormalizer implements NormalizerInterface, CacheableSu
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeOptionValueInterface && $format === 'array';
     }

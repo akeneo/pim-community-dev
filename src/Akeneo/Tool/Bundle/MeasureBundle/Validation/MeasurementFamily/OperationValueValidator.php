@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Validation;
 
 class OperationValueValidator extends ConstraintValidator
 {
-    public function validate($convertValue, Constraint $constraint)
+    public function validate($convertValue, Constraint $constraint): void
     {
         $validator = Validation::createValidator();
         $violations = $validator->validate(
@@ -41,8 +41,8 @@ class OperationValueValidator extends ConstraintValidator
         }
     }
 
-    private function isStringNumericWithoutScientificNotation($value)
+    private function isStringNumericWithoutScientificNotation($value): bool
     {
-        return is_string($value) && preg_match('~^[0-9]*\.?[0-9]+$~', $value) === 1;
+        return is_string($value) && preg_match('~^\d*\.?\d+$~', $value) === 1;
     }
 }

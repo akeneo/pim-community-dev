@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\HourlyErrorCount;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\ErrorCountRepository;
 use Doctrine\DBAL\Connection as DbalConnection;
@@ -18,7 +19,7 @@ class DbalErrorCountRepository implements ErrorCountRepository
     /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }

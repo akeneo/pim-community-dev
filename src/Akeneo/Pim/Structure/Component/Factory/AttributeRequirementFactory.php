@@ -21,7 +21,7 @@ class AttributeRequirementFactory
     /**
      * @param string $attrRequirementClass
      */
-    public function __construct($attrRequirementClass)
+    public function __construct(string $attrRequirementClass)
     {
         $this->attrRequirementClass = $attrRequirementClass;
     }
@@ -33,10 +33,8 @@ class AttributeRequirementFactory
      * @param AttributeInterface $attribute
      * @param ChannelInterface   $channel
      * @param bool               $required
-     *
-     * @return AttributeRequirementInterface
      */
-    public function createAttributeRequirement(AttributeInterface $attribute, ChannelInterface $channel, $required)
+    public function createAttributeRequirement(AttributeInterface $attribute, ChannelInterface $channel, bool $required): AttributeRequirementInterface
     {
         $requirement = new $this->attrRequirementClass();
         $requirement->setAttribute($attribute);

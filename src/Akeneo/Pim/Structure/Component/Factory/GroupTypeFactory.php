@@ -19,7 +19,7 @@ class GroupTypeFactory implements SimpleFactoryInterface
     /**
      * @param string $groupTypeClass
      */
-    public function __construct($groupTypeClass)
+    public function __construct(string $groupTypeClass)
     {
         $this->groupTypeClass = $groupTypeClass;
     }
@@ -27,7 +27,7 @@ class GroupTypeFactory implements SimpleFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create()
+    public function create(): object
     {
         return new $this->groupTypeClass();
     }

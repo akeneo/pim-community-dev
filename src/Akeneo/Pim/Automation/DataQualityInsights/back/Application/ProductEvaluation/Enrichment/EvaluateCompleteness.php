@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
@@ -30,12 +33,12 @@ final class EvaluateCompleteness
         $this->localesByChannelQuery = $localesByChannelQuery;
     }
 
-    public function evaluate(CalculateProductCompletenessInterface $completenessCalculator, Write\CriterionEvaluation $criterionEvaluation): Write\CriterionEvaluationResult
+    public function evaluate(CalculateProductCompletenessInterface $completenessCalculator, CriterionEvaluation $criterionEvaluation): CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
         $completenessResult = $completenessCalculator->calculate($criterionEvaluation->getProductId());
 
-        $evaluationResult = new Write\CriterionEvaluationResult();
+        $evaluationResult = new CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {
             foreach ($localeCodes as $localeCode) {
                 $this->evaluateChannelLocaleRate($evaluationResult, $channelCode, $localeCode, $completenessResult);
@@ -46,10 +49,10 @@ final class EvaluateCompleteness
     }
 
     private function evaluateChannelLocaleRate(
-        Write\CriterionEvaluationResult $evaluationResult,
+        CriterionEvaluationResult $evaluationResult,
         ChannelCode $channelCode,
         LocaleCode $localeCode,
-        Write\CompletenessCalculationResult $completenessResult
+        CompletenessCalculationResult $completenessResult
     ): void {
         $rate = $completenessResult->getRates()->getByChannelAndLocale($channelCode, $localeCode);
 

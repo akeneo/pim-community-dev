@@ -26,10 +26,8 @@ interface UpdateGuesserInterface
      * Check if the guesser support the action
      *
      * @param string $action
-     *
-     * @return bool
      */
-    public function supportAction($action);
+    public function supportAction(string $action): bool;
 
     /**
      * Get updated entities
@@ -37,8 +35,6 @@ interface UpdateGuesserInterface
      * @param EntityManager $em
      * @param object        $entity
      * @param string        $action
-     *
-     * @return array
      */
-    public function guessUpdates(EntityManager $em, $entity, $action);
+    public function guessUpdates(EntityManager $em, object $entity, string $action): array;
 }

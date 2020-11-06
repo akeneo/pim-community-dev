@@ -76,7 +76,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
@@ -91,7 +91,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @param FormEvent $event
      */
-    public function preSetData(FormEvent $event)
+    public function preSetData(FormEvent $event): void
     {
         $data = $event->getData();
         $form = $event->getForm();
@@ -124,7 +124,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @param FormEvent $event
      */
-    public function submit(FormEvent $event)
+    public function submit(FormEvent $event): void
     {
         $form = $event->getForm();
 
@@ -160,7 +160,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @param FormEvent $event
      */
-    public function postSubmit(FormEvent $event)
+    public function postSubmit(FormEvent $event): void
     {
         $form = $event->getForm();
         $data = $event->getData();
@@ -188,7 +188,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @return mixed string
      */
-    protected function bindTranslations($data)
+    protected function bindTranslations(array $data): array
     {
         $collection = [];
         $availableTrans = [];
@@ -219,7 +219,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @return string[]
      */
-    protected function getFieldNames()
+    protected function getFieldNames(): array
     {
         $userLocales = $this->userContext->getUserLocaleCodes();
         $collection = [];
@@ -242,7 +242,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @return mixed
      */
-    protected function getOption($name)
+    protected function getOption(string $name)
     {
         if (!isset($this->options[$name])) {
             throw new MissingOptionException(sprintf('Option %s is missing', $name));
@@ -256,10 +256,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @param string $code        the code of the locale to translate
      * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
-     *
-     * @return string
      */
-    private function getLocaleLabel($code, $translateIn = null)
+    private function getLocaleLabel(string $code, string $translateIn = null): string
     {
         $translateIn = $translateIn ?: $this->userContext->getCurrentLocaleCode();
 

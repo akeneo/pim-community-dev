@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -29,7 +30,7 @@ class AjaxEntityTransformerFactory implements TransformerFactoryInterface
      * @param RegistryInterface $doctrine
      * @param string            $class
      */
-    public function __construct(RegistryInterface $doctrine, $class)
+    public function __construct(RegistryInterface $doctrine, string $class)
     {
         $this->doctrine = $doctrine;
         $this->class = $class;
@@ -38,7 +39,7 @@ class AjaxEntityTransformerFactory implements TransformerFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(array $options)
+    public function create(array $options): DataTransformerInterface
     {
         $repository = $this->doctrine->getRepository($options['class']);
 

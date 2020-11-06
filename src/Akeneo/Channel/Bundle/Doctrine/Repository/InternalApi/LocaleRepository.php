@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Bundle\Doctrine\Repository\InternalApi;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
@@ -27,10 +28,8 @@ class LocaleRepository extends EntityRepository implements DatagridRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('l');
-
-        return $qb;
+        return $this->createQueryBuilder('l');
     }
 }

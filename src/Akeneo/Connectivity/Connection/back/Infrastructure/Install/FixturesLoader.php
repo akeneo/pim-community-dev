@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -35,7 +36,7 @@ class FixturesLoader
     private $userGroupSaver;
 
     public function __construct(
-        DbalConnection $dbalConnection,
+        Connection $dbalConnection,
         FileStorerInterface $fileStorer,
         ValidatorInterface $validator,
         SimpleFactoryInterface $userFactory,
@@ -189,7 +190,7 @@ class FixturesLoader
         ]);
     }
 
-    private function createUserRole(array $data): RoleInterface
+    private function createUserRole(array $data): object
     {
         $role = $this->userRoleFactory->create();
 
@@ -200,7 +201,7 @@ class FixturesLoader
         return $role;
     }
 
-    private function createUserGroup(array $data): GroupInterface
+    private function createUserGroup(array $data): object
     {
         $role = $this->userGroupFactory->create();
 

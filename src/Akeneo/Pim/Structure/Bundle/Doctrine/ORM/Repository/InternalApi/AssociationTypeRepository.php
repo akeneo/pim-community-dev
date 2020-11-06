@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
@@ -27,15 +28,13 @@ class AssociationTypeRepository extends EntityRepository implements DatagridRepo
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('a')
+        return $this->createQueryBuilder('a')
             ->addSelect('(CASE WHEN translation.label IS NULL THEN a.code ELSE translation.label END) AS label')
             ->addSelect('translation.label')
             ->addSelect('a.isTwoWay')
             ->addSelect('a.isQuantified')
             ->leftJoin('a.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
-
-        return $qb;
     }
 }

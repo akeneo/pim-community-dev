@@ -11,20 +11,14 @@ use Doctrine\Common\Collections\Collection;
  */
 interface GroupInterface
 {
-    /**
-     * @return int
-     */
-    public function getId(): ?int;
+    public function getId(): int;
 
-    /**
-     * @return string
-     */
-    public function getName(): ?string;
+    public function getName(): string;
 
     /**
      * @param  string $name
      */
-    public function setName($name): void;
+    public function setName(string $name): void;
 
     /**
      * @return string
@@ -45,7 +39,7 @@ interface GroupInterface
      *
      * @return RoleInterface|null
      */
-    public function getRole($roleName): ?RoleInterface;
+    public function getRole(string $roleName): ?RoleInterface;
 
     /**
      * @param  Role|string $role
@@ -79,5 +73,5 @@ interface GroupInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function setRoles($roles): void;
+    public function setRoles(\Doctrine\Common\Collections\Collection $roles): void;
 }

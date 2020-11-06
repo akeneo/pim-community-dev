@@ -40,7 +40,7 @@ class UpdateMappingIndexCommand extends Command
         parent::__construct(self::$defaultName);
     }
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->addArgument(
@@ -52,7 +52,7 @@ class UpdateMappingIndexCommand extends Command
         $this->addOption('all', 'a', InputOption::VALUE_NONE, "Use --all if you want to update all mappings of all indices", null);
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $indices = $input->getOption('all') ? [] : $input->getArgument('indices');
 
@@ -70,13 +70,11 @@ TXT;
         if (!$io->confirm('Are you sure to continue?', true)) {
             $output->writeln("<info>You decided to abort your Elasticearch mapping update</info>");
 
-            return;
+            return 0;
         }
 
         $clients = $this->esClients($indices);
-        $names = array_map(function (Client $client): string {
-            return $client->getIndexName();
-        }, $clients);
+        $names = array_map(fn(Client $client): string => $client->getIndexName(), $clients);
         $io->writeln("You will migrate those indices (if it misses one you gave, it means that you didn't write it correctly) : ");
         $io->listing($names);
 
@@ -89,6 +87,7 @@ TXT;
         }
 
         $io->success("All the indices listed above have been migrated");
+        return 0;
     }
 
     private function buildNativeClient(Client $client): array

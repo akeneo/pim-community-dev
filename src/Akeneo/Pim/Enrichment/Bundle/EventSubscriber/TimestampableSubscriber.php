@@ -18,10 +18,8 @@ class TimestampableSubscriber implements EventSubscriber
 {
     /**
      * Specifies the list of events to listen
-     *
-     * @return array
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'prePersist',
@@ -34,7 +32,7 @@ class TimestampableSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args): void
     {
         $object = $args->getObject();
 
@@ -51,7 +49,7 @@ class TimestampableSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(LifecycleEventArgs $args): void
     {
         $object = $args->getObject();
 

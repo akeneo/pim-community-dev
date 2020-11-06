@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Header;
 
+use Akeneo\Tool\Component\Localization\LanguageTranslatorInterface;
+use Akeneo\Tool\Component\Localization\CurrencyTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnsResolver;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
@@ -44,8 +46,8 @@ class AttributeTranslator implements FlatHeaderTranslatorInterface
         AttributeColumnsResolver $attributeColumnsResolver,
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
         GetChannelTranslations $getChannelTranslations,
-        LanguageTranslator $languageTranslator,
-        CurrencyTranslator $currencyTranslator,
+        LanguageTranslatorInterface $languageTranslator,
+        CurrencyTranslatorInterface $currencyTranslator,
         GetAttributeTranslations $getAttributeTranslations
     ) {
         $this->labelTranslator = $labelTranslator;

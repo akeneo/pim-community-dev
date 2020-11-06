@@ -56,21 +56,7 @@ class WebhookRequestLog
     }
 
     /**
-     * @return array{
-     *  type: string,
-     *  duration: int,
-     *  headers: array<string, int|string>,
-     *  message: string,
-     *  success: bool,
-     *  response: array{status_code: int}|null,
-     *  event: array{
-     *      uuid: string,
-     *      author: string,
-     *      author_type: string,
-     *      name: string,
-     *      timestamp: int|null,
-     *  },
-     * }
+     * @return array{type:string,  duration:int, headers:array<string,  int|string>, message:string,  success:bool, response:array{status_code:int}|null, event:array{uuid:string,  author:string, author_type:string,  name:string, timestamp:int|null}}
      */
     public function toLog(): array
     {
@@ -82,7 +68,7 @@ class WebhookRequestLog
             'headers' => $this->headers,
             'message' => $this->message,
             'success' => $this->success,
-            'response' => $this->response ? ['status_code' => $this->response->getStatusCode()] : null,
+            'response' => $this->response !== null ? ['status_code' => $this->response->getStatusCode()] : null,
             'event' => [
                 'uuid' => $this->webhookRequest->event()->eventId(),
                 'author' => $this->webhookRequest->event()->author()->name(),

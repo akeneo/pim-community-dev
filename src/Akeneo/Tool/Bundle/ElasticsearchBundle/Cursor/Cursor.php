@@ -31,7 +31,7 @@ class Cursor extends AbstractCursor implements CursorInterface
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
-        $pageSize
+        int $pageSize
     ) {
         $this->esClient = $esClient;
         $this->repository = $repository;
@@ -43,7 +43,7 @@ class Cursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->items = $this->getNextItems($this->esQuery);
@@ -54,7 +54,7 @@ class Cursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->searchAfter = [];
         $this->items = $this->getNextItems($this->esQuery);
@@ -64,7 +64,7 @@ class Cursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         if (null === $this->items) {
             $this->getNextIdentifiers($this->esQuery);
@@ -78,7 +78,7 @@ class Cursor extends AbstractCursor implements CursorInterface
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
-    protected function getNextIdentifiers(array $esQuery)
+    protected function getNextIdentifiers(array $esQuery): array
     {
         $esQuery['size'] = $this->pageSize;
 

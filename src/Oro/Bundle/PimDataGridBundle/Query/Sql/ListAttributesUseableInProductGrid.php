@@ -23,7 +23,7 @@ class ListAttributesUseableInProductGrid implements ListAttributesUseableInProdu
     /**
      * @param Connection $connection
      */
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -59,14 +59,12 @@ SQL;
         $stmt->execute();
         $attributes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        $attributes = array_map(function ($attribute) {
+        return array_map(function ($attribute) {
             $attribute['order'] = (int) $attribute['order'];
             $attribute['groupOrder'] = (int) $attribute['groupOrder'];
             unset($attribute['identifier_priority']);
 
             return $attribute;
         }, $attributes);
-
-        return $attributes;
     }
 }

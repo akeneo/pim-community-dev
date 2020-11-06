@@ -38,7 +38,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      *
      * @param JobExecution $jobExecution
      */
-    public function archive(JobExecution $jobExecution)
+    public function archive(JobExecution $jobExecution): void
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -60,7 +60,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'output';
     }
@@ -68,7 +68,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function supports(JobExecution $jobExecution)
+    public function supports(JobExecution $jobExecution): bool
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -84,20 +84,18 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      * Verify if the writer is usable or not
      *
      * @param ItemWriterInterface $writer
-     *
-     * @return bool
      */
-    protected function isUsableWriter(ItemWriterInterface $writer)
+    protected function isUsableWriter(ItemWriterInterface $writer): bool
     {
         $isNewWriter = ($writer instanceof AbstractItemMediaWriter);
         $isNewItemMediaWriter = ($writer instanceof AbstractFileWriter);
 
-        if (!($isNewItemMediaWriter || $isNewWriter)) {
+        if (!$isNewItemMediaWriter && !$isNewWriter) {
             return false;
         }
 
         if ($writer instanceof ArchivableWriterInterface) {
-            foreach ($writer->getWrittenFiles() as $filePath => $fileName) {
+            foreach (array_keys($writer->getWrittenFiles()) as $filePath) {
                 if (!is_file($filePath)) {
                     return false;
                 }
@@ -112,7 +110,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      * @param JobExecution $jobExecution
      * @param array        $filesToArchive ['filePath' => 'fileName']
      */
-    protected function doArchive(JobExecution $jobExecution, array $filesToArchive)
+    protected function doArchive(JobExecution $jobExecution, array $filesToArchive): void
     {
         foreach ($filesToArchive as $filePath => $fileName) {
             $archivedFilePath = strtr(

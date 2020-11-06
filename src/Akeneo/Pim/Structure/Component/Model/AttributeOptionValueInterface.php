@@ -13,81 +13,63 @@ interface AttributeOptionValueInterface
 {
     /**
      * Get id
-     *
-     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Set id
      *
      * @param int $id
-     *
-     * @return AttributeOptionValueInterface
      */
-    public function setId($id);
+    public function setId(int $id): \Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 
     /**
      * Set option
      *
      * @param AttributeOptionInterface $option
-     *
-     * @return AttributeOptionValueInterface
      */
-    public function setOption(AttributeOptionInterface $option);
+    public function setOption(AttributeOptionInterface $option): \Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 
     /**
      * Get option
-     *
-     * @return AttributeOptionInterface
      */
-    public function getOption();
+    public function getOption(): \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
     /**
      * Get used locale
      *
      * @return string $locale
      */
-    public function getLocale();
+    public function getLocale(): string;
 
     /**
      * Set used locale
      *
      * @param string $locale
-     *
-     * @return AttributeOptionValueInterface
      */
-    public function setLocale($locale);
+    public function setLocale(string $locale): \Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 
     /**
      * Set value
      *
      * @param string $value
-     *
-     * @return AttributeOptionValueInterface
      */
-    public function setValue($value);
+    public function setValue(string $value): \Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 
     /**
      * Get value
-     *
-     * @return string
      */
-    public function getValue();
+    public function getValue(): string;
 
     /**
      * Returns the label of the attribute
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * Sets the label
      *
      * @param string $label
-     *
-     * @return AttributeOptionValueInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 }

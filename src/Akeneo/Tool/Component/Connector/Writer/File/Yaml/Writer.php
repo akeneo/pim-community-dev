@@ -38,7 +38,7 @@ class Writer extends AbstractFileWriter implements
      * @param ArrayConverterInterface $arrayConverter
      * @param string                  $header
      */
-    public function __construct(ArrayConverterInterface $arrayConverter, $header = null)
+    public function __construct(ArrayConverterInterface $arrayConverter, string $header = null)
     {
         parent::__construct();
 
@@ -50,7 +50,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $flatItems = [];
         foreach ($items as $item) {
@@ -79,7 +79,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
         $this->isFirstWriting = true;
     }

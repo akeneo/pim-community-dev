@@ -49,7 +49,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function normalize($family, $format = null, array $context = [])
+    public function normalize($family, $format = null, array $context = []): array
     {
         return [
             'code'                   => $family->getCode(),
@@ -66,7 +66,7 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof FamilyInterface && 'standard' === $format;
     }
@@ -80,10 +80,8 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      * Normalize the attributes
      *
      * @param FamilyInterface $family
-     *
-     * @return array
      */
-    protected function normalizeAttributes(FamilyInterface $family)
+    protected function normalizeAttributes(FamilyInterface $family): array
     {
         $attributes = $this->collectionFilter->filterCollection(
             $this->attributeRepository->findAttributesByFamily($family),
@@ -104,10 +102,8 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      * Normalize the requirements
      *
      * @param FamilyInterface $family
-     *
-     * @return array
      */
-    protected function normalizeRequirements(FamilyInterface $family)
+    protected function normalizeRequirements(FamilyInterface $family): array
     {
         $requirements = $this->attributeRequirementRepo->findRequiredAttributesCodesByFamily($family);
         $required = [];

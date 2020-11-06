@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithQuantifiedAssociationsInterface;
@@ -73,7 +74,7 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    public function process($item): ?\Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
     {
         if (!$this->hasAssociationToImport($item)) {
             $this->stepExecution->incrementSummaryInfo('product_model_skipped_no_associations');
@@ -156,7 +157,7 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
      *
      * @return null|ProductModelInterface
      *
-     * @throws \Akeneo\Tool\Component\Batch\Item\InvalidItemException
+     * @throws InvalidItemException
      */
     public function findEntity(string $identifier, array $item): ?ProductModelInterface
     {
@@ -172,7 +173,7 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
     /**
      * @throws \InvalidArgumentException
      */
-    protected function validateAssociations(EntityWithAssociationsInterface $product): ConstraintViolationListInterface
+    protected function validateAssociations(EntityWithAssociationsInterface $product): ConstraintViolationList
     {
         $violations = new ConstraintViolationList();
         $associations = $product->getAssociations();

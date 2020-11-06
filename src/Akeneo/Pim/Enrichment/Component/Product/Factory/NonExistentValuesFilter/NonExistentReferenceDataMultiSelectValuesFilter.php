@@ -25,9 +25,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
     {
-        $filteredReferenceData = $this->filterByType($onGoingFilteredRawValues, AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
-
-        return $filteredReferenceData;
+        return $this->filterByType($onGoingFilteredRawValues, AttributeTypes::REFERENCE_DATA_MULTI_SELECT);
     }
 
     private function filterByType(OnGoingFilteredRawValues $onGoingFilteredRawValues, string $type): OnGoingFilteredRawValues

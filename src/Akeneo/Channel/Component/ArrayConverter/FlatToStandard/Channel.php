@@ -58,7 +58,7 @@ class Channel implements ArrayConverterInterface
      *          'viewing_area'      => 'DEKAMETER'
      *      ]
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $this->fieldChecker->checkFieldsPresence($item, ['code', 'tree', 'locales', 'currencies']);
         $this->fieldChecker->checkFieldsFilling($item, ['code', 'tree', 'locales', 'currencies']);
@@ -75,10 +75,8 @@ class Channel implements ArrayConverterInterface
      * @param array  $convertedItem
      * @param string $field
      * @param mixed  $data
-     *
-     * @return array
      */
-    protected function convertField(array $convertedItem, $field, $data)
+    protected function convertField(array $convertedItem, string $field, $data): array
     {
         if (false !== strpos($field, 'label-', 0)) {
             $labelTokens = explode('-', $field);
@@ -99,10 +97,8 @@ class Channel implements ArrayConverterInterface
 
     /**
      * @param array $flatUnits
-     *
-     * @return array
      */
-    protected function convertUnits($flatUnits)
+    protected function convertUnits(array $flatUnits): array
     {
         $units = array_filter(explode(',', $flatUnits));
 

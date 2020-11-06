@@ -24,7 +24,7 @@ class DbalSelectPeriodErrorCountPerConnectionQuery implements SelectPeriodErrorC
     /** @var Connection */
     private $dbalConnection;
 
-    public function __construct(Connection $dbalConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
@@ -36,13 +36,11 @@ class DbalSelectPeriodErrorCountPerConnectionQuery implements SelectPeriodErrorC
         $perConnection = $this->getPeriodErrorCountPerConnection($period, $connectionCodes);
         $forAllConnections = $this->getPeriodErrorCountForAllConnections($period, $connectionCodes);
 
-        $periodErrorCountPerConnection = $this->createPeriodEventCountPerConnection(
+        return $this->createPeriodEventCountPerConnection(
             $period,
             $connectionCodes,
             array_merge($perConnection, $forAllConnections)
         );
-
-        return $periodErrorCountPerConnection;
     }
 
     /**

@@ -31,10 +31,7 @@ class SecurityController
         $this->aclProvider = $aclProvider;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function getAction()
+    public function getAction(): JsonResponse
     {
         $securityFacade = $this->securityFacade;
         $annotations = $this->aclProvider->getAnnotations();

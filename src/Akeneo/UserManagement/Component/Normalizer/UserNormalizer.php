@@ -74,7 +74,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /**
      * {@inheritdoc}
      */
-    public function normalize($user, $format = null, array $context = [])
+    public function normalize($user, $format = null, array $context = []): array
     {
         $result = [
             'code'                      => $user->getUsername(), # Every Form Extension requires 'code' field.
@@ -124,13 +124,9 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
                 = $defaultView === null ? null : $defaultView->getId();
         }
 
-        $normalizedProperties = array_reduce($this->properties, function ($result, string $propertyName) use ($user) {
-            return $result + [$propertyName => $user->getProperty($propertyName)];
-        }, []);
+        $normalizedProperties = array_reduce($this->properties, fn($result, string $propertyName) => $result + [$propertyName => $user->getProperty($propertyName)], []);
 
-        $normalizedCompound = array_map(function ($normalizer) use ($user, $format, $context) {
-            return $normalizer->normalize($user, $format, $context);
-        }, $this->userNormalizers);
+        $normalizedCompound = array_map(fn($normalizer) => $normalizer->normalize($user, $format, $context), $this->userNormalizers);
 
         $result['properties'] = $normalizedProperties;
 
@@ -140,7 +136,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof UserInterface && in_array($format, $this->supportedFormats);
     }
@@ -157,9 +153,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
      */
     private function getRoleNames(UserInterface $user): array
     {
-        return $user->getRolesCollection()->map(function (Role $role) {
-            return $role->getRole();
-        })->toArray();
+        return $user->getRolesCollection()->map(fn(Role $role) => $role->getRole())->toArray();
     }
 
     /**
@@ -167,14 +161,14 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
      *
      * @return string
      */
-    private function getFormName($user): string
+    private function getFormName(\Akeneo\UserManagement\Component\Model\UserInterface $user): string
     {
         if ($this->securityFacade->isGranted('pim_user_user_edit')) {
             return 'pim-user-edit-form';
         }
 
         $token = $this->tokenStorage->getToken();
-        $currentUser = $token ? $token->getUser() : null;
+        $currentUser = $token !== null ? $token->getUser() : null;
 
         if ($user->getId() && is_object($currentUser) && $currentUser->getId() == $user->getId()) {
             return 'pim-user-profile-form';

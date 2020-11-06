@@ -17,17 +17,13 @@ interface FieldProviderInterface
      * @param mixed $element
      *
      * @throws RuntimeException If no field is found for the given element
-     *
-     * @return string
      */
-    public function getField($element);
+    public function getField($element): string;
 
     /**
      * Does the Field provider support the element
      *
      * @param mixed $element
-     *
-     * @return bool
      */
-    public function supports($element);
+    public function supports($element): bool;
 }

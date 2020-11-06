@@ -41,7 +41,7 @@ class ValidMetricValidator extends ConstraintValidator
      *
      * @throws \Exception
      */
-    public function validate($object, Constraint $constraint)
+    public function validate($object, Constraint $constraint): void
     {
         if (!$constraint instanceof ValidMetric) {
             throw new UnexpectedTypeException($constraint, ValidMetric::class);

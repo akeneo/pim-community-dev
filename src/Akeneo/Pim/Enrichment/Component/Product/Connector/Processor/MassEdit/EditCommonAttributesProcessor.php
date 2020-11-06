@@ -58,7 +58,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /**
      * {@inheritdoc}
      */
-    public function process($product)
+    public function process($product): ?\Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
     {
         $actions = $this->getConfiguredActions();
 
@@ -112,7 +112,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      *
      * @return ProductInterface $product
      */
-    protected function updateProduct(ProductInterface $product, array $actions)
+    protected function updateProduct(ProductInterface $product, array $actions): ?\Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
     {
         $normalizedValues = $actions['normalized_values'];
         $filteredValues = [];
@@ -142,21 +142,15 @@ class EditCommonAttributesProcessor extends AbstractProcessor
 
     protected function isAttributeEditable(ProductInterface $product, string $attributeCode): bool
     {
-        if (!$this->productRepository->hasAttributeInFamily($product->getId(), $attributeCode)) {
-            return false;
-        }
-
-        return true;
+        return $this->productRepository->hasAttributeInFamily($product->getId(), $attributeCode);
     }
 
     /**
      * Validate the product
      *
      * @param ProductInterface $product
-     *
-     * @return bool
      */
-    protected function isProductValid(ProductInterface $product)
+    protected function isProductValid(ProductInterface $product): bool
     {
         $violations = $this->validator->validate($product);
         $this->addWarningMessage($violations, $product);
@@ -166,10 +160,8 @@ class EditCommonAttributesProcessor extends AbstractProcessor
 
     /**
      * @param ProductInterface $product
-     *
-     * @return bool
      */
-    protected function isProductEditable(ProductInterface $product)
+    protected function isProductEditable(ProductInterface $product): bool
     {
         return true;
     }
@@ -177,7 +169,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /**
      * @param ProductInterface $product
      */
-    protected function addWarning(ProductInterface $product)
+    protected function addWarning(ProductInterface $product): void
     {
         /*
          * We don't give the product to addWarning because we don't want that step executor

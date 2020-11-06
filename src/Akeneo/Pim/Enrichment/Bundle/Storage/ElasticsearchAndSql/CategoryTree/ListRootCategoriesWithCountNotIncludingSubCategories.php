@@ -25,7 +25,7 @@ class ListRootCategoriesWithCountNotIncludingSubCategories implements Query\List
      * @param Connection $connection
      * @param Client     $client
      */
-    public function __construct(Connection $connection, Client $client)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, Client $client)
     {
         $this->connection = $connection;
         $this->client = $client;
@@ -37,9 +37,8 @@ class ListRootCategoriesWithCountNotIncludingSubCategories implements Query\List
     public function list(string $translationLocaleCode, int $userId, int $rootCategoryIdToExpand): array
     {
         $categoriesWithoutCount = $this->getRootCategories($translationLocaleCode);
-        $rootCategories = $this->countProductInCategories($categoriesWithoutCount, $rootCategoryIdToExpand);
 
-        return $rootCategories;
+        return $this->countProductInCategories($categoriesWithoutCount, $rootCategoryIdToExpand);
     }
 
     /**
@@ -70,14 +69,12 @@ class ListRootCategoriesWithCountNotIncludingSubCategories implements Query\List
                 label, root.code
 SQL;
 
-        $categories = $this->connection->executeQuery(
+        return $this->connection->executeQuery(
             $sql,
             [
                 'locale' => $translationLocaleCode
             ]
         )->fetchAll();
-
-        return $categories;
     }
 
     /**

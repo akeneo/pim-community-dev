@@ -17,7 +17,7 @@ final class SqlGetChannelCodeWithLocaleCodes implements GetChannelCodeWithLocale
     /** @var Connection */
     private $connection;
 
-    public function __construct($connection)
+    public function __construct(\Doctrine\DBAL\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -34,7 +34,7 @@ SQL;
 
         $results = $this->connection->executeQuery($sql)->fetchAll();
 
-        return array_map([$this, 'hydrateLocaleCodes'], $results);
+        return array_map(fn(array $row): array => $this->hydrateLocaleCodes($row), $results);
     }
 
     private function hydrateLocaleCodes(array $row): array

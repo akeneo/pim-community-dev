@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Localization\Localizer;
 
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 use Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormat;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -42,7 +43,7 @@ class DateLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function validate($date, $attributeCode, array $options = [])
+    public function validate($date, string $attributeCode, array $options = []): ?ConstraintViolationListInterface
     {
         if (null === $date || '' === $date || $date instanceof \DateTime) {
             return null;
@@ -90,7 +91,7 @@ class DateLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function localize($date, array $options = [])
+    public function localize($date, array $options = []): ?string
     {
         if (null === $date || '' === $date) {
             return null;
@@ -107,17 +108,15 @@ class DateLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports(string $attributeType): bool
     {
         return in_array($attributeType, $this->attributeTypes);
     }
 
     /**
      * @param array $options
-     *
-     * @return array
      */
-    protected function getOptions(array $options)
+    protected function getOptions(array $options): array
     {
         if (isset($options['locale']) || isset($options['date_format'])) {
             return $options;

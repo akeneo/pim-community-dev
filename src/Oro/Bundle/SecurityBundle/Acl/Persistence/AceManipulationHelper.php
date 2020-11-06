@@ -32,14 +32,14 @@ class AceManipulationHelper
     public function setPermission(
         ACL $acl,
         AclExtensionInterface $extension,
-        $replace,
-        $type,
-        $field,
+        bool $replace,
+        string $type,
+        ?string $field,
         SID $sid,
-        $granting,
-        $mask,
-        $strategy = null
-    ) {
+        bool $granting,
+        int $mask,
+        ?string $strategy = null
+    ): bool {
         $hasChanges = false;
         $found = false;
         $maskServiceBits = $extension->getServiceBits($mask);
@@ -79,13 +79,13 @@ class AceManipulationHelper
      */
     public function deletePermission(
         ACL $acl,
-        $type,
-        $field,
+        string $type,
+        ?string $field,
         SID $sid,
-        $granting,
-        $mask,
-        $strategy = null
-    ) {
+        bool $granting,
+        int $mask,
+        ?string $strategy = null
+    ): bool {
         $hasChanges = false;
         $aces = $this->getAces($acl, $type, $field);
         foreach ($aces as $index => $ace) {
@@ -111,7 +111,7 @@ class AceManipulationHelper
      * @param SID $sid
      * @return bool True if at least one permission was deleted
      */
-    public function deleteAllPermissions(ACL $acl, $type, $field, SID $sid)
+    public function deleteAllPermissions(ACL $acl, string $type, ?string $field, SID $sid): bool
     {
         $hasChanges = false;
         $aces = $this->getAces($acl, $type, $field);
@@ -135,7 +135,7 @@ class AceManipulationHelper
      *                           Set to not null class-field-based or object-field-based ACE
      * @return EntryInterface[]
      */
-    public function getAces(AclInterface $acl, $type, $field)
+    public function getAces(AclInterface $acl, string $type, ?string $field)
     {
         if ($field === null) {
             return $acl->{"get{$type}Aces"}();
@@ -160,7 +160,7 @@ class AceManipulationHelper
      *                                  ALL strategy is used for $granting = true
      *                                  ANY strategy is used for $granting = false
      */
-    public function insertAce(ACL $acl, $type, $field, $index, SID $sid, $granting, $mask, $strategy = null)
+    public function insertAce(ACL $acl, string $type, ?string $field, int $index, SID $sid, bool $granting, int $mask, ?string $strategy = null): void
     {
         if ($field === null) {
             $acl->{"insert{$type}Ace"}($sid, $mask, $index, $granting, $strategy);
@@ -181,7 +181,7 @@ class AceManipulationHelper
      * @param integer $mask
      * @param string $strategy If null the strategy should not be changed
      */
-    public function updateAce(ACL $acl, $type, $field, $index, $mask, $strategy = null)
+    public function updateAce(ACL $acl, string $type, ?string $field, int $index, int $mask, string $strategy = null): void
     {
         if ($field === null) {
             $acl->{"update{$type}Ace"}($index, $mask, $strategy);
@@ -200,7 +200,7 @@ class AceManipulationHelper
      *                           Set to not null class-field-based or object-field-based ACE
      * @param integer $index
      */
-    public function deleteAce(ACL $acl, $type, $field, $index)
+    public function deleteAce(ACL $acl, string $type, ?string $field, int $index): void
     {
         if ($field === null) {
             $acl->{"delete{$type}Ace"}($index);

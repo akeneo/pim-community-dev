@@ -34,7 +34,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
     private $additionalDataProviders = [];
 
     public function __construct(
-        Connection $connection,
+        \Doctrine\DBAL\Driver\Connection $connection,
         NormalizerInterface $valuesNormalizer,
         ReadValueCollectionFactory $readValueCollectionFactory,
         iterable $additionalDataProviders = []
@@ -55,9 +55,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
         $rows = $this->calculateAttributeCodeAncestors($rows);
         $rows = $this->calculateAttributeCodeForOwnLevel($rows);
 
-        $rowIdentifiers = array_map(function (array $row) {
-            return $row['identifier'];
-        }, $rows);
+        $rowIdentifiers = array_map(fn(array $row) => $row['identifier'], $rows);
 
         $diffIdentifiers = array_diff($productIdentifiers, $rowIdentifiers);
         if (count($diffIdentifiers) > 0) {

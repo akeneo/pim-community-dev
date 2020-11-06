@@ -95,9 +95,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
         $attributesInFamily = $this->getAttributesInFamilyVariantIndexedByCode($familyVariantCode, $level);
         $nonPriceAttributes = array_filter(
             $attributesInFamily,
-            function (AttributeInterface $attribute): bool {
-                return AttributeTypes::PRICE_COLLECTION !== $attribute->getType();
-            }
+            fn(AttributeInterface $attribute): bool => AttributeTypes::PRICE_COLLECTION !== $attribute->getType()
         );
 
         foreach ($nonPriceAttributes as $attribute) {
@@ -156,9 +154,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
         );
         $nonPriceAttributes = array_filter(
             $attributesInFamily,
-            function (AttributeInterface $attribute): bool {
-                return AttributeTypes::PRICE_COLLECTION !== $attribute->getType();
-            }
+            fn(AttributeInterface $attribute): bool => AttributeTypes::PRICE_COLLECTION !== $attribute->getType()
         );
 
         $valuesInPivotFormat = [];
@@ -211,9 +207,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
 
         $priceAttributes = array_filter(
             $attributesInFamily,
-            function (AttributeInterface $attribute): bool {
-                return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
-            }
+            fn(AttributeInterface $attribute): bool => AttributeTypes::PRICE_COLLECTION === $attribute->getType()
         );
 
         foreach ($priceAttributes as $attribute) {
@@ -268,9 +262,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
         );
         $priceAttributes = array_filter(
             $attributesInFamily,
-            function (AttributeInterface $attribute): bool {
-                return AttributeTypes::PRICE_COLLECTION === $attribute->getType();
-            }
+            fn(AttributeInterface $attribute): bool => AttributeTypes::PRICE_COLLECTION === $attribute->getType()
         );
 
         $valuesInPivotFormat = [];
@@ -370,9 +362,7 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
 
     private function sortCurrenciesByCode(array $currencies): array
     {
-        usort($currencies, function (CurrencyInterface $a, CurrencyInterface $b) {
-            return $a->getCode() <=> $b->getCode();
-        });
+        usort($currencies, fn(CurrencyInterface $a, CurrencyInterface $b) => $a->getCode() <=> $b->getCode());
 
         return $currencies;
     }

@@ -54,10 +54,8 @@ class SearchQueryBuilder
      * Adds a must_not clause to the query
      *
      * @param array $clause
-     *
-     * @return SearchQueryBuilder
      */
-    public function addMustNot(array $clause)
+    public function addMustNot(array $clause): self
     {
         $this->mustNotClauses[] = $clause;
 
@@ -68,10 +66,8 @@ class SearchQueryBuilder
      * Adds a filter clause to the query
      *
      * @param array $clause
-     *
-     * @return SearchQueryBuilder
      */
-    public function addFilter(array $clause)
+    public function addFilter(array $clause): self
     {
         $this->filterClauses[] = $clause;
 
@@ -115,10 +111,8 @@ class SearchQueryBuilder
      *
      *
      * @param array $clause
-     *
-     * @return SearchQueryBuilder
      */
-    public function addShould(array $clause)
+    public function addShould(array $clause): self
     {
         $this->shouldClauses[] = $clause;
 
@@ -132,7 +126,7 @@ class SearchQueryBuilder
      *
      * @return $this
      */
-    public function addSort(array $sort)
+    public function addSort(array $sort): self
     {
         $this->sortClauses = array_merge($this->sortClauses, $sort);
 
@@ -150,10 +144,8 @@ class SearchQueryBuilder
      * Returns an Elastic search Query
      *
      * @param array $source
-     *
-     * @return array
      */
-    public function getQuery(array $source = [])
+    public function getQuery(array $source = []): array
     {
         if (empty($source)) {
             $source = ['identifier'];

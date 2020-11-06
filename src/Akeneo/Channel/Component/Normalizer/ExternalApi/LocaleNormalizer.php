@@ -35,7 +35,7 @@ class LocaleNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof LocaleInterface && 'external_api' === $format;
     }

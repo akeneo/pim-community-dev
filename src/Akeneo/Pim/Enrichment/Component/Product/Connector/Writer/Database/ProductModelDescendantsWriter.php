@@ -35,7 +35,7 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
     /**
      * {@inheritdoc}
      */
-    public function write(array $productModels)
+    public function write(array $productModels): void
     {
         foreach ($productModels as $productModel) {
             $this->descendantsSaver->save($productModel);
@@ -48,7 +48,7 @@ class ProductModelDescendantsWriter implements ItemWriterInterface, StepExecutio
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }

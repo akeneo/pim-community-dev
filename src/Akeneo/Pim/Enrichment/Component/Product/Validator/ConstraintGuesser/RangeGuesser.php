@@ -19,7 +19,7 @@ class RangeGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AttributeInterface $attribute)
+    public function supportAttribute(AttributeInterface $attribute): bool
     {
         return in_array(
             $attribute->getType(),
@@ -34,7 +34,7 @@ class RangeGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AttributeInterface $attribute)
+    public function guessConstraints(AttributeInterface $attribute): array
     {
         $constraints = [];
 
@@ -44,7 +44,7 @@ class RangeGuesser implements ConstraintGuesserInterface
         } else {
             $min = $attribute->getNumberMin();
             $max = $attribute->getNumberMax();
-            if (false === $attribute->isNegativeAllowed() && ($min === null || $min < 0)) {
+            if (!$attribute->isNegativeAllowed() && ($min === null || $min < 0)) {
                 $min = 0;
             }
         }

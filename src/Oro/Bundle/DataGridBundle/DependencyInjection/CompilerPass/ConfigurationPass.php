@@ -24,7 +24,7 @@ class ConfigurationPass implements CompilerPassInterface
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->registerConfigFiles($container);
         $this->registerConfigProviders($container);
@@ -36,7 +36,7 @@ class ConfigurationPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
-    protected function registerConfigFiles(ContainerBuilder $container)
+    protected function registerConfigFiles(ContainerBuilder $container): void
     {
         if ($container->hasDefinition(self::PROVIDER_SERVICE_ID)) {
             $config = [];
@@ -62,7 +62,7 @@ class ConfigurationPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
-    protected function registerConfigProviders(ContainerBuilder $container)
+    protected function registerConfigProviders(ContainerBuilder $container): void
     {
         if ($container->hasDefinition(self::CHAIN_PROVIDER_SERVICE_ID)) {
             $providers = [];
@@ -88,7 +88,7 @@ class ConfigurationPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
-    protected function registerDataSources(ContainerBuilder $container)
+    protected function registerDataSources(ContainerBuilder $container): void
     {
         if ($container->hasDefinition(self::BUILDER_SERVICE_ID)) {
             $builderDef = $container->getDefinition(self::BUILDER_SERVICE_ID);
@@ -99,7 +99,7 @@ class ConfigurationPass implements CompilerPassInterface
             }
 
             $extensions = $container->findTaggedServiceIds(self::EXTENSION_TAG_NAME);
-            foreach ($extensions as $serviceId => $tags) {
+            foreach (array_keys($extensions) as $serviceId) {
                 $builderDef->addMethodCall('registerExtension', [new Reference($serviceId)]);
             }
         }

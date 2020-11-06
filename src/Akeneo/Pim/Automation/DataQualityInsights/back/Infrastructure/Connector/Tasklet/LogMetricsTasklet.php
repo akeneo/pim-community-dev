@@ -23,7 +23,7 @@ final class LogMetricsTasklet implements TaskletInterface
     /** @var StepExecution */
     private $stepExecution;
 
-    public function __construct(Connection $db, LoggerInterface $logger, LoggerInterface $qualityLogger)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db, LoggerInterface $logger, LoggerInterface $qualityLogger)
     {
         $this->db = $db;
         $this->logger = $logger;
@@ -33,12 +33,12 @@ final class LogMetricsTasklet implements TaskletInterface
     /**
      * @inheritDoc
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
 
-    public function execute()
+    public function execute(): void
     {
         try {
             $metrics = [
@@ -66,7 +66,7 @@ FROM information_schema.TABLES WHERE TABLE_NAME = :tableName
 SQL;
         try {
             $size = $this->db->executeQuery($query, ['tableName' => $tableName], )->fetchColumn();
-            return intval($size);
+            return (int) $size;
         } catch (\Exception $exception) {
             //Maybe the user does not have the rights to query information_schema.
         }

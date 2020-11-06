@@ -18,7 +18,7 @@ class FileExtensionValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (is_string($value)) {
             $this->validateFileExtension($value, $constraint);
@@ -31,7 +31,7 @@ class FileExtensionValidator extends ConstraintValidator
      * @param string     $filePath   The path of the file that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    protected function validateFileExtension($filePath, Constraint $constraint)
+    protected function validateFileExtension(string $filePath, Constraint $constraint): void
     {
         if (!$constraint instanceof FileExtension) {
             throw new UnexpectedTypeException($constraint, FileExtension::class);

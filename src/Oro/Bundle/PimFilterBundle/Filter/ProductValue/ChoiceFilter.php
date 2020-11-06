@@ -54,7 +54,7 @@ class ChoiceFilter extends AjaxChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -84,10 +84,8 @@ class ChoiceFilter extends AjaxChoiceFilter
      * Required to prepare choice url params and filter configuration
      *
      * @throws \LogicException
-     *
-     * @return AttributeInterface
      */
-    protected function getAttribute()
+    protected function getAttribute(): AttributeInterface
     {
         $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
         $attribute = $this->attributeRepository->findOneByCode($fieldName);
@@ -102,7 +100,7 @@ class ChoiceFilter extends AjaxChoiceFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormOptions()
+    protected function getFormOptions(): array
     {
         $attribute = $this->getAttribute();
 
@@ -126,9 +124,8 @@ class ChoiceFilter extends AjaxChoiceFilter
      * Filter options value to have only existing option codes
      *
      * @param $optionCodes
-     * @return array
      */
-    private function filterOnlyExistingOptions($optionCodes)
+    private function filterOnlyExistingOptions($optionCodes): array
     {
         $attribute = $this->getAttribute();
         $attributeOptions = $this->attributeOptionRepository->findCodesByIdentifiers(

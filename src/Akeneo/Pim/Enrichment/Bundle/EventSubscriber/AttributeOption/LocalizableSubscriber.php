@@ -31,10 +31,8 @@ final class LocalizableSubscriber implements EventSubscriber
 
     /**
      * Specifies the list of events to listen
-     *
-     * @return array
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return ['postLoad'];
     }
@@ -44,7 +42,7 @@ final class LocalizableSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
         $object = $args->getObject();
 

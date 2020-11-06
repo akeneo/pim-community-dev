@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\ProductQueryBuilder\Filter;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -49,7 +50,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AttributeInterface $attribute)
+    public function supportsAttribute(AttributeInterface $attribute): bool
     {
         return in_array($attribute->getType(), $this->supportedAttributeTypes);
     }
@@ -57,7 +58,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsField($field)
+    public function supportsField(string $field): bool
     {
         return in_array($field, $this->supportedFields);
     }
@@ -65,7 +66,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsOperator($operator)
+    public function supportsOperator(string $operator): bool
     {
         return in_array($operator, $this->supportedOperators);
     }
@@ -75,19 +76,19 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $value,
-        $locale = null,
-        $scope = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $scope = null,
+        array $options = []
+    ): AttributeFilterInterface {
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
+    public function addFieldFilter(string $field, string $operator, $value, string $locale = null, string $scope = null, array $options = []): FieldFilterInterface
     {
         return $this;
     }
@@ -95,7 +96,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeTypes()
+    public function getAttributeTypes(): array
     {
         return $this->supportedAttributeTypes;
     }
@@ -103,7 +104,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->supportedFields;
     }
@@ -111,7 +112,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getOperators()
+    public function getOperators(): array
     {
         return $this->supportedOperators;
     }
@@ -119,7 +120,7 @@ class DummyFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function setQueryBuilder($queryBuilder)
+    public function setQueryBuilder(SearchQueryBuilder $queryBuilder): void
     {
         $this->queryBuilder = $queryBuilder;
     }

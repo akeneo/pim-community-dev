@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Family;
 
+use Doctrine\DBAL\DBALException;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
@@ -20,7 +21,7 @@ class FindAttributesForFamily
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -28,7 +29,7 @@ class FindAttributesForFamily
     /**
      * @param FamilyInterface $family
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      *
      * @return string[]
      */
@@ -54,10 +55,7 @@ SQL;
     private function getAttributeCodes(Statement $query): array
     {
         $results = $query->fetchAll();
-        $attributeCodes = array_map(function (array $result) {
-            return $result['code'];
-        }, $results);
 
-        return $attributeCodes;
+        return array_map(fn(array $result) => $result['code'], $results);
     }
 }

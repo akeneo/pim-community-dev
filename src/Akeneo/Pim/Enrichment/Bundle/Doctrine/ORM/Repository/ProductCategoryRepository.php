@@ -23,7 +23,7 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
      * @param string        $entityName
      * @param string        $categoryClass
      */
-    public function __construct(EntityManager $em, $entityName, $categoryClass)
+    public function __construct(EntityManager $em, string $entityName, string $categoryClass)
     {
         parent::__construct($em, $entityName);
 
@@ -33,7 +33,7 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -41,7 +41,7 @@ class ProductCategoryRepository extends AbstractItemCategoryRepository implement
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier)
     {
         $qb = $this->em->createQueryBuilder()
             ->select('c')

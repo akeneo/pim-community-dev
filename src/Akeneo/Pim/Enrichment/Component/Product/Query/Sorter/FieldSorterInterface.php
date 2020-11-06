@@ -19,14 +19,12 @@ interface FieldSorterInterface extends SorterInterface
      * @param string $locale    the locale
      * @param string $channel   the channel
      */
-    public function addFieldSorter($field, $direction, $locale = null, $channel = null): FieldSorterInterface;
+    public function addFieldSorter(string $field, string $direction, string $locale = null, string $channel = null): FieldSorterInterface;
 
     /**
      * This filter supports the field
      *
      * @param string $field
-     *
-     * @return bool
      */
-    public function supportsField($field);
+    public function supportsField(string $field): bool;
 }

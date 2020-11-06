@@ -13,7 +13,7 @@ class View
     /** @var array */
     protected $sortersData;
 
-    public function __construct($name, array $filtersData = [], array $sortersData = [])
+    public function __construct(string $name, array $filtersData = [], array $sortersData = [])
     {
         $this->name = $name;
         $this->filtersData = $filtersData;
@@ -22,10 +22,8 @@ class View
 
     /**
      * Getter for name
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -37,7 +35,7 @@ class View
      *
      * @return $this
      */
-    public function setSortersData(array $sortersData)
+    public function setSortersData(array $sortersData): self
     {
         $this->sortersData = $sortersData;
 
@@ -46,10 +44,8 @@ class View
 
     /**
      * Getter for sorters data
-     *
-     * @return array
      */
-    public function getSortersData()
+    public function getSortersData(): array
     {
         return $this->sortersData;
     }
@@ -61,7 +57,7 @@ class View
      *
      * @return $this
      */
-    public function setFiltersData(array $filtersData)
+    public function setFiltersData(array $filtersData): self
     {
         $this->filtersData = $filtersData;
 
@@ -70,20 +66,16 @@ class View
 
     /**
      * Getter for filter data
-     *
-     * @return array
      */
-    public function getFiltersData()
+    public function getFiltersData(): array
     {
         return $this->filtersData;
     }
 
     /**
      * Convert to view data
-     *
-     * @return array
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return [
             'name'    => $this->getName(),

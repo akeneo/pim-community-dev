@@ -16,7 +16,7 @@ class ChoiceFilterType extends AbstractChoiceType
     /**
      * {@inheritDoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
@@ -24,7 +24,7 @@ class ChoiceFilterType extends AbstractChoiceType
     /**
      * {@inheritDoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return FilterType::class;
     }
@@ -32,7 +32,7 @@ class ChoiceFilterType extends AbstractChoiceType
     /**
      * {@inheritDoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $choices = [
             self::TYPE_CONTAINS     => $this->translator->trans('oro.filter.form.label_type_contains'),
@@ -52,7 +52,7 @@ class ChoiceFilterType extends AbstractChoiceType
     /**
      * {@inheritDoc}
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         parent::finishView($view, $form, $options);
         if (isset($options['populate_default'])) {

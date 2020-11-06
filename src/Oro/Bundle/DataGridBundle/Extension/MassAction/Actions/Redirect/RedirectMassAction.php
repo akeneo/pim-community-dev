@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect;
 
+use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Action\Actions\AbstractAction;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
@@ -14,7 +15,7 @@ class RedirectMassAction extends AbstractAction implements MassActionInterface
     /**
      * {@inheritDoc}
      */
-    public function setOptions(ActionConfiguration $options)
+    public function setOptions(ActionConfiguration $options): ActionInterface
     {
         $options['frontend_type'] = 'redirect';
 

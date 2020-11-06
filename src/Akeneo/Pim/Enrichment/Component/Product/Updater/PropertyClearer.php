@@ -29,7 +29,7 @@ final class PropertyClearer implements PropertyClearerInterface
     /**
      * {@inheritDoc}
      */
-    public function clear($entity, string $property, array $options = []): void
+    public function clear(object $entity, string $property, array $options = []): void
     {
         $clearer = $this->clearerRegistry->getClearer($property);
         if (null === $clearer) {

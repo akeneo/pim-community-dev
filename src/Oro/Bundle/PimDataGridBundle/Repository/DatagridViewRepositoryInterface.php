@@ -18,10 +18,8 @@ interface DatagridViewRepositoryInterface
      * Get all datagrid view type for a given user
      *
      * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
-     *
-     * @return ArrayCollection
      */
-    public function getDatagridViewTypeByUser(UserInterface $user);
+    public function getDatagridViewTypeByUser(UserInterface $user): ArrayCollection;
 
     /**
      * Get all datagrid views by type
@@ -29,11 +27,10 @@ interface DatagridViewRepositoryInterface
      * @param UserInterface $user
      * @param string        $alias
      *
-     * @return ArrayCollection
      *
      * @deprecated Please use DatagridViewRepositoryInterface::findDatagridViewBySearch instead
      */
-    public function findDatagridViewByAlias($alias);
+    public function findDatagridViewByAlias(string $alias): ArrayCollection;
 
     /**
      * Search datagrid views for the given $user and grid $alias.
@@ -44,8 +41,6 @@ interface DatagridViewRepositoryInterface
      * @param string        $alias
      * @param string        $term
      * @param array         $options
-     *
-     * @return ArrayCollection
      */
-    public function findDatagridViewBySearch(UserInterface $user, $alias, $term = '', array $options = []);
+    public function findDatagridViewBySearch(UserInterface $user, string $alias, string $term = '', array $options = []): ArrayCollection;
 }

@@ -26,16 +26,13 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
      * @param string $currentLocale
      * @param string $comparisonLocale
      */
-    public function __construct($currentLocale, $comparisonLocale)
+    public function __construct(string $currentLocale, string $comparisonLocale)
     {
         $this->currentLocale = $currentLocale;
         $this->comparisonLocale = $comparisonLocale;
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
@@ -45,7 +42,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
     /**
      * @param FormEvent $event
      */
-    public function preSetData(FormEvent $event)
+    public function preSetData(FormEvent $event): void
     {
         $data = $event->getData();
         $form = $event->getForm();
@@ -80,20 +77,16 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 
     /**
      * @param ValueInterface $value
-     *
-     * @return bool
      */
-    protected function isInCurrentLocale(ValueInterface $value)
+    protected function isInCurrentLocale(ValueInterface $value): bool
     {
         return $value->isLocalizable() && $value->getLocaleCode() === $this->currentLocale;
     }
 
     /**
      * @param ValueInterface $value
-     *
-     * @return bool
      */
-    protected function isInComparisonLocale(ValueInterface $value)
+    protected function isInComparisonLocale(ValueInterface $value): bool
     {
         return $value->isLocalizable() && $value->getLocaleCode() === $this->comparisonLocale;
     }

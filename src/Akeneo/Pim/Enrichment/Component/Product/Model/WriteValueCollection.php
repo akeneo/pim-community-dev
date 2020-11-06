@@ -60,7 +60,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->values;
     }
@@ -108,7 +108,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function removeKey($key)
+    public function removeKey($key): ?ValueInterface
     {
         if (!array_key_exists($key, $this->values)) {
             return null;
@@ -130,7 +130,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function remove(ValueInterface $value)
+    public function remove(ValueInterface $value): bool
     {
         $key = array_search($value, $this->values, true);
 
@@ -146,7 +146,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function removeByAttributeCode(string $attributeCode)
+    public function removeByAttributeCode(string $attributeCode): bool
     {
         $removed = false;
         foreach ($this->values as $value) {
@@ -162,7 +162,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function containsKey($key)
+    public function containsKey($key): bool
     {
         return array_key_exists($key, $this->values);
     }
@@ -170,7 +170,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function contains(ValueInterface $value)
+    public function contains(ValueInterface $value): bool
     {
         return in_array($value, $this->values, true);
     }
@@ -188,7 +188,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getByKey($key)
+    public function getByKey($key): ?ValueInterface
     {
         return isset($this->values[$key]) ? $this->values[$key] : null;
     }
@@ -206,7 +206,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getKeys()
+    public function getKeys(): array
     {
         return array_keys($this->values);
     }
@@ -214,7 +214,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getValues()
+    public function getValues(): array
     {
         return array_values($this->values);
     }
@@ -222,7 +222,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->values);
     }
@@ -230,7 +230,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function add(ValueInterface $value)
+    public function add(ValueInterface $value): bool
     {
         $attributeCode = $value->getAttributeCode();
 
@@ -253,7 +253,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return empty($this->values);
     }
@@ -261,7 +261,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->values);
     }
@@ -269,7 +269,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear(): void
     {
         $this->values = [];
         $this->attributeCodes = [];
@@ -278,7 +278,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function getAttributeCodes()
+    public function getAttributeCodes(): array
     {
         return array_values($this->attributeCodes);
     }
@@ -286,7 +286,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function filter(\Closure $filterBy)
+    public function filter(\Closure $filterBy): \Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection
     {
         $filteredValues = array_filter($this->values, $filterBy);
 
@@ -297,8 +297,7 @@ class WriteValueCollection implements \Countable, \IteratorAggregate
     {
         $channelCode = null !== $channelCode ? $channelCode : '<all_channels>';
         $localeCode = null !== $localeCode ? $localeCode : '<all_locales>';
-        $key = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
 
-        return $key;
+        return sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
     }
 }

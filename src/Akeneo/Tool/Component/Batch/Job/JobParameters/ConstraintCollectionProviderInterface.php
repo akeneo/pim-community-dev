@@ -28,13 +28,7 @@ use Symfony\Component\Validator\Constraints\Collection;
  */
 interface ConstraintCollectionProviderInterface
 {
-    /**
-     * @return Collection
-     */
-    public function getConstraintCollection();
+    public function getConstraintCollection(): Collection;
 
-    /**
-     * @return boolean
-     */
-    public function supports(JobInterface $job);
+    public function supports(JobInterface $job): bool;
 }

@@ -17,6 +17,10 @@ use Symfony\Component\HttpFoundation\Request;
 class DatagridController
 {
     /**
+     * @var \Oro\Bundle\DataGridBundle\Datagrid\MetadataParser|mixed
+     */
+    public $metadata;
+    /**
      * @var EngineInterface
      */
     protected $templating;
@@ -36,10 +40,8 @@ class DatagridController
      *
      * @param Request $request
      * @param string  $alias
-     *
-     * @return JsonResponse
      */
-    public function loadAction(Request $request, $alias)
+    public function loadAction(Request $request, string $alias): JsonResponse
     {
         $params = $request->get('params', []);
 

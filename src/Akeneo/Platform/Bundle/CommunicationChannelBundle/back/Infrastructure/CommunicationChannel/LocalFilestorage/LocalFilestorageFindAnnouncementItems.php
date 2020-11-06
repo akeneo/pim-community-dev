@@ -32,9 +32,7 @@ final class LocalFilestorageFindAnnouncementItems implements FindAnnouncementIte
 
         $paginatedItems = $this->paginateItems($content, self::LIMIT, $searchAfter);
 
-        return array_map(function ($announcement) {
-            return $this->getAnnouncementItem($announcement);
-        }, array_values($paginatedItems));
+        return array_map(fn($announcement) => $this->getAnnouncementItem($announcement), array_values($paginatedItems));
     }
 
     private function getAnnouncementItem(array $announcement): AnnouncementItem

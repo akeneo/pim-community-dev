@@ -28,10 +28,7 @@ class FilterLocaleSpecificValueSubscriber implements EventSubscriberInterface
         $this->attributeRepository = $attributeRepository;
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
@@ -41,7 +38,7 @@ class FilterLocaleSpecificValueSubscriber implements EventSubscriberInterface
     /**
      * @param FormEvent $event
      */
-    public function preSetData(FormEvent $event)
+    public function preSetData(FormEvent $event): void
     {
         $data = $event->getData();
         $form = $event->getForm();

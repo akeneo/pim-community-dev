@@ -41,7 +41,7 @@ final class CollectionToStringDataConverter implements ValueDataConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
+    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute): string
     {
         Assert::isIterable($sourceValue->getData());
 

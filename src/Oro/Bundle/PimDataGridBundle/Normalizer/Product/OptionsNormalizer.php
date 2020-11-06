@@ -25,7 +25,7 @@ class OptionsNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function normalize($optionsValue, $format = null, array $context = [])
+    public function normalize($optionsValue, $format = null, array $context = []): array
     {
         $locale = isset($context['data_locale']) ? $context['data_locale'] : null;
         $attributeCode = $optionsValue->getAttributeCode();
@@ -51,7 +51,7 @@ class OptionsNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      *
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return 'datagrid' === $format && $data instanceof OptionsValueInterface;
     }

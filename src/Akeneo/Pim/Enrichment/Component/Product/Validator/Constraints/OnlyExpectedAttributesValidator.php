@@ -47,9 +47,7 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
         $levelAttributes = $this->attributesProvider->getAttributes($entity);
 
         $levelAttributeCodes = array_map(
-            function ($attribute) {
-                return $attribute->getCode();
-            },
+            fn($attribute) => $attribute->getCode(),
             $levelAttributes
         );
 

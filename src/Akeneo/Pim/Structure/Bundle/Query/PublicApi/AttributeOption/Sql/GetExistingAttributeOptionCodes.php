@@ -17,7 +17,7 @@ final class GetExistingAttributeOptionCodes implements GetExistingAttributeOptio
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -51,12 +51,10 @@ SQL;
             $queryParams
         )->fetchAll();
 
-        $results =  array_reduce($rawResults, function (array $results, array  $item): array {
+        return array_reduce($rawResults, function (array $results, array  $item): array {
             $results[$item['attribute_code']] = json_decode($item['option_codes'], true);
 
             return $results;
         }, []);
-
-        return $results;
     }
 }

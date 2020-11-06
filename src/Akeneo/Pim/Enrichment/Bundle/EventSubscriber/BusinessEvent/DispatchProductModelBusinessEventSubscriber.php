@@ -55,7 +55,7 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
         /** @var ProductModelInterface */
         $productModel = $event->getSubject();
 
-        if (false === $productModel instanceof ProductModelInterface) {
+        if (!$productModel instanceof ProductModelInterface) {
             return;
         }
 
@@ -86,7 +86,7 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
     {
         /** @var ProductModelInterface */
         $productModel = $event->getSubject();
-        if (false === $productModel instanceof ProductModelInterface) {
+        if (!$productModel instanceof ProductModelInterface) {
             return;
         }
 

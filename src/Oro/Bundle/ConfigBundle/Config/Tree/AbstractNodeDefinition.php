@@ -10,7 +10,7 @@ abstract class AbstractNodeDefinition
     /** @var array */
     protected $definition;
 
-    public function __construct($name, array $definition)
+    public function __construct(string $name, array $definition)
     {
         $this->name = $name;
         $this->definition = $this->prepareDefinition($definition);
@@ -18,10 +18,8 @@ abstract class AbstractNodeDefinition
 
     /**
      * Getter for name
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -34,7 +32,7 @@ abstract class AbstractNodeDefinition
      * @return $this
      *
      */
-    public function setPriority($priority)
+    public function setPriority(int $priority): self
     {
         $this->definition['priority'] = $priority;
 
@@ -43,10 +41,8 @@ abstract class AbstractNodeDefinition
 
     /**
      * Returns node priority
-     *
-     * @return int
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         return $this->definition['priority'];
     }
@@ -55,10 +51,8 @@ abstract class AbstractNodeDefinition
      * Prepare definition, set default values
      *
      * @param array $definition
-     *
-     * @return array
      */
-    protected function prepareDefinition(array $definition)
+    protected function prepareDefinition(array $definition): array
     {
         if (!isset($definition['priority'])) {
             $definition['priority'] = 0;

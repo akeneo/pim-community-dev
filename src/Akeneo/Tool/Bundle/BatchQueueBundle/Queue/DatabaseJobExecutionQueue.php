@@ -52,9 +52,9 @@ class DatabaseJobExecutionQueue implements JobExecutionQueueInterface
         do {
             if (empty($whitelistedJobInstanceCodes) && empty($blacklistedJobInstanceCodes)) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessage();
-            } elseif ($whitelistedJobInstanceCodes) {
+            } elseif ($whitelistedJobInstanceCodes !== []) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableJobExecutionMessageFilteredByCodes($whitelistedJobInstanceCodes);
-            } elseif ($blacklistedJobInstanceCodes) {
+            } elseif ($blacklistedJobInstanceCodes !== []) {
                 $jobExecutionMessage = $this->jobExecutionMessageRepository->getAvailableNotBlacklistedJobExecutionMessageFilteredByCodes($blacklistedJobInstanceCodes);
             }
 

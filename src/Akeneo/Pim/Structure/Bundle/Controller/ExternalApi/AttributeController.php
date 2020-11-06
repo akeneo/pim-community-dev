@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -113,11 +114,10 @@ class AttributeController
      *
      * @throws NotFoundHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_attribute_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $attribute = $this->repository->findOneByIdentifier($code);
         if (null === $attribute) {
@@ -132,11 +132,10 @@ class AttributeController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_attribute_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -169,7 +168,7 @@ class AttributeController
             'item_route_name'     => 'pim_api_attribute_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
+        $count = $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedAttributes = $this->paginator->paginate(
             $this->normalizer->normalize($attributes, 'external_api'),
             $parameters,
@@ -185,11 +184,10 @@ class AttributeController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_attribute_edit")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -199,9 +197,7 @@ class AttributeController
 
         $this->saver->save($attribute);
 
-        $response = $this->getResponse($attribute, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($attribute, Response::HTTP_CREATED);
     }
 
     /**
@@ -209,27 +205,24 @@ class AttributeController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_attribute_edit")
      */
-    public function partialUpdateListAction(Request $request)
+    public function partialUpdateListAction(Request $request): StreamedResponse
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
-        return $response;
+        return $this->partialUpdateStreamResource->streamResponse($resource);
     }
 
     /**
      * @param Request $request
      * @param string  $code
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_attribute_edit")
      */
-    public function partialUpdateAction(Request $request, $code)
+    public function partialUpdateAction(Request $request, string $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -249,9 +242,8 @@ class AttributeController
         $this->saver->save($attribute);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($attribute, $status);
 
-        return $response;
+        return $this->getResponse($attribute, $status);
     }
 
     /**
@@ -260,10 +252,8 @@ class AttributeController
      * @param string $content content of a request to decode
      *
      * @throws BadRequestHttpException
-     *
-     * @return array
      */
-    protected function getDecodedContent($content)
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -283,7 +273,7 @@ class AttributeController
      *
      * @throws DocumentedHttpException
      */
-    protected function updateAttribute(AttributeInterface $attribute, array $data, $anchor)
+    protected function updateAttribute(AttributeInterface $attribute, array $data, string $anchor): void
     {
         try {
             $this->updater->update($attribute, $data);
@@ -304,7 +294,7 @@ class AttributeController
      *
      * @throws ViolationHttpException
      */
-    protected function validateAttribute(AttributeInterface $attribute)
+    protected function validateAttribute(AttributeInterface $attribute): void
     {
         $violations = $this->validator->validate($attribute);
         if (0 !== $violations->count()) {
@@ -323,7 +313,7 @@ class AttributeController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function validateCodeConsistency($code, array $data)
+    protected function validateCodeConsistency(string $code, array $data): void
     {
         if (array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(
@@ -341,10 +331,8 @@ class AttributeController
      *
      * @param AttributeInterface $attribute
      * @param int                $status
-     *
-     * @return Response
      */
-    protected function getResponse(AttributeInterface $attribute, $status)
+    protected function getResponse(AttributeInterface $attribute, int $status): Response
     {
         $response = new Response(null, $status);
         $url = $this->router->generate(

@@ -50,7 +50,7 @@ class ActionExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(DatagridConfiguration $config): bool
     {
         $actions = $config->offsetGetOr(static::ACTION_KEY, []);
 
@@ -60,7 +60,7 @@ class ActionExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(DatagridConfiguration $config): void
     {
         $actionConfiguration = $config->offsetGetOr(static::ACTION_CONFIGURATION_KEY);
 
@@ -86,7 +86,7 @@ class ActionExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // should  be applied before formatter extension
         // this extension add dynamic property and this may cause a bug
@@ -96,7 +96,7 @@ class ActionExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data): void
     {
         $actionsMetadata = [];
         $actions = $config->offsetGetOr(static::ACTION_KEY, []);
@@ -121,7 +121,7 @@ class ActionExtension extends AbstractExtension
      *
      * @return bool|ActionInterface
      */
-    protected function getActionObject($name, array $config)
+    protected function getActionObject(string $name, array $config)
     {
         $config = ActionConfiguration::createNamed($name, $config);
         $action = $this->create($config);
@@ -141,7 +141,7 @@ class ActionExtension extends AbstractExtension
      *
      * @return $this
      */
-    public function registerAction($type, $serviceId)
+    public function registerAction(string $type, string $serviceId): self
     {
         $this->actions[$type] = $serviceId;
 
@@ -155,9 +155,8 @@ class ActionExtension extends AbstractExtension
      * @param ActionConfiguration $config
      *
      * @throws \RunTimeException
-     * @return ActionInterface
      */
-    protected function create(ActionConfiguration $config)
+    protected function create(ActionConfiguration $config): ActionInterface
     {
         if (!$config->offsetExists(static::ACTION_TYPE_KEY)) {
             throw new \RunTimeException('The type must be defined');
@@ -183,10 +182,8 @@ class ActionExtension extends AbstractExtension
      * Checks if an access to a resource is granted or not
      *
      * @param string $aclResource An ACL annotation id or "permission;descriptor"
-     *
-     * @return bool
      */
-    protected function isResourceGranted($aclResource)
+    protected function isResourceGranted(string $aclResource): bool
     {
         $delimiter = strpos($aclResource, ';');
         if ($delimiter) {

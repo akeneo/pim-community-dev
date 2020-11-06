@@ -34,7 +34,7 @@ final class SqlGetCompletenessProductMasks implements GetCompletenessProductMask
     private $valuesNormalizer;
 
     public function __construct(
-        Connection $connection,
+        \Doctrine\DBAL\Driver\Connection $connection,
         MaskItemGenerator $maskItemGenerator,
         GetAttributes $getAttributes,
         NormalizerInterface $valuesNormalizer
@@ -70,14 +70,12 @@ GROUP BY product.identifier
 SQL;
 
         $rows = array_map(
-            function (array $row): array {
-                return [
-                    'id' => $row['id'],
-                    'identifier' => $row['identifier'],
-                    'familyCode' => $row['familyCode'],
-                    'cleanedRawValues' => json_decode($row['rawValues'], true),
-                ];
-            },
+            fn(array $row): array => [
+                'id' => $row['id'],
+                'identifier' => $row['identifier'],
+                'familyCode' => $row['familyCode'],
+                'cleanedRawValues' => json_decode($row['rawValues'], true),
+            ],
             $this->connection->executeQuery(
                 $sql,
                 ['productIdentifiers' => $productIdentifiers],
@@ -118,7 +116,7 @@ SQL;
         $result = [];
         foreach ($rows as $row) {
             $result[] = new CompletenessProductMask(
-                intval($row['id']),
+                (int) $row['id'],
                 $row['identifier'],
                 $row['familyCode'],
                 $this->getMask($row['cleanedRawValues'], $attributes)
@@ -134,7 +132,7 @@ SQL;
      *
      * @return string[]
      */
-    private function getMask($rawValues, array $attributes): array
+    private function getMask(array $rawValues, array $attributes): array
     {
         $masks = [];
         foreach ($rawValues as $attributeCode => $valuesByChannel) {

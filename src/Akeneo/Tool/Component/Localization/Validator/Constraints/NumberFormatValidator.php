@@ -48,7 +48,7 @@ class NumberFormatValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($number, Constraint $constraint)
+    public function validate($number, Constraint $constraint): void
     {
         preg_match('|\d+((?P<decimal>\D+)\d+)?|', $number, $matches);
 

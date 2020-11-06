@@ -226,7 +226,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductModelInterface && in_array($format, $this->supportedFormat);
     }
@@ -255,10 +255,8 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
 
     /**
      * @param ProductModelInterface $productModel
-     *
-     * @return array
      */
-    protected function getAssociationMeta(ProductModelInterface $productModel)
+    protected function getAssociationMeta(ProductModelInterface $productModel): array
     {
         $meta = [];
         $associations = $productModel->getAssociations();
@@ -266,9 +264,7 @@ class ProductModelNormalizer implements NormalizerInterface, CacheableSupportsMe
         foreach ($associations as $association) {
             $associationType = $association->getAssociationType();
             $meta[$associationType->getCode()]['groupIds'] = array_map(
-                function ($group) {
-                    return $group->getId();
-                },
+                fn($group) => $group->getId(),
                 $association->getGroups()->toArray()
             );
         }

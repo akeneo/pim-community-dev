@@ -74,7 +74,7 @@ class AttributeColumnInfoExtractor
      *
      * @return array|null
      */
-    public function extractColumnInfo($fieldName)
+    public function extractColumnInfo(string $fieldName): ?array
     {
         if (
             in_array($fieldName, $this->assoColumnResolver->resolveAssociationColumns()) ||
@@ -107,10 +107,8 @@ class AttributeColumnInfoExtractor
      *
      * @param AttributeInterface $attribute
      * @param array              $explodedFieldName
-     *
-     * @return array
      */
-    protected function extractAttributeInfo(AttributeInterface $attribute, array $explodedFieldName)
+    protected function extractAttributeInfo(AttributeInterface $attribute, array $explodedFieldName): array
     {
         array_shift($explodedFieldName);
 
@@ -138,7 +136,7 @@ class AttributeColumnInfoExtractor
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkFieldNameTokens(AttributeInterface $attribute, $fieldName, array $explodedFieldName)
+    protected function checkFieldNameTokens(AttributeInterface $attribute, string $fieldName, array $explodedFieldName): void
     {
         $isLocalizable = $attribute->isLocalizable();
         $isScopable = $attribute->isScopable();
@@ -173,10 +171,8 @@ class AttributeColumnInfoExtractor
      * Calculates the expected size of the field with the attribute and its properties locale, scope, etc.
      *
      * @param AttributeInterface $attribute
-     *
-     * @return int
      */
-    protected function calculateExpectedSize(AttributeInterface $attribute)
+    protected function calculateExpectedSize(AttributeInterface $attribute): array
     {
         // the expected number of tokens in a field may vary,
         //  - with the current price import, the currency can be optionally present in the header,
@@ -193,11 +189,7 @@ class AttributeColumnInfoExtractor
         $expectedSize = $isLocalizable ? $expectedSize + 1 : $expectedSize;
         $expectedSize = $isScopable ? $expectedSize + 1 : $expectedSize;
 
-        if ($isMetric || $isPrice) {
-            $expectedSize = [$expectedSize, $expectedSize + 1];
-        } else {
-            $expectedSize = [$expectedSize];
-        }
+        $expectedSize = $isMetric || $isPrice ? [$expectedSize, $expectedSize + 1] : [$expectedSize];
 
         return $expectedSize;
     }
@@ -211,7 +203,7 @@ class AttributeColumnInfoExtractor
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkFieldNameLocaleByChannel(AttributeInterface $attribute, $fieldName, array $attributeInfo)
+    protected function checkFieldNameLocaleByChannel(AttributeInterface $attribute, string $fieldName, array $attributeInfo): void
     {
         if ($attribute->isScopable() &&
             $attribute->isLocalizable() &&
@@ -240,7 +232,7 @@ class AttributeColumnInfoExtractor
      * @param AttributeInterface $attribute
      * @param array              $explodedFieldNames
      */
-    protected function checkForLocaleSpecificValue(AttributeInterface $attribute, array $explodedFieldNames)
+    protected function checkForLocaleSpecificValue(AttributeInterface $attribute, array $explodedFieldNames): void
     {
         if ($attribute->isLocaleSpecific()) {
             $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldNames);

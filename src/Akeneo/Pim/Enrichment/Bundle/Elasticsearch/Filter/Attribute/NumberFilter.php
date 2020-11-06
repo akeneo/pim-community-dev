@@ -35,12 +35,12 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): AttributeFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -158,7 +158,7 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
      * @param AttributeInterface $attribute
      * @param mixed              $value
      */
-    protected function checkValue(AttributeInterface $attribute, $value)
+    protected function checkValue(AttributeInterface $attribute, $value): void
     {
         if (!is_numeric($value)) {
             throw InvalidPropertyTypeException::numericExpected($attribute->getCode(), static::class, $value);

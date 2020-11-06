@@ -21,9 +21,7 @@ final class ConnectorProductModelList
     public function __construct(int $totalNumberOfProductModels, array $connectorProductModels)
     {
         $this->totalNumberOfProductModels = $totalNumberOfProductModels;
-        $this->connectorProductModels = (function (ConnectorProductModel ...$connectorProductModels) {
-            return $connectorProductModels;
-        })(...$connectorProductModels);
+        $this->connectorProductModels = (fn(ConnectorProductModel ...$connectorProductModels) => $connectorProductModels)(...$connectorProductModels);
     }
 
     public function totalNumberOfProductModels(): int

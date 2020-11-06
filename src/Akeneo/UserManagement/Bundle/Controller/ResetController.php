@@ -60,7 +60,7 @@ class ResetController extends Controller
     /**
      * @Template("PimUserBundle:Reset:request.html.twig")
      */
-    public function request()
+    public function request(): array
     {
         return [];
     }
@@ -178,11 +178,9 @@ class ResetController extends Controller
      * Get the truncated email displayed when requesting the resetting.
      * The default implementation only keeps the part following @ in the address.
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
-     *
-     * @return string
+     * @param UserInterface $user
      */
-    protected function getObfuscatedEmail(UserInterface $user)
+    protected function getObfuscatedEmail(UserInterface $user): string
     {
         $email = $user->getEmail();
 

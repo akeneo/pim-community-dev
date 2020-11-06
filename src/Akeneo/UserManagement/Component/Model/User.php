@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Component\Model;
 
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
@@ -165,7 +166,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize(
             [
@@ -182,7 +183,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         list(
             $this->password,
@@ -197,7 +198,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         $this->plainPassword = null;
     }
@@ -205,7 +206,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getClass()
+    public function getClass(): string
     {
         return UserInterface::class;
     }
@@ -221,7 +222,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -229,7 +230,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -237,7 +238,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getFirstName()
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -245,7 +246,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getLastName()
+    public function getLastName(): string
     {
         return $this->lastName;
     }
@@ -253,7 +254,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getMiddleName()
+    public function getMiddleName(): string
     {
         return $this->middleName;
     }
@@ -261,7 +262,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getNamePrefix()
+    public function getNamePrefix(): string
     {
         return $this->namePrefix;
     }
@@ -269,7 +270,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getNameSuffix()
+    public function getNameSuffix(): string
     {
         return $this->nameSuffix;
     }
@@ -277,7 +278,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getFullName()
+    public function getFullName(): string
     {
         return implode(' ', [
             $this->namePrefix,
@@ -291,7 +292,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getImage()
+    public function getImage(): object
     {
         return $this->image;
     }
@@ -299,7 +300,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getImageFile()
+    public function getImageFile(): \Symfony\Component\HttpFoundation\File\UploadedFile
     {
         return $this->imageFile;
     }
@@ -323,7 +324,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getSalt()
+    public function getSalt(): string
     {
         return $this->salt;
     }
@@ -331,7 +332,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -339,7 +340,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getPlainPassword()
+    public function getPlainPassword(): string
     {
         return $this->plainPassword;
     }
@@ -347,7 +348,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfirmationToken()
+    public function getConfirmationToken(): string
     {
         return $this->confirmationToken;
     }
@@ -355,7 +356,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getPasswordRequestedAt()
+    public function getPasswordRequestedAt(): ?\DateTime
     {
         return $this->passwordRequestedAt;
     }
@@ -363,7 +364,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getLastLogin()
+    public function getLastLogin(): \DateTime
     {
         return $this->lastLogin;
     }
@@ -371,7 +372,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getLoginCount()
+    public function getLoginCount(): int
     {
         return $this->loginCount;
     }
@@ -379,7 +380,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -387,7 +388,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
@@ -395,7 +396,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }
@@ -403,7 +404,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isAccountNonExpired()
+    public function isAccountNonExpired(): bool
     {
         return true;
     }
@@ -411,7 +412,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isAccountNonLocked()
+    public function isAccountNonLocked(): bool
     {
         return $this->isEnabled();
     }
@@ -419,7 +420,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isPasswordRequestNonExpired($ttl)
+    public function isPasswordRequestNonExpired(int $ttl): bool
     {
         return $this->getPasswordRequestedAt() instanceof \DateTime &&
                $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
@@ -428,7 +429,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -438,7 +439,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setUsername($username)
+    public function setUsername(string $username): UserInterface
     {
         $this->username = $username;
 
@@ -448,7 +449,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setEmail($email)
+    public function setEmail(string $email): UserInterface
     {
         $this->email = $email;
 
@@ -458,7 +459,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setFirstName($firstName = null)
+    public function setFirstName(string $firstName = null): UserInterface
     {
         $this->firstName = $firstName;
 
@@ -468,7 +469,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setLastName($lastName = null)
+    public function setLastName(string $lastName = null): UserInterface
     {
         $this->lastName = $lastName;
 
@@ -478,7 +479,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setMiddleName($middleName)
+    public function setMiddleName(string $middleName): void
     {
         $this->middleName = $middleName;
     }
@@ -486,7 +487,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setNamePrefix($namePrefix)
+    public function setNamePrefix(string $namePrefix): void
     {
         $this->namePrefix = $namePrefix;
     }
@@ -494,7 +495,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setNameSuffix($nameSuffix)
+    public function setNameSuffix(string $nameSuffix): void
     {
         $this->nameSuffix = $nameSuffix;
     }
@@ -502,7 +503,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setImage($image = null)
+    public function setImage(string $image = null): UserInterface
     {
         $this->image = $image;
 
@@ -512,7 +513,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setImageFile(UploadedFile $imageFile)
+    public function setImageFile(UploadedFile $imageFile): UserInterface
     {
         $this->imageFile = $imageFile;
         // this will trienvogger PreUpdate callback even if only image has been changed
@@ -524,7 +525,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function unsetImageFile()
+    public function unsetImageFile(): object
     {
         $this->imageFile = null;
 
@@ -534,7 +535,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): UserInterface
     {
         $this->enabled = (boolean) $enabled;
 
@@ -544,7 +545,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setSalt($salt)
+    public function setSalt(string $salt): UserInterface
     {
         $this->salt = $salt;
 
@@ -554,7 +555,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setPassword($password)
+    public function setPassword(string $password): UserInterface
     {
         $this->password = $password;
 
@@ -564,7 +565,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setPlainPassword($password)
+    public function setPlainPassword(string $password): UserInterface
     {
         $this->plainPassword = $password;
 
@@ -574,7 +575,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setConfirmationToken($token)
+    public function setConfirmationToken(string $token): UserInterface
     {
         $this->confirmationToken = $token;
 
@@ -584,7 +585,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setPasswordRequestedAt(\DateTime $time = null)
+    public function setPasswordRequestedAt(\DateTime $time = null): UserInterface
     {
         $this->passwordRequestedAt = $time;
 
@@ -594,7 +595,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setLastLogin(\DateTime $time)
+    public function setLastLogin(\DateTime $time): UserInterface
     {
         $this->lastLogin = $time;
 
@@ -604,7 +605,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setLoginCount($count)
+    public function setLoginCount(int $count): UserInterface
     {
         $this->loginCount = $count;
 
@@ -614,7 +615,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): UserInterface
     {
         $this->createdAt = $createdAt;
 
@@ -624,7 +625,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt): UserInterface
     {
         $this->updatedAt = $updatedAt;
 
@@ -634,7 +635,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         $roles = $this->roles->toArray();
 
@@ -649,7 +650,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getRolesCollection()
+    public function getRolesCollection(): Collection
     {
         return $this->roles;
     }
@@ -657,7 +658,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getRole($roleName)
+    public function getRole(string $roleName): ?\Akeneo\UserManagement\Component\Model\Role
     {
         /** @var Role $item */
         foreach ($this->getRoles() as $item) {
@@ -672,7 +673,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function hasRole($role)
+    public function hasRole($role): bool
     {
         if ($role instanceof Role) {
             $roleName = $role->getRole();
@@ -690,7 +691,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function addRole(Role $role)
+    public function addRole(Role $role): UserInterface
     {
         if (!$this->hasRole($role)) {
             $this->roles->add($role);
@@ -702,7 +703,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function removeRole($role)
+    public function removeRole($role): void
     {
         if ($role instanceof Role) {
             $roleObject = $role;
@@ -713,7 +714,7 @@ class User implements UserInterface
                 sprintf('$role must be an instance of %s or a string', Role::class)
             );
         }
-        if ($roleObject) {
+        if ($roleObject !== null) {
             $this->roles->removeElement($roleObject);
         }
     }
@@ -721,7 +722,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setRoles($roles)
+    public function setRoles(Collection $roles): UserInterface
     {
         if (!$roles instanceof Collection && !is_array($roles)) {
             throw new \InvalidArgumentException(
@@ -741,7 +742,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setRolesCollection(Collection $collection)
+    public function setRolesCollection(Collection $collection): UserInterface
     {
         if (!$collection instanceof Collection) {
             throw new \InvalidArgumentException(
@@ -756,7 +757,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getGroups()
+    public function getGroups(): Collection
     {
         return $this->groups;
     }
@@ -764,7 +765,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getGroupNames()
+    public function getGroupNames(): array
     {
         $names = [];
 
@@ -779,7 +780,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function hasGroup($name)
+    public function hasGroup(string $name): bool
     {
         return in_array($name, $this->getGroupNames());
     }
@@ -787,7 +788,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function addGroup(GroupInterface $group)
+    public function addGroup(GroupInterface $group): UserInterface
     {
         if (!$this->getGroups()->contains($group)) {
             $this->getGroups()->add($group);
@@ -799,7 +800,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function removeGroup(GroupInterface $group)
+    public function removeGroup(GroupInterface $group): UserInterface
     {
         if ($this->getGroups()->contains($group)) {
             $this->getGroups()->removeElement($group);
@@ -811,7 +812,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setGroups(array $groups)
+    public function setGroups(array $groups): UserInterface
     {
         $this->groups->clear();
 
@@ -825,7 +826,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getGroupsIds()
+    public function getGroupsIds(): array
     {
         $ids = [];
         foreach ($this->groups as $group) {
@@ -838,9 +839,9 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getImagePath()
+    public function getImagePath(): ?string
     {
-        if ($this->image) {
+        if ($this->image !== '') {
             return $this->getUploadDir(true) . '/' . $this->image;
         }
 
@@ -850,7 +851,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function generateToken()
+    public function generateToken(): string
     {
         return base_convert(bin2hex(hash('sha256', uniqid(mt_rand(), true), true)), 16, 36);
     }
@@ -866,7 +867,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function beforeSave()
+    public function beforeSave(): void
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -876,7 +877,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function preUpdate()
+    public function preUpdate(): void
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
@@ -884,7 +885,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isCredentialsNonExpired()
+    public function isCredentialsNonExpired(): bool
     {
         return true;
     }
@@ -892,7 +893,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUploadDir($forWeb = false)
+    public function getUploadDir($forWeb = false): string
     {
         $ds = DIRECTORY_SEPARATOR;
 
@@ -908,7 +909,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getCatalogLocale()
+    public function getCatalogLocale(): \Akeneo\Channel\Component\Model\LocaleInterface
     {
         return $this->catalogLocale;
     }
@@ -916,7 +917,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setCatalogLocale(LocaleInterface $catalogLocale)
+    public function setCatalogLocale(LocaleInterface $catalogLocale): UserInterface
     {
         $this->catalogLocale = $catalogLocale;
 
@@ -926,7 +927,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUiLocale()
+    public function getUiLocale(): \Akeneo\Channel\Component\Model\LocaleInterface
     {
         return $this->uiLocale;
     }
@@ -934,7 +935,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setUiLocale(LocaleInterface $uiLocale)
+    public function setUiLocale(LocaleInterface $uiLocale): UserInterface
     {
         $this->uiLocale = $uiLocale;
 
@@ -944,7 +945,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getCatalogScope()
+    public function getCatalogScope(): \Akeneo\Channel\Component\Model\ChannelInterface
     {
         return $this->catalogScope;
     }
@@ -952,7 +953,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setCatalogScope(ChannelInterface $catalogScope)
+    public function setCatalogScope(ChannelInterface $catalogScope): UserInterface
     {
         $this->catalogScope = $catalogScope;
 
@@ -962,7 +963,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultTree()
+    public function getDefaultTree(): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         return $this->defaultTree;
     }
@@ -970,7 +971,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultTree(CategoryInterface $defaultTree)
+    public function setDefaultTree(CategoryInterface $defaultTree): UserInterface
     {
         $this->defaultTree = $defaultTree;
 
@@ -980,7 +981,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function isEmailNotifications()
+    public function isEmailNotifications(): bool
     {
         return $this->emailNotifications;
     }
@@ -988,7 +989,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setEmailNotifications($emailNotifications)
+    public function setEmailNotifications(bool $emailNotifications): UserInterface
     {
         $this->emailNotifications = $emailNotifications;
 
@@ -998,7 +999,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getProductGridFilters()
+    public function getProductGridFilters(): array
     {
         return $this->productGridFilters;
     }
@@ -1006,7 +1007,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setProductGridFilters(array $productGridFilters = [])
+    public function setProductGridFilters(array $productGridFilters = []): UserInterface
     {
         $this->productGridFilters = $productGridFilters;
 
@@ -1016,7 +1017,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultGridView($alias)
+    public function getDefaultGridView($alias): ?DatagridView
     {
         foreach ($this->defaultGridViews as $datagridView) {
             if ($datagridView->getDatagridAlias() === $alias) {
@@ -1030,7 +1031,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultGridViews()
+    public function getDefaultGridViews(): array
     {
         $views = [];
         foreach ($this->defaultGridViews as $datagridView) {
@@ -1043,7 +1044,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultGridView($alias, $defaultGridView)
+    public function setDefaultGridView(string $alias, ?DatagridView $defaultGridView): UserInterface
     {
         if (null !== $gridView = $this->getDefaultGridView($alias)) {
             $this->defaultGridViews->removeElement($gridView);

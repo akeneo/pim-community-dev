@@ -25,10 +25,7 @@ class StepExecutionEvent extends Event implements EventInterface
         $this->stepExecution = $stepExecution;
     }
 
-    /**
-     * @return StepExecution
-     */
-    public function getStepExecution()
+    public function getStepExecution(): \Akeneo\Tool\Component\Batch\Model\StepExecution
     {
         return $this->stepExecution;
     }

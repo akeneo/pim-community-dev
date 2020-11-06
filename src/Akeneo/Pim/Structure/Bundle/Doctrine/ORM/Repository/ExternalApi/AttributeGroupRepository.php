@@ -37,12 +37,12 @@ class AttributeGroupRepository extends EntityRepository implements ApiResourceRe
         return $this->attributeGroupRepository->getIdentifierProperties();
     }
 
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier)
     {
         return $this->attributeGroupRepository->findOneByIdentifier($identifier);
     }
 
-    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset)
+    public function searchAfterOffset(array $searchFilters, array $orders, int $limit, int $offset): array
     {
         $qb = $this->createQueryBuilder('r');
         $qb = $this->addFilters($qb, $searchFilters);
@@ -135,11 +135,10 @@ class AttributeGroupRepository extends EntityRepository implements ApiResourceRe
                 ])
             ]),
         ];
-        $availableSearchFilters = array_keys($constraints);
 
         $exceptionMessage = '';
         foreach ($searchFilters as $property => $searchFilter) {
-            if (!in_array($property, $availableSearchFilters)) {
+            if (!array_key_exists($property, $constraints)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
                     implode(', ', $availableSearchFilters),

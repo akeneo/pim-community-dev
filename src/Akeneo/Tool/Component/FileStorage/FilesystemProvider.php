@@ -34,10 +34,8 @@ class FilesystemProvider
      * @param string $name
      *
      * @throws \LogicException
-     *
-     * @return FilesystemInterface
      */
-    public function getFilesystem($name)
+    public function getFilesystem(string $name): FilesystemInterface
     {
         return $this->mountManager->getFilesystem($name);
     }

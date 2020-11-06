@@ -24,24 +24,18 @@ class Link
      * @param string $rel
      * @param string $url
      */
-    public function __construct($rel, $url)
+    public function __construct(string $rel, string $url)
     {
         $this->rel = $rel;
         $this->url = $url;
     }
 
-    /**
-     * @return string
-     */
-    public function getRel()
+    public function getRel(): string
     {
         return $this->rel;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -54,10 +48,8 @@ class Link
      *         'href' => 'http://akeneo.com/api/resource/id',
      *     ],
      * ]
-     *
-     * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $link[$this->rel]['href'] = $this->url;
 

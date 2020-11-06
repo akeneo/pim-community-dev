@@ -16,7 +16,7 @@ class FieldSplitter extends BaseFieldSplitter
     /**
      * {@inheritdoc}
      */
-    public function splitFieldName($field): array
+    public function splitFieldName(string $field): array
     {
         if (1 === preg_match('/variant-axes/', $field) || 1 === preg_match('/variant-attributes/', $field)) {
             return explode('_', $field);

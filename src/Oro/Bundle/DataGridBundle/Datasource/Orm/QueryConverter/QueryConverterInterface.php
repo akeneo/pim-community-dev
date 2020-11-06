@@ -11,10 +11,8 @@ interface QueryConverterInterface
      *
      * @param  string|array $value A YAML string or structured associative array
      * @param  QueryBuilder $qb
-     *
-     * @return QueryBuilder
      */
-    public function parse($value, QueryBuilder $qb);
+    public function parse($value, QueryBuilder $qb): \Doctrine\ORM\QueryBuilder;
 
     /**
      * Dumps a QueryBuilder object to YAML.
@@ -23,5 +21,5 @@ interface QueryConverterInterface
      *
      * @return string       The YAML representation of the PHP value
      */
-    public function dump(QueryBuilder $input);
+    public function dump(QueryBuilder $input): string;
 }

@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Context;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
@@ -65,7 +66,7 @@ class UserContext
         ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
-        $defaultLocale
+        string $defaultLocale
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->localeRepository = $localeRepository;
@@ -154,9 +155,7 @@ class UserContext
     public function getUserLocaleCodes(): array
     {
         return array_map(
-            function ($locale) {
-                return $locale->getCode();
-            },
+            fn($locale) => $locale->getCode(),
             $this->getUserLocales()
         );
     }
@@ -216,7 +215,7 @@ class UserContext
      *
      * @return CategoryInterface|null
      */
-    public function getUserCategoryTree($relatedEntity): ?CategoryInterface
+    public function getUserCategoryTree(string $relatedEntity): ?CategoryInterface
     {
         if (static::USER_PRODUCT_CATEGORY_TYPE === $relatedEntity) {
             return $this->getUserProductCategoryTree();
@@ -256,20 +255,16 @@ class UserContext
 
     /**
      * Returns the UI user locale
-     *
-     * @return LocaleInterface|null
      */
-    public function getUiLocale()
+    public function getUiLocale(): ?\Akeneo\Channel\Component\Model\LocaleInterface
     {
         return $this->getUserOption('uiLocale');
     }
 
     /**
      * Returns the UI user locale code
-     *
-     * @return string
      */
-    public function getUiLocaleCode()
+    public function getUiLocaleCode(): string
     {
         if (null === $uiLocale = $this->getUiLocale()) {
             throw new \LogicException('User has no locale');
@@ -281,7 +276,7 @@ class UserContext
     /**
      * Get authenticated user
      *
-     * @return \Akeneo\UserManagement\Component\Model\UserInterface|null
+     * @return UserInterface|null
      */
     public function getUser()
     {
@@ -298,10 +293,8 @@ class UserContext
 
     /**
      * Get the user context as an array
-     *
-     * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         $channels = array_keys($this->getChannelChoicesWithUserChannel());
         $locales = $this->getUserLocaleCodes();
@@ -314,10 +307,7 @@ class UserContext
         ];
     }
     
-    /**
-     * @return CategoryInterface
-     */
-    public function getAccessibleUserTree()
+    public function getAccessibleUserTree(): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         return $this->getUserProductCategoryTree();
     }
@@ -366,10 +356,8 @@ class UserContext
 
     /**
      * Returns the catalog user locale
-     *
-     * @return LocaleInterface|null
      */
-    protected function getUserLocale()
+    protected function getUserLocale(): ?\Akeneo\Channel\Component\Model\LocaleInterface
     {
         $locale = $this->getUserOption('catalogLocale');
 
@@ -378,10 +366,8 @@ class UserContext
 
     /**
      * Returns the default application locale
-     *
-     * @return LocaleInterface|null
      */
-    protected function getDefaultLocale()
+    protected function getDefaultLocale(): ?\Akeneo\Channel\Component\Model\LocaleInterface
     {
         return $this->localeRepository->findOneByIdentifier($this->defaultLocale);
     }
@@ -390,10 +376,8 @@ class UserContext
      * Checks if a locale is activated
      *
      * @param LocaleInterface $locale
-     *
-     * @return bool
      */
-    protected function isLocaleAvailable(LocaleInterface $locale)
+    protected function isLocaleAvailable(LocaleInterface $locale): bool
     {
         return $locale->isActivated();
     }
@@ -405,7 +389,7 @@ class UserContext
      *
      * @return mixed|null
      */
-    protected function getUserOption($optionName)
+    protected function getUserOption(string $optionName)
     {
         $token = $this->tokenStorage->getToken();
 
@@ -436,10 +420,8 @@ class UserContext
 
     /**
      * Get current request
-     *
-     * @return Request|null
      */
-    protected function getCurrentRequest()
+    protected function getCurrentRequest(): ?Request
     {
         return $this->requestStack->getCurrentRequest();
     }

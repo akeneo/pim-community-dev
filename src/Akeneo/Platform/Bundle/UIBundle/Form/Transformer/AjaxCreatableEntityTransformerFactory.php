@@ -32,10 +32,8 @@ class AjaxCreatableEntityTransformerFactory
      * @param SaverInterface $saver       Saver for the creatable entity
      * @param array          $options
      * @param string         $transformer Transformer class for the creatable entity
-     *
-     * @return DataTransformerInterface
      */
-    public function create(SaverInterface $saver, array $options, $transformerClass)
+    public function create(SaverInterface $saver, array $options, $transformerClass): DataTransformerInterface
     {
         $repository = $this->doctrine->getRepository($options['class']);
 

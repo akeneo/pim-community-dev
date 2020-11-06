@@ -34,7 +34,7 @@ class Warning
      * @param array         $reasonParameters
      * @param array         $item
      */
-    public function __construct(StepExecution $stepExecution, $reason, array $reasonParameters, array $item)
+    public function __construct(StepExecution $stepExecution, string $reason, array $reasonParameters, array $item)
     {
         $this->stepExecution = $stepExecution;
         $this->reason = $reason;
@@ -44,20 +44,16 @@ class Warning
 
     /**
      * Returns the id of the warning
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Returns the step execution
-     *
-     * @return StepExecution
      */
-    public function getStepExecution()
+    public function getStepExecution(): \Akeneo\Tool\Component\Batch\Model\StepExecution
     {
         return $this->stepExecution;
     }
@@ -69,7 +65,7 @@ class Warning
      *
      * @return $this
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): self
     {
         $this->stepExecution = $stepExecution;
 
@@ -78,10 +74,8 @@ class Warning
 
     /**
      * Returns the reason
-     *
-     * @return string
      */
-    public function getReason()
+    public function getReason(): string
     {
         return $this->reason;
     }
@@ -93,7 +87,7 @@ class Warning
      *
      * @return $this
      */
-    public function setReason($reason)
+    public function setReason(string $reason): self
     {
         $this->reason = $reason;
 
@@ -102,10 +96,8 @@ class Warning
 
     /**
      * Returns the reason parameters
-     *
-     * @return array
      */
-    public function getReasonParameters()
+    public function getReasonParameters(): array
     {
         return $this->reasonParameters;
     }
@@ -117,7 +109,7 @@ class Warning
      *
      * @return $this
      */
-    public function setReasonParameters(array $reasonParameters)
+    public function setReasonParameters(array $reasonParameters): self
     {
         $this->reasonParameters = $reasonParameters;
 
@@ -126,10 +118,8 @@ class Warning
 
     /**
      * Returns the item over which the warning is set
-     *
-     * @return array
      */
-    public function getItem()
+    public function getItem(): array
     {
         return $this->item;
     }
@@ -141,7 +131,7 @@ class Warning
      *
      * @return $this
      */
-    public function setItem($item)
+    public function setItem(array $item): self
     {
         $this->item = $item;
 
@@ -150,10 +140,8 @@ class Warning
 
     /**
      * Returns a representation of the warning as an array
-     *
-     * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'reason'           => $this->reason,

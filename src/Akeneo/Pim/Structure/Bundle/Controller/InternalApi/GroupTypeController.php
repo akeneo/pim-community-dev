@@ -73,7 +73,7 @@ class GroupTypeController
         SaverInterface $saver,
         ValidatorInterface $validator,
         UserContext $userContext,
-        groupTypeFactory $groupTypeFactory,
+        \Akeneo\Pim\Structure\Component\Factory\GroupTypeFactory $groupTypeFactory,
         NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->groupTypeRepo = $groupTypeRepo;
@@ -88,11 +88,10 @@ class GroupTypeController
     }
 
     /**
-     * @return JsonResponse
      *
      * @AclAncestor("pim_enrich_grouptype_index")
      */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $groupTypes = $this->groupTypeRepo->findAll();
 
@@ -106,11 +105,10 @@ class GroupTypeController
      *
      * @param string $identifier
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_enrich_grouptype_get")
      */
-    public function getAction($identifier)
+    public function getAction(string $identifier): JsonResponse
     {
         $groupType = $this->getGroupTypeOr404($identifier);
 
@@ -166,11 +164,10 @@ class GroupTypeController
      *
      * @param string $code
      *
-     * @return Response
      *
      * @AclAncestor("pim_enrich_grouptype_remove")
      */
-    public function removeAction(Request $request, $code)
+    public function removeAction(Request $request, string $code): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new JsonResponse(
@@ -195,10 +192,8 @@ class GroupTypeController
      * @param string $code
      *
      * @throws NotFoundHttpException
-     *
-     * @return GroupTypeInterface
      */
-    protected function getGroupTypeOr404($code)
+    protected function getGroupTypeOr404(string $code): GroupTypeInterface
     {
         $groupType = $this->groupTypeRepo->findOneByIdentifier($code);
 

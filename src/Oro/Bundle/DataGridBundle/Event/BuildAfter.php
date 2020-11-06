@@ -26,7 +26,7 @@ class BuildAfter extends Event implements GridEventInterface
     /**
      * {@inheritDoc}
      */
-    public function getDatagrid()
+    public function getDatagrid(): \Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface
     {
         return $this->datagrid;
     }

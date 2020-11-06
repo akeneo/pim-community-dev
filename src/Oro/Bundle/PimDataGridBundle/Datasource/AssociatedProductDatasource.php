@@ -31,7 +31,7 @@ class AssociatedProductDatasource extends ProductDatasource
      *
      * @param string $sortOrder
      */
-    public function setSortOrder($sortOrder)
+    public function setSortOrder(string $sortOrder): void
     {
         $this->sortOrder = $sortOrder;
     }
@@ -51,7 +51,7 @@ class AssociatedProductDatasource extends ProductDatasource
      *
      * {@inheritdoc}
      */
-    public function getResults()
+    public function getResults(): array
     {
         $sourceProduct = $this->getConfiguration('current_product', false);
         if (!$sourceProduct instanceof ProductInterface) {
@@ -180,16 +180,14 @@ class AssociatedProductDatasource extends ProductDatasource
      * @param int    $from
      * @param string $locale
      * @param string $scope
-     *
-     * @return CursorInterface
      */
     protected function getAssociatedProducts(
         array $associatedProductsIds,
-        $limit,
-        $from,
-        $locale,
-        $scope
-    ) {
+        int $limit,
+        int $from,
+        string $locale,
+        string $scope
+    ): \Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface {
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('id', Operators::IN_LIST, $associatedProductsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
@@ -203,16 +201,14 @@ class AssociatedProductDatasource extends ProductDatasource
      * @param int    $from
      * @param string $locale
      * @param string $scope
-     *
-     * @return CursorInterface
      */
     protected function getAssociatedProductModels(
         array $associatedProductModelsIds,
-        $limit,
-        $from,
-        $locale,
-        $scope
-    ) {
+        int $limit,
+        int $from,
+        string $locale,
+        string $scope
+    ): \Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface {
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('id', Operators::IN_LIST, $associatedProductModelsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
@@ -225,15 +221,13 @@ class AssociatedProductDatasource extends ProductDatasource
      * @param array           $idsFromInheritance
      * @param string          $locale
      * @param string          $scope
-     *
-     * @return array
      */
     protected function normalizeProductsAndProductModels(
         CursorInterface $products,
         array $identifiersFromInheritance,
-        $locale,
-        $scope
-    ) {
+        string $locale,
+        string $scope
+    ): array {
         $dataLocale = $this->getParameters()['dataLocale'];
         $dataChannel = $this->getParameters()['dataChannel'];
 
@@ -285,10 +279,8 @@ class AssociatedProductDatasource extends ProductDatasource
      * @param int    $from
      * @param string $locale
      * @param string $scope
-     *
-     * @return ProductQueryBuilderInterface
      */
-    protected function createQueryBuilder($limit, $from, $locale, $scope)
+    protected function createQueryBuilder(int $limit, int $from, string $locale, string $scope): ProductQueryBuilderInterface
     {
         if (null === $repositoryParameters = $this->getConfiguration('repository_parameters', false)) {
             $repositoryParameters = [];
@@ -306,9 +298,7 @@ class AssociatedProductDatasource extends ProductDatasource
         $factoryConfig['default_scope'] = $scope;
         $factoryConfig['filters'] = $this->pqb->getRawFilters();
 
-        $pqb = $this->factory->create($factoryConfig);
-
-        return $pqb;
+        return $this->factory->create($factoryConfig);
     }
 
     /**

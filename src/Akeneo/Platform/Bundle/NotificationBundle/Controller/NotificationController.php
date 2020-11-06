@@ -54,10 +54,8 @@ class NotificationController
      * List user notifications for the current user
      *
      * @param Request $request
-     *
-     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $user = $this->userContext->getUser();
         $notifications = $this->userNotifRepository
@@ -75,10 +73,8 @@ class NotificationController
 
     /**
      * Return the number of unread notifications for the current user
-     *
-     * @return JsonResponse
      */
-    public function countUnreadAction()
+    public function countUnreadAction(): JsonResponse
     {
         $user = $this->userContext->getUser();
 
@@ -89,10 +85,8 @@ class NotificationController
      * Mark user notifications as viewed
      *
      * @param int|null $id If null, all notifications will be marked as viewed
-     *
-     * @return JsonResponse
      */
-    public function markAsViewedAction($id)
+    public function markAsViewedAction(?int $id): JsonResponse
     {
         $user = $this->userContext->getUser();
 
@@ -111,7 +105,7 @@ class NotificationController
      *
      * @return Response
      */
-    public function removeAction(Request $request, $id)
+    public function removeAction(Request $request, int $id)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');

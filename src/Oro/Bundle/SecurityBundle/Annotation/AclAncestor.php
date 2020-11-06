@@ -29,10 +29,8 @@ class AclAncestor implements \Serializable
 
     /**
      * Gets id of ACL annotation this ancestor is referred to
-     *
-     * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -40,7 +38,7 @@ class AclAncestor implements \Serializable
     /**
      * {@inheritdoc}
      */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize(
             [
@@ -52,7 +50,7 @@ class AclAncestor implements \Serializable
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         list(
             $this->id

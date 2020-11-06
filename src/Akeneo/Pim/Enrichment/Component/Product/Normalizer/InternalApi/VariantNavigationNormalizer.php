@@ -42,7 +42,7 @@ class VariantNavigationNormalizer implements NormalizerInterface, CacheableSuppo
     /**
      * {@inheritdoc}
      */
-    public function normalize($entity, $format = null, array $context = [])
+    public function normalize($entity, $format = null, array $context = []): array
     {
         if (!$entity instanceof ProductModelInterface && !$entity instanceof ProductInterface) {
             throw new \InvalidArgumentException(sprintf(
@@ -85,7 +85,7 @@ class VariantNavigationNormalizer implements NormalizerInterface, CacheableSuppo
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithFamilyVariantInterface && in_array($format, $this->supportedFormat);
     }

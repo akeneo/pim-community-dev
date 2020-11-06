@@ -11,7 +11,7 @@ class GroupApiType extends GroupType
     /**
      * {@inheritdoc}
      */
-    public function addEntityFields(FormBuilderInterface $builder)
+    public function addEntityFields(FormBuilderInterface $builder): void
     {
         $builder->addEventSubscriber(new PatchSubscriber());
     }
@@ -19,7 +19,7 @@ class GroupApiType extends GroupType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -29,7 +29,7 @@ class GroupApiType extends GroupType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'group';
     }

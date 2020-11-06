@@ -34,7 +34,7 @@ class ConfigManager
      * @param ObjectManager $om
      * @param array         $settings
      */
-    public function __construct(ObjectManager $om, $settings = [])
+    public function __construct(ObjectManager $om, array $settings = [])
     {
         $this->om = $om;
         $this->settings = $settings;
@@ -48,7 +48,7 @@ class ConfigManager
      * @param bool $full
      * @return mixed
      */
-    public function get($name, $default = false, $full = false)
+    public function get(string $name, bool $default = false, bool $full = false)
     {
         $entity = $this->getScopedEntityName();
         $entityId = $this->getScopeId();
@@ -79,7 +79,7 @@ class ConfigManager
      * Save settings with fallback to global scope (default)
      * and change storedSettings with the new settings
      */
-    public function save($newSettings)
+    public function save($newSettings): void
     {
         $entityName = $this->getScopedEntityName();
         $entityId   = $this->getScopeId();
@@ -110,9 +110,8 @@ class ConfigManager
 
     /**
      * @param $newSettings
-     * @return array
      */
-    public function getChanged($newSettings)
+    public function getChanged($newSettings): array
     {
         // find new and updated
         $updated = [];
@@ -151,9 +150,8 @@ class ConfigManager
      * @param $entity
      * @param $entityId
      * @param null $section
-     * @return bool
      */
-    public function loadStoredSettings($entity, $entityId, $section = null)
+    public function loadStoredSettings($entity, $entityId, $section = null): bool
     {
         if (isset($this->storedSettings[$entity][$entityId])) {
             return false;
@@ -168,10 +166,8 @@ class ConfigManager
 
     /**
      * @param FormInterface $form
-     *
-     * @return array
      */
-    public function getSettingsByForm(FormInterface $form)
+    public function getSettingsByForm(FormInterface $form): array
     {
         $settings = [];
 
@@ -194,15 +190,12 @@ class ConfigManager
     /**
      * @return null
      */
-    public function getScopedEntityName()
+    public function getScopedEntityName(): string
     {
         return 'app';
     }
 
-    /**
-     * @return int
-     */
-    public function getScopeId()
+    public function getScopeId(): int
     {
         return 0;
     }

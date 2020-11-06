@@ -23,7 +23,7 @@ class Acceptor
     /**
      * Ask extensions to process configuration
      */
-    public function processConfiguration()
+    public function processConfiguration(): void
     {
         foreach ($this->getExtensions() as $extension) {
             $extension->processConfigs($this->getConfig());
@@ -33,7 +33,7 @@ class Acceptor
     /**
      * @param DatasourceInterface $datasource
      */
-    public function acceptDatasource(DatasourceInterface $datasource)
+    public function acceptDatasource(DatasourceInterface $datasource): void
     {
         foreach ($this->getExtensions() as $extension) {
             $extension->visitDatasource($this->getConfig(), $datasource);
@@ -43,7 +43,7 @@ class Acceptor
     /**
      * @param ResultsIterableObject $result
      */
-    public function acceptResult(ResultsIterableObject $result)
+    public function acceptResult(ResultsIterableObject $result): void
     {
         foreach ($this->getExtensions() as $extension) {
             $extension->visitResult($this->getConfig(), $result);
@@ -53,7 +53,7 @@ class Acceptor
     /**
      * @param MetadataIterableObject $data
      */
-    public function acceptMetadata(MetadataIterableObject $data)
+    public function acceptMetadata(MetadataIterableObject $data): void
     {
         foreach ($this->getExtensions() as $extension) {
             $extension->visitMetadata($this->getConfig(), $data);
@@ -67,7 +67,7 @@ class Acceptor
      *
      * @return $this
      */
-    public function addExtension(ExtensionVisitorInterface $extension)
+    public function addExtension(ExtensionVisitorInterface $extension): self
     {
         /**
          * ATTENTION: extension object should be cloned cause it can contain some state
@@ -93,7 +93,7 @@ class Acceptor
      *
      * @return ExtensionVisitorInterface[]
      */
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return $this->extensions;
     }
@@ -105,7 +105,7 @@ class Acceptor
      *
      * @return mixed
      */
-    public function setConfig(DatagridConfiguration $config)
+    public function setConfig(DatagridConfiguration $config): \Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration
     {
         $this->config = $config;
 
@@ -114,10 +114,8 @@ class Acceptor
 
     /**
      * Getter for config
-     *
-     * @return DatagridConfiguration
      */
-    public function getConfig()
+    public function getConfig(): \Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration
     {
         return $this->config;
     }

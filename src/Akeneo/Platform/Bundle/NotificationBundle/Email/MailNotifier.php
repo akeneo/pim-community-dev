@@ -32,7 +32,7 @@ class MailNotifier
     /**
      * {@inheritdoc}
      */
-    public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = [])
+    public function notify(array $users, $subject, $txtBody, $htmlBody = null, array $options = []): void
     {
         foreach ($users as $user) {
             $message = $this->mailer->createMessage();

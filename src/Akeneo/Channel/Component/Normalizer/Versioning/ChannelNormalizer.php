@@ -42,11 +42,9 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      *
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     *
-     * @return array
+     * @param ChannelInterface $channel
      */
-    public function normalize($channel, $format = null, array $context = [])
+    public function normalize($channel, $format = null, array $context = []): array
     {
         $standardChannel = $this->standardNormalizer->normalize($channel, 'standard', $context);
 
@@ -69,7 +67,7 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ChannelInterface && in_array($format, $this->supportedFormats);
     }
@@ -83,10 +81,8 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      * Normalizes the conversion units into a flat array
      *
      * @param array $conversionUnits
-     *
-     * @return array
      */
-    protected function normalizeConversionUnits(array $conversionUnits)
+    protected function normalizeConversionUnits(array $conversionUnits): array
     {
         $flatArray = [];
 

@@ -52,7 +52,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
         return $entity->normalizeQuantifiedAssociations();
     }
 
-    public function normalizeOnlyParentsAssociations($entity, $format = null, array $context = [])
+    public function normalizeOnlyParentsAssociations($entity, $format = null, array $context = []): array
     {
         if (!$entity instanceof EntityWithFamilyVariantInterface) {
             return [];
@@ -66,7 +66,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithQuantifiedAssociationsInterface && 'standard' === $format;
     }

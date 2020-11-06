@@ -38,25 +38,20 @@ class CurrencyValidator extends ConstraintValidator
      * @param mixed      $object
      * @param Constraint $constraint
      */
-    public function validate($object, Constraint $constraint)
+    public function validate($object, Constraint $constraint): void
     {
         if (!$constraint instanceof Currency) {
             throw new UnexpectedTypeException($constraint, Currency::class);
         }
 
-        if ($object instanceof ProductPriceInterface) {
-            if (!in_array($object->getCurrency(), $this->getCurrencyCodes())) {
-                $this->context->buildViolation($constraint->unitMessage)
-                    ->atPath('currency')
-                    ->addViolation();
-            }
+        if ($object instanceof ProductPriceInterface && !in_array($object->getCurrency(), $this->getCurrencyCodes())) {
+            $this->context->buildViolation($constraint->unitMessage)
+                ->atPath('currency')
+                ->addViolation();
         }
     }
 
-    /**
-     * @return array
-     */
-    protected function getCurrencyCodes()
+    protected function getCurrencyCodes(): array
     {
         if (empty($this->currencyCodes)) {
             $this->currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();

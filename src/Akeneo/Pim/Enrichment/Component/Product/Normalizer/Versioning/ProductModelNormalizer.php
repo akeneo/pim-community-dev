@@ -59,9 +59,8 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
         $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
         $results = array_merge($results, $this->quantifiedAssociationsNormalizer->normalize($object, $format, $context));
-        $results = array_replace($results, $this->normalizeValues($object, $format, $context));
 
-        return $results;
+        return array_replace($results, $this->normalizeValues($object, $format, $context));
     }
 
     /**
@@ -69,7 +68,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ProductModelInterface && in_array($format, ['flat']);
+        return $data instanceof ProductModelInterface && $format == 'flat';
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -81,12 +80,10 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      * Normalizes a product parent.
      *
      * @param ProductModelInterface $parent
-     *
-     * @return string
      */
-    private function normalizeParent(ProductModelInterface $parent = null): string
+    private function normalizeParent(ProductModelInterface $parent = null): ?string
     {
-        return $parent ? $parent->getCode() : '';
+        return $parent !== null ? $parent->getCode() : '';
     }
 
     /**
@@ -98,7 +95,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      *
      * @return array
      */
-    private function normalizeValues(ProductModelInterface $productModel, $format = null, array $context = []): array
+    private function normalizeValues(ProductModelInterface $productModel, ?string $format = null, array $context = []): array
     {
         $values = $productModel->getValuesForVariation();
 
@@ -136,10 +133,8 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      * Normalize associations
      *
      * @param AssociationInterface[] $associations
-     *
-     * @return array
      */
-    protected function normalizeAssociations($associations = [])
+    protected function normalizeAssociations(array $associations = []): array
     {
         $results = [];
         foreach ($associations as $association) {

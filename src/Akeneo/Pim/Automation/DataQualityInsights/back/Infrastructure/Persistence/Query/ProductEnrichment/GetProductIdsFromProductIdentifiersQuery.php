@@ -22,7 +22,7 @@ final class GetProductIdsFromProductIdentifiersQuery implements GetProductIdsFro
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db)
     {
         $this->db = $db;
     }
@@ -45,7 +45,7 @@ SQL;
 
         $productIds = [];
         while ($product = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $productIds[$product['identifier']] = new ProductId(intval($product['id']));
+            $productIds[$product['identifier']] = new ProductId((int) $product['id']);
         }
 
         return $productIds;

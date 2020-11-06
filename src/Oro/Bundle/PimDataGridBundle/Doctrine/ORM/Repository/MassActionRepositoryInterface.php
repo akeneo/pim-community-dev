@@ -18,5 +18,5 @@ interface MassActionRepositoryInterface
      *
      * @return mixed
      */
-    public function applyMassActionParameters($qb, $inset, array $values);
+    public function applyMassActionParameters($qb, bool $inset, array $values);
 }

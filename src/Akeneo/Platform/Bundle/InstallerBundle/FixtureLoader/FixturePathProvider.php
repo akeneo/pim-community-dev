@@ -21,10 +21,8 @@ class FixturePathProvider
 
     /**
      * Get the path of the data used by the installer
-     *
-     * @return string
      */
-    public function getFixturesPath(string $catalogPath)
+    public function getFixturesPath(string $catalogPath): string
     {
         $installerDataDir = null;
 

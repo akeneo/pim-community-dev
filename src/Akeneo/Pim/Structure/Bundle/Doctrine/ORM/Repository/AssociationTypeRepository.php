@@ -18,15 +18,13 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
     /**
      * {@inheritdoc}
      */
-    public function findMissingAssociationTypes(EntityWithAssociationsInterface $entity)
+    public function findMissingAssociationTypes(EntityWithAssociationsInterface $entity): array
     {
         $qb = $this->createQueryBuilder('a');
 
         if ($associations = $entity->getAssociations()) {
             $associationTypeIds = $associations->map(
-                function ($association) {
-                    return $association->getAssociationType()->getId();
-                }
+                fn($association) => $association->getAssociationType()->getId()
             );
 
             if (!$associationTypeIds->isEmpty()) {
@@ -56,7 +54,7 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['code' => $code]);
     }
@@ -64,7 +62,7 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }

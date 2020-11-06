@@ -60,7 +60,7 @@ class GroupUpdater implements ObjectUpdaterInterface
      *     'axis'   => ['size', 'color']
      * ]
      */
-    public function update($group, array $data, array $options = [])
+    public function update(object $group, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$group instanceof GroupInterface) {
             throw InvalidObjectException::objectExpected(
@@ -83,7 +83,7 @@ class GroupUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setData(GroupInterface $group, $field, $data)
+    protected function setData(GroupInterface $group, string $field, $data): void
     {
         switch ($field) {
             case 'code':
@@ -105,7 +105,7 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param string         $code
      */
-    protected function setCode(GroupInterface $group, $code)
+    protected function setCode(GroupInterface $group, string $code): void
     {
         $group->setCode($code);
     }
@@ -116,7 +116,7 @@ class GroupUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setType(GroupInterface $group, $type)
+    protected function setType(GroupInterface $group, string $type): void
     {
         $groupType = $this->groupTypeRepository->findOneByIdentifier($type);
 
@@ -137,7 +137,7 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param array          $labels
      */
-    protected function setLabels(GroupInterface $group, array $labels)
+    protected function setLabels(GroupInterface $group, array $labels): void
     {
         foreach ($labels as $localeCode => $label) {
             $group->setLocale($localeCode);
@@ -151,7 +151,7 @@ class GroupUpdater implements ObjectUpdaterInterface
      * @param GroupInterface $group
      * @param array          $productIdentifiers
      */
-    protected function setProducts(GroupInterface $group, array $productIdentifiers)
+    protected function setProducts(GroupInterface $group, array $productIdentifiers): void
     {
         foreach ($group->getProducts() as $product) {
             $group->removeProduct($product);

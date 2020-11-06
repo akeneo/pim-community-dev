@@ -149,7 +149,7 @@ class QuantifiedAssociationCollection
         return array_unique($result);
     }
 
-    public function clearQuantifiedAssociations()
+    public function clearQuantifiedAssociations(): QuantifiedAssociationCollection
     {
         $quantifiedAssociationsCleared = array_fill_keys(
             $this->getAssociationTypeCodes(),
@@ -172,7 +172,7 @@ class QuantifiedAssociationCollection
         return self::createFromNormalized($mergedQuantifiedAssociationsNormalized);
     }
 
-    public function normalizeWithMapping(IdMapping $mappedProductIdentifiers, IdMapping $mappedProductModelIdentifiers)
+    public function normalizeWithMapping(IdMapping $mappedProductIdentifiers, IdMapping $mappedProductModelIdentifiers): array
     {
         $result = [];
         foreach ($this->quantifiedAssociations as $associationType => $associations) {
@@ -233,9 +233,7 @@ class QuantifiedAssociationCollection
             $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = $quantifiedAssociation['product_models'];
             $filteredQuantifiedAssociations[$associationTypeCode]['products'] = array_filter(
                 $quantifiedAssociation['products'],
-                function (QuantifiedLink $quantifiedLink) use ($productIdentifiersToKeep) {
-                    return in_array($quantifiedLink->identifier(), $productIdentifiersToKeep);
-                }
+                fn(QuantifiedLink $quantifiedLink) => in_array($quantifiedLink->identifier(), $productIdentifiersToKeep)
             );
         }
 
@@ -249,21 +247,19 @@ class QuantifiedAssociationCollection
             $filteredQuantifiedAssociations[$associationTypeCode]['products'] = $quantifiedAssociation['products'];
             $filteredQuantifiedAssociations[$associationTypeCode]['product_models'] = array_filter(
                 $quantifiedAssociation['product_models'],
-                function (QuantifiedLink $quantifiedLink) use ($productModelCodesToKeep) {
-                    return in_array($quantifiedLink->identifier(), $productModelCodesToKeep);
-                }
+                fn(QuantifiedLink $quantifiedLink) => in_array($quantifiedLink->identifier(), $productModelCodesToKeep)
             );
         }
 
         return new self($filteredQuantifiedAssociations);
     }
 
-    private function getAssociationTypeCodes()
+    private function getAssociationTypeCodes(): array
     {
         return array_keys($this->quantifiedAssociations);
     }
 
-    private function normalizeWithIndexedIdentifiers()
+    private function normalizeWithIndexedIdentifiers(): array
     {
         $quantifiedAssociationsNormalized = $this->normalize();
 

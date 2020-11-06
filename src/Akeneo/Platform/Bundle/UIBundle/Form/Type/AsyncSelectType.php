@@ -45,7 +45,7 @@ class AsyncSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_async_select';
     }
@@ -53,7 +53,7 @@ class AsyncSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return HiddenType::class;
     }
@@ -61,7 +61,7 @@ class AsyncSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults(
@@ -84,7 +84,7 @@ class AsyncSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $repository = $options['repository'];
 
@@ -104,7 +104,7 @@ class AsyncSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['attr']['data-url'] = $this->getUrl($options);
         $view->vars['attr']['data-min-input-length'] = $options['min-input-length'];
@@ -116,10 +116,8 @@ class AsyncSelectType extends AbstractType
 
     /**
      * @param array $options
-     *
-     * @return string
      */
-    protected function getUrl(array $options)
+    protected function getUrl(array $options): string
     {
         return $this->router->generate($options['route']);
     }
@@ -127,10 +125,8 @@ class AsyncSelectType extends AbstractType
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param array                                 $options
-     *
-     * @return DataTransformerInterface
      */
-    protected function createDataTransformer(IdentifiableObjectRepositoryInterface $repository, $options)
+    protected function createDataTransformer(IdentifiableObjectRepositoryInterface $repository, array $options): DataTransformerInterface
     {
         $transformerOptions = [
             'multiple' => $options['multiple']

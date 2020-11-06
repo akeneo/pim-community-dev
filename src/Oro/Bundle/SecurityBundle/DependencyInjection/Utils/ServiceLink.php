@@ -37,7 +37,7 @@ class ServiceLink
      * @param string $serviceId
      * @param bool $isOptional
      */
-    public function __construct(ContainerInterface $container, $serviceId, $isOptional = false)
+    public function __construct(ContainerInterface $container, string $serviceId, bool $isOptional = false)
     {
         $this->container = $container;
         $this->serviceId = $serviceId;
@@ -46,10 +46,8 @@ class ServiceLink
 
     /**
      * Gets a service this link refers to
-     *
-     * @return object
      */
-    public function getService()
+    public function getService(): object
     {
         // try to get a service and save it to internal cache
         if ($this->service === false) {

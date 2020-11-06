@@ -28,170 +28,138 @@ interface AttributeInterface extends
      * Set code
      *
      * @param string $code
-     *
-     * @return AttributeInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set required
      *
      * @param bool $required
-     *
-     * @return AttributeInterface
      */
-    public function setRequired($required);
+    public function setRequired(bool $required): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Is unique
      *
      * @return bool $unique
      */
-    public function isUnique();
+    public function isUnique(): bool;
 
     /**
      * Set numberMin
      *
      * @param mixed $numberMin
-     *
-     * @return AttributeInterface
      */
-    public function setNumberMin($numberMin);
+    public function setNumberMin($numberMin): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get properties
-     *
-     * @return array
      */
-    public function getProperties();
+    public function getProperties(): array;
 
     /**
      * Get backend type
-     *
-     * @return string
      */
-    public function getBackendType();
+    public function getBackendType(): string;
 
     /**
      * Set id
      *
      * @param int|string $id
-     *
-     * @return AttributeInterface
      */
-    public function setId($id);
+    public function setId($id): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Is scopable
      *
      * @return bool $scopable
      */
-    public function isScopable();
+    public function isScopable(): bool;
 
     /**
      * Set localizable
      *
      * @param bool $localizable
-     *
-     * @return AttributeInterface
      */
-    public function setLocalizable($localizable);
+    public function setLocalizable(bool $localizable): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get entity type
-     *
-     * @return string
      */
-    public function getEntityType();
+    public function getEntityType(): string;
 
     /**
      * Add option
      *
      * @param AttributeOptionInterface $option
-     *
-     * @return AttributeInterface
      */
-    public function addOption(AttributeOptionInterface $option);
+    public function addOption(AttributeOptionInterface $option): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get available locale codes
      *
      * @deprecated Will be removed in 1.8. Please use getAvailableLocaleCodes() instead.
-     *
-     * @return array
      */
-    public function getLocaleSpecificCodes();
+    public function getLocaleSpecificCodes(): array;
 
     /**
      * Get available locale
-     *
-     * @return array
      */
-    public function getAvailableLocales();
+    public function getAvailableLocales(): array;
 
     /**
      * Get available locale codes
-     *
-     * @return array
      */
-    public function getAvailableLocaleCodes();
+    public function getAvailableLocaleCodes(): array;
 
     /**
      * Test if the attribute have the given locale specific available
      *
      * @param LocaleInterface $locale
-     *
-     * @return bool
      */
-    public function hasLocaleSpecific(LocaleInterface $locale);
+    public function hasLocaleSpecific(LocaleInterface $locale): bool;
 
     /**
      * Set entity type
      *
      * @param string $entityType
-     *
-     * @return AttributeInterface
      */
-    public function setEntityType($entityType);
+    public function setEntityType(string $entityType): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get maxFileSize
      *
      * @return float $maxFileSize
      */
-    public function getMaxFileSize();
+    public function getMaxFileSize(): float;
 
     /**
      * Set wysiwygEnabled
      *
      * @param bool $wysiwygEnabled
-     *
-     * @return AttributeInterface
      */
-    public function setWysiwygEnabled($wysiwygEnabled);
+    public function setWysiwygEnabled(bool $wysiwygEnabled): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get metricFamily
      *
      * @return string $metricFamily
      */
-    public function getMetricFamily();
+    public function getMetricFamily(): string;
 
     /**
      * Set backend type
      *
      * @param string $type
-     *
-     * @return AttributeInterface
      */
-    public function setBackendType($type);
+    public function setBackendType(string $type): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get defaultMetricUnit
      *
      * @return string $defaultMetricUnit
      */
-    public function getDefaultMetricUnit();
+    public function getDefaultMetricUnit(): string;
 
     /**
      * Get numberMax
@@ -202,73 +170,59 @@ interface AttributeInterface extends
 
     /**
      * Get families
-     *
-     * @return ArrayCollection|null
      */
-    public function getFamilies();
+    public function getFamilies(): ?\Doctrine\Common\Collections\ArrayCollection;
 
     /**
      * Get label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * Get options
-     *
-     * @return \ArrayAccess
      */
-    public function getOptions();
+    public function getOptions(): \ArrayAccess;
 
     /**
      * Predicate for negativeAllowed property
      *
      * @return bool $negativeAllowed
      */
-    public function isNegativeAllowed();
+    public function isNegativeAllowed(): bool;
 
     /**
      * Returns the minimum input length for singlechoice and multichoice types
-     *
-     * @return int
      */
-    public function getMinimumInputLength();
+    public function getMinimumInputLength(): int;
 
     /**
      * Set a property
      *
      * @param string $property
      * @param mixed  $value
-     *
-     * @return AttributeInterface
      */
-    public function setProperty($property, $value);
+    public function setProperty(string $property, $value): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set group
      *
      * @param AttributeGroupInterface $group
-     *
-     * @return AttributeInterface
      */
-    public function setGroup(AttributeGroupInterface $group = null);
+    public function setGroup(AttributeGroupInterface $group = null): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get allowedExtensions
      *
      * @return array $allowedExtensions
      */
-    public function getAllowedExtensions();
+    public function getAllowedExtensions(): array;
 
     /**
      * Set allowedExtensions
      *
      * @param string $allowedExtensions
-     *
-     * @return AttributeInterface
      */
-    public function setAllowedExtensions($allowedExtensions);
+    public function setAllowedExtensions(string $allowedExtensions): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get a property
@@ -277,64 +231,54 @@ interface AttributeInterface extends
      *
      * @return mixed
      */
-    public function getProperty($property);
+    public function getProperty(string $property);
 
     /**
      * Set negativeAllowed
      *
      * @param bool $negativeAllowed
-     *
-     * @return AttributeInterface
      */
-    public function setNegativeAllowed($negativeAllowed);
+    public function setNegativeAllowed(bool $negativeAllowed): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Is localizable
      *
      * @return bool $localizable
      */
-    public function isLocalizable();
+    public function isLocalizable(): bool;
 
     /**
      * Add available locale
      *
      * @param LocaleInterface $availableLocale
-     *
-     * @return AttributeInterface
      */
-    public function addAvailableLocale(LocaleInterface $availableLocale);
+    public function addAvailableLocale(LocaleInterface $availableLocale): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get code
-     *
-     * @return string
      */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * Predicate for useableAsGridFilter property
      *
      * @return bool $useableAsGridFilter
      */
-    public function isUseableAsGridFilter();
+    public function isUseableAsGridFilter(): bool;
 
     /**
      * Set families
      *
      * @param ArrayCollection $families
-     *
-     * @return AttributeInterface
      */
-    public function setFamilies(ArrayCollection $families);
+    public function setFamilies(ArrayCollection $families): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set Validation regexp
      *
      * @param string $validationRegexp
-     *
-     * @return AttributeInterface
      */
-    public function setValidationRegexp($validationRegexp);
+    public function setValidationRegexp(string $validationRegexp): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get numberMin
@@ -347,39 +291,32 @@ interface AttributeInterface extends
      * Add family
      *
      * @param FamilyInterface $family
-     *
-     * @return AttributeInterface
      */
-    public function addFamily(FamilyInterface $family);
+    public function addFamily(FamilyInterface $family): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set Validation rule
      *
      * @param string $validationRule
-     *
-     * @return AttributeInterface
      */
-    public function setValidationRule($validationRule);
+    public function setValidationRule(string $validationRule): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set dateMin
      *
      * @param \DateTime $dateMin
-     *
-     * @return AttributeInterface
      */
-    public function setDateMin($dateMin);
+    public function setDateMin(\DateTime $dateMin): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set attribute type
      *
      * @param string $type
      *
-     * @return AttributeInterface
      *
      * @deprecated Will be removed in 1.8. Please use setType() instead.
      */
-    public function setAttributeType($type);
+    public function setAttributeType(string $type): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set attribute type
@@ -387,69 +324,56 @@ interface AttributeInterface extends
      * @param string $type
      *
      * @see Pim\Component\Catalog\AttributeTypes
-     *
-     * @return AttributeInterface
      */
-    public function setType($type);
+    public function setType(string $type): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set dateMax
      *
      * @param \DateTime $dateMax
-     *
-     * @return AttributeInterface
      */
-    public function setDateMax($dateMax);
+    public function setDateMax(\DateTime $dateMax): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set maxFileSize
      *
      * @param float $maxFileSize
-     *
-     * @return AttributeInterface
      */
-    public function setMaxFileSize($maxFileSize);
+    public function setMaxFileSize(float $maxFileSize): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get group
-     *
-     * @return AttributeGroupInterface
      */
-    public function getGroup();
+    public function getGroup(): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
     /**
      * Set label
      *
      * @param string $label
-     *
-     * @return string
      */
-    public function setLabel($label);
+    public function setLabel(string $label): string;
 
     /**
      * Get attribute type
      *
-     * @return string
      *
      * @deprecated Will be removed in 1.8. Please use getType() instead.
      */
-    public function getAttributeType();
+    public function getAttributeType(): string;
 
     /**
      * Get attribute type
      *
      * @see Pim\Component\Catalog\AttributeTypes
-     *
-     * @return string
      */
-    public function getType();
+    public function getType(): string;
 
     /**
      * Predicate for wysiwygEnabled property
      *
      * @return bool $wysiwygEnabled
      */
-    public function isWysiwygEnabled();
+    public function isWysiwygEnabled(): bool;
 
     /**
      * Get id
@@ -463,23 +387,21 @@ interface AttributeInterface extends
      *
      * @return string $validationRule
      */
-    public function getValidationRule();
+    public function getValidationRule(): string;
 
     /**
      * Set properties
      *
      * @param array $properties
-     *
-     * @return AttributeInterface
      */
-    public function setProperties(array $properties);
+    public function setProperties(array $properties): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Is required
      *
      * @return bool $required
      */
-    public function isRequired();
+    public function isRequired(): bool;
 
     /**
      * Set all parameters with associative array
@@ -487,189 +409,151 @@ interface AttributeInterface extends
      * @param array $parameters
      *
      * @throws \Exception
-     *
-     * @return AttributeInterface
      */
-    public function setParameters($parameters);
+    public function setParameters(array $parameters): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set Max characters
      *
      * @param int $maxCharacters
-     *
-     * @return AttributeInterface
      */
-    public function setMaxCharacters($maxCharacters);
+    public function setMaxCharacters(int $maxCharacters): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set unique
      *
      * @param bool $unique
-     *
-     * @return AttributeInterface
      */
-    public function setUnique($unique);
+    public function setUnique(bool $unique): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get dateMin
      *
      * @return \DateTime $dateMin
      */
-    public function getDateMin();
+    public function getDateMin(): \DateTime;
 
     /**
      * Remove family
      *
      * @param FamilyInterface $family
-     *
-     * @return AttributeInterface
      */
-    public function removeFamily(FamilyInterface $family);
+    public function removeFamily(FamilyInterface $family): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set numberMax
      *
      * @param mixed $numberMax
-     *
-     * @return AttributeInterface
      */
-    public function setNumberMax($numberMax);
+    public function setNumberMax($numberMax): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set useableAsGridFilter
      *
      * @param bool $useableAsGridFilter
-     *
-     * @return AttributeInterface
      */
-    public function setUseableAsGridFilter($useableAsGridFilter);
+    public function setUseableAsGridFilter(bool $useableAsGridFilter): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get dateMax
      *
      * @return \DateTime $dateMax
      */
-    public function getDateMax();
+    public function getDateMax(): \DateTime;
 
     /**
      * Sets the minimum input length for singlechoice and multichoice types
      *
      * @param int $minimumInputLength
-     *
-     * @return AttributeInterface
      */
-    public function setMinimumInputLength($minimumInputLength);
+    public function setMinimumInputLength(int $minimumInputLength): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set sortOrder
      *
      * @param number $sortOrder
-     *
-     * @return AttributeInterface
      */
-    public function setSortOrder($sortOrder);
+    public function setSortOrder($sortOrder): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Predicate for decimalsAllowed property
      *
      * @return bool $decimalsAllowed
      */
-    public function isDecimalsAllowed();
+    public function isDecimalsAllowed(): bool;
 
     /**
      * Set defaultMetricUnit
      *
      * @param string $defaultMetricUnit
-     *
-     * @return AttributeInterface
      */
-    public function setDefaultMetricUnit($defaultMetricUnit);
+    public function setDefaultMetricUnit(string $defaultMetricUnit): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Remove option
      *
      * @param AttributeOptionInterface $option
-     *
-     * @return AttributeInterface
      */
-    public function removeOption(AttributeOptionInterface $option);
+    public function removeOption(AttributeOptionInterface $option): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get Max characters
      *
      * @return int $maxCharacters
      */
-    public function getMaxCharacters();
+    public function getMaxCharacters(): int;
 
     /**
      * Remove available locale
      *
      * @param LocaleInterface $availableLocale
-     *
-     * @return AttributeInterface
      */
-    public function removeAvailableLocale(LocaleInterface $availableLocale);
+    public function removeAvailableLocale(LocaleInterface $availableLocale): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set scopable
      *
      * @param bool $scopable
-     *
-     * @return AttributeInterface
      */
-    public function setScopable($scopable);
+    public function setScopable(bool $scopable): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get sortOrder
-     *
-     * @return int
      */
-    public function getSortOrder();
+    public function getSortOrder(): int;
 
     /**
      * Get Validation regexp
      *
      * @return string $validationRegexp
      */
-    public function getValidationRegexp();
+    public function getValidationRegexp(): string;
 
     /**
      * Set decimalsAllowed
      *
      * @param bool $decimalsAllowed
-     *
-     * @return AttributeInterface
      */
-    public function setDecimalsAllowed($decimalsAllowed);
+    public function setDecimalsAllowed(bool $decimalsAllowed): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Set metricFamily
      *
      * @param string $metricFamily
-     *
-     * @return AttributeInterface
      */
-    public function setMetricFamily($metricFamily);
+    public function setMetricFamily(string $metricFamily): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Check if attribute is locale specific
-     *
-     * @return bool
      */
-    public function isLocaleSpecific();
+    public function isLocaleSpecific(): bool;
 
-    /**
-     * @return string
-     */
-    public function getReferenceDataName();
+    public function getReferenceDataName(): string;
 
     /**
      * @param string $name
      */
-    public function setReferenceDataName($name);
+    public function setReferenceDataName(string $name);
 
-    /**
-     * @return bool
-     */
-    public function isBackendTypeReferenceData();
+    public function isBackendTypeReferenceData(): bool;
 }

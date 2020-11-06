@@ -18,6 +18,14 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class SystemInfoController
 {
     /**
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface|mixed
+     */
+    public $templating;
+    /**
+     * @var \Akeneo\Tool\Component\Analytics\ChainedDataCollector|mixed
+     */
+    public $dataCollector;
+    /**
      * @param EngineInterface      $templating
      * @param ChainedDataCollector $dataCollector
      */
@@ -31,10 +39,8 @@ class SystemInfoController
      * @param string $_format
      *
      * @AclAncestor("pim_analytics_system_info_index")
-     *
-     * @return Response
      */
-    public function indexAction($_format)
+    public function indexAction(string $_format): Response
     {
         $moveToEnd = function (array $data, string $key) {
             $value = $data[$key];

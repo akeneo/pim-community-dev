@@ -26,7 +26,7 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
      * @param EntityManagerInterface $entityManager
      * @param string                 $entityName
      */
-    public function __construct(EntityManagerInterface $entityManager, $entityName)
+    public function __construct(EntityManagerInterface $entityManager, string $entityName)
     {
         $this->entityManager = $entityManager;
         $this->entityName = $entityName;
@@ -37,7 +37,7 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
      *
      * @return FamilyInterface[]
      */
-    public function findBySearch($search = null, array $options = [])
+    public function findBySearch(string $search = null, array $options = []): array
     {
         $qb = $this->entityManager->createQueryBuilder()->select('f')->from($this->entityName, 'f');
 
@@ -56,10 +56,8 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
     /**
      * @param QueryBuilder $qb
      * @param array        $options
-     *
-     * @return QueryBuilder
      */
-    protected function applyQueryOptions(QueryBuilder $qb, array $options)
+    protected function applyQueryOptions(QueryBuilder $qb, array $options): \Doctrine\ORM\QueryBuilder
     {
         if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
             $qb->andWhere('f.code in (:codes)');

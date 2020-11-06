@@ -69,7 +69,7 @@ class Version implements VersionInterface
      * @param string      $author
      * @param string|null $context
      */
-    public function __construct($resourceName, $resourceId, $author, $context = null)
+    public function __construct(string $resourceName, string $resourceId, string $author, ?string $context = null)
     {
         $this->resourceName = $resourceName;
         $this->resourceId = $resourceId;
@@ -81,10 +81,8 @@ class Version implements VersionInterface
 
     /**
      * Get id
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -93,10 +91,8 @@ class Version implements VersionInterface
      * Set id
      *
      * @param int $id
-     *
-     * @return Version
      */
-    public function setId($id)
+    public function setId(int $id): \Akeneo\Tool\Component\Versioning\Model\Version
     {
         $this->id = $id;
 
@@ -105,40 +101,32 @@ class Version implements VersionInterface
 
     /**
      * Get author
-     *
-     * @return string
      */
-    public function getAuthor()
+    public function getAuthor(): string
     {
         return $this->author;
     }
 
     /**
      * Get resource id
-     *
-     * @return string
      */
-    public function getResourceId()
+    public function getResourceId(): string
     {
         return $this->resourceId;
     }
 
     /**
      * Get resource name
-     *
-     * @return string
      */
-    public function getResourceName()
+    public function getResourceName(): string
     {
         return $this->resourceName;
     }
 
     /**
      * Get version
-     *
-     * @return int
      */
-    public function getVersion()
+    public function getVersion(): int
     {
         return $this->version;
     }
@@ -147,10 +135,8 @@ class Version implements VersionInterface
      * Set version
      *
      * @param int $version
-     *
-     * @return Version
      */
-    public function setVersion($version)
+    public function setVersion(int $version): VersionInterface
     {
         $this->version = $version;
 
@@ -159,10 +145,8 @@ class Version implements VersionInterface
 
     /**
      * Get snapshot
-     *
-     * @return array
      */
-    public function getSnapshot()
+    public function getSnapshot(): array
     {
         return $this->snapshot;
     }
@@ -171,10 +155,8 @@ class Version implements VersionInterface
      * Set snapshot
      *
      * @param array $snapshot
-     *
-     * @return Version
      */
-    public function setSnapshot(array $snapshot)
+    public function setSnapshot(array $snapshot): VersionInterface
     {
         if (!empty($snapshot)) {
             $this->pending = false;
@@ -187,10 +169,8 @@ class Version implements VersionInterface
 
     /**
      * Get changeset
-     *
-     * @return array
      */
-    public function getChangeset()
+    public function getChangeset(): array
     {
         return $this->changeset;
     }
@@ -199,10 +179,8 @@ class Version implements VersionInterface
      * Set changeset
      *
      * @param array $changeset
-     *
-     * @return Version
      */
-    public function setChangeset(array $changeset)
+    public function setChangeset(array $changeset): VersionInterface
     {
         $this->changeset = $changeset;
 
@@ -211,26 +189,18 @@ class Version implements VersionInterface
 
     /**
      * Get context
-     *
-     * @return string
      */
-    public function getContext()
+    public function getContext(): string
     {
         return $this->context;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getLoggedAt()
+    public function getLoggedAt(): \DateTime
     {
         return $this->loggedAt;
     }
 
-    /**
-     * @return bool
-     */
-    public function isPending()
+    public function isPending(): bool
     {
         return $this->pending;
     }

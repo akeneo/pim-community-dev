@@ -22,7 +22,7 @@ class RegisterPresentersPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(self::LOCALIZATION_PRESENTER_REGISTRY)) {
             return;

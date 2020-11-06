@@ -34,7 +34,7 @@ class FilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
@@ -42,7 +42,7 @@ class FilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $emptyChoice = false;
         if (isset($options['field_options']['attr']['empty_choice'])) {
@@ -71,26 +71,21 @@ class FilterType extends AbstractType
 
     /**
      * @param array $options
-     *
-     * @return array
      */
-    protected function createOperatorOptions(array $options)
+    protected function createOperatorOptions(array $options): array
     {
         $result = ['required' => false];
         if ($options['operator_choices']) {
             $result['choices'] = array_flip($options['operator_choices']);
         }
-        $result = array_merge($result, $options['operator_options']);
 
-        return $result;
+        return array_merge($result, $options['operator_options']);
     }
 
     /**
      * @param array $options
-     *
-     * @return array
      */
-    protected function createFieldOptions(array $options)
+    protected function createFieldOptions(array $options): array
     {
         return array_merge(['required' => false], $options['field_options']);
     }
@@ -98,7 +93,7 @@ class FilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $children = $form->all();
         $view->vars['value']['type'] = $children['type']->getViewData();
@@ -109,7 +104,7 @@ class FilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [

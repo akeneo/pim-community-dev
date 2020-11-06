@@ -55,7 +55,7 @@ class WebhookEventBuilder
     private function buildEventData(BusinessEventInterface $businessEvent): array
     {
         foreach ($this->builders as $builder) {
-            if (true === $builder->supports($businessEvent)) {
+            if ($builder->supports($businessEvent)) {
                 return $builder->build($businessEvent);
             }
         }

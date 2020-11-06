@@ -38,10 +38,10 @@ class TranslationsExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('get_translations_file', [$this, 'getTranslationsFile'])
+            new \Twig_SimpleFunction('get_translations_file', fn() => $this->getTranslationsFile())
         ];
     }
 
@@ -74,10 +74,8 @@ class TranslationsExtension extends \Twig_Extension
 
     /**
      * Get user's locale
-     *
-     * @return string
      */
-    protected function getLocale()
+    protected function getLocale(): string
     {
         $request = $this->requestStack->getMasterRequest();
         if (null === $request) {

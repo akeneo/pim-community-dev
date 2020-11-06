@@ -32,7 +32,7 @@ class ListClientsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('pim:oauth-server:list-clients')
@@ -43,7 +43,7 @@ class ListClientsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $clients = $this->clientRepository->findAll();
 
@@ -64,7 +64,7 @@ class ListClientsCommand extends Command
             ]);
         }
 
-        $table->render($output);
+        $table->render();
 
         return 0;
     }

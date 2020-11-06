@@ -42,7 +42,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($product, array $options = [])
+    public function save($product, array $options = []): void
     {
         $this->validateProduct($product);
 
@@ -62,7 +62,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $products, array $options = [])
+    public function saveAll(array $products, array $options = []): void
     {
         if (empty($products)) {
             return;
@@ -78,9 +78,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
-        $areProductsNew = array_map(function ($product) {
-            return null === $product->getId();
-        }, $products);
+        $areProductsNew = array_map(fn($product) => null === $product->getId(), $products);
 
         foreach ($products as $i => $product) {
             $this->eventDispatcher->dispatch(
@@ -107,7 +105,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         );
     }
 
-    protected function validateProduct($product)
+    protected function validateProduct($product): void
     {
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(

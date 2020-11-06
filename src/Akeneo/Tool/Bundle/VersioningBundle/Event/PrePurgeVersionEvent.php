@@ -29,10 +29,7 @@ class PrePurgeVersionEvent extends Event
         $this->version = $version;
     }
 
-    /**
-     * @return VersionInterface
-     */
-    public function getVersion()
+    public function getVersion(): \Akeneo\Tool\Component\Versioning\Model\VersionInterface
     {
         return $this->version;
     }

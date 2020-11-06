@@ -38,10 +38,8 @@ class AjaxOptionController
      * Returns a JSON response containing options
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         $query = $request->query;
         $search = $query->get('search');

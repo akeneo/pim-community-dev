@@ -19,7 +19,7 @@ class DocumentedNormalizer implements NormalizerInterface, CacheableSupportsMeth
     /**
      * {@inheritdoc}
      */
-    public function normalize($exception, $format = null, array $context = [])
+    public function normalize($exception, $format = null, array $context = []): array
     {
         $data = [
             'code'    => $exception->getStatusCode(),
@@ -35,7 +35,7 @@ class DocumentedNormalizer implements NormalizerInterface, CacheableSupportsMeth
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($exception, $format = null)
+    public function supportsNormalization($exception, $format = null): bool
     {
         return $exception instanceof DocumentedHttpException;
     }

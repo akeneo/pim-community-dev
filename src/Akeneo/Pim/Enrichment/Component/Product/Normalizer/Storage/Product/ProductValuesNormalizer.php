@@ -29,22 +29,20 @@ class ProductValuesNormalizer implements NormalizerInterface, CacheableSupportsM
     /**
      * {@inheritdoc}
      */
-    public function normalize($values, $format = null, array $context = [])
+    public function normalize($values, $format = null, array $context = []): array
     {
         $normalizedValues = [];
         foreach ($values as $value) {
             $normalizedValues[] = $this->valueNormalizer->normalize($value, $format, $context);
         }
 
-        $result = empty($normalizedValues) ? [] : array_replace_recursive(...$normalizedValues);
-
-        return $result;
+        return empty($normalizedValues) ? [] : array_replace_recursive(...$normalizedValues);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return 'storage' === $format && $data instanceof WriteValueCollection;
     }

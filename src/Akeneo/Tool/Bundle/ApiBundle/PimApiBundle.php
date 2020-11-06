@@ -12,7 +12,7 @@ class PimApiBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container
             ->addCompilerPass(new RegisterSerializerPass('pim_external_api_exception_serializer'))

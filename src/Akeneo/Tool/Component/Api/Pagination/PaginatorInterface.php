@@ -24,8 +24,6 @@ interface PaginatorInterface
      * @param int|null $count      total number of items without pagination, null if not calculated
      *
      * @throws PaginationParametersException if a parameter is either invalid, undefined parameter or missing
-     *
-     * @return array
      */
-    public function paginate(array $items, array $parameters, $count);
+    public function paginate(array $items, array $parameters, ?int $count): array;
 }

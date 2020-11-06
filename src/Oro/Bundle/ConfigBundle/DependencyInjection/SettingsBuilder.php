@@ -12,7 +12,7 @@ class SettingsBuilder
      * @param ArrayNodeDefinition $root     Config root node
      * @param array               $settings
      */
-    public static function append(ArrayNodeDefinition $root, $settings)
+    public static function append(ArrayNodeDefinition $root, array $settings): void
     {
         $builder = new TreeBuilder();
         $node = $builder

@@ -33,7 +33,7 @@ class QuantifiedAssociationsFromAncestorsFilter
         $this->quantifiedAssociationsMerger = $quantifiedAssociationsMerger;
     }
 
-    public function filter(array $data, EntityWithQuantifiedAssociationsInterface $entity)
+    public function filter(array $data, EntityWithQuantifiedAssociationsInterface $entity): array
     {
         if (!$entity instanceof EntityWithFamilyVariantInterface) {
             return $data;

@@ -22,7 +22,7 @@ class FileInfoType extends AbstractType
     /**
      * @param string $dataClass
      */
-    public function __construct($dataClass)
+    public function __construct(string $dataClass)
     {
         $this->dataClass = $dataClass;
     }
@@ -30,7 +30,7 @@ class FileInfoType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('uploadedFile', FileType::class, ['required' => false]);
     }
@@ -38,7 +38,7 @@ class FileInfoType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -50,7 +50,7 @@ class FileInfoType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'akeneo_file_storage_file_info';
     }

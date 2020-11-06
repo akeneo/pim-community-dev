@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager;
 
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Akeneo\Platform\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Exception\ConnectionException;
@@ -34,7 +35,7 @@ class InstallStatusManager
      * @param Registry $doctrine
      * @param string string $databaseName
      */
-    public function __construct(Registry $doctrine, string $databaseName)
+    public function __construct(RegistryInterface $doctrine, string $databaseName)
     {
         $this->doctrine = $doctrine;
         $this->databaseName = $databaseName;
@@ -42,10 +43,8 @@ class InstallStatusManager
 
     /**
      * Returns null if the PIM not installed or returns the timestamp of creation of the 'pim_user' table.
-     *
-     * @return \DateTime
      */
-    public function getPimInstallDateTime() : ?\DateTime
+    public function getPimInstallDateTime() : \DateTime
     {
         $sql = 'SELECT create_time FROM INFORMATION_SCHEMA.TABLES
                 WHERE table_schema = :database_name
@@ -72,9 +71,8 @@ class InstallStatusManager
                 )
             );
         }
-        $installDateTime = new \DateTime($result[self::MYSQL_META_COLUMN_CREATE_TIME]);
 
-        return $installDateTime;
+        return new \DateTime($result[self::MYSQL_META_COLUMN_CREATE_TIME]);
     }
 
     /**

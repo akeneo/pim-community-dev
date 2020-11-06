@@ -19,7 +19,7 @@ class RegisterReferenceDataConfigurationsPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $registry = $container->getDefinition(self::REFERENCE_DATA_REGISTRY);
         $referenceData = $container->getParameter('pim_reference_data.configurations');

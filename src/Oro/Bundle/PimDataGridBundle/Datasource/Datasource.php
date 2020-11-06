@@ -56,7 +56,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function setMassActionRepository(MassActionRepositoryInterface $massActionRepository)
+    public function setMassActionRepository(MassActionRepositoryInterface $massActionRepository): void
     {
         $this->massActionRepository = $massActionRepository;
     }
@@ -64,7 +64,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(DatagridInterface $grid, array $config)
+    public function process(DatagridInterface $grid, array $config): void
     {
         $this->configuration = $config;
         $queryBuilderConfig = [];
@@ -83,7 +83,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getResults()
+    public function getResults(): array
     {
         return $this->hydrator->hydrate($this->qb);
     }
@@ -91,7 +91,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getQueryBuilder()
+    public function getQueryBuilder(): QueryBuilder
     {
         return $this->qb;
     }
@@ -99,7 +99,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getRepository()
+    public function getRepository(): \Doctrine\Common\Persistence\ObjectRepository
     {
         if (null === $this->repository) {
             $this->repository = $this->om->getRepository($this->getConfiguration('entity'));
@@ -123,7 +123,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function setHydrator(HydratorInterface $hydrator)
+    public function setHydrator(HydratorInterface $hydrator): DatasourceInterface
     {
         $this->hydrator = $hydrator;
 
@@ -133,7 +133,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -141,7 +141,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * {@inheritdoc}
      */
-    public function setParameters($parameters)
+    public function setParameters(array $parameters): ParameterizableInterface
     {
         $this->parameters += $parameters;
 
@@ -163,7 +163,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
      *
      * @return mixed
      */
-    protected function getConfiguration($key, $isRequired = true)
+    protected function getConfiguration(string $key, bool $isRequired = true)
     {
         if (!$this->configuration) {
             throw new \LogicException('Datasource is not yet built. You need to call process method before');
@@ -179,10 +179,8 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /**
      * @param string $method the query builder creation method
      * @param array  $config the query builder creation config
-     *
-     * @return Datasource
      */
-    protected function initializeQueryBuilder($method, array $config = [])
+    protected function initializeQueryBuilder(string $method, array $config = []): self
     {
         $this->qb = $this->getRepository()->$method($config);
 

@@ -22,8 +22,6 @@ interface FileFetcherInterface
      *
      * @throws FileTransferException
      * @throws \LogicException
-     *
-     * @return \SplFileInfo
      */
-    public function fetch(FilesystemInterface $filesystem, $fileKey, array $options = []);
+    public function fetch(FilesystemInterface $filesystem, string $fileKey, array $options = []): \SplFileInfo;
 }

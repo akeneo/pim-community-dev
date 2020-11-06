@@ -172,8 +172,6 @@ class ProductGridController
         $productGridMetadata = MetadataIterableObject::createNamed('product-grid', ['filters' => []]);
         $this->filterExtension->visitMetadata($productGridConfiguration, $productGridMetadata);
 
-        $attributesAsFilters = $productGridMetadata->offsetGet('filters');
-
-        return $attributesAsFilters;
+        return $productGridMetadata->offsetGet('filters');
     }
 }

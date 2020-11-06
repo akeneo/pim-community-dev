@@ -21,7 +21,7 @@ class ViewElementRegistry
      * @param string               $type
      * @param int                  $position
      */
-    public function add(ViewElementInterface $element, $type, $position)
+    public function add(ViewElementInterface $element, string $type, int $position): void
     {
         if (!isset($this->elements[$type][$position])) {
             $this->elements[$type][$position] = $element;
@@ -37,7 +37,7 @@ class ViewElementRegistry
      *
      * @return ViewElementInterface[]
      */
-    public function get($type)
+    public function get(string $type)
     {
         $elements = isset($this->elements[$type]) ? $this->elements[$type] : [];
         ksort($elements);

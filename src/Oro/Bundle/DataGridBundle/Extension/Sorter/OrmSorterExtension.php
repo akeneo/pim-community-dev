@@ -29,19 +29,18 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(DatagridConfiguration $config): bool
     {
         $columns = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
-        $isApplicable = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) === OrmDatasource::TYPE
-            && is_array($columns);
 
-        return $isApplicable;
+        return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) === OrmDatasource::TYPE
+            && is_array($columns);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(DatagridConfiguration $config): void
     {
         $this->validateConfiguration(
             new Configuration(),
@@ -52,7 +51,7 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource): void
     {
         $sorters = $this->getSortersToApply($config);
         $multisort = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
@@ -73,7 +72,7 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data): void
     {
         $multisort = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
         $sorters = $this->getSorters($config);
@@ -87,7 +86,7 @@ class OrmSorterExtension extends AbstractExtension
         }
 
         $extraSorters = array_diff(array_keys($sorters), $proceed);
-        if (count($extraSorters)) {
+        if (count($extraSorters) > 0) {
             throw new \LogicException(
                 sprintf('Could not found column(s) "%s" for sorting', implode(', ', $extraSorters))
             );
@@ -108,7 +107,7 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function getPriority()
+    public function getPriority(): int
     {
         // should visit after all extensions
         return -250;
@@ -118,10 +117,8 @@ class OrmSorterExtension extends AbstractExtension
      * Retrieve and prepare list of sorters
      *
      * @param DatagridConfiguration $config
-     *
-     * @return array
      */
-    protected function getSorters(DatagridConfiguration $config)
+    protected function getSorters(DatagridConfiguration $config): array
     {
         $sorters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
@@ -137,10 +134,8 @@ class OrmSorterExtension extends AbstractExtension
      * Prepare sorters array
      *
      * @param DatagridConfiguration $config
-     *
-     * @return array
      */
-    protected function getSortersToApply(DatagridConfiguration $config)
+    protected function getSortersToApply(DatagridConfiguration $config): array
     {
         $result = [];
 
@@ -172,10 +167,8 @@ class OrmSorterExtension extends AbstractExtension
      * Normalize user input
      *
      * @param string $direction
-     *
-     * @return string
      */
-    protected function normalizeDirection($direction)
+    protected function normalizeDirection(string $direction): string
     {
         switch (true) {
             case in_array($direction, [self::DIRECTION_ASC, self::DIRECTION_DESC], true):

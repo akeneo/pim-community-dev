@@ -20,14 +20,14 @@ interface EntityWithAssociationsInterface
      *
      * @return Collection | AssociationInterface[]
      */
-    public function getAssociations();
+    public function getAssociations(): \Doctrine\Common\Collections\Collection;
 
     /**
      * Get all the hierarchical associations for the entity
      *
      * @return Collection | AssociationInterface[]
      */
-    public function getAllAssociations();
+    public function getAllAssociations(): \Doctrine\Common\Collections\Collection;
 
     /**
      * Set types of associations
@@ -74,5 +74,5 @@ interface EntityWithAssociationsInterface
      *
      * @return AssociationInterface|null
      */
-    public function getAssociationForTypeCode($typeCode): ?AssociationInterface;
+    public function getAssociationForTypeCode(string $typeCode): ?AssociationInterface;
 }

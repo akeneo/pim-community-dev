@@ -38,7 +38,7 @@ class AddUniqueAttributesToVariantProductAttributeSetSubscriber implements Event
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [StorageEvents::PRE_SAVE => 'addUniqueAttributes',];
     }
@@ -46,7 +46,7 @@ class AddUniqueAttributesToVariantProductAttributeSetSubscriber implements Event
     /**
      * @param GenericEvent $event
      */
-    public function addUniqueAttributes(GenericEvent $event)
+    public function addUniqueAttributes(GenericEvent $event): void
     {
         $subject = $event->getSubject();
 

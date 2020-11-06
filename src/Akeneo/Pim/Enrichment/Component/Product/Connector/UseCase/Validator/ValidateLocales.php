@@ -57,7 +57,7 @@ final class ValidateLocales
         if (null !== $channelCode) {
             $channel = $this->channelRepository->findOneByIdentifier($channelCode);
             $diff = array_diff($localeCodes, $channel->getLocaleCodes());
-            if ($diff) {
+            if ($diff !== []) {
                 $plural = sprintf(count($diff) > 1 ? 'Locales "%s" are' : 'Locale "%s" is', implode(', ', $diff));
                 throw new InvalidQueryException(
                     sprintf('%s not activated for the scope "%s".', $plural, $channel->getCode())

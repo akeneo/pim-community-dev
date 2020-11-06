@@ -21,7 +21,7 @@ class Controller
         $this->registry = $registry;
     }
 
-    public function isEnabledAction()
+    public function isEnabledAction(): JsonResponse
     {
         return new JsonResponse($this->registry->all());
     }

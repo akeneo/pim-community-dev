@@ -16,12 +16,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof BusinessEvent;
     }
 
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null): bool
     {
         return is_subclass_of($type, BusinessEvent::class);
     }
@@ -29,9 +29,9 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
     /**
      * @param BusinessEvent $object
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
-        if (false === $this->supportsNormalization($object, $format)) {
+        if (!$this->supportsNormalization($object, $format)) {
             throw new \InvalidArgumentException();
         }
 
@@ -47,7 +47,7 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
 
     public function denormalize($data, $type, $format = null, array $context = [])
     {
-        if (false === $this->supportsDenormalization($data, $type, $format)) {
+        if (!$this->supportsDenormalization($data, $type, $format)) {
             throw new \InvalidArgumentException();
         }
 

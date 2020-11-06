@@ -43,7 +43,7 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function init($name, array $params)
+    public function init(string $name, array $params): void
     {
         $this->name = $name;
         $this->params = $params;
@@ -52,7 +52,7 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getForm()
+    public function getForm(): \Symfony\Component\Form\Form
     {
         if (!$this->form) {
             $this->form = $this->formFactory->create(
@@ -68,7 +68,7 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -76,7 +76,7 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $formBuilderType = $this->getFormBuilder()->get('type');
         $operatorChoices = $formBuilderType->getOption('choices');
@@ -99,9 +99,8 @@ abstract class AbstractFilter implements FilterInterface
             array_flip($this->util->getExcludeParams())
         );
         $metadata = $this->mapParams($metadata);
-        $metadata = array_merge($defaultMetadata, $metadata);
 
-        return $metadata;
+        return array_merge($defaultMetadata, $metadata);
     }
 
     /**
@@ -111,10 +110,7 @@ abstract class AbstractFilter implements FilterInterface
      */
     abstract protected function getFormType();
 
-    /**
-     * @return FormBuilderInterface
-     */
-    protected function getFormBuilder()
+    protected function getFormBuilder(): \Symfony\Component\Form\FormBuilderInterface
     {
         if (!$this->formBuilder) {
             $this->formBuilder = $this->formFactory->createBuilder(
@@ -150,7 +146,7 @@ abstract class AbstractFilter implements FilterInterface
      * @throws \LogicException
      * @return mixed
      */
-    protected function get($paramName = null)
+    protected function get(string $paramName = null)
     {
         $value = $this->params;
 
@@ -173,7 +169,7 @@ abstract class AbstractFilter implements FilterInterface
      *
      * @return mixed
      */
-    protected function getOr($paramName = null, $default = null)
+    protected function getOr(string $paramName = null, $default = null)
     {
         if ($paramName !== null) {
             return isset($this->params[$paramName]) ? $this->params[$paramName] : $default;
@@ -189,16 +185,12 @@ abstract class AbstractFilter implements FilterInterface
      *
      * @return array
      */
-    protected function mapParams($params)
+    protected function mapParams(array $params)
     {
         $keys = [];
         $paramMap = $this->util->getParamMap();
         foreach (array_keys($params) as $key) {
-            if (isset($paramMap[$key])) {
-                $keys[] = $paramMap[$key];
-            } else {
-                $keys[] = $key;
-            }
+            $keys[] = isset($paramMap[$key]) ? $paramMap[$key] : $key;
         }
 
         return array_combine($keys, array_values($params));

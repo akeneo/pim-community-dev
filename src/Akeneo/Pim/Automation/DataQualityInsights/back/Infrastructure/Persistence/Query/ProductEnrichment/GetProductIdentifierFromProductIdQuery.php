@@ -23,7 +23,7 @@ final class GetProductIdentifierFromProductIdQuery implements GetProductIdentifi
     /** @var Connection */
     private $db;
 
-    public function __construct(Connection $db)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db)
     {
         $this->db = $db;
     }

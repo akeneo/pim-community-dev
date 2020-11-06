@@ -16,8 +16,6 @@ interface ReferableInterface
 {
     /**
      * Returns the unique code for the entity
-     *
-     * @return string
      */
-    public function getReference();
+    public function getReference(): string;
 }

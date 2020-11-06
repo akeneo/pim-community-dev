@@ -21,7 +21,7 @@ class UserNotificationFactory
     /**
      * @param string $className
      */
-    public function __construct($className)
+    public function __construct(string $className)
     {
         $this->className = $className;
     }
@@ -31,10 +31,8 @@ class UserNotificationFactory
      *
      * @param NotificationInterface $notification
      * @param UserInterface         $user
-     *
-     * @return UserNotificationInterface
      */
-    public function createUserNotification(NotificationInterface $notification, UserInterface $user)
+    public function createUserNotification(NotificationInterface $notification, UserInterface $user): UserNotificationInterface
     {
         $entity = new $this->className();
 

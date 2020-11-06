@@ -64,7 +64,7 @@ class UserContextListener implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => 'onKernelRequest'
@@ -74,7 +74,7 @@ class UserContextListener implements EventSubscriberInterface
     /**
      * @param GetResponseEvent $event
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $this->tokenStorage->getToken()) {
             return;
@@ -91,7 +91,7 @@ class UserContextListener implements EventSubscriberInterface
     /**
      * Configure gedmo translatable locale
      */
-    protected function configureTranslatableListener()
+    protected function configureTranslatableListener(): void
     {
         $this->listener->setLocale($this->userContext->getCurrentLocaleCode());
     }
@@ -99,7 +99,7 @@ class UserContextListener implements EventSubscriberInterface
     /**
      * Define locale and scope in CatalogContext
      */
-    protected function configureCatalogContext()
+    protected function configureCatalogContext(): void
     {
         $this->catalogContext->setLocaleCode($this->userContext->getCurrentLocaleCode());
         $this->catalogContext->setScopeCode($this->userContext->getUserChannelCode());

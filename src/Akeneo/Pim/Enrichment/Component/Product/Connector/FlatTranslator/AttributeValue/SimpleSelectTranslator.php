@@ -31,9 +31,7 @@ class SimpleSelectTranslator implements FlatAttributeValueTranslatorInterface
     public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
         $optionKeys = array_map(
-            function ($value) use ($attributeCode) {
-                return sprintf('%s.%s', $attributeCode, $value);
-            },
+            fn($value) => sprintf('%s.%s', $attributeCode, $value),
             $values
         );
 

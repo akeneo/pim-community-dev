@@ -20,26 +20,20 @@ interface ReferenceDataInterface
 
     /**
      * Get the code (unique) of the reference data
-     *
-     * @return string
      */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * Set the code (unique) of the reference data
      *
      * @param string $code
-     *
-     * @return ReferenceDataInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 
     /**
      * Get the order in which the reference data will be displayed
-     *
-     * @return int
      */
-    public function getSortOrder();
+    public function getSortOrder(): int;
 
     /**
      * Get the property that will be used as label to be displayed in the PIM.
@@ -48,7 +42,7 @@ interface ReferenceDataInterface
      *
      * @return string|null
      */
-    public static function getLabelProperty();
+    public static function getLabelProperty(): ?string;
 
     /**
      * To string

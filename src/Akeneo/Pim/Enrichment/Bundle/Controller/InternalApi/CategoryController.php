@@ -49,7 +49,7 @@ class CategoryController
      *
      * @return JsonResponse
      */
-    public function listSelectedChildrenAction(Request $request, $identifier): JsonResponse
+    public function listSelectedChildrenAction(Request $request, int $identifier): JsonResponse
     {
         $parent = $this->repository->findOneByIdentifier($identifier);
 
@@ -80,10 +80,8 @@ class CategoryController
 
     /**
      * List root categories
-     *
-     * @return JsonResponse
      */
-    public function listAction()
+    public function listAction(): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $categories = $this->repository->findBy(
             [
@@ -100,10 +98,8 @@ class CategoryController
 
     /**
      * @param string $identifier
-     *
-     * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction(string $identifier): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $category = $this->repository->findOneByIdentifier($identifier);
 

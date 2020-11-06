@@ -18,8 +18,6 @@ interface ArrayConverterInterface
      * @param array $options options to use to convert
      *
      * @throws ArrayConversionException
-     *
-     * @return array
      */
-    public function convert(array $item, array $options = []);
+    public function convert(array $item, array $options = []): array;
 }

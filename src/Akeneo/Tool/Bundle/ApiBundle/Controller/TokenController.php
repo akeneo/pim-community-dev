@@ -41,7 +41,7 @@ class TokenController
             $grantType = $request->request->get('grant_type');
             $message = $this->getErrorMessage($e->getMessage(), $grantType);
 
-            throw new UnprocessableEntityHttpException(null !== $message ? $message : $e->getDescription());
+            throw new UnprocessableEntityHttpException(null !== $message ? $message : $e->getDescription(), $e);
         }
     }
 
@@ -53,7 +53,7 @@ class TokenController
      *
      * @return null|string
      */
-    protected function getErrorMessage($errorCode, $grantType)
+    protected function getErrorMessage(string $errorCode, string $grantType): ?string
     {
         $messages = [
             OAuth2::ERROR_INVALID_REQUEST     => 'Parameter "grant_type", "username" or "password" is missing, empty or invalid',

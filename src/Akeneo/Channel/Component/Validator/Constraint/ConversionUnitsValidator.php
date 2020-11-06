@@ -36,7 +36,7 @@ class ConversionUnitsValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($conversionUnits, Constraint $constraint)
+    public function validate($conversionUnits, Constraint $constraint): void
     {
         if (null !== $conversionUnits && is_array($conversionUnits)) {
             foreach ($conversionUnits as $attributeCode => $conversionUnit) {

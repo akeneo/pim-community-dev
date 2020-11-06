@@ -40,7 +40,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution',
@@ -76,10 +76,8 @@ class JobExecutionNotifier implements EventSubscriberInterface
      * @param JobExecution $jobExecution
      *
      * @throws \LogicException
-     *
-     * @return NotificationInterface
      */
-    protected function createNotification(JobExecution $jobExecution)
+    protected function createNotification(JobExecution $jobExecution): NotificationInterface
     {
         $type = $jobExecution->getJobInstance()->getType();
         $factory = $this->factoryRegistry->get($type);
@@ -88,8 +86,6 @@ class JobExecutionNotifier implements EventSubscriberInterface
             throw new \LogicException(sprintf('No notification factory found for the "%s" job type', $type));
         }
 
-        $notification = $factory->create($jobExecution);
-
-        return $notification;
+        return $factory->create($jobExecution);
     }
 }

@@ -15,8 +15,6 @@ interface FilterProductDatasourceAdapterInterface extends FilterDatasourceAdapte
 {
     /**
      * Gets a product query builder
-     *
-     * @return ProductQueryBuilderInterface
      */
-    public function getProductQueryBuilder();
+    public function getProductQueryBuilder(): ProductQueryBuilderInterface;
 }

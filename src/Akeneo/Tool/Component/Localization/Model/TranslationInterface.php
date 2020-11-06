@@ -16,37 +16,33 @@ interface TranslationInterface
      *
      * @return int $id
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Set locale
      *
      * @param string $locale
-     *
-     * @return TranslationInterface
      */
-    public function setLocale($locale);
+    public function setLocale(string $locale): \Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 
     /**
      * Get locale
      *
      * @return string $locale
      */
-    public function getLocale();
+    public function getLocale(): string;
 
     /**
      * Set foreignKey
      *
      * @param string $foreignKey
-     *
-     * @return TranslationInterface
      */
-    public function setForeignKey($foreignKey);
+    public function setForeignKey(string $foreignKey): \Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 
     /**
      * Get foreignKey
      *
      * @return string $foreignKey
      */
-    public function getForeignKey();
+    public function getForeignKey(): string;
 }

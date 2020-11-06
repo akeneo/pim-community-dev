@@ -44,7 +44,7 @@ class GroupHandler
      * @param  GroupInterface $entity
      * @return bool           True on successfull processing, false otherwise
      */
-    public function process(GroupInterface $entity)
+    public function process(GroupInterface $entity): bool
     {
         $this->form->setData($entity);
 
@@ -70,7 +70,7 @@ class GroupHandler
      * @param UserInterface[] $appendUsers
      * @param UserInterface[] $removeUsers
      */
-    protected function onSuccess(GroupInterface $entity, array $appendUsers, array $removeUsers)
+    protected function onSuccess(GroupInterface $entity, array $appendUsers, array $removeUsers): void
     {
         $this->appendUsers($entity, $appendUsers);
         $this->removeUsers($entity, $removeUsers);
@@ -84,7 +84,7 @@ class GroupHandler
      * @param GroupInterface                            $group
      * @param UserInterface[] $users
      */
-    protected function appendUsers(GroupInterface $group, array $users)
+    protected function appendUsers(GroupInterface $group, array $users): void
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {
@@ -99,7 +99,7 @@ class GroupHandler
      * @param GroupInterface                            $group
      * @param UserInterface[] $users
      */
-    protected function removeUsers(GroupInterface $group, array $users)
+    protected function removeUsers(GroupInterface $group, array $users): void
     {
         /** @var $user UserInterface */
         foreach ($users as $user) {

@@ -74,40 +74,32 @@ class Acl implements \Serializable
 
     /**
      * Gets id of this ACL annotation
-     *
-     * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
      * Gets ACL extension key
-     *
-     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
      * Gets ACL class name
-     *
-     * @return string
      */
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
 
     /**
      * Gets ACL permission name
-     *
-     * @return string
      */
-    public function getPermission()
+    public function getPermission(): string
     {
         return $this->permission;
     }
@@ -117,27 +109,23 @@ class Acl implements \Serializable
      *
      * @param string $permission
      */
-    public function setPermission($permission)
+    public function setPermission(string $permission): void
     {
         $this->permission = $permission;
     }
 
     /**
      * Gets ACL group name
-     *
-     * @return string
      */
-    public function getGroup()
+    public function getGroup(): string
     {
         return $this->group;
     }
 
     /**
      * Gets ACL label name
-     *
-     * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
@@ -150,7 +138,7 @@ class Acl implements \Serializable
     /**
      * {@inheritdoc}
      */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize(
             [
@@ -167,7 +155,7 @@ class Acl implements \Serializable
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         list(
             $this->id,

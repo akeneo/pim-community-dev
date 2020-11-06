@@ -30,22 +30,20 @@ class ValueCollectionNormalizer implements NormalizerInterface, CacheableSupport
     /**
      * {@inheritdoc}
      */
-    public function normalize($values, $format = null, array $context = [])
+    public function normalize($values, $format = null, array $context = []): array
     {
         $normalizedValues = [];
         foreach ($values as $value) {
             $normalizedValues[] = $this->normalizer->normalize($value, $format, $context);
         }
 
-        $result = empty($normalizedValues) ? [] : array_replace_recursive(...$normalizedValues);
-
-        return $result;
+        return empty($normalizedValues) ? [] : array_replace_recursive(...$normalizedValues);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof WriteValueCollection && (
                 $format === self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX

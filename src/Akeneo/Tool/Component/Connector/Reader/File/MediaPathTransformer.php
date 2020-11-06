@@ -40,10 +40,8 @@ class MediaPathTransformer
      *
      * @param array  $attributeValues An associative array (attribute_code => values)
      * @param string $filePath        The absolute path
-     *
-     * @return array
      */
-    public function transform(array $attributeValues, $filePath)
+    public function transform(array $attributeValues, string $filePath): array
     {
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 

@@ -49,7 +49,7 @@ final class Attribute
         return $this->isLocalizable;
     }
 
-    public function hasOptions()
+    public function hasOptions(): bool
     {
         return $this->type->equals(AttributeType::simpleSelect()) || $this->type->equals(AttributeType::multiSelect());
     }

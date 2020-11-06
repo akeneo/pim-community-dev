@@ -18,33 +18,27 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
 {
     /**
      * Return the number of existing channels
-     *
-     * @return int
      */
-    public function countAll();
+    public function countAll(): int;
 
     /**
      * Return an array of channel codes
-     *
-     * @return array
      */
-    public function getChannelCodes();
+    public function getChannelCodes(): array;
 
     /**
      * Get full channels with locales and currencies
      *
      * @return ChannelInterface[]
      */
-    public function getFullChannels();
+    public function getFullChannels(): array;
 
     /**
      * Get channels count for the given currency
      *
      * @param CurrencyInterface $currency
-     *
-     * @return int
      */
-    public function getChannelCountUsingCurrency(CurrencyInterface $currency);
+    public function getChannelCountUsingCurrency(CurrencyInterface $currency): int;
 
     /**
      * Get channel choices
@@ -54,5 +48,5 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
      *
      * @return string[]
      */
-    public function getLabelsIndexedByCode($localeCode);
+    public function getLabelsIndexedByCode(string $localeCode): array;
 }

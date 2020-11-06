@@ -69,7 +69,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($attribute, array $data, array $options = [])
+    public function update(object $attribute, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$attribute instanceof AttributeInterface) {
             throw InvalidObjectException::objectExpected(
@@ -95,7 +95,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDataType($field, $data)
+    protected function validateDataType(string $field, $data): void
     {
         if (in_array($field, ['labels', 'available_locales', 'allowed_extensions'])) {
             if (!is_array($data)) {
@@ -157,7 +157,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyException
      * @throws UnknownPropertyException
      */
-    protected function setData(AttributeInterface $attribute, $field, $data)
+    protected function setData(AttributeInterface $attribute, string $field, $data): void
     {
         switch ($field) {
             case 'type':
@@ -196,14 +196,10 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
     /**
      * @param string $code
-     *
-     * @return AttributeGroupInterface|null
      */
-    protected function findAttributeGroup($code)
+    protected function findAttributeGroup(string $code): ?AttributeGroupInterface
     {
-        $attributeGroup = $this->attrGroupRepo->findOneByIdentifier($code);
-
-        return $attributeGroup;
+        return $this->attrGroupRepo->findOneByIdentifier($code);
     }
 
     /**
@@ -213,7 +209,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      *
      * @throws UnknownPropertyException
      */
-    protected function setValue(AttributeInterface $attribute, $field, $data)
+    protected function setValue(AttributeInterface $attribute, string $field, $data): void
     {
         try {
             $this->accessor->setValue($attribute, $field, $data);
@@ -230,7 +226,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * @throws UnknownPropertyException
      * @throws InvalidPropertyException
      */
-    protected function setAvailableLocales(AttributeInterface $attribute, $field, array $availableLocaleCodes)
+    protected function setAvailableLocales(AttributeInterface $attribute, string $field, array $availableLocaleCodes): void
     {
         $locales = [];
         foreach ($availableLocaleCodes as $localeCode) {
@@ -257,7 +253,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setGroup(AttributeInterface $attribute, $data)
+    protected function setGroup(AttributeInterface $attribute, string $data): void
     {
         $attributeGroup = $this->findAttributeGroup($data);
         if (null === $attributeGroup) {
@@ -279,7 +275,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setType(AttributeInterface $attribute, $data)
+    protected function setType(AttributeInterface $attribute, $data): void
     {
         if (('' === $data) || (null === $data)) {
             throw InvalidPropertyException::valueNotEmptyExpected('type', static::class);
@@ -299,7 +295,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
         $attribute->setType($attributeType->getName());
         $attribute->setBackendType($attributeType->getBackendType());
-        if (true === $attributeType->isUnique() || null === $attribute->isUnique()) {
+        if ($attributeType->isUnique() || null === $attribute->isUnique()) {
             $attribute->setUnique($attributeType->isUnique());
         }
     }
@@ -319,7 +315,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function validateDateFormat($field, $data)
+    protected function validateDateFormat(string $field, string $data): void
     {
         if (null === $data) {
             return;
@@ -341,7 +337,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      *
      * @return \DateTime|null
      */
-    protected function getDate($date)
+    protected function getDate(string $date): ?\DateTime
     {
         if (null === $date) {
             return null;
@@ -354,8 +350,6 @@ class AttributeUpdater implements ObjectUpdaterInterface
     {
         $readOnlyFields = ['group_labels'];
 
-        return array_filter($dataToFilter, function ($key) use ($readOnlyFields) {
-            return !in_array($key, $readOnlyFields);
-        }, ARRAY_FILTER_USE_KEY);
+        return array_filter($dataToFilter, fn($key) => !in_array($key, $readOnlyFields), ARRAY_FILTER_USE_KEY);
     }
 }

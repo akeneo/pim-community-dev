@@ -82,7 +82,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($productModel, array $data, array $options = [])
+    public function update(object $productModel, array $data, array $options = []): \Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface
     {
         if (!$productModel instanceof ProductModelInterface) {
             throw InvalidObjectException::objectExpected(
@@ -160,12 +160,10 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             return $associations;
         }
 
-        $associations = $this->parentAssociationsFilter->filterParentAssociations(
+        return $this->parentAssociationsFilter->filterParentAssociations(
             $associations,
             $parentAssociations
         );
-
-        return $associations;
     }
 
     protected function filterQuantifiedAssociationsFromAncestors(
@@ -178,14 +176,14 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         );
     }
 
-    private function validateScalar(string $field, $data)
+    private function validateScalar(string $field, $data): void
     {
         if (null !== $data && !is_scalar($data)) {
             throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
         }
     }
 
-    private function validateScalarArray(string $field, $data)
+    private function validateScalarArray(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);

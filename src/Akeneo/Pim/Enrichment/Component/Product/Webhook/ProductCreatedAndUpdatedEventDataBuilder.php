@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
@@ -43,11 +44,11 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     /**
      * @param ProductCreated|ProductUpdated $businessEvent
      * @throws NotGrantedCategoryException
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     public function build(BusinessEventInterface $businessEvent): array
     {
-        if (false === $this->supports($businessEvent)) {
+        if (!$this->supports($businessEvent)) {
             throw new \InvalidArgumentException();
         }
 

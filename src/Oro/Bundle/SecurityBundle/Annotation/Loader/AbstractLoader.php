@@ -14,7 +14,7 @@ abstract class AbstractLoader
      *
      * @param string[] $bundles A list of loaded bundles
      */
-    public function __construct($bundles)
+    public function __construct(array $bundles)
     {
         $this->bundleDirectories = [];
         foreach ($bundles as $bundle) {

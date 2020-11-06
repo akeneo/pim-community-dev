@@ -10,24 +10,20 @@ interface ActionInterface
 
     /**
      * Filter name
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * ACL resource name
      *
      * @return string|null
      */
-    public function getAclResource();
+    public function getAclResource(): ?string;
 
     /**
      * Action options (route, ACL resource etc.)
-     *
-     * @return ActionConfiguration
      */
-    public function getOptions();
+    public function getOptions(): \Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
     /**
      * Set action options
@@ -36,5 +32,5 @@ interface ActionInterface
      *
      * @return $this
      */
-    public function setOptions(ActionConfiguration $options);
+    public function setOptions(ActionConfiguration $options): self;
 }

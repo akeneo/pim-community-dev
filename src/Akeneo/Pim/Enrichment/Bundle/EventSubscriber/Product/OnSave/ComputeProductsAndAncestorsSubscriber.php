@@ -61,17 +61,13 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
 
         $products = array_filter(
             $products,
-            function ($product): bool {
-                return $product instanceof ProductInterface
-                    // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
-                    && get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
-            }
+            fn($product): bool => $product instanceof ProductInterface
+                // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+                && !$product instanceof \Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct
         );
 
         $productIdentifiers = array_map(
-            function (ProductInterface $product): string {
-                return $product->getIdentifier();
-            },
+            fn(ProductInterface $product): string => $product->getIdentifier(),
             $products
         );
 

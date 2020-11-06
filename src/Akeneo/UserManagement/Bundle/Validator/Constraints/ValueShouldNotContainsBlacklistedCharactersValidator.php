@@ -14,7 +14,7 @@ class ValueShouldNotContainsBlacklistedCharactersValidator extends ConstraintVal
 {
     private const BLACKLISTED_CHARACTERS = ['<', '>', '&', '"'];
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (null === $value || '' === $value) {
             return;

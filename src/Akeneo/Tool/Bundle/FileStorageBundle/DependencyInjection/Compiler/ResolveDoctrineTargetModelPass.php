@@ -17,7 +17,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     /**
      * {@inheritdoc}
      */
-    protected function getParametersMapping()
+    protected function getParametersMapping(): array
     {
         return [
             FileInfoInterface::class => 'akeneo_file_storage.model.file_info.class',

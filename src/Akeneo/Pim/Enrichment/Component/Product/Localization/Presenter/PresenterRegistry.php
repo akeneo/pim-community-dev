@@ -38,7 +38,7 @@ class PresenterRegistry implements PresenterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(PresenterInterface $presenter, $type)
+    public function register(PresenterInterface $presenter, string $type): self
     {
         $this->presenters[$type][] = $presenter;
 
@@ -48,7 +48,7 @@ class PresenterRegistry implements PresenterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPresenterByAttributeCode($code)
+    public function getPresenterByAttributeCode(string $code): ?PresenterInterface
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
         if (null === $attribute) {
@@ -66,7 +66,7 @@ class PresenterRegistry implements PresenterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPresenterByAttributeType($attributeType)
+    public function getPresenterByAttributeType(string $attributeType): ?PresenterInterface
     {
         return $this->getPresenter($attributeType, self::TYPE_PRODUCT_VALUE);
     }
@@ -74,7 +74,7 @@ class PresenterRegistry implements PresenterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeOptionPresenter($optionName)
+    public function getAttributeOptionPresenter(string $optionName): ?PresenterInterface
     {
         return $this->getPresenter($optionName, self::TYPE_ATTRIBUTE_OPTION);
     }
@@ -82,7 +82,7 @@ class PresenterRegistry implements PresenterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getPresenterByFieldCode($code)
+    public function getPresenterByFieldCode(string $code): ?PresenterInterface
     {
         return $this->getPresenter($code, self::TYPE_PRODUCT_FIELD);
     }
@@ -95,7 +95,7 @@ class PresenterRegistry implements PresenterRegistryInterface
      *
      * @return PresenterInterface|null
      */
-    protected function getPresenter($value, $type)
+    protected function getPresenter(string $value, string $type)
     {
         if (isset($this->presenters[$type])) {
             foreach ($this->presenters[$type] as $presenter) {

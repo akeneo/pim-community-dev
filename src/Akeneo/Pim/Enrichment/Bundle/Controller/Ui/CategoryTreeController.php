@@ -95,7 +95,7 @@ class CategoryTreeController extends Controller
      */
     public function listTreeAction(Request $request): Response
     {
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
+        if (!$this->securityFacade->isGranted($this->buildAclName('category_list'))) {
             throw new AccessDeniedException();
         }
 
@@ -134,7 +134,7 @@ class CategoryTreeController extends Controller
             return new RedirectResponse('/');
         }
 
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_edit'))) {
+        if (!$this->securityFacade->isGranted($this->buildAclName('category_edit'))) {
             throw new AccessDeniedException();
         }
 
@@ -171,12 +171,10 @@ class CategoryTreeController extends Controller
      * @param Request $request
      *
      * @throws AccessDeniedException
-     *
-     * @return Response
      */
-    public function childrenAction(Request $request)
+    public function childrenAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
+        if (!$this->securityFacade->isGranted($this->buildAclName('category_list'))) {
             throw new AccessDeniedException();
         }
 
@@ -231,7 +229,7 @@ class CategoryTreeController extends Controller
      */
     public function indexAction(): Response
     {
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
+        if (!$this->securityFacade->isGranted($this->buildAclName('category_list'))) {
             throw new AccessDeniedException();
         }
 
@@ -252,12 +250,10 @@ class CategoryTreeController extends Controller
      * @param int     $parent
      *
      * @throws AccessDeniedException
-     *
-     * @return Response
      */
-    public function createAction(Request $request, $parent = null)
+    public function createAction(Request $request, int $parent = null): JsonResponse
     {
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_create'))) {
+        if (!$this->securityFacade->isGranted($this->buildAclName('category_create'))) {
             throw new AccessDeniedException();
         }
 
@@ -305,12 +301,10 @@ class CategoryTreeController extends Controller
      * @param int     $id
      *
      * @throws AccessDeniedException
-     *
-     * @return Response
      */
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_edit'))) {
+        if (!$this->securityFacade->isGranted($this->buildAclName('category_edit'))) {
             throw new AccessDeniedException();
         }
 
@@ -322,7 +316,7 @@ class CategoryTreeController extends Controller
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
-                $message = sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree');
+                $message = sprintf('flash.%s.updated', $category->getParent() !== null ? 'category' : 'tree');
                 $this->addFlash('success', $this->translator->trans($message));
             }
         }
@@ -344,16 +338,14 @@ class CategoryTreeController extends Controller
      * @param int $id
      *
      * @throws AccessDeniedException
-     *
-     * @return Response
      */
-    public function removeAction(Request $request, $id)
+    public function removeAction(Request $request, int $id): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_remove'))) {
+        if (!$this->securityFacade->isGranted($this->buildAclName('category_remove'))) {
             throw new AccessDeniedException();
         }
 
@@ -370,10 +362,8 @@ class CategoryTreeController extends Controller
      * @param int $categoryId
      *
      * @throws NotFoundHttpException
-     *
-     * @return CategoryInterface
      */
-    protected function findCategory($categoryId)
+    protected function findCategory(int $categoryId): object
     {
         $category = $this->categoryRepository->find($categoryId);
 
@@ -388,10 +378,8 @@ class CategoryTreeController extends Controller
      * Gets the options for the form
      *
      * @param CategoryInterface $category
-     *
-     * @return array
      */
-    protected function getFormOptions(CategoryInterface $category)
+    protected function getFormOptions(CategoryInterface $category): array
     {
         return [];
     }
@@ -402,7 +390,7 @@ class CategoryTreeController extends Controller
      *
      * @return array|ArrayCollection
      */
-    protected function getChildrenCategories(Request $request, $selectNode, $parent)
+    protected function getChildrenCategories(Request $request, ?\Akeneo\Tool\Component\Classification\Model\CategoryInterface $selectNode, $parent)
     {
         if (null !== $selectNode) {
             $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId());
@@ -415,20 +403,16 @@ class CategoryTreeController extends Controller
 
     /**
      * @param string $name
-     *
-     * @return string
      */
-    protected function buildAclName($name)
+    protected function buildAclName(string $name): string
     {
         return $this->rawConfiguration['acl'] . '_' . $name;
     }
 
     /**
      * @param string $name
-     *
-     * @return string
      */
-    protected function buildRouteName($name)
+    protected function buildRouteName(string $name): string
     {
         return $this->rawConfiguration['route'] . '_' . $name;
     }
@@ -436,7 +420,7 @@ class CategoryTreeController extends Controller
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configure(OptionsResolver $resolver)
+    protected function configure(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['related_entity', 'form_type', 'acl', 'route']);
     }

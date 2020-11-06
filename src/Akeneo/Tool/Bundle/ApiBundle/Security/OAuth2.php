@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Security;
 
+use OAuth2\OAuth2ServerException;
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
 use Akeneo\UserManagement\Component\Model\User;
 use OAuth2\IOAuth2Storage;
@@ -57,7 +58,7 @@ class OAuth2 extends BaseOAuth2
      *
      * @return Response
      *
-     * @throws \OAuth2\OAuth2ServerException
+     * @throws OAuth2ServerException
      */
     public function grantAccessToken(Request $request = null): Response
     {
@@ -67,11 +68,7 @@ class OAuth2 extends BaseOAuth2
             return $response;
         }
 
-        if ($request->getMethod() === 'POST') {
-            $inputData = $request->request->all();
-        } else {
-            $inputData = $request->query->all();
-        }
+        $inputData = $request->getMethod() === 'POST' ? $request->request->all() : $request->query->all();
 
         $authHeaders = $this->getAuthorizationHeader($request);
         $clientCredentials = $this->getClientCredentials($inputData, $authHeaders);

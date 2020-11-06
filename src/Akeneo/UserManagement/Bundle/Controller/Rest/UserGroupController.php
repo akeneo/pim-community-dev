@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,7 @@ class UserGroupController
     /**
      * @param GroupRepository $groupRepository
      */
-    public function __construct(GroupRepository $groupRepository)
+    public function __construct(GroupRepositoryInterface $groupRepository)
     {
         $this->groupRepository = $groupRepository;
     }
@@ -31,17 +32,15 @@ class UserGroupController
      *
      * @return JsonResponse all user groups
      */
-    public function indexAction()
+    public function indexAction(): \Symfony\Component\HttpFoundation\JsonResponse
     {
-        $userGroups = array_map(function (GroupInterface $group) {
-            return [
-                'name' => $group->getName(),
-                'meta' => [
-                    'id'      => $group->getId(),
-                    'default' => 'All' === $group->getName()
-                ]
-            ];
-        }, $this->groupRepository->findAll());
+        $userGroups = array_map(fn(GroupInterface $group) => [
+            'name' => $group->getName(),
+            'meta' => [
+                'id'      => $group->getId(),
+                'default' => 'All' === $group->getName()
+            ]
+        ], $this->groupRepository->findAll());
 
         return new JsonResponse($userGroups);
     }

@@ -26,7 +26,7 @@ class OptionNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function normalize($optionValue, $format = null, array $context = [])
+    public function normalize($optionValue, $format = null, array $context = []): array
     {
         $optionCode = $optionValue->getData();
         $attributeCode = $optionValue->getAttributeCode();
@@ -56,7 +56,7 @@ class OptionNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      *
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return 'datagrid' === $format && $data instanceof OptionValueInterface;
     }

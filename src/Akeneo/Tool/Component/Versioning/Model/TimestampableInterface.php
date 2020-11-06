@@ -13,33 +13,25 @@ interface TimestampableInterface
 {
     /**
      * Get created datetime
-     *
-     * @return \DateTime
      */
-    public function getCreated();
+    public function getCreated(): \DateTime;
 
     /**
      * Set created datetime
      *
      * @param \DateTime $created
-     *
-     * @return TimestampableInterface
      */
-    public function setCreated($created);
+    public function setCreated(\DateTime $created): \Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 
     /**
      * Get updated datetime
-     *
-     * @return \DateTime
      */
-    public function getUpdated();
+    public function getUpdated(): \DateTime;
 
     /**
      * Set updated datetime
      *
      * @param \DateTime $updated
-     *
-     * @return TimestampableInterface
      */
-    public function setUpdated($updated);
+    public function setUpdated(\DateTime $updated): \Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 }

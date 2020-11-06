@@ -62,7 +62,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         if (null === $this->flatRowBuffer) {
             $this->flatRowBuffer = $this->bufferFactory->create();
@@ -72,7 +72,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $exportFolder = dirname($this->getPath());
         if (!is_dir($exportFolder)) {
@@ -93,7 +93,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
         $this->flusher->setStepExecution($this->stepExecution);
 
@@ -114,7 +114,7 @@ class Writer extends AbstractFileWriter implements
     /**
      * {@inheritdoc}
      */
-    public function getWrittenFiles()
+    public function getWrittenFiles(): array
     {
         return $this->writtenFiles;
     }

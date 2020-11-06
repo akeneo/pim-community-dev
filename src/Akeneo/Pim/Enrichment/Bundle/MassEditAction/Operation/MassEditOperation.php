@@ -25,7 +25,7 @@ class MassEditOperation implements BatchableOperationInterface
      * @param array  $filters
      * @param array  $actions
      */
-    public function __construct($jobInstanceCode, $filters, $actions)
+    public function __construct(string $jobInstanceCode, array $filters, array $actions)
     {
         $this->jobInstanceCode = $jobInstanceCode;
         $this->filters         = $filters;

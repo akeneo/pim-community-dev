@@ -55,20 +55,16 @@ class FormatController
 
     /**
      * Get all format informations (decimal separator and date format for now)
-     *
-     * @return JsonResponse
      */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         return new JsonResponse($this->formats);
     }
 
     /**
      * Date format action (show pattern expected for current locale)
-     *
-     * @return JsonResponse
      */
-    public function dateAction()
+    public function dateAction(): JsonResponse
     {
         $locale = $this->localeResolver->getCurrentLocale();
         $dateFormatter = $this->dateFactory->create(['locale' => $locale]);

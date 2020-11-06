@@ -36,7 +36,7 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
     /**
      * {@inheritdoc}
      */
-    public function normalize($attributeGroup, $format = null, array $context = [])
+    public function normalize($attributeGroup, $format = null, array $context = []): array
     {
         $standardAttributeGroup = $this->normalizer->normalize($attributeGroup, 'standard', $context);
 
@@ -58,7 +58,7 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeGroupInterface && in_array($format, $this->supportedFormats);
     }

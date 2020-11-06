@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Doctrine\ORM\Query\Expr\Join;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
@@ -34,7 +35,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        $entityName,
+        string $entityName,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->entityManager       = $entityManager;
@@ -47,7 +48,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
      *
      * @return AttributeOptionInterface[]
      */
-    public function findBySearch($search = null, array $options = [])
+    public function findBySearch(string $search = null, array $options = []): array
     {
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('o')
@@ -60,7 +61,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         if (isset($options['identifier']) && $this->isAttributeAutoSorted($options['identifier']) && isset($options['catalogLocale'])) {
             $qb
                 ->addSelect('v.value AS HIDDEN value')
-                ->leftJoin('o.optionValues', 'v', Expr\Join::WITH, 'v.locale = :localeCode')
+                ->leftJoin('o.optionValues', 'v', Join::WITH, 'v.locale = :localeCode')
                 ->setParameter('localeCode', $options['catalogLocale'])
                 ->orderBy('v.value')
                 ->addOrderBy('o.code');
@@ -84,10 +85,8 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     /**
      * @param QueryBuilder $qb
      * @param array        $options
-     *
-     * @return QueryBuilder
      */
-    protected function applyQueryOptions(QueryBuilder $qb, array $options)
+    protected function applyQueryOptions(QueryBuilder $qb, array $options): \Doctrine\ORM\QueryBuilder
     {
         if (isset($options['identifiers']) && is_array($options['identifiers']) && !empty($options['identifiers'])) {
             $qb->andWhere('o.code in (:codes)');
@@ -111,10 +110,8 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
 
     /**
      * @param string $attributeIdentifier
-     *
-     * @return bool
      */
-    protected function isAttributeAutoSorted($attributeIdentifier)
+    protected function isAttributeAutoSorted(string $attributeIdentifier): bool
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeIdentifier);
 

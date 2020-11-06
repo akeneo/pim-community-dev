@@ -19,7 +19,7 @@ class CodeMustBeUnique extends Constraint
     /**
      * @return self::PROPERTY_CONSTRAINT
      */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;
     }

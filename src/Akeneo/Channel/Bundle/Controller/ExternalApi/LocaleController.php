@@ -79,7 +79,7 @@ class LocaleController
      *
      * @AclAncestor("pim_api_locale_list")
      */
-    public function getAction(Request $request, $code): JsonResponse
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $locale = $this->repository->findOneByIdentifier($code);
         if (null === $locale) {
@@ -133,7 +133,7 @@ class LocaleController
             'item_route_name'  => 'pim_api_locale_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($criterias) : null;
+        $count = $request->query->getBoolean('with_count') ? $this->repository->count($criterias) : null;
         $paginatedLocales = $this->paginator->paginate(
             $this->normalizer->normalize($locales, 'external_api'),
             $parameters,

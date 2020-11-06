@@ -30,7 +30,7 @@ class FieldFilterDumper implements DumperInterface
     /**
      * {@inheritdoc}
      */
-    public function dump(OutputInterface $output)
+    public function dump(OutputInterface $output): void
     {
         $output->writeln("<info>Useable field filters...</info>");
 

@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid;
 
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductRowsFromIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\FetchProductModelRowsFromCodes;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductPropertiesRegistry;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductModelPropertiesRegistry;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
@@ -34,10 +39,10 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
     private $productAndProductsModelDocumentTypeFacetFactory;
 
     public function __construct(
-        Sql\ProductGrid\FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers,
-        Sql\ProductGrid\FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
-        Query\AddAdditionalProductPropertiesRegistry $addAdditionalProductProperties,
-        Query\AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties,
+        FetchProductRowsFromIdentifiers $fetchProductRowsFromIdentifiers,
+        FetchProductModelRowsFromCodes $fetchProductModelRowsFromCodes,
+        AddAdditionalProductPropertiesRegistry $addAdditionalProductProperties,
+        AddAdditionalProductModelPropertiesRegistry $addAdditionalProductModelProperties,
         ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory
     ) {
         $this->fetchProductRowsFromIdentifiers = $fetchProductRowsFromIdentifiers;
@@ -50,7 +55,7 @@ final class FetchProductAndProductModelRows implements Query\FetchProductAndProd
     /**
      * {@inheritdoc}
      */
-    public function __invoke(Query\FetchProductAndProductModelRowsParameters $queryParameters): Rows
+    public function __invoke(FetchProductAndProductModelRowsParameters $queryParameters): Rows
     {
         $productAndProductModelIdentifiersCursor = $queryParameters->productQueryBuilder()->execute();
 

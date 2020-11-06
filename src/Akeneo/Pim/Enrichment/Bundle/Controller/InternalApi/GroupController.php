@@ -123,10 +123,8 @@ class GroupController
 
     /**
      * @param string $identifier
-     *
-     * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction(string $identifier): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $group = $this->groupRepository->findOneBy(['code' => $identifier]);
 
@@ -138,11 +136,10 @@ class GroupController
      *
      * @param string $identifier
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_enrich_product_index")
      */
-    public function listProductsAction($identifier)
+    public function listProductsAction(string $identifier): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $group = $this->groupRepository->findOneBy(['code' => $identifier]);
 
@@ -165,7 +162,7 @@ class GroupController
      *
      * @return Response
      */
-    public function postAction(Request $request, $code)
+    public function postAction(Request $request, string $code)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -209,7 +206,7 @@ class GroupController
      *
      * @return Response
      */
-    public function removeAction(Request $request, $code)
+    public function removeAction(Request $request, string $code)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -278,7 +275,7 @@ class GroupController
             $options['limit'] = SearchableRepositoryInterface::FETCH_LIMIT;
         }
 
-        if (0 > intval($options['limit'])) {
+        if (0 > (int) $options['limit']) {
             $options['limit'] = null;
         }
 

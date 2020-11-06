@@ -36,7 +36,7 @@ class QueryHelpProductModelCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Display useable product model query filters');
@@ -45,7 +45,7 @@ class QueryHelpProductModelCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->fieldDumper->dump($output);
         $this->attributeDumper->dump($output);

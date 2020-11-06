@@ -47,10 +47,8 @@ class ProductModelController extends AbstractListCategoryController
      * @param string $id the product id
      *
      * @throws NotFoundHttpException
-     *
-     * @return ProductModelInterface
      */
-    protected function findEntityWithCategoriesOr404(string $id)
+    protected function findEntityWithCategoriesOr404(string $id): object
     {
         $productModel = $this->productModelRepository->find($id);
         if (null === $productModel) {

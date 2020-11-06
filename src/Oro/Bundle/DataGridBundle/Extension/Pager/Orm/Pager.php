@@ -16,7 +16,7 @@ class Pager extends AbstractPager implements PagerInterface
     /** @var array */
     protected $parameters = [];
 
-    public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
+    public function __construct(int $maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
         parent::__construct($maxPerPage);
@@ -27,27 +27,22 @@ class Pager extends AbstractPager implements PagerInterface
      *
      * @return $this
      */
-    public function setQueryBuilder(QueryBuilder $qb)
+    public function setQueryBuilder(QueryBuilder $qb): self
     {
         $this->qb = $qb;
 
         return $this;
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    public function getQueryBuilder()
+    public function getQueryBuilder(): \Doctrine\ORM\QueryBuilder
     {
         return $this->qb;
     }
 
     /**
      * Calculates count
-     *
-     * @return int
      */
-    public function computeNbResult()
+    public function computeNbResult(): int
     {
         $qb = clone $this->getQueryBuilder();
         $query = $qb->setFirstResult(null)
@@ -61,7 +56,7 @@ class Pager extends AbstractPager implements PagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
+    public function getResults($hydrationMode = Query::HYDRATE_OBJECT): array
     {
         return $this->getQueryBuilder()->getQuery()->execute([], $hydrationMode);
     }
@@ -69,7 +64,7 @@ class Pager extends AbstractPager implements PagerInterface
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
         $this->resetIterator();
 
@@ -99,10 +94,8 @@ class Pager extends AbstractPager implements PagerInterface
 
     /**
      * Returns the current pager's parameter holder.
-     *
-     * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -115,7 +108,7 @@ class Pager extends AbstractPager implements PagerInterface
      *
      * @return mixed
      */
-    public function getParameter($name, $default = null)
+    public function getParameter(string $name, $default = null)
     {
         return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
     }
@@ -124,10 +117,8 @@ class Pager extends AbstractPager implements PagerInterface
      * Checks whether a parameter has been set.
      *
      * @param string $name
-     *
-     * @return boolean
      */
-    public function hasParameter($name)
+    public function hasParameter(string $name): bool
     {
         return isset($this->parameters[$name]);
     }
@@ -138,7 +129,7 @@ class Pager extends AbstractPager implements PagerInterface
      * @param string $name
      * @param mixed  $value
      */
-    public function setParameter($name, $value)
+    public function setParameter(string $name, $value): void
     {
         $this->parameters[$name] = $value;
     }

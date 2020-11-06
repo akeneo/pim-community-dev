@@ -39,7 +39,7 @@ class ResetIndexesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption(
@@ -55,20 +55,21 @@ class ResetIndexesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->userConfirmation($input, $output)) {
-            return;
+            return 0;
         }
 
         $esClients = $this->getFilteredEsClients($input);
         $this->resetIndexes($output, $esClients);
 
         if (!$this->areIndexesExisting($output, $esClients)) {
-            return;
+            return 0;
         }
 
         $this->showSuccessMessages($output);
+        return 0;
     }
 
     /**
@@ -119,11 +120,7 @@ class ResetIndexesCommand extends Command
             return $esClients;
         }
 
-        $filteredEsClients = array_filter($esClients, function (Client $client) use ($selectedIndexes) {
-            return in_array($client->getIndexName(), $selectedIndexes);
-        });
-
-        return $filteredEsClients;
+        return array_filter($esClients, fn(Client $client) => in_array($client->getIndexName(), $selectedIndexes));
     }
 
     /**

@@ -13,125 +13,76 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 interface FileInfoInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): int;
 
     /**
      * @param int $id
-     *
-     * @return FileInfoInterface
      */
-    public function setId($id);
+    public function setId(int $id): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
     /**
      * The key of the file can be either its pathname or a unique identifier.
-     *
-     * @return string
      */
-    public function getKey();
+    public function getKey(): string;
 
     /**
      * @param string $key
-     *
-     * @return FileInfoInterface
      */
-    public function setKey($key);
+    public function setKey(string $key): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
-    /**
-     * @return string
-     */
-    public function getOriginalFilename();
+    public function getOriginalFilename(): string;
 
     /**
      * @param string $originalFilename
-     *
-    * @return FileInfoInterface
      */
-    public function setOriginalFilename($originalFilename);
+    public function setOriginalFilename(string $originalFilename): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
-    /**
-     * @return string
-     */
-    public function getMimeType();
+    public function getMimeType(): string;
 
     /**
      * @param string $mimeType
-     *
-     *@return FileInfoInterface
      */
-    public function setMimeType($mimeType);
+    public function setMimeType(string $mimeType): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
-    /**
-     * @return int
-     */
-    public function getSize();
+    public function getSize(): int;
 
     /**
      * @param int $size
-     *
-     * @return FileInfoInterface
      */
-    public function setSize($size);
+    public function setSize(int $size): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
-    /**
-     * @return string
-     */
-    public function getExtension();
+    public function getExtension(): string;
 
     /**
      * @param string $extension
-     *
-     * @return FileInfoInterface
      */
-    public function setExtension($extension);
+    public function setExtension(string $extension): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
-    /**
-     * @return string
-     */
-    public function getHash();
+    public function getHash(): string;
 
     /**
      * @param string $hash
-     *
-     * @return FileInfoInterface
      */
-    public function setHash($hash);
+    public function setHash(string $hash): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
-    /**
-     * @return string
-     */
-    public function getStorage();
+    public function getStorage(): string;
 
     /**
      * @param string $storage
-     *
-     * @return FileInfoInterface
      */
-    public function setStorage($storage);
+    public function setStorage(string $storage): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
-    /**
-     * @return UploadedFile
-     */
-    public function getUploadedFile();
+    public function getUploadedFile(): \Symfony\Component\HttpFoundation\File\UploadedFile;
 
     /**
      * @param UploadedFile $uploadedFile
-     *
-     * @return FileInfoInterface|null
      */
-    public function setUploadedFile(UploadedFile $uploadedFile = null);
+    public function setUploadedFile(UploadedFile $uploadedFile = null): ?\Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
     /**
      * @param bool $removed
-     *
-     * @return FileInfoInterface
      */
-    public function setRemoved($removed);
+    public function setRemoved(bool $removed): \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
-    /**
-     * @return bool
-     */
-    public function isRemoved();
+    public function isRemoved(): bool;
 }

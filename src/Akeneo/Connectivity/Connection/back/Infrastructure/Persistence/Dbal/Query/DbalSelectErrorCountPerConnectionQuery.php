@@ -22,7 +22,7 @@ class DbalSelectErrorCountPerConnectionQuery implements SelectErrorCountPerConne
     /** @var Connection */
     private $dbalConnection;
 
-    public function __construct(Connection $dbalConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }

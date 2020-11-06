@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -31,13 +32,13 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
      * {@inheritdoc}
      */
     public function addFieldFilter(
-        $attribute,
-        $operator,
+        string $attribute,
+        string $operator,
         $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): FieldFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -98,11 +99,11 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
      * @param string $operator
      * @param mixed  $value
      */
-    protected function checkValue($operator, $value): void
+    protected function checkValue(string $operator, $value): void
     {
         FieldFilterHelper::checkString('label_or_identifier', $value, static::class);
 
-        if (!in_array($operator, [Operators::CONTAINS])) {
+        if (!($operator == Operators::CONTAINS)) {
             throw InvalidOperatorException::notSupported($operator, static::class);
         }
     }
@@ -117,10 +118,8 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
      * TODO: TIP-706 - This may move somewhere else
      *
      * @param string $value
-     *
-     * @return string
      */
-    protected function escapeValue(string $value): string
+    protected function escapeValue(string $value): ?string
     {
         $regex = '#[-+=|! &(){}\[\]^"~*<>?:/\\\]#';
 

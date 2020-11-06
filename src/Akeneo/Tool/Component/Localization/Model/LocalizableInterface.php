@@ -16,14 +16,12 @@ interface LocalizableInterface
      *
      * @return string $locale
      */
-    public function getLocale();
+    public function getLocale(): string;
 
     /**
      * Set used locale
      *
      * @param string $locale
-     *
-     * @return LocalizableInterface
      */
-    public function setLocale($locale);
+    public function setLocale(string $locale): \Akeneo\Tool\Component\Localization\Model\LocalizableInterface;
 }

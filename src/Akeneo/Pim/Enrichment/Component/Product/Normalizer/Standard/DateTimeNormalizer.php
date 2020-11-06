@@ -20,7 +20,7 @@ class DateTimeNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /**
      * {@inheritdoc}
      */
-    public function normalize($date, $format = null, array $context = [])
+    public function normalize($date, $format = null, array $context = []): ?string
     {
         if (null !== $date && $date instanceof \DateTimeInterface) {
             return $date->format('c');
@@ -32,7 +32,7 @@ class DateTimeNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof \DateTime && 'standard' === $format;
     }

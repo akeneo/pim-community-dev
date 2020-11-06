@@ -31,7 +31,7 @@ class DateTimeRangeFilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
@@ -39,7 +39,7 @@ class DateTimeRangeFilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return DateRangeFilterType::class;
     }
@@ -47,7 +47,7 @@ class DateTimeRangeFilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -61,7 +61,7 @@ class DateTimeRangeFilterType extends AbstractType
      * @param FormInterface $form
      * @param array         $options
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $widgetOptions = ['firstDay' => 0];
         $view->vars['widget_options'] = array_merge($widgetOptions, $options['widget_options']);

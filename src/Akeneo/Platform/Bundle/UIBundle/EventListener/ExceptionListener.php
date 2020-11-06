@@ -41,7 +41,7 @@ class ExceptionListener extends BaseExceptionListener
     /**
      * {@inheritdoc}
      */
-    protected function setTargetPath(Request $request)
+    protected function setTargetPath(Request $request): void
     {
         if ($request->isXmlHttpRequest()) {
             return;

@@ -54,9 +54,7 @@ class ArrayReader implements FileReaderInterface
     public function read()
     {
         if (count($this->remainingItems) > 0) {
-            $item = array_shift($this->remainingItems);
-
-            return $item;
+            return array_shift($this->remainingItems);
         }
 
         $items = $this->reader->read();
@@ -72,7 +70,7 @@ class ArrayReader implements FileReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->reader->setStepExecution($stepExecution);
     }
@@ -80,7 +78,7 @@ class ArrayReader implements FileReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
         $this->reader->flush();
     }

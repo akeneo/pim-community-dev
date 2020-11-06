@@ -17,7 +17,7 @@ class IsThereAtLeastOneAttributeConfiguredWithMeasurementFamily
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -31,8 +31,7 @@ WHERE metric_family = :metric_family
 AND attribute_type = 'pim_catalog_metric';
 SQL;
         $stmt = $this->connection->executeQuery($query, ['metric_family' => $metricFamilyCode]);
-        $result = $this->connection->convertToPHPValue($stmt->fetch(\PDO::FETCH_COLUMN), Type::BOOLEAN);
 
-        return $result;
+        return $this->connection->convertToPHPValue($stmt->fetch(\PDO::FETCH_COLUMN), Type::BOOLEAN);
     }
 }

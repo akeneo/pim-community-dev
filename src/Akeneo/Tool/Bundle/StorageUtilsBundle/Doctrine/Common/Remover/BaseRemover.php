@@ -36,7 +36,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        $removedClass
+        string $removedClass
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
@@ -46,7 +46,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($object, array $options = [])
+    public function remove($object, array $options = []): void
     {
         $this->validateObject($object);
 
@@ -65,7 +65,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAll(array $objects, array $options = [])
+    public function removeAll(array $objects, array $options = []): void
     {
         if (empty($objects)) {
             return;
@@ -100,7 +100,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
     /**
      * @param $object
      */
-    protected function validateObject($object)
+    protected function validateObject($object): void
     {
         if (!$object instanceof $this->removedClass) {
             throw new \InvalidArgumentException(

@@ -37,7 +37,7 @@ class PlaceholderNode extends \Twig_Node
     /**
      * {@inheritDoc}
      */
-    public function compile(Twig_Compiler $compiler)
+    public function compile(Twig_Compiler $compiler): void
     {
         /*if (isset($this->placeholder['label'])) {
             $compiler
@@ -59,11 +59,7 @@ class PlaceholderNode extends \Twig_Node
                 } elseif (array_key_exists('action', $item)) {
                     $expression = new Twig_Node_Expression_Constant($item['action'], $this->lineno);
                     $attr = new Twig_Node_Expression_Constant([], $this->lineno);
-                    if ($this->variables === null) {
-                        $attributes = $attr;
-                    } else {
-                        $attributes = $this->variables;
-                    }
+                    $attributes = $this->variables === null ? $attr : $this->variables;
 
                     // {{ render(controller('Bundle:Directory:controllerAction', { action: attributes })) }}
                     $controllerFunctionExpression = new Twig_Node_Expression_Function(

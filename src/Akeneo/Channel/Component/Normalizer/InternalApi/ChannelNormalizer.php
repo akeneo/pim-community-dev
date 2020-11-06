@@ -60,7 +60,7 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function normalize($channel, $format = null, array $context = [])
+    public function normalize($channel, $format = null, array $context = []): array
     {
         $normalizedChannel = $this->channelNormalizer->normalize($channel, 'standard', $context);
 
@@ -97,7 +97,7 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ChannelInterface && in_array($format, $this->supportedFormats);
     }
@@ -115,7 +115,7 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      *
      * @return array|\ArrayAccess
      */
-    protected function normalizeLocales($locales, bool $filterLocales)
+    protected function normalizeLocales($locales, bool $filterLocales): array
     {
         $normalizedLocales = [];
         $locales = $filterLocales ? $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') : $locales;

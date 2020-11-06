@@ -17,12 +17,10 @@ class FamilyAttributeAsImage extends Constraint
     public $messageAttribute = 'Property "attribute_as_image" must belong to the family';
 
     /** @var string */
-    public $messageAttributeType = 'Property "attribute_as_image" only supports %s '.
-        'attribute type for the family';
+    public $messageAttributeType = 'Property "attribute_as_image" only supports %s attribute type for the family';
 
     /** @var string */
-    public $messageAttributeGlobal = 'Property "attribute_as_image" must not be scopable nor localizable '.
-        'for this family';
+    public $messageAttributeGlobal = 'Property "attribute_as_image" must not be scopable nor localizable for this family';
 
     /** @var string */
     public $propertyPath = 'attribute_as_image';
@@ -30,7 +28,7 @@ class FamilyAttributeAsImage extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_family_attribute_as_image_validator';
     }
@@ -38,7 +36,7 @@ class FamilyAttributeAsImage extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -13,8 +13,6 @@ interface PdfBuilderInterface
 {
     /**
      * @param string $htmlInput
-     *
-     * @return string
      */
-    public function buildPdfOutput($htmlInput);
+    public function buildPdfOutput(string $htmlInput): string;
 }

@@ -37,11 +37,11 @@ class Controller
      * @param array $options array('domains' => array(), 'debug' => true|false)
      * @throws \InvalidArgumentException
      */
-    public function __construct(TranslatorInterface $translator, EngineInterface $templating, $template, $options)
+    public function __construct(TranslatorInterface $translator, EngineInterface $templating, $template, array $options)
     {
         $this->translator = $translator;
         $this->templating = $templating;
-        if (empty($template) || !($template instanceof TemplateReferenceInterface || is_string($template))) {
+        if (empty($template) || !$template instanceof TemplateReferenceInterface && !is_string($template)) {
             throw new \InvalidArgumentException('Please provide valid twig template as third argument');
         }
         $this->template = $template;
@@ -53,9 +53,8 @@ class Controller
      *
      * @param Request $request
      * @param string $_locale
-     * @return Response
      */
-    public function indexAction(Request $request, $_locale)
+    public function indexAction(Request $request, string $_locale): Response
     {
         $domains = isset($this->options['domains']) ? $this->options['domains'] : [];
         $debug = isset($this->options['debug']) ? (bool)$this->options['debug'] : false;
@@ -71,9 +70,8 @@ class Controller
      * @param array $domains
      * @param string $locale
      * @param bool $debug
-     * @return string
      */
-    public function renderJsTranslationContent(array $domains, $locale, $debug = false)
+    public function renderJsTranslationContent(array $domains, string $locale, bool $debug = false): string
     {
         $domainsTranslations = $this->translator->getTranslations($domains, $locale);
 
@@ -89,9 +87,7 @@ class Controller
         foreach ($domainsTranslations as $domain => $translations) {
             $result['messages'] += array_combine(
                 array_map(
-                    function ($id) use ($domain) {
-                        return sprintf('%s:%s', $domain, $id);
-                    },
+                    fn($id) => sprintf('%s:%s', $domain, $id),
                     array_keys($translations)
                 ),
                 array_values($translations)

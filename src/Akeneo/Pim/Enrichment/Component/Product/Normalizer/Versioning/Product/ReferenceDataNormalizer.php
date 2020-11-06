@@ -21,7 +21,7 @@ class ReferenceDataNormalizer implements NormalizerInterface, CacheableSupportsM
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         return [
             $this->getFieldName($context) => $object->getCode(),
@@ -31,7 +31,7 @@ class ReferenceDataNormalizer implements NormalizerInterface, CacheableSupportsM
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ReferenceDataInterface && in_array($format, $this->supportedFormats);
     }
@@ -47,10 +47,8 @@ class ReferenceDataNormalizer implements NormalizerInterface, CacheableSupportsM
      * @param array $context Context options for the normalizer
      *
      * @throws \InvalidArgumentException when the context does not contain a "field_name" key
-     *
-     * @return string
      */
-    protected function getFieldName(array $context = [])
+    protected function getFieldName(array $context = []): string
     {
         if (!array_key_exists('field_name', $context)) {
             throw new \InvalidArgumentException(

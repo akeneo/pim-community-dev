@@ -51,7 +51,7 @@ class ConfigureHistoryGridListener
     /**
      * @param BuildBefore $event
      */
-    public function onBuildBefore(BuildBefore $event)
+    public function onBuildBefore(BuildBefore $event): void
     {
         $config = $event->getConfig();
         $objectClassParameter = $this->getObjectClassParameter();
@@ -75,10 +75,8 @@ class ConfigureHistoryGridListener
     /**
      * Get the object class parameter from the request.
      * It can be an empty string, a entity type (eg product, group, attribute) or an FQCN
-     *
-     * @return string
      */
-    protected function getObjectClassParameter()
+    protected function getObjectClassParameter(): string
     {
         return $this->requestParams->get(self::GRID_PARAM_CLASS, '');
     }
@@ -87,10 +85,8 @@ class ConfigureHistoryGridListener
      * Convert the object class parameter to a FQCN
      *
      * @param string $objectClassParameter
-     *
-     * @return string
      */
-    protected function getObjectClass($objectClassParameter)
+    protected function getObjectClass(string $objectClassParameter): string
     {
         if ('' === $objectClassParameter || null === $this->FQCNResolver->getFQCN($objectClassParameter)) {
             return $objectClassParameter;

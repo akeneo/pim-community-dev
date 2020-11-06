@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -192,7 +193,7 @@ class FamilyVariantController
             'item_route_name'     => 'pim_api_family_variant_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->familyVariantRepository->count($criteria) : null;
+        $count = $request->query->getBoolean('with_count') ? $this->familyVariantRepository->count($criteria) : null;
         $paginatedFamilies = $this->paginator->paginate(
             $this->normalizer->normalize($familyVariants, 'external_api'),
             $parameters,
@@ -223,9 +224,7 @@ class FamilyVariantController
 
         $this->saver->save($familyVariant);
 
-        $response = $this->getResponse($familyVariant, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($familyVariant, Response::HTTP_CREATED);
     }
 
     /**
@@ -260,9 +259,8 @@ class FamilyVariantController
         $this->saver->save($familyVariant);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($familyVariant, $status);
 
-        return $response;
+        return $this->getResponse($familyVariant, $status);
     }
 
     /**
@@ -272,16 +270,14 @@ class FamilyVariantController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_family_variant_edit")
      */
-    public function partialUpdateListAction(Request $request, string $familyCode): Response
+    public function partialUpdateListAction(Request $request, string $familyCode): StreamedResponse
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource, ['familyCode' => $familyCode]);
 
-        return $response;
+        return $this->partialUpdateStreamResource->streamResponse($resource, ['familyCode' => $familyCode]);
     }
 
     /**
@@ -292,7 +288,7 @@ class FamilyVariantController
      *
      * @return Response
      */
-    protected function getResponse(FamilyVariantInterface $familyVariant, $status): Response
+    protected function getResponse(FamilyVariantInterface $familyVariant, string $status): Response
     {
         $response = new Response(null, $status);
         $route = $this->router->generate(
@@ -357,7 +353,7 @@ class FamilyVariantController
      *
      * @return array
      */
-    protected function getDecodedContent($content): array
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -379,7 +375,7 @@ class FamilyVariantController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function validateCodeConsistency($familyVariantCode, array $data)
+    protected function validateCodeConsistency(string $familyVariantCode, array $data): void
     {
         if (array_key_exists('code', $data) && $familyVariantCode !== $data['code']) {
             throw new UnprocessableEntityHttpException(

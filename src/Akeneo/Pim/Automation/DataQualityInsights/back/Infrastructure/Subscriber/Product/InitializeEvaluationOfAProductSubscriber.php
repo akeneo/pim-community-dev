@@ -45,7 +45,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             // Priority greater than zero to ensure that the evaluation is done prior to the re-indexation of the product in ES
@@ -68,13 +68,13 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
             return;
         }
 
-        $productId = intval($subject->getId());
+        $productId = (int) $subject->getId();
         $this->initializeCriteria($productId);
         $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productId]);
         $this->consolidateProductAxisRates->consolidate([$productId]);
     }
 
-    private function initializeCriteria($productId)
+    private function initializeCriteria($productId): void
     {
         try {
             $this->createProductsCriteriaEvaluations->createAll([new ProductId($productId)]);

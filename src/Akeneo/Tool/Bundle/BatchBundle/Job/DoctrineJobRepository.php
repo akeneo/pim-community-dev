@@ -51,9 +51,9 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function __construct(
         EntityManager $entityManager,
-        $jobExecutionClass,
-        $jobInstanceClass,
-        $jobInstanceRepoClass,
+        string $jobExecutionClass,
+        string $jobInstanceClass,
+        string $jobInstanceRepoClass,
         $batchSize = 100
     ) {
         $currentConn = $entityManager->getConnection();
@@ -98,10 +98,8 @@ class DoctrineJobRepository implements JobRepositoryInterface
 
     /**
      * Get the specific Job entityManager
-     *
-     * @return EntityManager
      */
-    public function getJobManager()
+    public function getJobManager(): PersistedConnectionEntityManager
     {
         return $this->jobManager;
     }
@@ -109,7 +107,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createJobExecution(JobInstance $jobInstance, JobParameters $jobParameters)
+    public function createJobExecution(JobInstance $jobInstance, JobParameters $jobParameters): \Akeneo\Tool\Component\Batch\Model\JobExecution
     {
         if (null !== $jobInstance->getId()) {
             $jobInstance = $this->jobManager->merge($jobInstance);
@@ -130,7 +128,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function updateJobExecution(JobExecution $jobExecution)
+    public function updateJobExecution(JobExecution $jobExecution): \Akeneo\Tool\Component\Batch\Model\JobExecution
     {
         $this->jobManager->persist($jobExecution);
         $this->jobManager->flush($jobExecution);
@@ -139,7 +137,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function updateStepExecution(StepExecution $stepExecution)
+    public function updateStepExecution(StepExecution $stepExecution): StepExecution
     {
         $this->jobManager->persist($stepExecution);
         $this->jobManager->flush($stepExecution);
@@ -148,7 +146,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getLastJobExecution(JobInstance $jobInstance, $status)
+    public function getLastJobExecution(JobInstance $jobInstance, int $status): ?\Akeneo\Tool\Component\Batch\Model\JobExecution
     {
         return $this->jobManager->createQueryBuilder()
             ->select('j')
@@ -168,7 +166,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
      *
      * @deprecated not used anymore. Will be removed in 4.0
      */
-    public function findPurgeables($days)
+    public function findPurgeables(int $days): array
     {
         $qb = $this->jobManager->createQueryBuilder()
             ->select('je')
@@ -197,7 +195,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function remove(array $jobsExecutions)
+    public function remove(array $jobsExecutions): void
     {
         foreach ($jobsExecutions as $i => $jobsExecution) {
             $this->jobManager->remove($jobsExecution);

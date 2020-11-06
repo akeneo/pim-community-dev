@@ -15,56 +15,42 @@ interface UserNotificationInterface
 {
     /**
      * Get id
-     *
-     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Set notification
      *
      * @param NotificationInterface $notification
-     *
-     * @return UserNotificationInterface
      */
-    public function setNotification(NotificationInterface $notification);
+    public function setNotification(NotificationInterface $notification): \Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 
     /**
      * Get notification
-     *
-     * @return NotificationInterface
      */
-    public function getNotification();
+    public function getNotification(): \Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 
     /**
      * Set user
      *
      * @param UserInterface $user
-     *
-     * @return UserNotificationInterface
      */
-    public function setUser(UserInterface $user);
+    public function setUser(UserInterface $user): \Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 
     /**
      * Get user
-     *
-     * @return UserInterface
      */
-    public function getUser();
+    public function getUser(): \Symfony\Component\Security\Core\User\UserInterface;
 
     /**
      * Set viewed
      *
      * @param bool $viewed
-     *
-     * @return UserNotificationInterface
      */
-    public function setViewed($viewed);
+    public function setViewed(bool $viewed): \Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 
     /**
      * Get viewed
-     *
-     * @return bool
      */
-    public function isViewed();
+    public function isViewed(): bool;
 }

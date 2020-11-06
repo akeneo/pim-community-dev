@@ -79,14 +79,13 @@ class ProductModel implements ArrayConverterInterface
         $this->validateItem($filteredItem);
 
         $mergedFlatProductModel = $this->columnsMerger->merge($filteredItem);
-        $convertedProductModel = $this->convertItem($mergedFlatProductModel);
 
-        return $convertedProductModel;
+        return $this->convertItem($mergedFlatProductModel);
     }
 
     protected function filterFields(array $mappedItem, bool $withAssociations): array
     {
-        if (false === $withAssociations) {
+        if (!$withAssociations) {
             $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
             $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
             $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);

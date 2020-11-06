@@ -43,9 +43,7 @@ class FamilyVariantsByAttributeAxes implements FamilyVariantsByAttributeAxesInte
             ->getArrayResult();
 
         return array_map(
-            function ($data) {
-                return $data['code'];
-            },
+            fn($data) => $data['code'],
             $codes
         );
     }

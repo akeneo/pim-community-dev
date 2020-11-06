@@ -17,29 +17,21 @@ interface CheckerInterface
      * Checks the reference data configuration
      *
      * @param ReferenceDataConfigurationInterface $configuration
-     *
-     * @return bool
      */
-    public function check(ReferenceDataConfigurationInterface $configuration);
+    public function check(ReferenceDataConfigurationInterface $configuration): bool;
 
     /**
      * Gets the description of the check that is performed
-     *
-     * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * In case the configuration is invalid, gets the failure message.
-     *
-     * @return string
      */
-    public function getFailure();
+    public function getFailure(): string;
 
     /**
      * In case the configuration is invalid, tells if other checks should be performed or not.
-     *
-     * @return bool
      */
-    public function isBlockingOnFailure();
+    public function isBlockingOnFailure(): bool;
 }

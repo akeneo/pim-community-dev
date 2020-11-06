@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -23,10 +24,8 @@ interface FamilyRepositoryInterface extends
      *
      * @param FamilyInterface $family
      * @param string          $localeCode
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getFullRequirementsQB(FamilyInterface $family, $localeCode);
+    public function getFullRequirementsQB(FamilyInterface $family, string $localeCode): QueryBuilder;
 
     /**
      * Returns all families code with their required attributes code
@@ -37,26 +36,22 @@ interface FamilyRepositoryInterface extends
      *
      * @return FamilyInterface[]
      */
-    public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null);
+    public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null): array;
 
     /**
      * @param array $familyIds
      *
      * @throws \InvalidArgumentException array of id should not be empty
-     *
-     * @return array
      */
-    public function findByIds(array $familyIds);
+    public function findByIds(array $familyIds): array;
 
     /**
      * Checks if a family has the attribute with specified code.
      *
      * @param int    $id
      * @param string $attributeCode
-     *
-     * @return bool
      */
-    public function hasAttribute($id, $attributeCode);
+    public function hasAttribute(int $id, string $attributeCode): bool;
 
     /**
      * Get families with family variants

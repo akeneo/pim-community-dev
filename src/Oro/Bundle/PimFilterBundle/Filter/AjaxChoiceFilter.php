@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimFilterBundle\Filter;
 
+use Symfony\Component\Form\Form;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
@@ -20,7 +21,7 @@ class AjaxChoiceFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return AjaxChoiceFilterType::class;
     }
@@ -28,7 +29,7 @@ class AjaxChoiceFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function getForm()
+    public function getForm(): Form
     {
         if (null === $this->form) {
             $this->form = $this->formFactory->create($this->getFormType(), [], $this->getFormOptions());
@@ -40,16 +41,14 @@ class AjaxChoiceFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $formView = $this->getForm()->createView();
         $choices = array_map(
-            function (ChoiceView $choice) {
-                return [
-                    'label' => $choice->label,
-                    'value' => $choice->value
-                ];
-            },
+            fn(ChoiceView $choice) => [
+                'label' => $choice->label,
+                'value' => $choice->value
+            ],
             $formView->vars['choices']
         );
 
@@ -94,10 +93,8 @@ class AjaxChoiceFilter extends ChoiceFilter
 
     /**
      * Return options passed to the form factory
-     *
-     * @return array
      */
-    protected function getFormOptions()
+    protected function getFormOptions(): array
     {
         return array_merge(
             $this->getOr(FilterUtility::FORM_OPTIONS_KEY, []),

@@ -20,14 +20,14 @@ class PriceNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /**
      * {@inheritdoc}
      */
-    public function normalize($price, $format = null, array $context = [])
+    public function normalize($price, $format = null, array $context = []): array
     {
         $amount = $price->getData();
 
         // if decimals_allowed is false, we return an integer
         // if true, we return a string to avoid to loose precision (http://floating-point-gui.de)
         if (null !== $amount && is_numeric($amount) && isset($context['is_decimals_allowed'])) {
-            $amount = $context['is_decimals_allowed']
+            $amount = $context['is_decimals_allowed'] !== []
                 ? number_format($amount, static::DECIMAL_PRECISION, '.', '') : (int) $amount;
         }
 
@@ -40,7 +40,7 @@ class PriceNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductPriceInterface && 'standard' === $format;
     }

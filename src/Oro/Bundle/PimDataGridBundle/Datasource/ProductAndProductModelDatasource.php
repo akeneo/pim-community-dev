@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Oro\Bundle\PimDataGridBundle\Datasource;
 
+use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRows;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -49,7 +51,7 @@ class ProductAndProductModelDatasource extends Datasource
         ProductQueryBuilderFactoryInterface $factory,
         NormalizerInterface $serializer,
         ValidatorInterface $validator,
-        Query\FetchProductAndProductModelRows $fetchRows
+        FetchProductAndProductModelRows $fetchRows
     ) {
         $this->om = $om;
         $this->factory = $factory;
@@ -61,14 +63,14 @@ class ProductAndProductModelDatasource extends Datasource
     /**
      * {@inheritdoc}
      */
-    public function getResults()
+    public function getResults(): array
     {
         $attributesToDisplay = $this->getAttributeCodesToDisplay();
 
         $channelCode = $this->getConfiguration('scope_code');
         $localeCode = $this->getConfiguration('locale_code');
 
-        $getRowsQueryParameters = new Query\FetchProductAndProductModelRowsParameters(
+        $getRowsQueryParameters = new FetchProductAndProductModelRowsParameters(
             $this->pqb,
             $attributesToDisplay,
             $channelCode,
@@ -76,7 +78,7 @@ class ProductAndProductModelDatasource extends Datasource
         );
 
         $errors = $this->validator->validate($getRowsQueryParameters);
-        if (count($errors)) {
+        if (count($errors) > 0) {
             throw new \LogicException(
                 sprintf(
                     'Invalid query parameters sent to fetch data in the product and product model datagrid: "%s".',
@@ -109,10 +111,7 @@ class ProductAndProductModelDatasource extends Datasource
         return $normalizedRows;
     }
 
-    /**
-     * @return ProductQueryBuilderInterface
-     */
-    public function getProductQueryBuilder()
+    public function getProductQueryBuilder(): \Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface
     {
         return $this->pqb;
     }
@@ -123,7 +122,7 @@ class ProductAndProductModelDatasource extends Datasource
      *
      * @return Datasource
      */
-    protected function initializeQueryBuilder($method, array $config = [])
+    protected function initializeQueryBuilder(string $method, array $config = []): \Oro\Bundle\PimDataGridBundle\Datasource\Datasource
     {
         $factoryConfig['repository_parameters'] = $config;
         $factoryConfig['repository_method'] = $method;

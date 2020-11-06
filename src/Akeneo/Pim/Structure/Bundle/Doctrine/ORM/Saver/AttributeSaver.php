@@ -41,7 +41,7 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($attribute, array $options = [])
+    public function save($attribute, array $options = []): void
     {
         $this->validateAttribute($attribute);
 
@@ -59,7 +59,7 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $attributes, array $options = [])
+    public function saveAll(array $attributes, array $options = []): void
     {
         if (empty($attributes)) {
             return;
@@ -86,7 +86,7 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes, $options));
     }
 
-    protected function validateAttribute($attribute)
+    protected function validateAttribute($attribute): void
     {
         if (!$attribute instanceof AttributeInterface) {
             throw new \InvalidArgumentException(

@@ -52,7 +52,7 @@ class AttributeGroupWriter implements ItemWriterInterface, StepExecutionAwareInt
      * For example, we want to remove the price attribute from the product information group. We must put it
      * in the default group so we make sure it is always saved
      */
-    public function write(array $objects)
+    public function write(array $objects): void
     {
         $this->incrementCount($objects);
 
@@ -67,7 +67,7 @@ class AttributeGroupWriter implements ItemWriterInterface, StepExecutionAwareInt
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -75,7 +75,7 @@ class AttributeGroupWriter implements ItemWriterInterface, StepExecutionAwareInt
     /**
      * @param array $objects
      */
-    protected function incrementCount(array $objects)
+    protected function incrementCount(array $objects): void
     {
         foreach ($objects as $object) {
             if ($object->getId()) {

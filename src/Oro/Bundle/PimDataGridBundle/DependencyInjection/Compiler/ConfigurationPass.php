@@ -22,7 +22,7 @@ class ConfigurationPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->registerDatagridFiles($container);
     }
@@ -33,7 +33,7 @@ class ConfigurationPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
-    protected function registerDatagridFiles(ContainerBuilder $container)
+    protected function registerDatagridFiles(ContainerBuilder $container): void
     {
         if ($container->hasDefinition(OroConfigurationPass::PROVIDER_SERVICE_ID)) {
             $config = [];
@@ -63,7 +63,7 @@ class ConfigurationPass implements CompilerPassInterface
      *
      * @return SplFileInfo[] array the files (key: name of the file)
      */
-    protected function listDatagridFiles(ContainerBuilder $container)
+    protected function listDatagridFiles(ContainerBuilder $container): array
     {
         $files = [];
 
@@ -91,7 +91,7 @@ class ConfigurationPass implements CompilerPassInterface
      *
      * @return SplFileInfo[] array the files (key: name of the file)
      */
-    protected function listDatagridFilesInDirectory($directory)
+    protected function listDatagridFilesInDirectory(string $directory): array
     {
         $files = [];
         $finder = new Finder();

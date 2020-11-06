@@ -17,5 +17,5 @@ interface StructureVersionProviderInterface
      *
      * @return null|int The current structure version number
      */
-    public function getStructureVersion();
+    public function getStructureVersion(): ?int;
 }

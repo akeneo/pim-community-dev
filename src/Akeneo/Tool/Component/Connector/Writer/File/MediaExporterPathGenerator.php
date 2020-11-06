@@ -14,7 +14,7 @@ class MediaExporterPathGenerator implements FileExporterPathGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate($value, array $options = [])
+    public function generate($value, array $options = []): string
     {
         $identifier = str_replace(DIRECTORY_SEPARATOR, '_', $options['identifier']);
         $target = sprintf('files/%s/%s', $identifier, $options['code']);

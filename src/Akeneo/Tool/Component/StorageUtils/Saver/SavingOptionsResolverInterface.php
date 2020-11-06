@@ -15,17 +15,13 @@ interface SavingOptionsResolverInterface
      * Resolve options for a single save
      *
      * @param array $options
-     *
-     * @return array
      */
-    public function resolveSaveOptions(array $options);
+    public function resolveSaveOptions(array $options): array;
 
     /**
      * Resolve options for a bulk save
      *
      * @param array $options
-     *
-     * @return array
      */
-    public function resolveSaveAllOptions(array $options);
+    public function resolveSaveAllOptions(array $options): array;
 }

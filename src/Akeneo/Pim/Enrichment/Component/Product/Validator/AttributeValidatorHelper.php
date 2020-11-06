@@ -51,7 +51,7 @@ class AttributeValidatorHelper
      *
      * @throws \LogicException
      */
-    public function validateLocale(AttributeInterface $attribute, $locale)
+    public function validateLocale(AttributeInterface $attribute, string $locale): void
     {
         if (!$attribute->isLocalizable() && null === $locale) {
             return;
@@ -111,7 +111,7 @@ class AttributeValidatorHelper
     public function validateUnitFamilies(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute
-    ) {
+    ): void {
         if ($fromAttribute->getMetricFamily() !== $toAttribute->getMetricFamily()) {
             throw new \LogicException(
                 sprintf(
@@ -131,7 +131,7 @@ class AttributeValidatorHelper
      *
      * @throws \LogicException
      */
-    public function validateScope(AttributeInterface $attribute, $scope)
+    public function validateScope(AttributeInterface $attribute, string $scope): void
     {
         if (!$attribute->isScopable() && null === $scope) {
             return;
@@ -171,18 +171,12 @@ class AttributeValidatorHelper
         }
     }
 
-    /**
-     * @return array
-     */
-    protected function getActivatedLocaleCodes()
+    protected function getActivatedLocaleCodes(): array
     {
         return $this->localeRepository->getActivatedLocaleCodes();
     }
 
-    /**
-     * @return array
-     */
-    protected function getScopeCodes()
+    protected function getScopeCodes(): array
     {
         return $this->scopeRepository->getChannelCodes();
     }

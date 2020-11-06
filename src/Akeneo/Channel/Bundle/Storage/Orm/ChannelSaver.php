@@ -34,7 +34,7 @@ final class ChannelSaver implements ChannelSaverInterface
     /**
      * @param ChannelInterface $channel
      */
-    public function save($channel, array $options = [])
+    public function save($channel, array $options = []): void
     {
         $options['unitary'] = true;
 
@@ -44,7 +44,7 @@ final class ChannelSaver implements ChannelSaverInterface
     /**
      * @param ChannelInterface[] $channels
      */
-    public function saveAll(array $channels, array $commonOptions = [])
+    public function saveAll(array $channels, array $commonOptions = []): void
     {
         $commonOptions['unitary'] = false;
 
@@ -72,13 +72,11 @@ final class ChannelSaver implements ChannelSaverInterface
     private function formatDataOptionsAndEvents(array $channels, array $commonOptions) : array
     {
         return array_map(
-            function (ChannelInterface $channel) use ($commonOptions) {
-                return [
-                    $channel,
-                    array_merge($commonOptions, ['is_new' => null === $channel->getId()]),
-                    $channel->popEvents()
-                ];
-            },
+            fn(ChannelInterface $channel) => [
+                $channel,
+                array_merge($commonOptions, ['is_new' => null === $channel->getId()]),
+                $channel->popEvents()
+            ],
             $channels
         );
     }

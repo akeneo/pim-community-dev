@@ -43,12 +43,12 @@ class PropertyCopier implements PropertyCopierInterface
      * {@inheritdoc}
      */
     public function copyData(
-        $fromEntityWithValues,
-        $toEntityWithValues,
-        $fromField,
-        $toField,
+        object $fromEntityWithValues,
+        object $toEntityWithValues,
+        string $fromField,
+        string $toField,
         array $options = []
-    ) {
+    ): PropertyCopierInterface {
         if (!$fromEntityWithValues instanceof EntityWithValuesInterface ||
             !$toEntityWithValues instanceof EntityWithValuesInterface
         ) {
@@ -93,10 +93,8 @@ class PropertyCopier implements PropertyCopierInterface
 
     /**
      * @param string $code
-     *
-     * @return AttributeInterface|null
      */
-    protected function getAttribute($code)
+    protected function getAttribute(string $code): ?AttributeInterface
     {
         return $this->attributeRepository->findOneByIdentifier($code);
     }

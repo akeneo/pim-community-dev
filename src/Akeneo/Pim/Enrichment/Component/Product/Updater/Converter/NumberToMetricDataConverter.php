@@ -27,7 +27,7 @@ final class NumberToMetricDataConverter implements ValueDataConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
+    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute): array
     {
         Assert::numeric($sourceValue->getData());
         Assert::notNull($targetAttribute->getDefaultMetricUnit());

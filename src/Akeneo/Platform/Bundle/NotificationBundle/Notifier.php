@@ -52,7 +52,7 @@ class Notifier implements NotifierInterface
     /**
      * {@inheritdoc}
      */
-    public function notify(NotificationInterface $notification, array $users)
+    public function notify(NotificationInterface $notification, array $users): NotifierInterface
     {
         $userNotifications = [];
         $users = $this->filterSystemUser($users);
@@ -76,10 +76,8 @@ class Notifier implements NotifierInterface
      * Do not notify the System user.
      *
      * @param array $users
-     *
-     * @return array
      */
-    private function filterSystemUser(array $users)
+    private function filterSystemUser(array $users): array
     {
         return array_filter(
             $users,
@@ -87,11 +85,7 @@ class Notifier implements NotifierInterface
                 if (is_string($user) && UserInterface::SYSTEM_USER_NAME === $user) {
                     return false;
                 }
-                if (is_object($user) && UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
-                    return false;
-                }
-
-                return true;
+                return !(is_object($user) && UserInterface::SYSTEM_USER_NAME === $user->getUsername());
             }
         );
     }

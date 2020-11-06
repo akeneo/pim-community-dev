@@ -16,13 +16,11 @@ class GroupProductNormalizer extends ProductNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = array())
+    public function normalize($product, $format = null, array $context = array()): array
     {
         $data = parent::normalize($product, $format, $context);
 
-        $groupIds = array_map(function (GroupInterface $group) {
-            return $group->getId();
-        }, $product->getGroups()->toArray());
+        $groupIds = array_map(fn(GroupInterface $group) => $group->getId(), $product->getGroups()->toArray());
 
         $data['in_group'] = in_array($context['current_group_id'], $groupIds);
         $data['is_checked'] = in_array($context['current_group_id'], $groupIds);

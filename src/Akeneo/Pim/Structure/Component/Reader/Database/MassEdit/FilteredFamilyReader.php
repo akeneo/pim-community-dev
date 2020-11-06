@@ -47,7 +47,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
             $this->families = $this->getFamilies($filters);
         }
 
-        if (false === $this->firstRead) {
+        if (!$this->firstRead) {
             $this->families->next();
         }
 
@@ -64,12 +64,12 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
 
-    public function initialize()
+    public function initialize(): void
     {
         $filters = $this->getConfiguredFilters();
         $this->families = $this->getFamilies($filters);
@@ -82,10 +82,8 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
      * (We don't have raw filters yet for family grid)
      *
      * @param array $filters
-     *
-     * @return \Generator
      */
-    protected function getFamilies(array $filters)
+    protected function getFamilies(array $filters): iterable
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
@@ -104,10 +102,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
         }
     }
 
-    /**
-     * @return array
-     */
-    protected function getConfiguredFilters()
+    protected function getConfiguredFilters(): array
     {
         $jobParameters = $this->stepExecution->getJobParameters();
 

@@ -18,7 +18,7 @@ class MassActionResponse implements MassActionResponseInterface
      * @param string  $message
      * @param array   $options
      */
-    public function __construct($successful, $message, array $options = [])
+    public function __construct(bool $successful, string $message, array $options = [])
     {
         $this->successful = $successful;
         $this->message = $message;
@@ -28,7 +28,7 @@ class MassActionResponse implements MassActionResponseInterface
     /**
      * {@inheritDoc}
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -36,23 +36,17 @@ class MassActionResponse implements MassActionResponseInterface
     /**
      * {@inheritDoc}
      */
-    public function getOption($name)
+    public function getOption(string $name)
     {
         return isset($this->options[$name]) ? $this->options[$name] : null;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return $this->successful;
     }
 
-    /**
-     * @return string
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }

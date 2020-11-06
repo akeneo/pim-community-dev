@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect;
 
+use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\RedirectMassAction;
 
@@ -17,7 +18,7 @@ class EditMassAction extends RedirectMassAction
     /**
      * {@inheritdoc}
      */
-    public function setOptions(ActionConfiguration $options)
+    public function setOptions(ActionConfiguration $options): ActionInterface
     {
         if (empty($options['handler'])) {
             $options['handler'] = 'mass_edit';

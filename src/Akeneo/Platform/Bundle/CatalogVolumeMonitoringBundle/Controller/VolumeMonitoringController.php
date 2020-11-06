@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller;
 
+use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\Volumes;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,15 +22,12 @@ class VolumeMonitoringController
     /**
      * @param Normalizer\Volumes $volumesNormalizer
      */
-    public function __construct(Normalizer\Volumes $volumesNormalizer)
+    public function __construct(Volumes $volumesNormalizer)
     {
         $this->volumesNormalizer = $volumesNormalizer;
     }
 
-    /**
-     * @return Response
-     */
-    public function getVolumesAction(): Response
+    public function getVolumesAction(): JsonResponse
     {
         return new JsonResponse($this->volumesNormalizer->volumes());
     }

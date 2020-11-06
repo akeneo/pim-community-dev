@@ -22,10 +22,8 @@ class AttributeTypeController
 
     /**
      * Return all attributes types
-     *
-     * @return JsonResponse
      */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         return new JsonResponse($this->registry->getSortedAliases());
     }

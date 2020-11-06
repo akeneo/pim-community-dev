@@ -26,7 +26,7 @@ class BufferFactory
      *
      * @throws InvalidClassNameException If the class name is not a implementation of BufferInterface
      */
-    public function __construct($className)
+    public function __construct(string $className)
     {
         $interface = BufferInterface::class;
         if (!is_subclass_of($className, $interface)) {

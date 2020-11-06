@@ -37,7 +37,7 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(DatagridConfiguration $config)
+    public function isApplicable(DatagridConfiguration $config): bool
     {
         $filters = $config->offsetGetByPath(Configuration::COLUMNS_PATH, []);
 
@@ -51,7 +51,7 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function processConfigs(DatagridConfiguration $config)
+    public function processConfigs(DatagridConfiguration $config): void
     {
         // validate extension configuration
         $this->validateConfiguration(
@@ -63,7 +63,7 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource): void
     {
         $filters = $this->getFiltersToApply($config);
         $values = $this->getValuesToApply($config);
@@ -88,7 +88,7 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data): void
     {
         $filtersState = $data->offsetGetByPath('[state][filters]', []);
         $filtersMetaData = [];
@@ -129,7 +129,7 @@ class OrmFilterExtension extends AbstractExtension
      *
      * @return $this
      */
-    public function addFilter($name, FilterInterface $filter)
+    public function addFilter(string $name, FilterInterface $filter): self
     {
         $this->filters[$name] = $filter;
 
@@ -143,7 +143,7 @@ class OrmFilterExtension extends AbstractExtension
      *
      * @return FilterInterface[]
      */
-    protected function getFiltersToApply(DatagridConfiguration $config)
+    protected function getFiltersToApply(DatagridConfiguration $config): array
     {
         $filters = [];
         $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
@@ -165,10 +165,8 @@ class OrmFilterExtension extends AbstractExtension
      * Takes param from request and merge with default filters
      *
      * @param DatagridConfiguration $config
-     *
-     * @return array
      */
-    protected function getValuesToApply(DatagridConfiguration $config)
+    protected function getValuesToApply(DatagridConfiguration $config): array
     {
         $result = [];
 
@@ -191,10 +189,8 @@ class OrmFilterExtension extends AbstractExtension
      *
      * @param string $name
      * @param array  $config
-     *
-     * @return FilterInterface
      */
-    protected function getFilterObject($name, array $config)
+    protected function getFilterObject(string $name, array $config): \Oro\Bundle\FilterBundle\Filter\FilterInterface
     {
         $type = $config[FilterUtility::TYPE_KEY];
 

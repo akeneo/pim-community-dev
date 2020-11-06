@@ -21,7 +21,7 @@ class AkeneoPimEnrichmentExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -122,7 +122,7 @@ class AkeneoPimEnrichmentExtension extends Extension
      * @param ContainerBuilder $container
      * @param array            $config
      */
-    protected function loadLocalizationConfiguration(ContainerBuilder $container, array $config)
+    protected function loadLocalizationConfiguration(ContainerBuilder $container, array $config): void
     {
         $localization = $config['localization'];
 

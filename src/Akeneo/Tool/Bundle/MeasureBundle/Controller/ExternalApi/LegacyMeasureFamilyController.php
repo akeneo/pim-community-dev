@@ -61,10 +61,8 @@ class LegacyMeasureFamilyController
      * @param string  $code
      *
      * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
      */
-    public function getAction($code)
+    public function getAction(string $code): JsonResponse
     {
         $measuresConfig = $this->legacyMeasurementProvider->getMeasurementFamilies();
         foreach ($measuresConfig as $key => $value) {
@@ -86,10 +84,8 @@ class LegacyMeasureFamilyController
      * @param Request $request
      *
      * @throws UnprocessableEntityHttpException
-     *
-     * @return JsonResponse
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -112,7 +108,7 @@ class LegacyMeasureFamilyController
 
         $measuresConfig = $this->legacyMeasurementProvider->getMeasurementFamilies();
         $convertedMeasureFamilies = $this->convertMeasureFamilies($queryParameters);
-        $count = true === $request->query->getBoolean('with_count') ? count($measuresConfig) : null;
+        $count = $request->query->getBoolean('with_count') ? count($measuresConfig) : null;
         $paginatedMeasureFamilies = $this->paginator->paginate(
             $convertedMeasureFamilies,
             $parameters,
@@ -122,10 +118,7 @@ class LegacyMeasureFamilyController
         return new JsonResponse($paginatedMeasureFamilies);
     }
 
-    /**
-     * @return array
-     */
-    protected function convertMeasureFamilies(array $queryParameters)
+    protected function convertMeasureFamilies(array $queryParameters): array
     {
         $measuresConfig = $this->legacyMeasurementProvider->getMeasurementFamilies();
         $limit = $queryParameters['limit'];

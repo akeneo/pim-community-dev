@@ -57,7 +57,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociationType(AssociationTypeInterface $associationType)
+    public function setAssociationType(AssociationTypeInterface $associationType): AssociationInterface
     {
         $this->associationType = $associationType;
 
@@ -67,7 +67,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationType()
+    public function getAssociationType(): \Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface
     {
         return $this->associationType;
     }
@@ -75,7 +75,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function setOwner(EntityWithAssociationsInterface $owner)
+    public function setOwner(EntityWithAssociationsInterface $owner): AssociationInterface
     {
         if (!$this->owner) {
             $this->owner = $owner;
@@ -88,7 +88,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function getOwner()
+    public function getOwner(): \Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface
     {
         return $this->owner;
     }
@@ -96,7 +96,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function setProducts($products)
+    public function setProducts(array $products): AssociationInterface
     {
         $this->products = $products;
 
@@ -114,7 +114,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function addProduct(ProductInterface $product)
+    public function addProduct(ProductInterface $product): AssociationInterface
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
@@ -126,7 +126,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function hasProduct(ProductInterface $product)
+    public function hasProduct(ProductInterface $product): bool
     {
         return $this->products->contains($product);
     }
@@ -134,7 +134,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function removeProduct(ProductInterface $product)
+    public function removeProduct(ProductInterface $product): AssociationInterface
     {
         $this->products->removeElement($product);
 
@@ -170,7 +170,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function setProductModels($productModels): void
+    public function setProductModels(array $productModels): void
     {
         $this->productModels = $productModels;
     }
@@ -178,7 +178,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function setGroups($groups)
+    public function setGroups(array $groups): AssociationInterface
     {
         $this->groups = $groups;
 
@@ -196,7 +196,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function addGroup(GroupInterface $group)
+    public function addGroup(GroupInterface $group): AssociationInterface
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
@@ -208,7 +208,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function removeGroup(GroupInterface $group)
+    public function removeGroup(GroupInterface $group): AssociationInterface
     {
         $this->groups->removeElement($group);
 
@@ -218,7 +218,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         if (!$this->owner) {
             return null;

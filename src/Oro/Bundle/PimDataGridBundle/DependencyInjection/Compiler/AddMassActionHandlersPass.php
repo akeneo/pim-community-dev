@@ -24,7 +24,7 @@ class AddMassActionHandlersPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $handlerRegistry = $container->getDefinition(self::HANDLER_REGISTRY_SERVICE);
         $taggedServices = $container->findTaggedServiceIds(self::HANDLER_EXTENSION_TAG);

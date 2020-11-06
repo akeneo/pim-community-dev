@@ -47,9 +47,9 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         CursorableRepositoryInterface $repository,
         array $esQuery,
         array $searchAfter = [],
-        $pageSize,
-        $limit,
-        $searchAfterUniqueKey = null
+        int $pageSize,
+        int $limit,
+        ?string $searchAfterUniqueKey = null
     ) {
         $this->repository = $repository;
         $this->esClient = $esClient;
@@ -65,7 +65,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if (false === next($this->items)) {
             $this->fetchedItemsCount += count($this->items);
@@ -79,7 +79,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
-    protected function getNextIdentifiers(array $esQuery)
+    protected function getNextIdentifiers(array $esQuery): array
     {
         $size = $this->limit > $this->pageSize ? $this->pageSize : $this->limit;
         if ($this->fetchedItemsCount + $size > $this->limit) {
@@ -124,11 +124,11 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->searchAfter = $this->initialSearchAfter;
         if (null !== $this->searchAfterUniqueKey) {
-            array_push($this->searchAfter, $this->searchAfterUniqueKey);
+            $this->searchAfter[] = $this->searchAfterUniqueKey;
         }
 
         $this->fetchedItemsCount = 0;

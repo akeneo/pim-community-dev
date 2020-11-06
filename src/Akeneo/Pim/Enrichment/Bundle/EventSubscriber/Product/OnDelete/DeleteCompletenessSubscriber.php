@@ -49,7 +49,7 @@ final class DeleteCompletenessSubscriber implements EventSubscriberInterface
             ->deleteForOneProduct($event->getSubjectId());
     }
 
-    public function deleteForAllProducts(RemoveEvent $event)
+    public function deleteForAllProducts(RemoveEvent $event): void
     {
         $products = array_values($event->getSubject());
         $productIds = $event->getSubjectId();

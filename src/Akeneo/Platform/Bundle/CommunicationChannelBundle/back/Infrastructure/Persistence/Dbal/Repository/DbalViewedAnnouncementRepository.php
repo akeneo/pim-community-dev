@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\Dbal\Repository;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Repository\ViewedAnnouncementRepositoryInterface;
 use Doctrine\DBAL\Connection as DbalConnection;
 
@@ -17,7 +18,7 @@ class DbalViewedAnnouncementRepository implements ViewedAnnouncementRepositoryIn
     /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }

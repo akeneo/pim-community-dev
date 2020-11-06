@@ -45,7 +45,7 @@ class DateTimeWithUserTimezoneProperty extends FieldProperty
     /**
      * {@inheritdoc}
      */
-    protected function convertValue($value)
+    protected function convertValue($value): string
     {
         return $this->presenter->present(
             $value,

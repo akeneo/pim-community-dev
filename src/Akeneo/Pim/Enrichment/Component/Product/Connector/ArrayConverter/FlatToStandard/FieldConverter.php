@@ -56,11 +56,11 @@ class FieldConverter implements FieldConverterInterface
             return new ConvertedField('quantified_associations', [$associationTypeCode => [$associatedWith => $value]]);
         } elseif (in_array($fieldName, $this->assocFieldResolver->resolveQuantifiedQuantityAssociationColumns())) {
             return new ConvertedField($fieldName, $value);
-        } elseif (in_array($fieldName, ['categories'])) {
+        } elseif ($fieldName == 'categories') {
             $categories = $this->fieldSplitter->splitCollection($value);
 
             return new ConvertedField($fieldName, $categories);
-        } elseif (in_array($fieldName, ['groups'])) {
+        } elseif ($fieldName == 'groups') {
             return $this->extractGroup($value);
         } elseif ('enabled' === $fieldName) {
             return new ConvertedField($fieldName, (bool) $value);
@@ -76,7 +76,7 @@ class FieldConverter implements FieldConverterInterface
      *
      * @return bool
      */
-    public function supportsColumn($column): bool
+    public function supportsColumn(string $column): bool
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
         $quantifiedAssociationFields = $this->assocFieldResolver->resolveQuantifiedAssociationColumns();
@@ -93,7 +93,7 @@ class FieldConverter implements FieldConverterInterface
      *
      * @return ConvertedField
      */
-    protected function extractGroup($value): ConvertedField
+    protected function extractGroup(string $value): ConvertedField
     {
         $productGroups = $this->fieldSplitter->splitCollection($value);
 

@@ -24,7 +24,7 @@ class TemplatedErrorMessage
     public function __construct(string $template, array $parameters)
     {
         foreach ($parameters as $key => $value) {
-            if (false === is_string($value)) {
+            if (!is_string($value)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Message parameter "{%s}" must be of type string, %s given.',
                     $key,

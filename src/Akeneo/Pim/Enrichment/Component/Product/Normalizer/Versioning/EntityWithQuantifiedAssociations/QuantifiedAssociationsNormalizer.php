@@ -15,7 +15,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
      *
      * @param EntityWithQuantifiedAssociationsInterface $entityWithQuantifiedAssociations
      */
-    public function normalize($entityWithQuantifiedAssociations, $format = null, array $context = [])
+    public function normalize($entityWithQuantifiedAssociations, $format = null, array $context = []): array
     {
         $quantifiedAssociationsNormalized = $entityWithQuantifiedAssociations->normalizeQuantifiedAssociations();
 
@@ -31,7 +31,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
         return $results;
     }
 
-    private function normalizeQuantifiedProductLinks(array $quantifiedProductLinks, string $associationTypeCode)
+    private function normalizeQuantifiedProductLinks(array $quantifiedProductLinks, string $associationTypeCode): array
     {
         return [
             sprintf('%s-products', $associationTypeCode) => implode(',', array_column($quantifiedProductLinks, 'identifier')),
@@ -39,7 +39,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
         ];
     }
 
-    private function normalizeQuantifiedProductModelLinks(array $quantifiedProductModelLinks, string $associationTypeCode)
+    private function normalizeQuantifiedProductModelLinks(array $quantifiedProductModelLinks, string $associationTypeCode): array
     {
         return [
             sprintf('%s-product_models', $associationTypeCode) => implode(',', array_column($quantifiedProductModelLinks, 'identifier')),
@@ -50,7 +50,7 @@ class QuantifiedAssociationsNormalizer implements NormalizerInterface, Cacheable
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithQuantifiedAssociationsInterface && $format === 'flat';
     }

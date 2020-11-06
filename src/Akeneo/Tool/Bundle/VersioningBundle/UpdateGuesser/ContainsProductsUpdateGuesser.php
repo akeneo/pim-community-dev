@@ -18,7 +18,7 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAction($action)
+    public function supportAction(string $action): bool
     {
         return in_array(
             $action,
@@ -29,7 +29,7 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(EntityManager $em, $entity, $action)
+    public function guessUpdates(EntityManager $em, object $entity, string $action): array
     {
         $pendings = [];
 

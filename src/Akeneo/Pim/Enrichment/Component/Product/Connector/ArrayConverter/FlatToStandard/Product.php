@@ -180,9 +180,8 @@ class Product implements ArrayConverterInterface
         $this->validateItem($filteredItem);
 
         $mergedItem = $this->columnsMerger->merge($filteredItem);
-        $convertedItem = $this->convertItem($mergedItem);
 
-        return $convertedItem;
+        return $this->convertItem($mergedItem);
     }
 
     /**
@@ -215,7 +214,7 @@ class Product implements ArrayConverterInterface
 
     protected function filterFields(array $mappedItem, bool $withAssociations): array
     {
-        if (false === $withAssociations) {
+        if (!$withAssociations) {
             $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
             $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
             $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
@@ -327,7 +326,7 @@ class Product implements ArrayConverterInterface
         }
 
         if (count($messages) > 0) {
-            throw new StructureArrayConversionException(join(' ', $messages));
+            throw new StructureArrayConversionException(implode(' ', $messages));
         }
     }
 
@@ -389,7 +388,7 @@ class Product implements ArrayConverterInterface
                     $found = true;
                 }
             }
-            if ($found === true) {
+            if ($found) {
                 $result[] = $attributeCode;
             }
         }

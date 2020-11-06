@@ -35,7 +35,7 @@ class AttributeSetter extends AbstractAttributeSetter
         AttributeInterface $attribute,
         $data,
         array $options = []
-    ) {
+    ): void {
         $options = $this->resolver->resolve($options);
 
         $this->entityWithValuesBuilder->addOrReplaceValue(

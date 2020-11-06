@@ -42,10 +42,8 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      * {@inheritdoc}
      *
      * @param FamilyInterface $family
-     *
-     * @return array
      */
-    public function normalize($family, $format = null, array $context = [])
+    public function normalize($family, $format = null, array $context = []): array
     {
         $standardFamily = $this->standardNormalizer->normalize($family, 'standard', $context);
         $flatFamily = $standardFamily;
@@ -56,15 +54,14 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
         $flatFamily += $this->normalizeRequirements($standardFamily['attribute_requirements']);
 
         unset($flatFamily['labels']);
-        $flatFamily += $this->translationNormalizer->normalize($standardFamily['labels'], 'flat', $context);
 
-        return $flatFamily;
+        return $flatFamily + $this->translationNormalizer->normalize($standardFamily['labels'], 'flat', $context);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof FamilyInterface && in_array($format, $this->supportedFormats);
     }
@@ -78,10 +75,8 @@ class FamilyNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
      * Normalizes the attribute requirements into a flat array
      *
      * @param array $requirements
-     *
-     * @return array
      */
-    protected function normalizeRequirements(array $requirements)
+    protected function normalizeRequirements(array $requirements): array
     {
         $flat = [];
         foreach ($requirements as $channelCode => $attributeCodes) {

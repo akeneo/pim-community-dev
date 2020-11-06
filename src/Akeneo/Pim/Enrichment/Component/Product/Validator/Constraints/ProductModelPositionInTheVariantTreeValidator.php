@@ -39,7 +39,7 @@ class ProductModelPositionInTheVariantTreeValidator extends ConstraintValidator
 
         $numberOfLevel = $productModel->getFamilyVariant()->getNumberOfLevel();
 
-        if (2 === $numberOfLevel && false === $productModel->getParent()->isRootProductModel()) {
+        if (2 === $numberOfLevel && !$productModel->getParent()->isRootProductModel()) {
             $this->context->buildViolation(
                 ProductModelPositionInTheVariantTree::INVALID_PARENT,
                 [

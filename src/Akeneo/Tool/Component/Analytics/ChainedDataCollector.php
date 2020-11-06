@@ -20,7 +20,7 @@ class ChainedDataCollector
      * @param DataCollectorInterface $collector
      * @param string                 $type
      */
-    public function addCollector(DataCollectorInterface $collector, $type = self::DEFAULT_COLLECTOR_TYPE)
+    public function addCollector(DataCollectorInterface $collector, string $type = self::DEFAULT_COLLECTOR_TYPE): void
     {
         $this->collectors[$type][] = $collector;
     }
@@ -29,10 +29,8 @@ class ChainedDataCollector
      * Collect aggregated data from collectors of the specified type.
      *
      * @param string $type
-     *
-     * @return array
      */
-    public function collect($type)
+    public function collect(string $type): array
     {
         $aggregatedData = [];
         foreach ($this->collectors[$type] as $collector) {

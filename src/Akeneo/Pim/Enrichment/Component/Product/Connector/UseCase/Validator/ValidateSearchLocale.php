@@ -65,12 +65,10 @@ final class ValidateSearchLocale
                     // but it is actually not officially supported as it not in the API documentation.
                     // Removing the support of locale for the completeness filter for the products
                     // would not be considered as a BC break.
-                    if (isset($filter['locales'])) {
-                        if (!is_array($filter['locales'])) {
-                            throw new InvalidQueryException(
-                                sprintf('Property "completeness" expects an array with the key "locales".')
-                            );
-                        }
+                    if (isset($filter['locales']) && !is_array($filter['locales'])) {
+                        throw new InvalidQueryException(
+                            sprintf('Property "completeness" expects an array with the key "locales".')
+                        );
                     }
                 } else {
                     if (isset($filter['locale']) && !is_string($filter['locale'])) {

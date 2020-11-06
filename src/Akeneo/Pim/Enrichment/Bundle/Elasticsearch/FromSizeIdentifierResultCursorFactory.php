@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
@@ -26,7 +27,7 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createCursor($esQuery, array $options = [])
+    public function createCursor($esQuery, array $options = []): CursorInterface
     {
         $options = $this->resolveOptions($options);
         $sort = ['_id' => 'asc'];
@@ -52,10 +53,8 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
 
     /**
      * @param array $options
-     *
-     * @return array
      */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefined(
@@ -72,8 +71,6 @@ class FromSizeIdentifierResultCursorFactory implements CursorFactoryInterface
         $resolver->setAllowedTypes('limit', 'int');
         $resolver->setAllowedTypes('from', 'int');
 
-        $options = $resolver->resolve($options);
-
-        return $options;
+        return $resolver->resolve($options);
     }
 }

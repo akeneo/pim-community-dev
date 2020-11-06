@@ -52,7 +52,7 @@ class Ace
      * @param string|null               $strategy
      * @param bool                      $replace
      */
-    public function __construct($type, $field, SecurityIdentityInterface $sid, $granting, $mask, $strategy, $replace)
+    public function __construct(string $type, ?string $field, SecurityIdentityInterface $sid, bool $granting, int $mask, ?string $strategy, bool $replace)
     {
         $this->type = $type;
         $this->field = $field;
@@ -65,50 +65,40 @@ class Ace
 
     /**
      * Gets the security identity associated with this ACE
-     *
-     * @return SecurityIdentityInterface
      */
-    public function getSecurityIdentity()
+    public function getSecurityIdentity(): \Symfony\Component\Security\Acl\Model\SecurityIdentityInterface
     {
         return $this->sid;
     }
 
     /**
      * Gets this ACE type
-     *
-     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
      * Gets the name of a field
-     *
-     * @return string
      */
-    public function getField()
+    public function getField(): string
     {
         return $this->field;
     }
 
     /**
      * Gets the permission mask of this ACE
-     *
-     * @return int
      */
-    public function getMask()
+    public function getMask(): int
     {
         return $this->mask;
     }
 
     /**
      * Indicates whether this ACE is granting, or denying
-     *
-     * @return bool
      */
-    public function isGranting()
+    public function isGranting(): bool
     {
         return $this->granting;
     }
@@ -118,17 +108,15 @@ class Ace
      *
      * @return string|null
      */
-    public function getStrategy()
+    public function getStrategy(): string
     {
         return $this->strategy;
     }
 
     /**
      * Indicates whether this ACE should replace existing ACE or not
-     *
-     * @return bool
      */
-    public function isReplace()
+    public function isReplace(): bool
     {
         return $this->replace;
     }

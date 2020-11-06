@@ -16,7 +16,7 @@ class OptionMultiSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return AttributeTypes::OPTION_MULTI_SELECT;
     }

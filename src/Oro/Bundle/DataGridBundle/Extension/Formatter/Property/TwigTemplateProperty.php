@@ -27,10 +27,10 @@ class TwigTemplateProperty extends AbstractProperty
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         $checkInvalidArgument = array_intersect(array_keys($this->getOr(self::CONTEXT_KEY, [])), $this->reservedKeys);
-        if (count($checkInvalidArgument)) {
+        if (count($checkInvalidArgument) > 0) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Context of template "%s" includes reserved key(s) - (%s)',
@@ -44,7 +44,7 @@ class TwigTemplateProperty extends AbstractProperty
     /**
      * {@inheritdoc}
      */
-    public function getRawValue(ResultRecordInterface $record)
+    public function getRawValue(ResultRecordInterface $record): string
     {
         $context = array_merge(
             $this->getOr(self::CONTEXT_KEY, []),
@@ -59,10 +59,8 @@ class TwigTemplateProperty extends AbstractProperty
 
     /**
      * Load twig template
-     *
-     * @return \Twig_TemplateInterface
      */
-    protected function getTemplate()
+    protected function getTemplate(): \Twig_TemplateInterface
     {
         return $this->environment->loadTemplate($this->get(self::TEMPLATE_KEY));
     }

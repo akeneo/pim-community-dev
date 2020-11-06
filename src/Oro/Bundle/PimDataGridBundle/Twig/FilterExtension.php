@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Twig;
 
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
@@ -28,7 +29,7 @@ class FilterExtension extends Twig_Extension
     /** @var TranslatorInterface */
     private $translator;
 
-    public function __construct(Manager $datagridManager, ConfiguratorInterface $filtersConfigurator, TranslatorInterface $translator)
+    public function __construct(ManagerInterface $datagridManager, ConfiguratorInterface $filtersConfigurator, TranslatorInterface $translator)
     {
         $this->datagridManager = $datagridManager;
         $this->filtersConfigurator = $filtersConfigurator;
@@ -38,19 +39,17 @@ class FilterExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new Twig_SimpleFunction('filter_label', [$this, 'filterLabel']),
+            new Twig_SimpleFunction('filter_label', fn($code) => $this->filterLabel($code)),
         ];
     }
 
     /**
      * @param string $code
-     *
-     * @return string
      */
-    public function filterLabel($code)
+    public function filterLabel(string $code): ?string
     {
         $configuration = $this->datagridManager->getDatagrid('product-grid')->getAcceptor()->getConfig();
         $this->filtersConfigurator->configure($configuration);
@@ -61,8 +60,6 @@ class FilterExtension extends Twig_Extension
             return null;
         }
 
-        $label = $this->translator->trans($label);
-
-        return $label;
+        return $this->translator->trans($label);
     }
 }

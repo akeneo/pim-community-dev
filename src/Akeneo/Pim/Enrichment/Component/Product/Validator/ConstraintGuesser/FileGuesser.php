@@ -28,7 +28,7 @@ class FileGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AttributeInterface $attribute)
+    public function supportAttribute(AttributeInterface $attribute): bool
     {
         return in_array(
             $attribute->getType(),
@@ -42,17 +42,17 @@ class FileGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AttributeInterface $attribute)
+    public function guessConstraints(AttributeInterface $attribute): array
     {
         $constraints = [];
         $options = [];
 
-        if ($maxSize = $attribute->getMaxFileSize()) {
+        if (($maxSize = $attribute->getMaxFileSize()) !== 0.0) {
             if ($maxSize == (int) $maxSize) {
                 $maxSize = (int) $maxSize;
                 $unit = self::MEGABYTE_UNIT;
             } else {
-                $maxSize = intval($maxSize * self::KILOBYTE_MULTIPLIER);
+                $maxSize = (int) ($maxSize * self::KILOBYTE_MULTIPLIER);
                 $unit = self::KILOBYTE_UNIT;
             }
             if ($maxSize > 0) {
@@ -60,7 +60,7 @@ class FileGuesser implements ConstraintGuesserInterface
             }
         }
 
-        if ($allowedExtensions = $attribute->getAllowedExtensions()) {
+        if (($allowedExtensions = $attribute->getAllowedExtensions()) !== []) {
             $options['allowedExtensions'] = $allowedExtensions;
         }
 

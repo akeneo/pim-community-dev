@@ -20,10 +20,8 @@ class AccessDeniedException extends BaseAccessDeniedException
     /**
      * @param string $controllerClass
      * @param string $method
-     *
-     * @return AccessDeniedException
      */
-    public static function create($controllerClass, $method)
+    public static function create(string $controllerClass, string $method): \Oro\Bundle\SecurityBundle\Exception\AccessDeniedException
     {
         return new self($controllerClass, $method, sprintf('Access denied to %s::%s.', $controllerClass, $method));
     }
@@ -42,18 +40,12 @@ class AccessDeniedException extends BaseAccessDeniedException
         $this->method = $method;
     }
 
-    /**
-     * @return string
-     */
-    public function getControllerClass()
+    public function getControllerClass(): string
     {
         return $this->controllerClass;
     }
 
-    /**
-     * @return string
-     */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }

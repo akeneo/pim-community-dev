@@ -27,10 +27,8 @@ class DataController
 
     /**
      * Return the collected data
-     *
-     * @return JsonResponse
      */
-    public function collectAction()
+    public function collectAction(): JsonResponse
     {
         $data = $this->dataCollector->collect('update_checker');
 

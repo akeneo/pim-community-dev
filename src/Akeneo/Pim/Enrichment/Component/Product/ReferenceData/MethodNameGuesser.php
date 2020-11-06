@@ -27,10 +27,8 @@ class MethodNameGuesser
      * @param bool   $singularify
      *
      * @throws \LogicException If it can't singularify a word.
-     *
-     * @return string
      */
-    public static function guess($prefix, $dataName, $singularify = false)
+    public static function guess(string $prefix, string $dataName, bool $singularify = false): string
     {
         $name = $dataName;
 

@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
     /**
      * @param $types
      */
-    public function __construct($types)
+    public function __construct(array $types)
     {
         $this->types = $types;
     }
@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder();
 

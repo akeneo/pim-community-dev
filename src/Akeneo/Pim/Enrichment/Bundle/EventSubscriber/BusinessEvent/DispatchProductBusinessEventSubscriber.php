@@ -54,7 +54,7 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
     {
         /** @var ProductInterface */
         $product = $event->getSubject();
-        if (false === $product instanceof ProductInterface) {
+        if (!$product instanceof ProductInterface) {
             return;
         }
 
@@ -84,7 +84,7 @@ final class DispatchProductBusinessEventSubscriber implements EventSubscriberInt
     {
         /** @var ProductInterface */
         $product = $event->getSubject();
-        if (false === $product instanceof ProductInterface) {
+        if (!$product instanceof ProductInterface) {
             return;
         }
 

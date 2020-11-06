@@ -32,7 +32,7 @@ class DisableFieldSubscriber implements EventSubscriberInterface
      * @param string $fieldName
      * @param string $determinator
      */
-    public function __construct($fieldName, $determinator = 'getId')
+    public function __construct(string $fieldName, string $determinator = 'getId')
     {
         $this->fieldName = $fieldName;
         $this->determinator = $determinator;
@@ -41,7 +41,7 @@ class DisableFieldSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             FormEvents::POST_SET_DATA => 'postSetData'
@@ -53,7 +53,7 @@ class DisableFieldSubscriber implements EventSubscriberInterface
      *
      * @param FormEvent $event
      */
-    public function postSetData(FormEvent $event)
+    public function postSetData(FormEvent $event): void
     {
         $entity = $event->getData();
         $determinator = $this->determinator;
@@ -75,7 +75,7 @@ class DisableFieldSubscriber implements EventSubscriberInterface
      *
      * @return $config
      */
-    protected function prepareOptions(FormConfigInterface $config)
+    protected function prepareOptions(FormConfigInterface $config): array
     {
         $options = [
             'disabled'  => true,

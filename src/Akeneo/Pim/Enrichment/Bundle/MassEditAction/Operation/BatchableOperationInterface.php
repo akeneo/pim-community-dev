@@ -13,15 +13,11 @@ interface BatchableOperationInterface
 {
     /**
      * Get configuration to send to the BatchBundle command
-     *
-     * @return array
      */
-    public function getBatchConfig();
+    public function getBatchConfig(): array;
 
     /**
      * Get the code of the JobInstance
-     *
-     * @return string
      */
-    public function getJobInstanceCode();
+    public function getJobInstanceCode(): string;
 }

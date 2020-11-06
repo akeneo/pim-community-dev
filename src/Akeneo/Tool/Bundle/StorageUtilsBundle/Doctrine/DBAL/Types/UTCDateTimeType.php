@@ -27,7 +27,7 @@ class UTCDateTimeType extends DateTimeType
             return null;
         }
 
-        $value->setTimeZone((self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC')));
+        $value->setTimeZone((self::$utc !== null) ? self::$utc : (self::$utc = new \DateTimeZone('UTC')));
 
         return parent::convertToDatabaseValue($value, $platform);
     }
@@ -35,7 +35,7 @@ class UTCDateTimeType extends DateTimeType
     /**
      * {@inheritdoc}
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?\DateTime
     {
         if (null === $value) {
             return null;
@@ -44,7 +44,7 @@ class UTCDateTimeType extends DateTimeType
         $val = \DateTime::createFromFormat(
             $platform->getDateTimeFormatString(),
             $value,
-            (self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC'))
+            (self::$utc !== null) ? self::$utc : (self::$utc = new \DateTimeZone('UTC'))
         );
 
         $serverTimezone = date_default_timezone_get();

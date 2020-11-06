@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -113,11 +114,10 @@ class FamilyController
      *
      * @throws NotFoundHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_family_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $family = $this->repository->findOneByIdentifier($code);
         if (null === $family) {
@@ -132,11 +132,10 @@ class FamilyController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_family_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -169,7 +168,7 @@ class FamilyController
             'item_route_name'     => 'pim_api_family_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
+        $count = $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedFamilies = $this->paginator->paginate(
             $this->normalizer->normalize($families, 'external_api'),
             $parameters,
@@ -185,11 +184,10 @@ class FamilyController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_family_edit")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -199,9 +197,7 @@ class FamilyController
 
         $this->saver->save($family);
 
-        $response = $this->getResponse($family, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($family, Response::HTTP_CREATED);
     }
 
     /**
@@ -209,16 +205,14 @@ class FamilyController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_family_edit")
      */
-    public function partialUpdateListAction(Request $request)
+    public function partialUpdateListAction(Request $request): StreamedResponse
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
-        return $response;
+        return $this->partialUpdateStreamResource->streamResponse($resource);
     }
 
     /**
@@ -227,11 +221,10 @@ class FamilyController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_family_edit")
      */
-    public function partialUpdateAction(Request $request, $code)
+    public function partialUpdateAction(Request $request, $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -251,9 +244,8 @@ class FamilyController
         $this->saver->save($family);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($family, $status);
 
-        return $response;
+        return $this->getResponse($family, $status);
     }
 
     /**
@@ -262,10 +254,8 @@ class FamilyController
      * @param string $content content of a request to decode
      *
      * @throws BadRequestHttpException
-     *
-     * @return array
      */
-    protected function getDecodedContent($content)
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -285,7 +275,7 @@ class FamilyController
      *
      * @throws DocumentedHttpException
      */
-    protected function updateFamily(FamilyInterface $family, array $data, $anchor)
+    protected function updateFamily(FamilyInterface $family, array $data, string $anchor): void
     {
         try {
             $this->updater->update($family, $data);
@@ -306,7 +296,7 @@ class FamilyController
      *
      * @throws ViolationHttpException
      */
-    protected function validateFamily(FamilyInterface $family)
+    protected function validateFamily(FamilyInterface $family): void
     {
         $violations = $this->validator->validate($family);
         if (0 !== $violations->count()) {
@@ -319,10 +309,8 @@ class FamilyController
      *
      * @param FamilyInterface $family
      * @param string          $status
-     *
-     * @return Response
      */
-    protected function getResponse(FamilyInterface $family, $status)
+    protected function getResponse(FamilyInterface $family, string $status): Response
     {
         $response = new Response(null, $status);
         $route = $this->router->generate(
@@ -346,7 +334,7 @@ class FamilyController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function validateCodeConsistency($code, array $data)
+    protected function validateCodeConsistency(string $code, array $data): void
     {
         if (array_key_exists('code', $data) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(

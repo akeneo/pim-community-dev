@@ -26,7 +26,7 @@ interface CategoryFilterableRepositoryInterface
      * @param bool  $include     if yes, get item in those categories, if false
      *                           items NOT in those categories
      */
-    public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true);
+    public function applyFilterByCategoryIds($qb, array $categoryIds, bool $include = true);
 
     /**
      * Apply filter by category ids or unclassified

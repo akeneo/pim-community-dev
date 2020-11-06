@@ -64,7 +64,7 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         if (null === $this->items) {
             $this->rewind();
@@ -76,7 +76,7 @@ abstract class AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         if (null === $this->items) {
             $this->rewind();
@@ -89,10 +89,8 @@ abstract class AbstractCursor implements CursorInterface
      * Get the next items (hydrated from doctrine repository).
      *
      * @param array $esQuery
-     *
-     * @return array
      */
-    protected function getNextItems(array $esQuery)
+    protected function getNextItems(array $esQuery): array
     {
         $identifiers = $this->getNextIdentifiers($esQuery);
         if (empty($identifiers)) {
@@ -127,8 +125,6 @@ abstract class AbstractCursor implements CursorInterface
      * Get the next identifiers from the Elasticsearch query
      *
      * @param array $esQuery
-     *
-     * @return array
      */
-    abstract protected function getNextIdentifiers(array $esQuery);
+    abstract protected function getNextIdentifiers(array $esQuery): array;
 }

@@ -26,19 +26,15 @@ interface ArchiverInterface
      * Check if the job execution is supported
      *
      * @param JobExecution $jobExecution
-     *
-     * @return bool
      */
-    public function supports(JobExecution $jobExecution);
+    public function supports(JobExecution $jobExecution): bool;
 
     /**
      * Get the archives of a job execution
      *
      * @param JobExecution $jobExecution
-     *
-     * @return array
      */
-    public function getArchives(JobExecution $jobExecution);
+    public function getArchives(JobExecution $jobExecution): array;
 
     /**
      * Get a specific archive of a job execution
@@ -48,12 +44,10 @@ interface ArchiverInterface
      *
      * @return resource
      */
-    public function getArchive(JobExecution $jobExecution, $key);
+    public function getArchive(JobExecution $jobExecution, string $key);
 
     /**
      * Get the archiver name
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 }

@@ -26,7 +26,7 @@ class TranslatorDecorator implements TranslatorInterface
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null)
+    public function trans($id, array $parameters = [], $domain = null, $locale = null): string
     {
         return $this->symfonyTranslator->trans($id, $parameters, $domain, $locale);
     }
@@ -34,7 +34,7 @@ class TranslatorDecorator implements TranslatorInterface
     /**
      * {@inheritdoc}
      */
-    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
+    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null): string
     {
         try {
             return $this->symfonyTranslator->transChoice($id, $number, $parameters, $domain, $locale);
@@ -46,7 +46,7 @@ class TranslatorDecorator implements TranslatorInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale($locale): void
     {
         $this->symfonyTranslator->setLocale($locale);
     }
@@ -54,7 +54,7 @@ class TranslatorDecorator implements TranslatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->symfonyTranslator->getLocale();
     }

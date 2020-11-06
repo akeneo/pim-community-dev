@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
+use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
@@ -117,7 +118,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function supports($type, $id)
+    public function supports(string $type, $id): bool
     {
         if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {
             return true;
@@ -135,7 +136,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtensionKey()
+    public function getExtensionKey(): string
     {
         return 'entity';
     }
@@ -143,7 +144,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function validateMask($mask, $object, $permission = null)
+    public function validateMask(int $mask, $object, ?string $permission = null): void
     {
         if (0 === $this->removeServiceBits($mask)) {
             // zero mask
@@ -174,7 +175,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentity($val)
+    public function getObjectIdentity($val): \Symfony\Component\Security\Acl\Domain\ObjectIdentity
     {
         if (is_string($val)) {
             return $this->fromDescriptor($val);
@@ -191,7 +192,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getMaskBuilder($permission)
+    public function getMaskBuilder(string $permission): MaskBuilder
     {
         if (empty($permission)) {
             $permission = 'VIEW';
@@ -206,7 +207,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAllMaskBuilders()
+    public function getAllMaskBuilders(): array
     {
         $result = [];
         foreach ($this->maskBuilderClassNames as $maskBuilderClassName) {
@@ -219,7 +220,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getMaskPattern($mask)
+    public function getMaskPattern(int $mask): string
     {
         $maskBuilderClassName = $this->maskBuilderClassNames[$this->getServiceBits($mask)];
 
@@ -229,7 +230,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function adaptRootMask($rootMask, $object)
+    public function adaptRootMask(int $rootMask, $object): int
     {
         $permissions = $this->getPermissions($rootMask, true);
         if (!empty($permissions)) {
@@ -256,7 +257,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getServiceBits($mask)
+    public function getServiceBits(int $mask): int
     {
         return $mask & BaseEntityMaskBuilder::SERVICE_BITS;
     }
@@ -264,7 +265,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function removeServiceBits($mask)
+    public function removeServiceBits(int $mask): int
     {
         return $mask & BaseEntityMaskBuilder::REMOVE_SERVICE_BITS;
     }
@@ -272,7 +273,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAccessLevel($mask, $permission = null)
+    public function getAccessLevel(int $mask, string $permission = null): int
     {
         if (0 === $this->removeServiceBits($mask)) {
             return AccessLevel::NONE_LEVEL;
@@ -281,7 +282,7 @@ class EntityAclExtension extends AbstractAclExtension
         $identity = $this->getServiceBits($mask);
         if ($permission !== null) {
             $permissionMask = $this->getMaskBuilderConst($identity, 'GROUP_' . $permission);
-            $mask = $mask & $permissionMask;
+            $mask &= $permissionMask;
         }
 
         $result = AccessLevel::NONE_LEVEL;
@@ -297,7 +298,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getPermissions($mask = null, $setOnly = false)
+    public function getPermissions(?int $mask = null, bool $setOnly = false): array
     {
         if ($mask === null) {
             return array_keys($this->permissionToMaskBuilderIdentity);
@@ -314,10 +315,8 @@ class EntityAclExtension extends AbstractAclExtension
         } elseif (0 !== $this->removeServiceBits($mask)) {
             $identity = $this->getServiceBits($mask);
             foreach ($this->permissionToMaskBuilderIdentity as $permission => $id) {
-                if ($id === $identity) {
-                    if (0 !== ($mask & $this->getMaskBuilderConst($identity, 'GROUP_' . $permission))) {
-                        $result[] = $permission;
-                    }
+                if ($id === $identity && 0 !== ($mask & $this->getMaskBuilderConst($identity, 'GROUP_' . $permission))) {
+                    $result[] = $permission;
                 }
             }
         }
@@ -328,7 +327,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAllowedPermissions(ObjectIdentity $oid)
+    public function getAllowedPermissions(ObjectIdentity $oid): array
     {
         if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             $result = array_keys($this->permissionToMaskBuilderIdentity);
@@ -346,7 +345,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getClasses()
+    public function getClasses(): array
     {
         return [];
     }
@@ -354,19 +353,14 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken)
+    public function decideIsGranting(int $triggeredMask, $object, TokenInterface $securityToken): bool
     {
         $accessLevel = $this->getAccessLevel($triggeredMask);
         if ($accessLevel === AccessLevel::SYSTEM_LEVEL) {
             return true;
         }
-
         // check whether we check permissions for a domain object
-        if ($object === null || !is_object($object) || $object instanceof ObjectIdentityInterface) {
-            return true;
-        }
-
-        return true;
+        return $object === null || !is_object($object) || $object instanceof ObjectIdentityInterface;
     }
 
     /**
@@ -374,9 +368,8 @@ class EntityAclExtension extends AbstractAclExtension
      *
      * @param string $descriptor
      * @throws \InvalidArgumentException
-     * @return ObjectIdentity
      */
-    protected function fromDescriptor($descriptor)
+    protected function fromDescriptor(string $descriptor): \Symfony\Component\Security\Acl\Domain\ObjectIdentity
     {
         $type = $id = null;
         $this->parseDescriptor($descriptor, $type, $id);
@@ -400,7 +393,7 @@ class EntityAclExtension extends AbstractAclExtension
      * @throws InvalidDomainObjectException
      * @return ObjectIdentity
      */
-    protected function fromDomainObject($domainObject)
+    protected function fromDomainObject(object $domainObject)
     {
         if (!is_object($domainObject)) {
             throw new InvalidDomainObjectException('$domainObject must be an object.');
@@ -424,7 +417,7 @@ class EntityAclExtension extends AbstractAclExtension
      * @param mixed $object
      * @throws InvalidAclMaskException
      */
-    protected function validateMaskAccessLevel($permission, $mask, $object)
+    protected function validateMaskAccessLevel(string $permission, int $mask, $object): void
     {
         $identity = $this->permissionToMaskBuilderIdentity[$permission];
         if (0 !== ($mask & $this->getMaskBuilderConst($identity, 'GROUP_' . $permission))) {
@@ -450,9 +443,8 @@ class EntityAclExtension extends AbstractAclExtension
      *
      * @param string $permission
      * @param mixed $object
-     * @return int
      */
-    protected function getValidMasks($permission, $object)
+    protected function getValidMasks(string $permission, $object): int
     {
         if ($object instanceof ObjectIdentity && $object->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             $identity = $this->permissionToMaskBuilderIdentity[$permission];
@@ -476,9 +468,8 @@ class EntityAclExtension extends AbstractAclExtension
      * Gets class name for given object
      *
      * @param $object
-     * @return string
      */
-    protected function getObjectClassName($object)
+    protected function getObjectClassName($object): string
     {
         if ($object instanceof ObjectIdentity) {
             $className = $object->getType();
@@ -497,9 +488,8 @@ class EntityAclExtension extends AbstractAclExtension
      *
      * @param int $maskBuilderIdentity The permission mask builder identity
      * @param string $constName
-     * @return int
      */
-    protected function getMaskBuilderConst($maskBuilderIdentity, $constName)
+    protected function getMaskBuilderConst(int $maskBuilderIdentity, string $constName): int
     {
         $maskBuilderClassName = $this->maskBuilderClassNames[$maskBuilderIdentity];
 

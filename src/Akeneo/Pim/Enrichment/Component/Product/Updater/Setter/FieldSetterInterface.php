@@ -25,14 +25,12 @@ interface FieldSetterInterface extends SetterInterface
      *
      * @throws PropertyException
      */
-    public function setFieldData($entity, $field, $data, array $options = []);
+    public function setFieldData($entity, string $field, $data, array $options = []);
 
     /**
      * Supports the field
      *
      * @param string $field
-     *
-     * @return bool
      */
-    public function supportsField($field);
+    public function supportsField(string $field): bool;
 }

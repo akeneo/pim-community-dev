@@ -91,7 +91,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -99,7 +99,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): void
     {
         $this->initialize();
 
@@ -154,7 +154,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         $this->cacheClearer->clear();
     }

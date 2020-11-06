@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityManager;
@@ -37,7 +38,7 @@ class FamilyRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findTranslatedLabels(array $options = [])
+    public function findTranslatedLabels(array $options = []): array
     {
         $query = $this->createQueryBuilder('f')
             ->select('f.id')
@@ -58,7 +59,7 @@ class FamilyRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('f');
         $rootAlias = $qb->getRootAlias();
@@ -83,9 +84,9 @@ class FamilyRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyMassActionParameters($qb, $inset, array $values)
+    public function applyMassActionParameters($qb, bool $inset, array $values): void
     {
-        if ($values) {
+        if ($values !== []) {
             $rootAlias = $qb->getRootAlias();
             $valueWhereCondition =
                 $inset
@@ -107,9 +108,7 @@ class FamilyRepository extends EntityRepository implements
 
         $qb->setParameters(
             $qb->getParameters()->filter(
-                function ($parameter) {
-                    return $parameter->getName() !== 'entityIds';
-                }
+                fn($parameter) => $parameter->getName() !== 'entityIds'
             )
         );
 

@@ -14,5 +14,5 @@ interface ObjectDetacherInterface
     /**
      * @param object $object
      */
-    public function detach($object);
+    public function detach(object $object);
 }

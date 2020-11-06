@@ -36,10 +36,8 @@ class CurrencyController
      * Activate/Deactivate a currency
      *
      * @AclAncestor("pim_enrich_currency_toggle")
-     *
-     * @return JsonResponse
      */
-    public function toggleAction(Currency $currency)
+    public function toggleAction(Currency $currency): JsonResponse
     {
         try {
             $currency->toggleActivation();

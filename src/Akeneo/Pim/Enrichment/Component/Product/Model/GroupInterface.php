@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
@@ -23,90 +24,70 @@ interface GroupInterface extends
 {
     /**
      * Get the id
-     *
-     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Get code
      *
      * @return string $code
      */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * Set code
      *
      * @param string $code
-     *
-     * @return GroupInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 
     /**
      * Set group type
      *
      * @param GroupTypeInterface $type
-     *
-     * @return GroupInterface
      */
-    public function setType(GroupTypeInterface $type);
+    public function setType(GroupTypeInterface $type): \Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 
     /**
      * Get group type
-     *
-     * @return GroupTypeInterface
      */
-    public function getType();
+    public function getType(): \Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 
     /**
      * Get label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * Set label
      *
      * @param string $label
-     *
-     * @return GroupInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 
     /**
      * Add a product to the collection (if not already existing)
      *
      * @param ProductInterface $product
-     *
-     * @return GroupInterface
      */
-    public function addProduct(ProductInterface $product);
+    public function addProduct(ProductInterface $product): \Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 
     /**
      * Remove a product from the collection
      *
      * @param ProductInterface $product
-     *
-     * @return GroupInterface
      */
-    public function removeProduct(ProductInterface $product);
+    public function removeProduct(ProductInterface $product): \Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 
     /**
      * Get products collection
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getProducts();
+    public function getProducts(): ArrayCollection;
 
     /**
      * Set a products collection
      *
      * @param array $products
-     *
-     * @return GroupInterface
      */
-    public function setProducts(array $products);
+    public function setProducts(array $products): \Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 }

@@ -28,21 +28,7 @@ class WebhookEventDataBuilderErrorLog
     }
 
     /**
-     * @return array{
-     *  type: string,
-     *  message: string,
-     *  webhook: array{
-            connection_code: string,
-     *      user_id: int,
-     *  },
-     *  event: array{
-     *      uuid: string,
-     *      author: string,
-     *      author_type: string,
-     *      name: string,
-     *      timestamp: int,
-     *  },
-     * }
+     * @return array{type:string,  message:string, webhook:array{connection_code:string,  user_id:int}, event:array{uuid:string,  author:string, author_type:string, name:string,      timestamp:int}}
      */
     public function toLog(): array
     {

@@ -15,8 +15,6 @@ interface ProductQueryBuilderOptionsResolverInterface
      * Resolve options for the product query builder
      *
      * @param array $options
-     *
-     * @return array
      */
-    public function resolve(array $options);
+    public function resolve(array $options): array;
 }

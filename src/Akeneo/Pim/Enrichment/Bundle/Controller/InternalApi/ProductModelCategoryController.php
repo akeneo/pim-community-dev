@@ -52,7 +52,7 @@ class ProductModelCategoryController
      *
      * @return JsonResponse
      */
-    public function listAction($id): JsonResponse
+    public function listAction(string $id): JsonResponse
     {
         $productModel = $this->findProductModelOr404($id);
         $trees = $this->productModelCategoryRepository->getItemCountByTree($productModel);
@@ -69,10 +69,8 @@ class ProductModelCategoryController
      * @param string $id the product id
      *
      * @throws NotFoundHttpException
-     *
-     * @return ProductModelInterface
      */
-    protected function findProductModelOr404(string $id): ProductModelInterface
+    protected function findProductModelOr404(string $id): object
     {
         $productModel = $this->productModelRepository->find($id);
 

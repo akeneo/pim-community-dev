@@ -24,7 +24,7 @@ class TaskletStep extends AbstractStep
      * @param TaskletInterface         $tasklet
      */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         TaskletInterface $tasklet
@@ -36,16 +36,13 @@ class TaskletStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    protected function doExecute(StepExecution $stepExecution)
+    protected function doExecute(StepExecution $stepExecution): void
     {
         $this->tasklet->setStepExecution($stepExecution);
         $this->tasklet->execute();
     }
 
-    /**
-     * @return TaskletInterface
-     */
-    public function getTasklet()
+    public function getTasklet(): \Akeneo\Tool\Component\Connector\Step\TaskletInterface
     {
         return $this->tasklet;
     }
@@ -53,7 +50,7 @@ class TaskletStep extends AbstractStep
     /**
      * @param TaskletInterface $tasklet
      */
-    public function setTasklet($tasklet)
+    public function setTasklet(\Akeneo\Tool\Component\Connector\Step\TaskletInterface $tasklet): void
     {
         $this->tasklet = $tasklet;
     }

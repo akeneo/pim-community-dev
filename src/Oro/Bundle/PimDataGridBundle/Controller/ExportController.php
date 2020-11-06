@@ -47,10 +47,8 @@ class ExportController
 
     /**
      * Data export action
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(): StreamedResponse
     {
         // Export time execution depends on entities exported
         ignore_user_abort(false);
@@ -61,10 +59,8 @@ class ExportController
 
     /**
      * Create a streamed response containing a file
-     *
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    protected function createStreamedResponse()
+    protected function createStreamedResponse(): StreamedResponse
     {
         $filename = $this->createFilename();
 
@@ -79,10 +75,8 @@ class ExportController
 
     /**
      * Create filename
-     *
-     * @return string
      */
-    protected function createFilename()
+    protected function createFilename(): string
     {
         $dateTime = new \DateTime();
 
@@ -96,10 +90,8 @@ class ExportController
     /**
      * Callback for streamed response
      * Dispatch mass action and returning result as a file
-     *
-     * @return \Closure
      */
-    protected function quickExportCallback()
+    protected function quickExportCallback(): callable
     {
         return function () {
             flush();
@@ -113,7 +105,7 @@ class ExportController
     /**
      * Launch quick export dispatching action and serialize results
      */
-    protected function quickExport()
+    protected function quickExport(): void
     {
         $results = $this->massActionDispatcher->dispatch($this->requestStack->getCurrentRequest());
 
@@ -122,40 +114,32 @@ class ExportController
 
     /**
      * Get asked content type for streamed response
-     *
-     * @return string
      */
-    protected function getContentType()
+    protected function getContentType(): string
     {
         return $this->requestStack->getCurrentRequest()->get('_contentType');
     }
 
     /**
      * Get asked format type for exported file
-     *
-     * @return string
      */
-    protected function getFormat()
+    protected function getFormat(): string
     {
         return $this->requestStack->getCurrentRequest()->get('_format');
     }
 
     /**
      * Get context for serializer
-     *
-     * @return array
      */
-    protected function getContext()
+    protected function getContext(): array
     {
         return $this->getExportMassAction()->getExportContext();
     }
 
     /**
      * TODO: Get from datagrid builder ?
-     *
-     * @return \Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
      */
-    protected function getExportMassAction()
+    protected function getExportMassAction(): \Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
     {
         if ($this->exportMassAction === null) {
             $this->exportMassAction = $this->massActionDispatcher->getMassActionByNames(

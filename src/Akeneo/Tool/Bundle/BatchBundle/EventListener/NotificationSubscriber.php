@@ -21,7 +21,7 @@ class NotificationSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution',
@@ -33,17 +33,15 @@ class NotificationSubscriber implements EventSubscriberInterface
      *
      * @param Notifier $notifier
      */
-    public function registerNotifier(Notifier $notifier)
+    public function registerNotifier(Notifier $notifier): void
     {
         $this->notifiers[] = $notifier;
     }
 
     /**
      * Get the registered notifiers
-     *
-     * @return array
      */
-    public function getNotifiers()
+    public function getNotifiers(): array
     {
         return $this->notifiers;
     }
@@ -53,7 +51,7 @@ class NotificationSubscriber implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $jobExecutionEvent
      */
-    public function afterJobExecution(JobExecutionEvent $jobExecutionEvent)
+    public function afterJobExecution(JobExecutionEvent $jobExecutionEvent): void
     {
         $jobExecution = $jobExecutionEvent->getJobExecution();
 

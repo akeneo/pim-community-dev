@@ -34,11 +34,10 @@ class MeasureConverter
      *
      * @param string $family
      *
-     * @return MeasureConverter
      *
      * @throws MeasurementFamilyNotFoundException
      */
-    public function setFamily($family)
+    public function setFamily(string $family): self
     {
         $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
         if (!isset($measurementFamilies[$family])) {
@@ -56,16 +55,12 @@ class MeasureConverter
      * @param string $baseUnit  Base unit for value
      * @param string $finalUnit Result unit for value
      * @param double $value     Value to convert
-     *
-     * @return string
      */
-    public function convert($baseUnit, $finalUnit, $value)
+    public function convert(string $baseUnit, string $finalUnit, float $value): string
     {
         $standardValue = $this->convertBaseToStandard($baseUnit, $value);
 
-        $result = $this->convertStandardToResult($finalUnit, $standardValue);
-
-        return $result;
+        return $this->convertStandardToResult($finalUnit, $standardValue);
     }
 
     /**
@@ -79,7 +74,7 @@ class MeasureConverter
      *@throws UnitNotFoundException
      * @throws UnknownOperatorException
      */
-    public function convertBaseToStandard($baseUnit, $value)
+    public function convertBaseToStandard(string $baseUnit, float $value)
     {
         $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
         if (!isset($measurementFamilies[$this->family]['units'][$baseUnit])) {
@@ -111,9 +106,8 @@ class MeasureConverter
      * @param string $operand  Operand to use
      *
      * @throws UnknownOperatorException
-     * @return string
      */
-    protected function applyOperation($value, $operator, $operand)
+    protected function applyOperation(float $value, string $operator, string $operand): ?string
     {
         $processedValue = (string) $value;
 
@@ -154,7 +148,7 @@ class MeasureConverter
      * @return string
      *
      */
-    public function convertStandardToResult($finalUnit, $value)
+    public function convertStandardToResult(string $finalUnit, float $value)
     {
         $measurementFamilies = $this->legacyMeasurementProvider->getMeasurementFamilies();
         if (!isset($measurementFamilies[$this->family]['units'][$finalUnit])) {
@@ -187,9 +181,8 @@ class MeasureConverter
      * @param string $operand  Operand to use
      *
      * @throws UnknownOperatorException
-     * @return string
      */
-    protected function applyReversedOperation($value, $operator, $operand)
+    protected function applyReversedOperation(float $value, string $operator, string $operand): ?string
     {
         $processedValue = (string) $value;
 

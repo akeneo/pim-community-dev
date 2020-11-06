@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
+use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 
 /**
@@ -17,7 +18,7 @@ class XlsxInvalidItemWriter extends AbstractInvalidItemWriter
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'invalid_xlsx';
     }
@@ -33,7 +34,7 @@ class XlsxInvalidItemWriter extends AbstractInvalidItemWriter
     /**
      * {@inheritdoc}
      */
-    protected function getInputFileIterator(JobParameters $jobParameters)
+    protected function getInputFileIterator(JobParameters $jobParameters): FileIteratorInterface
     {
         $filePath = $jobParameters->get('filePath');
         $fileIterator = $this->fileIteratorFactory->create($filePath);

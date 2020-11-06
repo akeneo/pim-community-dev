@@ -88,12 +88,8 @@ class AddParent
             $attributeCodes[] = $attribute->getCode();
         }
 
-        $filteredValues = $product->getValues()->filter(
-            function (ValueInterface $value) use ($attributeCodes) {
-                return in_array($value->getAttributeCode(), $attributeCodes);
-            }
+        return $product->getValues()->filter(
+            fn(ValueInterface $value) => in_array($value->getAttributeCode(), $attributeCodes)
         );
-
-        return $filteredValues;
     }
 }

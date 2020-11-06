@@ -31,7 +31,7 @@ class BooleanConverter extends AbstractValueConverter implements ValueConverterI
      *     'auto_lock-de_DE-ecommerce' => '0',
      * ]
      */
-    public function convert($attributeCode, $data)
+    public function convert(string $attributeCode, $data): array
     {
         $convertedItem = [];
 

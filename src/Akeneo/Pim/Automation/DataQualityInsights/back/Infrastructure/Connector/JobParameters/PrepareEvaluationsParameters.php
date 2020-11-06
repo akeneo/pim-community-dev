@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters;
 
+use Symfony\Component\Validator\Constraints\Collection;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
@@ -24,12 +25,12 @@ final class PrepareEvaluationsParameters implements ConstraintCollectionProvider
     public const UPDATED_SINCE_DATE_FORMAT = 'Y-m-d H:i:s';
     public const UPDATED_SINCE_DEFAULT_TIME = '-1 DAY';
 
-    public function getConstraintCollection(): Constraints\Collection
+    public function getConstraintCollection(): Collection
     {
         $dateConstraint = new Constraints\DateTime();
         $dateConstraint->format = self::UPDATED_SINCE_DATE_FORMAT;
 
-        return new Constraints\Collection(
+        return new Collection(
             [
                 'fields' => [
                     self::UPDATED_SINCE_PARAMETER => $dateConstraint,
@@ -45,7 +46,7 @@ final class PrepareEvaluationsParameters implements ConstraintCollectionProvider
         ];
     }
 
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return $job->getName() === 'data_quality_insights_prepare_evaluations';
     }

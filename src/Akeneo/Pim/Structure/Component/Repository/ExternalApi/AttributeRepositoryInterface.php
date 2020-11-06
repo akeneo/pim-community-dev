@@ -16,15 +16,13 @@ interface AttributeRepositoryInterface extends PageableRepositoryInterface, Iden
 {
     /**
      * Get identifier code
-     *
-     * @return string
      */
-    public function getIdentifierCode();
+    public function getIdentifierCode(): string;
 
     /**
      * Get media attribute codes
      *
      * @return string[]
      */
-    public function getMediaAttributeCodes();
+    public function getMediaAttributeCodes(): array;
 }

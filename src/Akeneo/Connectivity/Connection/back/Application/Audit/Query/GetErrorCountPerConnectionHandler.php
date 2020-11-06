@@ -25,10 +25,8 @@ class GetErrorCountPerConnectionHandler
 
     public function handle(GetErrorCountPerConnectionQuery $query): ErrorCountPerConnection
     {
-        $errorCountsPerConnection = $this
+        return $this
             ->selectErrorCountPerConnectionQuery
             ->execute(new ErrorType($query->errorType()), $query->fromDateTime(), $query->upToDateTime());
-
-        return $errorCountsPerConnection;
     }
 }

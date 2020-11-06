@@ -3,6 +3,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Query;
 
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
@@ -65,7 +67,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): CursorInterface
     {
         if ($this->defaultContext['with_document_type_facet'] ?? false) {
             $this->getQueryBuilder()->addFacet(self::DOCUMENT_TYPE_FACET_NAME, self::DOCUMENT_TYPE_FIELD);
@@ -74,9 +76,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
         $allowedCursorOptions = ['page_size', 'search_after', 'search_after_unique_key', 'limit', 'from'];
         $cursorOptions = array_filter(
             $this->defaultContext,
-            function ($key) use ($allowedCursorOptions) {
-                return in_array($key, $allowedCursorOptions);
-            },
+            fn($key) => in_array($key, $allowedCursorOptions),
             ARRAY_FILTER_USE_KEY
         );
 
@@ -86,7 +86,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     /**
      * {@inheritdoc}
      */
-    public function setQueryBuilder($queryBuilder)
+    public function setQueryBuilder($queryBuilder): ProductQueryBuilderInterface
     {
         $this->qb = $queryBuilder;
 
@@ -96,7 +96,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     /**
      * {@inheritdoc}
      */
-    public function getQueryBuilder()
+    public function getQueryBuilder(): SearchQueryBuilder
     {
         if (null === $this->qb) {
             throw new \LogicException('Query builder must be configured');
@@ -108,7 +108,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     /**
      * {@inheritdoc}
      */
-    public function addFilter($field, $operator, $value, array $context = [])
+    public function addFilter(string $field, string $operator, $value, array $context = []): ProductQueryBuilderInterface
     {
         $code = FieldFilterHelper::getCode($field);
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
@@ -157,7 +157,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     /**
      * {@inheritdoc}
      */
-    public function addSorter($field, $direction, array $context = [])
+    public function addSorter(string $field, string $direction, array $context = []): ProductQueryBuilderInterface
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
 
@@ -186,7 +186,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
     /**
      * {@inheritdoc}
      */
-    public function getRawFilters()
+    public function getRawFilters(): array
     {
         return $this->rawFilters;
     }
@@ -199,10 +199,8 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      * @param string               $operator the operator
      * @param mixed                $value    the value to filter
      * @param array                $context  the filter context
-     *
-     * @return ProductQueryBuilderInterface
      */
-    protected function addFieldFilter(FieldFilterInterface $filter, $field, $operator, $value, array $context)
+    protected function addFieldFilter(FieldFilterInterface $filter, string $field, string $operator, $value, array $context): self
     {
         $filter->setQueryBuilder($this->getQueryBuilder());
         $filter->addFieldFilter($field, $operator, $value, $context['locale'], $context['scope'], $context);
@@ -218,16 +216,14 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      * @param string                   $operator  the operator
      * @param mixed                    $value     the value to filter
      * @param array                    $context   the filter context
-     *
-     * @return ProductQueryBuilderInterface
      */
     protected function addAttributeFilter(
         AttributeFilterInterface $filter,
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $value,
         array $context
-    ) {
+    ): self {
         $locale = $attribute->isLocalizable() ? $context['locale'] : null;
         $scope = $attribute->isScopable() ? $context['scope'] : null;
 
@@ -252,10 +248,8 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      * @param string               $field     the field to sort on
      * @param string               $direction the direction to use
      * @param array                $context   the sorter context
-     *
-     * @return ProductQueryBuilderInterface
      */
-    protected function addFieldSorter(FieldSorterInterface $sorter, $field, $direction, array $context)
+    protected function addFieldSorter(FieldSorterInterface $sorter, string $field, string $direction, array $context): self
     {
         $sorter->setQueryBuilder($this->getQueryBuilder());
         $sorter->addFieldSorter($field, $direction, $context['locale'], $context['scope']);
@@ -270,15 +264,13 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      * @param AttributeInterface       $attribute the attribute to sort on
      * @param string                   $direction the direction to use
      * @param array                    $context   the sorter context
-     *
-     * @return ProductQueryBuilderInterface
      */
     protected function addAttributeSorter(
         AttributeSorterInterface $sorter,
         AttributeInterface $attribute,
-        $direction,
+        string $direction,
         array $context
-    ) {
+    ): self {
         $sorter->setQueryBuilder($this->getQueryBuilder());
 
         $localeCode = !$attribute->isLocalizable() && !$attribute->isLocaleSpecific() ? null : $context['locale'];
@@ -293,10 +285,8 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
      * Merge default context with provided one
      *
      * @param array $context
-     *
-     * @return array
      */
-    protected function getFinalContext(array $context)
+    protected function getFinalContext(array $context): array
     {
         return array_merge($this->defaultContext, $context);
     }

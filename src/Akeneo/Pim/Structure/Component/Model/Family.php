@@ -2,6 +2,9 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -78,17 +81,15 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
      * Get created datetime
-     *
-     * @return \DateTime
      */
-    public function getCreated()
+    public function getCreated(): \DateTime
     {
         return $this->created;
     }
@@ -97,10 +98,8 @@ class Family implements FamilyInterface
      * Set created datetime
      *
      * @param \DateTime $created
-     *
-     * @return Family
      */
-    public function setCreated($created)
+    public function setCreated(\DateTime $created): TimestampableInterface
     {
         $this->created = $created;
 
@@ -109,10 +108,8 @@ class Family implements FamilyInterface
 
     /**
      * Get updated datetime
-     *
-     * @return \DateTime
      */
-    public function getUpdated()
+    public function getUpdated(): \DateTime
     {
         return $this->updated;
     }
@@ -121,10 +118,8 @@ class Family implements FamilyInterface
      * Set updated datetime
      *
      * @param \DateTime $updated
-     *
-     * @return Family
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated): TimestampableInterface
     {
         $this->updated = $updated;
 
@@ -134,7 +129,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -142,7 +137,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): FamilyInterface
     {
         $this->code = $code;
 
@@ -152,7 +147,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttribute(AttributeInterface $attribute)
+    public function addAttribute(AttributeInterface $attribute): FamilyInterface
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes->add($attribute);
@@ -166,7 +161,7 @@ class Family implements FamilyInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function removeAttribute(AttributeInterface $attribute)
+    public function removeAttribute(AttributeInterface $attribute): FamilyInterface
     {
         if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
@@ -180,7 +175,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributes()
+    public function getAttributes(): \Doctrine\Common\Collections\Collection
     {
         return $this->attributes;
     }
@@ -188,7 +183,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeCodes()
+    public function getAttributeCodes(): array
     {
         $codes = [];
         foreach ($this->attributes as $attribute) {
@@ -201,7 +196,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getGroupedAttributes()
+    public function getGroupedAttributes(): array
     {
         $result = [];
         foreach ($this->attributes as $attribute) {
@@ -214,7 +209,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttribute(AttributeInterface $attribute)
+    public function hasAttribute(AttributeInterface $attribute): bool
     {
         return $this->hasAttributeCode($attribute->getCode());
     }
@@ -222,7 +217,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeCode($attributeCode)
+    public function hasAttributeCode(string $attributeCode): bool
     {
         return in_array($attributeCode, $this->getAttributeCodes());
     }
@@ -230,7 +225,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributeAsLabel(AttributeInterface $attributeAsLabel)
+    public function setAttributeAsLabel(AttributeInterface $attributeAsLabel): FamilyInterface
     {
         $this->attributeAsLabel = $attributeAsLabel;
 
@@ -240,7 +235,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeAsLabel()
+    public function getAttributeAsLabel(): ?\Akeneo\Pim\Structure\Component\Model\AttributeInterface
     {
         return $this->attributeAsLabel;
     }
@@ -258,7 +253,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeAsImage(): ?AttributeInterface
+    public function getAttributeAsImage(): \Akeneo\Pim\Structure\Component\Model\AttributeInterface
     {
         return $this->attributeAsImage;
     }
@@ -266,22 +261,20 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeAsLabelChoices()
+    public function getAttributeAsLabelChoices(): array
     {
         return $this->attributes->filter(
-            function ($attribute) {
-                return in_array(
-                    $attribute->getType(),
-                    [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER]
-                );
-            }
+            fn($attribute) => in_array(
+                $attribute->getType(),
+                [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER]
+            )
         )->toArray();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 
@@ -291,7 +284,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): ArrayCollection
     {
         return $this->translations;
     }
@@ -299,7 +292,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null): ?FamilyTranslationInterface
+    public function getTranslation(?string $locale = null): AbstractTranslation
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {
@@ -321,7 +314,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): TranslatableInterface
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->set($translation->getLocale(), $translation);
@@ -333,7 +326,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): TranslatableInterface
     {
         $this->translations->removeElement($translation);
 
@@ -343,7 +336,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslationFQCN()
+    public function getTranslationFQCN(): string
     {
         return FamilyTranslation::class;
     }
@@ -351,9 +344,9 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
-        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+        $translated = $this->getTranslation() !== null ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
@@ -361,7 +354,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): FamilyInterface
     {
         $this->getTranslation()->setLabel($label);
 
@@ -371,7 +364,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeRequirement(AttributeRequirementInterface $requirement)
+    public function addAttributeRequirement(AttributeRequirementInterface $requirement): FamilyInterface
     {
         $requirementKey = $this->getAttributeRequirementKey($requirement);
         $requirements = $this->getAttributeRequirements();
@@ -389,7 +382,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAttributeRequirement(AttributeRequirementInterface $requirement)
+    public function removeAttributeRequirement(AttributeRequirementInterface $requirement): FamilyInterface
     {
         $this->requirements->removeElement($requirement);
 
@@ -399,7 +392,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributeRequirements(array $requirements)
+    public function setAttributeRequirements(array $requirements): FamilyInterface
     {
         foreach ($requirements as $requirement) {
             $requirement->setFamily($this);
@@ -412,7 +405,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeRequirements()
+    public function getAttributeRequirements(): array
     {
         $result = [];
 
@@ -427,7 +420,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeRequirementKey(AttributeRequirementInterface $requirement)
+    public function getAttributeRequirementKey(AttributeRequirementInterface $requirement): string
     {
         return sprintf(
             '%s_%s',
@@ -439,7 +432,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->code;
     }

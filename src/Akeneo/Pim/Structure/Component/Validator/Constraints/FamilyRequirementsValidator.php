@@ -43,7 +43,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($family, Constraint $constraint)
+    public function validate($family, Constraint $constraint): void
     {
         if (!$constraint instanceof FamilyRequirements) {
             throw new UnexpectedTypeException($constraint, FamilyRequirements::class);
@@ -61,7 +61,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
      * @param FamilyInterface    $family
      * @param FamilyRequirements $constraint
      */
-    protected function validateMissingChannels(FamilyInterface $family, FamilyRequirements $constraint)
+    protected function validateMissingChannels(FamilyInterface $family, FamilyRequirements $constraint): void
     {
         $missingChannelCodes = $this->getMissingChannelCodes($family);
         if (0 < count($missingChannelCodes)) {
@@ -84,7 +84,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
      * @param FamilyInterface    $family
      * @param FamilyRequirements $constraint
      */
-    protected function validateRequiredAttributes(FamilyInterface $family, FamilyRequirements $constraint)
+    protected function validateRequiredAttributes(FamilyInterface $family, FamilyRequirements $constraint): void
     {
         $familyAttributeCodes = $family->getAttributeCodes();
 
@@ -106,7 +106,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
      *
      * @return string[]
      */
-    protected function getMissingChannelCodes(FamilyInterface $family)
+    protected function getMissingChannelCodes(FamilyInterface $family): array
     {
         $requirements = $family->getAttributeRequirements();
         $identifierCode = $this->attributeRepository->getIdentifierCode();
@@ -118,8 +118,7 @@ class FamilyRequirementsValidator extends ConstraintValidator
         }
 
         $expectedChannelCodes = $this->channelRepository->getChannelCodes();
-        $missingChannelCodes = array_diff($expectedChannelCodes, $currentChannelCodes);
 
-        return $missingChannelCodes;
+        return array_diff($expectedChannelCodes, $currentChannelCodes);
     }
 }

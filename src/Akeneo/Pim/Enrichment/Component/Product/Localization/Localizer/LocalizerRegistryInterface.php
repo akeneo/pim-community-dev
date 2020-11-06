@@ -26,8 +26,6 @@ interface LocalizerRegistryInterface
      * Get the localizer supported by a product value
      *
      * @param string $attributeType
-     *
-     * @return LocalizerInterface|null
      */
-    public function getLocalizer($attributeType);
+    public function getLocalizer(string $attributeType): ?\Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 }

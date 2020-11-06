@@ -19,7 +19,7 @@ class QueryBuilderUtility
      *
      * @param QueryBuilder $qb
      */
-    public static function removeExtraParameters(QueryBuilder $qb)
+    public static function removeExtraParameters(QueryBuilder $qb): void
     {
         $parameters = $qb->getParameters();
         $dql = $qb->getDQL();

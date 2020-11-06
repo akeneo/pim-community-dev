@@ -27,7 +27,7 @@ abstract class AbstractProperty implements PropertyInterface
     /**
      * {@inheritdoc}
      */
-    final public function init(PropertyConfiguration $params)
+    final public function init(PropertyConfiguration $params): PropertyInterface
     {
         $this->params = $params;
         $this->initialize();
@@ -81,7 +81,7 @@ abstract class AbstractProperty implements PropertyInterface
                 $result = floatval($value);
                 break;
             case self::TYPE_INTEGER:
-                $result = intval($value);
+                $result = (int) $value;
                 break;
             case self::TYPE_BOOLEAN:
                 $result = (bool)$value;
@@ -119,7 +119,7 @@ abstract class AbstractProperty implements PropertyInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $defaultMetadata = [
             // use field name if label not set
@@ -128,9 +128,8 @@ abstract class AbstractProperty implements PropertyInterface
 
         $metadata = $this->get()->toArray([], array_merge($this->excludeParams, $this->excludeParamsDefault));
         $metadata = $this->mapParams($metadata);
-        $metadata = array_merge($defaultMetadata, $this->guessAdditionalMetadata(), $metadata);
 
-        return $metadata;
+        return array_merge($defaultMetadata, $this->guessAdditionalMetadata(), $metadata);
     }
 
     /**
@@ -141,7 +140,7 @@ abstract class AbstractProperty implements PropertyInterface
      * @throws \LogicException
      * @return PropertyConfiguration|mixed
      */
-    protected function get($paramName = null)
+    protected function get(string $paramName = null)
     {
         $value = $this->params;
 
@@ -164,7 +163,7 @@ abstract class AbstractProperty implements PropertyInterface
      *
      * @return mixed
      */
-    protected function getOr($paramName = null, $default = null)
+    protected function getOr(string $paramName = null, $default = null)
     {
         if ($paramName !== null) {
             return isset($this->params[$paramName]) ? $this->params[$paramName] : $default;
@@ -180,15 +179,11 @@ abstract class AbstractProperty implements PropertyInterface
      *
      * @return array
      */
-    protected function mapParams($params)
+    protected function mapParams(array $params)
     {
         $keys = [];
         foreach (array_keys($params) as $key) {
-            if (isset($this->paramMap[$key])) {
-                $keys[] = $this->paramMap[$key];
-            } else {
-                $keys[] = $key;
-            }
+            $keys[] = isset($this->paramMap[$key]) ? $this->paramMap[$key] : $key;
         }
 
         return array_combine($keys, array_values($params));

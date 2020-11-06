@@ -51,7 +51,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         AttributeInterface $attribute,
         $data,
         array $options = []
-    ) {
+    ): void {
         $options = $this->resolver->resolve($options);
         $this->checkData($attribute, $data);
 
@@ -80,7 +80,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function checkData(AttributeInterface $attribute, $data): void
     {
         if (null !== $data && !is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $data);

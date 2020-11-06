@@ -23,14 +23,12 @@ abstract class AbstractViewsList
      *
      * @return View[]
      */
-    abstract protected function getViewsList();
+    abstract protected function getViewsList(): array;
 
     /**
      * Public interface to retrieve list
-     *
-     * @return ArrayCollection
      */
-    public function getList()
+    public function getList(): ArrayCollection
     {
         if (!$this->views instanceof ArrayCollection) {
             $list = $this->getViewsList();
@@ -49,16 +47,14 @@ abstract class AbstractViewsList
      *
      * @return View|bool
      */
-    public function getViewByName($name)
+    public function getViewByName(string $name)
     {
         if (empty($name)) {
             return false;
         }
 
         $filtered = $this->getList()->filter(
-            function (View $view) use ($name) {
-                return $view->getName() === $name;
-            }
+            fn(View $view) => $view->getName() === $name
         );
 
         return $filtered->first();
@@ -66,10 +62,8 @@ abstract class AbstractViewsList
 
     /**
      * Returns array of choices for choice widget
-     *
-     * @return array
      */
-    public function toChoiceList()
+    public function toChoiceList(): array
     {
         $choices = [];
 
@@ -83,15 +77,11 @@ abstract class AbstractViewsList
 
     /**
      * Returns metadata array
-     *
-     * @return array
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $result = $this->getList()->map(
-            function (View $view) {
-                return $view->getMetadata();
-            }
+            fn(View $view) => $view->getMetadata()
         );
 
         return [

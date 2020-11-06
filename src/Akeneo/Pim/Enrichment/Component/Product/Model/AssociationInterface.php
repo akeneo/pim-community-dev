@@ -34,37 +34,29 @@ interface AssociationInterface extends ReferableInterface
      * Set products
      *
      * @param ProductInterface[] $products
-     *
-     * @return AssociationInterface
      */
-    public function setProducts($products);
+    public function setProducts(array $products): \Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
     /**
      * Add a product
      *
      * @param ProductInterface $product
-     *
-     * @return AssociationInterface
      */
-    public function addProduct(ProductInterface $product);
+    public function addProduct(ProductInterface $product): \Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
     /**
      * Remove a product
      *
      * @param ProductInterface $product
-     *
-     * @return AssociationInterface
      */
-    public function removeProduct(ProductInterface $product);
+    public function removeProduct(ProductInterface $product): \Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
     /**
      * Has a product
      *
      * @param ProductInterface $product
-     *
-     * @return bool
      */
-    public function hasProduct(ProductInterface $product);
+    public function hasProduct(ProductInterface $product): bool;
 
     /**
      * Get product models
@@ -90,41 +82,33 @@ interface AssociationInterface extends ReferableInterface
      *
      * @param ProductModelInterface[] $productModels
      */
-    public function setProductModels($productModels): void;
+    public function setProductModels(array $productModels): void;
 
     /**
      * Set groups
      *
      * @param GroupInterface[] $groups
-     *
-     * @return AssociationInterface
      */
-    public function setGroups($groups);
+    public function setGroups(array $groups): \Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
     /**
      * Get association type
-     *
-     * @return AssociationTypeInterface
      */
-    public function getAssociationType();
+    public function getAssociationType(): \Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 
     /**
      * Set association type
      *
      * @param AssociationTypeInterface $associationType
-     *
-     * @return AssociationInterface
      */
-    public function setAssociationType(AssociationTypeInterface $associationType);
+    public function setAssociationType(AssociationTypeInterface $associationType): \Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
     /**
      * Add a group
      *
      * @param GroupInterface $group
-     *
-     * @return AssociationInterface
      */
-    public function addGroup(GroupInterface $group);
+    public function addGroup(GroupInterface $group): \Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
     /**
      * Get groups
@@ -137,24 +121,18 @@ interface AssociationInterface extends ReferableInterface
      * Remove a group
      *
      * @param GroupInterface $group
-     *
-     * @return AssociationInterface
      */
-    public function removeGroup(GroupInterface $group);
+    public function removeGroup(GroupInterface $group): \Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
     /**
      * Get owner
-     *
-     * @return EntityWithAssociationsInterface
      */
-    public function getOwner();
+    public function getOwner(): \Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 
     /**
      * Set owner
      *
      * @param EntityWithAssociationsInterface $owner
-     *
-     * @return AssociationInterface
      */
-    public function setOwner(EntityWithAssociationsInterface $owner);
+    public function setOwner(EntityWithAssociationsInterface $owner): \Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 }

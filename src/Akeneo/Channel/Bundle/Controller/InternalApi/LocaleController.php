@@ -45,10 +45,8 @@ class LocaleController
      * Get the list of all locales
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): JsonResponse
     {
         $filterLocales = $request->query->getBoolean('filter_locales', true);
         $locales = $request->get('activated', false) ?
@@ -66,8 +64,7 @@ class LocaleController
     protected function getActivated(bool $filterLocales)
     {
         $locales = $this->localeRepository->getActivatedLocales();
-        $filteredLocales = $filterLocales ? $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') : $locales;
 
-        return $filteredLocales;
+        return $filterLocales ? $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') : $locales;
     }
 }

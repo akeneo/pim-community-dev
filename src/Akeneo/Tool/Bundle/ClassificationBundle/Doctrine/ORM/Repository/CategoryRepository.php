@@ -25,7 +25,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getCategoriesByIds(array $categoriesIds = [])
+    public function getCategoriesByIds(array $categoriesIds = []): Collection
     {
         if (empty($categoriesIds)) {
             return new ArrayCollection();
@@ -42,15 +42,14 @@ class CategoryRepository extends NestedTreeRepository implements
         $qb->setParameter('categoriesIds', $categoriesIds);
 
         $result = $qb->getQuery()->getResult();
-        $result = new ArrayCollection($result);
 
-        return $result;
+        return new ArrayCollection($result);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCategoriesByCodes(array $categoriesCodes = [])
+    public function getCategoriesByCodes(array $categoriesCodes = []): Collection
     {
         if (empty($categoriesCodes)) {
             return new ArrayCollection();
@@ -67,15 +66,14 @@ class CategoryRepository extends NestedTreeRepository implements
         $qb->setParameter('categoriesCodes', $categoriesCodes);
 
         $result = $qb->getQuery()->getResult();
-        $result = new ArrayCollection($result);
 
-        return $result;
+        return new ArrayCollection($result);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTreeFromParents(array $parentsIds)
+    public function getTreeFromParents(array $parentsIds): array
     {
         if (count($parentsIds) === 0) {
             return [];
@@ -100,7 +98,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getFilledTree(CategoryInterface $root, Collection $categories)
+    public function getFilledTree(CategoryInterface $root, Collection $categories): array
     {
         $parentsIds = [];
         foreach ($categories as $category) {
@@ -122,7 +120,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false)
+    public function getAllChildrenIds(CategoryInterface $parent, bool $includeNode = false): array
     {
         $categoryQb = $this->getAllChildrenQueryBuilder($parent, $includeNode);
         $rootAlias = current($categoryQb->getRootAliases());
@@ -137,7 +135,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAllChildrenCodes(CategoryInterface $parent, $includeNode = false)
+    public function getAllChildrenCodes(CategoryInterface $parent, bool $includeNode = false): array
     {
         $categoryQb = $this->getAllChildrenQueryBuilder($parent, $includeNode);
         $rootAlias = current($categoryQb->getRootAliases());
@@ -158,7 +156,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getCategoryIdsByCodes(array $categoriesCodes)
+    public function getCategoryIdsByCodes(array $categoriesCodes): array
     {
         if (empty($categoriesCodes)) {
             return [];
@@ -186,7 +184,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['code' => $code]);
     }
@@ -194,7 +192,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -202,7 +200,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getChildrenByParentId($parentId)
+    public function getChildrenByParentId(int $parentId): ArrayCollection
     {
         $parent = $this->find($parentId);
 
@@ -212,7 +210,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = [])
+    public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = []): array
     {
         return $this->getChildrenQueryBuilder($parent, true)
             ->andWhere('node.id IN (:ids)')
@@ -224,11 +222,11 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getChildrenTreeByParentId($parentId, $selectNodeId = false, array $grantedCategoryIds = [])
+    public function getChildrenTreeByParentId(int $parentId, bool $selectNodeId = false, array $grantedCategoryIds = []): array
     {
         $children = [];
 
-        if ($selectNodeId === false) {
+        if (!$selectNodeId) {
             $parent = $this->find($parentId);
             $children = $this->childrenHierarchy($parent);
         } else {
@@ -270,7 +268,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function buildTreeNode(array $nodes)
+    public function buildTreeNode(array $nodes): array
     {
         $vectorMap = [];
         $tree = [];
@@ -342,7 +340,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getTrees()
+    public function getTrees(): array
     {
         return $this->getChildren(null, true, 'created', 'DESC');
     }
@@ -350,22 +348,21 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getGrantedTrees(array $grantedCategoryIds = [])
+    public function getGrantedTrees(array $grantedCategoryIds = []): array
     {
         $qb = $this->getChildrenQueryBuilder(null, true, 'created', 'DESC');
-        $result = $qb
+
+        return $qb
             ->andWhere('node.id IN (:ids)')
             ->setParameter('ids', $grantedCategoryIds)
             ->getQuery()
             ->getResult();
-
-        return $result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode): bool
     {
         $sameRoot = $parentNode->getRoot() === $childNode->getRoot();
 
@@ -378,7 +375,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getOrderedAndSortedByTreeCategories()
+    public function getOrderedAndSortedByTreeCategories(): array
     {
         $queryBuilder = $this->createQueryBuilder('c');
         $queryBuilder = $queryBuilder->orderBy('c.root')->addOrderBy('c.left');
@@ -391,10 +388,8 @@ class CategoryRepository extends NestedTreeRepository implements
      *
      * @param CategoryInterface $category    the requested node
      * @param bool              $includeNode true to include actual node in query result
-     *
-     * @return QueryBuilder
      */
-    protected function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false)
+    protected function getAllChildrenQueryBuilder(CategoryInterface $category, bool $includeNode = false): QueryBuilder
     {
         return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
     }
@@ -403,7 +398,7 @@ class CategoryRepository extends NestedTreeRepository implements
      * persistAsNextSiblingOf is working with the magic method __call()
      * To pass the PHP checking, we have to do this trick.
      */
-    public function persistAsNextSiblingOf(CategoryInterface $node, CategoryInterface $sibling)
+    public function persistAsNextSiblingOf(CategoryInterface $node, CategoryInterface $sibling): void
     {
         parent::persistAsNextSiblingOf($node, $sibling);
     }
@@ -412,7 +407,7 @@ class CategoryRepository extends NestedTreeRepository implements
      * persistAsFirstChildOf is working with the magic method __call()
      * To pass the PHP checking, we have to do this trick.
      */
-    public function persistAsFirstChildOf(CategoryInterface $node, CategoryInterface $parent)
+    public function persistAsFirstChildOf(CategoryInterface $node, CategoryInterface $parent): void
     {
         parent::persistAsFirstChildOf($node, $parent);
     }

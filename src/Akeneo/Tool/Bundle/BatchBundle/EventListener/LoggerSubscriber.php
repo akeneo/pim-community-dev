@@ -44,7 +44,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             EventInterface::JOB_EXECUTION_CREATED      => 'jobExecutionCreated',
@@ -67,7 +67,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param string $translationLocale
      */
-    public function setTranslationLocale($translationLocale)
+    public function setTranslationLocale(string $translationLocale): void
     {
         $this->translationLocale = $translationLocale;
     }
@@ -77,7 +77,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param string $translationDomain
      */
-    public function setTranslationDomain($translationDomain)
+    public function setTranslationDomain(string $translationDomain): void
     {
         $this->translationDomain = $translationDomain;
     }
@@ -87,7 +87,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function jobExecutionCreated(JobExecutionEvent $event)
+    public function jobExecutionCreated(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -99,7 +99,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function beforeJobExecution(JobExecutionEvent $event)
+    public function beforeJobExecution(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -111,7 +111,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function jobExecutionStopped(JobExecutionEvent $event)
+    public function jobExecutionStopped(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -123,7 +123,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function jobExecutionInterrupted(JobExecutionEvent $event)
+    public function jobExecutionInterrupted(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -136,7 +136,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function jobExecutionFatalError(JobExecutionEvent $event)
+    public function jobExecutionFatalError(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -151,7 +151,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function beforeJobStatusUpgrade(JobExecutionEvent $event)
+    public function beforeJobStatusUpgrade(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -163,7 +163,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param StepExecutionEvent $event
      */
-    public function beforeStepExecution(StepExecutionEvent $event)
+    public function beforeStepExecution(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
@@ -175,7 +175,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param StepExecutionEvent $event
      */
-    public function stepExecutionSucceeded(StepExecutionEvent $event)
+    public function stepExecutionSucceeded(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
@@ -187,7 +187,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param StepExecutionEvent $event
      */
-    public function stepExecutionInterrupted(StepExecutionEvent $event)
+    public function stepExecutionInterrupted(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
@@ -204,7 +204,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @return null
      */
-    public function stepExecutionErrored(StepExecutionEvent $event)
+    public function stepExecutionErrored(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
@@ -214,14 +214,12 @@ class LoggerSubscriber implements EventSubscriberInterface
                 implode(
                     ', ',
                     array_map(
-                        function ($exception) {
-                            return $this->translator->trans(
-                                $exception['message'],
-                                $exception['messageParameters'],
-                                $this->translationDomain,
-                                $this->translationLocale
-                            );
-                        },
+                        fn($exception) => $this->translator->trans(
+                            $exception['message'],
+                            $exception['messageParameters'],
+                            $this->translationDomain,
+                            $this->translationLocale
+                        ),
                         $stepExecution->getFailureExceptions()
                     )
                 )
@@ -234,7 +232,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param StepExecutionEvent $event
      */
-    public function stepExecutionCompleted(StepExecutionEvent $event)
+    public function stepExecutionCompleted(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
@@ -246,7 +244,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param InvalidItemEvent $event
      */
-    public function invalidItem(InvalidItemEvent $event)
+    public function invalidItem(InvalidItemEvent $event): void
     {
         $this->logger->warning(
             sprintf(
@@ -267,10 +265,8 @@ class LoggerSubscriber implements EventSubscriberInterface
      * Format anything as a string
      *
      * @param mixed $data
-     *
-     * @return string
      */
-    private function formatAsString($data)
+    private function formatAsString($data): string
     {
         if (is_array($data)) {
             $result = [];
@@ -282,7 +278,7 @@ class LoggerSubscriber implements EventSubscriberInterface
                 );
             }
 
-            return sprintf("[%s]", join(', ', $result));
+            return sprintf("[%s]", implode(', ', $result));
         }
 
         if (is_bool($data)) {

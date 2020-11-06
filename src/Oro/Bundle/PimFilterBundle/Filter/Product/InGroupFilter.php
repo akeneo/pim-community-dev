@@ -47,7 +47,7 @@ class InGroupFilter extends BooleanFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -55,7 +55,7 @@ class InGroupFilter extends BooleanFilter
         }
 
         $groupId = $this->extractor->getDatagridParameter('currentGroup');
-        if (!$groupId) {
+        if ($groupId === '') {
             throw new \LogicException('The current product group must be configured');
         }
 

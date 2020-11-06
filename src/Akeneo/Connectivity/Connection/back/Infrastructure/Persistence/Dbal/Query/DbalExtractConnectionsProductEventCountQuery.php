@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\AllConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\EventTypes;
 use Akeneo\Connectivity\Connection\Domain\Audit\Model\Write\HourlyEventCount;
@@ -27,7 +28,7 @@ class DbalExtractConnectionsProductEventCountQuery implements ExtractConnections
     /** @var string */
     private $productClass;
 
-    public function __construct(DbalConnection $dbalConnection, string $productClass)
+    public function __construct(Connection $dbalConnection, string $productClass)
     {
         $this->dbalConnection = $dbalConnection;
         $this->productClass = $productClass;

@@ -64,13 +64,9 @@ class LabelCollection
 
     public function filterByLocaleIdentifiers(array $localeIdentifiers): LabelCollection
     {
-        $localeCodes = array_map(function (LocaleIdentifier $localeIdentifier) {
-            return $localeIdentifier->normalize();
-        }, $localeIdentifiers);
+        $localeCodes = array_map(fn(LocaleIdentifier $localeIdentifier) => $localeIdentifier->normalize(), $localeIdentifiers);
 
-        $filteredLabels = array_filter($this->translatedLabels, function ($labelCode) use ($localeCodes) {
-            return in_array($labelCode, $localeCodes);
-        }, ARRAY_FILTER_USE_KEY);
+        $filteredLabels = array_filter($this->translatedLabels, fn($labelCode) => in_array($labelCode, $localeCodes), ARRAY_FILTER_USE_KEY);
 
         return new self($filteredLabels);
     }

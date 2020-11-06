@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,7 +55,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -61,7 +63,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -69,7 +71,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): GroupInterface
     {
         $this->code = $code;
 
@@ -79,7 +81,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setType(GroupTypeInterface $type)
+    public function setType(GroupTypeInterface $type): GroupInterface
     {
         $this->type = $type;
 
@@ -89,7 +91,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): \Akeneo\Pim\Structure\Component\Model\GroupTypeInterface
     {
         return $this->type;
     }
@@ -97,7 +99,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 
@@ -107,7 +109,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->translations;
     }
@@ -115,7 +117,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null): ?GroupTranslationInterface
+    public function getTranslation(?string $locale = null): AbstractTranslation
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {
@@ -139,7 +141,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addTranslation(TranslationInterface $translation)
+    public function addTranslation(TranslationInterface $translation): TranslatableInterface
     {
         if (!$this->translations->contains($translation)) {
             $this->translations->add($translation);
@@ -151,7 +153,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTranslation(TranslationInterface $translation)
+    public function removeTranslation(TranslationInterface $translation): TranslatableInterface
     {
         $this->translations->removeElement($translation);
 
@@ -161,7 +163,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslationFQCN()
+    public function getTranslationFQCN(): string
     {
         return GroupTranslation::class;
     }
@@ -169,9 +171,9 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
-        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+        $translated = $this->getTranslation() !== null ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
@@ -179,7 +181,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): GroupInterface
     {
         $this->getTranslation()->setLabel($label);
 
@@ -189,7 +191,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function addProduct(ProductInterface $product)
+    public function addProduct(ProductInterface $product): GroupInterface
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
@@ -202,7 +204,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function removeProduct(ProductInterface $product)
+    public function removeProduct(ProductInterface $product): GroupInterface
     {
         $this->products->removeElement($product);
         $product->removeGroup($this);
@@ -213,7 +215,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getProducts()
+    public function getProducts(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->products;
     }
@@ -221,7 +223,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setProducts(array $products)
+    public function setProducts(array $products): GroupInterface
     {
         $this->products = new ArrayCollection($products);
 
@@ -233,7 +235,7 @@ class Group implements GroupInterface
      *
      * @return string[]
      */
-    public function getGroupSequence()
+    public function getGroupSequence(): array
     {
         return ['Group', strtolower($this->getType()->getCode())];
     }
@@ -251,7 +253,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->code;
     }

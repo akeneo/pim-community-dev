@@ -17,15 +17,11 @@ interface AttributeTranslationInterface extends TranslationInterface
      * Set label
      *
      * @param string $label
-     *
-     * @return AttributeTranslationInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
 
     /**
      * Get the label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 }

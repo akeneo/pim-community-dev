@@ -12,7 +12,7 @@ class FindNonExistingProductModelCodesQuery implements FindNonExistingProductMod
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -33,8 +33,6 @@ SQL;
             ['product_model_codes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll(\PDO::FETCH_COLUMN);
 
-        $nonExistingProductModelCodes = array_values(array_diff($productModelCodes, $results));
-
-        return $nonExistingProductModelCodes;
+        return array_values(array_diff($productModelCodes, $results));
     }
 }

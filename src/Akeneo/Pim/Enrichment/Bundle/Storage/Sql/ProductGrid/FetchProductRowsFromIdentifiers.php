@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -26,7 +27,7 @@ final class FetchProductRowsFromIdentifiers
      * @param Connection                      $connection
      * @param WriteValueCollectionFactory $valueCollectionFactory
      */
-    public function __construct(Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, WriteValueCollectionFactory $valueCollectionFactory)
     {
         $this->connection = $connection;
         $this->valueCollectionFactory = $valueCollectionFactory;
@@ -65,7 +66,7 @@ final class FetchProductRowsFromIdentifiers
             if (!$this->isExistingProduct($row)) {
                 continue;
             }
-            $products[] = ReadModel\Row::fromProduct(
+            $products[] = Row::fromProduct(
                 $row['identifier'],
                 $row['family_label'],
                 $row['groups'],
@@ -162,10 +163,8 @@ SQL;
 
         foreach ($valueCollections as $productIdentifier => $valueCollection) {
             $result[$productIdentifier]['value_collection'] = $valueCollection->filter(
-                function (ValueInterface $value) use ($channelCode, $localeCode) {
-                    return ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)
-                        && ($value->getLocaleCode() === $localeCode || $value->getLocaleCode() === null);
-                }
+                fn(ValueInterface $value) => ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)
+                    && ($value->getLocaleCode() === $localeCode || $value->getLocaleCode() === null)
             );
         }
 

@@ -15,51 +15,39 @@ interface TranslatableInterface
 {
     /**
      * Get translations
-     *
-     * @return ArrayCollection
      */
-    public function getTranslations();
+    public function getTranslations(): ArrayCollection;
 
     /**
      * Get translation for current locale
      *
      * @param string|null $locale
-     *
-     * @return AbstractTranslation
      */
-    public function getTranslation(?string $locale = null);
+    public function getTranslation(?string $locale = null): AbstractTranslation;
 
     /**
      * Add translation
      *
      * @param TranslationInterface $translation
-     *
-     * @return TranslatableInterface
      */
-    public function addTranslation(TranslationInterface $translation);
+    public function addTranslation(TranslationInterface $translation): \Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 
     /**
      * Remove translation
      *
      * @param TranslationInterface $translation
-     *
-     * @return TranslatableInterface
      */
-    public function removeTranslation(TranslationInterface $translation);
+    public function removeTranslation(TranslationInterface $translation): \Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 
     /**
      * Get translation full qualified class name
-     *
-     * @return string
      */
-    public function getTranslationFQCN();
+    public function getTranslationFQCN(): string;
 
     /**
      * Set the locale used for translation
      *
      * @param string $locale
-     *
-     * @return TranslatableInterface
      */
-    public function setLocale($locale);
+    public function setLocale(string $locale): \Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 }

@@ -71,10 +71,8 @@ class FileController
      * @param Request $request
      * @param string  $filename
      * @param string  $filter
-     *
-     * @return RedirectResponse
      */
-    public function showAction(Request $request, $filename, $filter = null)
+    public function showAction(Request $request, string $filename, string $filter = null): RedirectResponse
     {
         $filename = urldecode($filename);
         $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename);
@@ -112,10 +110,8 @@ class FileController
      *
      * @throws \RuntimeException
      * @throws BadRequestHttpException
-     *
-     * @return RedirectResponse
      */
-    public function cacheAction(Request $request, $path, $filter)
+    public function cacheAction(Request $request, string $path, string $filter): RedirectResponse
     {
         return $this->imagineController->filterAction($request, $path, $filter);
     }
@@ -124,10 +120,8 @@ class FileController
      * @param string $filename
      *
      * @throws NotFoundHttpException
-     *
-     * @return StreamedFileResponse
      */
-    public function downloadAction($filename)
+    public function downloadAction(string $filename): StreamedFileResponse
     {
         $filename = urldecode($filename);
 
@@ -157,10 +151,8 @@ class FileController
      * Get the default thumbnail from a mime type
      *
      * @param string $mimeType
-     *
-     * @return RedirectResponse
      */
-    public function defaultThumbnailAction($mimeType)
+    public function defaultThumbnailAction(string $mimeType): RedirectResponse
     {
         $fileType = $this->fileTypeGuesser->guess($mimeType);
 
@@ -170,10 +162,8 @@ class FileController
     /**
      * @param string $fileType
      * @param string $filter
-     *
-     * @return RedirectResponse
      */
-    protected function renderDefaultImage($fileType, $filter)
+    protected function renderDefaultImage(string $fileType, string $filter): RedirectResponse
     {
         $imageUrl = $this->defaultImageProvider->getImageUrl($fileType, $filter);
 
@@ -185,10 +175,8 @@ class FileController
      * If the file is linked to a FileInfo, returns its Mime type.
      *
      * @param string $filename
-     *
-     * @return string
      */
-    protected function getMimeType($filename)
+    protected function getMimeType(string $filename): string
     {
         $mimeType = null;
 

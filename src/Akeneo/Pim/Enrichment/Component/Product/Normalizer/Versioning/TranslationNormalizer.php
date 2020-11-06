@@ -22,10 +22,8 @@ class TranslationNormalizer implements NormalizerInterface
      * {@inheritdoc}
      *
      * @param array $translatable
-     *
-     * @return array
      */
-    public function normalize($translatable, $format = null, array $context = [])
+    public function normalize($translatable, $format = null, array $context = []): array
     {
         $context = array_merge(
             [
@@ -56,7 +54,7 @@ class TranslationNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return is_array($data) && in_array($format, $this->supportedFormats) && isset($data['labels']);
     }

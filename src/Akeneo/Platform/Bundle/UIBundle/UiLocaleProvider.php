@@ -40,7 +40,7 @@ class UiLocaleProvider implements LocaleProviderInterface
     public function __construct(
         TranslatorInterface $translator,
         LocaleRepositoryInterface $localeRepository,
-        $minPercentage,
+        float $minPercentage,
         array $localeCodes
     ) {
         $this->translator = $translator;
@@ -54,7 +54,7 @@ class UiLocaleProvider implements LocaleProviderInterface
      *
      * @return LocaleInterface[]
      */
-    public function getLocales()
+    public function getLocales(): array
     {
         $fallbackLocales = $this->translator->getFallbackLocales();
         $mainProgress = $this->getProgress(self::MAIN_LOCALE);
@@ -73,10 +73,8 @@ class UiLocaleProvider implements LocaleProviderInterface
      * Return the number of translated messages
      *
      * @param string $locale
-     *
-     * @return int
      */
-    protected function getProgress($locale)
+    protected function getProgress(string $locale): int
     {
         $catalogue = $this->translator->getCatalogue($locale);
 
@@ -90,10 +88,8 @@ class UiLocaleProvider implements LocaleProviderInterface
      * @param array  $fallbackLocales
      * @param string $code
      * @param int    $mainProgress
-     *
-     * @return bool
      */
-    protected function isAvailableLocale(array $fallbackLocales, $code, $mainProgress)
+    protected function isAvailableLocale(array $fallbackLocales, string $code, int $mainProgress): bool
     {
         if (in_array($code, $fallbackLocales)) {
             return true;

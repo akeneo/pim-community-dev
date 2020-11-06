@@ -28,8 +28,6 @@ interface MappingsOverrideConfiguratorInterface
      * @param ClassMetadata $metadata
      * @param mixed         $configuration
      * @param array         $mappingOverrides
-     *
-     * @return ClassMetadata
      */
-    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration);
+    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration): \Doctrine\Common\Persistence\Mapping\ClassMetadata;
 }

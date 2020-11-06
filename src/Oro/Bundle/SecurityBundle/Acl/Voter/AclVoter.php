@@ -46,7 +46,7 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
      *
      * @param AclExtensionSelector $selector
      */
-    public function setAclExtensionSelector(AclExtensionSelector $selector)
+    public function setAclExtensionSelector(AclExtensionSelector $selector): void
     {
         $this->extensionSelector = $selector;
     }
@@ -54,7 +54,7 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
     /**
      * {@inheritdoc}
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes): int
     {
         $this->securityToken = $token;
         $this->object = $object instanceof FieldVote
@@ -67,10 +67,9 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
             return self::ACCESS_ABSTAIN;
         }
 
-        // replace empty permissions with default ones
-        for ($i = 0; $i < count($attributes); $i++) {
-            if (empty($attributes[$i])) {
-                $attributes[$i] = $this->extension->getDefaultPermission();
+        foreach ($attributes as $i => $attribute) {
+            if (empty($attribute)) {
+                $attribute = $this->extension->getDefaultPermission();
             }
         }
 
@@ -94,7 +93,7 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
     /**
      * {@inheritdoc}
      */
-    public function getSecurityToken()
+    public function getSecurityToken(): TokenInterface
     {
         return $this->securityToken;
     }
@@ -102,7 +101,7 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
     /**
      * {@inheritdoc}
      */
-    public function getAclExtension()
+    public function getAclExtension(): \Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface
     {
         return $this->extension;
     }

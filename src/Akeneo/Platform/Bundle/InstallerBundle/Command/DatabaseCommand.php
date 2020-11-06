@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
+use Doctrine\DBAL\DBALException;
 use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
@@ -78,7 +79,7 @@ class DatabaseCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('pim:installer:db')
@@ -123,7 +124,7 @@ class DatabaseCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->commandExecutor = new CommandExecutor(
             $input,
@@ -135,7 +136,7 @@ class DatabaseCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Prepare database schema</info>');
 
@@ -205,7 +206,7 @@ class DatabaseCommand extends Command
 
         $this->setLatestKnownMigration($input);
 
-        return $this;
+        return (int) $this;
     }
 
     /**
@@ -214,7 +215,7 @@ class DatabaseCommand extends Command
      *
      * @param OutputInterface $output
      */
-    protected function resetElasticsearchIndex(OutputInterface $output)
+    protected function resetElasticsearchIndex(OutputInterface $output): void
     {
         $output->writeln('<info>Reset elasticsearch indexes</info>');
 
@@ -230,9 +231,9 @@ class DatabaseCommand extends Command
      *
      * @param OutputInterface $output
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
-    protected function createNotMappedTables(OutputInterface $output)
+    protected function createNotMappedTables(OutputInterface $output): void
     {
         $output->writeln('<info>Create session table</info>');
         $sessionTableSql = "CREATE TABLE pim_session (
@@ -256,10 +257,8 @@ class DatabaseCommand extends Command
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
-     *
-     * @return DatabaseCommand
      */
-    protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
+    protected function loadFixturesStep(InputInterface $input, OutputInterface $output): self
     {
         $catalog = $input->getOption('catalog');
         if ($input->getOption('env') === 'behat') {
@@ -350,7 +349,7 @@ class DatabaseCommand extends Command
     /**
      * Launches all commands needed after fixtures loading
      */
-    protected function launchCommands()
+    protected function launchCommands(): self
     {
         $this->commandExecutor->runCommand('pim:versioning:refresh');
 

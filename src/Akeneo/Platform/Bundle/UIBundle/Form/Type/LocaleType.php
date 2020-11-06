@@ -23,7 +23,7 @@ class LocaleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $choices = $this->localeProvider->getLocales();
         $resolver->setDefaults(['choices' => $choices]);
@@ -32,7 +32,7 @@ class LocaleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return SymfonyLocaleType::class;
     }
@@ -40,7 +40,7 @@ class LocaleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_locale';
     }

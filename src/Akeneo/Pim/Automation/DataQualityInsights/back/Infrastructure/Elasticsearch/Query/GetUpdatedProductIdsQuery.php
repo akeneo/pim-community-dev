@@ -94,7 +94,7 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
             throw new \Exception('No id not found in source when searching updated products');
         }
 
-        $productId =  intval(str_replace('product_', '', $productData['_source']['id']));
+        $productId =  (int) str_replace('product_', '', $productData['_source']['id']);
 
         return new ProductId($productId);
     }

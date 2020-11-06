@@ -42,7 +42,7 @@ class Locale implements ArrayConverterInterface
      *     'enabled' => true,
      * ]
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $this->fieldChecker->checkFieldsPresence($item, ['code']);
         $this->fieldChecker->checkFieldsFilling($item, ['code']);
@@ -59,10 +59,8 @@ class Locale implements ArrayConverterInterface
      * @param array  $convertedItem
      * @param string $field
      * @param mixed  $data
-     *
-     * @return array
      */
-    protected function convertField(array $convertedItem, $field, $data)
+    protected function convertField(array $convertedItem, string $field, $data): array
     {
         if ('code' === $field) {
             $convertedItem[$field] = $data;

@@ -16,7 +16,7 @@ final class GetProductAssociationsByProductModelCodes
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -27,9 +27,7 @@ final class GetProductAssociationsByProductModelCodes
             return [];
         }
 
-        $productModelCodes = (function (string ...$codes) {
-            return $codes;
-        })(... $productModelCodes);
+        $productModelCodes = (fn(string ...$codes) => $codes)(... $productModelCodes);
 
         $query = <<<SQL
 SELECT

@@ -28,7 +28,7 @@ class ElasticsearchFilterValidator
         $this->attributeValidator = $attributeValidator;
     }
 
-    public function validateLocaleForAttribute(string $attributeCode, ?string $localeCode)
+    public function validateLocaleForAttribute(string $attributeCode, ?string $localeCode): void
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
@@ -40,7 +40,7 @@ class ElasticsearchFilterValidator
         }
     }
 
-    public function validateChannelForAttribute(string $attributeCode, ?string $channelCode)
+    public function validateChannelForAttribute(string $attributeCode, ?string $channelCode): void
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 

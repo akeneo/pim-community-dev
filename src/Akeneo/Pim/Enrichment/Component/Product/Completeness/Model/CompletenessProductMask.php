@@ -41,7 +41,7 @@ class CompletenessProductMask
         $this->mask = $mask;
     }
 
-    public function familyCode(): ?string
+    public function familyCode(): string
     {
         return $this->familyCode;
     }
@@ -72,9 +72,7 @@ class CompletenessProductMask
             return new ProductCompletenessWithMissingAttributeCodesCollection($this->id, []);
         } else {
             $productCompletenesses = array_map(
-                function (RequiredAttributesMaskForChannelAndLocale $attributeRequirementMaskPerLocaleAndChannel): ProductCompletenessWithMissingAttributeCodes {
-                    return $this->completenessForChannelAndLocale($this->mask, $attributeRequirementMaskPerLocaleAndChannel);
-                },
+                fn(RequiredAttributesMaskForChannelAndLocale $attributeRequirementMaskPerLocaleAndChannel): ProductCompletenessWithMissingAttributeCodes => $this->completenessForChannelAndLocale($this->mask, $attributeRequirementMaskPerLocaleAndChannel),
                 $attributeRequirementMask->masks()
             );
 
@@ -86,9 +84,7 @@ class CompletenessProductMask
     {
         $difference = array_diff($attributeRequirementMaskPerChannelAndLocale->mask(), $productMask);
 
-        $missingAttributeCodes = array_map(function (string $mask) : string {
-            return substr($mask, 0, strpos($mask, RequiredAttributesMaskForChannelAndLocale::ATTRIBUTE_CHANNEL_LOCALE_SEPARATOR));
-        }, $difference);
+        $missingAttributeCodes = array_map(fn(string $mask): string => substr($mask, 0, strpos($mask, RequiredAttributesMaskForChannelAndLocale::ATTRIBUTE_CHANNEL_LOCALE_SEPARATOR)), $difference);
 
         return new ProductCompletenessWithMissingAttributeCodes(
             $attributeRequirementMaskPerChannelAndLocale->channelCode(),

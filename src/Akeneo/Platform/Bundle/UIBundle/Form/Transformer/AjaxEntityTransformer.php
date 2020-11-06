@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -30,7 +31,7 @@ class AjaxEntityTransformer implements DataTransformerInterface
      * @param AttributeOptionRepository $repository
      * @param array                     $options
      */
-    public function __construct(AttributeOptionRepository $repository, array $options)
+    public function __construct(AttributeOptionRepositoryInterface $repository, array $options)
     {
         $this->repository = $repository;
         $this->options = $options;
@@ -102,10 +103,8 @@ class AjaxEntityTransformer implements DataTransformerInterface
      * Sets the choices representing an entity in an array
      *
      * @param object $entity
-     *
-     * @return array
      */
-    protected function getOption($entity)
+    protected function getOption(object $entity): array
     {
         return [
             'id'    => $this->repository->getOptionId($entity),
@@ -117,10 +116,8 @@ class AjaxEntityTransformer implements DataTransformerInterface
      * Returns an entity for a value
      *
      * @param mixed $id
-     *
-     * @return object
      */
-    protected function getEntity($id)
+    protected function getEntity($id): object
     {
         return $this->repository->getOption($id, $this->options['collection_id'], $this->options);
     }

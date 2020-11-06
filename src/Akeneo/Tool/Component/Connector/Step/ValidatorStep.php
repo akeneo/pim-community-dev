@@ -27,7 +27,7 @@ class ValidatorStep extends AbstractStep
      * @param CharsetValidator         $charsetValidator
      */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         CharsetValidator $charsetValidator
@@ -39,16 +39,13 @@ class ValidatorStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    protected function doExecute(StepExecution $stepExecution)
+    protected function doExecute(StepExecution $stepExecution): void
     {
         $this->charsetValidator->setStepExecution($stepExecution);
         $this->charsetValidator->validate();
     }
 
-    /**
-     * @return CharsetValidator
-     */
-    public function getCharsetValidator()
+    public function getCharsetValidator(): \Akeneo\Tool\Component\Connector\Item\CharsetValidator
     {
         return $this->charsetValidator;
     }

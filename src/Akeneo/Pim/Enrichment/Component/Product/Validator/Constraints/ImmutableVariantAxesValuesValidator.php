@@ -56,9 +56,7 @@ class ImmutableVariantAxesValuesValidator extends ConstraintValidator
             return;
         }
 
-        $axisCodes = array_map(function (AttributeInterface $axis) {
-            return $axis->getCode();
-        }, $this->attributesProvider->getAxes($entity));
+        $axisCodes = array_map(fn(AttributeInterface $axis) => $axis->getCode(), $this->attributesProvider->getAxes($entity));
 
         if (null === $entity->getRawValues()) {
             return;

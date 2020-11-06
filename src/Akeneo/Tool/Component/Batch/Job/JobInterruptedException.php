@@ -28,7 +28,7 @@ class JobInterruptedException extends \Exception
     {
         parent::__construct($message, $code, $previous);
 
-        if ($status) {
+        if ($status !== null) {
             $this->status = $status;
         } else {
             $this->status = new BatchStatus(BatchStatus::STOPPED);
@@ -40,7 +40,7 @@ class JobInterruptedException extends \Exception
      *
      * @return BatchStatus the status of the interruption (default STOPPED)
      */
-    public function getStatus()
+    public function getStatus(): ?\Akeneo\Tool\Component\Batch\Job\BatchStatus
     {
         return $this->status;
     }

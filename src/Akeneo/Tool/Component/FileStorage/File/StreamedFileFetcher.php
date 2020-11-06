@@ -19,7 +19,7 @@ class StreamedFileFetcher implements FileFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch(FilesystemInterface $filesystem, $fileKey, array $options = [])
+    public function fetch(FilesystemInterface $filesystem, string $fileKey, array $options = []): \SplFileInfo
     {
         if (!$filesystem->has($fileKey)) {
             throw new FileNotFoundException($fileKey);

@@ -21,5 +21,5 @@ interface HydratorInterface
      *
      * @return ResultRecord[]
      */
-    public function hydrate($qb, array $options = []);
+    public function hydrate($qb, array $options = []): array;
 }

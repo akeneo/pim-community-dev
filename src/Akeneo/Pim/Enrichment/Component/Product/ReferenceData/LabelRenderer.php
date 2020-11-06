@@ -19,7 +19,7 @@ class LabelRenderer
      *
      * @return string|null
      */
-    public function render(ReferenceDataInterface $referenceData, $fallbackOnCode = true)
+    public function render(ReferenceDataInterface $referenceData, bool $fallbackOnCode = true)
     {
         if (null !== $labelProperty = $referenceData::getLabelProperty()) {
             $getter = MethodNameGuesser::guess('get', $labelProperty);
@@ -39,10 +39,8 @@ class LabelRenderer
 
     /**
      * @param ReferenceDataInterface $referenceData
-     *
-     * @return string
      */
-    public function getLabelProperty(ReferenceDataInterface $referenceData)
+    public function getLabelProperty(ReferenceDataInterface $referenceData): ?string
     {
         return $referenceData::getLabelProperty();
     }

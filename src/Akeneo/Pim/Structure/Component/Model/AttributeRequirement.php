@@ -41,7 +41,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function setFamily(FamilyInterface $family)
+    public function setFamily(FamilyInterface $family): AttributeRequirementInterface
     {
         $this->family = $family;
 
@@ -51,7 +51,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function getFamily()
+    public function getFamily(): FamilyInterface
     {
         return $this->family;
     }
@@ -59,7 +59,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttribute(AttributeInterface $attribute)
+    public function setAttribute(AttributeInterface $attribute): AttributeRequirementInterface
     {
         $this->attribute = $attribute;
 
@@ -69,7 +69,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttribute()
+    public function getAttribute(): \Akeneo\Pim\Structure\Component\Model\AttributeInterface
     {
         return $this->attribute;
     }
@@ -77,7 +77,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeCode()
+    public function getAttributeCode(): string
     {
         return $this->attribute->getCode();
     }
@@ -85,7 +85,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function setChannel(ChannelInterface $channel)
+    public function setChannel(ChannelInterface $channel): AttributeRequirementInterface
     {
         $this->channel = $channel;
 
@@ -95,7 +95,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function getChannel()
+    public function getChannel(): \Akeneo\Channel\Component\Model\ChannelInterface
     {
         return $this->channel;
     }
@@ -103,7 +103,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function getChannelCode()
+    public function getChannelCode(): string
     {
         return $this->channel->getCode();
     }
@@ -111,7 +111,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function setRequired($required)
+    public function setRequired(bool $required): AttributeRequirementInterface
     {
         $this->required = (bool) $required;
 
@@ -121,7 +121,7 @@ class AttributeRequirement implements AttributeRequirementInterface
     /**
      * {@inheritdoc}
      */
-    public function isRequired()
+    public function isRequired(): bool
     {
         return $this->required;
     }

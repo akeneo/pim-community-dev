@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Component\FileStorage;
 
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -24,7 +25,7 @@ class FileInfoFactory implements FileInfoFactoryInterface
      * @param PathGeneratorInterface $pathGenerator
      * @param string                 $fileClass
      */
-    public function __construct(PathGeneratorInterface $pathGenerator, $fileClass)
+    public function __construct(PathGeneratorInterface $pathGenerator, string $fileClass)
     {
         $this->pathGenerator = $pathGenerator;
         $this->fileClass = $fileClass;
@@ -33,7 +34,7 @@ class FileInfoFactory implements FileInfoFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias)
+    public function createFromRawFile(\SplFileInfo $rawFile, string $destFsAlias): FileInfoInterface
     {
         $pathInfo = $this->pathGenerator->generate($rawFile);
         $sha1 = sha1_file($rawFile->getPathname());

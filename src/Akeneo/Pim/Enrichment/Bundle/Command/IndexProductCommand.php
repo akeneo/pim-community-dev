@@ -42,7 +42,7 @@ class IndexProductCommand extends Command
     public function __construct(
         ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         Client $productAndProductModelClient,
-        Connection $connection
+        \Doctrine\DBAL\Driver\Connection $connection
     ) {
         parent::__construct();
         $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
@@ -53,7 +53,7 @@ class IndexProductCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addArgument(
@@ -74,7 +74,7 @@ class IndexProductCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->checkIndexExists();
 

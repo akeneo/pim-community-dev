@@ -39,7 +39,7 @@ class DummyConverter implements ArrayConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         if (!empty($this->fieldsPresence)) {
             $this->checker->checkFieldsPresence($item, $this->fieldsPresence);

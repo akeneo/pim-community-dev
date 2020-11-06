@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Tool\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
@@ -74,15 +75,12 @@ class VersionManager
     /**
      * @param string $username
      */
-    public function setUsername($username)
+    public function setUsername(string $username): void
     {
         $this->username = $username;
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -90,15 +88,12 @@ class VersionManager
     /**
      * @param bool $mode
      */
-    public function setRealTimeVersioning($mode)
+    public function setRealTimeVersioning(bool $mode): void
     {
         $this->realTimeVersioning = $mode;
     }
 
-    /**
-     * @return bool
-     */
-    public function isRealTimeVersioning()
+    public function isRealTimeVersioning(): bool
     {
         return $this->realTimeVersioning;
     }
@@ -111,7 +106,7 @@ class VersionManager
      *
      * @return Version[]
      */
-    public function buildVersion($versionable, array $changeset = [])
+    public function buildVersion(object $versionable, array $changeset = []): array
     {
         $createdVersions = [];
 
@@ -125,16 +120,10 @@ class VersionManager
 
             $builtVersions = array_filter(
                 $createdVersions,
-                function ($version) {
-                    return count($version->getChangeset()) > 0;
-                }
+                fn($version) => count($version->getChangeset()) > 0
             );
 
-            if (!empty($builtVersions)) {
-                $previousVersion = end($builtVersions);
-            } else {
-                $previousVersion = $this->getNewestLogEntry($versionable);
-            }
+            $previousVersion = !empty($builtVersions) ? end($builtVersions) : $this->getNewestLogEntry($versionable);
 
             $createdVersions[] = $this->versionBuilder
                 ->buildVersion(
@@ -162,18 +151,13 @@ class VersionManager
 
     /**
      * Get object manager for Version
-     *
-     * @return ObjectManager
      */
-    public function getObjectManager()
+    public function getObjectManager(): \Doctrine\Common\Persistence\ObjectManager
     {
         return $this->objectManager;
     }
 
-    /**
-     * @return VersionRepositoryInterface
-     */
-    public function getVersionRepository()
+    public function getVersionRepository(): ObjectRepository
     {
         return $this->objectManager->getRepository(Version::class);
     }
@@ -182,10 +166,8 @@ class VersionManager
      * Return log entries
      *
      * @param object $versionable
-     *
-     * @return ArrayCollection
      */
-    public function getLogEntries($versionable)
+    public function getLogEntries(object $versionable): ?array
     {
         return $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($versionable), $versionable->getId());
     }
@@ -196,10 +178,8 @@ class VersionManager
      *
      * @param object    $versionable
      * @param null|bool $pending
-     *
-     * @return Version|null
      */
-    public function getOldestLogEntry($versionable, $pending = false)
+    public function getOldestLogEntry(object $versionable, ?bool $pending = false): ?\Akeneo\Tool\Component\Versioning\Model\Version
     {
         return $this->getVersionRepository()->getOldestLogEntry(
             ClassUtils::getClass($versionable),
@@ -214,10 +194,8 @@ class VersionManager
      *
      * @param object    $versionable
      * @param null|bool $pending
-     *
-     * @return Version|null
      */
-    public function getNewestLogEntry($versionable, $pending = false)
+    public function getNewestLogEntry(object $versionable, ?bool $pending = false): ?\Akeneo\Tool\Component\Versioning\Model\Version
     {
         return $this->getVersionRepository()->getNewestLogEntry(
             ClassUtils::getClass($versionable),
@@ -231,10 +209,8 @@ class VersionManager
      *
      * @param Version      $pending
      * @param Version|null $previousVersion
-     *
-     * @return Version
      */
-    public function buildPendingVersion(Version $pending, Version $previousVersion = null)
+    public function buildPendingVersion(Version $pending, Version $previousVersion = null): \Akeneo\Tool\Component\Versioning\Model\Version
     {
         if (null === $previousVersion) {
             $previousVersion = $this->getVersionRepository()
@@ -251,7 +227,7 @@ class VersionManager
      *
      * @return Version[]
      */
-    public function buildPendingVersions($versionable)
+    public function buildPendingVersions(object $versionable): array
     {
         $createdVersions = [];
 
@@ -268,7 +244,7 @@ class VersionManager
         foreach ($pendingVersions as $pending) {
             $version = $this->buildPendingVersion($pending, $previousVersion);
             $createdVersions[] = $version;
-            if ($version->getChangeset()) {
+            if ($version->getChangeset() !== []) {
                 $previousVersion = $version;
             }
         }

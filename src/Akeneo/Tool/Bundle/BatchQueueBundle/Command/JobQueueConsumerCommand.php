@@ -72,7 +72,7 @@ class JobQueueConsumerCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Launch a daemon that will consume job execution messages and launch the associated job execution in backgrounds')
@@ -85,7 +85,7 @@ class JobQueueConsumerCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $whitelistedJobInstanceCodes = $input->getOption('job');
         $blacklistedJobInstanceCodes = $input->getOption('blacklisted-job');
@@ -149,6 +149,7 @@ class JobQueueConsumerCommand extends Command
                 sleep(self::EXCEPTION_WAIT_INTERVAL);
             }
         } while (false === $input->getOption('run-once'));
+        return 0;
     }
 
     /**

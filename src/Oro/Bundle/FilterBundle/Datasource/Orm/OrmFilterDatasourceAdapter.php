@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\FilterBundle\Datasource\Orm;
 
+use Oro\Bundle\FilterBundle\Datasource\ExpressionBuilderInterface;
+use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -41,7 +43,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
      *                            Can be FilterUtility::CONDITION_OR or FilterUtility::CONDITION_AND.
      * @param bool   $isComputed  Specifies whether the restriction should be added to the HAVING part of a query.
      */
-    public function addRestriction($restriction, $condition, $isComputed = false)
+    public function addRestriction($restriction, string $condition, bool $isComputed = false): void
     {
         if ($this->fixComparison($restriction, $condition)) {
             return;
@@ -53,12 +55,10 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
             } else {
                 $this->qb->orWhere($restriction);
             }
+        } elseif ($isComputed) {
+            $this->qb->andHaving($restriction);
         } else {
-            if ($isComputed) {
-                $this->qb->andHaving($restriction);
-            } else {
-                $this->qb->andWhere($restriction);
-            }
+            $this->qb->andWhere($restriction);
         }
     }
 
@@ -81,7 +81,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function expr()
+    public function expr(): ExpressionBuilderInterface
     {
         if ($this->expressionBuilder === null) {
             $this->expressionBuilder = new OrmExpressionBuilder($this->qb->expr());
@@ -93,7 +93,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function setParameter($key, $value, $type = null)
+    public function setParameter($key, $value, ?string $type = null): void
     {
         $this->qb->setParameter($key, $value, $type);
     }
@@ -101,17 +101,15 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function generateParameterName($filterName)
+    public function generateParameterName(string $filterName): string
     {
         return preg_replace('#[^a-z0-9]#i', '', $filterName) . mt_rand();
     }
 
     /**
      * Returns a QueryBuilder object used to modify this data source
-     *
-     * @return QueryBuilder
      */
-    public function getQueryBuilder()
+    public function getQueryBuilder(): \Doctrine\ORM\QueryBuilder
     {
         return $this->qb;
     }
@@ -125,9 +123,9 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
      *                            Can be FilterUtility::CONDITION_OR or FilterUtility::CONDITION_AND.
      * @return bool true if a the given restriction was fixed and applied to the query builder; otherwise, false.
      */
-    protected function fixComparison($restriction, $condition)
+    protected function fixComparison($restriction, string $condition): bool
     {
-        if ($restriction instanceof Expr\Comparison
+        if ($restriction instanceof Comparison
             && ($restriction->getOperator() === 'LIKE' || $restriction->getOperator() === 'NOT LIKE')
         ) {
             return $this->tryApplyWhereRestriction($restriction, $condition);
@@ -144,9 +142,9 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
      *                            Can be FilterUtility::CONDITION_OR or FilterUtility::CONDITION_AND.
      * @return bool true if a the given restriction was applied to the query builder; otherwise, false.
      */
-    protected function tryApplyWhereRestriction($restriction, $condition)
+    protected function tryApplyWhereRestriction($restriction, string $condition): bool
     {
-        if (!($restriction instanceof Expr\Comparison)) {
+        if (!($restriction instanceof Comparison)) {
             return false;
         }
 
@@ -155,7 +153,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
         $extraSelect = null;
         foreach ($this->qb->getDQLPart('select') as $selectPart) {
             foreach ($selectPart->getParts() as $part) {
-                if (preg_match("#(.*)\\s+as\\s+" . preg_quote($expectedAlias) . "#i", $part, $matches)) {
+                if (preg_match("#(.*)\\s+as\\s+" . preg_quote($expectedAlias, '#') . "#i", $part, $matches)) {
                     $extraSelect = $matches[1];
                     break;
                 }
@@ -165,7 +163,7 @@ class OrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
             return false;
         }
 
-        $restriction = new Expr\Comparison(
+        $restriction = new Comparison(
             $extraSelect,
             $restriction->getOperator(),
             $restriction->getRightExpr()

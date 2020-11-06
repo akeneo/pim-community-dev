@@ -20,7 +20,7 @@ class PimUIExtension extends Extension
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
@@ -45,7 +45,7 @@ class PimUIExtension extends Extension
      * @param array            $config
      * @param ContainerBuilder $container
      */
-    protected function placeholdersConfig(array $config, ContainerBuilder $container)
+    protected function placeholdersConfig(array $config, ContainerBuilder $container): void
     {
         $placeholders = [];
         $items = [];
@@ -78,10 +78,8 @@ class PimUIExtension extends Extension
      *
      * @param array $placeholders
      * @param array $items
-     *
-     * @return array
      */
-    protected function addItemsToPlaceholders(array $placeholders, array $items)
+    protected function addItemsToPlaceholders(array $placeholders, array $items): array
     {
         foreach ($placeholders as $placeholderName => $placeholder) {
             if (isset($placeholder['items']) && count($placeholder['items'])) {
@@ -112,21 +110,15 @@ class PimUIExtension extends Extension
      *
      * @param array $configPlaceholders
      * @param array $placeholders
-     *
-     * @return array
      */
-    protected function overwritePlaceholders($configPlaceholders, $placeholders)
+    protected function overwritePlaceholders(array $configPlaceholders, array $placeholders): array
     {
         foreach ($configPlaceholders as $placeholderName => $configPlaceholder) {
             foreach ($configPlaceholder['items'] as $itemId => $item) {
                 if (is_array($item) && isset($item['remove']) && $item['remove']) {
                     unset($placeholders[$placeholderName]['items'][$itemId]);
                 } else {
-                    if (!is_array($item) || !isset($item['order'])) {
-                        $order = 1;
-                    } else {
-                        $order = $item['order'];
-                    }
+                    $order = !is_array($item) || !isset($item['order']) ? 1 : $item['order'];
                     if (!isset($placeholders[$placeholderName])) {
                         $placeholders[$placeholderName] = ['items'=> []];
                     }
@@ -148,14 +140,12 @@ class PimUIExtension extends Extension
      * Change placeholders block order
      *
      * @param array $placeholders
-     *
-     * @return array
      */
-    protected function changeOrders(array $placeholders)
+    protected function changeOrders(array $placeholders): array
     {
-        foreach ($placeholders as $placeholderName => $placeholderData) {
+        foreach (array_keys($placeholders) as $placeholderName) {
             if (isset($placeholders[$placeholderName]['items'])) {
-                usort($placeholders[$placeholderName]['items'], [$this, "comparePlaceholderBlocks"]);
+                usort($placeholders[$placeholderName]['items'], fn($a, $b) => $this->comparePlaceholderBlocks($a, $b));
             }
         }
 
@@ -167,10 +157,8 @@ class PimUIExtension extends Extension
      *
      * @param $a
      * @param $b
-     *
-     * @return int
      */
-    protected function comparePlaceholderBlocks($a, $b)
+    protected function comparePlaceholderBlocks($a, $b): int
     {
         $aOrder = 1;
         if (isset($a['order'])) {

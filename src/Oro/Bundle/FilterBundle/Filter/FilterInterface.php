@@ -12,31 +12,23 @@ interface FilterInterface
      *
      * @param string $name
      * @param array  $params
-     *
-     * @return void
      */
-    public function init($name, array $params);
+    public function init(string $name, array $params): void;
 
     /**
      * Returns filter frontend name
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns form for validation of current submitted filter data
-     *
-     * @return Form
      */
-    public function getForm();
+    public function getForm(): Form;
 
     /**
      * Returns metadata for frontend
-     *
-     * @return array
      */
-    public function getMetadata();
+    public function getMetadata(): array;
 
     /**
      * Applies a filter restrictions to a data source
@@ -46,5 +38,5 @@ interface FilterInterface
      *
      * @return bool true if a filter successfully applied; otherwise, false.
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data);
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool;
 }

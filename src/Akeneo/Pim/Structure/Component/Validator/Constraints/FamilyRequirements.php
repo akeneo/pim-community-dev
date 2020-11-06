@@ -18,8 +18,7 @@ class FamilyRequirements extends Constraint
      *
      * @var string
      */
-    public $messageChannel = 'Family "%family%" should have requirements for identifier "%id%" and channel(s) '.
-        '"%channels%"';
+    public $messageChannel = 'Family "%family%" should have requirements for identifier "%id%" and channel(s) "%channels%"';
 
     /**
      * @var string
@@ -33,7 +32,7 @@ class FamilyRequirements extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_family_requirements_validator';
     }
@@ -41,7 +40,7 @@ class FamilyRequirements extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

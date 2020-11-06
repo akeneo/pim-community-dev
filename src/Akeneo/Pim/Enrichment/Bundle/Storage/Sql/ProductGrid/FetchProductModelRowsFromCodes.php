@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid;
 
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -26,7 +27,7 @@ final class FetchProductModelRowsFromCodes
     private $productModelImagesFromCodes;
 
     public function __construct(
-        Connection $connection,
+        \Doctrine\DBAL\Driver\Connection $connection,
         WriteValueCollectionFactory $valueCollectionFactory,
         ProductModelImagesFromCodes $productModelImagesFromCodes
     ) {
@@ -67,7 +68,7 @@ final class FetchProductModelRowsFromCodes
             if (!$this->isExistingProductModel($row)) {
                 continue;
             }
-            $productModels[] = ReadModel\Row::fromProductModel(
+            $productModels[] = Row::fromProductModel(
                 $row['code'],
                 $row['family_label'],
                 Type::getType(Type::DATETIME)->convertToPhpValue($row['created'], $platform),
@@ -290,10 +291,8 @@ SQL;
 
         foreach ($valueCollections as $productModelCode => $valueCollection) {
             $result[$productModelCode]['value_collection'] = $valueCollection->filter(
-                function (ValueInterface $value) use ($channelCode, $localeCode) {
-                    return ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)
-                        && ($value->getLocaleCode() === $localeCode || $value->getLocaleCode() === null);
-                }
+                fn(ValueInterface $value) => ($value->getScopeCode() === $channelCode || $value->getScopeCode() === null)
+                    && ($value->getLocaleCode() === $localeCode || $value->getLocaleCode() === null)
             );
         }
 

@@ -46,7 +46,7 @@ class ResetHandler
         return false;
     }
 
-    protected function onSuccess(UserInterface $user)
+    protected function onSuccess(UserInterface $user): void
     {
         $user
             ->setPlainPassword($this->form->getData()->getPlainPassword())

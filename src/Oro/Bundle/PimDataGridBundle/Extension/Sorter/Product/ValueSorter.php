@@ -29,7 +29,7 @@ class ValueSorter implements SorterInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(DatasourceInterface $datasource, $field, $direction)
+    public function apply(DatasourceInterface $datasource, string $field, string $direction): void
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($field);
 

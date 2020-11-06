@@ -12,7 +12,7 @@ class QueryConfiguration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $builder = new TreeBuilder();
 
@@ -69,9 +69,8 @@ class QueryConfiguration implements ConfigurationInterface
      * @param  string $name Join type ('left', 'inner')
      *
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition
      */
-    protected function addJoinNode($name)
+    protected function addJoinNode(string $name): ArrayNodeDefinition
     {
         if (!in_array($name, ['left', 'inner'])) {
             throw new InvalidConfigurationException(sprintf('Invalid join type "%s"', $name));
@@ -98,9 +97,8 @@ class QueryConfiguration implements ConfigurationInterface
      * @param  string $name Where type ('and', 'or')
      *
      * @throws InvalidConfigurationException
-     * @return ArrayNodeDefinition
      */
-    protected function addWhereNode($name)
+    protected function addWhereNode(string $name): ArrayNodeDefinition
     {
         if (!in_array($name, ['and', 'or'])) {
             throw new InvalidConfigurationException(sprintf('Invalid where type "%s"', $name));

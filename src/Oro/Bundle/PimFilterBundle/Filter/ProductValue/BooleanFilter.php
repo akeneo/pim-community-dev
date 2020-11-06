@@ -19,7 +19,7 @@ class BooleanFilter extends OroBooleanFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         if (!$data = $this->parseData($data)) {
             return false;
@@ -56,7 +56,7 @@ class BooleanFilter extends OroBooleanFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return BooleanFilterType::class;
     }

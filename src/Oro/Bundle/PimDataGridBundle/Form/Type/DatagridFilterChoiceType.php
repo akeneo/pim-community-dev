@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Form\Type;
 
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
@@ -35,7 +36,7 @@ class DatagridFilterChoiceType extends AbstractType
      * @param FiltersConfigurator $configurator
      * @param string              $datagrid
      */
-    public function __construct(Manager $manager, FiltersConfigurator $configurator, $datagrid)
+    public function __construct(ManagerInterface $manager, FiltersConfigurator $configurator, string $datagrid)
     {
         $this->manager = $manager;
         $this->configurator = $configurator;
@@ -45,7 +46,7 @@ class DatagridFilterChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $configuration = $this->manager->getDatagrid($this->datagrid)->getAcceptor()->getConfig();
         $this->configurator->configure($configuration);
@@ -79,7 +80,7 @@ class DatagridFilterChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_datagrid_product_filter_choice';
     }
@@ -87,7 +88,7 @@ class DatagridFilterChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }

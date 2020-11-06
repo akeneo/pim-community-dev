@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
+use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Model\AclProviderInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -37,7 +38,7 @@ class RootBasedAclProvider implements AclProviderInterface
      *
      * @param AclProviderInterface $provider
      */
-    public function setBaseAclProvider(AclProviderInterface $provider)
+    public function setBaseAclProvider(AclProviderInterface $provider): void
     {
         $this->baseAclProvider = $provider;
     }
@@ -45,7 +46,7 @@ class RootBasedAclProvider implements AclProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function findChildren(ObjectIdentityInterface $parentOid, $directChildrenOnly = false)
+    public function findChildren(ObjectIdentityInterface $parentOid, $directChildrenOnly = false): array
     {
         return $this->baseAclProvider->findChildren($parentOid, $directChildrenOnly);
     }
@@ -53,7 +54,7 @@ class RootBasedAclProvider implements AclProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function findAcl(ObjectIdentityInterface $oid, array $sids = [])
+    public function findAcl(ObjectIdentityInterface $oid, array $sids = []): AclInterface
     {
         $rootOid = $this->objectIdentityFactory->root($oid);
         try {
@@ -85,7 +86,7 @@ class RootBasedAclProvider implements AclProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function findAcls(array $oids, array $sids = [])
+    public function findAcls(array $oids, array $sids = []): \SplObjectStorage
     {
         return $this->baseAclProvider->findAcls($oids, $sids);
     }
@@ -98,7 +99,7 @@ class RootBasedAclProvider implements AclProviderInterface
      * @param ObjectIdentityInterface $rootOid
      * @return RootBasedAclWrapper|\Symfony\Component\Security\Acl\Model\AclInterface
      */
-    protected function getAcl(ObjectIdentityInterface $oid, array $sids, ObjectIdentityInterface $rootOid)
+    protected function getAcl(ObjectIdentityInterface $oid, array $sids, ObjectIdentityInterface $rootOid): AclInterface
     {
         $acl = $this->baseAclProvider->findAcl($oid, $sids);
         try {

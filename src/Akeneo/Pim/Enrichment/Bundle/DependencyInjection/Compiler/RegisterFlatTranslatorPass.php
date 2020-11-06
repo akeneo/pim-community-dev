@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class RegisterFlatTranslatorPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->registerTranslators(
             $container,

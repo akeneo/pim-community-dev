@@ -32,7 +32,7 @@ class DefaultColumnSorter implements ColumnSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function sort(array $unsortedColumns, array $context = [])
+    public function sort(array $unsortedColumns, array $context = []): array
     {
         $mainColumns = [];
         $additionalColumns = [];
@@ -45,7 +45,7 @@ class DefaultColumnSorter implements ColumnSorterInterface
             }
         }
 
-        usort($mainColumns, [$this, 'compare']);
+        usort($mainColumns, fn($a, $b) => $this->compare($a, $b));
         natcasesort($additionalColumns);
 
         return array_merge($mainColumns, $additionalColumns);
@@ -53,10 +53,8 @@ class DefaultColumnSorter implements ColumnSorterInterface
 
     /**
      * @param string $column
-     *
-     * @return bool
      */
-    protected function isInOrderConf($column)
+    protected function isInOrderConf(string $column): bool
     {
         $splitedColumn = $this->fieldSplitter->splitFieldName($column);
         $column = is_array($splitedColumn) ? $splitedColumn[0] : $column;
@@ -67,10 +65,8 @@ class DefaultColumnSorter implements ColumnSorterInterface
     /**
      * @param string $a
      * @param string $b
-     *
-     * @return int
      */
-    protected function compare($a, $b)
+    protected function compare(string $a, string $b): int
     {
         $a = $this->getColumnCode($a);
         $b = $this->getColumnCode($b);
@@ -80,10 +76,8 @@ class DefaultColumnSorter implements ColumnSorterInterface
 
     /**
      * @param string $column
-     *
-     * @return string
      */
-    protected function getColumnCode($column)
+    protected function getColumnCode(string $column): string
     {
         $splitedColumn = $this->fieldSplitter->splitFieldName($column);
 

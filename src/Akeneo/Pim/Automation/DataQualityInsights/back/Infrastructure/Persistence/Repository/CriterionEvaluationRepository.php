@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Doctrine\DBAL\Connection;
@@ -23,12 +25,12 @@ class CriterionEvaluationRepository
     /** @var Connection */
     protected $dbConnection;
 
-    public function __construct(Connection $dbConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
     }
 
-    public function createCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
+    public function createCriterionEvaluationsForProducts(CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
 INSERT INTO pim_data_quality_insights_product_criteria_evaluation
@@ -39,7 +41,7 @@ SQL;
         $this->createFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
 
-    public function createCriterionEvaluationsForProductModels(Write\CriterionEvaluationCollection $criteriaEvaluations): void
+    public function createCriterionEvaluationsForProductModels(CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
 INSERT INTO pim_data_quality_insights_product_model_criteria_evaluation
@@ -50,7 +52,7 @@ SQL;
         $this->createFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
 
-    public function updateCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
+    public function updateCriterionEvaluationsForProducts(CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
 UPDATE pim_data_quality_insights_product_criteria_evaluation
@@ -60,7 +62,7 @@ SQL;
         $this->updateFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
 
-    public function updateCriterionEvaluationsForProductModels(Write\CriterionEvaluationCollection $criteriaEvaluations): void
+    public function updateCriterionEvaluationsForProductModels(CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
 UPDATE pim_data_quality_insights_product_model_criteria_evaluation
@@ -70,7 +72,7 @@ SQL;
         $this->updateFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
 
-    private function createFromSqlQueryFormat(string $queryFormat, Write\CriterionEvaluationCollection $criteriaEvaluations): void
+    private function createFromSqlQueryFormat(string $queryFormat, CriterionEvaluationCollection $criteriaEvaluations): void
     {
         if (0 === $criteriaEvaluations->count()) {
             return;
@@ -142,7 +144,7 @@ SQL;
         }
     }
 
-    private function updateFromSqlQueryFormat(string $sqlQueryFormat, Write\CriterionEvaluationCollection $criteriaEvaluations): void
+    private function updateFromSqlQueryFormat(string $sqlQueryFormat, CriterionEvaluationCollection $criteriaEvaluations): void
     {
         if (0 === $criteriaEvaluations->count()) {
             return;
@@ -175,7 +177,7 @@ SQL;
     }
 
 
-    private function formatCriterionEvaluationResult(?Write\CriterionEvaluationResult $criterionEvaluationResult): ?string
+    private function formatCriterionEvaluationResult(?CriterionEvaluationResult $criterionEvaluationResult): ?string
     {
         return null !== $criterionEvaluationResult ? json_encode([
             'rates' => $criterionEvaluationResult->getRates()->toArrayInt(),

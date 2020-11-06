@@ -17,22 +17,16 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
 {
     /**
      * Find all ordered by label with fallback to default mechanism
-     *
-     * @return array
      */
-    public function getIdToLabelOrderedBySortOrder();
+    public function getIdToLabelOrderedBySortOrder(): array;
 
     /**
      * Get the default attribute group
-     *
-     * @return null|AttributeGroupInterface
      */
-    public function findDefaultAttributeGroup();
+    public function findDefaultAttributeGroup(): ?AttributeGroupInterface;
 
     /**
      * Find the largest attribute group sort order present in the database
-     *
-     * @return int
      */
-    public function getMaxSortOrder();
+    public function getMaxSortOrder(): int;
 }

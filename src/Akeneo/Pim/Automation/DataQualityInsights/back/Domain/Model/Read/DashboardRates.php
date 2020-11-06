@@ -57,15 +57,9 @@ final class DashboardRates
         $result = array_merge(['enrichment' => [], 'consistency' => []], $result);
 
         $actions = [
-            TimePeriod::DAILY => function (array $rates) {
-                return $this->ensureRatesContainEnoughDays($rates);
-            },
-            TimePeriod::WEEKLY => function (array $rates) {
-                return $this->ensureRatesContainEnoughWeeks($rates);
-            },
-            TimePeriod::MONTHLY => function (array $rates) {
-                return $this->ensureRatesContainEnoughMonths($rates);
-            },
+            TimePeriod::DAILY => fn(array $rates) => $this->ensureRatesContainEnoughDays($rates),
+            TimePeriod::WEEKLY => fn(array $rates) => $this->ensureRatesContainEnoughWeeks($rates),
+            TimePeriod::MONTHLY => fn(array $rates) => $this->ensureRatesContainEnoughMonths($rates),
         ];
 
         return $actions[$this->timePeriod]($result);

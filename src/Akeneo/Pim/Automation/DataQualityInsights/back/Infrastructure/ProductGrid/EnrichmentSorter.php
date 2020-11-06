@@ -20,7 +20,7 @@ use Oro\Bundle\PimDataGridBundle\Extension\Sorter\SorterInterface;
 
 final class EnrichmentSorter implements SorterInterface
 {
-    public function apply(DatasourceInterface $datasource, $field, $direction)
+    public function apply(DatasourceInterface $datasource, string $field, string $direction): void
     {
         if (!$datasource instanceof ProductDatasource
             && !$datasource instanceof ProductAndProductModelDatasource

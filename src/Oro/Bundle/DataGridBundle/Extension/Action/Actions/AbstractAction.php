@@ -21,7 +21,7 @@ abstract class AbstractAction implements ActionInterface
     /**
      * {@inheritDoc}
      */
-    public function getAclResource()
+    public function getAclResource(): ?string
     {
         return $this->options->offsetGetOr(self::ACL_KEY);
     }
@@ -29,7 +29,7 @@ abstract class AbstractAction implements ActionInterface
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->options->getName();
     }
@@ -37,7 +37,7 @@ abstract class AbstractAction implements ActionInterface
     /**
      * {@inheritDoc}
      */
-    public function getOptions()
+    public function getOptions(): \Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration
     {
         return $this->options;
     }
@@ -45,7 +45,7 @@ abstract class AbstractAction implements ActionInterface
     /**
      * {@inheritDoc}
      */
-    public function setOptions(ActionConfiguration $options)
+    public function setOptions(ActionConfiguration $options): ActionInterface
     {
         $this->options = $options;
         $this->assertHasRequiredOptions();
@@ -70,7 +70,7 @@ abstract class AbstractAction implements ActionInterface
      *
      * @throws \LogicException
      */
-    protected function assertHasRequiredOption($optionName)
+    protected function assertHasRequiredOption(string $optionName)
     {
         if (!isset($this->options[$optionName])) {
             throw new \LogicException(

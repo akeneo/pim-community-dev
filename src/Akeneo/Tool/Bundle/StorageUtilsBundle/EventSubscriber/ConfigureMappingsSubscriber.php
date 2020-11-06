@@ -33,10 +33,7 @@ class ConfigureMappingsSubscriber implements EventSubscriber
         $this->mappingOverrides = $mappingOverrides;
     }
 
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'loadClassMetadata',
@@ -46,7 +43,7 @@ class ConfigureMappingsSubscriber implements EventSubscriber
     /**
      * @param LoadClassMetadataEventArgs $eventArgs
      */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs): void
     {
         $this->configurator->configure(
             $eventArgs->getClassMetadata(),

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetEvaluableProductValuesQueryInterface;
@@ -96,7 +97,7 @@ class EvaluatePendingCriteria
         }
     }
 
-    private function evaluateCriterion(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): void
+    private function evaluateCriterion(CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): void
     {
         try {
             $evaluationService = $this->evaluationRegistry->get($criterionEvaluation->getCriterionCode());
@@ -112,7 +113,7 @@ class EvaluatePendingCriteria
         }
     }
 
-    private function evaluateCriterionApplicability(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): void
+    private function evaluateCriterionApplicability(CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): void
     {
         $applicabilityService = $this->applicabilityRegistry->get($criterionEvaluation->getCriterionCode());
 

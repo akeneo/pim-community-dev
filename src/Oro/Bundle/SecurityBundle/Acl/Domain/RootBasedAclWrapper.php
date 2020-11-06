@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Domain\Acl;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
@@ -39,7 +40,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function getClassAces()
+    public function getClassAces(): array
     {
         /** @var EntryInterface[] $aces */
         $aces = $this->acl->getClassAces();
@@ -66,7 +67,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function getClassFieldAces($field)
+    public function getClassFieldAces($field): array
     {
         /** @var EntryInterface[] $aces */
         $aces = $this->acl->getClassFieldAces($field);
@@ -93,7 +94,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjectAces()
+    public function getObjectAces(): array
     {
         return $this->acl->getObjectAces();
     }
@@ -101,7 +102,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjectFieldAces($field)
+    public function getObjectFieldAces($field): array
     {
         return $this->acl->getObjectFieldAces($field);
     }
@@ -109,7 +110,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentity()
+    public function getObjectIdentity(): ObjectIdentityInterface
     {
         /**
          *  @todo: Check ObjectIdentity for ACL records from the database.
@@ -126,7 +127,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function getParentAcl()
+    public function getParentAcl(): ?AclInterface
     {
         return $this->acl->getParentAcl();
     }
@@ -134,7 +135,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function isEntriesInheriting()
+    public function isEntriesInheriting(): bool
     {
         return $this->acl->isEntriesInheriting();
     }
@@ -142,7 +143,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function isFieldGranted($field, array $masks, array $securityIdentities, $administrativeMode = false)
+    public function isFieldGranted($field, array $masks, array $securityIdentities, $administrativeMode = false): bool
     {
         return $this->getPermissionGrantingStrategy()
             ->isFieldGranted($this, $field, $masks, $securityIdentities, $administrativeMode);
@@ -151,7 +152,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function isGranted(array $masks, array $securityIdentities, $administrativeMode = false)
+    public function isGranted(array $masks, array $securityIdentities, $administrativeMode = false): bool
     {
         return $this->getPermissionGrantingStrategy()
             ->isGranted($this, $masks, $securityIdentities, $administrativeMode);
@@ -160,7 +161,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function isSidLoaded($securityIdentities)
+    public function isSidLoaded($securityIdentities): bool
     {
         return $this->acl->isSidLoaded($securityIdentities);
     }
@@ -168,7 +169,7 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function serialize()
+    public function serialize(): void
     {
         throw new \LogicException('Not supported.');
     }
@@ -176,17 +177,15 @@ class RootBasedAclWrapper implements AclInterface
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         throw new \LogicException('Not supported.');
     }
 
     /**
      * Gets the permission granting strategy implementation
-     *
-     * @return PermissionGrantingStrategyInterface
      */
-    protected function getPermissionGrantingStrategy()
+    protected function getPermissionGrantingStrategy(): \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface
     {
         if ($this->permissionGrantingStrategy === null) {
             // Unfortunately permissionGrantingStrategy property is private, so the only way

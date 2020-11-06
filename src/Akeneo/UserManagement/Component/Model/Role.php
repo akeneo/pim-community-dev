@@ -41,7 +41,7 @@ class Role extends SymfonyRole implements RoleInterface
     /**
      * {@inheritdoc}
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -49,7 +49,7 @@ class Role extends SymfonyRole implements RoleInterface
     /**
      * {@inheritdoc}
      */
-    public function getRole(): ?string
+    public function getRole(): string
     {
         return $this->role;
     }
@@ -57,7 +57,7 @@ class Role extends SymfonyRole implements RoleInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel(): ?string
+    public function getLabel(): string
     {
         return $this->label;
     }
@@ -65,7 +65,7 @@ class Role extends SymfonyRole implements RoleInterface
     /**
      * {@inheritdoc}
      */
-    public function setRole($role): void
+    public function setRole(string $role): void
     {
         $this->role = (string) strtoupper($role);
 
@@ -78,7 +78,7 @@ class Role extends SymfonyRole implements RoleInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label): void
+    public function setLabel(string $label): void
     {
         $this->label = (string) $label;
     }

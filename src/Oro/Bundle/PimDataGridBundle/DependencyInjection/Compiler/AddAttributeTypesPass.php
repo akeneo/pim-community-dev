@@ -23,16 +23,14 @@ class AddAttributeTypesPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $registry = $container->getDefinition(self::REGISTRY_ID);
         if ($registry) {
             $allParameters = $container->getParameterBag()->all();
             $parameterKeys = array_filter(
                 array_keys($allParameters),
-                function ($paramKey) {
-                    return strpos($paramKey, self::PARAM_PREFIX) === 0;
-                }
+                fn($paramKey) => strpos($paramKey, self::PARAM_PREFIX) === 0
             );
             $parameters = array_intersect_key($allParameters, array_flip($parameterKeys));
             $configurations = [];

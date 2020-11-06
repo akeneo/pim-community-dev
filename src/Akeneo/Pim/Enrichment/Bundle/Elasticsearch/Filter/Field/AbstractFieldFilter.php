@@ -26,7 +26,7 @@ abstract class AbstractFieldFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsField($field)
+    public function supportsField(string $field): bool
     {
         return in_array($field, $this->supportedFields);
     }
@@ -34,7 +34,7 @@ abstract class AbstractFieldFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsOperator($operator)
+    public function supportsOperator(string $operator): bool
     {
         return in_array($operator, $this->supportedOperators);
     }
@@ -42,7 +42,7 @@ abstract class AbstractFieldFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getOperators()
+    public function getOperators(): array
     {
         return $this->supportedOperators;
     }
@@ -50,7 +50,7 @@ abstract class AbstractFieldFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getFields()
+    public function getFields(): array
     {
         return $this->supportedFields;
     }
@@ -58,7 +58,7 @@ abstract class AbstractFieldFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function setQueryBuilder($searchQueryBuilder)
+    public function setQueryBuilder(\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder $searchQueryBuilder)
     {
         if (!$searchQueryBuilder instanceof SearchQueryBuilder) {
             throw new \InvalidArgumentException(

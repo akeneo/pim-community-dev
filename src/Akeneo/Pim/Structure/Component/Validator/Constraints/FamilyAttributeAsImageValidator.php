@@ -59,9 +59,7 @@ class FamilyAttributeAsImageValidator extends ConstraintValidator
             $this->context
                 ->buildViolation(sprintf(
                     $constraint->messageAttributeType,
-                    join(', ', array_map(function ($validAttributeType) {
-                        return sprintf('"%s"', $validAttributeType);
-                    }, $this->validAttributeTypes))
+                    implode(', ', array_map(fn($validAttributeType) => sprintf('"%s"', $validAttributeType), $this->validAttributeTypes))
                 ))
                 ->atPath($constraint->propertyPath)
                 ->addViolation();

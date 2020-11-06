@@ -44,7 +44,7 @@ class VersionPurger implements VersionPurgerInterface
     /**
      * {@inheritdoc}
      */
-    public function purge(array $options, OutputInterface $output)
+    public function purge(array $options, OutputInterface $output): void
     {
         $optionResolver = new OptionsResolver();
         $this->configureOptions($optionResolver);
@@ -64,7 +64,7 @@ class VersionPurger implements VersionPurgerInterface
     /**
      * {@inheritdoc}
      */
-    public function addVersionPurgerAdvisor(VersionPurgerAdvisorInterface $versionPurgerAdvisor)
+    public function addVersionPurgerAdvisor(VersionPurgerAdvisorInterface $versionPurgerAdvisor): void
     {
         $this->versionPurgerAdvisors[] = $versionPurgerAdvisor;
     }
@@ -115,7 +115,7 @@ class VersionPurger implements VersionPurgerInterface
      *
      * @param OptionsResolver $optionResolver
      */
-    protected function configureOptions(OptionsResolver $optionResolver)
+    protected function configureOptions(OptionsResolver $optionResolver): void
     {
         $optionResolver->setDefaults(
             [
@@ -131,12 +131,10 @@ class VersionPurger implements VersionPurgerInterface
             ->setAllowedTypes('batch_size', 'int')
             ->setAllowedValues('date_operator', ['<', '>']);
 
-        $optionResolver->setNormalizer('limit_date', function (Options $options, $value) {
-            return new \DateTime(
-                sprintf('%d days ago', $options['days_number']),
-                new \DateTimeZone('UTC')
-            );
-        });
+        $optionResolver->setNormalizer('limit_date', fn(Options $options, $value) => new \DateTime(
+            sprintf('%d days ago', $options['days_number']),
+            new \DateTimeZone('UTC')
+        ));
     }
 
     private function getResourceNamesToPurge(array $options): array

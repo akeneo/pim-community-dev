@@ -11,8 +11,5 @@ namespace Akeneo\Tool\Component\Analytics;
  */
 interface DataCollectorInterface
 {
-    /**
-     * @return array
-     */
-    public function collect();
+    public function collect(): array;
 }

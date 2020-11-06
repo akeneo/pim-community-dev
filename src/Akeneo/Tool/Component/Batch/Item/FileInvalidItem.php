@@ -22,7 +22,7 @@ class FileInvalidItem implements InvalidItemInterface
      * @param array $invalidData
      * @param int   $itemPosition
      */
-    public function __construct(array $invalidData, $itemPosition)
+    public function __construct(array $invalidData, int $itemPosition)
     {
         $this->invalidData = $invalidData;
         $this->itemPosition = $itemPosition;
@@ -31,15 +31,12 @@ class FileInvalidItem implements InvalidItemInterface
     /**
      * {@inheritdoc}
      */
-    public function getInvalidData()
+    public function getInvalidData(): array
     {
         return $this->invalidData;
     }
 
-    /**
-     * @return int
-     */
-    public function getItemPosition()
+    public function getItemPosition(): int
     {
         return $this->itemPosition;
     }

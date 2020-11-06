@@ -16,6 +16,10 @@ use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 class BaseOrmRelationDatagridListener
 {
     /**
+     * @var \Oro\Bundle\DataGridBundle\Datagrid\RequestParameters|mixed
+     */
+    public $requestParams;
+    /**
      * Included/excluded param names
      * populated by oro/datagrid/column-form-listener on frontend
      */
@@ -33,7 +37,7 @@ class BaseOrmRelationDatagridListener
      * @param RequestParameters $requestParams
      * @param bool              $isEditMode whether or not to add data_in, data_not_in params to query
      */
-    public function __construct($paramName, RequestParameters $requestParams, $isEditMode = true)
+    public function __construct(string $paramName, RequestParameters $requestParams, bool $isEditMode = true)
     {
         $this->paramName = $paramName;
         $this->requestParams = $requestParams;
@@ -54,7 +58,7 @@ class BaseOrmRelationDatagridListener
      *
      * @param BuildAfter $event
      */
-    public function onBuildAfter(BuildAfter $event)
+    public function onBuildAfter(BuildAfter $event): void
     {
         $datasource = $event->getDatagrid()->getDatasource();
         if ($datasource instanceof OrmDatasource) {
@@ -62,11 +66,7 @@ class BaseOrmRelationDatagridListener
             $queryBuilder = $datasource->getQueryBuilder();
 
             $additionalParams = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
-            if (isset($additionalParams[self::GRID_PARAM_DATA_IN])) {
-                $dataIn = $additionalParams[self::GRID_PARAM_DATA_IN];
-            } else {
-                $dataIn = [0];
-            }
+            $dataIn = isset($additionalParams[self::GRID_PARAM_DATA_IN]) ? $additionalParams[self::GRID_PARAM_DATA_IN] : [0];
 
             if (isset($additionalParams[self::GRID_PARAM_DATA_NOT_IN])) {
                 $dataOut = $additionalParams[self::GRID_PARAM_DATA_NOT_IN];

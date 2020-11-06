@@ -38,7 +38,7 @@ class FamilyFactory implements SimpleFactoryInterface
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $factory,
         AttributeRepositoryInterface $attributeRepository,
-        $familyClass
+        string $familyClass
     ) {
         $this->channelRepository = $channelRepository;
         $this->factory = $factory;
@@ -49,7 +49,7 @@ class FamilyFactory implements SimpleFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create()
+    public function create(): object
     {
         /** @var FamilyInterface $family */
         $family = new $this->familyClass();
@@ -66,10 +66,7 @@ class FamilyFactory implements SimpleFactoryInterface
         return $family;
     }
 
-    /**
-     * @return array
-     */
-    protected function getChannels()
+    protected function getChannels(): array
     {
         return $this->channelRepository->findAll();
     }

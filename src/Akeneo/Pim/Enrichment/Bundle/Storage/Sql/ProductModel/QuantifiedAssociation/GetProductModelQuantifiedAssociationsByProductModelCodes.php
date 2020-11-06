@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\QuantifiedAssociation;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQueryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductModelIdsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
@@ -24,8 +25,8 @@ final class GetProductModelQuantifiedAssociationsByProductModelCodes
     private $quantifiedAssociationTypeCodesCache = null;
 
     public function __construct(
-        Connection $connection,
-        GetIdMappingFromProductModelIdsQuery $getIdMappingFromProductModelIdsQuery,
+        \Doctrine\DBAL\Driver\Connection $connection,
+        GetIdMappingFromProductModelIdsQueryInterface $getIdMappingFromProductModelIdsQuery,
         FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
     ) {
         $this->connection = $connection;
@@ -69,13 +70,11 @@ WHERE product_model.code IN (:productModelCodes)
 ;
 SQL;
 
-        $rows = $this->connection->executeQuery(
+        return $this->connection->executeQuery(
             $query,
             ['productModelCodes' => $productModelCodes],
             ['productModelCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
-
-        return $rows;
     }
 
     private function hydrateQuantifiedAssociations($rows): array
@@ -96,7 +95,7 @@ SQL;
         return $results;
     }
 
-    private function associationsWithCodes(array $allQuantifiedAssociationsWithProductModelIds)
+    private function associationsWithCodes(array $allQuantifiedAssociationsWithProductModelIds): array
     {
         $productModelIdMapping = $this->fetchIdMapping($allQuantifiedAssociationsWithProductModelIds);
 
@@ -132,9 +131,7 @@ SQL;
     private function productModelIds(array $quantifiedAssociationWithProductModelId): array
     {
         return array_map(
-            function (array $quantifiedAssociations) {
-                return $quantifiedAssociations['id'];
-            },
+            fn(array $quantifiedAssociations) => $quantifiedAssociations['id'],
             $quantifiedAssociationWithProductModelId['product_models'] ?? []
         );
     }

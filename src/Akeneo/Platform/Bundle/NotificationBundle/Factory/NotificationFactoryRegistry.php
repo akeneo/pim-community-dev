@@ -17,7 +17,7 @@ class NotificationFactoryRegistry
     /**
      * {@inheritdoc}
      */
-    public function register(NotificationFactoryInterface $factory)
+    public function register(NotificationFactoryInterface $factory): void
     {
         if (!in_array($factory, $this->factories)) {
             $this->factories[] = $factory;
@@ -27,7 +27,7 @@ class NotificationFactoryRegistry
     /**
      * {@inheritdoc}
      */
-    public function get($type)
+    public function get($type): ?NotificationFactoryInterface
     {
         foreach ($this->factories as $factory) {
             if ($factory->supports($type)) {

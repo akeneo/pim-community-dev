@@ -21,7 +21,7 @@ class InvalidItemsCollector implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::INVALID_ITEM => 'collect'
@@ -33,17 +33,15 @@ class InvalidItemsCollector implements EventSubscriberInterface
      *
      * @param InvalidItemEvent $event
      */
-    public function collect(InvalidItemEvent $event)
+    public function collect(InvalidItemEvent $event): void
     {
         $this->invalidItems[$this->getHashKey($event->getItem()->getInvalidData())] = $event->getItem();
     }
 
     /**
      * Get invalid items
-     *
-     * @return array
      */
-    public function getInvalidItems()
+    public function getInvalidItems(): array
     {
         return $this->invalidItems;
     }
@@ -52,10 +50,8 @@ class InvalidItemsCollector implements EventSubscriberInterface
      * Get an unique hash for the given item
      *
      * @param array $item
-     *
-     * @return string
      */
-    protected function getHashKey(array $item)
+    protected function getHashKey(array $item): string
     {
         return md5(serialize($item));
     }

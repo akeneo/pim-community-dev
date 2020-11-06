@@ -44,7 +44,7 @@ class ControllerListener
      *
      * @throws AccessDeniedException
      */
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController(FilterControllerEvent $event): void
     {
         $controller = $event->getController();
         /*

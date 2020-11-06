@@ -22,8 +22,6 @@ interface CategoryItemsCounterInterface
      * @param CategoryInterface $category   the requested category node
      * @param bool              $inChildren true to include children in count
      * @param bool              $inProvided true to include the provided none to count item
-     *
-     * @return int
      */
-    public function getItemsCountInCategory(CategoryInterface $category, $inChildren = false, $inProvided = true);
+    public function getItemsCountInCategory(CategoryInterface $category, bool $inChildren = false, bool $inProvided = true): int;
 }

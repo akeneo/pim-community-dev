@@ -41,10 +41,8 @@ interface ProductInterface extends
      * Set id
      *
      * @param int|string $id
-     *
-     * @return ProductInterface
      */
-    public function setId($id);
+    public function setId($id): \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
     /**
      * @param string|null $identifierValue
@@ -55,19 +53,15 @@ interface ProductInterface extends
 
     /**
      * Get the product groups
-     *
-     * @return Collection
      */
-    public function getGroups();
+    public function getGroups(): \Doctrine\Common\Collections\Collection;
 
     /**
      * Add a group
      *
      * @param GroupInterface $group
-     *
-     * @return ProductInterface
      */
-    public function addGroup(GroupInterface $group);
+    public function addGroup(GroupInterface $group): \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
     /**
      * @param Collection $groups
@@ -78,58 +72,44 @@ interface ProductInterface extends
      * Remove a group
      *
      * @param GroupInterface $group
-     *
-     * @return ProductInterface
      */
-    public function removeGroup(GroupInterface $group);
+    public function removeGroup(GroupInterface $group): \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
     /**
      * Get groups code
-     *
-     * @return array
      */
-    public function getGroupCodes();
+    public function getGroupCodes(): array;
 
     /**
      * Setter for predicate enabled
      *
      * @param bool $enabled
-     *
-     * @return ProductInterface
      */
-    public function setEnabled($enabled);
+    public function setEnabled(bool $enabled): \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
     /**
      * Predicate to know if product is enabled or not
-     *
-     * @return bool
      */
-    public function isEnabled();
+    public function isEnabled(): bool;
 
     /**
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function hasAttributeInFamily(AttributeInterface $attribute);
+    public function hasAttributeInFamily(AttributeInterface $attribute): bool;
 
     /**
      * Check if an attribute can be removed from the product
      *
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function isAttributeRemovable(AttributeInterface $attribute);
+    public function isAttributeRemovable(AttributeInterface $attribute): bool;
 
     /**
      * Check if an attribute can be edited from the product
      *
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function isAttributeEditable(AttributeInterface $attribute);
+    public function isAttributeEditable(AttributeInterface $attribute): bool;
 
     /**
      * Get product image
@@ -146,35 +126,26 @@ interface ProductInterface extends
      *
      * @return mixed|string
      */
-    public function getLabel($locale = null, $scopeCode = null);
+    public function getLabel(string $locale = null, string $scopeCode = null);
 
     /**
      * Set family
      *
      * @param FamilyInterface $family
-     *
-     * @return ProductInterface
      */
-    public function setFamily(FamilyInterface $family = null);
+    public function setFamily(FamilyInterface $family = null): \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
     /**
      * Get family id
-     *
-     * @return int
      */
-    public function getFamilyId();
+    public function getFamilyId(): int;
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getUniqueData();
+    public function getUniqueData(): ArrayCollection;
 
     /**
      * @param ProductUniqueDataInterface $uniqueData
-     *
-     * @return ProductInterface
      */
-    public function addUniqueData(ProductUniqueDataInterface $uniqueData);
+    public function addUniqueData(ProductUniqueDataInterface $uniqueData): \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
     /**
      * @param Collection $data

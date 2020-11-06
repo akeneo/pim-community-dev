@@ -88,6 +88,6 @@ class VersionProvider implements VersionProviderInterface
      */
     public function isSaaSVersion(): bool
     {
-        return false !== strpos(strtolower($this->getEdition()), 'saas');
+        return false !== stripos($this->getEdition(), 'saas');
     }
 }

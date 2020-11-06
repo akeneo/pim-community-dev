@@ -14,7 +14,7 @@ abstract class AbstractFilter implements CollectionFilterInterface, ObjectFilter
     /**
      * {@inheritdoc}
      */
-    public function filterCollection($objects, $type, array $options = [])
+    public function filterCollection($objects, string $type, array $options = []): array
     {
         $filteredObjects = [];
 
@@ -30,7 +30,7 @@ abstract class AbstractFilter implements CollectionFilterInterface, ObjectFilter
     /**
      * {@inheritdoc}
      */
-    public function filterObject($objects, $type, array $options = [])
+    public function filterObject($objects, string $type, array $options = []): bool
     {
         return false;
     }
@@ -38,7 +38,7 @@ abstract class AbstractFilter implements CollectionFilterInterface, ObjectFilter
     /**
      * {@inheritdoc}
      */
-    public function supportsObject($object, $type, array $options = [])
+    public function supportsObject($object, string $type, array $options = []): bool
     {
         return false;
     }
@@ -46,7 +46,7 @@ abstract class AbstractFilter implements CollectionFilterInterface, ObjectFilter
     /**
      * {@inheritdoc}
      */
-    public function supportsCollection($collection, $type, array $options = [])
+    public function supportsCollection($collection, string $type, array $options = []): bool
     {
         return ($collection instanceof \Traversable && $collection instanceof \ArrayAccess) || is_array($collection);
     }

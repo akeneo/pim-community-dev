@@ -35,14 +35,14 @@ final class SchedulePeriodicTasksCommand extends Command
         $this->featureFlag = $featureFlag;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('pim:data-quality-insights:schedule-periodic-tasks')
             ->setDescription('Schedule the periodic tasks of Data-Quality-Insights.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('Data Quality Insights feature is disabled');

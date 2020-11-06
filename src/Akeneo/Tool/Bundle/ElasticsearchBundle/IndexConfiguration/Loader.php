@@ -36,10 +36,9 @@ class Loader
     /**
      * Load the Elasticsearch index configuration from multiple YAML files.
      *
-     * @return IndexConfiguration
      * @throws \Exception
      */
-    public function load()
+    public function load(): IndexConfiguration
     {
         $settings = [];
         $mappings = [];
@@ -101,11 +100,10 @@ class Loader
         $otherMappings = $additionalMappings;
         unset($otherMappings['properties']);
         unset($otherMappings['dynamic_templates']);
-        $originalMappings = array_replace_recursive(
+
+        return array_replace_recursive(
             $originalMappings,
             $otherMappings
         );
-
-        return $originalMappings;
     }
 }

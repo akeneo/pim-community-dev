@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 
@@ -41,7 +42,7 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = []): void
+    public function addFieldFilter(string $field, string $operator, $value, string $locale = null, string $channel = null, array $options = []): FieldFilterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
@@ -160,10 +161,8 @@ class SelfAndAncestorFilterLabelOrIdentifier extends AbstractFieldFilter
      * TODO: TIP-706 - This may move somewhere else
      *
      * @param string $value
-     *
-     * @return string
      */
-    protected function escapeValue(string $value): string
+    protected function escapeValue(string $value): ?string
     {
         $regex = '#[-+=|! &(){}\[\]^"~*<>?:/\\\]#';
 

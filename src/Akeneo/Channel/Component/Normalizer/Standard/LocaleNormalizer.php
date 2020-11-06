@@ -16,7 +16,7 @@ class LocaleNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function normalize($locale, $format = null, array $context = [])
+    public function normalize($locale, $format = null, array $context = []): array
     {
         return [
             'code'    => $locale->getCode(),
@@ -27,7 +27,7 @@ class LocaleNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof LocaleInterface && 'standard' === $format;
     }

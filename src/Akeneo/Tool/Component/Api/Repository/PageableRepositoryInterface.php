@@ -18,17 +18,13 @@ interface PageableRepositoryInterface
      * @param array $orders
      * @param int   $limit
      * @param int   $offset
-     *
-     * @return array
      */
-    public function searchAfterOffset(array $criteria, array $orders, $limit, $offset);
+    public function searchAfterOffset(array $criteria, array $orders, int $limit, int $offset): array;
 
     /**
      * Return the count of resources filtered by $criteria
      *
      * @param array $criteria
-     *
-     * @return int
      */
-    public function count(array $criteria = []);
+    public function count(array $criteria = []): int;
 }

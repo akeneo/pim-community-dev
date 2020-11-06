@@ -79,7 +79,7 @@ class JobInstanceProcessor extends AbstractProcessor implements ItemProcessorInt
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    public function process($item): JobInstance
     {
         $entity = $this->findOrCreateObject($item);
 
@@ -111,10 +111,8 @@ class JobInstanceProcessor extends AbstractProcessor implements ItemProcessorInt
 
     /**
      * @param array $convertedItem
-     *
-     * @return JobInstance
      */
-    protected function findOrCreateObject(array $convertedItem)
+    protected function findOrCreateObject(array $convertedItem): object
     {
         $entity = $this->findObject($this->repository, $convertedItem);
         if (null === $entity) {

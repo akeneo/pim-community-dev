@@ -41,7 +41,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier)
     {
         return $this->attributeRepository->findOneByIdentifier($identifier);
     }
@@ -53,10 +53,8 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
      * @param array $orders
      * @param int   $limit
      * @param int   $offset
-     *
-     * @return array
      */
-    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset)
+    public function searchAfterOffset(array $searchFilters, array $orders, int $limit, int $offset): array
     {
         $qb = $this->createQueryBuilder('r');
         $qb = $this->addFilters($qb, $searchFilters);
@@ -77,7 +75,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * {@inheritdoc}
      */
-    public function count(array $searchFilters = [])
+    public function count(array $searchFilters = []): int
     {
         try {
             $qb = $this->createQueryBuilder('r');
@@ -95,7 +93,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return $this->attributeRepository->getIdentifierProperties();
     }
@@ -103,7 +101,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode()
+    public function getIdentifierCode(): string
     {
         return $this->attributeRepository->getIdentifierCode();
     }
@@ -111,7 +109,7 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
     /**
      * {@inheritdoc}
      */
-    public function getMediaAttributeCodes()
+    public function getMediaAttributeCodes(): array
     {
         return $this->attributeRepository->findMediaAttributeCodes();
     }
@@ -193,11 +191,10 @@ class AttributeRepository extends EntityRepository implements AttributeRepositor
                 ])
             ),
         ];
-        $availableSearchFilters = array_keys($constraints);
 
         $exceptionMessage = '';
         foreach ($searchFilters as $property => $searchFilter) {
-            if (!in_array($property, $availableSearchFilters)) {
+            if (!array_key_exists($property, $constraints)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
                     implode(', ', $availableSearchFilters),

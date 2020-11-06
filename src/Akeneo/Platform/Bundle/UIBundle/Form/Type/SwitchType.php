@@ -20,7 +20,7 @@ class SwitchType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->setData(isset($options['data']) ? $options['data'] : false);
         $builder->resetViewTransformers();
@@ -30,7 +30,7 @@ class SwitchType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -46,7 +46,7 @@ class SwitchType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return CheckboxType::class;
     }
@@ -54,7 +54,7 @@ class SwitchType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'switch';
     }

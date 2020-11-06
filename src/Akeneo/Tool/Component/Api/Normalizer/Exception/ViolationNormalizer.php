@@ -34,23 +34,21 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
     /**
      * {@inheritdoc}
      */
-    public function normalize($exception, $format = null, array $context = [])
+    public function normalize($exception, $format = null, array $context = []): array
     {
         $errors = $this->normalizeViolations($exception->getViolations());
 
-        $data = [
+        return [
             'code'    => $exception->getStatusCode(),
             'message' => $exception->getMessage(),
             'errors'  => $errors
         ];
-
-        return $data;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($exception, $format = null)
+    public function supportsNormalization($exception, $format = null): bool
     {
         return $exception instanceof ViolationHttpException;
     }
@@ -62,10 +60,8 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
 
     /**
      * @param ConstraintViolationListInterface $violations
-     *
-     * @return array
      */
-    protected function normalizeViolations(ConstraintViolationListInterface $violations)
+    protected function normalizeViolations(ConstraintViolationListInterface $violations): array
     {
         $errors = [];
         $existingViolation = [];
@@ -195,10 +191,8 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
      *
      * @param ConstraintViolationInterface $violation
      * @param string                       $productValueKey
-     *
-     * @return array
      */
-    protected function getProductValuesErrors(ConstraintViolationInterface $violation, $productValueKey)
+    protected function getProductValuesErrors(ConstraintViolationInterface $violation, string $productValueKey): array
     {
         $productValue = $violation->getRoot()->getValues()->getByKey($productValueKey);
         $attribute = $this->attributeRepository->findOneByIdentifier($productValue->getAttributeCode());

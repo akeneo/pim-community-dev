@@ -54,7 +54,7 @@ class VersionDataCollector implements DataCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function collect()
+    public function collect(): array
     {
         return [
             'pim_edition'      => $this->versionProvider->getEdition(),
@@ -67,10 +67,8 @@ class VersionDataCollector implements DataCollectorInterface
 
     /**
      * Returns the server version.
-     *
-     * @return string
      */
-    protected function getServerVersion()
+    protected function getServerVersion(): string
     {
         $version = '';
         $request = $this->requestStack->getCurrentRequest();

@@ -35,7 +35,7 @@ final class CollectionToArrayDataConverter implements ValueDataConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
+    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute): array
     {
         Assert::isIterable($sourceValue->getData());
 

@@ -17,15 +17,11 @@ interface GroupTranslationInterface extends TranslationInterface
      * Set label
      *
      * @param string $label
-     *
-     * @return GroupTranslationInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface;
 
     /**
      * Get the label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 }

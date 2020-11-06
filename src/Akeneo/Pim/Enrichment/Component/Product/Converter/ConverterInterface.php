@@ -16,8 +16,6 @@ interface ConverterInterface
      * Convert data
      *
      * @param array $data
-     *
-     * @return array
      */
-    public function convert(array $data);
+    public function convert(array $data): array;
 }

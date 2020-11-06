@@ -18,10 +18,8 @@ class SequentialEditProduct extends Cursor implements CursorInterface
      * Get the next items (hydrated from doctrine repository).
      *
      * @param array $esQuery
-     *
-     * @return array
      */
-    protected function getNextItems(array $esQuery)
+    protected function getNextItems(array $esQuery): array
     {
         $identifiers = $this->getNextIdentifiers($esQuery);
         if (empty($identifiers)) {
@@ -36,7 +34,7 @@ class SequentialEditProduct extends Cursor implements CursorInterface
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
-    protected function getNextIdentifiers(array $esQuery)
+    protected function getNextIdentifiers(array $esQuery): array
     {
         $esQuery['size'] = $this->pageSize;
 

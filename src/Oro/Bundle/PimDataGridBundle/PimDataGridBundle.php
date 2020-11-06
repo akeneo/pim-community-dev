@@ -2,6 +2,12 @@
 
 namespace Oro\Bundle\PimDataGridBundle;
 
+use Oro\Bundle\PimDataGridBundle\DependencyInjection\Compiler\AddFilterTypesPass;
+use Oro\Bundle\PimDataGridBundle\DependencyInjection\Compiler\AddAttributeTypesPass;
+use Oro\Bundle\PimDataGridBundle\DependencyInjection\Compiler\AddSelectorsPass;
+use Oro\Bundle\PimDataGridBundle\DependencyInjection\Compiler\AddSortersPass;
+use Oro\Bundle\PimDataGridBundle\DependencyInjection\Compiler\AddMassActionHandlersPass;
+use Oro\Bundle\PimDataGridBundle\DependencyInjection\Compiler\ConfigurationPass;
 use Oro\Bundle\PimDataGridBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -18,14 +24,14 @@ class PimDataGridBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container
-            ->addCompilerPass(new Compiler\AddFilterTypesPass())
-            ->addCompilerPass(new Compiler\AddAttributeTypesPass())
-            ->addCompilerPass(new Compiler\AddSelectorsPass())
-            ->addCompilerPass(new Compiler\AddSortersPass())
-            ->addCompilerPass(new Compiler\AddMassActionHandlersPass())
-            ->addCompilerPass(new Compiler\ConfigurationPass());
+            ->addCompilerPass(new AddFilterTypesPass())
+            ->addCompilerPass(new AddAttributeTypesPass())
+            ->addCompilerPass(new AddSelectorsPass())
+            ->addCompilerPass(new AddSortersPass())
+            ->addCompilerPass(new AddMassActionHandlersPass())
+            ->addCompilerPass(new ConfigurationPass());
     }
 }

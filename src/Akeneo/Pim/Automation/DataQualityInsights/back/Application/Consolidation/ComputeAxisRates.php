@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
@@ -35,7 +36,7 @@ class ComputeAxisRates
         $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
     }
 
-    public function compute(Axis $axis, Read\CriterionEvaluationCollection $criteriaEvaluations): ChannelLocaleRateCollection
+    public function compute(Axis $axis, CriterionEvaluationCollection $criteriaEvaluations): ChannelLocaleRateCollection
     {
         $axisRates = new ChannelLocaleRateCollection();
 
@@ -51,7 +52,7 @@ class ComputeAxisRates
         return $axisRates;
     }
 
-    private function computeAxisRate(Axis $axis, Read\CriterionEvaluationCollection $criteriaEvaluations, ChannelCode $channelCode, LocaleCode $localeCode): ?Rate
+    private function computeAxisRate(Axis $axis, CriterionEvaluationCollection $criteriaEvaluations, ChannelCode $channelCode, LocaleCode $localeCode): ?Rate
     {
         $criteriaEvaluations = $criteriaEvaluations->filterByAxis($axis);
         $criteriaRates = [];
@@ -73,7 +74,7 @@ class ComputeAxisRates
 
         $axisRate = round(array_sum($criteriaRates) / $totalCoefficient, 0, PHP_ROUND_HALF_DOWN);
 
-        return new Rate(intval($axisRate));
+        return new Rate((int) $axisRate);
     }
 
     private function getChannelsLocales(): ChannelLocaleCollection

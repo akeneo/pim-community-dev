@@ -44,7 +44,7 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
     /**
      * {@inheritdoc}
      */
-    public function sort(array $columns, array $context = [])
+    public function sort(array $columns, array $context = []): array
     {
         $identifier = $this->attributeRepository->getIdentifierCode();
 
@@ -54,17 +54,13 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
             $rawColumns = array_merge(
                 [$identifier],
                 $this->firstDefaultColumns,
-                array_map(function ($associationType) {
-                    return $associationType->getCode();
-                }, $this->associationTypeRepository->findAll()),
+                array_map(fn($associationType) => $associationType->getCode(), $this->associationTypeRepository->findAll()),
                 $context['filters']['structure']['attributes']
             );
 
             $sortedColumns = [];
             foreach ($rawColumns as $columnCode) {
-                $sortedColumns = array_merge($sortedColumns, array_filter($columns, function ($columnCandidate) use ($columnCode) {
-                    return 0 !== preg_match(sprintf('/^%s(-.*)*$/', $columnCode), $columnCandidate);
-                }));
+                $sortedColumns = array_merge($sortedColumns, array_filter($columns, fn($columnCandidate) => 0 !== preg_match(sprintf('/^%s(-.*)*$/', $columnCode), $columnCandidate)));
             }
 
             return array_unique($sortedColumns);

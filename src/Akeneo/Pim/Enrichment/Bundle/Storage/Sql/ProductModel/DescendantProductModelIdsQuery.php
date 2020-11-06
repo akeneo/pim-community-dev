@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -33,8 +34,6 @@ SQL;
             ['parentId' => $parentProductModelId]
         )->fetchAll();
 
-        return array_map(function ($rowData) {
-            return (int) $rowData['id'];
-        }, $resultRows);
+        return array_map(fn($rowData) => (int) $rowData['id'], $resultRows);
     }
 }

@@ -58,7 +58,7 @@ class Family implements ArrayConverterInterface
      *      ],
      * ]
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $this->fieldChecker->checkFieldsPresence($item, ['code']);
         $this->fieldChecker->checkFieldsFilling($item, ['code']);
@@ -78,7 +78,7 @@ class Family implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function convertField(array $convertedItem, $field, $data)
+    protected function convertField(array $convertedItem, string $field, $data)
     {
         if (false !== strpos($field, 'label-', 0)) {
             $labelTokens = explode('-', $field);

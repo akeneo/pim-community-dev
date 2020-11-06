@@ -40,7 +40,7 @@ final class PurgeOutdatedDataCommand extends Command
         $this->purgeOutdatedData = $purgeOutdatedData;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('pim:data-quality-insights:purge-outdated-data')
@@ -52,7 +52,7 @@ final class PurgeOutdatedDataCommand extends Command
             ->addOption('date', 'd', InputOption::VALUE_REQUIRED, 'Date from which the purge will be launched (Y-m-d)', date('Y-m-d'));
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $purgeDate = \DateTimeImmutable::createFromFormat('Y-m-d', $input->getOption('date'));
         $purgeType = $input->getArgument('type');
@@ -97,7 +97,7 @@ final class PurgeOutdatedDataCommand extends Command
         $output->writeln('Purge done.');
     }
 
-    private function purgeDashboardProjectionRates(\DateTimeImmutable $purgeDate, OutputInterface $output)
+    private function purgeDashboardProjectionRates(\DateTimeImmutable $purgeDate, OutputInterface $output): void
     {
         $output->writeln('Start to purge dashboard projection rates.');
         $this->purgeOutdatedData->purgeDashboardProjectionRatesFrom($purgeDate);

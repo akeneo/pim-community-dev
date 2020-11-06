@@ -15,54 +15,38 @@ class CatalogContext
     /** @var array configuration */
     protected $configuration = [];
 
-    /**
-     * @return string
-     */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         return $this->getConfiguration('localeCode');
     }
 
-    /**
-     * @return string
-     */
-    public function getScopeCode()
+    public function getScopeCode(): string
     {
         return $this->getConfiguration('scopeCode');
     }
 
     /**
      * @param string $code
-     *
-     * @return CatalogContext
      */
-    public function setLocaleCode($code)
+    public function setLocaleCode(string $code): \Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext
     {
         return $this->setConfiguration('localeCode', $code);
     }
 
     /**
      * @param string $code
-     *
-     * @return CatalogContext
      */
-    public function setScopeCode($code)
+    public function setScopeCode(string $code): \Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext
     {
         return $this->setConfiguration('scopeCode', $code);
     }
 
-    /**
-     * @return bool
-     */
-    public function hasLocaleCode()
+    public function hasLocaleCode(): bool
     {
         return (isset($this->configuration['localeCode']) && $this->configuration['localeCode'] !== null);
     }
 
-    /**
-     * @return bool
-     */
-    public function hasScopeCode()
+    public function hasScopeCode(): bool
     {
         return (isset($this->configuration['scopeCode']) && $this->configuration['scopeCode'] !== null);
     }
@@ -70,10 +54,8 @@ class CatalogContext
     /**
      * @param string $key  the key
      * @param mixed  $data the data
-     *
-     * @return CatalogContext
      */
-    public function setConfiguration($key, $data)
+    public function setConfiguration(string $key, $data): self
     {
         $this->configuration[$key] = $data;
 
@@ -89,7 +71,7 @@ class CatalogContext
      *
      * @return mixed
      */
-    public function getConfiguration($key)
+    public function getConfiguration(string $key)
     {
         if (!isset($this->configuration[$key]) || $this->configuration[$key] === null) {
             throw new \LogicException(sprintf('"%s" expects to be configured with "%s"', get_class($this), $key));

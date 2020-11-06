@@ -49,9 +49,9 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     public function flush(
         FlatItemBuffer $buffer,
         array $writerOptions = [],
-        $basePathname,
-        $maxLinesPerFile = -1
-    ) {
+        string $basePathname,
+        int $maxLinesPerFile = -1
+    ): array {
         if ($this->areSeveralFilesNeeded($buffer, $maxLinesPerFile)) {
             $writtenFiles = $this->writeIntoSeveralFiles(
                 $buffer,
@@ -70,10 +70,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * @param FlatItemBuffer $buffer
      * @param array          $writerOptions
      * @param string         $filePath
-     *
-     * @return array
      */
-    protected function writeIntoSingleFile(FlatItemBuffer $buffer, array $writerOptions, $filePath)
+    protected function writeIntoSingleFile(FlatItemBuffer $buffer, array $writerOptions, string $filePath): array
     {
         $writtenFiles = [];
 
@@ -112,15 +110,13 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * @param array          $writerOptions
      * @param int            $maxLinesPerFile
      * @param string         $basePathname
-     *
-     * @return array
      */
     protected function writeIntoSeveralFiles(
         FlatItemBuffer $buffer,
         array $writerOptions,
-        $maxLinesPerFile,
-        $basePathname
-    ) {
+        int $maxLinesPerFile,
+        string $basePathname
+    ): array {
         $writtenFiles = [];
         $basePathPattern = $this->getNumberedPathname($basePathname);
         $writtenLinesCount = 0;
@@ -172,17 +168,15 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     /**
      * @param StepExecution $stepExecution
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
 
     /**
      * @param array $headers
-     *
-     * @return array
      */
-    protected function sortHeaders(array $headers)
+    protected function sortHeaders(array $headers): array
     {
         if (null !== $this->columnSorter) {
             $headers = $this->columnSorter->sort($headers, $this->stepExecution->getJobParameters()->all());
@@ -194,10 +188,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
     /**
      * @param FlatItemBuffer $buffer
      * @param int            $maxLinesPerFile
-     *
-     * @return bool
      */
-    protected function areSeveralFilesNeeded(FlatItemBuffer $buffer, $maxLinesPerFile)
+    protected function areSeveralFilesNeeded(FlatItemBuffer $buffer, int $maxLinesPerFile): bool
     {
         if (-1 === $maxLinesPerFile) {
             return false;
@@ -213,15 +205,13 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * @param int            $linesPerFile
      * @param string         $pathPattern
      * @param int            $currentFileCount
-     *
-     * @return string
      */
     protected function resolveFilePath(
         FlatItemBuffer $buffer,
-        $linesPerFile,
-        $pathPattern,
-        $currentFileCount
-    ) {
+        int $linesPerFile,
+        string $pathPattern,
+        int $currentFileCount
+    ): string {
         $resolvedFilePath = $pathPattern;
         if ($this->areSeveralFilesNeeded($buffer, $linesPerFile)) {
             return strtr($pathPattern, ['%fileNb%' => '_' . $currentFileCount]);
@@ -236,10 +226,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      *     - in -> '/path/myFile' ; out -> '/path/myFile%fileNb%'
      *
      * @param string $originalPathname
-     *
-     * @return string
      */
-    protected function getNumberedPathname($originalPathname)
+    protected function getNumberedPathname(string $originalPathname): string
     {
         $fileInfo = new \SplFileInfo($originalPathname);
 
@@ -259,10 +247,8 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      * @param array  $options  Options for Spout writer (delimiter, enclosure, ...)
      *
      * @throws UnsupportedTypeException
-     *
-     * @return WriterInterface
      */
-    protected function getWriter($filePath, array $options = [])
+    protected function getWriter(string $filePath, array $options = []): WriterInterface
     {
         if (!isset($options['type'])) {
             throw new \InvalidArgumentException('Option "type" have to be defined');

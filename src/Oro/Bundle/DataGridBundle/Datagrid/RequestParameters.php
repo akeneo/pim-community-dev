@@ -32,7 +32,7 @@ class RequestParameters
      *
      * @return mixed
      */
-    public function get($type, $default = [])
+    public function get(string $type, $default = [])
     {
         $rootParameter = $this->getRootParameterValue();
 
@@ -42,10 +42,8 @@ class RequestParameters
     /**
      * @param  string $type
      * @param  mixed  $value
-     *
-     * @return void
      */
-    public function set($type, $value)
+    public function set(string $type, $value): void
     {
         $parameters = $this->getRootParameterValue();
         $currentValue = $this->get($type);
@@ -59,10 +57,7 @@ class RequestParameters
         $this->getRequest()->query->set($this->rootParam ? : self::DEFAULT_ROOT_PARAM, $parameters);
     }
 
-    /**
-     * @return string
-     */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->getRequest()->getLocale();
     }
@@ -72,17 +67,14 @@ class RequestParameters
      *
      * @return $this
      */
-    public function setRootParameter($rootParam)
+    public function setRootParameter(string $rootParam): self
     {
         $this->rootParam = $rootParam;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getRootParameterValue()
+    public function getRootParameterValue(): array
     {
         return $this->getRequest()->get($this->rootParam ? : self::DEFAULT_ROOT_PARAM, []);
     }

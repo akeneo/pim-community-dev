@@ -137,10 +137,8 @@ class ProductAndProductModelReader implements
      *
      * Here we transform the ID filter into SELF_AND_ANCESTOR.ID in order to retrieve
      * all the product models and products that are possibly impacted by the mass edit.
-     *
-     * @return array
      */
-    private function getConfiguredFilters(): array
+    private function getConfiguredFilters(): ?array
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
@@ -162,9 +160,7 @@ class ProductAndProductModelReader implements
             }, $filters);
         }
 
-        return array_filter($filters, function ($filter) {
-            return count($filter) > 0;
-        });
+        return array_filter($filters, fn($filter) => count($filter) > 0);
     }
 
     /**

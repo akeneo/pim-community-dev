@@ -17,7 +17,7 @@ class AttributeGroup extends AbstractSimpleArrayConverter implements ArrayConver
     /**
      * {@inheritdoc}
      */
-    protected function convertProperty($property, $data, array $convertedItem, array $options)
+    protected function convertProperty(string $property, $data, array $convertedItem, array $options): array
     {
         switch ($property) {
             case 'labels':

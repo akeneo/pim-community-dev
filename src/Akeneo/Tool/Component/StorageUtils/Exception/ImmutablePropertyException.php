@@ -47,7 +47,7 @@ class ImmutablePropertyException extends PropertyException
      *
      * @return ImmutablePropertyException
      */
-    public static function immutableProperty($propertyName, $propertyValue, $className)
+    public static function immutableProperty(string $propertyName, string $propertyValue, string $className)
     {
         if (null === $propertyValue) {
             $propertyValue = 'NULL';
@@ -65,18 +65,12 @@ class ImmutablePropertyException extends PropertyException
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getPropertyValue()
+    public function getPropertyValue(): string
     {
         return $this->propertyValue;
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }

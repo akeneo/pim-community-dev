@@ -20,8 +20,6 @@ interface PropertyAdderInterface
      * @param array  $options  Options to pass to the adder
      *
      * @throws \InvalidArgumentException
-     *
-     * @return PropertyAdderInterface
      */
-    public function addData($object, $property, $data, array $options = []);
+    public function addData(object $object, string $property, $data, array $options = []): \Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 }

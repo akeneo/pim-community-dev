@@ -34,7 +34,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($productModel, array $data, array $options = [])
+    public function update(object $productModel, array $data, array $options = []): \Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface
     {
         if (!$productModel instanceof ProductModelInterface) {
             throw InvalidObjectException::objectExpected(
@@ -68,7 +68,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
 
         $this->productModelUpdater->update($productModel, $data, $options);
 
-        if (true === $checkFamilyCode) {
+        if ($checkFamilyCode) {
             $this->validateFamilyCode($familyCode, $productModel);
         }
 
@@ -80,14 +80,12 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      */
     private function validateFamilyCode($familyCode, ProductModelInterface $productModel): void
     {
-        if (null !== $productModel->getId()) {
-            if (!is_string($familyCode) || empty($familyCode) || $productModel->getFamily()->getCode() !== $familyCode) {
-                throw ImmutablePropertyException::immutableProperty(
-                    'family',
-                    is_scalar($familyCode) ? $familyCode : gettype($familyCode),
-                    ProductModelInterface::class
-                );
-            }
+        if (null !== $productModel->getId() && (!is_string($familyCode) || empty($familyCode) || $productModel->getFamily()->getCode() !== $familyCode)) {
+            throw ImmutablePropertyException::immutableProperty(
+                'family',
+                is_scalar($familyCode) ? $familyCode : gettype($familyCode),
+                ProductModelInterface::class
+            );
         }
 
         if (null === $familyCode || '' === $familyCode) {

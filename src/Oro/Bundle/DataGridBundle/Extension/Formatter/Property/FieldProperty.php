@@ -18,16 +18,14 @@ class FieldProperty extends AbstractProperty
     /**
      * {@inheritdoc}
      */
-    protected function initialize()
+    protected function initialize(): void
     {
         if ($this->getOr(self::FRONTEND_TYPE_KEY) === self::TYPE_SELECT) {
             $translator = $this->translator;
 
             $choices = $this->getOr('choices', []);
             $translated = array_map(
-                function ($item) use ($translator) {
-                    return $translator->trans($item);
-                },
+                fn($item) => $translator->trans($item),
                 $choices
             );
 

@@ -36,7 +36,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      *
      * @param JobExecution $jobExecution
      */
-    public function archive(JobExecution $jobExecution)
+    public function archive(JobExecution $jobExecution): void
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {
@@ -71,10 +71,8 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      * Verify if the reader is usable or not
      *
      * @param ItemReaderInterface $reader
-     *
-     * @return bool
      */
-    protected function isReaderUsable(ItemReaderInterface $reader)
+    protected function isReaderUsable(ItemReaderInterface $reader): bool
     {
         return $reader instanceof Reader;
     }
@@ -82,7 +80,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'input';
     }
@@ -94,7 +92,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      *
      * @return bool
      */
-    public function supports(JobExecution $jobExecution)
+    public function supports(JobExecution $jobExecution): bool
     {
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
         foreach ($job->getSteps() as $step) {

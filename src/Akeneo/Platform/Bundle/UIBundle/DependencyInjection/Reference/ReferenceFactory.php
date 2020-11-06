@@ -17,10 +17,8 @@ class ReferenceFactory
      * Create a reference to a container service
      *
      * @param string $serviceId
-     *
-     * @return Reference
      */
-    public function createReference($serviceId)
+    public function createReference(string $serviceId): Reference
     {
         return new Reference($serviceId);
     }

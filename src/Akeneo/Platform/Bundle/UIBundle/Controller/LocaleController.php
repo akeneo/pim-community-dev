@@ -33,10 +33,8 @@ class LocaleController
 
     /**
      * Index action (fetch all ui locales)
-     *
-     * @return JsonResponse
      */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $result = [];
         foreach ($this->localeProvider->getLocales() as $locale) {

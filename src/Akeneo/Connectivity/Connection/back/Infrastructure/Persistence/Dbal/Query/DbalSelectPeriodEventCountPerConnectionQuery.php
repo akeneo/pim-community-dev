@@ -25,7 +25,7 @@ class DbalSelectPeriodEventCountPerConnectionQuery implements SelectPeriodEventC
     /** @var Connection */
     private $dbalConnection;
 
-    public function __construct(Connection $dbalConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
@@ -39,13 +39,11 @@ class DbalSelectPeriodEventCountPerConnectionQuery implements SelectPeriodEventC
         $perConnection = $this->getPeriodEventCountPerConnection($eventType, $period, $connectionCodes);
         $forAllConnections = $this->getPeriodEventCountForAllConnections($eventType, $period, $connectionCodes);
 
-        $periodEventCountPerConnection = $this->createPeriodEventCountPerConnection(
+        return $this->createPeriodEventCountPerConnection(
             $period,
             $connectionCodes,
             array_merge($perConnection, $forAllConnections),
         );
-
-        return $periodEventCountPerConnection;
     }
 
     /**
@@ -91,7 +89,7 @@ WHERE connection_code IN (:connection_codes)
 ORDER BY conn.code, audit.event_datetime
 SQL;
 
-        $hourlyEventCountsData = $this->dbalConnection->executeQuery(
+        return $this->dbalConnection->executeQuery(
             $sql,
             [
                 'event_type' => $eventType,
@@ -105,8 +103,6 @@ SQL;
                 'connection_codes' => Connection::PARAM_STR_ARRAY,
             ]
         )->fetchAll();
-
-        return $hourlyEventCountsData;
     }
 
     /**
@@ -126,7 +122,8 @@ AND event_type = :event_type
 GROUP BY event_datetime
 ORDER BY event_datetime
 SQL;
-        $hourlyEventCountsData = $this->dbalConnection->executeQuery(
+
+        return $this->dbalConnection->executeQuery(
             $sql,
             [
                 'all' => AllConnectionCode::CODE,
@@ -141,11 +138,9 @@ SQL;
                 'connection_codes' => Connection::PARAM_STR_ARRAY,
             ]
         )->fetchAll();
-
-        return $hourlyEventCountsData;
     }
 
-    private function getFlowTypeForEventType(string $eventType)
+    private function getFlowTypeForEventType(string $eventType): string
     {
         $flowType = '';
 

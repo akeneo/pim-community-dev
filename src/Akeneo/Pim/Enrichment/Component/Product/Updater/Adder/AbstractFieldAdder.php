@@ -17,7 +17,7 @@ abstract class AbstractFieldAdder implements FieldAdderInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsField($field)
+    public function supportsField(string $field): bool
     {
         return in_array($field, $this->supportedFields);
     }

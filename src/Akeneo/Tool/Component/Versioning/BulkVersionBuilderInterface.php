@@ -21,5 +21,5 @@ interface BulkVersionBuilderInterface
      *
      * @return VersionInterface[]
      */
-    public function buildVersions(array $versionables);
+    public function buildVersions(array $versionables): array;
 }

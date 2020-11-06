@@ -17,7 +17,7 @@ class CompletenessSorter implements SorterInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(DatasourceInterface $datasource, $field, $direction)
+    public function apply(DatasourceInterface $datasource, string $field, string $direction): void
     {
         $datasource->getProductQueryBuilder()->addSorter('completeness', $direction);
     }

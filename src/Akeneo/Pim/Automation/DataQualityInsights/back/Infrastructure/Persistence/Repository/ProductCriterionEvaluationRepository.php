@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -27,19 +28,19 @@ final class ProductCriterionEvaluationRepository implements CriterionEvaluationR
     /** @var CriterionEvaluationRepository */
     private $repository;
 
-    public function __construct(Connection $db, CriterionEvaluationRepository $repository)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $db, CriterionEvaluationRepository $repository)
     {
         $this->db = $db;
         $this->repository = $repository;
     }
 
-    public function create(Write\CriterionEvaluationCollection $criteriaEvaluations): void
+    public function create(CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $this->repository->createCriterionEvaluationsForProducts($criteriaEvaluations);
     }
 
 
-    public function update(Write\CriterionEvaluationCollection $criteriaEvaluations): void
+    public function update(CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $this->repository->updateCriterionEvaluationsForProducts($criteriaEvaluations);
     }

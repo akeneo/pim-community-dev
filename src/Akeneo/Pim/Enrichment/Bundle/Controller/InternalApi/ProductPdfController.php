@@ -47,10 +47,8 @@ class ProductPdfController
      * @AclAncestor("pim_pdf_generator_product_download")
      *
      * @throws HttpException
-     *
-     * @return Response
      */
-    public function downloadPdfAction(Request $request, $id)
+    public function downloadPdfAction(Request $request, int $id): Response
     {
         $product = $this->findProductOr404($id);
         $renderingDate = new \DateTime('now');
@@ -88,11 +86,9 @@ class ProductPdfController
      *
      * @param int $id the product id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @return ProductInterface
+     * @throws NotFoundHttpException
      */
-    protected function findProductOr404($id)
+    protected function findProductOr404(int $id): object
     {
         $product = $this->productRepository->find($id);
 

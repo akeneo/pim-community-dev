@@ -58,7 +58,7 @@ class UserPreferencesListener
      *
      * @param OnFlushEventArgs $args
      */
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         $manager = $args->getEntityManager();
         $uow = $manager->getUnitOfWork();
@@ -75,7 +75,7 @@ class UserPreferencesListener
      *
      * @param PostFlushEventArgs $args
      */
-    public function postFlush(PostFlushEventArgs $args)
+    public function postFlush(PostFlushEventArgs $args): void
     {
         $manager = $args->getEntityManager();
 
@@ -91,7 +91,7 @@ class UserPreferencesListener
      * @param EntityManagerInterface $manager
      * @param object                 $entity
      */
-    protected function preRemove(UnitOfWork $uow, EntityManagerInterface $manager, $entity)
+    protected function preRemove(UnitOfWork $uow, EntityManagerInterface $manager, object $entity): void
     {
         if ($entity instanceof ChannelInterface) {
             $this->onChannelRemoved($uow, $manager, $entity);
@@ -107,7 +107,7 @@ class UserPreferencesListener
      *
      * @param object $entity
      */
-    protected function preUpdate(UnitOfWork $uow, $entity)
+    protected function preUpdate(UnitOfWork $uow, object $entity): void
     {
         if ($entity instanceof LocaleInterface && !$entity->isActivated()) {
             $changeset = $uow->getEntityChangeSet($entity);
@@ -122,10 +122,8 @@ class UserPreferencesListener
      *
      * @param EntityManagerInterface $manager
      * @param object                 $entity
-     *
-     * @return array
      */
-    protected function getMetadata(EntityManagerInterface $manager, $entity)
+    protected function getMetadata(EntityManagerInterface $manager, object $entity): array
     {
         $className = get_class($entity);
         if (!isset($this->metadata[$className])) {
@@ -142,7 +140,7 @@ class UserPreferencesListener
      * @param EntityManagerInterface $manager
      * @param object                 $entity
      */
-    protected function computeChangeset(UnitOfWork $uow, EntityManagerInterface $manager, $entity)
+    protected function computeChangeset(UnitOfWork $uow, EntityManagerInterface $manager, object $entity): void
     {
         $uow->persist($entity);
         $uow->computeChangeSet($this->getMetadata($manager, $entity), $entity);
@@ -159,16 +157,14 @@ class UserPreferencesListener
         UnitOfWork $uow,
         EntityManagerInterface $manager,
         ChannelInterface $removedChannel
-    ) {
+    ): void {
         $users = $this->userRepository->findBy(['catalogScope' => $removedChannel]);
         $channels = $this->channelRepository->findAll();
 
         $defaultScope = current(
             array_filter(
                 $channels,
-                function ($channel) use ($removedChannel) {
-                    return $channel->getCode() !== $removedChannel->getCode();
-                }
+                fn($channel) => $channel->getCode() !== $removedChannel->getCode()
             )
         );
 
@@ -183,7 +179,7 @@ class UserPreferencesListener
      *
      * @param CategoryInterface $removedTree
      */
-    protected function onTreeRemoved(UnitOfWork $uow, EntityManagerInterface $manager, CategoryInterface $removedTree)
+    protected function onTreeRemoved(UnitOfWork $uow, EntityManagerInterface $manager, CategoryInterface $removedTree): void
     {
         $users = $this->userRepository->findBy(['defaultTree' => $removedTree]);
         $trees = $this->categoryRepository->getTrees();
@@ -191,9 +187,7 @@ class UserPreferencesListener
         $defaultTree = current(
             array_filter(
                 $trees,
-                function ($tree) use ($removedTree) {
-                    return $tree->getCode() !== $removedTree->getCode();
-                }
+                fn($tree) => $tree->getCode() !== $removedTree->getCode()
             )
         );
 
@@ -206,7 +200,7 @@ class UserPreferencesListener
     /**
      * Update catalog locale of users using a deactivated locale
      */
-    protected function onLocalesDeactivated(EntityManagerInterface $manager)
+    protected function onLocalesDeactivated(EntityManagerInterface $manager): void
     {
         $activeLocales = $this->localeRepository->getActivatedLocales();
         $defaultLocale = current($activeLocales);

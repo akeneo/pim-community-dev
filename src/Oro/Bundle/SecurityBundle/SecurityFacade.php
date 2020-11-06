@@ -54,9 +54,8 @@ class SecurityFacade
      *
      * @param  string $class
      * @param  string $method
-     * @return bool
      */
-    public function isClassMethodGranted($class, $method)
+    public function isClassMethodGranted(string $class, string $method): bool
     {
         $isGranted = true;
 
@@ -86,7 +85,7 @@ class SecurityFacade
     {
         $annotation = $this->annotationProvider->findAnnotation($class, $method);
 
-        if ($annotation) {
+        if ($annotation !== null) {
             return $annotation->getPermission();
         }
     }
@@ -97,9 +96,8 @@ class SecurityFacade
      * @param string|string[] $attributes Can be a role name(s), permission name(s), an ACL annotation id
      *                                    or something else, it depends on registered security voters
      * @param  mixed $object A domain object, object identity or object identity descriptor (id:type)
-     * @return bool
      */
-    public function isGranted($attributes, $object = null)
+    public function isGranted($attributes, $object = null): bool
     {
         if ($object === null
             && is_string($attributes)

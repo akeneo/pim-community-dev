@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -17,7 +18,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
+    public function getOptions(string $dataLocale, int $collectionId = null, string $search = '', array $options = []): array
     {
         $identifier = isset($options['type']) && 'code' === $options['type'] ? 'code' : 'id';
 
@@ -32,7 +33,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
             ->addOrderBy('text', 'ASC')
             ->setParameter('locale', $dataLocale);
 
-        if ($search) {
+        if ($search !== '') {
             $qb->andWhere('t.label like :search OR o.code LIKE :search')
                 ->setParameter('search', "%$search%");
         }
@@ -64,7 +65,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function createAssociationDatagridQueryBuilder()
+    public function createAssociationDatagridQueryBuilder(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('g');
 
@@ -95,7 +96,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['code' => $code]);
     }
@@ -103,7 +104,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }

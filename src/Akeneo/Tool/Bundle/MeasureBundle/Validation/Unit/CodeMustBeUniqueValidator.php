@@ -23,7 +23,7 @@ class CodeMustBeUniqueValidator extends ConstraintValidator
         $this->measurementFamilyRepository = $measurementFamilyRepository;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof CodeMustBeUnique) {
             throw new UnexpectedTypeException($constraint, CodeMustBeUnique::class);
@@ -41,7 +41,7 @@ class CodeMustBeUniqueValidator extends ConstraintValidator
         }
     }
 
-    private function measurementFamilyAlreadyHasUnitWithCode(string $measurementFamilyCode, string $code)
+    private function measurementFamilyAlreadyHasUnitWithCode(string $measurementFamilyCode, string $code): bool
     {
         $measurementFamily = $this->measurementFamilyRepository->getByCode(MeasurementFamilyCode::fromString($measurementFamilyCode));
 

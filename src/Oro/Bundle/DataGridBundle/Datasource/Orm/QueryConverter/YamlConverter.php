@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter;
 
+use Doctrine\ORM\Query\Expr\Select;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Config\Definition\Processor;
@@ -12,7 +13,7 @@ class YamlConverter implements QueryConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function parse($value, QueryBuilder $qb)
+    public function parse($value, QueryBuilder $qb): \Doctrine\ORM\QueryBuilder
     {
         if (!is_array($value)) {
             $value = Yaml::parse(file_get_contents($value));
@@ -32,7 +33,7 @@ class YamlConverter implements QueryConverterInterface
 
         if (isset($value['select'])) {
             foreach ($value['select'] as $select) {
-                $qb->add('select', new Expr\Select($select), true);
+                $qb->add('select', new Select($select), true);
             }
         }
 
@@ -58,7 +59,7 @@ class YamlConverter implements QueryConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function dump(QueryBuilder $input)
+    public function dump(QueryBuilder $input): string
     {
         return '';
     }
@@ -67,7 +68,7 @@ class YamlConverter implements QueryConverterInterface
      * @param QueryBuilder $qb
      * @param array        $value
      */
-    protected function addJoin(QueryBuilder $qb, $value)
+    protected function addJoin(QueryBuilder $qb, array $value): void
     {
         $defaultValues = ['conditionType' => null, 'condition' => null];
         if (isset($value['join'])) {
@@ -91,7 +92,7 @@ class YamlConverter implements QueryConverterInterface
      * @param QueryBuilder $qb
      * @param array        $value
      */
-    protected function addWhere(QueryBuilder $qb, $value)
+    protected function addWhere(QueryBuilder $qb, array $value): void
     {
         if (isset($value['where'])) {
             if (isset($value['where']['and'])) {
@@ -112,7 +113,7 @@ class YamlConverter implements QueryConverterInterface
      * @param QueryBuilder $qb
      * @param array        $value
      */
-    protected function addOrder(QueryBuilder $qb, $value)
+    protected function addOrder(QueryBuilder $qb, array $value): void
     {
         if (isset($value['orderBy'])) {
             $qb->resetDQLPart('orderBy');

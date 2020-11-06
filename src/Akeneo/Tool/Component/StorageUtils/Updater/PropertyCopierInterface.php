@@ -21,14 +21,12 @@ interface PropertyCopierInterface
      * @param array  $options      Options to pass to the copier
      *
      * @throws \InvalidArgumentException
-     *
-     * @return PropertyCopierInterface
      */
     public function copyData(
-        $fromObject,
-        $toObject,
-        $fromProperty,
-        $toProperty,
+        object $fromObject,
+        object $toObject,
+        string $fromProperty,
+        string $toProperty,
         array $options = []
-    );
+    ): \Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
 }

@@ -17,31 +17,23 @@ interface AdderRegistryInterface
      * Register a adder
      *
      * @param AdderInterface $adder
-     *
-     * @return AdderRegistryInterface
      */
-    public function register(AdderInterface $adder);
+    public function register(AdderInterface $adder): \Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderRegistryInterface;
 
     /**
      * Get a adder compatible with the given property
      *
      * @param string $property
-     *
-     * @return AdderInterface
      */
-    public function getAdder($property);
+    public function getAdder(string $property): \Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 
     /**
      * @param string $field
-     *
-     * @return FieldAdderInterface
      */
-    public function getFieldAdder($field);
+    public function getFieldAdder(string $field): FieldAdderInterface;
 
     /**
      * @param AttributeInterface $attribute
-     *
-     * @return AttributeAdderInterface
      */
-    public function getAttributeAdder(AttributeInterface $attribute);
+    public function getAttributeAdder(AttributeInterface $attribute): AttributeAdderInterface;
 }

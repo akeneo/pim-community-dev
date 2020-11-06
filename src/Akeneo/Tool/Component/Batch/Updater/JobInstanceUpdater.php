@@ -40,7 +40,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
      *
      * @param JobInstance $jobInstance
      */
-    public function update($jobInstance, array $data, array $options = [])
+    public function update(object $jobInstance, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$jobInstance instanceof JobInstance) {
             throw InvalidObjectException::objectExpected(
@@ -59,7 +59,7 @@ class JobInstanceUpdater implements ObjectUpdaterInterface
      * @param string      $field
      * @param mixed       $data
      */
-    protected function setData(JobInstance $jobInstance, $field, $data)
+    protected function setData(JobInstance $jobInstance, string $field, $data): void
     {
         switch ($field) {
             case 'connector':

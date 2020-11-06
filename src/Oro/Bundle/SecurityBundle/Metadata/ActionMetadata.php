@@ -33,7 +33,7 @@ class ActionMetadata implements AclClassInfo, \Serializable
      *
      * @return string
      */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->name;
     }
@@ -43,7 +43,7 @@ class ActionMetadata implements AclClassInfo, \Serializable
      *
      * @return string
      */
-    public function getGroup()
+    public function getGroup(): string
     {
         return $this->group;
     }
@@ -53,7 +53,7 @@ class ActionMetadata implements AclClassInfo, \Serializable
      *
      * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
@@ -63,7 +63,7 @@ class ActionMetadata implements AclClassInfo, \Serializable
         return $this->isEnabledAtCreation;
     }
 
-    public function __construct($name = '', $group = '', $label = '', bool $isEnabledAtCreation = true)
+    public function __construct(string $name = '', string $group = '', string $label = '', bool $isEnabledAtCreation = true)
     {
         $this->name = $name;
         $this->group = $group;
@@ -74,7 +74,7 @@ class ActionMetadata implements AclClassInfo, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize(
             [
@@ -89,7 +89,7 @@ class ActionMetadata implements AclClassInfo, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         list(
             $this->name,

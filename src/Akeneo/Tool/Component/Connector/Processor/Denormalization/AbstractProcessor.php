@@ -56,7 +56,7 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
      *
      * @return object|null
      */
-    protected function findObject(IdentifiableObjectRepositoryInterface $repository, array $data)
+    protected function findObject(IdentifiableObjectRepositoryInterface $repository, array $data): ?object
     {
         $identifier = $this->getItemIdentifier($repository, $data);
 
@@ -70,10 +70,8 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
      * @param array                                 $item
      *
      * @throws MissingIdentifierException if the processed item doesn't contain the identifier properties
-     *
-     * @return string
      */
-    protected function getItemIdentifier(IdentifiableObjectRepositoryInterface $repository, array $item)
+    protected function getItemIdentifier(IdentifiableObjectRepositoryInterface $repository, array $item): string
     {
         $properties = $repository->getIdentifierProperties();
         $references = [];
@@ -100,7 +98,7 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface
      *
      * @throws InvalidItemException
      */
-    protected function skipItemWithMessage(array $item, $message, \Exception $previousException = null)
+    protected function skipItemWithMessage(array $item, string $message, \Exception $previousException = null)
     {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Controller;
 
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
@@ -70,7 +71,7 @@ class ProductExportController
         IdentifiableObjectRepositoryInterface $jobInstanceRepo,
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
-        DataGridManager $datagridManager,
+        ManagerInterface $datagridManager,
         MassActionParametersParser $parameterParser
     ) {
         $this->requestStack = $requestStack;
@@ -87,10 +88,8 @@ class ProductExportController
      * Launch the quick export
      *
      * @param Request $request
-     *
-     * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): JsonResponse
     {
         // If the parameter _displayedColumnOnly is set, it means it's a grid context. We didn't change the name of the
         // parameter to avoid BC.
@@ -178,7 +177,7 @@ class ProductExportController
      *
      * @return string[] Returns [] || ['locale' => 'en_US', 'scope' => 'mobile']
      */
-    protected function getContextParameters(Request $request)
+    protected function getContextParameters(Request $request): array
     {
         $datagridName = $request->get('gridName');
         $datagrid = $this->datagridManager->getDatagrid($datagridName);
@@ -209,10 +208,8 @@ class ProductExportController
      *
      * @param string $filePath
      * @param array  $contextParameters
-     *
-     * @return string
      */
-    protected function buildFilePath($filePath, array $contextParameters)
+    protected function buildFilePath(string $filePath, array $contextParameters): string
     {
         $data = ['%datetime%' => date(static::DATETIME_FORMAT)];
         foreach ($contextParameters as $key => $value) {

@@ -45,8 +45,6 @@ abstract class AbstractResolveDoctrineTargetModelPass implements CompilerPassInt
 
     /**
      * Returns the parameter mappings
-     *
-     * @return array
      */
-    abstract protected function getParametersMapping();
+    abstract protected function getParametersMapping(): array;
 }

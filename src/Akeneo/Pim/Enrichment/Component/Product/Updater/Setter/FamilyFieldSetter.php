@@ -40,7 +40,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
      *
      * Expected data input format : "family_code"
      */
-    public function setFieldData($product, $field, $data, array $options = [])
+    public function setFieldData($product, string $field, $data, array $options = []): void
     {
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
@@ -70,7 +70,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_string($data) && null !== $data) {
             throw InvalidPropertyTypeException::stringExpected(
@@ -83,13 +83,9 @@ class FamilyFieldSetter extends AbstractFieldSetter
 
     /**
      * @param string $familyCode
-     *
-     * @return FamilyInterface
      */
-    protected function getFamily($familyCode)
+    protected function getFamily(string $familyCode): FamilyInterface
     {
-        $family = $this->familyRepository->findOneByIdentifier($familyCode);
-
-        return $family;
+        return $this->familyRepository->findOneByIdentifier($familyCode);
     }
 }

@@ -32,7 +32,7 @@ class ConfigureProductFiltersListener
     /**
      * @param BuildAfter $event
      */
-    public function onBuildAfter(BuildAfter $event)
+    public function onBuildAfter(BuildAfter $event): void
     {
         $defaults = $this->context->getUser()->getProductGridFilters();
 
@@ -42,7 +42,7 @@ class ConfigureProductFiltersListener
 
         $configuration = $event->getDatagrid()->getAcceptor()->getConfig();
 
-        foreach ($configuration['filters']['columns'] as $code => $filter) {
+        foreach (array_keys($configuration['filters']['columns']) as $code) {
             if (in_array($code, $this->disallowed)) {
                 continue;
             }

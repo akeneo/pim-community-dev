@@ -42,7 +42,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAction($action)
+    public function supportAction(string $action): bool
     {
         return in_array($action, [UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE]);
     }
@@ -50,7 +50,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(EntityManager $em, $entity, $action)
+    public function guessUpdates(EntityManager $em, object $entity, string $action): array
     {
         $pendings = [];
         if ($entity instanceof TranslationInterface) {

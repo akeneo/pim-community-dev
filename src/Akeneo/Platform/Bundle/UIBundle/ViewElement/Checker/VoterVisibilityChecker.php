@@ -28,7 +28,7 @@ class VoterVisibilityChecker implements VisibilityCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isVisible(array $config = [], array $context = [])
+    public function isVisible(array $config = [], array $context = []): bool
     {
         if (!isset($config['attribute'])) {
             throw new \InvalidArgumentException('The "attribute" should be provided in the configuration.');

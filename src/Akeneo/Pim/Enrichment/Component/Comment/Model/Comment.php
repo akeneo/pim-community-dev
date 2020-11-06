@@ -45,7 +45,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -53,7 +53,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setResourceId($resourceId)
+    public function setResourceId(string $resourceId): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $this->resourceId = $resourceId;
 
@@ -63,7 +63,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getResourceId()
+    public function getResourceId(): string
     {
         return $this->resourceId;
     }
@@ -71,7 +71,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setResourceName($resourceName)
+    public function setResourceName(string $resourceName): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $this->resourceName = $resourceName;
 
@@ -81,7 +81,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getResourceName()
+    public function getResourceName(): string
     {
         return $this->resourceName;
     }
@@ -89,7 +89,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setAuthor(UserInterface $author)
+    public function setAuthor(UserInterface $author): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $this->author = $author;
 
@@ -99,7 +99,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getAuthor()
+    public function getAuthor(): \Akeneo\UserManagement\Component\Model\UserInterface
     {
         return $this->author;
     }
@@ -107,7 +107,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setBody($body)
+    public function setBody(string $body): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $this->body = $body;
 
@@ -117,7 +117,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getBody()
+    public function getBody(): string
     {
         return $this->body;
     }
@@ -125,7 +125,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $this->createdAt = $createdAt;
 
@@ -135,7 +135,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -143,7 +143,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setParent(CommentInterface $parent)
+    public function setParent(CommentInterface $parent): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $this->parent = $parent;
 
@@ -153,7 +153,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         return $this->parent;
     }
@@ -161,7 +161,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setRepliedAt(\DateTime $repliedAt)
+    public function setRepliedAt(\DateTime $repliedAt): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $this->repliedAt = $repliedAt;
 
@@ -171,7 +171,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getRepliedAt()
+    public function getRepliedAt(): \DateTime
     {
         return $this->repliedAt;
     }
@@ -179,7 +179,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getChildren()
+    public function getChildren(): ArrayCollection
     {
         return $this->children;
     }
@@ -187,7 +187,7 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setChildren(ArrayCollection $children)
+    public function setChildren(ArrayCollection $children): \Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface
     {
         $this->children = $children;
 

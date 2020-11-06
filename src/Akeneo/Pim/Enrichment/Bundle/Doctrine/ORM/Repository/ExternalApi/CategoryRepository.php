@@ -38,12 +38,12 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return $this->categoryRepository->getIdentifierProperties();
     }
 
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier)
     {
         return $this->categoryRepository->findOneByIdentifier($identifier);
     }
@@ -55,10 +55,8 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
      * @param array $orders
      * @param int   $limit
      * @param int   $offset
-     *
-     * @return array
      */
-    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset)
+    public function searchAfterOffset(array $searchFilters, array $orders, int $limit, int $offset): array
     {
         $qb = $this->createQueryBuilder('r');
         $qb = $this->addFilters($qb, $searchFilters);
@@ -176,11 +174,10 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 ])
             ]),
         ];
-        $availableSearchFilters = array_keys($constraints);
 
         $exceptionMessage = '';
         foreach ($searchFilters as $property => $searchFilter) {
-            if (!in_array($property, $availableSearchFilters)) {
+            if (!array_key_exists($property, $constraints)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Available search filters are "%s" and you tried to search on unavailable filter "%s"',
                     implode(', ', $availableSearchFilters),

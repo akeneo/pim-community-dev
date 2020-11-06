@@ -20,17 +20,13 @@ interface AttributeSorterInterface extends SorterInterface
      * @param string             $direction the direction to use
      * @param string             $locale    the locale
      * @param string             $channel   the channel
-     *
-     * @return AttributeSorterInterface
      */
-    public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $channel = null);
+    public function addAttributeSorter(AttributeInterface $attribute, string $direction, string $locale = null, string $channel = null): \Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 
     /**
      * This filter supports the attribute
      *
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function supportsAttribute(AttributeInterface $attribute);
+    public function supportsAttribute(AttributeInterface $attribute): bool;
 }

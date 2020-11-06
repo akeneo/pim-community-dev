@@ -55,10 +55,8 @@ class InvalidOperatorException extends \LogicException
      * @param array  $operators
      * @param string $className
      * @param mixed  $value a value that is not a scalar (array, object, null)
-     *
-     * @return InvalidOperatorException
      */
-    public static function scalarExpected(array $operators, $className, $value)
+    public static function scalarExpected(array $operators, string $className, $value): \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException
     {
         $message = 'Only scalar values are allowed for operators %s, "%s" given.';
 
@@ -77,10 +75,8 @@ class InvalidOperatorException extends \LogicException
      * @param array  $operators
      * @param string $className
      * @param mixed  $value a value that is not a scalar (array, object, null)
-     *
-     * @return InvalidOperatorException
      */
-    public static function arrayExpected($operators, $className, $value)
+    public static function arrayExpected(array $operators, string $className, $value): \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException
     {
         $message = 'Only array values are allowed for operators %s, "%s" given.';
 
@@ -98,10 +94,8 @@ class InvalidOperatorException extends \LogicException
      *
      * @param string $operator
      * @param string $className
-     *
-     * @return InvalidOperatorException
      */
-    public static function notSupported($operator, $className)
+    public static function notSupported(string $operator, string $className): \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException
     {
         $message = 'Operator "%s" is not supported';
 
@@ -114,26 +108,17 @@ class InvalidOperatorException extends \LogicException
         );
     }
 
-    /**
-     * @return string
-     */
-    public function getOperators()
+    public function getOperators(): array
     {
         return $this->operators;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }

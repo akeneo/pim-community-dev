@@ -51,7 +51,7 @@ class JobTrackerController extends Controller
         JobExecutionRepository $jobExecutionRepo,
         JobExecutionArchivist $archivist,
         SecurityFacade $securityFacade,
-        $jobSecurityMapping
+        array $jobSecurityMapping
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->jobExecutionRepo = $jobExecutionRepo;
@@ -66,10 +66,8 @@ class JobTrackerController extends Controller
      * @param int    $id
      * @param string $archiver
      * @param string $key
-     *
-     * @return StreamedResponse
      */
-    public function downloadFilesAction($id, $archiver, $key)
+    public function downloadFilesAction(int $id, string $archiver, string $key): StreamedFileResponse
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
@@ -93,10 +91,8 @@ class JobTrackerController extends Controller
      *
      * @param JobExecution  $jobExecution
      * @param mixed $object The object
-     *
-     * @return bool
      */
-    protected function isJobGranted($jobExecution, $object = null)
+    protected function isJobGranted(\Akeneo\Tool\Component\Batch\Model\JobExecution $jobExecution, $object = null): bool
     {
         $jobExecutionType = $jobExecution->getJobInstance()->getType();
         if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {

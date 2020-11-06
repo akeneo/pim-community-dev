@@ -9,7 +9,7 @@ class PercentFilter extends NumberFilter
     /**
      * {@inheritDoc}
      */
-    public function init($name, array $params)
+    public function init(string $name, array $params): void
     {
         $params[FilterUtility::FRONTEND_TYPE_KEY] = 'number';
         $params[FilterUtility::FORM_OPTIONS_KEY] =

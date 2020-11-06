@@ -6,24 +6,18 @@ interface AclClassInfo
 {
     /**
      * Gets the class name
-     *
-     * @return string
      */
-    public function getClassName();
+    public function getClassName(): string;
 
     /**
      * Gets the security group name
-     *
-     * @return string
      */
-    public function getGroup();
+    public function getGroup(): string;
 
     /**
      * Gets a label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     public function isEnabledAtCreation(): bool;
 }

@@ -172,10 +172,8 @@ class JobInstanceController
      * @param string $identifier
      *
      * @AclAncestor("pim_importexport_import_profile_show")
-     *
-     * @return JsonResponse
      */
-    public function getImportAction($identifier)
+    public function getImportAction(string $identifier): JsonResponse
     {
         return $this->getAction($identifier);
     }
@@ -186,10 +184,8 @@ class JobInstanceController
      * @param string $identifier
      *
      * @AclAncestor("pim_importexport_export_profile_show")
-     *
-     * @return JsonResponse
      */
-    public function getExportAction($identifier)
+    public function getExportAction(string $identifier): JsonResponse
     {
         return $this->getAction($identifier);
     }
@@ -201,10 +197,8 @@ class JobInstanceController
      * @param string  $identifier
      *
      * @AclAncestor("pim_importexport_import_profile_edit")
-     *
-     * @return Response
      */
-    public function putImportAction(Request $request, $identifier)
+    public function putImportAction(Request $request, string $identifier): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -220,10 +214,8 @@ class JobInstanceController
      * @param string  $identifier
      *
      * @AclAncestor("pim_importexport_export_profile_edit")
-     *
-     * @return Response
      */
-    public function putExportAction(Request $request, $identifier)
+    public function putExportAction(Request $request, string $identifier): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -238,10 +230,8 @@ class JobInstanceController
      * @param string $code
      *
      * @AclAncestor("pim_importexport_import_profile_remove")
-     *
-     * @return Response
      */
-    public function deleteImportAction(Request $request, $code)
+    public function deleteImportAction(Request $request, string $code): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -256,10 +246,8 @@ class JobInstanceController
      * @param string $code
      *
      * @AclAncestor("pim_importexport_export_profile_remove")
-     *
-     * @return Response
      */
-    public function deleteExportAction(Request $request, $code)
+    public function deleteExportAction(Request $request, string $code): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -275,10 +263,8 @@ class JobInstanceController
      * @param string  $code
      *
      * @AclAncestor("pim_importexport_import_profile_launch")
-     *
-     * @return Response
      */
-    public function launchImportAction(Request $request, $code)
+    public function launchImportAction(Request $request, string $code): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -294,10 +280,8 @@ class JobInstanceController
      * @param string  $code
      *
      * @AclAncestor("pim_importexport_export_profile_launch")
-     *
-     * @return Response
      */
-    public function launchExportAction(Request $request, $code)
+    public function launchExportAction(Request $request, string $code): RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -310,10 +294,8 @@ class JobInstanceController
      * Get a job profile
      *
      * @param string $identifier
-     *
-     * @return JsonResponse
      */
-    protected function getAction($identifier)
+    protected function getAction(string $identifier): JsonResponse
     {
         $jobInstance = $this->getJobInstance($identifier);
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.show')) {
@@ -331,7 +313,7 @@ class JobInstanceController
      *
      * @return Response
      */
-    protected function putAction(Request $request, $identifier)
+    protected function putAction(Request $request, string $identifier)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -379,10 +361,8 @@ class JobInstanceController
      * Delete a job profile
      *
      * @param string $code
-     *
-     * @return Response
      */
-    protected function deleteAction($code): Response
+    protected function deleteAction(string $code): JsonResponse
     {
         $jobInstance = $this->getJobInstance($code);
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.delete')) {
@@ -478,10 +458,8 @@ class JobInstanceController
      * @param string $code
      *
      * @throws NotFoundHttpException
-     *
-     * @return JobInstance
      */
-    protected function getJobInstance($code)
+    protected function getJobInstance(string $code): \Akeneo\Tool\Component\Batch\Model\JobInstance
     {
         $jobInstance = $this->repository->findOneByIdentifier($code);
         if (null === $jobInstance) {
@@ -514,10 +492,8 @@ class JobInstanceController
      * @param Request $request
      *
      * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
      */
-    public function getJobNamesAction(Request $request)
+    public function getJobNamesAction(Request $request): JsonResponse
     {
         $jobType = $request->query->get('jobType');
         $choices = [];
@@ -535,10 +511,8 @@ class JobInstanceController
      *
      * @param JobInstance $jobInstance
      * @param array|null  $groups
-     *
-     * @return array
      */
-    protected function getValidationErrors(JobInstance $jobInstance, $groups = null)
+    protected function getValidationErrors(JobInstance $jobInstance, ?array $groups = null): array
     {
         $rawParameters = $jobInstance->getRawParameters();
         $parametersViolations = [];
@@ -570,10 +544,8 @@ class JobInstanceController
      * Normalize the job errors
      *
      * @param JobInstance $jobInstance
-     *
-     * @return array
      */
-    protected function normalizeJobInstance(JobInstance $jobInstance)
+    protected function normalizeJobInstance(JobInstance $jobInstance): array
     {
         $normalizedJobInstance = $this->jobInstanceNormalizer->normalize($jobInstance, 'standard');
 
@@ -607,10 +579,8 @@ class JobInstanceController
      * Create an import profile
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function createImportAction(Request $request)
+    public function createImportAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         return $this->createAction($request, 'import');
     }
@@ -619,10 +589,8 @@ class JobInstanceController
      * Create an export profile
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function createExportAction(Request $request)
+    public function createExportAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         return $this->createAction($request, 'export');
     }

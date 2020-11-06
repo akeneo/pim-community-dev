@@ -38,7 +38,7 @@ class CalculateCompletenessCommand extends Command
     public function __construct(
         ProductAndAncestorsIndexer $productANdAncestorsIndexer,
         ComputeAndPersistProductCompletenesses $computeAndPersistProductCompleteness,
-        Connection $connection
+        \Doctrine\DBAL\Driver\Connection $connection
     ) {
         parent::__construct();
         $this->productAndAncestorsIndexer = $productANdAncestorsIndexer;
@@ -49,7 +49,7 @@ class CalculateCompletenessCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Launch the product completeness calculation');
     }
@@ -57,7 +57,7 @@ class CalculateCompletenessCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->lock()) {
             $output->writeln(sprintf('The command "%s" is still running in another process.', self::$defaultName));

@@ -45,7 +45,7 @@ class CheckHeadersRequestSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => 'onKernelRequest'
@@ -60,7 +60,7 @@ class CheckHeadersRequestSubscriber implements EventSubscriberInterface
      * @throws NotAcceptableHttpException
      * @throws UnsupportedMediaTypeHttpException
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
 

@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\RootCategory;
+use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer\ChildCategory;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
 use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
@@ -51,8 +53,8 @@ class ProductGridCategoryTreeController
     public function __construct(
         ListRootCategoriesWithCountHandler $listRootCategoriesWithCount,
         ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount,
-        Normalizer\RootCategory $rootCategoryNormalizer,
-        Normalizer\ChildCategory $childCategoryNormalizer,
+        RootCategory $rootCategoryNormalizer,
+        ChildCategory $childCategoryNormalizer,
         UserContext $userContext,
         SecurityFacade $securityFacade
     ) {
@@ -71,12 +73,10 @@ class ProductGridCategoryTreeController
      * @param Request $request
      *
      * @throws AccessDeniedException
-     *
-     * @return Response
      */
-    public function listTreeAction(Request $request): Response
+    public function listTreeAction(Request $request): JsonResponse
     {
-        if (false === $this->securityFacade->isGranted('pim_enrich_product_category_list')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_product_category_list')) {
             throw new AccessDeniedException();
         }
 
@@ -107,12 +107,10 @@ class ProductGridCategoryTreeController
      * @param Request $request
      *
      * @throws AccessDeniedException
-     *
-     * @return Response
      */
-    public function listChildrenAction(Request $request): Response
+    public function listChildrenAction(Request $request): JsonResponse
     {
-        if (false === $this->securityFacade->isGranted('pim_enrich_product_category_list')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_product_category_list')) {
             throw new AccessDeniedException();
         }
 

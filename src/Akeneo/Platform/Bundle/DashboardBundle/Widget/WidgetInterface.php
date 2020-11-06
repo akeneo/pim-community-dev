@@ -13,26 +13,20 @@ interface WidgetInterface
 {
     /**
      * Get the alias of the widget
-     *
-     * @return string
      */
-    public function getAlias();
+    public function getAlias(): string;
 
     /**
      * Get the template reference
      *
      * ie.: bundle:module:template.format.engine
-     *
-     * @return string
      */
-    public function getTemplate();
+    public function getTemplate(): string;
 
     /**
      * Get the template parameters
-     *
-     * @return array
      */
-    public function getParameters();
+    public function getParameters(): array;
 
     /**
      * Get the widget data

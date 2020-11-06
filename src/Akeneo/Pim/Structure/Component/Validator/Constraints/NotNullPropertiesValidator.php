@@ -29,7 +29,7 @@ class NotNullPropertiesValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($attribute, Constraint $constraint)
+    public function validate($attribute, Constraint $constraint): void
     {
         if (!$constraint instanceof NotNullProperties) {
             throw new UnexpectedTypeException($constraint, NotNullProperties::class);

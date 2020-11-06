@@ -28,7 +28,7 @@ class TwigProperty extends FieldProperty
     /**
      * {@inheritdoc}
      */
-    protected function convertValue($value)
+    protected function convertValue($value): ?string
     {
         if ($value) {
             return $this->getTemplate()->render(['value' => $value]);
@@ -39,10 +39,8 @@ class TwigProperty extends FieldProperty
 
     /**
      * Load twig template
-     *
-     * @return \Twig_TemplateInterface
      */
-    protected function getTemplate()
+    protected function getTemplate(): \Twig_TemplateInterface
     {
         return $this->environment->loadTemplate($this->get(self::TEMPLATE_KEY));
     }

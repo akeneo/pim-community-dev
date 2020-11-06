@@ -18,20 +18,15 @@ class BuildVersionEvent extends Event
 
     /**
      * @param string $username
-     *
-     * @return BuildVersionEvent
      */
-    public function setUsername($username)
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }

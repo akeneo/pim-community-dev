@@ -50,10 +50,8 @@ interface QueryParametersCheckerInterface
      *
      * @throws UnprocessableEntityHttpException
      * @throws BadRequestHttpException
-     *
-     * @return array
      */
-    public function checkCriterionParameters(string $searchString);
+    public function checkCriterionParameters(string $searchString): array;
 
     /**
      * Checks if the property is valid.

@@ -64,7 +64,7 @@ class PublishJobToQueueCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Publish a registered job instance to execute into the job execution queue')
@@ -99,11 +99,11 @@ class PublishJobToQueueCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $jobInstanceCode = $input->getArgument('code');
         $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
-        $noLog = $input->getOption('no-log') ? true : false;
+        $noLog = (bool) $input->getOption('no-log');
         $username = $input->getOption('username');
         $email = $input->getOption('email');
 
@@ -142,9 +142,8 @@ class PublishJobToQueueCommand extends Command
         $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
 
         $rawParameters = array_merge($rawParameters, $config);
-        $jobParameters = $this->jobParametersFactory->create($job, $rawParameters);
 
-        return $jobParameters;
+        return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
     /**
@@ -154,7 +153,7 @@ class PublishJobToQueueCommand extends Command
      *
      * @return array
      */
-    private function decodeConfiguration($data): array
+    private function decodeConfiguration(string $data): array
     {
         $config = json_decode($data, true);
 

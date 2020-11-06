@@ -12,7 +12,7 @@ class PermissionCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['privileges_config'] = $options['entry_options']['privileges_config'];
         //TODO: Removing 'SHARE' from config. Remove this code after sharing is implemented.
@@ -24,7 +24,7 @@ class PermissionCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'oro_acl_permission_collection';
     }
@@ -32,7 +32,7 @@ class PermissionCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return CollectionType::class;
     }

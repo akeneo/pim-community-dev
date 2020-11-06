@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
@@ -34,10 +35,10 @@ final class GetUpToDateCriteriaEvaluationsByProductIdQuery implements GetCriteri
         $this->hasUpToDateEvaluationQuery = $hasUpToDateEvaluationQuery;
     }
 
-    public function execute(ProductId $productId): Read\CriterionEvaluationCollection
+    public function execute(ProductId $productId): CriterionEvaluationCollection
     {
-        if (false === $this->hasUpToDateEvaluationQuery->forProductId($productId)) {
-            return new Read\CriterionEvaluationCollection();
+        if (!$this->hasUpToDateEvaluationQuery->forProductId($productId)) {
+            return new CriterionEvaluationCollection();
         }
 
         return $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);

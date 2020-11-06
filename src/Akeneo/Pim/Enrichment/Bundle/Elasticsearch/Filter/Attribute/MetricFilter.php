@@ -48,12 +48,12 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): AttributeFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -183,7 +183,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
      * @throws InvalidPropertyTypeException
      * @throws InvalidPropertyException
      */
-    protected function checkValue(AttributeInterface $attribute, $data)
+    protected function checkValue(AttributeInterface $attribute, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($attribute->getCode(), static::class, $data);
@@ -247,10 +247,8 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
      *
      * @param AttributeInterface $attribute
      * @param array              $data
-     *
-     * @return float
      */
-    protected function convertValue(AttributeInterface $attribute, array $data)
+    protected function convertValue(AttributeInterface $attribute, array $data): string
     {
         $this->measureConverter->setFamily($attribute->getMetricFamily());
 

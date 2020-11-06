@@ -103,7 +103,7 @@ class CreateMeasurementFamilyAction
         return $createMeasurementFamilyCommand;
     }
 
-    private function handleCreateMeasurementFamilyCommand(CreateMeasurementFamilyCommand $createMeasurementFamilyCommand)
+    private function handleCreateMeasurementFamilyCommand(CreateMeasurementFamilyCommand $createMeasurementFamilyCommand): void
     {
         $this->createMeasurementFamilyHandler->handle($createMeasurementFamilyCommand);
     }

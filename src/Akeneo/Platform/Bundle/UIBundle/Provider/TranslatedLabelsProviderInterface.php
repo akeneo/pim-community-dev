@@ -13,8 +13,6 @@ interface TranslatedLabelsProviderInterface
      * Return an array used to build HTML select
      *
      * @param array $options
-     *
-     * @return array
      */
-    public function findTranslatedLabels(array $options = []);
+    public function findTranslatedLabels(array $options = []): array;
 }

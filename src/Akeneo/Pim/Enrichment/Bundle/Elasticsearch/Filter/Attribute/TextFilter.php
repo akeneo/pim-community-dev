@@ -34,12 +34,12 @@ class TextFilter extends AbstractAttributeFilter implements AttributeFilterInter
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): AttributeFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -168,7 +168,7 @@ class TextFilter extends AbstractAttributeFilter implements AttributeFilterInter
      * @param AttributeInterface $attribute
      * @param mixed              $value
      */
-    protected function checkValue(AttributeInterface $attribute, $value)
+    protected function checkValue(AttributeInterface $attribute, $value): void
     {
         if (!is_string($value)) {
             throw InvalidPropertyTypeException::stringExpected($attribute->getCode(), static::class, $value);

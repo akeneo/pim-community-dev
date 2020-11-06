@@ -14,10 +14,10 @@ class LocaleExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter('pretty_locale_name', [$this, 'prettyLocaleName'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('pretty_locale_name', fn($code) => $this->prettyLocaleName($code), ['is_safe' => ['html']]),
         ];
     }
 
@@ -25,10 +25,8 @@ class LocaleExtension extends \Twig_Extension
      * Display the name of a locale by its code, like English (United States) when you provide en_US
      *
      * @param string $code
-     *
-     * @return string
      */
-    public function prettyLocaleName($code)
+    public function prettyLocaleName(string $code): string
     {
         if (empty($code)) {
             return '';

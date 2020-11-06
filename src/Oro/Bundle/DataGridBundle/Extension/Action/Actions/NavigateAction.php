@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Action\Actions;
 
+use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 class NavigateAction extends AbstractAction
 {
     /**
@@ -26,7 +27,7 @@ class NavigateAction extends AbstractAction
      * merge method). To avoid changing this low-level method, we do a recursive merge in this method, to be able to
      * merge the options and the additional parameters with the sub options.
      */
-    public function getOptions()
+    public function getOptions(): ActionConfiguration
     {
         $additionalOptions = self::$additionalOptions;
         $options = parent::getOptions();

@@ -37,7 +37,7 @@ class ResetUniqueValidationSubscriber
      * Reset the Unique Value Set.
      * Called on EventInterface::ITEM_STEP_AFTER_BATCH
      */
-    public function onAkeneoBatchItemStepAfterBatch()
+    public function onAkeneoBatchItemStepAfterBatch(): void
     {
         $this->uniqueValueSet->reset();
         $this->uniqueAxesCombinationSet->reset();

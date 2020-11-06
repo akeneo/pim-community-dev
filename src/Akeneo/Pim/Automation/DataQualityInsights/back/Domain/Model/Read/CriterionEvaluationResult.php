@@ -51,24 +51,18 @@ final class CriterionEvaluationResult
 
         if (count($attributes) > 0) {
             return ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($attributes, function ($attributes) {
-                if (false === is_array($attributes)) {
+                if (!is_array($attributes)) {
                     return [];
                 }
 
-                $attributes = array_keys(array_filter($attributes, function ($rate) {
-                    return $rate < 100;
-                }));
-
-                return $attributes;
+                return array_keys(array_filter($attributes, fn($rate) => $rate < 100));
             });
         }
 
         // The 'attributes' array key is deprecated but kept here to allow backward compatibility
         $attributes = $this->data['attributes'] ?? [];
 
-        return ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($attributes, function ($attributeCodes) {
-            return is_array($attributeCodes) ? $attributeCodes : [];
-        });
+        return ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($attributes, fn($attributeCodes) => is_array($attributeCodes) ? $attributeCodes : []);
     }
 
     public function getStatus(): CriterionEvaluationResultStatusCollection

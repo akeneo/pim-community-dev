@@ -85,7 +85,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -93,7 +93,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $familyVariantCodes = $jobParameters->get('family_variant_codes');
@@ -116,7 +116,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         }
     }
 
-    private function updateRootProductModels(string $familyVariant)
+    private function updateRootProductModels(string $familyVariant): void
     {
         $pmqb = $this->productQueryBuilderFactory->create([
             'filters' => [
@@ -129,7 +129,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         $this->updateValuesOfEntities($pmqb->execute());
     }
 
-    private function updateVariantProducts(string $familyVariant)
+    private function updateVariantProducts(string $familyVariant): void
     {
         $pmqb = $this->productQueryBuilderFactory->create([
             'filters' => [
@@ -142,7 +142,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         $this->updateValuesOfEntities($pmqb->execute());
     }
 
-    private function updateSubProductModels(string $familyVariant)
+    private function updateSubProductModels(string $familyVariant): void
     {
         $pmqb = $this->productQueryBuilderFactory->create([
             'filters' => [

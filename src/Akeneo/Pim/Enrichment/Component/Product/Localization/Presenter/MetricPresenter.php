@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
@@ -34,7 +35,7 @@ class MetricPresenter extends NumberPresenter
         NumberFactory $numberFactory,
         array $attributeTypes,
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
-        BaseCachedObjectRepository $baseCachedObjectRepository,
+        CachedObjectRepositoryInterface $baseCachedObjectRepository,
         LoggerInterface $logger
     ) {
         parent::__construct($numberFactory, $attributeTypes);
@@ -47,7 +48,7 @@ class MetricPresenter extends NumberPresenter
     /**
      * {@inheritdoc}
      */
-    public function present($value, array $options = [])
+    public function present($value, array $options = []): string
     {
         if (isset($options['versioned_attribute'])) {
             $value = $this->getStructuredMetric($value, $options['versioned_attribute']);
@@ -74,7 +75,7 @@ class MetricPresenter extends NumberPresenter
         $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
         $unit = isset($value['unit']) && $value['unit'] !== '' ? $unitLabel : null;
 
-        return join(' ', array_filter([$amount, $unit]));
+        return implode(' ', array_filter([$amount, $unit]));
     }
 
     /**
@@ -84,10 +85,8 @@ class MetricPresenter extends NumberPresenter
      *
      * @param string $value
      * @param string $versionedAttribute
-     *
-     * @return array
      */
-    protected function getStructuredMetric($value, $versionedAttribute)
+    protected function getStructuredMetric(string $value, string $versionedAttribute): array
     {
         $parts = preg_split('/-/', $versionedAttribute);
         $unit = end($parts);

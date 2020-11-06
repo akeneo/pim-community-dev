@@ -11,7 +11,7 @@ class OverrideCompilerPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $translatorService = $container->getDefinition('translator.default');
         $translatorService->setClass(Translator::class);

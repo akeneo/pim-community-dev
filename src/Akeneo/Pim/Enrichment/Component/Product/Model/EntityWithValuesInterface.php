@@ -22,33 +22,24 @@ interface EntityWithValuesInterface
      */
     public function getIdentifier();
 
-    /**
-     * @return array
-     */
-    public function getRawValues();
+    public function getRawValues(): array;
 
     /**
      * @param array $rawValues
-     *
-     * @return EntityWithValuesInterface
      */
-    public function setRawValues(array $rawValues);
+    public function setRawValues(array $rawValues): \Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
     /**
      * Get values
-     *
-     * @return WriteValueCollection
      */
-    public function getValues();
+    public function getValues(): \Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 
     /**
      * Set values
      *
      * @param WriteValueCollection $values
-     *
-     * @return EntityWithValuesInterface
      */
-    public function setValues(WriteValueCollection $values);
+    public function setValues(WriteValueCollection $values): \Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
     /**
      * Get value related to attribute code
@@ -56,28 +47,22 @@ interface EntityWithValuesInterface
      * @param string $attributeCode
      * @param string $localeCode
      * @param string $scopeCode
-     *
-     * @return ValueInterface
      */
-    public function getValue($attributeCode, $localeCode = null, $scopeCode = null);
+    public function getValue(string $attributeCode, string $localeCode = null, string $scopeCode = null): \Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
     /**
      * Add value, override to deal with relation owner side
      *
      * @param ValueInterface $value
-     *
-     * @return EntityWithValuesInterface
      */
-    public function addValue(ValueInterface $value);
+    public function addValue(ValueInterface $value): \Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
     /**
      * Remove value
      *
      * @param ValueInterface $value
-     *
-     * @return EntityWithValuesInterface
      */
-    public function removeValue(ValueInterface $value);
+    public function removeValue(ValueInterface $value): \Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 
     /**
      * Get whether or not an attribute is part of a product from its attribute code

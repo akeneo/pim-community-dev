@@ -30,7 +30,7 @@ class AclAnnotationStorage implements \Serializable
      * @throws \InvalidArgumentException
      * @return AclAnnotation|null        AclAnnotation object or null if ACL annotation was not found
      */
-    public function findById($id)
+    public function findById(string $id): ?Acl
     {
         if (empty($id)) {
             throw new \InvalidArgumentException('$id must not be empty.');
@@ -49,7 +49,7 @@ class AclAnnotationStorage implements \Serializable
      * @throws \InvalidArgumentException
      * @return AclAnnotation|null        AclAnnotation object or null if ACL annotation was not found
      */
-    public function find($class, $method = null)
+    public function find(string $class, ?string $method = null)
     {
         if (empty($class)) {
             throw new \InvalidArgumentException('$class must not be empty.');
@@ -79,7 +79,7 @@ class AclAnnotationStorage implements \Serializable
      * @param  string|null $method
      * @return bool
      */
-    public function has($class, $method = null)
+    public function has(string $class, ?string $method = null)
     {
         if (empty($method)) {
             if (!isset($this->classes[$class]['!'])) {
@@ -102,7 +102,7 @@ class AclAnnotationStorage implements \Serializable
      * @param  string|null     $type The annotation type
      * @return AclAnnotation[]
      */
-    public function getAnnotations($type = null)
+    public function getAnnotations(?string $type = null): array
     {
         if ($type === null) {
             return array_values($this->annotations);
@@ -124,7 +124,7 @@ class AclAnnotationStorage implements \Serializable
      * @param  string $class
      * @return bool   true if the class is registered in this storage; otherwise, false
      */
-    public function isKnownClass($class)
+    public function isKnownClass(string $class): bool
     {
         return isset($this->classes[$class]);
     }
@@ -136,7 +136,7 @@ class AclAnnotationStorage implements \Serializable
      * @param  string $method
      * @return bool   true if the method is registered in this storage; otherwise, false
      */
-    public function isKnownMethod($class, $method)
+    public function isKnownMethod(string $class, string $method): bool
     {
         return isset($this->classes[$class]) && isset($this->classes[$class][$method]);
     }
@@ -150,7 +150,7 @@ class AclAnnotationStorage implements \Serializable
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function add(AclAnnotation $annotation, $class = null, $method = null)
+    public function add(AclAnnotation $annotation, ?string $class = null, ?string $method = null): void
     {
         $id = $annotation->getId();
         $this->annotations[$id] = $annotation;
@@ -168,7 +168,7 @@ class AclAnnotationStorage implements \Serializable
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
-    public function addAncestor(AclAnnotationAncestor $ancestor, $class = null, $method = null)
+    public function addAncestor(AclAnnotationAncestor $ancestor, ?string $class = null, ?string $method = null): void
     {
         if ($class !== null) {
             $this->addBinding($ancestor->getId(), $class, $method);
@@ -186,7 +186,7 @@ class AclAnnotationStorage implements \Serializable
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function addBinding($id, $class, $method = null)
+    public function addBinding(string $id, string $class, ?string $method = null): void
     {
         if (empty($class)) {
             throw new \InvalidArgumentException('$class must not be empty.');
@@ -218,19 +218,17 @@ class AclAnnotationStorage implements \Serializable
                 }
                 $this->classes[$class][$method] = $id;
             }
+        } elseif (empty($method)) {
+            $this->classes[$class] = ['!' => $id];
         } else {
-            if (empty($method)) {
-                $this->classes[$class] = ['!' => $id];
-            } else {
-                $this->classes[$class] = [$method => $id];
-            }
+            $this->classes[$class] = [$method => $id];
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function serialize()
+    public function serialize(): string
     {
         $data = [];
         foreach ($this->annotations as $annotation) {
@@ -248,7 +246,7 @@ class AclAnnotationStorage implements \Serializable
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         list(
             $data,

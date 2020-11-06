@@ -36,7 +36,7 @@ final class GetUpToDateLatestAxesRatesQuery implements GetLatestAxesRatesQueryIn
 
     public function byProductId(ProductId $productId): AxisRateCollection
     {
-        if (false === $this->hasUpToDateEvaluationQuery->forProductId($productId)) {
+        if (!$this->hasUpToDateEvaluationQuery->forProductId($productId)) {
             return new AxisRateCollection();
         }
 

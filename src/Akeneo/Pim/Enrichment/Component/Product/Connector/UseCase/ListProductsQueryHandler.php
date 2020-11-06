@@ -114,9 +114,7 @@ final class ListProductsQueryHandler
             $this->getLocales($query->channelCode, $query->localeCodes)
         );
 
-        $productIds = array_map(function (ConnectorProduct $connectorProduct) {
-            return $connectorProduct->id();
-        }, $connectorProductList->connectorProducts());
+        $productIds = array_map(fn(ConnectorProduct $connectorProduct) => $connectorProduct->id(), $connectorProductList->connectorProducts());
         $this->eventDispatcher->dispatch(new ReadProductsEvent($productIds));
 
         return $connectorProductList;
@@ -145,14 +143,11 @@ final class ListProductsQueryHandler
     {
         if (null === $channelCodeToFilterValuesOn) {
             return $localeCodesToFilterValuesOn;
+        } elseif (null === $localeCodesToFilterValuesOn) {
+            $channel = $this->channelRepository->findOneByIdentifier($channelCodeToFilterValuesOn);
+            return $channel->getLocaleCodes();
         } else {
-            if (null === $localeCodesToFilterValuesOn) {
-                $channel = $this->channelRepository->findOneByIdentifier($channelCodeToFilterValuesOn);
-
-                return $channel->getLocaleCodes();
-            } else {
-                return $localeCodesToFilterValuesOn;
-            }
+            return $localeCodesToFilterValuesOn;
         }
     }
 }

@@ -17,10 +17,8 @@ class ClassMetadataFactory
      * Create an instance of ClassMetadata
      *
      * @param string $class
-     *
-     * @return ClassMetadata
      */
-    public function createMetadata($class)
+    public function createMetadata(string $class): ClassMetadata
     {
         return new ClassMetadata($class);
     }

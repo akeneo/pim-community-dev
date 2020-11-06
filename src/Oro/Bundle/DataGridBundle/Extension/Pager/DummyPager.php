@@ -22,51 +22,49 @@ class DummyPager implements PagerInterface
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function init(): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setMaxPerPage($maxPerPage)
+    public function setMaxPerPage(int $maxPerPage): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getMaxPerPage()
+    public function getMaxPerPage(): int
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setPage($page)
+    public function setPage(int $page): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPage()
+    public function getPage(): int
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getNbResults()
+    public function getNbResults(): int
     {
     }
 
     /**
      * @param mixed $qb
-     *
-     * @return DummyPager
      */
-    public function setQueryBuilder($qb)
+    public function setQueryBuilder($qb): self
     {
         return $this;
     }

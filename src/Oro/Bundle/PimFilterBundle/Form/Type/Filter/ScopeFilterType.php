@@ -37,7 +37,7 @@ class ScopeFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
@@ -45,7 +45,7 @@ class ScopeFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceFilterType::class;
     }
@@ -53,7 +53,7 @@ class ScopeFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $scopeChoices = $this->userContext->getChannelChoicesWithUserChannel();
 

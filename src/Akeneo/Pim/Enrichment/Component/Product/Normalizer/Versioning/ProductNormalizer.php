@@ -108,7 +108,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @return array
      */
-    protected function normalizeValues(ProductInterface $product, $format = null, array $context = []): array
+    protected function normalizeValues(ProductInterface $product, ?string $format = null, array $context = []): array
     {
         $values = $this->getFilteredValues($product, $context);
 
@@ -134,11 +134,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     protected function getFilteredValues(ProductInterface $product, array $context = [])
     {
-        if ($product->isVariant()) {
-            $values = $product->getValuesForVariation();
-        } else {
-            $values = $product->getValues();
-        }
+        $values = $product->isVariant() ? $product->getValuesForVariation() : $product->getValues();
 
         if (null === $this->filter) {
             return $values;
@@ -165,7 +161,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @return string
      */
-    protected function getFieldValue($value): string
+    protected function getFieldValue(\Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface $value): string
     {
         $suffix = '';
 
@@ -188,7 +184,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     protected function normalizeFamily(FamilyInterface $family = null): string
     {
-        return $family ? $family->getCode() : '';
+        return $family !== null ? $family->getCode() : '';
     }
 
     /**
@@ -219,12 +215,10 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      * Normalizes a product parent.
      *
      * @param ProductModelInterface $parent
-     *
-     * @return string
      */
-    protected function normalizeParent(ProductModelInterface $parent = null): string
+    protected function normalizeParent(ProductModelInterface $parent = null): ?string
     {
-        return $parent ? $parent->getCode() : '';
+        return $parent !== null ? $parent->getCode() : '';
     }
 
     /**
@@ -234,7 +228,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      *
      * @return array
      */
-    protected function normalizeAssociations($associations): array
+    protected function normalizeAssociations(Collection $associations): array
     {
         $results = [];
         foreach ($associations as $association) {

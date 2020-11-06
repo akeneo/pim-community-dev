@@ -26,7 +26,7 @@ class AttributeGroupSearchableRepository implements SearchableRepositoryInterfac
      * @param EntityManagerInterface $entityManager
      * @param string                 $entityName
      */
-    public function __construct(EntityManagerInterface $entityManager, $entityName)
+    public function __construct(EntityManagerInterface $entityManager, string $entityName)
     {
         $this->entityManager = $entityManager;
         $this->entityName = $entityName;
@@ -35,7 +35,7 @@ class AttributeGroupSearchableRepository implements SearchableRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findBySearch($search = null, array $options = [])
+    public function findBySearch(string $search = null, array $options = []): array
     {
         $qb = $this->findBySearchQb($search, $options);
 
@@ -44,10 +44,8 @@ class AttributeGroupSearchableRepository implements SearchableRepositoryInterfac
 
     /**
      * @param  array $options
-     *
-     * @return array
      */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(
@@ -80,10 +78,8 @@ class AttributeGroupSearchableRepository implements SearchableRepositoryInterfac
     /**
      * @param  string $search
      * @param  array  $options
-     *
-     * @return QueryBuilder
      */
-    protected function findBySearchQb($search, array $options)
+    protected function findBySearchQb(string $search, array $options): QueryBuilder
     {
         $qb = $this->entityManager
             ->createQueryBuilder()

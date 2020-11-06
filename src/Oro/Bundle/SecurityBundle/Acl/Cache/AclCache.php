@@ -31,7 +31,7 @@ class AclCache extends DoctrineAclCache
     /**
      * {@inheritDoc}
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         $this->cache->deleteAll();
     }

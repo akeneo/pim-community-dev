@@ -42,7 +42,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($family, array $options = [])
+    public function save($family, array $options = []): void
     {
         $this->validateFamily($family);
 
@@ -60,7 +60,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $families, array $options = [])
+    public function saveAll(array $families, array $options = []): void
     {
         if (empty($families)) {
             return;
@@ -87,7 +87,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($families, $options));
     }
 
-    protected function validateFamily($family)
+    protected function validateFamily($family): void
     {
         if (!$family instanceof FamilyInterface) {
             throw new \InvalidArgumentException(

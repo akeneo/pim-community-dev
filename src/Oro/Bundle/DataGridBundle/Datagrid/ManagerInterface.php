@@ -10,10 +10,8 @@ interface ManagerInterface
      * Returns prepared datagrid object for further operations
      *
      * @param string $name
-     *
-     * @return DatagridInterface
      */
-    public function getDatagrid($name);
+    public function getDatagrid(string $name): DatagridInterface;
 
     /**
      * Returns prepared config for requested datagrid
@@ -22,7 +20,6 @@ interface ManagerInterface
      * @param string $name
      *
      * @throws \RuntimeException
-     * @return DatagridConfiguration
      */
-    public function getConfigurationForGrid($name);
+    public function getConfigurationForGrid(string $name): DatagridConfiguration;
 }

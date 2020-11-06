@@ -20,7 +20,7 @@ final class GetValuesAndPropertiesFromProductModelCodes
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -31,9 +31,7 @@ final class GetValuesAndPropertiesFromProductModelCodes
             return [];
         }
 
-        $productModelCodes = (function (string ...$productModelCodes) {
-            return $productModelCodes;
-        })(...$productModelCodes);
+        $productModelCodes = (fn(string ...$productModelCodes) => $productModelCodes)(...$productModelCodes);
 
         $query = <<<SQL
 SELECT

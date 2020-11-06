@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Provider;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 class ChainConfigurationProvider implements ConfigurationProviderInterface
 {
     /**
@@ -14,7 +15,7 @@ class ChainConfigurationProvider implements ConfigurationProviderInterface
      *
      * @param ConfigurationProviderInterface $provider
      */
-    public function addProvider(ConfigurationProviderInterface $provider)
+    public function addProvider(ConfigurationProviderInterface $provider): void
     {
         $this->providers[] = $provider;
     }
@@ -22,7 +23,7 @@ class ChainConfigurationProvider implements ConfigurationProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function isApplicable($gridName)
+    public function isApplicable(string $gridName): bool
     {
         return true;
     }
@@ -30,7 +31,7 @@ class ChainConfigurationProvider implements ConfigurationProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfiguration($gridName)
+    public function getConfiguration(string $gridName): DatagridConfiguration
     {
         $foundProvider = null;
         foreach ($this->providers as $provider) {

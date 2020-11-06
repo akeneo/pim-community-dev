@@ -21,7 +21,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(ReferenceDataConfigurationInterface $configuration, $name)
+    public function register(ReferenceDataConfigurationInterface $configuration, string $name): ConfigurationRegistryInterface
     {
         $configuration->setName($name);
         self::$configurations[$name] = $configuration;
@@ -32,7 +32,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function registerRaw(array $rawConfiguration, $name)
+    public function registerRaw(array $rawConfiguration, string $name): ConfigurationRegistryInterface
     {
         $this->checkRawConfiguration($rawConfiguration);
 
@@ -46,7 +46,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name)
+    public function get(string $name): ReferenceDataConfigurationInterface
     {
         return self::$configurations[$name];
     }
@@ -54,7 +54,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return isset(self::$configurations[$name]);
     }
@@ -62,7 +62,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function all()
+    public function all(): array
     {
         return self::$configurations;
     }
@@ -70,7 +70,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function unregister($name)
+    public function unregister(string $name): ConfigurationRegistryInterface
     {
         unset(self::$configurations[$name]);
 
@@ -80,7 +80,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * @param array $rawConfiguration
      */
-    protected function checkRawConfiguration(array $rawConfiguration)
+    protected function checkRawConfiguration(array $rawConfiguration): void
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['class', 'type'])

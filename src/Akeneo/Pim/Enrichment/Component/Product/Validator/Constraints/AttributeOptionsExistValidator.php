@@ -27,7 +27,7 @@ class AttributeOptionsExistValidator extends ConstraintValidator
         $this->getExistingAttibuteOptionCodes = $getExistingAttibuteOptionCodes;
     }
 
-    public function validate($values, Constraint $constraint)
+    public function validate($values, Constraint $constraint): void
     {
         if (!$constraint instanceof AttributeOptionsExist) {
             throw new UnexpectedTypeException($constraint, AttributeOptionsExist::class);
@@ -38,9 +38,7 @@ class AttributeOptionsExistValidator extends ConstraintValidator
         }
 
         $optionValues = $values->filter(
-            function (ValueInterface $value): bool {
-                return $value instanceof OptionValueInterface || $value instanceof OptionsValueInterface;
-            }
+            fn(ValueInterface $value): bool => $value instanceof OptionValueInterface || $value instanceof OptionsValueInterface
         );
 
         if ($optionValues->isEmpty()) {

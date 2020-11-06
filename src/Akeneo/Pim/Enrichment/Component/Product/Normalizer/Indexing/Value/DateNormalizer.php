@@ -19,7 +19,7 @@ class DateNormalizer extends AbstractProductValueNormalizer implements Normalize
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof DateValueInterface && (
                 $format === ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
@@ -34,7 +34,7 @@ class DateNormalizer extends AbstractProductValueNormalizer implements Normalize
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedData(ValueInterface $value)
+    protected function getNormalizedData(ValueInterface $value): ?string
     {
         $date = $value->getData();
 

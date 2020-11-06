@@ -37,7 +37,7 @@ class InstallCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Akeneo PIM Application Installer.')
@@ -55,7 +55,7 @@ class InstallCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->commandExecutor = new CommandExecutor(
             $input,
@@ -67,7 +67,7 @@ class InstallCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $forceInstall = $input->getOption('force');
 
@@ -87,7 +87,7 @@ class InstallCommand extends Command
             $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
             $output->writeln('');
 
-            return $e->getCode();
+            return (int) $e->getCode();
         }
 
         $output->writeln('');
@@ -99,11 +99,10 @@ class InstallCommand extends Command
     /**
      * Step where configuration is checked
      *
-     * @return InstallCommand
      * @throws \RuntimeException
      *
      */
-    protected function checkStep()
+    protected function checkStep(): self
     {
         $this->commandExecutor->runCommand('pim:installer:check-requirements');
 
@@ -124,10 +123,8 @@ class InstallCommand extends Command
      * Load only assets
      *
      * @param InputInterface $input
-     *
-     * @return InstallCommand
      */
-    protected function assetsStep(InputInterface $input)
+    protected function assetsStep(InputInterface $input): self
     {
         $options = false === $input->getOption('symlink') ? [] : ['--symlink' => true];
         $options = false === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);

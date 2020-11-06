@@ -21,7 +21,7 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface, Ca
      *
      * @var ProductCompletenessCollection $completenesses
      */
-    public function normalize($completenesses, $format = null, array $context = [])
+    public function normalize($completenesses, $format = null, array $context = []): array
     {
         $data = [];
 
@@ -37,12 +37,10 @@ class ProductCompletenessCollectionNormalizer implements NormalizerInterface, Ca
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return
-            in_array($format, [
-                ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-            ]) &&
+            $format == ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX &&
             $data instanceof ProductCompletenessCollection;
     }
 

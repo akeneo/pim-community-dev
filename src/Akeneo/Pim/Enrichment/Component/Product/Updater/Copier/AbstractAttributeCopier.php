@@ -50,7 +50,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
+    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute): bool
     {
         $supportsFrom = in_array($fromAttribute->getType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getType(), $this->supportedToTypes);
@@ -69,7 +69,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function checkLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
+    protected function checkLocaleAndScope(AttributeInterface $attribute, string $locale, string $scope)
     {
         try {
             $this->attrValidatorHelper->validateLocale($attribute, $locale);

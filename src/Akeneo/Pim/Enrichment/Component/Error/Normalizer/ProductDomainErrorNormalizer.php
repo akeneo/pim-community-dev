@@ -48,7 +48,7 @@ class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupp
 
         if (isset($context['product'])) {
             $product = $context['product'];
-            if (false === $product instanceof ProductInterface) {
+            if (!$product instanceof ProductInterface) {
                 throw new \LogicException(
                     sprintf('Context property "product" should be an instance of %s', ProductInterface::class)
                 );

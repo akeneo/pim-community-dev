@@ -17,17 +17,13 @@ interface NotificationFactoryInterface
      * Creates a notification
      *
      * @param mixed $notification
-     *
-     * @return NotificationInterface
      */
-    public function create($notification);
+    public function create($notification): NotificationInterface;
 
     /**
      * Does this factory support the specified type ?
      *
      * @param string $type
-     *
-     * @return bool
      */
-    public function supports($type);
+    public function supports(string $type): bool;
 }

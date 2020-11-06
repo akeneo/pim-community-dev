@@ -17,77 +17,57 @@ interface AttributeRequirementInterface
      * Setter family
      *
      * @param FamilyInterface $family
-     *
-     * @return AttributeRequirementInterface
      */
-    public function setFamily(FamilyInterface $family);
+    public function setFamily(FamilyInterface $family): \Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 
     /**
      * Getter family
-     *
-     * @return FamilyInterface
      */
-    public function getFamily();
+    public function getFamily(): \Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
     /**
      * Set attribute
      *
      * @param AttributeInterface $attribute
-     *
-     * @return AttributeRequirementInterface
      */
-    public function setAttribute(AttributeInterface $attribute);
+    public function setAttribute(AttributeInterface $attribute): \Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 
     /**
      * Get attribute
-     *
-     * @return AttributeInterface
      */
-    public function getAttribute();
+    public function getAttribute(): \Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
     /**
      * Get attribute code
-     *
-     * @return string
      */
-    public function getAttributeCode();
+    public function getAttributeCode(): string;
 
     /**
      * Setter channel
      *
      * @param ChannelInterface $channel
-     *
-     * @return AttributeRequirementInterface
      */
-    public function setChannel(ChannelInterface $channel);
+    public function setChannel(ChannelInterface $channel): \Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 
     /**
      * Getter channel
-     *
-     * @return ChannelInterface
      */
-    public function getChannel();
+    public function getChannel(): \Akeneo\Channel\Component\Model\ChannelInterface;
 
     /**
      * Get channel code
-     *
-     * @return string
      */
-    public function getChannelCode();
+    public function getChannelCode(): string;
 
     /**
      * Setter required property
      *
      * @param bool $required
-     *
-     * @return AttributeRequirementInterface
      */
-    public function setRequired($required);
+    public function setRequired(bool $required): \Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 
     /**
      * Predicate for required property
-     *
-     * @return bool
      */
-    public function isRequired();
+    public function isRequired(): bool;
 }

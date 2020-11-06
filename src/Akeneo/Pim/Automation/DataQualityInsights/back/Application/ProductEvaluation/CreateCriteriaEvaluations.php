@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -49,11 +51,11 @@ class CreateCriteriaEvaluations
      */
     public function create(array $criterionCodes, array $productIds): void
     {
-        $criteria = new Write\CriterionEvaluationCollection();
+        $criteria = new CriterionEvaluationCollection();
 
         foreach ($productIds as $productId) {
             foreach ($criterionCodes as $criterionCode) {
-                $criteria->add(new Write\CriterionEvaluation(
+                $criteria->add(new CriterionEvaluation(
                     $criterionCode,
                     $productId,
                     CriterionEvaluationStatus::pending()

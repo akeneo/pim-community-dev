@@ -69,10 +69,8 @@ abstract class MaskBuilder
 
     /**
      * Gets the mask of this permission
-     *
-     * @return integer
      */
-    public function get()
+    public function get(): ?int
     {
         return $this->mask;
     }
@@ -82,9 +80,8 @@ abstract class MaskBuilder
      *
      * @param int|string $mask
      * @throws \InvalidArgumentException
-     * @return MaskBuilder
      */
-    public function add($mask)
+    public function add($mask): self
     {
         if (is_string($mask)) {
             $name = 'static::MASK_' . strtoupper($mask);
@@ -106,9 +103,8 @@ abstract class MaskBuilder
      *
      * @param int|string $mask
      * @throws \InvalidArgumentException
-     * @return MaskBuilder
      */
-    public function remove($mask)
+    public function remove($mask): self
     {
         if (is_string($mask) && defined($name = 'static::MASK_' . strtoupper($mask))) {
             $mask = constant($name);
@@ -123,10 +119,8 @@ abstract class MaskBuilder
 
     /**
      * Resets the builder
-     *
-     * @return MaskBuilder
      */
-    public function reset()
+    public function reset(): self
     {
         $this->mask = 0;
 
@@ -138,9 +132,8 @@ abstract class MaskBuilder
      *
      * @param bool $brief optional; defaults to false
      *                    Determine whether the representation should be in brief of full format
-     * @return string
      */
-    public function getPattern($brief = false)
+    public function getPattern(bool $brief = false): string
     {
         return static::getPatternFor($this->mask, $brief);
     }
@@ -152,9 +145,8 @@ abstract class MaskBuilder
      * @param bool $brief optional; defaults to false
      *                    Determine whether the representation should be in brief of full format
      * @throws \InvalidArgumentException
-     * @return string
      */
-    public static function getPatternFor($mask, $brief = false)
+    public static function getPatternFor(int $mask, bool $brief = false): string
     {
         if (!is_int($mask)) {
             throw new \InvalidArgumentException('$mask must be an integer.');
@@ -183,7 +175,7 @@ abstract class MaskBuilder
      * @param integer $mask
      * @return string
      */
-    protected static function getCode($mask)
+    protected static function getCode(int $mask)
     {
         $reflection = new \ReflectionClass(get_called_class());
         foreach ($reflection->getConstants() as $name => $cMask) {
@@ -215,7 +207,7 @@ abstract class MaskBuilder
      * @param string $name
      * @return mixed
      */
-    public static function hasConst($name)
+    public static function hasConst(string $name): bool
     {
         return defined('static::' . $name);
     }
@@ -226,7 +218,7 @@ abstract class MaskBuilder
      * @param string $name
      * @return mixed
      */
-    public static function getConst($name)
+    public static function getConst(string $name)
     {
         return constant('static::' . $name);
     }

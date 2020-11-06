@@ -18,6 +18,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CheckRequirementsCommand extends Command
 {
+    /**
+     * @var string|mixed
+     */
+    public $rootDirectory;
     protected static $defaultName = 'pim:installer:check-requirements';
 
     /** @var string */
@@ -41,7 +45,7 @@ class CheckRequirementsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Check requirements for Akeneo PIM');
     }
@@ -49,7 +53,7 @@ class CheckRequirementsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Akeneo PIM requirements check:</info>');
 
@@ -58,6 +62,7 @@ class CheckRequirementsCommand extends Command
             $output,
             new Requirements($this->rootDirectory)
         );
+        return 0;
     }
 
     /**
@@ -73,7 +78,7 @@ class CheckRequirementsCommand extends Command
         $this->renderTable($collection->getPimRequirements(), 'Pim requirements', $output);
         $this->renderTable($collection->getRecommendations(), 'Recommendations', $output);
 
-        if (count($collection->getFailedRequirements())) {
+        if (count($collection->getFailedRequirements()) > 0) {
             $this->renderTable($collection->getFailedRequirements(), 'Errors', $output);
 
             throw new \RuntimeException(
@@ -89,7 +94,7 @@ class CheckRequirementsCommand extends Command
      * @param string          $header
      * @param OutputInterface $output
      */
-    protected function renderTable(array $collection, $header, OutputInterface $output)
+    protected function renderTable(array $collection, string $header, OutputInterface $output): void
     {
         $table = new Table($output);
 

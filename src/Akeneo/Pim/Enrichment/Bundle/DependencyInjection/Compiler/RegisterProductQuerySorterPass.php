@@ -27,7 +27,7 @@ class RegisterProductQuerySorterPass implements CompilerPassInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $this->registerSorters($container);
     }
@@ -35,7 +35,7 @@ class RegisterProductQuerySorterPass implements CompilerPassInterface
     /**
      * @param ContainerBuilder $container
      */
-    protected function registerSorters(ContainerBuilder $container)
+    protected function registerSorters(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(self::QUERY_SORTER_REGISTRY)) {
             throw new \LogicException('ProductQueryBuilder must be configured');
@@ -55,9 +55,9 @@ class RegisterProductQuerySorterPass implements CompilerPassInterface
      * @param string           $tagName
      * @param ContainerBuilder $container
      *
-     * @return \Symfony\Component\DependencyInjection\Reference[]
+     * @return Reference[]
      */
-    protected function findAndSortTaggedServices($tagName, ContainerBuilder $container)
+    protected function findAndSortTaggedServices(string $tagName, ContainerBuilder $container): array
     {
         $services = $container->findTaggedServiceIds($tagName);
 

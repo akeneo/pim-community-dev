@@ -23,7 +23,7 @@ abstract class AbstractProductPrice implements ProductPriceInterface
      * @param float  $data
      * @param string $currency
      */
-    public function __construct($data, $currency)
+    public function __construct(float $data, string $currency)
     {
         $this->data = $data;
         $this->currency = $currency;
@@ -32,7 +32,7 @@ abstract class AbstractProductPrice implements ProductPriceInterface
     /**
      * {@inheritdoc}
      */
-    public function getData()
+    public function getData(): float
     {
         return $this->data;
     }
@@ -40,7 +40,7 @@ abstract class AbstractProductPrice implements ProductPriceInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrency()
+    public function getCurrency(): string
     {
         return $this->currency;
     }
@@ -48,7 +48,7 @@ abstract class AbstractProductPrice implements ProductPriceInterface
     /**
      * {@inheritdoc}
      */
-    public function isEqual(ProductPriceInterface $price)
+    public function isEqual(ProductPriceInterface $price): bool
     {
         return $price->getData() === $this->data && $price->getCurrency() === $this->currency;
     }

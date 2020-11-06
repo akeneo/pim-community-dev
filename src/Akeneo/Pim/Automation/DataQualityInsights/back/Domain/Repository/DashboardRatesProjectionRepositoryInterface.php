@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 interface DashboardRatesProjectionRepositoryInterface
 {
-    public function save(Write\DashboardRatesProjection $dashboardRates): void;
+    public function save(DashboardRatesProjection $dashboardRates): void;
 
-    public function purgeRates(Write\DashboardPurgeDateCollection $purgeDates): void;
+    public function purgeRates(DashboardPurgeDateCollection $purgeDates): void;
 }

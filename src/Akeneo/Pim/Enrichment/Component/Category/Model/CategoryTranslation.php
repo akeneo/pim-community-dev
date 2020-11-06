@@ -22,7 +22,7 @@ class CategoryTranslation extends AbstractTranslation implements CategoryTransla
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): CategoryTranslationInterface
     {
         $this->label = $label;
 
@@ -32,7 +32,7 @@ class CategoryTranslation extends AbstractTranslation implements CategoryTransla
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }

@@ -90,7 +90,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setHidden(true)
@@ -115,7 +115,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $localesIdentifiers  = explode(',', $input->getArgument('locales-identifier'));
         $channelCode         = $input->getArgument('channel-code');
@@ -231,7 +231,7 @@ class RemoveCompletenessForChannelAndLocaleCommand extends Command
         array $productIdentifiers,
         string $env,
         string $rootDir
-    ) {
+    ): void {
         $process = new Process([
             sprintf('%s/../bin/console', $rootDir),
             'pim:product:refresh',

@@ -43,7 +43,7 @@ class InvalidAttributeValueTypeException extends InvalidPropertyTypeException im
     /**
      * {@inheritdoc}
      */
-    public static function stringExpected($attributeCode, $className, $attributeValue)
+    public static function stringExpected(string $attributeCode, string $className, string $attributeValue)
     {
         $message = 'The {attribute} attribute requires a string, a {invalid} was detected.';
         $templatedErrorMessage = new TemplatedErrorMessage(

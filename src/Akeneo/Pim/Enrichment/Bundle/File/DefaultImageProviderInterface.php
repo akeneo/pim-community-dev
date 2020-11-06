@@ -19,8 +19,6 @@ interface DefaultImageProviderInterface
      *
      * @param string $fileType File type, defined in Akeneo\Pim\Enrichment\Bundle\File\FileTypes
      * @param string $filter   Transformation filter name
-     *
-     * @return string
      */
-    public function getImageUrl($fileType, $filter);
+    public function getImageUrl(string $fileType, string $filter): string;
 }

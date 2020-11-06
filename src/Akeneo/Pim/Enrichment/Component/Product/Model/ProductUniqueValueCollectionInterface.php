@@ -24,5 +24,5 @@ interface ProductUniqueValueCollectionInterface
      * @return array The unique values in the collection, in the order they
      *               appear in the collection.
      */
-    public function getUniqueValues();
+    public function getUniqueValues(): array;
 }

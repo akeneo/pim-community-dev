@@ -26,7 +26,7 @@ class SetAttributeOptionSortOrderSubscriber implements EventSubscriberInterface
         $this->getAttributeOptionsMaxSortOrder = $getAttributeOptionsMaxSortOrder;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_SAVE => 'onPreSave',
@@ -56,7 +56,7 @@ class SetAttributeOptionSortOrderSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function onPreSaveAll(GenericEvent $event)
+    public function onPreSaveAll(GenericEvent $event): void
     {
         $subjects = $event->getSubject();
         if (!is_array($subjects)) {
@@ -85,16 +85,12 @@ class SetAttributeOptionSortOrderSubscriber implements EventSubscriberInterface
      */
     private function setSortOrders(array $options): void
     {
-        $options = array_filter($options, function (AttributeoptionInterface $option) {
-            return null === $option->getSortOrder();
-        });
+        $options = array_filter($options, fn(AttributeOptionInterface $option) => null === $option->getSortOrder());
         if (empty($options)) {
             return;
         }
 
-        $attributeCodes = array_unique(array_map(function (AttributeOptionInterface $option): string {
-            return $option->getAttribute()->getCode();
-        }, $options));
+        $attributeCodes = array_unique(array_map(fn(AttributeOptionInterface $option): string => $option->getAttribute()->getCode(), $options));
 
         $currentMaxSortOrders = $this->getAttributeOptionsMaxSortOrder->forAttributeCodes(
             array_values($attributeCodes)

@@ -36,7 +36,7 @@ class CategoryItemsCounter implements CategoryItemsCounterInterface
     /**
      * {@inheritdoc}
      */
-    public function getItemsCountInCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
+    public function getItemsCountInCategory(CategoryInterface $category, bool $inChildren = false, bool $inProvided = true): int
     {
         $categoryIds = $inChildren
             ? $this->categoryRepository->getAllChildrenIds($category, $inProvided) : [$category->getId()];

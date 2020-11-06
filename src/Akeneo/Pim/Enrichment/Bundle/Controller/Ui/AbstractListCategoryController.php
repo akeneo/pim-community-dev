@@ -66,10 +66,8 @@ abstract class AbstractListCategoryController extends Controller
      * @param int        $categoryId The parent category id
      *
      * httpparam include_category if true, will include the parentCategory in the response
-     *
-     * @return Response
      */
-    public function listCategoriesAction(Request $request, $id, $categoryId)
+    public function listCategoriesAction(Request $request, string $id, int $categoryId): Response
     {
         if (!$this->securityFacade->isGranted($this->acl)) {
             throw new AccessDeniedException();

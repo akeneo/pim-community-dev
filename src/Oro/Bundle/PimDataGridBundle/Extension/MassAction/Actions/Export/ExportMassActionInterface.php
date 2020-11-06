@@ -13,8 +13,6 @@ interface ExportMassActionInterface
 {
     /**
      * Get export context for serializer
-     *
-     * @return array
      */
-    public function getExportContext();
+    public function getExportContext(): array;
 }

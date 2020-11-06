@@ -26,7 +26,7 @@ class CountLocales implements CountQuery
     /**
      * @param Connection $connection
      */
-    public function __construct(Connection $connection, int $limit)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, int $limit)
     {
         $this->connection = $connection;
         $this->limit = $limit;
@@ -43,8 +43,7 @@ class CountLocales implements CountQuery
             WHERE is_activated = 1;
 SQL;
         $result = $this->connection->query($sql)->fetch();
-        $volume = new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
 
-        return $volume;
+        return new CountVolume((int) $result['count'], $this->limit, self::VOLUME_NAME);
     }
 }

@@ -54,8 +54,6 @@ final class DashboardWidgetFamiliesController
             throw new \InvalidArgumentException('The list of families must be an array');
         }
 
-        return array_map(function ($familyCode) {
-            return new FamilyCode($familyCode);
-        }, $requestFamilies);
+        return array_map(fn($familyCode) => new FamilyCode($familyCode), $requestFamilies);
     }
 }

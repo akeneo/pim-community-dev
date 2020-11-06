@@ -16,26 +16,23 @@ class UserConfigManager extends ConfigManager
      *
      * @param TokenStorageInterface $tokenStorage
      */
-    public function setSecurity(TokenStorageInterface $tokenStorage)
+    public function setSecurity(TokenStorageInterface $tokenStorage): void
     {
         $this->tokenStorage = $tokenStorage;
 
         // if we have a user - try to merge his scoped settings into global settings array
-        if ($token = $this->tokenStorage->getToken()) {
-            if (is_object($user = $token->getUser())) {
-                foreach ($user->getGroups() as $group) {
-                    $this->loadStoredSettings('group', $group->getId());
-                }
-
-                $this->loadStoredSettings('user', $user->getId());
+        if (($token = $this->tokenStorage->getToken()) !== null && is_object($user = $token->getUser())) {
+            foreach ($user->getGroups() as $group) {
+                $this->loadStoredSettings('group', $group->getId());
             }
+            $this->loadStoredSettings('user', $user->getId());
         }
     }
 
     /**
      * @return string
      */
-    public function getScopedEntityName()
+    public function getScopedEntityName(): string
     {
         return 'user';
     }
@@ -43,7 +40,7 @@ class UserConfigManager extends ConfigManager
     /**
      * @return int
      */
-    public function getScopeId()
+    public function getScopeId(): int
     {
         return 0;
     }

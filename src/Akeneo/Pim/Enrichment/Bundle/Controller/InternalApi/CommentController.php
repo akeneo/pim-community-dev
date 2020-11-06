@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,7 +45,7 @@ class CommentController
         TokenStorageInterface $tokenStorage,
         ObjectManager $doctrine,
         RemoverInterface $commentRemover,
-        $commentClassName
+        string $commentClassName
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->doctrine = $doctrine;
@@ -58,12 +59,12 @@ class CommentController
      * @param Request $request
      * @param string  $id
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws AccessDeniedException
+     * @throws NotFoundHttpException
      *
      * @return Response
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, string $id)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -87,7 +88,7 @@ class CommentController
     /**
      * Get a user from the Security Context
      *
-     * @return \Symfony\Component\Security\Core\User\UserInterface|null
+     * @return UserInterface|null
      *
      * @see Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
      */

@@ -17,15 +17,11 @@ interface FamilyTranslationInterface extends TranslationInterface
      * Set label
      *
      * @param string $label
-     *
-     * @return FamilyTranslationInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 
     /**
      * Get the label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 }

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
@@ -20,7 +21,7 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     /**
      * {@inheritdoc}
      */
-    public function getIdToLabelOrderedBySortOrder()
+    public function getIdToLabelOrderedBySortOrder(): array
     {
         $groups = $this->buildAllOrderedBySortOrder()->getQuery()->execute();
         $orderedGroups = [];
@@ -34,7 +35,7 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     /**
      * {@inheritdoc}
      */
-    public function findDefaultAttributeGroup()
+    public function findDefaultAttributeGroup(): ?AttributeGroupInterface
     {
         return $this->findOneBy(['code' => AttributeGroup::DEFAULT_GROUP_CODE]);
     }
@@ -42,7 +43,7 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     /**
      * {@inheritdoc}
      */
-    public function getMaxSortOrder()
+    public function getMaxSortOrder(): int
     {
         return (int) $this->createQueryBuilder('ag')
             ->select('MAX(ag.sortOrder)')
@@ -53,7 +54,7 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['code' => $code]);
     }
@@ -61,15 +62,12 @@ class AttributeGroupRepository extends EntityRepository implements AttributeGrou
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
 
-    /**
-     * @return QueryBuilder
-     */
-    protected function buildAllOrderedBySortOrder()
+    protected function buildAllOrderedBySortOrder(): QueryBuilder
     {
         return $this->createQueryBuilder('attribute_group')
             ->orderBy('attribute_group.sortOrder');

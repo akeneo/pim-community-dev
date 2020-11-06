@@ -45,7 +45,7 @@ class PropertySetter implements PropertySetterInterface
      *
      * @param ProductInterface|ProductModelInterface $entity
      */
-    public function setData($entity, $field, $data, array $options = [])
+    public function setData(object $entity, string $field, $data, array $options = []): PropertySetterInterface
     {
         $setter = $this->setterRegistry->getSetter($field);
         if (null === $setter) {
@@ -67,10 +67,9 @@ class PropertySetter implements PropertySetterInterface
     /**
      * @param string $code
      *
-     * @return null|AttributeInterface
      * @throws ResourceNotFoundException
      */
-    protected function getAttribute($code)
+    protected function getAttribute(string $code): ?AttributeInterface
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
 

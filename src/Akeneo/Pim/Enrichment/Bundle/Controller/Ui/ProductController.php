@@ -54,11 +54,10 @@ class ProductController extends AbstractListCategoryController
      *
      * @param string $id
      *
-     * @return Response
      *
      * @AclAncestor("pim_enrich_product_edit_attributes")
      */
-    public function toggleStatusAction($id)
+    public function toggleStatusAction(string $id): JsonResponse
     {
         $product = $this->findEntityWithCategoriesOr404($id);
 
@@ -79,10 +78,8 @@ class ProductController extends AbstractListCategoryController
      * @param string $id the product id
      *
      * @throws NotFoundHttpException
-     *
-     * @return ProductInterface
      */
-    protected function findEntityWithCategoriesOr404(string $id)
+    protected function findEntityWithCategoriesOr404(string $id): object
     {
         $product = $this->productRepository->find($id);
         if (null === $product) {

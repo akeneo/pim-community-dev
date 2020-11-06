@@ -15,103 +15,73 @@ interface VersionInterface
 {
     /**
      * Get id
-     *
-     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Set id
      *
      * @param int $id
-     *
-     * @return Version
      */
-    public function setId($id);
+    public function setId(int $id): Version;
 
     /**
      * Get author
-     *
-     * @return string
      */
-    public function getAuthor();
+    public function getAuthor(): string;
 
     /**
      * Get resource id
-     *
-     * @return string
      */
-    public function getResourceId();
+    public function getResourceId(): string;
 
     /**
      * Get resource name
-     *
-     * @return string
      */
-    public function getResourceName();
+    public function getResourceName(): string;
 
     /**
      * Get version
-     *
-     * @return int
      */
-    public function getVersion();
+    public function getVersion(): int;
 
     /**
      * Set version
      *
      * @param int $version
-     *
-     * @return VersionInterface
      */
-    public function setVersion($version);
+    public function setVersion(int $version): \Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 
     /**
      * Get snapshot
-     *
-     * @return array
      */
-    public function getSnapshot();
+    public function getSnapshot(): array;
 
     /**
      * Set snapshot
      *
      * @param array $snapshot
-     *
-     * @return VersionInterface
      */
-    public function setSnapshot(array $snapshot);
+    public function setSnapshot(array $snapshot): \Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 
     /**
      * Get changeset
-     *
-     * @return array
      */
-    public function getChangeset();
+    public function getChangeset(): array;
 
     /**
      * Set changeset
      *
      * @param array $changeset
-     *
-     * @return VersionInterface
      */
-    public function setChangeset(array $changeset);
+    public function setChangeset(array $changeset): \Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 
     /**
      * Get context
-     *
-     * @return string
      */
-    public function getContext();
+    public function getContext(): string;
 
-    /**
-     * @return \DateTime
-     */
-    public function getLoggedAt();
+    public function getLoggedAt(): \DateTime;
 
-    /**
-     * @return bool
-     */
-    public function isPending();
+    public function isPending(): bool;
 }

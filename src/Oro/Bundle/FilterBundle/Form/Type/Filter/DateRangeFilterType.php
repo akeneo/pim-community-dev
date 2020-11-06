@@ -33,7 +33,7 @@ class DateRangeFilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return self::NAME;
     }
@@ -41,7 +41,7 @@ class DateRangeFilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return FilterType::class;
     }
@@ -49,7 +49,7 @@ class DateRangeFilterType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $operatorChoices = [
             self::TYPE_BETWEEN     => $this->translator->trans('oro.filter.form.label_date_type_between'),
@@ -80,7 +80,7 @@ class DateRangeFilterType extends AbstractType
      * @param FormInterface $form
      * @param array         $options
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['type_values'] = $options['type_values'];
 

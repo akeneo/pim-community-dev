@@ -13,7 +13,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getMasks($permission)
+    public function getMasks(string $permission): array
     {
         return isset($this->map[$permission])
             ? $this->map[$permission]
@@ -23,7 +23,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function hasMasks($permission)
+    public function hasMasks(string $permission): bool
     {
         return isset($this->map[$permission]);
     }
@@ -31,7 +31,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function adaptRootMask($rootMask, $object)
+    public function adaptRootMask(int $rootMask, $object): int
     {
         return $rootMask;
     }
@@ -39,7 +39,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getServiceBits($mask)
+    public function getServiceBits(int $mask): int
     {
         return 0;
     }
@@ -47,7 +47,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function removeServiceBits($mask)
+    public function removeServiceBits(int $mask): int
     {
         return $mask;
     }
@@ -55,7 +55,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultPermission()
+    public function getDefaultPermission(): string
     {
         return '';
     }
@@ -63,7 +63,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken)
+    public function decideIsGranting(int $triggeredMask, $object, TokenInterface $securityToken): bool
     {
         return true;
     }
@@ -76,7 +76,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
      * @param string $id [output]
      * @throws \InvalidArgumentException
      */
-    protected function parseDescriptor($descriptor, &$type, &$id)
+    protected function parseDescriptor(string $descriptor, string &$type, string &$id)
     {
         $delim = strpos($descriptor, ':');
         if (!$delim) {
@@ -98,9 +98,8 @@ abstract class AbstractAclExtension implements AclExtensionInterface
      * @param int $mask
      * @param mixed $object
      * @param string|null $errorDescription
-     * @return InvalidAclMaskException
      */
-    protected function createInvalidAclMaskException($mask, $object, $errorDescription = null)
+    protected function createInvalidAclMaskException(int $mask, $object, ?string $errorDescription = null): InvalidAclMaskException
     {
         $objectDescription = is_object($object) && !($object instanceof ObjectIdentityInterface)
             ? get_class($object)

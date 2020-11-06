@@ -17,7 +17,7 @@ class GroupSavingOptionsResolver implements SavingOptionsResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolveSaveOptions(array $options)
+    public function resolveSaveOptions(array $options): array
     {
         $resolver = $this->createOptionsResolver();
         $resolver->setDefaults(
@@ -28,23 +28,19 @@ class GroupSavingOptionsResolver implements SavingOptionsResolverInterface
                 'unitary'                 => true,
             ]
         );
-        $options = $resolver->resolve($options);
 
-        return $options;
+        return $resolver->resolve($options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function resolveSaveAllOptions(array $options)
+    public function resolveSaveAllOptions(array $options): array
     {
         return array_merge($this->resolveSaveOptions($options), ['unitary' => false]);
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    protected function createOptionsResolver()
+    protected function createOptionsResolver(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefined(['copy_values_to_products', 'add_products', 'remove_products'])

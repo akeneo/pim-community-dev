@@ -48,10 +48,8 @@ class CommandLauncher
 
     /**
      * @param string $command
-     *
-     * @return string
      */
-    protected function buildCommandString($command)
+    protected function buildCommandString(string $command): string
     {
         $phpCommand = $this->getPhp();
 
@@ -71,7 +69,7 @@ class CommandLauncher
      *
      * @return null
      */
-    public function executeBackground($command, $logfile = null)
+    public function executeBackground(string $command, string $logfile = null)
     {
         $cmd = $this->buildCommandString($command);
         if (null === $logfile) {
@@ -89,10 +87,8 @@ class CommandLauncher
      * Launch command and return result
      *
      * @param string $command
-     *
-     * @return CommandResultInterface
      */
-    public function executeForeground($command)
+    public function executeForeground(string $command): CommandResult
     {
         $cmd = $this->buildCommandString($command);
         $cmd = escapeshellcmd($cmd);
@@ -102,8 +98,6 @@ class CommandLauncher
 
         exec($cmd, $output, $status);
 
-        $result = new CommandResult($output, $status);
-
-        return $result;
+        return new CommandResult($output, $status);
     }
 }

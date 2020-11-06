@@ -34,7 +34,7 @@ class AdderRegistry implements AdderRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(AdderInterface $adder)
+    public function register(AdderInterface $adder): AdderRegistryInterface
     {
         if ($adder instanceof FieldAdderInterface) {
             $this->fieldAdders[] = $adder;
@@ -49,14 +49,10 @@ class AdderRegistry implements AdderRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAdder($property)
+    public function getAdder(string $property): AdderInterface
     {
         $attribute = $this->getAttribute($property);
-        if (null !== $attribute) {
-            $adder = $this->getAttributeAdder($attribute);
-        } else {
-            $adder = $this->getFieldAdder($property);
-        }
+        $adder = null !== $attribute ? $this->getAttributeAdder($attribute) : $this->getFieldAdder($property);
 
         return $adder;
     }
@@ -64,7 +60,7 @@ class AdderRegistry implements AdderRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldAdder($field)
+    public function getFieldAdder(string $field): FieldAdderInterface
     {
         foreach ($this->fieldAdders as $adder) {
             if ($adder->supportsField($field)) {
@@ -78,7 +74,7 @@ class AdderRegistry implements AdderRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributeAdder(AttributeInterface $attribute)
+    public function getAttributeAdder(AttributeInterface $attribute): AttributeAdderInterface
     {
         foreach ($this->attributeAdders as $adder) {
             if ($adder->supportsAttribute($attribute)) {
@@ -91,10 +87,8 @@ class AdderRegistry implements AdderRegistryInterface
 
     /**
      * @param string $code
-     *
-     * @return AttributeInterface|null
      */
-    protected function getAttribute($code)
+    protected function getAttribute(string $code): ?AttributeInterface
     {
         return $this->attributeRepository->findOneByIdentifier($code);
     }

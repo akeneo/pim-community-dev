@@ -20,8 +20,6 @@ interface PropertyRemoverInterface
      * @param array  $options  Options to pass to the remover
      *
      * @throws \InvalidArgumentException
-     *
-     * @return PropertyRemoverInterface
      */
-    public function removeData($object, $property, $data, array $options = []);
+    public function removeData(object $object, string $property, $data, array $options = []): \Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 }

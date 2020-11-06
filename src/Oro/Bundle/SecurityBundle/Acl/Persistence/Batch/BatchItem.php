@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Persistence\Batch;
 
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity as OID;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface as ACL;
@@ -43,7 +44,7 @@ class BatchItem
      * @param int $state
      * @param ACL $acl
      */
-    public function __construct(OID $oid, $state, ACL $acl = null)
+    public function __construct(ObjectIdentityInterface $oid, int $state, ACL $acl = null)
     {
         $this->oid = $oid;
         $this->state = $state;
@@ -55,7 +56,7 @@ class BatchItem
      *
      * @return OID
      */
-    public function getOid()
+    public function getOid(): OID
     {
         return $this->oid;
     }
@@ -65,17 +66,15 @@ class BatchItem
      *
      * @return ACL
      */
-    public function getAcl()
+    public function getAcl(): ACL
     {
         return $this->acl;
     }
 
     /**
      * Gets the state of this item
-     *
-     * @return int
      */
-    public function getState()
+    public function getState(): int
     {
         return $this->state;
     }
@@ -85,7 +84,7 @@ class BatchItem
      *
      * @param int $state
      */
-    public function setState($state)
+    public function setState(int $state): void
     {
         $this->state = $state;
     }
@@ -118,7 +117,7 @@ class BatchItem
      *                                  ANY strategy is used for $granting = false
      * @param bool $replace If true the mask and strategy of the existing ACE should be replaced with the given ones
      */
-    public function addAce($type, $field, SID $sid, $granting, $mask, $strategy, $replace = false)
+    public function addAce(string $type, ?string $field, SID $sid, bool $granting, int $mask, ?string $strategy, bool $replace = false): void
     {
         if ($this->aces === null) {
             $this->aces = new ArrayCollection();
@@ -138,7 +137,7 @@ class BatchItem
      * @param int       $mask
      * @param bool|null $strategy
      */
-    public function removeAce($type, $field, SID $sid, $granting, $mask, $strategy)
+    public function removeAce(string $type, ?string $field, SID $sid, bool $granting, int $mask, ?bool $strategy): void
     {
         if ($this->aces !== null) {
             $toRemoveKey = null;
@@ -169,7 +168,7 @@ class BatchItem
      *                           Set to not null class-field-based or object-field-based ACE
      * @param SID $sid
      */
-    public function removeAces($type, $field, SID $sid)
+    public function removeAces(string $type, ?string $field, SID $sid): void
     {
         if ($this->aces !== null) {
             $toRemoveKeys = [];

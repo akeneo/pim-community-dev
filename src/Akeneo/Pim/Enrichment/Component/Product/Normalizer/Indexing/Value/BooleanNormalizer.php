@@ -16,7 +16,7 @@ class BooleanNormalizer extends AbstractProductValueNormalizer implements Normal
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         if (! $data instanceof ValueInterface) {
             return false;

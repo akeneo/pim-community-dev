@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Component\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Channel\Component\Event\ChannelEvent;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
@@ -17,51 +18,30 @@ use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
  */
 interface ChannelInterface extends ReferableInterface, VersionableInterface, TranslatableInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): int;
 
-    /**
-     * @return string
-     */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * @param string $code
-     *
-     * @return ChannelInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Channel\Component\Model\ChannelInterface;
 
-    /**
-     * @return string
-     */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * @param string $label
-     *
-     * @return ChannelInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Channel\Component\Model\ChannelInterface;
 
-    /**
-     * @return CategoryInterface
-     */
-    public function getCategory();
+    public function getCategory(): \Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 
     /**
      * @param CategoryInterface $category
-     *
-     * @return ChannelInterface
      */
-    public function setCategory(CategoryInterface $category);
+    public function setCategory(CategoryInterface $category): \Akeneo\Channel\Component\Model\ChannelInterface;
 
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getCurrencies();
+    public function getCurrencies(): ArrayCollection;
 
     /**
      * @param array $currencies
@@ -70,29 +50,20 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Tra
 
     /**
      * @param CurrencyInterface $currency
-     *
-     * @return ChannelInterface
      */
-    public function addCurrency(CurrencyInterface $currency);
+    public function addCurrency(CurrencyInterface $currency): \Akeneo\Channel\Component\Model\ChannelInterface;
 
     /**
      * @param CurrencyInterface $currency
-     *
-     * @return ChannelInterface
      */
-    public function removeCurrency(CurrencyInterface $currency);
+    public function removeCurrency(CurrencyInterface $currency): \Akeneo\Channel\Component\Model\ChannelInterface;
 
     /**
      * @param CurrencyInterface $currency
-     *
-     * @return boolean
      */
-    public function hasCurrency(CurrencyInterface $currency);
+    public function hasCurrency(CurrencyInterface $currency): bool;
 
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getLocales();
+    public function getLocales(): ArrayCollection;
 
     /**
      * @param array $locales
@@ -101,43 +72,30 @@ interface ChannelInterface extends ReferableInterface, VersionableInterface, Tra
 
     /**
      * @param LocaleInterface $locale
-     *
-     * @return ChannelInterface
      */
-    public function addLocale(LocaleInterface $locale);
+    public function addLocale(LocaleInterface $locale): \Akeneo\Channel\Component\Model\ChannelInterface;
 
     /**
      * @param LocaleInterface $locale
-     *
-     * @return ChannelInterface
      */
-    public function removeLocale(LocaleInterface $locale);
+    public function removeLocale(LocaleInterface $locale): \Akeneo\Channel\Component\Model\ChannelInterface;
 
     /**
      * @param LocaleInterface $locale
-     *
-     * @return bool
      */
-    public function hasLocale(LocaleInterface $locale);
+    public function hasLocale(LocaleInterface $locale): bool;
 
     /**
      * @param array $conversionUnits
-     *
-     * @return ChannelInterface
      */
-    public function setConversionUnits(array $conversionUnits);
+    public function setConversionUnits(array $conversionUnits): \Akeneo\Channel\Component\Model\ChannelInterface;
 
-    /**
-     * @return array
-     */
-    public function getConversionUnits();
+    public function getConversionUnits(): array;
 
     /**
      * Get locale codes
-     *
-     * @return array
      */
-    public function getLocaleCodes();
+    public function getLocaleCodes(): array;
 
     /**
      * To string

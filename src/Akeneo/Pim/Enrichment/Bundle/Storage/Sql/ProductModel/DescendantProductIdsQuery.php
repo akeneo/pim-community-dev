@@ -16,7 +16,7 @@ final class DescendantProductIdsQuery implements DescendantProductIdsQueryInterf
 {
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -38,8 +38,6 @@ SQL;
             ['productModelIds' => Connection::PARAM_INT_ARRAY]
         )->fetchAll();
 
-        return array_map(function ($rowData) {
-            return (int) $rowData['id'];
-        }, $resultRows);
+        return array_map(fn($rowData) => (int) $rowData['id'], $resultRows);
     }
 }

@@ -39,7 +39,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier): ?ProductModelInterface
+    public function findOneByIdentifier(string $identifier): ?object
     {
         return $this->findOneBy(['code' => $identifier]);
     }
@@ -67,13 +67,11 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      */
     public function countRootProductModels(): int
     {
-        $count = $this->createQueryBuilder('pm')
+        return $this->createQueryBuilder('pm')
             ->select('COUNT(pm.id)')
             ->andWhere('pm.parent IS NULL')
             ->getQuery()
             ->getSingleScalarResult();
-
-        return $count;
     }
 
     /**

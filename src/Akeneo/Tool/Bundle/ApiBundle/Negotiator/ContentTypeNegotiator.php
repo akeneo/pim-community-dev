@@ -58,7 +58,7 @@ class ContentTypeNegotiator
      * @param RequestMatcherInterface $requestMatcher
      * @param array                   $rule
      */
-    public function add(RequestMatcherInterface $requestMatcher, array $rule)
+    public function add(RequestMatcherInterface $requestMatcher, array $rule): void
     {
         $this->rulesByPriority[$rule['priority']][] = ['request_matcher' => $requestMatcher, 'rule' => $rule];
     }

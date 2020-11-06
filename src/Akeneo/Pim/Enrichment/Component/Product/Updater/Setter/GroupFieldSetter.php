@@ -37,7 +37,7 @@ class GroupFieldSetter extends AbstractFieldSetter
      *
      * Expected data input format : ["group_code"]
      */
-    public function setFieldData($product, $field, $data, array $options = [])
+    public function setFieldData($product, string $field, $data, array $options = []): void
     {
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
@@ -83,7 +83,7 @@ class GroupFieldSetter extends AbstractFieldSetter
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(

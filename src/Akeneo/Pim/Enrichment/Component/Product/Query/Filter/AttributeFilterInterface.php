@@ -22,31 +22,27 @@ interface AttributeFilterInterface extends FilterInterface
      * @param string             $locale    the locale
      * @param string             $channel   the channel
      * @param array              $options   the filter options
-     *
-     * @return AttributeFilterInterface
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    );
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): \Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterface;
 
     /**
      * This filter supports the attribute
      *
      * @param AttributeInterface $attribute
-     *
-     * @return bool
      */
-    public function supportsAttribute(AttributeInterface $attribute);
+    public function supportsAttribute(AttributeInterface $attribute): bool;
 
     /**
      * Returns supported attributes types
      *
      * @return string[]|array
      */
-    public function getAttributeTypes();
+    public function getAttributeTypes(): array;
 }

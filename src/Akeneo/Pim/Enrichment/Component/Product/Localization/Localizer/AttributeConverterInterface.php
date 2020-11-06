@@ -18,25 +18,19 @@ interface AttributeConverterInterface
      *
      * @param array $items
      * @param array $options
-     *
-     * @return array
      */
-    public function convertToDefaultFormats(array $items, array $options = []);
+    public function convertToDefaultFormats(array $items, array $options = []): array;
 
     /**
      * Convert localized attributes to localized format
      *
      * @param array $items
      * @param array $options
-     *
-     * @return array
      */
-    public function convertToLocalizedFormats(array $items, array $options = []);
+    public function convertToLocalizedFormats(array $items, array $options = []): array;
 
     /**
      * Get list of violations return by localizers
-     *
-     * @return ConstraintViolationListInterface
      */
-    public function getViolations();
+    public function getViolations(): ConstraintViolationListInterface;
 }

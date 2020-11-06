@@ -28,17 +28,13 @@ interface ReferenceDataRepositoryInterface extends ObjectRepository
      * Possible options are:
      *    limit: the limit of reference data to return (if no search if performed, self::LIMIT_IF_NO_SEARCH is used)
      *    page: the page result to get
-     *
-     * @return array
      */
-    public function findBySearch($search = null, array $options = []);
+    public function findBySearch(string $search = null, array $options = []): array;
 
     /**
      * Return an array of reference data codes
      *
      * @param array $referenceDataCodes
-     *
-     * @return array
      */
-    public function findCodesByIdentifiers(array $referenceDataCodes);
+    public function findCodesByIdentifiers(array $referenceDataCodes): array;
 }

@@ -22,51 +22,39 @@ interface AssociationTypeInterface extends
 {
     /**
      * Get id
-     *
-     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Set id
      *
      * @param int $id
-     *
-     * @return AssociationTypeInterface
      */
-    public function setId($id);
+    public function setId(int $id): \Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 
     /**
      * Get code
-     *
-     * @return string
      */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * Set code
      *
      * @param string $code
-     *
-     * @return AssociationTypeInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 
     /**
      * Get label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 
     /**
      * Set label
      *
      * @param string $label
-     *
-     * @return AssociationTypeInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 
     /**
      * @return bool

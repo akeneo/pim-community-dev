@@ -38,7 +38,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = [])
+    public function normalize($product, $format = null, array $context = []): array
     {
         if (!$this->serializer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
@@ -66,7 +66,7 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && 'datagrid' === $format;
     }
@@ -79,10 +79,8 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
     /**
      * @param ProductInterface $product
      * @param string           $locale
-     *
-     * @return string
      */
-    protected function getFamilyLabel(ProductInterface $product, $locale)
+    protected function getFamilyLabel(ProductInterface $product, string $locale): ?string
     {
         $family = $product->getFamily();
         if (null === $family) {
@@ -109,16 +107,14 @@ class ProductAssociationNormalizer implements NormalizerInterface, SerializerAwa
         $locale = current($context['locales']);
         $completeness = $completenesses->getCompletenessForChannelAndLocale($channel, $locale);
 
-        return $completeness ? $completeness->ratio() : null;
+        return $completeness !== null ? $completeness->ratio() : null;
     }
 
     /**
      * @param string      $code
      * @param string|null $value
-     *
-     * @return string
      */
-    protected function getLabel($code, $value = null)
+    protected function getLabel(string $code, ?string $value = null): string
     {
         return '' === $value || null === $value ? sprintf('[%s]', $code) : $value;
     }

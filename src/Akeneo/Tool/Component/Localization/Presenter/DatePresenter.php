@@ -32,7 +32,7 @@ class DatePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function present($value, array $options = [])
+    public function present($value, array $options = []): string
     {
         if (null === $value || '' === $value) {
             return $value;
@@ -58,7 +58,7 @@ class DatePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports(string $attributeType): bool
     {
         return in_array($attributeType, $this->attributeTypes);
     }
@@ -68,10 +68,8 @@ class DatePresenter implements PresenterInterface
      *
      * @param array $values  The original values
      * @param array $options The options for presentation
-     *
-     * @return string
      */
-    protected function presentArray($values, $options)
+    protected function presentArray(array $values, array $options): string
     {
         $formattedValues = [];
         foreach ($values as $value) {

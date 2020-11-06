@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
-    const RELATIVE_DATETIME_FORMAT = '/^(now|[+-][0-9]+\s?(minute|hour|day|week|month|year)s?)$/';
+    const RELATIVE_DATETIME_FORMAT = '/^(now|[+-]\d+\s?(minute|hour|day|week|month|year)s?)$/';
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $jobInstanceRepository;
@@ -51,7 +51,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldFilter($field, $operator, $value, $locale = null, $channel = null, $options = [])
+    public function addFieldFilter(string $field, string $operator, $value, string $locale = null, string $channel = null, array $options = []): FieldFilterInterface
     {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
@@ -184,10 +184,8 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
 
     /**
      * @param string $field
-     *
-     * @return array
      */
-    protected function getExistsClause($field)
+    protected function getExistsClause(string $field): array
     {
         return [
             'exists' => ['field' => $field]
@@ -199,7 +197,7 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
      * @param string $field
      * @param string|array|\DateTimeInterface $value
      */
-    protected function checkValue($operator, $field, $value)
+    protected function checkValue(string $operator, string $field, $value): void
     {
         switch ($operator) {
             case Operators::EQUALS:
@@ -264,10 +262,8 @@ class DateTimeFilter extends AbstractFieldFilter implements FieldFilterInterface
     /**
      * @param string $field
      * @param string|\DateTime $value
-     *
-     * @return string
      */
-    protected function getFormattedDate($field, $value)
+    protected function getFormattedDate(string $field, $value): string
     {
         $dateTime = $value;
         $utcTimeZone = new \DateTimeZone('UTC');

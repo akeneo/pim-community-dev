@@ -48,7 +48,7 @@ class CommandExecutor
     /**
      * {@inheritdoc}
      */
-    public function runCommand($command, $params = [])
+    public function runCommand($command, $params = []): self
     {
         $params = array_merge(
             ['command' => $command],
@@ -72,10 +72,8 @@ class CommandExecutor
 
     /**
      * Get default parameters
-     *
-     * @return array
      */
-    protected function getDefaultParams()
+    protected function getDefaultParams(): array
     {
         $defaultParams = ['--no-debug' => true];
 

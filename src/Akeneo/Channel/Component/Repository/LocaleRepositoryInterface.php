@@ -21,14 +21,12 @@ interface LocaleRepositoryInterface extends IdentifiableObjectRepositoryInterfac
      *
      * @return LocaleInterface[]
      */
-    public function getActivatedLocales();
+    public function getActivatedLocales(): array;
 
     /**
      * Return an array of activated locales codes
-     *
-     * @return array
      */
-    public function getActivatedLocaleCodes();
+    public function getActivatedLocaleCodes(): array;
 
     /**
      * Return a query builder for activated locales
@@ -44,12 +42,10 @@ interface LocaleRepositoryInterface extends IdentifiableObjectRepositoryInterfac
      *
      * @return array the list of deleted locales
      */
-    public function getDeletedLocalesForChannel(ChannelInterface $channel);
+    public function getDeletedLocalesForChannel(ChannelInterface $channel): array;
 
     /**
      * Return the number of activated locales
-     *
-     * @return int
      */
-    public function countAllActivated();
+    public function countAllActivated(): int;
 }

@@ -36,7 +36,7 @@ class AuthorProperty extends FieldProperty
     /**
      * {@inheritdoc}
      */
-    protected function getRawValue(ResultRecordInterface $record)
+    protected function getRawValue(ResultRecordInterface $record): array
     {
         $author = parent::getRawValue($record);
 
@@ -55,7 +55,7 @@ class AuthorProperty extends FieldProperty
     /**
      * {@inheritdoc}
      */
-    protected function convertValue($value)
+    protected function convertValue($value): string
     {
         if (!isset($this->userCachedResults[$value['author']])) {
             $user = $this->userManager->findUserByUsername($value['author']);

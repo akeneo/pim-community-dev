@@ -26,7 +26,7 @@ class IdentifierResults
      * @param string $identifier
      * @param string $type
      */
-    public function add(string $identifier, string $type)
+    public function add(string $identifier, string $type): void
     {
         $this->identifierResults[] = new IdentifierResult($identifier, $type);
     }

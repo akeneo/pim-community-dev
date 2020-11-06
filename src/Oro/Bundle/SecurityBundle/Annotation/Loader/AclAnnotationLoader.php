@@ -31,7 +31,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      *                          where classes with ACL annotations may be located
      * @param AnnotationReader $reader
      */
-    public function __construct($bundles, array $subDirs, AnnotationReader $reader)
+    public function __construct(array $bundles, array $subDirs, AnnotationReader $reader)
     {
         parent::__construct($bundles);
         $this->reader = $reader;
@@ -43,7 +43,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      *
      * @param AclAnnotationStorage $storage
      */
-    public function load(AclAnnotationStorage $storage)
+    public function load(AclAnnotationStorage $storage): void
     {
         if (!empty($this->subDirs)) {
             $directories = [];
@@ -101,7 +101,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      * @param  string      $fileName
      * @return null|string the fully qualified class name or null if the class name cannot be extracted
      */
-    protected function getClassName($fileName)
+    protected function getClassName(string $fileName): ?string
     {
         $src = $this->getFileContent($fileName);
         if (!preg_match('#' . str_replace("\\", "\\\\", self::ANNOTATION_CLASS) . '#', $src)) {
@@ -124,9 +124,8 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      * Creates ReflectionClass object
      *
      * @param  string           $className
-     * @return \ReflectionClass
      */
-    protected function getReflectionClass($className)
+    protected function getReflectionClass(string $className): \ReflectionClass
     {
         return new \ReflectionClass($className);
     }
@@ -137,7 +136,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      * @param  string $fileName
      * @return string
      */
-    protected function getFileContent($fileName)
+    protected function getFileContent(string $fileName)
     {
         return file_get_contents($fileName);
     }
@@ -145,9 +144,8 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     /**
      * @param $filePattern
      * @param  array $dirs
-     * @return array
      */
-    private function findFiles($filePattern, array $dirs)
+    private function findFiles($filePattern, array $dirs): array
     {
         $finder = new Finder();
         $finder

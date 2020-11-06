@@ -47,7 +47,7 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkLocalesParameters(array $localeCodes, ChannelInterface $channel = null)
+    public function checkLocalesParameters(array $localeCodes, ChannelInterface $channel = null): void
     {
         $localeCodes = array_map('trim', $localeCodes);
         $errors = [];
@@ -66,7 +66,7 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
 
         if (null !== $channel) {
             $diff = array_diff($localeCodes, $channel->getLocaleCodes());
-            if ($diff) {
+            if ($diff !== []) {
                 $plural = sprintf(count($diff) > 1 ? 'Locales "%s" are' : 'Locale "%s" is', implode(', ', $diff));
                 throw new UnprocessableEntityHttpException(
                     sprintf('%s not activated for the scope "%s".', $plural, $channel->getCode())
@@ -78,7 +78,7 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkAttributesParameters(array $attributeCodes)
+    public function checkAttributesParameters(array $attributeCodes): void
     {
         $errors = [];
         foreach ($attributeCodes as $attributeCode) {
@@ -97,7 +97,7 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkPropertyParameters(string $property, string $operator)
+    public function checkPropertyParameters(string $property, string $operator): void
     {
         if (!in_array($property, $this->productFields) && null === $this->attributeRepository->findOneByIdentifier($property)) {
             throw new UnprocessableEntityHttpException(
@@ -113,7 +113,7 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function checkCategoriesParameters(array $categories)
+    public function checkCategoriesParameters(array $categories): void
     {
         $errors = [];
         foreach ($categories as $category) {

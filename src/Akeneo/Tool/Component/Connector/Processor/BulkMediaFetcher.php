@@ -53,7 +53,7 @@ class BulkMediaFetcher
      * @param string                   $target
      * @param string                   $identifier
      */
-    public function fetchAll(WriteValueCollection $values, $target, $identifier)
+    public function fetchAll(WriteValueCollection $values, string $target, string $identifier): void
     {
         $target = DIRECTORY_SEPARATOR !== substr($target, -1) ? $target . DIRECTORY_SEPARATOR : $target;
 
@@ -85,7 +85,6 @@ class BulkMediaFetcher
     /**
      * Get an array of errors
      *
-     * @return array
      *  [
      *      [
      *          'message' => (string) 'The media has not been copied',
@@ -101,7 +100,7 @@ class BulkMediaFetcher
      *      [...]
      *  ]
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -111,7 +110,7 @@ class BulkMediaFetcher
      *
      * @param array $media
      */
-    protected function fetch(array $media)
+    protected function fetch(array $media): void
     {
         try {
             $filesystem = $this->filesystemProvider->getFilesystem($media['storage']);
@@ -130,7 +129,7 @@ class BulkMediaFetcher
      * @param array  $media
      * @param string $message
      */
-    protected function addError(array $media, $message)
+    protected function addError(array $media, string $message): void
     {
         $this->errors[] = [
             'message' => $message,

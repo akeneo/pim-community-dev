@@ -60,7 +60,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function normalize($productModel, $format = null, array $context = [])
+    public function normalize($productModel, $format = null, array $context = []): array
     {
         if (!$this->normalizer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
@@ -97,7 +97,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductModelInterface && 'datagrid' === $format;
     }
@@ -156,15 +156,13 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
      *
      * @return array
      */
-    private function normalizeValues(WriteValueCollection $values, $format, array $context = []) : array
+    private function normalizeValues(WriteValueCollection $values, string $format, array $context = []) : array
     {
         foreach ($context['filter_types'] as $filterType) {
             $values = $this->filter->filterCollection($values, $filterType, $context);
         }
 
-        $data = $this->normalizer->normalize($values, $format, $context);
-
-        return $data;
+        return $this->normalizer->normalize($values, $format, $context);
     }
 
     /**

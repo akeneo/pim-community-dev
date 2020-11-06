@@ -42,7 +42,7 @@ class PropertyRemover implements PropertyRemoverInterface
     /**
      * {@inheritdoc}
      */
-    public function removeData($entityWithValues, $field, $data, array $options = [])
+    public function removeData(object $entityWithValues, string $field, $data, array $options = []): PropertyRemoverInterface
     {
         if (!$entityWithValues instanceof EntityWithValuesInterface) {
             throw InvalidObjectException::objectExpected(
@@ -73,10 +73,8 @@ class PropertyRemover implements PropertyRemoverInterface
 
     /**
      * @param string $code
-     *
-     * @return AttributeInterface|null
      */
-    protected function getAttribute($code)
+    protected function getAttribute(string $code): ?AttributeInterface
     {
         return $this->attributeRepository->findOneByIdentifier($code);
     }

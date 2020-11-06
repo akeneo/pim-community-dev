@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\FollowUp;
 
+use Doctrine\DBAL\DBALException;
 use Akeneo\Pim\Enrichment\Component\FollowUp\Query\GetCompletenessPerChannelAndLocaleInterface;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\ChannelCompleteness;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\CompletenessWidget;
@@ -28,7 +29,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
      * @param Connection $connection
      * @param Client     $client
      */
-    public function __construct(Connection $connection, Client $client)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, Client $client)
     {
         $this->connection = $connection;
         $this->client = $client;
@@ -61,7 +62,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
      *
      *      ex : ['ecommerce', ['en_US' => 'Ecommerce'...], ['print','cameras'...], ['de_DE','fr_FR'...]]
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function getCategoriesCodesAndLocalesByChannel(): array
     {
@@ -132,10 +133,9 @@ SQL;
      *
      * @param array $categoriesCodeAndLocalesByChannels
      *
-     * @return array
      *      ex: ['ecommerce' => 1259 ]
      */
-    private function countTotalProductsInCategoriesByChannel(array $categoriesCodeAndLocalesByChannels): array
+    private function countTotalProductsInCategoriesByChannel(array $categoriesCodeAndLocalesByChannels): ?array
     {
         if (empty($categoriesCodeAndLocalesByChannels)) {
             return null;
@@ -190,13 +190,12 @@ SQL;
      * Count with Elasticsearch the total number of products in categories, by channel and by locale
      *
      * @param array $categoriesCodeAndLocalesByChannels
-     * @return array
      *      ex: ['ecommerce' => [
      *              'locales' => ['fr_Fr' => 15, 'de_DE' => 1, 'en_US' => 5],
      *              'total' => 21
      *      ] ]
      */
-    private function countTotalProductInCategoriesByChannelAndLocale(array $categoriesCodeAndLocalesByChannels): array
+    private function countTotalProductInCategoriesByChannelAndLocale(array $categoriesCodeAndLocalesByChannels): ?array
     {
         if (empty($categoriesCodeAndLocalesByChannels)) {
             return null;
@@ -263,14 +262,13 @@ SQL;
      * @param array $categoriesCodeAndLocalesByChannels
      * @param array $totalProductsByChannel
      * @param array $localesWithNbCompleteByChannel
-     * @return CompletenessWidget
      */
     private function generateCompletenessWidgetModel(
             string $translationLocaleCode,
             array $categoriesCodeAndLocalesByChannels,
             array $totalProductsByChannel,
             array $localesWithNbCompleteByChannel
-    ) {
+    ): CompletenessWidget {
         $channelCompletenesses = [];
         foreach ($categoriesCodeAndLocalesByChannels as $categoriesCodeAndLocalesByChannel) {
             $channelCode = $categoriesCodeAndLocalesByChannel['channel_code'];
@@ -298,8 +296,6 @@ SQL;
                 $channelCompletenesses[$channelCompleteness->channel()] = $channelCompleteness;
             }
         }
-
-        $completenessWidget = new CompletenessWidget($channelCompletenesses);
-        return $completenessWidget;
+        return new CompletenessWidget($channelCompletenesses);
     }
 }

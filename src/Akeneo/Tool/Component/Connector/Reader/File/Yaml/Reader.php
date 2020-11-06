@@ -43,7 +43,7 @@ class Reader implements FileReaderInterface
      * @param bool                    $multiple
      * @param string                  $codeField
      */
-    public function __construct(ArrayConverterInterface $converter, $multiple = false, $codeField = 'code')
+    public function __construct(ArrayConverterInterface $converter, bool $multiple = false, string $codeField = 'code')
     {
         $this->converter = $converter;
         $this->codeField = $codeField;
@@ -54,10 +54,8 @@ class Reader implements FileReaderInterface
      * Set the code field
      *
      * @param string $codeField
-     *
-     * @return Reader
      */
-    public function setCodeField($codeField)
+    public function setCodeField(string $codeField): self
     {
         $this->codeField = $codeField;
 
@@ -66,10 +64,8 @@ class Reader implements FileReaderInterface
 
     /**
      * Get the code field
-     *
-     * @return string
      */
-    public function getCodeField()
+    public function getCodeField(): string
     {
         return $this->codeField;
     }
@@ -77,7 +73,7 @@ class Reader implements FileReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -126,10 +122,8 @@ class Reader implements FileReaderInterface
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
         $fileContent = file_get_contents($filePath);
-        if (false !== $fileContent) {
-            if (null !== $this->stepExecution) {
-                $this->stepExecution->setSummary(['item_position' => 0]);
-            }
+        if (false !== $fileContent && null !== $this->stepExecution) {
+            $this->stepExecution->setSummary(['item_position' => 0]);
         }
         $fileData = current(Yaml::parse($fileContent));
         if (null === $fileData) {
@@ -148,7 +142,7 @@ class Reader implements FileReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         if (null !== $this->yaml) {
             $this->yaml->rewind();
@@ -158,7 +152,7 @@ class Reader implements FileReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
         $this->yaml = null;
     }
@@ -170,7 +164,7 @@ class Reader implements FileReaderInterface
      * @throws InvalidItemException
      * @throws InvalidItemFromViolationsException
      */
-    protected function skipItemFromConversionException(array $item, DataArrayConversionException $exception)
+    protected function skipItemFromConversionException(array $item, DataArrayConversionException $exception): void
     {
         if (null !== $this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');

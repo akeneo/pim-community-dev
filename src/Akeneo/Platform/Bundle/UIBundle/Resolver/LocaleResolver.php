@@ -23,7 +23,7 @@ class LocaleResolver
      * @param RequestStack $requestStack
      * @param string       $defaultLocale
      */
-    public function __construct(RequestStack $requestStack, $defaultLocale)
+    public function __construct(RequestStack $requestStack, string $defaultLocale)
     {
         $this->requestStack = $requestStack;
         $this->defaultLocale = $defaultLocale;
@@ -31,10 +31,8 @@ class LocaleResolver
 
     /**
      * Get current locale. If request is null, take the default locale defined in config
-     *
-     * @return string
      */
-    public function getCurrentLocale()
+    public function getCurrentLocale(): string
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {

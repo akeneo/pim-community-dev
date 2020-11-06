@@ -34,9 +34,7 @@ final class ChannelLocaleCollection implements \Iterator
     {
         foreach ($localesByChannel as $channel => $locales) {
             $this->channelCodes[$channel] = new ChannelCode($channel);
-            $this->localeCollections[$channel] = new LocaleCollection(array_map(function ($locale) {
-                return new LocaleCode($locale);
-            }, $locales));
+            $this->localeCollections[$channel] = new LocaleCollection(array_map(fn($locale) => new LocaleCode($locale), $locales));
         }
 
         $this->iterator = new \ArrayIterator($this->localeCollections);
@@ -53,7 +51,7 @@ final class ChannelLocaleCollection implements \Iterator
     /**
      * @inheritDoc
      */
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
@@ -69,7 +67,7 @@ final class ChannelLocaleCollection implements \Iterator
     /**
      * @inheritDoc
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->iterator->valid();
     }
@@ -77,7 +75,7 @@ final class ChannelLocaleCollection implements \Iterator
     /**
      * @inheritDoc
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator->rewind();
     }

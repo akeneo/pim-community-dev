@@ -14,33 +14,24 @@ interface ReferenceDataConfigurationInterface
     const TYPE_SIMPLE = 'simple';
     const TYPE_MULTI = 'multi';
 
-    /**
-     * @return string
-     */
-    public function getClass();
+    public function getClass(): string;
 
     /**
      * @param string $class
      */
-    public function setClass($class);
+    public function setClass(string $class);
 
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @param string $name
      */
-    public function setName($name);
+    public function setName(string $name);
 
-    /**
-     * @return string
-     */
-    public function getType();
+    public function getType(): string;
 
     /**
      * @param string $type
      */
-    public function setType($type);
+    public function setType(string $type);
 }

@@ -67,7 +67,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         EventDispatcherInterface $eventDispatcher,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkObjectDetacherInterface $detacher,
-        $productClassName
+        string $productClassName
     ) {
         $this->objectManager = $objectManager;
         $this->productSaver = $productSaver;
@@ -82,7 +82,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($group, array $options = [])
+    public function save($group, array $options = []): void
     {
         $this->validateGroup($group);
 
@@ -100,7 +100,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $groups, array $options = [])
+    public function saveAll(array $groups, array $options = []): void
     {
         if (empty($groups)) {
             return;
@@ -132,13 +132,11 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
      *
      * @param  GroupInterface $group
      */
-    protected function saveAssociatedProducts(GroupInterface $group)
+    protected function saveAssociatedProducts(GroupInterface $group): void
     {
         $productInGroup = $group->getProducts();
         $productsToUpdate = $productInGroup->toArray();
-        $productToUpdateIds = array_map(function ($product) {
-            return $product->getId();
-        }, $productsToUpdate);
+        $productToUpdateIds = array_map(fn($product) => $product->getId(), $productsToUpdate);
 
         if (null !== $group->getId()) {
             $pqb = $this->productQueryBuilderFactory->create();
@@ -158,7 +156,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         }
     }
 
-    protected function validateGroup($group)
+    protected function validateGroup($group): void
     {
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
@@ -170,7 +168,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         }
     }
 
-    protected function persistGroupAndSaveAssociatedProducts(GroupInterface $group)
+    protected function persistGroupAndSaveAssociatedProducts(GroupInterface $group): void
     {
         $context = $this->productClassName;
         $this->versionContext->addContextInfo(

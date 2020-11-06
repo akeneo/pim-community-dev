@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
 
 /**
@@ -36,20 +37,19 @@ class Manager implements ManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function getDatagrid($name)
+    public function getDatagrid(string $name): DatagridInterface
     {
         // prepare for work with current grid
         $this->requestParameters->setRootParameter($name);
         $config = $this->getConfigurationForGrid($name);
-        $datagrid = $this->datagridBuilder->build($config);
 
-        return $datagrid;
+        return $this->datagridBuilder->build($config);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getConfigurationForGrid($name)
+    public function getConfigurationForGrid(string $name): DatagridConfiguration
     {
         return $this->configurationProvider->getConfiguration($name);
     }

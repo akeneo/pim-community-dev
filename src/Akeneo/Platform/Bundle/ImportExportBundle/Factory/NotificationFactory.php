@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Factory;
 
+use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
 use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -26,7 +27,7 @@ class NotificationFactory extends AbstractNotificationFactory implements Notific
      * @param array  $notificationTypes
      * @param string $notificationClass
      */
-    public function __construct(array $notificationTypes, $notificationClass)
+    public function __construct(array $notificationTypes, string $notificationClass)
     {
         $this->notificationTypes = $notificationTypes;
         $this->notificationClass = $notificationClass;
@@ -35,7 +36,7 @@ class NotificationFactory extends AbstractNotificationFactory implements Notific
     /**
      * {@inheritdoc}
      */
-    public function create($jobExecution)
+    public function create($jobExecution): NotificationInterface
     {
         if (!$jobExecution instanceof JobExecution) {
             throw new \InvalidArgumentException(
@@ -64,7 +65,7 @@ class NotificationFactory extends AbstractNotificationFactory implements Notific
     /**
      * {@inheritdoc}
      */
-    public function supports($type)
+    public function supports(string $type): bool
     {
         return in_array($type, $this->notificationTypes);
     }

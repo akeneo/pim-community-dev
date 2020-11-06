@@ -27,7 +27,7 @@ class ScalarComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($type)
+    public function supports(string $type): bool
     {
         return in_array($type, $this->types);
     }

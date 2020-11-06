@@ -22,7 +22,7 @@ class DelegatingClassMetadataFactory implements MetadataFactoryInterface
      *
      * @param MetadataFactoryInterface $factory
      */
-    public function addMetadataFactory(MetadataFactoryInterface $factory)
+    public function addMetadataFactory(MetadataFactoryInterface $factory): void
     {
         $this->factories[] = $factory;
     }
@@ -44,7 +44,7 @@ class DelegatingClassMetadataFactory implements MetadataFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasMetadataFor($value)
+    public function hasMetadataFor($value): bool
     {
         foreach ($this->factories as $factory) {
             if ($factory->hasMetadataFor($value)) {

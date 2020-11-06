@@ -43,7 +43,7 @@ class TranslationFactory
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($translationClass, $entityClass, $field)
+    public function __construct(string $translationClass, string $entityClass, string $field)
     {
         $refl = new \ReflectionClass($translationClass);
         if (!$refl->isSubClassOf(AbstractTranslation::class)) {
@@ -65,10 +65,8 @@ class TranslationFactory
      * Create the translation entity
      *
      * @param string $locale
-     *
-     * @return AbstractTranslation
      */
-    public function createTranslation($locale)
+    public function createTranslation(string $locale): AbstractTranslation
     {
         $translation = new $this->translationClass();
         $translation->setLocale($locale);

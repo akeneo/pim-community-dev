@@ -35,7 +35,7 @@ class CategoryFieldAdder extends AbstractFieldAdder
      *
      * Expected data input format : ["category_code"]
      */
-    public function addFieldData($product, $field, $data, array $options = [])
+    public function addFieldData($product, string $field, $data, array $options = []): void
     {
         $this->checkData($field, $data);
 
@@ -69,7 +69,7 @@ class CategoryFieldAdder extends AbstractFieldAdder
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(

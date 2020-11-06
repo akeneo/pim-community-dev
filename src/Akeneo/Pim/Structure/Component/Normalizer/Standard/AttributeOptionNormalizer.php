@@ -25,7 +25,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, CacheableSupport
     /**
      * {@inheritdoc}
      */
-    public function normalize($attributeOption, $format = null, array $context = [])
+    public function normalize($attributeOption, $format = null, array $context = []): array
     {
         return [
             'code'       => $attributeOption->getCode(),
@@ -39,7 +39,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, CacheableSupport
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof AttributeOptionInterface && 'standard' === $format;
     }
@@ -54,10 +54,8 @@ class AttributeOptionNormalizer implements NormalizerInterface, CacheableSupport
      *
      * @param AttributeOptionInterface $attributeOption
      * @param array                    $context
-     *
-     * @return array
      */
-    protected function normalizeLabels(AttributeOptionInterface $attributeOption, $context)
+    protected function normalizeLabels(AttributeOptionInterface $attributeOption, array $context): array
     {
         $locales = isset($context['locales']) ? $context['locales'] : [];
         $labels = array_fill_keys($locales, null);

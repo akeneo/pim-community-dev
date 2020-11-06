@@ -31,7 +31,7 @@ class AddJobCodeToGridListener
      *
      * @param BuildAfter $event
      */
-    public function onBuildAfter(BuildAfter $event)
+    public function onBuildAfter(BuildAfter $event): void
     {
         $jobCode = $this->requestParams->get('jobCode');
         $dataSource = $event->getDatagrid()->getDatasource();

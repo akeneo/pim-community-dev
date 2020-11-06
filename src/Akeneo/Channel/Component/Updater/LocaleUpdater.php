@@ -24,7 +24,7 @@ class LocaleUpdater implements ObjectUpdaterInterface
      *     'code' => 'en_US'
      * ]
      */
-    public function update($locale, array $data, array $options = [])
+    public function update(object $locale, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$locale instanceof LocaleInterface) {
             throw InvalidObjectException::objectExpected(
@@ -45,7 +45,7 @@ class LocaleUpdater implements ObjectUpdaterInterface
      * @param string          $field
      * @param mixed           $data
      */
-    protected function setData(LocaleInterface $locale, $field, $data)
+    protected function setData(LocaleInterface $locale, string $field, $data): void
     {
         if ('code' === $field) {
             $locale->setCode($data);

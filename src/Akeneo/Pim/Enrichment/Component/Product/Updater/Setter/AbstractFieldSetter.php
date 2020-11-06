@@ -17,7 +17,7 @@ abstract class AbstractFieldSetter implements FieldSetterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsField($field)
+    public function supportsField(string $field): bool
     {
         return in_array($field, $this->supportedFields);
     }

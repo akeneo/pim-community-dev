@@ -27,7 +27,7 @@ class PricesComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($type)
+    public function supports(string $type): bool
     {
         return in_array($type, $this->types);
     }
@@ -63,9 +63,7 @@ class PricesComparator implements ComparatorInterface
         }
 
         if ($dataPrices !== $originalPrices) {
-            $data['data'] = array_filter($data['data'], function (array $price) {
-                return null !== $price['amount'];
-            });
+            $data['data'] = array_filter($data['data'], fn(array $price) => null !== $price['amount']);
             return $data;
         }
 

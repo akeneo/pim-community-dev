@@ -16,8 +16,6 @@ interface GroupTypeRepositoryInterface extends IdentifiableObjectRepositoryInter
 {
     /**
      * Find axis technical identifiers
-     *
-     * @return array
      */
-    public function findTypeIds();
+    public function findTypeIds(): array;
 }

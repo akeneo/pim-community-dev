@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 interface GetCriteriaEvaluationsByProductIdQueryInterface
 {
-    public function execute(ProductId $productId): Read\CriterionEvaluationCollection;
+    public function execute(ProductId $productId): CriterionEvaluationCollection;
 }

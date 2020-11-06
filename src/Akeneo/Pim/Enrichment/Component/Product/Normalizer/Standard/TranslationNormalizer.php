@@ -28,7 +28,7 @@ class TranslationNormalizer implements NormalizerInterface, CacheableSupportsMet
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         $context = array_merge(
             [
@@ -47,7 +47,7 @@ class TranslationNormalizer implements NormalizerInterface, CacheableSupportsMet
                 continue;
             }
 
-            if (false === method_exists($translation, $method)) {
+            if (!method_exists($translation, $method)) {
                 throw new \LogicException(
                     sprintf("Class %s doesn't provide method %s", get_class($translation), $method)
                 );
@@ -65,7 +65,7 @@ class TranslationNormalizer implements NormalizerInterface, CacheableSupportsMet
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof TranslatableInterface && 'standard' === $format;
     }

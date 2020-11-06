@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\CommunicationChannel\Infrastructure\Persistence\Dbal\Query;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Platform\CommunicationChannel\Domain\Announcement\Query\FindViewedAnnouncementIdsInterface;
 use Doctrine\DBAL\Connection as DbalConnection;
 use Doctrine\DBAL\FetchMode;
@@ -18,7 +19,7 @@ class DbalFindViewedAnnouncementIds implements FindViewedAnnouncementIdsInterfac
     /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
@@ -43,7 +44,7 @@ class DbalFindViewedAnnouncementIds implements FindViewedAnnouncementIdsInterfac
         $results = $statement->fetchAll(FetchMode::COLUMN);
         $statement->closeCursor();
 
-        if (!$results) {
+        if ($results === []) {
             return [];
         }
 

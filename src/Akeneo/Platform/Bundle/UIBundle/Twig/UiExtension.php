@@ -19,7 +19,7 @@ class UiExtension extends \Twig_Extension
     /**
      * {@inheritDoc}
      */
-    public function getTokenParsers()
+    public function getTokenParsers(): array
     {
         return [
             new PlaceholderTokenParser($this->placeholders, $this->wrapClassName)

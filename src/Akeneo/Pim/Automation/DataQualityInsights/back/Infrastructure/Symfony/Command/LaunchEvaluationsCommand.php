@@ -40,14 +40,14 @@ class LaunchEvaluationsCommand extends Command
         $this->runUniqueProcessJob = $runUniqueProcessJob;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('pim:data-quality-insights:evaluations')
             ->setDescription('Launch the evaluations of products and structure');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (! $this->featureFlag->isEnabled()) {
             $output->writeln('<info>Data Quality Insights feature is disabled</info>');
@@ -55,9 +55,7 @@ class LaunchEvaluationsCommand extends Command
         }
 
         try {
-            $this->runUniqueProcessJob->run('data_quality_insights_evaluations', function (?JobExecution $lastJobExecution) {
-                return [];
-            });
+            $this->runUniqueProcessJob->run('data_quality_insights_evaluations', fn(?JobExecution $lastJobExecution) => []);
         } catch (AnotherJobStillRunningException $e) {
             exit(0);
         }

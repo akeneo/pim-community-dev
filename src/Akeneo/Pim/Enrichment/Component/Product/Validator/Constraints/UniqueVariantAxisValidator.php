@@ -47,7 +47,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
         if (!$entity instanceof EntityWithFamilyVariantInterface) {
             throw new UnexpectedTypeException($constraint, EntityWithFamilyVariantInterface::class);
@@ -90,9 +90,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             return;
         }
 
-        $axesAttributesCodesToFilter = array_map(function (AttributeInterface $axisAttribute) {
-            return $axisAttribute->getCode();
-        }, $axes);
+        $axesAttributesCodesToFilter = array_map(fn(AttributeInterface $axisAttribute) => $axisAttribute->getCode(), $axes);
 
         $siblingValues = $this->getValuesOfSiblings->for($entity, $axesAttributesCodesToFilter);
 
@@ -194,9 +192,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         string $siblingIdentifier
     ): void {
         $axesCodes = implode(',', array_map(
-            function (AttributeInterface $axis) {
-                return $axis->getCode();
-            },
+            fn(AttributeInterface $axis) => $axis->getCode(),
             $axes
         ));
 

@@ -10,7 +10,7 @@ class SelectRowFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return SelectRowFilterType::class;
     }
@@ -18,10 +18,10 @@ class SelectRowFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
-        if (!$data) {
+        if ($data === []) {
             return false;
         }
 

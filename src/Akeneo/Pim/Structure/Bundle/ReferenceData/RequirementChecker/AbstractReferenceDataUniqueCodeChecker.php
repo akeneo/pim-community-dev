@@ -31,7 +31,7 @@ abstract class AbstractReferenceDataUniqueCodeChecker implements CheckerInterfac
     /**
      * {@inheritdoc}
      */
-    public function check(ReferenceDataConfigurationInterface $configuration)
+    public function check(ReferenceDataConfigurationInterface $configuration): bool
     {
         try {
             $mapping = $this->getCodeFieldMapping($configuration->getClass());
@@ -42,8 +42,7 @@ abstract class AbstractReferenceDataUniqueCodeChecker implements CheckerInterfac
         }
 
         if (!isset($mapping['unique']) || true !== $mapping['unique']) {
-            $this->failure = 'Please configure a "code" column with a unique constraint ' .
-                             'in your Reference Data mapping.';
+            $this->failure = 'Please configure a "code" column with a unique constraint in your Reference Data mapping.';
 
             return false;
         }
@@ -54,7 +53,7 @@ abstract class AbstractReferenceDataUniqueCodeChecker implements CheckerInterfac
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'Reference Data mapping must have a unique "code" field.';
     }
@@ -62,7 +61,7 @@ abstract class AbstractReferenceDataUniqueCodeChecker implements CheckerInterfac
     /**
      * {@inheritdoc}
      */
-    public function getFailure()
+    public function getFailure(): string
     {
         return $this->failure;
     }
@@ -70,7 +69,7 @@ abstract class AbstractReferenceDataUniqueCodeChecker implements CheckerInterfac
     /**
      * {@inheritdoc}
      */
-    public function isBlockingOnFailure()
+    public function isBlockingOnFailure(): bool
     {
         return false;
     }
@@ -80,8 +79,6 @@ abstract class AbstractReferenceDataUniqueCodeChecker implements CheckerInterfac
      * Depending on Doctrine's storage, this method has to be changed.
      *
      * @param string $referenceDataClass
-     *
-     * @return array
      */
-    abstract protected function getCodeFieldMapping($referenceDataClass);
+    abstract protected function getCodeFieldMapping(string $referenceDataClass): array;
 }

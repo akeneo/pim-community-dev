@@ -19,7 +19,7 @@ class UploadedImageSubscriber implements EventSubscriber
      * @param  string                    $kernelRootDir
      * @throws \InvalidArgumentException
      */
-    public function __construct($kernelRootDir)
+    public function __construct(string $kernelRootDir)
     {
         $this->webRoot = realpath($kernelRootDir . '/../public');
         if (!$this->webRoot) {
@@ -30,7 +30,7 @@ class UploadedImageSubscriber implements EventSubscriber
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'preUpdate',
@@ -46,7 +46,7 @@ class UploadedImageSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    public function postRemove(LifecycleEventArgs $args)
+    public function postRemove(LifecycleEventArgs $args): void
     {
         /** @var EntityUploadedImageInterface $entity */
         $entity = $args->getEntity();
@@ -58,7 +58,7 @@ class UploadedImageSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    public function preUpdate(LifecycleEventArgs $args): void
     {
         /** @var EntityUploadedImageInterface $entity */
         $entity = $args->getEntity();
@@ -81,7 +81,7 @@ class UploadedImageSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args): void
     {
         $this->updateImageName($args);
     }
@@ -91,7 +91,7 @@ class UploadedImageSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    public function postPersist(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args): void
     {
         $this->handleImageUpload($args);
     }
@@ -101,7 +101,7 @@ class UploadedImageSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    public function postUpdate(LifecycleEventArgs $args)
+    public function postUpdate(LifecycleEventArgs $args): void
     {
         $this->handleImageUpload($args);
     }
@@ -111,7 +111,7 @@ class UploadedImageSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    protected function handleImageUpload(LifecycleEventArgs $args)
+    protected function handleImageUpload(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
         if ($this->isExpectedEntity($entity)) {
@@ -134,7 +134,7 @@ class UploadedImageSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $args
      */
-    protected function updateImageName(LifecycleEventArgs $args)
+    protected function updateImageName(LifecycleEventArgs $args): void
     {
         /** @var EntityUploadedImageInterface $entity */
         $entity = $args->getEntity();
@@ -148,9 +148,8 @@ class UploadedImageSubscriber implements EventSubscriber
      * Get upload directory location in FS.
      *
      * @param  EntityUploadedImageInterface $entity
-     * @return string
      */
-    protected function getUploadRootDir(EntityUploadedImageInterface $entity)
+    protected function getUploadRootDir(EntityUploadedImageInterface $entity): string
     {
         return rtrim($this->webRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $entity->getUploadDir();
     }
@@ -160,7 +159,7 @@ class UploadedImageSubscriber implements EventSubscriber
      *
      * @param EntityUploadedImageInterface $entity
      */
-    protected function removeImage($entity)
+    protected function removeImage(\Akeneo\UserManagement\Component\EntityUploadedImageInterface $entity): void
     {
         if ($this->isExpectedEntity($entity) && $entity->getImage()) {
             $file = $this->getUploadRootDir($entity) . DIRECTORY_SEPARATOR . $entity->getImage();
@@ -174,9 +173,8 @@ class UploadedImageSubscriber implements EventSubscriber
      * Check for new image upload.
      *
      * @param  EntityUploadedImageInterface $entity
-     * @return bool
      */
-    protected function hasUploadedImage($entity)
+    protected function hasUploadedImage(\Akeneo\UserManagement\Component\EntityUploadedImageInterface $entity): bool
     {
         return $this->isExpectedEntity($entity) && null !== $entity->getImageFile();
     }
@@ -185,9 +183,8 @@ class UploadedImageSubscriber implements EventSubscriber
      * Check if entity acceptable by subscriber.
      *
      * @param  object $entity
-     * @return bool
      */
-    protected function isExpectedEntity($entity)
+    protected function isExpectedEntity(object $entity): bool
     {
         return $entity instanceof EntityUploadedImageInterface;
     }

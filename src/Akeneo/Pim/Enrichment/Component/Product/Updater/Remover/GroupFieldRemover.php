@@ -37,7 +37,7 @@ class GroupFieldRemover extends AbstractFieldRemover
      *
      * Expected data input format : ["group_code", "another_group_code"]
      */
-    public function removeFieldData($product, $field, $data, array $options = [])
+    public function removeFieldData($product, string $field, $data, array $options = []): void
     {
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
@@ -78,7 +78,7 @@ class GroupFieldRemover extends AbstractFieldRemover
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(

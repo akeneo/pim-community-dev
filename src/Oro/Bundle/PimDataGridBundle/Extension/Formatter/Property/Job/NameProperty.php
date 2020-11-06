@@ -47,10 +47,8 @@ class NameProperty extends FieldProperty
      *
      * @return array with job alias => job
      */
-    protected function getAllJobs()
+    protected function getAllJobs(): array
     {
-        $jobs = $this->jobRegistry->all();
-
-        return $jobs;
+        return $this->jobRegistry->all();
     }
 }

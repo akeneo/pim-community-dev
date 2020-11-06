@@ -30,7 +30,7 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param int $maxPerPage Number of records to display per page
      */
-    public function __construct($maxPerPage = 10)
+    public function __construct(int $maxPerPage = 10)
     {
         $this->setMaxPerPage($maxPerPage);
     }
@@ -40,7 +40,7 @@ abstract class AbstractPager implements PagerInterface
      *
      * @return int
      */
-    public function getNbResults()
+    public function getNbResults(): int
     {
         return (int) $this->nbResults;
     }
@@ -50,7 +50,7 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param int $number
      */
-    protected function setNbResults($number)
+    protected function setNbResults(int $number)
     {
         $this->nbResults = $number;
     }
@@ -60,7 +60,7 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param int $page
      */
-    protected function setLastPage($page)
+    protected function setLastPage(int $page)
     {
         $this->lastPage = $page;
 
@@ -74,7 +74,7 @@ abstract class AbstractPager implements PagerInterface
      *
      * @return int
      */
-    public function getPage()
+    public function getPage(): int
     {
         return $this->page;
     }
@@ -84,12 +84,12 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param int $page
      */
-    public function setPage($page)
+    public function setPage(int $page): void
     {
-        $this->page = intval($page);
+        $this->page = (int) $page;
 
         if ($this->page <= 0) {
-            $this->page = $this->getMaxPerPage() ? 1 : 0;
+            $this->page = $this->getMaxPerPage() !== 0 ? 1 : 0;
         }
     }
 
@@ -98,7 +98,7 @@ abstract class AbstractPager implements PagerInterface
      *
      * @return int
      */
-    public function getMaxPerPage()
+    public function getMaxPerPage(): int
     {
         return $this->maxPerPage;
     }
@@ -108,22 +108,20 @@ abstract class AbstractPager implements PagerInterface
      *
      * @param int $max
      */
-    public function setMaxPerPage($max)
+    public function setMaxPerPage(int $max): void
     {
         if ($max > 0) {
             $this->maxPerPage = $max;
             if ($this->page === 0) {
                 $this->page = 1;
             }
+        } elseif ($max === 0) {
+            $this->maxPerPage = 0;
+            $this->page = 0;
         } else {
-            if ($max === 0) {
-                $this->maxPerPage = 0;
-                $this->page = 0;
-            } else {
-                $this->maxPerPage = 1;
-                if ($this->page === 0) {
-                    $this->page = 1;
-                }
+            $this->maxPerPage = 1;
+            if ($this->page === 0) {
+                $this->page = 1;
             }
         }
     }

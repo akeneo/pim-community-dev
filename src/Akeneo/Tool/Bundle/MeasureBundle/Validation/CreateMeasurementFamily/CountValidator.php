@@ -30,7 +30,7 @@ class CountValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($createMeasurementFamilyCommand, Constraint $constraint)
+    public function validate($createMeasurementFamilyCommand, Constraint $constraint): void
     {
         if (!$constraint instanceof Count) {
             throw new UnexpectedTypeException($constraint, Count::class);

@@ -24,7 +24,7 @@ final class GetRequiredProductModelAttributesMaskQuery implements GetProductMode
     /** @var Connection */
     private $dbConnection;
 
-    public function __construct(Connection $dbConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
     }
@@ -103,13 +103,11 @@ SQL;
             return null;
         }
 
-        $masksPerChannelAndLocale = array_map(function (array $row) {
-            return new RequiredAttributesMaskForChannelAndLocale(
-                $row['channel_code'],
-                $row['locale_code'],
-                json_decode($row['mask'], true)
-            );
-        }, $rows);
+        $masksPerChannelAndLocale = array_map(fn(array $row) => new RequiredAttributesMaskForChannelAndLocale(
+            $row['channel_code'],
+            $row['locale_code'],
+            json_decode($row['mask'], true)
+        ), $rows);
 
         return new RequiredAttributesMask($rows[0]['family_code'], $masksPerChannelAndLocale);
     }

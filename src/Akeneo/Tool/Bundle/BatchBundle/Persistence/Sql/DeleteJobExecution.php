@@ -17,7 +17,7 @@ final class DeleteJobExecution
     /** @var Connection */
     private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -51,13 +51,11 @@ final class DeleteJobExecution
             )
 SQL;
 
-        $numberDeletedJobExecution = $this->connection->executeUpdate(
+        return $this->connection->executeUpdate(
             $query,
             ['create_time' => $endTime, 'status' => BatchStatus::COMPLETED],
             ['create_time' => Type::DATETIME]
         );
-
-        return $numberDeletedJobExecution;
     }
 
     public function all(): void

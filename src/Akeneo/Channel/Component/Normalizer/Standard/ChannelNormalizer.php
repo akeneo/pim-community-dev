@@ -27,7 +27,7 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function normalize($channel, $format = null, array $context = [])
+    public function normalize($channel, $format = null, array $context = []): array
     {
         return [
             'code'             => $channel->getCode(),
@@ -43,7 +43,7 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ChannelInterface && 'standard' === $format;
     }
@@ -57,10 +57,8 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      * Returns an array containing the currency values
      *
      * @param ChannelInterface $channel
-     *
-     * @return array
      */
-    protected function normalizeCurrencies(ChannelInterface $channel)
+    protected function normalizeCurrencies(ChannelInterface $channel): array
     {
         $currencies = [];
         foreach ($channel->getCurrencies() as $currency) {

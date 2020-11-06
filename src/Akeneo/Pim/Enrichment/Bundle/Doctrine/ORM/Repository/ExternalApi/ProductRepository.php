@@ -31,7 +31,7 @@ class ProductRepository extends EntityRepository implements ProductRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier(string $identifier)
     {
         return $this->productRepository->findOneByIdentifier($identifier);
     }
@@ -39,7 +39,7 @@ class ProductRepository extends EntityRepository implements ProductRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return $this->productRepository->getIdentifierProperties();
     }

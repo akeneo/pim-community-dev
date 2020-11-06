@@ -17,7 +17,7 @@ class ReferenceDataSorter implements SorterInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(DatasourceInterface $dataSource, $field, $direction)
+    public function apply(DatasourceInterface $dataSource, string $field, string $direction): void
     {
         $dataSource->getProductQueryBuilder()->addSorter($field, $direction);
     }

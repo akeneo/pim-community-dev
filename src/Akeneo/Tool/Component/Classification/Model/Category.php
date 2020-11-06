@@ -46,7 +46,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -54,7 +54,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         $this->code = $code;
 
@@ -64,7 +64,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -72,7 +72,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setLeft($left)
+    public function setLeft(int $left): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         $this->left = $left;
 
@@ -82,7 +82,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getLeft()
+    public function getLeft(): int
     {
         return $this->left;
     }
@@ -90,7 +90,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setLevel($level)
+    public function setLevel(int $level): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         $this->level = $level;
 
@@ -100,7 +100,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
+    public function getLevel(): int
     {
         return $this->level;
     }
@@ -108,7 +108,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setRight($right)
+    public function setRight(int $right): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         $this->right = $right;
 
@@ -118,7 +118,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getRight()
+    public function getRight(): int
     {
         return $this->right;
     }
@@ -126,7 +126,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setRoot($root)
+    public function setRoot(int $root): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         $this->root = $root;
 
@@ -136,7 +136,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoot()
+    public function getRoot(): int
     {
         return $this->root;
     }
@@ -144,7 +144,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setParent(CategoryInterface $parent = null)
+    public function setParent(CategoryInterface $parent = null): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         $this->parent = $parent;
 
@@ -154,7 +154,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?\Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         return $this->parent;
     }
@@ -162,7 +162,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function addChild(CategoryInterface $child)
+    public function addChild(CategoryInterface $child): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         $child->setParent($this);
         $this->children[] = $child;
@@ -173,7 +173,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function removeChild(CategoryInterface $children)
+    public function removeChild(CategoryInterface $children): \Akeneo\Tool\Component\Classification\Model\CategoryInterface
     {
         $this->children->removeElement($children);
 
@@ -183,7 +183,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return count($this->getChildren()) > 0;
     }
@@ -191,7 +191,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getChildren()
+    public function getChildren(): \Doctrine\Common\Collections\Collection
     {
         return $this->children;
     }
@@ -199,7 +199,7 @@ class Category implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function isRoot()
+    public function isRoot(): bool
     {
         return (null === $this->getParent());
     }

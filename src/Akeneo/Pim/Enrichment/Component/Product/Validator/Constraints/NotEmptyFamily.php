@@ -20,7 +20,7 @@ class NotEmptyFamily extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_family_not_empty';
     }
@@ -28,7 +28,7 @@ class NotEmptyFamily extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

@@ -28,10 +28,8 @@ interface LocalizerInterface
      * @param mixed  $data
      * @param string $attributeCode
      * @param array  $options
-     *
-     * @return ConstraintViolationListInterface|null
      */
-    public function validate($data, $attributeCode, array $options = []);
+    public function validate($data, string $attributeCode, array $options = []): ?ConstraintViolationListInterface;
 
     /**
      * Convert a localized value to the default format depending on options
@@ -57,8 +55,6 @@ interface LocalizerInterface
      * Whether or not the class supports the localizer
      *
      * @param string $attributeType
-     *
-     * @return bool
      */
-    public function supports($attributeType);
+    public function supports(string $attributeType): bool;
 }

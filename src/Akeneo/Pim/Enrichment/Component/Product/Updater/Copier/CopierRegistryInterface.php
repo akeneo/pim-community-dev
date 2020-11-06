@@ -17,34 +17,26 @@ interface CopierRegistryInterface
      * Register a copier
      *
      * @param CopierInterface $copier
-     *
-     * @return CopierRegistryInterface
      */
-    public function register(CopierInterface $copier);
+    public function register(CopierInterface $copier): \Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierRegistryInterface;
 
     /**
      * Get a copier compatible with the given properties
      *
      * @param string $fromProperty
      * @param string $toProperty
-     *
-     * @return CopierInterface
      */
-    public function getCopier($fromProperty, $toProperty);
+    public function getCopier(string $fromProperty, string $toProperty): \Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface;
 
     /**
      * @param string $fromField
      * @param string $toField
-     *
-     * @return FieldCopierInterface
      */
-    public function getFieldCopier($fromField, $toField);
+    public function getFieldCopier(string $fromField, string $toField): FieldCopierInterface;
 
     /**
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
-     *
-     * @return AttributeCopierInterface
      */
-    public function getAttributeCopier(AttributeInterface $fromAttribute, AttributeInterface $toAttribute);
+    public function getAttributeCopier(AttributeInterface $fromAttribute, AttributeInterface $toAttribute): AttributeCopierInterface;
 }

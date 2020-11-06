@@ -23,7 +23,7 @@ class FamilyVariantSearchableRepository implements SearchableRepositoryInterface
      * @param EntityManagerInterface $entityManager
      * @param string $entityName
      */
-    public function __construct(EntityManagerInterface $entityManager, $entityName)
+    public function __construct(EntityManagerInterface $entityManager, string $entityName)
     {
         $this->entityManager = $entityManager;
         $this->entityName = $entityName;
@@ -32,7 +32,7 @@ class FamilyVariantSearchableRepository implements SearchableRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findBySearch($search = null, array $options = [])
+    public function findBySearch(string $search = null, array $options = []): array
     {
         $qb = $this->entityManager->createQueryBuilder()->select('fv')->from($this->entityName, 'fv');
 
@@ -50,10 +50,8 @@ class FamilyVariantSearchableRepository implements SearchableRepositoryInterface
     /**
      * @param QueryBuilder $qb
      * @param array $options
-     *
-     * @return QueryBuilder
      */
-    protected function applyQueryOptions(QueryBuilder $qb, array $options)
+    protected function applyQueryOptions(QueryBuilder $qb, array $options): \Doctrine\ORM\QueryBuilder
     {
         if (isset($options['familyId'])) {
             $qb->andWhere('fv.family = :familyId');

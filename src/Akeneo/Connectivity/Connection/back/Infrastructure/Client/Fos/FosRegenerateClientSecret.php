@@ -52,7 +52,7 @@ class FosRegenerateClientSecret implements RegenerateClientSecret
         return $fosClient;
     }
 
-    private function deleteApiToken(ClientId $clientId)
+    private function deleteApiToken(ClientId $clientId): void
     {
         $deleteSqlAccessToken = <<<SQL
 DELETE FROM pim_api_access_token WHERE client = :client_id

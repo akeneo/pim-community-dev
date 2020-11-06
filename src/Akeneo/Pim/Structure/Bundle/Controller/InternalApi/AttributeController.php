@@ -131,10 +131,8 @@ class AttributeController
      * a refactor must be done.
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $options = $request->get('options', []);
         $options['locale'] = $options['locale'] ?? null;
@@ -194,13 +192,11 @@ class AttributeController
             $options
         );
 
-        $normalizedAttributes = array_map(function ($attribute) {
-            return $this->lightAttributeNormalizer->normalize(
-                $attribute,
-                'internal_api',
-                ['locale' => $this->userContext->getUiLocale()->getCode()]
-            );
-        }, $attributes);
+        $normalizedAttributes = array_map(fn($attribute) => $this->lightAttributeNormalizer->normalize(
+            $attribute,
+            'internal_api',
+            ['locale' => $this->userContext->getUiLocale()->getCode()]
+        ), $attributes);
 
         return new JsonResponse($normalizedAttributes);
     }
@@ -212,10 +208,8 @@ class AttributeController
      * @param string  $identifier
      *
      * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
      */
-    public function getAction(Request $request, $identifier)
+    public function getAction(Request $request, string $identifier): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($identifier);
 
@@ -286,7 +280,7 @@ class AttributeController
      *
      * @AclAncestor("pim_enrich_attribute_edit")
      */
-    public function postAction(Request $request, $identifier)
+    public function postAction(Request $request, string $identifier)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -373,7 +367,7 @@ class AttributeController
         $channelCodes = $this->channelCodesUsedAsConversionUnit($code);
         if (count($channelCodes) > 0) {
             $message = $this->translator->trans('flash.attribute.used_as_conversion_unit', [
-                '%channelCodes%' => join(', ', $channelCodes)
+                '%channelCodes%' => implode(', ', $channelCodes)
             ]);
 
             return new JsonResponse(
@@ -465,10 +459,8 @@ class AttributeController
      * List attribute axes
      *
      * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function listAxesAction(Request $request)
+    public function listAxesAction(Request $request): \Symfony\Component\HttpFoundation\JsonResponse
     {
         $locale = $request->get('locale');
         $attributeAxes = $this->attributeRepository->findAvailableAxes($locale);
@@ -481,8 +473,7 @@ class AttributeController
         // TODO This method can be updated with a real SQL query (not in 2.3 because we can't filter on JSON columns)
         $channelCodes = [];
         foreach ($this->channelRepository->findAll() as $channel) {
-            $attributeCodes = array_keys($channel->getConversionUnits());
-            if (in_array($code, $attributeCodes)) {
+            if (array_key_exists($code, $channel->getConversionUnits())) {
                 $channelCodes[] = $channel->getCode();
             }
         }

@@ -22,7 +22,7 @@ class AttributeOptionValueType extends AbstractType
     /**
      * @param string $dataClass
      */
-    public function __construct($dataClass)
+    public function __construct(string $dataClass)
     {
         $this->dataClass = $dataClass;
     }
@@ -30,7 +30,7 @@ class AttributeOptionValueType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->addFieldId($builder);
 
@@ -44,7 +44,7 @@ class AttributeOptionValueType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      */
-    protected function addFieldId(FormBuilderInterface $builder)
+    protected function addFieldId(FormBuilderInterface $builder): void
     {
         $builder->add('id', HiddenType::class);
     }
@@ -54,7 +54,7 @@ class AttributeOptionValueType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      */
-    protected function addFieldLocale(FormBuilderInterface $builder)
+    protected function addFieldLocale(FormBuilderInterface $builder): void
     {
         $builder->add('locale', HiddenType::class);
     }
@@ -64,7 +64,7 @@ class AttributeOptionValueType extends AbstractType
      *
      * @param FormBuilderInterface $builder
      */
-    protected function addFieldValue(FormBuilderInterface $builder)
+    protected function addFieldValue(FormBuilderInterface $builder): void
     {
         $builder->add('value', null, ['required' => false]);
     }
@@ -72,7 +72,7 @@ class AttributeOptionValueType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -84,7 +84,7 @@ class AttributeOptionValueType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'pim_enrich_attribute_option_value';
     }

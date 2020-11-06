@@ -24,7 +24,7 @@ class AttributeTranslation extends AbstractTranslation implements AttributeTrans
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): AttributeTranslationInterface
     {
         $this->label = $label;
 
@@ -34,7 +34,7 @@ class AttributeTranslation extends AbstractTranslation implements AttributeTrans
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }

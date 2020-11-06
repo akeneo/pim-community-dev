@@ -21,7 +21,7 @@ class AkeneoVersioningBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container
             ->addCompilerPass(new RegisterSerializerPass('pim_versioning.serializer'))

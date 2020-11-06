@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -100,11 +101,10 @@ class CategoryController
      *
      * @throws NotFoundHttpException
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_category_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $category = $this->repository->findOneByIdentifier($code);
         if (null === $category) {
@@ -119,11 +119,10 @@ class CategoryController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_category_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -162,7 +161,7 @@ class CategoryController
             'item_route_name'     => 'pim_api_category_get',
         ];
 
-        $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
+        $count = $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedCategories = $this->paginator->paginate(
             $this->normalizer->normalize($categories, 'external_api'),
             $parameters,
@@ -178,11 +177,10 @@ class CategoryController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_category_edit")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -192,9 +190,7 @@ class CategoryController
 
         $this->saver->save($category);
 
-        $response = $this->getResponse($category, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->getResponse($category, Response::HTTP_CREATED);
     }
 
     /**
@@ -202,16 +198,14 @@ class CategoryController
      *
      * @throws HttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_category_edit")
      */
-    public function partialUpdateListAction(Request $request)
+    public function partialUpdateListAction(Request $request): StreamedResponse
     {
         $resource = $request->getContent(true);
-        $response = $this->partialUpdateStreamResource->streamResponse($resource);
 
-        return $response;
+        return $this->partialUpdateStreamResource->streamResponse($resource);
     }
 
     /**
@@ -221,11 +215,10 @@ class CategoryController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return Response
      *
      * @AclAncestor("pim_api_category_edit")
      */
-    public function partialUpdateAction(Request $request, $code)
+    public function partialUpdateAction(Request $request, string $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -249,9 +242,8 @@ class CategoryController
         }
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($category, $status);
 
-        return $response;
+        return $this->getResponse($category, $status);
     }
 
     /**
@@ -260,10 +252,8 @@ class CategoryController
      * @param string $content content of a request to decode
      *
      * @throws BadRequestHttpException
-     *
-     * @return array
      */
-    protected function getDecodedContent($content)
+    protected function getDecodedContent(string $content): array
     {
         $decodedContent = json_decode($content, true);
 
@@ -283,7 +273,7 @@ class CategoryController
      *
      * @throws DocumentedHttpException
      */
-    protected function updateCategory(CategoryInterface $category, array $data, $anchor)
+    protected function updateCategory(CategoryInterface $category, array $data, string $anchor): void
     {
         try {
             $this->updater->update($category, $data);
@@ -304,7 +294,7 @@ class CategoryController
      *
      * @throws ViolationHttpException
      */
-    protected function validateCategory(CategoryInterface $category)
+    protected function validateCategory(CategoryInterface $category): void
     {
         $violations = $this->validator->validate($category);
         if (0 !== $violations->count()) {
@@ -317,10 +307,8 @@ class CategoryController
      *
      * @param CategoryInterface $category
      * @param string            $status
-     *
-     * @return Response
      */
-    protected function getResponse(CategoryInterface $category, $status)
+    protected function getResponse(CategoryInterface $category, string $status): Response
     {
         $response = new Response(null, $status);
         $route = $this->router->generate(
@@ -345,7 +333,7 @@ class CategoryController
      *
      * @throws UnprocessableEntityHttpException
      */
-    protected function validateCodeConsistency($code, array $data)
+    protected function validateCodeConsistency(string $code, array $data): void
     {
         if (isset($data['code']) && $code !== $data['code']) {
             throw new UnprocessableEntityHttpException(

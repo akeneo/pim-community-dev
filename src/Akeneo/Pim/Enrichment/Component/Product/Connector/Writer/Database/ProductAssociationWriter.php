@@ -41,7 +41,7 @@ class ProductAssociationWriter implements ItemWriterInterface, StepExecutionAwar
     /**
      * {@inheritdoc}
      */
-    public function write(array $objects)
+    public function write(array $objects): void
     {
         $this->incrementCount($objects);
         $this->bulkSaver->saveAll($objects);
@@ -51,7 +51,7 @@ class ProductAssociationWriter implements ItemWriterInterface, StepExecutionAwar
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -59,7 +59,7 @@ class ProductAssociationWriter implements ItemWriterInterface, StepExecutionAwar
     /**
      * @param array $products
      */
-    protected function incrementCount(array $products)
+    protected function incrementCount(array $products): void
     {
         foreach ($products as $product) {
             foreach ($product->getAssociations() as $association) {

@@ -21,7 +21,7 @@ interface StepInterface
     /**
      * @return string The name of this step
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Process the step and assign progress and status meta information to the

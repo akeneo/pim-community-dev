@@ -11,20 +11,14 @@ namespace Akeneo\Tool\Component\StorageUtils\Cursor;
  */
 interface PaginatorInterface extends \Countable, \Iterator
 {
-    /**
-     * @return int
-     */
-    public function getPageSize();
+    public function getPageSize(): int;
 
     /**
      * @param $pageSize
      *
      * @return $this
      */
-    public function setPageSize($pageSize);
+    public function setPageSize($pageSize): self;
 
-    /**
-     * @return int
-     */
-    public function getPageNumber();
+    public function getPageNumber(): int;
 }

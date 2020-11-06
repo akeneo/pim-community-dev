@@ -164,7 +164,7 @@ abstract class AbstractItemMediaWriter implements
         return array_replace_recursive($additionalHeadersFilledInFlatItemFormat, $items);
     }
 
-    protected function getAdditionalHeaders()
+    protected function getAdditionalHeaders(): array
     {
         return [];
     }
@@ -196,10 +196,8 @@ abstract class AbstractItemMediaWriter implements
      * Get the file path in which to write the data
      *
      * @param array $placeholders
-     *
-     * @return string
      */
-    public function getPath(array $placeholders = [])
+    public function getPath(array $placeholders = []): string
     {
         $parameters = $this->stepExecution->getJobParameters();
         $filePath = $parameters->get($this->jobParamFilePath);
@@ -224,7 +222,7 @@ abstract class AbstractItemMediaWriter implements
     /**
      * {@inheritdoc}
      */
-    public function getWrittenFiles()
+    public function getWrittenFiles(): array
     {
         return $this->writtenFiles;
     }
@@ -239,19 +237,15 @@ abstract class AbstractItemMediaWriter implements
 
     /**
      * Get configuration for writer (type of export, delimiter, enclosure, etc)
-     *
-     * @return array
      */
-    abstract protected function getWriterConfiguration();
+    abstract protected function getWriterConfiguration(): array;
 
     /**
      * Return the identifier of the item (e.q sku or variant group code)
      *
      * @param array $item
-     *
-     * @return string
      */
-    abstract protected function getItemIdentifier(array $item);
+    abstract protected function getItemIdentifier(array $item): string;
 
     /**
      * - Add the media to the $this->writtenFiles to be archive later
@@ -292,19 +286,15 @@ abstract class AbstractItemMediaWriter implements
      *
      * @param array  $item          standard format of an item
      * @param string $tmpDirectory  directory where media have been copied before to be exported
-     *
-     * @return array
      */
-    protected function resolveMediaPaths(array $item, $tmpDirectory)
+    protected function resolveMediaPaths(array $item, string $tmpDirectory): array
     {
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($item['values']));
-        $mediaAttributeTypes = array_filter($attributeTypes, function ($attributeCode) {
-            return in_array($attributeCode, $this->mediaAttributeTypes);
-        });
+        $mediaAttributeTypes = array_filter($attributeTypes, fn($attributeCode) => in_array($attributeCode, $this->mediaAttributeTypes));
 
         $identifier = $this->getItemIdentifier($item);
 
-        foreach ($mediaAttributeTypes as $attributeCode => $attributeType) {
+        foreach (array_keys($mediaAttributeTypes) as $attributeCode) {
             if (!isset($item['values'][$attributeCode])) {
                 continue;
             }
@@ -334,10 +324,8 @@ abstract class AbstractItemMediaWriter implements
 
     /**
      * @param JobParameters $parameters
-     *
-     * @return array
      */
-    protected function getConverterOptions(JobParameters $parameters)
+    protected function getConverterOptions(JobParameters $parameters): array
     {
         $options = [];
 
@@ -386,10 +374,8 @@ abstract class AbstractItemMediaWriter implements
      * Replace [^A-Za-z0-9\.] from a string by '_'
      *
      * @param string $value
-     *
-     * @return string
      */
-    protected function sanitize($value)
+    protected function sanitize(string $value): ?string
     {
         return preg_replace('#[^A-Za-z0-9\.]#', '_', $value);
     }

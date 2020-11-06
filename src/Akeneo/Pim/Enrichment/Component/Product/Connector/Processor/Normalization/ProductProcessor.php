@@ -61,7 +61,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /**
      * {@inheritdoc}
      */
-    public function process($product)
+    public function process($product): array
     {
         $parameters = $this->stepExecution->getJobParameters();
         $structure = $parameters->get('filters')['structure'];
@@ -94,9 +94,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
             $productStandard['values'] = array_filter(
                 $productStandard['values'],
-                function ($attributeCode) use ($mediaAttributes) {
-                    return !in_array($attributeCode, $mediaAttributes);
-                },
+                fn($attributeCode) => !in_array($attributeCode, $mediaAttributes),
                 ARRAY_FILTER_USE_KEY
             );
         }
@@ -107,7 +105,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -118,7 +116,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      * @param EntityWithFamilyInterface $product
      * @param string           $directory
      */
-    protected function fetchMedia(EntityWithFamilyInterface $product, $directory)
+    protected function fetchMedia(EntityWithFamilyInterface $product, string $directory): void
     {
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $product->getIdentifier());
 
@@ -145,10 +143,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      * Return a list of attributes to export
      *
      * @param JobParameters $parameters
-     *
-     * @return array
      */
-    protected function getAttributesCodesToFilter(JobParameters $parameters)
+    protected function getAttributesCodesToFilter(JobParameters $parameters): array
     {
         $attributes = $parameters->get('filters')['structure']['attributes'];
         $identifierCode = $this->attributeRepository->getIdentifierCode();
@@ -163,10 +159,8 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
      * Are there attributes to filter?
      *
      * @param JobParameters $parameters
-     *
-     * @return bool
      */
-    protected function areAttributesToFilter(JobParameters $parameters)
+    protected function areAttributesToFilter(JobParameters $parameters): bool
     {
         return isset($parameters->get('filters')['structure']['attributes'])
             && !empty($parameters->get('filters')['structure']['attributes']);

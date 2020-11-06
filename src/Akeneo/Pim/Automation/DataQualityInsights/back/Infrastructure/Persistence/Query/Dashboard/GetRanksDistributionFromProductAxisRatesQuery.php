@@ -28,7 +28,7 @@ final class GetRanksDistributionFromProductAxisRatesQuery implements GetRanksDis
     /** @var GetCategoryChildrenIdsQueryInterface */
     private $getCategoryChildrenIdsQuery;
 
-    public function __construct(Connection $connection, GetCategoryChildrenIdsQueryInterface $getCategoryChildrenIdsQuery)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, GetCategoryChildrenIdsQueryInterface $getCategoryChildrenIdsQuery)
     {
         $this->connection = $connection;
         $this->getCategoryChildrenIdsQuery = $getCategoryChildrenIdsQuery;

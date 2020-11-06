@@ -13,127 +13,95 @@ interface NotificationInterface
 {
     /**
      * Get id
-     *
-     * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * Set message
      *
      * @param string $message
-     *
-     * @return NotificationInterface
      */
-    public function setMessage($message);
+    public function setMessage(string $message): \Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 
     /**
      * Get message
-     *
-     * @return string
      */
-    public function getMessage();
+    public function getMessage(): string;
 
     /**
      * Set comment
      *
      * @param string $comment
-     *
-     * @return NotificationInterface
      */
-    public function setComment($comment);
+    public function setComment(string $comment): \Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 
     /**
      * Get comment
-     *
-     * @return string
      */
-    public function getComment();
+    public function getComment(): string;
 
     /**
      * Set type
      *
      * @param string $type
-     *
-     * @return NotificationInterface
      */
-    public function setType($type);
+    public function setType(string $type): \Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 
     /**
      * Get type
-     *
-     * @return string
      */
-    public function getType();
+    public function getType(): string;
 
     /**
      * Set route
      *
      * @param string $route
-     *
-     * @return NotificationInterface
      */
-    public function setRoute($route);
+    public function setRoute(string $route): \Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 
     /**
      * Get route
-     *
-     * @return string
      */
-    public function getRoute();
+    public function getRoute(): string;
 
     /**
      * Set routeParams
      *
      * @param array $routeParams
-     *
-     * @return NotificationInterface
      */
-    public function setRouteParams(array $routeParams);
+    public function setRouteParams(array $routeParams): \Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 
     /**
      * Get routeParams
-     *
-     * @return array
      */
-    public function getRouteParams();
+    public function getRouteParams(): array;
 
     /**
      * Set messageParams
      *
      * @param array $messageParams
-     *
-     * @return NotificationInterface
      */
-    public function setMessageParams(array $messageParams);
+    public function setMessageParams(array $messageParams): \Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 
     /**
      * Get messageParams
-     *
-     * @return array
      */
-    public function getMessageParams();
+    public function getMessageParams(): array;
 
     /**
      * Get created
-     *
-     * @return \DateTime
      */
-    public function getCreated();
+    public function getCreated(): \DateTime;
 
     /**
      * Set context
      *
      * @param array $context
-     *
-     * @return NotificationInterface
      */
-    public function setContext(array $context);
+    public function setContext(array $context): \Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 
     /**
      * Get context
-     *
-     * @return array
      */
-    public function getContext();
+    public function getContext(): array;
 }

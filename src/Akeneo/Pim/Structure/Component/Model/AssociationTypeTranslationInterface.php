@@ -17,15 +17,11 @@ interface AssociationTypeTranslationInterface extends TranslationInterface
      * Set label
      *
      * @param string $label
-     *
-     * @return AssociationTypeTranslationInterface
      */
-    public function setLabel($label);
+    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface;
 
     /**
      * Get the label
-     *
-     * @return string
      */
-    public function getLabel();
+    public function getLabel(): string;
 }

@@ -55,7 +55,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -63,7 +63,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId(int $id): LocaleInterface
     {
         $this->id = $id;
 
@@ -73,7 +73,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -81,7 +81,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode($code)
+    public function setCode(string $code): LocaleInterface
     {
         $this->code = $code;
 
@@ -91,7 +91,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function getLanguage()
+    public function getLanguage(): ?string
     {
         return (null === $this->code) ? null : substr($this->code, 0, 2);
     }
@@ -99,7 +99,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function isActivated()
+    public function isActivated(): bool
     {
         return $this->activated;
     }
@@ -107,7 +107,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function getChannels()
+    public function getChannels(): \Doctrine\Common\Collections\ArrayCollection
     {
         return $this->channels;
     }
@@ -115,7 +115,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function hasChannel(ChannelInterface $channel)
+    public function hasChannel(ChannelInterface $channel): bool
     {
         return $this->channels->contains($channel);
     }
@@ -123,7 +123,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function setChannels($channels)
+    public function setChannels(\Doctrine\Common\Collections\ArrayCollection $channels): LocaleInterface
     {
         $this->channels = new ArrayCollection();
         $this->activated = false;
@@ -138,7 +138,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function addChannel(ChannelInterface $channel)
+    public function addChannel(ChannelInterface $channel): LocaleInterface
     {
         $this->channels[] = $channel;
         if ($this->channels->count() > 0) {
@@ -151,7 +151,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function removeChannel(ChannelInterface $channel)
+    public function removeChannel(ChannelInterface $channel): LocaleInterface
     {
         $this->channels->removeElement($channel);
         if ($this->channels->count() === 0) {
@@ -164,7 +164,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReference(): string
     {
         return $this->code;
     }
@@ -172,7 +172,7 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): ?string
     {
         return null !== $this->code ? \Locale::getDisplayName($this->code) : null;
     }

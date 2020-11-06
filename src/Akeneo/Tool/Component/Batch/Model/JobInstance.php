@@ -71,7 +71,7 @@ class JobInstance
      * @param string $type
      * @param string $jobName
      */
-    public function __construct($connector = null, $type = null, $jobName = null)
+    public function __construct(string $connector = null, string $type = null, string $jobName = null)
     {
         $this->connector = $connector;
         $this->type = $type;
@@ -93,10 +93,8 @@ class JobInstance
 
     /**
      * Get id
-     *
-     * @return integer
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -105,10 +103,8 @@ class JobInstance
      * Set code
      *
      * @param string $code
-     *
-     * @return JobInstance
      */
-    public function setCode($code)
+    public function setCode(string $code): self
     {
         $this->code = $code;
 
@@ -117,10 +113,8 @@ class JobInstance
 
     /**
      * Get code
-     *
-     * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -129,10 +123,8 @@ class JobInstance
      * Set label
      *
      * @param string $label
-     *
-     * @return JobInstance
      */
-    public function setLabel($label)
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
@@ -141,40 +133,32 @@ class JobInstance
 
     /**
      * Get label
-     *
-     * @return string
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
     /**
      * Get connector
-     *
-     * @return string
      */
-    public function getConnector()
+    public function getConnector(): string
     {
         return $this->connector;
     }
 
     /**
      * Get job name
-     *
-     * @return string
      */
-    public function getJobName()
+    public function getJobName(): string
     {
         return $this->jobName;
     }
 
     /**
      * Get status
-     *
-     * @return integer
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -183,10 +167,8 @@ class JobInstance
      * Set status
      *
      * @param integer $status
-     *
-     * @return JobInstance
      */
-    public function setStatus($status)
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 
@@ -197,10 +179,8 @@ class JobInstance
      * Set type
      *
      * @param string $type
-     *
-     * @return JobInstance
      */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -209,10 +189,8 @@ class JobInstance
 
     /**
      * Get type
-     *
-     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
@@ -221,10 +199,8 @@ class JobInstance
      * This parameters can be used to create a JobParameters, stored like this in a legacy way
      *
      * @param array $rawParameters
-     *
-     * @return JobInstance
      */
-    public function setRawParameters($rawParameters)
+    public function setRawParameters(array $rawParameters): self
     {
         $this->rawParameters = $rawParameters;
 
@@ -233,10 +209,8 @@ class JobInstance
 
     /**
      * This parameters can be used to create a JobParameters, stored like this in a legacy way
-     *
-     * @return array
      */
-    public function getRawParameters()
+    public function getRawParameters(): array
     {
         return $this->rawParameters;
     }
@@ -251,10 +225,8 @@ class JobInstance
 
     /**
      * @param JobExecution $jobExecution
-     *
-     * @return JobInstance
      */
-    public function addJobExecution(JobExecution $jobExecution)
+    public function addJobExecution(JobExecution $jobExecution): self
     {
         $this->jobExecutions->add($jobExecution);
 
@@ -263,10 +235,8 @@ class JobInstance
 
     /**
      * @param JobExecution $jobExecution
-     *
-     * @return JobInstance
      */
-    public function removeJobExecution(JobExecution $jobExecution)
+    public function removeJobExecution(JobExecution $jobExecution): self
     {
         $this->jobExecutions->removeElement($jobExecution);
 
@@ -281,10 +251,8 @@ class JobInstance
      * @param string $jobName
      *
      * @throws \LogicException
-     *
-     * @return JobInstance
      */
-    public function setJobName($jobName)
+    public function setJobName(string $jobName): self
     {
         if ($this->jobName !== null) {
             throw new \LogicException('Job name already set in JobInstance');
@@ -302,10 +270,8 @@ class JobInstance
      * @param string $connector
      *
      * @throws \LogicException
-     *
-     * @return JobInstance
      */
-    public function setConnector($connector)
+    public function setConnector(string $connector): self
     {
         if ($this->connector !== null) {
             throw new \LogicException('Connector already set in JobInstance');

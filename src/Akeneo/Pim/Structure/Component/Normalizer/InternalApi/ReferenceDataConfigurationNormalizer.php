@@ -21,7 +21,7 @@ class ReferenceDataConfigurationNormalizer implements NormalizerInterface, Cache
     /**
      * {@inheritdoc}
      */
-    public function normalize($config, $format = null, array $context = [])
+    public function normalize($config, $format = null, array $context = []): array
     {
         return [
             'name'  => $config->getName(),
@@ -33,7 +33,7 @@ class ReferenceDataConfigurationNormalizer implements NormalizerInterface, Cache
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ReferenceDataConfiguration && in_array($format, $this->supportedFormats);
     }

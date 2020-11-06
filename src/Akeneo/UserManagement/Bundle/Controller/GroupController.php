@@ -137,7 +137,7 @@ class GroupController extends Controller
      * @param string $event
      * @param Group  $group
      */
-    private function dispatchGroupEvent($event, Group $group = null)
+    private function dispatchGroupEvent(string $event, Group $group = null): void
     {
         $this->eventDispatcher->dispatch($event, new GenericEvent($group));
     }

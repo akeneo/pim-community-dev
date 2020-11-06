@@ -33,18 +33,17 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
      *
      * @param EntityWithAssociationsInterface $associationAwareEntity
      */
-    public function normalize($associationAwareEntity, $format = null, array $context = [])
+    public function normalize($associationAwareEntity, $format = null, array $context = []): array
     {
         $ancestorProducts = $this->getAncestorProducts($associationAwareEntity);
-        $data = $this->normalizeAssociations($ancestorProducts);
 
-        return $data;
+        return $this->normalizeAssociations($ancestorProducts);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EntityWithAssociationsInterface && 'standard' === $format;
     }
@@ -72,10 +71,8 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
 
     /**
      * @param EntityWithAssociationsInterface[] $associationAwareEntities
-     *
-     * @return array
      */
-    private function normalizeAssociations(array $associationAwareEntities)
+    private function normalizeAssociations(array $associationAwareEntities): array
     {
         $data = [];
 

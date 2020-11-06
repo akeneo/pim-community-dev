@@ -16,7 +16,7 @@ abstract class AbstractValueDataNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         return [
             $this->getFieldName($object, $context) => $this->doNormalize($object, $format, $context),
@@ -30,10 +30,8 @@ abstract class AbstractValueDataNormalizer implements NormalizerInterface
      * @param array  $context Context options for the normalizer
      *
      * @throws \InvalidArgumentException when the context does not contain a "field_name" key
-     *
-     * @return string
      */
-    protected function getFieldName($object, array $context = [])
+    protected function getFieldName(object $object, array $context = []): string
     {
         if (!array_key_exists('field_name', $context)) {
             throw new \InvalidArgumentException(
@@ -56,5 +54,5 @@ abstract class AbstractValueDataNormalizer implements NormalizerInterface
      *
      * @return array|scalar
      */
-    abstract protected function doNormalize($object, $format = null, array $context = []);
+    abstract protected function doNormalize(object $object, string $format = null, array $context = []);
 }

@@ -70,9 +70,8 @@ class CountImpactedProducts
         $pmqb = $this->productAndProductModelQueryBuilderFactory->create(['filters' => $filters]);
         $pmqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
         $pmqb->addFilter('ancestor.id', Operators::IN_LIST, $productModelIds);
-        $count = $pmqb->execute()->count();
 
-        return $count;
+        return $pmqb->execute()->count();
     }
 
     /**
@@ -106,9 +105,7 @@ class CountImpactedProducts
         $pqb = $this->productAndProductModelQueryBuilderFactory->create(['filters' => $filters]);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
 
-        $count = $pqb->execute()->count();
-
-        return $count;
+        return $pqb->execute()->count();
     }
 
     /**
@@ -222,11 +219,7 @@ class CountImpactedProducts
     private function removeIdFilter(array $filers): array
     {
         return array_filter($filers, function ($condition) {
-            if ('id' === $condition['field']) {
-                return false;
-            }
-
-            return true;
+            return 'id' !== $condition['field'];
         });
     }
 

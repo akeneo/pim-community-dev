@@ -52,7 +52,7 @@ class MutableAclProvider extends BaseMutableAclProvider
      *
      * @param ObjectIdentityInterface $oid
      */
-    public function clearOidCache(ObjectIdentityInterface $oid)
+    public function clearOidCache(ObjectIdentityInterface $oid): void
     {
         $this->cache->evictFromCacheByIdentity($oid);
     }
@@ -62,7 +62,7 @@ class MutableAclProvider extends BaseMutableAclProvider
      *
      * @param ObjectIdentityInterface $oid
      */
-    public function cacheEmptyAcl(ObjectIdentityInterface $oid)
+    public function cacheEmptyAcl(ObjectIdentityInterface $oid): void
     {
         $this->cache->putInCache(new Acl(0, $oid, $this->permissionStrategy, [], true));
     }
@@ -70,7 +70,7 @@ class MutableAclProvider extends BaseMutableAclProvider
     /**
      * Initiates a transaction
      */
-    public function beginTransaction()
+    public function beginTransaction(): void
     {
         $this->connection->beginTransaction();
     }
@@ -78,7 +78,7 @@ class MutableAclProvider extends BaseMutableAclProvider
     /**
      * Commits a transaction
      */
-    public function commit()
+    public function commit(): void
     {
         $this->connection->commit();
     }
@@ -86,7 +86,7 @@ class MutableAclProvider extends BaseMutableAclProvider
     /**
      * Rolls back a transaction
      */
-    public function rollBack()
+    public function rollBack(): void
     {
         $this->connection->rollBack();
     }
@@ -99,7 +99,7 @@ class MutableAclProvider extends BaseMutableAclProvider
      *                        It is the user's username if $sid is UserSecurityIdentity
      *                        or the role name if $sid is RoleSecurityIdentity
      */
-    public function updateSecurityIdentity(SecurityIdentityInterface $sid, $oldName)
+    public function updateSecurityIdentity(SecurityIdentityInterface $sid, string $oldName): void
     {
         $this->connection->executeQuery($this->getUpdateSecurityIdentitySql($sid, $oldName));
     }
@@ -111,7 +111,7 @@ class MutableAclProvider extends BaseMutableAclProvider
      * @param SecurityIdentityInterface $sid
      * @throws \InvalidArgumentException
      */
-    public function deleteSecurityIdentity(SecurityIdentityInterface $sid)
+    public function deleteSecurityIdentity(SecurityIdentityInterface $sid): void
     {
         $this->connection->executeQuery($this->getDeleteSecurityIdentityIdSql($sid));
     }
@@ -119,7 +119,7 @@ class MutableAclProvider extends BaseMutableAclProvider
     /**
      * Clear ACLs internal cache
      */
-    public function clearCache()
+    public function clearCache(): void
     {
         $this->cache->clearCache();
     }
@@ -130,19 +130,18 @@ class MutableAclProvider extends BaseMutableAclProvider
      * @param SecurityIdentityInterface $sid
      * @param string $oldName
      * @throws \InvalidArgumentException
-     * @return string
      */
-    protected function getUpdateSecurityIdentitySql(SecurityIdentityInterface $sid, $oldName)
+    protected function getUpdateSecurityIdentitySql(SecurityIdentityInterface $sid, string $oldName): string
     {
         if ($sid instanceof UserSecurityIdentity) {
-            if ($sid->getUsername() == $oldName) {
+            if ($sid->getUsername() === $oldName) {
                 throw new \InvalidArgumentException('There are no changes.');
             }
             $oldIdentifier = $sid->getClass() . '-' . $oldName;
             $newIdentifier = $sid->getClass() . '-' . $sid->getUsername();
             $username = true;
         } elseif ($sid instanceof RoleSecurityIdentity) {
-            if ($sid->getRole() == $oldName) {
+            if ($sid->getRole() === $oldName) {
                 throw new \InvalidArgumentException('There are no changes.');
             }
             $oldIdentifier = $oldName;
@@ -168,13 +167,11 @@ class MutableAclProvider extends BaseMutableAclProvider
      *
      * @param SecurityIdentityInterface $sid
      * @throws \InvalidArgumentException
-     * @return string
      */
-    protected function getDeleteSecurityIdentityIdSql(SecurityIdentityInterface $sid)
+    protected function getDeleteSecurityIdentityIdSql(SecurityIdentityInterface $sid): ?string
     {
         $select = $this->getSelectSecurityIdentityIdSql($sid);
-        $delete = preg_replace('/^SELECT id FROM/', 'DELETE FROM', $select);
 
-        return $delete;
+        return preg_replace('/^SELECT id FROM/', 'DELETE FROM', $select);
     }
 }

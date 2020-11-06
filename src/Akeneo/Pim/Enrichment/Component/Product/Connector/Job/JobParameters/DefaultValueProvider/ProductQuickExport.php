@@ -33,7 +33,7 @@ class ProductQuickExport implements DefaultValuesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         $parameters = $this->simpleProvider->getDefaultValues();
         $parameters['filters'] = null;
@@ -52,7 +52,7 @@ class ProductQuickExport implements DefaultValuesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

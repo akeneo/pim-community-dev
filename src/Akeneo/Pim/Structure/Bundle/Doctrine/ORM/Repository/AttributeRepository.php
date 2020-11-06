@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
@@ -30,7 +31,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllInDefaultGroup()
+    public function findAllInDefaultGroup(): array
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -47,10 +48,8 @@ class AttributeRepository extends EntityRepository implements
      *
      * @param array $attributeIds
      * @param array $criterias
-     *
-     * @return QueryBuilder
      */
-    protected function findWithGroupsQB(array $attributeIds = [], array $criterias = [])
+    protected function findWithGroupsQB(array $attributeIds = [], array $criterias = []): QueryBuilder
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -75,7 +74,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findUniqueAttributeCodes()
+    public function findUniqueAttributeCodes(): array
     {
         $codes = $this
             ->createQueryBuilder('a')
@@ -86,9 +85,7 @@ class AttributeRepository extends EntityRepository implements
             ->getArrayResult();
 
         return array_map(
-            function ($data) {
-                return $data['code'];
-            },
+            fn($data) => $data['code'],
             $codes
         );
     }
@@ -96,7 +93,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findMediaAttributeCodes()
+    public function findMediaAttributeCodes(): array
     {
         $codes = $this
             ->createQueryBuilder('a')
@@ -112,9 +109,7 @@ class AttributeRepository extends EntityRepository implements
             ->getArrayResult();
 
         return array_map(
-            function ($data) {
-                return $data['code'];
-            },
+            fn($data) => $data['code'],
             $codes
         );
     }
@@ -122,7 +117,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllAxesQB()
+    public function findAllAxesQB(): QueryBuilder
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -141,7 +136,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAvailableAxes($locale)
+    public function findAvailableAxes(string $locale): array
     {
         return $this->getAxesQuery($locale)->getArrayResult();
     }
@@ -149,7 +144,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    protected function getAxesQuery($locale)
+    protected function getAxesQuery($locale): Query
     {
         return $this->findAllAxesQB()
             ->select('a.id')
@@ -165,7 +160,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier(string $code): ?object
     {
         return $this->findOneBy(['code' => $code]);
     }
@@ -173,7 +168,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -181,7 +176,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAttributesAsArray($withLabel = false, $locale = null, array $ids = [])
+    public function getAttributesAsArray(bool $withLabel = false, string $locale = null, array $ids = []): array
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('att')
@@ -221,7 +216,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAttributeIdsUseableInGrid($codes = null, $groupIds = null)
+    public function getAttributeIdsUseableInGrid(array $codes = null, array $groupIds = null): array
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('att.id')
@@ -252,7 +247,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): AttributeInterface
     {
         return $this->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
     }
@@ -260,7 +255,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierCode()
+    public function getIdentifierCode(): string
     {
         if (null === $this->identifierCode) {
             $code = $this->createQueryBuilder('a')
@@ -279,7 +274,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAttributeTypeByCodes(array $codes)
+    public function getAttributeTypeByCodes(array $codes): array
     {
         $results = $this->createQueryBuilder('a')
             ->select('a.code, a.type')
@@ -301,7 +296,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAttributeCodesByType($type)
+    public function getAttributeCodesByType(string $type): array
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -321,7 +316,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getAttributeCodesByGroup(AttributeGroupInterface $group)
+    public function getAttributeCodesByGroup(AttributeGroupInterface $group): array
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -341,7 +336,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAttributesByFamily(FamilyInterface $family)
+    public function findAttributesByFamily(FamilyInterface $family): array
     {
         $qb = $this->createQueryBuilder('a');
         $qb

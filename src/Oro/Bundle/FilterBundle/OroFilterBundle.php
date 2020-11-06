@@ -11,7 +11,7 @@ class OroFilterBundle extends Bundle
     /**
      * {@inheritDoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new FilterTypesPass());
     }

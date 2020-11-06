@@ -60,7 +60,7 @@ class MetricFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
-    public function init($name, array $params)
+    public function init(string $name, array $params): void
     {
         parent::init($name, $params);
 
@@ -70,7 +70,7 @@ class MetricFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
-    protected function getFormType()
+    protected function getFormType(): string
     {
         return MetricFilterType::class;
     }
@@ -78,7 +78,7 @@ class MetricFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data): bool
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -135,7 +135,7 @@ class MetricFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         $metadata = parent::getMetadata();
 
@@ -147,7 +147,7 @@ class MetricFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
-    public function getOperator($type)
+    public function getOperator(int $type): string
     {
         $operatorTypes = [
             NumberFilterType::TYPE_EQUAL         => Operators::EQUALS,

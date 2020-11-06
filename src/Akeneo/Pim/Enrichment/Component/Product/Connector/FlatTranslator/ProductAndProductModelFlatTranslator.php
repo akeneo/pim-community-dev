@@ -40,9 +40,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
             $flatItemsByColumnName = $this->translateHeaders($flatItemsByColumnName, $locale);
         }
 
-        $flatItems = $this->undoGroupFlatItemsByColumnName($flatItemsByColumnName);
-
-        return $flatItems;
+        return $this->undoGroupFlatItemsByColumnName($flatItemsByColumnName);
     }
 
     private function translateHeaders(array $flatItemsByColumnName, string $locale): array
@@ -100,9 +98,7 @@ class ProductAndProductModelFlatTranslator implements FlatTranslatorInterface
 
     private function areValuesEmpty(array $values): bool
     {
-        return 0 === count(array_filter($values, function ($value) {
-            return '' !== $value;
-        }));
+        return 0 === count(array_filter($values, fn($value) => '' !== $value));
     }
 
     /**

@@ -13,48 +13,36 @@ interface MetricInterface
 {
     /**
      * Gets the metric base unit (standard unit of the measure family).
-     *
-     * @return string
      */
-    public function getBaseUnit();
+    public function getBaseUnit(): string;
 
     /**
      * Gets the metric base data (amount converted according to the
      * standard unit of the measure family).
-     *
-     * @return float
      */
-    public function getBaseData();
+    public function getBaseData(): float;
 
     /**
      * Gets used unit.
-     *
-     * @return string
      */
-    public function getUnit();
+    public function getUnit(): string;
 
     /**
      * Gets the metric amount.
-     *
-     * @return float
      */
-    public function getData();
+    public function getData(): float;
 
     /**
      * Gets the measure family of the metric.
-     *
-     * @return string
      */
-    public function getFamily();
+    public function getFamily(): string;
 
     /**
      * Checks if the metric is equal to another one.
      *
      * @param MetricInterface $metric
-     *
-     * @return bool
      */
-    public function isEqual(MetricInterface $metric);
+    public function isEqual(MetricInterface $metric): bool;
 
     /**
      * @return string

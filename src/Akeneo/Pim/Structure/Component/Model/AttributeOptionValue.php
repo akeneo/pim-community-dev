@@ -36,7 +36,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -44,7 +44,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setId($id)
+    public function setId(int $id): AttributeOptionValueInterface
     {
         $this->id = $id;
 
@@ -54,7 +54,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setOption(AttributeOptionInterface $option)
+    public function setOption(AttributeOptionInterface $option): AttributeOptionValueInterface
     {
         $this->option = $option;
 
@@ -64,7 +64,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function getOption()
+    public function getOption(): \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
     {
         return $this->option;
     }
@@ -72,7 +72,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }
@@ -80,7 +80,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): AttributeOptionValueInterface
     {
         $this->locale = $locale;
 
@@ -90,7 +90,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setValue($value)
+    public function setValue(string $value): AttributeOptionValueInterface
     {
         $this->value = $value;
 
@@ -100,7 +100,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -108,7 +108,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->value;
     }
@@ -116,7 +116,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): AttributeOptionValueInterface
     {
         $this->value = (string) $label;
 

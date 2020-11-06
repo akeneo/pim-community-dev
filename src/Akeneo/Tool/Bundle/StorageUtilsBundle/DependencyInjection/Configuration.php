@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('akeneo_storage_utils');
@@ -30,9 +30,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('original')->isRequired()->cannotBeEmpty()
                                 ->validate()
                                 ->ifTrue(
-                                    function ($class) {
-                                        return false === class_exists($class);
-                                    }
+                                    fn($class) => !class_exists($class)
                                 )
                                 ->thenInvalid('Invalid original class "%s".')
                                 ->end()
@@ -40,9 +38,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('override')->isRequired()->cannotBeEmpty()
                                 ->validate()
                                 ->ifTrue(
-                                    function ($class) {
-                                        return false === class_exists($class);
-                                    }
+                                    fn($class) => !class_exists($class)
                                 )
                                 ->thenInvalid('Invalid overriden class "%s".')
                                 ->end()

@@ -16,17 +16,13 @@ interface PresenterInterface
      *
      * @param mixed $value   The original value
      * @param array $options The options for presentation
-     *
-     * @return string
      */
-    public function present($value, array $options = []);
+    public function present($value, array $options = []): string;
 
     /**
      * Returns wether the presenter supports an attribute type.
      *
      * @param string $attributeType
-     *
-     * @return bool
      */
-    public function supports($attributeType);
+    public function supports(string $attributeType): bool;
 }

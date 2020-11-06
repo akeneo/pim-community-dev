@@ -35,7 +35,7 @@ class IsReferenceDataConfiguredValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($attribute, Constraint $constraint)
+    public function validate($attribute, Constraint $constraint): void
     {
         if (!$constraint instanceof IsReferenceDataConfigured) {
             throw new UnexpectedTypeException($constraint, IsReferenceDataConfigured::class);

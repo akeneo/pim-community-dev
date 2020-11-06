@@ -17,10 +17,7 @@ interface ReferenceDataCollectionValueInterface extends ValueInterface
     /**
      * @return ReferenceDataInterface[]
      */
-    public function getData();
+    public function getData(): array;
 
-    /**
-     * @return array
-     */
-    public function getReferenceDataCodes();
+    public function getReferenceDataCodes(): array;
 }

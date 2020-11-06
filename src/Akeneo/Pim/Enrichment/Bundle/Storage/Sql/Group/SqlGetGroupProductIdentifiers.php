@@ -16,7 +16,7 @@ class SqlGetGroupProductIdentifiers implements GetGroupProductIdentifiers
     /** @var Connection */
     private $dbConnection;
 
-    public function __construct(Connection $dbConnection)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
     }

@@ -38,7 +38,7 @@ final class UpdateIndexMapping
         ;
     }
 
-    private function createIndexReadyForNewConfiguration(IndicesNamespace $indicesClient, string $newIndexName, Loader $indexConfiguration): UpdateIndexMapping
+    private function createIndexReadyForNewConfiguration(IndicesNamespace $indicesClient, string $newIndexName, Loader $indexConfiguration): self
     {
         $body = $indexConfiguration->load()->buildAggregated();
 
@@ -51,7 +51,7 @@ final class UpdateIndexMapping
         return $this;
     }
 
-    private function moveData(Client $client, string $oldIndexNameOrAlias, string $newIndexName): UpdateIndexMapping
+    private function moveData(Client $client, string $oldIndexNameOrAlias, string $newIndexName): self
     {
         $client->reindex([
             "wait_for_completion" => true,
@@ -68,7 +68,7 @@ final class UpdateIndexMapping
         return $this;
     }
 
-    private function resetIndexSettings(IndicesNamespace $indicesClient, string $indexName, string $oldIndexNameOrAlias): UpdateIndexMapping
+    private function resetIndexSettings(IndicesNamespace $indicesClient, string $indexName, string $oldIndexNameOrAlias): self
     {
         $oldIndexSettings = $indicesClient->getSettings(['index' => $oldIndexNameOrAlias]);
         $oldIndexSettings = array_shift($oldIndexSettings)['settings'];
@@ -86,7 +86,7 @@ final class UpdateIndexMapping
         return $this;
     }
 
-    private function moveAliasAndRemoveOldIndex(IndicesNamespace $indicesClient, string $newIndexName, string $oldIndexNameOrAlias): UpdateIndexMapping
+    private function moveAliasAndRemoveOldIndex(IndicesNamespace $indicesClient, string $newIndexName, string $oldIndexNameOrAlias): self
     {
         $aliasAlreadyExists = $indicesClient->existsAlias(['name' => $oldIndexNameOrAlias]);
 

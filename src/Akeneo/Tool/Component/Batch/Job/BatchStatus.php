@@ -21,7 +21,7 @@ class BatchStatus
      * Constructor
      * @param integer $status
      */
-    public function __construct($status = self::UNKNOWN)
+    public function __construct(int $status = self::UNKNOWN)
     {
         $this->value = $status;
     }
@@ -60,10 +60,8 @@ class BatchStatus
     /**
      * Get all labels associative array
      * @static
-     *
-     * @return array
      */
-    public static function getAllLabels()
+    public static function getAllLabels(): array
     {
         return array_flip(self::$statusLabels);
     }
@@ -75,7 +73,7 @@ class BatchStatus
      *
      * @return $this
      */
-    public function setValue($value)
+    public function setValue($value): self
     {
         $this->value = $value;
 
@@ -87,7 +85,7 @@ class BatchStatus
      *
      * @return $value
      */
-    public function getValue()
+    public function getValue(): int
     {
         return $this->value;
     }
@@ -97,7 +95,7 @@ class BatchStatus
      *
      * @return boolean true if the status is STARTING
      */
-    public function isStarting()
+    public function isStarting(): bool
     {
         return $this->value == self::STARTING;
     }
@@ -107,7 +105,7 @@ class BatchStatus
      *
      * @return boolean true if the status is STARTING, STARTED
      */
-    public function isRunning()
+    public function isRunning(): bool
     {
         return $this->value == self::STARTING || $this->value == self::STARTED;
     }
@@ -118,7 +116,7 @@ class BatchStatus
      *
      * @return boolean true if the status is FAILED or greater
      */
-    public function isUnsuccessful()
+    public function isUnsuccessful(): bool
     {
         return ($this->value == self::FAILED || $this->value > self::FAILED);
     }
@@ -128,10 +126,8 @@ class BatchStatus
      *
      * @param integer $value1
      * @param integer $value2
-     *
-     * @return integer
      */
-    public static function max($value1, $value2)
+    public static function max(int $value1, int $value2): int
     {
         return max($value1, $value2);
     }
@@ -148,19 +144,16 @@ class BatchStatus
      *
      * @return BatchStatus with either this or the other status depending on their priority
      */
-    public function upgradeTo($otherStatus)
+    public function upgradeTo(int $otherStatus): self
     {
         $newStatus = $this->value;
 
         if ($this->value > self::STARTED || $otherStatus > self::STARTED) {
             $newStatus = max($this->value, $otherStatus);
+        } elseif ($this->value == self::COMPLETED || $otherStatus == self::COMPLETED) {
+            $newStatus = self::COMPLETED;
         } else {
-            // Both less than or equal to STARTED
-            if ($this->value == self::COMPLETED || $otherStatus == self::COMPLETED) {
-                $newStatus = self::COMPLETED;
-            } else {
-                $newStatus = max($this->value, $otherStatus);
-            }
+            $newStatus = max($this->value, $otherStatus);
         }
         $this->value = $newStatus;
 

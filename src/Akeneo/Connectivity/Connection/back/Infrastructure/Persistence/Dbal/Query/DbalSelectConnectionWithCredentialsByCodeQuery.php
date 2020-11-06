@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
+use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\SelectConnectionWithCredentialsByCodeQuery;
 use Akeneo\UserManagement\Component\Model\User;
@@ -24,7 +25,7 @@ final class DbalSelectConnectionWithCredentialsByCodeQuery implements SelectConn
     /** @var DbalConnection */
     private $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
@@ -68,9 +69,7 @@ SQL;
 
         // If there is more than one line, remove the one with the default user group (null).
         if (count($data) > 1) {
-            $data = array_filter($data, function (array $row) {
-                return null !== $row['group_id'];
-            });
+            $data = array_filter($data, fn(array $row) => null !== $row['group_id']);
         }
         $row = array_pop($data);
 

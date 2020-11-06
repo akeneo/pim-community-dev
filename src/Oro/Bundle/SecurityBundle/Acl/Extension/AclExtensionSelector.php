@@ -44,7 +44,7 @@ class AclExtensionSelector
      *
      * @param AclExtensionInterface $extension
      */
-    public function addAclExtension(AclExtensionInterface $extension)
+    public function addAclExtension(AclExtensionInterface $extension): void
     {
         $this->extensions[] = $extension;
     }
@@ -108,7 +108,7 @@ class AclExtensionSelector
      *
      * @return AclExtensionInterface[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->extensions;
     }
@@ -119,9 +119,8 @@ class AclExtensionSelector
      * @param mixed $val
      * @param string $type
      * @param int|string $id
-     * @return InvalidDomainObjectException
      */
-    protected function createAclExtensionNotFoundException($val, $type, $id)
+    protected function createAclExtensionNotFoundException($val, string $type, $id): \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
     {
         $objInfo = is_object($val) && !($val instanceof ObjectIdentityInterface)
             ? get_class($val)

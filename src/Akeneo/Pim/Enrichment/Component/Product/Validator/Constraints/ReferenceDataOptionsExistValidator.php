@@ -34,7 +34,7 @@ class ReferenceDataOptionsExistValidator extends ConstraintValidator
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function validate($values, Constraint $constraint)
+    public function validate($values, Constraint $constraint): void
     {
         if (!$constraint instanceof ReferenceDataOptionsExist) {
             throw new UnexpectedTypeException($constraint, ReferenceDataOptionsExist::class);
@@ -45,9 +45,7 @@ class ReferenceDataOptionsExistValidator extends ConstraintValidator
         }
 
         $refDataValues = $values->filter(
-            function (ValueInterface $value): bool {
-                return $value instanceof ReferenceDataCollectionValueInterface || $value instanceof ReferenceDataValueInterface;
-            }
+            fn(ValueInterface $value): bool => $value instanceof ReferenceDataCollectionValueInterface || $value instanceof ReferenceDataValueInterface
         );
 
         if ($refDataValues->isEmpty()) {
@@ -107,9 +105,7 @@ class ReferenceDataOptionsExistValidator extends ConstraintValidator
                 ->fromReferenceDataNameAndCodes($refDataName, array_values(array_unique(array_merge_recursive(...$refDataCodes))));
         }
 
-        return array_map(function (string $referenceDataName) use ($existingReferenceDataCodes): array {
-            return $existingReferenceDataCodes[$referenceDataName];
-        }, $referenceDataNames);
+        return array_map(fn(string $referenceDataName): array => $existingReferenceDataCodes[$referenceDataName], $referenceDataNames);
     }
 
     private function getReferenceDataNamesIndexedByAttributeCode(array $attributeCodes): array

@@ -43,7 +43,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         array $options = []
-    ) {
+    ): void {
         $options = $this->resolver->resolve($options);
         $fromLocale = $options['from_locale'];
         $toLocale = $options['to_locale'];
@@ -68,7 +68,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     /**
      * {@inheritdoc}
      */
-    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
+    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute): bool
     {
         $supportsFrom = in_array($fromAttribute->getType(), $this->supportedFromTypes);
         $supportsTo = in_array($toAttribute->getType(), $this->supportedToTypes);
@@ -93,11 +93,11 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
         EntityWithValuesInterface $toEntityWithValues,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        $fromLocale,
-        $toLocale,
-        $fromScope,
-        $toScope
-    ) {
+        ?string $fromLocale,
+        ?string $toLocale,
+        ?string $fromScope,
+        ?string $toScope
+    ): void {
         $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         $value = (null !== $fromValue && null !== $fromValue->getData()) ? $fromValue->getData() : null;
         $this->entityWithValuesBuilder->addOrReplaceValue(

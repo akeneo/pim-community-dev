@@ -33,7 +33,7 @@ final class LoadEntityWithValuesSubscriber implements EventSubscriber
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::postLoad
@@ -48,7 +48,7 @@ final class LoadEntityWithValuesSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $event
      */
-    public function postLoad(LifecycleEventArgs $event)
+    public function postLoad(LifecycleEventArgs $event): void
     {
         $entity = $event->getObject();
         if (!$entity instanceof EntityWithValuesInterface) {

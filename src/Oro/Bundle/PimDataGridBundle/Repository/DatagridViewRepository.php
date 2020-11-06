@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
@@ -18,7 +19,7 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
     /**
      * {@inheritdoc}
      */
-    public function getDatagridViewTypeByUser(UserInterface $user)
+    public function getDatagridViewTypeByUser(UserInterface $user): ArrayCollection
     {
         return $this->createQueryBuilder('v')
             ->select('v.datagridAlias')
@@ -30,23 +31,21 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
     /**
      * {@inheritdoc}
      */
-    public function findDatagridViewByAlias($alias)
+    public function findDatagridViewByAlias(string $alias): ArrayCollection
     {
-        $queryBuilder = $this->createQueryBuilder('v')
+        return $this->createQueryBuilder('v')
             ->andWhere('v.type = :type')
             ->andWhere('v.datagridAlias = :alias')
             ->setParameters([
                 'type'  => DatagridView::TYPE_PUBLIC,
                 'alias' => $alias
             ]);
-
-        return $queryBuilder;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findDatagridViewBySearch(UserInterface $user, $alias, $term = '', array $options = [])
+    public function findDatagridViewBySearch(UserInterface $user, string $alias, string $term = '', array $options = []): ArrayCollection
     {
         $options += ['limit' => 20, 'page' => 1];
         $offset = (int) $options['limit'] * ((int) $options['page'] - 1);

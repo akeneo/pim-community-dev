@@ -18,9 +18,8 @@ class Translator extends BaseTranslator
      *
      * @param array $domains list of required domains, by default empty, means all domains
      * @param string|null $locale  locale of translations, by default is current locale
-     * @return array
      */
-    public function getTranslations(array $domains = [], $locale = null)
+    public function getTranslations(array $domains = [], ?string $locale = null): array
     {
         if (null === $locale) {
             $locale = $this->getLocale();
@@ -41,7 +40,7 @@ class Translator extends BaseTranslator
         for ($i = count($fallbackCatalogues) - 1; $i >= 0; $i--) {
             $localeTranslations = $fallbackCatalogues[$i]->all();
             // if there are domains -> filter only their translations
-            if ($domains) {
+            if ($domains !== []) {
                 $localeTranslations = array_intersect_key($localeTranslations, $domains);
             }
             foreach ($localeTranslations as $domain => $domainTranslations) {

@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,7 +32,7 @@ class UserRoleController
      * @param UserContext         $userContext
      */
     public function __construct(
-        RoleRepository $roleRepository,
+        RoleRepositoryInterface $roleRepository,
         NormalizerInterface $normalizer,
         UserContext $userContext
     ) {
@@ -40,10 +41,7 @@ class UserRoleController
         $this->userContext = $userContext;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $queryBuildder = $this->roleRepository->getAllButAnonymousQB();
         $roles = $queryBuildder->getQuery()->execute();

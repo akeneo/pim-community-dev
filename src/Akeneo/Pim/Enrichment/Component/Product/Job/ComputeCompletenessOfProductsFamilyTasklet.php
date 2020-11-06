@@ -82,12 +82,11 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     /**
      * Get the family instance from the job parameters or null.
      *
-     * @return FamilyInterface
      *
      * @throws UndefinedJobParameterException
      * @throws \InvalidArgumentException
      */
-    private function getFamilyFromJobParameters(): ?FamilyInterface
+    private function getFamilyFromJobParameters(): \Akeneo\Pim\Structure\Component\Model\FamilyInterface
     {
         $familyCode = $this->stepExecution->getJobParameters()->get('family_code');
         $family = $this->familyRepository->findOneByIdentifier($familyCode);

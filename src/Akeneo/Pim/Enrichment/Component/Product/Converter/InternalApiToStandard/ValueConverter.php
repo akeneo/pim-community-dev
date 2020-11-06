@@ -47,7 +47,7 @@ class ValueConverter implements ConverterInterface
      *     }
      * }
      */
-    public function convert(array $productValues)
+    public function convert(array $productValues): array
     {
         $mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
 

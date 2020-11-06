@@ -13,120 +13,77 @@ use Doctrine\Common\Collections\Collection;
  */
 interface CategoryInterface
 {
-    /**
-     * @return int
-     */
-    public function getId();
+    public function getId(): int;
 
     /**
      * @param string $code
-     *
-     * @return CategoryInterface
      */
-    public function setCode($code);
+    public function setCode(string $code): \Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
-    /**
-     * @return string
-     */
-    public function getCode();
+    public function getCode(): string;
 
     /**
      * @param int $left
-     *
-     * @return CategoryInterface
      */
-    public function setLeft($left);
+    public function setLeft(int $left): \Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
-    /**
-     * @return int
-     */
-    public function getLeft();
+    public function getLeft(): int;
 
     /**
      * @param int $level
-     *
-     * @return CategoryInterface
      */
-    public function setLevel($level);
+    public function setLevel(int $level): \Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
-    /**
-     * @return int
-     */
-    public function getLevel();
+    public function getLevel(): int;
 
     /**
      * @param int $right
-     *
-     * @return CategoryInterface
      */
-    public function setRight($right);
+    public function setRight(int $right): \Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
-    /**
-     * @return int
-     */
-    public function getRight();
+    public function getRight(): int;
 
     /**
      * @param int $root
-     *
-     * @return CategoryInterface
      */
-    public function setRoot($root);
+    public function setRoot(int $root): \Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
-    /**
-     * @return int
-     */
-    public function getRoot();
+    public function getRoot(): int;
 
     /**
      * @param CategoryInterface $parent
-     *
-     * @return CategoryInterface
      */
-    public function setParent(CategoryInterface $parent = null);
+    public function setParent(CategoryInterface $parent = null): \Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
-    /**
-     * @return CategoryInterface|null
-     */
-    public function getParent();
+    public function getParent(): ?\Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
     /**
      * If a node is a tree root, it's the tree starting point and therefore
      * defines the tree itself.
-     *
-     * @return bool
      */
-    public function isRoot();
+    public function isRoot(): bool;
 
     /**
      * Add a child to this category
      *
      * @param CategoryInterface $child
-     *
-     * @return CategoryInterface
      */
-    public function addChild(CategoryInterface $child);
+    public function addChild(CategoryInterface $child): \Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
     /**
      * Remove a child from this category
      *
      * @param CategoryInterface $child
-     *
-     * @return CategoryInterface
      */
-    public function removeChild(CategoryInterface $child);
+    public function removeChild(CategoryInterface $child): \Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
     /**
      * Predicate to know if this category has children
-     *
-     * @return bool
      */
-    public function hasChildren();
+    public function hasChildren(): bool;
 
     /**
      * Get children of this category
-     *
-     * @return Collection
      */
-    public function getChildren();
+    public function getChildren(): Collection;
 }

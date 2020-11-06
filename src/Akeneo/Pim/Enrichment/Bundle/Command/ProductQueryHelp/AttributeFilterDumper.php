@@ -37,7 +37,7 @@ class AttributeFilterDumper implements DumperInterface
     /**
      * {@inheritdoc}
      */
-    public function dump(OutputInterface $output)
+    public function dump(OutputInterface $output): void
     {
         $output->writeln("<info>Useable attributes filters...</info>");
         $attributeFilters = $this->getAttributeFilters();
@@ -56,10 +56,8 @@ class AttributeFilterDumper implements DumperInterface
 
     /**
      * Returns all registered filters indexed by their supported attributes
-     *
-     * @return array
      */
-    protected function getAttributeFilters()
+    protected function getAttributeFilters(): array
     {
         $attributeFilters = [];
         foreach ($this->registry->getAttributeFilters() as $filter) {
@@ -80,10 +78,8 @@ class AttributeFilterDumper implements DumperInterface
      *
      * @param AttributeInterface $attribute
      * @param array              $attributeFilters
-     *
-     * @return array
      */
-    protected function getFilterInformationForAttribute(AttributeInterface $attribute, array $attributeFilters)
+    protected function getFilterInformationForAttribute(AttributeInterface $attribute, array $attributeFilters): array
     {
         $field = $attribute->getCode();
         $attributeType = $attribute->getType();

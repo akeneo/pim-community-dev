@@ -102,7 +102,7 @@ class Reader implements FileReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -110,17 +110,15 @@ class Reader implements FileReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
         $this->fileIterator = null;
     }
 
     /**
      * Returns the options for array converter. It can be overridden in the sub classes.
-     *
-     * @return array
      */
-    protected function getArrayConverterOptions()
+    protected function getArrayConverterOptions(): array
     {
         return [];
     }
@@ -132,7 +130,7 @@ class Reader implements FileReaderInterface
      * @throws InvalidItemException
      * @throws InvalidItemFromViolationsException
      */
-    protected function skipItemFromConversionException(array $item, DataArrayConversionException $exception)
+    protected function skipItemFromConversionException(array $item, DataArrayConversionException $exception): void
     {
         if (null !== $this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
@@ -165,7 +163,7 @@ class Reader implements FileReaderInterface
      *
      * @throws InvalidItemException
      */
-    protected function checkColumnNumber($countHeaders, $countData, $data, $filePath)
+    protected function checkColumnNumber(int $countHeaders, int $countData, string $data, string $filePath): void
     {
         if ($countHeaders < $countData) {
             throw new InvalidItemException(

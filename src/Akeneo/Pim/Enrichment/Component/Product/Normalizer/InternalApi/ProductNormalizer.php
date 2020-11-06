@@ -148,7 +148,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      *
      * @param ProductInterface $product
      */
-    public function normalize($product, $format = null, array $context = [])
+    public function normalize($product, $format = null, array $context = []): array
     {
         $this->missingAssociationAdder->addMissingAssociations($product);
         $normalizedProduct = $this->normalizer->normalize($product, 'standard', $context);
@@ -205,7 +205,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && in_array($format, $this->supportedFormat);
     }
@@ -218,10 +218,8 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     /**
      * @param ProductInterface $product
      * @param string|null      $scopeCode
-     *
-     * @return array
      */
-    protected function getLabels(ProductInterface $product, string $scopeCode = null)
+    protected function getLabels(ProductInterface $product, string $scopeCode = null): array
     {
         $labels = [];
 
@@ -234,10 +232,8 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
     /**
      * @param ProductInterface $product
-     *
-     * @return array
      */
-    protected function getAssociationMeta(ProductInterface $product)
+    protected function getAssociationMeta(ProductInterface $product): array
     {
         $meta = [];
         $associations = $product->getAssociations();
@@ -245,9 +241,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         foreach ($associations as $association) {
             $associationType = $association->getAssociationType();
             $meta[$associationType->getCode()]['groupIds'] = array_map(
-                function ($group) {
-                    return $group->getId();
-                },
+                fn($group) => $group->getId(),
                 $association->getGroups()->toArray()
             );
         }
@@ -299,7 +293,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     protected function getMetaForVariantProduct(
         ProductInterface $product,
         string $format,
-        $context = []
+        array $context = []
     ): array {
         $meta = [
             'variant_navigation'        => [],

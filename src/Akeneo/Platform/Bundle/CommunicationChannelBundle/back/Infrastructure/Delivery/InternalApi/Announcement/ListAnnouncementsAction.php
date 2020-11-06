@@ -60,8 +60,6 @@ class ListAnnouncementsAction
 
     private function normalizeAnnouncementItems(array $announcementItems): array
     {
-        return array_map(function (AnnouncementItem $item) {
-            return $item->toArray();
-        }, $announcementItems);
+        return array_map(fn(AnnouncementItem $item) => $item->toArray(), $announcementItems);
     }
 }

@@ -32,7 +32,7 @@ class CharsetValidator implements StepExecutionAwareInterface
      * @param string $charset
      * @param int    $maxErrors
      */
-    public function __construct(array $whiteListExtension = ['xls', 'xlsx', 'zip'], $charset = 'UTF-8', $maxErrors = 10)
+    public function __construct(array $whiteListExtension = ['xls', 'xlsx', 'zip'], string $charset = 'UTF-8', int $maxErrors = 10)
     {
         $this->charset = $charset;
         $this->maxErrors = $maxErrors;
@@ -45,7 +45,7 @@ class CharsetValidator implements StepExecutionAwareInterface
      * @throws CharsetException
      * @throws \Exception
      */
-    public function validate()
+    public function validate(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
@@ -66,7 +66,7 @@ class CharsetValidator implements StepExecutionAwareInterface
      * @throws CharsetException
      * @throws \Exception
      */
-    protected function validateEncoding()
+    protected function validateEncoding(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
@@ -105,7 +105,7 @@ class CharsetValidator implements StepExecutionAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }

@@ -21,7 +21,7 @@ final class DeleteOrphanJobExecutionDirectories
     /** @var Connection */
     private $connection;
 
-    public function __construct(Filesystem $archivistFilesystem, Connection $connection)
+    public function __construct(Filesystem $archivistFilesystem, \Doctrine\DBAL\Driver\Connection $connection)
     {
         $this->archivistFilesystem = $archivistFilesystem;
         $this->connection = $connection;
@@ -54,9 +54,7 @@ final class DeleteOrphanJobExecutionDirectories
     private function getPathsAtLevel3ByBatch(): \Iterator
     {
         $paths = [];
-        $directoryFilterFunction = function (array $content) {
-            return $content['type'] === 'dir';
-        };
+        $directoryFilterFunction = fn(array $content) => $content['type'] === 'dir';
 
         $firstLevelContents = array_filter(
             $this->archivistFilesystem->listContents('.', false),
@@ -106,13 +104,11 @@ final class DeleteOrphanJobExecutionDirectories
     {
         $sql = 'SELECT id FROM akeneo_batch_job_execution WHERE id IN (:job_execution_ids)';
 
-        $existingJobExecutionIds = $this->connection->executeQuery(
+        return $this->connection->executeQuery(
             $sql,
             ['job_execution_ids' => $jobExecutionIds],
             ['job_execution_ids' => Connection::PARAM_STR_ARRAY]
         )->fetchAll(\PDO::FETCH_COLUMN);
-
-        return $existingJobExecutionIds;
     }
 
     private function deleteOrphanJobExecutionDirectories(array $paths, array $existingJobExecutionIds): void

@@ -11,24 +11,18 @@ interface RoleInterface
 {
     /**
      * Return the role id
-     *
-     * @return int
      */
-    public function getId(): ?int;
+    public function getId(): int;
 
     /**
      * Return the role name field
-     *
-     * @return string
      */
-    public function getRole(): ?string;
+    public function getRole(): string;
 
     /**
      * Return the role label field
-     *
-     * @return string
      */
-    public function getLabel(): ?string;
+    public function getLabel(): string;
 
     /**
      * Set role name only for newly created role
@@ -37,12 +31,12 @@ interface RoleInterface
      *
      * @throws \RuntimeException
      */
-    public function setRole($role): void;
+    public function setRole(string $role): void;
 
     /**
      * Set the new label for role
      *
      * @param  string $label New label
      */
-    public function setLabel($label): void;
+    public function setLabel(string $label): void;
 }

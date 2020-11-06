@@ -35,7 +35,7 @@ class CategoryFieldRemover extends AbstractFieldRemover
      *
      * Expected data input format : ["category_code", "another_category_code"]
      */
-    public function removeFieldData($product, $field, $data, array $options = [])
+    public function removeFieldData($product, string $field, $data, array $options = []): void
     {
         $this->checkData($field, $data);
 
@@ -68,7 +68,7 @@ class CategoryFieldRemover extends AbstractFieldRemover
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(

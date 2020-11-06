@@ -18,5 +18,5 @@ interface SorterInterface
      *
      * @param SearchQueryBuilder $queryBuilder
      */
-    public function setQueryBuilder($queryBuilder);
+    public function setQueryBuilder(\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder $queryBuilder);
 }

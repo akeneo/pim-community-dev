@@ -6,47 +6,35 @@ interface PagerInterface
 {
     /**
      * Initialize the pager.
-     *
-     * @return void
      */
-    public function init();
+    public function init(): void;
 
     /**
      * Set max records per page
      *
      * @param  int $maxPerPage
-     *
-     * @return void
      */
-    public function setMaxPerPage($maxPerPage);
+    public function setMaxPerPage(int $maxPerPage): void;
 
     /**
      * Get max records per page
-     *
-     * @return int
      */
-    public function getMaxPerPage();
+    public function getMaxPerPage(): int;
 
     /**
      * Set current page
      *
      * @param  int $page
-     *
-     * @return void
      */
-    public function setPage($page);
+    public function setPage(int $page): void;
 
     /**
      * Get current page
-     *
-     * @return int
      */
-    public function getPage();
+    public function getPage(): int;
 
     /**
      * Returns the number of results.
-     *
-     * @return integer
      */
-    public function getNbResults();
+    public function getNbResults(): int;
 }

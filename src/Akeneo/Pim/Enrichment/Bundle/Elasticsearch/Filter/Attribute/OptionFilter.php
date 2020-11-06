@@ -40,12 +40,12 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     public function addAttributeFilter(
         AttributeInterface $attribute,
-        $operator,
+        string $operator,
         $values,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
+        string $locale = null,
+        string $channel = null,
+        array $options = []
+    ): AttributeFilterInterface {
         if (null === $this->searchQueryBuilder) {
             throw new \LogicException('The search query builder is not initialized in the filter.');
         }
@@ -131,7 +131,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
      *
      * @throws ObjectNotFoundException
      */
-    protected function checkValue(AttributeInterface $attribute, $values)
+    protected function checkValue(AttributeInterface $attribute, $values): void
     {
         FieldFilterHelper::checkArray($attribute->getCode(), $values, static::class);
 
@@ -141,9 +141,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         $attributeOptions = $this->attributeOptionRepository->findCodesByIdentifiers($attribute->getCode(), $values);
         $optionCodes = array_map(
-            function ($attributeOptions) {
-                return $attributeOptions['code'];
-            },
+            fn($attributeOptions) => $attributeOptions['code'],
             $attributeOptions
         );
 

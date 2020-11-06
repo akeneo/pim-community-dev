@@ -54,7 +54,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
      * {@inheritdoc}
      * @param GroupInterface $group
      */
-    public function normalize($group, $format = null, array $context = [])
+    public function normalize($group, $format = null, array $context = []): array
     {
         $normalizedGroup = $this->groupNormalizer->normalize($group, 'standard', $context);
 
@@ -85,7 +85,7 @@ class GroupNormalizer implements NormalizerInterface, CacheableSupportsMethodInt
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof GroupInterface && in_array($format, $this->supportedFormats);
     }

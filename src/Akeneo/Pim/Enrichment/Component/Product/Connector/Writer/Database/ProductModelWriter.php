@@ -42,7 +42,7 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(array $items): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $realTimeVersioning = $jobParameters->get('realTimeVersioning');
@@ -58,7 +58,7 @@ class ProductModelWriter implements ItemWriterInterface, StepExecutionAwareInter
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }

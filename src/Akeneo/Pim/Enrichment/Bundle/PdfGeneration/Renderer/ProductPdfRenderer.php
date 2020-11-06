@@ -83,7 +83,7 @@ class ProductPdfRenderer implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function render($object, $format, array $context = [])
+    public function render($object, string $format, array $context = []): string
     {
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -113,7 +113,7 @@ class ProductPdfRenderer implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($object, $format)
+    public function supports($object, string $format): bool
     {
         return $object instanceof ProductInterface && $format === static::PDF_FORMAT;
     }
@@ -135,7 +135,7 @@ class ProductPdfRenderer implements RendererInterface
         $groups = [];
 
         $attributeCodes = $product->getUsedAttributeCodes();
-        if ($product->getFamily()) {
+        if ($product->getFamily() !== null) {
             $attributeCodes = array_unique(array_merge($attributeCodes, $product->getFamily()->getAttributeCodes()));
         }
 
@@ -163,7 +163,7 @@ class ProductPdfRenderer implements RendererInterface
      *
      * @return string[]
      */
-    protected function getImagePaths(ProductInterface $product, $locale, $scope): array
+    protected function getImagePaths(ProductInterface $product, string $locale, string $scope): array
     {
         $imagePaths = [];
 
@@ -245,7 +245,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param string[] $imagePaths
      * @param string   $filter
      */
-    protected function generateThumbnailsCache(array $imagePaths, $filter)
+    protected function generateThumbnailsCache(array $imagePaths, string $filter): void
     {
         foreach ($imagePaths as $path) {
             if (!$this->cacheManager->isStored($path, $filter)) {
@@ -264,7 +264,7 @@ class ProductPdfRenderer implements RendererInterface
      *
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setRequired(['locale', 'scope', 'product'])

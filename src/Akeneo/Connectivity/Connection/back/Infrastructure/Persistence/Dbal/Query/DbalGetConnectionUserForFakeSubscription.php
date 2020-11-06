@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
+use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\DBALException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Doctrine\DBAL\Connection as DbalConnection;
 
@@ -10,13 +12,13 @@ class DbalGetConnectionUserForFakeSubscription implements GetConnectionUserForFa
 {
     private DbalConnection $dbalConnection;
 
-    public function __construct(DbalConnection $dbalConnection)
+    public function __construct(Connection $dbalConnection)
     {
         $this->dbalConnection = $dbalConnection;
     }
 
     /**
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function execute(): ?int
     {

@@ -135,7 +135,7 @@ final class PriceCollectionValueFactory implements ValueFactory
 
         $sort = array_multisort($currencies, SORT_ASC, $amounts, SORT_ASC, $arrayPrices);
 
-        if (false === $sort) {
+        if (!$sort) {
             throw new \LogicException(
                 sprintf('Impossible to perform multisort on the following array: %s', json_encode($arrayPrices)),
                 0,

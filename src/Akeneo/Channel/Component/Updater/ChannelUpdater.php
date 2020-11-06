@@ -73,7 +73,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *     'category_tree' => 'master'
      * ]
      */
-    public function update($channel, array $data, array $options = [])
+    public function update(object $channel, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$channel instanceof ChannelInterface) {
             throw InvalidObjectException::objectExpected(
@@ -99,7 +99,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDataType($field, $data)
+    protected function validateDataType(string $field, $data): void
     {
         if (in_array($field, ['labels', 'locales', 'currencies', 'conversion_units'])) {
             if (!is_array($data)) {
@@ -132,7 +132,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setData(ChannelInterface $channel, $field, $data)
+    protected function setData(ChannelInterface $channel, string $field, $data): void
     {
         switch ($field) {
             case 'code':
@@ -162,7 +162,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setCategoryTree(ChannelInterface $channel, $treeCode)
+    protected function setCategoryTree(ChannelInterface $channel, string $treeCode): void
     {
         $category = $this->categoryRepository->findOneByIdentifier($treeCode);
         if (null === $category) {
@@ -183,7 +183,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setCurrencies(ChannelInterface $channel, array $currencyCodes)
+    protected function setCurrencies(ChannelInterface $channel, array $currencyCodes): void
     {
         $currencies = [];
         foreach ($currencyCodes as $currencyCode) {
@@ -210,7 +210,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setLocales(ChannelInterface $channel, array $localeCodes)
+    protected function setLocales(ChannelInterface $channel, array $localeCodes): void
     {
         $locales = [];
         foreach ($localeCodes as $localeCode) {

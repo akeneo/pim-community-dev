@@ -21,8 +21,6 @@ interface AttributeOptionRepositoryInterface extends
      *
      * @param string $code
      * @param array  $optionCodes
-     *
-     * @return array
      */
-    public function findCodesByIdentifiers($code, array $optionCodes);
+    public function findCodesByIdentifiers(string $code, array $optionCodes): array;
 }

@@ -6,10 +6,8 @@ class FieldNodeDefinition extends AbstractNodeDefinition
 {
     /**
      * Return field type
-     *
-     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->definition['type'];
     }
@@ -30,10 +28,8 @@ class FieldNodeDefinition extends AbstractNodeDefinition
 
     /**
      * Get field options
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->definition['options'];
     }
@@ -45,7 +41,7 @@ class FieldNodeDefinition extends AbstractNodeDefinition
      *
      * @return $this
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): self
     {
         $this->definition['options'] = $options;
 
@@ -60,7 +56,7 @@ class FieldNodeDefinition extends AbstractNodeDefinition
      *
      * @return $this
      */
-    public function replaceOption($name, $value)
+    public function replaceOption(string $name, $value): self
     {
         $this->definition['options'][$name] = $value;
 
@@ -69,10 +65,8 @@ class FieldNodeDefinition extends AbstractNodeDefinition
 
     /**
      * Returns options in specific format for config form field
-     *
-     * @return array
      */
-    public function toFormFieldOptions()
+    public function toFormFieldOptions(): array
     {
         return array_merge(
             [
@@ -92,7 +86,7 @@ class FieldNodeDefinition extends AbstractNodeDefinition
      *
      * @return array
      */
-    protected function prepareDefinition(array $definition)
+    protected function prepareDefinition(array $definition): array
     {
         if (!isset($definition['options'])) {
             $definition['options'] = [];
@@ -125,10 +119,8 @@ class FieldNodeDefinition extends AbstractNodeDefinition
 
     /**
      * @param array $nodes
-     *
-     * @return array
      */
-    protected function parseValidator(array $nodes)
+    protected function parseValidator(array $nodes): array
     {
         $values = [];
 

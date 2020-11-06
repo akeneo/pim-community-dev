@@ -64,7 +64,7 @@ class User implements ArrayConverterInterface
      *      'timezone'               => 'UTC',
      * ]
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $this->fieldsChecker->checkFieldsPresence(
             $item,
@@ -87,16 +87,14 @@ class User implements ArrayConverterInterface
      * @param array  $convertedItem
      * @param string $field
      * @param mixed  $data
-     *
-     * @return array
      */
-    protected function convertField(array $convertedItem, $field, $data)
+    protected function convertField(array $convertedItem, string $field, $data): array
     {
         if (in_array($field, ['roles', 'groups'])) {
             $convertedItem[$field] = '' !== $data ? explode(',', $data) : [];
         } elseif (in_array($field, ['enabled', 'email_notifications'])) {
-            $convertedItem[$field] = '1' == $data ? true : false;
-        } elseif (in_array($field, ['timezone'])) {
+            $convertedItem[$field] = '1' == $data;
+        } elseif ($field == 'timezone') {
             $convertedItem[$field] = '' !== $data ? $data : null;
         } else {
             $convertedItem[$field] = $data;

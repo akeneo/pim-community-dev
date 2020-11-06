@@ -25,10 +25,7 @@ class CurrencyController
         $this->currencyRepository = $currencyRepository;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $currencies = $this->currencyRepository->getActivatedCurrencies();
 

@@ -16,7 +16,7 @@ class UcfirstProcessor implements ItemProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    public function process($item): string
     {
         return ucfirst($item);
     }

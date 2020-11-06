@@ -27,7 +27,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
      * @param EntityManager $em
      * @param string        $entityName
      */
-    public function __construct(EntityManager $em, $entityName)
+    public function __construct(EntityManager $em, string $entityName)
     {
         $this->em = $em;
         $this->entityName = $entityName;
@@ -38,7 +38,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
      *
      * @param ProductQueryBuilder $queryBuilder
      */
-    public function applyMassActionParameters($queryBuilder, $inset, array $values)
+    public function applyMassActionParameters($queryBuilder, bool $inset, array $values): void
     {
         if (!empty($values)) {
             $inset ? $this->includeProducts($queryBuilder, $values) : $this->excludeProducts($queryBuilder, $values);
@@ -78,9 +78,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     {
         $queryBuilder->addFilter('id', Operators::NOT_IN_LIST, $productIds);
 
-        $productModelIds = array_values(array_filter($productIds, function ($id) {
-            return 0 === strpos($id, 'product_model_');
-        }));
+        $productModelIds = array_values(array_filter($productIds, fn($id) => 0 === strpos($id, 'product_model_')));
 
         if (!empty($productModelIds)) {
             $queryBuilder->addFilter('ancestor.id', Operators::NOT_IN_LIST, $productModelIds);

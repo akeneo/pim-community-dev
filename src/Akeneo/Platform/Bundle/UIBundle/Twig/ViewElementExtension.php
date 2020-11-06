@@ -29,7 +29,7 @@ class ViewElementExtension extends \Twig_Extension
      * @param EngineInterface     $templating
      * @param bool                $debug
      */
-    public function __construct(ViewElementRegistry $registry, EngineInterface $templating, $debug = false)
+    public function __construct(ViewElementRegistry $registry, EngineInterface $templating, bool $debug = false)
     {
         $this->registry = $registry;
         $this->templating = $templating;
@@ -39,17 +39,17 @@ class ViewElementExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new \Twig_SimpleFunction(
                 'view_elements',
-                [$this, 'renderViewElements'],
+                fn(array $context, $type) => $this->renderViewElements($context, $type),
                 ['needs_context' => true, 'is_safe' => ['html']]
             ),
             new \Twig_SimpleFunction(
                 'view_element_aliases',
-                [$this, 'getViewElementAliases'],
+                fn(array $context, $type) => $this->getViewElementAliases($context, $type),
                 ['needs_context' => true, 'is_safe' => ['html']]
             )
         ];
@@ -60,10 +60,8 @@ class ViewElementExtension extends \Twig_Extension
      *
      * @param array  $context
      * @param string $type
-     *
-     * @return string
      */
-    public function renderViewElements(array $context, $type)
+    public function renderViewElements(array $context, string $type): string
     {
         $elements = $this->getViewElements($type, $context);
         $content = '';
@@ -83,7 +81,7 @@ class ViewElementExtension extends \Twig_Extension
                 ]
             ] + $context;
 
-            if (true === $this->debug) {
+            if ($this->debug) {
                 $content .= sprintf("<!-- Start view element template: %s -->\n", $element->getTemplate());
             }
 
@@ -92,7 +90,7 @@ class ViewElementExtension extends \Twig_Extension
                 array_replace_recursive($elementContext, $element->getParameters($context))
             );
 
-            if (true === $this->debug) {
+            if ($this->debug) {
                 $content .= sprintf("<!-- End view element template: %s -->\n", $element->getTemplate());
             }
         }
@@ -108,7 +106,7 @@ class ViewElementExtension extends \Twig_Extension
      *
      * @return string[]
      */
-    public function getViewElementAliases(array $context, $type)
+    public function getViewElementAliases(array $context, string $type): array
     {
         $elements = $this->getViewElements($type, $context);
         $result = [];
@@ -128,7 +126,7 @@ class ViewElementExtension extends \Twig_Extension
      *
      * @return ViewElementInterface[]
      */
-    protected function getViewElements($type, array $context = [])
+    protected function getViewElements(string $type, array $context = []): array
     {
         $elements = $this->registry->get($type);
         $result = [];

@@ -58,7 +58,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
     /**
      * {@inheritdoc}
      */
-    public function paginate(array $items, array $parameters, $count)
+    public function paginate(array $items, array $parameters, ?int $count): array
     {
         try {
             $parameters = $this->resolver->resolve($parameters);
@@ -114,7 +114,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
      *
      * @return Link
      */
-    protected function createLink($routeName, array $parameters, ?string $searchAfterIdentifier, string $linkName): Link
+    protected function createLink(string $routeName, array $parameters, ?string $searchAfterIdentifier, string $linkName): Link
     {
         $parameters['search_after'] = $searchAfterIdentifier;
 

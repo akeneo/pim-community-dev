@@ -37,7 +37,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return ['prePersist'];
     }
@@ -47,7 +47,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
      *
      * @param LifecycleEventArgs $event
      */
-    public function prePersist(LifecycleEventArgs $event)
+    public function prePersist(LifecycleEventArgs $event): void
     {
         $entity = $event->getEntity();
 

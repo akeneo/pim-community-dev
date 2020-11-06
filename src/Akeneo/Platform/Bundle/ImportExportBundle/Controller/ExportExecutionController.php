@@ -2,6 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
@@ -18,7 +20,7 @@ class ExportExecutionController extends JobExecutionController
      *
      * @AclAncestor("pim_importexport_export_execution_download_log")
      */
-    public function downloadLogFileAction($id)
+    public function downloadLogFileAction(int $id): Response
     {
         return parent::downloadLogFileAction($id);
     }
@@ -28,7 +30,7 @@ class ExportExecutionController extends JobExecutionController
      *
      * @AclAncestor("pim_importexport_export_execution_download_files")
      */
-    public function downloadFilesAction($id, $archiver, $key)
+    public function downloadFilesAction(int $id, string $archiver, string $key): StreamedFileResponse
     {
         return parent::downloadFilesAction($id, $archiver, $key);
     }

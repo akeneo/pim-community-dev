@@ -34,7 +34,7 @@ abstract class BaseEntityMaskBuilder extends MaskBuilder
     /**
      * {@inheritdoc}
      */
-    public function reset()
+    public function reset(): MaskBuilder
     {
         $this->mask = $this->getConst('IDENTITY');
 

@@ -39,17 +39,15 @@ class FamilyVariantDatasource extends RepositoryDatasource
     {
         $familyVariants = $this->qb->getQuery()->execute();
 
-        return array_map(function ($familyVariant) {
-            return new ResultRecord(
-                $this->normalizer->normalize(
-                    $familyVariant,
-                    'datagrid',
-                    ['localeCode' => isset($this->getParameters()[':localeCode']) ?
-                        $this->getParameters()[':localeCode'] :
-                        ''
-                    ]
-                )
-            );
-        }, $familyVariants);
+        return array_map(fn($familyVariant) => new ResultRecord(
+            $this->normalizer->normalize(
+                $familyVariant,
+                'datagrid',
+                ['localeCode' => isset($this->getParameters()[':localeCode']) ?
+                    $this->getParameters()[':localeCode'] :
+                    ''
+                ]
+            )
+        ), $familyVariants);
     }
 }

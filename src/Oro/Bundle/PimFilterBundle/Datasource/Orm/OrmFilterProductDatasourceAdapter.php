@@ -17,6 +17,10 @@ use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterfac
 class OrmFilterProductDatasourceAdapter extends OrmFilterDatasourceAdapter implements
     FilterProductDatasourceAdapterInterface
 {
+    /**
+     * @var null
+     */
+    public $expressionBuilder;
     /** @var ProductQueryBuilderInterface */
     protected $pqb;
 
@@ -38,7 +42,7 @@ class OrmFilterProductDatasourceAdapter extends OrmFilterDatasourceAdapter imple
     /**
      * {@inheritdoc}
      */
-    public function getProductQueryBuilder()
+    public function getProductQueryBuilder(): \Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface
     {
         return $this->pqb;
     }
@@ -50,7 +54,7 @@ class OrmFilterProductDatasourceAdapter extends OrmFilterDatasourceAdapter imple
      *
      * @return string
      */
-    public function getFormatByComparisonType($comparisonType)
+    public function getFormatByComparisonType(string $comparisonType): string
     {
         return '%s';
     }

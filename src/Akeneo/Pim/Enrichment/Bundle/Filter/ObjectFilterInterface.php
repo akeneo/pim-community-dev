@@ -22,7 +22,7 @@ interface ObjectFilterInterface
      *
      * @return bool Does the object should be filtered
      */
-    public function filterObject($view, $type, array $options = []);
+    public function filterObject($view, string $type, array $options = []): bool;
 
     /**
      * Checks whether the given object is supported for filtering by this filter
@@ -30,8 +30,6 @@ interface ObjectFilterInterface
      * @param mixed  $object  The object to filter
      * @param string $type    The type of objects in the collection
      * @param array  $options The filter options
-     *
-     * @return bool
      */
-    public function supportsObject($object, $type, array $options = []);
+    public function supportsObject($object, string $type, array $options = []): bool;
 }

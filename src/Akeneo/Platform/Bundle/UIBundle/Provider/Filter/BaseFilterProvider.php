@@ -57,7 +57,7 @@ class BaseFilterProvider implements FilterProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFilters($attribute)
+    public function getFilters($attribute): string
     {
         return $this->filters[$attribute->getType()];
     }
@@ -65,9 +65,9 @@ class BaseFilterProvider implements FilterProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($element)
+    public function supports($element): bool
     {
         return $element instanceof AttributeInterface &&
-            in_array($element->getType(), array_keys($this->filters));
+            array_key_exists($element->getType(), $this->filters);
     }
 }

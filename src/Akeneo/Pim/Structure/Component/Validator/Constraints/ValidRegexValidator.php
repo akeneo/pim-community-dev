@@ -23,17 +23,15 @@ class ValidRegexValidator extends ConstraintValidator
      *
      * @throws \Exception
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof ValidRegex) {
             throw new UnexpectedTypeException($constraint, ValidRegex::class);
         }
 
-        if ($value) {
-            if (false === @preg_match($value, null)) {
-                $this->context->buildViolation($constraint->message)
-                    ->addViolation();
-            }
+        if ($value && false === @preg_match($value, null)) {
+            $this->context->buildViolation($constraint->message)
+                ->addViolation();
         }
     }
 }

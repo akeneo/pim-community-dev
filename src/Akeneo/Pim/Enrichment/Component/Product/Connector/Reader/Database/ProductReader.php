@@ -58,7 +58,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): void
     {
         $channel = $this->getConfiguredChannel();
         $filters = $this->getConfiguredFilters();
@@ -98,7 +98,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
     }
@@ -130,10 +130,8 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     /**
      * Returns the filters from the configuration.
      * The parameters can be in the 'filters' root node, or in filters data node (e.g. for export).
-     *
-     * @return array
      */
-    protected function getConfiguredFilters()
+    protected function getConfiguredFilters(): ?array
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
@@ -141,34 +139,26 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
             $filters = $filters['data'];
         }
 
-        return array_filter($filters, function ($filter) {
-            return count($filter) > 0;
-        });
+        return array_filter($filters, fn($filter) => count($filter) > 0);
     }
 
     /**
      * Get a filter by field name
      *
      * @param string $fieldName
-     *
-     * @return array
      */
-    protected function getConfiguredFilter(string $fieldName)
+    protected function getConfiguredFilter(string $fieldName): array
     {
         $filters = $this->getConfiguredFilters();
 
-        return array_values(array_filter($filters, function ($filter) use ($fieldName) {
-            return $filter['field'] === $fieldName;
-        }))[0] ?? null;
+        return array_values(array_filter($filters, fn($filter) => $filter['field'] === $fieldName))[0] ?? null;
     }
 
     /**
      * @param array            $filters
      * @param ChannelInterface $channel
-     *
-     * @return CursorInterface
      */
-    protected function getProductsCursor(array $filters, ChannelInterface $channel = null)
+    protected function getProductsCursor(array $filters, ChannelInterface $channel = null): \Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface
     {
         $options = null !== $channel ? ['default_scope' => $channel->getCode()] : [];
 

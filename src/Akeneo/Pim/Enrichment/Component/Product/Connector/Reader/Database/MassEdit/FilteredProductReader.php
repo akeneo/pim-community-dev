@@ -127,10 +127,8 @@ class FilteredProductReader implements
     /**
      * Returns the filters from the configuration.
      * The parameters can be in the 'filters' root node, or in filters data node (e.g. for export).
-     *
-     * @return array
      */
-    private function getConfiguredFilters(): array
+    private function getConfiguredFilters(): ?array
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
@@ -138,9 +136,7 @@ class FilteredProductReader implements
             $filters = $filters['data'];
         }
 
-        return array_filter($filters, function ($filter) {
-            return count($filter) > 0;
-        });
+        return array_filter($filters, fn($filter) => count($filter) > 0);
     }
 
     /**

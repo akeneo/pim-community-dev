@@ -34,7 +34,7 @@ class FilterStructureLocaleValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof FilterStructureLocale) {
             throw new UnexpectedTypeException($constraint, FilterStructureLocale::class);

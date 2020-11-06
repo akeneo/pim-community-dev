@@ -104,10 +104,8 @@ class ProductCommentController
      * @param int|string $id
      *
      * @AclAncestor("pim_enrich_product_comment")
-     *
-     * @return JsonResponse
      */
-    public function getAction($id)
+    public function getAction($id): JsonResponse
     {
         $product = $this->findProductOr404($id);
         $comments = $this->commentRepository->getComments(
@@ -138,7 +136,7 @@ class ProductCommentController
      *
      * @return Response
      */
-    public function postAction(Request $request, $id)
+    public function postAction(Request $request, string $id)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -178,7 +176,7 @@ class ProductCommentController
      *
      * @return Response
      */
-    public function postReplyAction(Request $request, $id, $commentId)
+    public function postReplyAction(Request $request, string $id, string $commentId)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -228,10 +226,8 @@ class ProductCommentController
      * @param int $id the product id
      *
      * @throws NotFoundHttpException
-     *
-     * @return ProductInterface
      */
-    protected function findProductOr404($id)
+    protected function findProductOr404(int $id): object
     {
         $product = $this->productRepository->find($id);
 
@@ -264,10 +260,8 @@ class ProductCommentController
 
     /**
      * @param string $date
-     *
-     * @return string
      */
-    protected function presentDate($date)
+    protected function presentDate(string $date): string
     {
         $context = ['locale' => $this->localeResolver->getCurrentLocale()];
 

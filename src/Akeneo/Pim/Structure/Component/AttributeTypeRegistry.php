@@ -19,10 +19,8 @@ class AttributeTypeRegistry
      *
      * @param string                 $alias
      * @param AttributeTypeInterface $type
-     *
-     * @return AttributeTypeRegistry
      */
-    public function register($alias, AttributeTypeInterface $type)
+    public function register(string $alias, AttributeTypeInterface $type): self
     {
         $this->types[$alias] = $type;
 
@@ -35,10 +33,8 @@ class AttributeTypeRegistry
      * @param string $alias
      *
      * @throws \LogicException
-     *
-     * @return AttributeTypeInterface
      */
-    public function get($alias)
+    public function get(string $alias): \Akeneo\Pim\Structure\Component\AttributeTypeInterface
     {
         if (!isset($this->types[$alias])) {
             throw new \LogicException(sprintf('Attribute type "%s" is not registered', $alias));
@@ -49,10 +45,8 @@ class AttributeTypeRegistry
 
     /**
      * Return the attribute types aliases
-     *
-     * @return array
      */
-    public function getAliases()
+    public function getAliases(): array
     {
         return array_keys($this->types);
     }

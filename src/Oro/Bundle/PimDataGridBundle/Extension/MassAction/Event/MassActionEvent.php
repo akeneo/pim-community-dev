@@ -49,30 +49,24 @@ class MassActionEvent extends Event
 
     /**
      * Get datagrid
-     *
-     * @return DatagridInterface
      */
-    public function getDatagrid()
+    public function getDatagrid(): \Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface
     {
         return $this->datagrid;
     }
 
     /**
      * Get mass action
-     *
-     * @return MassActionInterface
      */
-    public function getMassAction()
+    public function getMassAction(): \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
     {
         return $this->massAction;
     }
 
     /**
      * Get objects
-     *
-     * @return array
      */
-    public function getObjects()
+    public function getObjects(): array
     {
         return $this->objects;
     }

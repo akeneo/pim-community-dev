@@ -23,7 +23,7 @@ class RemoveRoleSubscriber implements EventSubscriberInterface
         $this->isThereUserWithoutRole = $isThereUserWithoutRole;
     }
 
-    public function checkRoleIsRemovable(RemoveEvent $event)
+    public function checkRoleIsRemovable(RemoveEvent $event): void
     {
         $role = $event->getSubject();
         if (!$role instanceof Role) {
@@ -41,10 +41,7 @@ class RemoveRoleSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_REMOVE => [['checkRoleIsRemovable']],

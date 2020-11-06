@@ -20,15 +20,13 @@ interface RendererInterface
      *
      * @return mixed
      */
-    public function render($object, $format, array $context = []);
+    public function render($object, string $format, array $context = []);
 
     /**
      * Test if the given generator support given object and format rendering
      *
      * @param mixed  $object
      * @param string $format
-     *
-     * @return bool
      */
-    public function supports($object, $format);
+    public function supports($object, string $format): bool;
 }

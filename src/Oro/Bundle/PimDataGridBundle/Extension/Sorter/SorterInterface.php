@@ -20,5 +20,5 @@ interface SorterInterface
      * @param string              $field
      * @param string              $direction
      */
-    public function apply(DatasourceInterface $datasource, $field, $direction);
+    public function apply(DatasourceInterface $datasource, string $field, string $direction);
 }

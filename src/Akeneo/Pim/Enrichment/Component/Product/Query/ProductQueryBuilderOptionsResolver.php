@@ -16,18 +16,14 @@ class ProductQueryBuilderOptionsResolver implements ProductQueryBuilderOptionsRe
     /**
      * {@inheritdoc}
      */
-    public function resolve(array $options)
+    public function resolve(array $options): array
     {
         $resolver = $this->createOptionsResolver();
-        $options = $resolver->resolve($options);
 
-        return $options;
+        return $resolver->resolve($options);
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    protected function createOptionsResolver()
+    protected function createOptionsResolver(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['locale', 'scope']);

@@ -24,7 +24,7 @@ class AssociationTypeTranslation extends AbstractTranslation implements Associat
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label)
+    public function setLabel(string $label): AssociationTypeTranslationInterface
     {
         $this->label = $label;
 
@@ -34,7 +34,7 @@ class AssociationTypeTranslation extends AbstractTranslation implements Associat
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }

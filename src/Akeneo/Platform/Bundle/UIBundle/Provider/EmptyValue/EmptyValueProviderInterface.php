@@ -17,17 +17,13 @@ interface EmptyValueProviderInterface
      * @param mixed $element
      *
      * @throws RuntimeException If no empty value is found for the given element
-     *
-     * @return string
      */
-    public function getEmptyValue($element);
+    public function getEmptyValue($element): string;
 
     /**
      * Does the EmptyValue provider support the element
      *
      * @param mixed $element
-     *
-     * @return bool
      */
-    public function supports($element);
+    public function supports($element): bool;
 }

@@ -19,16 +19,12 @@ final class UnknownFamily implements DocumentationBuilderInterface
 {
     public function support($object): bool
     {
-        if ($object instanceof UnknownFamilyException) {
-            return true;
-        }
-
-        return false;
+        return $object instanceof UnknownFamilyException;
     }
 
     public function buildDocumentation($object): DocumentationCollection
     {
-        if (false === $this->support($object)) {
+        if (!$this->support($object)) {
             throw new \InvalidArgumentException('Parameter $object is not supported.');
         }
 

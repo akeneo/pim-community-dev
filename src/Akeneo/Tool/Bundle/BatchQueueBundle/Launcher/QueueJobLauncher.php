@@ -151,7 +151,7 @@ class QueueJobLauncher implements JobLauncherInterface
      * @param string       $eventName    Name of the event
      * @param JobExecution $jobExecution Object to store job execution
      */
-    private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
+    private function dispatchJobExecutionEvent(string $eventName, JobExecution $jobExecution): void
     {
         $event = new JobExecutionEvent($jobExecution);
         $this->eventDispatcher->dispatch($eventName, $event);

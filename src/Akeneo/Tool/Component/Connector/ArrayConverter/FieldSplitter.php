@@ -19,7 +19,7 @@ class FieldSplitter
      *
      * @return string[]
      */
-    public function splitFieldName($field): array
+    public function splitFieldName(string $field): array
     {
         return '' === $field ? [] : explode(AttributeColumnInfoExtractor::FIELD_SEPARATOR, $field);
     }

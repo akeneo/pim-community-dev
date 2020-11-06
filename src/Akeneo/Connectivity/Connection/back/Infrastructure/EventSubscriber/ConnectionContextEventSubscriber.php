@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
+use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
@@ -19,7 +20,7 @@ class ConnectionContextEventSubscriber implements EventSubscriberInterface
     /** @var ConnectionContext */
     private $connectionContext;
 
-    public function __construct(ConnectionContext $connectionContext)
+    public function __construct(ConnectionContextInterface $connectionContext)
     {
         $this->connectionContext = $connectionContext;
     }

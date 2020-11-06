@@ -46,9 +46,7 @@ final class RanksDistribution
     {
         $total = array_sum($this->ranksDistribution);
 
-        return array_map(function ($distribution) use ($total) {
-            return round($distribution / $total * 100, 2);
-        }, $this->ranksDistribution);
+        return array_map(fn($distribution) => round($distribution / $total * 100, 2), $this->ranksDistribution);
     }
 
     public function getAverageRank(): ?Rank
@@ -67,7 +65,7 @@ final class RanksDistribution
             $total += $rank->toInt() * $distribution;
         }
 
-        $average = intval(round($total / $distributionSum));
+        $average = (int) round($total / $distributionSum);
 
         return $ranks[$average];
     }

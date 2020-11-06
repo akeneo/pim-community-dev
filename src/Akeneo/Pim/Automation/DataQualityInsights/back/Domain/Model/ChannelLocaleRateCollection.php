@@ -44,9 +44,7 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
         $rateCollection = new self();
 
         $rateCollection->rates = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
-            $rawRates, function ($rawRate) {
-                return new Rate(intval($rawRate));
-            });
+            $rawRates, fn($rawRate) => new Rate((int) $rawRate));
 
         return $rateCollection;
     }
@@ -57,25 +55,19 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
 
         $rateCollection->rates = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData(
             $normalizedRates,
-            function ($normalizedRate) use ($getNormalizedRateValue) {
-                return new Rate(intval($getNormalizedRateValue($normalizedRate)));
-            });
+            fn($normalizedRate) => new Rate((int) $getNormalizedRateValue($normalizedRate)));
 
         return $rateCollection;
     }
 
     public function toArrayLetter(): array
     {
-        return $this->rates->mapWith(function (Rate $rate) {
-            return $rate->toLetter();
-        });
+        return $this->rates->mapWith(fn(Rate $rate) => $rate->toLetter());
     }
 
     public function toArrayInt(): array
     {
-        return $this->rates->mapWith(function (Rate $rate) {
-            return $rate->toInt();
-        });
+        return $this->rates->mapWith(fn(Rate $rate) => $rate->toInt());
     }
 
     public function mapWith(\Closure $callback): array

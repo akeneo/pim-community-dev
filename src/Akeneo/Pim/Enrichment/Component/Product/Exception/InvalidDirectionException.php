@@ -50,10 +50,8 @@ class InvalidDirectionException extends \LogicException
      *
      * @param string $direction
      * @param string $className
-     *
-     * @return InvalidDirectionException
      */
-    public static function notSupported($direction, $className)
+    public static function notSupported(string $direction, string $className): \Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException
     {
         $message = 'Direction "%s" is not supported';
 
@@ -66,26 +64,17 @@ class InvalidDirectionException extends \LogicException
         );
     }
 
-    /**
-     * @return array
-     */
-    public function getDirections()
+    public function getDirections(): array
     {
         return $this->directions;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @return string
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }

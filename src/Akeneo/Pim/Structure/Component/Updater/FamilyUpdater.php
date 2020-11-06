@@ -81,7 +81,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function update($family, array $data, array $options = [])
+    public function update(object $family, array $data, array $options = []): ObjectUpdaterInterface
     {
         if (!$family instanceof FamilyInterface) {
             throw InvalidObjectException::objectExpected(
@@ -107,7 +107,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @throws InvalidPropertyTypeException
      * @throws UnknownPropertyException
      */
-    protected function validateDataType($field, $data)
+    protected function validateDataType(string $field, $data): void
     {
         if (in_array($field, ['code', 'attribute_as_label', 'attribute_as_image'])) {
             if (null !== $data && !is_scalar($data)) {
@@ -130,7 +130,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function validateScalarArray($field, $data)
+    protected function validateScalarArray(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
@@ -152,7 +152,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function validateAttributeRequirements($data)
+    protected function validateAttributeRequirements($data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected('attribute_requirements', static::class, $data);
@@ -187,7 +187,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @throws UnknownPropertyException
      * @throws InvalidPropertyException
      */
-    protected function setData(FamilyInterface $family, $field, $data)
+    protected function setData(FamilyInterface $family, string $field, $data): void
     {
         switch ($field) {
             case 'labels':
@@ -217,7 +217,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws UnknownPropertyException
      */
-    protected function setValue(FamilyInterface $family, string $field, $data)
+    protected function setValue(FamilyInterface $family, string $field, $data): void
     {
         try {
             $this->accessor->setValue($family, $field, $data);
@@ -237,7 +237,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setAttributeRequirements(FamilyInterface $family, array $newRequirements)
+    protected function setAttributeRequirements(FamilyInterface $family, array $newRequirements): void
     {
         foreach ($family->getAttributeRequirements() as $requirement) {
             $channelCode = $requirement->getChannelCode();
@@ -246,7 +246,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 $key = array_search($attribute->getCode(), $newRequirements[$channelCode], true);
                 if (false === $key && AttributeTypes::IDENTIFIER !== $attribute->getType()) {
                     $family->removeAttributeRequirement($requirement);
-                } elseif (false !== $key && true === $requirement->isRequired()) {
+                } elseif (false !== $key && $requirement->isRequired()) {
                     unset($newRequirements[$channelCode][$key]);
                 }
             }
@@ -267,14 +267,12 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param string          $channelCode
      *
      * @throws InvalidPropertyException
-     *
-     * @return array
      */
     protected function createAttributeRequirementsByChannel(
         FamilyInterface $family,
         array $attributeCodes,
-        $channelCode
-    ) {
+        string $channelCode
+    ): array {
         $requirements = [];
 
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
@@ -313,14 +311,12 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param ChannelInterface   $channel
      *
      * @throws InvalidPropertyException
-     *
-     * @return AttributeRequirementInterface
      */
     protected function createAttributeRequirement(
         FamilyInterface $family,
         AttributeInterface $attribute,
         ChannelInterface $channel
-    ) {
+    ): object {
         $requirement = $this->requirementRepo->findOneBy(
             ['attribute' => $attribute->getId(), 'channel' => $channel->getId(), 'family' => $family->getId()]
         );
@@ -338,7 +334,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function addAttributes(FamilyInterface $family, array $data)
+    protected function addAttributes(FamilyInterface $family, array $data): void
     {
         $currentAttributeCodes = [];
         $wantedAttributeCodes = array_values($data);
@@ -351,10 +347,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
         $attributeCodesToAdd = array_diff($wantedAttributeCodes, $currentAttributeCodes);
 
         foreach ($family->getAttributes() as $attribute) {
-            if (in_array($attribute->getCode(), $attributeCodesToRemove)) {
-                if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
-                    $family->removeAttribute($attribute);
-                }
+            if (in_array($attribute->getCode(), $attributeCodesToRemove) && AttributeTypes::IDENTIFIER !== $attribute->getType()) {
+                $family->removeAttribute($attribute);
             }
         }
 
@@ -379,7 +373,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setAttributeAsLabel(FamilyInterface $family, $data)
+    protected function setAttributeAsLabel(FamilyInterface $family, string $data): void
     {
         if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($data)) {
             $family->setAttributeAsLabel($attribute);
@@ -400,7 +394,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function setAttributeAsImage(FamilyInterface $family, $data): void
+    protected function setAttributeAsImage(FamilyInterface $family, string $data): void
     {
         if (null === $data || '' === $data) {
             $family->setAttributeAsImage(null);

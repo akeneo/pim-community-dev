@@ -23,7 +23,7 @@ class CommandResult implements CommandResultInterface
      * @param array $output
      * @param int   $status
      */
-    public function __construct(array $output, $status)
+    public function __construct(array $output, int $status)
     {
         $this->commandOutput = $output;
         $this->commandStatus = $status;
@@ -32,7 +32,7 @@ class CommandResult implements CommandResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getCommandOutput()
+    public function getCommandOutput(): array
     {
         return $this->commandOutput;
     }
@@ -40,7 +40,7 @@ class CommandResult implements CommandResultInterface
     /**
      * {@inheritdoc}
      */
-    public function getCommandStatus()
+    public function getCommandStatus(): int
     {
         return $this->commandStatus;
     }

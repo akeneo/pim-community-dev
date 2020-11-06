@@ -16,17 +16,13 @@ interface ValueConverterInterface
      *
      * @param array  $attributeFieldInfo
      * @param string $value
-     *
-     * @return array
      */
-    public function convert(array $attributeFieldInfo, $value);
+    public function convert(array $attributeFieldInfo, string $value): array;
 
     /**
      * Supports the field.
      *
      * @param string $attributeType
-     *
-     * @return bool
      */
-    public function supportsField($attributeType);
+    public function supportsField(string $attributeType): bool;
 }

@@ -16,7 +16,7 @@ class OSDataCollector implements DataCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function collect()
+    public function collect(): array
     {
         return [
             'os_version'     => php_uname(),

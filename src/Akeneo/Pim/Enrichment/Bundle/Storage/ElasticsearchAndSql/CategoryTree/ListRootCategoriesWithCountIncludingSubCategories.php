@@ -25,7 +25,7 @@ class ListRootCategoriesWithCountIncludingSubCategories implements Query\ListRoo
      * @param Connection $connection
      * @param Client     $client
      */
-    public function __construct(Connection $connection, Client $client)
+    public function __construct(\Doctrine\DBAL\Driver\Connection $connection, Client $client)
     {
         $this->connection = $connection;
         $this->client = $client;
@@ -37,9 +37,8 @@ class ListRootCategoriesWithCountIncludingSubCategories implements Query\ListRoo
     public function list(string $translationLocaleCode, int $userId, int $rootCategoryIdToExpand): array
     {
         $categoriesWithoutCount = $this->getRootCategories($translationLocaleCode);
-        $rootCategories = $this->countProductInCategories($categoriesWithoutCount, $rootCategoryIdToExpand);
 
-        return $rootCategories;
+        return $this->countProductInCategories($categoriesWithoutCount, $rootCategoryIdToExpand);
     }
 
     /**

@@ -45,7 +45,7 @@ class ColumnsMerger
      *
      * @return array merged $row
      */
-    public function merge(array $row)
+    public function merge(array $row): array
     {
         $resultRow = [];
         $collectedMetrics = [];
@@ -62,32 +62,27 @@ class ColumnsMerger
                 } else {
                     $resultRow[$fieldName] = $fieldValue;
                 }
+            } elseif (in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedQuantityAssociationColumns())) {
+                $collectedQuantifiedAssociations = $this->collectQuantifiedQuantityAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
+            } elseif (in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns())) {
+                $collectedQuantifiedAssociations = $this->collectQuantifiedIdentifierAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
             } else {
-                if (in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedQuantityAssociationColumns())) {
-                    $collectedQuantifiedAssociations = $this->collectQuantifiedQuantityAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
-                } elseif (in_array($fieldName, $this->associationColumnResolver->resolveQuantifiedIdentifierAssociationColumns())) {
-                    $collectedQuantifiedAssociations = $this->collectQuantifiedIdentifierAssociationData($collectedQuantifiedAssociations, $fieldName, $fieldValue);
-                } else {
-                    $resultRow[$fieldName] = $fieldValue;
-                }
+                $resultRow[$fieldName] = $fieldValue;
             }
         }
 
         $resultRow = $this->mergeMetricData($resultRow, $collectedMetrics);
         $resultRow = $this->mergePriceData($resultRow, $collectedPrices);
-        $resultRow = $this->mergeQuantifiedAssociationData($resultRow, $collectedQuantifiedAssociations);
 
-        return $resultRow;
+        return $this->mergeQuantifiedAssociationData($resultRow, $collectedQuantifiedAssociations);
     }
 
     /**
      * Returns a clean field name with code, locale and scope (without unit, currency, etc in the field)
      *
      * @param array $attributeInfos
-     *
-     * @return string
      */
-    protected function getCleanFieldName(array $attributeInfos)
+    protected function getCleanFieldName(array $attributeInfos): string
     {
         $attribute = $attributeInfos['attribute'];
         $cleanField = $attribute->getCode();
@@ -108,11 +103,11 @@ class ColumnsMerger
      *
      * @return array collected metrics
      */
-    protected function collectMetricData(array $collectedMetrics, array $attributeInfos, $fieldValue)
+    protected function collectMetricData(array $collectedMetrics, array $attributeInfos, string $fieldValue): array
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
 
-        if (!in_array($cleanField, array_keys($collectedMetrics))) {
+        if (!array_key_exists($cleanField, $collectedMetrics)) {
             $collectedMetrics[$cleanField] = ['data' => '', 'unit' => ''];
         }
         if ('unit' === $attributeInfos['metric_unit']) {
@@ -129,10 +124,8 @@ class ColumnsMerger
      *
      * @param array $resultRow
      * @param array $collectedMetrics
-     *
-     * @return array
      */
-    protected function mergeMetricData(array $resultRow, array $collectedMetrics)
+    protected function mergeMetricData(array $resultRow, array $collectedMetrics): array
     {
         foreach ($collectedMetrics as $fieldName => $metricData) {
             $resultRow[$fieldName] = trim(
@@ -157,7 +150,7 @@ class ColumnsMerger
      *
      * @return array collected metrics
      */
-    protected function collectPriceData(array $collectedPrices, array $attributeInfos, $fieldValue)
+    protected function collectPriceData(array $collectedPrices, array $attributeInfos, string $fieldValue): array
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
         if (null !== $attributeInfos['price_currency']) {
@@ -221,10 +214,8 @@ class ColumnsMerger
      *
      * @param array $resultRow
      * @param array $collectedPrices
-     *
-     * @return array
      */
-    protected function mergePriceData(array $resultRow, array $collectedPrices)
+    protected function mergePriceData(array $resultRow, array $collectedPrices): array
     {
         foreach ($collectedPrices as $fieldName => $prices) {
             $resultRow[$fieldName] = implode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $prices);
@@ -251,9 +242,7 @@ class ColumnsMerger
                 }
 
                 $resultRow[sprintf('%s%s%s', $associationTypeCode, AttributeColumnInfoExtractor::FIELD_SEPARATOR, $entityType)] =
-                array_map(function ($identifier, $quantity) {
-                    return ['identifier' => $identifier, 'quantity' => (int) $quantity];
-                }, $quantifiedAssociation[$entityType]['identifiers'], $quantifiedAssociation[$entityType]['quantities']);
+                array_map(fn($identifier, $quantity) => ['identifier' => $identifier, 'quantity' => (int) $quantity], $quantifiedAssociation[$entityType]['identifiers'], $quantifiedAssociation[$entityType]['quantities']);
             }
         }
 

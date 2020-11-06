@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -28,7 +29,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
     /**
      * {@inheritdoc}
      */
-    public function createCursor($esQuery, array $options = [])
+    public function createCursor($esQuery, array $options = []): CursorInterface
     {
         $options = $this->resolveOptions($options);
         $sort = ['_id' => 'asc'];
@@ -38,7 +39,7 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
         $esQuery['size'] = $options['limit'];
 
         if (null !== $options['search_after_unique_key']) {
-            array_push($options['search_after'], $options['search_after_unique_key']);
+            $options['search_after'][] = $options['search_after_unique_key'];
         }
         if (!empty($options['search_after'])) {
             $esQuery['search_after'] = $options['search_after'];
@@ -77,8 +78,6 @@ class SearchAfterSizeIdentifierResultCursorFactory implements CursorFactoryInter
         $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
         $resolver->setAllowedTypes('limit', 'int');
 
-        $options = $resolver->resolve($options);
-
-        return $options;
+        return $resolver->resolve($options);
     }
 }
