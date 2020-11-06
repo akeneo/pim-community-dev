@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9555: Fix PurgeJobExecutionCommand with 0 day option
+
 # 4.0.69 (2020-11-05)
 
 # 4.0.68 (2020-10-30)
