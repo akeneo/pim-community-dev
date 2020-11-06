@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace AkeneoTestEnterprise\Pim\Enrichment\Product\EndToEnd;
+namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\EventAPI\Product;
 
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductLoader;
@@ -9,9 +9,11 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -35,6 +37,9 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
     /** @var IdentifiableObjectRepositoryInterface */
     private $userGroupRepository;
 
+    /** @var PermissionFixturesLoader */
+    private $loader;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -44,6 +49,62 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
         $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
         $this->normalizer = $this->get('pim_catalog.normalizer.standard.product');
         $this->userGroupRepository = $this->get('pim_user.repository.group');
+        $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
+    }
+
+    public function test_that_a_connection_with_access_to_only_one_category_of_the_product_is_still_notified_about_its_removal(
+    ): void
+    {
+        $this->loader->loadCategoriesAndAttributesForEventAPI();
+
+        $product = $this->productLoader->create(
+            'product_with_one_category_viewable_by_redactor_and_one_category_not_viewable_by_readactor',
+            [
+                'categories' => ['view_category', 'category_without_right'],
+                'family' => 'familyA',
+            ]
+        );
+
+        $erpConnection = $this->connectionLoader->createConnection('erp', 'erp', FlowType::DATA_SOURCE, false);
+        $this->webhookLoader->initWebhook($erpConnection->code());
+        $redactorGroup = $this->userGroupRepository->findOneByIdentifier('redactor');
+
+        $this->connectionLoader->update(
+            $erpConnection->code(),
+            $erpConnection->label(),
+            $erpConnection->flowType(),
+            $erpConnection->image(),
+            $erpConnection->userRoleId(),
+            (string)$redactorGroup->getId(),
+            $erpConnection->auditable()
+        );
+
+
+        /** @var HandlerStack $handlerStack */
+        $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
+        $handlerStack->setHandler(
+            new MockHandler(
+                [
+                    new Response(200),
+                ]
+            )
+        );
+
+        $container = [];
+        $history = Middleware::history($container);
+        $handlerStack->push($history);
+
+        $message = new ProductRemoved(
+            Author::fromNameAndType('ecommerce', 'ui'),
+            $this->normalizer->normalize($product, 'standard')
+        );
+
+        /** @var $businessEventHandler BusinessEventHandler */
+        $businessEventHandler = $this->get(BusinessEventHandler::class);
+        $businessEventHandler->__invoke($message);
+
+        $this->assertCount(1, $container);
+
     }
 
     public function test_that_a_connection_that_does_not_see_a_product_is_not_notified_about_its_removal(): void
@@ -64,22 +125,26 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
             $erpConnection->flowType(),
             $erpConnection->image(),
             $erpConnection->userRoleId(),
-            (string) $redactorGroup->getId(),
+            (string)$redactorGroup->getId(),
             $erpConnection->auditable()
         );
 
-        /** @var HandlerStack $handlerStack*/
+        /** @var HandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
-        $handlerStack->setHandler(new MockHandler([
-            new Response(200),
-        ]));
+        $handlerStack->setHandler(
+            new MockHandler(
+                [
+                    new Response(200),
+                ]
+            )
+        );
 
         $container = [];
         $history = Middleware::history($container);
         $handlerStack->push($history);
 
         $message = new ProductRemoved(
-            'ecommerce',
+            Author::fromNameAndType('ecommerce', 'ui'),
             $this->normalizer->normalize($product, 'standard')
         );
 
