@@ -53,6 +53,9 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
     configure: function () {
       this.onExtensions('tab:register', this.registerTab.bind(this));
       this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
+      this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:add-error', this.addError);
+      this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:remove-error', this.removeError);
+
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },
@@ -70,6 +73,7 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
           code: event.code,
           isVisible: event.isVisible,
           label: event.label,
+          error: 0,
         });
       } else {
         existingTab.label = event.label;
@@ -151,6 +155,20 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
       }
 
       return this;
+    },
+
+    addError: function (tabCode) {
+      const tab = this.tabs.find(currentTab => currentTab.code === tabCode);
+      tab.error++;
+
+      this.render();
+    },
+
+    removeError: function (tabCode) {
+      const tab = this.tabs.find(currentTab => currentTab.code === tabCode);
+      tab.error = Math.max(0, tab.error - 1);
+
+      this.render();
     },
 
     /**
