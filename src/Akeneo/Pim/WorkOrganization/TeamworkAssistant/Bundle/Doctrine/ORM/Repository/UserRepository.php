@@ -15,6 +15,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterfa
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\AbstractQuery;
@@ -79,7 +80,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * Allow to find contributors that belong to a project.
+     * Allow to find contributors that belongs to a project.
      *
      * {@inheritdoc}
      */
@@ -94,13 +95,14 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $groupIds = array_map(function (GroupInterface $userGroup) {
             return $userGroup->getId();
         }, $project->getUserGroups()->toArray());
-
+var_dump($groupIds);
         if (empty($groupIds)) {
             return [];
         }
 
         $qb->leftJoin('u.groups', 'g');
         $qb->andWhere($qb->expr()->in('g.id', $groupIds));
+        $qb->andWhere($qb->expr()->eq('u.user_type', User::TYPE_USER));
 
         $qb->setMaxResults($options['limit']);
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
