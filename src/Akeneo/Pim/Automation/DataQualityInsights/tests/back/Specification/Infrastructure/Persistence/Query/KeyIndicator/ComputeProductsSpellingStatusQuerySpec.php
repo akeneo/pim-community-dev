@@ -19,14 +19,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
 
-final class GetProductsSpellingStatusQuerySpec extends ObjectBehavior
+final class ComputeProductsSpellingStatusQuerySpec extends ObjectBehavior
 {
     public function let(GetEvaluationRatesByProductsAndCriterionQueryInterface $getEvaluationRatesByProductAndCriterionQuery)
     {
         $this->beConstructedWith($getEvaluationRatesByProductAndCriterionQuery);
     }
 
-    public function it_gives_products_with_spelling_status_key_indicator($getEvaluationRatesByProductAndCriterionQuery)
+    public function it_computes_products_with_spelling_status_key_indicator($getEvaluationRatesByProductAndCriterionQuery)
     {
         $productIds = [new ProductId(13), new ProductId(42), new ProductId(999)];
         $criterionCode = new CriterionCode(EvaluateSpelling::CRITERION_CODE);
@@ -48,7 +48,7 @@ final class GetProductsSpellingStatusQuerySpec extends ObjectBehavior
             ],
         ]);
 
-        $this->execute($productIds)->shouldBeLike([
+        $this->compute($productIds)->shouldBeLike([
             13 => [
                 'ecommerce' => [
                     'en_US' => true,

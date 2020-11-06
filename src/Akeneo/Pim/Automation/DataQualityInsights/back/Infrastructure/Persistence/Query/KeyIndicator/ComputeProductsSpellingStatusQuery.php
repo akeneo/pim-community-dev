@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetProductsKeyIndicator;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithPerfectSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
-final class GetProductsSpellingStatusQuery implements GetProductsKeyIndicator
+final class ComputeProductsSpellingStatusQuery implements ComputeProductsKeyIndicator
 {
     private GetEvaluationRatesByProductsAndCriterionQueryInterface $getEvaluationRatesByProductAndCriterionQuery;
 
@@ -29,10 +30,10 @@ final class GetProductsSpellingStatusQuery implements GetProductsKeyIndicator
 
     public function getName(): string
     {
-        return 'no_spelling_mistakes';
+        return ProductsWithPerfectSpelling::CODE;
     }
 
-    public function execute(array $productIds): array
+    public function compute(array $productIds): array
     {
         $productsSpellingRates = $this->getEvaluationRatesByProductAndCriterionQuery->toArrayInt(
             $productIds,
