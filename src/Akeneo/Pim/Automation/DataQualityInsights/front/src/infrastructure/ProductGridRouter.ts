@@ -23,6 +23,7 @@ const buildFilters = (channelCode: string, familyCode: string|null, categoryId: 
   let filters = [
     's[updated]=1',
     `f[scope][value]=${channelCode}`,
+    'f[entity_type][value]=product',
     't=product-grid',
   ];
   if (familyCode) {
