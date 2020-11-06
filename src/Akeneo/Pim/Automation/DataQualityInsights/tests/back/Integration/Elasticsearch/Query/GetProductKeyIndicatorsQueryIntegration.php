@@ -86,6 +86,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
     public function test_it_retrieves_key_indicators_for_the_products_of_a_given_category()
     {
         $this->createCategory(['code' => 'category_A']);
+        $this->createCategory(['code' => 'category_A_1', 'parent' => 'category_A']);
         $this->createCategory(['code' => 'category_B']);
 
         $this->createMinimalFamilyAndFamilyVariant('family_V', 'family_V_1');
@@ -96,7 +97,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         $this->givenAProductsWithoutValues(['categories' => ['category_A', 'category_B']]);
         $this->givenAProductsWithoutValues(['categories' => ['category_B']]);
         $this->givenAProductWithPerfectEnrichmentButWithoutAttributeImage(['categories' => ['category_A']]);
-        $this->givenAProductWithPerfectEnrichmentAndImage(['categories' => ['category_A', 'category_B']]);
+        $this->givenAProductWithPerfectEnrichmentAndImage(['categories' => ['category_A_1', 'category_B']]);
         $this->givenAProductWithImageButMissingEnrichment(['categories' => ['category_B']]);
 
         // Product variant in category B from itself, and in category A from its parent
