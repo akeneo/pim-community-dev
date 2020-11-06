@@ -103,7 +103,6 @@ const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) =
 
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'modal-root');
-
   const containerRef = useRef(portalNode);
 
   useEffect(() => {
