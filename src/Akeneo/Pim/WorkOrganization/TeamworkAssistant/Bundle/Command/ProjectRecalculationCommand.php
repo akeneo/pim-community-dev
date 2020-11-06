@@ -94,5 +94,7 @@ class ProjectRecalculationCommand extends Command
 
             $projectToDetach = $project;
         }
+
+        return 0;
     }
 }

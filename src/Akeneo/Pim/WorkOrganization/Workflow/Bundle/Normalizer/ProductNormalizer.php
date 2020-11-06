@@ -25,49 +25,27 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDr
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Product normalizer
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
+class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var PublishedProductManager */
-    protected $publishedManager;
-
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    protected $draftRepository;
-
-    /** @var DraftApplierInterface */
-    protected $draftApplier;
-
-    /** @var CategoryAccessRepository */
-    protected $categoryAccessRepo;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /** @var SerializerInterface */
-    protected $serializer;
-
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
-
-    /** @var MissingRequiredAttributesCalculator */
-    protected $missingRequiredAttributesCalculator;
-
-    /** @var MissingRequiredAttributesNormalizerInterface */
-    protected $missingRequiredAttributesNormalizer;
+    protected NormalizerInterface $normalizer;
+    protected PublishedProductManager $publishedManager;
+    protected EntityWithValuesDraftRepositoryInterface $draftRepository;
+    protected DraftApplierInterface $draftApplier;
+    protected CategoryAccessRepository $categoryAccessRepo;
+    protected TokenStorageInterface $tokenStorage;
+    protected AuthorizationCheckerInterface $authorizationChecker;
+    protected NormalizerInterface $chainedNormalizer;
+    protected ProductRepositoryInterface $productRepository;
+    protected MissingRequiredAttributesCalculator $missingRequiredAttributesCalculator;
+    protected MissingRequiredAttributesNormalizerInterface $missingRequiredAttributesNormalizer;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -121,9 +99,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $meta = [
             'published' => $published ?
-                $this->serializer->normalize($published->getVersion(), 'internal_api', $context) :
+                $this->chainedNormalizer->normalize($published->getVersion(), 'internal_api', $context) :
                 null,
-            'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
+            'owner_groups' => $this->chainedNormalizer->normalize($ownerGroups, 'internal_api', $context),
             'is_owner' => $isOwner,
             'working_copy' => $normalizedWorkingCopy,
             'draft_status' => $draftStatus
@@ -158,9 +136,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function setSerializer(SerializerInterface $serializer)
+    public function setNormalizer(NormalizerInterface $normalizer)
     {
-        $this->serializer = $serializer;
+        $this->chainedNormalizer = $normalizer;
     }
 
     /**

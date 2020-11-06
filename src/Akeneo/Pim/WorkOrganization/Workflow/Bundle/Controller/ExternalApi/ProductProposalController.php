@@ -14,6 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -24,6 +25,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Laurent Petard <laurent.petard@akeneo.com>
@@ -115,6 +117,7 @@ class ProductProposalController
             throw new UnprocessableEntityHttpException('You should create a draft before submitting it for approval.');
         }
 
+        Assert::isInstanceOf($productDraft, EntityWithValuesDraftInterface::class);
         if (ProductDraft::READY === $productDraft->getStatus()) {
             throw new UnprocessableEntityHttpException('You already submit your draft for approval.');
         }

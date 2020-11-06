@@ -403,14 +403,6 @@ class ProductModelDraft implements EntityWithValuesDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributes(): array
-    {
-        return $this->getValues()->getAttributes();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getValues(): WriteValueCollection
     {
         return $this->values;

@@ -129,3 +129,18 @@
 - Change `Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager::isUserGranted()` to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
 - Change constructor `Akeneo\Pim\Permission\Bundle\Voter\CategoryVoter` to replace `mixed $className` parameter by `string $className`
 - Change constructor `Akeneo\Pim\Permission\Component\Updater\Setter\GrantedCategoryFieldSetter` to replace `ObjectRepository $categoryAccessRepository` parameter by `CategoryAccessRepository $categoryAccessRepository`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface::isProjectContributor()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\UserRepository::isProjectContributor()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface::notifyUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectCreatedNotifier::notifyUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectDueDateReminderNotifier::notifyUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectFinishedNotifier::notifyUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectFinishedNotifier::findApprovableByUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager` to add `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $publishedProductBulkSaver`
+- Change `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft` to remove `getAttributes()` method
+- Change `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft` to remove `getAttributes()` method
+- Change `Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface::findUserEntityWithValuesDraft()` to return `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface` instead of `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface`
+- Change constructor `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\EnsureUserCanBeDeletedSubscriber` to make the parameter `IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery` not null
+- Update `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct` to:
+    - remove the `setFamilyId()`, `setProductModel()` and `getProductModel()` methods
+    - remove the `$categoryIds` public property and the `$familyId`, `$groupIds` and `$productModel` protected properties

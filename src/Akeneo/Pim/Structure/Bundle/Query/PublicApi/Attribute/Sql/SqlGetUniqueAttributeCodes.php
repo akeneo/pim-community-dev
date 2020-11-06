@@ -17,6 +17,9 @@ final class SqlGetUniqueAttributeCodes implements GetUniqueAttributeCodes
         $this->connection = $connection;
     }
 
+    /**
+     * @return string[]
+     */
     public function all(): array
     {
         $query = <<<SQL

@@ -17,6 +17,7 @@ $rules = [
         'Akeneo\Tool',
         'Symfony\Bundle\FrameworkBundle',
         'Sensio\Bundle\FrameworkExtraBundle',
+        'Webmozart\Assert\Assert',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component',
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
@@ -65,6 +66,7 @@ $rules = [
 
         // TIP-976: TWA should not be linked to Workflow
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter',
+        'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource',
 
         // TIP-977: Move CommandExecutor to Tool
         'Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor',

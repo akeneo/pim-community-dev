@@ -25,13 +25,9 @@ class RefreshProjectCompletenessJobParameter implements
     DefaultValuesProviderInterface,
     ConstraintCollectionProviderInterface
 {
-    /** @var string */
-    protected $jobName;
+    protected string $jobName;
 
-    /**
-     * @param $jobName
-     */
-    public function __construct($jobName)
+    public function __construct(string $jobName)
     {
         $this->jobName = $jobName;
     }

@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Add metadata to product normalized data concerning only the PIM Enterprise Edition
@@ -114,6 +115,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
                 return static::WORKFLOW_STATUS_WORKING_COPY;
             }
 
+            Assert::implementsInterface($productDraft, EntityWithValuesDraftInterface::class);
             if (EntityWithValuesDraftInterface::READY === $productDraft->getStatus()) {
                 return static::WORKFLOW_STATUS_WAITING_FOR_APPROVAL;
             }

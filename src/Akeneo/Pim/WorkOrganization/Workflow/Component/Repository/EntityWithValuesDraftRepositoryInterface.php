@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Repository;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,7 +27,7 @@ interface EntityWithValuesDraftRepositoryInterface extends ObjectRepository
     /**
      * Return entities with values based on user
      */
-    public function findUserEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesInterface;
+    public function findUserEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesDraftInterface;
 
     /**
      * Create the datagrid query builder

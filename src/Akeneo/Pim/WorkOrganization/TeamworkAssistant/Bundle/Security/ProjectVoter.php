@@ -13,9 +13,11 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Security;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Project voter, allow to know if a user has own and/or contribute access to a project.
@@ -57,11 +59,14 @@ class ProjectVoter extends Voter implements VoterInterface
             return false;
         }
 
+        Assert::implementsInterface($user, UserInterface::class);
         switch ($attribute) {
             case self::OWN:
                 return $subject->getOwner()->getId() === $user->getId();
             case self::CONTRIBUTE:
                 return $this->userRepository->isProjectContributor($subject, $user);
         }
+
+        return false;
     }
 }

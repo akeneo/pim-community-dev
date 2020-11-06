@@ -27,6 +27,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Product model draft import processor, allows to,
@@ -175,6 +176,7 @@ class ProductModelDraftProcessor extends AbstractProcessor implements
         if (null === $productModelDraft) {
             $deprecatedDraft = $this->getProductModelDraft($productModel);
             if (null !== $deprecatedDraft) {
+                Assert::implementsInterface($deprecatedDraft, EntityWithValuesDraftInterface::class);
                 $deprecatedDraft->setChanges([]);
 
                 return $deprecatedDraft;

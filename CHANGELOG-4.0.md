@@ -1,5 +1,13 @@
 # 4.0.x
 
+# 4.0.69 (2020-11-05)
+
+## Bug fixes:
+
+- PIM-9547: Fix SqlFindPropertyAccessibleAsset performance
+- PIM-9546: [Backport] PIM-9528: Fix asset code changed into lower case in create asset/upload asset UI
+- PIM-9530: [Backport] PIM-9316: Fix url encoding of media links in asset edit form
+
 # 4.0.68 (2020-10-30)
 
 ## Bug fixes:
