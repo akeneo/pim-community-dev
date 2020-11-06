@@ -108,8 +108,8 @@ const Text = styled.div`
 
 const TextWithLink = styled.span`
   a, button {
-    color: ${({theme}) => theme.color.purple100};
-    text-decoration: underline ${({theme}) => theme.color.purple100};
+    color: ${({theme}) => theme.color.blue100};
+    text-decoration: underline ${({theme}) => theme.color.blue100};
     cursor: pointer;
     border: none;
     background: none;
