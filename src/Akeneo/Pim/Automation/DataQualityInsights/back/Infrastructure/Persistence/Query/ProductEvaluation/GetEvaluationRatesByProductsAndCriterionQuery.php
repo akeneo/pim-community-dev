@@ -43,7 +43,8 @@ SQL;
 
         $evaluationRates = [];
         while ($productSpelling = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $evaluationRates[$productSpelling['product_id']] = json_decode($productSpelling['rates'], true, 512, JSON_THROW_ON_ERROR);
+            $evaluationRates[$productSpelling['product_id']] =
+                isset($productSpelling['rates']) ? json_decode($productSpelling['rates'], true, 512, JSON_THROW_ON_ERROR) : [];
         }
 
         return $evaluationRates;
