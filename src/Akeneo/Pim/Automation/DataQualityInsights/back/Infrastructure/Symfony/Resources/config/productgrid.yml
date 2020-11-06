@@ -54,6 +54,6 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\KeyIndicatorFilter
         arguments:
             - 'data_quality_insights_spelling_quality'
-            - 'no_spelling_mistakes'
+            - 'values_perfect_spelling'
         tags:
             - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
