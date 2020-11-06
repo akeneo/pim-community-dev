@@ -818,17 +818,9 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - ready_to_build_dev?:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - "master"
-                requires:
-                    - checkout
           - build_dev:
                 requires:
-                    - ready_to_build_dev?
+                    - checkout
           - build_prod:
                 requires:
                     - checkout
@@ -912,32 +904,24 @@ workflows:
                     - test_upgrade_from_last_release
 
   growth_edition_release:
-      # triggerss:
-      #     - schedule:
-      #           cron: "0 4 * * *"
-      #           filters:
-      #               branches:
-      #                   only:
-      #                       - master
+      triggers:
+          - schedule:
+                cron: "0 4 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
       jobs:
-          - ready_to_build?:
-                    type: approval
-                    filters:
-                        branches:
-                            ignore:
-                                - master
-          - checkout:
+           - checkout
+           - prepare_growth_edition:
                 requires:
-                    - ready_to_build?
-          - prepare_growth_edition:
-              requires:
-                  - checkout
-          - test_deploy:
-              requires:
-                  - prepare_growth_edition
-          # - release_growth_edition:
-          #         requires:
-          #             - test_deploy
+                    - checkout
+           - test_deploy:
+                requires:
+                    - prepare_growth_edition
+           - release_growth_edition:
+                    requires:
+                        - test_deploy
 
   nightly_deployments:
       triggers:
