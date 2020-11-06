@@ -4,4 +4,8 @@ akeneo_data_quality_insights:
     attribute_grid:
         quality_column_label: Quality
 
+    product_grid:
+        filter_label:
+            spelling_quality: Spelling quality
+
 Consistency: Consistency
