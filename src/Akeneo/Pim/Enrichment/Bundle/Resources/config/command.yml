@@ -16,6 +16,17 @@ services:
         tags:
             - { name: console.command }
 
+    Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributeFromProductAndProductModelCommand:
+        arguments:
+            - '@akeneo.shared_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_query_builder_search_after_size_factory'
+            - '@Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQueryInterface'
+            - '@database_connection'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@event_dispatcher'
+        tags:
+            - { name: console.command }
+
     Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductCommand:
         arguments:
             - '@pim_catalog.query.filter.product.field_dumper'
