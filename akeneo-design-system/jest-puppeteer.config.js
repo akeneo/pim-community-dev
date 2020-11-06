@@ -1,7 +1,7 @@
 module.exports = {
   launch: {
     dumpio: true,
-    headless: true,
+    headless: false,
   },
   server: {
     command: 'yarn http-server storybook-static -p 6006',
