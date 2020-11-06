@@ -79,7 +79,6 @@ abstract class AbstractAssociation implements AssociationInterface
     {
         if (!$this->owner) {
             $this->owner = $owner;
-            $owner->addAssociation($this);
         }
 
         return $this;

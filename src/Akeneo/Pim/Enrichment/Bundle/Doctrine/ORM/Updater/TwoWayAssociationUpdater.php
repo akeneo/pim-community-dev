@@ -45,7 +45,7 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
         }
 
         if ($owner instanceof ProductInterface) {
-            $this->addInversedAssociatedProduct($inversedAssociation, $owner);
+            $this->addInversedAssociatedProduct($inversedAssociation, $owner, $associatedEntity);
         } elseif ($owner instanceof ProductModelInterface) {
             $this->addInversedAssociatedProductModel($inversedAssociation, $owner);
         } else {
@@ -68,17 +68,20 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
      */
     private function addInversedAssociatedProduct(
         AssociationInterface $association,
-        ProductInterface $associatedProduct
+        ProductInterface $owner,
+        EntityWithAssociationsInterface $associatedProduct
     ): void {
         /** @var ProductInterface $product */
         foreach ($association->getProducts() as $product) {
-            if ($product->getIdentifier() === $associatedProduct->getIdentifier()
-                && $product !== $associatedProduct) {
+            if ($product->getIdentifier() === $owner->getIdentifier()
+                && $product !== $owner) {
                 $association->removeProduct($product);
             }
         }
 
-        $association->addProduct($associatedProduct);
+        $associatedProduct->removeAssociation($association);
+        $association->addProduct($owner);
+        $associatedProduct->addAssociation($association);
     }
 
     /**
@@ -119,7 +122,9 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
         }
 
         if ($owner instanceof ProductInterface) {
+            $associatedEntity->removeAssociation($inversedAssociation);
             $inversedAssociation->removeProduct($owner);
+            $associatedEntity->addAssociation($inversedAssociation);
         } elseif ($owner instanceof ProductModelInterface) {
             $inversedAssociation->removeProductModel($owner);
         } else {

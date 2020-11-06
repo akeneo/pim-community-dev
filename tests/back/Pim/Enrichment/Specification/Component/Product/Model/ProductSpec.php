@@ -3,14 +3,18 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -37,58 +41,46 @@ class ProductSpec extends ObjectBehavior
         $this->getCategories()->shouldHaveCount(2);
     }
 
-    function it_returns_association_from_an_association_type(
-        ProductAssociation $assoc1,
-        ProductAssociation $assoc2,
-        AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2,
-        Collection $associations,
-        \Iterator $associationsIterator
-    ) {
-        $associations->getIterator()->willReturn($associationsIterator);
-        $associationsIterator->current()->willReturn($assoc1, $assoc2);
-        $associationsIterator->rewind()->shouldBeCalled();
-        $associationsIterator->valid()->willReturn(true, true, false);
+    function it_returns_association_from_an_association_type()
+    {
+        $upsellAssociation = new ProductAssociation();
+        $upsellType = new AssociationType();
+        $upsellType->setCode('UPSELL');
+        $upsellAssociation->setAssociationType($upsellType);
 
-        $assoc1->getAssociationType()->willReturn($assocType1);
-        $assoc2->getAssociationType()->willReturn($assocType2);
+        $xSellAssociation = new ProductAssociation();
+        $xSellType = new AssociationType();
+        $xSellType->setCode('X_SELL');
+        $xSellAssociation->setAssociationType($xSellType);
 
-        $this->setAssociations($associations);
-        $this->getAssociationForType($assocType1)->shouldReturn($assoc1);
+        $this->setAssociations(new ArrayCollection([$upsellAssociation, $xSellAssociation]));
+        $this->getAssociationForType($upsellType)->shouldReturn($upsellAssociation);
     }
 
-    function it_returns_association_from_an_association_type_code(
-        ProductAssociation $assoc1,
-        ProductAssociation $assoc2,
-        AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2,
-        Collection $associations,
-        \Iterator $associationsIterator
-    ) {
-        $associations->getIterator()->willReturn($associationsIterator);
-        $associationsIterator->current()->willReturn($assoc1, $assoc2);
-        $associationsIterator->next()->shouldBeCalled();
-        $associationsIterator->rewind()->shouldBeCalled();
-        $associationsIterator->valid()->willReturn(true, true, false);
+    function it_returns_association_from_an_association_type_code()
+    {
+        $upsellAssociation = new ProductAssociation();
+        $upsellType = new AssociationType();
+        $upsellType->setCode('UPSELL');
+        $upsellAssociation->setAssociationType($upsellType);
 
-        $assocType1->getCode()->willReturn('ASSOC_TYPE_1');
-        $assocType2->getCode()->willReturn('ASSOC_TYPE_2');
-        $assoc1->getAssociationType()->willReturn($assocType1);
-        $assoc2->getAssociationType()->willReturn($assocType2);
+        $xSellAssociation = new ProductAssociation();
+        $xSellType = new AssociationType();
+        $xSellType->setCode('X_SELL');
+        $xSellAssociation->setAssociationType($xSellType);
 
-        $this->setAssociations($associations);
-        $this->getAssociationForTypeCode('ASSOC_TYPE_2')->shouldReturn($assoc2);
+        $this->setAssociations(new ArrayCollection([$upsellAssociation, $xSellAssociation]));
+
+        $this->getAssociationForTypeCode('X_SELL')->shouldReturn($xSellAssociation);
     }
 
-    function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection(
-        AssociationTypeInterface $assocType1,
-        Collection $associations,
-        \Iterator $associationsIterator
-    ) {
-        $associations->getIterator()->willReturn($associationsIterator);
+    function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection()
+    {
+        $xSellType = new AssociationType();
+        $xSellType->setCode('X_SELL');
 
-        $this->setAssociations($associations);
-        $this->getAssociationForType($assocType1)->shouldReturn(null);
+        $this->setAssociations(new ArrayCollection());
+        $this->getAssociationForType($xSellType)->shouldReturn(null);
     }
 
     function it_has_not_attribute_in_family_without_family(AttributeInterface $attribute)
@@ -392,14 +384,9 @@ class ProductSpec extends ObjectBehavior
         $this->getFamilyVariant()->shouldReturn($familyVariant);
     }
 
-    function it_is_updated_at_instantiation()
-    {
-        $this->beConstructedWith([]);
-        $this->wasUpdated()->shouldReturn(true);
-    }
-
     function it_can_reset_its_updated_state()
     {
+        $this->setEnabled(false);
         $this->cleanup();
         $this->wasUpdated()->shouldReturn(false);
     }
@@ -682,4 +669,313 @@ class ProductSpec extends ObjectBehavior
         );
         $this->wasUpdated()->shouldReturn(true);
     }
+
+    function it_is_updated_when_adding_a_non_empty_association(
+        AssociationInterface $association,
+        AssociationTypeInterface $associationType
+    ) {
+        $associationType->getCode()->willReturn('X_SELL');
+        $association->getAssociationType()->willReturn($associationType);
+        $association->getProducts()->willReturn(new ArrayCollection([new Product()]));
+        $this->cleanup();
+
+        $association->setOwner($this)->shouldBeCalled();
+
+        $this->addAssociation($association);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_adding_an_empty_association(
+        AssociationInterface $association,
+        AssociationTypeInterface $associationType
+    ) {
+        $associationType->getCode()->willReturn('X_SELL');
+        $association->getAssociationType()->willReturn($associationType);
+        $association->getProducts()->willReturn(new ArrayCollection());
+        $association->getProductModels()->willReturn(new ArrayCollection());
+        $association->getGroups()->willReturn(new ArrayCollection());
+        $this->cleanup();
+
+
+        $association->setOwner($this)->shouldBeCalled();
+
+        $this->addAssociation($association);
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_not_updated_when_adding_an_already_existing_association()
+    {
+        $upsellAssociation = new ProductAssociation();
+        $upsellType = new AssociationType();
+        $upsellType->setCode('UPSELL');
+        $upsellAssociation->setAssociationType($upsellType);
+
+        $this->setAssociations(new ArrayCollection([$upsellAssociation]));
+        $this->cleanup();
+
+        $this
+            ->shouldThrow(\LogicException::class)
+            ->during('addAssociation', [$upsellAssociation]);
+
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_throws_an_exception_if_a_similar_association_already_exists()
+    {
+        $upsellAssociation = new ProductAssociation();
+        $upsellType = new AssociationType();
+        $upsellType->setCode('UPSELL');
+        $upsellAssociation->setAssociationType($upsellType);
+
+        $anotherUpsellAssociation = new ProductAssociation();
+        $anotherUpsellType = new AssociationType();
+        $anotherUpsellType->setCode('UPSELL');
+        $anotherUpsellAssociation->setAssociationType($anotherUpsellType);
+
+        $this->setAssociations(new ArrayCollection([$upsellAssociation]));
+
+        $this
+            ->shouldThrow(\LogicException::class)
+            ->during('addAssociation', [$anotherUpsellAssociation]);
+    }
+
+    function it_is_updated_when_a_non_empty_association_is_removed(
+        AssociationInterface $association
+    ) {
+        $association->getProducts()->willReturn(new ArrayCollection([new Product()]));
+
+        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $this->cleanup();
+
+        $this->removeAssociation($association);
+        $this->wasUpdated()->shouldReturn(true);
+    }
+
+    function it_is_not_updated_when_an_empty_association_is_removed()
+    {
+        $upsellAssociation = new ProductAssociation();
+        $upsellType = new AssociationType();
+        $upsellType->setCode('UPSELL');
+        $upsellAssociation->setAssociationType($upsellType);
+
+        $this->setAssociations(new ArrayCollection([$upsellAssociation]));
+        $this->cleanup();
+
+        $this->removeAssociation($upsellAssociation);
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    function it_is_not_updated_when_removing_a_non_existent_association(
+        AssociationInterface $association
+    ) {
+        $this->cleanup();
+
+        $this->removeAssociation($association);
+        $this->wasUpdated()->shouldReturn(false);
+    }
+
+    // TODO: check the new association has products, models or groups
+//    function it_is_updated_when_setting_new_associations(
+//        AssociationInterface $association
+//    ) {
+//        $this->cleanup();
+//        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+//
+//        $this->wasUpdated()->shouldReturn(true);
+//    }
+//
+//    // TODO: check the former association had products, models or groups
+//    function it_is_updated_when_removing_an_association(
+//        AssociationInterface $association1,
+//        AssociationInterface $association2
+//    ) {
+//        $this->setAssociations(new ArrayCollection([
+//            $association1->getWrappedObject(),
+//            $association2->getWrappedObject(),
+//        ]));
+//        $this->cleanup();
+//
+//        $this->setAssociations(new ArrayCollection([$association1->getWrappedObject()]));
+//        $this->wasUpdated()->shouldReturn(true);
+//    }
+//
+//    function it_is_updated_when_an_associated_product_is_added(
+//        AssociationInterface $formerAssociation,
+//        AssociationInterface $newAssociation,
+//        AssociationTypeInterface $associationType,
+//        ProductInterface $associatedProduct
+//    ) {
+//        $associationType->getCode()->willReturn('X_SELL');
+//
+//        $formerAssociation->getAssociationType()->willReturn($associationType);
+//        $formerAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $formerAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $formerAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $newAssociation->getAssociationType()->willReturn($associationType);
+//        $newAssociation->getProducts()->willReturn(new ArrayCollection([$associatedProduct->getWrappedObject()]));
+//        $newAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $newAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $this->setAssociations(new ArrayCollection([$formerAssociation->getWrappedObject()]));
+//        $this->cleanup();
+//
+//        $this->setAssociations(new ArrayCollection([$newAssociation->getWrappedObject()]));
+//        $this->wasUpdated()->shouldReturn(true);
+//    }
+//
+//    function it_is_updated_when_an_associated_product_model_is_added(
+//        AssociationInterface $formerAssociation,
+//        AssociationInterface $newAssociation,
+//        AssociationTypeInterface $associationType,
+//        ProductModelInterface $associatedProductModel
+//    ) {
+//        $associationType->getCode()->willReturn('X_SELL');
+//
+//        $formerAssociation->getAssociationType()->willReturn($associationType);
+//        $formerAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $formerAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $formerAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $newAssociation->getAssociationType()->willReturn($associationType);
+//        $newAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $newAssociation->getProductModels()->willReturn(
+//            new ArrayCollection([$associatedProductModel->getWrappedObject()])
+//        );
+//        $newAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $this->setAssociations(new ArrayCollection([$formerAssociation->getWrappedObject()]));
+//        $this->cleanup();
+//
+//        $this->setAssociations(new ArrayCollection([$newAssociation->getWrappedObject()]));
+//        $this->wasUpdated()->shouldReturn(true);
+//    }
+//
+//    function it_is_updated_when_an_associated_group_is_added(
+//        AssociationInterface $formerAssociation,
+//        AssociationInterface $newAssociation,
+//        AssociationTypeInterface $associationType,
+//        GroupInterface $associatedGroup
+//    ) {
+//        $associationType->getCode()->willReturn('X_SELL');
+//
+//        $formerAssociation->getAssociationType()->willReturn($associationType);
+//        $formerAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $formerAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $formerAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $newAssociation->getAssociationType()->willReturn($associationType);
+//        $newAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $newAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $newAssociation->getGroups()->willReturn(new ArrayCollection([$associatedGroup->getWrappedObject()]));
+//
+//        $this->setAssociations(new ArrayCollection([$formerAssociation->getWrappedObject()]));
+//        $this->cleanup();
+//
+//        $this->setAssociations(new ArrayCollection([$newAssociation->getWrappedObject()]));
+//        $this->wasUpdated()->shouldReturn(true);
+//    }
+//
+//    function it_is_updated_when_an_associated_product_is_removed(
+//        AssociationInterface $formerAssociation,
+//        AssociationInterface $newAssociation,
+//        AssociationTypeInterface $associationType,
+//        ProductInterface $associatedProduct
+//    ) {
+//        $associationType->getCode()->willReturn('X_SELL');
+//
+//        $formerAssociation->getAssociationType()->willReturn($associationType);
+//        $formerAssociation->getProducts()->willReturn(new ArrayCollection([$associatedProduct->getWrappedObject()]));
+//        $formerAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $formerAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $newAssociation->getAssociationType()->willReturn($associationType);
+//        $newAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $newAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $newAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $this->setAssociations(new ArrayCollection([$formerAssociation->getWrappedObject()]));
+//        $this->cleanup();
+//
+//        $this->setAssociations(new ArrayCollection([$newAssociation->getWrappedObject()]));
+//        $this->wasUpdated()->shouldReturn(true);
+//    }
+//
+//    function it_is_updated_when_an_associated_product_model_is_removed(
+//        AssociationInterface $formerAssociation,
+//        AssociationInterface $newAssociation,
+//        AssociationTypeInterface $associationType,
+//        ProductModelInterface $associatedProductModel
+//    ) {
+//        $associationType->getCode()->willReturn('X_SELL');
+//
+//        $formerAssociation->getAssociationType()->willReturn($associationType);
+//        $formerAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $formerAssociation->getProductModels()->willReturn(
+//            new ArrayCollection([$associatedProductModel->getWrappedObject()])
+//        );
+//        $formerAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $newAssociation->getAssociationType()->willReturn($associationType);
+//        $newAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $newAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $newAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $this->setAssociations(new ArrayCollection([$formerAssociation->getWrappedObject()]));
+//        $this->cleanup();
+//
+//        $this->setAssociations(new ArrayCollection([$newAssociation->getWrappedObject()]));
+//        $this->wasUpdated()->shouldReturn(true);
+//    }
+//
+//    function it_is_updated_when_an_associated_group_is_removed(
+//        AssociationInterface $formerAssociation,
+//        AssociationInterface $newAssociation,
+//        AssociationTypeInterface $associationType,
+//        GroupInterface $associatedGroup
+//    ) {
+//        $associationType->getCode()->willReturn('X_SELL');
+//
+//        $formerAssociation->getAssociationType()->willReturn($associationType);
+//        $formerAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $formerAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $formerAssociation->getGroups()->willReturn(new ArrayCollection([$associatedGroup->getWrappedObject()]));
+//
+//        $newAssociation->getAssociationType()->willReturn($associationType);
+//        $newAssociation->getProducts()->willReturn(new ArrayCollection());
+//        $newAssociation->getProductModels()->willReturn(new ArrayCollection());
+//        $newAssociation->getGroups()->willReturn(new ArrayCollection());
+//
+//        $this->setAssociations(new ArrayCollection([$formerAssociation->getWrappedObject()]));
+//        $this->cleanup();
+//
+//        $this->setAssociations(new ArrayCollection([$newAssociation->getWrappedObject()]));
+//        $this->wasUpdated()->shouldReturn(true);
+//    }
+//
+//    function it_is_not_updated_when_setting_similar_associations(
+//        AssociationInterface $formerAssociation,
+//        AssociationInterface $newAssociation,
+//        AssociationTypeInterface $associationType,
+//        ProductInterface $product,
+//        ProductModelInterface $productModel,
+//        GroupInterface $group
+//    ) {
+//        $associationType->getCode()->willReturn('X_SELL');
+//        $formerAssociation->getAssociationType()->willReturn($associationType);
+//        $formerAssociation->getProducts()->willReturn(new ArrayCollection([$product->getWrappedObject()]));
+//        $formerAssociation->getProductModels()->willReturn(new ArrayCollection([$productModel->getWrappedObject()]));
+//        $formerAssociation->getGroups()->willReturn(new ArrayCollection([$group->getWrappedObject()]));
+//        $this->setAssociations(new ArrayCollection([$formerAssociation->getWrappedObject()]));
+//        $this->cleanup();
+//
+//        $newAssociation->getAssociationType()->willReturn($associationType);
+//        $newAssociation->getProducts()->willReturn(new ArrayCollection([$product->getWrappedObject()]));
+//        $newAssociation->getProductModels()->willReturn(new ArrayCollection([$productModel->getWrappedObject()]));
+//        $newAssociation->getGroups()->willReturn(new ArrayCollection([$group->getWrappedObject()]));
+//
+//        $this->setAssociations(new ArrayCollection([$newAssociation->getWrappedObject()]));
+//
+//        $this->wasUpdated()->shouldReturn(false);
+//    }
 }

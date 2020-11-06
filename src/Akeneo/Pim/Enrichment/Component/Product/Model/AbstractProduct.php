@@ -95,7 +95,6 @@ abstract class AbstractProduct implements ProductInterface
         $this->associations = new ArrayCollection();
         $this->uniqueData = new ArrayCollection();
         $this->quantifiedAssociationCollection = QuantifiedAssociationCollection::createFromNormalized([]);
-        $this->wasUpdated = true;
     }
 
     /**
@@ -573,21 +572,26 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addAssociation(AssociationInterface $association): EntityWithAssociationsInterface
+    public function addAssociation(AssociationInterface $newAssociation): EntityWithAssociationsInterface
     {
-        if (!$this->associations->contains($association)) {
-            $associationType = $association->getAssociationType();
-            if (null !== $associationType && null !== $this->getAssociationForType($associationType)) {
-                throw new \LogicException(
-                    sprintf(
-                        'Can not add an association of type %s because the product already has one',
-                        $associationType->getCode()
-                    )
-                );
-            }
+        $currentAssociation = $this->getSimilarAssociation($newAssociation);
+        if ($currentAssociation) {
+            throw new \LogicException(
+                sprintf(
+                    'Can not add an association of type %s because the product already has one',
+                    $currentAssociation->getAssociationType()->getCode()
+                )
+            );
+        }
 
-            $this->associations->add($association);
-            $association->setOwner($this);
+        $newAssociation->setOwner($this);
+        $this->associations->add($newAssociation);
+        if (
+            $newAssociation->getProducts()->count() > 0 ||
+            $newAssociation->getProductModels()->count() > 0 ||
+            $newAssociation->getGroups()->count() > 0
+        ) {
+            $this->wasUpdated = true;
         }
 
         return $this;
@@ -598,7 +602,18 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
-        $this->associations->removeElement($association);
+        $similarAssociation = $this->getSimilarAssociation($association);
+        if (
+            null !== $similarAssociation &&
+            true === $this->associations->removeElement($similarAssociation) &&
+            (
+                $similarAssociation->getProducts()->count() > 0 ||
+                $similarAssociation->getProductModels()->count() > 0 ||
+                $similarAssociation->getGroups()->count() > 0
+            )
+        ) {
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
@@ -608,7 +623,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAssociations()
     {
-        return $this->associations;
+        return new ArrayCollection($this->associations->toArray());
     }
 
     /**
@@ -635,7 +650,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAssociationForTypeCode($typeCode): ?AssociationInterface
     {
-        foreach ($this->associations as $association) {
+        foreach ($this->getAssociations() as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
                 return $association;
             }
@@ -650,6 +665,7 @@ abstract class AbstractProduct implements ProductInterface
     public function setAssociations(Collection $associations): EntityWithAssociationsInterface
     {
         $this->associations = $associations;
+        $this->wasUpdated = true;
 
         return $this;
     }
@@ -774,6 +790,35 @@ abstract class AbstractProduct implements ProductInterface
     public function cleanup(): void
     {
         $this->wasUpdated = false;
+    }
+
+    /**
+     * Should be handled by an AssociationsCollection->contains()
+     *
+     * @param AssociationInterface $needleAssociation
+     *
+     * @return AssociationInterface|null
+     */
+    private function getSimilarAssociation(AssociationInterface $needleAssociation): ?AssociationInterface
+    {
+        if ($this->associations->contains($needleAssociation)) {
+            return $needleAssociation;
+        }
+
+        $needleAssociationType = $needleAssociation->getAssociationType();
+        foreach ($this->associations as $current) {
+            if (
+                $current->getReference() === $needleAssociation->getReference() ||
+                (
+                    null !== $needleAssociationType &&
+                    null !== $this->getAssociationForType($needleAssociationType)
+                )
+            ) {
+                return $current;
+            }
+        }
+
+        return null;
     }
 
     /**
