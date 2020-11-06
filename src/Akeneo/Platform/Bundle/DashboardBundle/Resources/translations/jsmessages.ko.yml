@@ -1,6 +1,0 @@
-pim_dashboard:
-  widget:
-    completeness:
-      load_more: '더 로드...'
-pim_title:
-  pim_dashboard_index: 대시보드

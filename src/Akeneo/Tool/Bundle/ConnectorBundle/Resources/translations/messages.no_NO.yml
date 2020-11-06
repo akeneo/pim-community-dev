@@ -1,0 +1,23 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Forventet å ha %totalColumnsCount% kolonner, men har faktisk %itemColumnsCount% i %filePath%:%lineno%'
+job_execution.summary:
+  read: les
+  write: skrevet av
+  skip: hoppet over
+  create: opprettet
+  process: behandlet
+  update_products: oppdaterte produkter
+  process_products: bearbeidede produkter
+  skip_products: hoppet over produkter
+  displayed: første advarsler vises
+  charset_validator:
+    title: '-Koding:'
+    skipped: hoppet over, utvidelsen i hvitlisten
+  product_skipped_no_diff: hoppet over produktet (ingen forskjeller)
+  product_skipped_no_associations: hoppet over produkt (ingen tilknytning oppdaget)
+  product_model_skipped_no_diff: hoppet over produktmodell (ingen forskjeller)
+  item_position: les linjer
+  skipped_in_root_product_model: hoppet over produktmodell med foreldre
+  skipped_in_sub_product_model: hoppet over produktmodell uten foreldre

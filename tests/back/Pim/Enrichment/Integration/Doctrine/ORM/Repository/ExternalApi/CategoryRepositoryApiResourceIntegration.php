@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Doctrine\ORM\Repository\ExternalApi;
+namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi\CategoryRepository;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;

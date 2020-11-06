@@ -1,0 +1,100 @@
+pim_title:
+  pim_user_index: 用戶
+  pim_user_role_index: 角色
+  pim_user_group_index: 用戶分組
+  oro_config_configuration_system: 配置
+  pim_user_edit: '用戶 {{ username }} | 編輯'
+  pim_user_create: '用戶|創建'
+  pim_user_role_update: '角色 {{ role }} | 編輯'
+  pim_user_role_create: '角色 | 創建'
+  pim_user_security_login: 登入
+  pim_user_reset_reset: 重設密碼
+  pim_user_reset_request: 忘記密碼
+  pim_user_reset_check_email: 重設密碼 | 查看郵件
+  pim_user_group_create: '分組 | 創建'
+  pim_user_group_update: '分組 {{ group }} | 編輯'
+confirmation:
+  remove:
+    user: 確定刪除該用戶？
+    group: 確定刪除該分組嗎？
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: 無法刪除該用戶
+          success: 該用戶已刪除
+      module:
+        delete:
+          confirm: 確定刪除該用戶？
+pim_user_management:
+  entity:
+    user:
+      label: 用戶
+      flash:
+        update:
+          success: 用戶已成功更新。
+          fail: 該用戶無法更新。
+          fields_not_ready: "該用戶現在無法保存。以下字段尚未準備就緒：{{ fields }}"
+        create:
+          success: 用戶已成功創建。
+      page_title:
+        index: "]-Inf, 1] {{ count }} 個用戶 |]1, Inf [{{ count }} 個用戶"
+      properties:
+        username: 用戶名
+        name_prefix: 姓名前綴
+        first_name: 名字
+        middle_name: 中間名
+        last_name: 姓氏
+        name_suffix: 姓名後綴
+        phone: 電話
+        avatar: 大頭貼
+        email: 電子郵件
+        catalog_locale: 目錄區域
+        catalog_scope: 目錄範圍
+        default_tree: 默認目錄
+        default_asset_tree: 默認資產目錄
+        product_grid_filters: 商品網格篩選
+        current_password: 當前密碼
+        new_password: 新密碼
+        new_password_repeat: 新密碼 （再次輸入）
+        password: 密碼
+        password_repeat: 密碼 （再次輸入）
+        last_logged_in: 上次登入
+        login_count: 登入次數
+        ui_locale: UI 區域
+        timezone: 時區
+        default_product_grid_view: 默認產品網格視圖
+        default_published_product_grid_view: 默認發佈產品網格視圖 #EE Only
+        proposals_to_review_notification: 新提案待審核時 #EE Only
+        proposals_state_notifications: 新提案已被接受或拒絕 #EE Only
+      meta:
+        created: 已創建
+        updated: 已更新
+      module:
+        create:
+          button: 創建用戶
+        delete:
+          confirm: 確定刪除該用戶？
+        update:
+          additional: 附加
+          groups_and_roles: 分組和角色
+          password: 密碼
+          interfaces: 介面
+          notifications: 通知 #TODO EE Only
+    role:
+      plural_label: 角色
+      page_title:
+        index: "]-Inf, 1] {{ count }} 個角色|]1, Inf [{{ count }} 個角色"
+      module:
+        create:
+          button: 創建角色
+        delete:
+          confirm: 確定要刪除這個角色？
+    group:
+      plural_label: 用戶分組
+      page_title:
+        index: "]-Inf, 1] {{ count }} 個分組|]1, Inf [{{ count }} 個分組"
+      module:
+        create:
+          button: 創建分組

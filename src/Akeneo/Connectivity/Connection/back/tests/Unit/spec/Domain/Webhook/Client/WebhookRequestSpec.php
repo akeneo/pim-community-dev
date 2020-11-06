@@ -71,24 +71,23 @@ class WebhookRequestSpec extends ObjectBehavior
             );
     }
 
-    public function it_returns_metadata(): void
+    public function it_returns_the_webhook(ActiveWebhook $webhook, WebhookEvent $webhookEvent): void
     {
-        $this->metadata()
-            ->shouldReturn(
-                [
-                    'webhook' => [
-                        'connection_code' => 'ecommerce',
-                        'url' => 'http://localhost/webhook',
-                    ],
-                    'event' => [
-                        'action' => 'product.created',
-                        'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                        'event_date' => '2020-01-01T00:00:00+00:00',
-                        'author' => 'julia',
-                        'author_type' => 'ui',
-                        'pim_source' => 'staging.akeneo.com',
-                    ],
-                ]
-            );
+        $this->beConstructedWith(
+            $webhook,
+            $webhookEvent
+        );
+
+        $this->webhook()->shouldReturn($webhook);
+    }
+
+    public function it_returns_the_event(ActiveWebhook $webhook, WebhookEvent $webhookEvent): void
+    {
+        $this->beConstructedWith(
+            $webhook,
+            $webhookEvent
+        );
+
+        $this->event()->shouldReturn($webhookEvent);
     }
 }

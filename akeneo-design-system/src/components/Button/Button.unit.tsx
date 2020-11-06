@@ -102,3 +102,23 @@ test('it does not trigger onClick when onClick is undefined', () => {
 
   expect(onClick).not.toBeCalled();
 });
+
+test('Button supports forwardRef', () => {
+  const ref = {current: null};
+
+  render(
+    <Button onClick={jest.fn()} ref={ref}>
+      My button
+    </Button>
+  );
+  expect(ref.current).not.toBe(null);
+});
+
+test('Button supports ...rest props', () => {
+  const {container} = render(
+    <Button onClick={jest.fn()} data-my-attribute="my_value">
+      My button
+    </Button>
+  );
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+});
