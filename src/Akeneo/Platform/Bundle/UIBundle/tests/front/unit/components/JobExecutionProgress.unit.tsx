@@ -253,6 +253,35 @@ test('it render the progress bar of one untrackable and started job step', () =>
   expect(screen.getByRole('progressbar')).not.toHaveAttribute('aria-valuenow');
 });
 
+test('it render the progress bar of one untrackable and failed job step', () => {
+  mockGetFormData.mockImplementationOnce(() => ({
+    tracking: {
+      status: 'FAILED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
+        {
+          jobName: 'csv_product_export',
+          stepName: 'export',
+          status: 'FAILED',
+          isTrackable: false,
+          hasWarning: false,
+          hasError: false,
+          duration: 10,
+          processedItems: 0,
+          totalItems: 0,
+        },
+      ],
+    },
+  }));
+
+  const component = new JobExecutionProgress(container);
+  component.render();
+
+  expect(screen.getByText('pim_import_export.tracking.completed')).toBeInTheDocument();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '100');
+});
+
 test('it render without error the progress bar of one job step with warning', () => {
   mockGetFormData.mockImplementationOnce(() => ({
     tracking: {
