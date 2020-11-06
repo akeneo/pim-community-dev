@@ -775,10 +775,6 @@ jobs:
               root: ~/
               paths:
                 - project
-          - run:
-              name: Remove growth env
-              command: TYPE=grth make delete-instance
-              when: on_fail
 
   release_growth_edition:
       environment:
@@ -899,28 +895,21 @@ workflows:
                     - test_back_performance
                     - test_upgrade_from_last_release
 
-          - prepare_growth_edition:
-                requires:
-                    - checkout
-          - test_deploy:
-                requires:
-                    - prepare_growth_edition
-
   growth_edition_release:
-      triggers:
-          - schedule:
-                cron: "0 4 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
+      # triggers:
+      #     - schedule:
+      #           cron: "0 4 * * *"
+      #           filters:
+      #               branches:
+      #                   only:
+      #                       - master
       jobs:
           - ready_to_build?:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - "master"
+                    type: approval
+                    filters:
+                        branches:
+                            ignore:
+                                - master
           - checkout:
                 requires:
                     - ready_to_build?
@@ -930,9 +919,9 @@ workflows:
           - test_deploy:
               requires:
                   - prepare_growth_edition
-          - release_growth_edition:
-                  requires:
-                      - test_deploy
+          # - release_growth_edition:
+          #         requires:
+          #             - test_deploy
 
   nightly_deployments:
       triggers:
