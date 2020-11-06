@@ -56,7 +56,7 @@ Github Action will deploy a new version of the storybook give the url to designe
 - Component should be strongly typed with TypeScript
 - All properties should be documented
 - Simple components should be stateless
-- Coding style should follow rules defined in .eslintrc
+- Coding style should follow rules defined in .eslintrc (`yarn lint:check`)
 - Component should manage forwardRef and ...props
 - Component should provide aria attributes if necessary
 - Components should be keyboard accessible
