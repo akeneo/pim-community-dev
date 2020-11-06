@@ -33,7 +33,7 @@ class MarkProductDraftAsReadyProcessor implements ItemProcessorInterface
     }
 
     /**
-     * @param EntityWithValuesDraftInterface
+     * @param EntityWithValuesDraftInterface $productDraft
      *
      * @return EntityWithValuesDraftInterface
      */

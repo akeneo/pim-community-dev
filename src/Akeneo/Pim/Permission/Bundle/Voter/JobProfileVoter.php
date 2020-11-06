@@ -14,9 +14,11 @@ namespace Akeneo\Pim\Permission\Bundle\Voter;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Job profile voter, allows to know if a job profile can be executed or edited by
@@ -69,7 +71,7 @@ class JobProfileVoter extends Voter implements VoterInterface
      * @param string      $attribute
      * @param JobInstance $object
      *
-     * @return \Akeneo\UserManagement\Component\Model\Group[]
+     * @return \Akeneo\UserManagement\Component\Model\GroupInterface[]
      */
     protected function extractGroups($attribute, $object)
     {
@@ -99,8 +101,10 @@ class JobProfileVoter extends Voter implements VoterInterface
     {
         $grantedGroups = $this->extractGroups($attribute, $subject);
 
+        $user = $token->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
         foreach ($grantedGroups as $group) {
-            if ($token->getUser()->hasGroup($group)) {
+            if ($user->hasGroup($group)) {
                 return true;
             }
         }

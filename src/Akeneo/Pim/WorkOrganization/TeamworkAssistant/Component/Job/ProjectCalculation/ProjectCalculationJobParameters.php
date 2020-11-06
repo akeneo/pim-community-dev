@@ -23,13 +23,9 @@ use Symfony\Component\Validator\Constraints\Type;
  */
 class ProjectCalculationJobParameters implements DefaultValuesProviderInterface, ConstraintCollectionProviderInterface
 {
-    /** @var string */
-    protected $projectCalculationJobName;
+    protected string $projectCalculationJobName;
 
-    /**
-     * @param $projectCalculationJobName
-     */
-    public function __construct($projectCalculationJobName)
+    public function __construct(string $projectCalculationJobName)
     {
         $this->projectCalculationJobName = $projectCalculationJobName;
     }

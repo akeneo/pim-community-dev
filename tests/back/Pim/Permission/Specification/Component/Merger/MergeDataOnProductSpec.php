@@ -62,7 +62,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredProduct->getId()->willReturn(1);
         $filteredProduct->isEnabled()->willReturn(true);
         $filteredProduct->getFamily()->willReturn($family);
-        $filteredProduct->getFamilyId()->willReturn(2);
         $filteredProduct->getIdentifier()->willReturn('my_sku');
         $filteredProduct->getGroups()->willReturn($groups);
         $filteredProduct->getUniqueData()->willReturn($uniqueData);
@@ -79,7 +78,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
 
         $fullProduct->setEnabled(true)->shouldBeCalled();
         $fullProduct->setFamily($family)->shouldBeCalled();
-        $fullProduct->setFamilyId(2)->shouldBeCalled();
         $fullProduct->getValues()->willReturn($productValues);
         $productValues->removeByAttributeCode('sku')->shouldBeCalled();
         $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
@@ -133,7 +131,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredVariantProduct->getId()->willReturn(1);
         $filteredVariantProduct->isEnabled()->willReturn(true);
         $filteredVariantProduct->getFamily()->willReturn($family);
-        $filteredVariantProduct->getFamilyId()->willReturn(2);
         $filteredVariantProduct->getIdentifier()->willReturn('my_sku');
         $filteredVariantProduct->getGroups()->willReturn($groups);
         $filteredVariantProduct->getUniqueData()->willReturn($uniqueData);
@@ -145,7 +142,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
 
         $fullProduct->setEnabled(true)->shouldBeCalled();
         $fullProduct->setFamily($family)->shouldBeCalled();
-        $fullProduct->setFamilyId(2)->shouldBeCalled();
         $fullProduct->getValues()->willReturn($productValues);
         $productValues->removeByAttributeCode('sku')->shouldBeCalled();
         $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
@@ -179,7 +175,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredProduct->getId()->willReturn(1);
         $filteredProduct->isEnabled()->willReturn(true);
         $filteredProduct->getFamily()->willReturn($family);
-        $filteredProduct->getFamilyId()->willReturn(2);
         $filteredProduct->getIdentifier()->willReturn('my_sku');
         $filteredProduct->getGroups()->willReturn($groups);
         $filteredProduct->getUniqueData()->willReturn($uniqueData);
@@ -199,7 +194,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
 
         $fullProduct->setEnabled(true)->shouldBeCalled();
         $fullProduct->setFamily($family)->shouldBeCalled();
-        $fullProduct->setFamilyId(2)->shouldBeCalled();
         $fullProduct->getValues()->willReturn($productValues);
         $productValues->removeByAttributeCode('sku')->shouldBeCalled();
         $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
@@ -235,7 +229,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredVariantProduct->getId()->willReturn(1);
         $filteredVariantProduct->isEnabled()->willReturn(true);
         $filteredVariantProduct->getFamily()->willReturn($family);
-        $filteredVariantProduct->getFamilyId()->willReturn(2);
         $filteredVariantProduct->getIdentifier()->willReturn('my_sku');
         $filteredVariantProduct->getGroups()->willReturn($groups);
         $filteredVariantProduct->getUniqueData()->willReturn($uniqueData);
@@ -249,7 +242,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullVariantProduct->isVariant()->willReturn(true);
         $fullVariantProduct->setEnabled(true)->shouldBeCalled();
         $fullVariantProduct->setFamily($family)->shouldBeCalled();
-        $fullVariantProduct->setFamilyId(2)->shouldBeCalled();
         $fullVariantProduct->getValues()->willReturn($variantProductValues);
         $variantProductValues->removeByAttributeCode('sku')->shouldBeCalled();
         $fullVariantProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();

@@ -61,9 +61,6 @@ jobs:
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
               sudo chown -R 1000:1000 ~/.cache/yarn
-      - run:
-          name: Change owner on project dir after restoring cache
-          command: sudo chown -R 1000:1000 ../project
       - when:
             condition: << parameters.is_pull_request >>
             steps:
@@ -112,6 +109,9 @@ jobs:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project
           - run:
+                name: No legacy translation format
+                command: make find-legacy-translations
+          - run:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
@@ -157,10 +157,50 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: PhpUnit Integration
-                command: make integration-back
+                command: make pim-integration-back
           - run:
                 name: PhpUnit End to end
                 command: make end-to-end-back
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
+
+  test_back_integration_bounded_contexts:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=test make database
+          - run:
+                name: PhpUnit Integration
+                command: make var/tests/phpunit
+          - run:
+                name: Data Quality
+                command: make data-quality-insights-integration-back
+          - run:
+                name: Asset Manager
+                command: make asset-manager-integration-back
+          - run:
+                name: Rules Engine
+                command: make rule-engine-integration-back
+          - run:
+                name: Reference Entities
+                command: make reference-entity-integration-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -766,7 +806,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "master"
           - checkout:
                 requires:
                     - ready_to_build?
@@ -804,17 +844,15 @@ workflows:
           - deploy_pr_environment:
                 requires:
                     - deploy_pr_environment?
+
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
+
           - test_back_missing_structure_migrations:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-          - test_back_data_migrations:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -822,24 +860,37 @@ workflows:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
+          - test_back_integration_bounded_contexts:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
           - test_onboarder_bundle:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
-          - test_back_behat_legacy:
+
+          - test_back_data_migrations:
                 requires:
-                    - test_back_data_migrations
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
+                    - test_back_integration_bounded_contexts
+                    - test_onboarder_bundle
+          - test_back_behat_legacy:
+                requires:
+                    - test_back_missing_structure_migrations
+                    - test_back_phpunit
+                    - test_back_integration_bounded_contexts
                     - test_onboarder_bundle
           - test_back_performance:
                 requires:
-                    - test_back_data_migrations
                     - test_back_missing_structure_migrations
+                    - test_back_integration_bounded_contexts
                     - test_back_phpunit
                     - test_onboarder_bundle
+
           - pull_request_success:
                 requires:
+                    - test_back_data_migrations
                     - test_back_behat_legacy
                     - test_back_performance
                     - test_upgrade_from_last_release
@@ -931,6 +982,9 @@ workflows:
           - test_back_phpunit:
                 requires:
                     - build_dev
+          - test_back_integration_bounded_contexts:
+                requires:
+                    - build_dev
           - test_onboarder_bundle:
                 requires:
                     - build_dev
@@ -948,6 +1002,7 @@ workflows:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
+                    - test_back_integration_bounded_contexts
                     - test_onboarder_bundle
                     - test_back_performance
                     - test_back_behat_legacy
@@ -985,6 +1040,9 @@ workflows:
           - test_back_phpunit:
                 requires:
                     - build_dev
+          - test_back_integration_bounded_contexts:
+                requires:
+                    - build_dev
           - test_onboarder_bundle:
                 requires:
                     - build_dev
@@ -1002,6 +1060,7 @@ workflows:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
+                    - test_back_integration_bounded_contexts
                     - test_onboarder_bundle
                     - test_back_performance
                     - test_back_behat_legacy

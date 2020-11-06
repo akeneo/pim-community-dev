@@ -6,10 +6,12 @@ describe('akeneoassetmanager/tools/sanitizeAssetCode', () => {
   });
 
   test('I replace not alphanumeric characters by underscore', () => {
-    expect(sanitizeAssetCode('asset.code-with,5;forbidden~character!')).toEqual('asset_code_with_5_forbidden_character_');
+    expect(sanitizeAssetCode('asset.code-with,5;forbidden~character!')).toEqual(
+      'asset_code_with_5_forbidden_character_'
+    );
   });
 
-  test('I don\'t change the case', () => {
+  test("I don't change the case", () => {
     expect(sanitizeAssetCode('asset_code_fr_FR')).toEqual('asset_code_fr_FR');
-  })
+  });
 });

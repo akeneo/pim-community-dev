@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
@@ -22,6 +23,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Mass refuse action handler
@@ -53,6 +55,7 @@ class MassRefuseActionHandler implements MassActionHandlerInterface
 
         $datasource = $datagrid->getDatasource();
 
+        Assert::isInstanceOf($datasource, ProductProposalDatasource::class);
         $pqb = $datasource->getProductQueryBuilder();
         $cursor = $this->cursorFactory->createCursor($pqb->getQueryBuilder()->getQuery());
 

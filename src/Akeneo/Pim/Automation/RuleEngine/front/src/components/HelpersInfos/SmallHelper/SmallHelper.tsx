@@ -78,7 +78,6 @@ export const SmallHelperText = styled.span<{level: Level}>`
   align-items: center;
   border-left: 1px solid ${({theme, level}) => getBorderColor(level, theme)};
   color: ${({theme, level}) => getColor(level, theme)};
-  display: flex;
   padding-left: 10px;
   a {
     color: ${({theme, level}) => getAnchorColor(level, theme)};

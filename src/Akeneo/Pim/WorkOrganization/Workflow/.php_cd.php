@@ -15,6 +15,7 @@ $rules = [
         'Symfony\Bundle',
         'Psr\Log\LoggerInterface',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+        'Webmozart\Assert\Assert',
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
 
         // TIP-979: Remove ServerErrorResponseException
@@ -116,6 +117,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
+        'Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactoryInterface',
@@ -138,6 +140,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
 
@@ -165,6 +168,7 @@ $rules = [
     $builder->only([
         'Doctrine\Common',
         'Symfony\Component',
+        'Webmozart\Assert\Assert',
         'Akeneo\Tool\Component',
 
         // TODO: imports should be decoupled

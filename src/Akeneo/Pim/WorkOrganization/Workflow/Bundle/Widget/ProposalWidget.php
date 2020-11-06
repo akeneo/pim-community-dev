@@ -16,9 +16,11 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Widget to display proposals
@@ -95,6 +97,7 @@ class ProposalWidget implements WidgetInterface
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
         $result = [];
         $productProposals = $this->productDraftRepository->findApprovableByUser($user, 10);
         $productModelProposals = $this->productModelDraftRepository->findApprovableByUser($user, 10);

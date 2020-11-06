@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
@@ -28,7 +29,7 @@ class MassApproveActionHandlerSpec extends ObjectBehavior
         $cursorFactory,
         SearchQueryBuilder $searchQueryBuilder,
         DatagridInterface $datagrid,
-        DatasourceSpecInterface $datasource,
+        ProductProposalDatasource $datasource,
         EditMassAction $massAction,
         ProductQueryBuilderInterface $pqb,
         ProductDraft $productDraft1,
@@ -65,8 +66,4 @@ class MassApproveActionHandlerSpec extends ObjectBehavior
 
         $this->handle($datagrid, $massAction)->shouldReturn($objectIds);
     }
-}
-
-interface DatasourceSpecInterface extends FilterProductDatasourceAdapterInterface
-{
 }

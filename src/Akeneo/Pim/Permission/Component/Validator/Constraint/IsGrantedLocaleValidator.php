@@ -47,6 +47,7 @@ class IsGrantedLocaleValidator extends ConstraintValidator
     public function validate($localeCode, Constraint $constraint)
     {
         Assert::string($localeCode, 'Locale code should be a string to validate that it is a granted locale.');
+        Assert::isInstanceOf($constraint, IsGrantedLocale::class);
         $locale = $this->localeRepository->findOneByIdentifier($localeCode);
         if (null === $locale || !$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
             $this->context->buildViolation($constraint->message, ['%locale%' => $localeCode])->addViolation();

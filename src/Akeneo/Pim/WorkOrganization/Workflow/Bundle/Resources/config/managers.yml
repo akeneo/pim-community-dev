@@ -14,6 +14,7 @@ services:
             - '@pimee_workflow.unpublisher.product'
             - '@pim_catalog.object_manager.product'
             - '@pimee_workflow.saver.published_product'
+            - '@pimee_workflow.saver.published_product'
             - '@pimee_workflow.remover.published_product'
             - '@pimee_workflow.remover.published_product'
             - '@pimee_workflow.repository.published_product_without_permission'

@@ -46,11 +46,16 @@ Feature: Import rules for categories
     When the following yaml file is imported:
     """
     rules:
-      rule_with_valid_empty_category:
+      rule_with_valid_empty_value_for_categories:
         conditions:
-          - field:    categories
+          - field: categories
             operator: UNCLASSIFIED
             value: []
+          - field: categories
+            operator: UNCLASSIFIED
+            value: ~
+          - field: categories
+            operator: UNCLASSIFIED
         actions:
           - type:  set
             field: name
@@ -59,3 +64,4 @@ Feature: Import rules for categories
     """
     Then no exception has been thrown
     And the rule list contains the imported rules
+

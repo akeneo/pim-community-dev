@@ -17,7 +17,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\Project
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * Notify users for project created.

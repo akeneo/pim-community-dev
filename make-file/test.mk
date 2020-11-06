@@ -1,6 +1,10 @@
 var/tests/%:
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
+.PHONY: find-legacy-translations
+find-legacy-translations:
+	vendor/akeneo/pim-community-dev/.circleci/find_legacy_translations.sh
+
 .PHONY: coupling-back
 coupling-back: twa-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
 
@@ -21,9 +25,10 @@ check-sf-services:
 lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
-	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim --level 1
+	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Automation --level 3
-	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Enrichment --level 2
+	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Permission --level 3
+	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Structure --level 8
 	$(PHP_RUN) vendor/bin/phpstan analyse vendor/akeneo/pim-community-dev/src/Akeneo/Pim --level 2
 	$(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan reference-entity-lint-back asset-manager-lint-back connectivity-connection-lint-back communication-channel-lint-back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
@@ -76,7 +81,10 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: integration-back
-integration-back: var/tests/phpunit data-quality-insights-integration-back reference-entity-integration-back asset-manager-integration-back rule-engine-integration-back
+integration-back: var/tests/phpunit data-quality-insights-integration-back reference-entity-integration-back asset-manager-integration-back rule-engine-integration-back pim-integration-back
+
+.PHONY: pim-integration-back
+pim-integration-back:
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Integration_Test
 else

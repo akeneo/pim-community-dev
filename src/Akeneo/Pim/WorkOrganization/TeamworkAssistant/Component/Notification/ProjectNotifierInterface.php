@@ -13,7 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -22,10 +22,6 @@ interface ProjectNotifierInterface
 {
     /**
      * Notify the user about project event.
-     *
-     * @param UserInterface          $user
-     * @param ProjectInterface       $project
-     * @param ProjectCompleteness    $projectCompleteness
      *
      * @return bool
      */

@@ -84,7 +84,6 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
 
         $fullProduct->setEnabled($filteredProduct->isEnabled());
         $fullProduct->setFamily($filteredProduct->getFamily());
-        $fullProduct->setFamilyId($filteredProduct->getFamilyId());
         $fullProduct->setGroups($filteredProduct->getGroups());
         $fullProduct->setUniqueData($filteredProduct->getUniqueData());
 

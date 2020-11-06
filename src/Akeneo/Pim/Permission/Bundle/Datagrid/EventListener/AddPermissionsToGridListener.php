@@ -12,8 +12,12 @@
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\EventListener;
 
 use Akeneo\Pim\Permission\Component\Repository\AccessRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ParameterizableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Add permissions to datagrid listener
@@ -54,9 +58,11 @@ class AddPermissionsToGridListener
     public function onBuildAfter(BuildAfter $event)
     {
         $datasource = $event->getDatagrid()->getDatasource();
+        Assert::implementsInterface($datasource, DatasourceInterface::class);
 
         // Prepare subquery
         $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
         $subQB = $this->accessRepository->getGrantedEntitiesQB($user, $this->accessLevel);
 
         $datasource->getRepository()->addGridAccessQB(
@@ -67,6 +73,7 @@ class AddPermissionsToGridListener
         $queryParameters = [
             'groups' => $user->getGroups()->toArray()
         ];
+        Assert::implementsInterface($datasource, ParameterizableInterface::class);
         $datasource->setParameters($queryParameters);
     }
 }
