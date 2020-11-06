@@ -38,6 +38,7 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
         $expectedEvaluationRates = [];
         $expectedEvaluationRates += $this->givenSampleA();
         $expectedEvaluationRates += $this->givenSampleB();
+        $expectedEvaluationRates += $this->givenAProductNotEvaluatedYet('spelling');
 
         $this->givenANotInvolvedProduct();
 
@@ -115,6 +116,23 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
         ]);
 
         $this->saveEvaluationResults($product->getId(), $evaluationResults);
+    }
+
+    private function givenAProductNotEvaluatedYet(string $criterionCode): array
+    {
+        $productId = $this->createProduct('not_evaluated_product')->getId();
+
+        $this->get('database_connection')->executeQuery(<<<SQL
+REPLACE INTO pim_data_quality_insights_product_criteria_evaluation (product_id, criterion_code, evaluated_at, status, result) 
+VALUES (:productId, :criterionCode, null, 'pending', null);
+SQL,
+            [
+                'productId' => $productId,
+                'criterionCode' => $criterionCode,
+            ]
+        );
+
+        return [$productId => []];
     }
 
     private function saveEvaluationResults(int $productId, array $evaluationResults): void
