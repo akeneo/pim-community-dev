@@ -940,13 +940,7 @@
     "willdurand/negotiation": {
         "version": "v2.3.1"
     },
-    "zendframework/zend-code": {
-        "version": "3.3.2"
-    },
     "zendframework/zend-diactoros": {
         "version": "2.2.1"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.1"
     }
 }
