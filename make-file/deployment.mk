@@ -103,6 +103,17 @@ endif
 
 .PHONY: delete
 delete:
+	@echo "#######################################################################################"
+	@echo "$(INSTANCE_NAME_PREFIX)"
+	@echo "$(INSTANCE_NAME)"
+	@echo "$(TYPE)"
+	@echo "$(PFID)"
+	@echo "$(CI)"
+	@echo "$(ACTIVATE_MONITORING)"
+	@echo "$(ENV_NAME)"
+	@echo "$(DEPLOYMENTS_INSTANCES_DIR)"
+	@echo "$(INSTANCE_DIR)"
+	@echo "#######################################################################################"
 	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
 		cd $(INSTANCE_DIR) ;\
 		echo "Destroying $(INSTANCE_DIR) ..." ;\
