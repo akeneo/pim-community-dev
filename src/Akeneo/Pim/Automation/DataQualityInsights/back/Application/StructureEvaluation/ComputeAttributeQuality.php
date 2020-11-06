@@ -13,46 +13,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttributeOptionSpellcheckQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttributeSpellcheckQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheckCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeSpellcheck;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\Quality;
 
-class ComputeAttributeQuality
+final class ComputeAttributeQuality
 {
-    /** @var GetAttributeSpellcheckQueryInterface */
-    private $getAttributeSpellcheckQuery;
-
-    /** @var GetAttributeOptionSpellcheckQueryInterface */
-    private $getAttributeOptionSpellcheckQuery;
-
-    public function __construct(
-        GetAttributeSpellcheckQueryInterface $getAttributeSpellcheckQuery,
-        GetAttributeOptionSpellcheckQueryInterface $getAttributeOptionSpellcheckQuery
-    ) {
-        $this->getAttributeSpellcheckQuery = $getAttributeSpellcheckQuery;
-        $this->getAttributeOptionSpellcheckQuery = $getAttributeOptionSpellcheckQuery;
-    }
-
-    public function byAttributeCode(AttributeCode $attributeCode): Quality
+    public static function computeGlobalQuality(?AttributeSpellcheck $attributeSpellcheck, AttributeOptionSpellcheckCollection $attributeOptionsSpellchecks): Quality
     {
-        $attributeSpellcheck = $this->getAttributeSpellcheckQuery->getByAttributeCode($attributeCode);
-
         if (null === $attributeSpellcheck) {
             return Quality::processing();
         }
 
-        if ($attributeSpellcheck->isToImprove()) {
-            return Quality::toImprove();
-        }
-
-        $attributeOptionsSpellchecks = $this->getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode);
-
-        if ($attributeOptionsSpellchecks->isEmpty()) {
-            return false === $attributeSpellcheck->isToImprove() ? Quality::good() : Quality::notApplicable();
-        }
-
-        if ($attributeOptionsSpellchecks->hasAttributeOptionToImprove()) {
+        if (true === $attributeSpellcheck->isToImprove() || $attributeOptionsSpellchecks->hasAttributeOptionToImprove()) {
             return Quality::toImprove();
         }
 
@@ -61,5 +35,26 @@ class ComputeAttributeQuality
         }
 
         return Quality::notApplicable();
+    }
+
+    public static function computeLocaleQuality(LocaleCode  $locale, ?AttributeSpellcheck $attributeSpellcheck, AttributeOptionSpellcheckCollection $attributeOptionsSpellchecks): Quality
+    {
+        if (null === $attributeSpellcheck) {
+            return Quality::processing();
+        }
+
+        $attributeSpellcheckResult = $attributeSpellcheck->getResult()->getLocaleResult($locale);
+
+        if ((null !== $attributeSpellcheckResult && $attributeSpellcheckResult->isToImprove())
+            || $attributeOptionsSpellchecks->hasAttributeOptionToImproveForLocale($locale)
+        ) {
+            return Quality::toImprove();
+        }
+
+        if (null === $attributeSpellcheckResult && $attributeOptionsSpellchecks->isEmptyForLocale($locale)) {
+            return Quality::notApplicable();
+        }
+
+        return Quality::good();
     }
 }

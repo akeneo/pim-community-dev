@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+
 final class AttributeOptionSpellcheckCollection
 {
     /** @var AttributeOptionSpellcheck[] */
-    private $attributeOptionSpellchecks = [];
+    private array $attributeOptionSpellchecks = [];
 
     public function add(AttributeOptionSpellcheck $attributeOptionSpellcheck): self
     {
@@ -30,10 +32,34 @@ final class AttributeOptionSpellcheckCollection
         return empty($this->attributeOptionSpellchecks);
     }
 
+    public function isEmptyForLocale(LocaleCode $locale): bool
+    {
+        foreach ($this->attributeOptionSpellchecks as $attributeOptionSpellcheck) {
+            $localeResult = $attributeOptionSpellcheck->getResult()->getLocaleResult($locale);
+            if (null !== $localeResult) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function hasAttributeOptionToImprove(): bool
     {
         foreach ($this->attributeOptionSpellchecks as $attributeOptionSpellcheck) {
             if ($attributeOptionSpellcheck->isToImprove()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function hasAttributeOptionToImproveForLocale(LocaleCode $locale): bool
+    {
+        foreach ($this->attributeOptionSpellchecks as $attributeOptionSpellcheck) {
+            $localeResult = $attributeOptionSpellcheck->getResult()->getLocaleResult($locale);
+            if (null !== $localeResult && $localeResult->isToImprove()) {
                 return true;
             }
         }
