@@ -31,10 +31,10 @@ abstract class AbstractProduct implements ProductInterface
     /** @var array */
     protected $rawValues;
 
-    /** @var \DateTime $created */
+    /** @var \DateTime */
     protected $created;
 
-    /** @var \DateTime $updated */
+    /** @var \DateTime */
     protected $updated;
 
     /**
@@ -44,28 +44,19 @@ abstract class AbstractProduct implements ProductInterface
      */
     protected $values;
 
-    /** @var FamilyInterface $family */
+    /** @var FamilyInterface|null */
     protected $family;
 
-    /** @var int */
-    protected $familyId;
-
-    /** @var Collection $categories */
+    /** @var Collection */
     protected $categories;
-
-    /** @var array */
-    public $categoryIds = [];
 
     /** @var bool $enabled */
     protected $enabled = true;
 
-    /** @var Collection $groups */
+    /** @var Collection */
     protected $groups;
 
-    /** @var array */
-    protected $groupIds = [];
-
-    /** @var Collection $associations */
+    /** @var Collection */
     protected $associations;
 
     /**
@@ -75,19 +66,19 @@ abstract class AbstractProduct implements ProductInterface
      */
     protected $quantifiedAssociationCollection;
 
-    /** @var Collection $completenesses */
+    /** @var Collection */
     protected $completenesses;
 
     /** @var string|null */
     protected $identifier;
 
-    /** @var ArrayCollection */
+    /** @var Collection */
     protected $uniqueData;
 
-    /** @var ProductModelInterface $parent */
+    /** @var ProductModelInterface|null */
     protected $parent;
 
-    /** @var FamilyVariantInterface */
+    /** @var FamilyVariantInterface|null */
     protected $familyVariant;
 
     /**
@@ -242,20 +233,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setFamily(FamilyInterface $family = null)
     {
-        if (null !== $family) {
-            $this->familyId = $family->getId();
-        }
         $this->family = $family;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFamilyId($familyId)
-    {
-        $this->familyId = $familyId;
 
         return $this;
     }
@@ -265,7 +243,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getFamilyId()
     {
-        return $this->familyId;
+        return $this->family ? $this->family->getId() : null;
     }
 
     /**

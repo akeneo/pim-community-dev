@@ -17,7 +17,7 @@ const Description = (props: DesciptionProps & any): JSX.Element => (
 
 const StyledDescription = styled.div`
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

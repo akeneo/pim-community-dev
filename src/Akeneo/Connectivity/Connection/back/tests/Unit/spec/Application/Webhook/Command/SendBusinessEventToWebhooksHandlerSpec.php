@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
@@ -33,7 +34,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
         WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
-        WebhookEventBuilder $builder
+        WebhookEventBuilder $builder,
+        GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -41,6 +43,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $client,
             $builder,
             new NullLogger(),
+            $connectionUserForFakeSubscription,
             'staging.akeneo.com'
         );
     }
@@ -113,12 +116,16 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_does_not_send_message_if_there_is_no_webhook(
+    public function it_sends_fake_message_if_there_is_no_webhook(
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
-        UserInterface $user
+        $builder,
+        UserInterface $user,
+        $connectionUserForFakeSubscription
     ): void {
+
+        $user->getId()->willReturn(0);
         $user->getUsername()->willReturn('julia');
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
@@ -130,8 +137,47 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $selectActiveWebhooksQuery->execute()->willReturn([]);
 
-        $webhookUserAuthenticator->authenticate(0)->shouldNotBeCalled();
-        $client->bulkSend(Argument::any())->shouldNotBeCalled();
+        $connectionUserForFakeSubscription->execute()->willReturn(1234);
+
+        $webhookUserAuthenticator->authenticate(1234)->shouldBeCalled();
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willReturn(
+            new WebhookEvent(
+                'product.created',
+                '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                '2020-01-01T00:00:00+00:00',
+                $author,
+                'staging.akeneo.com',
+                ['data']
+            )
+        );
+
+        $client->bulkFakeSend(
+            Argument::that(
+                function (iterable $iterable) {
+                    $requests = iterator_to_array($iterable);
+
+                    Assert::assertCount(1, $requests);
+                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[0]->url());
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[0]->secret());
+                    Assert::assertEquals(
+                        [
+                            'action' => 'product.created',
+                            'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                            'event_date' => '2020-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                            'pim_source' => 'staging.akeneo.com',
+                            'data' => ['data'],
+                        ],
+                        $requests[0]->content()
+                    );
+
+                    return true;
+                }
+            )
+        )->shouldBeCalled();
 
         $this->handle($command);
     }

@@ -55,8 +55,10 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
             throw new RuntimeException(sprintf('The class "%s" is not defined.', $type));
         }
 
+        // /!\ Do not change to a new format for event without a strategy to
+        // support the previous/old format of the events already in the queue (before the migration).
         return new $type(
-            Author::fromNameAndType($data['author'], $data['author_type']),
+            Author::fromNameAndType($data['author'], $data['author_type'] ?? Author::TYPE_API),
             $data['data'],
             $data['timestamp'],
             $data['uuid']

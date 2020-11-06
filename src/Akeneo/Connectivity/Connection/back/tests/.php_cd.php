@@ -28,10 +28,14 @@ $rules = [
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
 
+            'Psr\Http\Message\ResponseInterface',
             'Psr\Log\LoggerInterface',
 
             'Akeneo\Platform\Component\EventQueue',
             'Akeneo\Platform\Component\Webhook',
+
+            //CXP-462
+            'Akeneo\UserManagement\Component\Model\UserInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -132,7 +136,7 @@ $rules = [
             'Doctrine\DBAL',
 
             // Dependency on Elasticsearch
-            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client'
+            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 
