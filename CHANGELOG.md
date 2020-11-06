@@ -81,6 +81,7 @@
 - CPM-38: Upgrade Symfony to 4.4.15
 - CPM-33: Upgrade node to 12.19
 - CPM-33: Upgrade npm to 6.14
+- PIM-9452: Add a command to update the ElasticSearch indexes max fields limit
 
 ## Classes
 
@@ -191,6 +192,10 @@
 - Change `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface` interface to add `getWithVariants()`
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup` to replace `Doctrine\DBAL\Driver\Connection $connection` by `Doctrine\DBAL\Connection $connection`
 - Add `clearCache` method in `Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface`
+- Remove method `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface::setFamilyId()`
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct` to
+    - remove the `setFamilyId()` method
+    - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
 
 ### CLI commands
 
