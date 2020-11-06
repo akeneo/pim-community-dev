@@ -375,7 +375,7 @@ jobs:
               command: |
                   if [ -z "$TYPE" ];
                   then
-                      TYPE="srnt"
+                      echo export TYPE="srnt" >> $BASH_ENV
                   fi
           - run:
               name: Remove env on kubernetes
@@ -818,7 +818,12 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - build_dev:
+          - build_dev?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
                 requires:
                     - checkout
           - build_prod:
