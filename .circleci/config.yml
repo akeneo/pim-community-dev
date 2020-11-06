@@ -818,14 +818,17 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - build_dev?:
+          - ready_to_build_dev?:
                 type: approval
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "master"
                 requires:
                     - checkout
+          - build_dev:
+                requires:
+                    - ready_to_build_dev?
           - build_prod:
                 requires:
                     - checkout
