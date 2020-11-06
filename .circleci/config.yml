@@ -371,8 +371,12 @@ jobs:
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
+              name: Get the type of the instance (srnt or grth)
+              command: |
+                  TYPE=$(echo "${PFID}"|cut -d "-" -f 1)
+          - run:
               name: Remove env on kubernetes
-              command: make delete
+              command: TYPE=${TYPE} make delete
               when: always
 
   test_upgrade_from_32:
