@@ -47,11 +47,6 @@ class PublishedProductVersionPurgerAdvisor implements VersionPurgerAdvisorInterf
 
     /**
      * Prevents published versions of a product from being purged
-     *
-     * @param VersionInterface $version
-     * @param array            $options
-     *
-     * @return bool
      */
     public function isPurgeable(PurgeableVersionList $versionList): PurgeableVersionList
     {

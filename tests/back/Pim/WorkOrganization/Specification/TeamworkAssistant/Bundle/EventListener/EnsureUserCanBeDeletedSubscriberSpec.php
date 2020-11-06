@@ -41,7 +41,7 @@ class EnsureUserCanBeDeletedSubscriberSpec extends ObjectBehavior
 
     function it_does_nothing_if_subject_is_not_a_user($isUserLinkedToProjectsQuery, GenericEvent $event)
     {
-        $event->getSubject()->willReturn(new \stdClass());
+        $event->getSubject()->willReturn(null);
         $isUserLinkedToProjectsQuery->execute(Argument::any())->shouldNotBeCalled();
         $this->ensureUserCanBeDeleted($event)->shouldReturn(null);
     }

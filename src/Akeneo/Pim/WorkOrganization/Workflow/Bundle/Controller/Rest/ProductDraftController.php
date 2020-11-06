@@ -27,6 +27,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
@@ -43,6 +44,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
+use Webmozart\Assert\Assert;
 
 /**
  * Product draft rest controller
@@ -346,8 +348,9 @@ class ProductDraftController
         $search = $query->get('search');
         $options = $query->get('options', []);
 
-        $token = $this->tokenStorage->getToken();
-        $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
+        $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
+        $options['user_groups_ids'] = $user->getGroupsIds();
         $attributes = $this->attributeSearchableRepository->findBySearch($search, $options);
 
         $normalizedAttributes = [];

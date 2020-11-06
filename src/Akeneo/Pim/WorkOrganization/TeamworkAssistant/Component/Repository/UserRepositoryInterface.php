@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>

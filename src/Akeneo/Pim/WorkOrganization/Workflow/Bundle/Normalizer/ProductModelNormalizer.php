@@ -14,6 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -87,7 +88,7 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
         if (!$isOwner && $canEdit) {
             $username = $this->tokenStorage->getToken()->getUsername();
             $draft = $this->draftRepository->findUserEntityWithValuesDraft($productModel, $username);
-            if (null !== $draft) {
+            if ($draft instanceof EntityWithValuesDraftInterface) {
                 $draftStatus = $draft->getStatus();
                 $this->draftApplier->applyAllChanges($productModel, $draft);
             }

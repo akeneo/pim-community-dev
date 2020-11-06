@@ -96,6 +96,8 @@ class IndexProductProposalCommand extends Command
 
         $this->indexProductProposals($batchSize, $output);
         $this->indexProductModelProposals($batchSize, $output);
+
+        return 0;
     }
 
     /**

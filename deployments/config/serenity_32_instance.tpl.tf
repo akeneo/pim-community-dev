@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "google" {
-  version = "~> 3.17.0"
+  version = ">= 3.21.0, < 4.0.0"
 }
 
 terraform {

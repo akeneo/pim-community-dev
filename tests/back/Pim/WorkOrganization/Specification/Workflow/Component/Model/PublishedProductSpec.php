@@ -23,7 +23,6 @@ class PublishedProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(true);
@@ -50,7 +49,6 @@ class PublishedProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -77,7 +75,6 @@ class PublishedProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(true);
@@ -114,7 +111,6 @@ class PublishedProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $family->getAttributeAsLabel()->willReturn(null);
-        $family->getId()->willReturn(42);
 
         $identifier->getData()->willReturn('shovel');
         $identifier->getAttributeCode()->willReturn('name');
@@ -136,7 +132,6 @@ class PublishedProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -161,7 +156,6 @@ class PublishedProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);

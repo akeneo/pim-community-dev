@@ -2,16 +2,17 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler;
 
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
-use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassActionEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
+use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -27,7 +28,7 @@ class MassRefuseActionHandlerSpec extends ObjectBehavior
         $cursorFactory,
         SearchQueryBuilder $searchQueryBuilder,
         DatagridInterface $datagrid,
-        DatasourceSpecInterface $datasource,
+        ProductProposalDatasource $datasource,
         EditMassAction $massAction,
         ProductQueryBuilderInterface $pqb,
         ProductDraft $productDraft1,

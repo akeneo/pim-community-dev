@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Webmozart\Assert\Assert;
 
 /**
  * Published products repository with permission applied
@@ -76,7 +77,7 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
      */
     public function find($id, $lockMode = null, $lockVersion = null)
     {
-        $publishedProduct = $this->publishedProductRepository->find($id, $lockMode, $lockVersion);
+        $publishedProduct = $this->publishedProductRepository->find($id);
         if (null === $publishedProduct) {
             return null;
         }
@@ -224,6 +225,7 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
      */
     public function getItemsFromIdentifiers(array $identifiers)
     {
+        Assert::implementsInterface($this->publishedProductRepository, CursorableRepositoryInterface::class);
         $publishedProducts = $this->publishedProductRepository->getItemsFromIdentifiers($identifiers);
 
         return $this->getFilteredPublishedProducts($publishedProducts);
@@ -308,6 +310,8 @@ class PublishedProductWithPermissionRepository extends EntityRepository implemen
      */
     public function getIdentifierProperties()
     {
+        Assert::implementsInterface($this->publishedProductRepository, IdentifiableObjectRepositoryInterface::class);
+
         return $this->publishedProductRepository->getIdentifierProperties();
     }
 

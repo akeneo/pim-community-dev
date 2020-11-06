@@ -90,6 +90,6 @@ class ProxyRouter implements UrlGeneratorInterface
      */
     public function getContext()
     {
-        $this->router->getContext();
+        return $this->router->getContext();
     }
 }

@@ -11,12 +11,15 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\PimDataGridBundle\Adapter\OroToPimGridFilterAdapter;
+use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface as PimDatasourceInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension;
-use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 /**
  * It crafts a fake request in order to add parameters needed to convert oro grid filters into PQB filters.
@@ -61,9 +64,19 @@ class FilterConverter
         $datagrid = $this->manager->getDatagrid(OroToPimGridFilterAdapter::PRODUCT_GRID_NAME);
 
         // trigger the build of the datagrid with the attribute filters
-        $datagrid->getAcceptedDatasource()->getQueryBuilder();
+        $acceptedDatasource = $datagrid->getAcceptedDatasource();
+        Assert::implementsInterface($acceptedDatasource, PimDatasourceInterface::class);
+        $acceptedDatasource->getQueryBuilder();
 
-        $filters = $datagrid->getDatasource()->getProductQueryBuilder()->getRawFilters();
+        $datasource = $datagrid->getDatasource();
+        if (!$datasource instanceof ProductDatasource
+            && !$datasource instanceof ProductAndProductModelDatasource
+            && !$datasource instanceof ProductProposalDatasource
+        ) {
+            throw new \InvalidArgumentException('Datasource must be a product datasource.');
+        }
+
+        $filters = $datasource->getProductQueryBuilder()->getRawFilters();
 
         return $filters;
     }

@@ -13,9 +13,11 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 class GetAssociatedProductCodesByPublishedProductFromDB implements GetAssociatedProductCodesByProduct
 {
@@ -45,6 +47,7 @@ class GetAssociatedProductCodesByPublishedProductFromDB implements GetAssociated
     public function getCodes(int $publishedProductId, AssociationInterface $association)
     {
         $user = $this->tokenStorage->getToken()->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
         $userGroupsIds = $user->getGroupsIds();
 
         $sql = <<<SQL
