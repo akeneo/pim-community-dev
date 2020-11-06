@@ -371,9 +371,12 @@ jobs:
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
-              name: Get the type of the instance (srnt or grth)
+              name: Set the type to srnt by default
               command: |
-                  TYPE=$(echo "${PFID}"|cut -d "-" -f 1)
+                  if [ -z "$TYPE" ];
+                  then
+                      TYPE="srnt"
+                  fi
           - run:
               name: Remove env on kubernetes
               command: TYPE=${TYPE} make delete
@@ -775,6 +778,7 @@ jobs:
                   echo export CE_COMMIT_HASH=$CE_COMMIT_HASH > persisted_env_vars
                   echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
                   echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> persisted_env_vars
+                  echo export TYPE="grth" >> persisted_env_vars
           - persist_to_workspace:
               root: ~/
               paths:
