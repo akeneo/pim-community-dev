@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Card, CardGrid} from './Card.tsx';
 import {Badge} from '../../components';
+import {Loading} from 'shared/LoadingContext';
 
 <Meta
   title="Components/Card"
@@ -152,6 +153,33 @@ Here the `fit` prop is also set to `contain`.
             Badge &amp; selectable 🤩
           </Card>
         </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Loading card
+
+<Canvas>
+  <Story name="Loading">
+    {args => {
+      return (
+        <Loading loading={true}>
+          <CardGrid>
+            <Card {...args} src="https://picsum.photos/seed/akenea/200">
+              <Badge level="danger">0%</Badge>
+              Card not complete
+            </Card>
+            <Card
+              {...args}
+              src="https://picsum.photos/seed/akenee/200"
+              isSelected={true}
+              onSelect={isSelected => {}}
+            >
+              Another one
+            </Card>
+          </CardGrid>
+        </Loading>
       );
     }}
   </Story>
