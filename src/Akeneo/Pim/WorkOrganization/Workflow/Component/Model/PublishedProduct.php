@@ -729,6 +729,16 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         return null !== $this->getParent();
     }
 
+    public function wasUpdated(): bool
+    {
+        return false;
+    }
+
+    public function cleanup(): void
+    {
+        // nothing here
+    }
+
     private function getAllValues(
         EntityWithFamilyVariantInterface $entity,
         WriteValueCollection $valueCollection
