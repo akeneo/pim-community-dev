@@ -11,9 +11,6 @@ use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
 
-/**
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
- */
 class UserRepositoryIntegration extends TeamworkAssistantTestCase
 {
     public function test_that_it_searches_all_user_that_does_not_belong_to_the_api(): void
@@ -31,11 +28,11 @@ class UserRepositoryIntegration extends TeamworkAssistantTestCase
             $erpConnection->auditable()
         );
         $connectionUsername = $erpConnection->username();
-        $project = $this->createProject('Tshirt - ecommerce', 'Julia', 'en_US',  'ecommerce', [
+        $project = $this->createProject('Tshirt - ecommerce', 'Julia', 'en_US', 'ecommerce', [
             [
-                'field'    => 'family',
+                'field' => 'family',
                 'operator' => 'IN',
-                'value'    => ['tshirt'],
+                'value' => ['tshirt'],
             ],
         ]);
 
@@ -50,14 +47,14 @@ class UserRepositoryIntegration extends TeamworkAssistantTestCase
         /** @var UserRepository $twaUserRepo */
         $twaUserRepo = $this->get('pimee_teamwork_assistant.repository.user');
         $resultUsers = $twaUserRepo->findBySearch(null, ['project' => $project]);
-        $resultUsernames = array_map(function(User $user) {
+        $resultUsernames = array_map(function (User $user) {
             return $user->getUsername();
         }, $resultUsers);
 
         $this->assertNotContains($connectionUsername, $resultUsernames);
     }
 
-    private function getMarketingGroupId()
+    private function getMarketingGroupId(): string
     {
         $sql = <<<SQL
 SELECT id
@@ -65,10 +62,10 @@ FROM oro_access_group
 WHERE name = :name
 SQL;
 
-        return (string) $this->getConnection()->fetchColumn($sql, ['name' => 'Marketing']);
+        return (string)$this->getConnection()->fetchColumn($sql, ['name' => 'Marketing']);
     }
 
-    private function getUserRoleId()
+    private function getUserRoleId(): string
     {
         $sql = <<<SQL
 SELECT id
@@ -76,6 +73,6 @@ FROM oro_access_role
 WHERE role = :role
 SQL;
 
-        return (string) $this->getConnection()->fetchColumn($sql, ['role' => 'ROLE_USER']);
+        return (string)$this->getConnection()->fetchColumn($sql, ['role' => 'ROLE_USER']);
     }
 }

@@ -17,14 +17,11 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class TeamworkAssistantWebTestCase extends TestCase
 {
-    /** @var KernelBrowser */
-    protected $client;
+    protected KernelBrowser $client;
 
-    /** @var Connection */
-    protected $connection;
+    protected Connection $connection;
 
-    /** @var JobLauncher */
-    protected $jobLauncher;
+    protected JobLauncher $jobLauncher;
 
     protected function setUp(): void
     {
@@ -38,20 +35,20 @@ abstract class TeamworkAssistantWebTestCase extends TestCase
     {
         $dueDate = (new \DateTime())->modify('+1 month');
         $projectData = array_merge([
-            'label'           => $label,
-            'locale'          => $locale,
-            'owner'           => $owner,
-            'channel'         => $channel,
+            'label' => $label,
+            'locale' => $locale,
+            'owner' => $owner,
+            'channel' => $channel,
             'product_filters' => $filters,
-            'description'     => 'An awesome description',
-            'due_date'        => $dueDate->format('Y-m-d'),
-            'datagrid_view'   => ['filters' => '', 'columns' => 'sku,label,family'],
+            'description' => 'An awesome description',
+            'due_date' => $dueDate->format('Y-m-d'),
+            'datagrid_view' => ['filters' => '', 'columns' => 'sku,label,family'],
         ]);
 
         if (isset($projectData['product_filters'])) {
             foreach ($projectData['product_filters'] as $key => $filter) {
                 $projectData['product_filters'][$key] = array_merge($filter, [
-                    'context'  => ['locale' => $projectData['locale'], 'scope' => $projectData['channel']],
+                    'context' => ['locale' => $projectData['locale'], 'scope' => $projectData['channel']],
                 ]);
             }
         }
@@ -81,17 +78,10 @@ abstract class TeamworkAssistantWebTestCase extends TestCase
         $this->isCompleteJobExecution($numberOfExecutedJob);
     }
 
-
     /**
      * Check if the project calculation is complete before the timeout.
-     *
-     * @param int $numberOfExecutedJob
-     *
-     * @throws \RuntimeException
-     * @return bool
-     *
      */
-    private function isCompleteJobExecution($numberOfExecutedJob)
+    private function isCompleteJobExecution(int $numberOfExecutedJob): bool
     {
         $countOfJobExecution = $timeout = 0;
         while ($numberOfExecutedJob >= $countOfJobExecution) {
@@ -170,7 +160,7 @@ WHERE `instance`.`code` = :project_calculation
 AND `execution`.`exit_code` = 'COMPLETED'
 SQL;
 
-        return (int) $this->connection->fetchColumn($sql, [
+        return (int)$this->connection->fetchColumn($sql, [
             'project_calculation' => $this->getParameter('pimee_teamwork_assistant.project_calculation.job_name'),
         ]);
     }
