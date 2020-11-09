@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\EventQueue;
 
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,20 +12,27 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterface
+class BulkEventNormalizer implements NormalizerInterface, DenormalizerInterface
 {
+    private EventNormalizer $eventNormalizer;
+
+    public function __construct(EventNormalizer $eventNormalizer)
+    {
+        $this->eventNormalizer = $eventNormalizer;
+    }
+
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof BusinessEvent;
+        return $data instanceof BulkEvent;
     }
 
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return is_subclass_of($type, BusinessEvent::class);
+        return $type === BulkEvent::class;
     }
 
     /**
-     * @param BusinessEvent $object
+     * @param BulkEvent $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -35,14 +40,9 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
             throw new \InvalidArgumentException();
         }
 
-        return [
-            'name' => $object->name(),
-            'author' => $object->author()->name(),
-            'author_type' => $object->author()->type(),
-            'data' => $object->data(),
-            'timestamp' => $object->timestamp(),
-            'uuid' => $object->uuid(),
-        ];
+        return \array_map(function (Event $event) {
+            return $this->eventNormalizer->normalize($event);
+        }, $object->getEvents());
     }
 
     public function denormalize($data, $type, $format = null, array $context = [])
@@ -55,13 +55,10 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
             throw new RuntimeException(sprintf('The class "%s" is not defined.', $type));
         }
 
-        // /!\ Do not change to a new format for event without a strategy to
-        // support the previous/old format of the events already in the queue (before the migration).
-        return new $type(
-            Author::fromNameAndType($data['author'], $data['author_type'] ?? Author::TYPE_API),
-            $data['data'],
-            $data['timestamp'],
-            $data['uuid']
-        );
+        $events = \array_map(function (array $eventData) {
+            return $this->eventNormalizer->denormalize($eventData, $eventData['type']);
+        }, $data);
+
+        return new BulkEvent($events);
     }
 }

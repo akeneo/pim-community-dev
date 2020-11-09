@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Component\EventQueue;
 
 use Akeneo\Platform\Component\EventQueue\Author;
-use Akeneo\Platform\Component\EventQueue\BusinessEvent;
-use Akeneo\Platform\Component\EventQueue\BusinessEventNormalizer;
+use Akeneo\Platform\Component\EventQueue\Event;
+use Akeneo\Platform\Component\EventQueue\EventNormalizer;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -28,7 +28,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(BusinessEventNormalizer::class);
+        $this->shouldHaveType(EventNormalizer::class);
     }
 
     public function it_is_a_normalizer(): void
@@ -44,8 +44,8 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $user->isApiUser()->willReturn(false);
         $author = Author::fromUser($user->getWrappedObject());
 
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
-            public function name(): string
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
+            public function getName(): string
             {
                 return 'event_name';
             }
@@ -71,7 +71,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $user->isApiUser()->willReturn(false);
         $author = Author::fromUser($user->getWrappedObject());
 
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
             public function name(): string
             {
                 return 'event_name';
@@ -104,7 +104,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $user->isApiUser()->willReturn(false);
         $author = Author::fromUser($user->getWrappedObject());
 
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
             public function name(): string
             {
                 return 'event_name';
@@ -130,7 +130,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
 
         $author = Author::fromUser($user->getWrappedObject());
 
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
             public function name(): string
             {
                 return 'event_name';
@@ -159,7 +159,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $user->isApiUser()->willReturn(false);
         $author = Author::fromUser($user->getWrappedObject());
 
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends BusinessEvent {
+        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
             public function name(): string
             {
                 return 'event_name';
