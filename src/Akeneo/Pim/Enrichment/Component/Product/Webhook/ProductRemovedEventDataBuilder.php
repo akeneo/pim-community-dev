@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 
 /**
@@ -14,7 +14,7 @@ use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
  */
 class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
 {
-    public function supports(BusinessEventInterface $businessEvent): bool
+    public function supports(object $businessEvent): bool
     {
         return $businessEvent instanceof ProductRemoved;
     }
@@ -22,13 +22,13 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
     /**
      * @param ProductRemoved $businessEvent
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(object $businessEvent): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();
         }
 
-        $data = $businessEvent->data();
+        $data = $businessEvent->getData();
 
         return [
             'resource' => ['identifier' => $data['identifier']]

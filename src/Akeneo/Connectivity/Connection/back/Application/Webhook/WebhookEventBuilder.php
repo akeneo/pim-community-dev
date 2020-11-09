@@ -6,8 +6,10 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -28,38 +30,62 @@ class WebhookEventBuilder
     }
 
     /**
+     * @param EventInterface|BulkEventInterface $event
      * @param array<mixed> $context
+     * @return array<WebhookEvent>
      */
-    public function build(BusinessEventInterface $businessEvent, array $context = []): WebhookEvent
+    public function build(object $event, array $context = []): array
     {
-        if (!array_key_exists(
-                'pim_source',
-                $context
-            ) || null === $context['pim_source'] || '' === $context['pim_source']) {
-            throw new \InvalidArgumentException("Context property 'pim_source' is mandatory");
+        Assert::notEmpty($context['pim_source'] ?? null, 'pim_source');
+
+        $builder = $this->getEventDataBuilder($event);
+
+        if ($event instanceof EventInterface) {
+            $data = $builder->build($event);
+
+            return [
+                new WebhookEvent(
+                    $event->getName(),
+                    $event->getUuid(),
+                    date(\DateTimeInterface::ATOM, $event->getTimestamp()),
+                    $event->getAuthor(),
+                    $context['pim_source'],
+                    $data
+                )
+            ];
         }
 
-        return new WebhookEvent(
-            $businessEvent->name(),
-            $businessEvent->uuid(),
-            date(\DateTimeInterface::ATOM, $businessEvent->timestamp()),
-            $businessEvent->author(),
-            $context['pim_source'],
-            $this->buildEventData($businessEvent)
-        );
+        if ($event instanceof BulkEventInterface) {
+            $events = $event->getEvents();
+            $eventsData = $builder->build($event);
+
+            $webhookEvents = [];
+            foreach ($events as $i => $event) {
+                $webhookEvents[] = new WebhookEvent(
+                    $event->getName(),
+                    $event->getUuid(),
+                    date(\DateTimeInterface::ATOM, $event->getTimestamp()),
+                    $event->getAuthor(),
+                    $context['pim_source'],
+                    $eventsData[$i]
+                );
+            }
+
+            return $webhookEvents;
+        }
     }
 
     /**
-     * @return array<mixed>
+     * @param EventInterface|BulkEventInterface $event
      */
-    private function buildEventData(BusinessEventInterface $businessEvent): array
+    private function getEventDataBuilder(object $event): EventDataBuilderInterface
     {
         foreach ($this->builders as $builder) {
-            if (true === $builder->supports($businessEvent)) {
-                return $builder->build($businessEvent);
+            if (true === $builder->supports($event)) {
+                return $builder;
             }
         }
 
-        throw new WebhookEventDataBuilderNotFoundException($businessEvent->name());
+        throw new WebhookEventDataBuilderNotFoundException($event);
     }
 }

@@ -13,11 +13,11 @@ class WebhookEventBuildLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $author = Author::fromNameAndType('Julia', Author::TYPE_UI);
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
         $businessEvent = new ProductCreated(
             $author,
-            [],
+            ['identifier' => '1'],
             1603935337,
             'fe904867-9428-4d97-bfa9-7aa13c0ee0bf'
         );

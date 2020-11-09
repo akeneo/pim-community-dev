@@ -74,7 +74,8 @@ class WebhookRequestLog
      */
     public function toLog(): array
     {
-        $date = \DateTime::createFromFormat(\DateTime::ATOM, $this->webhookRequest->event()->eventDate());
+        /*
+        $date = \DateTime::createFromFormat(\DateTime::ATOM, $this->webhookRequest->events()->eventDate());
 
         return [
             'type' => 'webhook.send_request',
@@ -84,13 +85,15 @@ class WebhookRequestLog
             'success' => $this->success,
             'response' => $this->response ? ['status_code' => $this->response->getStatusCode()] : null,
             'event' => [
-                'uuid' => $this->webhookRequest->event()->eventId(),
-                'author' => $this->webhookRequest->event()->author()->name(),
-                'author_type' => $this->webhookRequest->event()->author()->type(),
-                'name' => $this->webhookRequest->event()->action(),
+                'uuid' => $this->webhookRequest->events()->eventId(),
+                'author' => $this->webhookRequest->events()->author()->name(),
+                'author_type' => $this->webhookRequest->events()->author()->type(),
+                'name' => $this->webhookRequest->events()->action(),
                 'timestamp' => ($date) ? $date->getTimestamp() : null,
             ],
         ];
+        */
+        return [];
     }
 
     private function getDuration(): int

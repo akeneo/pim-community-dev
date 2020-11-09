@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -15,12 +15,12 @@ class WebhookEventDataBuilderErrorLog
 {
     private string $message;
     private ActiveWebhook $webhook;
-    private BusinessEventInterface $businessEvent;
+    private EventInterface $businessEvent;
 
     public function __construct(
         string $message,
         ActiveWebhook $webhook,
-        BusinessEventInterface $businessEvent
+        EventInterface $businessEvent
     ) {
         $this->message = $message;
         $this->webhook = $webhook;
@@ -54,11 +54,11 @@ class WebhookEventDataBuilderErrorLog
                 'user_id' => $this->webhook->userId(),
             ],
             'event' => [
-                'uuid' => $this->businessEvent->uuid(),
-                'author' => $this->businessEvent->author()->name(),
-                'author_type' => $this->businessEvent->author()->type(),
-                'name' => $this->businessEvent->name(),
-                'timestamp' => $this->businessEvent->timestamp(),
+                'uuid' => $this->businessEvent->getUuid(),
+                'author' => $this->businessEvent->getAuthor()->name(),
+                'author_type' => $this->businessEvent->getAuthor()->type(),
+                'name' => $this->businessEvent->getName(),
+                'timestamp' => $this->businessEvent->getTimestamp(),
             ],
         ];
     }

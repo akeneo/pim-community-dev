@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFoundException;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -35,7 +34,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
         $this->externalApiNormalizer = $externalApiNormalizer;
     }
 
-    public function supports(BusinessEventInterface $businessEvent): bool
+    public function supports(object $businessEvent): bool
     {
         return $businessEvent instanceof ProductModelUpdated || $businessEvent instanceof ProductModelCreated;
     }
@@ -43,13 +42,13 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
     /**
      * @param ProductModelUpdated|ProductModelCreated $businessEvent
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(object $businessEvent): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();
         }
 
-        $data = $businessEvent->data();
+        $data = $businessEvent->getData();
 
         try {
             $productModel = $this->productModelRepository->findOneByIdentifier($data['code']);

@@ -16,18 +16,17 @@ class WebhookRequestLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $author = Author::fromNameAndType('Julia', Author::TYPE_UI);
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
         $event = new WebhookEvent(
             'product.created',
             '79fc4791-86d6-4d3b-93c5-76b787af9497',
             '2020-01-01T00:00:00+00:00',
-            $author,
+            Author::fromNameAndType('julia', Author::TYPE_UI),
             'staging.akeneo.com',
             ['data']
         );
 
-        $webhookRequest = new WebhookRequest($webhook, $event);
+        $webhookRequest = new WebhookRequest($webhook, [$event]);
 
         $this->beConstructedWith(
             $webhookRequest,
