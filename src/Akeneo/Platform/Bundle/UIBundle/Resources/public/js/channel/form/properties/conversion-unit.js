@@ -19,18 +19,7 @@ define([
   'react',
   'akeneo-design-system',
   'jquery.select2',
-], function (
-  $,
-  _,
-  __,
-  BaseForm,
-  FetcherRegistry,
-  template,
-  UserContext,
-  i18n,
-  React,
-  {Helper},
-) {
+], function ($, _, __, BaseForm, FetcherRegistry, template, UserContext, i18n, React, {Helper}) {
   return BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),
