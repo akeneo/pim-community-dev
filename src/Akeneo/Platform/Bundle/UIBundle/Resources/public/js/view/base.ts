@@ -1,3 +1,8 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import * as _ from 'underscore';
 import * as JQuery from 'jquery';
 import * as Backbone from 'backbone';
@@ -239,6 +244,16 @@ class BaseView extends Backbone.View<any> implements View {
     zone.appendChild(extension.el);
 
     extension.render();
+  }
+
+  /**
+   * Render a React component wrapped with PIM theme & legacy providers inside the given container
+   */
+  renderReact(component: JSX.Element, container: Element) {
+    ReactDOM.render(
+      React.createElement(DependenciesProvider, null, React.createElement(ThemeProvider, {theme: pimTheme}, component)),
+      container
+    );
   }
 
   /**
