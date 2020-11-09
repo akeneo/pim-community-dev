@@ -102,7 +102,8 @@ var_dump($groupIds);
 
         $qb->leftJoin('u.groups', 'g');
         $qb->andWhere($qb->expr()->in('g.id', $groupIds));
-        $qb->andWhere($qb->expr()->eq('u.user_type', User::TYPE_USER));
+        $qb->andWhere($qb->expr()->eq('u.type', ':user_type'));
+        $qb->setParameter('user_type', User::TYPE_USER);
 
         $qb->setMaxResults($options['limit']);
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
