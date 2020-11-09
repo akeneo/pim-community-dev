@@ -53,7 +53,10 @@ define([
      */
     resetValidationErrors: function () {
       if (Object.entries(this.errors).length >= 0) {
-        this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.config.tabCode ? this.config.tabCode : this.code);
+        this.getRoot().trigger(
+          'pim_enrich:form:form-tabs:remove-error',
+          this.config.tabCode ? this.config.tabCode : this.code
+        );
         this.errors = {};
       }
     },

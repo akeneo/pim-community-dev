@@ -4,7 +4,7 @@
             <li class="AknHorizontalNavtab-item<% if (currentTab === tab.code) { %> active<% } %>" data-tab="<%- tab.code %>">
                 <a class="AknHorizontalNavtab-link <% if (currentTab === tab.code) { %> AknHorizontalNavtab-link--active<% } %>" href="javascript:void(0);">
                     <%= tab.label %>
-                    <% if (tab.error > 0) { %>
+                    <% if (tab.fieldErrorCount > 0) { %>
                         <div class="AknBadge AknBadge--small  AknBadge--highlight AknBadge--highlight--below-average"></div>
                     <% } %>
                 </a>

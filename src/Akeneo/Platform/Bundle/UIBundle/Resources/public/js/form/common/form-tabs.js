@@ -56,7 +56,6 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
       this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:add-error', this.addError);
       this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:remove-error', this.removeError);
 
-
       return BaseForm.prototype.configure.apply(this, arguments);
     },
 
@@ -73,7 +72,7 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
           code: event.code,
           isVisible: event.isVisible,
           label: event.label,
-          error: 0,
+          fieldErrorCount: 0,
         });
       } else {
         existingTab.label = event.label;
@@ -159,14 +158,14 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
 
     addError: function (tabCode) {
       const tab = this.tabs.find(currentTab => currentTab.code === tabCode);
-      tab.error++;
+      tab.fieldErrorCount++;
 
       this.render();
     },
 
     removeError: function (tabCode) {
       const tab = this.tabs.find(currentTab => currentTab.code === tabCode);
-      tab.error = Math.max(0, tab.error - 1);
+      tab.fieldErrorCount = Math.max(0, tab.fieldErrorCount - 1);
 
       this.render();
     },
