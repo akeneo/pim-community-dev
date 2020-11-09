@@ -95,7 +95,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
         $groupIds = array_map(function (GroupInterface $userGroup) {
             return $userGroup->getId();
         }, $project->getUserGroups()->toArray());
-var_dump($groupIds);
+
         if (empty($groupIds)) {
             return [];
         }

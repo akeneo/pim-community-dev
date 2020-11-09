@@ -7,6 +7,8 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoa
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProjectRepository;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\UserRepository;
+use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
+use Akeneo\UserManagement\Component\Model\User;
 use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\TeamworkAssistantTestCase;
 
 /**
@@ -28,6 +30,7 @@ class UserRepositoryIntegration extends TeamworkAssistantTestCase
             $this->getMarketingGroupId(),
             $erpConnection->auditable()
         );
+        $connectionUsername = $erpConnection->username();
         $project = $this->createProject('Tshirt - ecommerce', 'Julia', 'en_US',  'ecommerce', [
             [
                 'field'    => 'family',
@@ -36,45 +39,22 @@ class UserRepositoryIntegration extends TeamworkAssistantTestCase
             ],
         ]);
 
+        /** @var UnitOfWorkAndRepositoriesClearer $clearer */
+        $clearer = $this->get('pim_connector.doctrine.cache_clearer');
+        $clearer->clear();
+
         /** @var ProjectRepository $projectRepo */
         $projectRepo = $this->get('pimee_teamwork_assistant.repository.project');
         $project = $projectRepo->findOneByIdentifier($project->getCode());
-        die(print_r($project->getProjectStatus()));
-$this->destrucs($project->getCode());
+
         /** @var UserRepository $twaUserRepo */
         $twaUserRepo = $this->get('pimee_teamwork_assistant.repository.user');
-        $result = $twaUserRepo->findBySearch(null, ['project' => $project]);
-        var_dump($result);
-    }
+        $resultUsers = $twaUserRepo->findBySearch(null, ['project' => $project]);
+        $resultUsernames = array_map(function(User $user) {
+            return $user->getUsername();
+        }, $resultUsers);
 
-    private function destrucs($code)
-    {
-        $sqltwa = <<<SQL
-SELECT *
-FROM pimee_teamwork_assistant_project as project
-LEFT JOIN pimee_teamwork_assistant_project_user_group as group ON project.id = group.project_id
-SQL;
-
-        $twa = $this->getConnection()->fetchAll($sqltwa, ['code' => $code]);
-        var_dump('pimee_teamwork_assistant_project_user_group');
-        var_dump($twa);
-
-        $sqltwa = <<<SQL
-SELECT *
-FROM pimee_teamwork_assistant_project_user_group
-SQL;
-
-        $twa = $this->getConnection()->fetchAll($sqltwa);
-        var_dump('pimee_teamwork_assistant_project_user_group');
-        var_dump($twa);
-
-//        $sqlGroup = <<<SQL
-//SELECT *
-//FROM oro_access_group
-//SQL;
-//        $groups = $this->getConnection()->fetchAll($sqlGroup);
-//        var_dump('oro_user_group');
-//        var_dump($groups);
+        $this->assertNotContains($connectionUsername, $resultUsernames);
     }
 
     private function getMarketingGroupId()
