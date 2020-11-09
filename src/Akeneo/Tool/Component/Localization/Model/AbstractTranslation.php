@@ -31,7 +31,7 @@ abstract class AbstractTranslation
      *
      * @param string $locale
      */
-    public function setLocale(string $locale): self
+    public function setLocale(string $locale)
     {
         $this->locale = $locale;
 
@@ -53,7 +53,7 @@ abstract class AbstractTranslation
      *
      * @param string $foreignKey
      */
-    public function setForeignKey(string $foreignKey): self
+    public function setForeignKey(string $foreignKey)
     {
         $this->foreignKey = $foreignKey;
 

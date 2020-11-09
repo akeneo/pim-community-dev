@@ -21,8 +21,7 @@ use Doctrine\ORM\NoResultException;
  */
 class VersionRepository extends EntityRepository implements VersionRepositoryInterface, CursorableRepositoryInterface
 {
-    /** @var CursorFactoryInterface */
-    protected $cursorFactory;
+    protected CursorFactoryInterface $cursorFactory;
 
     /**
      * {@inheritdoc}

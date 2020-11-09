@@ -32,7 +32,7 @@ class PersistedConnectionEntityManager extends EntityManagerDecorator
     /**
      * {@inheritdoc}
      */
-    public function flush($entity = null): void
+    public function flush($entity = null)
     {
         $this->checkConnection();
 

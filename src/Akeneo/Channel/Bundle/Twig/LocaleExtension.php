@@ -2,7 +2,6 @@
 
 namespace Akeneo\Channel\Bundle\Twig;
 
-use Symfony\Component\Intl\Intl;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Intl;
 use Twig_Environment;

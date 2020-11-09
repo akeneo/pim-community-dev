@@ -31,7 +31,7 @@ interface AttributeGroupInterface extends
      *
      * @param int $id
      */
-    public function setId(int $id): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+    public function setId(int $id);
 
     /**
      * Get code
@@ -43,7 +43,7 @@ interface AttributeGroupInterface extends
      *
      * @param string $code
      */
-    public function setCode(string $code): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+    public function setCode(string $code);
 
     /**
      * Get sort order
@@ -55,7 +55,7 @@ interface AttributeGroupInterface extends
      *
      * @param string $sortOrder
      */
-    public function setSortOrder(string $sortOrder): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+    public function setSortOrder(string $sortOrder);
 
     /**
      * Get created
@@ -67,7 +67,7 @@ interface AttributeGroupInterface extends
      *
      * @param \DateTime $created
      */
-    public function setCreated(\DateTime $created): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+    public function setCreated(\DateTime $created);
 
     /**
      * Get updated datetime
@@ -79,21 +79,21 @@ interface AttributeGroupInterface extends
      *
      * @param \DateTime $updated
      */
-    public function setUpdated(\DateTime $updated): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+    public function setUpdated(\DateTime $updated);
 
     /**
      * Add attributes
      *
      * @param AttributeInterface $attribute
      */
-    public function addAttribute(AttributeInterface $attribute): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+    public function addAttribute(AttributeInterface $attribute);
 
     /**
      * Remove attributes
      *
      * @param AttributeInterface $attribute
      */
-    public function removeAttribute(AttributeInterface $attribute): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+    public function removeAttribute(AttributeInterface $attribute);
 
     /**
      * Get attributes
@@ -112,7 +112,7 @@ interface AttributeGroupInterface extends
     /**
      * {@inheritdoc}
      */
-    public function setLocale(string $locale);
+    public function setLocale(?string $locale);
 
     /**
      * Get label
@@ -124,7 +124,7 @@ interface AttributeGroupInterface extends
      *
      * @param string $label
      */
-    public function setLabel(string $label): \Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+    public function setLabel(string $label);
 
     /**
      * Returns the label of the attribute group

@@ -21,7 +21,7 @@ interface TimestampableInterface
      *
      * @param \DateTime $created
      */
-    public function setCreated(\DateTime $created): \Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
+    public function setCreated(\DateTime $created);
 
     /**
      * Get updated datetime
@@ -33,5 +33,5 @@ interface TimestampableInterface
      *
      * @param \DateTime $updated
      */
-    public function setUpdated(\DateTime $updated): \Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
+    public function setUpdated(\DateTime $updated);
 }

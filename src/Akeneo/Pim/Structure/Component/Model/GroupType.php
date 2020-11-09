@@ -92,7 +92,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale(string $locale): TranslatableInterface
+    public function setLocale(?string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 

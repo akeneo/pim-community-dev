@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel;
 
-use Doctrine\DBAL\Driver\Connection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -15,7 +14,7 @@ use Doctrine\DBAL\Connection;
  */
 final class DescendantProductModelIdsQuery implements DescendantProductModelIdsQueryInterface
 {
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

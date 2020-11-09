@@ -23,7 +23,7 @@ interface TranslationInterface
      *
      * @param string $locale
      */
-    public function setLocale(string $locale): \Akeneo\Tool\Component\Localization\Model\TranslationInterface;
+    public function setLocale(string $locale);
 
     /**
      * Get locale
@@ -37,7 +37,7 @@ interface TranslationInterface
      *
      * @param string $foreignKey
      */
-    public function setForeignKey(string $foreignKey): \Akeneo\Tool\Component\Localization\Model\TranslationInterface;
+    public function setForeignKey(string $foreignKey);
 
     /**
      * Get foreignKey

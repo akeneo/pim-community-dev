@@ -99,7 +99,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale(string $locale): TranslatableInterface
+    public function setLocale(?string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 

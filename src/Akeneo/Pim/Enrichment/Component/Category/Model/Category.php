@@ -102,7 +102,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setLocale(string $locale): TranslatableInterface
+    public function setLocale(?string $locale): TranslatableInterface
     {
         $this->locale = $locale;
 

@@ -16,12 +16,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  */
 class AddLocaleListener implements EventSubscriber
 {
-    /**
-     * Locale to inject
-     *
-     * @var string
-     */
-    protected $locale;
+    protected ?string $locale;
 
     /**
      * Specifies the list of events to listen
@@ -33,10 +28,7 @@ class AddLocaleListener implements EventSubscriber
         ];
     }
 
-    /**
-     * @param string $locale
-     */
-    public function setLocale(string $locale): void
+    public function setLocale(?string $locale): void
     {
         $this->locale = $locale;
     }

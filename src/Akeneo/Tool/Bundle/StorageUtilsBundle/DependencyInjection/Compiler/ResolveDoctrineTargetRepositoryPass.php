@@ -14,13 +14,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class ResolveDoctrineTargetRepositoryPass implements CompilerPassInterface
 {
-    /** @var string */
-    protected $tag;
+    protected string $tag;
 
     /**
-     * @param array $tag tag of the repositories
+     * @param string $tag tag of the repositories
      */
-    public function __construct(array $tag)
+    public function __construct(string $tag)
     {
         $this->tag = $tag;
     }

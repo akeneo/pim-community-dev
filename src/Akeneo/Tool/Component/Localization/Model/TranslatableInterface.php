@@ -30,14 +30,14 @@ interface TranslatableInterface
      *
      * @param TranslationInterface $translation
      */
-    public function addTranslation(TranslationInterface $translation): \Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+    public function addTranslation(TranslationInterface $translation);
 
     /**
      * Remove translation
      *
      * @param TranslationInterface $translation
      */
-    public function removeTranslation(TranslationInterface $translation): \Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+    public function removeTranslation(TranslationInterface $translation);
 
     /**
      * Get translation full qualified class name
@@ -47,7 +47,7 @@ interface TranslatableInterface
     /**
      * Set the locale used for translation
      *
-     * @param string $locale
+     * @param string|null $locale
      */
-    public function setLocale(string $locale): \Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+    public function setLocale(?string $locale);
 }

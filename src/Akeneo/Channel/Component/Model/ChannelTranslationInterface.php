@@ -18,7 +18,7 @@ interface ChannelTranslationInterface extends TranslationInterface
      *
      * @param string $label
      */
-    public function setLabel(string $label): \Akeneo\Channel\Component\Model\ChannelTranslationInterface;
+    public function setLabel(string $label): self;
 
     /**
      * Get the label
