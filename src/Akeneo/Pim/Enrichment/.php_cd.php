@@ -129,8 +129,8 @@ $rules = [
         'Psr\Log\LoggerInterface',
 
         // Event queue: business event
-        'Akeneo\Platform\Component\EventQueue\BusinessEventInterface',
-        'Akeneo\Platform\Component\EventQueue\BusinessEvent',
+        'Akeneo\Platform\Component\EventQueue\EventInterface',
+        'Akeneo\Platform\Component\EventQueue\Event',
 
         // Webhook API: event data building
         'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',

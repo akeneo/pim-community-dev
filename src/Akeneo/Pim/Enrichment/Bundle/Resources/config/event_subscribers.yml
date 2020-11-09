@@ -176,10 +176,17 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductBusinessEventSubscriber:
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@pim_catalog.normalizer.standard.product'
+            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '%webhook_max_bulk_size%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber:
+        arguments:
+            - '@security.helper'
             - '@Symfony\Component\Messenger\MessageBusInterface'
         tags:
             - { name: kernel.event_subscriber }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
-use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductBusinessEventSubscriber;
+use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
+class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
 {
     function let(
         Security $security,
@@ -28,7 +28,7 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable(): void
     {
-        $this->shouldHaveType(DispatchProductBusinessEventSubscriber::class);
+        $this->shouldHaveType(DispatchProductRemovedEventSubscriber::class);
     }
 
     function it_returns_subscribed_events(): void
@@ -190,7 +190,8 @@ class DispatchProductBusinessEventSubscriberSpec extends ObjectBehavior
 
     private function getMessageBus()
     {
-        return new class () implements MessageBusInterface {
+        return new class () implements MessageBusInterface
+        {
 
             public $messages = [];
 
