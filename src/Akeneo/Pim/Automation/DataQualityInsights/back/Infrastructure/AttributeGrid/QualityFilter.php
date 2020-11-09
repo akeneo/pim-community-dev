@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\AttributeGrid;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\Quality;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
@@ -34,10 +35,22 @@ class QualityFilter extends ChoiceFilter
         }
 
         Assert::implementsInterface($ds, PimFilterDatasourceAdapterInterface::class);
-        $ds->getQueryBuilder()
-            ->andWhere(AddQualityDataExtension::ATTRIBUTE_QUALITY_ALIAS . '.quality = :quality_value')
-            ->setParameter(':quality_value', $data['value']);
+
+        if (isset($data['value'][0]) && $this->isLocaleSpecificFilter($data['value'][0])) {
+            $ds->getQueryBuilder()
+                ->andWhere(AddQualityDataExtension::ATTRIBUTE_LOCALE_QUALITY_ALIAS . '.quality = :quality_value')
+                ->setParameter(':quality_value', Quality::TO_IMPROVE);
+        } else {
+            $ds->getQueryBuilder()
+                ->andWhere(AddQualityDataExtension::ATTRIBUTE_QUALITY_ALIAS . '.quality = :quality_value')
+                ->setParameter(':quality_value', $data['value']);
+        }
 
         return true;
+    }
+
+    private function isLocaleSpecificFilter($value): bool
+    {
+        return !in_array($value, Quality::FILTERS);
     }
 }

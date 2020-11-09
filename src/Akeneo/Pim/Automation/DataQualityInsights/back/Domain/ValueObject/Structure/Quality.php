@@ -20,6 +20,11 @@ final class Quality
     public const PROCESSING = 'in_progress';
     public const NOT_APPLICABLE = 'n_a';
 
+    public const FILTERS = [
+        self::GOOD,
+        self::TO_IMPROVE,
+    ];
+
     /** @var string */
     private $quality;
 
