@@ -6,6 +6,10 @@ const useFetchKeyIndicators = (channel: string, locale: string, familyCode: stri
   const [keyIndicators, setKeyIndicators] = useState<keyIndicatorMap|null>(null);
 
   useEffect(() => {
+    setKeyIndicators(null);
+  }, [channel, locale, familyCode, categoryCode]);
+
+  useEffect(() => {
     (async () => {
       const data = await fetchKeyIndicators(channel, locale, familyCode, categoryCode);
       setKeyIndicators(data);
