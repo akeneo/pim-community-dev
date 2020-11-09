@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Copier;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier;
@@ -89,13 +90,19 @@ class AssetCollectionAttributeCopier extends AbstractAttributeCopier
         ?string $toScope
     ): void {
         $fromValue = $fromEntityWithValues->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
-        $value = (null !== $fromValue && null !== $fromValue->getData()) ? $fromValue->getData() : null;
+        $data = (null !== $fromValue && null !== $fromValue->getData()) ? $fromValue->getData() : null;
+        if (\is_array($data)) {
+            $data = array_map(function (AssetCode $assetCode): string {
+                return $assetCode->normalize();
+            }, $data);
+        }
+
         $this->entityWithValuesBuilder->addOrReplaceValue(
             $toEntityWithValues,
             $toAttribute,
             $toLocale,
             $toScope,
-            $value
+            $data
         );
     }
 }

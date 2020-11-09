@@ -4,9 +4,10 @@
 namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Updater\Copier;
 
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\CopierInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -56,9 +57,7 @@ class AssetCollectionAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
-        ProductInterface $product2,
-        ValueInterface $fromValue,
-        ValueInterface $toValue
+        ProductInterface $product2
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -73,11 +72,18 @@ class AssetCollectionAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromValue->getData()->willReturn(['asset_code_1','asset_code_2']);
-
+        $fromValue = AssetCollectionValue::scopableLocalizableValue(
+            'packshot_promo',
+            [
+                AssetCode::fromString('asset_code_1'),
+                AssetCode::fromString('asset_code_2'),
+            ],
+            'mobile',
+            'fr_FR'
+        );
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromValue);
         $builder
-            ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['asset_code_1','asset_code_2'])
+            ->addOrReplaceValue($product1, $toAttribute, $toLocale, $toScope, ['asset_code_1', 'asset_code_2'])
             ->shouldBeCalled();
 
         $product2->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn(null);
