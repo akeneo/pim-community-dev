@@ -36,13 +36,13 @@ const TimePeriodAxisChart: FunctionComponent<TimePeriodAxisChartProps> = ({datas
       ) : (
         <>
           {timePeriod === 'daily' && (
-            <AxisChart dataset={dataset} padding={63} barRatio={1.29} dateFormatCallback={dailyCallback} />
+            <AxisChart dataset={dataset} dateFormatCallback={dailyCallback} />
           )}
           {timePeriod === 'weekly' && (
-            <AxisChart dataset={dataset} padding={117} barRatio={1.85} dateFormatCallback={weeklyCallback} />
+            <AxisChart dataset={dataset} dateFormatCallback={weeklyCallback} />
           )}
           {timePeriod === 'monthly' && (
-            <AxisChart dataset={dataset} padding={73} barRatio={1.42} dateFormatCallback={monthlyCallback} />
+            <AxisChart dataset={dataset} dateFormatCallback={monthlyCallback} />
           )}
         </>
       )}

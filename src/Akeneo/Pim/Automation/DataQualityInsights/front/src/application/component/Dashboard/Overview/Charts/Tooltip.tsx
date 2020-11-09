@@ -45,7 +45,7 @@ const Tooltip: FunctionComponent<TooltipProps> = ({datum, x, y, data, upScalingR
       style={{pointerEvents: 'none', fill: 'none', stroke: 'none'}}
       transform={`scale(${downScalingRatio}, ${downScalingRatio})`}
     >
-      <foreignObject x={x * upScalingRatio - 20} y={y} width="300" height="350">
+      <foreignObject x={x * upScalingRatio} y={y} width="300" height="350">
         <div className="AknHoverBoxWithArrow">
           <div className="AknHoverBoxArrow" />
           <div className="AknHoverBox">
