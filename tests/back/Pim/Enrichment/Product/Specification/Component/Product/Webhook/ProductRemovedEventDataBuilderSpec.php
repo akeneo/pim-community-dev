@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\NotGrantedProductExc
 use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\ProductRemovedEventDataBuilder;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
@@ -29,7 +30,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_supports_the_same_business_events_as_decorated_service($eventDataBuilder): void
     {
-        $businessEvent = new ProductRemoved('erp', $this->getProduct());
+        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
         $eventDataBuilder->supports($businessEvent)->willReturn(true, false);
 
         $this->supports($businessEvent)->shouldReturn(true);
@@ -41,10 +42,10 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $categoryAccessRepository
     ): void {
         $user = new User();
-        $businessEvent = new ProductRemoved('erp', $this->getProduct());
+        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
         $eventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $categoryAccessRepository->areAllCategoryCodesGranted(
+        $categoryAccessRepository->isCategoryCodesGranted(
             $user,
             Attributes::VIEW_ITEMS,
             ['space_battleship']
@@ -61,10 +62,10 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
     ): void {
         $user = new User();
         $user->setUsername('erp_06458');
-        $businessEvent = new ProductRemoved('erp', $this->getProduct());
+        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
         $eventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $categoryAccessRepository->areAllCategoryCodesGranted(
+        $categoryAccessRepository->isCategoryCodesGranted(
             $user,
             Attributes::VIEW_ITEMS,
             ['space_battleship']
@@ -81,7 +82,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $eventDataBuilder
     ): void {
         $user = new User();
-        $businessEvent = new ProductRemoved('erp', []);
+        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), []);
         $eventDataBuilder->supports($businessEvent)->willReturn(true);
 
         $this
@@ -91,7 +92,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_error_if_the_business_event_is_not_supported($eventDataBuilder): void
     {
-        $businessEvent = new ProductRemoved('erp', $this->getProduct());
+        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
         $eventDataBuilder->supports($businessEvent)->willReturn(false);
 
         $this

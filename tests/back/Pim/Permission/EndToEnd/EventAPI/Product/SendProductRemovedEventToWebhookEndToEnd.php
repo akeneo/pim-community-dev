@@ -50,13 +50,13 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
         $this->normalizer = $this->get('pim_catalog.normalizer.standard.product');
         $this->userGroupRepository = $this->get('pim_user.repository.group');
         $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
+
+        $this->loader->loadCategoriesAndAttributesForEventAPI();
     }
 
     public function test_that_a_connection_with_access_to_only_one_category_of_the_product_is_still_notified_about_its_removal(
     ): void
     {
-        $this->loader->loadCategoriesAndAttributesForEventAPI();
-
         $product = $this->productLoader->create(
             'product_with_one_category_viewable_by_redactor_and_one_category_not_viewable_by_readactor',
             [
@@ -78,7 +78,6 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
             (string)$redactorGroup->getId(),
             $erpConnection->auditable()
         );
-
 
         /** @var HandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
@@ -104,7 +103,6 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
         $businessEventHandler->__invoke($message);
 
         $this->assertCount(1, $container);
-
     }
 
     public function test_that_a_connection_that_does_not_see_a_product_is_not_notified_about_its_removal(): void
@@ -112,7 +110,7 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
         $product = $this->productLoader->create(
             'product_not_viewable_by_redactor',
             [
-                'categories' => ['categoryB'],
+                'categories' => ['category_without_right'],
                 'family' => 'familyA',
             ]
         );

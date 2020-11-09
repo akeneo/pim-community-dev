@@ -55,7 +55,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
             );
         }
 
-        $isProductGranted = $this->categoryAccessRepository->areAllCategoryCodesGranted(
+        $isProductGranted = $this->categoryAccessRepository->isCategoryCodesGranted(
             $user,
             Attributes::VIEW_ITEMS,
             $categoryCodes
