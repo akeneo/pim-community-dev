@@ -13,7 +13,7 @@ use AkeneoTestEnterprise\Pim\WorkOrganization\Integration\TeamworkAssistant\Team
 
 class UserRepositoryIntegration extends TeamworkAssistantTestCase
 {
-    public function test_that_it_searches_all_user_that_does_not_belong_to_the_api(): void
+    public function test_that_it_searches_all_users_that_do_not_belong_to_the_api(): void
     {
         /** @var ConnectionLoader $connectionLoader */
         $connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');

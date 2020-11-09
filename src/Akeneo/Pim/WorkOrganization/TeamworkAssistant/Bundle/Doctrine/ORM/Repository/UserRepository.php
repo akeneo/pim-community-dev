@@ -80,7 +80,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * Allow to find contributors that belongs to a project.
+     * Allow to find contributors that belong to a project.
      *
      * {@inheritdoc}
      */
