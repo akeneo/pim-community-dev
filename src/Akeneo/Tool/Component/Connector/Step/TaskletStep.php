@@ -14,8 +14,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class TaskletStep extends AbstractStep
 {
-    /** @var TaskletInterface */
-    protected $tasklet;
+    protected TaskletInterface $tasklet;
 
     /**
      * @param string                   $name
