@@ -84,12 +84,16 @@ class BaseView extends Backbone.View<any> implements View {
    * @param  {string} code
    * @return {View}
    */
-  getExtension(code: string): View {
-    const extensionKey = _.findKey(this.extensions, (extension: View) => {
+  getExtension(code: string): View | undefined {
+    let extensionKey = _.findKey(this.extensions, (extension: View) => {
       const expectedPosition = extension.code.length - code.length;
 
       return expectedPosition >= 0 && expectedPosition === extension.code.indexOf(code, expectedPosition);
     });
+
+    if (undefined === extensionKey) {
+      extensionKey = '';
+    }
 
     return this.extensions[extensionKey];
   }
