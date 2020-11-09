@@ -3,6 +3,7 @@ import {useFetchKeyIndicators} from '../../../../infrastructure/hooks';
 import styled from 'styled-components';
 import {keyIndicatorMap} from '../../../../domain';
 import {SectionTitle} from "./SectionTitle";
+import {EmptyKeyIndicators} from "./EmptyKeyIndicators";
 
 type Props = {
   channel: string;
@@ -21,8 +22,9 @@ const KeyIndicators: FC<Props> = ({children, channel, locale, family, category})
 
       <KeyIndicatorContainer>
         {keyIndicators === null && <div data-testid={'dqi-key-indicator-loading'} className="AknLoadingMask"/>}
+        {keyIndicators !== null && Object.keys(keyIndicators).length === 0 && <EmptyKeyIndicators />}
         {
-          keyIndicators !== null && Children.map(children, ((child) => {
+          keyIndicators !== null && Object.keys(keyIndicators).length > 0 && Children.map(children, ((child) => {
             const element = child as ReactElement;
 
             if (!keyIndicators.hasOwnProperty(element.props.type)) {
