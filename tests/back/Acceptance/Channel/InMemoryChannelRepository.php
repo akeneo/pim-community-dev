@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Channel;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
@@ -83,7 +84,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
     {
         return $this->channels->map(function (ChannelInterface $channel): string {
             return $channel->getCode();
-        })->toArray();
+        })->getValues();
     }
 
     /**
