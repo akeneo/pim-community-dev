@@ -48,6 +48,7 @@
 - PIM-9536: Fix unexpected behaviors on drag&drop in rules edit page (calculate and concatenate actions)
 - PIM-9528: Fix asset code changed into lower case in create asset/upload asset UI
 - PIM-9537: Fix importing reference entities with wrong code fails the import
+- PIM-9541: Fix API users shown in Project contributors search
 
 ## Improvements
 
