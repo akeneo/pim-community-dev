@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
@@ -32,30 +33,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class PublishProductTasklet extends AbstractProductPublisherTasklet implements TaskletInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
+    protected AuthorizationCheckerInterface $authorizationChecker;
+    protected ProductQueryBuilderFactoryInterface $pqbFactory;
+    protected EntityManagerClearerInterface $cacheClearer;
+    protected JobStopper $jobStopper;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbFactory;
-
-    /** @var EntityManagerClearerInterface */
-    protected $cacheClearer;
-
-    /**
-     * @param PublishedProductManager             $manager
-     * @param PaginatorFactoryInterface           $paginatorFactory
-     * @param ValidatorInterface                  $validator
-     * @param AuthorizationCheckerInterface       $authorizationChecker
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param EntityManagerClearerInterface       $cacheClearer
-     */
     public function __construct(
         PublishedProductManager $manager,
         PaginatorFactoryInterface $paginatorFactory,
         ValidatorInterface $validator,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        JobStopper $jobStopper
     ) {
         parent::__construct(
             $manager,
@@ -66,6 +56,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         $this->authorizationChecker = $authorizationChecker;
         $this->pqbFactory = $pqbFactory;
         $this->cacheClearer = $cacheClearer;
+        $this->jobStopper = $jobStopper;
     }
 
     /**
@@ -78,6 +69,11 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
         foreach ($paginator as $productsPage) {
+            if ($this->jobStopper->isStopping($this->stepExecution)) {
+                $this->jobStopper->stop($this->stepExecution);
+                break;
+            }
+
             $invalidEntitiesWithFamily = [];
             foreach ($productsPage as $index => $entityWithFamily) {
                 if (!$entityWithFamily instanceof ProductInterface) {

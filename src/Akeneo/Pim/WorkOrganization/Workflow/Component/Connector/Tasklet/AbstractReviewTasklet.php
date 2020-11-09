@@ -17,6 +17,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermis
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -40,42 +41,23 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @staticvar string */
     const ERROR_INVALID_DRAFT = 'invalid_draft';
 
-    /** @var StepExecution */
-    protected $stepExecution;
+    protected StepExecution $stepExecution;
+    protected EntityWithValuesDraftRepositoryInterface $productDraftRepository;
+    protected EntityWithValuesDraftManager $productDraftManager;
+    protected EntityWithValuesDraftRepositoryInterface $productModelDraftRepository;
+    protected EntityWithValuesDraftManager $productModelDraftManager;
+    protected AuthorizationCheckerInterface $authorizationChecker;
+    protected ProductDraftChangesPermissionHelper $permissionHelper;
+    protected JobStopper $jobStopper;
 
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    protected $productDraftRepository;
-
-    /** @var EntityWithValuesDraftManager */
-    protected $productDraftManager;
-
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    protected $productModelDraftRepository;
-
-    /** @var EntityWithValuesDraftManager */
-    protected $productModelDraftManager;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /** @var ProductDraftChangesPermissionHelper */
-    protected $permissionHelper;
-
-    /**
-     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
-     * @param EntityWithValuesDraftManager             $productDraftManager
-     * @param EntityWithValuesDraftRepositoryInterface $productModelDraftRepository
-     * @param EntityWithValuesDraftManager             $productModelDraftManager
-     * @param AuthorizationCheckerInterface            $authorizationChecker
-     * @param ProductDraftChangesPermissionHelper      $permissionHelper
-     */
     public function __construct(
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         EntityWithValuesDraftManager $productDraftManager,
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
         EntityWithValuesDraftManager $productModelDraftManager,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductDraftChangesPermissionHelper $permissionHelper
+        ProductDraftChangesPermissionHelper $permissionHelper,
+        JobStopper $jobStopper
     ) {
         $this->productDraftRepository = $productDraftRepository;
         $this->productDraftManager = $productDraftManager;
@@ -83,6 +65,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
         $this->productModelDraftManager = $productModelDraftManager;
         $this->authorizationChecker = $authorizationChecker;
         $this->permissionHelper = $permissionHelper;
+        $this->jobStopper = $jobStopper;
     }
 
     /**
