@@ -17,5 +17,5 @@ interface EventDataBuilderInterface
     /**
      * @return array<mixed> Normalized data.
      */
-    public function build(BusinessEventInterface $businessEvent): array;
+    public function build(BusinessEventInterface $businessEvent, int $userId): array;
 }

@@ -55,7 +55,10 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $user->isApiUser()->willReturn(false);
         $author = Author::fromUser($user->getWrappedObject());
 
-        $this->build(new ProductRemoved($author, ['identifier' => 'product_identifier']))->shouldReturn(
+        $this->build(
+            new ProductRemoved($author, ['identifier' => 'product_identifier']),
+            1
+        )->shouldReturn(
             [
                 'resource' => ['identifier' => 'product_identifier'],
             ]
@@ -70,9 +73,13 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $user->isApiUser()->willReturn(false);
         $author = Author::fromUser($user->getWrappedObject());
 
-        $this->shouldThrow(new \InvalidArgumentException())->during(
-            'build',
-            [new ProductCreated($author, ['identifier' => 'product_identifier'])]
-        );
+        $this->shouldThrow(new \InvalidArgumentException())
+            ->during(
+                'build',
+                [
+                    new ProductCreated($author, ['identifier' => 'product_identifier']),
+                    1
+                ]
+            );
     }
 }

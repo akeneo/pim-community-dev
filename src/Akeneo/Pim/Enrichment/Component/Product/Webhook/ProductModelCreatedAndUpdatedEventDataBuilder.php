@@ -43,7 +43,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
     /**
      * @param ProductModelUpdated|ProductModelCreated $businessEvent
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(BusinessEventInterface $businessEvent, int $userId): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();

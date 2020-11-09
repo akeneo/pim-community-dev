@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,17 +22,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
-
-    /** @var NormalizerInterface */
-    private $externalApiNormalizer;
+    private GetConnectorProducts $getConnectorProductsQuery;
+    private NormalizerInterface$externalApiNormalizer;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
+        GetConnectorProducts $getConnectorProductsQuery,
         NormalizerInterface $externalApiNormalizer
     ) {
-        $this->productRepository = $productRepository;
+        $this->getConnectorProductsQuery = $getConnectorProductsQuery;
         $this->externalApiNormalizer = $externalApiNormalizer;
     }
 
@@ -45,7 +43,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
      * @throws NotGrantedCategoryException
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(BusinessEventInterface $businessEvent, int $userId): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();
@@ -54,12 +52,8 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
         $data = $businessEvent->data();
 
         try {
-            $product = $this->productRepository->findOneByIdentifier($data['identifier']);
-        } catch (AccessDeniedException $e) {
-            throw new NotGrantedCategoryException($e->getMessage(), $e);
-        }
-
-        if (null === $product) {
+            $product = $this->getConnectorProductsQuery->fromProductIdentifier($data['identifier'], $userId);
+        } catch (ObjectNotFoundException $e) {
             throw new ProductNotFoundException($data['identifier']);
         }
 

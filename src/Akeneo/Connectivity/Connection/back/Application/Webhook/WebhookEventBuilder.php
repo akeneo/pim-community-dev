@@ -32,11 +32,16 @@ class WebhookEventBuilder
      */
     public function build(BusinessEventInterface $businessEvent, array $context = []): WebhookEvent
     {
-        if (!array_key_exists(
-                'pim_source',
-                $context
-            ) || null === $context['pim_source'] || '' === $context['pim_source']) {
+        if (!array_key_exists('pim_source', $context)
+            || null === $context['pim_source'] || '' === $context['pim_source']
+        ) {
             throw new \InvalidArgumentException("Context property 'pim_source' is mandatory");
+        }
+
+        if (!array_key_exists('user_id',$context)
+            || null === $context['user_id'] || '' === $context['user_id']
+        ) {
+            throw new \InvalidArgumentException("Context property 'user_id' is mandatory");
         }
 
         return new WebhookEvent(
@@ -45,18 +50,18 @@ class WebhookEventBuilder
             date(\DateTimeInterface::ATOM, $businessEvent->timestamp()),
             $businessEvent->author(),
             $context['pim_source'],
-            $this->buildEventData($businessEvent)
+            $this->buildEventData($businessEvent, $context['user_id'])
         );
     }
 
     /**
      * @return array<mixed>
      */
-    private function buildEventData(BusinessEventInterface $businessEvent): array
+    private function buildEventData(BusinessEventInterface $businessEvent, int $userId): array
     {
         foreach ($this->builders as $builder) {
             if (true === $builder->supports($businessEvent)) {
-                return $builder->build($businessEvent);
+                return $builder->build($businessEvent, $userId);
             }
         }
 

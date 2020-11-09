@@ -22,7 +22,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
     /**
      * @param ProductRemoved $businessEvent
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(BusinessEventInterface $businessEvent, int $userId): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();
