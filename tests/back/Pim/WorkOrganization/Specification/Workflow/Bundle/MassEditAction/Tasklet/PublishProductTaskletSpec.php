@@ -17,10 +17,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -35,7 +34,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ValidatorInterface $validator,
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        JobStopper $jobStopper
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqbFactory->create(Argument::any())->willReturn($pqb);
@@ -46,7 +46,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
             $validator,
             $authorizationChecker,
             $pqbFactory,
-            $cacheClearer
+            $cacheClearer,
+            $jobStopper
         );
         $this->setStepExecution($stepExecution);
     }
@@ -66,7 +67,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ConstraintViolationListInterface $violations,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobStopper $jobStopper
     ) {
         $configuration = [
             'filters' => [
@@ -101,6 +103,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $violations->count()->willReturn(0);
 
         $manager->publishAll([$product1, $product2])->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
@@ -115,7 +118,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ConstraintViolationListInterface $violations,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobStopper $jobStopper
     ) {
         $configuration = [
             'filters' => [
@@ -157,6 +161,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $violations->count()->willReturn(0);
 
         $manager->publishAll([$product1])->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }

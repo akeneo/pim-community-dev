@@ -30,32 +30,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ProductRuleApplier implements ApplierInterface
 {
-    /** @var ProductsUpdater */
-    protected $productsUpdater;
+    protected ProductsUpdater $productsUpdater;
+    protected ProductsValidator $productsValidator;
+    protected ProductsSaver $productsSaver;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected EntityManagerClearerInterface $cacheClearer;
+    protected int $pageSize;
 
-    /** @var ProductsValidator */
-    protected $productsValidator;
-
-    /** @var ProductsSaver */
-    protected $productsSaver;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var EntityManagerClearerInterface */
-    protected $cacheClearer;
-
-    /** @var int */
-    protected $pageSize;
-
-    /**
-     * @param ProductsUpdater $productsUpdater
-     * @param ProductsValidator $productsValidator
-     * @param ProductsSaver $productsSaver
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param EntityManagerClearerInterface $cacheClearer
-     * @param int $pageSize
-     */
     public function __construct(
         ProductsUpdater $productsUpdater,
         ProductsValidator $productsValidator,

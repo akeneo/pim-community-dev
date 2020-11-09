@@ -19,6 +19,7 @@ services:
             -
                 - '@pimee_enrich.step.add_product_value_with_permission.perform'
                 - '@pimee_enrich.step.execute_rules'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -31,6 +32,7 @@ services:
             -
                 - '@pimee_enrich.step.update_product_value_with_permission.perform'
                 - '@pimee_enrich.step.execute_rules'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -43,6 +45,7 @@ services:
             -
                 - '@pimee_enrich.step.remove_product_value_with_permission.perform'
                 - '@pimee_enrich.step.execute_rules'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -55,6 +58,7 @@ services:
             -
                 - '@pimee_enrich.step.add_to_category_with_permission.perform'
                 - '@pimee_enrich.step.execute_rules'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -67,6 +71,7 @@ services:
             -
                 - '@pimee_enrich.step.move_to_category_with_permission.perform'
                 - '@pimee_enrich.step.execute_rules'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -79,6 +84,7 @@ services:
             -
                 - '@pimee_enrich.step.remove_from_category_with_permission.perform'
                 - '@pimee_enrich.step.execute_rules'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -93,19 +99,21 @@ services:
                 - '@pim_enrich.step.clean'
                 - '@pimee_enrich.step.execute_rules'
                 - '@pimee_workflow.step.mass_edit.send_for_approval'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
     pim_enrich.job.add_attribute_value:
          class: '%pim_connector.job.simple_job.class%'
          arguments:
-             - '%pim_enrich.job.name.add_attribute_value%'
-             - '@event_dispatcher'
-             - '@akeneo_batch.job_repository'
-             -
-                 - '@pimee_enrich.step.add_attribute_value.mass_edit.perform'
-                 - '@pimee_enrich.step.execute_rules'
-                 - '@pimee_workflow.step.mass_edit.send_for_approval'
+            - '%pim_enrich.job.name.add_attribute_value%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_enrich.step.add_attribute_value.mass_edit.perform'
+                - '@pimee_enrich.step.execute_rules'
+                - '@pimee_workflow.step.mass_edit.send_for_approval'
+            - true
          tags:
              - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 

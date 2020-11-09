@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,7 +30,8 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         ProductQueryBuilder $pqb,
         CursorInterface $cursor,
         AuthorizationCheckerInterface $authorizationChecker,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        JobStopper $jobStopper
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqb->addFilter(Argument::cetera())->willReturn($pqb);
@@ -41,7 +43,8 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
             $validator,
             $authorizationChecker,
             $pqbFactory,
-            $cacheClearer
+            $cacheClearer,
+            $jobStopper
         );
     }
 
@@ -60,7 +63,8 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         PublishedProductInterface $pubProduct1,
         PublishedProductInterface $pubProduct2,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobStopper $jobStopper
     ) {
         $filters = [
             [
@@ -90,6 +94,7 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(2);
 
         $manager->unpublishAll([$pubProduct1, $pubProduct2])->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
@@ -104,7 +109,8 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         PublishedProductInterface $pubProduct1,
         PublishedProductInterface $pubProduct2,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobStopper $jobStopper
     ) {
         $filters = [
             [
@@ -143,6 +149,7 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         )->shouldBeCalledTimes(1);
 
         $manager->unpublishAll([$pubProduct1])->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->setStepExecution($stepExecution);
         $this->execute();

@@ -18,5 +18,5 @@ Feature: Follow project calculation job
     When I am on the job tracker page
     Then I should see entity Project calculation
     And the grid should contain 1 element
-    When I click on the "Show" action of the row which contains "Project calculation"
+    And I press the "View" button
     Then I should see the text "execution details - Project calculation"

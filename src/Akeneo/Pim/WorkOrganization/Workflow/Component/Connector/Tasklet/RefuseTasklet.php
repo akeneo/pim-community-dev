@@ -39,11 +39,11 @@ class RefuseTasklet extends AbstractReviewTasklet
         $productModelDrafts = $this->productModelDraftRepository->findByIds($jobParameters->get('productModelDraftIds'));
         $context = ['comment' => $jobParameters->get('comment')];
 
-        if (null !== $productDrafts) {
+        if (null !== $productDrafts && !$this->jobStopper->isStopping($this->stepExecution)) {
             $this->processDrafts($productDrafts, $context);
         }
 
-        if (null !== $productModelDrafts) {
+        if (null !== $productModelDrafts && !$this->jobStopper->isStopping($this->stepExecution)) {
             $this->processDrafts($productModelDrafts, $context);
         }
     }
@@ -57,6 +57,11 @@ class RefuseTasklet extends AbstractReviewTasklet
     protected function processDrafts($drafts, array $context): void
     {
         foreach ($drafts as $draft) {
+            if ($this->jobStopper->isStopping($this->stepExecution)) {
+                $this->jobStopper->stop($this->stepExecution);
+                break;
+            }
+
             if ($this->permissionHelper->canEditOneChangeToReview($draft)) {
                 try {
                     $this->refuseDraft($draft, $context);
