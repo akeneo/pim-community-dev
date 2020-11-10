@@ -19,39 +19,39 @@ include make-file/*.mk
 ## Front
 ##
 
-yarn.lock: package.json #Doc: perform “yarn install”
+yarn.lock: package.json
 	$(YARN_RUN) install
 
 node_modules: yarn.lock #Doc: perform “yarn install --check-files”
 	$(YARN_RUN) install --frozen-lockfile --check-files
 
 .PHONY: dsm
-dsm:
+dsm: #Doc: install & build the PIM DSM
 	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
 	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build
 
 .PHONY: assets
-assets:
+assets: #Doc: clean & reinstall assets
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
 	$(PHP_RUN) bin/console --env=prod pim:installer:assets --symlink --clean
 
 .PHONY: css
-css:
+css: #Doc: build PIM CSS
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/css
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod: dsm
+javascript-prod: dsm #Doc: clean & yarn run webpack in production environement
 	$(NODE_RUN) rm -rf public/dist
 	$(DOCKER_COMPOSE) run -e EDITION=cloud --rm node yarn run webpack
 
 .PHONY: javascript-prod-onprem-paas
-javascript-prod-onprem-paas: dsm
+javascript-prod-onprem-paas: dsm #Doc: clean & yarn run webpack
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: dsm
+javascript-dev: dsm #Doc: clean & run webpack dev
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
@@ -66,35 +66,35 @@ javascript-test: dsm
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css javascript-test javascript-dev
+front: assets css javascript-test javascript-dev #Doc: build the front-end
 
 ##
 ## Back
 ##
 
 .PHONY: fix-cs-back
-fix-cs-back:
+fix-cs-back: #Doc: Launch CSFixer on the back-end
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=.php_cs.php
 
-var/cache/dev:
+var/cache/dev: #Doc: create Sf cache in DEV environement 
 	APP_ENV=dev make cache
 
 .PHONY: cache
-cache:
+cache: #Doc: clean, generate & warm the Sf cache up
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
 
-composer.lock: composer.json
+composer.lock: composer.json #Doc: launch composer update
 	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer update --no-interaction
 
-vendor: composer.lock
+vendor: composer.lock #Doc: launch composer install
 	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer install --no-interaction
 
 .PHONY: check-requirements
-check-requirements:
+check-requirements: #Doc: check if PIM requirements are set
 	$(PHP_RUN) bin/console pim:installer:check-requirements
 
 .PHONY: database
-database:
+database: #Doc: install a new icecat catalog database
 	$(PHP_RUN) bin/console pim:installer:db ${O}
 
 ##
@@ -102,7 +102,7 @@ database:
 ##
 
 .PHONY: dependencies
-dependencies: vendor node_modules
+dependencies: vendor node_modules #Doc: install PHP & JS dependencies
 
 # Those targets ease the pim installation depending on the Symfony environnement: behat, test, dev, prod.
 #
@@ -166,7 +166,7 @@ pim-saas-like: #Doc: build, (re)create, start containers, load the db and create
 .PHONY: down-pim-saas-like
 down-pim-saas-like: export COMPOSE_PROJECT_NAME = pim-saas-like
 down-pim-saas-like: export COMPOSE_FILE = docker-compose.saas-like.yml
-down-pim-saas-like:
+down-pim-saas-like: #Doc: shutdown all docker containers
 	$(DOCKER_COMPOSE) down
 
 ##
@@ -202,5 +202,5 @@ up: #Doc: build, (re)create and start containers
 	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}
 
 .PHONY: down
-down:
+down: #Doc: shutdown all Docker containers
 	$(DOCKER_COMPOSE) down -v
