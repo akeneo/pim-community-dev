@@ -17,20 +17,6 @@ const convertToType = (type: string, value: string) => {
   }
 };
 
-<<<<<<< HEAD
-type PropTypes = {[key: string]: string | number | boolean};
-
-class ReactCell extends StringCell {
-  render() {
-    const extraOptions = this.options.column.attributes.extraOptions;
-    const Component = requireContext(extraOptions.component).default;
-    const props = Object.keys(extraOptions.props).reduce((result: PropTypes, key) => {
-      result[key] = convertToType(extraOptions.props[key], this.model.get(key));
-
-      return result;
-    }, {});
-
-=======
 type PropTypes = {[key: string]: string | number | boolean | (() => void)};
 
 class ReactCell extends StringCell {
@@ -50,7 +36,6 @@ class ReactCell extends StringCell {
 
     props.refreshCollection = () => this.model.collection.fetch();
 
->>>>>>> origin/master
     ReactDOM.render(
       <ThemeProvider theme={pimTheme}>
         <DependenciesProvider>
