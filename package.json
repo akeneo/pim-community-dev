@@ -92,7 +92,7 @@
     "thread-loader": "^2.1.2",
     "ts-jest": "24.0.0",
     "ts-loader": "5.3.3",
-    "typescript": "^3.7.2",
+    "typescript": "3.8.2",
     "webpack": "4.29.6",
     "webpack-cleanup-plugin": "0.5.1",
     "webpack-cli": "^3.2.3",
