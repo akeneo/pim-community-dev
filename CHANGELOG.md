@@ -53,6 +53,7 @@
 - PIM-9498: Add translation for 'Mass delete products' job
 - PIM-9538: Fix sorting on rule engine list page
 - PIM-9499: Fix warning display when a job is running with warnings
+- PIM-9545: Fix possible memory leak in large import jobs
 
 ## New features
 
