@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -15,6 +16,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Exception\DeadlockException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +68,12 @@ class CategoryController
     /** @var StreamResourceResponse */
     protected $partialUpdateStreamResource;
 
+    /** @var ManagerRegistry */
+    protected $managerRegistry;
+
+    /** @var UnitOfWorkAndRepositoriesClearer */
+    protected $unitOfWorkAndRepositoriesClearer;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -79,6 +88,8 @@ class CategoryController
         PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
         StreamResourceResponse $partialUpdateStreamResource,
+        ManagerRegistry $managerRegistry,
+        UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer,
         array $apiConfiguration
     ) {
         $this->repository = $repository;
@@ -91,6 +102,8 @@ class CategoryController
         $this->parameterValidator = $parameterValidator;
         $this->paginator = $paginator;
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
+        $this->managerRegistry = $managerRegistry;
+        $this->unitOfWorkAndRepositoriesClearer = $unitOfWorkAndRepositoriesClearer;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -234,11 +247,52 @@ class CategoryController
 
         if (null === $category) {
             $isCreation = true;
-            $this->validateCodeConsistency($code, $data);
-            $data['code'] = $code;
-            $category = $this->factory->create();
+            $category = $this->createAndSaveCategory($code, $data);
+        } else {
+            $this->updateAndSaveCategory($category, $data);
         }
 
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($category, $status);
+
+        return $response;
+    }
+
+    private function createAndSaveCategory(string $code, array $data): CategoryInterface
+    {
+        $this->validateCodeConsistency($code, $data);
+        $data['code'] = $code;
+
+        $attempts = 0;
+
+        do {
+            /** @var CategoryInterface $category */
+            $category = $this->factory->create();
+
+            $this->updateCategory($category, $data, 'patch_categories__code_');
+            $this->validateCategory($category);
+
+            try {
+                $this->saver->save($category);
+
+                return $category;
+            } catch (\UnexpectedValueException $e) {
+                throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+            } catch (DeadlockException $e) {
+                usleep(100 + rand(0, 100));
+                // The EM is always closed when a deadlock is thrown
+                // we need to clear UoW and reset the EM
+                $this->unitOfWorkAndRepositoriesClearer->clear();
+                $this->managerRegistry->resetManager();
+                $attempts++;
+            }
+        } while($attempts < 5);
+
+        throw new \LogicException('Deadlock');
+    }
+
+    private function updateAndSaveCategory(CategoryInterface $category, array $data): CategoryInterface
+    {
         $this->updateCategory($category, $data, 'patch_categories__code_');
         $this->validateCategory($category);
 
@@ -248,10 +302,7 @@ class CategoryController
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         }
 
-        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
-        $response = $this->getResponse($category, $status);
-
-        return $response;
+        return $category;
     }
 
     /**

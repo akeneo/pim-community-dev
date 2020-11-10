@@ -113,6 +113,8 @@ services:
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.category_partial_update_stream'
+            - '@doctrine'
+            - '@pim_connector.doctrine.cache_clearer'
             - '%pim_api.configuration%'
 
     pim_enrich.controller.rest.category:
