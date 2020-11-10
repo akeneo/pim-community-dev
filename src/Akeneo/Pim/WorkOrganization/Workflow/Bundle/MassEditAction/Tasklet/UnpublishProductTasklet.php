@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
@@ -28,30 +29,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements TaskletInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
+    protected AuthorizationCheckerInterface $authorizationChecker;
+    protected ProductQueryBuilderFactoryInterface $publishedPqbFactory;
+    protected EntityManagerClearerInterface $cacheClearer;
+    protected JobStopper $jobStopper;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $publishedPqbFactory;
-
-    /** @var EntityManagerClearerInterface */
-    protected $cacheClearer;
-
-    /**
-     * @param PublishedProductManager             $manager
-     * @param PaginatorFactoryInterface           $paginatorFactory
-     * @param ValidatorInterface                  $validator
-     * @param AuthorizationCheckerInterface       $authorizationChecker
-     * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
-     * @param EntityManagerClearerInterface       $cacheClearer
-     */
     public function __construct(
         PublishedProductManager $manager,
         PaginatorFactoryInterface $paginatorFactory,
         ValidatorInterface $validator,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductQueryBuilderFactoryInterface $publishedPqbFactory,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        JobStopper $jobStopper
     ) {
         parent::__construct(
             $manager,
@@ -62,6 +52,7 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
         $this->authorizationChecker = $authorizationChecker;
         $this->publishedPqbFactory = $publishedPqbFactory;
         $this->cacheClearer = $cacheClearer;
+        $this->jobStopper = $jobStopper;
     }
 
     /**
@@ -74,6 +65,11 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet implements
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
         foreach ($paginator as $productsPage) {
+            if ($this->jobStopper->isStopping($this->stepExecution)) {
+                $this->jobStopper->stop($this->stepExecution);
+                break;
+            }
+
             $invalidProducts = [];
             foreach ($productsPage as $index => $product) {
                 $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $product);

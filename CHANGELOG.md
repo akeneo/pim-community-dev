@@ -48,6 +48,7 @@
 - PIM-9536: Fix unexpected behaviors on drag&drop in rules edit page (calculate and concatenate actions)
 - PIM-9528: Fix asset code changed into lower case in create asset/upload asset UI
 - PIM-9537: Fix importing reference entities with wrong code fails the import
+- PIM-9541: Fix API users shown in Project contributors search
 
 ## Improvements
 
@@ -69,6 +70,7 @@
 - MET-207: Asset Manager - As Peter, I would like to manually re-execute naming conventions
 - RUL-271: Rule engine - As Peter, I'd like to add a condition on a relative date for created/updated fields
 - PIM-9506: Make "image" the default media type for media link asset attributes
+- PIM-9452: Add a command to update ES max field limit on Serenity upgrade (Helm hook)
 
 ## New features
 

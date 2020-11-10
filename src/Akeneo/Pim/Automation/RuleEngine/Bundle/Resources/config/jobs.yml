@@ -23,6 +23,7 @@ services:
                 - '@pimee_catalog_rule.step.csv_product.import'
                 - '@pimee_catalog_rule.step.csv_product.import_associations'
                 - '@pimee_catalog_rule.step.csv_product.execute_rules'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -38,6 +39,7 @@ services:
                 - '@pimee_catalog_rule.step.csv_sub_product_model.import'
                 - '@pimee_catalog_rule.step.csv_product_model.execute_rules'
                 - '@pim_connector.step.csv_product_model.import_associations'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -53,6 +55,7 @@ services:
                 - '@pimee_catalog_rule.step.xlsx_product.import'
                 - '@pimee_catalog_rule.step.xlsx_product.import_associations'
                 - '@pimee_catalog_rule.step.xlsx_product.execute_rules'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
@@ -68,6 +71,7 @@ services:
                 - '@pimee_catalog_rule.step.xlsx_sub_product_model.import'
                 - '@pimee_catalog_rule.step.xlsx_product_model.execute_rules'
                 - '@pim_connector.step.xlsx_product_model.import_associations'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
@@ -80,6 +84,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_catalog_rule.step.yml_rule.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pim_connector.job.import_type%' }
 
@@ -92,6 +97,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_catalog_rule.step.yml_rule.export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pim_connector.job.export_type%' }
 
@@ -104,6 +110,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_catalog_rule.step.rule_impacted_product_count'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: '%pimee_catalog_rule.mass_edit_type%' }
 
@@ -116,5 +123,6 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_catalog_rule.step.execute_rules'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_catalog_rule.connector_name.rule_engine%', type: 'execute_rules' }

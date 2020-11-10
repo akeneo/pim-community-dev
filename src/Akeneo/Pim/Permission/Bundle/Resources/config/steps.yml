@@ -9,6 +9,7 @@ services:
             - '@pimee_enrich.mass_edit.add_product_value.processor'
             - '@pim_connector.writer.database.product'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_enrich.step.update_product_value_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -20,6 +21,7 @@ services:
             - '@pimee_enrich.mass_edit.update_product_value.processor'
             - '@pim_connector.writer.database.product'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_enrich.step.remove_product_value_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -31,6 +33,7 @@ services:
             - '@pimee_enrich.mass_edit.remove_product_value.processor'
             - '@pim_connector.writer.database.product'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_enrich.step.add_to_category_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -42,6 +45,7 @@ services:
             - '@pimee_enrich.mass_edit.add_product_value.processor'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_enrich.step.move_to_category_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -53,6 +57,7 @@ services:
             - '@pimee_enrich.mass_edit.update_product_value.processor'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_enrich.step.remove_from_category_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -64,6 +69,7 @@ services:
             - '@pimee_enrich.mass_edit.remove_product_value.processor'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_enrich.step.edit_common_attributes_with_permission.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -75,6 +81,7 @@ services:
             - '@pim_enrich.connector.processor.mass_edit.product.edit_attributes'
             - '@pimee_security.connector.writer.mass_edit.product_and_product_model'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_enrich.step.add_attribute_value.mass_edit.perform:
         class: '%pim_connector.step.item_step.class%'
@@ -86,3 +93,4 @@ services:
             - '@pim_enrich.connector.processor.mass_edit.product.add_attribute_value'
             - '@pimee_security.connector.writer.mass_edit.product_and_product_model'
             - 1000
+            - '@akeneo_batch.job.job_stopper'

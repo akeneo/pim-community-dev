@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -27,31 +28,25 @@ class ImpactedProductCountTasklet implements TaskletInterface
 {
     const CHUNK_SIZE = 300;
 
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var RuleDefinitionRepositoryInterface */
-    protected $ruleDefinitionRepo;
-
-    /** @var DryRunnerInterface */
-    protected $productRuleRunner;
-
-    /** @var BulkSaverInterface */
-    protected $saver;
-
-    /** @var EntityManagerClearerInterface */
-    protected $cacheClearer;
+    protected ?StepExecution $stepExecution = null;
+    protected RuleDefinitionRepositoryInterface $ruleDefinitionRepo;
+    protected DryRunnerInterface $productRuleRunner;
+    protected BulkSaverInterface $saver;
+    protected EntityManagerClearerInterface $cacheClearer;
+    protected JobStopper $jobStopper;
 
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         DryRunnerInterface $productRuleRunner,
         BulkSaverInterface $saver,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        JobStopper $jobStopper
     ) {
         $this->ruleDefinitionRepo = $ruleDefinitionRepo;
         $this->productRuleRunner = $productRuleRunner;
         $this->saver = $saver;
         $this->cacheClearer = $cacheClearer;
+        $this->jobStopper = $jobStopper;
     }
 
     /**
@@ -62,6 +57,10 @@ class ImpactedProductCountTasklet implements TaskletInterface
         $jobParameters = $this->stepExecution->getJobParameters();
         $ruleIds = $jobParameters->get('ruleIds');
         foreach (array_chunk($ruleIds, self::CHUNK_SIZE) as $ruleIdsChunk) {
+            if ($this->jobStopper->isStopping($this->stepExecution)) {
+                $this->jobStopper->stop($this->stepExecution);
+                return;
+            }
             $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $ruleIdsChunk]);
 
             foreach ($ruleDefinitions as $ruleDefinition) {
