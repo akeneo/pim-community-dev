@@ -17,3 +17,7 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductModelIdsByAttributeOptionCodeQuery
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetFamiliesByCategoryCodesQuery:
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'

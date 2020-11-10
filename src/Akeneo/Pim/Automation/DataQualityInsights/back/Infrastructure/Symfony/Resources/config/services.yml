@@ -206,3 +206,11 @@ services:
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithPerfectSpelling::CODE
+
+    akeneo.pimee.automation.data_quality_insights.get_key_indicators:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\PimEnterpriseGetKeyIndicators
+        decorates: akeneo.pim.automation.data_quality_insights.get_key_indicators
+        decoration_inner_name: akeneo.pim.automation.data_quality_insights.get_key_indicators.community
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.get_key_indicators.community'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeAttributesWithPerfectSpellingQuery'
