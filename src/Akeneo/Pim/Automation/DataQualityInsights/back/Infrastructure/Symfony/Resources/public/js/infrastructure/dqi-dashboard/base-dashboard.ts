@@ -34,7 +34,7 @@ class BaseDashboard extends BaseView {
     align: 'left',
   };
 
-  protected timePeriod: string = 'daily';
+  protected timePeriod: string = 'weekly';
 
   protected familyCode: string | null = null;
 
