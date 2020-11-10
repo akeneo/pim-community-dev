@@ -95,9 +95,9 @@ const Criterion: FunctionComponent<CriterionProps> = ({criterionEvaluation, axis
         })
       );
       if (criterion === ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE) {
-        redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes(family.meta.id);
+        redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes(family.code);
       } else {
-        redirectToAttributeGridFilteredByFamilyAndQuality(family.meta.id);
+        redirectToAttributeGridFilteredByFamilyAndQuality(family.code);
       }
     }
   };
