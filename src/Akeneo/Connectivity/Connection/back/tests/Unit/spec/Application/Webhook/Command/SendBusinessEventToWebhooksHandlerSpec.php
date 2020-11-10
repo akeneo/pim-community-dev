@@ -156,9 +156,9 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 function (iterable $iterable) {
                     $requests = iterator_to_array($iterable);
 
-                    Assert::assertCount(1, $requests);
-                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                    Assert::assertCount(3, $requests);
 
+                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
                     Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[0]->url());
                     Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[0]->secret());
                     Assert::assertEquals(
@@ -172,6 +172,36 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                             'data' => ['data'],
                         ],
                         $requests[0]->content()
+                    );
+                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[1]->url());
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[1]->secret());
+                    Assert::assertEquals(
+                        [
+                            'action' => 'product.created',
+                            'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                            'event_date' => '2020-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                            'pim_source' => 'staging.akeneo.com',
+                            'data' => ['data'],
+                        ],
+                        $requests[1]->content()
+                    );
+                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[2]->url());
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[2]->secret());
+                    Assert::assertEquals(
+                        [
+                            'action' => 'product.created',
+                            'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                            'event_date' => '2020-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                            'pim_source' => 'staging.akeneo.com',
+                            'data' => ['data'],
+                        ],
+                        $requests[2]->content()
                     );
 
                     return true;
