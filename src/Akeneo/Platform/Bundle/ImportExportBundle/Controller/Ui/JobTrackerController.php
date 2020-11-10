@@ -5,13 +5,17 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -24,40 +28,30 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class JobTrackerController extends Controller
 {
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected JobExecutionRepository $jobExecutionRepo;
+    protected JobExecutionArchivist $archivist;
+    protected SecurityFacade $securityFacade;
+    protected array $jobSecurityMapping;
+    private SqlUpdateJobExecutionStatus $updateJobExecutionStatus;
+    private JobRegistry $jobRegistry;
 
-    /** @var JobExecutionRepository */
-    protected $jobExecutionRepo;
-
-    /** @var JobExecutionArchivist */
-    protected $archivist;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var array */
-    protected $jobSecurityMapping;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobExecutionRepository   $jobExecutionRepo
-     * @param JobExecutionArchivist    $archivist
-     * @param SecurityFacade           $securityFacade
-     * @param array                    $jobSecurityMapping
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         JobExecutionRepository $jobExecutionRepo,
         JobExecutionArchivist $archivist,
         SecurityFacade $securityFacade,
-        $jobSecurityMapping
+        array $jobSecurityMapping,
+        SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
+        JobRegistry $jobRegistry
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->jobExecutionRepo = $jobExecutionRepo;
         $this->archivist = $archivist;
         $this->securityFacade = $securityFacade;
         $this->jobSecurityMapping = $jobSecurityMapping;
+        $this->updateJobExecutionStatus = $updateJobExecutionStatus;
+        $this->jobRegistry = $jobRegistry;
     }
 
     /**
@@ -66,10 +60,8 @@ class JobTrackerController extends Controller
      * @param int    $id
      * @param string $archiver
      * @param string $key
-     *
-     * @return StreamedResponse
      */
-    public function downloadFilesAction($id, $archiver, $key)
+    public function downloadFilesAction($id, $archiver, $key): StreamedFileResponse
     {
         $jobExecution = $this->jobExecutionRepo->find($id);
 
@@ -93,10 +85,8 @@ class JobTrackerController extends Controller
      *
      * @param JobExecution  $jobExecution
      * @param mixed $object The object
-     *
-     * @return bool
      */
-    protected function isJobGranted($jobExecution, $object = null)
+    protected function isJobGranted($jobExecution, $object = null): bool
     {
         $jobExecutionType = $jobExecution->getJobInstance()->getType();
         if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {
@@ -104,5 +94,22 @@ class JobTrackerController extends Controller
         }
 
         return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType], $object);
+    }
+
+    /**
+     * Set the Job status to Stopping
+     */
+    public function stopJobAction(int $id): JsonResponse
+    {
+        $jobExecution = $this->jobExecutionRepo->find($id);
+        $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
+        $isStoppable = $jobExecution->isRunning() && $job instanceof StoppableJobInterface && $job->isStoppable();
+        $isGranted = $this->securityFacade->isGranted('pim_importexport_stop_job');
+
+        if ($isStoppable && $isGranted) {
+            $this->updateJobExecutionStatus->updateByJobExecutionId($id, new BatchStatus(BatchStatus::STOPPING));
+        }
+
+        return new JsonResponse(['successful' => true]);
     }
 }

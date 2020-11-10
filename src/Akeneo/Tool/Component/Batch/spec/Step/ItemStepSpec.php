@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
 use PhpSpec\ObjectBehavior;
@@ -26,7 +27,8 @@ class ItemStepSpec extends ObjectBehavior
         DoctrineJobRepository $repository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
-        ItemWriterInterface $writer
+        ItemWriterInterface $writer,
+        JobStopper $jobStopper
     ) {
         $this->beConstructedWith(
             'myname',
@@ -35,7 +37,8 @@ class ItemStepSpec extends ObjectBehavior
             $reader,
             $processor,
             $writer,
-            3
+            3,
+            $jobStopper
         );
     }
 
@@ -47,7 +50,8 @@ class ItemStepSpec extends ObjectBehavior
         $repository,
         StepExecution $execution,
         BatchStatus $status,
-        ExitStatus $exitStatus
+        ExitStatus $exitStatus,
+        JobStopper $jobStopper
     ) {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
@@ -63,12 +67,14 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process('r3')->shouldBeCalled()->willReturn('p3');
         $writer->write(['p1', 'p2', 'p3'])->shouldBeCalled();
         $dispatcher->dispatch(EventInterface::ITEM_STEP_AFTER_BATCH, Argument::any())->shouldBeCalled();
+        $jobStopper->isStopping($execution)->willReturn(false);
 
         // second batch
         $processor->process('r4')->shouldBeCalled()->willReturn('p4');
         $processor->process(null)->shouldNotBeCalled();
         $writer->write(['p4'])->shouldBeCalled();
         $dispatcher->dispatch(EventInterface::ITEM_STEP_AFTER_BATCH, Argument::any())->shouldBeCalled();
+        $jobStopper->isStopping($execution)->willReturn(false);
 
         $execution->getExitStatus()->willReturn($exitStatus);
         $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
@@ -92,7 +98,8 @@ class ItemStepSpec extends ObjectBehavior
         $repository,
         StepExecution $execution,
         BatchStatus $status,
-        ExitStatus $exitStatus
+        ExitStatus $exitStatus,
+        JobStopper $jobStopper
     ) {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
@@ -108,6 +115,7 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process('r3')->shouldBeCalled()->willReturn('p3');
         $writer->write(['p1', 'p2', 'p3'])->shouldBeCalled();
         $dispatcher->dispatch(EventInterface::ITEM_STEP_AFTER_BATCH, Argument::any())->shouldBeCalled();
+        $jobStopper->isStopping($execution)->willReturn(false);
 
         // second batch
         $processor->process('r4')->shouldBeCalled()->willThrow(

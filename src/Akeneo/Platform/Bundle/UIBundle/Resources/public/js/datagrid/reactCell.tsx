@@ -17,6 +17,7 @@ const convertToType = (type: string, value: string) => {
   }
 };
 
+<<<<<<< HEAD
 type PropTypes = {[key: string]: string | number | boolean};
 
 class ReactCell extends StringCell {
@@ -29,6 +30,27 @@ class ReactCell extends StringCell {
       return result;
     }, {});
 
+=======
+type PropTypes = {[key: string]: string | number | boolean | (() => void)};
+
+class ReactCell extends StringCell {
+  render() {
+    const {props: optionsProps, component} = this.options.column.attributes.extraOptions;
+    const Component = requireContext(component).default;
+
+    if (undefined === Component) {
+      throw new Error(`Module ${component} has no default export`);
+    }
+
+    const props = Object.keys(optionsProps).reduce((props: PropTypes, key) => {
+      props[key] = convertToType(optionsProps[key], this.model.get(key));
+
+      return props;
+    }, {});
+
+    props.refreshCollection = () => this.model.collection.fetch();
+
+>>>>>>> origin/master
     ReactDOM.render(
       <ThemeProvider theme={pimTheme}>
         <DependenciesProvider>

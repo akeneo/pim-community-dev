@@ -403,6 +403,7 @@ config:
           aclResourceId: pim_importexport_export_execution_show
         pim_enrich_job_tracker_show:
           module: pim/controller/job-execution
+          aclResourceId: pim_enrich_job_tracker_index
         oro_config_configuration_system:
           module: pim/controller/system
         pim_enrich_catalog_volume_index:
@@ -764,6 +765,7 @@ config:
     pim/job/execution/summary-table:                             pimui/js/job/execution/summary-table
     pim/job/execution/auto-refresh:                              pimui/js/job/execution/auto-refresh
     pim/job/execution/show-profile:                              pimui/js/job/execution/show-profile
+    pim/job/execution/stop-job:                                  pimui/js/job/execution/stop-job
     pim/job/execution/download-archives-buttons:                 pimui/js/job/execution/download-archives-buttons
     pim/job/execution/download-log:                              pimui/js/job/execution/download-log
     pim/job/execution/progress:                                  pimui/js/job/execution/progress

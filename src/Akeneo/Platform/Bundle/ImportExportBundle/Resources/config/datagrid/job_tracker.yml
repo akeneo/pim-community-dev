@@ -38,14 +38,17 @@ datagrid:
                 data_name:     warningCount
                 template:      PimImportExportBundle:Property:warning.html.twig
                 frontend_type: html
-        actions:
-            view:
-                launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--view
-                type:      navigate
-                label:     pim_datagrid.action.show.title
-                link:      show_link
-                rowAction: true
+            actions:
+                label: ~
+                frontend_type: react
+                type: field
+                component: pimimportexport/js/datagrid/Actions
+                props:
+                    id: string
+                    jobLabel: string
+                    isStoppable: boolean
+                    showLink: string
+                data_name: id
         sorters:
             columns:
                 job:
@@ -89,7 +92,9 @@ datagrid:
             totalSteps: ~
             hasWarning: ~
             hasError: ~
-            show_link:
+            jobLabel: ~
+            isStoppable: ~
+            showLink:
                 type: url
                 params:
                     - id

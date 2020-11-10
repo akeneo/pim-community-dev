@@ -109,6 +109,10 @@ $rules = [
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
             'Oro\Bundle\FilterBundle\Filter\FilterUtility',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface',
+            'Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource',
+            'Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource',
+
 
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager',
@@ -142,6 +146,7 @@ $rules = [
             'GuzzleHttp\Exception',
             'Mekras\Speller',
             'League\Flysystem',
+            'Webmozart\Assert\Assert',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         ]

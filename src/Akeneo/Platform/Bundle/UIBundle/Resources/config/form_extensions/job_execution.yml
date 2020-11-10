@@ -24,6 +24,12 @@ extensions:
         targetZone: buttons
         position: 50
 
+    pim-job-execution-form-stop:
+        module: pim/job/execution/stop-job
+        parent: pim-job-execution-form
+        targetZone: buttons
+        position: 95
+
     pim-job-execution-form-download-file:
         module: pim/job/execution/download-archives-buttons
         parent: pim-job-execution-form

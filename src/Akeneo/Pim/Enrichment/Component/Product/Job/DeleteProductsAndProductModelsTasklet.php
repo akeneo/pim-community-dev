@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
@@ -11,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModel
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -26,32 +28,16 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
  */
 class DeleteProductsAndProductModelsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var BulkRemoverInterface */
-    protected $productRemover;
-
-    /** @var BulkRemoverInterface */
-    protected $productModelRemover;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $pqbFactory;
-
-    /** @var EntityManagerClearerInterface */
-    protected $cacheClearer;
-
-    /** @var ObjectFilterInterface */
-    protected $filter;
-
-    /** @var int */
-    protected $batchSize = 100;
-
-    /** @var CountProductModelsAndChildrenProductModelsInterface */
-    private $countProductModelsAndChildrenProductModels;
-
-    /** @var CountVariantProductsInterface */
-    private $countVariantProducts;
+    protected ?StepExecution $stepExecution = null;
+    protected BulkRemoverInterface $productRemover;
+    protected BulkRemoverInterface $productModelRemover;
+    protected ProductQueryBuilderFactoryInterface $pqbFactory;
+    protected EntityManagerClearerInterface $cacheClearer;
+    protected ObjectFilterInterface $filter;
+    protected int $batchSize = 100;
+    private CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels;
+    private CountVariantProductsInterface $countVariantProducts;
+    private JobStopper $jobStopper;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -61,7 +47,8 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         ObjectFilterInterface $filter,
         int $batchSize,
         CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
-        CountVariantProductsInterface $countVariantProducts
+        CountVariantProductsInterface $countVariantProducts,
+        JobStopper $jobStopper
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->productRemover = $productRemover;
@@ -71,6 +58,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
         $this->filter = $filter;
         $this->countProductModelsAndChildrenProductModels = $countProductModelsAndChildrenProductModels;
         $this->countVariantProducts = $countVariantProducts;
+        $this->jobStopper = $jobStopper;
     }
 
     /**
@@ -167,6 +155,10 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
 
             $loopCount++;
             if ($this->batchSizeIsReached($loopCount)) {
+                if ($this->jobStopper->isStopping($this->stepExecution)) {
+                    $this->jobStopper->stop($this->stepExecution);
+                    return;
+                }
                 $this->doDelete($entitiesToRemove);
                 $entitiesToRemove = [];
             }

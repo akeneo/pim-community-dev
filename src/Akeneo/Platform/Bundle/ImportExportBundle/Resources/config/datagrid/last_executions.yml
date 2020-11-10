@@ -31,21 +31,26 @@ datagrid:
                 label: Warnings
                 frontendType: label
                 data_name: warningCount
+            actions:
+                label: ~
+                frontend_type: react
+                type: field
+                component: pimimportexport/js/datagrid/Actions
+                props:
+                    id: string
+                    jobLabel: string
+                    isStoppable: boolean
+                    showLink: string
+                data_name: id
         properties:
             id: ~
+            jobLabel: ~
+            isStoppable: ~
             currentStep: ~
             totalSteps: ~
             hasWarning: ~
             hasError: ~
-            show_link:
+            showLink:
                 type: url
                 params:
                     - id
-        actions:
-            show:
-                launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--view
-                type:      navigate
-                label:     pim_datagrid.action.show.title
-                link:      show_link
-                rowAction: true

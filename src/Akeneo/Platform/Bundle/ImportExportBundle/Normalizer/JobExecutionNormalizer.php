@@ -2,6 +2,8 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer;
 
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,20 +22,18 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
 {
     use SerializerAwareTrait;
 
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
+    protected NormalizerInterface $jobInstanceNormalizer;
+    private JobRegistry $jobRegistry;
 
-    /** @var NormalizerInterface */
-    protected $jobInstanceNormalizer;
-
-    /**
-     * @param TranslatorInterface $translator
-     * @param NormalizerInterface $jobInstanceNormalizer
-     */
-    public function __construct(TranslatorInterface $translator, NormalizerInterface $jobInstanceNormalizer)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        NormalizerInterface $jobInstanceNormalizer,
+        JobRegistry $jobRegistry
+    ) {
         $this->translator = $translator;
         $this->jobInstanceNormalizer = $jobInstanceNormalizer;
+        $this->jobRegistry = $jobRegistry;
     }
 
     /**
@@ -50,6 +50,11 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
             );
         }
 
+        $jobInstance = $jobExecution->getJobInstance();
+        $job = $this->jobRegistry->get($jobInstance->getJobName());
+        $isRunning = $jobExecution->isRunning();
+        $isStoppable = $isRunning && $job instanceof StoppableJobInterface && $job->isStoppable();
+
         return [
             'failures'       => array_map(
                 function ($exception) {
@@ -58,11 +63,12 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
                 $jobExecution->getFailureExceptions()
             ),
             'stepExecutions' => $this->normalizeStepExecutions($jobExecution->getStepExecutions(), $format, $context),
-            'isRunning'      => $jobExecution->isRunning(),
+            'isRunning'      => $isRunning,
+            'isStoppable'    => $isStoppable,
             'status'         => $this->translator->trans(
                 sprintf('pim_import_export.batch_status.%d', $jobExecution->getStatus()->getValue())
             ),
-            'jobInstance'    => $this->jobInstanceNormalizer->normalize($jobExecution->getJobInstance(), 'standard', $context),
+            'jobInstance'    => $this->jobInstanceNormalizer->normalize($jobInstance, 'standard', $context)
         ];
     }
 

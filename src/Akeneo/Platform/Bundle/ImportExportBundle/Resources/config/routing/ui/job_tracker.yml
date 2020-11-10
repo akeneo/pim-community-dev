@@ -6,6 +6,12 @@ pim_enrich_job_tracker_show:
     requirements:
         id: \d+
 
+pim_enrich_job_tracker_rest_stop:
+    path: /{id}/stop
+    defaults: { _controller: pim_enrich.controller.job_tracker:stopJobAction }
+    requirements:
+        id: \d+
+
 pim_enrich_job_tracker_download_file:
     path: /{id}/download/{archiver}/{key}
     defaults: { _controller: pim_enrich.controller.job_tracker:downloadFilesAction }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Batch\Step;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -10,7 +12,10 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
 use Psr\Log\LoggerAwareInterface;
@@ -24,42 +29,27 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwareInterface
+class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwareInterface, StoppableStepInterface
 {
     use LoggerAwareTrait;
 
-    /** @var ItemReaderInterface */
-    protected $reader = null;
+    protected ?ItemReaderInterface $reader = null;
+    protected ?ItemProcessorInterface $processor = null;
+    protected ?ItemWriterInterface $writer = null;
+    protected int $batchSize;
+    protected ?StepExecution $stepExecution = null;
+    private bool $stoppable = false;
+    private ?JobStopper $jobStopper = null;
 
-    /** @var ItemProcessorInterface */
-    protected $processor = null;
-
-    /** @var ItemWriterInterface */
-    protected $writer = null;
-
-    /** @var int */
-    protected $batchSize;
-
-    /** @var StepExecution */
-    protected $stepExecution = null;
-
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     * @param ItemReaderInterface      $reader
-     * @param ItemProcessorInterface   $processor
-     * @param ItemWriterInterface      $writer
-     * @param integer                  $batchSize
-     */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
-        $batchSize = 100
+        int $batchSize = 100,
+        JobStopper $jobStopper = null
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
 
@@ -67,6 +57,7 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         $this->processor = $processor;
         $this->writer = $writer;
         $this->batchSize = $batchSize;
+        $this->jobStopper = $jobStopper;
     }
 
     /**
@@ -102,6 +93,11 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
     public function isTrackable(): bool
     {
         return $this->reader instanceof TrackableItemReaderInterface;
+    }
+
+    public function setStoppable(bool $stoppable): void
+    {
+        $this->stoppable = $stoppable;
     }
 
     /**
@@ -146,6 +142,11 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
+                if ($this->jobStopper->isStopping($stepExecution)) {
+                    $this->jobStopper->stop($stepExecution);
+
+                    break;
+                }
             }
         }
 
@@ -155,6 +156,10 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
 
         if ($batchCount > 0) {
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
+        }
+
+        if ($this->jobStopper->isStopping($stepExecution)) {
+            $this->jobStopper->stop($stepExecution);
         }
 
         $this->flushStepElements();
@@ -282,5 +287,21 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         }
         $this->stepExecution->incrementProcessedItems($processedItemsCount);
         $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    private function isStopping(StepExecution $stepExecution): bool
+    {
+        return $this->stoppable &&
+            null !== $this->sqlGetJobExecutionStatus &&
+            BatchStatus::STOPPING === $this->sqlGetJobExecutionStatus->getByJobExecutionId(
+                $stepExecution->getJobExecution()->getId()
+            )->getValue();
+    }
+
+    private function stop(StepExecution $stepExecution): void
+    {
+        $stepExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
+        $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
+        $this->getJobRepository()->updateStepExecution($stepExecution);
     }
 }

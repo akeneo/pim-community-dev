@@ -18,12 +18,8 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
  */
 class JobExecutionResultRecordHydrator implements HydratorInterface
 {
-    private $registry;
-
-    /**
-     * @var GetJobExecutionTracking
-     */
-    private $getJobExecutionTracking;
+    private JobRegistry $registry;
+    private GetJobExecutionTracking $getJobExecutionTracking;
 
     public function __construct(JobRegistry $registry, GetJobExecutionTracking $getJobExecutionTracking)
     {
@@ -38,17 +34,16 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
     {
         $records = [];
         foreach ($qb->getQuery()->execute() as $record) {
-            // TODO: Will be fixed by the "stoppable" stories
-//            $job = $this->registry->get($record['jobName']);
-//            $recordStatus = new BatchStatus($record['status']);
-//            $isStoppable = $recordStatus->isRunning() && $job instanceof StoppableJobInterface && $job->isStoppable();
+            $job = $this->registry->get($record['jobName']);
+            $recordStatus = new BatchStatus($record['status']);
+            $isStoppable = $recordStatus->isRunning() && $job instanceof StoppableJobInterface && $job->isStoppable();
 
             $jobExecutionTracking = $this->getJobExecutionTracking->execute($record['id']);
             $records[] = new ResultRecord(
                 array_merge(
                     $record,
                     [
-                        'isStoppable'     => true,
+                        'isStoppable'     => $isStoppable,
                         'currentStep'     => $jobExecutionTracking->currentStep,
                         'totalSteps'       => $jobExecutionTracking->totalSteps,
                         'hasError'        => $jobExecutionTracking->hasError(),

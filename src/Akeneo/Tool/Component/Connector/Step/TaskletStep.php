@@ -16,8 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class TaskletStep extends AbstractStep implements TrackableStepInterface
 {
-    /** @var TaskletInterface */
-    protected $tasklet;
+    protected TaskletInterface $tasklet;
 
     /**
      * @param string                   $name

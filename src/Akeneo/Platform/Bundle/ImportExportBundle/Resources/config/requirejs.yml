@@ -6,3 +6,4 @@ config:
         pim/importexport/template/widget/view-all-btn: pimimportexport/templates/view-all-btn.html
 
         pimimportexport/js/JobExecutionStatus: pimimportexport/js/JobExecutionStatus
+        pimimportexport/js/datagrid/Actions: pimimportexport/js/datagrid/Actions

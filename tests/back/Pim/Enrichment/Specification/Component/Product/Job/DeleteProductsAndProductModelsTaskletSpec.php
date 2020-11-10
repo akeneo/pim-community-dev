@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -29,7 +30,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ObjectFilterInterface $filter,
         EntityManagerClearerInterface $cacheClearer,
         CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
-        CountVariantProductsInterface $countVariantProducts
+        CountVariantProductsInterface $countVariantProducts,
+        JobStopper $jobStopper
     ) {
         $this->beConstructedWith(
             $pqbFactory,
@@ -39,7 +41,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
             $filter,
             2,
             $countProductModelsAndChildrenProductModels,
-            $countVariantProducts
+            $countVariantProducts,
+            $jobStopper
         );
     }
 
@@ -67,7 +70,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         CursorInterface $variantProductsCursor,
         ProductInterface $product123,
         ProductInterface $product456,
-        ProductInterface $product789
+        ProductInterface $product789,
+        JobStopper $jobStopper
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -124,6 +128,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $cacheClearer->clear()->shouldBeCalledTimes(2);
 
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
         $this->execute();
     }
 
@@ -145,7 +151,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         CursorInterface $variantProductsCursor,
         ProductModelInterface $productModel123,
         ProductModelInterface $productModel456,
-        ProductModelInterface $productModel789
+        ProductModelInterface $productModel789,
+        JobStopper $jobStopper
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -208,6 +215,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $cacheClearer->clear()->shouldBeCalledTimes(2);
 
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
         $this->execute();
     }
 
@@ -232,7 +241,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductModelInterface $productModel3,
         ProductInterface $product4,
         ProductInterface $product5,
-        ProductInterface $product6
+        ProductInterface $product6,
+        JobStopper $jobStopper
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -316,6 +326,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $cacheClearer->clear()->shouldBeCalledTimes(3);
 
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
         $this->execute();
     }
 
@@ -338,7 +350,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        JobStopper $jobStopper
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -422,6 +435,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementReadCount()->shouldBeCalledTimes(4);
 
         $cacheClearer->clear()->shouldBeCalledTimes(2);
+
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }

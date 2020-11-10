@@ -169,6 +169,7 @@ pim_enrich.entity.product_model:
       required_label: '(axe de variante)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} produit variant|]1, Inf[{{ complete }} / {{ total }} produits variants"
+      label: Variante
     delete:
       confirm: Êtes-vous sûr de que vouloir supprimer ce modèle de produit ? Tous ses enfants, modèles de produit et de variantes de produits seront également supprimés.
       confirm_for_products_and_product_models: Êtes-vous sûr(e) de vouloir supprimer les produits et modèles de produits sélectionnés ? Tous les enfants des modèles de produits seront aussi supprimés.
