@@ -24,10 +24,10 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 class WebhookEventBuilderSpec extends ObjectBehavior
 {
     public function let(
-        EventDataBuilderInterface $eventDataBuilder1,
-        EventDataBuilderInterface $eventDataBuilder2
+        EventDataBuilderInterface $notSupportedEventDataBuilder,
+        EventDataBuilderInterface $supportedEventDataBuilder
     ): void {
-        $this->beConstructedWith([$eventDataBuilder1, $eventDataBuilder2]);
+        $this->beConstructedWith([$notSupportedEventDataBuilder, $supportedEventDataBuilder]);
     }
 
     public function it_is_initializable(): void
@@ -35,8 +35,11 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(WebhookEventBuilder::class);
     }
 
-    public function it_builds_a_webhook_event($eventDataBuilder1, $eventDataBuilder2, UserInterface $user): void
-    {
+    public function it_builds_a_webhook_event(
+        $notSupportedEventDataBuilder,
+        $supportedEventDataBuilder,
+        UserInterface $user
+    ): void {
         $user->getUsername()->willReturn('julia');
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
@@ -50,10 +53,10 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($businessEvent)->willReturn(false);
+        $supportedEventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $eventDataBuilder2->build(
+        $supportedEventDataBuilder->build(
             $businessEvent,
             [
                 'pim_source' => 'staging.akeneo.com',
@@ -102,8 +105,8 @@ class WebhookEventBuilderSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_if_there_is_no_pim_source_in_context(
-        $eventDataBuilder1,
-        $eventDataBuilder2,
+        $notSupportedEventDataBuilder,
+        $supportedEventDataBuilder,
         UserInterface $user
     ): void {
         $user->getUsername()->willReturn('julia');
@@ -119,18 +122,18 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($businessEvent)->willReturn(false);
+        $supportedEventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
+        $supportedEventDataBuilder->build($businessEvent)->willReturn(['data']);
 
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('build', [$businessEvent, ['user' => $user]]);
     }
 
     public function it_throws_an_exception_if_pim_source_is_empty(
-        $eventDataBuilder1,
-        $eventDataBuilder2,
+        $notSupportedEventDataBuilder,
+        $supportedEventDataBuilder,
         UserInterface $user
     ): void {
         $user->getUsername()->willReturn('julia');
@@ -146,18 +149,18 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($businessEvent)->willReturn(false);
+        $supportedEventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
+        $supportedEventDataBuilder->build($businessEvent)->willReturn(['data']);
 
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('build', [$businessEvent, ['pim_source' => '', 'user' => $user]]);
     }
 
     public function it_throws_an_exception_if_pim_source_is_null(
-        $eventDataBuilder1,
-        $eventDataBuilder2,
+        $notSupportedEventDataBuilder,
+        $supportedEventDataBuilder,
         UserInterface $user
     ): void {
         $user->getUsername()->willReturn('julia');
@@ -173,10 +176,10 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($businessEvent)->willReturn(false);
+        $supportedEventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
+        $supportedEventDataBuilder->build($businessEvent)->willReturn(['data']);
 
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('build', [$businessEvent, ['pim_source' => null, 'user' => $user]]);

@@ -41,7 +41,6 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     }
 
     /**
-     * @param ProductCreated|ProductUpdated $businessEvent
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      * @throws ProductNotFoundException
      * @throws NotGrantedCategoryException
