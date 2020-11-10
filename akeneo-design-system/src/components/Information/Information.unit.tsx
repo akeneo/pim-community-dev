@@ -24,3 +24,22 @@ describe('A helper', () => {
     expect(getByText(helperMessage)).toBeInTheDocument();
   });
 });
+describe('Information supports forwardRef', () => {
+  const ref = {current: null};
+
+  render(
+    <Information illustration={UsersIllustration} title="Some information" ref={ref}>
+      Some Information
+    </Information>
+  );
+  expect(ref.current).not.toBe(null);
+});
+
+describe('Information supports ...rest props', () => {
+  const {container} = render(
+    <Information illustration={UsersIllustration} title="Some information" data-my-attribute="my_value">
+      Some Information
+    </Information>
+  );
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+});

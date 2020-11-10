@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal} from './Modal';
+import {Modal, SectionTitle} from './Modal';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 
 test('it renders its children properly', () => {
@@ -51,6 +51,7 @@ test('it calls the onClose handler when hitting the Escape key', () => {
 
   render(
     <Modal isOpen={true} onClose={onClose}>
+      <SectionTitle>With a section Title</SectionTitle>
       Modal content
     </Modal>
   );
