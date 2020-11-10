@@ -160,7 +160,8 @@ class ItemStepSpec extends ObjectBehavior
         DoctrineJobRepository $repository,
         StepExecution $execution,
         BatchStatus $status,
-        ExitStatus $exitStatus
+        ExitStatus $exitStatus,
+        JobStopper $jobStopper
     ) {
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
@@ -168,6 +169,7 @@ class ItemStepSpec extends ObjectBehavior
         $dispatcher->dispatch(EventInterface::BEFORE_STEP_EXECUTION, Argument::any())->shouldBeCalled();
         $execution->setStartTime(Argument::any())->shouldBeCalled();
         $execution->setStatus(Argument::any())->shouldBeCalled();
+        $jobStopper->isStopping($execution)->willReturn(false);
 
         // first batch
         $reader->read()->willReturn('r1', 'r2', 'r3', 'r4', null);
