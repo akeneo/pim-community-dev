@@ -35,8 +35,7 @@ test('it render a progress bar with indeterminate progress', () => {
 });
 
 test('it render a indeterminate progress when percent is not a number', () => {
-  // @ts-ignore
-  render(<ProgressBar percent="an_invalid_value" level="primary" />);
+  render(<ProgressBar percent={NaN} level="primary" />);
   expect(screen.getByRole('progressbar')).not.toHaveAttribute('aria-valuemin');
   expect(screen.getByRole('progressbar')).not.toHaveAttribute('aria-valuenow');
   expect(screen.getByRole('progressbar')).not.toHaveAttribute('aria-valuemax');
