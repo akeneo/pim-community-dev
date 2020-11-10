@@ -13,4 +13,5 @@ export default interface View extends Backbone.View<any> {
   shutdown: () => void;
   triggerExtensions: () => void;
   getFormData: () => any;
+  getExtension: (code: string) => View | undefined;
 }

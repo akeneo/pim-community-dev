@@ -253,12 +253,6 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
-    "guzzlehttp/ringphp": {
-        "version": "1.1.1"
-    },
-    "guzzlehttp/streams": {
-        "version": "3.0.0"
-    },
     "imagine/imagine": {
         "version": "v0.7.1"
     },
@@ -574,9 +568,6 @@
             "bin/console",
             "config/bootstrap.php"
         ]
-    },
-    "symfony/contracts": {
-        "version": "v1.1.0"
     },
     "symfony/css-selector": {
         "version": "v3.4.31"
@@ -949,13 +940,7 @@
     "willdurand/negotiation": {
         "version": "v2.3.1"
     },
-    "zendframework/zend-code": {
-        "version": "3.3.2"
-    },
     "zendframework/zend-diactoros": {
         "version": "2.2.1"
-    },
-    "zendframework/zend-eventmanager": {
-        "version": "3.2.1"
     }
 }

@@ -60,9 +60,9 @@
                                 <% }) %>
                             </ul>
                             <a class="data" data-step-index="<%- stepIndex %>" data-warning-index="<%- warningIndex %>">
-                                <%- warning.expanded ? __('job_execution.summary.hide_item') : __('job_execution.summary.display_item')%>
+                                <%- expandedWarnings[stepIndex] && expandedWarnings[stepIndex].includes(warningIndex) ? __('job_execution.summary.hide_item') : __('job_execution.summary.display_item')%>
                             </a>
-                            <table class="AknGrid AknGrid--condensed AknGrid--unclickable <%- warning.expanded ? '' : 'hide'%>">
+                            <table class="AknGrid AknGrid--condensed AknGrid--unclickable <%- expandedWarnings[stepIndex] && expandedWarnings[stepIndex].includes(warningIndex) ? '' : 'hide'%>">
                                 <% _.each(warning.item, function (value, key) { %>
                                 <tr class="AknGrid-bodyRow">
                                     <td class="AknGrid-bodyCell"><%- key %></td>
