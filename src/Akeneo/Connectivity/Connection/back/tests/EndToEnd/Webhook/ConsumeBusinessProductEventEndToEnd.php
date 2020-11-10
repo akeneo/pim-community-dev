@@ -13,13 +13,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -75,16 +78,18 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
         $container = [];
         $history = Middleware::history($container);
         $handlerStack->push($history);
-        $message = new ProductCreated(
-            $author,
-            $this->normalizer->normalize($product, 'standard')
-        );
+        $message = new BulkEvent([
+            new ProductCreated(
+                $author,
+                $this->normalizer->normalize($product, 'standard')
+            )
+        ]);
 
         /** @var $businessEventHandler BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $container);
+        Assert::assertCount(1, $container);
     }
 
     public function test_it_sends_a_product_updated_webhook_event()
@@ -113,16 +118,18 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
         $history = Middleware::history($container);
         $handlerStack->push($history);
 
-        $message = new ProductUpdated(
-            $author,
-            $this->normalizer->normalize($product, 'standard')
-        );
+        $message = new BulkEvent([
+            new ProductUpdated(
+                $author,
+                $this->normalizer->normalize($product, 'standard')
+            )
+        ]);
 
         /** @var $businessEventHandler BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $container);
+        Assert::assertCount(1, $container);
     }
 
     public function test_it_sends_a_product_removed_webhook_event()
