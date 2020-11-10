@@ -11,10 +11,10 @@ import AttributesTabContent from './component/ProductEditForm/TabContent/Attribu
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
-import Criterion from "./component/ProductEditForm/TabContent/DataQualityInsights/Criterion";
-import {Recommendation} from "./component/ProductEditForm/TabContent/DataQualityInsights/Recommendation";
-import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from "../domain/Evaluation.interface";
-import {isSuccess} from "./helper";
+import Criterion from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import {Recommendation} from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
+import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from '../domain/Evaluation.interface';
+import {isSuccess} from './helper';
 
 const translate = require('oro/translator');
 
