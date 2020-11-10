@@ -28,17 +28,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
 {
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var LoggerInterface */
-    protected $logger;
-
-    /** @var bool */
-    protected $stopOnError;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected LoggerInterface $logger;
+    protected bool $stopOnError;
 
     /** @var RunnerInterface[] ordered runner with priority */
-    protected $runners;
+    protected array $runners;
 
     /**
      * @param EventDispatcherInterface $eventDispatcher

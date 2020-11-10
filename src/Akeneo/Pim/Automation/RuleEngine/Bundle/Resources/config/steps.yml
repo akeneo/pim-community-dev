@@ -36,6 +36,7 @@ services:
             - '@pimee_catalog_rule.processor.product_loader'
             - '@pimee_catalog_rule.executor.rules'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_catalog_rule.step.csv_product_model.execute_rules:
         class: '%pim_connector.step.item_step.class%'
@@ -47,6 +48,7 @@ services:
             - '@pim_connector.processor.denormalization.product_model_loader'
             - '@pimee_catalog_rule.executor.rules'
             - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_catalog_rule.step.xlsx_product.execute_rules:
         class: '%pim_connector.step.item_step.class%'
@@ -58,6 +60,7 @@ services:
             - '@pimee_catalog_rule.processor.product_loader'
             - '@pimee_catalog_rule.executor.rules'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_catalog_rule.step.xlsx_product_model.execute_rules:
         class: '%pim_connector.step.item_step.class%'
@@ -69,6 +72,7 @@ services:
             - '@pim_connector.processor.denormalization.product_model_loader'
             - '@pimee_catalog_rule.executor.rules'
             - 100
+            - '@akeneo_batch.job.job_stopper'
 
     # Import Rules steps ----------------------------------------------------------------------------------------------
     pimee_catalog_rule.step.yml_rule.import:
@@ -80,6 +84,8 @@ services:
             - '@pimee_catalog_rule.reader.file.yaml_rule'
             - '@pimee_catalog_rule.processor.denormalization.rule_definition'
             - '@pimee_catalog_rule.writer.database.rule_definition'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     # Export Rules steps ----------------------------------------------------------------------------------------------
     pimee_catalog_rule.step.yml_rule.export:
@@ -91,6 +97,8 @@ services:
             - '@pimee_catalog_rule.reader.database.rule_definition'
             - '@pimee_catalog_rule.processor.normalization.rule_definition'
             - '@pimee_catalog_rule.writer.file.yaml_rule_definition'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     # Calculate Rules steps -------------------------------------------------------------------------------------------
     pimee_catalog_rule.step.rule_impacted_product_count:
@@ -112,6 +120,7 @@ services:
             - '@pimee_catalog_rule.processor.product_loader'
             - '@pimee_catalog_rule.executor.rules'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_catalog_rule.step.execute_rules:
         class: '%pim_connector.step.tasklet.class%'

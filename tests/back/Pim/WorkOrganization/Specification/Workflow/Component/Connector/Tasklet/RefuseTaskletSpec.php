@@ -14,6 +14,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -26,7 +27,8 @@ class RefuseTaskletSpec extends ObjectBehavior
         EntityWithValuesDraftManager $productModelDraftManager,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftChangesPermissionHelper $permissionHelper,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobStopper $jobStopper
     ) {
         $this->beConstructedWith(
             $productDraftRepository,
@@ -34,7 +36,8 @@ class RefuseTaskletSpec extends ObjectBehavior
             $productModelDraftRepository,
             $productModelDraftManager,
             $authorizationChecker,
-            $permissionHelper
+            $permissionHelper,
+            $jobStopper
         );
         $this->setStepExecution($stepExecution);
     }
@@ -53,7 +56,8 @@ class RefuseTaskletSpec extends ObjectBehavior
         ProductInterface $product2,
         JobParameters $jobParameters,
         ProductModelDraft $productModelDraft,
-        ProductModel $productModel
+        ProductModel $productModel,
+        JobStopper $jobStopper
     ) {
         $configuration = ['productDraftIds' => [1, 2], 'productModelDraftIds' => [1], 'comment' => null];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -85,6 +89,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $productDraftManager->refuse($productDraft1, ['comment' => null])->shouldBeCalled();
         $productDraftManager->refuse($productDraft2, ['comment' => null])->shouldBeCalled();
         $productModelDraftManager->refuse($productModelDraft, ['comment' => null])->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
@@ -103,7 +108,8 @@ class RefuseTaskletSpec extends ObjectBehavior
         ProductInterface $product2,
         JobParameters $jobParameters,
         ProductModelDraft $productModelDraft,
-        ProductModel $productModel
+        ProductModel $productModel,
+        JobStopper $jobStopper
     ) {
         $configuration = ['productDraftIds' => [1, 2], 'productModelDraftIds' => [1], 'comment' => null];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -137,6 +143,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $productDraftManager->refuse($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->refuse($productDraft2, ['comment' => null])->shouldBeCalled();
         $productModelDraftManager->refuse($productModelDraft, ['comment' => null])->shouldNotBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
@@ -155,7 +162,8 @@ class RefuseTaskletSpec extends ObjectBehavior
         ProductInterface $product2,
         JobParameters $jobParameters,
         ProductModelDraft $productModelDraft,
-        ProductModel $productModel
+        ProductModel $productModel,
+        JobStopper $jobStopper
     ) {
         $configuration = ['productDraftIds' => [1, 2], 'productModelDraftIds' => [1], 'comment' => null];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -189,6 +197,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $productDraftManager->refuse($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->refuse($productDraft2, ['comment' => null])->shouldBeCalled();
         $productModelDraftManager->refuse($productModelDraft, ['comment' => null])->shouldNotBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
@@ -204,7 +213,8 @@ class RefuseTaskletSpec extends ObjectBehavior
         ProductDraft $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobStopper $jobStopper
     ) {
         $configuration = ['productDraftIds' => [1, 2], 'productModelDraftIds' => [], 'comment' => 'Please fix the typo.'];
         $stepExecution->getJobParameters()->willReturn($jobParameters);
@@ -230,6 +240,7 @@ class RefuseTaskletSpec extends ObjectBehavior
 
         $productDraftManager->refuse($productDraft1, ['comment' => 'Please fix the typo.'])->shouldBeCalled();
         $productDraftManager->refuse($productDraft2, ['comment' => 'Please fix the typo.'])->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }

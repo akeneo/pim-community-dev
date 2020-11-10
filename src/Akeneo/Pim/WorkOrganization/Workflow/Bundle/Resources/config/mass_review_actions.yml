@@ -12,6 +12,7 @@ services:
             - '@pimee_workflow.manager.product_model_draft'
             - '@security.authorization_checker'
             - '@pimee_workflow.helper.product_draft_changes_permission'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_workflow.mass_review_tasklet.refuse_draft:
         class: '%pimee_workflow.mass_review_tasklet.refuse_draft.class%'
@@ -22,3 +23,4 @@ services:
             - '@pimee_workflow.manager.product_model_draft'
             - '@security.authorization_checker'
             - '@pimee_workflow.helper.product_draft_changes_permission'
+            - '@akeneo_batch.job.job_stopper'
