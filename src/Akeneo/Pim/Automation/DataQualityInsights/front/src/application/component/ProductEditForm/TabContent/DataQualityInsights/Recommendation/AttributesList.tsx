@@ -3,7 +3,7 @@ import AttributeWithRecommendation from '../../../../../../domain/AttributeWithR
 import Attribute, {FollowAttributeRecommendationHandler} from './Attribute';
 import {Evaluation} from '../../../../../../domain';
 import {FollowAttributesListRecommendationHandler} from '../../../../../user-actions';
-import {Recommendation, RecommendationType} from './Recommendation';
+import {Recommendation} from './Recommendation';
 import {TooManyAttributesLink} from './TooManyAttributesLink';
 import {getAxisAttributesWithRecommendations} from '../../../../../helper';
 
@@ -23,7 +23,7 @@ const AttributesList: FC<AttributesListProps> = ({criterionCode, attributes, axi
   const allAttributes = getAxisAttributesWithRecommendations(criteria);
 
   if (attributes.length === 0) {
-    return (<Recommendation type={RecommendationType.SUCCESS} />);
+    return (<Recommendation type={'success'} />);
   }
 
   if (attributes.length <= MAX_ATTRIBUTES_DISPLAYED) {

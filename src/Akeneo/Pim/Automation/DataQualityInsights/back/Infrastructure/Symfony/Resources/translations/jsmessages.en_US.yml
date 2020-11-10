@@ -69,7 +69,8 @@ akeneo_data_quality_insights:
                 title: Sorry, we were unable to calculate your Quality score.
                 subtitle: "The quality score cannot be calculated: none of the attribute groups of this product are activated."
                 help_center_link: Learn how data quality insights can help you improve your data quality in our help center.
-            add_image_attribute_recommendation: To improve your data quality, you should fill your product with at least one image.
+            add_image_attribute_recommendation: To improve your data quality, you should have at least one image attribute.
+            fill_image_attribute_recommendation: To improve your data quality, you should fill your product with at least one image.
 
     product_edit_form:
         attribute_filter:

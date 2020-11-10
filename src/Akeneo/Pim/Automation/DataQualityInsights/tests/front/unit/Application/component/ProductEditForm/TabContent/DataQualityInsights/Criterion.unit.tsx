@@ -96,14 +96,14 @@ describe('Criterion for simple product', () => {
     const criterion = aCriterion('a_criterion', CRITERION_DONE, criterionRate, []);
     const rate = aRate();
     const evaluation = anEvaluation(rate, [criterion]);
-    const recommendation = <Recommendation>a_custom_recommendation</Recommendation>;
+    const recommendation = <Recommendation type={'to_improve'}>a_custom_recommendation</Recommendation>;
 
     const {getByText} = renderCriterion('a_criterion', criterion, 'enrichment', evaluation, recommendation);
 
     expect(
       getByText(/akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation/)
     ).toBeInTheDocument();
-    expect(getByText('a_custom_recommendation')).toBeInTheDocument();
+    expect(getByText(/a_custom_recommendation/)).toBeInTheDocument();
   });
 });
 

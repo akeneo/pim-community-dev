@@ -13,8 +13,6 @@ import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
 import Criterion from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
 import {Recommendation} from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
-import {CRITERION_DONE, CRITERION_NOT_APPLICABLE} from '../domain/Evaluation.interface';
-import {isSuccess} from './helper';
 
 const translate = require('oro/translator');
 
@@ -43,8 +41,11 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
               <Criterion code={'completeness_of_required_attributes'} />
               <Criterion code={'completeness_of_non_required_attributes'} />
               <Criterion code={'enrichment_image'}>
-                <Recommendation supports={criterion => criterion.status === CRITERION_NOT_APPLICABLE || (criterion.status === CRITERION_DONE && !isSuccess(criterion.rate) && criterion.improvable_attributes.length === 0)}>
+                <Recommendation type={'not_applicable'}>
                   <span className="NotApplicableAttribute">{translate('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}</span>
+                </Recommendation>
+                <Recommendation type={'to_improve'}>
+                  <span>{translate('akeneo_data_quality_insights.product_evaluation.messages.fill_image_attribute_recommendation')}</span>
                 </Recommendation>
               </Criterion>
             </AxisEvaluation>
