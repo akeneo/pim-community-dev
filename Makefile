@@ -9,12 +9,8 @@ CI ?= 0
 .DEFAULT_GOAL := help
 
 .PHONY: help
-help:
-	@echo ""
-	@echo "Caution: those targets are optimized for docker 19+"
-	@echo ""
-	@echo "Please add your custom Makefile in the directory "make-file". They will be automatically loaded!"
-	@echo ""
+help: #Doc: This help
+	@echo "$$(grep -hE '^\S+:.*#Doc:' $(MAKEFILE_LIST) | sed -e 's/:.*#Doc:\s*/:/' -e 's/^\(.\+\):\(.*\)/\\e[1;1m \1\\e[0m:\2/' | column -c2 -t -s :)"
 
 ## Include all *.mk files
 include make-file/*.mk
@@ -23,7 +19,7 @@ include make-file/*.mk
 ## Front
 ##
 
-yarn.lock: package.json
+yarn.lock: package.json #Doc: perform “yarn install”
 	$(YARN_RUN) install
 
 node_modules: yarn.lock
