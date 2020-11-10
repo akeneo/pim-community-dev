@@ -9,7 +9,7 @@ find-legacy-translations:
 coupling-back: twa-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
 
 ### Static tests
-static-back: asset-manager-static-back check-pullup check-sf-services
+static-back: asset-manager-static-back check-pullup check-sf-services #Doc: run static tests for asset manager back, verify non duplicated method and ????
 	echo "Job done! Nothing more to do here..."
 
 .PHONY: check-pullup
@@ -22,7 +22,7 @@ check-sf-services:
 
 ### Lint tests
 .PHONY: lint-back
-lint-back:
+lint-back: #Doc: run all lint tests back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
@@ -36,7 +36,7 @@ lint-back:
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs_ce.php
 
 .PHONY: lint-front
-lint-front: connectivity-connection-lint-front
+lint-front: connectivity-connection-lint-front #Doc: run all lint tests front
 	$(YARN_RUN) lint
 	$(YARN_RUN) run --cwd=vendor/akeneo/pim-community-dev/ lint
 	$(MAKE) rule-engine-lint-front
@@ -45,7 +45,7 @@ lint-front: connectivity-connection-lint-front
 
 ### Unit tests
 .PHONY: unit-back
-unit-back: var/tests/phpspec community-unit-back reference-entity-unit-back asset-manager-unit-back
+unit-back: var/tests/phpspec community-unit-back reference-entity-unit-back asset-manager-unit-back #Doc: run all unitary tests back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
@@ -62,7 +62,7 @@ else
 endif
 
 .PHONY: unit-front
-unit-front:
+unit-front: #Doc: run all unitary tests front
 	$(YARN_RUN) unit
 	$(MAKE) rule-engine-unit-front
 
@@ -84,7 +84,7 @@ integration-front:
 integration-back: var/tests/phpunit data-quality-insights-integration-back reference-entity-integration-back asset-manager-integration-back rule-engine-integration-back pim-integration-back
 
 .PHONY: pim-integration-back
-pim-integration-back:
+pim-integration-back: #Doc: run all integration tests back
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Integration_Test
 else
@@ -93,7 +93,7 @@ endif
 
 ### Migration tests
 .PHONY: migration-back
-migration-back: var/tests/phpunit
+migration-back: var/tests/phpunit #Doc: run migration tests back
 	cp vendor/akeneo/pim-community-dev/upgrades/schema/*.php upgrades/schema/.
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php PIM_Migration_Test

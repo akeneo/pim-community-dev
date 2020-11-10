@@ -1,5 +1,5 @@
 .PHONY: pim-shared-catalog
-pim-shared-catalog:
+pim-shared-catalog: #Doc: build, (re)create, start containers, clear symfony cache and load the db and ????
 	APP_ENV=dev $(MAKE) up
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
