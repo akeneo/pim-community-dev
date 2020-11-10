@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment;
 
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -36,7 +37,12 @@ class CategoryLoader
     {
         $category = $this->builder->create();
         $this->updater->update($category, $data);
-        $this->validator->validate($category);
+
+        $violations = $this->validator->validate($category);
+        if (0 !== $violations->count()) {
+            throw new ViolationHttpException($violations);
+        }
+
         $this->saver->save($category);
     }
 }
