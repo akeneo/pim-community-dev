@@ -46,4 +46,18 @@ final class KeyIndicator
 
         return $total === 0 ? 0 : intval(round($this->totalGood / $total * 100));
     }
+
+    public function isEmpty(): bool
+    {
+        return $this->totalToImprove === 0 && $this->totalGood === 0;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'ratioGood' => $this->getRatioGood(),
+            'totalGood' => $this->totalGood,
+            'totalToImprove' => $this->totalToImprove,
+        ];
+    }
 }
