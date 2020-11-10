@@ -88,6 +88,8 @@ akeneo_data_quality_insights:
                             message2: What an adventure, you can be proud of your work.
                             message3: You are a true master in keeping your catalog up to date.
                             message4: Congratulations, this is spotless!
+            no_data: Sorry, we don't have enough data yet to show the key indicators.
+            no_data_subtitle: Please come back later.
 
     product_evaluation:
         criteria:
