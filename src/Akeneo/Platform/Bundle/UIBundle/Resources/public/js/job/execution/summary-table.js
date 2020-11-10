@@ -18,19 +18,21 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/job-
     events: {
       'click .data': 'toggleDisplayWarning',
     },
+    expandedWarnings: {},
 
     /**
-     * Display or hide a warning details
+     * Display or hide warning details
      * @param event
      */
     toggleDisplayWarning: function (event) {
-      var stepIndex = event.currentTarget.dataset.stepIndex;
-      var warningIndex = event.currentTarget.dataset.warningIndex;
-      var model = this.getFormData();
-      model.stepExecutions[stepIndex].warnings[warningIndex].expanded = !model.stepExecutions[stepIndex].warnings[
-        warningIndex
-      ].expanded;
+      const stepIndex = parseInt(event.currentTarget.dataset.stepIndex);
+      const warningIndex = parseInt(event.currentTarget.dataset.warningIndex);
 
+      this.expandedWarnings[stepIndex] = this.expandedWarnings[stepIndex] || [];
+
+      this.expandedWarnings[stepIndex] = this.expandedWarnings[stepIndex].includes(warningIndex)
+        ? this.expandedWarnings[stepIndex].filter(index => index !== warningIndex)
+        : [...this.expandedWarnings[stepIndex], warningIndex];
       this.render();
     },
 
@@ -39,7 +41,6 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/job-
      */
     initialize: function (config) {
       this.config = config.config;
-
       BaseForm.prototype.initialize.apply(this, arguments);
     },
 
@@ -47,6 +48,7 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/job-
      * {@inheritdoc}
      */
     configure: function () {
+      this.expandedWarnings = {};
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
       return BaseForm.prototype.configure.apply(this, arguments);
@@ -68,6 +70,7 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/job-
           failures: model.failures,
           id: model.meta.id,
           translateStepExecutionLabel: this.translateStepExecutionLabel,
+          expandedWarnings: this.expandedWarnings,
         })
       );
 
