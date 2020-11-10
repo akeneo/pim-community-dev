@@ -14,6 +14,10 @@ import {KeyIndicatorsProvider} from "@akeneo-pim-community/data-quality-insights
 import {EEKeyIndicatorsTips} from "../../helper/Dashboard/EEKeyIndicatorsTips";
 import {redirectToProductGridFilteredByKeyIndicator} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/ProductGridRouter";
 import {DashboardContextProvider} from "@akeneo-pim-community/data-quality-insights/src/application/context/DashboardContext";
+import {
+  redirectToAttributeGridFilteredByFamilyAndKeyIndicator,
+  redirectToAttributeGridFilteredByKeyIndicator
+} from "../../../infrastructure/AttributeGridRouter";
 
 interface DataQualityInsightsDashboardProps {
   timePeriod: string;
@@ -73,6 +77,14 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({timePe
                       type="attributes_perfect_spelling"
                       title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.attributes_perfect_spelling.title'}
                       resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.attributes_to_work_on'}
+                      // @ts-ignore
+                      followResults={(channelCode: string, localeCode: string, familyCode: string|null, categoryId: string|null, rootCategoryId: string|null) => {
+                        if (familyCode) {
+                          redirectToAttributeGridFilteredByFamilyAndKeyIndicator(familyCode, localeCode);
+                        } else {
+                          redirectToAttributeGridFilteredByKeyIndicator(localeCode);
+                        }
+                      }}
                     >
                       <SettingsIcon/>
                     </KeyIndicator>
