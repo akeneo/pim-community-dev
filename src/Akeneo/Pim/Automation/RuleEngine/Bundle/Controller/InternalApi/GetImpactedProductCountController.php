@@ -15,11 +15,17 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleSelector;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -27,18 +33,18 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class GetImpactedProductCountController
 {
-    /** @var ProductRuleBuilder */
-    private $productRuleBuilder;
-
-    /** @var ProductRuleSelector */
-    private $productRuleSelector;
+    private ProductRuleBuilder $productRuleBuilder;
+    private ProductRuleSelector $productRuleSelector;
+    private ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory;
 
     public function __construct(
         ProductRuleBuilder $productRuleBuilder,
-        ProductRuleSelector $productRuleSelector
+        ProductRuleSelector $productRuleSelector,
+        ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory
     ) {
         $this->productRuleBuilder = $productRuleBuilder;
         $this->productRuleSelector = $productRuleSelector;
+        $this->productAndProductsModelDocumentTypeFacetFactory = $productAndProductsModelDocumentTypeFacetFactory;
     }
 
     public function __invoke(Request $request): Response
@@ -59,10 +65,20 @@ final class GetImpactedProductCountController
         try {
             $rule = $this->productRuleBuilder->build($ruleDefinition);
             $subjectSet = $this->productRuleSelector->select($rule);
-        } catch (\LogicException $e) {
+
+            Assert::isInstanceOf($subjectSet->getSubjectsCursor(), ResultAwareInterface::class);
+            $documentTypeFacet = null;
+            $documentTypeFacet = $this->productAndProductsModelDocumentTypeFacetFactory->build(
+                $subjectSet->getSubjectsCursor()->getResult()
+            );
+            Assert::notNull($documentTypeFacet);
+
+            return new JsonResponse([
+                'impacted_product_count' => $documentTypeFacet->getCountForKey(ProductInterface::class),
+                'impacted_product_model_count' => $documentTypeFacet->getCountForKey(ProductModelInterface::class),
+            ]);
+        } catch (\LogicException | \InvalidArgumentException $e) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
-
-        return new JsonResponse(['impacted_product_count' => $subjectSet->getSubjectsCursor()->count()]);
     }
 }
