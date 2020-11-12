@@ -5,6 +5,7 @@ import {Link} from 'akeneo-design-system';
 
 const Container = styled.span`
   font-style: italic;
+  font-weight: 700;
 `;
 
 const LinkableMessage = styled(Link)`
