@@ -36,8 +36,8 @@ class WebhookEventBuilder
      */
     public function build(object $event, array $context = []): array
     {
-        Assert::notEmpty($context['pim_source'] ?? null, 'pim_source');
-        Assert::notEmpty($context['user_id'] ?? null, 'user_id');
+        Assert::notEmpty($context['pim_source'] ?? null);
+        Assert::notEmpty($context['user_id'] ?? null);
 
         $eventDataBuilder = $this->getEventDataBuilder($event);
 
