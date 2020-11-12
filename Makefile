@@ -19,7 +19,7 @@ include make-file/*.mk
 ## Front
 ##
 
-yarn.lock: package.json
+yarn.lock: package.json #Doc: run YARN install
 	$(YARN_RUN) install
 
 node_modules: yarn.lock #Doc: run YARN install --check-files
