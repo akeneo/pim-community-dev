@@ -52,6 +52,8 @@
 - PIM-9542: Fix product creation if the family has a numeric code
 - PIM-9498: Add translation for 'Mass delete products' job
 - PIM-9538: Fix sorting on rule engine list page
+- PIM-9499: Fix warning display when a job is running with warnings
+- PIM-9545: Fix possible memory leak in large import jobs
 - PIM-9548: Mitigate deadlock issues on category API
 
 ## New features
@@ -61,6 +63,7 @@
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 - RAC-54: Add a new type of associations: Association with quantity
 - RAC-123: Add possibility to export product/product model with labels instead of code
+- RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI
 
 ## Improvements
 

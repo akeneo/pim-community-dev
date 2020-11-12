@@ -6,5 +6,5 @@ datagrid:
         options:
             entityHint: export report
         properties:
-            show_link:
+            showLink:
                 route: pim_importexport_export_execution_show

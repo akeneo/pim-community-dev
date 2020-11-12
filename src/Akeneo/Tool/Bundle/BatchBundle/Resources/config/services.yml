@@ -86,3 +86,13 @@ services:
         class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    akeneo_batch.query.get_job_execution_status:
+        class: 'Akeneo\Tool\Component\Batch\Query\SqlGetJobExecutionStatus'
+        arguments:
+            - '@database_connection'
+
+    akeneo_batch.query.update_job_execution_status:
+        class: 'Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus'
+        arguments:
+            - '@database_connection'

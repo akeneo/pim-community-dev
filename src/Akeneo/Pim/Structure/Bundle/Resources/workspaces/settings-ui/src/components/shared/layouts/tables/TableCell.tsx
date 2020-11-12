@@ -29,7 +29,7 @@ const TableCell = styled.td.attrs((props: Props) => ({
   ${props => props.isDraggable && props.isActive === true && draggableStyle}
 
   ${props => props.isDraggable && props.isActive === false && dragDisabledStyle}
-  
+
   ${props => props.isActive === false && inactiveStyle}
 `;
 
