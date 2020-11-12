@@ -8,6 +8,8 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuil
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -28,16 +30,14 @@ class WebhookEventBuilder
     }
 
     /**
+     * @param BusinessEventInterface $businessEvent
      * @param array<mixed> $context
+     *
+     * @return WebhookEvent
      */
     public function build(BusinessEventInterface $businessEvent, array $context = []): WebhookEvent
     {
-        if (!array_key_exists(
-                'pim_source',
-                $context
-            ) || null === $context['pim_source'] || '' === $context['pim_source']) {
-            throw new \InvalidArgumentException("Context property 'pim_source' is mandatory");
-        }
+        $context = $this->resolveOptions($context);
 
         return new WebhookEvent(
             $businessEvent->name(),
@@ -45,18 +45,40 @@ class WebhookEventBuilder
             date(\DateTimeInterface::ATOM, $businessEvent->timestamp()),
             $businessEvent->author(),
             $context['pim_source'],
-            $this->buildEventData($businessEvent)
+            $this->buildEventData($businessEvent, $context)
         );
     }
 
     /**
+     * @param array<mixed> $options
+     *
      * @return array<mixed>
      */
-    private function buildEventData(BusinessEventInterface $businessEvent): array
+    private function resolveOptions(array $options): array
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(['user', 'pim_source']);
+        $resolver->setAllowedTypes('pim_source', 'string');
+        $resolver->setAllowedValues('pim_source', function ($value) {
+            return !empty($value);
+        });
+        $resolver->setAllowedTypes('user', UserInterface::class);
+
+        return $resolver->resolve($options);
+    }
+
+
+    /**
+     * @param BusinessEventInterface $businessEvent
+     * @param array<mixed> $context
+     *
+     * @return array<mixed>
+     */
+    private function buildEventData(BusinessEventInterface $businessEvent, array $context): array
     {
         foreach ($this->builders as $builder) {
             if (true === $builder->supports($businessEvent)) {
-                return $builder->build($businessEvent);
+                return $builder->build($businessEvent, $context);
             }
         }
 
