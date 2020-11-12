@@ -52,13 +52,6 @@ services:
             - '@event_dispatcher'
             - '%pim_catalog.model.association_type.interface%'
 
-    pim_catalog.saver.category:
-        class: '%pim_catalog.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_catalog.model.category.interface%'
-
     pim_catalog.saver.group_options_resolver:
         class: '%pim_catalog.saver.group_options_resolver.class%'
 

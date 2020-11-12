@@ -1,0 +1,23 @@
+services:
+    pim_catalog.saver.category:
+        class: Akeneo\Tool\Bundle\ClassificationBundle\Storage\Orm\CategorySaver
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.category.interface%'
+            - '@akeneo_classification.lock.factory'
+
+    akeneo_classification.lock.store:
+        class: Symfony\Component\Lock\Store\PdoStore
+        arguments:
+            - '@database_connection'
+
+    akeneo_classification.lock.store.retry_till_save:
+        class: Symfony\Component\Lock\Store\RetryTillSaveStore
+        decorates: akeneo_classification.lock.store
+        arguments: ['@akeneo_classification.lock.store.retry_till_save.inner', 100, 50]
+
+    akeneo_classification.lock.factory:
+        class: Symfony\Component\Lock\LockFactory
+        arguments:
+            - '@akeneo_classification.lock.store'
