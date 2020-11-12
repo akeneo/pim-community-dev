@@ -3,7 +3,9 @@ import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 import {uuid} from '../../shared';
 
-const ProgressBarContainer = styled.div``;
+const ProgressBarContainer = styled.div`
+  overflow: hidden;
+`;
 
 const progressBarAnimation = keyframes`
   from { background-position: 0 0; }

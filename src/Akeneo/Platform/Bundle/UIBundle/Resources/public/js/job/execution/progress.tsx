@@ -45,11 +45,16 @@ const guessStepExecutionTrackingLevel = (step: StepExecutionTracking): Level => 
 };
 
 const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 'indeterminate' => {
+  if (step.status === 'STARTING') {
+    return 0;
+  }
+
+  if (step.status === 'COMPLETED') {
+    return 100;
+  }
+
   if (step.totalItems === 0 || !step.isTrackable) {
     switch (step.status) {
-      case 'STARTING':
-        return 0;
-      case 'COMPLETED':
       case 'STOPPED':
       case 'FAILED':
       case 'ABANDONED':
@@ -62,7 +67,7 @@ const getStepExecutionTrackingPercent = (step: StepExecutionTracking): number | 
     }
   }
 
-  return Math.round((step.processedItems * 100) / step.totalItems);
+  return (step.processedItems * 100) / step.totalItems;
 };
 
 const getStepExecutionTrackingTitle = (step: StepExecutionTracking): string => {
@@ -79,11 +84,15 @@ const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): str
     case 'STARTING':
       return __('pim_import_export.tracking.not_started');
     case 'STARTED':
-      if (step.totalItems === 0 || !step.isTrackable || step.processedItems === 0) {
+      if (!step.isTrackable) {
         return __('pim_import_export.tracking.untrackable');
       }
 
-      const percentProcessed = Math.round((step.processedItems * 100) / step.totalItems);
+      if (step.totalItems === 0 || step.processedItems === 0) {
+        return __('pim_import_export.tracking.estimating');
+      }
+
+      const percentProcessed = (step.processedItems * 100) / step.totalItems;
       const durationProjection = Math.round((step.duration * 100) / percentProcessed);
       const durationLeft = durationProjection - step.duration;
       return __('pim_import_export.tracking.in_progress', {duration: formatSecondsIntl(durationLeft)});

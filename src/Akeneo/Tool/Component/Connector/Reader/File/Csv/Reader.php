@@ -58,8 +58,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Rewin
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
-
-        $iterator = $this->fileIteratorFactory->create($filePath);
+        $iterator = $this->createFileIterator($jobParameters, $filePath);
 
         return max(iterator_count($iterator) - 1, 0);
     }
@@ -72,7 +71,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Rewin
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
         if (null === $this->fileIterator) {
-            $this->initializeFileIterator($jobParameters, $filePath);
+            $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
             $this->fileIterator->rewind();
         }
 
@@ -133,7 +132,7 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Rewin
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
         if (null === $this->fileIterator) {
-            $this->initializeFileIterator($jobParameters, $filePath);
+            $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
         }
         $this->fileIterator->rewind();
     }
@@ -203,10 +202,10 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Rewin
         }
     }
 
-    private function initializeFileIterator(
+    private function createFileIterator(
         JobParameters $jobParameters,
         string $filePath
-    ): void {
+    ): FileIteratorInterface {
         $delimiter = $jobParameters->get('delimiter');
         $enclosure = $jobParameters->get('enclosure');
         $defaultOptions = [
@@ -215,7 +214,8 @@ class Reader implements FileReaderInterface, TrackableItemReaderInterface, Rewin
                 'fieldEnclosure' => $enclosure,
             ],
         ];
-        $this->fileIterator = $this->fileIteratorFactory->create(
+
+        return $this->fileIteratorFactory->create(
             $filePath,
             array_merge($defaultOptions, $this->options)
         );

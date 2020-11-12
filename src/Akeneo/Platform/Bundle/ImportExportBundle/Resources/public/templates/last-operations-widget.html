@@ -42,7 +42,7 @@
                     <% } %>
                 </span>
             </td>
-            <td class="AknGrid-bodyCell"><%- counter %></td>
+            <td class="AknGrid-bodyCell"><%- (counter > 0) ? counter : '-' %></td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
             <% if (operation.canSeeReport) { %>
                 <span class="AknButton AknButton--small AknButton--grey show-details-btn"

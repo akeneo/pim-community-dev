@@ -18,6 +18,7 @@ type JobExecutionTracking = {
 
 const Label = styled.span`
   display: inline-block;
+  vertical-align: top;
   margin: 0 5px 0 0;
 `;
 
