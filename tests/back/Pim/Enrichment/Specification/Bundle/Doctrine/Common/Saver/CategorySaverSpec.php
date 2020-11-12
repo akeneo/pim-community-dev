@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Tool\Bundle\ClassificationBundle\Storage\Orm;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -22,7 +22,7 @@ class CategorySaverSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         LockFactory $lockFactory
     ): void {
-        $this->beConstructedWith($objectManager, $eventDispatcher, CategoryInterface::class, $lockFactory);
+        $this->beConstructedWith($objectManager, $eventDispatcher, $lockFactory);
     }
 
     public function it_is_a_saver(): void
