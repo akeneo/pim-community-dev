@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9550: Add attribute codes as an argument to the command "pim:product:clean-removed-attributes"
+
 # 4.0.70 (2020-11-09)
 
 ## Bug fixes

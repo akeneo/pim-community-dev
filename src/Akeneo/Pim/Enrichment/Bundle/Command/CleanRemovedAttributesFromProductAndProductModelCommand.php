@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
+use Akeneo\Pim\Enrichment\Bundle\Product\RemoveAttributesValuesFromProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -11,6 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -39,11 +41,15 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     /** @var int */
     private $productBatchSize;
 
+    /** @var RemoveAttributesValuesFromProductAndProductModel|null */
+    private $removeAttributesValuesFromProductAndProductModel;
+
     public function __construct(
         EntityManagerClearerInterface $entityManagerClearer,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         string $kernelRootDir,
-        int $productBatchSize
+        int $productBatchSize,
+        RemoveAttributesValuesFromProductAndProductModel $removeAttributesValuesFromProductAndProductModel = null
     ) {
         parent::__construct();
 
@@ -51,6 +57,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->kernelRootDir = $kernelRootDir;
         $this->productBatchSize = $productBatchSize;
+        $this->removeAttributesValuesFromProductAndProductModel = $removeAttributesValuesFromProductAndProductModel;
     }
 
     /**
@@ -59,7 +66,8 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Removes all values of deleted attributes on all products and product models');
+            ->setDescription('Removes all values of deleted attributes on all products and product models')
+            ->addArgument('attributes', InputArgument::OPTIONAL | InputArgument::IS_ARRAY);
     }
 
     /**
@@ -67,6 +75,16 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
+        // TODO @merge master Remove this condition
+        if (null !== $this->removeAttributesValuesFromProductAndProductModel) {
+            $attributesCodes = $input->getArgument('attributes');
+
+            if (!empty($attributesCodes)) {
+                $this->cleanProductsWithAttributesCodes($attributesCodes, $input, $output);
+                return;
+            }
+        }
+
         $io = new SymfonyStyle($input, $output);
         $env = $input->getOption('env');
 
@@ -163,5 +181,40 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:product:refresh', sprintf('--env=%s', $env), implode(',', $productIds)]);
         $process->setTimeout(null);
         $process->run();
+    }
+
+    private function cleanProductsWithAttributesCodes(
+        array $attributesCodes,
+        InputInterface $input,
+        OutputInterface $output
+    ): void {
+        $countAffected = $this->removeAttributesValuesFromProductAndProductModel->countAffectedProductAndProductModel($attributesCodes);
+
+        $io = new SymfonyStyle($input, $output);
+        $io->title('Clean removed attributes values');
+        $answer = $io->confirm(
+            "This command will remove the values of the attributes: \n ".
+            implode(array_map(function (string $attributeCode) {
+                return sprintf(" - %s \n ", $attributeCode);
+            }, $attributesCodes)).
+            "This will update ".(string)$countAffected." products and product models. \n ".
+            "Do you want to proceed?", true);
+
+        if (!$answer) {
+            return;
+        }
+
+        $progressBar = new ProgressBar($output, $countAffected);
+        $progressBar->start();
+
+        $this->removeAttributesValuesFromProductAndProductModel->removeAttributesValues(
+            $attributesCodes,
+            function (int $count) use ($progressBar) {
+                $progressBar->advance($count);
+            }
+        );
+
+        $progressBar->finish();
+        $io->newLine();
     }
 }
