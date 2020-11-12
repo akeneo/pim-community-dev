@@ -52,6 +52,7 @@
 - PIM-9542: Fix product creation if the family has a numeric code
 - PIM-9498: Add translation for 'Mass delete products' job
 - PIM-9538: Fix sorting on rule engine list page
+- PIM-9548: Mitigate deadlock issues on category API
 
 ## New features
 
