@@ -1,4 +1,4 @@
-import React, {Children, FC, ReactElement} from 'react';
+import React, {Children, FC} from 'react';
 import {useFetchKeyIndicators} from '../../../../infrastructure/hooks';
 import styled from 'styled-components';
 import {keyIndicatorMap} from '../../../../domain';
@@ -25,20 +25,19 @@ const KeyIndicators: FC<Props> = ({children, channel, locale, family, category})
         {keyIndicators !== null && Object.keys(keyIndicators).length === 0 && <EmptyKeyIndicators />}
         {
           keyIndicators !== null && Object.keys(keyIndicators).length > 0 && Children.map(children, ((child) => {
-            const element = child as ReactElement;
 
-            if (!keyIndicators.hasOwnProperty(element.props.type)) {
+            if (!React.isValidElement(child)) {
               return;
             }
 
-            const keyIndicatorData = keyIndicators[element.props.type];
+            const keyIndicatorData = keyIndicators.hasOwnProperty(child.props.type) ? keyIndicators[child.props.type] : null;
 
             return React.cloneElement(
-              element,
-              {
+              child,
+              keyIndicatorData !== null ? {
                 ratioGood: parseFloat(keyIndicatorData.ratioGood.toString()),
                 totalToImprove: keyIndicatorData.totalToImprove,
-              }
+              } : {}
             );
           }))
         }

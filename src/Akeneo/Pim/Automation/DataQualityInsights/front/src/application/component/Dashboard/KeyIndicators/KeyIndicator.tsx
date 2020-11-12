@@ -26,8 +26,22 @@ const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, tit
   const userContext = useUserContext();
   const {category, familyCode} = useDashboardContext();
 
-  if (ratioGood === undefined || totalToImprove === undefined || title === undefined) {
+  if (title === undefined) {
     return <></>;
+  }
+
+  if (ratioGood === undefined || totalToImprove === undefined) {
+    return (
+      <Container>
+        <Icon>{children}</Icon>
+        <Content>
+          <ProgressBar size="small" title={translate(title)} progressLabel={'\u00a0'} light={true} level={'tertiary'} percent={0}/>
+          <Text>
+            {translate(`akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.${type}.no_data`)}
+          </Text>
+        </Content>
+      </Container>
+    );
   }
 
   const tip: Tip = computeTipMessage(tips, ratioGood);
