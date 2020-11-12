@@ -19,6 +19,6 @@ test('MyComponent supports forwardRef', () => {
 });
 
 test('MyComponent supports ...rest props', () => {
-  const {container} = render(<MyComponent data-my-attribute="my_value" />);
-  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+  render(<MyComponent data-testid="my_value" />);
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
