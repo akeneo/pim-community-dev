@@ -18,7 +18,6 @@ import {
   ToImproveEnrichmentImageMessage,
 } from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
 import {followNotApplicableEnrichmentImageRecommendation} from './user-actions';
-import {isVariantProduct} from './helper';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 interface ProductEditFormAppProps {
@@ -51,10 +50,10 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                     type={'not_applicable'}
                     follow={() => followNotApplicableEnrichmentImageRecommendation(product.family)}
                   >
-                    <NotApplicableEnrichmentImageMessage isVariant={isVariantProduct(product)} />
+                    <NotApplicableEnrichmentImageMessage />
                   </Recommendation>
                   <Recommendation type={'to_improve'}>
-                    <ToImproveEnrichmentImageMessage isVariant={isVariantProduct(product)} />
+                    <ToImproveEnrichmentImageMessage />
                   </Recommendation>
                 </Criterion>
               </AxisEvaluation>
