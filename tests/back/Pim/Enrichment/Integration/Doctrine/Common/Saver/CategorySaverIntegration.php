@@ -18,10 +18,9 @@ class CategorySaverIntegration extends TestCase
 
     public function test_that_it_saves_a_new_category(): void
     {
-        $category = $this->createCategory([
+        $category = $this->createCategoryWithoutSaving([
             'code' => 'foo',
         ]);
-
         $createdNormalizedCategory = $this->getCategoryNormalizer()->normalize($category);
 
         $this->getCategorySaver()->save($category);
@@ -32,7 +31,28 @@ class CategorySaverIntegration extends TestCase
         self::assertEquals($createdNormalizedCategory, $persistedNormalizedCategory);
     }
 
-    protected function createCategory(array $data = []): CategoryInterface
+    public function test_that_it_saves_a_new_sub_category(): void
+    {
+        $parent = $this->createCategoryWithoutSaving([
+            'code' => 'foo',
+        ]);
+        $this->getCategorySaver()->save($parent);
+
+        $category = $this->createCategoryWithoutSaving([
+            'code' => 'bar',
+            'parent' => 'foo',
+        ]);
+        $createdNormalizedCategory = $this->getCategoryNormalizer()->normalize($category);
+
+        $this->getCategorySaver()->save($category);
+
+        $persistedCategory = $this->getCategoryRepository()->findOneByIdentifier('bar');
+        $persistedNormalizedCategory = $this->getCategoryNormalizer()->normalize($persistedCategory);
+
+        self::assertEquals($createdNormalizedCategory, $persistedNormalizedCategory);
+    }
+
+    private function createCategoryWithoutSaving(array $data = []): CategoryInterface
     {
         $category = $this->get('pim_catalog.factory.category')->create();
         $this->get('pim_catalog.updater.category')->update($category, $data);
