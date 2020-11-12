@@ -1,7 +1,8 @@
-import React, {ReactNode, ReactElement} from 'react';
+import React, {ReactNode, ReactElement, isValidElement, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CloseIcon, IconProps} from '../../icons';
+import {LinkProps, Link} from '../../components';
 
 type MessageBarLevel = 'info' | 'success' | 'warning' | 'danger';
 
@@ -33,6 +34,7 @@ const CloseButton = styled.button`
   background: none;
   cursor: pointer;
   display: inline-flex;
+  font-size: ${getFontSize('bigger')};
 `;
 
 const Container = styled.div<{level: MessageBarLevel} & AkeneoThemedProps>`
@@ -50,7 +52,7 @@ const Container = styled.div<{level: MessageBarLevel} & AkeneoThemedProps>`
   }
 `;
 
-const getLevelColor = (level: MessageBarLevel) => {
+const getLevelColor = (level: MessageBarLevel): ((props: AkeneoThemedProps) => string) => {
   switch (level) {
     case 'info':
       return getColor('blue', 100);
@@ -63,24 +65,41 @@ const getLevelColor = (level: MessageBarLevel) => {
   }
 };
 
+const getDuration = (level: MessageBarLevel): number => {
+  switch (level) {
+    case 'success':
+      return 3;
+    case 'info':
+    case 'warning':
+      return 5;
+    case 'danger':
+      return 8;
+  }
+};
+
 type MessageBarProps = {
   /**
-   * Defines the level of the MessageBar, changing the color accent
+   * Defines the level of the MessageBar, changing the color accent.
    */
   level?: MessageBarLevel;
 
   /**
-   * The title to display
+   * The title to display.
    */
   title: string;
 
   /**
-   * Icon to display
+   * Icon to display.
    */
   icon: ReactElement<IconProps>;
 
   /**
-   * Content of the MessageBar
+   * Handler called when the MessageBar is closed.
+   */
+  onClose: () => void;
+
+  /**
+   * Content of the MessageBar.
    */
   children?: ReactNode;
 };
@@ -88,7 +107,34 @@ type MessageBarProps = {
 /**
  * A message bar is a message that communicates information to the user.
  */
-const MessageBar = ({level = 'info', title, icon, children}: MessageBarProps) => {
+const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBarProps) => {
+  const autoHide = !React.Children.toArray(children).some(
+    child => isValidElement<LinkProps>(child) && child.type === Link
+  );
+
+  const [remaining, setRemaining] = useState<number | null>(autoHide ? getDuration(level) : null);
+
+  useEffect(() => {
+    if (!autoHide) return;
+
+    const intervalId = setInterval(
+      () =>
+        setRemaining(remaining => {
+          if (0 === remaining) {
+            clearInterval(intervalId);
+            onClose();
+
+            return remaining;
+          }
+
+          return null === remaining ? null : remaining - 1 ?? null;
+        }),
+      1000
+    );
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <Container level={level}>
       <IconContainer>{React.cloneElement(icon, {size: 24})}</IconContainer>
@@ -96,9 +142,7 @@ const MessageBar = ({level = 'info', title, icon, children}: MessageBarProps) =>
         <Title>{title}</Title>
         {children}
       </Content>
-      <CloseButton>
-        <CloseIcon size={24} />
-      </CloseButton>
+      <CloseButton onClick={onClose}>{autoHide ? `${remaining}s` : <CloseIcon size={24} />}</CloseButton>
     </Container>
   );
 };

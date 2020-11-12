@@ -72,3 +72,4 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 );
 
 export {Link};
+export type {LinkProps};
