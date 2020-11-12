@@ -6,11 +6,12 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,18 +21,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
-
-    /** @var NormalizerInterface */
-    private $externalApiNormalizer;
+    private GetConnectorProducts $getConnectorProductsQuery;
+    private NormalizerInterface $externalApiNormalizer;
+    private ProductQueryBuilderFactoryInterface $searchAfterPqbFactory;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        NormalizerInterface $externalApiNormalizer
+        GetConnectorProducts $getConnectorProductsQuery,
+        NormalizerInterface $externalApiNormalizer,
+        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory
     ) {
-        $this->productRepository = $productRepository;
+        $this->getConnectorProductsQuery = $getConnectorProductsQuery;
         $this->externalApiNormalizer = $externalApiNormalizer;
+        $this->searchAfterPqbFactory = $searchAfterPqbFactory;
     }
 
     /**
@@ -59,7 +60,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
      * @throws NotGrantedCategoryException
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
-    public function build(object $bulkEvent): array
+    public function build(object $bulkEvent, int $userId): array
     {
         if (false === $this->supports($bulkEvent)) {
             throw new \InvalidArgumentException();
@@ -71,6 +72,15 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
         foreach ($bulkEvent->getEvents() as $event) {
             $identifiers[] = $event->getIdentifier();
         }
+
+        $pqb = $this->searchAfterPqbFactory->create(['limit' => 10]);
+        $productList = $this->getConnectorProductsQuery->fromProductQueryBuilder(
+            $pqb,
+            $userId,
+            null,
+            null,
+            null
+        );
 
         /*
         try {

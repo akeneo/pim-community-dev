@@ -19,14 +19,14 @@ use Webmozart\Assert\Assert;
 class WebhookEventBuilder
 {
     /** @var iterable<EventDataBuilderInterface> */
-    private $builders;
+    private iterable $eventDataBuilders;
 
     /**
-     * @param iterable<EventDataBuilderInterface> $builders
+     * @param iterable<EventDataBuilderInterface> $eventDataBuilders
      */
-    public function __construct(iterable $builders)
+    public function __construct(iterable $eventDataBuilders)
     {
-        $this->builders = $builders;
+        $this->eventDataBuilders = $eventDataBuilders;
     }
 
     /**
@@ -37,11 +37,12 @@ class WebhookEventBuilder
     public function build(object $event, array $context = []): array
     {
         Assert::notEmpty($context['pim_source'] ?? null, 'pim_source');
+        Assert::notEmpty($context['user_id'] ?? null, 'user_id');
 
-        $builder = $this->getEventDataBuilder($event);
+        $eventDataBuilder = $this->getEventDataBuilder($event);
 
         if ($event instanceof EventInterface) {
-            $data = $builder->build($event);
+            $data = $eventDataBuilder->build($event, $context['user_id']);
 
             return [
                 new WebhookEvent(
@@ -57,7 +58,7 @@ class WebhookEventBuilder
 
         if ($event instanceof BulkEventInterface) {
             $events = $event->getEvents();
-            $eventsData = $builder->build($event);
+            $eventsData = $eventDataBuilder->build($event, $context['user_id']);
 
             $webhookEvents = [];
             foreach ($events as $i => $event) {
@@ -80,7 +81,7 @@ class WebhookEventBuilder
      */
     private function getEventDataBuilder(object $event): EventDataBuilderInterface
     {
-        foreach ($this->builders as $builder) {
+        foreach ($this->eventDataBuilders as $builder) {
             if (true === $builder->supports($event)) {
                 return $builder;
             }
