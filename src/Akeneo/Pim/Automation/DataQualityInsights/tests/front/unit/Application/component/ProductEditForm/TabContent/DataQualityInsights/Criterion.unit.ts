@@ -168,7 +168,7 @@ describe('Criterion user actions', () => {
     const backLink = JSON.parse(sessionStorage.getItem(BACK_LINK_SESSION_STORAGE_KEY) as string);
     expect(backLink.route).toBe('pim_enrich_product_edit');
     expect(backLink.routeParams.id).toBe(1234);
-    expect(redirectToAttributeGridFilteredByFamilyAndQuality).toHaveBeenCalledWith(4321);
+    expect(redirectToAttributeGridFilteredByFamilyAndQuality).toHaveBeenCalledWith('a_family');
   });
   test('it redirects to the attribute grid filtered by family, quality and selected attributes types when criterion is attribute option spelling', () => {
     const criterionRate = aRate(85, 'B');
@@ -192,6 +192,6 @@ describe('Criterion user actions', () => {
     const backLink = JSON.parse(sessionStorage.getItem(BACK_LINK_SESSION_STORAGE_KEY) as string);
     expect(backLink.route).toBe('pim_enrich_product_edit');
     expect(backLink.routeParams.id).toBe(1234);
-    expect(redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes).toHaveBeenCalledWith(4321);
+    expect(redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes).toHaveBeenCalledWith('a_family');
   });
 });

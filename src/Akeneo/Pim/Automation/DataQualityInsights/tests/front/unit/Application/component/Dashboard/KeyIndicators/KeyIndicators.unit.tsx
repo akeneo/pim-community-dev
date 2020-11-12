@@ -37,21 +37,6 @@ test('It displays a loading when key indicators have not been loaded yet', async
   expect(queryByTestId('dqi-key-indicator-loading')).toBeInTheDocument();
 });
 
-test('It displays only the key indicators for which we have data', async() => {
-  useFetchKeyIndicators.mockReturnValueOnce({
-    'good_enrichment': {
-      'ratioGood': 25.65,
-      'totalToImprove': 5000
-    }
-  });
-
-  const {getByText, queryByText, queryByTestId} = renderComponent();
-
-  expect(queryByText('akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.has_image.title')).toBeNull();
-  expect(getByText('akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.good_enrichment.title')).toBeInTheDocument();
-  expect(queryByTestId('dqi-key-indicator-loading')).toBeNull();
-});
-
 function renderComponent()
 {
   return renderDashboardWithProvider(

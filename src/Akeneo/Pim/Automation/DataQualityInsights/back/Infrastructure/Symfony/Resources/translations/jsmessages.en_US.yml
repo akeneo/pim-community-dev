@@ -48,6 +48,7 @@ akeneo_data_quality_insights:
             list:
                 has_image :
                     title: Products with an image
+                    no_data: Your image attributes seem to be empty, you should upload images for this key indicator to highlight the quality of your products.
                     messages:
                         first_step:
                             message1: Without images, your products won't look as good as they deserve.
@@ -67,6 +68,7 @@ akeneo_data_quality_insights:
                             message3: This is perfect.
                 good_enrichment:
                     title: Products with a good enrichment ratio
+                    no_data: Your products seen to be empty, you should add attributes for this key indicator to highlight the quality of your products.
                     messages:
                         first_step:
                             message1: One way to improve this ratio is to make sure you carefully define the most relevant attributes. <a href="{{ link }}" target="_blank">Take a look at our help center</a>.
