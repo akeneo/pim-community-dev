@@ -142,7 +142,9 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
         <Title>{title}</Title>
         {children}
       </Content>
-      <CloseButton onClick={onClose}>{autoHide ? `${remaining}s` : <CloseIcon size={24} />}</CloseButton>
+      <CloseButton onClick={onClose}>
+        {null !== remaining && autoHide ? `${remaining}s` : <CloseIcon size={24} />}
+      </CloseButton>
     </Container>
   );
 };
