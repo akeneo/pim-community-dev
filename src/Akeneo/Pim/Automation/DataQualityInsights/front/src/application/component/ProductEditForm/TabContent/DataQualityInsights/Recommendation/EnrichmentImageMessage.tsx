@@ -10,6 +10,7 @@ const Container = styled.span`
 
 const LinkableMessage = styled(Link)`
   text-decoration: none;
+  font-weight: 700;
 `;
 
 const NotApplicableEnrichmentImageMessage: FC = () => {
