@@ -23,9 +23,7 @@ define([
   'pim/template/mass-edit/product/associate/pick',
   'pim/template/mass-edit/product/associate/confirm',
   'pim/template/common/modal-centered',
-  'react',
-  'react-dom',
-  'pimui/js/product/form/quantified-associations/QuantifiedAssociationsTab',
+  'pimui/js/product/form/quantified-associations/components/QuantifiedAssociations',
 ], function (
   $,
   _,
@@ -43,9 +41,7 @@ define([
   pickTemplate,
   confirmTemplate,
   modalTemplate,
-  React,
-  ReactDOM,
-  {QuantifiedAssociationsTab}
+  {QuantifiedAssociations}
 ) {
   return BaseOperation.extend({
     className: 'AknGridToolbar',
@@ -71,7 +67,7 @@ define([
      */
     render: function () {
       if ('' !== this.$el.html() && this.$('.association-type-selector').length === 0) {
-        ReactDOM.unmountComponentAtNode(this.el);
+        this.unmountReact();
       }
       if (!this.readOnly) {
         this.loadAssociationTypes().then(associationTypes => {
@@ -160,7 +156,7 @@ define([
     },
 
     renderQuantifiedAssociations: function (quantifiedAssociations) {
-      const Component = React.createElement(QuantifiedAssociationsTab, {
+      const props = {
         quantifiedAssociations,
         parentQuantifiedAssociations: {products: [], product_models: []},
         errors: [],
@@ -170,8 +166,8 @@ define([
           this.setValue({[currentAssociationTypeCode]: updatedAssociations}, true);
         },
         onOpenPicker: () => {},
-      });
-      ReactDOM.render(Component, this.el);
+      };
+      this.renderReact(QuantifiedAssociations, props, this.el);
     },
 
     /**

@@ -16,8 +16,9 @@ define([
   'pim/template/channel/tab/properties/conversion-unit',
   'pim/user-context',
   'pim/i18n',
+  'akeneo-design-system',
   'jquery.select2',
-], function ($, _, __, BaseForm, FetcherRegistry, template, UserContext, i18n) {
+], function ($, _, __, BaseForm, FetcherRegistry, template, UserContext, i18n, {Helper}) {
   return BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),
@@ -61,6 +62,12 @@ define([
               i18n,
               __,
             })
+          );
+
+          this.renderReact(
+            Helper,
+            {children: __('pim_enrich.entity.channel.property.label_conversion_units')},
+            this.$('.tabsection-helper').get(0)
           );
 
           this.$('.select2').select2().on('change', this.updateState.bind(this));
