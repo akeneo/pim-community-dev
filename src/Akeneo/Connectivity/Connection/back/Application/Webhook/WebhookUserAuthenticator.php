@@ -27,7 +27,7 @@ class WebhookUserAuthenticator
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function authenticate(int $userId): void
+    public function authenticate(int $userId): UserInterface
     {
         /** @var ?UserInterface $user */
         $user = $this->userRepository->find($userId);
@@ -38,5 +38,7 @@ class WebhookUserAuthenticator
         $roles = array_map('strval', $user->getRoles());
 
         $this->tokenStorage->setToken(new UsernamePasswordToken($user, null, 'main', $roles));
+
+        return $user;
     }
 }

@@ -73,8 +73,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
-        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willReturn(
+        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled()->willReturn($user);
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $user])->willReturn(
             new WebhookEvent(
                 'product.created',
                 '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
@@ -139,8 +139,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $connectionUserForFakeSubscription->execute()->willReturn(1234);
 
-        $webhookUserAuthenticator->authenticate(1234)->shouldBeCalled();
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willReturn(
+        $webhookUserAuthenticator->authenticate(1234)->shouldBeCalled()->willReturn($user);
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $user])->willReturn(
             new WebhookEvent(
                 'product.created',
                 '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
@@ -231,8 +231,10 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
-        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willThrow(\Exception::class);
+        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled()->willReturn($user);
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $user])->willThrow(
+            \Exception::class
+        );
 
         $client->bulkSend(
             Argument::that(

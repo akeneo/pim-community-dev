@@ -13,6 +13,8 @@ use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -22,10 +24,10 @@ use PhpSpec\ObjectBehavior;
 class WebhookEventBuilderSpec extends ObjectBehavior
 {
     public function let(
-        EventDataBuilderInterface $eventDataBuilder1,
-        EventDataBuilderInterface $eventDataBuilder2
+        EventDataBuilderInterface $notSupportedEventDataBuilder,
+        EventDataBuilderInterface $supportedEventDataBuilder
     ): void {
-        $this->beConstructedWith([$eventDataBuilder1, $eventDataBuilder2]);
+        $this->beConstructedWith([$notSupportedEventDataBuilder, $supportedEventDataBuilder]);
     }
 
     public function it_is_initializable(): void
@@ -33,8 +35,11 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(WebhookEventBuilder::class);
     }
 
-    public function it_builds_a_webhook_event($eventDataBuilder1, $eventDataBuilder2, UserInterface $user): void
-    {
+    public function it_builds_a_webhook_event(
+        $notSupportedEventDataBuilder,
+        $supportedEventDataBuilder,
+        UserInterface $user
+    ): void {
         $user->getUsername()->willReturn('julia');
         $user->getFirstName()->willReturn('Julia');
         $user->getLastName()->willReturn('Doe');
@@ -48,12 +53,24 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($businessEvent)->willReturn(false);
+        $supportedEventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
+        $supportedEventDataBuilder->build(
+            $businessEvent,
+            [
+                'pim_source' => 'staging.akeneo.com',
+                'user' => $user,
+            ]
+        )->willReturn(['data']);
 
-        $this->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])
+        $this->build(
+            $businessEvent,
+            [
+                'pim_source' => 'staging.akeneo.com',
+                'user' => $user,
+            ]
+        )
             ->shouldBeLike(
                 new WebhookEvent(
                     'product.created',
@@ -84,12 +101,12 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(WebhookEventDataBuilderNotFoundException::class)
-            ->during('build', [$businessEvent, ['pim_source' => 'staging.akeneo.com']]);
+            ->during('build', [$businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $user]]);
     }
 
     public function it_throws_an_exception_if_there_is_no_pim_source_in_context(
-        $eventDataBuilder1,
-        $eventDataBuilder2,
+        $notSupportedEventDataBuilder,
+        $supportedEventDataBuilder,
         UserInterface $user
     ): void {
         $user->getUsername()->willReturn('julia');
@@ -105,18 +122,18 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($businessEvent)->willReturn(false);
+        $supportedEventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
+        $supportedEventDataBuilder->build($businessEvent)->willReturn(['data']);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$businessEvent]);
+            ->during('build', [$businessEvent, ['user' => $user]]);
     }
 
     public function it_throws_an_exception_if_pim_source_is_empty(
-        $eventDataBuilder1,
-        $eventDataBuilder2,
+        $notSupportedEventDataBuilder,
+        $supportedEventDataBuilder,
         UserInterface $user
     ): void {
         $user->getUsername()->willReturn('julia');
@@ -132,18 +149,18 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($businessEvent)->willReturn(false);
+        $supportedEventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
+        $supportedEventDataBuilder->build($businessEvent)->willReturn(['data']);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$businessEvent, ['pim_source' => '']]);
+            ->during('build', [$businessEvent, ['pim_source' => '', 'user' => $user]]);
     }
 
     public function it_throws_an_exception_if_pim_source_is_null(
-        $eventDataBuilder1,
-        $eventDataBuilder2,
+        $notSupportedEventDataBuilder,
+        $supportedEventDataBuilder,
         UserInterface $user
     ): void {
         $user->getUsername()->willReturn('julia');
@@ -159,13 +176,56 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($businessEvent)->willReturn(false);
-        $eventDataBuilder2->supports($businessEvent)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($businessEvent)->willReturn(false);
+        $supportedEventDataBuilder->supports($businessEvent)->willReturn(true);
 
-        $eventDataBuilder2->build($businessEvent)->willReturn(['data']);
+        $supportedEventDataBuilder->build($businessEvent)->willReturn(['data']);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$businessEvent, ['pim_source' => null]]);
+            ->during('build', [$businessEvent, ['pim_source' => null, 'user' => $user]]);
+    }
+
+    public function it_throws_an_exception_if_there_is_no_user_in_context(UserInterface $user): void
+    {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
+        $businessEvent = $this->createBusinessEvent(
+            $author,
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(MissingOptionsException::class)->during(
+            'build',
+            [$businessEvent, ['pim_source' => 'staging.akeneo.com']]
+        );
+    }
+
+    public function it_throws_an_exception_if_the_user_has_not_the_good_type(UserInterface $user): void
+    {
+        $user->getUsername()->willReturn('julia');
+        $user->getFirstName()->willReturn('Julia');
+        $user->getLastName()->willReturn('Doe');
+        $user->isApiUser()->willReturn(false);
+
+        $author = Author::fromUser($user->getWrappedObject());
+
+        $businessEvent = $this->createBusinessEvent(
+            $author,
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(InvalidOptionsException::class)->during(
+            'build',
+            [$businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => 'not_ok']]
+        );
     }
 
     private function createBusinessEvent(
