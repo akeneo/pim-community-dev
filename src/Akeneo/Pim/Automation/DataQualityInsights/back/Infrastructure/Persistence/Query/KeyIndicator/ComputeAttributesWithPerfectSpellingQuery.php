@@ -66,7 +66,7 @@ SQL;
             ]
         )->fetchColumn();
 
-        $result = false !== $result ? json_decode($result, true, 512, JSON_THROW_ON_ERROR) : [];
+        $result = (false !== $result && null !== $result) ? json_decode($result, true, 512, JSON_THROW_ON_ERROR) : [];
 
         return new KeyIndicator(
             new KeyIndicatorCode(AttributesWithPerfectSpelling::CODE),
@@ -122,7 +122,7 @@ SQL;
             ]
         )->fetchColumn();
 
-        $result = false !== $result ? json_decode($result, true, 512, JSON_THROW_ON_ERROR) : [];
+        $result = (false !== $result && null !== $result) ? json_decode($result, true, 512, JSON_THROW_ON_ERROR) : [];
 
         return new KeyIndicator(
             new KeyIndicatorCode(AttributesWithPerfectSpelling::CODE),
