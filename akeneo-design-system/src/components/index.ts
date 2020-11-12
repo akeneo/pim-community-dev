@@ -6,4 +6,5 @@ export * from './Helper/Helper';
 export * from './Information/Information';
 export * from './Link/Link';
 export * from './ProgressBar/ProgressBar';
+export * from './MessageBar/MessageBar';
 export * from './Modal/Modal';
