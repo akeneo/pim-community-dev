@@ -10,9 +10,9 @@ const Step = styled.a<{color?: string} & AkeneoThemedProps>`
 
 Step.displayName = 'Step';
 
-const BreadcrumbContainer = styled.nav<{color?: string} & AkeneoThemedProps>`
+const BreadcrumbContainer = styled.nav<{color: string} & AkeneoThemedProps>`
   ${Step}:last-child {
-    color: ${({color}) => getColor(color ?? 'grey', 100)};
+    color: ${({color}) => getColor(color, 100)};
   }
 `;
 
@@ -24,7 +24,7 @@ type BreadcrumbProps = {
   /**
    * Color of the breadcrumb (grey, brand, yellow, etc)
    */
-  color: string;
+  color?: string;
 
   /**
    * Children can only be a `Breadcrumb.Step` elements. Other type of children will not be displayed
@@ -35,7 +35,7 @@ type BreadcrumbProps = {
 /**
  * Breadcrumbs are an important navigation component that shows content hierarchy.
  */
-const Breadcrumb = ({children, color, ...rest}: BreadcrumbProps) => {
+const Breadcrumb = ({children, color = 'grey', ...rest}: BreadcrumbProps) => {
   const childrenCount = React.Children.count(children);
 
   // https://www.w3.org/TR/wai-aria-practices-1.1/examples/breadcrumb/index.html

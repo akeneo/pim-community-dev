@@ -14,6 +14,7 @@ test('it renders its children properly', () => {
 
 test('it does not render children that are not `Breadcrumb.Step`', () => {
   render(
+    //@ts-expect-error This other child should be ignored
     <Breadcrumb>
       Other child
       <Breadcrumb.Step>Breadcrumb content</Breadcrumb.Step>
@@ -24,7 +25,12 @@ test('it does not render children that are not `Breadcrumb.Step`', () => {
   expect(screen.queryByText('Other child')).not.toBeInTheDocument();
 });
 
-describe('Breadcrumb supports ...rest props', () => {
-  const {container} = render(<Breadcrumb data-my-attribute="my_value" />);
-  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+test('Breadcrumb supports ...rest props', () => {
+  render(
+    <Breadcrumb data-testid="my_value">
+      <Breadcrumb.Step>Breadcrumb content</Breadcrumb.Step>
+    </Breadcrumb>
+  );
+
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
