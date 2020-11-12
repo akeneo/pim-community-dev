@@ -116,6 +116,7 @@ SQL;
                 ],
             ],
             'isRunning' => false,
+            'isStoppable' => false,
             'status' => 'Completed',
             'jobInstance' => [
                 'code' => 'csv_product_import',
