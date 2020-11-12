@@ -12,9 +12,14 @@ import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
 import Criterion from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
-import {Recommendation} from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
-
-const translate = require('oro/translator');
+import {
+  NotApplicableEnrichmentImageMessage,
+  Recommendation,
+  ToImproveEnrichmentImageMessage,
+} from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
+import {followNotApplicableEnrichmentImageRecommendation} from './user-actions';
+import {isVariantProduct} from './helper';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -24,36 +29,41 @@ interface ProductEditFormAppProps {
 
 const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product, catalogChannel, catalogLocale}) => {
   return (
-    <ThemeProvider theme={pimTheme}>
-      <Provider store={productEditFormStore}>
-        <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
-        <PageContextListener />
-        <ProductContextListener product={product} productFetcher={fetchProduct} />
+    <DependenciesProvider>
+      <ThemeProvider theme={pimTheme}>
+        <Provider store={productEditFormStore}>
+          <CatalogContextListener catalogChannel={catalogChannel} catalogLocale={catalogLocale} />
+          <PageContextListener />
+          <ProductContextListener product={product} productFetcher={fetchProduct} />
 
-        <AttributesTabContent product={product} />
+          <AttributesTabContent product={product} />
 
-        <AxesContextProvider axes={['enrichment']}>
-          <DataQualityInsightsTabContent
-            product={product}
-            productEvaluationFetcher={fetchProductDataQualityEvaluation}
-          >
-            <AxisEvaluation axis={'enrichment'}>
-              <Criterion code={'completeness_of_required_attributes'} />
-              <Criterion code={'completeness_of_non_required_attributes'} />
-              <Criterion code={'enrichment_image'}>
-                <Recommendation type={'not_applicable'}>
-                  <span className="NotApplicableAttribute">{translate('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}</span>
-                </Recommendation>
-                <Recommendation type={'to_improve'}>
-                  <span>{translate('akeneo_data_quality_insights.product_evaluation.messages.fill_image_attribute_recommendation')}</span>
-                </Recommendation>
-              </Criterion>
-            </AxisEvaluation>
-          </DataQualityInsightsTabContent>
-          <AxisRatesOverviewPortal />
-        </AxesContextProvider>
-      </Provider>
-    </ThemeProvider>
+          <AxesContextProvider axes={['enrichment']}>
+            <DataQualityInsightsTabContent
+              product={product}
+              productEvaluationFetcher={fetchProductDataQualityEvaluation}
+            >
+              <AxisEvaluation axis={'enrichment'}>
+                <Criterion code={'completeness_of_required_attributes'} />
+                <Criterion code={'completeness_of_non_required_attributes'} />
+                <Criterion code={'enrichment_image'}>
+                  <Recommendation
+                    type={'not_applicable'}
+                    follow={() => followNotApplicableEnrichmentImageRecommendation(product.family)}
+                  >
+                    <NotApplicableEnrichmentImageMessage isVariant={isVariantProduct(product)} />
+                  </Recommendation>
+                  <Recommendation type={'to_improve'}>
+                    <ToImproveEnrichmentImageMessage isVariant={isVariantProduct(product)} />
+                  </Recommendation>
+                </Criterion>
+              </AxisEvaluation>
+            </DataQualityInsightsTabContent>
+            <AxisRatesOverviewPortal />
+          </AxesContextProvider>
+        </Provider>
+      </ThemeProvider>
+    </DependenciesProvider>
   );
 };
 
