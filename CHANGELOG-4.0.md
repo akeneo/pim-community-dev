@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9556: Fix proposal diff rendering for wysiwyg-enabled textarea attributes
+
 # 4.0.70 (2020-11-09)
 
 # 4.0.69 (2020-11-05)
