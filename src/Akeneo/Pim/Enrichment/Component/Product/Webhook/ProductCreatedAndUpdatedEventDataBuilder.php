@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
-use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,26 +24,25 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
     private GetConnectorProducts $getConnectorProductsQuery;
-    private NormalizerInterface $externalApiNormalizer;
-    private ProductQueryBuilderFactoryInterface $searchAfterPqbFactory;
+    private ConnectorProductNormalizer $connectorProductNormalizer;
+    private ProductQueryBuilderFactoryInterface $pqbFactory;
 
     public function __construct(
         GetConnectorProducts $getConnectorProductsQuery,
-        NormalizerInterface $externalApiNormalizer,
-        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory
+        ConnectorProductNormalizer $connectorProductNormalizer,
+        ProductQueryBuilderFactoryInterface $pqbFactory
     ) {
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
-        $this->externalApiNormalizer = $externalApiNormalizer;
-        $this->searchAfterPqbFactory = $searchAfterPqbFactory;
+        $this->connectorProductNormalizer = $connectorProductNormalizer;
+        $this->pqbFactory = $pqbFactory;
     }
 
     /**
-     * @param EventInterface|BulkEventInterface $event
+     * @param BulkEventInterface $event
      */
     public function supports(object $event): bool
     {
-        // For retro-compatibility with non-bulk event.
-        if ($event instanceof EventInterface) {
+        if (false === $event instanceof BulkEventInterface) {
             return false;
         }
 
@@ -73,7 +74,11 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
             $identifiers[] = $event->getIdentifier();
         }
 
-        $pqb = $this->searchAfterPqbFactory->create(['limit' => 10]);
+        $pqb = $this->pqbFactory->create([
+            'field' => 'identifier',
+            'operator' => Operators::IN_LIST,
+            'value' => $identifiers
+        ]);
         $productList = $this->getConnectorProductsQuery->fromProductQueryBuilder(
             $pqb,
             $userId,
@@ -82,23 +87,17 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
             null
         );
 
-        /*
-        try {
-            $product = $this->productRepository->($event->getIdentifier());
-            if (null === $product) {
-                throw new ProductNotFoundException($event->getIdentifier());
+        // TODO : log products not found
+
+        return \array_map(function ($identifier) use ($productList) {
+            foreach ($productList as $connectorProduct) {
+                /** @var ConnectorProduct $connectorProduct */
+                if ($identifier === $connectorProduct->identifier()) {
+                    return ['resource' => ['identifier' => $identifier]];
+                }
             }
-        } catch (AccessDeniedException $e) {
-            throw new NotGrantedCategoryException($e->getMessage(), $e);
-        }
 
-        return [
-            'resource' => $this->externalApiNormalizer->normalize($product, 'external_api'),
-        ];
-        */
-
-        return \array_map(function ($identifier) {
-            return ['resource' => ['identifier' => $identifier]];
+            return null;
         }, $identifiers);
     }
 }

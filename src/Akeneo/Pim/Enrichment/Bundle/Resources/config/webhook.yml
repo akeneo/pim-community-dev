@@ -3,8 +3,8 @@ services:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder
         arguments:
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
-            - '@pim_api.normalizer.product'
-            - '@pim_catalog.query.product_model_query_builder_search_after_size_factory_external_api'
+            - '@pim_api.normalizer.connector_products'
+            - '@pim_catalog.query.product_query_builder_factory'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
 
