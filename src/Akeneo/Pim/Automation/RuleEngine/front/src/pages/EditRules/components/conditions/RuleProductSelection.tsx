@@ -33,10 +33,10 @@ import {
   LocaleCode,
 } from '../../../../models/';
 import {TextBoxBlue} from '../TextBoxBlue';
-import {useProductsCount} from '../../hooks';
+import {useProductAndProductModelCount} from '../../hooks';
 import {IndexedScopes} from '../../../../repositories/ScopeRepository';
 import {ConditionLine} from './ConditionLine';
-import {ProductsCount} from '../ProductsCount';
+import { ProductAndProductModelCount } from "../ProductAndProductModelCount";
 import {AddFieldButton} from '../../../../components/Selectors/AddFieldButton';
 import {FormData} from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
@@ -125,7 +125,7 @@ const RuleProductSelection: React.FC<Props> = ({
 
   const {getValues} = useFormContext();
 
-  const productsCount = useProductsCount(
+  const productAndProductModelCount = useProductAndProductModelCount(
     router,
     getValuesFromFormData(getValues)
   );
@@ -241,9 +241,10 @@ const RuleProductSelection: React.FC<Props> = ({
           </TitleHeader>
         </HeaderPartContainer>
         <HeaderPartContainer>
-          <ProductsCount
-            count={productsCount.value}
-            status={productsCount.status}
+          <ProductAndProductModelCount
+            productCount={productAndProductModelCount.productCount}
+            productModelCount={productAndProductModelCount.productModelCount}
+            status={productAndProductModelCount.status}
           />
           <AddConditionContainer>
             <AddFieldButton

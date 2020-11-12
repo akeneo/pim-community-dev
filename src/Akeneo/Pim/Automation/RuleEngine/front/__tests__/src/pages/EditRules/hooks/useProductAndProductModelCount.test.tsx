@@ -1,5 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks';
-import {useProductsCount} from '../../../../../src/pages/EditRules/hooks';
+import {useProductAndProductModelCount} from '../../../../../src/pages/EditRules/hooks';
 import {Router} from '../../../../../src/dependenciesTools';
 import {httpGet} from '../../../../../src/fetch';
 
@@ -15,7 +15,7 @@ jest.mock('react-hook-form', () => {
   };
 });
 
-describe('useProductsCount', () => {
+describe('useProductAndProductModelCount', () => {
   test('it should get the products count according to the formValues', async () => {
     // Given
     // TODO Improve type here
@@ -48,7 +48,7 @@ describe('useProductsCount', () => {
 
     // When
     const {result, wait} = renderHook(() =>
-      useProductsCount(router, formValues)
+      useProductAndProductModelCount(router, formValues)
     );
     // Expect
     await wait(() => {
@@ -88,7 +88,7 @@ describe('useProductsCount', () => {
 
     // When
     const {result, wait} = renderHook(() =>
-      useProductsCount(router, formValues)
+      useProductAndProductModelCount(router, formValues)
     );
     // Expect
     await wait(() =>
