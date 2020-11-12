@@ -32,9 +32,9 @@ class CategorySaver extends BaseSaver
      */
     public function save($object, array $options = [])
     {
-        try {
-            $lock = $this->lockUnitarySave($object);
+        $lock = $this->lockUnitarySave($object);
 
+        try {
             parent::save($object, $options);
         } finally {
             $lock->release();
@@ -70,7 +70,7 @@ class CategorySaver extends BaseSaver
         }
 
         if (!$acquired) {
-            throw new \LogicException('The lock for creating new categories cannot be acquired.');
+            throw new \ErrorException('The lock for creating new categories cannot be acquired.');
         }
 
         return $lock;
