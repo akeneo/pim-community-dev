@@ -98,9 +98,6 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $options));
     }
 
-    /**
-     * @param $object
-     */
     protected function validateObject($object)
     {
         if (!$object instanceof CategoryInterface) {
