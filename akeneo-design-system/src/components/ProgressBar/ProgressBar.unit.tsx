@@ -59,3 +59,15 @@ test('it renders a progress bar with progress label', () => {
 
   expect(screen.getByText('Progress label')).toBeInTheDocument();
 });
+
+test('ProgressBar supports forwardRef', () => {
+  const ref = {current: null};
+
+  render(<ProgressBar level="primary" percent={50} ref={ref} />);
+  expect(ref.current).not.toBe(null);
+});
+
+test('Button supports ...rest props', () => {
+  const {container} = render(<ProgressBar level="primary" percent={50} data-my-attribute="my_value" />);
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+});
