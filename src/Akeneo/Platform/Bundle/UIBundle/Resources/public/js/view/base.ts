@@ -20,6 +20,7 @@ const mediator = require('oro/mediator');
 class BaseView extends Backbone.View<any> implements View {
   private parent: View | null = null;
   private extensions: {[code: string]: View};
+  private reactRef: Element | null = null;
 
   readonly preUpdateEventName: string = 'pim_enrich:form:entity:pre_update';
   readonly postUpdateEventName: string = 'pim_enrich:form:entity:post_update';
@@ -247,13 +248,42 @@ class BaseView extends Backbone.View<any> implements View {
   }
 
   /**
-   * Render a React component wrapped with PIM theme & legacy providers inside the given container
+   * Render a React component with the given props wrapped with PIM theme & legacy providers inside the given container
    */
-  renderReact(component: JSX.Element, container: Element) {
+  renderReact(
+    componentType: string | React.FunctionComponent | React.ComponentClass,
+    props: React.Attributes,
+    container: Element
+  ) {
+    this.reactRef = container;
     ReactDOM.render(
-      React.createElement(DependenciesProvider, null, React.createElement(ThemeProvider, {theme: pimTheme}, component)),
-      container
+      React.createElement(
+        ThemeProvider,
+        {theme: pimTheme},
+        React.createElement(DependenciesProvider, null, React.createElement(componentType, props))
+      ),
+      this.reactRef
     );
+  }
+
+  /**
+   * Unmount the React ref if present
+   */
+  unmountReact() {
+    if (null !== this.reactRef) {
+      ReactDOM.unmountComponentAtNode(this.reactRef);
+      this.reactRef = null;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  remove(): BaseView {
+    super.remove();
+    this.unmountReact();
+
+    return this;
   }
 
   /**
