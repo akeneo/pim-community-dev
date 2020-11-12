@@ -94,7 +94,7 @@ const buildRecommendation = (
     return <>{getRecommendation(children, criterionEvaluation.status as RecommendationType)}</>;
   }
 
-  if (isSuccess(criterionEvaluation.rate) && attributes.length == 0) {
+  if (isSuccess(criterionEvaluation.rate)) {
     return (
       <div className="CriterionSuccessContainer">
         {getRecommendation(children, 'success')}
