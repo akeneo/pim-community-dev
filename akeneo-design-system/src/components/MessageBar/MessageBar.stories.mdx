@@ -11,6 +11,7 @@ import * as Icons from '../../icons';
     level: {control: {type: 'select', options: ['info', 'success', 'warning', 'danger']}},
     icon: {control: {type: 'select', options: Object.keys(Icons)}},
     children: {control: {type: 'text'}},
+    onClose: {action: 'Closing the MessageBar'},
   }}
   args={{
     level: 'info',
@@ -37,8 +38,8 @@ We recommend that the body of the message holds within two lines maximum. Be des
 
 ### Close
 
-We recommend that messages automatically disappear after 3 seconds for success, 5s for warning and 8s for danger.
-Manual closing instead timer if there is a link in the message.
+We recommend that messages automatically disappear after 3 seconds for success, 5s for info & warning and 8s for danger.
+Manual closing instead of the timer if there is a Link component in the message.
 
 > ##### ⚠️ &nbsp; Important messages are persistent until the user closes them.
 
@@ -85,7 +86,7 @@ Icons can bring extra clarity. They should be placed at the left of the title. T
         <>
           <MessageBar {...args} level="success" title="This one has a title only" icon={<Icons.TagIcon />} />
           <MessageBar {...args} title="This one has a Link" icon={<Icons.LinkIcon />}>
-            The MessageBar can also be combined with the Link component. <Link>Take a look here</Link>
+            If a Link component is present, the MessageBar will not auto hide. <Link>Take a look here</Link>
           </MessageBar>
         </>
       );
