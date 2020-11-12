@@ -15,7 +15,10 @@ interface EventDataBuilderInterface
     public function supports(BusinessEventInterface $businessEvent): bool;
 
     /**
+     * @param BusinessEventInterface $businessEvent
+     * @param array<mixed> $context
+     *
      * @return array<mixed> Normalized data.
      */
-    public function build(BusinessEventInterface $businessEvent): array;
+    public function build(BusinessEventInterface $businessEvent, array $context = []): array;
 }
