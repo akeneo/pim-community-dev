@@ -53,17 +53,17 @@
 #
 
 .PHONY: asset-manager-coupling-back
-asset-manager-coupling-back: #Doc: run coupling detector for asset manager files
+asset-manager-coupling-back: #Doc: launch coupling detector for asset manager files
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back
 
 .PHONY: asset-manager-lint-back
-asset-manager-lint-back: #Doc: run the PHP linter for the asset-manager
+asset-manager-lint-back: #Doc: launch PHP linter for the asset-manager
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/AssetManager/back
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/Enrichment/AssetManager/
 
 .PHONY: asset-manager-static-back
-asset-manager-static-back: #Doc: run the PHP static analyzer for the asset manager
+asset-manager-static-back: #Doc: launch PHP static analyzer for the asset manager
 	$(PHP_RUN) src/Akeneo/AssetManager/tests/check-fake-implementations.php
 	$(PHP_RUN) src/Akeneo/AssetManager/tests/check-requests-contracts-with-json-schemas.php
 

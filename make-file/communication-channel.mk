@@ -1,4 +1,4 @@
-communication-channel-lint-back: #Doc: lauch PHPStan for communication-channel
+communication-channel-lint-back: #Doc: launch PHPStan for communication-channel
 	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Application vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Domain
 	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Infrastructure
 

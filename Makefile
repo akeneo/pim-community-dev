@@ -9,7 +9,7 @@ CI ?= 0
 .DEFAULT_GOAL := help
 
 .PHONY: help
-help: #Doc: This help
+help: #Doc: display this help
 	@echo "$$(grep -hE '^\S+:.*#Doc:' $(MAKEFILE_LIST) | sed -e 's/:.*#Doc:\s*/:/' -e 's/^\(.\+\):\(.*\)/\\e[1;1m \1\\e[0m:\2/' | column -c2 -t -s :)"
 
 ## Include all *.mk files
@@ -22,7 +22,7 @@ include make-file/*.mk
 yarn.lock: package.json
 	$(YARN_RUN) install
 
-node_modules: yarn.lock #Doc: perform “yarn install --check-files”
+node_modules: yarn.lock #Doc: run YARN install --check-files
 	$(YARN_RUN) install --frozen-lockfile --check-files
 
 .PHONY: dsm
@@ -56,12 +56,12 @@ javascript-dev: dsm #Doc: clean & run webpack dev
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: javascript-dev-strict
-javascript-dev-strict: dsm
+javascript-dev-strict: dsm #Doc: clean & run webpack dev --strict
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev --strict
 
 .PHONY: javascript-test
-javascript-test: dsm
+javascript-test: dsm #Doc: clean & run webpack test
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-test
 
@@ -73,10 +73,10 @@ front: assets css javascript-test javascript-dev #Doc: build the front-end
 ##
 
 .PHONY: fix-cs-back
-fix-cs-back: #Doc: Launch CSFixer on the back-end
+fix-cs-back: #Doc: launch CSFixer on the back-end
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=.php_cs.php
 
-var/cache/dev: #Doc: create Sf cache in DEV environement 
+var/cache/dev: #Doc: create Sf cache in DEV environement
 	APP_ENV=dev make cache
 
 .PHONY: cache
@@ -86,7 +86,7 @@ cache: #Doc: clean, generate & warm the Sf cache up
 composer.lock: composer.json #Doc: launch composer update
 	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer update --no-interaction
 
-vendor: composer.lock #Doc: launch composer install
+vendor: composer.lock #Doc: run composer install
 	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer install --no-interaction
 
 .PHONY: check-requirements
@@ -116,7 +116,7 @@ dependencies: vendor node_modules #Doc: install PHP & JS dependencies
 # - Make sure the docker php is built (make php-image-dev).
 
 .PHONY: pim-behat
-pim-behat: #Doc: build, (re)create, start containers, clear symfony cache, load front env, launch js tests, load the db and create an admin user
+pim-behat: #Doc: run docker-compose up, clean symfony cache, reinstall assets, build PIM CSS, run YARN webpack-test, run webpack dev & install shared_catalog_fixtures database in behat environement
 	APP_ENV=behat $(MAKE) up
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
@@ -128,14 +128,14 @@ pim-behat: #Doc: build, (re)create, start containers, clear symfony cache, load 
 	APP_ENV=behat $(PHP_RUN) bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
 
 .PHONY: pim-test
-pim-test: #Doc: build, (re)create, start containers, clear symfony cache and load the db
+pim-test: #Doc: run docker-compose up, clean symfony cache & install a new icecat catalog database in test environement
 	APP_ENV=test $(MAKE) up
 	APP_ENV=test $(MAKE) cache
 	docker/wait_docker_up.sh
 	APP_ENV=test $(MAKE) database
 
 .PHONY: pim-dev
-pim-dev: #Doc: build, (re)create, start containers, clear symfony cache, load front env and load the demo db
+pim-dev: #Doc: run docker-compose up, clean symfony cache, run webpack dev & install icecat_demo_dev database in dev environement
 	APP_ENV=dev $(MAKE) up
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
@@ -145,7 +145,7 @@ pim-dev: #Doc: build, (re)create, start containers, clear symfony cache, load fr
 	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
 
 .PHONY: pim-prod
-pim-prod: #Doc: build, (re)create, start containers, clear symfony cache, load front env and load the db
+pim-prod: #Doc: run docker-compose up, clean symfony cache, reinstall assets, build PIM CSS, ???run make javascript-cloud??? & install a new icecat catalog database in prod environement
 	APP_ENV=prod $(MAKE) up
 	APP_ENV=prod $(MAKE) cache
 	$(MAKE) assets
@@ -157,7 +157,7 @@ pim-prod: #Doc: build, (re)create, start containers, clear symfony cache, load f
 .PHONY: pim-saas-like
 pim-saas-like: export COMPOSE_PROJECT_NAME = pim-saas-like
 pim-saas-like: export COMPOSE_FILE = docker-compose.saas-like.yml
-pim-saas-like: #Doc: build, (re)create, start containers, load the db and create an admin user
+pim-saas-like: #Doc: run docker-compose up, install PIM database and create PIM admin user
 	$(DOCKER_COMPOSE) up --detach --remove-orphan
 	docker/wait_docker_up.sh
 	$(DOCKER_COMPOSE) run fpm bin/console pim:installer:db
@@ -174,11 +174,11 @@ down-pim-saas-like: #Doc: shutdown all docker containers
 ##
 
 .PHONY: php-image-dev
-php-image-dev: #Doc: pull docker for pim-enterprise-dev with the dev tag
+php-image-dev: #Doc: pull docker image for pim-enterprise-dev with the dev tag
 	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:7.4 --target dev .
 
 .PHONY: php-image-prod
-php-image-prod: #Doc: pull docker for pim-enterprise-dev with the prod tag
+php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
 ifeq ($(CI),true)
 	git config user.name "Michel Tag"
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
@@ -198,9 +198,9 @@ push-php-image-prod: #Doc: push docker image to docker hub
 	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
 
 .PHONY: up
-up: #Doc: build, (re)create and start containers
+up: #Doc: run docker-compose up
 	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}
 
 .PHONY: down
-down: #Doc: shutdown all Docker containers
+down: #Doc: shutdown all docker containers
 	$(DOCKER_COMPOSE) down -v
