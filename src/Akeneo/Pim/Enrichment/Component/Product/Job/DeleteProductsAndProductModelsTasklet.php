@@ -89,15 +89,17 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface, Trackab
             );
         }
 
-        $productsAndRootProductModels = $this->findSimpleProductsAndRootProductModels();
-        $subProductModels = $this->findSubProductModels();
-        $variantProducts = $this->findVariantProducts();
 
         $this->stepExecution->addSummaryInfo('deleted_products', 0);
         $this->stepExecution->addSummaryInfo('deleted_product_models', 0);
 
+        $productsAndRootProductModels = $this->findSimpleProductsAndRootProductModels();
         $this->delete($productsAndRootProductModels);
+
+        $subProductModels = $this->findSubProductModels();
         $this->delete($subProductModels);
+
+        $variantProducts = $this->findVariantProducts();
         $this->delete($variantProducts);
     }
 
