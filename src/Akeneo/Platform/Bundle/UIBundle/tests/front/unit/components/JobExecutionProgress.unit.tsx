@@ -344,30 +344,30 @@ test('it fallback on default job step label when missing', () => {
 });
 
 test('it render progress bar lower than 1%', () => {
-   mockGetFormData.mockImplementationOnce(() => ({
-      tracking: {
-        status: 'STARTED',
-        currentStep: 1,
-        totalSteps: 1,
-        steps: [
-          {
-            jobName: 'csv_product_export',
-            stepName: 'export',
-            status: 'STARTED',
-            isTrackable: true,
-            hasWarning: false,
-            hasError: false,
-            duration: 12,
-            processedItems: 1,
-            totalItems: 100000,
-          },
-        ],
-      },
-    }));
+  mockGetFormData.mockImplementationOnce(() => ({
+    tracking: {
+      status: 'STARTED',
+      currentStep: 1,
+      totalSteps: 1,
+      steps: [
+        {
+          jobName: 'csv_product_export',
+          stepName: 'export',
+          status: 'STARTED',
+          isTrackable: true,
+          hasWarning: false,
+          hasError: false,
+          duration: 12,
+          processedItems: 1,
+          totalItems: 100000,
+        },
+      ],
+    },
+  }));
 
-    const component = new JobExecutionProgress(container);
-    component.render();
+  const component = new JobExecutionProgress(container);
+  component.render();
 
-    expect(screen.getByText('13 day(s) 21 hour(s) left')).toBeInTheDocument();
-    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0.001');
-  });
+  expect(screen.getByText('13 day(s) 21 hour(s) left')).toBeInTheDocument();
+  expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '0.001');
+});
