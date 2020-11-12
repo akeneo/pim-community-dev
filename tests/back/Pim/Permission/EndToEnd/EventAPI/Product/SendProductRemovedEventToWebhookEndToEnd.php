@@ -58,7 +58,7 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
     ): void
     {
         $product = $this->productLoader->create(
-            'product_with_one_category_viewable_by_redactor_and_one_category_not_viewable_by_readactor',
+            'product_with_one_category_viewable_by_redactor_and_one_category_not_viewable_by_redactor',
             [
                 'categories' => ['view_category', 'category_without_right'],
                 'family' => 'familyA',
