@@ -55,7 +55,7 @@ else
 endif
 
 .PHONY: community-unit-back
-community-unit-back: var/tests/phpspec #Doc: lauch PHPSpec for PIM CE dev
+community-unit-back: var/tests/phpspec #Doc: launch PHPSpec for PIM CE dev
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run  --format=junit > ../../../var/tests/phpspec/specs-ce.xml"
 else
