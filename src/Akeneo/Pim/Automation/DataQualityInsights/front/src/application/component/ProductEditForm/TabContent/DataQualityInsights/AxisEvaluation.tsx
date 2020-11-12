@@ -30,23 +30,28 @@ const isAxisGradingInProgress = (criteria: CriterionEvaluationResult[]) => {
   );
 };
 
-const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluationPlaceholder, axis, showRate= true}) => {
+const AxisEvaluation: FC<AxisEvaluationProps> = ({
+  children,
+  evaluation = evaluationPlaceholder,
+  axis,
+  showRate = true,
+}) => {
   const criteria = evaluation.criteria || [];
   const axisHasError: boolean = isAxisInError(criteria);
   const axisGradingInProgress: boolean = isAxisGradingInProgress(criteria);
 
-  const getCriterionEvaluation = (code: string): CriterionEvaluationResult|undefined => {
-    return criteria.find((criterion) => criterion.code === code);
+  const getCriterionEvaluation = (code: string): CriterionEvaluationResult | undefined => {
+    return criteria.find(criterion => criterion.code === code);
   };
 
   return (
-    <div className='AknSubsection AxisEvaluationContainer'>
-      <AxisHeader evaluation={evaluation} axis={axis} showRate={showRate}/>
+    <div className="AknSubsection AxisEvaluationContainer">
+      <AxisHeader evaluation={evaluation} axis={axis} showRate={showRate} />
 
       {axisHasError && <AxisError />}
       {axisGradingInProgress && !axisHasError && <AxisGradingInProgress />}
 
-      {Children.map(children, ((child) => {
+      {Children.map(children, child => {
         const element = child as ReactElement;
         if (element.type === Criterion) {
           const criterionEvaluation = getCriterionEvaluation(element.props.code);
@@ -58,11 +63,11 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluat
           return React.cloneElement(element, {
             axis,
             evaluation,
-            criterionEvaluation
+            criterionEvaluation,
           });
         }
         return child;
-      }))}
+      })}
     </div>
   );
 };

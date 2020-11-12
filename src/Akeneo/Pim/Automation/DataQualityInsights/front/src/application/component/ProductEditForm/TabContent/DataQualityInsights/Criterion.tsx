@@ -45,7 +45,7 @@ const getRecommendation = (children: ReactNode | null, type: RecommendationType)
 
 const getToImproveRecommendation = (
   children: ReactNode | null,
-  criterion:string,
+  criterion: string,
   attributes: string[],
   product: Product,
   axis: string,

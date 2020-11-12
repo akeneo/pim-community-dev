@@ -3,8 +3,8 @@ import {CriterionEvaluationResult} from '@akeneo-pim-community/data-quality-insi
 import Evaluation from '@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
 import Criterion, {
-    AllowFollowingCriterionRecommendation,
-    FollowCriterionRecommendationHandler,
+  AllowFollowingCriterionRecommendation,
+  FollowCriterionRecommendationHandler,
 } from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
 import {renderWithAppContextHelper} from './renderWithAppContextHelper';
 

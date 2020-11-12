@@ -18,12 +18,19 @@ interface AttributesListProps {
   followAttributesListRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
-const AttributesList: FC<AttributesListProps> = ({criterionCode, attributes, axis, evaluation, followAttributeRecommendation, followAttributesListRecommendation}) => {
+const AttributesList: FC<AttributesListProps> = ({
+  criterionCode,
+  attributes,
+  axis,
+  evaluation,
+  followAttributeRecommendation,
+  followAttributesListRecommendation,
+}) => {
   const criteria = evaluation.criteria || [];
   const allAttributes = getAxisAttributesWithRecommendations(criteria);
 
   if (attributes.length === 0) {
-    return (<Recommendation type={'success'} />);
+    return <Recommendation type={'success'} />;
   }
 
   if (attributes.length <= MAX_ATTRIBUTES_DISPLAYED) {

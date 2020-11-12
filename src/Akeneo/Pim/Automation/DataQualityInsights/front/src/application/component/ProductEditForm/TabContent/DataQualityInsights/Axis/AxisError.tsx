@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 
 const __ = require('oro/translator');
 
-const AxisError: FC= () => {
+const AxisError: FC = () => {
   return (
     <div className="NoRateWindow">
       <span className="NoRateIconWindow" />
