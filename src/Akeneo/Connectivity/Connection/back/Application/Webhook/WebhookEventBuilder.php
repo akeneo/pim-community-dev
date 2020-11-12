@@ -62,6 +62,10 @@ class WebhookEventBuilder
 
             $webhookEvents = [];
             foreach ($events as $i => $event) {
+                if (null === $eventsData[$i]) {
+                    // LOG event data not built?
+                    continue;
+                }
                 $webhookEvents[] = new WebhookEvent(
                     $event->getName(),
                     $event->getUuid(),

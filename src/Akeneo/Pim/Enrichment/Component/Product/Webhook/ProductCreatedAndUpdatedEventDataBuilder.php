@@ -14,7 +14,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -23,18 +22,18 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
+    private ProductQueryBuilderFactoryInterface $pqbFactory;
     private GetConnectorProducts $getConnectorProductsQuery;
     private ConnectorProductNormalizer $connectorProductNormalizer;
-    private ProductQueryBuilderFactoryInterface $pqbFactory;
 
     public function __construct(
+        ProductQueryBuilderFactoryInterface $pqbFactory,
         GetConnectorProducts $getConnectorProductsQuery,
-        ConnectorProductNormalizer $connectorProductNormalizer,
-        ProductQueryBuilderFactoryInterface $pqbFactory
+        ConnectorProductNormalizer $connectorProductNormalizer
     ) {
+        $this->pqbFactory = $pqbFactory;
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
         $this->connectorProductNormalizer = $connectorProductNormalizer;
-        $this->pqbFactory = $pqbFactory;
     }
 
     /**
@@ -74,11 +73,9 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
             $identifiers[] = $event->getIdentifier();
         }
 
-        $pqb = $this->pqbFactory->create([
-            'field' => 'identifier',
-            'operator' => Operators::IN_LIST,
-            'value' => $identifiers
-        ]);
+        $pqb = $this->pqbFactory->create(['limit' => count($identifiers)]);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $identifiers);
+
         $productList = $this->getConnectorProductsQuery->fromProductQueryBuilder(
             $pqb,
             $userId,
@@ -90,10 +87,12 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
         // TODO : log products not found
 
         return \array_map(function ($identifier) use ($productList) {
-            foreach ($productList as $connectorProduct) {
+            foreach ($productList->connectorProducts() as $connectorProduct) {
                 /** @var ConnectorProduct $connectorProduct */
                 if ($identifier === $connectorProduct->identifier()) {
-                    return ['resource' => ['identifier' => $identifier]];
+                    return [
+                        'resource' => $this->connectorProductNormalizer->normalizeConnectorProduct($connectorProduct)
+                    ];
                 }
             }
 

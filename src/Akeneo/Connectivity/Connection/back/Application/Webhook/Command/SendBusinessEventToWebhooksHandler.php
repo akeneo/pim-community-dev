@@ -80,15 +80,21 @@ final class SendBusinessEventToWebhooksHandler
                 try {
                     $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
+                    $webhookEvents = $this->builder->build(
+                        $event,
+                        [
+                            'pim_source' => $this->pimSource,
+                            'user_id' => $webhook->userId(),
+                        ]
+                    );
+
+                    if (0 === count($webhookEvents)) {
+                        continue;
+                    }
+
                     yield new WebhookRequest(
                         $webhook,
-                        $this->builder->build(
-                            $event,
-                            [
-                                'pim_source' => $this->pimSource,
-                                'user_id' => $webhook->userId(),
-                            ]
-                        )
+                        $webhookEvents
                     );
                 } catch (\Throwable $error) {
                     // Handle error gracefully and continue the processing of other webhooks.
