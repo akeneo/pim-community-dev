@@ -47,8 +47,11 @@ akeneo_data_quality_insights:
         key_indicators:
             attributes_to_work_on: '{1}You have <button>1 attribute</button> to work on.|]1, 200[You have <button>{{ count }} attributes</button> to work on.|[200, Inf[You have more than <button>{{ count }} attributes</button> to work on.'
             list:
+                has_image :
+                    no_data: Your asset collections and image attributes seem to be empty, you should upload images for this key indicator to highlight the quality of your products.
                 attributes_perfect_spelling:
                     title: Attributes properly labelled
+                    no_data: Your attribute and option labels seem to be empty, you should enrich them for this key indicator to highlight the quality of your attributes.
                     messages:
                         first_step:
                             message1: You are having a hard time with attribute and option labels? How about going back to basics <a href="{{ link }}" target="_blank">here</a>?
@@ -65,6 +68,7 @@ akeneo_data_quality_insights:
 
                 values_perfect_spelling:
                     title: Products with perfect spelling in text product values
+                    no_data: Your text areas seem to be empty, you should enrich them for this key indicator to highlight the quality of your products.
                     messages:
                         first_step:
                             message1: Your products deserve to be described properly. Check out the spelling!

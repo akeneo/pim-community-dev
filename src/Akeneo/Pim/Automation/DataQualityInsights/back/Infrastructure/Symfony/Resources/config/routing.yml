@@ -60,3 +60,10 @@ akeneo_data_quality_insights_get_number_of_products_impacted_by_attribute_spelli
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetNumberOfProductsImpactedByAttributeSpellingMistakesController
         _feature: data_quality_insights
     methods: [GET]
+
+akeneo_data_quality_insights_get_spellcheck_supported_locales:
+    path: /data-quality-insights/spellcheck-supported-locales
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetSpellcheckSupportedLocalesController
+        _feature: data_quality_insights
+    methods: [ GET ]
