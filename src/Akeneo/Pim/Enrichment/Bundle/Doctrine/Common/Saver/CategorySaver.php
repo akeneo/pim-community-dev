@@ -119,7 +119,10 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
      * Gedmo/Tree execute queries like `UPDATE pim_catalog_category SET lft = lft + 2 WHERE lft >= 2 AND root = ?`
      * producing GAP Lock issues.
      *
-     * The entity manager is not capable to recover from such error.
+     * The entity manager is not capable to recover from such error and is automatically closed.
+     * A new entity manager could be created but when a new one is created using the ManagerRegistry, there is a lot of
+     * issues because the reference to the previous entity manager is kept in many places.
+     *
      * By locking with an external lock beforehand, we can mitigate this deadlock issue.
      *
      * This lock is restricted to the category root, since only rows belonging to this root are affected by the
