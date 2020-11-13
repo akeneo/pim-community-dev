@@ -9,7 +9,6 @@ interface AttributeProps {
   followRecommendation?: FollowAttributeRecommendationHandler;
 }
 
-
 const Attribute: FunctionComponent<AttributeProps> = ({
   attributeCode,
   label,

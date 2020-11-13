@@ -18,7 +18,11 @@ const getAttributeLabel = (attributeCode: string, productFamilyInformation: Fami
   return attributeItem.labels[locale];
 };
 
-const getAttributesListWithLabels = (attributes: string[], family: Family|null, locale?: string): AttributeWithRecommendation[] => {
+const getAttributesListWithLabels = (
+  attributes: string[],
+  family: Family | null,
+  locale?: string
+): AttributeWithRecommendation[] => {
   const attributesWithLabels: AttributeWithRecommendation[] = [];
 
   attributes.forEach((attributeCode: string) => {
@@ -28,7 +32,7 @@ const getAttributesListWithLabels = (attributes: string[], family: Family|null, 
       label = getAttributeLabel(attributeCode, family, locale);
     }
 
-      attributesWithLabels.push({
+    attributesWithLabels.push({
       code: attributeCode,
       label,
     });
@@ -45,35 +49,44 @@ const sortAttributesList = (attributesLabels: AttributeWithRecommendation[]): At
   );
 };
 
-const computeRootProductModelAttributesList = (attributes: AttributeWithRecommendation[], product: Product): AttributeWithRecommendation[] => {
-    let variantAttributes: string[] = [];
-    product.meta.family_variant.variant_attribute_sets.forEach((value: any) => {
-        variantAttributes = [...variantAttributes, ...value.attributes];
-    });
+const computeRootProductModelAttributesList = (
+  attributes: AttributeWithRecommendation[],
+  product: Product
+): AttributeWithRecommendation[] => {
+  let variantAttributes: string[] = [];
+  product.meta.family_variant.variant_attribute_sets.forEach((value: any) => {
+    variantAttributes = [...variantAttributes, ...value.attributes];
+  });
 
-    return attributes.filter((attribute: AttributeWithRecommendation) => {
-        return !variantAttributes.includes(attribute.code);
-    });
+  return attributes.filter((attribute: AttributeWithRecommendation) => {
+    return !variantAttributes.includes(attribute.code);
+  });
 };
 
 const getLevelAttributes = (attributes: AttributeWithRecommendation[], level: number, product: Product) => {
-    if (level === 0) {
-        return computeRootProductModelAttributesList(attributes, product);
-    }
+  if (level === 0) {
+    return computeRootProductModelAttributesList(attributes, product);
+  }
 
-    return attributes.filter((attribute: AttributeWithRecommendation) => {
-        return product.meta.family_variant.variant_attribute_sets[level -1 ].attributes.includes(attribute.code);
-    });
+  return attributes.filter((attribute: AttributeWithRecommendation) => {
+    return product.meta.family_variant.variant_attribute_sets[level - 1].attributes.includes(attribute.code);
+  });
 };
 
 const getAxisAttributesWithRecommendations = (criteria: CriterionEvaluationResult[]): string[] => {
-    let attributes: string[] = [];
+  let attributes: string[] = [];
 
-    criteria.map(criterion => {
-        attributes = [...criterion.improvable_attributes, ...attributes];
-    });
+  criteria.map(criterion => {
+    attributes = [...criterion.improvable_attributes, ...attributes];
+  });
 
-    return _uniq(attributes);
+  return _uniq(attributes);
 };
 
-export {getAttributeLabel, getAttributesListWithLabels, sortAttributesList, getLevelAttributes, getAxisAttributesWithRecommendations};
+export {
+  getAttributeLabel,
+  getAttributesListWithLabels,
+  sortAttributesList,
+  getLevelAttributes,
+  getAxisAttributesWithRecommendations,
+};

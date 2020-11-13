@@ -71,7 +71,7 @@ describe('Attribute actions', () => {
     const product = aVariantProduct(1234, {}, 1, 'idx_1234', 'a_family', ['an_axis_attribute', 'an_attribute']);
     const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', {
       product,
-      families: {a_family: family}
+      families: {a_family: family},
     });
 
     fireEvent.click(getByText('an_attribute_label'));
@@ -111,10 +111,16 @@ describe('Attribute actions', () => {
       [{attributes: ['a_variant_level_1_attribute, another_parent_level_1_attribute']}],
       ['a_variant_level_1_attribute', 'another_parent_level_1_attribute']
     );
-    const {getByText} = renderAttribute('another_parent_level_1_attribute', 'another_parent_level_1_attribute_label', null, 'an_axis', {
-      product,
-      families: {a_family: family}
-    });
+    const {getByText} = renderAttribute(
+      'another_parent_level_1_attribute',
+      'another_parent_level_1_attribute_label',
+      null,
+      'an_axis',
+      {
+        product,
+        families: {a_family: family},
+      }
+    );
 
     fireEvent.click(getByText('another_parent_level_1_attribute_label'));
 
@@ -143,10 +149,16 @@ describe('Attribute actions', () => {
       ],
       ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']
     );
-    const {getByText} = renderAttribute('another_parent_level_2_attribute', 'another_parent_level_2_attribute_label', null, 'an_axis', {
-      product,
-      families: {a_family: family}
-    });
+    const {getByText} = renderAttribute(
+      'another_parent_level_2_attribute',
+      'another_parent_level_2_attribute_label',
+      null,
+      'an_axis',
+      {
+        product,
+        families: {a_family: family},
+      }
+    );
 
     fireEvent.click(getByText('another_parent_level_2_attribute_label'));
 
@@ -175,10 +187,16 @@ describe('Attribute actions', () => {
       ],
       ['a_variant_level_2_attribute', 'another_parent_level_2_attribute']
     );
-    const {getByText} = renderAttribute('another_parent_level_1_attribute', 'another_parent_level_1_attribute_label', null, 'an_axis', {
-      product,
-      families: {a_family: family}
-    });
+    const {getByText} = renderAttribute(
+      'another_parent_level_1_attribute',
+      'another_parent_level_1_attribute_label',
+      null,
+      'an_axis',
+      {
+        product,
+        families: {a_family: family},
+      }
+    );
 
     fireEvent.click(getByText('another_parent_level_1_attribute_label'));
 

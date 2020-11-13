@@ -40,8 +40,8 @@ describe('TooManyAttributesLink user actions', () => {
 
     const product = aProduct();
     const {getByText} = renderTooManyAttributesLink('enrichment', attributes, 2, {
-            product
-        });
+      product,
+    });
 
     fireEvent.click(getByText('akeneo_data_quality_insights.product_evaluation.messages.too_many_attributes'));
     expect(window.dispatchEvent).toHaveBeenCalledWith(expectedEvent);
@@ -57,8 +57,8 @@ describe('TooManyAttributesLink user actions', () => {
 
     const product = aProduct();
     const {getByText} = renderTooManyAttributesLink('consistency', attributes, 2, {
-            product
-        });
+      product,
+    });
 
     fireEvent.click(getByText('akeneo_data_quality_insights.product_evaluation.messages.too_many_attributes'));
     expect(window.dispatchEvent).toHaveBeenCalledWith(expectedEvent);
