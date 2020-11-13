@@ -27,7 +27,7 @@ const Breadcrumb = ({color, children, ...rest}: BreadcrumbProps) => {
   const decoratedChildren = React.Children.map(children, (child, index) => {
     const isLastStep = index === React.Children.count(children) - 1;
     if (!(React.isValidElement(child) && child.type === Breadcrumb.Item)) {
-      console.error(`Found an element that was not Breadcrumb.Item as a children of Breadcrumb`);
+      console.error('Found an element that was not Breadcrumb.Item as a children of Breadcrumb');
 
       return null;
     }
