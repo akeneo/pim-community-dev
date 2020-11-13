@@ -8,7 +8,7 @@
 - Fixes memory leak when indexing product models with a lot of product models in the same family (see https://github.com/akeneo/pim-community-dev/pull/11742)
 - PIM-9109: Fix SSO not working behind reverse proxy.
 - PIM-9133: Fix product and product model save when the user has no permission on some attribute groups
-- PIM-9149: Fix compare/translate on product 
+- PIM-9149: Fix compare/translate on product
 - DAPI-947: The evaluation of the title formatting criterion should be apply only on text attributes that are localizable and are defined as main title
 - PIM-9138: Rules import not working with asset manager
 - PIM-9196: Allow the search on label and code on the rules grid
@@ -23,7 +23,7 @@
 - PIM-9318: Add created_at & updated_at fields in RefEntity record table
 - PIM-9334: Add error during rule import when a condition value contains null value
 - PIM-9324: Fix cannot save product when simple reference entity linked to this product is deleted
-- PIM-9243: Creation and update dates are not displayed on the asset page 
+- PIM-9243: Creation and update dates are not displayed on the asset page
 - PIM-9362: Fix missing "System information" translations for asset analytics
 - PIM-9363: Fix API error 500 when import a picture with an incorrect extension
 - PIM-9370: Fixes page freezing with a big number of attribute options
@@ -49,6 +49,7 @@
 - PIM-9528: Fix asset code changed into lower case in create asset/upload asset UI
 - PIM-9537: Fix importing reference entities with wrong code fails the import
 - PIM-9541: Fix API users shown in Project contributors search
+- PIM-9545: Fix possible memory leak in large import jobs 
 
 ## Improvements
 
@@ -87,7 +88,7 @@
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\AdderActionApplier` to:
   - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
-- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CopierActionApplier` to: 
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CopierActionApplier` to:
   - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\SetterActionApplier` to:
@@ -146,3 +147,4 @@
 - Update `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct` to:
     - remove the `setFamilyId()`, `setProductModel()` and `getProductModel()` methods
     - remove the `$categoryIds` public property and the `$familyId`, `$groupIds` and `$productModel` protected properties
+- Rename `Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository::isCategoriesGranted` to `isCategoryIdsGranted`

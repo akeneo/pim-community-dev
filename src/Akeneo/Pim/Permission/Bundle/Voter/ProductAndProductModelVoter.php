@@ -95,7 +95,7 @@ class ProductAndProductModelVoter extends Voter implements VoterInterface
             $categoryIds[] = $category->getId();
         }
 
-        return $this->categoryAccessRepo->isCategoriesGranted($user, $categoryAttribute, $categoryIds);
+        return $this->categoryAccessRepo->isCategoryIdsGranted($user, $categoryAttribute, $categoryIds);
     }
 
     /**
