@@ -109,6 +109,7 @@ const Icon = styled.div`
   height: 60px;
   text-align: center;
   margin-right: 20px;
+  color: ${({theme}) => theme.color.grey100};
 `;
 
 const Content = styled.div`
