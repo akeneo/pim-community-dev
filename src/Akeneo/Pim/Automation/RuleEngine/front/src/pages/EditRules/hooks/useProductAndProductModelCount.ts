@@ -9,13 +9,36 @@ import {Condition} from '../../../models';
 import {formatDateLocaleTimeConditionsToBackend} from '../components/conditions/DateConditionLines/dateConditionLines.utils';
 type CountFn = (x: CountError | CountPending | CountComplete) => void;
 
-type CountError = {productCount: -1; productModelCount: -1; status: Status.ERROR};
-type CountPending = {productCount: -1; productModelCount: -1; status: Status.PENDING};
-type CountComplete = {productCount: number; productModelCount: number; status: Status.COMPLETE};
+type CountError = {
+  productCount: -1;
+  productModelCount: -1;
+  status: Status.ERROR;
+};
+type CountPending = {
+  productCount: -1;
+  productModelCount: -1;
+  status: Status.PENDING;
+};
+type CountComplete = {
+  productCount: number;
+  productModelCount: number;
+  status: Status.COMPLETE;
+};
 
-const countError: CountError = {productCount: -1, productModelCount: -1, status: Status.ERROR};
-const countPending: CountPending = {productCount: -1, productModelCount: -1, status: Status.PENDING};
-const countComplete = (productCount: number, productModelCount: number): CountComplete => {
+const countError: CountError = {
+  productCount: -1,
+  productModelCount: -1,
+  status: Status.ERROR,
+};
+const countPending: CountPending = {
+  productCount: -1,
+  productModelCount: -1,
+  status: Status.PENDING,
+};
+const countComplete = (
+  productCount: number,
+  productModelCount: number
+): CountComplete => {
   return {productCount, productModelCount, status: Status.COMPLETE};
 };
 
@@ -38,10 +61,12 @@ const getProductsCountUrl = async (url: string, fn: CountFn) => {
     const response = await httpGet(url);
     if (response.ok) {
       const result = await response.json();
-      fn(countComplete(
-        Number(result.impacted_product_count),
-        Number(result.impacted_product_model_count)
-      ));
+      fn(
+        countComplete(
+          Number(result.impacted_product_count),
+          Number(result.impacted_product_model_count)
+        )
+      );
     } else {
       fn(countError);
     }
@@ -70,7 +95,10 @@ const createProductsCountUrl = (router: Router, form: FormData) => {
   );
 };
 
-const useProductAndProductModelCount = (router: Router, formValues: FormData) => {
+const useProductAndProductModelCount = (
+  router: Router,
+  formValues: FormData
+) => {
   const url = createProductsCountUrl(router, formValues);
   const {watch} = useFormContext();
   const [count, setCount] = useState<CountError | CountPending | CountComplete>(

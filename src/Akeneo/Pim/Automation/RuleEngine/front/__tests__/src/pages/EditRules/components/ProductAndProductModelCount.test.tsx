@@ -9,12 +9,18 @@ describe('ProductAndProductModelCount', () => {
     const status = Status.COMPLETE;
     // When
     const {getByText} = renderWithProviders(
-      <ProductAndProductModelCount productCount={10} productModelCount={15} status={status} />,
+      <ProductAndProductModelCount
+        productCount={10}
+        productModelCount={15}
+        status={status}
+      />,
       {legacy: true}
     );
     // Then
     expect(
-      getByText('pimee_catalog_rule.form.edit.products_count.products_and_product_models')
+      getByText(
+        'pimee_catalog_rule.form.edit.products_count.products_and_product_models'
+      )
     ).toBeInTheDocument();
   });
   test('it should render in error mode', () => {
@@ -22,7 +28,11 @@ describe('ProductAndProductModelCount', () => {
     const status = Status.ERROR;
     // When
     const {getByText} = renderWithProviders(
-      <ProductAndProductModelCount productCount={-1} productModelCount={-1} status={status} />,
+      <ProductAndProductModelCount
+        productCount={-1}
+        productModelCount={-1}
+        status={status}
+      />,
       {legacy: true}
     );
     // Then
@@ -35,7 +45,11 @@ describe('ProductAndProductModelCount', () => {
     const status = Status.PENDING;
     // When
     const {getByText} = renderWithProviders(
-      <ProductAndProductModelCount productCount={-1} productModelCount={-1} status={status} />,
+      <ProductAndProductModelCount
+        productCount={-1}
+        productModelCount={-1}
+        status={status}
+      />,
       {legacy: true}
     );
     // Then

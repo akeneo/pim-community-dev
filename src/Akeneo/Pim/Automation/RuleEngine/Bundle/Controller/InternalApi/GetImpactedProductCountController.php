@@ -16,7 +16,6 @@ namespace Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleSelector;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
@@ -67,7 +66,6 @@ final class GetImpactedProductCountController
             $subjectSet = $this->productRuleSelector->select($rule);
 
             Assert::isInstanceOf($subjectSet->getSubjectsCursor(), ResultAwareInterface::class);
-            $documentTypeFacet = null;
             $documentTypeFacet = $this->productAndProductsModelDocumentTypeFacetFactory->build(
                 $subjectSet->getSubjectsCursor()->getResult()
             );

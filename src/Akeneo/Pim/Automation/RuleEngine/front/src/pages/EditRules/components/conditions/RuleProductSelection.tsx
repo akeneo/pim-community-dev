@@ -36,7 +36,7 @@ import {TextBoxBlue} from '../TextBoxBlue';
 import {useProductAndProductModelCount} from '../../hooks';
 import {IndexedScopes} from '../../../../repositories/ScopeRepository';
 import {ConditionLine} from './ConditionLine';
-import { ProductAndProductModelCount } from "../ProductAndProductModelCount";
+import {ProductAndProductModelCount} from '../ProductAndProductModelCount';
 import {AddFieldButton} from '../../../../components/Selectors/AddFieldButton';
 import {FormData} from '../../edit-rules.types';
 import startImage from '../../../../assets/illustrations/start.svg';
