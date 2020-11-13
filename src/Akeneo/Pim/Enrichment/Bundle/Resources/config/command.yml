@@ -11,7 +11,7 @@ services:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '%kernel.root_dir%'
             - '%pim_job_product_batch_size%'
-            - '@pim_catalog.product_values.remove_attributes_values_from_product_and_product_model'
+            - '@pim_catalog.product_values.clean_values_of_removed_attributes'
         tags:
             - { name: console.command }
 
