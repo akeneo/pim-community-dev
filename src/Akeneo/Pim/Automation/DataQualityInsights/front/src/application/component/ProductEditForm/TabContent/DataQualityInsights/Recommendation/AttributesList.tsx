@@ -1,42 +1,36 @@
-import AttributeWithRecommendation from '../../../../../domain/AttributeWithRecommendation.interface';
-import Attribute from './Attribute';
-import React from 'react';
-import {CriterionEvaluationResult, Evaluation, Product} from '../../../../../domain';
-import TooManyAttributesLink from './TooManyAttributesLink';
-import {uniq as _uniq} from 'lodash';
-
-const __ = require('oro/translator');
+import React, {FC} from 'react';
+import AttributeWithRecommendation from '../../../../../../domain/AttributeWithRecommendation.interface';
+import Attribute, {FollowAttributeRecommendationHandler} from './Attribute';
+import {Evaluation} from '../../../../../../domain';
+import {FollowAttributesListRecommendationHandler} from '../../../../../user-actions';
+import {Recommendation} from './Recommendation';
+import {TooManyAttributesLink} from './TooManyAttributesLink';
+import {getAxisAttributesWithRecommendations} from '../../../../../helper';
 
 const MAX_ATTRIBUTES_DISPLAYED = 15;
 
 interface AttributesListProps {
-  product: Product;
   criterionCode: string;
   attributes: AttributeWithRecommendation[];
   axis: string;
   evaluation: Evaluation;
+  followAttributeRecommendation?: FollowAttributeRecommendationHandler;
+  followAttributesListRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
-const getAxisAttributesWithRecommendations = (criteria: CriterionEvaluationResult[]): string[] => {
-  let attributes: string[] = [];
-
-  criteria.map(criterion => {
-    attributes = [...criterion.improvable_attributes, ...attributes];
-  });
-
-  return _uniq(attributes);
-};
-
-const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: AttributesListProps) => {
+const AttributesList: FC<AttributesListProps> = ({
+  criterionCode,
+  attributes,
+  axis,
+  evaluation,
+  followAttributeRecommendation,
+  followAttributesListRecommendation,
+}) => {
   const criteria = evaluation.criteria || [];
   const allAttributes = getAxisAttributesWithRecommendations(criteria);
 
   if (attributes.length === 0) {
-    return (
-      <span className="CriterionSuccessMessage">
-        {__(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
-      </span>
-    );
+    return <Recommendation type={'success'} />;
   }
 
   if (attributes.length <= MAX_ATTRIBUTES_DISPLAYED) {
@@ -56,7 +50,7 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
               attributeCode={attribute.code}
               label={attribute.label}
               separator={separator}
-              product={product}
+              followRecommendation={followAttributeRecommendation}
             />
           );
         })}
@@ -68,7 +62,7 @@ const AttributesList = ({product, criterionCode, attributes, axis, evaluation}: 
         axis={axis}
         attributes={allAttributes}
         numOfAttributes={attributes.length}
-        product={product}
+        followRecommendation={followAttributesListRecommendation}
       />
     );
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import {fireEvent} from '@testing-library/react';
-import {aProduct, aProductModel, aVariantProduct, renderAttribute} from '../../../../../../utils';
+import {aFamily, aProduct, aProductModel, aVariantProduct, renderAttribute} from '../../../../../../../utils';
 import {
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
@@ -13,7 +13,9 @@ jest.mock('pim/router');
 describe('Attribute', () => {
   test('it displays an attribute label', () => {
     const product = aProduct();
-    const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', product);
+    const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', {
+      product,
+    });
 
     expect(getByText('an_attribute_label')).toBeInTheDocument();
   });
@@ -21,7 +23,9 @@ describe('Attribute', () => {
   test('it displays an attribute label with a separator', () => {
     const product = aProduct();
     const separator = <>__SEPARATOR__</>;
-    const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', separator, 'an_axis', product);
+    const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', separator, 'an_axis', {
+      product,
+    });
 
     expect(getByText('an_attribute_label')).toBeInTheDocument();
     expect(getByText('__SEPARATOR__')).toBeInTheDocument();
@@ -48,7 +52,9 @@ describe('Attribute actions', () => {
       },
     });
     const product = aProduct();
-    const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', product);
+    const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', {
+      product,
+    });
 
     fireEvent.click(getByText('an_attribute_label'));
 
@@ -61,8 +67,12 @@ describe('Attribute actions', () => {
         code: 'an_attribute',
       },
     });
+    const family = aFamily('a_family');
     const product = aVariantProduct(1234, {}, 1, 'idx_1234', 'a_family', ['an_axis_attribute', 'an_attribute']);
-    const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', product);
+    const {getByText} = renderAttribute('an_attribute', 'an_attribute_label', null, 'an_axis', {
+      product,
+      families: {a_family: family},
+    });
 
     fireEvent.click(getByText('an_attribute_label'));
 
@@ -76,7 +86,9 @@ describe('Attribute actions', () => {
       },
     });
     const product = aProductModel();
-    const {getByText} = renderAttribute('a_model_attribute', 'a_model_attribute_label', null, 'an_axis', product);
+    const {getByText} = renderAttribute('a_model_attribute', 'a_model_attribute_label', null, 'an_axis', {
+      product,
+    });
 
     fireEvent.click(getByText('a_model_attribute_label'));
 
@@ -84,6 +96,7 @@ describe('Attribute actions', () => {
   });
 
   test('it redirects to the attribute on parent product model Form when it is a variant product with 1 level of variation', () => {
+    const family = aFamily('a_family');
     const product = aVariantProduct(
       1234,
       {en_US: 'A variant product'},
@@ -103,7 +116,10 @@ describe('Attribute actions', () => {
       'another_parent_level_1_attribute_label',
       null,
       'an_axis',
-      product
+      {
+        product,
+        families: {a_family: family},
+      }
     );
 
     fireEvent.click(getByText('another_parent_level_1_attribute_label'));
@@ -114,6 +130,7 @@ describe('Attribute actions', () => {
   });
 
   test('it redirects to the attribute on product model level 1 Form when it is a variant product with 2 levels of variations', () => {
+    const family = aFamily('a_family');
     const product = aVariantProduct(
       1234,
       {en_US: 'A variant product'},
@@ -137,7 +154,10 @@ describe('Attribute actions', () => {
       'another_parent_level_2_attribute_label',
       null,
       'an_axis',
-      product
+      {
+        product,
+        families: {a_family: family},
+      }
     );
 
     fireEvent.click(getByText('another_parent_level_2_attribute_label'));
@@ -148,6 +168,7 @@ describe('Attribute actions', () => {
   });
 
   test('it redirects to the attribute on product model root Form when it is a variant product with 2 levels of variations', () => {
+    const family = aFamily('a_family');
     const product = aVariantProduct(
       1234,
       {en_US: 'A variant product'},
@@ -171,7 +192,10 @@ describe('Attribute actions', () => {
       'another_parent_level_1_attribute_label',
       null,
       'an_axis',
-      product
+      {
+        product,
+        families: {a_family: family},
+      }
     );
 
     fireEvent.click(getByText('another_parent_level_1_attribute_label'));

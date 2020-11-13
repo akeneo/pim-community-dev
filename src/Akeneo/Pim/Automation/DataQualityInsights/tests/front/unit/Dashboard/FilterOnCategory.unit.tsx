@@ -1,7 +1,7 @@
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render, waitForElement} from '@testing-library/react';
+import {fireEvent, render, waitFor} from '@testing-library/react';
 
 import fetchCategoryTrees from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryTrees';
 import fetchCategoryChildren from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryChildren';
@@ -41,23 +41,23 @@ describe('Dashboard > filter on category', () => {
 
 async function openCategoryFilterModal(getByTestId) {
   fireEvent.click(getByTestId('dqiCategoryFilter'));
-  await waitForElement(() => getByTestId('dqiModal'));
+  await waitFor(() => getByTestId('dqiModal'));
 }
 
 async function navigateToDigitalCamerasCategory(getByText, getByTestId) {
-  const cameraCategory = await waitForElement(() => getByText('Cameras'));
+  const cameraCategory = await waitFor(() => getByText('Cameras'));
   expect(cameraCategory).toBeTruthy();
 
-  const cameraChildOpeningIcon = await waitForElement(() => getByTestId('dqiChildOpeningIcon_4'));
+  const cameraChildOpeningIcon = await waitFor(() => getByTestId('dqiChildOpeningIcon_4'));
   expect(cameraChildOpeningIcon).toBeTruthy();
   fireEvent.click(cameraChildOpeningIcon);
 }
 
 async function selectDigitalCamerasCategory(getByText, getByTestId) {
-  const digitalCameraLabel = await waitForElement(() => getByText('Digital cameras'));
+  const digitalCameraLabel = await waitFor(() => getByText('Digital cameras'));
   fireEvent.click(digitalCameraLabel);
 
-  const digitalCameraNode = await waitForElement(() => getByTestId('dqiChildNode_5'));
+  const digitalCameraNode = await waitFor(() => getByTestId('dqiChildNode_5'));
   expect(digitalCameraNode.className.includes('jstree-checked')).toBeTruthy();
 }
 

@@ -1,10 +1,8 @@
-import React, {FunctionComponent} from 'react';
+import React, {FC} from 'react';
 
 const __ = require('oro/translator');
 
-interface AxisGradingInProgressProps {}
-
-const AxisGradingInProgress: FunctionComponent<AxisGradingInProgressProps> = () => {
+const AxisGradingInProgress: FC = () => {
   return (
     <div className="AknDataQualityInsightsEvaluation">
       <span className="gradingInProgressIcon" />
@@ -15,4 +13,4 @@ const AxisGradingInProgress: FunctionComponent<AxisGradingInProgressProps> = () 
   );
 };
 
-export default AxisGradingInProgress;
+export {AxisGradingInProgress};

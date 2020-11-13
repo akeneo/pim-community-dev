@@ -1,25 +1,22 @@
-import React, {FunctionComponent, ReactElement} from 'react';
-import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from '../../../../listener';
-import {Product} from '../../../../../domain';
-import {isSimpleProduct} from '../../../../helper/ProductEditForm/Product';
+import {Family, Product} from '../../domain';
+import {isSimpleProduct} from '../helper';
+import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from '../listener';
 import {
   ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY,
   MAX_VARIATION_LEVELS,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
   ROOT_PRODUCT_MODEL_LEVEL,
   SUB_PRODUCT_MODEL_LEVEL,
-} from '../../../../constant';
+} from '../constant';
 
 const Router = require('pim/router');
 
-interface AttributeProps {
-  attributeCode: string;
-  label: string;
-  separator: ReactElement | null;
-  product: Product;
-}
+type FollowAttributeRecommendationHandler = (attributeCode: string, product: Product, family: Family | null) => void;
 
-const handleClick = (attributeCode: string, product: Product) => {
+const followAttributeRecommendation: FollowAttributeRecommendationHandler = (
+  attributeCode: string,
+  product: Product
+) => {
   if (isSimpleProduct(product) || product.meta.attributes_for_this_level.includes(attributeCode)) {
     window.dispatchEvent(
       new CustomEvent(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, {
@@ -47,22 +44,5 @@ const handleClick = (attributeCode: string, product: Product) => {
   }
 };
 
-const Attribute: FunctionComponent<AttributeProps> = ({attributeCode, label, separator, product}) => {
-  const content = (
-    <>
-      <span data-testid={'dqiAttributeWithRecommendation'}>{label}</span>
-      {separator}
-    </>
-  );
-
-  return (
-    <button
-      onClick={() => handleClick(attributeCode, product)}
-      className="AknActionButton AknActionButton--withoutBorder AknDataQualityInsightsAttribute AknDataQualityInsightsAttribute--link"
-    >
-      {content}
-    </button>
-  );
-};
-
-export default Attribute;
+export {followAttributeRecommendation};
+export type {FollowAttributeRecommendationHandler};
