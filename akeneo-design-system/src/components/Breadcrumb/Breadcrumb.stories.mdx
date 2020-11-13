@@ -1,9 +1,14 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Breadcrumb} from './Breadcrumb.tsx';
 
-<Meta title="Components/Breadcrumb" component={Breadcrumb} argTypes={{
-  color: {control: {type: 'select', options: ['brand', 'grey', 'green', 'yellow', 'blue', 'purple']}},
-}} args={{}} />
+<Meta
+  title="Components/Breadcrumb"
+  component={Breadcrumb}
+  argTypes={{
+    color: {control: {type: 'select', options: ['brand', 'grey', 'green', 'yellow', 'blue', 'purple']}},
+  }}
+  args={{}}
+/>
 
 # Breadcrumb
 
@@ -18,11 +23,13 @@ Breadcrumbs are an important navigation component that shows content hierarchy. 
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Breadcrumb {...args}>
-        <Breadcrumb.Step>first</Breadcrumb.Step>
-        <Breadcrumb.Step href="http://google.com">second</Breadcrumb.Step>
-        <Breadcrumb.Step>third</Breadcrumb.Step>
-      </Breadcrumb>;
+      return (
+        <Breadcrumb {...args}>
+          <Breadcrumb.Step>first</Breadcrumb.Step>
+          <Breadcrumb.Step href="https://google.com">second</Breadcrumb.Step>
+          <Breadcrumb.Step>third</Breadcrumb.Step>
+        </Breadcrumb>
+      );
     }}
   </Story>
 </Canvas>
@@ -37,7 +44,7 @@ Breadcrumbs are an important navigation component that shows content hierarchy. 
       return (
         <>
           <Breadcrumb {...args}>
-            <Breadcrumb.Step href="http://google.com">first</Breadcrumb.Step>
+            <Breadcrumb.Step href="https://akeneo.com">first</Breadcrumb.Step>
             <Breadcrumb.Step href="#">second</Breadcrumb.Step>
           </Breadcrumb>
           <Breadcrumb {...args}>
@@ -56,33 +63,33 @@ Breadcrumbs are an important navigation component that shows content hierarchy. 
     {args => {
       return (
         <>
-          <Breadcrumb color="brand" {...args}>
-            <Breadcrumb.Step href="http://akeneo.com">first</Breadcrumb.Step>
+          <Breadcrumb {...args} color="brand">
+            <Breadcrumb.Step href="https://akeneo.com">first</Breadcrumb.Step>
             <Breadcrumb.Step href="#">second</Breadcrumb.Step>
             <Breadcrumb.Step href="#">third</Breadcrumb.Step>
           </Breadcrumb>
-          <Breadcrumb color="grey" {...args}>
-            <Breadcrumb.Step href="http://akeneo.com">first</Breadcrumb.Step>
+          <Breadcrumb {...args} color="grey">
+            <Breadcrumb.Step href="https://akeneo.com">first</Breadcrumb.Step>
             <Breadcrumb.Step href="#">second</Breadcrumb.Step>
             <Breadcrumb.Step href="#">third</Breadcrumb.Step>
           </Breadcrumb>
-          <Breadcrumb color="green" {...args}>
-            <Breadcrumb.Step href="http://akeneo.com">first</Breadcrumb.Step>
+          <Breadcrumb {...args} color="green">
+            <Breadcrumb.Step href="https://akeneo.com">first</Breadcrumb.Step>
             <Breadcrumb.Step href="#">second</Breadcrumb.Step>
             <Breadcrumb.Step href="#">third</Breadcrumb.Step>
           </Breadcrumb>
-          <Breadcrumb color="yellow" {...args}>
-            <Breadcrumb.Step href="http://akeneo.com">first</Breadcrumb.Step>
+          <Breadcrumb {...args} color="yellow">
+            <Breadcrumb.Step href="https://akeneo.com">first</Breadcrumb.Step>
             <Breadcrumb.Step href="#">second</Breadcrumb.Step>
             <Breadcrumb.Step href="#">third</Breadcrumb.Step>
           </Breadcrumb>
-          <Breadcrumb color="blue" {...args}>
-            <Breadcrumb.Step href="http://akeneo.com">first</Breadcrumb.Step>
+          <Breadcrumb {...args} color="blue">
+            <Breadcrumb.Step href="https://akeneo.com">first</Breadcrumb.Step>
             <Breadcrumb.Step href="#">second</Breadcrumb.Step>
             <Breadcrumb.Step href="#">third</Breadcrumb.Step>
           </Breadcrumb>
-          <Breadcrumb color="red" {...args}>
-            <Breadcrumb.Step href="http://akeneo.com">first</Breadcrumb.Step>
+          <Breadcrumb {...args} color="red">
+            <Breadcrumb.Step href="https://akeneo.com">first</Breadcrumb.Step>
             <Breadcrumb.Step href="#">second</Breadcrumb.Step>
             <Breadcrumb.Step href="#">third</Breadcrumb.Step>
           </Breadcrumb>

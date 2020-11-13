@@ -2,9 +2,9 @@ import React, {isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
-const Step = styled.a<{color?: string} & AkeneoThemedProps>`
+const Step = styled.a<{color: string} & AkeneoThemedProps>`
   text-transform: uppercase;
-  color: ${({color}) => getColor(color ?? 'grey', 120)};
+  color: ${({color}) => getColor(color, 120)};
   text-decoration: none;
 `;
 
