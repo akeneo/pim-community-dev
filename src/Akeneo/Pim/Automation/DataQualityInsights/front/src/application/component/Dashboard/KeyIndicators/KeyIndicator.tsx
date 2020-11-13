@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import {useTranslate, useUserContext} from "@akeneo-pim-community/legacy-bridge";
 import styled from "styled-components";
-import {ProgressBar} from "./ProgressBar";
 import {
   computeProductsNumberToWorkOn,
   computeTipMessage,
@@ -10,6 +9,7 @@ import {
 import {Tip, KeyIndicatorTips} from "../../../../domain";
 import {useGetKeyIndicatorTips} from "../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips";
 import {useDashboardContext} from "../../../context/DashboardContext";
+import {ProgressBar} from 'akeneo-design-system';
 
 type Props = {
   type: string;
