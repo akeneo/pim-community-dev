@@ -189,7 +189,6 @@ class RemoveAttributesValuesFromProductAndProductModel
             'sort' => [
                 'identifier' => 'asc',
             ],
-            'track_total_hits' => true,
         ];
 
         $rows = $this->elasticsearchClient->search($body);
