@@ -2,15 +2,19 @@ import React, {FunctionComponent} from 'react';
 import Overview from './Overview/Overview';
 import Widgets from './Widgets/Widgets';
 import {AxesContextProvider} from '../../context/AxesContext';
-import {KeyIndicators} from './KeyIndicators/KeyIndicators';
-import {AssetCollectionIcon, EditIcon, pimTheme} from 'akeneo-design-system';
+//@todo DAPI-1436
+//import {KeyIndicators} from './KeyIndicators/KeyIndicators';
+//import {AssetCollectionIcon, EditIcon, pimTheme} from 'akeneo-design-system';
+import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+/*
 import {KeyIndicator} from './index';
 import {KeyIndicatorsProvider} from '../../context/KeyIndicatorsContext';
 import {keyIndicatorsTips} from '../../helper/Dashboard/KeyIndicatorsTips';
-import {DashboardContextProvider} from '../../context/DashboardContext';
 import {redirectToProductGridFilteredByKeyIndicator} from '../../../infrastructure/ProductGridRouter';
+*/
+import {DashboardContextProvider} from '../../context/DashboardContext';
 
 interface DataQualityInsightsDashboardProps {
   timePeriod: string;
@@ -43,7 +47,7 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                   familyCode={familyCode}
                   categoryCode={categoryCode}
                 />
-
+                {/* @todo DAPI-1436
                 <KeyIndicatorsProvider tips={keyIndicatorsTips}>
                   <KeyIndicators
                     channel={catalogChannel}
@@ -100,6 +104,7 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                     </KeyIndicator>
                   </KeyIndicators>
                 </KeyIndicatorsProvider>
+                */}
                 <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
               </div>
             </div>
