@@ -11,7 +11,7 @@ import AttributesTabContent from './component/ProductEditForm/TabContent/Attribu
 import {EditIcon, pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
-import {Criterion, Icon} from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import {Criterion, Icon} from './component/ProductEditForm/TabContent/DataQualityInsights';
 
 interface ProductModelEditFormAppProps {
   catalogChannel: string;
