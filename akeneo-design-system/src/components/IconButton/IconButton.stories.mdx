@@ -1,0 +1,77 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {IconButton} from './IconButton.tsx';
+import * as Icons from '../../icons';
+
+<Meta
+  title="Components/IconButton"
+  component={IconButton}
+  argTypes={{
+    icon: {control: {type: 'select', options: Object.keys(Icons)}},
+    color: {
+      control: {
+        type: 'select',
+        options: [undefined, 'inherit', 'brand', 'grey', 'green', 'red', 'yellow', 'blue', 'purple'],
+      },
+    },
+    onClick: {action: 'Click on the icon button'},
+  }}
+  args={{
+    icon: 'ActivityIcon',
+    color: 'inherit',
+    disabled: false,
+  }}
+/>
+
+# IconButton
+
+## Usage
+
+The IconButton component is useful when your only need is to have a clickable Icon.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <IconButton {...args} icon={React.createElement(Icons[args.icon])} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on icon and color
+
+<Canvas>
+  <Story name="Icon and color">
+    {args => {
+      return (
+        <>
+          <IconButton {...args} color="brand" icon={<Icons.CloseIcon />} />
+          <IconButton {...args} color="grey" icon={<Icons.DeleteIcon />} />
+          <IconButton {...args} color="green" icon={<Icons.ViewIcon />} />
+          <IconButton {...args} color="blue" icon={<Icons.EditIcon />} />
+          <IconButton {...args} color="yellow" icon={<Icons.LinkIcon />} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on disabled
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <>
+          <IconButton {...args} color="brand" icon={<Icons.CloseIcon />} disabled={true} />
+          <IconButton {...args} color="grey" icon={<Icons.DeleteIcon />} disabled={true} />
+          <IconButton {...args} color="green" icon={<Icons.ViewIcon />} disabled={true} />
+          <IconButton {...args} color="blue" icon={<Icons.EditIcon />} disabled={true} />
+          <IconButton {...args} color="yellow" icon={<Icons.LinkIcon />} disabled={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

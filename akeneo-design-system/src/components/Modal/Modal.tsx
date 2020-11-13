@@ -2,6 +2,7 @@ import React, {ReactElement, ReactNode, useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
+import {IconButton} from '../../components';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
@@ -24,15 +25,10 @@ const ModalContainer = styled.div`
   cursor: default;
 `;
 
-const ModalCloseButton = styled.button`
-  background: none;
-  border: none;
-  margin: 0;
-  padding: 0;
+const ModalCloseButton = styled(IconButton)`
   position: absolute;
   top: 40px;
   left: 40px;
-  cursor: pointer;
   color: ${getColor('grey', 100)};
 `;
 
@@ -115,9 +111,7 @@ const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) =
 
   return createPortal(
     <ModalContainer {...rest}>
-      <ModalCloseButton onClick={onClose}>
-        <CloseIcon size={20} />
-      </ModalCloseButton>
+      <ModalCloseButton size={20} icon={<CloseIcon />} onClick={onClose} />
       {undefined === illustration ? (
         children
       ) : (
