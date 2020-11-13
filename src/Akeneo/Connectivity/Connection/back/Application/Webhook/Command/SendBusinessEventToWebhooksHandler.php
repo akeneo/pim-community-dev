@@ -28,6 +28,7 @@ final class SendBusinessEventToWebhooksHandler
     const FAKE_CONNECTION_CODE = 'FAKE_CONNECTION_CODE';
     const FAKE_SECRET = 'FAKE_SECRET';
     const FAKE_URL = 'FAKE_URL';
+    const NUMBER_FAKE_WEBHOOKS = 3;
 
     private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
@@ -69,17 +70,26 @@ final class SendBusinessEventToWebhooksHandler
                 return;
             }
 
-            $webhooks[] = $this->buildFakeActiveWebhook($userId);
+            $webhooks = $this->buildFakeActiveWebhooks($userId);
             $isFake = true;
         }
 
         $businessEvent = $command->businessEvent();
-
-        $requests = function () use ($businessEvent, $webhooks) {
+        $authorName = $businessEvent->author()->name();
+        $requests = function () use ($businessEvent, $webhooks, $authorName) {
             foreach ($webhooks as $webhook) {
                 try {
-                    $this->webhookUserAuthenticator->authenticate($webhook->userId());
-                    $event = $this->builder->build($businessEvent, ['pim_source' => $this->pimSource]);
+                    $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
+                    if ($user->getUsername() === $authorName) {
+                        continue;
+                    }
+                    $event = $this->builder->build(
+                        $businessEvent,
+                        [
+                            'pim_source' => $this->pimSource,
+                            'user' => $user,
+                        ]
+                    );
                 } catch (\Throwable $error) {
                     // Handle error gracefully and continue the processing of other webhooks.
                     $this->handleError($error, $webhook, $businessEvent);
@@ -134,13 +144,20 @@ final class SendBusinessEventToWebhooksHandler
         }
     }
 
-    private function buildFakeActiveWebhook(int $userId): ActiveWebhook
+    /**
+     * @return array<ActiveWebhook>
+     */
+    private function buildFakeActiveWebhooks(int $userId): array
     {
-        return new ActiveWebhook(
-            self::FAKE_CONNECTION_CODE,
-            $userId,
-            self::FAKE_SECRET,
-            self::FAKE_URL
+        return array_fill(
+            0,
+            self::NUMBER_FAKE_WEBHOOKS,
+            new ActiveWebhook(
+                self::FAKE_CONNECTION_CODE,
+                $userId,
+                self::FAKE_SECRET,
+                self::FAKE_URL
+            )
         );
     }
 }

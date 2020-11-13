@@ -1,6 +1,7 @@
 parameters:
     akeneo_elasticsearch.client_builder.class: 'Elasticsearch\ClientBuilder'
     akeneo_elasticsearch.registry.clients.class: Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry
+    env(APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT): 0
 
 services:
     akeneo_elasticsearch.registry.clients:
@@ -15,3 +16,7 @@ services:
             - '@akeneo_elasticsearch.registry.clients'
         tags:
             - { name: console.command }
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\GetTotalFieldsLimit:
+        arguments:
+            - '%env(int:APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT)%'

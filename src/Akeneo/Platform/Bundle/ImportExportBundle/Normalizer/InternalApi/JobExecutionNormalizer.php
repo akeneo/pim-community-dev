@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\InternalApi;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -22,14 +23,22 @@ class JobExecutionNormalizer implements NormalizerInterface, CacheableSupportsMe
     /** @var UserContext */
     private $userContext;
 
-    /**
-     * @param NormalizerInterface $jobExecutionStandardNormalizer
-     * @param UserContext         $userContext
-     */
-    public function __construct(NormalizerInterface $jobExecutionStandardNormalizer, UserContext $userContext)
-    {
+    /** @var GetJobExecutionTracking */
+    private $getJobExecutionTracking;
+
+    /** @var NormalizerInterface */
+    private $jobExecutionTrackingNormalizer;
+
+    public function __construct(
+        NormalizerInterface $jobExecutionStandardNormalizer,
+        UserContext $userContext,
+        GetJobExecutionTracking $getJobExecutionTracking,
+        NormalizerInterface $jobExecutionTrackingNormalizer
+    ) {
         $this->jobExecutionStandardNormalizer = $jobExecutionStandardNormalizer;
         $this->userContext = $userContext;
+        $this->getJobExecutionTracking = $getJobExecutionTracking;
+        $this->jobExecutionTrackingNormalizer = $jobExecutionTrackingNormalizer;
     }
 
     /**
@@ -39,15 +48,23 @@ class JobExecutionNormalizer implements NormalizerInterface, CacheableSupportsMe
     {
         try {
             $timezone = $this->userContext->getUserTimezone();
+            $context = array_merge(
+                $context,
+                ['locale' => $this->userContext->getUiLocaleCode(), 'timezone' => $timezone]
+            );
         } catch (\RuntimeException $exception) {
-            return $this->jobExecutionStandardNormalizer->normalize($jobExecution, 'standard', $context);
         }
 
-        return $this->jobExecutionStandardNormalizer->normalize(
+        $normalizedJobExecution = $this->jobExecutionStandardNormalizer->normalize(
             $jobExecution,
             'standard',
-            array_merge($context, ['locale' => $this->userContext->getUiLocaleCode(), 'timezone' => $timezone])
+            $context
         );
+        $normalizedJobExecution['tracking'] = $this->jobExecutionTrackingNormalizer->normalize(
+            $this->getJobExecutionTracking->execute($jobExecution->getId())
+        );
+
+        return $normalizedJobExecution;
     }
 
     /**

@@ -36,7 +36,8 @@ const isProductEvaluationPending = (evaluation: ProductEvaluation | undefined, c
 };
 
 const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> = ({
-  children, productEvaluationFetcher,
+  children,
+  productEvaluationFetcher,
 }) => {
   const {locale, channel} = useCatalogContext();
   const productEvaluation = useFetchProductDataQualityEvaluation(productEvaluationFetcher);
@@ -58,7 +59,7 @@ const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> 
               locale={locale}
             />
           )}
-          {Children.map(children, (child => {
+          {Children.map(children, child => {
             const element = child as ReactElement;
             if (element.type === AxisEvaluation) {
               const axisEvaluation: Evaluation = _get(productEvaluation, [element.props.axis, channel, locale], {
@@ -70,11 +71,11 @@ const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> 
               });
 
               return React.cloneElement(element, {
-                evaluation: axisEvaluation
+                evaluation: axisEvaluation,
               });
             }
             return child;
-          }))}
+          })}
         </>
       )}
     </>

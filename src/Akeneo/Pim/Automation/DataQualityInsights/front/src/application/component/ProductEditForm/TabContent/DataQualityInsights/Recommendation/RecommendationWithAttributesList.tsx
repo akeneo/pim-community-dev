@@ -14,7 +14,7 @@ import {
   FollowAttributeRecommendationHandler,
   FollowAttributesListRecommendationHandler,
 } from '../../../../../user-actions';
-import {Recommendation, RecommendationType} from './Recommendation';
+import {Recommendation} from './Recommendation';
 import {ROOT_PRODUCT_MODEL_LEVEL} from '../../../../../constant';
 
 const translate = require('oro/translator');
@@ -85,7 +85,7 @@ const RecommendationWithAttributesList: FC<RecommendationWithAttributesListProps
   const sortedAttributes = sortAttributesList(attributesLabels);
 
   if (sortedAttributes.length === 0) {
-    return <Recommendation type={RecommendationType.NOT_APPLICABLE} />;
+    return <Recommendation type={'not_applicable'} />;
   }
 
   if (isSimpleProduct(product)) {

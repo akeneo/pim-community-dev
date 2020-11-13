@@ -1,49 +1,45 @@
 import React, {FC} from 'react';
-import {CriterionEvaluationResult} from '../../../../../../domain';
 
-// @todo[DAPI-1339] use the "useTranslate" hook from legacy-bridge workspace
 const translate = require('oro/translator');
 
-enum RecommendationType {
-  ERROR = 'error',
-  SUCCESS = 'success',
-  IN_PROGRESS = 'in_progress',
-  NOT_APPLICABLE = 'not_applicable',
-  OTHER = 'other,',
-}
+type RecommendationType = 'error' | 'success' | 'in_progress' | 'not_applicable' | 'to_improve';
 
-type SupportsRecommendationHandler = (criterion: CriterionEvaluationResult) => boolean;
+type FollowRecommendationHandler = () => void;
 
 type Props = {
-  type?: RecommendationType;
-  supports?: SupportsRecommendationHandler;
+  type: RecommendationType;
+  follow?: FollowRecommendationHandler;
 };
 
-const Recommendation: FC<Props> = ({children, type = RecommendationType.OTHER}) => {
-  if (type === RecommendationType.ERROR) {
+const Recommendation: FC<Props> = ({children, type, follow}) => {
+  if (type === 'error') {
     return (
-      <span className="CriterionErrorMessage">
-        {translate(`akeneo_data_quality_insights.product_evaluation.messages.error.criterion_error`)}
+      <span className="CriterionErrorMessage" onClick={follow}>
+        {children || translate(`akeneo_data_quality_insights.product_evaluation.messages.error.criterion_error`)}
       </span>
     );
   }
 
-  if (type === RecommendationType.IN_PROGRESS) {
+  if (type === 'in_progress') {
     return (
-      <span className="CriterionInProgressMessage">
-        {translate(`akeneo_data_quality_insights.product_evaluation.messages.grading_in_progress`)}
+      <span className="CriterionInProgressMessage" onClick={follow}>
+        {children || translate(`akeneo_data_quality_insights.product_evaluation.messages.grading_in_progress`)}
       </span>
     );
   }
 
-  if (type === RecommendationType.NOT_APPLICABLE) {
-    return <span className="NotApplicableAttribute">N/A</span>;
+  if (type === 'not_applicable') {
+    return (
+      <span className="NotApplicableAttribute" onClick={follow}>
+        {children || 'N/A'}
+      </span>
+    );
   }
 
-  if (type === RecommendationType.SUCCESS) {
+  if (type === 'success') {
     return (
-      <span className="CriterionSuccessMessage">
-        {translate(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
+      <span className="CriterionSuccessMessage" onClick={follow}>
+        {children || translate(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
       </span>
     );
   }
@@ -51,4 +47,4 @@ const Recommendation: FC<Props> = ({children, type = RecommendationType.OTHER}) 
   return <>{children}</>;
 };
 
-export {Recommendation, RecommendationType};
+export {Recommendation, RecommendationType, FollowRecommendationHandler};

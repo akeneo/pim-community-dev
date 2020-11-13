@@ -58,6 +58,14 @@ services:
             - '@validator'
             - '@pim_catalog.saver.family_variant'
 
+    akeneo_connectivity.connection.fixtures.enrichment.category:
+        class: 'Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\CategoryLoader'
+        arguments:
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+
     akeneo_connectivity.connection.fixtures.webhook_loader:
         class: Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader
         arguments:

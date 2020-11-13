@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Widget;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetLastOperationsInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -26,17 +28,25 @@ class LastOperationsFetcher
 
     /** @var PresenterInterface */
     private $presenter;
+    /** @var NormalizerInterface */
+    private $jobExecutionTrackingNormalizer;
+    /** @var GetJobExecutionTracking */
+    private $getJobExecutionTracking;
 
     public function __construct(
         GetLastOperationsInterface $lastOperations,
         SecurityFacade $securityFacade,
         TokenStorageInterface $tokenStorage,
-        PresenterInterface $presenter
+        PresenterInterface $presenter,
+        GetJobExecutionTracking $getJobExecutionTracking,
+        NormalizerInterface $jobExecutionTrackingNormalizer
     ) {
         $this->lastOperations = $lastOperations;
         $this->securityFacade = $securityFacade;
         $this->tokenStorage = $tokenStorage;
         $this->presenter = $presenter;
+        $this->getJobExecutionTracking = $getJobExecutionTracking;
+        $this->jobExecutionTrackingNormalizer = $jobExecutionTrackingNormalizer;
     }
 
     /**
@@ -66,7 +76,9 @@ class LastOperationsFetcher
                     ]
                 );
             }
-
+            $operation['tracking'] = $this->jobExecutionTrackingNormalizer->normalize(
+                $this->getJobExecutionTracking->execute((int) $operation['id'])
+            );
             $operation['canSeeReport'] = !in_array($operation['type'], ['import', 'export']) ||
                 $this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $operation['type']));
         }

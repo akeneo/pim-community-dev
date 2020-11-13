@@ -29,4 +29,3 @@ Feature: Display last operations widget
     Then I should see the text "Last operations"
     And I follow the link "Show job tracker"
     Then I should be redirected on the job tracker page
-    And I should see the columns Job, Type, Started at, Username, Status and Warnings

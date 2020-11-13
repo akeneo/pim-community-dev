@@ -169,6 +169,7 @@ pim_enrich.entity.product_model:
       required_label: '(variantenachse(n))'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} Produktvariante|]1, Inf[{{ complete }} / {{ total }} Produktvariante"
+      label: Variante
     delete:
       confirm: Sind Sie sicher, dass Sie dieses Produktmodell löschen möchten? Alle untergeordneten Produktmodelle und Produktvarianten werden ebenfalls gelöscht.
       confirm_for_products_and_product_models: Sind Sie sicher, dass Sie die ausgewählten Produkte und Produktmodelle löschen wollen? Alle untergeordneten Produktmodelle werden ebenfalls gelöscht.

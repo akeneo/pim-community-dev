@@ -11,7 +11,7 @@ import {
 
 const Router = require('pim/router');
 
-type FollowAttributeRecommendationHandler = (attributeCode: string, product: Product, family: Family|null) => void;
+type FollowAttributeRecommendationHandler = (attributeCode: string, product: Product, family: Family | null) => void;
 
 const followAttributeRecommendation: FollowAttributeRecommendationHandler = (
   attributeCode: string,

@@ -16,7 +16,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectio
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
 use Akeneo\Platform\Component\EventQueue\BusinessEvent;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
@@ -57,24 +57,29 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
-        $builder,
-        UserInterface $user
+        $builder
     ): void {
+        $juliaUser = new User();
+        $juliaUser->setId(0);
+        $juliaUser->setUsername('julia');
+        $juliaUser->setFirstName('Julia');
+        $juliaUser->setLastName('Doe');
+        $magentoUser = new User();
+        $magentoUser->setId(42);
+        $magentoUser->setUsername('magento_452');
+        $magentoUser->setFirstName('magento_452');
+        $magentoUser->setLastName('magento_452');
+        $magentoUser->defineAsApiUser();
 
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromUser($juliaUser);
         $businessEvent = $this->createBusinessEvent($author, ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
-        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
+        $webhook = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
 
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
-        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willReturn(
+        $webhookUserAuthenticator->authenticate(42)->willReturn($magentoUser);
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $magentoUser])->willReturn(
             new WebhookEvent(
                 'product.created',
                 '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
@@ -121,26 +126,29 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        UserInterface $user,
         $connectionUserForFakeSubscription
     ): void {
+        $julia = new User();
+        $julia->setId(1234);
+        $julia->setUsername('julia');
+        $julia->setFirstName('Julia');
+        $julia->setLastName('Doe');
+        $magentoUser = new User();
+        $magentoUser->setId(42);
+        $magentoUser->setUsername('magento_452');
+        $magentoUser->setFirstName('magento_452');
+        $magentoUser->setLastName('magento_452');
+        $magentoUser->defineAsApiUser();
 
-        $user->getId()->willReturn(0);
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromUser($julia);
         $businessEvent = $this->createBusinessEvent($author, ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $selectActiveWebhooksQuery->execute()->willReturn([]);
-
         $connectionUserForFakeSubscription->execute()->willReturn(1234);
 
-        $webhookUserAuthenticator->authenticate(1234)->shouldBeCalled();
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willReturn(
+        $webhookUserAuthenticator->authenticate(1234)->willReturn($magentoUser);
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $magentoUser])->willReturn(
             new WebhookEvent(
                 'product.created',
                 '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
@@ -156,9 +164,9 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 function (iterable $iterable) {
                     $requests = iterator_to_array($iterable);
 
-                    Assert::assertCount(1, $requests);
-                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                    Assert::assertCount(3, $requests);
 
+                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
                     Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[0]->url());
                     Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[0]->secret());
                     Assert::assertEquals(
@@ -173,6 +181,36 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                         ],
                         $requests[0]->content()
                     );
+                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[1]->url());
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[1]->secret());
+                    Assert::assertEquals(
+                        [
+                            'action' => 'product.created',
+                            'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                            'event_date' => '2020-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                            'pim_source' => 'staging.akeneo.com',
+                            'data' => ['data'],
+                        ],
+                        $requests[1]->content()
+                    );
+                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[2]->url());
+                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[2]->secret());
+                    Assert::assertEquals(
+                        [
+                            'action' => 'product.created',
+                            'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                            'event_date' => '2020-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                            'pim_source' => 'staging.akeneo.com',
+                            'data' => ['data'],
+                        ],
+                        $requests[2]->content()
+                    );
 
                     return true;
                 }
@@ -182,27 +220,101 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_handle_error_gracefully(
+    public function it_does_not_send_the_message_if_the_webhook_is_the_author_of_the_business_event(
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
-        $builder,
-        UserInterface $user
+        $builder
     ): void {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
+        $erpUser = new User();
+        $erpUser->setId(42);
+        $erpUser->setUsername('erp_452');
+        $erpUser->setFirstName('erp_452');
+        $erpUser->setLastName('erp_452');
+        $erpUser->defineAsApiUser();
+        $magentoUser = new User();
+        $magentoUser->setId(12);
+        $magentoUser->setUsername('magento_987');
+        $magentoUser->setFirstName('magento_987');
+        $magentoUser->setLastName('magento_987');
+        $magentoUser->defineAsApiUser();
 
-        $author = Author::fromUser($user->getWrappedObject());
+        $erpAuthor = Author::fromUser($erpUser);
+        $businessEvent = $this->createBusinessEvent($erpAuthor, ['data']);
+        $command = new SendBusinessEventToWebhooksCommand($businessEvent);
+        $erpWebhook = new ActiveWebhook('erp_source', 42, 'a_secret', 'http://localhost/');
+        $magentoWebhook = new ActiveWebhook('ecommerce_destination', 12, 'a_secret', 'http://localhost/');
+
+        $selectActiveWebhooksQuery->execute()->willReturn([$erpWebhook, $magentoWebhook]);
+        $webhookUserAuthenticator->authenticate(12)->willReturn($magentoUser);
+        $webhookUserAuthenticator->authenticate(42)->willReturn($erpUser);
+
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $magentoUser])->willReturn(
+            new WebhookEvent(
+                'product.created',
+                '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                '2020-01-01T00:00:00+00:00',
+                $erpAuthor,
+                'staging.akeneo.com',
+                ['data']
+            )
+        );
+
+        $client->bulkSend(
+            Argument::that(
+                function (iterable $iterable) {
+                    $requests = iterator_to_array($iterable);
+
+                    Assert::assertCount(1, $requests);
+                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+
+                    Assert::assertEquals('http://localhost/', $requests[0]->url(), 'Url is not equal');
+                    Assert::assertEquals('a_secret', $requests[0]->secret(), 'Secret is not equal');
+                    Assert::assertEquals(
+                        [
+                            'action' => 'product.created',
+                            'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                            'event_date' => '2020-01-01T00:00:00+00:00',
+                            'author' => 'erp_452',
+                            'author_type' => 'api',
+                            'pim_source' => 'staging.akeneo.com',
+                            'data' => ['data'],
+                        ],
+                        $requests[0]->content(),
+                        'Content is not equal'
+                    );
+
+                    return true;
+                }
+            )
+        )->shouldBeCalled();
+
+        $this->handle($command);
+    }
+
+    public function it_handles_error_gracefully(
+        $selectActiveWebhooksQuery,
+        $webhookUserAuthenticator,
+        $client,
+        $builder
+    ): void {
+        $user = new User();
+        $user->setId(0);
+        $user->setUsername('julia');
+        $user->setFirstName('Julia');
+        $user->setLastName('Doe');
+
+        $author = Author::fromUser($user);
         $businessEvent = $this->createBusinessEvent($author, ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
-        $webhookUserAuthenticator->authenticate(0)->shouldBeCalled();
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com'])->willThrow(\Exception::class);
+        $webhookUserAuthenticator->authenticate(0)->willReturn($user);
+        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $user])->willThrow(
+            \Exception::class
+        );
 
         $client->bulkSend(
             Argument::that(

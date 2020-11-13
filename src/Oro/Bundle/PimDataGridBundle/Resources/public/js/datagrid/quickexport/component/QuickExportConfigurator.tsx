@@ -1,6 +1,6 @@
 import React from 'react';
-import styled, {ThemeProvider} from 'styled-components';
-import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import styled from 'styled-components';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   Modal,
   useToggleState,
@@ -13,7 +13,7 @@ import {
 import {Form, FormValue} from './Form';
 import {Select} from './Select';
 import {Option} from './Option';
-import {AkeneoThemedProps, FileXlsxIcon, FileCsvIcon, pimTheme} from 'akeneo-design-system';
+import {AkeneoThemedProps, FileXlsxIcon, FileCsvIcon} from 'akeneo-design-system';
 
 const Container = styled.div`
   color: ${({theme}: AkeneoThemedProps) => theme.color.grey140};
@@ -58,15 +58,7 @@ type QuickExportConfiguratorProps = {
   getProductCount: () => number;
 };
 
-const QuickExportConfigurator = (props: QuickExportConfiguratorProps) => (
-  <DependenciesProvider>
-    <ThemeProvider theme={pimTheme}>
-      <QuickExportConfiguratorContainer {...props} />
-    </ThemeProvider>
-  </DependenciesProvider>
-);
-
-const QuickExportConfiguratorContainer = ({
+const QuickExportConfigurator = ({
   showWithLabelsSelect,
   onActionLaunch,
   getProductCount,

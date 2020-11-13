@@ -52,6 +52,9 @@
 - PIM-9542: Fix product creation if the family has a numeric code
 - PIM-9498: Add translation for 'Mass delete products' job
 - PIM-9538: Fix sorting on rule engine list page
+- PIM-9499: Fix warning display when a job is running with warnings
+- PIM-9545: Fix possible memory leak in large import jobs
+- PIM-9533: Update wysiwyg editor's style in order to differentiate new paragraphs from mere line breaks
 
 ## New features
 
@@ -60,6 +63,8 @@
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 - RAC-54: Add a new type of associations: Association with quantity
 - RAC-123: Add possibility to export product/product model with labels instead of code
+- RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI
+- RAC-277: Add job progress and remaining time in the UI
 
 ## Improvements
 
@@ -81,6 +86,7 @@
 - CPM-38: Upgrade Symfony to 4.4.15
 - CPM-33: Upgrade node to 12.19
 - CPM-33: Upgrade npm to 6.14
+- PIM-9452: Add a command to update the ElasticSearch indexes max fields limit
 
 ## Classes
 
@@ -191,6 +197,10 @@
 - Change `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface` interface to add `getWithVariants()`
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup` to replace `Doctrine\DBAL\Driver\Connection $connection` by `Doctrine\DBAL\Connection $connection`
 - Add `clearCache` method in `Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface`
+- Remove method `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface::setFamilyId()`
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct` to
+    - remove the `setFamilyId()` method
+    - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
 
 ### CLI commands
 

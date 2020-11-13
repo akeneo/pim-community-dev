@@ -21,7 +21,9 @@ UserContext.get.mockReturnValue('en_US');
 
 describe('Product evaluation tab', () => {
   test('Consistency axis with ongoing criterion evaluation, 2 criteria with recommendations, 1 perfect criterion and 1 not applicable criterion', async () => {
-    const { queryAllByTestId, getByText, queryByText, queryAllByText, getAllByTestId } = renderConsistencyEvaluation(evaluation1);
+    const {queryAllByTestId, getByText, queryByText, queryAllByText, getAllByTestId} = renderConsistencyEvaluation(
+      evaluation1
+    );
     assertAxisTitleIsDisplayed(getByText);
     assertAxisGradingInProgressMessageIsDisplayed(getByText);
     assertAxisErrorMessageIsNotDisplayed(queryByText);
@@ -62,7 +64,9 @@ describe('Product evaluation tab', () => {
   });
 
   test('Consistency axis with an error, 2 criteria with recommendations, 1 perfect criterion and 1 not applicable criterion', async () => {
-    const { queryAllByTestId, getByText, queryByText, queryAllByText, getAllByTestId } = renderConsistencyEvaluation(evaluation2);
+    const {queryAllByTestId, getByText, queryByText, queryAllByText, getAllByTestId} = renderConsistencyEvaluation(
+      evaluation2
+    );
     assertAxisTitleIsDisplayed(getByText);
     assertAxisGradingInProgressMessageIsNotDisplayed(queryByText);
     assertAxisErrorMessageIsDisplayed(getByText);
@@ -101,7 +105,7 @@ describe('Product evaluation tab', () => {
   });
 
   test('Consistency axis with 4 perfect results and 1 not applicable criterion', async () => {
-    const { getByText, queryByText, queryAllByText, queryAllByTestId } = renderConsistencyEvaluation(evaluation3);
+    const {getByText, queryByText, queryAllByText, queryAllByTestId} = renderConsistencyEvaluation(evaluation3);
     assertAxisTitleIsDisplayed(getByText);
     assertAxisGradingInProgressMessageIsNotDisplayed(queryByText);
     assertAxisErrorMessageIsNotDisplayed(queryByText);
@@ -142,7 +146,7 @@ describe('Product evaluation tab', () => {
   });
 
   test('Enrichment axis with 2 criteria with recommendations', async () => {
-    const { queryByText } = renderEnrichmentEvaluation(evaluation4);
+    const {queryByText} = renderEnrichmentEvaluation(evaluation4);
     assertAllAttributesLinkClickSendsAnEvent(queryByText, 'enrichment', ['power_requirements', 'weight']);
   });
 });
@@ -377,4 +381,3 @@ const evaluation4: Evaluation = {
     value: 35,
   },
 };
-

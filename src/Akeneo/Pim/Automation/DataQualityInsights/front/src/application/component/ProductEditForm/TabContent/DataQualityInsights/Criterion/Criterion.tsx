@@ -1,4 +1,13 @@
-import React, {Children, cloneElement, createElement, FC, isValidElement, ReactElement, ReactNode} from 'react';
+import React, {
+  Children,
+  cloneElement,
+  createElement,
+  FC,
+  isValidElement,
+  ReactElement,
+  ReactNode,
+  useMemo,
+} from 'react';
 import {Product} from '../../../../../../domain';
 import Evaluation, {
   CRITERION_ERROR,
@@ -31,49 +40,38 @@ interface CriterionProps {
   followAttributesListRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
-const buildRecommendation = (
-  children: ReactNode | null | undefined,
-  criterionEvaluation: CriterionEvaluationResult,
-  evaluation: Evaluation,
-  product: Product,
-  axis: string,
-  followAttributeRecommendation: FollowAttributeRecommendationHandler | undefined,
-  followAttributesListRecommendation: FollowAttributesListRecommendationHandler | undefined
-): ReactElement => {
-  const criterion = criterionEvaluation.code;
-  const attributes = criterionEvaluation.improvable_attributes || ([] as string[]);
+const getRecommendation = (children: ReactNode | null, type: RecommendationType): ReactElement | undefined => {
+  let recommendation = <Recommendation type={type} />;
 
-  // Display a specific recommendation
-  let recommendationContent: ReactElement | undefined = undefined;
-  React.Children.forEach(children, child => {
-    if (isValidElement(child)) {
-      const element = child as ReactElement;
-      if (
-        element.type === Recommendation &&
-        (element.props.supports === undefined || element.props.supports(criterionEvaluation))
-      ) {
-        recommendationContent = element;
-      }
+  Children.forEach(children, child => {
+    if (React.isValidElement(child) && child.type === Recommendation && child.props.type === type) {
+      recommendation = cloneElement(child);
     }
   });
 
-  if (recommendationContent) {
-    return recommendationContent;
-  }
+  return recommendation;
+};
 
-  if (criterionEvaluation.status === CRITERION_ERROR) {
-    return <Recommendation type={RecommendationType.ERROR} />;
-  } else if (criterionEvaluation.status === CRITERION_IN_PROGRESS) {
-    return <Recommendation type={RecommendationType.IN_PROGRESS} />;
-  } else if (criterionEvaluation.status === CRITERION_NOT_APPLICABLE) {
-    return <Recommendation type={RecommendationType.NOT_APPLICABLE} />;
-  } else if (isSuccess(criterionEvaluation.rate) && attributes.length == 0) {
-    return (
-      <div className="CriterionSuccessContainer">
-        <Recommendation type={RecommendationType.SUCCESS} />
-        <span className="CriterionSuccessTick" />
-      </div>
-    );
+const getToImproveRecommendation = (
+  children: ReactNode | null,
+  criterion: string,
+  attributes: string[],
+  product: Product,
+  axis: string,
+  evaluation: Evaluation,
+  followAttributeRecommendation: FollowAttributeRecommendationHandler | undefined,
+  followAttributesListRecommendation: FollowAttributesListRecommendationHandler | undefined
+): ReactElement | undefined => {
+  let recommendation: ReactElement | null = null;
+
+  Children.forEach(children, child => {
+    if (React.isValidElement(child) && child.type === Recommendation && child.props.type === 'to_improve') {
+      recommendation = cloneElement(child);
+    }
+  });
+
+  if (recommendation !== null) {
+    return recommendation;
   }
 
   return (
@@ -86,6 +84,47 @@ const buildRecommendation = (
       followAttributeRecommendation={followAttributeRecommendation}
       followAttributesListRecommendation={followAttributesListRecommendation}
     />
+  );
+};
+
+const buildRecommendation = (
+  children: ReactNode | null | undefined,
+  criterionEvaluation: CriterionEvaluationResult,
+  evaluation: Evaluation,
+  product: Product,
+  axis: string,
+  followAttributeRecommendation: FollowAttributeRecommendationHandler | undefined,
+  followAttributesListRecommendation: FollowAttributesListRecommendationHandler | undefined
+): ReactElement => {
+  const criterion = criterionEvaluation.code;
+  const attributes = criterionEvaluation.improvable_attributes || ([] as string[]);
+
+  if ([CRITERION_ERROR, CRITERION_IN_PROGRESS, CRITERION_NOT_APPLICABLE].includes(criterionEvaluation.status)) {
+    return <>{getRecommendation(children, criterionEvaluation.status as RecommendationType)}</>;
+  }
+
+  if (isSuccess(criterionEvaluation.rate)) {
+    return (
+      <div className="CriterionSuccessContainer">
+        {getRecommendation(children, 'success')}
+        <span className="CriterionSuccessTick" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {getToImproveRecommendation(
+        children,
+        criterion,
+        attributes,
+        product,
+        axis,
+        evaluation,
+        followAttributeRecommendation,
+        followAttributesListRecommendation
+      )}
+    </>
   );
 };
 
@@ -127,21 +166,32 @@ const Criterion: FC<CriterionProps> = ({
           followCriterionRecommendation(criterionEvaluation, family, product);
         };
 
-  const rowProps = {
-    className: `AknVerticalList-item ${isClickable ? 'AknVerticalList-item--clickable' : ''}`,
-    onClick: handleFollowingCriterionRecommendation,
-  };
-
-  const icon = buildIcon(children);
-  const recommendation = buildRecommendation(
+  const recommendation = useMemo(() => {
+    return buildRecommendation(
+      children,
+      criterionEvaluation,
+      evaluation,
+      product,
+      axis,
+      followAttributeRecommendation,
+      followAttributesListRecommendation
+    );
+  }, [
     children,
     criterionEvaluation,
     evaluation,
     product,
     axis,
     followAttributeRecommendation,
-    followAttributesListRecommendation
-  );
+    followAttributesListRecommendation,
+  ]);
+
+  const rowProps = {
+    className: `AknVerticalList-item ${isClickable ? 'AknVerticalList-item--clickable' : ''}`,
+    onClick: handleFollowingCriterionRecommendation,
+  };
+
+  const icon = buildIcon(children);
 
   return (
     <li data-testid={'dqiProductEvaluationCriterion'} {...rowProps}>
