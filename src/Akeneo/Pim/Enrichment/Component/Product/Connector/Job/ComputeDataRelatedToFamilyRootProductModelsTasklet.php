@@ -12,6 +12,8 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\RewindableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -34,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInterface, InitializableInterface
+class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -127,18 +129,21 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
             $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
             if (null === $family) {
                 $this->stepExecution->incrementSummaryInfo('skip');
+
                 continue;
             }
 
             $skippedProductModels = [];
             $productModelsToSave = [];
-            $productModels = $this->getRootProductModelsForFamily($family);
+            $productModels = $this->getRootProductModelsForFamily([$family->getCode()]);
 
             foreach ($productModels as $productModel) {
                 $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel]);
 
                 if (!$this->isValid($productModel)) {
                     $this->stepExecution->incrementSummaryInfo('skip');
+                    $this->stepExecution->incrementProcessedItems();
+
                     $skippedProductModels[] = $productModel;
                 } else {
                     $productModelsToSave[] = $productModel;
@@ -164,6 +169,11 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
         $this->cacheClearer->clear();
     }
 
+    public function totalItems(): int
+    {
+        return $this->computeRootProductModelsToProcess();
+    }
+
     /**
      * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      *
@@ -187,18 +197,60 @@ class ComputeDataRelatedToFamilyRootProductModelsTasklet implements TaskletInter
 
         $this->productModelSaver->saveAll($productModels);
         $this->stepExecution->incrementSummaryInfo('process', count($productModels));
+        $this->stepExecution->incrementProcessedItems(count($productModels));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     /**
-     * @param FamilyInterface $family
+     * Quentin raised some concerns regarding the ability to rewind the familyReader (which can be seen as a cursor)
+     * in a shared environment.
      *
-     * @return CursorInterface
+     * @throws \Exception
      */
-    private function getRootProductModelsForFamily(FamilyInterface $family): CursorInterface
+    private function computeRootProductModelsToProcess(): int
+    {
+        if (!$this->familyReader instanceof RewindableItemReaderInterface) {
+            return 0;
+        }
+
+        $this->familyReader->rewind();
+
+        $familyCodes = [];
+        $totalProductsToProcess = 0;
+        while (true) {
+            try {
+                $familyItem = $this->familyReader->read();
+                if (null === $familyItem) {
+                    break;
+                }
+            } catch (InvalidItemException $e) {
+                continue;
+            }
+            $familyCodes[] = $familyItem['code'];
+
+            if (\count($familyCodes) % 100 === 0) {
+                $totalProductsToProcess += $this->countRootProductModels($familyCodes);
+                $familyCodes = [];
+            }
+        }
+        $totalProductsToProcess += $this->countRootProductModels($familyCodes);
+
+        $this->familyReader->rewind();
+
+        return $totalProductsToProcess;
+    }
+
+    private function countRootProductModels(array $familyCodes): int
+    {
+        $cursor = $this->getRootProductModelsForFamily($familyCodes);
+
+        return $cursor->count();
+    }
+
+    private function getRootProductModelsForFamily(array $familyCodes): CursorInterface
     {
         $pqb = $this->queryBuilderFactory->create();
-        $pqb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
+        $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
         $pqb->addFilter('parent', Operators::IS_EMPTY, null);
 
         return $pqb->execute();

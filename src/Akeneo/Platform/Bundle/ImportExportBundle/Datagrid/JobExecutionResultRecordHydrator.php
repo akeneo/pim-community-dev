@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Datagrid;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
@@ -18,10 +19,12 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 class JobExecutionResultRecordHydrator implements HydratorInterface
 {
     private JobRegistry $registry;
+    private GetJobExecutionTracking $getJobExecutionTracking;
 
-    public function __construct(JobRegistry $registry)
+    public function __construct(JobRegistry $registry, GetJobExecutionTracking $getJobExecutionTracking)
     {
         $this->registry = $registry;
+        $this->getJobExecutionTracking = $getJobExecutionTracking;
     }
 
     /**
@@ -35,10 +38,19 @@ class JobExecutionResultRecordHydrator implements HydratorInterface
             $recordStatus = new BatchStatus($record['status']);
             $isStoppable = $recordStatus->isRunning() && $job instanceof StoppableJobInterface && $job->isStoppable();
 
-            $records[] = new ResultRecord(array_merge(
-                $record,
-                ['isStoppable' => $isStoppable]
-            ));
+            $jobExecutionTracking = $this->getJobExecutionTracking->execute($record['id']);
+            $records[] = new ResultRecord(
+                array_merge(
+                    $record,
+                    [
+                        'isStoppable'     => $isStoppable,
+                        'currentStep'     => $jobExecutionTracking->currentStep,
+                        'totalSteps'       => $jobExecutionTracking->totalSteps,
+                        'hasError'        => $jobExecutionTracking->hasError(),
+                        'hasWarning' => $jobExecutionTracking->hasWarning()
+                    ]
+                )
+            );
         }
 
         return $records;

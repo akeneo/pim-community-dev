@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVa
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\CountProductModelsAndChildrenProductModelsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -25,7 +26,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteProductsAndProductModelsTasklet implements TaskletInterface
+class DeleteProductsAndProductModelsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     protected ?StepExecution $stepExecution = null;
     protected BulkRemoverInterface $productRemover;
@@ -68,6 +69,15 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
         $this->stepExecution = $stepExecution;
     }
 
+    public function totalItems(): int
+    {
+        $productsAndRootProductModels = $this->findSimpleProductsAndRootProductModels();
+        $subProductModels = $this->findSubProductModels();
+        $variantProducts = $this->findVariantProducts();
+
+        return $this->totalItemsToDelete($productsAndRootProductModels, $subProductModels, $variantProducts);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -78,6 +88,7 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
                 sprintf('In order to execute "%s" you need to set a step execution.', static::class)
             );
         }
+
 
         $this->stepExecution->addSummaryInfo('deleted_products', 0);
         $this->stepExecution->addSummaryInfo('deleted_product_models', 0);
@@ -259,5 +270,13 @@ class DeleteProductsAndProductModelsTasklet implements TaskletInterface
                 return $item instanceof ProductModelInterface;
             })
         );
+    }
+
+    private function totalItemsToDelete(
+        CursorInterface $productsAndRootProductModels,
+        CursorInterface $subProductModels,
+        CursorInterface $variantProducts
+    ): int {
+        return $productsAndRootProductModels->count() + $subProductModels->count() + $variantProducts->count();
     }
 }
