@@ -5,11 +5,11 @@ import WidgetElement, {
   WidgetsCollection,
 } from './EditorHighlight/WidgetElement';
 import EditorElement, {
+  convertHtmlContent,
   getEditorContent,
   isTextArea,
   isTextInput,
   setEditorContent,
-  convertHtmlContent,
 } from './EditorHighlight/EditorElement';
 import HighlightElement, {
   createHighlight,
