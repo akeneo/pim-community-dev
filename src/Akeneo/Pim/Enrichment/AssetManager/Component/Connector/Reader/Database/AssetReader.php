@@ -14,14 +14,16 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Reader\Database;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
-class AssetReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
+class AssetReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -38,12 +40,16 @@ class AssetReader implements ItemReaderInterface, InitializableInterface, StepEx
     /** @var bool */
     private $firstRead;
 
+    private CountAssetsInterface $countAssets;
+
     public function __construct(
         FindAssetIdentifiersByAssetFamilyInterface $findAssetIdentifiersByAssetFamily,
-        AssetRepositoryInterface $assetRepository
+        AssetRepositoryInterface $assetRepository,
+        CountAssetsInterface $countAssets
     ) {
         $this->findAssetIdentifiersByAssetFamily = $findAssetIdentifiersByAssetFamily;
         $this->assetRepository = $assetRepository;
+        $this->countAssets = $countAssets;
     }
 
     /**
@@ -51,9 +57,7 @@ class AssetReader implements ItemReaderInterface, InitializableInterface, StepEx
      */
     public function initialize()
     {
-        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(
-            $this->stepExecution->getJobParameters()->get('asset_family_identifier')
-        );
+        $assetFamilyIdentifier = $this->assetFamilyIdentifier();
         $this->identifiers = $this->findAssetIdentifiersByAssetFamily->find($assetFamilyIdentifier);
         $this->identifiers->rewind();
         $this->firstRead = true;
@@ -87,5 +91,17 @@ class AssetReader implements ItemReaderInterface, InitializableInterface, StepEx
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    public function totalItems(): int
+    {
+        return $this->countAssets->forAssetFamily($this->assetFamilyIdentifier());
+    }
+
+    private function assetFamilyIdentifier(): AssetFamilyIdentifier
+    {
+        return AssetFamilyIdentifier::fromString(
+            $this->stepExecution->getJobParameters()->get('asset_family_identifier')
+        );
     }
 }

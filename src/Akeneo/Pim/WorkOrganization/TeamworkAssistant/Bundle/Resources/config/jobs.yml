@@ -39,6 +39,7 @@ services:
             - '@pimee_teamwork_assistant.calculation_step.chained'
             - '@pimee_teamwork_assistant.saver.project'
             - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
         public: false
 
     pimee_teamwork_assistant.tasklet.prepare_project_calculation:

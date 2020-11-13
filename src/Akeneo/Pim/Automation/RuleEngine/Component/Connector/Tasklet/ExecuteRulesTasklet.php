@@ -17,12 +17,14 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInter
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class ExecuteRulesTasklet implements TaskletInterface
+final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     private ?StepExecution $stepExecution = null;
     private RuleDefinitionRepositoryInterface $ruleDefinitionRepository;
@@ -30,18 +32,21 @@ final class ExecuteRulesTasklet implements TaskletInterface
     private DryRunnerInterface $dryRuleRunner;
     private EventDispatcherInterface $eventDispatcher;
     private JobStopper $jobStopper;
+    private JobRepositoryInterface $jobRepository;
 
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         RunnerInterface $ruleRunner,
         DryRunnerInterface $dryRuleRunner,
         EventDispatcherInterface $eventDispatcher,
+        JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper
     ) {
         $this->ruleDefinitionRepository = $ruleDefinitionRepository;
         $this->ruleRunner = $ruleRunner;
         $this->dryRuleRunner = $dryRuleRunner;
         $this->eventDispatcher = $eventDispatcher;
+        $this->jobRepository = $jobRepository;
         $this->jobStopper = $jobStopper;
     }
 
@@ -63,7 +68,7 @@ final class ExecuteRulesTasklet implements TaskletInterface
             ]
         );
 
-        $subscriber = new ProductRuleExecutionSubscriber($this->stepExecution);
+        $subscriber = new ProductRuleExecutionSubscriber($this->stepExecution, $this->jobRepository);
         $this->eventDispatcher->addSubscriber($subscriber);
 
         foreach ($this->getRuleDefinitions() as $ruleDefinition) {
@@ -114,5 +119,10 @@ final class ExecuteRulesTasklet implements TaskletInterface
         foreach ($ruleDefinitions as $ruleDefinition) {
             yield $ruleDefinition;
         }
+    }
+
+    public function totalItems(): int
+    {
+        return iterator_count($this->getRuleDefinitions());
     }
 }

@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Tasklet;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -28,6 +29,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftChangesPermissionHelper $permissionHelper,
         StepExecution $stepExecution,
+        JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper
     ) {
         $this->beConstructedWith(
@@ -37,6 +39,7 @@ class RefuseTaskletSpec extends ObjectBehavior
             $productModelDraftManager,
             $authorizationChecker,
             $permissionHelper,
+            $jobRepository,
             $jobStopper
         );
         $this->setStepExecution($stepExecution);
@@ -50,6 +53,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $permissionHelper,
         $stepExecution,
+        $jobRepository,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -84,12 +88,15 @@ class RefuseTaskletSpec extends ObjectBehavior
         $permissionHelper->canEditOneChangeToReview($productModelDraft)->willReturn(true);
 
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(3);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
         $this->setStepExecution($stepExecution);
 
         $productDraftManager->refuse($productDraft1, ['comment' => null])->shouldBeCalled();
         $productDraftManager->refuse($productDraft2, ['comment' => null])->shouldBeCalled();
         $productModelDraftManager->refuse($productModelDraft, ['comment' => null])->shouldBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
+
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $this->execute();
     }
@@ -102,6 +109,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $permissionHelper,
         $stepExecution,
+        $jobRepository,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -138,12 +146,15 @@ class RefuseTaskletSpec extends ObjectBehavior
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(1);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
         $this->setStepExecution($stepExecution);
 
         $productDraftManager->refuse($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->refuse($productDraft2, ['comment' => null])->shouldBeCalled();
         $productModelDraftManager->refuse($productModelDraft, ['comment' => null])->shouldNotBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
+
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $this->execute();
     }
@@ -156,6 +167,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $permissionHelper,
         $stepExecution,
+        $jobRepository,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -192,12 +204,15 @@ class RefuseTaskletSpec extends ObjectBehavior
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(1);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
         $this->setStepExecution($stepExecution);
 
         $productDraftManager->refuse($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->refuse($productDraft2, ['comment' => null])->shouldBeCalled();
         $productModelDraftManager->refuse($productModelDraft, ['comment' => null])->shouldNotBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
+
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $this->execute();
     }
@@ -209,6 +224,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $permissionHelper,
         $stepExecution,
+        $jobRepository,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -236,12 +252,27 @@ class RefuseTaskletSpec extends ObjectBehavior
         $permissionHelper->canEditOneChangeToReview($productDraft2)->willReturn(true);
 
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
         $this->setStepExecution($stepExecution);
 
         $productDraftManager->refuse($productDraft1, ['comment' => 'Please fix the typo.'])->shouldBeCalled();
         $productDraftManager->refuse($productDraft2, ['comment' => 'Please fix the typo.'])->shouldBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
 
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
+
         $this->execute();
+    }
+
+    function it_counts_the_total_of_item_to_process(
+        $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $configuration = ['productDraftIds' => [1, 2], 'productModelDraftIds' => [1, 2], 'comment' => 'Please fix the typo.'];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('productDraftIds')->willReturn($configuration['productDraftIds']);
+        $jobParameters->get('productModelDraftIds')->willReturn($configuration['productModelDraftIds']);
+
+        $this->totalItems()->shouldReturn(4);
     }
 }
