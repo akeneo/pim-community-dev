@@ -1,9 +1,12 @@
-import React, {Ref, ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import {getColor, Link} from "..";
+import {AkeneoThemedProps, getColor} from '../../theme';
 
 //TODO be sure to select the appropriate container element here
-const BreadcrumbContainer = styled.div<{color: string}>``;
+const BreadcrumbContainer = styled.nav``;
+const Separator = styled.span`
+  margin: 0 0.5rem;
+`;
 
 type BreadcrumbProps = {
   /**
@@ -17,25 +20,39 @@ type BreadcrumbProps = {
   children?: ReactNode;
 };
 
+/**
+ * Breadcrumbs are an important navigation component that shows content hierarchy
+ */
 const Breadcrumb = ({color, children, ...rest}: BreadcrumbProps) => {
-  const decoratedChildren = React.Children.map(children, (child) => {
+  const decoratedChildren = React.Children.map(children, (child, index) => {
+    const isLastStep = index === React.Children.count(children) - 1;
     if (!(React.isValidElement(child) && child.type === Breadcrumb.Item)) {
-      console.error(`Found an element that was not Breadcrumb.Item as a children of Breadcrumb`)
+      console.error(`Found an element that was not Breadcrumb.Item as a children of Breadcrumb`);
 
       return null;
     }
-    return React.cloneElement(child, {color})
+
+    return isLastStep ? (
+      React.cloneElement(child, {color, gradient: 100, 'aria-current': 'page'})
+    ) : (
+      <>
+        {React.cloneElement(child, {color, gradient: 120})}
+        <Separator aria-hidden="true">/</Separator>
+      </>
+    );
   });
 
   return (
-    <BreadcrumbContainer {...rest}>
-      {children}
+    <BreadcrumbContainer aria-label="Breadcrumb" {...rest}>
+      {decoratedChildren}
     </BreadcrumbContainer>
   );
 };
 
-Breadcrumb.Item = styled(Link)<{color: string}>`
-  color: ${(props) => getColor(props.color, 100)};
+Breadcrumb.Item = styled.a<{color: string; gradient: number} & AkeneoThemedProps>`
+  color: ${props => getColor(props.color, props.gradient)};
+  text-transform: uppercase;
+  text-decoration: none;
 `;
 
 export {Breadcrumb};

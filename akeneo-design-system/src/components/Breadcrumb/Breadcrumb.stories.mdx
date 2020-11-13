@@ -7,18 +7,14 @@ import {Breadcrumb} from './Breadcrumb.tsx';
   argTypes={{
     color: {control: {type: 'select', options: ['red', 'blue', 'green']}},
   }}
-  args={{color: 'red', children: 'Breadcrumb text'}}
+  args={{color: 'red'}}
 />
 
 # Breadcrumb
+Breadcrumbs are an important navigation component that shows content hierarchy. They allow users to be aware of their current location in the hierarchical structure of the application. Breadcrumbs enable users to quickly move up to a parent level.
 
 ## Usage
-
-TODO
-
-### TODO
-
-TODO
+Breadcrumbs are very effective for products and experience with a large amount of content organized in a multi-level hierarchy. Breadcrumbs should be considered secondary navigation and should never completely replace the main navigation. The last level is always the current page, this one is not clickable.
 
 ## Playground
 
@@ -28,6 +24,7 @@ TODO
       return <Breadcrumb {...args} >
         <Breadcrumb.Item href="#level1">Level1</Breadcrumb.Item>
         <Breadcrumb.Item href="#level2">Level2</Breadcrumb.Item>
+        <Breadcrumb.Item>Level3</Breadcrumb.Item>
       </Breadcrumb>;
     }}
   </Story>
@@ -35,18 +32,27 @@ TODO
 
 <ArgsTable story="Standard" />
 
-## Variation on level
+## Variation on color
 
 <Canvas>
   <Story name="Level">
     {args => {
       return (
         <>
-          <Breadcrumb {...args} level="warning">
-            Warning
+          <Breadcrumb {...args} color="blue">
+            <Breadcrumb.Item href="#level1">Level1</Breadcrumb.Item>
+            <Breadcrumb.Item href="#level2">Level2</Breadcrumb.Item>
+            <Breadcrumb.Item>Level3</Breadcrumb.Item>
           </Breadcrumb>
-          <Breadcrumb {...args} level="danger">
-            Danger
+          <Breadcrumb {...args} color="red">
+            <Breadcrumb.Item href="#level1">Level1</Breadcrumb.Item>
+            <Breadcrumb.Item href="#level2">Level2</Breadcrumb.Item>
+            <Breadcrumb.Item>Level3</Breadcrumb.Item>
+          </Breadcrumb>
+          <Breadcrumb {...args} color="green">
+            <Breadcrumb.Item href="#level1">Level1</Breadcrumb.Item>
+            <Breadcrumb.Item href="#level2">Level2</Breadcrumb.Item>
+            <Breadcrumb.Item>Level3</Breadcrumb.Item>
           </Breadcrumb>
         </>
       );
