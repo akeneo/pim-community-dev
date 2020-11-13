@@ -20,17 +20,40 @@ class CleanValuesOfRemovedAttributes implements CleanValuesOfRemovedAttributesIn
 {
     private const BATCH_SIZE = 100;
 
+    /** @var CountProductsWithRemovedAttributeInterface */
     private $countProductsWithRemovedAttribute;
+
+    /** @var CountProductModelsWithRemovedAttributeInterface */
     private $countProductModelsWithRemovedAttribute;
+
+    /** @var CountProductsAndProductModelsWithInheritedRemovedAttributeInterface */
     private $countProductsAndProductModelsWithInheritedRemovedAttribute;
+
+    /** @var GetProductIdentifiersWithRemovedAttributeInterface */
     private $getProductIdentifiersWithRemovedAttribute;
+
+    /** @var GetProductModelIdentifiersWithRemovedAttributeInterface */
     private $getProductModelIdentifiersWithRemovedAttribute;
+
+    /** @var ProductRepositoryInterface */
     private $productRepository;
+
+    /** @var BulkSaverInterface */
     private $productSaver;
+
+    /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
+
+    /** @var BulkSaverInterface */
     private $productModelSaver;
+
+    /** @var ValidatorInterface */
     private $validator;
+
+    /** @var GetAttributes */
     private $getAttributes;
+
+    /** @var UnitOfWorkAndRepositoriesClearer */
     private $clearer;
 
     public function __construct(
