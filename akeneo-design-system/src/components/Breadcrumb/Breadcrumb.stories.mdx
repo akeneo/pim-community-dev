@@ -1,0 +1,55 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Breadcrumb} from './Breadcrumb.tsx';
+
+<Meta
+  title="Components/Breadcrumb"
+  component={Breadcrumb}
+  argTypes={{
+    color: {control: {type: 'select', options: ['red', 'blue', 'green']}},
+  }}
+  args={{color: 'red', children: 'Breadcrumb text'}}
+/>
+
+# Breadcrumb
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Breadcrumb {...args} >
+        <Breadcrumb.Item href="#level1">Level1</Breadcrumb.Item>
+        <Breadcrumb.Item href="#level2">Level2</Breadcrumb.Item>
+      </Breadcrumb>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Breadcrumb {...args} level="warning">
+            Warning
+          </Breadcrumb>
+          <Breadcrumb {...args} level="danger">
+            Danger
+          </Breadcrumb>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

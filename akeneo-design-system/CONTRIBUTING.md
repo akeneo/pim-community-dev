@@ -13,8 +13,8 @@ As a general advice, you should ask the assigned designer what to do and make su
 - Start Storybook in dev mode
 
 ```bash
-$ akeneo-design-system/bin/dsm generate ComponentName
-$ yarn --cwd=akeneo-design-system storybook:start
+$ cd akeneo-design-system && bin/dsm generate ComponentName
+$ cd .. && yarn --cwd=akeneo-design-system storybook:start
 # Or with Docker
 $ docker-compose run --rm -p 6006:6006 node yarn --cwd=akeneo-design-system storybook:start
 ```

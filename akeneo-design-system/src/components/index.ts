@@ -6,3 +6,4 @@ export * from './Helper/Helper';
 export * from './Information/Information';
 export * from './Link/Link';
 export * from './Modal/Modal';
+export * from './Breadcrumb/Breadcrumb';
