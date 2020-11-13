@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Reader\Database;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\ProductReader;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Reader\Database\ProductDraftReader;

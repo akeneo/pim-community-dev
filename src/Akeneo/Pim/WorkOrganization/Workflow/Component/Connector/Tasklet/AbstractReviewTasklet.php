@@ -17,6 +17,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermis
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -48,6 +49,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     protected EntityWithValuesDraftManager $productModelDraftManager;
     protected AuthorizationCheckerInterface $authorizationChecker;
     protected ProductDraftChangesPermissionHelper $permissionHelper;
+    protected JobRepositoryInterface $jobRepository;
     protected JobStopper $jobStopper;
 
     public function __construct(
@@ -57,6 +59,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
         EntityWithValuesDraftManager $productModelDraftManager,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftChangesPermissionHelper $permissionHelper,
+        JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper
     ) {
         $this->productDraftRepository = $productDraftRepository;
@@ -65,6 +68,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
         $this->productModelDraftManager = $productModelDraftManager;
         $this->authorizationChecker = $authorizationChecker;
         $this->permissionHelper = $permissionHelper;
+        $this->jobRepository = $jobRepository;
         $this->jobStopper = $jobStopper;
     }
 
@@ -90,6 +94,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     protected function skipWithWarning(StepExecution $stepExecution, $name, $reason, array $reasonParameters, $item): void
     {
         $stepExecution->incrementSummaryInfo('skip');
+        $stepExecution->incrementProcessedItems();
         $stepExecution->addWarning(
             'pimee_workflow.product_draft.mass_review_action.error.' . $reason,
             $reasonParameters,

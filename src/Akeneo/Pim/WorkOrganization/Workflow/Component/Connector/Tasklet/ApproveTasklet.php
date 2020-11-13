@@ -18,13 +18,14 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableE
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 
 /**
  * Tasklet for product drafts mass approval.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-class ApproveTasklet extends AbstractReviewTasklet
+class ApproveTasklet extends AbstractReviewTasklet implements TrackableTaskletInterface
 {
     /** @staticvar string */
     const TASKLET_NAME = 'approve';
@@ -66,6 +67,7 @@ class ApproveTasklet extends AbstractReviewTasklet
                 try {
                     $this->approveDraft($draft, $context);
                     $this->stepExecution->incrementSummaryInfo('approved');
+                    $this->stepExecution->incrementProcessedItems();
                 } catch (DraftNotReviewableException $e) {
                     $this->skipWithWarning(
                         $this->stepExecution,
@@ -84,6 +86,7 @@ class ApproveTasklet extends AbstractReviewTasklet
                     $draft->getEntityWithValue()
                 );
             }
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 
@@ -108,5 +111,14 @@ class ApproveTasklet extends AbstractReviewTasklet
         } elseif ($draft instanceof ProductModelDraft) {
             $this->productModelDraftManager->approve($draft, $context);
         }
+    }
+
+    public function totalItems(): int
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $productDrafts = $jobParameters->get('productDraftIds');
+        $productModelDrafts = $jobParameters->get('productModelDraftIds');
+
+        return \count($productDrafts) + \count($productModelDrafts);
     }
 }

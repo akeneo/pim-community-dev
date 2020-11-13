@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -28,6 +29,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftChangesPermissionHelper $permissionHelper,
         StepExecution $stepExecution,
+        JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper
     ) {
         $this->beConstructedWith(
@@ -37,6 +39,7 @@ class ApproveTaskletSpec extends ObjectBehavior
             $productModelDraftManager,
             $authorizationChecker,
             $permissionHelper,
+            $jobRepository,
             $jobStopper
         );
         $this->setStepExecution($stepExecution);
@@ -50,6 +53,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $permissionHelper,
         $stepExecution,
+        $jobRepository,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -84,6 +88,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         $permissionHelper->canEditOneChangeToReview($productModelDraft)->willReturn(true);
 
         $stepExecution->incrementSummaryInfo('approved')->shouldBeCalledTimes(3);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
         $this->setStepExecution($stepExecution);
 
         $productDraftManager->approve($productDraft1, ['comment' => null])->shouldBeCalled();
@@ -91,6 +96,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         $productModelDraftManager->approve($productModelDraft, ['comment' => null])->shouldBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
 
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
         $this->execute();
     }
 
@@ -102,6 +108,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $permissionHelper,
         $stepExecution,
+        $jobRepository,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -138,12 +145,15 @@ class ApproveTaskletSpec extends ObjectBehavior
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('approved')->shouldBeCalledTimes(1);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
         $this->setStepExecution($stepExecution);
 
         $productDraftManager->approve($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->approve($productDraft2, ['comment' => null])->shouldBeCalled();
         $productModelDraftManager->approve($productModelDraft, ['comment' => null])->shouldNotBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
+
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $this->execute();
     }
@@ -156,6 +166,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $permissionHelper,
         $stepExecution,
+        $jobRepository,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -192,12 +203,15 @@ class ApproveTaskletSpec extends ObjectBehavior
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('approved')->shouldBeCalledTimes(1);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
         $this->setStepExecution($stepExecution);
 
         $productDraftManager->approve($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->approve($productDraft2, ['comment' => null])->shouldBeCalled();
         $productModelDraftManager->approve($productModelDraft, ['comment' => null])->shouldNotBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
+
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $this->execute();
     }
@@ -208,6 +222,7 @@ class ApproveTaskletSpec extends ObjectBehavior
         $authorizationChecker,
         $permissionHelper,
         $stepExecution,
+        $jobRepository,
         ProductDraft $productDraft1,
         ProductDraft $productDraft2,
         ProductInterface $product1,
@@ -236,12 +251,27 @@ class ApproveTaskletSpec extends ObjectBehavior
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('approved')->shouldBeCalledTimes(1);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
         $this->setStepExecution($stepExecution);
 
         $productDraftManager->approve($productDraft1, ['comment' => null])->shouldNotBeCalled();
         $productDraftManager->approve($productDraft2, ['comment' => null])->shouldBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
 
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
+
         $this->execute();
+    }
+
+    function it_counts_the_total_items_to_process(
+        $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $configuration = ['productDraftIds' => [1, 2], 'productModelDraftIds' => [1,2], 'comment' => null];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('productDraftIds')->willReturn($configuration['productDraftIds']);
+        $jobParameters->get('productModelDraftIds')->willReturn($configuration['productModelDraftIds']);
+
+        $this->totalItems()->shouldReturn(4);
     }
 }

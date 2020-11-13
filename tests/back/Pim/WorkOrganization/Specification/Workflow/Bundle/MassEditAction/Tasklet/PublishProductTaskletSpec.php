@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet;
 
-use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -35,6 +36,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         StepExecution $stepExecution,
         EntityManagerClearerInterface $cacheClearer,
+        JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper
     ) {
         $pqb->execute()->willReturn($cursor);
@@ -47,6 +49,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
             $authorizationChecker,
             $pqbFactory,
             $cacheClearer,
+            $jobRepository,
             $jobStopper
         );
         $this->setStepExecution($stepExecution);
@@ -99,6 +102,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $validator->validate($product2)->willReturn($violations);
 
         $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
 
         $violations->count()->willReturn(0);
 
@@ -151,6 +155,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
 
         $stepExecution->addWarning(
             Argument::any(),
@@ -169,5 +174,39 @@ class PublishProductTaskletSpec extends ObjectBehavior
     function it_sets_the_step_execution(StepExecution $stepExecution)
     {
         $this->setStepExecution($stepExecution)->shouldReturn($this);
+    }
+
+    function it_counts_the_total_item_to_process(
+        $paginatorFactory,
+        $cursor,
+        $stepExecution,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        JobParameters $jobParameters
+    ) {
+        $configuration = [
+            'filters' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'IN',
+                    'value'    => ['1000', '1001']
+                ]
+            ],
+            'actions' => []
+        ];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($configuration['filters']);
+        $jobParameters->get('actions')->willReturn($configuration['actions']);
+
+        $productsPage = [
+            [
+                $product1,
+                $product2
+            ]
+        ];
+        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
+        $cursor->count()->willReturn(2);
+
+        $this->totalItems()->shouldReturn(2);
     }
 }

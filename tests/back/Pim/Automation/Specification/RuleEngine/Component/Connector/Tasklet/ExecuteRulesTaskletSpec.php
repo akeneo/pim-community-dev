@@ -9,6 +9,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -25,9 +26,10 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         JobParameters $jobParameters,
         StepExecution $stepExecution,
+        JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper
     ) {
-        $this->beConstructedWith($ruleDefinitionRepository, $ruleRunner, $dryRuleRunner, $eventDispatcher, $jobStopper);
+        $this->beConstructedWith($ruleDefinitionRepository, $ruleRunner, $dryRuleRunner, $eventDispatcher, $jobRepository, $jobStopper);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $this->setStepExecution($stepExecution);

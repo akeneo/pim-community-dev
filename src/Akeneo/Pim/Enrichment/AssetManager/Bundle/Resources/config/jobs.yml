@@ -68,6 +68,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
 
     # Processors:
     akeneo_assetmanager.job.processor.normalization.asset:
