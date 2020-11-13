@@ -10,18 +10,10 @@ import {
 } from '@akeneo-pim-community/data-quality-insights/src/application/listener';
 import AttributesTabContent from './component/ProductEditForm/TabContent/AttributesTabContent';
 import {DataQualityInsightsTabContent} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent';
-import AxisEvaluation
-  from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation";
-import Criterion
-  from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion";
-import {Recommendation} from "@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Recommendation";
+import AxisEvaluation from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
+import Criterion from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
 import {fetchProductModelEvaluation} from '@akeneo-pim-community/data-quality-insights/src';
 import fetchProductModel from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductModel';
-import {isSuccess} from "@akeneo-pim-community/data-quality-insights/src/application/helper";
-import {
-  CRITERION_DONE,
-  CRITERION_NOT_APPLICABLE
-} from "@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface";
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {
@@ -29,10 +21,7 @@ import {
   checkFollowingAttributeSpellingCriterionActive,
   followAttributeOptionSpellingCriterion,
   followAttributeSpellingCriterion,
-  followImageAttributeRecommendation
-} from "./user-actions";
-
-const translate = require('oro/translator');
+} from './user-actions';
 
 interface ProductModelEditFormAppProps {
   catalogChannel: string;
@@ -56,28 +45,25 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
 
         <AxesContextProvider axes={['enrichment', 'consistency']}>
           <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation}>
-            <AxisEvaluation axis={'enrichment'}>
-              <Criterion code={'completeness_of_non_required_attributes'}/>
-              <Criterion code={'completeness_of_required_attributes'}/>
-              <Criterion code={'enrichment_image'} followAttributeRecommendation={followImageAttributeRecommendation}>
-                <Recommendation supports={criterion => criterion.status === CRITERION_NOT_APPLICABLE || (criterion.status === CRITERION_DONE && !isSuccess(criterion.rate) && criterion.improvable_attributes.length === 0)}>
-                  <span className="NotApplicableAttribute">{translate('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}</span>
-                </Recommendation>
-              </Criterion>
+            <AxisEvaluation axis={'enrichment'} showRate={false}>
+              <Criterion code={'completeness_of_non_required_attributes'} />
+              <Criterion code={'completeness_of_required_attributes'} />
             </AxisEvaluation>
 
-            <AxisEvaluation axis={"consistency"}>
-              <Criterion code={'consistency_spelling'}/>
-              <Criterion code={'consistency_textarea_lowercase_words'}/>
-              <Criterion code={'consistency_textarea_uppercase_words'}/>
-              <Criterion code={'consistency_text_title_formatting'}/>
-              <Criterion code={'consistency_attribute_spelling'}
-                 followCriterionRecommendation={followAttributeSpellingCriterion}
-                 isFollowingCriterionRecommendationAllowed={checkFollowingAttributeSpellingCriterionActive}
+            <AxisEvaluation axis={'consistency'} showRate={false}>
+              <Criterion code={'consistency_spelling'} />
+              <Criterion code={'consistency_textarea_lowercase_words'} />
+              <Criterion code={'consistency_textarea_uppercase_words'} />
+              <Criterion code={'consistency_text_title_formatting'} />
+              <Criterion
+                code={'consistency_attribute_spelling'}
+                followCriterionRecommendation={followAttributeSpellingCriterion}
+                isFollowingCriterionRecommendationAllowed={checkFollowingAttributeSpellingCriterionActive}
               />
-              <Criterion code={'consistency_attribute_option_spelling'}
-                 followCriterionRecommendation={followAttributeOptionSpellingCriterion}
-                 isFollowingCriterionRecommendationAllowed={checkFollowingAttributeOptionSpellingCriterionActive}
+              <Criterion
+                code={'consistency_attribute_option_spelling'}
+                followCriterionRecommendation={followAttributeOptionSpellingCriterion}
+                isFollowingCriterionRecommendationAllowed={checkFollowingAttributeOptionSpellingCriterionActive}
               />
             </AxisEvaluation>
           </DataQualityInsightsTabContent>

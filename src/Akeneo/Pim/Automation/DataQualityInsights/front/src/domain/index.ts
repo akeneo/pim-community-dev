@@ -6,4 +6,4 @@ import {
 
 export {ProductEvaluation, CriterionEvaluationResult, Product};
 
-export * from './Events'
+export * from './Events';

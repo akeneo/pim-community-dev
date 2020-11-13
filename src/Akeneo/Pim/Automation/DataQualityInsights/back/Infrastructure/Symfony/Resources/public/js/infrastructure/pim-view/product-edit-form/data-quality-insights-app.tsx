@@ -17,7 +17,7 @@ import {
   PRODUCT_MODEL_LEVEL_CHANGED,
   PRODUCT_TAB_CHANGED,
 } from '@akeneo-pim-community/data-quality-insights/src';
-import {DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS} from "@akeneo-pim-ee/data-quality-insights/src/domain";
+import {DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS} from '@akeneo-pim-ee/data-quality-insights/src/domain';
 
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
@@ -155,11 +155,12 @@ class DataQualityInsightsApp extends BaseView {
   public redirectToProductAssetsEdition() {
     const productData = this.getFormData();
     const tab =
-      productData.meta.model_type === 'product_model' ? 'pimee-product-model-edit-form-assets' : 'pim-product-edit-form-assets';
+      productData.meta.model_type === 'product_model'
+        ? 'pimee-product-model-edit-form-assets'
+        : 'pim-product-edit-form-assets';
 
     this.changeTab(tab);
   }
-
 
   private changeTab(tabName: string): void {
     this.getRoot().trigger('column-tab:change-tab', {
