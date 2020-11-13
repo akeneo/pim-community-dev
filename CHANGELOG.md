@@ -54,6 +54,7 @@
 - PIM-9538: Fix sorting on rule engine list page
 - PIM-9499: Fix warning display when a job is running with warnings
 - PIM-9545: Fix possible memory leak in large import jobs
+- PIM-9533: Update wysiwyg editor's style in order to differentiate new paragraphs from mere line breaks
 - PIM-9548: Mitigate deadlock issues on category API
 
 ## New features
