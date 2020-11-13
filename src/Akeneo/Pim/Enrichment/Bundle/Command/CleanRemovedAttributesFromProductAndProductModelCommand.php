@@ -192,13 +192,19 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
         $io->title('Clean removed attributes values');
-        $answer = $io->confirm(
+
+        $confirmMessage = sprintf(
             "This command will remove the values of the attributes: \n ".
+            "%s".
+            "This will update %d products and product models. \n ".
+            "Do you want to proceed?",
             implode(array_map(function (string $attributeCode) {
                 return sprintf(" - %s \n ", $attributeCode);
-            }, $attributesCodes)).
-            "This will update ".(string)$countAffected." products and product models. \n ".
-            "Do you want to proceed?", true);
+            }, $attributesCodes)),
+            $countAffected
+        );
+
+        $answer = $io->confirm($confirmMessage, true);
 
         if (!$answer) {
             return;
