@@ -37,6 +37,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         UnpublisherInterface $unpublisher,
         ObjectManager $objectManager,
         SaverInterface $publishedProductSaver,
+        BulkSaverInterface $publishedProductBulkSaver,
         RemoverInterface $remover,
         BulkRemoverInterface $bulkRemover,
         PublishedProductRepositoryInterface $repositoryWithoutPermission
@@ -50,6 +51,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
             $unpublisher,
             $objectManager,
             $publishedProductSaver,
+            $publishedProductBulkSaver,
             $remover,
             $bulkRemover,
             $repositoryWithoutPermission
@@ -84,7 +86,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $remover,
         $productRepository,
         $repositoryWithoutPermission,
-        BulkSaverInterface $publishedProductSaver,
+        BulkSaverInterface $publishedProductBulkSaver,
         ProductInterface $productFoo,
         ProductInterface $productBar,
         PublishedProductInterface $publishedFoo,
@@ -107,7 +109,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $repositoryWithoutPermission->findOneByOriginalProduct($productBar)->willReturn($publishedBar);
         $repositoryWithoutPermission->findOneByOriginalProduct($productFoo)->willReturn($publishedFoo);
 
-        $publishedProductSaver->saveAll([$publishedFoo, $publishedBar])->shouldBeCalled();
+        $publishedProductBulkSaver->saveAll([$publishedFoo, $publishedBar])->shouldBeCalled();
 
         $productFoo->getAssociations()->willReturn([$association]);
         $productBar->getAssociations()->willReturn([$association]);

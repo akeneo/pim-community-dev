@@ -34,6 +34,8 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_workflow.mass_edit_tasklet.unpublish_product:
         class: '%pimee_workflow.mass_edit_tasklet.unpublish_product.class%'
@@ -44,3 +46,5 @@ services:
             - '@security.authorization_checker'
             - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
             - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_stopper'

@@ -30,23 +30,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProductRuleRunner implements DryRunnerInterface
 {
-    /** @var BuilderInterface */
-    protected $builder;
-
-    /** @var SelectorInterface */
-    protected $selector;
-
-    /** @var ApplierInterface */
-    protected $applier;
-
-    /** @var string */
-    protected $productCondClass;
+    protected BuilderInterface $builder;
+    protected SelectorInterface $selector;
+    protected ApplierInterface $applier;
+    protected string $productCondClass;
 
     /**
-     * @param BuilderInterface  $builder
-     * @param SelectorInterface $selector
-     * @param ApplierInterface  $applier
-     * @param string            $productCondClass should implement ProductConditionInterface
+     * @param string $productCondClass should implement ProductConditionInterface
      */
     public function __construct(
         BuilderInterface $builder,

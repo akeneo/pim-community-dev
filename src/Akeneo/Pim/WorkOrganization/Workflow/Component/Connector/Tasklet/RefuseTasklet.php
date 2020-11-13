@@ -18,13 +18,14 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableE
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 
 /**
  * Tasklet for product drafts mass refusal.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-class RefuseTasklet extends AbstractReviewTasklet
+class RefuseTasklet extends AbstractReviewTasklet implements TrackableTaskletInterface
 {
     /** @staticvar string */
     const TASKLET_NAME = 'refuse';
@@ -39,11 +40,11 @@ class RefuseTasklet extends AbstractReviewTasklet
         $productModelDrafts = $this->productModelDraftRepository->findByIds($jobParameters->get('productModelDraftIds'));
         $context = ['comment' => $jobParameters->get('comment')];
 
-        if (null !== $productDrafts) {
+        if (null !== $productDrafts && !$this->jobStopper->isStopping($this->stepExecution)) {
             $this->processDrafts($productDrafts, $context);
         }
 
-        if (null !== $productModelDrafts) {
+        if (null !== $productModelDrafts && !$this->jobStopper->isStopping($this->stepExecution)) {
             $this->processDrafts($productModelDrafts, $context);
         }
     }
@@ -57,10 +58,16 @@ class RefuseTasklet extends AbstractReviewTasklet
     protected function processDrafts($drafts, array $context): void
     {
         foreach ($drafts as $draft) {
+            if ($this->jobStopper->isStopping($this->stepExecution)) {
+                $this->jobStopper->stop($this->stepExecution);
+                break;
+            }
+
             if ($this->permissionHelper->canEditOneChangeToReview($draft)) {
                 try {
                     $this->refuseDraft($draft, $context);
                     $this->stepExecution->incrementSummaryInfo('refused');
+                    $this->stepExecution->incrementProcessedItems();
                 } catch (DraftNotReviewableException $e) {
                     $this->skipWithWarning(
                         $this->stepExecution,
@@ -79,6 +86,7 @@ class RefuseTasklet extends AbstractReviewTasklet
                     $draft->getEntityWithValue()
                 );
             }
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 
@@ -103,5 +111,14 @@ class RefuseTasklet extends AbstractReviewTasklet
         } elseif ($draft instanceof ProductModelDraft) {
             $this->productModelDraftManager->refuse($draft, $context);
         }
+    }
+
+    public function totalItems(): int
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $productDraftCount = \count($jobParameters->get('productDraftIds'));
+        $productModelDraftCount = \count($jobParameters->get('productModelDraftIds'));
+
+        return $productDraftCount + $productModelDraftCount;
     }
 }

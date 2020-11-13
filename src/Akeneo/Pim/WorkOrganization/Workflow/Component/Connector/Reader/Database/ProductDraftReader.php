@@ -18,13 +18,14 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
-class ProductDraftReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
+class ProductDraftReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface, TrackableItemReaderInterface
 {
     /** @var ItemReaderInterface */
     private $productReader;
@@ -106,5 +107,14 @@ class ProductDraftReader implements ItemReaderInterface, InitializableInterface,
         $jobActions = $this->stepExecution->getJobParameters()->get('actions');
 
         return isset($jobActions[0]['sendForApproval']) && true === $jobActions[0]['sendForApproval'];
+    }
+
+    public function totalItems(): int
+    {
+        if (!$this->shouldSendForApproval() || !$this->productReader instanceof TrackableItemReaderInterface) {
+            return 0;
+        }
+
+        return $this->productReader->totalItems();
     }
 }

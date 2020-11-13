@@ -11,7 +11,6 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
@@ -292,30 +291,42 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     }
 
     /**
-     * Check if categories are granted to user
-     *
-     * @param UserInterface $user
-     * @param string        $accessLevel
-     * @param array         $categoryIds
-     *
-     * @return bool
+     * Check if at least one category (defined by theirs codes) is granted to user
      */
-    public function isCategoriesGranted(UserInterface $user, $accessLevel, array $categoryIds)
+    public function isCategoryCodesGranted(UserInterface $user, string $accessLevel, array $categoryCodes): bool
+    {
+        $qb = $this->buildPartialQueryIsCategoryGranted($user, $accessLevel);
+        $qb->andWhere($qb->expr()->in('c.code', ':categoryCodes'))
+            ->setParameter('categoryCodes', $categoryCodes);
+
+        return $qb->getQuery()->getSingleScalarResult() > 0;
+    }
+
+    /**
+     * Check if at least one category (defined by theirs ids) is granted to user
+     */
+    public function isCategoryIdsGranted(UserInterface $user, string $accessLevel, array $categoryIds): bool
+    {
+        $qb = $this->buildPartialQueryIsCategoryGranted($user, $accessLevel);
+        $qb->andWhere($qb->expr()->in('c.id', ':categoryIds'))
+            ->setParameter('categoryIds', $categoryIds);
+
+        return $qb->getQuery()->getSingleScalarResult() > 0;
+    }
+
+    /**
+     * Build partial query for methods isCategoryCodesGranted() and isCategoryIdsGranted()
+     */
+    private function buildPartialQueryIsCategoryGranted(UserInterface $user, string $accessLevel): QueryBuilder
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('COUNT(c.id)')
             ->from($this->_entityName, 'ca');
 
-        $qb->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
+        return $qb->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
             ->setParameter('groups', $user->getGroups()->toArray())
             ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
-            ->andWhere($qb->expr()->in('c.id', ':categoryIds'))
-            ->setParameter('categoryIds', $categoryIds)
             ->innerJoin('ca.category', 'c', 'c.id');
-
-        $count = $qb->getQuery()->getSingleScalarResult();
-
-        return $count > 0;
     }
 
     /**

@@ -51,13 +51,13 @@ if [[ $CI != "true" ]]; then
       read
 fi
 
-echo "- get last snapshot selflink"
+echo "- Get last snapshot selflink"
 cd ${PED_DIR}
 SELFLINKMYSQL=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots list --filter="labels.backup-ns=${SOURCE_PFID} AND labels.pvc_name=data-mysql-server-0" --limit=1 --sort-by="~creationTimestamp" --uri)
 MYSQL_SIZE=$(gcloud compute snapshots describe $SELFLINKMYSQL --format=json | jq -r '.diskSizeGb')
 echo "$SELFLINKMYSQL / $MYSQL_SIZE"
 
-echo "- create disk (delete before if existing)"
+echo "- Create disk (delete before if existing)"
 if [[ $( gcloud compute disks describe ${PFID} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
       gcloud compute disks delete ${PFID} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
       sleep 10
@@ -70,20 +70,23 @@ fi
 echo "Mysql duplicate disk has been created : $DISKMYSQL"
 
 
-echo "- run terraform & helm."
+echo "- Run terraform & helm."
 cd ${PED_DIR}; TF_INPUT_FALSE="-input=false" TF_AUTO_APPROVE="-auto-approve" INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=${SOURCE_PED_TAG} INSTANCE_NAME_PREFIX=pimci-duplic make deploy
 
 #echo "- Duplicate prod bucket... take long time..."
 #cd ${PED_DIR}; gsutil -m rsync -r gs://${SOURCE_PFID} gs://${PFID}
 
-echo "- populate ES"
-PODDAEMON=$(kubectl get pods  --namespace=${PFID}|grep pim-daemon-default|head -n 1|awk '{print $1}')
+echo "- Populate ES"
+PODDAEMON=$(kubectl get pods --namespace=${PFID}|grep pim-daemon-default|head -n 1|awk '{print $1}')
 kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/console akeneo:elasticsearch:reset-indexes --env=prod --quiet && bin/console pim:product:index --all --env=prod && bin/console pim:product-model:index --all --env=prod'
 
 echo "- Anonymize"
-PODSQL=$(kubectl get pods  --namespace=${PFID}|grep mysql|head -n 1|awk '{print $1}')
+PODSQL=$(kubectl get pods --namespace=${PFID}|grep mysql|head -n 1|awk '{print $1}')
 kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE oro_user SET email = LOWER(CONCAT(SUBSTRING(CONCAT(\"support+clone_\", username), 1, 64), \"@akeneo.com\"));"'
-kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n'
+kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n || echo "WARN: User adminakeneo exists"'
+
+echo "- Ensure that DQI evaluations will start"
+kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE akeneo_batch_job_execution SET exit_code=\"COMPLETED\" WHERE exit_code=\"UNKNOWN\" AND job_instance_id=(select id from akeneo_batch_job_instance WHERE code=\"data_quality_insights_evaluations\");"'
 
 echo "- Upgrade config files"
 yq d -i ${DESTINATION_PATH}/values.yaml pim.hook

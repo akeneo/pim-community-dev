@@ -25,31 +25,13 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class RefreshProjectCompletenessTasklet implements TaskletInterface
 {
-    /** @var StepExecution */
-    protected $stepExecution;
+    protected StepExecution $stepExecution;
+    protected ProjectItemCalculatorInterface $attributeGroupCompletenessCalculator;
+    protected PreProcessingRepositoryInterface $preProcessingRepository;
+    protected IdentifiableObjectRepositoryInterface $localeRepository;
+    protected IdentifiableObjectRepositoryInterface $channelRepository;
+    protected ProductRepositoryInterface $productRepository;
 
-    /** @var ProjectItemCalculatorInterface */
-    protected $attributeGroupCompletenessCalculator;
-
-    /** @var PreProcessingRepositoryInterface */
-    protected $preProcessingRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productRepository;
-
-    /**
-     * @param ProjectItemCalculatorInterface        $attributeGroupCompletenessCalculator
-     * @param PreProcessingRepositoryInterface      $preProcessingRepository
-     * @param IdentifiableObjectRepositoryInterface $localeRepository
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param ProductRepositoryInterface            $productRepository
-     */
     public function __construct(
         ProjectItemCalculatorInterface $attributeGroupCompletenessCalculator,
         PreProcessingRepositoryInterface $preProcessingRepository,

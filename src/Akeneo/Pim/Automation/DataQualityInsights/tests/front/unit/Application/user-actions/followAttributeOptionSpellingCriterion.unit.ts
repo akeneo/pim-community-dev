@@ -1,7 +1,7 @@
-import {followAttributeOptionSpellingCriterion} from "@akeneo-pim-ee/data-quality-insights/src/application";
+import {followAttributeOptionSpellingCriterion} from '@akeneo-pim-ee/data-quality-insights/src/application';
 import {BACK_LINK_SESSION_STORAGE_KEY} from '@akeneo-pim-community/data-quality-insights/src/application/constant';
-import {redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes} from "@akeneo-pim-ee/data-quality-insights/src/infrastructure/navigation/AttributeGridRouter";
-import {aCriterion, aFamily, aProduct, aProductModel, aRate} from "../../../utils/provider";
+import {redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes} from '@akeneo-pim-ee/data-quality-insights/src/infrastructure/navigation/AttributeGridRouter';
+import {aCriterion, aFamily, aProduct, aProductModel, aRate} from '../../../utils/provider';
 
 jest.mock('@akeneo-pim-ee/data-quality-insights/src/infrastructure/navigation/AttributeGridRouter');
 

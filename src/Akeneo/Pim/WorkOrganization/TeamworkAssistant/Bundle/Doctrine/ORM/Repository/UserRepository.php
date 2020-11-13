@@ -15,12 +15,13 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterfa
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -101,6 +102,8 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
         $qb->leftJoin('u.groups', 'g');
         $qb->andWhere($qb->expr()->in('g.id', $groupIds));
+        $qb->andWhere($qb->expr()->eq('u.type', ':user_type'));
+        $qb->setParameter('user_type', User::TYPE_USER);
 
         $qb->setMaxResults($options['limit']);
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));

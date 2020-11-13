@@ -111,6 +111,10 @@ $rules = [
             'Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface',
             'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface',
+            'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource',
+            'Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource',
+            'Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource',
+
 
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager',

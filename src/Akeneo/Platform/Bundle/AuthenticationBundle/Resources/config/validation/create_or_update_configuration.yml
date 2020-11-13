@@ -9,7 +9,12 @@ Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrU
             - NotBlank: ~
         identityProviderEntityId:
             - NotBlank: ~
-            - Url: ~
+            - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\AtLeastOneOf:
+                message: "This value is not a valid URL or URN."
+                includeInternalMessages: false
+                constraints:
+                    - Url: ~
+                    - Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\IsUrnValid: ~
         identityProviderSignOnUrl:
             - NotBlank: ~
             - Url: ~

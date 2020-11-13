@@ -8,7 +8,7 @@
 - Fixes memory leak when indexing product models with a lot of product models in the same family (see https://github.com/akeneo/pim-community-dev/pull/11742)
 - PIM-9109: Fix SSO not working behind reverse proxy.
 - PIM-9133: Fix product and product model save when the user has no permission on some attribute groups
-- PIM-9149: Fix compare/translate on product 
+- PIM-9149: Fix compare/translate on product
 - DAPI-947: The evaluation of the title formatting criterion should be apply only on text attributes that are localizable and are defined as main title
 - PIM-9138: Rules import not working with asset manager
 - PIM-9196: Allow the search on label and code on the rules grid
@@ -23,7 +23,7 @@
 - PIM-9318: Add created_at & updated_at fields in RefEntity record table
 - PIM-9334: Add error during rule import when a condition value contains null value
 - PIM-9324: Fix cannot save product when simple reference entity linked to this product is deleted
-- PIM-9243: Creation and update dates are not displayed on the asset page 
+- PIM-9243: Creation and update dates are not displayed on the asset page
 - PIM-9362: Fix missing "System information" translations for asset analytics
 - PIM-9363: Fix API error 500 when import a picture with an incorrect extension
 - PIM-9370: Fixes page freezing with a big number of attribute options
@@ -48,6 +48,8 @@
 - PIM-9536: Fix unexpected behaviors on drag&drop in rules edit page (calculate and concatenate actions)
 - PIM-9528: Fix asset code changed into lower case in create asset/upload asset UI
 - PIM-9537: Fix importing reference entities with wrong code fails the import
+- PIM-9541: Fix API users shown in Project contributors search
+- PIM-9545: Fix possible memory leak in large import jobs 
 
 ## Improvements
 
@@ -69,6 +71,7 @@
 - MET-207: Asset Manager - As Peter, I would like to manually re-execute naming conventions
 - RUL-271: Rule engine - As Peter, I'd like to add a condition on a relative date for created/updated fields
 - PIM-9506: Make "image" the default media type for media link asset attributes
+- PIM-9452: Add a command to update ES max field limit on Serenity upgrade (Helm hook)
 
 ## New features
 
@@ -85,7 +88,7 @@
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\AdderActionApplier` to:
   - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
-- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CopierActionApplier` to: 
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CopierActionApplier` to:
   - replace `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface` by `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes`
   - add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\SetterActionApplier` to:
@@ -129,3 +132,19 @@
 - Change `Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager::isUserGranted()` to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
 - Change constructor `Akeneo\Pim\Permission\Bundle\Voter\CategoryVoter` to replace `mixed $className` parameter by `string $className`
 - Change constructor `Akeneo\Pim\Permission\Component\Updater\Setter\GrantedCategoryFieldSetter` to replace `ObjectRepository $categoryAccessRepository` parameter by `CategoryAccessRepository $categoryAccessRepository`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface::isProjectContributor()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\UserRepository::isProjectContributor()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface::notifyUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectCreatedNotifier::notifyUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectDueDateReminderNotifier::notifyUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectFinishedNotifier::notifyUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectFinishedNotifier::findApprovableByUser()` to use `Akeneo\UserManagement\Component\Model\UserInterface $user` as parameter instead of `Symfony\Component\Security\Core\User\UserInterface $user`
+- Change constructor of `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager` to add `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $publishedProductBulkSaver`
+- Change `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft` to remove `getAttributes()` method
+- Change `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft` to remove `getAttributes()` method
+- Change `Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface::findUserEntityWithValuesDraft()` to return `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface` instead of `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface`
+- Change constructor `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\EnsureUserCanBeDeletedSubscriber` to make the parameter `IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery` not null
+- Update `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct` to:
+    - remove the `setFamilyId()`, `setProductModel()` and `getProductModel()` methods
+    - remove the `$categoryIds` public property and the `$familyId`, `$groupIds` and `$productModel` protected properties
+- Rename `Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository::isCategoriesGranted` to `isCategoryIdsGranted`

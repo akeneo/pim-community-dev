@@ -125,8 +125,6 @@ class PublishedProductController
      * @param int|string $id
      *
      * @AclAncestor("pimee_workflow_published_product_index")
-     *
-     * @return array
      */
     public function viewAction($id): Response
     {

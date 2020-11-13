@@ -20,24 +20,13 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
  */
 class ProjectFactory implements ProjectFactoryInterface
 {
-    /** @var SimpleFactoryInterface */
-    protected $datagridViewFactory;
-
-    /** @var SimpleFactoryInterface */
-    protected $projectUpdater;
-
-    /** @var SimpleFactoryInterface */
-    protected $datagridViewUpdater;
+    protected SimpleFactoryInterface $datagridViewFactory;
+    protected ObjectUpdaterInterface $projectUpdater;
+    protected ObjectUpdaterInterface $datagridViewUpdater;
 
     /** @var string */
     protected $projectClassname;
 
-    /**
-     * @param ObjectUpdaterInterface $projectUpdater
-     * @param SimpleFactoryInterface $datagridViewFactory
-     * @param ObjectUpdaterInterface $datagridViewUpdater
-     * @param string                 $projectClassName
-     */
     public function __construct(
         ObjectUpdaterInterface $projectUpdater,
         SimpleFactoryInterface $datagridViewFactory,

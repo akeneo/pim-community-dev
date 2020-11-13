@@ -11,11 +11,13 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedAssociationRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Publisher for product related associations.
@@ -66,9 +68,11 @@ class RelatedAssociationPublisher implements PublisherInterface
             );
 
             foreach ($associations as $association) {
+                $owner = $association->getOwner();
+                Assert::implementsInterface($owner, EntityWithValuesInterface::class);
                 $publishedAssociation = $this->publishedAssocRepo->findOneByTypeAndOwner(
                     $association->getAssociationType(),
-                    $productIds[$association->getOwner()->getId()]
+                    $productIds[$owner->getId()]
                 );
 
                 if (null !== $publishedAssociation) {
@@ -76,6 +80,8 @@ class RelatedAssociationPublisher implements PublisherInterface
                 }
             }
         }
+
+        return $object;
     }
 
     /**

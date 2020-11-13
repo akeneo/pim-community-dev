@@ -8,6 +8,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@akeneo_assetmanager.step.csv_asset.export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
 
@@ -19,6 +20,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@akeneo_assetmanager.step.xlsx_asset.export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
@@ -33,6 +35,7 @@ services:
             - '@akeneo_assetmanager.job.processor.normalization.asset'
             - '@akeneo_assetmanager.job.writer.csv_file.asset'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     akeneo_assetmanager.step.xlsx_asset.export:
         class: '%pim_connector.step.item_step.class%'
@@ -44,6 +47,7 @@ services:
             - '@akeneo_assetmanager.job.processor.normalization.asset'
             - '@akeneo_assetmanager.job.writer.xlsx_file.asset'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
 
     # Providers
     akeneo_assetmanager.job.provider.csv_asset_export:
@@ -64,6 +68,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
 
     # Processors:
     akeneo_assetmanager.job.processor.normalization.asset:

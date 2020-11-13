@@ -24,6 +24,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.csv_product_proposal.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -35,6 +36,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.csv_product_model_proposal.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -47,6 +49,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.csv_published_product.export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
 
@@ -59,6 +62,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.xlsx_product_proposal.import'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
@@ -70,6 +74,7 @@ services:
                 - '@akeneo_batch.job_repository'
                 -
                     - '@pimee_workflow.step.xlsx_product_model_proposal.import'
+                - true
             tags:
                 - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
@@ -82,6 +87,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.xlsx_published_product.export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
@@ -94,6 +100,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.approve_product_draft.perform'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -105,6 +112,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.refuse_product_draft.perform'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -131,6 +139,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.csv_published_product.quick_export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
 
@@ -142,6 +151,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.csv_published_product.quick_export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
 
@@ -168,6 +178,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.xlsx_published_product.quick_export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
 
@@ -179,6 +190,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_workflow.step.xlsx_published_product.quick_export'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
 
@@ -190,6 +202,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_enrich.step.publish_product.perform'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
 
@@ -201,5 +214,6 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pimee_enrich.step.unpublish_product.perform'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }

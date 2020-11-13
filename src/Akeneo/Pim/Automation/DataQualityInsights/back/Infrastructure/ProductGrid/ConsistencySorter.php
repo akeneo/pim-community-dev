@@ -13,16 +13,24 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\Sorter\SorterInterface;
-use Oro\Bundle\PimFilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Webmozart\Assert\Assert;
 
 final class ConsistencySorter implements SorterInterface
 {
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        Assert::implementsInterface($datasource, FilterProductDatasourceAdapterInterface::class);
+        if (!$datasource instanceof ProductDatasource
+            && !$datasource instanceof ProductAndProductModelDatasource
+            && !$datasource instanceof ProductProposalDatasource
+        ) {
+            throw new \InvalidArgumentException('Datasource must be a product datasource.');
+        }
+
         $datasource->getProductQueryBuilder()->addSorter($field, $direction);
     }
 }

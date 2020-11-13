@@ -109,6 +109,9 @@ jobs:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project
           - run:
+                name: No legacy translation format
+                command: make find-legacy-translations
+          - run:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
@@ -368,8 +371,15 @@ jobs:
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
+              name: Set the type to srnt by default
+              command: |
+                  if [ -z "$TYPE" ];
+                  then
+                      echo export TYPE="srnt" >> $BASH_ENV
+                  fi
+          - run:
               name: Remove env on kubernetes
-              command: make delete
+              command: TYPE=${TYPE} make delete
               when: always
 
   test_upgrade_from_32:
@@ -768,6 +778,7 @@ jobs:
                   echo export CE_COMMIT_HASH=$CE_COMMIT_HASH > persisted_env_vars
                   echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
                   echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> persisted_env_vars
+                  echo export TYPE="grth" >> persisted_env_vars
           - persist_to_workspace:
               root: ~/
               paths:
@@ -803,7 +814,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "master"
           - checkout:
                 requires:
                     - ready_to_build?

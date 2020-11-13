@@ -102,6 +102,10 @@ pim_reference_entity:
       code:
         pattern: 'このフィールドに含めることができるのは半角英数字とアンダースコアのみです。'
         should_be_unique: 'このコードは該当エンティティにすでに使用されています。'
+      text:
+        incompatible_with_regular_expression: '正規表現を満たすテキストを入力してください: "{{ %regular_expression% }}"'
+        invalid_email: 'メールアドレスを入力してください。'
+        invalid_url: 'URLを入力してください: http(s)://xxxx.XXX'
     no_data:
       title: '{{ entityLabel }} の記録がありません'
       subtitle: 最初のレコードを作成するには、「新規追加」 ボタンをクリックして下さい。

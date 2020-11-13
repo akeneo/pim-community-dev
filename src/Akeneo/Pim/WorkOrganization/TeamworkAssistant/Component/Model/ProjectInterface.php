@@ -65,8 +65,6 @@ interface ProjectInterface
 
     /**
      * @param \DateTime $dueDate
-     *
-     * @return
      */
     public function setDueDate(\DateTime $dueDate = null);
 

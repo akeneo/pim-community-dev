@@ -18,6 +18,9 @@ akeneo_data_quality_insights:
                 attributes_link: Display all improvable attributes
                 success: Your product data is fully consistent. Congratulations!
 
+        messages:
+            add_image_attribute_recommendation: An image is worth a thousand words. You should add an asset collection or an image attribute to improve the data quality of this product.
+
     product_edit_form:
         attribute_filter:
             all_improvable_attributes: All improvable attributes

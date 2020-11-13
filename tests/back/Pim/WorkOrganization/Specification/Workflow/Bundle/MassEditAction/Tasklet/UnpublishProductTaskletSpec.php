@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditActi
 
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -15,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,7 +31,9 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         ProductQueryBuilder $pqb,
         CursorInterface $cursor,
         AuthorizationCheckerInterface $authorizationChecker,
-        EntityManagerClearerInterface $cacheClearer
+        EntityManagerClearerInterface $cacheClearer,
+        JobRepositoryInterface $jobRepository,
+        JobStopper $jobStopper
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqb->addFilter(Argument::cetera())->willReturn($pqb);
@@ -41,7 +45,9 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
             $validator,
             $authorizationChecker,
             $pqbFactory,
-            $cacheClearer
+            $cacheClearer,
+            $jobRepository,
+            $jobStopper
         );
     }
 
@@ -60,7 +66,8 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         PublishedProductInterface $pubProduct1,
         PublishedProductInterface $pubProduct2,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobStopper $jobStopper
     ) {
         $filters = [
             [
@@ -88,8 +95,10 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(true);
 
         $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
 
         $manager->unpublishAll([$pubProduct1, $pubProduct2])->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
@@ -104,7 +113,8 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         PublishedProductInterface $pubProduct1,
         PublishedProductInterface $pubProduct2,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        JobStopper $jobStopper
     ) {
         $filters = [
             [
@@ -132,9 +142,10 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(1);
 
-
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(false);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
+
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
 
         $stepExecution->addWarning(
             'pim_enrich.mass_edit_action.unpublish.message.error',
@@ -143,6 +154,7 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         )->shouldBeCalledTimes(1);
 
         $manager->unpublishAll([$pubProduct1])->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->setStepExecution($stepExecution);
         $this->execute();
@@ -151,5 +163,40 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
     function it_sets_the_step_execution(StepExecution $stepExecution)
     {
         $this->setStepExecution($stepExecution)->shouldReturn($this);
+    }
+
+    function it_counts_the_total_items_that_will_be_processed(
+        $paginatorFactory,
+        $cursor,
+        $pqbFactory,
+        $pqb,
+        StepExecution $stepExecution,
+        PublishedProductInterface $pubProduct1,
+        PublishedProductInterface $pubProduct2,
+        JobParameters $jobParameters
+    ) {
+        $filters = [
+            [
+                'field'    => 'sku',
+                'operator' => 'IN',
+                'value'    => ['1000', '1001']
+            ]
+        ];
+
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($filters);
+        $pqbFactory->create(['filters' => $filters])->willReturn($pqb);
+
+        $paginator = [
+            [
+                $pubProduct1,
+                $pubProduct2
+            ]
+        ];
+        $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
+        $cursor->count()->willReturn(2);
+
+        $this->totalItems()->shouldReturn(2);
     }
 }

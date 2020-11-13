@@ -14,8 +14,10 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface as PimFilterDatasourceAdapterInterface;
 use Oro\Bundle\PimFilterBundle\Filter\AjaxChoiceFilter;
 use Symfony\Component\Form\FormFactoryInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Author filter for an Elasticsearch query.
@@ -53,6 +55,7 @@ class AuthorFilter extends AjaxChoiceFilter
         $operator = $this->getOperator($data['type']);
         $value = $data['value'];
 
+        Assert::implementsInterface($ds, PimFilterDatasourceAdapterInterface::class);
         $this->authorFilter->setQueryBuilder($ds->getQueryBuilder());
         $this->authorFilter->addFieldFilter($field, $operator, $value);
 

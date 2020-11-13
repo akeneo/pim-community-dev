@@ -2,18 +2,20 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCalculation;
 
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCalculation\ProjectCalculationTasklet;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProductRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use PhpSpec\ObjectBehavior;
 
 class ProjectCalculationTaskletSpec extends ObjectBehavior
 {
@@ -22,14 +24,16 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $projectRepository,
         CalculationStepInterface $chainCalculationStep,
         SaverInterface $projectSaver,
-        ObjectDetacherInterface $objectDetacher
+        EntityManagerClearerInterface $cacheClearer,
+        JobRepositoryInterface $jobRepository
     ) {
         $this->beConstructedWith(
             $productRepository,
             $projectRepository,
             $chainCalculationStep,
             $projectSaver,
-            $objectDetacher
+            $cacheClearer,
+            $jobRepository
         );
     }
 
@@ -49,11 +53,11 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
     }
 
     function it_calculates_a_project(
-        $productRepository,
-        $projectRepository,
-        $chainCalculationStep,
-        $projectSaver,
-        $objectDetacher,
+        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $projectRepository,
+        CalculationStepInterface $chainCalculationStep,
+        SaverInterface $projectSaver,
+        JobRepositoryInterface $jobRepository,
         StepExecution $stepExecution,
         ProjectInterface $project,
         ProductInterface $product,
@@ -73,12 +77,76 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $chainCalculationStep->execute($otherProduct, $project);
 
         $stepExecution->incrementSummaryInfo('processed_products')->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
+        $projectSaver->save($project);
 
-        $objectDetacher->detach($product)->shouldBeCalled();
-        $objectDetacher->detach($otherProduct)->shouldBeCalled();
+        $this->execute()->shouldReturn(null);
+    }
+
+    function it_clears_the_cache_during_project_calculation(
+        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $projectRepository,
+        CalculationStepInterface $chainCalculationStep,
+        JobRepositoryInterface $jobRepository,
+        SaverInterface $projectSaver,
+        EntityManagerClearerInterface $cacheClearer,
+        StepExecution $stepExecution,
+        ProjectInterface $project,
+        ProductInterface $product,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $stepExecution->getJobParameters()->willreturn($jobParameters);
+        $jobParameters->get('project_code')->willReturn('project_code');
+        $projectRepository->findOneByIdentifier('project_code')->willReturn($project);
+        $productRepository->findByProject($project)->willReturn(array_fill(0, 1001, $product));
+
+        $chainCalculationStep->execute($product, $project)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('processed_products')->shouldBeCalledTimes(1001);
+        $stepExecution->incrementProcessedItems(1000)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
+        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
+
+        $cacheClearer->clear()->shouldBeCalled();
 
         $projectSaver->save($project);
 
         $this->execute()->shouldReturn(null);
+    }
+
+    function it_counts_the_total_items_to_process(
+        $productRepository,
+        $projectRepository,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        ProjectInterface $project,
+        CursorInterface $cursor
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $stepExecution->getJobParameters()->willreturn($jobParameters);
+        $jobParameters->get('project_code')->willReturn('project_code');
+
+        $projectRepository->findOneByIdentifier('project_code')->willReturn($project);
+        $productRepository->findByProject($project)->willReturn($cursor);
+        $cursor->count()->willReturn(2);
+
+        $this->totalItems()->shouldReturn(2);
+    }
+
+    function it_tells_the_total_item_is_0_if_the_project_does_not_exist(
+        $projectRepository,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+
+        $stepExecution->getJobParameters()->willreturn($jobParameters);
+        $jobParameters->get('project_code')->willReturn('project_code');
+        $projectRepository->findOneByIdentifier('project_code')->willReturn(null);
+
+        $this->totalItems()->shouldReturn(0);
     }
 }

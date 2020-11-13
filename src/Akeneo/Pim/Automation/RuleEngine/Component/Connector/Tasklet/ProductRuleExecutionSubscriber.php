@@ -22,6 +22,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -34,9 +35,12 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
     /** @var RuleDefinitionInterface */
     private $currentRule;
 
-    public function __construct(StepExecution $stepExecution)
+    private JobRepositoryInterface $jobRepository;
+
+    public function __construct(StepExecution $stepExecution, JobRepositoryInterface $jobRepository)
     {
         $this->stepExecution = $stepExecution;
+        $this->jobRepository = $jobRepository;
     }
 
     public static function getSubscribedEvents()
@@ -54,6 +58,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
     public function preExecute(GenericEvent $event): void
     {
         $this->stepExecution->incrementSummaryInfo('read_rules');
+        $this->jobRepository->updateStepExecution($this->stepExecution);
         $this->currentRule = $event->getSubject();
     }
 
@@ -61,16 +66,20 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
     {
         $subjectSet = $event->getSubjectSet();
         $this->stepExecution->incrementSummaryInfo('selected_entities', $subjectSet->getSubjectsCursor()->count());
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     public function postExecute(GenericEvent $event): void
     {
         $this->stepExecution->incrementSummaryInfo('executed_rules');
+        $this->stepExecution->incrementProcessedItems();
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     public function postSave(SavedSubjectsEvent $event): void
     {
         $this->stepExecution->incrementSummaryInfo('updated_entities', count($event->getSubjects()));
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     public function skipAction(SkippedActionForSubjectEvent $event): void
@@ -89,6 +98,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
             new DataInvalidItem($event->getSubject())
         );
         $this->stepExecution->incrementSummaryInfo('skipped_invalid');
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     public function skipInvalid(SkippedSubjectRuleEvent $event)
@@ -110,6 +120,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         );
         $this->stepExecution->addWarning($message, [], new DataInvalidItem($subject));
         $this->stepExecution->incrementSummaryInfo('skipped_invalid');
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     private function getEntityIdentifier(EntityWithValuesInterface $entity): string

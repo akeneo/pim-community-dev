@@ -151,6 +151,34 @@ class PermissionFixturesLoader
 
     /**
      * For redactor user:
+     * +-------------------------------------------------------+
+     * |                     Categories                        |
+     * +-------------------------------------------------------+
+     * | No view  | category_without_right                     |
+     * +-------------------------------------------------------+
+     * | View     | view_category, edit_category, own_category |
+     * +-------------------------------------------------------+
+     * | Edit     | edit_category                              |
+     * +-------------------------------------------------------+
+     * | Own      | own_category                               |
+     * +-------------------------------------------------------+
+     *
+     * +-------------------------------------------------------+
+     * |                    Attributes                         |
+     * +----------+--------------------------------------------+
+     * | No view  | root_product_model_no_view_attribute       |
+     * |          | sub_product_model_no_view_attribute        |
+     * |          | variant_product_no_view_attribute          |
+     * +----------+--------------------------------------------+
+     */
+    public function loadCategoriesAndAttributesForEventAPI(): void
+    {
+        $this->createCategoryFixtures();
+        $this->createAttributeFixtures();
+    }
+
+    /**
+     * For redactor user:
      *
      * +----------+--------------------------------------------+
      * |                     Variant products                  |
@@ -202,7 +230,7 @@ class PermissionFixturesLoader
                 'root_product_model_no_view_attribute' => [
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                 ],
-            ]
+            ],
         ];
 
         $subProductModel = [
@@ -212,7 +240,7 @@ class PermissionFixturesLoader
                 'sub_product_model_axis_attribute' => [
                     ['locale' => null, 'scope' => null, 'data' => true],
                 ],
-            ]
+            ],
         ];
 
         $variantProduct = [
@@ -224,9 +252,9 @@ class PermissionFixturesLoader
             ],
             'associations' => [
                 'X_SELL' => [
-                    'products' => ['product_no_view', 'product_view']
-                ]
-            ]
+                    'products' => ['product_no_view', 'product_view'],
+                ],
+            ],
         ];
 
         $productNoView = [
@@ -269,121 +297,151 @@ class PermissionFixturesLoader
         $this->createAttributeFixtures();
         $this->createFamilyVariant();
 
-        $this->createProduct('product_viewable_by_everybody', [
-            'categories' => ['categoryA2'],
-        ]);
+        $this->createProduct(
+            'product_viewable_by_everybody',
+            [
+                'categories' => ['categoryA2'],
+            ]
+        );
 
-        $this->createProduct('product_viewable_by_everybody_1', [
-            'categories' => ['categoryA2'],
-        ]);
+        $this->createProduct(
+            'product_viewable_by_everybody_1',
+            [
+                'categories' => ['categoryA2'],
+            ]
+        );
 
-        $this->createProduct('product_not_viewable_by_redactor', [
-            'categories' => ['categoryB'],
-        ]);
+        $this->createProduct(
+            'product_not_viewable_by_redactor',
+            [
+                'categories' => ['categoryB'],
+            ]
+        );
 
-        $this->createProduct('product_without_category', [
-            'categories' => [],
-        ]);
+        $this->createProduct(
+            'product_without_category',
+            [
+                'categories' => [],
+            ]
+        );
 
-        $this->createProductModel([
-            'code' => 'product_model_viewable_by_everybody',
-            'family_variant' => 'family_variant_permission',
-            'categories' => ['categoryA2', 'categoryB'],
-        ]);
+        $this->createProductModel(
+            [
+                'code' => 'product_model_viewable_by_everybody',
+                'family_variant' => 'family_variant_permission',
+                'categories' => ['categoryA2', 'categoryB'],
+            ]
+        );
 
-        $this->createProductModel([
-            'code' => 'product_model_viewable_by_everybody_1',
-            'family_variant' => 'family_variant_permission',
-            'categories' => ['categoryA2'],
-        ]);
+        $this->createProductModel(
+            [
+                'code' => 'product_model_viewable_by_everybody_1',
+                'family_variant' => 'family_variant_permission',
+                'categories' => ['categoryA2'],
+            ]
+        );
 
-        $this->createProductModel([
-            'code' => 'product_model_not_viewable_by_redactor',
-            'family_variant' => 'family_variant_permission',
-            'categories' => ['categoryB'],
-        ]);
+        $this->createProductModel(
+            [
+                'code' => 'product_model_not_viewable_by_redactor',
+                'family_variant' => 'family_variant_permission',
+                'categories' => ['categoryB'],
+            ]
+        );
 
-        $this->createProductModel([
-            'code' => 'product_model_without_category',
-            'family_variant' => 'family_variant_permission',
-            'categories' => [],
-        ]);
+        $this->createProductModel(
+            [
+                'code' => 'product_model_without_category',
+                'family_variant' => 'family_variant_permission',
+                'categories' => [],
+            ]
+        );
 
-        $this->createProduct('product_associated_with_product_and_product_model', [
-            'categories' => ['categoryA2'],
-            'quantified_associations' => [
-                'PRODUCTSET' => [
-                    'products' => [
-                        ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
-                        ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
-                        ['identifier' => 'product_without_category', 'quantity' => 3],
-                    ],
-                    'product_models' => [
-                        ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
-                        ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
-                        ['identifier' => 'product_model_without_category', 'quantity' => 6],
-                    ],
-                ],
-            ],
-        ]);
-
-        $this->createProductModel([
-            'code' => 'product_model_associated_with_product_and_product_model',
-            'family_variant' => 'family_variant_permission',
-            'categories' => ['categoryA2'],
-            'quantified_associations' => [
-                'PRODUCTSET' => [
-                    'products' => [
-                        ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
-                        ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
-                        ['identifier' => 'product_without_category', 'quantity' => 3],
-                    ],
-                    'product_models' => [
-                        ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
-                        ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
-                        ['identifier' => 'product_model_without_category', 'quantity' => 6],
-                    ],
-                ],
-            ],
-        ]);
-
-        $this->createProduct('product_owned_by_redactor_and_associated_with_product_and_product_model', [
-            'categories' => ['own_category'],
-            'quantified_associations' => [
-                'PRODUCTSET' => [
-                    'products' => [
-                        ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
-                        ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
-                        ['identifier' => 'product_without_category', 'quantity' => 3],
-                    ],
-                    'product_models' => [
-                        ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
-                        ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
-                        ['identifier' => 'product_model_without_category', 'quantity' => 6],
+        $this->createProduct(
+            'product_associated_with_product_and_product_model',
+            [
+                'categories' => ['categoryA2'],
+                'quantified_associations' => [
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                            ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                            ['identifier' => 'product_without_category', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
+                            ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                            ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
-        $this->createProductModel([
-            'code' => 'product_model_owned_by_redactor_and_associated_with_product_and_product_model',
-            'family_variant' => 'family_variant_permission',
-            'categories' => ['own_category'],
-            'quantified_associations' => [
-                'PRODUCTSET' => [
-                    'products' => [
-                        ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
-                        ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
-                        ['identifier' => 'product_without_category', 'quantity' => 3],
-                    ],
-                    'product_models' => [
-                        ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
-                        ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
-                        ['identifier' => 'product_model_without_category', 'quantity' => 6],
+        $this->createProductModel(
+            [
+                'code' => 'product_model_associated_with_product_and_product_model',
+                'family_variant' => 'family_variant_permission',
+                'categories' => ['categoryA2'],
+                'quantified_associations' => [
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                            ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                            ['identifier' => 'product_without_category', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
+                            ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                            ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]
+        );
+
+        $this->createProduct(
+            'product_owned_by_redactor_and_associated_with_product_and_product_model',
+            [
+                'categories' => ['own_category'],
+                'quantified_associations' => [
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                            ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                            ['identifier' => 'product_without_category', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
+                            ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                            ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $this->createProductModel(
+            [
+                'code' => 'product_model_owned_by_redactor_and_associated_with_product_and_product_model',
+                'family_variant' => 'family_variant_permission',
+                'categories' => ['own_category'],
+                'quantified_associations' => [
+                    'PRODUCTSET' => [
+                        'products' => [
+                            ['identifier' => 'product_not_viewable_by_redactor', 'quantity' => 1],
+                            ['identifier' => 'product_viewable_by_everybody', 'quantity' => 2],
+                            ['identifier' => 'product_without_category', 'quantity' => 3],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'product_model_not_viewable_by_redactor', 'quantity' => 4],
+                            ['identifier' => 'product_model_viewable_by_everybody', 'quantity' => 5],
+                            ['identifier' => 'product_model_without_category', 'quantity' => 6],
+                        ],
+                    ],
+                ],
+            ]
+        );
     }
 
     /**
@@ -456,7 +514,7 @@ class PermissionFixturesLoader
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
-            ]
+            ],
         ];
 
         $subProductModel = [
@@ -481,7 +539,7 @@ class PermissionFixturesLoader
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
-            ]
+            ],
         ];
 
         $variantProduct = [
@@ -505,7 +563,7 @@ class PermissionFixturesLoader
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                     ['locale' => 'de_DE', 'scope' => null, 'data' => true],
                 ],
-            ]
+            ],
         ];
 
         $this->createProductModel($rootProductModel);
@@ -595,7 +653,7 @@ class PermissionFixturesLoader
             ['code' => 'sweat_edit', 'categories' => ['edit_category']],
             ['code' => 'shoes_no_view', 'categories' => ['category_without_right']],
             ['code' => 'shoes_own', 'categories' => ['own_category']],
-            ['code' => 'trousers', 'categories' => []]
+            ['code' => 'trousers', 'categories' => []],
         ];
 
         $subProductModels = [
@@ -606,14 +664,23 @@ class PermissionFixturesLoader
             ['code' => 'colored_shoes_edit', 'categories' => ['edit_category'], 'parent' => 'shoes_no_view'],
             ['code' => 'colored_jacket_own', 'categories' => ['own_category'], 'parent' => 'jacket_no_view'],
             ['code' => 'colored_shoes_own', 'categories' => ['category_without_right'], 'parent' => 'shoes_own'],
-            ['code' => 'colored_trousers', 'parent' => 'trousers']
+            ['code' => 'colored_trousers', 'parent' => 'trousers'],
         ];
 
         $variantProducts = [
-            'colored_sized_sweat_no_view' => ['categories' => ['category_without_right'], 'parent' => 'colored_sweat_no_view'],
-            'colored_sized_shoes_view' => ['categories' => ['category_without_right'], 'parent' => 'colored_shoes_view'],
+            'colored_sized_sweat_no_view' => [
+                'categories' => ['category_without_right'],
+                'parent' => 'colored_sweat_no_view',
+            ],
+            'colored_sized_shoes_view' => [
+                'categories' => ['category_without_right'],
+                'parent' => 'colored_shoes_view',
+            ],
             'colored_sized_tshirt_view' => ['categories' => ['view_category'], 'parent' => 'colored_tshirt_view'],
-            'colored_sized_sweat_edit' => ['categories' => ['category_without_right'], 'parent' => 'colored_sweat_edit'],
+            'colored_sized_sweat_edit' => [
+                'categories' => ['category_without_right'],
+                'parent' => 'colored_sweat_edit',
+            ],
             'colored_sized_shoes_edit' => ['categories' => ['edit_category'], 'parent' => 'colored_shoes_edit'],
             'colored_sized_sweat_own' => ['categories' => ['category_without_right'], 'parent' => 'colored_jacket_own'],
             'colored_sized_shoes_own' => ['categories' => ['own_category'], 'parent' => 'colored_shoes_own'],
@@ -623,13 +690,23 @@ class PermissionFixturesLoader
         foreach ($rootProductModels as $rootProductModel) {
             $rootProductModel += [
                 'family_variant' => 'familyVariantA1',
-                'values'  => [
-                    'a_price'  => [
-                        'data' => ['data' => [['amount' => '50', 'currency' => 'EUR']], 'locale' => null, 'scope' => null],
+                'values' => [
+                    'a_price' => [
+                        'data' => [
+                            'data' => [['amount' => '50', 'currency' => 'EUR']],
+                            'locale' => null,
+                            'scope' => null,
+                        ],
                     ],
-                    'a_number_float'  => [['data' => '12.5', 'locale' => null, 'scope' => null]],
-                    'a_localized_and_scopable_text_area'  => [['data' => 'my pink tshirt', 'locale' => 'en_US', 'scope' => 'ecommerce']],
-                ]
+                    'a_number_float' => [['data' => '12.5', 'locale' => null, 'scope' => null]],
+                    'a_localized_and_scopable_text_area' => [
+                        [
+                            'data' => 'my pink tshirt',
+                            'locale' => 'en_US',
+                            'scope' => 'ecommerce',
+                        ],
+                    ],
+                ],
             ];
 
             $this->createProductModel($rootProductModel);
@@ -638,7 +715,7 @@ class PermissionFixturesLoader
         foreach ($subProductModels as $subProductModel) {
             $subProductModel += [
                 'family_variant' => 'familyVariantA1',
-                'values'  => [
+                'values' => [
                     'a_simple_select' => [
                         ['locale' => null, 'scope' => null, 'data' => 'optionB'],
                     ],
@@ -650,7 +727,7 @@ class PermissionFixturesLoader
 
         foreach ($variantProducts as $identifier => $data) {
             $data += [
-                'values'  => [
+                'values' => [
                     'a_yes_no' => [
                         ['locale' => null, 'scope' => null, 'data' => false],
                     ],
@@ -669,8 +746,12 @@ class PermissionFixturesLoader
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function createAttribute(string $code, string $right, bool $localizable = true, $type = AttributeTypes::BOOLEAN): void
-    {
+    public function createAttribute(
+        string $code,
+        string $right,
+        bool $localizable = true,
+        $type = AttributeTypes::BOOLEAN
+    ): void {
         switch ($right) {
             case 'view':
                 $attributeGroup = 'attributeGroupB';
@@ -687,7 +768,7 @@ class PermissionFixturesLoader
             'type' => $type,
             'localizable' => $localizable,
             'scopable' => false,
-            'group' => $attributeGroup
+            'group' => $attributeGroup,
         ];
 
         $attribute = $this->attributeFactory->create();
@@ -744,24 +825,11 @@ class PermissionFixturesLoader
     private function createFamilyVariant(): void
     {
         $family = $this->familyFactory->create();
-        $this->familyUpdater->update($family, [
-            'code' => 'family_permission',
-            'attributes'  => [
-                'sku',
-                'root_product_model_no_view_attribute',
-                'root_product_model_view_attribute',
-                'root_product_model_edit_attribute',
-                'sub_product_model_axis_attribute',
-                'sub_product_model_no_view_attribute',
-                'sub_product_model_view_attribute',
-                'sub_product_model_edit_attribute',
-                'variant_product_axis_attribute',
-                'variant_product_no_view_attribute',
-                'variant_product_view_attribute',
-                'variant_product_edit_attribute',
-            ],
-            'attribute_requirements' => [
-                'tablet' => [
+        $this->familyUpdater->update(
+            $family,
+            [
+                'code' => 'family_permission',
+                'attributes' => [
                     'sku',
                     'root_product_model_no_view_attribute',
                     'root_product_model_view_attribute',
@@ -774,45 +842,64 @@ class PermissionFixturesLoader
                     'variant_product_no_view_attribute',
                     'variant_product_view_attribute',
                     'variant_product_edit_attribute',
-                ]
+                ],
+                'attribute_requirements' => [
+                    'tablet' => [
+                        'sku',
+                        'root_product_model_no_view_attribute',
+                        'root_product_model_view_attribute',
+                        'root_product_model_edit_attribute',
+                        'sub_product_model_axis_attribute',
+                        'sub_product_model_no_view_attribute',
+                        'sub_product_model_view_attribute',
+                        'sub_product_model_edit_attribute',
+                        'variant_product_axis_attribute',
+                        'variant_product_no_view_attribute',
+                        'variant_product_view_attribute',
+                        'variant_product_edit_attribute',
+                    ],
+                ],
             ]
-        ]);
+        );
 
         $errors = $this->validator->validate($family);
         Assert::assertCount(0, $errors);
         $this->familySaver->save($family);
 
         $familyVariant = $this->familyVariantFactory->create();
-        $this->familyVariantUpdater->update($familyVariant, [
-            'code' => 'family_variant_permission',
-            'family' => 'family_permission',
-            'labels' => [
-                'en_US' => 'My family variant'
-            ],
-            'variant_attribute_sets' => [
-                [
-                    'axes' => ['sub_product_model_axis_attribute'],
-                    'attributes' => [
-                        'sub_product_model_axis_attribute',
-                        'sub_product_model_view_attribute',
-                        'sub_product_model_edit_attribute',
-                        'sub_product_model_no_view_attribute'
-                    ],
-                    'level'=> 1,
+        $this->familyVariantUpdater->update(
+            $familyVariant,
+            [
+                'code' => 'family_variant_permission',
+                'family' => 'family_permission',
+                'labels' => [
+                    'en_US' => 'My family variant',
                 ],
-                [
-                    'axes' => ['variant_product_axis_attribute'],
-                    'attributes' => [
-                        'variant_product_axis_attribute',
-                        'sku',
-                        'variant_product_view_attribute',
-                        'variant_product_edit_attribute',
-                        'variant_product_no_view_attribute'
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['sub_product_model_axis_attribute'],
+                        'attributes' => [
+                            'sub_product_model_axis_attribute',
+                            'sub_product_model_view_attribute',
+                            'sub_product_model_edit_attribute',
+                            'sub_product_model_no_view_attribute',
+                        ],
+                        'level' => 1,
                     ],
-                    'level'=> 2,
-                ]
-            ],
-        ]);
+                    [
+                        'axes' => ['variant_product_axis_attribute'],
+                        'attributes' => [
+                            'variant_product_axis_attribute',
+                            'sku',
+                            'variant_product_view_attribute',
+                            'variant_product_edit_attribute',
+                            'variant_product_no_view_attribute',
+                        ],
+                        'level' => 2,
+                    ],
+                ],
+            ]
+        );
 
         $errors = $this->validator->validate($familyVariant);
         Assert::assertCount(0, $errors);
@@ -821,12 +908,12 @@ class PermissionFixturesLoader
 
     /**
      * @param string $identifier
-     * @param array  $data
+     * @param array $data
      *
      * @return ProductInterface
      * @throws \Exception
      */
-    protected function createProduct($identifier, array $data = []) : ProductInterface
+    protected function createProduct($identifier, array $data = []): ProductInterface
     {
         $product = $this->productBuilder->createProduct($identifier);
         $this->productUpdater->update($product, $data);
@@ -848,7 +935,7 @@ class PermissionFixturesLoader
      * @return ProductModelInterface
      * @throws \Exception
      */
-    private function createProductModel(array $data = []) : ProductModelInterface
+    private function createProductModel(array $data = []): ProductModelInterface
     {
         $productModel = $this->productModelFactory->create();
         $this->productModelUpdater->update($productModel, $data);
@@ -868,7 +955,7 @@ class PermissionFixturesLoader
      *
      * @return CategoryInterface
      */
-    private function createCategory(array $data = []) : CategoryInterface
+    private function createCategory(array $data = []): CategoryInterface
     {
         $category = $this->categoryFactory->create();
         $this->categoryUpdater->update($category, $data);

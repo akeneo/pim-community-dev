@@ -9,6 +9,8 @@ services:
             - '@pimee_catalog_rule.runner.product'
             - '@akeneo_rule_engine.saver.rule_definition'
             - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_stopper'
 
     pimee_catalog_rule.tasklet.execute_rules:
         class: Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ExecuteRulesTasklet
@@ -17,3 +19,5 @@ services:
             - '@akeneo_rule_engine.runner.strict_chained'
             - '@akeneo_rule_engine.runner.strict_chained'
             - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job.job_stopper'

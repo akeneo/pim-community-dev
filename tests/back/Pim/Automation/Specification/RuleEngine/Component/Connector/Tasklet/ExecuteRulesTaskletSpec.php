@@ -9,6 +9,8 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use PhpSpec\ObjectBehavior;
@@ -23,9 +25,11 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         DryRunnerInterface $dryRuleRunner,
         EventDispatcherInterface $eventDispatcher,
         JobParameters $jobParameters,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobRepositoryInterface $jobRepository,
+        JobStopper $jobStopper
     ) {
-        $this->beConstructedWith($ruleDefinitionRepository, $ruleRunner, $dryRuleRunner, $eventDispatcher);
+        $this->beConstructedWith($ruleDefinitionRepository, $ruleRunner, $dryRuleRunner, $eventDispatcher, $jobRepository, $jobStopper);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $this->setStepExecution($stepExecution);
@@ -41,7 +45,8 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         RunnerInterface $ruleRunner,
         JobParameters $jobParameters,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobStopper $jobStopper
     ) {
         $jobParameters->get('rule_codes')->willReturn(['rule1', 'rule2']);
         $jobParameters->get('dry_run')->willReturn(false);
@@ -51,6 +56,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
 
         $stepExecution->setSummary(Argument::type('array'))->shouldBeCalled();
         $ruleRunner->run(Argument::type(RuleDefinition::class))->shouldBeCalledTimes(2);
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
@@ -59,16 +65,18 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         RunnerInterface $ruleRunner,
         JobParameters $jobParameters,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobStopper $jobStopper
     ) {
         $jobParameters->get('rule_codes')->willReturn([]);
         $jobParameters->get('dry_run')->willReturn(false);
 
         $ruleDefinitionRepository->findEnabledOrderedByPriority()
-                                 ->willReturn([new RuleDefinition(), new RuleDefinition(), new RuleDefinition()]);
+            ->willReturn([new RuleDefinition(), new RuleDefinition(), new RuleDefinition()]);
 
         $stepExecution->setSummary(Argument::type('array'))->shouldBeCalled();
         $ruleRunner->run(Argument::type(RuleDefinition::class))->shouldBeCalledTimes(3);
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
@@ -77,16 +85,18 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         DryRunnerInterface $dryRuleRunner,
         JobParameters $jobParameters,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        JobStopper $jobStopper
     ) {
         $jobParameters->get('rule_codes')->willReturn(['rule1']);
         $jobParameters->get('dry_run')->willReturn(true);
 
         $ruleDefinitionRepository->findBy(['code' => ['rule1']], ['priority' => 'DESC'])
-                                 ->willReturn([new RuleDefinition(), new RuleDefinition()]);
+            ->willReturn([new RuleDefinition(), new RuleDefinition()]);
 
         $stepExecution->setSummary(Argument::type('array'))->shouldBeCalled();
         $dryRuleRunner->dryRun(Argument::type(RuleDefinition::class))->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
@@ -97,7 +107,8 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         JobParameters $jobParameters,
         StepExecution $stepExecution,
         RuleDefinition $ruleDefinition1,
-        RuleDefinition $ruleDefinition2
+        RuleDefinition $ruleDefinition2,
+        JobStopper $jobStopper
     ) {
         $ruleDefinition1->getCode()->willReturn('my_rule_code');
         $ruleDefinition1->getContent()->willReturn(['normalized rule content']);
@@ -129,6 +140,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('errored_rules')->shouldBeCalled();
 
         $ruleRunner->run($ruleDefinition2)->shouldNotBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->shouldThrow($exception)->during('execute');
     }
@@ -139,7 +151,8 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         JobParameters $jobParameters,
         StepExecution $stepExecution,
         RuleDefinition $ruleDefinition1,
-        RuleDefinition $ruleDefinition2
+        RuleDefinition $ruleDefinition2,
+        JobStopper $jobStopper
     ) {
         $ruleDefinition1->getCode()->willReturn('my_rule_code');
         $ruleDefinition1->getContent()->willReturn(['normalized rule content']);
@@ -171,6 +184,7 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('errored_rules')->shouldBeCalled();
 
         $ruleRunner->run($ruleDefinition2)->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }

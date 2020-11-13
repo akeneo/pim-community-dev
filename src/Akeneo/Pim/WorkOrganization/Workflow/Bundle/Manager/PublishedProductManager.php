@@ -22,6 +22,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\UnpublisherInterfac
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,52 +34,19 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class PublishedProductManager
 {
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
+    protected ProductRepositoryInterface $productRepository;
+    protected AttributeRepositoryInterface $attributeRepository;
+    protected PublishedProductRepositoryInterface $publishedRepositoryWithPermission;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected PublisherInterface $publisher;
+    protected UnpublisherInterface $unpublisher;
+    protected ObjectManager $objectManager;
+    protected SaverInterface $publishedProductSaver;
+    protected BulkSaverInterface $publishedProductBulkSaver;
+    protected RemoverInterface $remover;
+    private BulkRemoverInterface $bulkRemover;
+    private PublishedProductRepositoryInterface $publishedRepositoryWithoutPermission;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var PublishedProductRepositoryInterface*/
-    protected $publishedRepositoryWithPermission;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var PublisherInterface */
-    protected $publisher;
-
-    /** @var  UnpublisherInterface */
-    protected $unpublisher;
-
-    /** @var ObjectManager */
-    protected $objectManager;
-
-    /** @var SaverInterface */
-    protected $publishedProductSaver;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var BulkRemoverInterface */
-    private $bulkRemover;
-
-    /** @var PublishedProductRepositoryInterface */
-    private $publishedRepositoryWithoutPermission;
-
-    /**
-     * @param ProductRepositoryInterface          $productRepository     the product repository
-     * @param PublishedProductRepositoryInterface $publishedRepositoryWithPermission
-     * @param AttributeRepositoryInterface        $attributeRepository   the attribute repository
-     * @param EventDispatcherInterface            $eventDispatcher       the event dispatcher
-     * @param PublisherInterface                  $publisher             the product publisher
-     * @param UnpublisherInterface                $unpublisher           the product unpublisher
-     * @param ObjectManager                       $objectManager         the object manager
-     * @param SaverInterface                      $publishedProductSaver the object saver
-     * @param RemoverInterface                    $remover
-     * @param BulkRemoverInterface                $bulkRemover
-     * @param PublishedProductRepositoryInterface $publishedRepositoryWithoutPermission
-     */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         PublishedProductRepositoryInterface $publishedRepositoryWithPermission,
@@ -88,6 +56,7 @@ class PublishedProductManager
         UnpublisherInterface $unpublisher,
         ObjectManager $objectManager,
         SaverInterface $publishedProductSaver,
+        BulkSaverInterface $publishedProductBulkSaver,
         RemoverInterface $remover,
         BulkRemoverInterface $bulkRemover,
         PublishedProductRepositoryInterface $publishedRepositoryWithoutPermission
@@ -100,6 +69,7 @@ class PublishedProductManager
         $this->unpublisher = $unpublisher;
         $this->objectManager = $objectManager;
         $this->publishedProductSaver = $publishedProductSaver;
+        $this->publishedProductBulkSaver = $publishedProductBulkSaver;
         $this->remover = $remover;
         $this->bulkRemover = $bulkRemover;
         $this->publishedRepositoryWithoutPermission = $publishedRepositoryWithoutPermission;
@@ -226,7 +196,7 @@ class PublishedProductManager
             $publishedProducts[] = $published;
         }
 
-        $this->publishedProductSaver->saveAll($publishedProducts);
+        $this->publishedProductBulkSaver->saveAll($publishedProducts);
 
         foreach ($publishedProducts as $publishedProduct) {
             $this->dispatchEvent(
@@ -286,7 +256,7 @@ class PublishedProductManager
             $publishedProducts[] = $published;
         }
 
-        $this->publishedProductSaver->saveAll($publishedProducts);
+        $this->publishedProductBulkSaver->saveAll($publishedProducts);
     }
 
     /**
