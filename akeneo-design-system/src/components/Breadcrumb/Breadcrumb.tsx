@@ -2,15 +2,17 @@ import React, {isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
-const Step = styled.a<{color: string} & AkeneoThemedProps>`
+const Step = styled.a`
   text-transform: uppercase;
-  color: ${({color}) => getColor(color, 120)};
   text-decoration: none;
 `;
 
 Step.displayName = 'Step';
 
 const BreadcrumbContainer = styled.nav<{color: string} & AkeneoThemedProps>`
+  ${Step} {
+    color: ${({color}) => getColor(color, 120)};
+  }
   ${Step}:last-child {
     color: ${({color}) => getColor(color, 100)};
   }
@@ -50,7 +52,7 @@ const Breadcrumb = ({children, color = 'grey', ...rest}: BreadcrumbProps) => {
           React.cloneElement(child, {'aria-current': 'page'})
         ) : (
           <>
-            {React.cloneElement(child, {color})}
+            {child}
             <Separator aria-hidden="true">/</Separator>
           </>
         );
