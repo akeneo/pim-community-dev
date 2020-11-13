@@ -41,11 +41,11 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     }
 
     /**
-     * @param ProductCreated|ProductUpdated $businessEvent
-     * @throws NotGrantedCategoryException
      * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws ProductNotFoundException
+     * @throws NotGrantedCategoryException
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(BusinessEventInterface $businessEvent, array $context = []): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();

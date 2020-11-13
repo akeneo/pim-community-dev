@@ -18,11 +18,14 @@ $rules = [
             // Dependency on Symfony Validator to ease validation
             'Symfony\Component\Validator',
             'Symfony\Component\Security',
+            'Symfony\Component\OptionsResolver\OptionsResolver',
 
             'Doctrine\Common\Persistence\ObjectRepository',
 
             'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+
+            'Akeneo\UserManagement\Component\Model\UserInterface',
 
             // TODO: Fix serializer usage to not depends on FOSRestBundle inside Application.
             'FOS\RestBundle\Context\Context',
