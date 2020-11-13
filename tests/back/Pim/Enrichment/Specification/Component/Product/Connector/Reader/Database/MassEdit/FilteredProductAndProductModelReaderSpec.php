@@ -227,4 +227,79 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn($product3);
         $this->read()->shouldReturn(null);
     }
+
+    function it_returns_the_total_number_of_product_and_product_models_that_will_be_read(
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        ChannelRepositoryInterface $channelRepository,
+        MetricConverter $metricConverter,
+        StepExecution $stepExecution,
+        ChannelInterface $channel,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $cursor,
+        JobParameters $jobParameters
+    ) {
+        $this->beConstructedWith(
+            $pqbFactory,
+            $channelRepository,
+            $metricConverter,
+            false
+        );
+
+        $this->setStepExecution($stepExecution);
+
+        $filters = [
+            'data' => [
+                [
+                    'field' => 'enabled',
+                    'operator' => '=',
+                    'value' => true,
+                ],
+                [
+                    'field' => 'family',
+                    'operator' => 'IN',
+                    'value' => [
+                        'camcorder',
+                    ],
+                ],
+            ],
+            'structure' => [
+                'scope' => 'mobile',
+                'locales' => ['fr_FR', 'en_US'],
+            ],
+        ];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($filters);
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getCode()->willReturn('mobile');
+
+        $pqbFactory->create(['filters' => $filters['data'], 'default_scope' => 'mobile'])
+            ->shouldBeCalled()
+            ->willReturn($pqb);
+        $pqb->execute()
+            ->shouldBeCalled()
+            ->willReturn($cursor);
+
+        $expectedTotalItems = 10;
+        $cursor->count()->willReturn($expectedTotalItems);
+
+        $this->initialize();
+        $this->totalItems()->shouldReturn($expectedTotalItems);
+    }
+
+    function it_throws_if_the_reader_is_not_initialized(
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        ChannelRepositoryInterface $channelRepository,
+        MetricConverter $metricConverter
+    ) {
+        $this->beConstructedWith(
+            $pqbFactory,
+            $channelRepository,
+            $metricConverter,
+            false
+        );
+
+        $this->shouldThrow(\RuntimeException::class)
+            ->during('totalItems');
+    }
 }

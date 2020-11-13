@@ -454,4 +454,52 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
             )
             ->during('execute');
     }
+
+    function it_computes_the_total_items_to_delete(
+        $pqbFactory,
+        $productRemover,
+        $productModelRemover,
+        $filter,
+        $cacheClearer,
+        $countProductModelsAndChildrenProductModels,
+        $countVariantProducts,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        ProductQueryBuilderInterface $rootProductModelPQB,
+        ProductQueryBuilderInterface $subProductModelPQB,
+        ProductQueryBuilderInterface $variantProductsPQB,
+        CursorInterface $rootProductModelCursor,
+        CursorInterface $subProductModelCursor,
+        CursorInterface $variantProductsCursor
+    ) {
+        $this->setStepExecution($stepExecution);
+        $filters = [
+            [
+                'field' => 'id',
+                'operator' => 'IN',
+                'values' => ['product_123', 'product_456', 'product_789']
+            ]
+        ];
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($filters);
+
+        $pqbFactory->create(['filters' => $filters])
+            ->willReturn($rootProductModelPQB, $subProductModelPQB, $variantProductsPQB);
+
+        $rootProductModelPQB->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
+        $rootProductModelPQB->execute()->willReturn($rootProductModelCursor);
+        $rootProductModelCursor->count()->willReturn(2);
+
+        $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
+        $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
+        $subProductModelPQB->execute()->willReturn($subProductModelCursor);
+        $subProductModelCursor->count()->willReturn(1);
+
+        $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
+        $variantProductsPQB->execute()->willReturn($variantProductsCursor);
+        $variantProductsCursor->count()->willReturn(1);
+
+        $this->totalItems()->shouldReturn(4);
+    }
 }

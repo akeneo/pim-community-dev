@@ -9,9 +9,6 @@ services:
 
     pim_catalog.webhook.event_data_builder.product_removed:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductRemovedEventDataBuilder
-        arguments:
-            - '@pim_api.repository.product'
-            - '@pim_api.normalizer.product'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
 

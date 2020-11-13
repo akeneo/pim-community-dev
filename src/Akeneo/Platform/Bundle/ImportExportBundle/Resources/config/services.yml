@@ -24,3 +24,4 @@ services:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Datagrid\JobExecutionResultRecordHydrator'
         arguments:
             - '@akeneo_batch.job.job_registry'
+            - '@pim_import_export.query.get_job_execution_tracking'

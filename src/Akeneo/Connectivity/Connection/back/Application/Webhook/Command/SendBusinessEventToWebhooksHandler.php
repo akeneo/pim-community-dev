@@ -75,12 +75,21 @@ final class SendBusinessEventToWebhooksHandler
         }
 
         $businessEvent = $command->businessEvent();
-
-        $requests = function () use ($businessEvent, $webhooks) {
+        $authorName = $businessEvent->author()->name();
+        $requests = function () use ($businessEvent, $webhooks, $authorName) {
             foreach ($webhooks as $webhook) {
                 try {
-                    $this->webhookUserAuthenticator->authenticate($webhook->userId());
-                    $event = $this->builder->build($businessEvent, ['pim_source' => $this->pimSource]);
+                    $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
+                    if ($user->getUsername() === $authorName) {
+                        continue;
+                    }
+                    $event = $this->builder->build(
+                        $businessEvent,
+                        [
+                            'pim_source' => $this->pimSource,
+                            'user' => $user,
+                        ]
+                    );
                 } catch (\Throwable $error) {
                     // Handle error gracefully and continue the processing of other webhooks.
                     $this->handleError($error, $webhook, $businessEvent);
