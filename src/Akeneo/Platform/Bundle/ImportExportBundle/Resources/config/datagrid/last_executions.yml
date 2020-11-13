@@ -18,16 +18,21 @@ datagrid:
                 frontendType: label
             status:
                 label:         Status
-                template:      PimImportExportBundle:Property:status.html.twig
-                type:          twig
-                frontend_type: html
-                data_name:     statusLabel
+                frontend_type: react
+                type: field
+                component: pimimportexport/js/JobExecutionStatus
+                props:
+                    status: string
+                    currentStep: integer
+                    totalSteps: integer
+                    hasWarning: boolean
+                    hasError: boolean
             warning:
-                label:         Warnings
-                template:      PimImportExportBundle:Property:warning.html.twig
-                type:          twig
+                label: Warnings
+                template: PimImportExportBundle:Property:warning.html.twig
+                type: twig
                 frontend_type: html
-                data_name:     warningCount
+                data_name: warningCount
             actions:
                 label: ~
                 frontend_type: react
@@ -43,6 +48,10 @@ datagrid:
             id: ~
             jobLabel: ~
             isStoppable: ~
+            currentStep: ~
+            totalSteps: ~
+            hasWarning: ~
+            hasError: ~
             showLink:
                 type: url
                 params:

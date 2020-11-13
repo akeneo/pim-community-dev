@@ -67,13 +67,16 @@ extensions:
             aclIdExport: pim_importexport_export_execution_download_log
 
     pim-job-execution-form-status:
-        module: pim/form/common/meta/status
+        module: pim/job/execution/status
         parent: pim-job-execution-form
         targetZone: meta
         position: 90
-        config:
-            label: pim_common.status
-            valuePath: status
+
+    pim-job-execution-form-progress:
+        module: pim/job/execution/progress
+        parent: pim-job-execution-form
+        targetZone: content
+        position: 95
 
     pim-job-execution-form-label:
         module: pim/job/common/label
