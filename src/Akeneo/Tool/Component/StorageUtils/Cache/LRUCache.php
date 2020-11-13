@@ -1,17 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\StorageUtils\Cache;
 
 /**
- * Least Recently Used Cache
- *
- * A fixed sized cache that removes the element used last when it reaches its
- * size limit.
- *
  * @see https://github.com/cash/LRUCache
  */
-final class LRUCache
+final class LRUCache implements LRUCacheInterface
 {
     /** @var int */
     private $maximumSize;
@@ -22,9 +18,6 @@ final class LRUCache
      * @var array
      */
     private $data = [];
-
-    /** @var string */
-    private $nullData;
 
     /** @var string */
     private $defaultValue;
@@ -40,16 +33,13 @@ final class LRUCache
         if ($size <= 0) {
             throw new \InvalidArgumentException("The size has to be a positive int");
         }
-        $this->nullData = sha1('NULL_DATA_ON_LRU_CACHE');
         $this->defaultValue = sha1('DEFAULT_CACHED_VALUE');
 
         $this->maximumSize = $size;
     }
 
     /**
-     * This methods gets what is stored on cache.
-     * When an entry is not in the cache, it call the first callable in order to fetch the missing entries.
-     * These entries HAVE TO BE indexed by the key.
+     * @inheritDoc
      *
      * The performance impact of the callable is non significant.
      *
@@ -82,7 +72,7 @@ final class LRUCache
     }
 
     /**
-     * Returns an entry from the cache or call the query to fetch the entry thanks to the callable.
+     * @inheritDoc
      *
      * The performance impact of the callable and `array_key_exist` instead of `isset` are non significant.
      * The time consuming tasks are call to `recordAccess` and reset + unset in `put` method.
@@ -100,6 +90,11 @@ final class LRUCache
 
 
         return $resultFromQuery;
+    }
+
+    public function clear(): void
+    {
+        $this->data = [];
     }
 
     /**

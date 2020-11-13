@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Component\StorageUtils\Cache;
 
+use Akeneo\Tool\Component\StorageUtils\Cache\LRUCacheInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -17,6 +19,11 @@ final class LRUCacheSpec extends ObjectBehavior
     public function let()
     {
         $this->beConstructedWith(2);
+    }
+
+    function it_is_a_lru_cache()
+    {
+        $this->shouldImplement(LRUCacheInterface::class);
     }
 
     function it_cannot_be_instantiated_with_zero_or_negative_value()
@@ -55,7 +62,7 @@ final class LRUCacheSpec extends ObjectBehavior
      */
     function it_store_null_values_and_does_not_call_the_query_if_null_value_is_stored()
     {
-        $query = function(string $entityCode) {
+        $query = function (string $entityCode) {
             return null;
         };
 
@@ -150,27 +157,41 @@ final class LRUCacheSpec extends ObjectBehavior
             ]);
     }
 
+    function it_clears_the_cache(EntityObjectQuery $entityObjectQuery)
+    {
+        $entityObjectQuery->fromCode('entity_code_1')->willReturn(new EntityObject('entity_code_1'))->shouldBeCalledTimes(2);
+
+        $this->getForKey('entity_code_1', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_1'));
+        $this->getForKey('entity_code_1', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_1'));
+
+        $this->clear();
+
+        $this->getForKey('entity_code_1', $this->queryToFetchEntityFromCode($entityObjectQuery->getWrappedObject()))->shouldBeLike(new EntityObject('entity_code_1'));
+    }
+
     private function queryToFetchEntityFromCode(EntityObjectQuery $entityObjectQuery)
     {
-        return function(string $entityCode)  use ($entityObjectQuery) {
+        return function (string $entityCode)  use ($entityObjectQuery) {
             return $entityObjectQuery->fromCode($entityCode);
         };
     }
 
     private function queryToFetchEntitiesFromCodes(EntityObjectQuery $entityObjectQuery)
     {
-        return function(array $entityCodes) use ($entityObjectQuery) {
+        return function (array $entityCodes) use ($entityObjectQuery) {
             return $entityObjectQuery->fromCodes($entityCodes);
         };
     }
 }
 
-interface EntityObjectQuery {
+interface EntityObjectQuery
+{
     public function fromCode(string $entityCode): EntityObject;
     public function fromCodes(array $entityCodes): array;
 }
 
-class EntityObject {
+class EntityObject
+{
     private $id;
 
     public function __construct(string $id)
