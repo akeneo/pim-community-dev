@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInterface;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\CountAssets;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Reader\Database\AssetReader;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -32,9 +33,10 @@ class AssetReaderSpec extends ObjectBehavior
         FindAssetIdentifiersByAssetFamilyInterface $findAssetIdentifiersByAssetFamily,
         AssetRepositoryInterface $assetRepository,
         StepExecution $stepExecution,
-        JobParameters $parameters
+        JobParameters $parameters,
+        CountAssets $countAssets
     ) {
-        $this->beConstructedWith($findAssetIdentifiersByAssetFamily, $assetRepository);
+        $this->beConstructedWith($findAssetIdentifiersByAssetFamily, $assetRepository, $countAssets);
 
         $parameters->get('asset_family_identifier')->willReturn('packshot');
         $stepExecution->getJobParameters()->willReturn($parameters);
@@ -83,6 +85,14 @@ class AssetReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn($asset2);
         $this->read()->shouldReturn($asset3);
         $this->read()->shouldReturn(null);
+    }
+
+    function it_counts_the_total_item_to_process(CountAssets $countAssets)
+    {
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('packshot');
+        $countAssets->forAssetFamily($assetFamilyIdentifier)->willReturn(15);
+
+        $this->totalItems()->shouldReturn(15);
     }
 
     private function createAsset(AssetIdentifier $identifier, AssetFamilyIdentifier $familyIdentifier): Asset

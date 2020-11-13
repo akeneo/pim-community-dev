@@ -19,6 +19,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -31,11 +33,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class PublishProductTasklet extends AbstractProductPublisherTasklet implements TaskletInterface
+class PublishProductTasklet extends AbstractProductPublisherTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     protected AuthorizationCheckerInterface $authorizationChecker;
     protected ProductQueryBuilderFactoryInterface $pqbFactory;
     protected EntityManagerClearerInterface $cacheClearer;
+    private JobRepositoryInterface $jobRepository;
     protected JobStopper $jobStopper;
 
     public function __construct(
@@ -45,6 +48,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         AuthorizationCheckerInterface $authorizationChecker,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         EntityManagerClearerInterface $cacheClearer,
+        JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper
     ) {
         parent::__construct(
@@ -56,6 +60,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         $this->authorizationChecker = $authorizationChecker;
         $this->pqbFactory = $pqbFactory;
         $this->cacheClearer = $cacheClearer;
+        $this->jobRepository = $jobRepository;
         $this->jobStopper = $jobStopper;
     }
 
@@ -78,6 +83,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
             foreach ($productsPage as $index => $entityWithFamily) {
                 if (!$entityWithFamily instanceof ProductInterface) {
                     $invalidEntitiesWithFamily[$index] = $entityWithFamily;
+                    $this->stepExecution->incrementProcessedItems();
 
                     continue;
                 }
@@ -86,8 +92,10 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
 
                 if ($isAuthorized) {
                     $this->stepExecution->incrementSummaryInfo('mass_published');
+                    $this->stepExecution->incrementProcessedItems();
                 } else {
                     $this->stepExecution->incrementSummaryInfo('skipped_products');
+                    $this->stepExecution->incrementProcessedItems();
                     $invalidEntitiesWithFamily[$index] = $entityWithFamily;
 
                     if (!$isAuthorized) {
@@ -104,6 +112,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
             $this->manager->publishAll($productsPage);
 
             $this->cacheClearer->clear();
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 
@@ -123,5 +132,12 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         $pqb = $this->pqbFactory->create(['filters' => $filters]);
 
         return $pqb;
+    }
+
+    public function totalItems(): int
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+
+        return $this->getProductsCursor($jobParameters->get('filters'))->count();
     }
 }

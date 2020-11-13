@@ -13,6 +13,8 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -24,7 +26,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ImpactedProductCountTasklet implements TaskletInterface
+class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     const CHUNK_SIZE = 300;
 
@@ -34,18 +36,21 @@ class ImpactedProductCountTasklet implements TaskletInterface
     protected BulkSaverInterface $saver;
     protected EntityManagerClearerInterface $cacheClearer;
     protected JobStopper $jobStopper;
+    private JobRepositoryInterface $jobRepository;
 
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         DryRunnerInterface $productRuleRunner,
         BulkSaverInterface $saver,
         EntityManagerClearerInterface $cacheClearer,
+        JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper
     ) {
         $this->ruleDefinitionRepo = $ruleDefinitionRepo;
         $this->productRuleRunner = $productRuleRunner;
         $this->saver = $saver;
         $this->cacheClearer = $cacheClearer;
+        $this->jobRepository = $jobRepository;
         $this->jobStopper = $jobStopper;
     }
 
@@ -69,6 +74,8 @@ class ImpactedProductCountTasklet implements TaskletInterface
 
                 $this->stepExecution->incrementSummaryInfo('rule_calculated');
             }
+            $this->stepExecution->incrementProcessedItems(count($ruleDefinitions));
+            $this->jobRepository->updateStepExecution($this->stepExecution);
 
             $this->saver->saveAll($ruleDefinitions);
             $this->cacheClearer->clear();
@@ -83,5 +90,10 @@ class ImpactedProductCountTasklet implements TaskletInterface
         $this->stepExecution = $stepExecution;
 
         return $this;
+    }
+
+    public function totalItems(): int
+    {
+        return \count($this->stepExecution->getJobParameters()->get('ruleIds'));
     }
 }

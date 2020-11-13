@@ -16,6 +16,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -32,9 +33,10 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         BulkSaverInterface $saver,
         EntityManagerClearerInterface $cacheClearer,
         StepExecution $stepExecution,
+        JobRepositoryInterface  $jobRepository,
         JobStopper $jobStopper
     ) {
-        $this->beConstructedWith($ruleDefinitionRepo, $productRuleRunner, $saver, $cacheClearer, $jobStopper);
+        $this->beConstructedWith($ruleDefinitionRepo, $productRuleRunner, $saver, $cacheClearer, $jobRepository, $jobStopper);
 
         $this->setStepExecution($stepExecution);
     }
@@ -52,6 +54,7 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         CursorInterface $cursor1,
         CursorInterface $cursor2,
         JobParameters $jobParameters,
+        JobRepositoryInterface  $jobRepository,
         JobStopper $jobStopper
     ) {
         $configuration = [
@@ -75,11 +78,24 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $ruleDefinition1->setImpactedSubjectCount(1000)->willReturn($ruleDefinition2);
 
         $stepExecution->incrementSummaryInfo('rule_calculated')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $jobRepository->updateStepExecution($stepExecution);
 
         $saver->saveAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalled();
         $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
+    }
+
+    public function it_counts_the_number_of_rules_it_will_process(
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $configuration = ['ruleIds' => [1, 2]];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('ruleIds')->willReturn($configuration['ruleIds']);
+
+        $this->totalItems()->shouldReturn(2);
     }
 }
