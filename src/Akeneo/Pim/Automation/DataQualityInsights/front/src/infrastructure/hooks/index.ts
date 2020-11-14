@@ -1,7 +1,7 @@
 import useFetchDqiDashboardData from './Dashboard/useFetchDqiDashboardData';
 import useGetChartScalingSizeRatio from './Dashboard/useGetChartScalingSizeRatio';
 import useFetchProductDataQualityEvaluation from './ProductEditForm/useFetchProductDataQualityEvaluation';
-import useFetchProductFamilyInformation from './ProductEditForm/useFetchProductFamilyInformation';
+import useProductFamily from './ProductEditForm/useProductFamily';
 import useCatalogContext from './ProductEditForm/useCatalogContext';
 import useProduct from './ProductEditForm/useProduct';
 import useFetchProductAxisRates from './ProductEditForm/useFetchProductAxisRates';
@@ -14,7 +14,7 @@ export {
   useFetchDqiDashboardData,
   useGetChartScalingSizeRatio as useGetDashboardChartScalingSizeRatio,
   useFetchProductDataQualityEvaluation,
-  useFetchProductFamilyInformation,
+  useProductFamily,
   useCatalogContext,
   useProduct,
   useFetchProductAxisRates,

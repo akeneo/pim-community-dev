@@ -75,11 +75,14 @@ final class SendBusinessEventToWebhooksHandler
         }
 
         $businessEvent = $command->businessEvent();
-
-        $requests = function () use ($businessEvent, $webhooks) {
+        $authorName = $businessEvent->author()->name();
+        $requests = function () use ($businessEvent, $webhooks, $authorName) {
             foreach ($webhooks as $webhook) {
                 try {
                     $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
+                    if ($user->getUsername() === $authorName) {
+                        continue;
+                    }
                     $event = $this->builder->build(
                         $businessEvent,
                         [

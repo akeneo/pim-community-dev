@@ -1,27 +1,25 @@
-import React, {FunctionComponent} from 'react';
+import {Product} from '../../domain';
+import {isRootProductModel, isSimpleProduct, isVariantProduct} from '../helper';
 import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
-} from '../../../../listener';
-import {isRootProductModel, isSimpleProduct, isVariantProduct} from '../../../../helper/ProductEditForm/Product';
-import {Product} from '../../../../../domain';
-import {ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY, PRODUCT_MODEL_ATTRIBUTES_TAB_NAME} from '../../../../constant';
+} from '../listener';
+import {
+  ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY,
+  PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
+  ROOT_PRODUCT_MODEL_LEVEL,
+  SUB_PRODUCT_MODEL_LEVEL,
+} from '../constant';
 
 const Router = require('pim/router');
 
-const __ = require('oro/translator');
+type FollowAttributesListRecommendationHandler = (product: Product, attributes: string[], axis: string) => void;
 
-const SUB_PRODUCT_MODEL_LEVEL = 1;
-const ROOT_PRODUCT_MODEL_LEVEL = 0;
-
-interface TooManyAttributesLinkProps {
-  axis: string;
-  attributes: string[];
-  numOfAttributes: number;
-  product: Product;
-}
-
-const handleClick = (product: Product, attributes: string[], axis: string) => {
+const followAttributesListRecommendation: FollowAttributesListRecommendationHandler = (
+  product: Product,
+  attributes: string[],
+  axis: string
+) => {
   const attributeToImprove = attributes[0];
 
   // @ts-ignore
@@ -62,22 +60,5 @@ const handleClick = (product: Product, attributes: string[], axis: string) => {
   }
 };
 
-const TooManyAttributesLink: FunctionComponent<TooManyAttributesLinkProps> = ({
-  axis,
-  attributes,
-  numOfAttributes,
-  product,
-}) => {
-  return (
-    <>
-      <button
-        onClick={() => handleClick(product, attributes, axis)}
-        className="AknActionButton AknActionButton--withoutBorder AknDataQualityInsightsManyAttributes"
-      >
-        {__('akeneo_data_quality_insights.product_evaluation.messages.too_many_attributes', {count: numOfAttributes})}
-      </button>
-    </>
-  );
-};
-
-export default TooManyAttributesLink;
+export {followAttributesListRecommendation};
+export type {FollowAttributesListRecommendationHandler};

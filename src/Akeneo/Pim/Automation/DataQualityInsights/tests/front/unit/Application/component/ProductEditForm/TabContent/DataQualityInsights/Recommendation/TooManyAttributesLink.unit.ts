@@ -1,6 +1,6 @@
 import {fireEvent} from '@testing-library/react';
-import {renderTooManyAttributesLink} from '../../../../../../utils/render';
-import {aProduct} from '../../../../../../utils/provider';
+import {renderTooManyAttributesLink} from '../../../../../../../utils/render';
+import {aProduct} from '../../../../../../../utils/provider';
 import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
@@ -10,7 +10,9 @@ describe('TooManyAttributesLink', () => {
   test('it displays a message with the number of attributes to improve', () => {
     const product = aProduct();
 
-    const {getByText} = renderTooManyAttributesLink('an_axis', [], 0, product);
+    const {getByText} = renderTooManyAttributesLink('an_axis', [], 0, {
+      product,
+    });
     expect(
       getByText('akeneo_data_quality_insights.product_evaluation.messages.too_many_attributes')
     ).toBeInTheDocument();
@@ -37,7 +39,9 @@ describe('TooManyAttributesLink user actions', () => {
     });
 
     const product = aProduct();
-    const {getByText} = renderTooManyAttributesLink('enrichment', attributes, 2, product);
+    const {getByText} = renderTooManyAttributesLink('enrichment', attributes, 2, {
+      product,
+    });
 
     fireEvent.click(getByText('akeneo_data_quality_insights.product_evaluation.messages.too_many_attributes'));
     expect(window.dispatchEvent).toHaveBeenCalledWith(expectedEvent);
@@ -52,7 +56,9 @@ describe('TooManyAttributesLink user actions', () => {
     });
 
     const product = aProduct();
-    const {getByText} = renderTooManyAttributesLink('consistency', attributes, 2, product);
+    const {getByText} = renderTooManyAttributesLink('consistency', attributes, 2, {
+      product,
+    });
 
     fireEvent.click(getByText('akeneo_data_quality_insights.product_evaluation.messages.too_many_attributes'));
     expect(window.dispatchEvent).toHaveBeenCalledWith(expectedEvent);

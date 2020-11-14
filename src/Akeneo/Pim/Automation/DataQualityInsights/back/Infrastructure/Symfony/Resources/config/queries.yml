@@ -220,3 +220,17 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQuery'
         tags:
             - { name:  akeneo.pim.automation.data_quality_insights.compute_key_indicator_query}
+
+    akeneo.pim.automation.data_quality_insights.query.product.get_enrichment_images_masks:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesMasksQuery
+        arguments:
+            $connection: '@database_connection'
+            $attributeTypes:
+                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::IMAGE
+
+    akeneo.pim.automation.data_quality_insights.query.product_model.get_enrichment_images_masks:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesProductModelMasksQuery
+        arguments:
+            $connection: '@database_connection'
+            $attributeTypes:
+                - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::IMAGE

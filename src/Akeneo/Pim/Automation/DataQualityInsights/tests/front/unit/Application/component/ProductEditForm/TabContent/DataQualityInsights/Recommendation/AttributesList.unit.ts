@@ -1,5 +1,5 @@
-import {renderAttributesList} from '../../../../../../utils/render';
-import {anEvaluation, aProduct} from '../../../../../../utils/provider';
+import {renderAttributesList} from '../../../../../../../utils/render';
+import {anEvaluation, aProduct} from '../../../../../../../utils/provider';
 import AttributeWithRecommendation from '@akeneo-pim-community/data-quality-insights/src/domain/AttributeWithRecommendation.interface';
 
 describe('AttributesList', () => {
@@ -8,7 +8,9 @@ describe('AttributesList', () => {
     const evaluation = anEvaluation();
     const attributes: AttributeWithRecommendation[] = [];
 
-    const {getByText} = renderAttributesList(product, 'a_criterion', 'an_axis', attributes, evaluation);
+    const {getByText} = renderAttributesList('a_criterion', 'an_axis', attributes, evaluation, {
+      product,
+    });
 
     expect(getByText('akeneo_data_quality_insights.product_evaluation.messages.success.criterion')).toBeInTheDocument();
   });
@@ -18,7 +20,9 @@ describe('AttributesList', () => {
     const evaluation = anEvaluation();
     const attributes: AttributeWithRecommendation[] = [{code: 'an_attribute', label: 'an_attribute'}];
 
-    const {getByText} = renderAttributesList(product, 'a_criterion', 'an_axis', attributes, evaluation);
+    const {getByText} = renderAttributesList('a_criterion', 'an_axis', attributes, evaluation, {
+      product,
+    });
 
     expect(getByText('an_attribute')).toBeInTheDocument();
   });
@@ -45,7 +49,9 @@ describe('AttributesList', () => {
       {code: 'attribute16', label: 'attribute16'},
     ];
 
-    const {getByText} = renderAttributesList(product, 'a_criterion', 'an_axis', attributes, evaluation);
+    const {getByText} = renderAttributesList('a_criterion', 'an_axis', attributes, evaluation, {
+      product,
+    });
 
     expect(
       getByText('akeneo_data_quality_insights.product_evaluation.messages.too_many_attributes')
