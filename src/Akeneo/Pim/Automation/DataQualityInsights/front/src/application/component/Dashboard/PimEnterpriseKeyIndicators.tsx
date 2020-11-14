@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
 import {KeyIndicator, KeyIndicators} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
-import {redirectToProductGridFilteredByKeyIndicator} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/ProductGridRouter";
+import {redirectToProductGridFilteredByKeyIndicator} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/ProductGridRouter';
 import {
   redirectToAttributeGridFilteredByFamilyAndKeyIndicator,
   redirectToAttributeGridFilteredByKeyIndicator
-} from "../../../infrastructure/AttributeGridRouter";
+} from '../../../infrastructure/navigation/AttributeGridRouter';
 import {AssetCollectionIcon, EditIcon, SettingsIcon} from "akeneo-design-system";
 import {useGetSpellcheckSupportedLocales} from "../../../infrastructure/hooks";
 
