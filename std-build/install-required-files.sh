@@ -36,6 +36,9 @@ cp $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/pa
 # Partners are most likely to develop and deploy using local filesystem, not MinIO
 cp $DEV_DISTRIB_DIR/config/packages/prod_onprem_paas/oneup_flysystem.yml $STANDARD_DISTRIB_DIR/config/packages/dev/
 
+# We need google fake credentials for dev environment
+cp $DEV_DISTRIB_DIR/config/fake_credentials_gcp.json $STANDARD_DISTRIB_DIR/config/
+
 # We need a console and FPM entrypoint
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 chmod +x $STANDARD_DISTRIB_DIR/bin/console

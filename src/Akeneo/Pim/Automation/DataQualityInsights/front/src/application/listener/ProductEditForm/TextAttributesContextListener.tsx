@@ -1,6 +1,6 @@
 import React, {useLayoutEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {useFetchProductFamilyInformation, usePageContext, useProduct} from '../../../infrastructure/hooks';
+import {usePageContext, useProduct, useProductFamily} from '../../../infrastructure/hooks';
 import {createWidget, EditorElement, WidgetsCollection} from '../../helper';
 import {Product} from '../../../domain';
 import {Attribute, Family} from '@akeneo-pim-community/data-quality-insights/src/domain';
@@ -78,7 +78,7 @@ const getEditorElement = (element: Element) => {
 };
 
 const TextAttributesContextListener = () => {
-  const family = useFetchProductFamilyInformation();
+  const family = useProductFamily();
   const {attributesTabIsLoading} = usePageContext();
   const product = useProduct();
   const dispatchAction = useDispatch();
