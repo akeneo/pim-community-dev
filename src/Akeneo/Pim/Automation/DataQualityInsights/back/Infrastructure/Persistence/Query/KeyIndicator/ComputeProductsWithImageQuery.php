@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
@@ -31,7 +32,7 @@ final class ComputeProductsWithImageQuery implements ComputeProductsKeyIndicator
     {
         $productsWithImageRates = $this->getEvaluationRatesByProductAndCriterionQuery->toArrayInt(
             $productIds,
-            new CriterionCode('enrichment_has_image') // @todo Use constant when it will be defined
+            new CriterionCode(EvaluateImageEnrichment::CRITERION_CODE)
         );
 
         $productsWithImage = [];
