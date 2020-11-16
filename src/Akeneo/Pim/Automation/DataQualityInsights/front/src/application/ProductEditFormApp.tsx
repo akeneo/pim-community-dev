@@ -10,8 +10,12 @@ import {
 import {fetchProduct} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher';
 import AttributesTabContent from './component/ProductEditForm/TabContent/AttributesTabContent';
 import {DataQualityInsightsTabContent} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent';
-import AxisEvaluation from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
-import Criterion from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import AxisEvaluation
+  from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
+import {
+  Criterion,
+  Icon,
+} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
 import {
   NotApplicableEnrichmentImageMessage,
   Recommendation,
@@ -22,7 +26,7 @@ import {fetchProductDataQualityEvaluation} from '@akeneo-pim-community/data-qual
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
 import {followNotApplicableEnrichmentImageRecommendation} from '@akeneo-pim-community/data-quality-insights/src/application/user-actions';
 import {ThemeProvider} from 'styled-components';
-import {pimTheme} from 'akeneo-design-system';
+import {AssetCollectionIcon, EditIcon, pimTheme, SettingsIcon} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {
   checkFollowingAttributeOptionSpellingCriterionActive,
@@ -54,9 +58,14 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
               productEvaluationFetcher={fetchProductDataQualityEvaluation}
             >
               <AxisEvaluation axis={'enrichment'}>
-                <Criterion code={'completeness_of_non_required_attributes'} />
-                <Criterion code={'completeness_of_required_attributes'} />
+                <Criterion code={'completeness_of_non_required_attributes'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'completeness_of_required_attributes'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
                 <Criterion code={'enrichment_image'}>
+                  <Icon type={AssetCollectionIcon} />
                   <Recommendation
                     type={'not_applicable'}
                     follow={() => followNotApplicableEnrichmentImageRecommendation(product.family)}
@@ -70,20 +79,32 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
               </AxisEvaluation>
 
               <AxisEvaluation axis={'consistency'}>
-                <Criterion code={'consistency_spelling'} />
-                <Criterion code={'consistency_textarea_lowercase_words'} />
-                <Criterion code={'consistency_textarea_uppercase_words'} />
-                <Criterion code={'consistency_text_title_formatting'} />
+                <Criterion code={'consistency_spelling'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'consistency_textarea_lowercase_words'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'consistency_textarea_uppercase_words'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'consistency_text_title_formatting'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
                 <Criterion
                   code={'consistency_attribute_spelling'}
                   followCriterionRecommendation={followAttributeSpellingCriterion}
                   isFollowingCriterionRecommendationAllowed={checkFollowingAttributeSpellingCriterionActive}
-                />
+                >
+                  <Icon type={SettingsIcon} />
+                </Criterion>
                 <Criterion
                   code={'consistency_attribute_option_spelling'}
                   followCriterionRecommendation={followAttributeOptionSpellingCriterion}
                   isFollowingCriterionRecommendationAllowed={checkFollowingAttributeOptionSpellingCriterionActive}
-                />
+                >
+                  <Icon type={SettingsIcon} />
+                </Criterion>
               </AxisEvaluation>
             </DataQualityInsightsTabContent>
             <AxisRatesOverviewPortal />
