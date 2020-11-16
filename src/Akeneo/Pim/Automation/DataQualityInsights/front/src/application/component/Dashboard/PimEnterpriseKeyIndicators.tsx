@@ -106,12 +106,14 @@ const PimEnterpriseKeyIndicators: FC<Props> = ({channel, locale, family, categor
           type="attributes_perfect_spelling"
           title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.attributes_perfect_spelling.title'}
           resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.attributes_to_work_on'}
-          // @ts-ignore
           followResults={(
+            // @ts-ignore
             channelCode: string,
             localeCode: string,
             familyCode: string | null,
+            // @ts-ignore
             categoryId: string | null,
+            // @ts-ignore
             rootCategoryId: string | null
           ) => {
             if (familyCode) {
