@@ -67,21 +67,21 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
      * To fix this, we look for cloned objects by comparing the identifier.
      */
     private function addInversedAssociatedProduct(
-        AssociationInterface $association,
+        AssociationInterface $inversedAssociation,
         ProductInterface $owner,
         EntityWithAssociationsInterface $associatedProduct
     ): void {
         /** @var ProductInterface $product */
-        foreach ($association->getProducts() as $product) {
+        foreach ($inversedAssociation->getProducts() as $product) {
             if ($product->getIdentifier() === $owner->getIdentifier()
                 && $product !== $owner) {
-                $association->removeProduct($product);
+                $inversedAssociation->removeProduct($product);
             }
         }
 
-        $associatedProduct->removeAssociation($association);
-        $association->addProduct($owner);
-        $associatedProduct->addAssociation($association);
+        $associatedProduct->removeAssociation($inversedAssociation);
+        $inversedAssociation->addProduct($owner);
+        $associatedProduct->addAssociation($inversedAssociation);
     }
 
     /**
