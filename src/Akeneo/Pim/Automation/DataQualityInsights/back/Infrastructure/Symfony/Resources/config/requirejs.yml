@@ -22,7 +22,6 @@ config:
 
         # View
         ## Product Edit Form
-        akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-overview: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-overview.tsx
         akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-app: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-app.tsx
         akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-tab-content: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-tab-content.tsx
         akeneo/data-quality-insights/infrastructure/product-edit-form/attributes-tab-content: akeneodataqualityinsights/js/infrastructure/product-edit-form/attributes-tab-content.tsx
