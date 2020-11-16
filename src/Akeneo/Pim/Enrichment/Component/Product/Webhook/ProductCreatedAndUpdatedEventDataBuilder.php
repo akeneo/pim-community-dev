@@ -76,27 +76,27 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
         $pqb = $this->pqbFactory->create(['limit' => count($identifiers)]);
         $pqb->addFilter('identifier', Operators::IN_LIST, $identifiers);
 
-        $productList = $this->getConnectorProductsQuery->fromProductQueryBuilder(
+        $products = $this->getConnectorProductsQuery->fromProductQueryBuilder(
             $pqb,
             $userId,
             null,
             null,
             null
+        )->connectorProducts();
+
+        $resources = array_reduce(
+            $products,
+            function (array $resources, ConnectorProduct $product) {
+                $resources[$product->identifier()] = [
+                    'resource' => $this->connectorProductNormalizer->normalizeConnectorProduct($product)
+                ];
+                return $resources;
+            },
+            array_fill_keys($identifiers, null)
         );
 
-        // TODO : log products not found
+        // TODO: Log products not found.
 
-        return \array_map(function ($identifier) use ($productList) {
-            foreach ($productList->connectorProducts() as $connectorProduct) {
-                /** @var ConnectorProduct $connectorProduct */
-                if ($identifier === $connectorProduct->identifier()) {
-                    return [
-                        'resource' => $this->connectorProductNormalizer->normalizeConnectorProduct($connectorProduct)
-                    ];
-                }
-            }
-
-            return null;
-        }, $identifiers);
+        return array_values($resources);
     }
 }

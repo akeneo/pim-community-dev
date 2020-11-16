@@ -45,9 +45,9 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $eventDataBuilder1->supports($event)->willReturn(false);
         $eventDataBuilder2->supports($event)->willReturn(true);
 
-        $eventDataBuilder2->build($event)->willReturn(['data']);
+        $eventDataBuilder2->build($event, 10)->willReturn(['data']);
 
-        $this->build($event, ['pim_source' => 'staging.akeneo.com'])
+        $this->build($event, ['pim_source' => 'staging.akeneo.com', 'user_id' => 10])
             ->shouldBeLike(
                 [
                     new WebhookEvent(
@@ -75,13 +75,62 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(WebhookEventDataBuilderNotFoundException::class)
+            ->during('build', [$event, ['pim_source' => 'staging.akeneo.com', 'user_id' => 10]]);
+    }
+
+    public function it_throws_an_exception_if_there_is_no_pim_source_in_context(): void {
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $event = $this->createEvent(
+            $author,
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('build', [$event, ['user_id' => 10]]);
+    }
+
+    public function it_throws_an_exception_if_pim_source_is_empty(): void {
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $event = $this->createEvent(
+            $author,
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('build', [$event, ['pim_source' => '', 'user_id' => 10]]);
+    }
+
+    public function it_throws_an_exception_if_pim_source_is_null(): void {
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $event = $this->createEvent(
+            $author,
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('build', [$event, ['pim_source' => null, 'user_id' => 10]]);
+    }
+
+    public function it_throws_an_exception_if_there_is_no_user_id_in_context(): void {
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $event = $this->createEvent(
+            $author,
+            ['data'],
+            1599814161,
+            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
+        );
+
+        $this->shouldThrow(\InvalidArgumentException::class)
             ->during('build', [$event, ['pim_source' => 'staging.akeneo.com']]);
     }
 
-    public function it_throws_an_exception_if_there_is_no_pim_source_in_context(
-        $eventDataBuilder1,
-        $eventDataBuilder2
-    ): void {
+    public function it_throws_an_exception_if_user_id_is_empty(): void {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $event = $this->createEvent(
             $author,
@@ -90,19 +139,11 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($event)->willReturn(false);
-        $eventDataBuilder2->supports($event)->willReturn(true);
-
-        $eventDataBuilder2->build($event)->willReturn(['data']);
-
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$event]);
+            ->during('build', [$event, ['pim_source' => 'staging.akeneo.com', 'user_id' => '']]);
     }
 
-    public function it_throws_an_exception_if_pim_source_is_empty(
-        $eventDataBuilder1,
-        $eventDataBuilder2
-    ): void {
+    public function it_throws_an_exception_if_user_id_is_null(): void {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $event = $this->createEvent(
             $author,
@@ -111,34 +152,8 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($event)->willReturn(false);
-        $eventDataBuilder2->supports($event)->willReturn(true);
-
-        $eventDataBuilder2->build($event)->willReturn(['data']);
-
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$event, ['pim_source' => '']]);
-    }
-
-    public function it_throws_an_exception_if_pim_source_is_null(
-        $eventDataBuilder1,
-        $eventDataBuilder2
-    ): void {
-        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $event = $this->createEvent(
-            $author,
-            ['data'],
-            1599814161,
-            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
-        );
-
-        $eventDataBuilder1->supports($event)->willReturn(false);
-        $eventDataBuilder2->supports($event)->willReturn(true);
-
-        $eventDataBuilder2->build($event)->willReturn(['data']);
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$event, ['pim_source' => null]]);
+            ->during('build', [$event, ['pim_source' => 'staging.akeneo.com', 'user_id' => null]]);
     }
 
     private function createEvent(

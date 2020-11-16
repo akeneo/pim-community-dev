@@ -42,7 +42,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->build(new ProductModelRemoved($author, ['code' => 'product_identifier']))->shouldReturn(
+        $this->build(new ProductModelRemoved($author, ['code' => 'product_identifier']), 10)->shouldReturn(
             [
                 'resource' => ['code' => 'product_identifier'],
             ]
@@ -55,7 +55,10 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 
         $this->shouldThrow(new \InvalidArgumentException())->during(
             'build',
-            [new ProductCreated($author, ['identifier' => '1'])]
+            [
+                new ProductCreated($author, ['identifier' => '1']),
+                10
+            ]
         );
     }
 }

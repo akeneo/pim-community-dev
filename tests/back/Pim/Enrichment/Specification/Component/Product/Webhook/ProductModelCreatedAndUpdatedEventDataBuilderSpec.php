@@ -60,7 +60,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $this->supports(new ProductCreated($author, ['identifier' => '1']))->shouldReturn(false);
     }
 
-    public function it_builds_product_created_event(
+    public function it_builds_product_model_created_event(
         $productModelRepository,
         $externalApiNormalizer
     ): void {
@@ -72,12 +72,12 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
         $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
 
-        $this->build(new ProductModelCreated($author, ['code' => 'polo_col_mao']))->shouldReturn(
+        $this->build(new ProductModelCreated($author, ['code' => 'polo_col_mao']), 10)->shouldReturn(
             ['resource' => ['code' => 'polo_col_mao'],]
         );
     }
 
-    public function it_builds_product_updated_event(
+    public function it_builds_product_model_updated_event(
         $productModelRepository,
         $externalApiNormalizer
     ): void {
@@ -89,7 +89,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
         $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
 
-        $this->build(new ProductModelUpdated($author, ['code' => 'polo_col_mao']))->shouldReturn(
+        $this->build(new ProductModelUpdated($author, ['code' => 'polo_col_mao']), 10)->shouldReturn(
             ['resource' => ['code' => 'polo_col_mao'],]
         );
     }
@@ -99,7 +99,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new ProductCreated($author, ['identifier' => '1'])]);
+            ->during('build', [new ProductCreated($author, ['identifier' => '1']), 10]);
     }
 
     public function it_does_not_build_if_product_model_was_not_found($productModelRepository): void
@@ -109,7 +109,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn(null);
 
         $this->shouldThrow(ProductModelNotFoundException::class)
-            ->during('build', [new ProductModelUpdated($author, ['code' => 'polo_col_mao'])]);
+            ->during('build', [new ProductModelUpdated($author, ['code' => 'polo_col_mao']), 10]);
     }
 
     public function it_raises_a_not_granted_category_exception($productModelRepository)
@@ -124,6 +124,6 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         );
 
         $this->shouldThrow(NotGrantedCategoryException::class)
-            ->during('build', [new ProductModelCreated($author, ['code' => 'polo_col_mao'])]);
+            ->during('build', [new ProductModelCreated($author, ['code' => 'polo_col_mao']), 10]);
     }
 }
