@@ -84,13 +84,13 @@ class WebhookEventBuilder
     /**
      * @param array<mixed> $options
      *
-     * @return array{user_id: string, pim_source: string}>
+     * @return array<mixed>
      */
     private function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['user_id', 'pim_source']);
-        $resolver->setAllowedTypes('user_id', 'string');
+        $resolver->setAllowedTypes('user_id', 'int');
         $resolver->setAllowedTypes('pim_source', 'string');
 
         return $resolver->resolve($options);

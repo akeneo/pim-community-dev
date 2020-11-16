@@ -32,8 +32,10 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(WebhookEventBuilder::class);
     }
 
-    public function it_builds_a_webhook_event($eventDataBuilder1, $eventDataBuilder2): void
-    {
+    public function it_builds_a_webhook_event(
+        EventDataBuilderInterface $notSupportedEventDataBuilder,
+        EventDataBuilderInterface $supportedEventDataBuilder
+    ): void {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $event = $this->createEvent(
             $author,
@@ -42,10 +44,10 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
         );
 
-        $eventDataBuilder1->supports($event)->willReturn(false);
-        $eventDataBuilder2->supports($event)->willReturn(true);
+        $notSupportedEventDataBuilder->supports($event)->willReturn(false);
+        $supportedEventDataBuilder->supports($event)->willReturn(true);
 
-        $eventDataBuilder2->build($event, 10)->willReturn(['data']);
+        $supportedEventDataBuilder->build($event, 10)->willReturn(['data']);
 
         $this->build($event, ['pim_source' => 'staging.akeneo.com', 'user_id' => 10])
             ->shouldBeLike(

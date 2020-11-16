@@ -14,6 +14,8 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuil
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
 use Psr\Log\LoggerInterface;
@@ -79,46 +81,42 @@ final class SendBusinessEventToWebhooksHandler
         $requests = function () use ($event, $webhooks) {
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
-                if ($user->getUsername() === $event->getAuthor()->name()) {
-                    // TODO: Log skipped user.
+
+                $filteredEvent = $this->filterConnectionOwnEvents($user->getUsername(), $event);
+                if (null === $filteredEvent) {
                     continue;
                 }
 
                 try {
                     $webhookEvents = $this->builder->build(
-                        $event,
+                        $filteredEvent,
                         [
                             'pim_source' => $this->pimSource,
                             'user_id' => $webhook->userId(),
                         ]
                     );
+
+                    if (0 === count($webhookEvents)) {
+                        continue;
+                    }
+
+                    yield new WebhookRequest(
+                        $webhook,
+                        $webhookEvents
+                    );
                 } catch (\Throwable $error) {
                     // Handle error gracefully and continue the processing of other webhooks.
-                    // $this->handleError($error, $webhook, $event);
+                    $this->handleError($error, $webhook, $filteredEvent);
                 }
-
-                if (0 === count($webhookEvents)) {
-                    continue;
-                }
-
-                yield new WebhookRequest(
-                    $webhook,
-                    $webhookEvents
-                );
             }
         };
 
-        $endTimeBeforeSend = microtime(true);
-
-        // $webhookEventBuildLog = new WebhookEventBuildLog(
-        //     count($webhooks),
-        //     $event,
-        //     $startTime,
-        //     $endTimeBeforeSend
-        // );
-        // if ($jsonWebhookEventBuildLog = json_encode($webhookEventBuildLog->toLog())) {
-        //     $this->logger->info($jsonWebhookEventBuildLog);
-        // }
+        $this->logger->info(
+            json_encode(
+                (new WebhookEventBuildLog(count($webhooks), $event, $startTime, microtime(true)))->toLog(),
+                JSON_THROW_ON_ERROR
+            )
+        );
 
         if ($isFake) {
             $this->client->bulkFakeSend($requests());
@@ -127,29 +125,70 @@ final class SendBusinessEventToWebhooksHandler
         }
     }
 
-    private function handleError(\Throwable $error, ActiveWebhook $webhook, EventInterface $businessEvent): void
+    /**
+     * @param EventInterface|BulkEventInterface $event
+     *
+     * @return EventInterface|BulkEventInterface|null
+     */
+    private function filterConnectionOwnEvents(string $username, object $event): ?object
+    {
+        if ($event instanceof BulkEventInterface) {
+            $events = array_filter(
+                $event->getEvents(),
+                function (EventInterface $event) use ($username) {
+                    if ($username === $event->getAuthor()->name()) {
+                        // TODO: Log skipped event.
+
+                        return false;
+                    }
+
+                    return true;
+                }
+            );
+            if (count($events) === 0) {
+                return null;
+            }
+
+            return new BulkEvent($events);
+        }
+
+        if ($event instanceof EventInterface && $username === $event->getAuthor()->name()) {
+            // TODO: Log skipped event.
+
+            return null;
+        }
+
+        return $event;
+    }
+
+    /**
+     * @param EventInterface|BulkEventInterface $event
+     */
+    private function handleError(\Throwable $error, ActiveWebhook $webhook, object $event): void
     {
         if ($error instanceof WebhookEventDataBuilderNotFoundException) {
             $this->logger->warning($error->getMessage());
-        } elseif ($error instanceof EventBuildingExceptionInterface) {
-            $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog(
-                $error->getMessage(),
-                $webhook,
-                $businessEvent
-            );
-            if ($jsonWebhookEventDataBuilderErrorLog = json_encode($webhookEventDataBuilderErrorLog->toLog())) {
-                $this->logger->warning($jsonWebhookEventDataBuilderErrorLog);
-            }
-        } else {
-            $webhookEventDataBuilderErrorLog = new WebhookEventDataBuilderErrorLog(
-                (string)$error,
-                $webhook,
-                $businessEvent
-            );
-            if ($jsonWebhookEventDataBuilderErrorLog = json_encode($webhookEventDataBuilderErrorLog->toLog())) {
-                $this->logger->critical($jsonWebhookEventDataBuilderErrorLog);
-            }
+
+            return;
         }
+
+        if ($error instanceof EventBuildingExceptionInterface) {
+            $this->logger->warning(
+                json_encode(
+                    (new WebhookEventDataBuilderErrorLog($error->getMessage(), $webhook, $event))->toLog(),
+                    JSON_THROW_ON_ERROR
+                )
+            );
+
+            return;
+        }
+
+        $this->logger->critical(
+            json_encode(
+                (new WebhookEventDataBuilderErrorLog((string)$error, $webhook, $event))->toLog(),
+                JSON_THROW_ON_ERROR
+            )
+        );
     }
 
     /**

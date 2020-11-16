@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 
 /**
@@ -12,19 +13,23 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  */
 class WebhookEventBuildLog
 {
-    private int $webhookEventBuildCount;
-    private EventInterface $businessEvent;
+    private int $subscriptionCount;
+    /** @var EventInterface|BulkEventInterface */
+    private object $event;
     private float $startTime;
     private float $endTime;
 
+    /**
+     * @param EventInterface|BulkEventInterface $event
+     */
     public function __construct(
-        int $webhookEventBuildCount,
-        EventInterface $businessEvent,
+        int $subscriptionCount,
+        object $event,
         float $startTime,
         float $endTime
     ) {
-        $this->webhookEventBuildCount = $webhookEventBuildCount;
-        $this->businessEvent = $businessEvent;
+        $this->subscriptionCount = $subscriptionCount;
+        $this->event = $event;
         $this->startTime = $startTime;
         $this->endTime = $endTime;
     }
@@ -32,30 +37,42 @@ class WebhookEventBuildLog
     /**
      * @return array{
      *  type: string,
-     * webhook_event_build_count: int,
-     * duration: int,
-     *  event: array{
+     *  subscription_count: int,
+     *  event_count: int,
+     *  duration: int,
+     *  events: array<array{
      *      uuid: string,
      *      author: string,
      *      author_type: string,
      *      name: string,
      *      timestamp: int,
-     *  }
+     *  }>
      * }
      */
     public function toLog(): array
     {
+        $events = [];
+        if ($this->event instanceof EventInterface) {
+            $events[] = $this->event;
+        }
+        if ($this->event instanceof BulkEventInterface) {
+            $events = $this->event->getEvents();
+        }
+
         return [
             'type' => 'webhook.event_build',
-            'webhook_event_build_count' => $this->webhookEventBuildCount,
+            'subscription_count' => $this->subscriptionCount,
+            'event_count' => count($events),
             'duration' => $this->getDuration(),
-            'event' => [
-                'uuid' => $this->businessEvent->getUuid(),
-                'author' => $this->businessEvent->getAuthor()->name(),
-                'author_type' => $this->businessEvent->getAuthor()->type(),
-                'name' => $this->businessEvent->getName(),
-                'timestamp' => $this->businessEvent->getTimestamp(),
-            ],
+            'events' => array_map(function (EventInterface $event) {
+                return [
+                    'uuid' => $event->getUuid(),
+                    'author' => $event->getAuthor()->name(),
+                    'author_type' => $event->getAuthor()->type(),
+                    'name' => $event->getName(),
+                    'timestamp' => $event->getTimestamp(),
+                ];
+            }, $events),
         ];
     }
 
