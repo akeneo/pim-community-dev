@@ -5,10 +5,10 @@ import {
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
-  PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
-  PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_ATTRIBUTES_TAB_NAME,
+  PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
+  PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
 } from './application/constant';
 
 import {
@@ -23,18 +23,22 @@ import {
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_MODEL_LEVEL_CHANGED,
   PRODUCT_TAB_CHANGED,
+  DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
 } from './application/listener';
 
 import ProductEditFormApp from './application/ProductEditFormApp';
 import ProductModelEditFormApp from './application/ProductModelEditFormApp';
 import {DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/TabContent';
 
-import fetchProductDataQualityEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
+import fetchProductDataQualityEvaluation
+  from './infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
 import fetchProductModelEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
 
 import {CriterionEvaluationResult, ProductEvaluation} from './domain';
 
 import {AttributeGroupDQIActivation} from './application/component/AttributeGroup/AttributeGroupDQIActivation';
+import {QualityScoreBar} from './application/component/QualityScoreBar';
+import {CONTAINER_ELEMENT_ID as DATA_QUALITY_INSIGHTS_PRODUCT_QUALITY_SCORE_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/QualityScorePortal';
 
 export {
   Rate,
@@ -66,4 +70,7 @@ export {
   ProductEvaluation,
   CriterionEvaluationResult,
   AttributeGroupDQIActivation,
+  QualityScoreBar,
+  DATA_QUALITY_INSIGHTS_PRODUCT_QUALITY_SCORE_CONTAINER_ELEMENT_ID,
+  DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
 };

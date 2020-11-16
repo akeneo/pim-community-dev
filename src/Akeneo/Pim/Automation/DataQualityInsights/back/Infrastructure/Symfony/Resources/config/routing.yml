@@ -74,3 +74,10 @@ akeneo_data_quality_insights_get_all_attribute_groups_activation:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetAllAttributeGroupsActivationController
         _feature: data_quality_insights
     methods: [ GET ]
+
+akeneo_data_quality_insights_product_quality_score:
+    path: /data-quality-insights/product-quality-score/{productId}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductQualityScoreController
+        _feature: data_quality_insights
+    methods: [GET]

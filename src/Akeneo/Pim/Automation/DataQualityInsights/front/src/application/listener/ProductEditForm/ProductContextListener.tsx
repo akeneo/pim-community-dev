@@ -16,6 +16,7 @@ export const DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES =
   'data-quality:product:filter_all_improvable_attributes';
 export const DATA_QUALITY_INSIGHTS_PRODUCT_SAVING = 'data-quality:product:saving';
 export const DATA_QUALITY_INSIGHTS_PRODUCT_SAVED = 'data-quality:product:saved';
+export const DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB = 'data-quality:redirect:dqi-tab';
 
 const ProductContextListener: FunctionComponent<ProductContextListenerProps> = ({product, productFetcher}) => {
   const [productHasToBeReloaded, setProductHasToBeReloaded] = useState(false);

@@ -18,6 +18,7 @@ import {
 } from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
 import {followNotApplicableEnrichmentImageRecommendation} from './user-actions';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import QualityScorePortal from "./component/ProductEditForm/QualityScorePortal";
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -62,6 +63,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                 </Criterion>
               </AxisEvaluation>
             </DataQualityInsightsTabContent>
+            <QualityScorePortal/>
           </AxesContextProvider>
         </Provider>
       </ThemeProvider>

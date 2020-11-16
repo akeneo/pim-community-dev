@@ -4,7 +4,7 @@ import useFetchProductDataQualityEvaluation from './ProductEditForm/useFetchProd
 import useProductFamily from './ProductEditForm/useProductFamily';
 import useCatalogContext from './ProductEditForm/useCatalogContext';
 import useProduct from './ProductEditForm/useProduct';
-import useFetchProductAxisRates from './ProductEditForm/useFetchProductAxisRates';
+import {useFetchProductQualityScore} from './ProductEditForm/useFetchProductQualityScore';
 import usePageContext from './ProductEditForm/usePageContext';
 import useProductEvaluation from './ProductEditForm/useProductEvaluation';
 import {useProductEvaluatedAttributeGroups} from './AttributeGroup/useProductEvaluatedAttributeGroups';
@@ -17,7 +17,7 @@ export {
   useProductFamily,
   useCatalogContext,
   useProduct,
-  useFetchProductAxisRates,
+  useFetchProductQualityScore,
   usePageContext,
   useProductEvaluation,
   useProductEvaluatedAttributeGroups,
