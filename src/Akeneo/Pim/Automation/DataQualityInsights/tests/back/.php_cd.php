@@ -115,6 +115,8 @@ $rules = [
             'Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource',
             'Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource',
 
+            //Attribute group grid
+            'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
 
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager',
@@ -131,6 +133,7 @@ $rules = [
             'Doctrine\DBAL',
             'Doctrine\Common\Persistence\ObjectRepository',
             'Doctrine\ORM\Query\Expr',
+            'Doctrine\ORM\QueryBuilder',
             'League\Flysystem\MountManager',
             'Psr\Log\LoggerInterface',
             'Symfony\Component\Config\FileLocator',
@@ -145,6 +148,7 @@ $rules = [
             'Symfony\Component\Validator\Constraints',
             'Symfony\Contracts\EventDispatcher',
             'Symfony\Component\Form\FormFactoryInterface',
+            'Symfony\Component\Translation\TranslatorInterface',
             'GuzzleHttp\ClientInterface',
             'GuzzleHttp\Exception',
             'Mekras\Speller',
