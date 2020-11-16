@@ -4,7 +4,14 @@ const fs = require('fs');
 const yargs = require('yargs');
 const glob = require('glob');
 
-const {_: commandName, ComponentName, sourceFolder} = yargs
+const getDSMFolder = (binaryPath) => {
+  const binaryFolder = binaryPath.split('/');
+  binaryFolder.pop();
+
+  return `${process.cwd()}/${binaryFolder.join('/')}/..`;
+}
+
+const {_: commandName, ComponentName, sourceFolder, $0: binaryPath} = yargs
   .command('generate [ComponentName]', 'Generate a new component with the given name', yargs => {
     yargs.positional('ComponentName', {
       describe: 'The component name you want to create',
@@ -29,7 +36,7 @@ const {_: commandName, ComponentName, sourceFolder} = yargs
           throw new Error('The component name should be Capitalized (first letter uppercase)');
         }
 
-        if (fs.existsSync(`src/components/${argv.ComponentName}`)) {
+        if (fs.existsSync(`${getDSMFolder(argv.$0)}/src/components/${argv.ComponentName}`)) {
           throw new Error(`Component "${argv.ComponentName}" already exists`);
         }
         break;
@@ -92,10 +99,10 @@ const replaceInFile = async (file, search, replace) => {
     });
   });
 };
-const renameComponentFolder = async (sourceComponentName, targetComponentName) => {
-  const files = fs.readdirSync(`src/components/${targetComponentName}`);
+const renameComponentFolder = async (baseDir, sourceComponentName, targetComponentName) => {
+  const files = fs.readdirSync(`${baseDir}/src/components/${targetComponentName}`);
   for (const iterator of files) {
-    await replaceInFile(`src/components/${targetComponentName}/${iterator}`, sourceComponentName, targetComponentName);
+    await replaceInFile(`${baseDir}/src/components/${targetComponentName}/${iterator}`, sourceComponentName, targetComponentName);
   }
 };
 
@@ -189,12 +196,13 @@ const compileMetrics = metrics => {
 };
 
 (async () => {
+
   try {
     switch (commandName[0]) {
       case 'generate':
-        await copyComponentFolder('generator/components/MyComponent', `src/components/${ComponentName}`);
-        await renameComponentFolder('MyComponent', ComponentName);
-        exportComponentToIndex('src/components/index.ts', ComponentName);
+        await copyComponentFolder(`${getDSMFolder(binaryPath)}/generator/components/MyComponent`, `${getDSMFolder(binaryPath)}/src/components/${ComponentName}`);
+        await renameComponentFolder(getDSMFolder(binaryPath), 'MyComponent', ComponentName);
+        exportComponentToIndex(`${getDSMFolder(binaryPath)}/src/components/index.ts`, ComponentName);
         break;
       case 'metric':
         const files = await getTsxFiles(sourceFolder);
