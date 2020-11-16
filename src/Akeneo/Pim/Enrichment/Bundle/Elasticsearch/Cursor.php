@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ResultInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
@@ -19,16 +21,12 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Cursor extends AbstractCursor implements CursorInterface
+class Cursor extends AbstractCursor implements CursorInterface, ResultAwareInterface
 {
-    /** @var array */
-    private $esQuery;
-
-    /** @var int */
-    private $pageSize;
-
-    /** @var array */
-    private $searchAfter;
+    private array $esQuery;
+    private int $pageSize;
+    private array $searchAfter;
+    private ?ResultInterface $result;
 
     /**
      * @param Client                        $esClient
@@ -101,6 +99,7 @@ class Cursor extends AbstractCursor implements CursorInterface
         }
 
         $response = $this->esClient->search($esQuery);
+        $this->result = new ElasticsearchResult($response);
         $this->count = $response['hits']['total']['value'];
 
         foreach ($response['hits']['hits'] as $hit) {
@@ -114,5 +113,17 @@ class Cursor extends AbstractCursor implements CursorInterface
         }
 
         return $identifiers;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResult(): ResultInterface
+    {
+        if (null === $this->result) {
+            $this->getNextIdentifiers([]);
+        }
+
+        return $this->result;
     }
 }
