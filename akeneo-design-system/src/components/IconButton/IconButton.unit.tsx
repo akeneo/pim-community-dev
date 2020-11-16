@@ -4,9 +4,21 @@ import {render, screen} from '../../storybook/test-util';
 import {ActivityIcon} from '../../icons';
 
 test('it renders its children properly', () => {
-  render(<IconButton icon={<ActivityIcon />} />);
+  render(
+    <>
+      <IconButton icon={<ActivityIcon />} />
+      <IconButton size="small" icon={<ActivityIcon />} />
+    </>
+  );
 
-  expect(screen.getByRole('button')).toBeInTheDocument();
+  expect(screen.getAllByRole('button').length).toEqual(2);
+});
+
+test('it does not render other children than the given Icon', () => {
+  //@ts-expect-error This other child should not be displayed
+  render(<IconButton icon={<ActivityIcon />}>Other child</IconButton>);
+
+  expect(screen.queryByText('Other child')).not.toBeInTheDocument();
 });
 
 test('IconButton supports forwardRef', () => {
