@@ -1,7 +1,7 @@
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render, waitForElement} from '@testing-library/react';
+import {fireEvent, render, waitFor} from '@testing-library/react';
 
 import FamilyFilter from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Overview/Filters/FamilyFilter';
 import fetchFamilies from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies';
@@ -36,7 +36,7 @@ async function openFamilyFilterDropdown(getByTestId) {
 }
 
 async function selectMugsFamily(getByTestId) {
-  const mugsLabel = await waitForElement(() => getByTestId('dqiFamily_mugs'));
+  const mugsLabel = await waitFor(() => getByTestId('dqiFamily_mugs'));
   fireEvent.click(mugsLabel);
 }
 

@@ -9,7 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
-use Webmozart\Assert\Assert;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -32,12 +32,12 @@ class WebhookEventBuilder
     /**
      * @param EventInterface|BulkEventInterface $event
      * @param array<mixed> $context
+     *
      * @return array<WebhookEvent>
      */
     public function build(object $event, array $context = []): array
     {
-        Assert::notEmpty($context['pim_source'] ?? null);
-        Assert::notEmpty($context['user_id'] ?? null);
+        $context = $this->resolveOptions($context);
 
         $eventDataBuilder = $this->getEventDataBuilder($event);
 
@@ -63,7 +63,8 @@ class WebhookEventBuilder
             $webhookEvents = [];
             foreach ($events as $i => $event) {
                 if (null === $eventsData[$i]) {
-                    // LOG event data not built?
+                    // TODO: Log event data not built.
+
                     continue;
                 }
                 $webhookEvents[] = new WebhookEvent(
@@ -78,6 +79,21 @@ class WebhookEventBuilder
 
             return $webhookEvents;
         }
+    }
+
+    /**
+     * @param array<mixed> $options
+     *
+     * @return array{user_id: string, pim_source: string}>
+     */
+    private function resolveOptions(array $options): array
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(['user_id', 'pim_source']);
+        $resolver->setAllowedTypes('user_id', 'string');
+        $resolver->setAllowedTypes('pim_source', 'string');
+
+        return $resolver->resolve($options);
     }
 
     /**

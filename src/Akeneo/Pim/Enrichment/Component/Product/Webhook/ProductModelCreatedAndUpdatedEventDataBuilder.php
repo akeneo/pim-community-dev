@@ -34,21 +34,21 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
         $this->externalApiNormalizer = $externalApiNormalizer;
     }
 
-    public function supports(object $businessEvent): bool
+    public function supports(object $event): bool
     {
-        return $businessEvent instanceof ProductModelUpdated || $businessEvent instanceof ProductModelCreated;
+        return $event instanceof ProductModelUpdated || $event instanceof ProductModelCreated;
     }
 
     /**
-     * @param ProductModelUpdated|ProductModelCreated $businessEvent
+     * @param ProductModelUpdated|ProductModelCreated $event
      */
-    public function build(object $businessEvent, int $userId): array
+    public function build(object $event, int $userId): array
     {
-        if (false === $this->supports($businessEvent)) {
+        if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
         }
 
-        $data = $businessEvent->getData();
+        $data = $event->getData();
 
         try {
             $productModel = $this->productModelRepository->findOneByIdentifier($data['code']);

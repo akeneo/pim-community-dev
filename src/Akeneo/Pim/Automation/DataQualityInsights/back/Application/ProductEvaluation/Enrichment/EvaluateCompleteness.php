@@ -22,8 +22,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
 final class EvaluateCompleteness
 {
-    /** @var GetLocalesByChannelQueryInterface */
-    private $localesByChannelQuery;
+    private GetLocalesByChannelQueryInterface $localesByChannelQuery;
 
     public function __construct(GetLocalesByChannelQueryInterface $localesByChannelQuery)
     {

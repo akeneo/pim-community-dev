@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 use Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrdersEqualOrSuperiorTo;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -22,14 +23,16 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
         ItemReaderInterface $attributeGroupReader,
         SaverInterface $attributeGroupSaver,
         FindAttributeGroupOrdersEqualOrSuperiorTo $findAttributeGroupOrdersEqualOrSuperiorTo,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        JobRepositoryInterface $jobRepository
     ) {
         $this->beConstructedWith(
             $attributeGroupRepository,
             $attributeGroupReader,
             $attributeGroupSaver,
             $findAttributeGroupOrdersEqualOrSuperiorTo,
-            $validator
+            $validator,
+            $jobRepository
         );
     }
 
@@ -62,6 +65,7 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup);
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $this->execute($attributeGroup);
     }
@@ -90,6 +94,7 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup);
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $this->execute($attributeGroup);
     }
@@ -114,6 +119,7 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup)->shouldNotBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $this->execute($attributeGroup);
     }
@@ -136,6 +142,7 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup)->shouldNotBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $this->execute($attributeGroup);
     }
@@ -166,6 +173,7 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup)->shouldNotBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
 
         $this->execute($attributeGroup);
     }

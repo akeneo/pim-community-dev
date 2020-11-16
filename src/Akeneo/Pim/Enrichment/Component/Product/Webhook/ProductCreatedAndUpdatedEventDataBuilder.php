@@ -11,7 +11,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 
@@ -56,9 +55,6 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 
     /**
      * @param BulkEventInterface $bulkEvent
-     *
-     * @throws NotGrantedCategoryException
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
      */
     public function build(object $bulkEvent, int $userId): array
     {

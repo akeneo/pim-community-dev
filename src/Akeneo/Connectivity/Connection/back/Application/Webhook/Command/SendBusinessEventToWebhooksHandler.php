@@ -28,6 +28,7 @@ final class SendBusinessEventToWebhooksHandler
     const FAKE_CONNECTION_CODE = 'FAKE_CONNECTION_CODE';
     const FAKE_SECRET = 'FAKE_SECRET';
     const FAKE_URL = 'FAKE_URL';
+    const NUMBER_FAKE_WEBHOOKS = 3;
 
     private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
@@ -69,7 +70,7 @@ final class SendBusinessEventToWebhooksHandler
                 return;
             }
 
-            $webhooks[] = $this->buildFakeActiveWebhook($userId);
+            $webhooks = $this->buildFakeActiveWebhooks($userId);
             $isFake = true;
         }
 
@@ -77,9 +78,13 @@ final class SendBusinessEventToWebhooksHandler
 
         $requests = function () use ($event, $webhooks) {
             foreach ($webhooks as $webhook) {
-                try {
-                    $this->webhookUserAuthenticator->authenticate($webhook->userId());
+                $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
+                if ($user->getUsername() === $event->getAuthor()->name()) {
+                    // TODO: Log skipped user.
+                    continue;
+                }
 
+                try {
                     $webhookEvents = $this->builder->build(
                         $event,
                         [
@@ -87,19 +92,19 @@ final class SendBusinessEventToWebhooksHandler
                             'user_id' => $webhook->userId(),
                         ]
                     );
-
-                    if (0 === count($webhookEvents)) {
-                        continue;
-                    }
-
-                    yield new WebhookRequest(
-                        $webhook,
-                        $webhookEvents
-                    );
                 } catch (\Throwable $error) {
                     // Handle error gracefully and continue the processing of other webhooks.
                     // $this->handleError($error, $webhook, $event);
                 }
+
+                if (0 === count($webhookEvents)) {
+                    continue;
+                }
+
+                yield new WebhookRequest(
+                    $webhook,
+                    $webhookEvents
+                );
             }
         };
 
@@ -147,13 +152,20 @@ final class SendBusinessEventToWebhooksHandler
         }
     }
 
-    private function buildFakeActiveWebhook(int $userId): ActiveWebhook
+    /**
+     * @return array<ActiveWebhook>
+     */
+    private function buildFakeActiveWebhooks(int $userId): array
     {
-        return new ActiveWebhook(
-            self::FAKE_CONNECTION_CODE,
-            $userId,
-            self::FAKE_SECRET,
-            self::FAKE_URL
+        return array_fill(
+            0,
+            self::NUMBER_FAKE_WEBHOOKS,
+            new ActiveWebhook(
+                self::FAKE_CONNECTION_CODE,
+                $userId,
+                self::FAKE_SECRET,
+                self::FAKE_URL
+            )
         );
     }
 }

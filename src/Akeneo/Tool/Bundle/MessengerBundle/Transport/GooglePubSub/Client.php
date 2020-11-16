@@ -43,7 +43,7 @@ class Client
             'project_id' => null,
             'topic_name' => null,
             'subscription_name' => null,
-            'auto_setup' => true,
+            'auto_setup' => false,
         ];
         $options = array_merge($defaultOptions, $options);
 

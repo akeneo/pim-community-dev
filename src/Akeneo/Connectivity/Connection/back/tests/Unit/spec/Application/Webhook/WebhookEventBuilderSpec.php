@@ -21,10 +21,10 @@ use PhpSpec\ObjectBehavior;
 class WebhookEventBuilderSpec extends ObjectBehavior
 {
     public function let(
-        EventDataBuilderInterface $eventDataBuilder1,
-        EventDataBuilderInterface $eventDataBuilder2
+        EventDataBuilderInterface $notSupportedEventDataBuilder,
+        EventDataBuilderInterface $supportedEventDataBuilder
     ): void {
-        $this->beConstructedWith([$eventDataBuilder1, $eventDataBuilder2]);
+        $this->beConstructedWith([$notSupportedEventDataBuilder, $supportedEventDataBuilder]);
     }
 
     public function it_is_initializable(): void
@@ -78,7 +78,8 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             ->during('build', [$event, ['pim_source' => 'staging.akeneo.com', 'user_id' => 10]]);
     }
 
-    public function it_throws_an_exception_if_there_is_no_pim_source_in_context(): void {
+    public function it_throws_an_exception_if_there_is_no_pim_source_in_context(): void
+    {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $event = $this->createEvent(
             $author,
@@ -91,20 +92,8 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             ->during('build', [$event, ['user_id' => 10]]);
     }
 
-    public function it_throws_an_exception_if_pim_source_is_empty(): void {
-        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $event = $this->createEvent(
-            $author,
-            ['data'],
-            1599814161,
-            'a20832d1-a1e6-4f39-99ea-a1dd859faddb'
-        );
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$event, ['pim_source' => '', 'user_id' => 10]]);
-    }
-
-    public function it_throws_an_exception_if_pim_source_is_null(): void {
+    public function it_throws_an_exception_if_pim_source_is_null(): void
+    {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $event = $this->createEvent(
             $author,
@@ -117,7 +106,8 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             ->during('build', [$event, ['pim_source' => null, 'user_id' => 10]]);
     }
 
-    public function it_throws_an_exception_if_there_is_no_user_id_in_context(): void {
+    public function it_throws_an_exception_if_there_is_no_user_id_in_context(): void
+    {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $event = $this->createEvent(
             $author,
@@ -130,7 +120,8 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             ->during('build', [$event, ['pim_source' => 'staging.akeneo.com']]);
     }
 
-    public function it_throws_an_exception_if_user_id_is_empty(): void {
+    public function it_throws_an_exception_if_user_id_is_empty(): void
+    {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $event = $this->createEvent(
             $author,
@@ -143,7 +134,8 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             ->during('build', [$event, ['pim_source' => 'staging.akeneo.com', 'user_id' => '']]);
     }
 
-    public function it_throws_an_exception_if_user_id_is_null(): void {
+    public function it_throws_an_exception_if_user_id_is_null(): void
+    {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $event = $this->createEvent(
             $author,

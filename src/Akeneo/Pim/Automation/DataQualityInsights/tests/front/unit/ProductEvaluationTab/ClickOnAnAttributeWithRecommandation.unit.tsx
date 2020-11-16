@@ -4,14 +4,14 @@ import {Provider} from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, render} from '@testing-library/react';
 
-import RecommendationAttributesList from '@akeneo-pim-community/data-quality-insights//src/application/component/ProductEditForm/TabContent/DataQualityInsights/RecommendationAttributesList';
+import {RecommendationWithAttributesList} from '@akeneo-pim-community/data-quality-insights//src/application/component/ProductEditForm/TabContent/DataQualityInsights/';
 import {Evaluation, Product} from '@akeneo-pim-community/data-quality-insights//src/domain';
 import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
 import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from '@akeneo-pim-community/data-quality-insights//src/application/listener';
 import {
   ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
-} from '@akeneo-pim-community/data-quality-insights//src/application/constant';
+} from '@akeneo-pim-community/data-quality-insights/src/application/constant';
 
 beforeEach(() => {
   jest.resetModules();
@@ -45,7 +45,7 @@ describe('Click on improvable or missing attributes', () => {
     const product = buildSimpleProduct();
     const {getAllByTestId} = renderWithRedux(
       product,
-      <RecommendationAttributesList
+      <RecommendationWithAttributesList
         product={product}
         attributes={['description', 'title', 'weight']}
         axis={'consistency'}
@@ -63,7 +63,7 @@ describe('Click on improvable or missing attributes', () => {
     const product = buildThirdLevelProduct();
     const {getAllByTestId} = renderWithRedux(
       product,
-      <RecommendationAttributesList
+      <RecommendationWithAttributesList
         product={product}
         attributes={['description', 'title', 'weight']}
         axis={'consistency'}
@@ -91,7 +91,7 @@ describe('Click on improvable or missing attributes', () => {
     const product = buildSecondLevelProduct();
     const {getAllByTestId} = renderWithRedux(
       product,
-      <RecommendationAttributesList
+      <RecommendationWithAttributesList
         product={product}
         attributes={['description', 'title']}
         axis={'consistency'}

@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Link} from './Link';
+import {Button} from '../Button/Button';
+import LinkTo from '@storybook/addon-links/react';
 
 <Meta
   title="Components/Link"
@@ -37,6 +39,10 @@ Use this playground to test the link component
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## Having a link looking like a button
+
+To make your Link look like a `Button`, you can follow <LinkTo kind="Components/Button" story="Link">this documentation</LinkTo>
 
 ## Variation on status
 
