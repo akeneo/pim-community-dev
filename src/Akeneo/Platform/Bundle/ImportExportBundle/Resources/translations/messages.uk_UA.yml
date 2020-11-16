@@ -1,0 +1,166 @@
+#Entities
+Job: Робота
+Connector: Коннектор
+pim_import_export:
+  job: Робота
+  connector: Коннектор
+  ## Job status
+  status:
+    0: Готовий
+  batch_status:
+    1: Завершено
+    2: Запуск
+    3: Розпочато
+    4: Зупинка
+    5: Зупинено
+    6: Невдало
+    7: Завершити
+    8: Невідомий
+  download_archive:
+    archive: завантажити створений архів| завантажити створені архіви
+    output: скачати згенерований файл | скачати згенеровані файли
+    input: скачати файл читання | скачати файли читання
+    invalid_xlsx: скачати неприпустимі дані
+    invalid_csv: скачати неприпустимі дані
+  notification:
+    export:
+      error: Не вдалося експортувати <strong>%label%</strong>
+      warning: Експорт <strong>%label%</strong> завершений з деякими попередженнями
+      success: Експорт <strong>%label%</strong> завершений
+    import:
+      error: Не вдалося імпортувати <strong>%label%</strong>
+      warning: Імпорт <strong>%label%</strong> завершений з деякими попередженнями
+      success: Імпорт <strong>%label%</strong> завершений
+  list: Оберіть завдання
+  job_profile:
+    tab:
+      property.title: Загальні властивості
+      history.title: Історія
+      job_content.title: Вміст
+#Page titles:
+pim_title.export_profile.index: Керування профілями експорту
+pim_title.export_profile.edit: Профіль експорту %job.label% | Редагувати
+pim_title.export_profile.show: Профіль експорту %job.label% | Показати
+pim_title.export_execution.index: Історія запусків експорту
+pim_title.export_execution.show: Запуски експорту | Подробиці
+pim_title.import_profile.index: Керування профілями імпорту
+pim_title.import_profile.edit: Профіль імпорту %job.label% | Редагувати
+pim_title.import_profile.show: Профіль імпорту %job.label% | Показати
+pim_title.import_execution.index: Історія запусків імпорту
+pim_title.import_execution.show: Запуски імпорту | Подробиці
+#Entity and page header titles
+export profile:
+  title: профіль експорту
+  edit: редагувати профіль експорту
+import profile:
+  title: профіль імпорту
+  edit: редагувати профіль імпорту
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Переглянути список профілів експорту
+      create: Створити профіль експорту
+      show: Показати профіль експорту
+      edit: Редагувати профіль експорту
+      remove: Видалити профіль експорту
+      launch: Запустити експорт профілю
+      property_edit: Редагувати загальні властивості профілю експорту
+      property_show: Показати загальні властивості профілю експорту
+      history: Перегляд журналу профілю експорту
+      content_edit: Редагувати вміст профілю експорту
+      content_show: Показати вміст профілю експорту
+    import_profile:
+      index: Переглянути список профілів імпорту
+      create: Створити профіль імпорту
+      show: Показати профіль імпорту
+      edit: Редагувати профіль імпорту
+      remove: Видалити профіль імпорту
+      launch: Запустити імпорт профілю
+      history: Перегляд журналу профілю імпорту
+    export_execution:
+      index: Переглянути список звітів експорту
+      show: Переглянути подробиці звіту експорту
+      dl_log: Скачати журнал експорту
+      dl_files: Скачати експортовані файли
+    import_execution:
+      index: Переглянути список звітів імпорту
+      show: Переглянути подробиці звіту імпорту
+      dl_log: Скачати журнал імпорту
+      dl_files: Скачати імпортовані файли
+  acl_group:
+    export: Профілі експорту
+    import: Профілі імпорту
+#Buttons
+btn:
+  create:
+    export profile: створити профіль експорту
+    import profile: створити профіль імпорту
+Upload and import now: Завантажити та імпортувати зараз
+import now: Імпортувати зараз
+export now: Експортувати зараз
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Ви впевнені, що ви хочете видалили профіль експорту %name%?
+    import profile: Ви впевнені, що ви хочете видалити профіль імпорту %name%?
+#Flash messages
+flash:
+  export:
+    created: Експорт було успішно створено
+    removed: Експорт було видалено
+    updated: Експорт було успішно оновлено
+    running: Виконується експорт
+  import:
+    created: Імпорт було успішно створено
+    removed: Імпорт було видалено
+    updated: Імпорт було успішно оновлено
+    running: Виконується імпорт
+#Tabs
+General properties: Загальні властивості
+History: Історія
+pane.accordion:
+  properties: Властивості
+  global_settings: Глобальні налаштування
+  filters: Фільтри
+#Popin titles
+popin.create:
+  export_profile.title: Створити новий профіль експорту
+  import_profile.title: Створити новий профіль імпорту
+#Job execution
+'Display item': Показати елемент
+'Hide item': Приховати елемент
+'Collecting data about job execution...': Збирання даних про виконання роботи...
+'You must select a file to upload': Необхідно вибрати файл для завантаження
+Download log: Журнал завантаження
+Show profile: Показати профіль
+execution details: подробиці виконання
+job_execution.summary:
+  read: прочитано
+  write: записано
+  skip: пропущено
+  create: створено
+  update: оновлено
+  update_products: оновлених продуктів
+  skip_products: пропущених продуктів
+  displayed: відображені перші попередження
+  charset_validator:
+    title: 'Кодування файлу:'
+    skipped: пропущено, розширення з білого списку
+Step: Етап
+Status: Статус
+Warnings: Попередження
+Summary: Зведення
+Start: Початок
+End: Кінець
+#Process tracker
+set_attribute_requirements: Назначити вимоги атрибутів
+COMPLETED: Завершено
+STARTING: Запущено
+STARTED: Запущено
+STOPPING: Завершується
+STOPPED: Зупинено
+FAILED: Невдалі
+ABANDONED: Перервано
+UNKNOWN: Невідомо
+warning.label: Попередження

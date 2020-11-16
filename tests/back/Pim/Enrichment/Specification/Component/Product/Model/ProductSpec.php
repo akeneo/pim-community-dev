@@ -96,7 +96,6 @@ class ProductSpec extends ObjectBehavior
     function it_has_not_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
     {
         $attributes->contains($attribute)->willReturn(false);
-        $family->getId()->willReturn(42);
         $family->getAttributes()->willReturn($attributes);
         $this->setFamily($family);
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
@@ -105,7 +104,6 @@ class ProductSpec extends ObjectBehavior
     function it_has_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
     {
         $attributes->contains($attribute)->willReturn(true);
-        $family->getId()->willReturn(42);
         $family->getAttributes()->willReturn($attributes);
         $this->setFamily($family);
         $this->hasAttributeInfamily($attribute)->shouldReturn(true);
@@ -120,7 +118,6 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
         $familyAttributes->contains($attribute)->willReturn(true);
-        $family->getId()->willReturn(42);
         $family->getAttributes()->willReturn($familyAttributes);
         $this->setFamily($family);
 
@@ -138,7 +135,6 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
         $familyAttributes->contains($attribute)->willReturn(true);
-        $family->getId()->willReturn(42);
         $family->getAttributes()->willReturn($familyAttributes);
 
         $this->setFamily($family);
@@ -161,7 +157,6 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(true);
@@ -188,7 +183,6 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -215,7 +209,6 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(true);
@@ -255,7 +248,6 @@ class ProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $family->getAttributeAsLabel()->willReturn(null);
-        $family->getId()->willReturn(42);
 
         $identifier->getData()->willReturn('shovel');
         $identifier->getAttributeCode()->willReturn('name');
@@ -280,7 +272,6 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -305,7 +296,6 @@ class ProductSpec extends ObjectBehavior
         $identifier->getAttributeCode()->willReturn('name');
 
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
-        $family->getId()->willReturn(42);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -330,7 +320,6 @@ class ProductSpec extends ObjectBehavior
         $attributeAsImage->getCode()->willReturn('picture');
 
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
-        $family->getId()->willReturn(42);
 
         $values->getByCodes('picture', null, null)->willReturn($pictureValue);
 
@@ -350,8 +339,6 @@ class ProductSpec extends ObjectBehavior
         FamilyInterface $family
     ) {
         $family->getAttributeAsImage()->willReturn(null);
-        $family->getId()->willReturn(42);
-
         $this->setFamily($family);
 
         $this->getImage()->shouldReturn(null);
@@ -365,8 +352,6 @@ class ProductSpec extends ObjectBehavior
         $attributeAsImage->getCode()->willReturn('picture');
 
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
-        $family->getId()->willReturn(42);
-
         $values->getByCodes('picture', null, null)->willReturn(null);
 
         $this->setFamily($family);

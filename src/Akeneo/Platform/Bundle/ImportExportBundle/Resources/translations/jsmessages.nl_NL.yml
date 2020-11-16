@@ -159,6 +159,15 @@ pim_import_export:
     6: Mislukt
     7: Afgebroken
     8: Onbekend
+  job_status:
+    COMPLETED: Voltooid
+    STARTING: Opstarten
+    STARTED: Gestart
+    STOPPING: Aan het stoppen
+    STOPPED: Gestopt
+    FAILED: Mislukt
+    ABANDONED: Afgebroken
+    UNKNOWN: Onbekend
 confirmation:
   remove:
     import_profile: Weet u zeker dat u dit importprofiel wilt verwijderen?

@@ -130,13 +130,17 @@ class ProductPdfRenderer implements RendererInterface
      *
      * @return AttributeInterface[]
      */
-    protected function getGroupedAttributes(ProductInterface $product)
+    protected function getGroupedAttributes(ProductInterface $product): array
     {
         $groups = [];
 
-        foreach ($this->getAttributeCodes($product) as $attributeCode) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        $attributeCodes = $product->getUsedAttributeCodes();
+        if ($product->getFamily()) {
+            $attributeCodes = array_unique(array_merge($attributeCodes, $product->getFamily()->getAttributeCodes()));
+        }
 
+        foreach ($attributeCodes as $attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
             if (null !== $attribute) {
                 $groupLabel = $attribute->getGroup()->getLabel();
                 if (!isset($groups[$groupLabel])) {
@@ -159,7 +163,7 @@ class ProductPdfRenderer implements RendererInterface
      *
      * @return string[]
      */
-    protected function getImagePaths(ProductInterface $product, $locale, $scope)
+    protected function getImagePaths(ProductInterface $product, $locale, $scope): array
     {
         $imagePaths = [];
 

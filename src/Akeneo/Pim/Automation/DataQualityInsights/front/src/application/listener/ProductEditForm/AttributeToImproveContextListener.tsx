@@ -1,7 +1,7 @@
-import React, {useLayoutEffect, useState} from "react";
-import {useDispatch} from "react-redux";
-import {useFetchProductFamilyInformation, usePageContext, useProduct} from "../../../infrastructure/hooks";
-import {showDataQualityInsightsAttributeToImproveAction} from "../../../infrastructure/reducer";
+import React, {useLayoutEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
+import {useProductFamily, usePageContext, useProduct} from '../../../infrastructure/hooks';
+import {showDataQualityInsightsAttributeToImproveAction} from '../../../infrastructure/reducer';
 
 const handleScrollToAttribute = (attribute: string) => {
   const form = document.querySelector('.edit-form');
@@ -31,15 +31,17 @@ const handleScrollToAttribute = (attribute: string) => {
   }
 
   form.scrollTo({
-    top: (attributeTopPosition - scrollTopMargin),
-    behavior: 'smooth'
+    top: attributeTopPosition - scrollTopMargin,
+    behavior: 'smooth',
   });
 
-  handleFocusOnAttribute(attributeElement)
+  handleFocusOnAttribute(attributeElement);
 };
 
 const handleFocusOnAttribute = (attribute: Element) => {
-  const fieldInput = attribute.querySelector('.field-input div.note-editable') || attribute.querySelector('.field-input input, .field-input textarea');
+  const fieldInput =
+    attribute.querySelector('.field-input div.note-editable') ||
+    attribute.querySelector('.field-input input, .field-input textarea');
 
   if (fieldInput) {
     // @ts-ignore
@@ -48,63 +50,59 @@ const handleFocusOnAttribute = (attribute: Element) => {
 };
 
 const AttributeToImproveContextListener = () => {
-  const family = useFetchProductFamilyInformation();
+  const family = useProductFamily();
   const {attributesTabIsLoading, attributeToImprove} = usePageContext();
   const product = useProduct();
   const [isAttributeDisplayed, setIsAttributeDisplayed] = useState(false);
   const dispatchAction = useDispatch();
 
   useLayoutEffect(() => {
-      if (attributeToImprove && isAttributeDisplayed) {
-        const attributeElement = document.querySelector(`.field-container[data-attribute= ${attributeToImprove}]`);
+    if (attributeToImprove && isAttributeDisplayed) {
+      const attributeElement = document.querySelector(`.field-container[data-attribute= ${attributeToImprove}]`);
 
-        if (attributeElement !== null) {
-          handleScrollToAttribute(attributeToImprove);
-          setIsAttributeDisplayed(false);
-          dispatchAction(showDataQualityInsightsAttributeToImproveAction(null));
-        }
+      if (attributeElement !== null) {
+        handleScrollToAttribute(attributeToImprove);
+        setIsAttributeDisplayed(false);
+        dispatchAction(showDataQualityInsightsAttributeToImproveAction(null));
       }
+    }
   }, [attributeToImprove, isAttributeDisplayed]);
 
   useLayoutEffect(() => {
-      const container = document.querySelector('.entity-edit-form.edit-form div[data-drop-zone="container"]');
-      let observer: MutationObserver | null = null;
+    const container = document.querySelector('.entity-edit-form.edit-form div[data-drop-zone="container"]');
+    let observer: MutationObserver | null = null;
 
-      if (family && container) {
+    if (family && container) {
+      if (attributeToImprove) {
+        observer = new MutationObserver(mutations => {
+          mutations.forEach(mutation => {
+            const element = mutation.target as Element;
+            const attributeCode = element.getAttribute('data-attribute');
 
-        if (attributeToImprove) {
-          observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-              const element = mutation.target as Element;
-              const attributeCode = element.getAttribute('data-attribute');
-
-              if (attributeCode && attributeCode === attributeToImprove) {
-                // Add delay to ensure that all attributes are rendered
-                setTimeout(() => {
-                  setIsAttributeDisplayed(true);
-                }, 200);
-              }
-            });
+            if (attributeCode && attributeCode === attributeToImprove) {
+              // Add delay to ensure that all attributes are rendered
+              setTimeout(() => {
+                setIsAttributeDisplayed(true);
+              }, 200);
+            }
           });
+        });
 
-          observer.observe(container, {
-            childList: true,
-            subtree: true
-          });
-        }
+        observer.observe(container, {
+          childList: true,
+          subtree: true,
+        });
       }
+    }
 
-      return () => {
-        if (observer) {
-          observer.disconnect();
-        }
+    return () => {
+      if (observer) {
+        observer.disconnect();
       }
-    },
-    [product, family, attributesTabIsLoading, attributeToImprove]);
+    };
+  }, [product, family, attributesTabIsLoading, attributeToImprove]);
 
-  return (
-    <></>
-  );
+  return <></>;
 };
 
 export default AttributeToImproveContextListener;

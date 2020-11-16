@@ -113,4 +113,68 @@ class FilteredProductReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn($product3);
         $this->read()->shouldReturn(null);
     }
+
+    function it_returns_the_total_product_the_reader_will_read(
+        $pqbFactory,
+        $channelRepository,
+        $stepExecution,
+        ChannelInterface $channel,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $cursor,
+        JobParameters $jobParameters
+    ) {
+        $filters = [
+            'data'      => [
+                [
+                    'field'    => 'enabled',
+                    'operator' => '=',
+                    'value'    => true,
+                ],
+                [
+                    'field'    => 'family',
+                    'operator' => 'IN',
+                    'value'    => [
+                        'camcorder',
+                    ],
+                ],
+                [
+                    'field' => 'entity_type',
+                    'operator' => '=',
+                    'value' => ProductInterface::class,
+                ],
+            ],
+            'structure' => [
+                'scope'   => 'mobile',
+                'locales' => ['fr_FR', 'en_US'],
+            ],
+        ];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($filters);
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getCode()->willReturn('mobile');
+
+        $pqbFactory->create(['filters' => array_merge($filters['data'], [[
+            'field' => 'entity_type',
+            'operator' => '=',
+            'value' => ProductInterface::class,
+        ]]), 'default_scope' => 'mobile'])
+            ->shouldBeCalled()
+            ->willReturn($pqb);
+        $pqb->execute()
+            ->shouldBeCalled()
+            ->willReturn($cursor);
+
+        $expectedTotalItems = 10;
+        $cursor->count()->willReturn($expectedTotalItems);
+
+        $this->initialize();
+        $this->totalItems()->shouldReturn($expectedTotalItems);
+    }
+
+    function it_throws_if_the_reader_is_not_initialized()
+    {
+        $this->shouldThrow(\RuntimeException::class)
+            ->during('totalItems');
+    }
 }

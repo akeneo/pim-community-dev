@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -26,7 +27,8 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 class FilteredProductReader implements
     ItemReaderInterface,
     InitializableInterface,
-    StepExecutionAwareInterface
+    StepExecutionAwareInterface,
+    TrackableItemReaderInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
@@ -41,7 +43,7 @@ class FilteredProductReader implements
     private $stepExecution;
 
     /** @var CursorInterface */
-    private $productsAndProductModels;
+    private $products;
 
     /** @var bool */
     private $firstRead = true;
@@ -71,7 +73,7 @@ class FilteredProductReader implements
         $channel = $this->getConfiguredChannel();
 
         $filters = $this->getConfiguredFilters();
-        $this->productsAndProductModels = $this->getProductsCursor($filters, $channel);
+        $this->products = $this->getProductsCursor($filters, $channel);
     }
 
     /**
@@ -176,12 +178,12 @@ class FilteredProductReader implements
     {
         $entity = null;
 
-        if ($this->productsAndProductModels->valid()) {
+        if ($this->products->valid()) {
             if (!$this->firstRead) {
-                $this->productsAndProductModels->next();
+                $this->products->next();
             }
 
-            $entity = $this->productsAndProductModels->current();
+            $entity = $this->products->current();
             if (false === $entity) {
                 return null;
             }
@@ -190,5 +192,14 @@ class FilteredProductReader implements
         $this->firstRead = false;
 
         return $entity;
+    }
+
+    public function totalItems(): int
+    {
+        if (null === $this->products) {
+            throw new \RuntimeException('Unable to compute the total items the reader will process if the reader is not initialized');
+        }
+
+        return $this->products->count();
     }
 }

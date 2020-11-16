@@ -6,10 +6,13 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFoundException;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +22,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
+
+    /** @var NormalizerInterface */
     private $externalApiNormalizer;
 
     public function __construct(
@@ -37,8 +43,15 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
 
     /**
      * @param ProductModelUpdated|ProductModelCreated $businessEvent
+     * @param array<mixed> $context
+     *
+     * @return array<mixed>
+     *
+     * @throws \InvalidArgumentException
+     * @throws ProductModelNotFoundException
+     * @throws ExceptionInterface
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(BusinessEventInterface $businessEvent, array $context = []): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();
@@ -46,7 +59,11 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
 
         $data = $businessEvent->data();
 
-        $productModel = $this->productModelRepository->findOneByIdentifier($data['code']);
+        try {
+            $productModel = $this->productModelRepository->findOneByIdentifier($data['code']);
+        } catch (AccessDeniedException $e) {
+            throw new NotGrantedCategoryException($e->getMessage(), $e);
+        }
 
         if (null === $productModel) {
             throw new ProductModelNotFoundException($data['code']);

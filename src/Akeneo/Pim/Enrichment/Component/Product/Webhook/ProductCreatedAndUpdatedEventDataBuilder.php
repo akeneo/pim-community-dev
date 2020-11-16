@@ -6,10 +6,12 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -19,7 +21,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
+    /** @var IdentifiableObjectRepositoryInterface */
     private $productRepository;
+
+    /** @var NormalizerInterface */
     private $externalApiNormalizer;
 
     public function __construct(
@@ -36,9 +41,11 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     }
 
     /**
-     * @param ProductCreated|ProductUpdated $businessEvent
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @throws ProductNotFoundException
+     * @throws NotGrantedCategoryException
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    public function build(BusinessEventInterface $businessEvent, array $context = []): array
     {
         if (false === $this->supports($businessEvent)) {
             throw new \InvalidArgumentException();
@@ -46,7 +53,12 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 
         $data = $businessEvent->data();
 
-        $product = $this->productRepository->findOneByIdentifier($data['identifier']);
+        try {
+            $product = $this->productRepository->findOneByIdentifier($data['identifier']);
+        } catch (AccessDeniedException $e) {
+            throw new NotGrantedCategoryException($e->getMessage(), $e);
+        }
+
         if (null === $product) {
             throw new ProductNotFoundException($data['identifier']);
         }

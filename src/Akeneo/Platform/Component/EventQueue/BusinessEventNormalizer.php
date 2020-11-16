@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\EventQueue;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -35,10 +37,11 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
 
         return [
             'name' => $object->name(),
-            'author' => $object->author(),
+            'author' => $object->author()->name(),
+            'author_type' => $object->author()->type(),
             'data' => $object->data(),
             'timestamp' => $object->timestamp(),
-            'uuid' => $object->uuid()
+            'uuid' => $object->uuid(),
         ];
     }
 
@@ -52,8 +55,10 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
             throw new RuntimeException(sprintf('The class "%s" is not defined.', $type));
         }
 
+        // /!\ Do not change to a new format for event without a strategy to
+        // support the previous/old format of the events already in the queue (before the migration).
         return new $type(
-            $data['author'],
+            Author::fromNameAndType($data['author'], $data['author_type'] ?? Author::TYPE_API),
             $data['data'],
             $data['timestamp'],
             $data['uuid']

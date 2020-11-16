@@ -71,7 +71,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
 
 
     /**
-     * @param array{string: array{operator: string, value: mixed}[]} $searchFilters
+     * @param array $searchFilters {string: array{operator: string, value: mixed}[]}
      *
      * @return int
      */
@@ -127,7 +127,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => 'IN',
-                        'message' => 'In order to search on family codes you must use "IN" operator, {{ compared_value }} given.',
+                        'message' => 'In order to search on family codes you must use "IN" operator, {{ value }} given.',
                     ]),
                     'value' => [
                         new Assert\Type([
@@ -144,7 +144,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => '>',
-                        'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ compared_value }} given.',
+                        'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ value }} given.',
                     ]),
                     'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
                 ])
@@ -152,7 +152,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
         ];
         $availableSearchFilters = array_keys($constraints);
 
-        $exceptionMessage = '';
+        $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
             if (!in_array($property, $availableSearchFilters)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -164,12 +164,12 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
             $violations = $validator->validate($searchFilter, $constraints[$property]);
             if (0 !== $violations->count()) {
                 foreach ($violations as $violation) {
-                    $exceptionMessage .= $violation->getMessage();
+                    $exceptionMessages[] = $violation->getMessage();
                 }
             }
         }
-        if ('' !== $exceptionMessage) {
-            throw new \InvalidArgumentException($exceptionMessage);
+        if (!empty($exceptionMessages)) {
+            throw new \InvalidArgumentException(implode(' ', $exceptionMessages));
         }
     }
 }

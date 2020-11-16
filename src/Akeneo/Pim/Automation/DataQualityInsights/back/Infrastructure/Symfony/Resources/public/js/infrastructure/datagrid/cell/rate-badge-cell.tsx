@@ -1,5 +1,5 @@
-import ReactDOM from "react-dom";
-import React from "react";
+import ReactDOM from 'react-dom';
+import React from 'react';
 import Rate from '@akeneo-pim-community/data-quality-insights/src/application/component/Rate';
 
 const StringCell = require('oro/datagrid/string-cell');
@@ -12,10 +12,7 @@ class RateBadgeCell extends StringCell {
       value = productRate;
     }
 
-    ReactDOM.render(
-      <Rate value={value}/>,
-      this.el
-    );
+    ReactDOM.render(<Rate value={value} />, this.el);
 
     this.$el.addClass('AknDataQualityInsightsGrid-axis-rate');
 
