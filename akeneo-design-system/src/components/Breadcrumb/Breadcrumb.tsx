@@ -1,4 +1,4 @@
-import React, {Ref, ReactNode, isValidElement} from 'react';
+import React, {Ref, isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
@@ -7,16 +7,24 @@ type Color = 'blue' | 'red' | 'green' | 'purple';
 //TODO be sure to select the appropriate container element here
 const BreadcrumbContainer = styled.nav``;
 
+const Item = styled.a<{color: string; gradient: number} & AkeneoThemedProps>`
+  text-transform: uppercase;
+  text-decoration: none;
+  color: ${({color, gradient}) => getColor(color, gradient)};
+`;
+
 type BreadcrumbProps = {
   /**
    * Define the color of the breadcrumb
    */
-  color: Color;
+  color?: Color;
 
   /**
    * Items of the breadcrumb (only accepts Item components)
    */
-  children?: ReactNode;
+  children:
+    | ReactElement<React.AnchorHTMLAttributes<HTMLAnchorElement>>
+    | ReactElement<React.AnchorHTMLAttributes<HTMLAnchorElement>>[];
 };
 
 /**
@@ -30,10 +38,16 @@ const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
       }
       const isLast = React.Children.count(children) - 1 === index;
 
-      return <>
-        {React.cloneElement(child, {color, gradient: isLast ? 100 : 120, 'aria-current': isLast ? 'page' : undefined})}
-        {!isLast && <Separator aria-hidden={true}>/</Separator>}
-      </>;
+      return (
+        <>
+          {React.cloneElement<any>(child, {
+            color,
+            gradient: isLast ? 100 : 120,
+            'aria-current': isLast ? 'page' : undefined,
+          })}
+          {!isLast && <Separator aria-hidden={true}>/</Separator>}
+        </>
+      );
     });
 
     return (
@@ -43,12 +57,6 @@ const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
     );
   }
 );
-
-const Item = styled.a<{color: string, gradient: number} & AkeneoThemedProps>`
-  text-transform: uppercase;
-  text-decoration: none;
-  color: ${({color, gradient}) => getColor(color, gradient)}
-`;
 
 const Separator = styled.span`
   margin: 0 0.5rem;
