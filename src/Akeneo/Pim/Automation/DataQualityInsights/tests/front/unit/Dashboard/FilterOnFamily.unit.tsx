@@ -6,7 +6,7 @@ import {fireEvent, render, waitFor} from '@testing-library/react';
 import FamilyFilter from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Overview/Filters/FamilyFilter';
 import fetchFamilies from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '@akeneo-pim-community/data-quality-insights/src';
-import {renderDashboardWithProvider} from "../../utils/render/renderDashboardWithProvider";
+import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
 
 const UserContext = require('pim/user-context');
 

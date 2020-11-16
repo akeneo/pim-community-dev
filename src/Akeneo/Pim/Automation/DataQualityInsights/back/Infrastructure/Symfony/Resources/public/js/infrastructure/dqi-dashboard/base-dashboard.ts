@@ -3,9 +3,9 @@ import BaseView = require('pimui/js/view/base');
 import {
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
-  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY
-} from "@akeneo-pim-community/data-quality-insights/src";
-import ReactDOM from "react-dom";
+  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
+} from '@akeneo-pim-community/data-quality-insights/src';
+import ReactDOM from 'react-dom';
 
 interface SectionConfig {
   align: string;
@@ -49,18 +49,24 @@ class BaseDashboard extends BaseView {
   }
 
   configure(): JQueryPromise<any> {
-    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD, ((event: CustomEvent<DashboardChangeTimePeriodEvent>) => {
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD, ((
+      event: CustomEvent<DashboardChangeTimePeriodEvent>
+    ) => {
       this.timePeriod = event.detail.timePeriod;
       this.render();
     }) as EventListener);
 
-    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, ((event: CustomEvent<DashboardFilterOnFamilyEvent>) => {
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, ((
+      event: CustomEvent<DashboardFilterOnFamilyEvent>
+    ) => {
       this.familyCode = event.detail.familyCode;
       this.categoryCode = null;
       this.render();
     }) as EventListener);
 
-    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY, ((event: CustomEvent<DashboardFilterOnCategoryEvent>) => {
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY, ((
+      event: CustomEvent<DashboardFilterOnCategoryEvent>
+    ) => {
       this.categoryCode = event.detail.categoryCode;
       this.familyCode = null;
       this.render();

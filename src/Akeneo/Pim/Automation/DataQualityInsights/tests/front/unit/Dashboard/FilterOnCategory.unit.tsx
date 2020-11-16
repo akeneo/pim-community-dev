@@ -7,7 +7,7 @@ import fetchCategoryTrees from '@akeneo-pim-community/data-quality-insights/src/
 import fetchCategoryChildren from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryChildren';
 import CategoryFilter from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Overview/Filters/CategoryFilter';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '@akeneo-pim-community/data-quality-insights/src';
-import {renderDashboardWithProvider} from "../../utils/render/renderDashboardWithProvider";
+import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
 
 const UserContext = require('pim/user-context');
 
