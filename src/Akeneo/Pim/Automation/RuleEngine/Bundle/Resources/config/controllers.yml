@@ -69,6 +69,7 @@ services:
         arguments:
             - '@pimee_catalog_rule.builder.product'
             - '@pimee_catalog_rule.selector.product'
+            - '@pim_enrich.query.product_and_product_model_document_type_facet_factory'
 
     pimee_enrich.controller.rule_definition.get_available_fields:
         class: 'Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\InternalApi\GetAvailableFieldsController'

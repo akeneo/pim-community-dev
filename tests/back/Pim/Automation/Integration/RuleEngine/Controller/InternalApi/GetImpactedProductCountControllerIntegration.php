@@ -48,7 +48,7 @@ class GetImpactedProductCountControllerIntegration extends ControllerIntegration
             ],
         ];
 
-        $this->assertImpactedProductCount($normalizedConditions, 230);
+        $this->assertImpactedProductCount($normalizedConditions, 169, 61);
     }
 
     public function test_it_returns_the_impacted_product_count_for_a_condition_on_shoes_family()
@@ -61,7 +61,7 @@ class GetImpactedProductCountControllerIntegration extends ControllerIntegration
             ],
         ];
 
-        $this->assertImpactedProductCount($normalizedConditions, 83);
+        $this->assertImpactedProductCount($normalizedConditions, 65, 18);
     }
 
     public function test_it_returns_a_400_response_with_invalid_condition()
@@ -81,7 +81,7 @@ class GetImpactedProductCountControllerIntegration extends ControllerIntegration
         Assert::assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
     }
 
-    private function assertImpactedProductCount(array $conditions, int $expectedCount)
+    private function assertImpactedProductCount(array $conditions, int $expectedProductCount, int $expectedProductModelCount)
     {
         $this->webClientHelper->callApiRoute(
             $this->client,
@@ -96,7 +96,9 @@ class GetImpactedProductCountControllerIntegration extends ControllerIntegration
 
         $content = \json_decode($response->getContent(), true);
         Assert::assertArrayHasKey('impacted_product_count', $content);
-        Assert::assertSame($expectedCount, $content['impacted_product_count']);
+        Assert::assertSame($expectedProductCount, $content['impacted_product_count']);
+        Assert::assertArrayHasKey('impacted_product_model_count', $content);
+        Assert::assertSame($expectedProductModelCount, $content['impacted_product_model_count']);
     }
 
     /**
