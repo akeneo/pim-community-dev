@@ -147,6 +147,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
         $product->getAssociationForTypeCode('upsell')->willReturn($upsellAssociation);
 
+        $product->removeAssociation($xsellAssociation)->shouldBeCalled();
+        $product->removeAssociation($upsellAssociation)->shouldBeCalled();
+        $product->addAssociation($xsellAssociation)->shouldBeCalled();
+        $product->addAssociation($upsellAssociation)->shouldBeCalled();
+
         $productRepository->findOneByIdentifier('assocProductOne')->willReturn($assocProductOne);
         $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
         $productRepository->findOneByIdentifier('assocProductThree')->willReturn($assocProductThree);
@@ -186,7 +191,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         );
     }
 
-    function it_create_inversed_association_on_create_association(
+    function it_creates_inversed_association_on_create_association(
         AssociationTypeInterface $compatibilityAssociationType,
         AssociationInterface $compatibilityAssociation,
         ProductInterface $product,
@@ -206,6 +211,8 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $compatibilityAssociation->getProductModels()->willReturn(new ArrayCollection());
 
         $product->getAssociationForTypeCode('COMPATIBILITY')->willReturn($compatibilityAssociation);
+        $product->removeAssociation($compatibilityAssociation)->shouldBeCalled();
+        $product->addAssociation($compatibilityAssociation)->shouldBeCalled();
 
         $productRepository->findOneByIdentifier('productAssociated')->willReturn($productAssociated);
         $productModelRepository->findOneByIdentifier('productModelAssociated')->willReturn($productModelAssociated);
@@ -230,7 +237,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         );
     }
 
-    function it_remove_inversed_association_on_remove_association(
+    function it_removes_inversed_association_on_remove_association(
         AssociationTypeInterface $compatibilityAssociationType,
         AssociationInterface $compatibilityAssociation,
         ProductInterface $product,
@@ -254,6 +261,8 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $compatibilityAssociation->getGroups()->willReturn(new ArrayCollection([$groupAssociated->getWrappedObject()]));
 
         $product->getAssociationForTypeCode('COMPATIBILITY')->willReturn($compatibilityAssociation);
+        $product->removeAssociation($compatibilityAssociation)->shouldBeCalled();
+        $product->addAssociation($compatibilityAssociation)->shouldBeCalled();
 
         $compatibilityAssociation->removeProduct($productAssociated)->shouldBeCalled();
         $compatibilityAssociation->removeProductModel($productModelAssociated)->shouldBeCalled();
@@ -400,6 +409,8 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $product->getAssociations()->willReturn(
             new ArrayCollection([$xsellAssociation->getWrappedObject(), $upsellAssociation->getWrappedObject()])
         );
+        $product->removeAssociation($xsellAssociation)->shouldBeCalled();
+        $product->addAssociation($xsellAssociation)->shouldBeCalled();
 
         $xsellAssociation->removeProduct($product1)->shouldBeCalled();
         $xsellAssociation->removeProduct($product2)->shouldBeCalled();
