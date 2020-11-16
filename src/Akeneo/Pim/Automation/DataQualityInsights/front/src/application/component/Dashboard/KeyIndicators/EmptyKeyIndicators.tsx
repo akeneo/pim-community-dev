@@ -1,6 +1,6 @@
 import React from 'react';
-import styled from "styled-components";
-import {useTranslate} from "@akeneo-pim-community/legacy-bridge";
+import styled from 'styled-components';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   text-align: center;
@@ -19,6 +19,6 @@ const EmptyKeyIndicators = () => {
       <p>{translate('akeneo_data_quality_insights.dqi_dashboard.key_indicators.no_data_subtitle')}</p>
     </Container>
   );
-}
+};
 
 export {EmptyKeyIndicators};

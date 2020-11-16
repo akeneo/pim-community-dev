@@ -1,5 +1,5 @@
-import {KeyIndicatorTips} from "../../../domain";
-import {useKeyIndicatorsContext} from "../../../application/context/KeyIndicatorsContext";
+import {KeyIndicatorTips} from '../../../domain';
+import {useKeyIndicatorsContext} from '../../../application/context/KeyIndicatorsContext';
 
 const useGetKeyIndicatorTips = (keyIndicator: string): KeyIndicatorTips => {
   const {tips} = useKeyIndicatorsContext();
@@ -9,6 +9,6 @@ const useGetKeyIndicatorTips = (keyIndicator: string): KeyIndicatorTips => {
   }
 
   return tips[keyIndicator];
-}
+};
 
 export {useGetKeyIndicatorTips};

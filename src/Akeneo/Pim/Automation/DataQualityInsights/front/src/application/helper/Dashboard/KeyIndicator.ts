@@ -1,5 +1,5 @@
-import {Level} from "akeneo-design-system";
-import {Tip, KeyIndicatorTips} from "../../../domain";
+import {Level} from 'akeneo-design-system';
+import {Tip, KeyIndicatorTips} from '../../../domain';
 
 const getProgressBarLevel = (ratio: number): Level => {
   if (ratio >= 50) {
@@ -22,11 +22,9 @@ const computeProductsNumberToWorkOn = (productsNumber: number): number => {
   let roundValue = 100;
   if (productsNumber >= 10001 && productsNumber < 100000) {
     roundValue = 1000;
-  }
-  else if (productsNumber >= 100001 && productsNumber < 1000000) {
+  } else if (productsNumber >= 100001 && productsNumber < 1000000) {
     roundValue = 10000;
-  }
-  else if (productsNumber >= 1000001) {
+  } else if (productsNumber >= 1000001) {
     roundValue = 1000000;
   }
 
@@ -37,11 +35,9 @@ const computeTipMessage = (tips: KeyIndicatorTips, ratio: number): Tip => {
   let stepKey: string = 'perfect_score_step';
   if (ratio < 60) {
     stepKey = 'first_step';
-  }
-  else if (ratio < 80) {
+  } else if (ratio < 80) {
     stepKey = 'second_step';
-  }
-  else if (ratio < 100) {
+  } else if (ratio < 100) {
     stepKey = 'third_step';
   }
 

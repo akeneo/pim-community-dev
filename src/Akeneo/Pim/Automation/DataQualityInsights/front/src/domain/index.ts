@@ -50,5 +50,9 @@ export {
   AxisEvaluation,
   CriterionEvaluationResult,
   Status,
-  KeyIndicator, keyIndicatorMap, KeyIndicatorTips, KeyIndicatorsTips, Tip,
+  KeyIndicator,
+  keyIndicatorMap,
+  KeyIndicatorTips,
+  KeyIndicatorsTips,
+  Tip,
 };

@@ -11,14 +11,10 @@ export const KeyIndicatorsContext = createContext<KeyIndicatorsContextState>({
 
 export const useKeyIndicatorsContext = (): KeyIndicatorsContextState => {
   return useContext(KeyIndicatorsContext);
-}
+};
 
 type ProviderProps = KeyIndicatorsContextState;
 
 export const KeyIndicatorsProvider: FC<ProviderProps> = ({children, ...tips}) => {
-  return (
-    <KeyIndicatorsContext.Provider value={tips}>
-      {children}
-    </KeyIndicatorsContext.Provider>
-  );
-}
+  return <KeyIndicatorsContext.Provider value={tips}>{children}</KeyIndicatorsContext.Provider>;
+};

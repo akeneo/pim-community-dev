@@ -101,7 +101,7 @@ const buildRecommendation = (
         <span className="CriterionSuccessTick" />
       </div>
     );
-  };
+  }
 
   return (
     <>

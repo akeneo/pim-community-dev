@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
-import styled from "styled-components";
-import {useTranslate} from "@akeneo-pim-community/legacy-bridge";
+import styled from 'styled-components';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type Props = {
   title: string;

@@ -9,34 +9,44 @@ export const redirectToProductGridFilteredByFamily = (channelCode: string, local
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
 };
 
-export const redirectToProductGridFilteredByCategory = (channelCode: string, localeCode: string, categoryId: string, rootCategoryId: string) => {
+export const redirectToProductGridFilteredByCategory = (
+  channelCode: string,
+  localeCode: string,
+  categoryId: string,
+  rootCategoryId: string
+) => {
   const gridFilters = buildFilters(channelCode, null, categoryId, rootCategoryId, null);
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
 };
 
-export const redirectToProductGridFilteredByKeyIndicator = (keyIndicator: string, channelCode: string, localeCode: string, familyCode: string|null, categoryId: string|null, rootCategoryId: string|null) => {
+export const redirectToProductGridFilteredByKeyIndicator = (
+  keyIndicator: string,
+  channelCode: string,
+  localeCode: string,
+  familyCode: string | null,
+  categoryId: string | null,
+  rootCategoryId: string | null
+) => {
   const gridFilters = buildFilters(channelCode, familyCode, categoryId, rootCategoryId, keyIndicator);
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters, false);
 };
 
-const buildFilters = (channelCode: string, familyCode: string|null, categoryId: string|null, rootCategoryId: string|null, keyIndicator: string | null) => {
-  let filters = [
-    's[updated]=1',
-    `f[scope][value]=${channelCode}`,
-    'f[entity_type][value]=product',
-    't=product-grid',
-  ];
+const buildFilters = (
+  channelCode: string,
+  familyCode: string | null,
+  categoryId: string | null,
+  rootCategoryId: string | null,
+  keyIndicator: string | null
+) => {
+  let filters = ['s[updated]=1', `f[scope][value]=${channelCode}`, 'f[entity_type][value]=product', 't=product-grid'];
   if (familyCode) {
-    filters = filters.concat([
-      `f[family][value][]=${familyCode}`,
-      'f[family][type]=in',
-    ]);
+    filters = filters.concat([`f[family][value][]=${familyCode}`, 'f[family][type]=in']);
   }
   if (categoryId) {
     filters = filters.concat([
       `f[category][value][treeId]=${rootCategoryId}`,
       `f[category][value][categoryId]=${categoryId}`,
-      'f[category][type]=1'
+      'f[category][type]=1',
     ]);
   }
   if (keyIndicator) {
@@ -46,7 +56,12 @@ const buildFilters = (channelCode: string, familyCode: string|null, categoryId: 
   return filters.join('&');
 };
 
-const redirectToFilteredProductGrid = (channelCode: string, localeCode: string, gridFilters: string, redefineColumns = true) => {
+const redirectToFilteredProductGrid = (
+  channelCode: string,
+  localeCode: string,
+  gridFilters: string,
+  redefineColumns = true
+) => {
   const productGridColumns = redefineColumns ? getProductGridColumnsWithAxes() : getDefaultProductGridColumns();
   DatagridState.set('product-grid', {
     columns: productGridColumns.join(','),

@@ -1,14 +1,14 @@
 import React, {FC} from 'react';
-import {useTranslate, useUserContext} from "@akeneo-pim-community/legacy-bridge";
-import styled from "styled-components";
+import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import styled from 'styled-components';
 import {
   computeProductsNumberToWorkOn,
   computeTipMessage,
-  getProgressBarLevel
-} from "../../../helper/Dashboard/KeyIndicator";
-import {Tip, KeyIndicatorTips} from "../../../../domain";
-import {useGetKeyIndicatorTips} from "../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips";
-import {useDashboardContext} from "../../../context/DashboardContext";
+  getProgressBarLevel,
+} from '../../../helper/Dashboard/KeyIndicator';
+import {Tip, KeyIndicatorTips} from '../../../../domain';
+import {useGetKeyIndicatorTips} from '../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips';
+import {useDashboardContext} from '../../../context/DashboardContext';
 import {ProgressBar} from 'akeneo-design-system';
 
 type Props = {
@@ -17,7 +17,13 @@ type Props = {
   totalToImprove?: number;
   title?: string;
   resultsMessage?: string;
-  followResults?: (channelCode: string, localeCode: string, familyCode: string|null, categoryId: string|null, rootCategoryId: string|null) => void;
+  followResults?: (
+    channelCode: string,
+    localeCode: string,
+    familyCode: string | null,
+    categoryId: string | null,
+    rootCategoryId: string | null
+  ) => void;
 };
 
 const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, title, resultsMessage, followResults}) => {
@@ -35,10 +41,15 @@ const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, tit
       <Container>
         <Icon>{children}</Icon>
         <Content>
-          <ProgressBar size="small" title={translate(title)} progressLabel={'\u00a0'} light={true} level={'tertiary'} percent={0}/>
-          <Text>
-            {translate(`akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.${type}.no_data`)}
-          </Text>
+          <ProgressBar
+            size="small"
+            title={translate(title)}
+            progressLabel={'\u00a0'}
+            light={true}
+            level={'tertiary'}
+            percent={0}
+          />
+          <Text>{translate(`akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.${type}.no_data`)}</Text>
         </Content>
       </Container>
     );
@@ -51,7 +62,13 @@ const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, tit
   const handleOnClickOnProductsNumber = (event: any) => {
     event.stopPropagation();
     if (event.target.tagName === 'BUTTON' && followResults) {
-      followResults(userContext.get('catalogScope'), userContext.get('catalogLocale'), familyCode, category?.id || null, category?.rootCategoryId || null);
+      followResults(
+        userContext.get('catalogScope'),
+        userContext.get('catalogLocale'),
+        familyCode,
+        category?.id || null,
+        category?.rootCategoryId || null
+      );
     }
   };
 
@@ -68,32 +85,32 @@ const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, tit
           title={translate(title)}
         />
         <Text>
-          {
-            totalToImprove > 0 && resultsMessage &&
-            <TextWithLink onClickCapture={(event: any) => handleOnClickOnProductsNumber(event)} dangerouslySetInnerHTML={{
-              __html: translate(
-                resultsMessage,
-                {count: productsNumberToWorkOn.toString()},
-                productsNumberToWorkOn
-              )
-            }}/>
-          }
-            &nbsp;
-          <TextWithLink dangerouslySetInnerHTML={{
-            __html: translate(tip.message, {link: tip.link || ''})
-          }}/>
+          {totalToImprove > 0 && resultsMessage && (
+            <TextWithLink
+              onClickCapture={(event: any) => handleOnClickOnProductsNumber(event)}
+              dangerouslySetInnerHTML={{
+                __html: translate(resultsMessage, {count: productsNumberToWorkOn.toString()}, productsNumberToWorkOn),
+              }}
+            />
+          )}
+          &nbsp;
+          <TextWithLink
+            dangerouslySetInnerHTML={{
+              __html: translate(tip.message, {link: tip.link || ''}),
+            }}
+          />
         </Text>
       </Content>
     </Container>
   );
-}
+};
 
 const Container = styled.div`
   flex: 1 0 50%;
   display: flex;
   margin: 24px 0 0 0;
   max-width: 50%;
-  
+
   :nth-child(odd) {
     padding-right: 20px;
   }
@@ -122,7 +139,8 @@ const Text = styled.div`
 `;
 
 const TextWithLink = styled.span`
-  a, button {
+  a,
+  button {
     color: ${({theme}) => theme.color.blue100};
     text-decoration: underline ${({theme}) => theme.color.blue100};
     cursor: pointer;
@@ -130,7 +148,7 @@ const TextWithLink = styled.span`
     background: none;
     padding: 0;
     margin: 0;
-    
+
     :focus {
       outline: none;
     }

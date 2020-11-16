@@ -3,7 +3,7 @@ import useFetchFamilies from '../../../../../infrastructure/hooks/Dashboard/useF
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '../../../../constant';
 import styled from 'styled-components';
 import {debounce} from 'lodash';
-import {useDashboardContext} from "../../../../context/DashboardContext";
+import {useDashboardContext} from '../../../../context/DashboardContext';
 
 const __ = require('oro/translator');
 const UserContext = require('pim/user-context');

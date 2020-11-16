@@ -2,7 +2,7 @@ import React, {FunctionComponent, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 import CategoryModal from '../../CategoryModal/CategoryModal';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '../../../../constant';
-import {useDashboardContext} from "../../../../context/DashboardContext";
+import {useDashboardContext} from '../../../../context/DashboardContext';
 
 const __ = require('oro/translator');
 
@@ -35,7 +35,12 @@ const CategoryFilter: FunctionComponent<CategoryFilterProps> = ({categoryCode}) 
     };
   }, []);
 
-  const onSelectCategory = (categoryCode: string, categoryLabel: string, categoryId: string, rootCategoryId: string) => {
+  const onSelectCategory = (
+    categoryCode: string,
+    categoryLabel: string,
+    categoryId: string,
+    rootCategoryId: string
+  ) => {
     setSelectedCategoryCode(categoryCode);
     setSelectedCategoryLabel(categoryLabel);
     setSelectedCategoryId(categoryId);
@@ -51,7 +56,11 @@ const CategoryFilter: FunctionComponent<CategoryFilterProps> = ({categoryCode}) 
           },
         })
       );
-      updateDashboardFilters(null, {code: selectedCategoryCode, id: selectedCategoryId, rootCategoryId: selectedRootCategoryId});
+      updateDashboardFilters(null, {
+        code: selectedCategoryCode,
+        id: selectedCategoryId,
+        rootCategoryId: selectedRootCategoryId,
+      });
     }
     setShowModal(false);
   };

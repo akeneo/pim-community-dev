@@ -1,5 +1,5 @@
 import React, {createContext, FC, useContext} from 'react';
-import {useInitDashboardContextState} from "../../infrastructure/hooks/useInitDashboardContextState";
+import {useInitDashboardContextState} from '../../infrastructure/hooks/useInitDashboardContextState';
 
 export type DashboardCategoryFilter = {
   id: string;
@@ -8,9 +8,9 @@ export type DashboardCategoryFilter = {
 };
 
 export type DashboardContextState = {
-  familyCode: string|null;
-  category: DashboardCategoryFilter|null;
-  updateDashboardFilters: (familyCode: string|null, category: DashboardCategoryFilter|null) => void;
+  familyCode: string | null;
+  category: DashboardCategoryFilter | null;
+  updateDashboardFilters: (familyCode: string | null, category: DashboardCategoryFilter | null) => void;
 };
 export const DashboardContext = createContext<DashboardContextState | undefined>(undefined);
 
