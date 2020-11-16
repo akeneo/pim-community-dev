@@ -53,8 +53,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
         'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
-
-
+        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory',
+        'Akeneo\Pim\Enrichment\Component\Product\Query\ResultAwareInterface',
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
     $builder->only([
         'Symfony\Component',
