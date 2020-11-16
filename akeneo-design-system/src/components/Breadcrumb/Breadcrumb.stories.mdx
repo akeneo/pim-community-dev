@@ -1,0 +1,55 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Breadcrumb,Item,Separator} from './Breadcrumb.tsx';
+
+<Meta
+  title="Components/Breadcrumb"
+  component={Breadcrumb}
+/>
+
+# Breadcrumb
+
+Breadcrumbs are an important navigation component that shows content hierarchy. They allow users to be aware of their current location in the hierarchical structure of the application. Breadcrumbs enable users to quickly move up to a parent level.
+
+## Usage
+
+Breadcrumbs are very effective for products and experience with a large amount of content organized in a multi-level hierarchy. Breadcrumbs should be considered secondary navigation and should never completely replace the main navigation. The last level is always the current page, this one is not clickable.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Breadcrumb {...args} >
+        <Item href="https://www.akeneo.com" color={args.color} gradient={120}>first</Item>
+        <Separator>/</Separator>
+        <Item color={args.color} gradient={120}>second</Item>
+        <Separator>/</Separator>
+        <Item color={args.color} gradient={100}>last</Item>
+      </Breadcrumb>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Breadcrumb {...args} level="primary">
+            Primary
+          </Breadcrumb>
+          <Breadcrumb {...args} level="warning">
+            Warning
+          </Breadcrumb>
+          <Breadcrumb {...args} level="danger">
+            Danger
+          </Breadcrumb>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
