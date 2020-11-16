@@ -30,7 +30,9 @@ class ProductQueryBuilderOptionsResolver implements ProductQueryBuilderOptionsRe
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
+        $resolver->setDefined(['locale', 'scope', 'with_document_type_facet']);
         $resolver->setRequired(['locale', 'scope']);
+        $resolver->setAllowedTypes('with_document_type_facet', ['bool', 'null']);
 
         return $resolver;
     }
