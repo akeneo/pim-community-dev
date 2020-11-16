@@ -20,11 +20,9 @@ Breadcrumbs are very effective for products and experience with a large amount o
   <Story name="Standard">
     {args => {
       return <Breadcrumb {...args} >
-        <Item href="https://www.akeneo.com" color={args.color} gradient={120}>first</Item>
-        <Separator>/</Separator>
-        <Item color={args.color} gradient={120}>second</Item>
-        <Separator>/</Separator>
-        <Item color={args.color} gradient={100}>last</Item>
+        <Item href="https://www.akeneo.com">first</Item>
+        <Item>second</Item>
+        <Item>last</Item>
       </Breadcrumb>;
     }}
   </Story>

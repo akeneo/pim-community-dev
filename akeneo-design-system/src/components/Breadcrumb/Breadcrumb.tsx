@@ -1,11 +1,11 @@
-import React, {Ref, ReactNode} from 'react';
+import React, {Ref, ReactNode, isValidElement} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
 type Color = 'blue' | 'red' | 'green' | 'purple';
 
 //TODO be sure to select the appropriate container element here
-const BreadcrumbContainer = styled.div<{color: Color}>``;
+const BreadcrumbContainer = styled.nav``;
 
 type BreadcrumbProps = {
   /**
@@ -24,9 +24,21 @@ type BreadcrumbProps = {
  */
 const Breadcrumb = React.forwardRef<HTMLDivElement, BreadcrumbProps>(
   ({color = 'blue', children, ...rest}: BreadcrumbProps, forwardedRef: Ref<HTMLDivElement>) => {
+    const decoratedChildren = React.Children.map(children, (child, index) => {
+      if (!(isValidElement(child) && child.type === Item)) {
+        return null;
+      }
+      const isLast = React.Children.count(children) - 1 === index;
+
+      return <>
+        {React.cloneElement(child, {color, gradient: isLast ? 100 : 120, 'aria-current': isLast ? 'page' : undefined})}
+        {!isLast && <Separator aria-hidden={true}>/</Separator>}
+      </>;
+    });
+
     return (
-      <BreadcrumbContainer color={color} ref={forwardedRef} {...rest}>
-        {children}
+      <BreadcrumbContainer ref={forwardedRef} aria-label="Breadcrumb" {...rest}>
+        {decoratedChildren}
       </BreadcrumbContainer>
     );
   }
