@@ -1,0 +1,55 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Table} from './Table.tsx';
+
+<Meta
+  title="Components/Table"
+  component={Table}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'Table text'}}
+/>
+
+# Table
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Table {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Table {...args} level="primary">
+            Primary
+          </Table>
+          <Table {...args} level="warning">
+            Warning
+          </Table>
+          <Table {...args} level="danger">
+            Danger
+          </Table>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
