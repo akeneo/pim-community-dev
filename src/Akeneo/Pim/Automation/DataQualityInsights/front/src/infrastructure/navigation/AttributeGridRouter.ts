@@ -1,4 +1,4 @@
-import {redirectToFilteredAttributeGrid} from "@akeneo-pim-community/data-quality-insights/src/infrastructure/navigation/AttributeGridRouter";
+import {redirectToFilteredAttributeGrid} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/navigation/AttributeGridRouter';
 
 const Router = require('pim/router');
 const DatagridState = require('pim/datagrid/state');
@@ -25,5 +25,7 @@ export const redirectToAttributeGridFilteredByKeyIndicator = (keyIndicator: stri
   redirectToFilteredAttributeGrid(`s[label]=-1&f[quality][value]=${keyIndicator}&t=attribute-grid`);
 };
 export const redirectToAttributeGridFilteredByFamilyAndKeyIndicator = (familyId: string, keyIndicator: string) => {
-  redirectToFilteredAttributeGrid(`s[label]=-1&f[family][value][]=${familyId}&f[quality][value]=${keyIndicator}&t=attribute-grid`);
+  redirectToFilteredAttributeGrid(
+    `s[label]=-1&f[family][value][]=${familyId}&f[quality][value]=${keyIndicator}&t=attribute-grid`
+  );
 };

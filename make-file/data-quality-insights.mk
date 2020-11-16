@@ -20,6 +20,10 @@ data-quality-insights-lint-back:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/Automation/DataQualityInsights/back
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/back
 
+.PHONY: data-quality-insights-lint-front
+data-quality-insights-lint-front:
+	$(YARN_RUN) prettier --config vendor/akeneo/pim-community-dev/.prettierrc.json --parser typescript --write "./src/Akeneo/Pim/Automation/DataQualityInsights/front/**/*.{js,ts,tsx}"
+
 .PHONY: data-quality-insights-cs-fix
 data-quality-insights-cs-fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=.php_cs.php src/Akeneo/Pim/Automation/DataQualityInsights/back
