@@ -70,7 +70,9 @@ class ProductRuleSelector implements SelectorInterface
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
         $subjectSet = new $this->subjectSetClass();
-        $pqb = $this->queryBuilderFactory->create();
+        $pqb = $this->queryBuilderFactory->create([
+            'with_document_type_facet' => true
+        ]);
 
         foreach ($rule->getConditions() as $condition) {
             Assert::implementsInterface($condition, ProductConditionInterface::class);

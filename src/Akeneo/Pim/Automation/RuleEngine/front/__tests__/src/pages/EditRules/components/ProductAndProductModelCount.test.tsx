@@ -1,30 +1,38 @@
 import React from 'react';
 import {renderWithProviders} from '../../../../../test-utils';
 import {Status} from '../../../../../src/rules.constants';
-import {ProductsCount} from '../../../../../src/pages/EditRules/components/ProductsCount';
+import {ProductAndProductModelCount} from '../../../../../src/pages/EditRules/components/ProductAndProductModelCount';
 
-describe('ProductsCount', () => {
+describe('ProductAndProductModelCount', () => {
   test('it should render in complete mode', () => {
     // Given
-    const count = 10;
     const status = Status.COMPLETE;
     // When
     const {getByText} = renderWithProviders(
-      <ProductsCount count={count} status={status} />,
+      <ProductAndProductModelCount
+        productCount={10}
+        productModelCount={15}
+        status={status}
+      />,
       {legacy: true}
     );
     // Then
     expect(
-      getByText('pimee_catalog_rule.form.edit.products_count.complete')
+      getByText(
+        'pimee_catalog_rule.form.edit.products_count.products_and_product_models'
+      )
     ).toBeInTheDocument();
   });
   test('it should render in error mode', () => {
     // Given
-    const count = -1;
     const status = Status.ERROR;
     // When
     const {getByText} = renderWithProviders(
-      <ProductsCount count={count} status={status} />,
+      <ProductAndProductModelCount
+        productCount={-1}
+        productModelCount={-1}
+        status={status}
+      />,
       {legacy: true}
     );
     // Then
@@ -34,11 +42,14 @@ describe('ProductsCount', () => {
   });
   test('it should render in pending mode', () => {
     // Given
-    const count = -1;
     const status = Status.PENDING;
     // When
     const {getByText} = renderWithProviders(
-      <ProductsCount count={count} status={status} />,
+      <ProductAndProductModelCount
+        productCount={-1}
+        productModelCount={-1}
+        status={status}
+      />,
       {legacy: true}
     );
     // Then
