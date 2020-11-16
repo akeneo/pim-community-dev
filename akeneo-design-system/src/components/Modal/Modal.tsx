@@ -29,7 +29,6 @@ const ModalCloseButton = styled(IconButton)`
   position: absolute;
   top: 40px;
   left: 40px;
-  color: ${getColor('grey', 100)};
 `;
 
 const ModalContent = styled.div`
@@ -111,7 +110,7 @@ const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) =
 
   return createPortal(
     <ModalContainer {...rest}>
-      <ModalCloseButton size={20} icon={<CloseIcon />} onClick={onClose} />
+      <ModalCloseButton level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
       {undefined === illustration ? (
         children
       ) : (

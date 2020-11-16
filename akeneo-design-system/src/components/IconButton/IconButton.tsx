@@ -1,49 +1,58 @@
 import React, {Ref, ReactElement} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor} from '../../theme';
 import {IconProps} from '../../icons';
+import {Button, ButtonProps, ButtonSize} from 'components/Button/Button';
+import {Override} from '../../shared';
 
-const Container = styled.button<{color: string} & AkeneoThemedProps>`
-  background: none;
-  border: none;
-  padding: 0;
+const IconButtonContainer = styled(Button)<ButtonProps & {borderless: boolean}>`
   display: inline-flex;
-  color: ${({color}) => getColor(color, 100)};
-  cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
-  opacity: ${({disabled}) => (disabled ? 0.6 : 1)};
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: ${({size}) => (size === 'small' ? 24 : 32)}px;
+  border-style: ${({borderless, ghost}) => (!borderless && ghost ? 'solid' : 'none')};
 `;
 
-type IconButtonProps = {
-  /**
-   * The Icon to display.
-   */
-  icon: ReactElement<IconProps>;
+const getIconSize = (size?: ButtonSize): number => {
+  switch (size) {
+    case 'small':
+      return 16;
+    case 'default':
+    case undefined:
+      return 20;
+  }
+};
 
-  /**
-   * The size of the Icon component.
-   */
-  size?: number;
+type IconButtonProps = Override<
+  Omit<ButtonProps, 'children'>,
+  {
+    /**
+     * When an action does not require primary dominance on the page. The IconButton can also be borderless.
+     */
+    ghost?: boolean | 'borderless';
 
-  /**
-   * The color of the Icon component.
-   */
-  color?: string;
-
-  /**
-   * Whether or not button is disabled.
-   */
-  disabled?: boolean;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+    /**
+     * The Icon to display.
+     */
+    icon: ReactElement<IconProps>;
+  }
+>;
 
 /**
  * The IconButton component is useful to have a clickable icon.
  */
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({icon, size = 24, color = 'inherit', ...rest}: IconButtonProps, forwardedRef: Ref<HTMLButtonElement>) => {
+  ({icon, size, ghost, ...rest}: IconButtonProps, forwardedRef: Ref<HTMLButtonElement>) => {
     return (
-      <Container ref={forwardedRef} color={color} {...rest}>
-        {React.cloneElement(icon, {size})}
-      </Container>
+      <IconButtonContainer
+        ref={forwardedRef}
+        ghost={true === ghost || 'borderless' === ghost}
+        borderless={'borderless' === ghost}
+        size={size}
+        {...rest}
+      >
+        {React.cloneElement(icon, {size: getIconSize(size)})}
+      </IconButtonContainer>
     );
   }
 );
