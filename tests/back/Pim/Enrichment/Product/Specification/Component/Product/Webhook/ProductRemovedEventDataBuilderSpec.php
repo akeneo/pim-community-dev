@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
@@ -30,11 +31,11 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_supports_the_same_business_events_as_decorated_service($eventDataBuilder): void
     {
-        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
-        $eventDataBuilder->supports($businessEvent)->willReturn(true, false);
+        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
+        $eventDataBuilder->supports($event)->willReturn(true, false);
 
-        $this->supports($businessEvent)->shouldReturn(true);
-        $this->supports($businessEvent)->shouldReturn(false);
+        $this->supports($event)->shouldReturn(true);
+        $this->supports($event)->shouldReturn(false);
     }
 
     public function it_builds_event_data_if_the_product_is_granted(
@@ -42,8 +43,8 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $categoryAccessRepository
     ): void {
         $user = new User();
-        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
-        $eventDataBuilder->supports($businessEvent)->willReturn(true);
+        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
+        $eventDataBuilder->supports($event)->willReturn(true);
 
         $categoryAccessRepository->isCategoryCodesGranted(
             $user,
@@ -51,9 +52,9 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
             ['space_battleship']
         )->willReturn(true);
 
-        $eventDataBuilder->build($businessEvent)->willReturn(['resource' => ['identifier' => 'cruiser']]);
+        $eventDataBuilder->build($event, $user)->willReturn(['resource' => ['identifier' => 'cruiser']]);
 
-        $this->build($businessEvent, ['user' => $user]);
+        $this->build($event, $user);
     }
 
     public function it_does_not_build_event_data_if_the_product_is_not_granted(
@@ -62,8 +63,8 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
     ): void {
         $user = new User();
         $user->setUsername('erp_06458');
-        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
-        $eventDataBuilder->supports($businessEvent)->willReturn(true);
+        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
+        $eventDataBuilder->supports($event)->willReturn(true);
 
         $categoryAccessRepository->isCategoryCodesGranted(
             $user,
@@ -71,33 +72,34 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
             ['space_battleship']
         )->willReturn(false);
 
-        $eventDataBuilder->build($businessEvent)->willReturn(['resource' => ['identifier' => 'cruiser']]);
+        $eventDataBuilder->build($event)->willReturn(['resource' => ['identifier' => 'cruiser']]);
 
         $this
             ->shouldThrow(NotGrantedProductException::class)
-            ->during('build', [$businessEvent, ['user' => $user]]);
+            ->during('build', [$event, $user]);
     }
 
     public function it_throws_an_error_if_the_business_event_data_does_not_provide_categories(
         $eventDataBuilder
     ): void {
         $user = new User();
-        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), []);
-        $eventDataBuilder->supports($businessEvent)->willReturn(true);
+        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), []);
+        $eventDataBuilder->supports($event)->willReturn(true);
 
         $this
             ->shouldThrow(\UnexpectedValueException::class)
-            ->during('build', [$businessEvent, ['user' => $user]]);
+            ->during('build', [$event, $user]);
     }
 
     public function it_throws_an_error_if_the_business_event_is_not_supported($eventDataBuilder): void
     {
-        $businessEvent = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
-        $eventDataBuilder->supports($businessEvent)->willReturn(false);
+        $user = new User();
+        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
+        $eventDataBuilder->supports($event)->willReturn(false);
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$businessEvent]);
+            ->during('build', [$event, $user]);
     }
 
     private function getProduct(): array

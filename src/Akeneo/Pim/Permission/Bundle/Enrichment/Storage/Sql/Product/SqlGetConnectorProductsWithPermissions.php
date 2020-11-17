@@ -212,9 +212,11 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         $workflowStatusIndexedByProductIdentifiers = $this->getWorkflowStatusFromProductIdentifiers->fromProductIdentifiers($productIdentifiers, $userId);
 
         return array_map(function (ConnectorProduct $connectorProduct) use ($workflowStatusIndexedByProductIdentifiers) {
-            $workflowStatus = $workflowStatusIndexedByProductIdentifiers[$connectorProduct->identifier()];
+            if (null !== $workflowStatus = $workflowStatusIndexedByProductIdentifiers[$connectorProduct->identifier()] ?? null) {
+                return $connectorProduct->addMetadata('workflow_status', $workflowStatus);
+            }
 
-            return $connectorProduct->addMetadata('workflow_status', $workflowStatus);
+            return $connectorProduct;
         }, $products);
     }
 

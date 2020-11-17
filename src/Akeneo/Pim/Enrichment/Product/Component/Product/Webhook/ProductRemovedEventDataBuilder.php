@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
@@ -28,28 +29,22 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
         $this->categoryAccessRepository = $categoryAccessRepository;
     }
 
-    public function supports(BusinessEventInterface $businessEvent): bool
+    public function supports(object $event): bool
     {
-        return $this->eventDataBuilder->supports($businessEvent);
+        return $this->eventDataBuilder->supports($event);
     }
 
-    public function build(BusinessEventInterface $businessEvent, array $context = []): array
+    /**
+     * @param EventInterface $event
+     */
+    public function build(object $event, UserInterface $user): array
     {
-        if (false === $this->supports($businessEvent)) {
+        if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
         }
-        $user = $context['user'] ?? null;
-        if (!$user || !$user instanceof UserInterface) {
-            throw new \UnexpectedValueException(
-                sprintf(
-                    '"%s" context must provide a "%s" in the context.',
-                    self::class,
-                    UserInterface::class
-                )
-            );
-        }
-        $categoryCodes = $businessEvent->data()['categories'] ?? null;
-        if (!$categoryCodes) {
+
+        $categoryCodes = $event->getData()['categories'] ?? null;
+        if (null === $categoryCodes) {
             throw new \UnexpectedValueException(
                 'Business event data must provide a "categories" index.'
             );
@@ -60,11 +55,11 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
             Attributes::VIEW_ITEMS,
             $categoryCodes
         );
-        if (!$isProductGranted) {
-            $productIdentifier = $businessEvent->data()['identifier'] ?? '';
+        if (false === $isProductGranted) {
+            $productIdentifier = $event->getData()['identifier'] ?? '';
             throw new NotGrantedProductException($user->getUsername(), $productIdentifier);
         }
 
-        return $this->eventDataBuilder->build($businessEvent);
+        return $this->eventDataBuilder->build($event, $user);
     }
 }
