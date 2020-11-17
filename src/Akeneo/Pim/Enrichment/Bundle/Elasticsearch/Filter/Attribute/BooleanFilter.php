@@ -84,6 +84,15 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
                 $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
+            case Operators::IS_EMPTY:
+                $mustNotClause = [
+                    'exists' => [
+                        'field' => $attributePath,
+                    ],
+                ];
+                $this->searchQueryBuilder->addMustNot($mustNotClause);
+                break;
+
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
