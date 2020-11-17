@@ -34,7 +34,8 @@ class BaseDashboard extends BaseView {
     align: 'left',
   };
 
-  protected timePeriod: string = 'weekly';
+  // @todo revert it to "weekly" DAPI-1436
+  protected timePeriod: string = 'daily';
 
   protected familyCode: string | null = null;
 
