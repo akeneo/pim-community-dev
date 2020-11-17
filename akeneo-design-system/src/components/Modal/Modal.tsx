@@ -52,7 +52,7 @@ const ModalChildren = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px 0;
-  width: 480px;
+  min-width: 480px;
 `;
 
 //TODO extract to Typography RAC-331
@@ -99,8 +99,6 @@ type ModalProps = {
  * The Modal Component is used to display a secondary window over the content.
  */
 const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) => {
-  useShortcut(Key.Escape, onClose);
-
   const containerRef = useRef(document.createElement('div'));
 
   useEffect(() => {
@@ -111,10 +109,12 @@ const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) =
     };
   }, []);
 
+  const ref = useShortcut(Key.Escape, onClose);
+
   if (!isOpen) return null;
 
   return createPortal(
-    <ModalContainer {...rest}>
+    <ModalContainer ref={ref} {...rest}>
       <ModalCloseButton onClick={onClose}>
         <CloseIcon size={20} />
       </ModalCloseButton>
@@ -136,6 +136,13 @@ Modal.BottomButtons = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 20px;
+`;
+
+Modal.TopRightButtons = styled(Modal.BottomButtons)`
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  margin: 0;
 `;
 
 export {Modal, SectionTitle, Title};
