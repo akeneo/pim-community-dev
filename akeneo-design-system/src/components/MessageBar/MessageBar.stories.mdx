@@ -82,9 +82,10 @@ Icons can bring extra clarity. They should be placed at the left of the title. T
   <Story name="Content">
     {args => {
       delete args.children;
+      delete args.icon;
       return (
         <>
-          <MessageBar {...args} level="success" title="This one has a title only" icon={<Icons.TagIcon />} />
+          <MessageBar {...args} level="success" title="This one has a title only" />
           <MessageBar {...args} title="This one has a Link" icon={<Icons.LinkIcon />}>
             If a Link component is present, the MessageBar will not auto hide. <Link>Take a look here</Link>
           </MessageBar>

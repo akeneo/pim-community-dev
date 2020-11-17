@@ -1,9 +1,16 @@
-'use strict';
-
 import ReactDOM from 'react-dom';
-import React, {useState, useEffect} from 'react';
+import React, {useCallback} from 'react';
+import {AnimateMessageBar, MessageBar, pimTheme, uuid} from 'akeneo-design-system';
+import styled, {ThemeProvider} from 'styled-components';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+`;
 
 type FlashMessage = {
+  identifier: string;
   type: string;
   message: string;
   options: {messageTitle: string};
@@ -14,41 +21,41 @@ const Notifications = ({
   onNotificationClosed,
 }: {
   notifications: FlashMessage[];
-  onNotificationClosed: (notifications: FlashMessage[]) => void;
+  onNotificationClosed: (notifications: FlashMessage) => void;
 }) => {
-  console.log('render');
-  const [updated, setUpdated] = useState<number>(0);
+  const handleClose = useCallback(
+    (notification: FlashMessage) => () => {
+      onNotificationClosed(notification);
+    },
+    []
+  );
 
-  useEffect(() => {
-    console.log('reset total');
-    setTimeout(() => {
-      notifications.pop();
-      onNotificationClosed(notifications);
-    }, 2000);
-  }, []);
-
-  useEffect(() => {
-    setUpdated(updated => updated + 1);
-  }, [notifications]);
-  useEffect(() => {
-    console.log(updated);
-  }, [updated]);
-
-  return <div></div>;
+  return (
+    <Container>
+      {notifications.map(notification => (
+        <AnimateMessageBar key={notification.identifier}>
+          <MessageBar title={notification.message} onClose={handleClose(notification)}></MessageBar>
+        </AnimateMessageBar>
+      ))}
+    </Container>
+  );
 };
 
 let notifications: FlashMessage[] = [];
 
 const render = () => {
-  console.log(notifications);
   ReactDOM.render(
-    <Notifications
-      notifications={notifications}
-      onNotificationClosed={(updatedNotifications: FlashMessage[]) => {
-        notifications = updatedNotifications;
-        render();
-      }}
-    />,
+    <ThemeProvider theme={pimTheme}>
+      <DependenciesProvider>
+        <Notifications
+          notifications={notifications}
+          onNotificationClosed={(notification: FlashMessage) => {
+            notifications = notifications.filter(currentNotif => currentNotif.identifier !== notification.identifier);
+            render();
+          }}
+        />
+      </DependenciesProvider>
+    </ThemeProvider>,
     document.getElementById('flash-messages')
   );
 };
@@ -67,7 +74,7 @@ const render = () => {
  * @param {boolean} options.flash flag to turn on default delay close call, it's 5s
  */
 const notify = (type: string, message: string, options: {messageTitle: string}) => {
-  notifications.push({type, message, options});
+  notifications.push({identifier: uuid(), type, message, options});
   render();
 };
 

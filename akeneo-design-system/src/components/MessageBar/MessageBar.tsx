@@ -1,7 +1,7 @@
 import React, {ReactNode, ReactElement, isValidElement, useEffect, useState, useCallback} from 'react';
-import styled from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {CloseIcon, IconProps} from '../../icons';
+import {CheckIcon, CloseIcon, DangerIcon, IconProps, InfoIcon} from '../../icons';
 import {LinkProps, Link} from '../../components';
 
 type MessageBarLevel = 'info' | 'success' | 'warning' | 'danger';
@@ -38,6 +38,7 @@ const Content = styled.div`
   border-left: 1px solid;
   flex: 1;
   line-height: 1.5;
+  background-color: ${getColor('white')};
 
   a {
     color: ${getColor('grey', 140)};
@@ -96,10 +97,40 @@ const CloseButton = styled.button<{autoHide: boolean} & AkeneoThemedProps>`
   }
 `;
 
-const ANIMATION_DURATION = 1000;
+const MessageBarHideAnimation = keyframes`
+  0% { 
+    transform: translateX(0) scaleY(1);
+  }
+  50% { 
+    transform: translateX(calc(100% + 50px)) scaleY(1);
+  }
+  100% { 
+    transform: translateX(calc(100% + 50px)) scaleY(0);
+  }
+`;
+
+const MessageBarHideAnimationReverse = keyframes`
+  0% { 
+    transform: translateX(0) scaleY(1);
+  }
+  50% { 
+    transform: translateX(calc(100% + 50px)) scaleY(1);
+  }
+  100% { 
+    transform: translateX(calc(100% + 50px)) scaleY(0);
+  }
+`;
+
+const ANIMATION_DURATION = 2000;
 const AnimateContainer = styled.div<{mounted: boolean}>`
-  transition: transform ${ANIMATION_DURATION}ms ease-in-out;
-  transform: translateX(${({mounted}) => (mounted ? 0 : 'calc(100% + 50px)')});
+  animation: ${({mounted}) =>
+    !mounted
+      ? css`
+          ${MessageBarHideAnimation} ${ANIMATION_DURATION}ms forwards
+        `
+      : css`
+          ${MessageBarHideAnimationReverse} ${ANIMATION_DURATION}ms forwards reverse
+        `};
 `;
 
 const AnimateMessageBar = ({children}: {children: ReactElement<MessageBarProps>}) => {
@@ -164,6 +195,18 @@ const getDuration = (level: MessageBarLevel): number => {
   }
 };
 
+const getLevelIcon = (level: MessageBarLevel): ReactElement => {
+  switch (level) {
+    case 'success':
+      return <CheckIcon />;
+    case 'info':
+      return <InfoIcon />;
+    case 'warning':
+    case 'danger':
+      return <DangerIcon />;
+  }
+};
+
 const useOver = () => {
   const [over, setOver] = useState<boolean>(false);
   const onMouseOver = useCallback(() => {
@@ -191,7 +234,7 @@ type MessageBarProps = {
   /**
    * Icon to display.
    */
-  icon: ReactElement<IconProps>;
+  icon?: ReactElement<IconProps>;
 
   /**
    * Handler called when the MessageBar is closed.
@@ -251,7 +294,7 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
 
   return (
     <Container level={level} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
-      <IconContainer>{React.cloneElement(icon, {size: 24})}</IconContainer>
+      <IconContainer>{React.cloneElement(icon ?? getLevelIcon(level), {size: 24})}</IconContainer>
       <Content>
         <Title>{title}</Title>
         {children}
