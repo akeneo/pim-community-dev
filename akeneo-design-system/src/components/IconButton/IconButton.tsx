@@ -1,7 +1,7 @@
 import React, {Ref, ReactElement} from 'react';
 import styled from 'styled-components';
 import {IconProps} from '../../icons';
-import {Button, ButtonProps, ButtonSize} from '../../components';
+import {Button, ButtonProps, ButtonSize} from '../../components/Button/Button';
 import {Override} from '../../shared';
 
 const IconButtonContainer = styled(Button)<ButtonProps & {borderless: boolean}>`
