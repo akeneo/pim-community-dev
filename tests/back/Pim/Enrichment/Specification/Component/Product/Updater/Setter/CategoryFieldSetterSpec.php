@@ -2,15 +2,18 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Prophecy\Argument;
 
 class CategoryFieldSetterSpec extends ObjectBehavior
 {
@@ -57,20 +60,16 @@ class CategoryFieldSetterSpec extends ObjectBehavior
 
     function it_sets_category_field(
         $categoryRepository,
-        ProductInterface $product,
-        CategoryInterface $mug,
-        CategoryInterface $shirt,
-        CategoryInterface $men
+        ProductInterface $product
     ) {
+        $mug = (new Category())->setCode('mug');
+        $shirt = (new Category())->setCode('shirt');
         $categoryRepository->findOneByIdentifier('mug')->willReturn($mug);
         $categoryRepository->findOneByIdentifier('shirt')->willReturn($shirt);
 
-        $product->getCategories()->willReturn([$men]);
-
-        $product->removeCategory($men)->shouldBeCalled();
-
-        $product->addCategory($mug)->shouldBeCalled();
-        $product->addCategory($shirt)->shouldBeCalled();
+        $product->setCategories(Argument::that(function (ArrayCollection $categories) use ($mug, $shirt) {
+            return $categories->getValues() === [$mug, $shirt];
+        }))->shouldBeCalled();
 
         $this->setFieldData($product, 'categories', ['mug', 'shirt']);
     }

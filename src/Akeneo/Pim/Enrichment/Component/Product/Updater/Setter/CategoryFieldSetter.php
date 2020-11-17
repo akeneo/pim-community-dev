@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Sets the category field
@@ -57,14 +58,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
             $categories[] = $category;
         }
 
-        $oldCategories = $entity->getCategories();
-        foreach ($oldCategories as $category) {
-            $entity->removeCategory($category);
-        }
-
-        foreach ($categories as $category) {
-            $entity->addCategory($category);
-        }
+        $entity->setCategories(new ArrayCollection($categories));
     }
 
     /**
