@@ -9,7 +9,7 @@ export const dependencies = {
   router,
   translate,
   viewBuilder,
-  notify: messenger.notify.bind(messenger),
+  notify: messenger.notify,
   user: userContext,
   security: {
     isGranted: securityContext.isGranted.bind(securityContext),
