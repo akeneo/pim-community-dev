@@ -34,9 +34,9 @@ TODO
 
 <ArgsTable story="Standard" />
 
-## Variation on level
+## Basic table
 <Canvas>
-    <Story name="Basic DataTable">
+    <Story name="Basic Table">
         {args => {
             return (
                 <Table selectable={true}>
@@ -68,7 +68,7 @@ TODO
 
 ## Sortable header
 <Canvas>
-    <Story name="Sortable Table">
+    <Story name="Sortable header">
         {args => {
             const [sortedColumn, setSortedColumn] = useState({
                 columnName: null,
@@ -140,6 +140,157 @@ TODO
                                         <Table.Cell>
                                             <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
                                         </Table.Cell>
+                                    </Table.Row>
+                                )
+                            })
+                        }
+                    </Table.Body>
+                </Table>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Selectable lines
+<Canvas>
+    <Story name="Selectable lines">
+        {args => {
+            const [selectedLines, setSelectedLines] = useState([]);
+            const handleToggleSelected = (lineId) => {
+                if (selectedLines.indexOf(lineId) === -1) {
+                    setSelectedLines([...selectedLines, lineId]);
+                } else {
+                    setSelectedLines(selectedLines.filter(currentValue => currentValue !== lineId));
+                }
+            }
+            const data = [
+                {
+                    id: 1,
+                    name: 'The giant panda',
+                    family: 'Ursidae',
+                    order: 'Carnivora',
+                    genus: 'Ailuropoda',
+                    conservation_status: 'vu',
+                    conservation_status_level: 'warning'
+                },
+                {
+                    id: 2,
+                    name: 'Red panda',
+                    family: 'Ailuridae',
+                    order: 'Carnivora',
+                    genus: 'Ailurus',
+                    conservation_status: 'en',
+                    conservation_status_level: 'danger'
+                },
+                {
+                    id: 3,
+                    name: 'American black bear, not a panda',
+                    family: 'Ursidae',
+                    order: 'Carnivora',
+                    genus: 'Ursus',
+                    conservation_status: 'lc',
+                    conservation_status_level: 'primary'
+                },
+            ];
+            return (
+                <Table isSelectable={true}>
+                    <Table.Header>
+                        <Table.HeaderCell>Name</Table.HeaderCell>
+                        <Table.HeaderCell>Family</Table.HeaderCell>
+                        <Table.HeaderCell>Order</Table.HeaderCell>
+                        <Table.HeaderCell>Genus</Table.HeaderCell>
+                        <Table.HeaderCell>Conservation status</Table.HeaderCell>
+                    </Table.Header>
+                    <Table.Body>
+                        {
+                            data.map((row) => {
+                                return (
+                                    <Table.Row key={row.id} onSelectToggle={() => {handleToggleSelected(row.id)}} isSelected={selectedLines.indexOf(row.id) !== -1}>
+                                        <Table.Cell>{row.name}</Table.Cell>
+                                        <Table.Cell>{row.family}</Table.Cell>
+                                        <Table.Cell>{row.order}</Table.Cell>
+                                        <Table.Cell>{row.genus}</Table.Cell>
+                                        <Table.Cell>
+                                            <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )
+                            })
+                        }
+                    </Table.Body>
+                </Table>
+            );
+        }}
+    </Story>
+</Canvas>
+
+
+## Clickable lines
+<Canvas>
+    <Story name="Clickable lines">
+        {args => {
+            const [data, setData] = useState([
+                {
+                    id: 1,
+                    name: 'The giant panda',
+                    family: 'Ursidae',
+                    order: 'Carnivora',
+                    genus: 'Ailuropoda',
+                    conservation_status: 'vu',
+                    conservation_status_level: 'warning',
+                    count: 0,
+                },
+                {
+                    id: 2,
+                    name: 'Red panda',
+                    family: 'Ailuridae',
+                    order: 'Carnivora',
+                    genus: 'Ailurus',
+                    conservation_status: 'en',
+                    conservation_status_level: 'danger',
+                    count: 0,
+                },
+                {
+                    id: 3,
+                    name: 'American black bear, not a panda',
+                    family: 'Ursidae',
+                    order: 'Carnivora',
+                    genus: 'Ursus',
+                    conservation_status: 'lc',
+                    conservation_status_level: 'primary',
+                    count: 0,
+                },
+            ]);
+            const handleClick = (rowId) => {
+                setData(data => {
+                    return data.map((row) => {
+                        return row.id === rowId ? {...row, count: row.count + 1} : row;
+                    })
+                })
+            }
+            return (
+                <Table>
+                    <Table.Header>
+                        <Table.HeaderCell>Name</Table.HeaderCell>
+                        <Table.HeaderCell>Family</Table.HeaderCell>
+                        <Table.HeaderCell>Order</Table.HeaderCell>
+                        <Table.HeaderCell>Genus</Table.HeaderCell>
+                        <Table.HeaderCell>Conservation status</Table.HeaderCell>
+                        <Table.HeaderCell>Click count</Table.HeaderCell>
+                    </Table.Header>
+                    <Table.Body>
+                        {
+                            data.map((row) => {
+                                return (
+                                    <Table.Row key={row.id} onClick={() => handleClick(row.id)}>
+                                        <Table.Cell>{row.name}</Table.Cell>
+                                        <Table.Cell>{row.family}</Table.Cell>
+                                        <Table.Cell>{row.order}</Table.Cell>
+                                        <Table.Cell>{row.genus}</Table.Cell>
+                                        <Table.Cell>
+                                            <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                                        </Table.Cell>
+                                        <Table.Cell>{row.count}</Table.Cell>
                                     </Table.Row>
                                 )
                             })
