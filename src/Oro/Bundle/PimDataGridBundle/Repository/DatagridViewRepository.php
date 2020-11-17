@@ -57,8 +57,9 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
         }
 
         $qb = $this->createQueryBuilder('v')
-            ->where('v.type = :type')
+            ->where('v.type = :type OR v.owner = :owner')
                 ->setParameter('type', DatagridView::TYPE_PUBLIC)
+                ->setParameter('owner', $user)
             ->andWhere('v.datagridAlias = :alias')
                 ->setParameter('alias', $alias)
             ->andWhere('v.label LIKE :term')
