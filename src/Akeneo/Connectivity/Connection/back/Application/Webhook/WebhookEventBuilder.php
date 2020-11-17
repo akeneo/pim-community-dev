@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -42,7 +43,7 @@ class WebhookEventBuilder
         $eventDataBuilder = $this->getEventDataBuilder($event);
 
         if ($event instanceof EventInterface) {
-            $data = $eventDataBuilder->build($event, $context['user_id']);
+            $data = $eventDataBuilder->build($event, $context['user']);
 
             return [
                 new WebhookEvent(
@@ -58,7 +59,7 @@ class WebhookEventBuilder
 
         if ($event instanceof BulkEventInterface) {
             $events = $event->getEvents();
-            $eventsData = $eventDataBuilder->build($event, $context['user_id']);
+            $eventsData = $eventDataBuilder->build($event, $context['user']);
 
             $webhookEvents = [];
             foreach ($events as $i => $event) {
@@ -89,8 +90,8 @@ class WebhookEventBuilder
     private function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['user_id', 'pim_source']);
-        $resolver->setAllowedTypes('user_id', 'int');
+        $resolver->setRequired(['user', 'pim_source']);
+        $resolver->setAllowedTypes('user', UserInterface::class);
         $resolver->setAllowedTypes('pim_source', 'string');
 
         return $resolver->resolve($options);

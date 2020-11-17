@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -56,7 +57,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     /**
      * @param BulkEventInterface $bulkEvent
      */
-    public function build(object $bulkEvent, int $userId): array
+    public function build(object $bulkEvent, UserInterface $user): array
     {
         if (false === $this->supports($bulkEvent)) {
             throw new \InvalidArgumentException();
@@ -74,7 +75,7 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
 
         $products = $this->getConnectorProductsQuery->fromProductQueryBuilder(
             $pqb,
-            $userId,
+            $user->getId(),
             null,
             null,
             null

@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 
 class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
@@ -38,18 +39,18 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $this->supports(new ProductCreated($author, ['identifier' => '1']))->shouldReturn(false);
     }
 
-    public function it_builds_product_model_removed_event(): void
+    public function it_builds_product_model_removed_event(UserInterface $user): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->build(new ProductModelRemoved($author, ['code' => 'product_identifier']), 10)->shouldReturn(
+        $this->build(new ProductModelRemoved($author, ['code' => 'product_identifier']), $user)->shouldReturn(
             [
                 'resource' => ['code' => 'product_identifier'],
             ]
         );
     }
 
-    public function it_does_not_build_other_business_event(): void
+    public function it_does_not_build_other_business_event(UserInterface $user): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
@@ -57,7 +58,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
             'build',
             [
                 new ProductCreated($author, ['identifier' => '1']),
-                10
+                $user
             ]
         );
     }

@@ -91,8 +91,8 @@ final class SendBusinessEventToWebhooksHandler
                     $webhookEvents = $this->builder->build(
                         $filteredEvent,
                         [
+                            'user' => $user,
                             'pim_source' => $this->pimSource,
-                            'user_id' => $webhook->userId(),
                         ]
                     );
 

@@ -6,6 +6,7 @@ namespace Akeneo\Platform\Component\Webhook;
 
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -23,5 +24,5 @@ interface EventDataBuilderInterface
      *
      * @return array<mixed> Normalized data.
      */
-    public function build(object $event, int $userId): array;
+    public function build(object $event, UserInterface $user): array;
 }

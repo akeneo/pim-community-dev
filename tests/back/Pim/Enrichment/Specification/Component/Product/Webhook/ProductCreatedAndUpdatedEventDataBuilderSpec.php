@@ -22,6 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEven
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Routing\RouterInterface;
@@ -79,8 +80,11 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_builds_a_bulk_event_of_product_created_and_updated_event(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         GetConnectorProducts $getConnectorProductsQuery,
-        ProductQueryBuilderInterface $pqb
+        ProductQueryBuilderInterface $pqb,
+        UserInterface $user
     ): void {
+        $user->getId()->willReturn(10);
+
         $bulkEvent = new BulkEvent([
             new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => 'blue_jean']),
             new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => 'red_jean'])
@@ -101,7 +105,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             null
         )->willReturn($productList);
 
-        $this->build($bulkEvent, 10)->shouldBeLike(
+        $this->build($bulkEvent, $user)->shouldBeLike(
             [
                 ['resource' => [
                     'identifier' => 'blue_jean',
@@ -136,8 +140,11 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_builds_a_bulk_event_of_product_created_and_updated_event_if_a_product_as_been_removed(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         GetConnectorProducts $getConnectorProductsQuery,
-        ProductQueryBuilderInterface $pqb
+        ProductQueryBuilderInterface $pqb,
+        UserInterface $user
     ): void {
+        $user->getId()->willReturn(10);
+
         $blueJeanProduct = $this->buildConnectorProduct(1, 'blue_jean');
         $productList = new ConnectorProductList(1, [$blueJeanProduct]);
 
@@ -155,7 +162,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => 'red_jean'])
         ]);
 
-        $this->build($bulkEvent, 10)->shouldBeLike(
+        $this->build($bulkEvent, $user)->shouldBeLike(
             [
                 ['resource' => [
                     'identifier' => 'blue_jean',

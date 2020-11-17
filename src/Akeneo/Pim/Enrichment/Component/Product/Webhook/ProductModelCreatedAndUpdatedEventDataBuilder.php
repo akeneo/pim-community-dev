@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategory
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFoundException;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -42,7 +43,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
     /**
      * @param ProductModelUpdated|ProductModelCreated $event
      */
-    public function build(object $event, int $userId): array
+    public function build(object $event, UserInterface $user): array
     {
         if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
