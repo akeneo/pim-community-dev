@@ -41,9 +41,18 @@ class TextAreaNormalizer extends AbstractProductValueNormalizer implements Norma
         if (null === $textAreaValue) {
             return null;
         }
+        return $this->clean($textAreaValue);
+    }
 
-        $cleanedData = str_replace(["\r", "\n"], "", $textAreaValue);
-        $cleanedData = strip_tags(html_entity_decode($cleanedData));
+    private function clean(string $value): string
+    {
+        $cleanedData = $value;
+        $cleanedData = html_entity_decode($cleanedData);
+
+        $cleanedData = preg_replace('/<!--.+-->/i', '', $cleanedData);
+        $cleanedData = preg_replace('/<.+?>/i', '', $cleanedData);
+
+        $cleanedData = str_replace(["\r", "\n"], "", $cleanedData);
 
         return $cleanedData;
     }

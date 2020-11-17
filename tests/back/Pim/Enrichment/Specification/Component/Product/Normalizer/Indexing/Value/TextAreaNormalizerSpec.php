@@ -320,4 +320,40 @@ description\r\n");
             ]
         ]);
     }
+
+    function it_normalizes_a_text_area_product_value_with_html_tags_and_invalid_tags(
+        ValueInterface $textAreaValue,
+        GetAttributes $getAttributes
+    ) {
+            $textAreaValue->getAttributeCode()->willReturn('description');
+            $textAreaValue->getLocaleCode()->willReturn(null);
+            $textAreaValue->getScopeCode()->willReturn(null);
+            $textAreaValue->getData()->willReturn("my <a href=\"www.foo.bar\">link</a> 
+<br>hello<!--comment--> 
+hello<script><!-- f('<!--internal--></script>'); --></script> 
+if a<b then print a; 
+hello <td height=22 nowrap align=\"left\">
+a<b &#65 Alpha&Omega Ω");
+
+            $getAttributes->forCode('description')->willReturn(new Attribute(
+                'description',
+                'pim_catalog_textarea',
+                [],
+                false,
+                false,
+                null,
+                null,
+                true,
+                'textarea',
+                []
+            ));
+
+            $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+                'description-textarea' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'my link hello hello if a<b then print a; hello a<b &#65 Alpha&Omega Ω'
+                    ]
+                ]
+            ]);
+    }
 }
