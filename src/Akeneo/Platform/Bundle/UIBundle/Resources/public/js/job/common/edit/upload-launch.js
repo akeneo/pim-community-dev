@@ -49,9 +49,9 @@ define([
           })
           .fail(response => {
             if (undefined !== response.responseJSON.message) {
-              messenger.notify('error', __(response.responseJSON.message));
+              messenger.notify({level: 'error', title: __(response.responseJSON.message)});
             } else {
-              messenger.notify('error', __('pim_import_export.form.job_instance.fail.launch'));
+              messenger.notify({level: 'error', title: __('pim_import_export.form.job_instance.fail.launch')});
             }
           })
           .always(() => {

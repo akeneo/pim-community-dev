@@ -227,7 +227,7 @@ define([
               );
             })
             .fail(() => {
-              messenger.notify('error', __(this.config.launchErrorLabel));
+              messenger.notify({level: 'error', title: __(this.config.launchErrorLabel)});
             })
             .always(() => {
               loadingMask.hide().$el.remove();

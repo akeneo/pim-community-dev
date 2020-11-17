@@ -93,7 +93,7 @@ define([
         .remove(this.getIdentifier())
         .done(
           function () {
-            messenger.notify('success', __(this.config.trans.success));
+            messenger.notify({level: 'success', title: __(this.config.trans.success)});
             router.redirectToRoute(this.config.redirect);
           }.bind(this)
         )
@@ -102,7 +102,7 @@ define([
             var message =
               xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : __(config.trans.fail);
 
-            messenger.notify('error', message);
+            messenger.notify({level: 'error', title: message});
           }.bind(this)
         )
         .always(function () {

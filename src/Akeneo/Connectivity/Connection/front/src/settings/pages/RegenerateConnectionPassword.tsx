@@ -34,16 +34,16 @@ export const RegenerateConnectionPassword = () => {
         });
 
         if (isErr(result)) {
-            notify(
-                NotificationLevel.ERROR,
-                translate('akeneo_connectivity.connection.regenerate_password.flash.error')
-            );
+            notify({
+                level: NotificationLevel.ERROR,
+                title: translate('akeneo_connectivity.connection.regenerate_password.flash.error')
+            });
         } else {
             dispatch(connectionPasswordRegenerated(code, result.value.password));
-            notify(
-                NotificationLevel.SUCCESS,
-                translate('akeneo_connectivity.connection.regenerate_password.flash.success')
-            );
+            notify({
+                level: NotificationLevel.SUCCESS,
+                title: translate('akeneo_connectivity.connection.regenerate_password.flash.success')
+            });
         }
 
         handleRedirect();

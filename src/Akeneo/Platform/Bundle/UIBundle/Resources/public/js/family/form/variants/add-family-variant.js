@@ -56,7 +56,7 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/messenger', 'pim/form', '
      */
     submitForm(formModal) {
       return formModal.saveFamilyVariant().then(familyVariant => {
-        messenger.notify('success', _.__('pim_enrich.entity.family_variant.flash.create.success'));
+        messenger.notify({level: 'success', title: _.__('pim_enrich.entity.family_variant.flash.create.success')});
         this.getRoot().trigger('pim_enrich.entity.family.family_variant.post_create', familyVariant);
       });
     },

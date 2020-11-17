@@ -288,15 +288,24 @@ define([
       const attributeToRemove = event.currentTarget.dataset.attribute;
 
       if (attributeAsLabel === attributeToRemove) {
-        Messenger.notify('error', __('pim_enrich.entity.family.flash.update.cant_remove_attribute_as_label'));
+        Messenger.notify({
+          level: 'error',
+          title: __('pim_enrich.entity.family.flash.update.cant_remove_attribute_as_label'),
+        });
 
         return false;
       } else if (attributeAsImage === attributeToRemove) {
-        Messenger.notify('error', __('pim_enrich.entity.family.flash.update.cant_remove_attribute_as_image'));
+        Messenger.notify({
+          level: 'error',
+          title: __('pim_enrich.entity.family.flash.update.cant_remove_attribute_as_image'),
+        });
 
         return false;
       } else if (_.contains(attributesUsedAsAxis, attributeToRemove)) {
-        Messenger.notify('error', __('pim_enrich.entity.family.flash.update.cant_remove_attribute_used_as_axis'));
+        Messenger.notify({
+          level: 'error',
+          title: __('pim_enrich.entity.family.flash.update.cant_remove_attribute_used_as_axis'),
+        });
 
         return false;
       }

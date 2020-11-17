@@ -180,7 +180,7 @@ define([
           .tooltip('destroy')
           .tooltip('show');
       } else {
-        messenger.notify('error', response.optionValues);
+        messenger.notify({level: 'error', title: response.optionValues});
       }
     },
     cancelSubmit: function (e) {
@@ -369,7 +369,7 @@ define([
     requestRowEdition: function (attributeOptionRow) {
       if (this.currentlyEditedItemView) {
         if (this.currentlyEditedItemView.dirty) {
-          messenger.notify('error', __('alert.attribute_option.save_before_edit_other'));
+          messenger.notify({level: 'error', title: __('alert.attribute_option.save_before_edit_other')});
 
           return false;
         } else {
@@ -423,7 +423,7 @@ define([
             message = response.responseText;
           }
 
-          messenger.notify('error', message);
+          messenger.notify({level: 'error', title: message});
         }.bind(this),
       });
     },

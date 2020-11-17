@@ -137,11 +137,11 @@ define([
         .done(
           function () {
             this.render();
-            messenger.notify('success', __('flash.comment.create.success'));
+            messenger.notify({level: 'success', title: __('flash.comment.create.success')});
           }.bind(this)
         )
         .fail(function () {
-          messenger.notify('error', __('flash.comment.create.error'));
+          messenger.notify({level: 'error', title: __('flash.comment.create.error')});
         });
     },
 
@@ -173,11 +173,11 @@ define([
         .done(
           function () {
             this.render();
-            messenger.notify('success', __('flash.comment.delete.success'));
+            messenger.notify({level: 'success', title: __('flash.comment.delete.success')});
           }.bind(this)
         )
         .fail(function () {
-          messenger.notify('error', __('flash.comment.delete.error'));
+          messenger.notify({level: 'error', title: __('flash.comment.delete.error')});
         });
     },
 
@@ -202,11 +202,11 @@ define([
           function () {
             $thread.find('textarea').val('');
             this.render();
-            messenger.notify('success', __('flash.comment.reply.success'));
+            messenger.notify({level: 'success', title: __('flash.comment.reply.success')});
           }.bind(this)
         )
         .fail(function () {
-          messenger.notify('error', __('flash.comment.reply.error'));
+          messenger.notify({level: 'error', title: __('flash.comment.reply.error')});
         });
     },
   });

@@ -1,8 +1,10 @@
+import {FlashMessage} from 'akeneo-design-system';
+
 export enum NotificationLevel {
     INFO = 'info',
     SUCCESS = 'success',
     WARNING = 'warning',
-    ERROR = 'error',
+    ERROR = 'danger',
 }
 
-export type Notify = (level: NotificationLevel, message: string) => void;
+export type Notify = (flashMessage: FlashMessage) => void;

@@ -26,15 +26,15 @@ export const RegenerateWebhookSecret = () => {
         });
 
         if (isErr(result)) {
-            notify(
-                NotificationLevel.ERROR,
-                translate('akeneo_connectivity.connection.webhook.regenerate_secret.flash.error')
-            );
+            notify({
+                level: NotificationLevel.ERROR,
+                title: translate('akeneo_connectivity.connection.webhook.regenerate_secret.flash.error')
+            });
         } else {
-            notify(
-                NotificationLevel.SUCCESS,
-                translate('akeneo_connectivity.connection.webhook.regenerate_secret.flash.success')
-            );
+            notify({
+                level: NotificationLevel.SUCCESS,
+                title: translate('akeneo_connectivity.connection.webhook.regenerate_secret.flash.success')
+            });
         }
 
         handleRedirect();

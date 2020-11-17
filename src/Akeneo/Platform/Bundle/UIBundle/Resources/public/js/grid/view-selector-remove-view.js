@@ -80,7 +80,7 @@ define([
           }.bind(this)
         )
         .fail(function (response) {
-          messenger.notify('error', response.responseJSON);
+          messenger.notify({level: 'error', title: response.responseJSON});
         });
     },
   });

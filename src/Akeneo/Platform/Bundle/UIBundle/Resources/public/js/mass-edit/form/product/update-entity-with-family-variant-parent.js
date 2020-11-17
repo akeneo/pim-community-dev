@@ -82,7 +82,10 @@ define([
       const hasUpdate = null !== productModelCode;
 
       if (!hasUpdate) {
-        messenger.notify('error', __('pim_enrich.mass_edit.product.operation.add_to_existing_product_model.no_update'));
+        messenger.notify({
+          level: 'error',
+          title: __('pim_enrich.mass_edit.product.operation.add_to_existing_product_model.no_update'),
+        });
       }
 
       return $.Deferred().resolve(hasUpdate);

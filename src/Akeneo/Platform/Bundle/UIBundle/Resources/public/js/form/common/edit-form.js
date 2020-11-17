@@ -154,7 +154,7 @@ define([
     displayError: function (event) {
       _.each(event.response, function (error) {
         if (error.global) {
-          messenger.notify('error', error.message);
+          messenger.notify({level: 'error', title: error.message});
         }
       });
     },

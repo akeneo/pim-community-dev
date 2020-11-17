@@ -33,13 +33,13 @@ define([
       this.getRoot().trigger('pim_enrich:form:entity:post_save');
       var code = this.getFormData().code;
       if (!isUpdate) {
-        messenger.notify('success', this.createSuccessMessage);
+        messenger.notify({level: 'success', title: this.createSuccessMessage});
         router.redirectToRoute(this.config.redirectUrl, {code: code});
 
         return;
       }
 
-      messenger.notify('success', this.updateSuccessMessage);
+      messenger.notify({level: 'success', title: this.updateSuccessMessage});
     },
 
     /**

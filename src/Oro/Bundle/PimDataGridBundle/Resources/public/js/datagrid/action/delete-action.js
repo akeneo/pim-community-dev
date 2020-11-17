@@ -69,7 +69,7 @@ define([
         }.bind(this),
         success: function () {
           var messageText = __('pim_enrich.entity.' + this.getEntityCode() + '.flash.delete.success');
-          messenger.notify('success', messageText);
+          messenger.notify({level: 'success', title: messageText});
           userContext.initialize();
 
           mediator.trigger('grid_action_execute:product-grid:delete');
@@ -112,7 +112,10 @@ define([
         }
       }
 
-      messenger.notify('error', '' === message ? __('error.removing.' + this.getEntityHint()) : message);
+      messenger.notify({
+        level: 'error',
+        title: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
+      });
     },
   });
 });

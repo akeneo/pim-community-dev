@@ -103,11 +103,11 @@ define([
           }.bind(this)
         )
         .fail(function (xhr) {
-          var message =
+          var title =
             xhr.responseJSON && xhr.responseJSON.message
               ? xhr.responseJSON.message
               : _.__('pim_enrich.entity.product.flash.update.file_upload');
-          messenger.notify('error', message);
+          messenger.notify({level: 'error', title});
         })
         .always(
           function () {

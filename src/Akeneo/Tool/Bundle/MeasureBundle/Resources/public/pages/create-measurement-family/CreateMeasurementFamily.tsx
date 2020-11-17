@@ -47,7 +47,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
 
       switch (response.success) {
         case true:
-          notify(NotificationLevel.SUCCESS, __('measurements.create_family.flash.success'));
+          notify({level: NotificationLevel.SUCCESS, title: __('measurements.create_family.flash.success')});
           handleClose(measurementFamily.code);
           break;
 
@@ -57,7 +57,7 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
       }
     } catch (error) {
       console.error(error);
-      notify(NotificationLevel.ERROR, __('measurements.create_family.flash.error'));
+      notify({level: NotificationLevel.ERROR, title: __('measurements.create_family.flash.error')});
     }
   }, [form, locale, saveMeasurementFamily, notify, __, handleClose, setErrors]);
 

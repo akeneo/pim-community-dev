@@ -135,7 +135,7 @@ define([
               loadingMask.hide().$el.remove();
               const targetUrl = $el.attr('data-redirect-url');
               router.redirect(targetUrl, {trigger: true});
-              messenger.notify('success', $el.attr('data-success-message'));
+              messenger.notify({level: 'success', title: $el.attr('data-success-message')});
             },
             error: function (xhr) {
               loadingMask.hide().$el.remove();

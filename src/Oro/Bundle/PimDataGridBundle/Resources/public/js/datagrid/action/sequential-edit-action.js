@@ -40,14 +40,14 @@ define([
           sequentialEditProvider.set(response.entities);
 
           if (1000 < response.total) {
-            messenger.notify(
-              'warning',
-              __('pim_enrich.entity.product.module.sequential_edit.item_limit', {count: response.total})
-            );
+            messenger.notify({
+              level: 'warning',
+              title: __('pim_enrich.entity.product.module.sequential_edit.item_limit', {count: response.total}),
+            });
           }
 
           if (0 === response.total) {
-            messenger.notify('error', __('pim_enrich.entity.product.module.sequential_edit.empty'));
+            messenger.notify({level: 'error', title: __('pim_enrich.entity.product.module.sequential_edit.empty')});
 
             return;
           }

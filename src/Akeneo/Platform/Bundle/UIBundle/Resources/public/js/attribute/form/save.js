@@ -20,7 +20,7 @@ define(['pim/form/common/save-form', 'oro/messenger'], function (BaseSave, messe
         default:
       }
 
-      messenger.notify('error', errorMessage);
+      messenger.notify({level: 'error', title: errorMessage});
     },
   });
 });

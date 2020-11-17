@@ -215,7 +215,10 @@ define([
       const hasUpdates = 0 !== categories.length;
 
       if (!hasUpdates) {
-        messenger.notify('error', __(`pim_enrich.mass_edit.product.operation.${data.operation}.no_update`));
+        messenger.notify({
+          level: 'error',
+          title: __(`pim_enrich.mass_edit.product.operation.${data.operation}.no_update`),
+        });
       }
 
       return $.Deferred().resolve(hasUpdates);

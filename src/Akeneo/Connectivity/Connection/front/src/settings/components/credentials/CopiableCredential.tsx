@@ -25,10 +25,10 @@ export const CopiableCredential: FC<Props> = ({label, children: value, actions, 
         }
         copyTextToClipboard(ref.current);
 
-        notify(
-            NotificationLevel.INFO,
-            translate('akeneo_connectivity.connection.edit_connection.credentials.flash.copied', {name: label})
-        );
+        notify({
+            level: NotificationLevel.INFO,
+            title: translate('akeneo_connectivity.connection.edit_connection.credentials.flash.copied', {name: label})
+        });
     };
 
     return (

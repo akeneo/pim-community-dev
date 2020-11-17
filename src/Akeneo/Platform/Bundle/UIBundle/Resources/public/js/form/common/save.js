@@ -83,7 +83,7 @@ define(['oro/translator', 'pim/form', 'oro/mediator', 'oro/loading-mask', 'oro/m
     postSave: function (data) {
       this.getRoot().trigger('pim_enrich:form:entity:post_save', data);
 
-      messenger.notify('success', this.updateSuccessMessage, {flash: this.isFlash});
+      messenger.notify({level: 'success', title: this.updateSuccessMessage});
     },
 
     /**
@@ -109,7 +109,7 @@ define(['oro/translator', 'pim/form', 'oro/mediator', 'oro/loading-mask', 'oro/m
         default:
       }
 
-      messenger.notify('error', this.updateFailureMessage);
+      messenger.notify({level: 'error', title: this.updateFailureMessage});
     },
   });
 });

@@ -338,7 +338,7 @@ define([
                     }.bind(this)
                   )
                   .fail(function () {
-                    messenger.notify('error', __(this.config.deletionFailed));
+                    messenger.notify({level: 'error', title: __(this.config.deletionFailed)});
                   });
               }.bind(this)
             );

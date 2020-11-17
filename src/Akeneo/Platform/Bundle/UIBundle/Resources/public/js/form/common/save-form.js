@@ -50,8 +50,8 @@ define([
      * @param  {Array} labels   An array of field names
      */
     showFlashMessage: function (message, labels) {
-      var flash = __(message, {fields: labels.join(', ')});
-      messenger.notify('error', flash);
+      var title = __(message, {fields: labels.join(', ')});
+      messenger.notify({level: 'error', title});
     },
 
     /**

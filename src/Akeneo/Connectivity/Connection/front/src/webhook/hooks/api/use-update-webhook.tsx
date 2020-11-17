@@ -42,15 +42,18 @@ export const useUpdateWebhook = (code: string) => {
         });
         if (isErr(result)) {
             if (result.error.errors) {
-                result.error.errors.forEach(({message}) => notify(NotificationLevel.ERROR, translate(message)));
+                result.error.errors.forEach(({message}) => notify({level: NotificationLevel.ERROR, title: translate(message)}));
             } else {
-                notify(NotificationLevel.ERROR, translate('akeneo_connectivity.connection.webhook.flash.error'));
+                notify({
+                    level: NotificationLevel.ERROR,
+                    title: translate('akeneo_connectivity.connection.webhook.flash.error')
+                });
             }
 
             return result;
         }
 
-        notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.webhook.flash.success'));
+        notify({level: NotificationLevel.SUCCESS, title: translate('akeneo_connectivity.connection.webhook.flash.success')});
 
         return result;
     };

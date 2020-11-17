@@ -39,7 +39,10 @@ define([
           })
             .done(option => {
               modal.close();
-              messenger.notify('success', _.__('pim_enrich.entity.attribute_option.flash.create.success'));
+              messenger.notify({
+                level: 'success',
+                title: _.__('pim_enrich.entity.attribute_option.flash.create.success'),
+              });
               deferred.resolve(option);
             })
             .fail(xhr => {
@@ -52,7 +55,7 @@ define([
                   })
                 );
               } else {
-                messenger.notify('error', _.__('pim_enrich.entity.attribute_option.flash.create.fail'));
+                messenger.notify({level: 'error', title: _.__('pim_enrich.entity.attribute_option.flash.create.fail')});
               }
             });
         });

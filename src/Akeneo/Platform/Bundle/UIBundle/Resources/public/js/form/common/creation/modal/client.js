@@ -16,7 +16,7 @@ define(['pim/form/common/creation/modal', 'oro/messenger', 'oro/mediator', 'oro/
         modal.remove();
         deferred.resolve();
 
-        messenger.notify('success', __(this.config.successMessage));
+        messenger.notify({level: 'success', title: __(this.config.successMessage)});
         mediator.trigger('datagrid:doRefresh:' + this.config.gridName);
       });
     },

@@ -139,7 +139,7 @@ define([
         )
         .fail(function (response) {
           _.each(response.responseJSON, function (error) {
-            messenger.notify('error', error);
+            messenger.notify({level: 'error', title: error});
           });
         });
     },

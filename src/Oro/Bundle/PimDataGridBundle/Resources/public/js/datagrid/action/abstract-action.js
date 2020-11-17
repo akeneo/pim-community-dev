@@ -242,7 +242,7 @@ define([
       var defaultMessage = data.successful ? this.messages.success : this.messages.error,
         message = __(data.message) || defaultMessage;
       if (message) {
-        messenger.notify(data.successful ? 'success' : 'error', message);
+        messenger.notify({level: data.successful ? 'success' : 'error', title: message});
       }
     },
 

@@ -20,12 +20,12 @@ export const useDeleteConnection = (code: string) => {
         });
 
         if (isErr(result)) {
-            notify(NotificationLevel.ERROR, result.error.message);
+            notify({level: NotificationLevel.ERROR, title: result.error.message});
 
             return result;
         }
 
-        notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.delete_connection.flash.success'));
+        notify({level: NotificationLevel.SUCCESS, title: translate('akeneo_connectivity.connection.delete_connection.flash.success')});
 
         return result;
     };

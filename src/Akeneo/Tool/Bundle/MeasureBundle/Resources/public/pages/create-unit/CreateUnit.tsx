@@ -81,7 +81,7 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
       }
     } catch (error) {
       console.error(error);
-      notify(NotificationLevel.ERROR, __('measurements.add_unit.flash.error'));
+      notify({level: NotificationLevel.ERROR, title: __('measurements.add_unit.flash.error')});
     }
   }, [
     form,

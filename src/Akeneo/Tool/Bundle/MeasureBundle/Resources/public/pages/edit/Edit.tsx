@@ -140,7 +140,7 @@ const Edit = () => {
       switch (response.success) {
         case true:
           resetState();
-          notify(NotificationLevel.SUCCESS, __('measurements.family.save.flash.success'));
+          notify({level: NotificationLevel.SUCCESS, title: __('measurements.family.save.flash.success')});
           break;
 
         case false:
@@ -149,7 +149,7 @@ const Edit = () => {
       }
     } catch (error) {
       console.error(error);
-      notify(NotificationLevel.ERROR, __('measurements.family.save.flash.error'));
+      notify({level: NotificationLevel.ERROR, title: __('measurements.family.save.flash.error')});
     }
   }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors, resetState]);
 
@@ -160,7 +160,7 @@ const Edit = () => {
 
       switch (response) {
         case MeasurementFamilyRemoverResult.Success:
-          notify(NotificationLevel.SUCCESS, __('measurements.family.delete.flash.success'));
+          notify({level: NotificationLevel.SUCCESS, title: __('measurements.family.delete.flash.success')});
           history.push('/');
           break;
         case MeasurementFamilyRemoverResult.NotFound:
@@ -169,7 +169,7 @@ const Edit = () => {
       }
     } catch (error) {
       console.error(error);
-      notify(NotificationLevel.ERROR, __('measurements.family.delete.flash.error'));
+      notify({level: NotificationLevel.ERROR, title: __('measurements.family.delete.flash.error')});
     }
   }, [measurementFamilyCode, removeMeasurementFamily, history, notify, __]);
 

@@ -15,7 +15,7 @@ define([
   'oro/datagrid/pagination',
   'pim/template/datagrid/pagination',
   'oro/messenger',
-], function ($, mediator, _, __, Pagination, template, Messenger) {
+], function ($, mediator, _, __, Pagination, template, messenger) {
   'use strict';
 
   const PaginationInput = Pagination.extend({
@@ -168,7 +168,10 @@ define([
         const state = this.collection.state;
         const currentPage = state.firstPage === 0 ? state.currentPage : state.currentPage - 1;
         if (currentPage + 1 === Math.floor(this.maxRescoreWindow / state.pageSize)) {
-          Messenger.notify('warning', __('oro.datagrid.pagination.limit_warning', {limit: this.maxRescoreWindow}));
+          messenger.notify({
+            level: 'warning',
+            title: __('oro.datagrid.pagination.limit_warning', {limit: this.maxRescoreWindow}),
+          });
         }
 
         if (this.options.appendToGrid) {

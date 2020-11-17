@@ -84,7 +84,7 @@ const AttributeOptions = () => {
         await attributeOptionSaver(attributeOption);
         dispatchAction(updateAttributeOptionAction(attributeOption));
       } catch (error) {
-        notify(NotificationLevel.ERROR, error);
+        notify({level: NotificationLevel.ERROR, title: error});
       }
       setIsSaving(false);
     },
@@ -100,7 +100,7 @@ const AttributeOptions = () => {
         setShowNewOptionForm(false);
         setSelectedOption(attributeOption);
       } catch (error) {
-        notify(NotificationLevel.ERROR, error);
+        notify({level: NotificationLevel.ERROR, title: error});
       }
       setIsSaving(false);
     },
@@ -117,7 +117,7 @@ const AttributeOptions = () => {
           setSelectedOption(attributeOptions[0]);
         }
       } catch (error) {
-        notify(NotificationLevel.ERROR, error);
+        notify({level: NotificationLevel.ERROR, title: error});
       }
       setIsSaving(false);
     },

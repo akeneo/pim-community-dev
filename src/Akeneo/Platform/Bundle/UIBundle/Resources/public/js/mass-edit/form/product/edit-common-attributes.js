@@ -171,7 +171,7 @@ define([
       const actions = propertyAccessor.accessProperty(data, 'actions.0.normalized_values', {});
 
       if (0 === Object.keys(actions).length) {
-        messenger.notify('error', __('pim_enrich.mass_edit.product.operation.edit_common.no_update'));
+        messenger.notify({level: 'error', title: __('pim_enrich.mass_edit.product.operation.edit_common.no_update')});
 
         return $.Deferred().resolve(false);
       } else {

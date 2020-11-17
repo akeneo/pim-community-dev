@@ -106,15 +106,15 @@ define([
           router.redirectToRoute(this.config.backRoute);
 
           const translatedAction = __('pim_datagrid.mass_action.mass_delete');
-          messenger.notify(
-            'success',
-            __(this.config.launchedLabel, {
+          messenger.notify({
+            level: 'success',
+            title: __(this.config.launchedLabel, {
               operation: translatedAction,
-            })
-          );
+            }),
+          });
         })
         .fail(() => {
-          messenger.notify('error', __(this.config.launchErrorLabel));
+          messenger.notify({level: 'error', title: __(this.config.launchErrorLabel)});
         })
         .always(() => {
           loadingMask.hide().$el.remove();

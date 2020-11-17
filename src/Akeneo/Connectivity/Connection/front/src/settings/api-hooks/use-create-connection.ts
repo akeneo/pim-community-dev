@@ -51,16 +51,16 @@ export const useCreateConnection = () => {
 
         if (isErr(result)) {
             if (undefined === result.error.errors) {
-                notify(
-                    NotificationLevel.ERROR,
-                    translate('akeneo_connectivity.connection.create_connection.flash.error')
-                );
+                notify({
+                    level: NotificationLevel.ERROR,
+                    title: translate('akeneo_connectivity.connection.create_connection.flash.error')
+                });
             }
 
             return result;
         }
 
-        notify(NotificationLevel.SUCCESS, translate('akeneo_connectivity.connection.create_connection.flash.success'));
+        notify({level: NotificationLevel.SUCCESS, title: translate('akeneo_connectivity.connection.create_connection.flash.success')});
 
         const connection: Connection & ConnectionCredentials & ConnectionUserPermissions = {
             ...result.value,

@@ -28,9 +28,9 @@ define(['jquery', 'pim/dialogform', 'oro/messenger', 'pim/initselect2', 'jquery.
         initSelect2.initSelect($select);
         $select.trigger('change');
         $select.select2('data', selectData);
-        messenger.notify('success', $field.data('success-message'));
+        messenger.notify({level: 'success', title: $field.data('success-message')});
       } else {
-        messenger.notify('error', $field.data('error-message'));
+        messenger.notify({level: 'error', title: $field.data('error-message')});
       }
     };
     new DialogForm(fieldId, callback);

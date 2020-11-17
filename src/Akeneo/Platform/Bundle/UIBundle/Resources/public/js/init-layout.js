@@ -122,7 +122,6 @@ define([
           type: 'DELETE',
           success: function () {
             el.trigger('removesuccess');
-            messenger.enqueueMessage('success', el.data('success-message'), {hashNavEnabled: true});
             if (el.data('redirect')) {
               $.isActive(true);
               Backbone.history.navigate('#' + el.data('redirect'));
@@ -143,7 +142,7 @@ define([
               }
             }
 
-            messenger.notify('error', el.data('error-message') || message, {flash: false});
+            messenger.notify({level: 'error', title: el.data('error-message') || message});
           },
         });
       };

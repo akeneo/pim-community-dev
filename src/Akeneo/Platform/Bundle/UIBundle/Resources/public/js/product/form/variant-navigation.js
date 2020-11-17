@@ -274,7 +274,7 @@ define([
      * @param {Object} formModal
      */
     submitForm: function (isVariantProduct, formModal) {
-      const message = isVariantProduct
+      const title = isVariantProduct
         ? __('pim_enrich.entity.product_model.flash.create.variant_product_added')
         : __('pim_enrich.entity.product_model.flash.create.product_model_added');
 
@@ -282,7 +282,7 @@ define([
 
       return formModal.saveProductModelChild(route).done(entity => {
         this.redirectToEntity(entity.meta);
-        messenger.notify('success', message);
+        messenger.notify({level: 'success', title});
       });
     },
 

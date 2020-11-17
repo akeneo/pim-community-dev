@@ -1,13 +1,14 @@
 import {View} from 'backbone';
+import {FlashMessage} from 'akeneo-design-system';
 
 enum NotificationLevel {
   INFO = 'info',
   SUCCESS = 'success',
   WARNING = 'warning',
-  ERROR = 'error',
+  ERROR = 'danger',
 }
 
-type Notify = (level: NotificationLevel, message: string) => void;
+type Notify = (notification: FlashMessage) => void;
 
 type RouteParams = {[param: string]: any};
 

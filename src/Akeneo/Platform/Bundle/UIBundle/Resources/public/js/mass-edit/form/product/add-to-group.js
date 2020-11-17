@@ -100,7 +100,7 @@ define([
       const hasUpdates = 0 !== groups.length;
 
       if (!hasUpdates) {
-        messenger.notify('error', __('pim_enrich.mass_edit.product.operation.add_to_group.no_update'));
+        messenger.notify({level: 'error', title: __('pim_enrich.mass_edit.product.operation.add_to_group.no_update')});
       }
 
       return $.Deferred().resolve(hasUpdates);
