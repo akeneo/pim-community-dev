@@ -48,31 +48,19 @@ class Kernel extends BaseKernel
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
 
-        $ceEnv = $this->environment;
-
-        if ('prod' === $this->environment) {
-            $ceEnv = 'prod_onprem_paas';
-        }
-
         $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
         $projectConfDir = $this->getProjectDir() . '/config';
 
-        $this->loadPackagesConfigurationExceptSecurity($loader, $ceConfDir, $ceEnv);
+        $this->loadPackagesConfigurationExceptSecurity($loader, $ceConfDir, $this->environment);
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
 
-        $this->loadContainerConfiguration($loader, $ceConfDir, $ceEnv);
+        $this->loadContainerConfiguration($loader, $ceConfDir, $this->environment);
         $this->loadContainerConfiguration($loader, $projectConfDir, $this->environment);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $ceEnv = $this->environment;
-
-        if ('prod' === $this->environment) {
-            $ceEnv = 'prod_onprem_paas';
-        }
-
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config', $ceEnv);
+        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config', $this->environment);
         $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/config', $this->environment);
     }
 
