@@ -164,7 +164,16 @@ class DatagridViewController
         $loggedUsername = $this->tokenStorage->getToken()->getUser()->getUsername();
         if (isset($view['id'])) {
             $creation = false;
-            $datagridView = $this->datagridViewRepo->find($view['id']);
+            $datagridView = $this->datagridViewRepo->findOneBy(['id' => $view['id'], 'datagridAlias' => $alias]);
+            if (null === $datagridView) {
+                throw new NotFoundHttpException();
+            }
+
+            $owner = $datagridView->getOwner();
+            if (!$owner instanceof UserInterface || $owner->getUsername() !== $loggedUsername) {
+                throw new AccessDeniedException();
+            }
+
             // Once the view is created we cannot change its type.
             unset($view['type']);
         } else {
@@ -175,19 +184,9 @@ class DatagridViewController
             $view['datagrid_alias'] = $alias;
         }
 
-        if (null === $datagridView) {
-            throw new NotFoundHttpException();
-        }
-
         $this->updater->update($datagridView, $view);
 
-        $owner = $datagridView->getOwner();
-        if (!$owner instanceof UserInterface || $owner->getUsername() !== $loggedUsername) {
-            throw new AccessDeniedException();
-        }
-
         $violations = $this->validator->validate($datagridView);
-
         if ($violations->count()) {
             $messages = [];
             foreach ($violations as $violation) {
