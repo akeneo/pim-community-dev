@@ -6,17 +6,31 @@ namespace Pim\Upgrade\Schema\Tests;
 
 use Akeneo\Test\Integration\TestCase;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class Version_5_0_20201117114538_modify_auto_increment_integer_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
     private const MIGRATION_LABEL = '_5_0_20201117114538_modify_auto_increment_integer';
 
+    /** @var AbstractSchemaManager */
+    private $schemaManager;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function test_completeness_id_has_changed_to_bigint(): void
     {
         $this->ensureCompletenessUsesNormalInt();
         $this->reExecuteMigration(self::MIGRATION_LABEL);
-        $tableColumns = $this->schemaManager->listTableColumns('pim_catalog_completeness');
+        $tableColumns = $this->get('database_connection')
+            ->getSchemaManager()
+            ->listTableColumns('pim_catalog_completeness');
 
         $found = false;
         foreach($tableColumns as $column) {
