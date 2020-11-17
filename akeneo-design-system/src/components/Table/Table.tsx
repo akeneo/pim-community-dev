@@ -60,11 +60,11 @@ type TableHeaderCellProps = {
   children?: ReactNode;
 };
 
-const HeaderCellContainer = styled.th<{sortable: boolean} & AkeneoThemedProps>`
+const HeaderCellContainer = styled.th<{sortable: boolean; isSorted: boolean} & AkeneoThemedProps>`
   background: linear-gradient(to top, #67768a 1px, white 0px);
   height: 44px;
   text-align: left;
-  color: ${getColor('grey', 100)};
+  color: ${props => (props.isSorted ? getColor('purple', 100) : getColor('grey', 100))};
 
   ${props =>
     props.sortable &&
@@ -101,7 +101,13 @@ Table.HeaderCell = ({sortable, onDirectionChange, direction, children, ...rest}:
   };
 
   return (
-    <HeaderCellContainer sortable={sortable} aria-sort={direction} onClick={handleClick} {...rest}>
+    <HeaderCellContainer
+      isSorted={direction !== TableSortDirection.NONE}
+      sortable={sortable}
+      aria-sort={direction}
+      onClick={handleClick}
+      {...rest}
+    >
       <HeaderCellContentContainer>{children}</HeaderCellContentContainer>
       {sortable &&
         (direction == TableSortDirection.DESC || direction == TableSortDirection.NONE ? (
