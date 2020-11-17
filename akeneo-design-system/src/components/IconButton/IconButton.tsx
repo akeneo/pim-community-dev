@@ -13,12 +13,11 @@ const IconButtonContainer = styled(Button)<ButtonProps & {borderless: boolean}>`
   border-style: ${({borderless, ghost}) => (!borderless && ghost ? 'solid' : 'none')};
 `;
 
-const getIconSize = (size?: ButtonSize): number => {
+const getIconSize = (size: ButtonSize): number => {
   switch (size) {
     case 'small':
       return 16;
     case 'default':
-    case undefined:
       return 20;
   }
 };
@@ -42,7 +41,7 @@ type IconButtonProps = Override<
  * The IconButton component is useful to have a clickable icon.
  */
 const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({icon, size, ghost, ...rest}: IconButtonProps, forwardedRef: Ref<HTMLButtonElement>) => {
+  ({icon, size = 'default', ghost, ...rest}: IconButtonProps, forwardedRef: Ref<HTMLButtonElement>) => {
     return (
       <IconButtonContainer
         ref={forwardedRef}

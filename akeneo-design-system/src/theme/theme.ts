@@ -83,7 +83,7 @@ type Level = 'primary' | 'secondary' | 'tertiary' | 'warning' | 'danger';
 
 const getColor = (color: string, gradient?: number): ((props: AkeneoThemedProps) => string) => ({
   theme,
-}: AkeneoThemedProps): string => (theme.color[`${color}${gradient ?? ''}`] ?? color) as string;
+}: AkeneoThemedProps): string => theme.color[`${color}${gradient ?? ''}`] as string;
 
 const getColorForLevel = (level: Level, gradient: number): ((props: AkeneoThemedProps) => string) => ({
   theme,
