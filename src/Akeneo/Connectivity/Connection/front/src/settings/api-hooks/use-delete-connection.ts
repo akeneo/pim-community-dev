@@ -25,7 +25,10 @@ export const useDeleteConnection = (code: string) => {
             return result;
         }
 
-        notify({level: NotificationLevel.SUCCESS, title: translate('akeneo_connectivity.connection.delete_connection.flash.success')});
+        notify({
+            level: NotificationLevel.SUCCESS,
+            title: translate('akeneo_connectivity.connection.delete_connection.flash.success'),
+        });
 
         return result;
     };

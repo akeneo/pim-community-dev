@@ -36,13 +36,13 @@ export const RegenerateConnectionPassword = () => {
         if (isErr(result)) {
             notify({
                 level: NotificationLevel.ERROR,
-                title: translate('akeneo_connectivity.connection.regenerate_password.flash.error')
+                title: translate('akeneo_connectivity.connection.regenerate_password.flash.error'),
             });
         } else {
             dispatch(connectionPasswordRegenerated(code, result.value.password));
             notify({
                 level: NotificationLevel.SUCCESS,
-                title: translate('akeneo_connectivity.connection.regenerate_password.flash.success')
+                title: translate('akeneo_connectivity.connection.regenerate_password.flash.success'),
             });
         }
 

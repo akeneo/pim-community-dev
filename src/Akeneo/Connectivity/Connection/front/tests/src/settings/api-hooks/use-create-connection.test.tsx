@@ -1,6 +1,5 @@
 import React, {PropsWithChildren} from 'react';
 import {FlowType} from '@src/model/flow-type.enum';
-import {useUpdateConnection} from '@src/settings/api-hooks/use-update-connection';
 import {ok, err} from '@src/shared/fetch-result/result';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 import {act, renderHook} from '@testing-library/react-hooks';
@@ -68,10 +67,10 @@ describe('useCreateConnection', () => {
                 password: '<password>',
             })
         );
-        expect(notify).toBeCalledWith(
-            NotificationLevel.SUCCESS,
-            'akeneo_connectivity.connection.create_connection.flash.success'
-        );
+        expect(notify).toBeCalledWith({
+            level: NotificationLevel.SUCCESS,
+            title: 'akeneo_connectivity.connection.create_connection.flash.success',
+        });
     });
 
     it('handles errors', async () => {
@@ -89,9 +88,9 @@ describe('useCreateConnection', () => {
         });
 
         expect(createConnectionResult).toStrictEqual(err('fail'));
-        expect(notify).toBeCalledWith(
-            NotificationLevel.ERROR,
-            'akeneo_connectivity.connection.create_connection.flash.error'
-        );
+        expect(notify).toBeCalledWith({
+            level: NotificationLevel.ERROR,
+            title: 'akeneo_connectivity.connection.create_connection.flash.error',
+        });
     });
 });

@@ -26,11 +26,14 @@ export const RegenerateConnectionSecret = () => {
         });
 
         if (isErr(result)) {
-            notify({level: NotificationLevel.ERROR, title: translate('akeneo_connectivity.connection.regenerate_secret.flash.error')});
+            notify({
+                level: NotificationLevel.ERROR,
+                title: translate('akeneo_connectivity.connection.regenerate_secret.flash.error'),
+            });
         } else {
             notify({
                 level: NotificationLevel.SUCCESS,
-                title: translate('akeneo_connectivity.connection.regenerate_secret.flash.success')
+                title: translate('akeneo_connectivity.connection.regenerate_secret.flash.success'),
             });
         }
 

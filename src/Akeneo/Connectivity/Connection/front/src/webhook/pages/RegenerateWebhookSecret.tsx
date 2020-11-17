@@ -28,12 +28,12 @@ export const RegenerateWebhookSecret = () => {
         if (isErr(result)) {
             notify({
                 level: NotificationLevel.ERROR,
-                title: translate('akeneo_connectivity.connection.webhook.regenerate_secret.flash.error')
+                title: translate('akeneo_connectivity.connection.webhook.regenerate_secret.flash.error'),
             });
         } else {
             notify({
                 level: NotificationLevel.SUCCESS,
-                title: translate('akeneo_connectivity.connection.webhook.regenerate_secret.flash.success')
+                title: translate('akeneo_connectivity.connection.webhook.regenerate_secret.flash.success'),
             });
         }
 

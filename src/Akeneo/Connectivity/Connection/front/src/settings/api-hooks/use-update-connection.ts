@@ -38,21 +38,26 @@ export const useUpdateConnection = (code: string) => {
         });
         if (isErr(result)) {
             if (result.error.errors) {
-                result.error.errors.forEach(({reason}) => notify({
-                    level: NotificationLevel.ERROR,
-                    title: translate(reason)
-                }));
+                result.error.errors.forEach(({reason}) =>
+                    notify({
+                        level: NotificationLevel.ERROR,
+                        title: translate(reason),
+                    })
+                );
             } else {
                 notify({
                     level: NotificationLevel.ERROR,
-                    title: translate('akeneo_connectivity.connection.edit_connection.flash.error')
+                    title: translate('akeneo_connectivity.connection.edit_connection.flash.error'),
                 });
             }
 
             return result;
         }
 
-        notify({level: NotificationLevel.SUCCESS, title: translate('akeneo_connectivity.connection.edit_connection.flash.success')});
+        notify({
+            level: NotificationLevel.SUCCESS,
+            title: translate('akeneo_connectivity.connection.edit_connection.flash.success'),
+        });
 
         return result;
     };

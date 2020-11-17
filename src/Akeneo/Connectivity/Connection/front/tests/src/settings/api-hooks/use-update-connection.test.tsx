@@ -49,10 +49,10 @@ describe('useUpdateConnection', () => {
             }),
         });
         expect(updateConnectionResult).toStrictEqual(ok('ok'));
-        expect(notify).toBeCalledWith(
-            NotificationLevel.SUCCESS,
-            'akeneo_connectivity.connection.edit_connection.flash.success'
-        );
+        expect(notify).toBeCalledWith({
+            level: NotificationLevel.SUCCESS,
+            title: 'akeneo_connectivity.connection.edit_connection.flash.success',
+        });
     });
 
     it('handles a bad request', async () => {
@@ -75,8 +75,8 @@ describe('useUpdateConnection', () => {
         });
 
         expect(updateConnectionResult).toStrictEqual(err(response));
-        expect(notify).toBeCalledWith(NotificationLevel.ERROR, 'reason 1');
-        expect(notify).toBeCalledWith(NotificationLevel.ERROR, 'reason 2');
+        expect(notify).toBeCalledWith({level: NotificationLevel.ERROR, title: 'reason 1'});
+        expect(notify).toBeCalledWith({level: NotificationLevel.ERROR, title: 'reason 2'});
     });
 
     it('handles a unknown error', async () => {
@@ -98,9 +98,9 @@ describe('useUpdateConnection', () => {
         });
 
         expect(updateConnectionResult).toStrictEqual(err('fail'));
-        expect(notify).toBeCalledWith(
-            NotificationLevel.ERROR,
-            'akeneo_connectivity.connection.edit_connection.flash.error'
-        );
+        expect(notify).toBeCalledWith({
+            level: NotificationLevel.ERROR,
+            title: 'akeneo_connectivity.connection.edit_connection.flash.error',
+        });
     });
 });

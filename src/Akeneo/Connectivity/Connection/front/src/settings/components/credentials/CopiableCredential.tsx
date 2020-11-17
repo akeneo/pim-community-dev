@@ -27,7 +27,7 @@ export const CopiableCredential: FC<Props> = ({label, children: value, actions, 
 
         notify({
             level: NotificationLevel.INFO,
-            title: translate('akeneo_connectivity.connection.edit_connection.credentials.flash.copied', {name: label})
+            title: translate('akeneo_connectivity.connection.edit_connection.credentials.flash.copied', {name: label}),
         });
     };
 
