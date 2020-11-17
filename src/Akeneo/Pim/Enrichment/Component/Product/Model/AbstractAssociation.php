@@ -232,4 +232,11 @@ abstract class AbstractAssociation implements AssociationInterface
 
         return $this->owner->getIdentifier() . '.' . $this->associationType->getCode();
     }
+
+    public function __clone()
+    {
+        $this->products = clone $this->products;
+        $this->productModels = clone $this->productModels;
+        $this->groups = clone $this->groups;
+    }
 }

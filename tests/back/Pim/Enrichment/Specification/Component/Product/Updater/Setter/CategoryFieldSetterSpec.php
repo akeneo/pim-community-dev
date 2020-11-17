@@ -3,6 +3,9 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
@@ -10,10 +13,6 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Prophecy\Argument;
 
 class CategoryFieldSetterSpec extends ObjectBehavior
 {
@@ -66,10 +65,12 @@ class CategoryFieldSetterSpec extends ObjectBehavior
         $shirt = (new Category())->setCode('shirt');
         $categoryRepository->findOneByIdentifier('mug')->willReturn($mug);
         $categoryRepository->findOneByIdentifier('shirt')->willReturn($shirt);
+        $shoes = (new Category())->setCode('shoes');
 
-        $product->setCategories(Argument::that(function (ArrayCollection $categories) use ($mug, $shirt) {
-            return $categories->getValues() === [$mug, $shirt];
-        }))->shouldBeCalled();
+        $product->getCategories()->willReturn(new ArrayCollection([$mug, $shoes]));
+
+        $product->removeCategory($shoes)->shouldBeCalled();
+        $product->addCategory($shirt)->shouldBeCalled();
 
         $this->setFieldData($product, 'categories', ['mug', 'shirt']);
     }

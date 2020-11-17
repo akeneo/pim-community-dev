@@ -54,7 +54,7 @@ class ProductSpec extends ObjectBehavior
         $xSellAssociation->setAssociationType($xSellType);
 
         $this->setAssociations(new ArrayCollection([$upsellAssociation, $xSellAssociation]));
-        $this->getAssociationForType($upsellType)->shouldReturn($upsellAssociation);
+        $this->getAssociationForType($upsellType)->shouldBeLike($upsellAssociation);
     }
 
     function it_returns_association_from_an_association_type_code()
@@ -71,7 +71,7 @@ class ProductSpec extends ObjectBehavior
 
         $this->setAssociations(new ArrayCollection([$upsellAssociation, $xSellAssociation]));
 
-        $this->getAssociationForTypeCode('X_SELL')->shouldReturn($xSellAssociation);
+        $this->getAssociationForTypeCode('X_SELL')->shouldBeLike($xSellAssociation);
     }
 
     function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection()

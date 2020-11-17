@@ -652,7 +652,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         foreach ($this->getAssociations() as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
-                return $association;
+                return clone $association;
             }
         }
 
@@ -955,5 +955,17 @@ abstract class AbstractProduct implements ProductInterface
         $associationsCollection->add($association);
 
         return $associationsCollection;
+    }
+
+    public function __clone()
+    {
+        $this->values = clone $this->values;
+        $this->categories = clone $this->categories;
+        $this->groups = clone $this->groups;
+        $clonedAssociations = $this->associations->map(
+            fn (AssociationInterface $association): AssociationInterface => clone $association
+        );
+        $this->associations = $clonedAssociations;
+        $this->quantifiedAssociationCollection = clone $this->quantifiedAssociationCollection;
     }
 }

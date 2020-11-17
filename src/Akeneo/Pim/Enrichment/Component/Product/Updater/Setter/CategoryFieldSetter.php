@@ -48,17 +48,34 @@ class CategoryFieldSetter extends AbstractFieldSetter
 
         $this->checkData($field, $data);
 
-        $categories = [];
+        $categories = new ArrayCollection();
         foreach ($data as $categoryCode) {
             $category = $this->getCategory($categoryCode);
 
             if (null === $category) {
                 throw new UnknownCategoryException($field, $categoryCode, static::class);
             }
-            $categories[] = $category;
+            $categories->add($category);
         }
 
-        $entity->setCategories(new ArrayCollection($categories));
+        $formerCategories = $entity->getCategories();
+        $categoriesToAdd = $categories->filter(
+            function (CategoryInterface $category) use ($formerCategories) {
+                return !$formerCategories->contains($category);
+            }
+        );
+        foreach ($categoriesToAdd as $categoryToAdd) {
+            $entity->addCategory($categoryToAdd);
+        }
+
+        $categoriesToRemove = $formerCategories->filter(
+            function (Categoryinterface $category) use ($categories) {
+                return !$categories->contains($category);
+            }
+        );
+        foreach ($categoriesToRemove as $categoryToRemove) {
+            $entity->removeCategory($categoryToRemove);
+        }
     }
 
     /**
