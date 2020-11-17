@@ -109,12 +109,12 @@ const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) =
     };
   }, []);
 
-  const ref = useShortcut(Key.Escape, onClose);
+  useShortcut(Key.Escape, onClose);
 
   if (!isOpen) return null;
 
   return createPortal(
-    <ModalContainer ref={ref} {...rest}>
+    <ModalContainer {...rest}>
       <ModalCloseButton onClick={onClose}>
         <CloseIcon size={20} />
       </ModalCloseButton>
