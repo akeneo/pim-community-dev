@@ -47,7 +47,7 @@ const ModalChildren = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px 0;
-  width: 480px;
+  min-width: 480px;
 `;
 
 //TODO extract to Typography RAC-331
@@ -131,6 +131,13 @@ Modal.BottomButtons = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 20px;
+`;
+
+Modal.TopRightButtons = styled(Modal.BottomButtons)`
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  margin: 0;
 `;
 
 export {Modal, SectionTitle, Title};

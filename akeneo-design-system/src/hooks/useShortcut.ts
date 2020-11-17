@@ -1,4 +1,4 @@
-import {Ref, useCallback, useEffect, useRef} from 'react';
+import {Ref, useEffect, useRef} from 'react';
 import {Key} from '../shared';
 
 /**
@@ -13,31 +13,28 @@ const useShortcut = <NodeType extends HTMLElement>(
   callback: (args?: any) => unknown,
   externalRef: Ref<NodeType> = null
 ): Ref<NodeType> => {
-  const memoizedCallback = useCallback(
-    (event: KeyboardEvent) => {
-      if (key === event.code) {
-        event.stopImmediatePropagation();
-        callback(event);
-
-        return false;
-      }
-
-      return true;
-    },
-    [key, callback]
-  );
-
   const internalRef = useRef<NodeType>(null);
   const ref = null === externalRef ? internalRef : externalRef;
+
+  const memoizedCallback = (event: KeyboardEvent) => {
+    if (key === event.code) {
+      event.stopImmediatePropagation();
+      callback(event);
+
+      return true;
+    }
+
+    return false;
+  };
 
   useEffect(() => {
     if (typeof ref !== 'function' && null !== ref.current) {
       const element = (ref.current as unknown) as NodeType;
 
-      element.addEventListener('keydown', memoizedCallback);
+      element.addEventListener('keydown', memoizedCallback, true);
       return () => element.removeEventListener('keydown', memoizedCallback);
     } else {
-      document.addEventListener('keydown', memoizedCallback);
+      document.addEventListener('keydown', memoizedCallback, true);
       return () => document.removeEventListener('keydown', memoizedCallback);
     }
   }, [memoizedCallback, ref]);
