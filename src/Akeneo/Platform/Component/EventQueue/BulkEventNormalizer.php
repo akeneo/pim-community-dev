@@ -40,7 +40,7 @@ class BulkEventNormalizer implements NormalizerInterface, DenormalizerInterface
             throw new \InvalidArgumentException();
         }
 
-        return \array_map(function (Event $event) {
+        return array_map(function (Event $event) {
             return $this->eventNormalizer->normalize($event);
         }, $object->getEvents());
     }
@@ -55,7 +55,7 @@ class BulkEventNormalizer implements NormalizerInterface, DenormalizerInterface
             throw new RuntimeException(sprintf('The class "%s" is not defined.', $type));
         }
 
-        $events = \array_map(function (array $eventData) {
+        $events = array_map(function (array $eventData) {
             return $this->eventNormalizer->denormalize($eventData, $eventData['type']);
         }, $data);
 

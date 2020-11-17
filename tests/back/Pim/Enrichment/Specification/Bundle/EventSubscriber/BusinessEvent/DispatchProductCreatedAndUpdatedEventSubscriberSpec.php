@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Platform\Component\EventQueue\Author;
-use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -59,7 +58,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $this->createAndDispatchProductEvents(new GenericEvent($product, ['is_new' => true, 'unitary' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
-        Assert::assertContainsOnlyInstancesOf(BulkEvent::class, $messageBus->messages);
+        Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
 
         /** @var EventInterface[] */
         $events = $messageBus->messages[0]->getEvents();
@@ -87,7 +86,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $this->createAndDispatchProductEvents(new GenericEvent($product, ['is_new' => false, 'unitary' => true]));
 
         Assert::assertCount(1, $messageBus->messages);
-        Assert::assertContainsOnlyInstancesOf(BulkEvent::class, $messageBus->messages);
+        Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
 
         /** @var EventInterface[] */
         $events = $messageBus->messages[0]->getEvents();
@@ -119,7 +118,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $this->dispatchBufferedProductEvents(new GenericEvent());
 
         Assert::assertCount(1, $messageBus->messages);
-        Assert::assertContainsOnlyInstancesOf(BulkEvent::class, $messageBus->messages);
+        Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
 
         /** @var EventInterface[] */
         $events = $messageBus->messages[0]->getEvents();
@@ -159,7 +158,7 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
         $this->dispatchBufferedProductEvents(new GenericEvent());
 
         Assert::assertCount(2, $messageBus->messages);
-        Assert::assertContainsOnlyInstancesOf(BulkEvent::class, $messageBus->messages);
+        Assert::assertContainsOnlyInstancesOf(BulkEventInterface::class, $messageBus->messages);
 
         /** @var EventInterface[] */
         $events = $messageBus->messages[0]->getEvents();

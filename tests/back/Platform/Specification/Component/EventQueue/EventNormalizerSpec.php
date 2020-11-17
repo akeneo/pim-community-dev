@@ -7,11 +7,7 @@ namespace Specification\Akeneo\Platform\Component\EventQueue;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventNormalizer;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use PHPUnit\Framework\Assert;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -19,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class BusinessEventNormalizerSpec extends ObjectBehavior
+class EventNormalizerSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -36,26 +32,23 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    public function it_supports_normalization_of_business_event(UserInterface $user): void
+    public function it_supports_normalization_of_event(): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
+        $event = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event
+        {
             public function getName(): string
             {
                 return 'event_name';
             }
         };
 
-        $this->supportsNormalization($businessEvent)
+        $this->supportsNormalization($event)
             ->shouldReturn(true);
     }
 
-    public function it_does_not_supports_normalization_of_non_business_event(): void
+    public function it_does_not_support_normalization_of_non_event(): void
     {
         $object = new \stdClass();
 
@@ -63,22 +56,20 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    public function it_normalizes_a_business_event(UserInterface $user)
+    public function it_normalizes_an_event()
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
-            public function name(): string
+        $event = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event
+        {
+            public function getName(): string
             {
                 return 'event_name';
             }
         };
 
         $expected = [
+            'type' => \get_class($event),
             'name' => 'event_name',
             'author' => 'julia',
             'author_type' => 'ui',
@@ -87,7 +78,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
             'uuid' => 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba',
         ];
 
-        $this->normalize($businessEvent)
+        $this->normalize($event)
             ->shouldReturn($expected);
     }
 
@@ -96,77 +87,67 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(DenormalizerInterface::class);
     }
 
-    public function it_supports_denormalization_of_business_event(UserInterface $user): void
+    public function it_supports_denormalization_of_event(): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
-            public function name(): string
+        $event = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event
+        {
+            public function getName(): string
             {
                 return 'event_name';
             }
         };
 
-        $this->supportsDenormalization([], get_class($businessEvent))
+        $this->supportsDenormalization([], \get_class($event))
             ->shouldReturn(true);
     }
 
-    public function it_does_not_supports_denormalization_of_non_business_event(): void
+    public function it_does_not_support_denormalization_of_non_event(): void
     {
         $this->supportsDenormalization([], \stdClass::class)
             ->shouldReturn(false);
     }
 
-    public function it_denormalizes_a_business_event(UserInterface $user)
+    public function it_denormalizes_an_event()
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(true);
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $author = Author::fromUser($user->getWrappedObject());
-
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
-            public function name(): string
+        $event = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event
+        {
+            public function getName(): string
             {
                 return 'event_name';
             }
         };
 
         $data = [
+            'type' => \get_class($event),
             'name' => 'event_name',
             'author' => 'julia',
-            'author_type' => 'api',
+            'author_type' => 'ui',
             'data' => ['data'],
             'timestamp' => 0,
             'uuid' => 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba',
         ];
 
-        $denormalizedBusinessEvent = $this->denormalize($data, get_class($businessEvent));
-
-        Assert::assertEquals($denormalizedBusinessEvent->getWrappedObject(), $businessEvent);
+        $denormalizedevent = $this->denormalize($data, \get_class($event))->shouldBeLike($event);
     }
 
-    public function it_does_not_denormalize_a_business_event_because_author_type_is_invalid(UserInterface $user)
+    public function it_does_not_denormalize_an_event_because_author_type_is_invalid()
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $businessEvent = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event {
-            public function name(): string
+        $event = new class ($author, ['data'], 0, 'e0e4c95d-9646-40d7-be2b-d9b14fc0c6ba') extends Event
+        {
+            public function getName(): string
             {
                 return 'event_name';
             }
         };
 
         $data = [
+            'type' => \get_class($event),
             'name' => 'event_name',
             'author' => 'author',
             'author_type' => 'not_an_author_type',
@@ -179,7 +160,7 @@ class BusinessEventNormalizerSpec extends ObjectBehavior
             'denormalize',
             [
                 $data,
-                get_class($businessEvent),
+                Event::class,
             ]
         );
     }
