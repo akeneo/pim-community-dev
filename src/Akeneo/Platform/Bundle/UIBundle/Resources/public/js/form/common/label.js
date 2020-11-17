@@ -30,7 +30,7 @@ define(['pim/form', 'pim/user-context', 'pim/i18n', 'underscore','oro/messenger'
 
 
       this.$el.on('click', () => {
-        messenger.notify('warning', 'YOLO', {})
+        messenger.notify('success', 'the count', {messageTitle: 'STOP'})
       })
 
       return BaseForm.prototype.configure.apply(this, arguments);

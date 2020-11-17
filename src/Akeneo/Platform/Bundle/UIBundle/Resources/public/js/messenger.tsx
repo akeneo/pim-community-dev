@@ -1,19 +1,24 @@
 import ReactDOM from 'react-dom';
 import React, {useCallback} from 'react';
-import {AnimateMessageBar, MessageBar, pimTheme, uuid} from 'akeneo-design-system';
+import {AnimateMessageBar, MessageBar, MessageBarLevel, pimTheme, uuid} from 'akeneo-design-system';
 import styled, {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column-reverse;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 100000;
+  gap: 10px;
 `;
 
 type FlashMessage = {
   identifier: string;
-  type: string;
+  level: MessageBarLevel;
   message: string;
-  options: {messageTitle: string};
+  options: {messageTitle?: string};
 };
 
 const Notifications = ({
@@ -34,7 +39,13 @@ const Notifications = ({
     <Container>
       {notifications.map(notification => (
         <AnimateMessageBar key={notification.identifier}>
-          <MessageBar title={notification.message} onClose={handleClose(notification)}></MessageBar>
+          <MessageBar
+            level={notification.level}
+            title={notification.options.messageTitle ?? notification.message}
+            onClose={handleClose(notification)}
+          >
+            {notification.options.messageTitle ? notification.message : null}
+          </MessageBar>
         </AnimateMessageBar>
       ))}
     </Container>
@@ -63,7 +74,6 @@ const render = () => {
 /**
  * Shows notification message
  *
- * @param {(string|boolean)} type 'error'|'success'|'warning'|false
  * @param {string} message text of message
  * @param {Object} options
  *
@@ -73,8 +83,8 @@ const render = () => {
  * @param {Function} options.template template function
  * @param {boolean} options.flash flag to turn on default delay close call, it's 5s
  */
-const notify = (type: string, message: string, options: {messageTitle: string}) => {
-  notifications.push({identifier: uuid(), type, message, options});
+const notify = (level: MessageBarLevel, message: string, options: {messageTitle?: string}) => {
+  notifications.push({identifier: uuid(), level, message, options});
   render();
 };
 

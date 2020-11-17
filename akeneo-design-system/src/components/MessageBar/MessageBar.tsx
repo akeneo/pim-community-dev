@@ -8,6 +8,7 @@ type MessageBarLevel = 'info' | 'success' | 'warning' | 'danger';
 
 const IconContainer = styled.div`
   padding: 0 25px;
+  display: inline-flex;
 `;
 
 const Progress = styled.svg.attrs(({ratio}: {ratio: number; level: MessageBarLevel}) => ({
@@ -38,7 +39,6 @@ const Content = styled.div`
   border-left: 1px solid;
   flex: 1;
   line-height: 1.5;
-  background-color: ${getColor('white')};
 
   a {
     color: ${getColor('grey', 140)};
@@ -99,38 +99,44 @@ const CloseButton = styled.button<{autoHide: boolean} & AkeneoThemedProps>`
 
 const MessageBarHideAnimation = keyframes`
   0% { 
-    transform: translateX(0) scaleY(1);
+    transform: translateX(0);
   }
-  50% { 
-    transform: translateX(calc(100% + 50px)) scaleY(1);
+  90% {
+    transform: translateX(calc(100% + 50px));
+    opacity: 0;
   }
   100% { 
-    transform: translateX(calc(100% + 50px)) scaleY(0);
+    transform: translateX(calc(100% + 50px));
+    max-height: 0;
   }
 `;
 
-const MessageBarHideAnimationReverse = keyframes`
+const MessageBarDisplayAnimation = keyframes`
   0% { 
-    transform: translateX(0) scaleY(1);
-  }
-  50% { 
-    transform: translateX(calc(100% + 50px)) scaleY(1);
+    transform: translateX(calc(100% + 50px));
   }
   100% { 
-    transform: translateX(calc(100% + 50px)) scaleY(0);
+    transform: translateX(0);
   }
 `;
 
-const ANIMATION_DURATION = 2000;
-const AnimateContainer = styled.div<{mounted: boolean}>`
-  animation: ${({mounted}) =>
-    !mounted
-      ? css`
-          ${MessageBarHideAnimation} ${ANIMATION_DURATION}ms forwards
-        `
-      : css`
-          ${MessageBarHideAnimationReverse} ${ANIMATION_DURATION}ms forwards reverse
-        `};
+const ANIMATION_DURATION = 1000;
+const AnimateContainer = styled.div<{mounting: boolean; unmounting: boolean}>`
+  ${({mounting, unmounting}) => {
+    if (unmounting) {
+      return css`
+        animation: ${MessageBarHideAnimation} ${ANIMATION_DURATION}ms forwards;
+      `;
+    }
+    if (mounting) {
+      return css`
+        animation: ${MessageBarDisplayAnimation} ${ANIMATION_DURATION}ms forwards;
+      `;
+    }
+
+    return '';
+  }}
+  max-height: 150px;
 `;
 
 const AnimateMessageBar = ({children}: {children: ReactElement<MessageBarProps>}) => {
@@ -138,19 +144,28 @@ const AnimateMessageBar = ({children}: {children: ReactElement<MessageBarProps>}
     throw new Error('Only MessageBar element can be passed to AnimateMessageBar');
   }
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  const onClose = useCallback(() => {
-    setMounted(false);
+  const [mounting, setMounting] = useState(false);
+  const [unmounting, setUnmounting] = useState(false);
 
-    setTimeout(() => {
+  useEffect(() => {
+    setMounting(true);
+  }, []);
+
+  const onClose = useCallback(() => {
+    setUnmounting(true);
+
+    const timeoutId = setTimeout(() => {
       children.props.onClose();
     }, ANIMATION_DURATION);
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
-  return <AnimateContainer mounted={mounted}>{React.cloneElement(children, {onClose})}</AnimateContainer>;
+  return (
+    <AnimateContainer mounting={mounting} unmounting={unmounting}>
+      {React.cloneElement(children, {onClose})}
+    </AnimateContainer>
+  );
 };
 
 const Container = styled.div<{level: MessageBarLevel} & AkeneoThemedProps>`
@@ -160,6 +175,7 @@ const Container = styled.div<{level: MessageBarLevel} & AkeneoThemedProps>`
   max-width: 500px;
   padding: 10px 20px 10px 0;
   box-shadow: 2px 4px 8px 0 rgba(9, 30, 66, 0.25);
+  background-color: ${getColor('white')};
 
   ${Title}, ${IconContainer} {
     color: ${({level}) => getLevelColor(level)};
@@ -315,3 +331,4 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
 };
 
 export {MessageBar, AnimateMessageBar};
+export type {MessageBarLevel};
