@@ -98,24 +98,24 @@ const CloseButton = styled.button<{autoHide: boolean} & AkeneoThemedProps>`
 `;
 
 const MessageBarHideAnimation = keyframes`
-  0% { 
+  0% {
     transform: translateX(0);
   }
   90% {
     transform: translateX(calc(100% + 50px));
     opacity: 0;
   }
-  100% { 
+  100% {
     transform: translateX(calc(100% + 50px));
     max-height: 0;
   }
 `;
 
 const MessageBarDisplayAnimation = keyframes`
-  0% { 
+  0% {
     transform: translateX(calc(100% + 50px));
   }
-  100% { 
+  100% {
     transform: translateX(0);
   }
 `;
@@ -236,7 +236,7 @@ const useOver = () => {
   return [over, onMouseOver, onMouseOut] as const;
 };
 
-type MessageBarProps = {
+type FlashMessage = {
   /**
    * Defines the level of the MessageBar, changing the color accent.
    */
@@ -253,14 +253,16 @@ type MessageBarProps = {
   icon?: ReactElement<IconProps>;
 
   /**
-   * Handler called when the MessageBar is closed.
-   */
-  onClose: () => void;
-
-  /**
    * Content of the MessageBar.
    */
   children?: ReactNode;
+}
+
+type MessageBarProps = FlashMessage & {
+  /**
+   * Handler called when the MessageBar is closed.
+   */
+  onClose: () => void;
 };
 
 /**
@@ -331,4 +333,4 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
 };
 
 export {MessageBar, AnimateMessageBar};
-export type {MessageBarLevel};
+export type {MessageBarLevel, FlashMessage};
