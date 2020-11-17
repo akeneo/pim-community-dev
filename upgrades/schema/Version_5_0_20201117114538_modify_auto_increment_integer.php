@@ -5,7 +5,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_5_0_20201117114538_modify_auto_increment_integer.php extends AbstractMigration
+final class Version_5_0_20201117114538_modify_auto_increment_integer extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
