@@ -96,10 +96,10 @@ class RaiseNotGrantedCategoryExceptionIntegration extends ApiTestCase
             ),
         ]);
 
-        $this->productCreatedAndUpdatedEventDataBuilder->build($event, $user);
-
         // TODO: Fix permissions.
         // $this->expectException(NotGrantedCategoryException::class);
+
+        $this->productCreatedAndUpdatedEventDataBuilder->build($event, $user);
     }
 
     public function test_that_the_exception_is_raised_when_trying_to_build_product_model_data_builder(): void
@@ -107,15 +107,15 @@ class RaiseNotGrantedCategoryExceptionIntegration extends ApiTestCase
         $productModel = $this->loadProductModel();
 
         $user = $this->authenticateAs('mary');
-        $this->productModelCreatedAndUpdatedEventDataBuilder->build(
-            new ProductModelUpdated(
-                Author::fromNameAndType('mary', 'ui'),
-                $this->productModelNormalizer->normalize($productModel, 'standard')
-            ),
-            $user
+
+        $event = new ProductModelUpdated(
+            Author::fromNameAndType('mary', 'ui'),
+            $this->productModelNormalizer->normalize($productModel, 'standard')
         );
 
         $this->expectException(NotGrantedCategoryException::class);
+
+        $this->productModelCreatedAndUpdatedEventDataBuilder->build($event, $user);
     }
 
     public function test_that_that_no_webhook_is_sent_when_a_connection_tries_to_update_non_authorized_product(): void

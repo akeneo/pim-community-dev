@@ -44,7 +44,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
         }
 
         $categoryCodes = $event->getData()['categories'] ?? null;
-        if (!$categoryCodes) {
+        if (null === $categoryCodes) {
             throw new \UnexpectedValueException(
                 'Business event data must provide a "categories" index.'
             );
