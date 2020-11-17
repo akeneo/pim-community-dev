@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
-use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
-use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -21,50 +22,78 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
-
-    /** @var NormalizerInterface */
-    private $externalApiNormalizer;
+    private ProductQueryBuilderFactoryInterface $pqbFactory;
+    private GetConnectorProducts $getConnectorProductsQuery;
+    private ConnectorProductNormalizer $connectorProductNormalizer;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        NormalizerInterface $externalApiNormalizer
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        GetConnectorProducts $getConnectorProductsQuery,
+        ConnectorProductNormalizer $connectorProductNormalizer
     ) {
-        $this->productRepository = $productRepository;
-        $this->externalApiNormalizer = $externalApiNormalizer;
-    }
-
-    public function supports(BusinessEventInterface $businessEvent): bool
-    {
-        return $businessEvent instanceof ProductUpdated || $businessEvent instanceof ProductCreated;
+        $this->pqbFactory = $pqbFactory;
+        $this->getConnectorProductsQuery = $getConnectorProductsQuery;
+        $this->connectorProductNormalizer = $connectorProductNormalizer;
     }
 
     /**
-     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
-     * @throws ProductNotFoundException
-     * @throws NotGrantedCategoryException
+     * @param BulkEventInterface $event
      */
-    public function build(BusinessEventInterface $businessEvent, array $context = []): array
+    public function supports(object $event): bool
     {
-        if (false === $this->supports($businessEvent)) {
+        if (false === $event instanceof BulkEventInterface) {
+            return false;
+        }
+
+        foreach ($event->getEvents() as $event) {
+            if (false === $event instanceof ProductCreated && false === $event instanceof ProductUpdated) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param BulkEventInterface $bulkEvent
+     */
+    public function build(object $bulkEvent, UserInterface $user): array
+    {
+        if (false === $this->supports($bulkEvent)) {
             throw new \InvalidArgumentException();
         }
 
-        $data = $businessEvent->data();
+        $identifiers = [];
 
-        try {
-            $product = $this->productRepository->findOneByIdentifier($data['identifier']);
-        } catch (AccessDeniedException $e) {
-            throw new NotGrantedCategoryException($e->getMessage(), $e);
+        /** @var ProductCreated|ProductUpdated $event */
+        foreach ($bulkEvent->getEvents() as $event) {
+            $identifiers[] = $event->getIdentifier();
         }
 
-        if (null === $product) {
-            throw new ProductNotFoundException($data['identifier']);
-        }
+        $pqb = $this->pqbFactory->create(['limit' => count($identifiers)]);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $identifiers);
 
-        return [
-            'resource' => $this->externalApiNormalizer->normalize($product, 'external_api'),
-        ];
+        $products = $this->getConnectorProductsQuery->fromProductQueryBuilder(
+            $pqb,
+            $user->getId(),
+            null,
+            null,
+            null
+        )->connectorProducts();
+
+        $resources = array_reduce(
+            $products,
+            function (array $resources, ConnectorProduct $product) {
+                $resources[$product->identifier()] = [
+                    'resource' => $this->connectorProductNormalizer->normalizeConnectorProduct($product)
+                ];
+                return $resources;
+            },
+            array_fill_keys($identifiers, null)
+        );
+
+        // TODO: Log products not found.
+
+        return array_values($resources);
     }
 }

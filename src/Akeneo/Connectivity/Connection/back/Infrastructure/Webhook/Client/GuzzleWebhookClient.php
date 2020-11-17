@@ -78,7 +78,9 @@ class GuzzleWebhookClient implements WebhookClient
         };
 
         $pool = new Pool(
-            $this->client, $guzzleRequests(), [
+            $this->client,
+            $guzzleRequests(),
+            [
                 'concurrency' => $this->config['concurrency'] ?? null,
                 'options' => [
                     'timeout' => $this->config['timeout'] ?? null,

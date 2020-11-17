@@ -14,8 +14,8 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
-use Akeneo\Platform\Component\EventQueue\BusinessEvent;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Platform\Component\EventQueue\Event;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
@@ -331,10 +331,11 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    private function createBusinessEvent(Author $author, array $data): BusinessEventInterface
+    private function createBusinessEvent(Author $author, array $data): EventInterface
     {
-        return new class ($author, $data) extends BusinessEvent {
-            public function name(): string
+        return new class ($author, $data) extends Event
+        {
+            public function getName(): string
             {
                 return 'product.created';
             }

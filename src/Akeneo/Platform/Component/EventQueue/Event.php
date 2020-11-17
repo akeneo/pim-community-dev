@@ -10,19 +10,12 @@ use Ramsey\Uuid\Uuid;
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class BusinessEvent implements BusinessEventInterface
+abstract class Event implements EventInterface
 {
-    /** @var Author */
-    private $author;
-
-    /** @var array */
-    private $data;
-
-    /** @var int */
-    private $timestamp;
-
-    /** @var string */
-    private $uuid;
+    private Author $author;
+    protected array $data;
+    private int $timestamp;
+    private string $uuid;
 
     public function __construct(
         Author $author,
@@ -36,24 +29,24 @@ abstract class BusinessEvent implements BusinessEventInterface
         $this->uuid = $uuid ?? Uuid::uuid4()->toString();
     }
 
-    abstract public function name(): string;
+    abstract public function getName(): string;
 
-    public function author(): Author
+    public function getAuthor(): Author
     {
         return $this->author;
     }
 
-    public function data(): array
+    public function getData(): array
     {
         return $this->data;
     }
 
-    public function timestamp(): int
+    public function getTimestamp(): int
     {
         return $this->timestamp;
     }
 
-    public function uuid(): string
+    public function getUuid(): string
     {
         return $this->uuid;
     }

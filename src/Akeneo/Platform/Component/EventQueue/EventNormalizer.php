@@ -14,20 +14,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterface
+class EventNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof BusinessEvent;
+        return $data instanceof Event;
     }
 
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return is_subclass_of($type, BusinessEvent::class);
+        return is_subclass_of($type, Event::class);
     }
 
     /**
-     * @param BusinessEvent $object
+     * @param Event $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
@@ -36,12 +36,13 @@ class BusinessEventNormalizer implements NormalizerInterface, DenormalizerInterf
         }
 
         return [
-            'name' => $object->name(),
-            'author' => $object->author()->name(),
-            'author_type' => $object->author()->type(),
-            'data' => $object->data(),
-            'timestamp' => $object->timestamp(),
-            'uuid' => $object->uuid(),
+            'type' => \get_class($object),
+            'name' => $object->getName(),
+            'author' => $object->getAuthor()->name(),
+            'author_type' => $object->getAuthor()->type(),
+            'data' => $object->getData(),
+            'timestamp' => $object->getTimestamp(),
+            'uuid' => $object->getUuid(),
         ];
     }
 
