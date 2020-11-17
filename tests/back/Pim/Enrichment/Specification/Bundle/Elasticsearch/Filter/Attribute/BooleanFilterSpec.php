@@ -113,6 +113,17 @@ class BooleanFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
+        $sqb->addFilter([
+            'bool' => [
+                'should' => [
+                    ['terms' => ['attributes_for_this_level' => ['boolean']]],
+                    ['terms' => ['attributes_of_ancestors' => ['boolean']]]
+                ],
+                'minimum_should_match' => 1
+            ]
+        ])->shouldBeCalled();
+
+
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($booleanAttribute, Operators::IS_EMPTY, false, 'en_US', 'ecommerce', []);
     }

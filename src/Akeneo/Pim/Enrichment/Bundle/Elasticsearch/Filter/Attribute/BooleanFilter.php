@@ -90,6 +90,28 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
                         'field' => $attributePath,
                     ],
                 ];
+
+                $attributeInEntityClauses = [
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
+                        ],
+                    ],
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
+                        ],
+                    ]
+                ];
+
+                $this->searchQueryBuilder->addFilter(
+                    [
+                        'bool' => [
+                            'should' => $attributeInEntityClauses,
+                            'minimum_should_match' => 1,
+                        ],
+                    ]
+                );
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
                 break;
 
