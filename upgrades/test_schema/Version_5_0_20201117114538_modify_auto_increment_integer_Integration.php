@@ -35,7 +35,7 @@ final class Version_5_0_20201117114538_modify_auto_increment_integer_Integration
         $found = false;
         foreach($tableColumns as $column) {
             if ($column->getName() === 'id') {
-                $this->assertEquals('bigint', $column->getType());
+                $this->assertTrue($column->getType() instanceOf Doctrine\DBAL\Types\BigIntType);
                 $found=true;
             }
         }
