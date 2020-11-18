@@ -10,7 +10,7 @@ const TableContainer = styled.table`
 `;
 
 type TableProps = {
-  isSelectable: boolean;
+  isSelectable?: boolean;
   amountSelectedRows?: number;
   children?: ReactNode;
 };
@@ -36,7 +36,6 @@ const Table = ({isSelectable = false, amountSelectedRows, children, ...rest}: Ta
 };
 
 type TableHeaderProps = {
-  isSelectable: boolean;
   children?: ReactNode;
 };
 
@@ -62,7 +61,7 @@ export enum TableSortDirection {
 }
 
 type TableHeaderCellProps = {
-  sortable: boolean;
+  sortable?: boolean;
   onDirectionChange?: (direction: TableSortDirection) => {};
   direction?: TableSortDirection;
   children?: ReactNode;
@@ -89,7 +88,7 @@ const HeaderCellContentContainer = styled.span`
   text-overflow: ellipsis;
 `;
 
-Table.HeaderCell = ({sortable, onDirectionChange, direction, children, ...rest}: TableHeaderCellProps) => {
+Table.HeaderCell = ({sortable = false, onDirectionChange, direction, children, ...rest}: TableHeaderCellProps) => {
   if (sortable && (onDirectionChange === undefined || direction === undefined)) {
     throw Error('Sortable header should provide onDirectionChange and direction props');
   }
@@ -138,7 +137,6 @@ type TableRowProps = {
 
 const RowContainer = styled.tr<{isSelected: boolean} & AkeneoThemedProps>`
   min-height: 54px;
-  border-bottom: 1px solid ${getColor('grey', 60)};
   ${props =>
     props.isSelected &&
     css`
@@ -146,6 +144,7 @@ const RowContainer = styled.tr<{isSelected: boolean} & AkeneoThemedProps>`
     `};
   &:hover {
     background-color: ${getColor('grey', 20)};
+    cursor: pointer;
   }
 
   &:hover td {
@@ -155,6 +154,7 @@ const RowContainer = styled.tr<{isSelected: boolean} & AkeneoThemedProps>`
 
 const CheckboxContainer = styled.td<{isVisible: boolean}>`
   opacity: ${props => (props.isVisible ? 1 : 0)};
+  cursor: auto;
 `;
 
 Table.Row = ({isSelected, onSelectToggle, children, ...rest}: TableRowProps) => {
@@ -167,7 +167,7 @@ Table.Row = ({isSelected, onSelectToggle, children, ...rest}: TableRowProps) => 
     throw Error('A row in a selectable table should have the prop "onSelectToggle"');
   }
 
-  const isCheckboxVisible = amountSelectedRows > 0;
+  const isCheckboxVisible = undefined !== amountSelectedRows && amountSelectedRows > 0;
 
   const handleCheckboxChange = () => {
     undefined !== onSelectToggle && onSelectToggle(!isSelected);
@@ -187,6 +187,7 @@ Table.Row = ({isSelected, onSelectToggle, children, ...rest}: TableRowProps) => 
 
 Table.Cell = styled.td`
   color: ${getColor('grey', 140)};
+  border-bottom: 1px solid ${getColor('grey', 60)};
   padding: 0 10px;
 `;
 
