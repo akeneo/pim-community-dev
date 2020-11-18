@@ -1,14 +1,16 @@
-import React, { Ref, useCallback } from 'react';
-import styled, { css } from 'styled-components';
-import { AkeneoThemedProps, CommonStyle, getColor } from "../../../theme";
-import { EraseIcon, LockIcon } from "../../../icons";
+import React, {Ref, useCallback} from 'react';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
+import {EraseIcon, LockIcon} from '../../../icons';
 
 const BooleanInputContainer = styled.div``;
 
-const BooleanButton = styled.button<{
-  value?: boolean,
-  readOnly: boolean,
-} & AkeneoThemedProps>`
+const BooleanButton = styled.button<
+  {
+    value?: boolean;
+    readOnly: boolean;
+  } & AkeneoThemedProps
+>`
   ${CommonStyle}
   height: 40px;
   width: 60px;
@@ -20,31 +22,37 @@ const BooleanButton = styled.button<{
   white-space: nowrap;
   text-overflow: ellipsis;
   background: ${getColor('white')};
-  
-  ${({readOnly}) => readOnly ? css`
-    border: 1px solid ${getColor('grey',60)}}
+
+  ${({readOnly}) =>
+    readOnly
+      ? css`
+    border: 1px solid ${getColor('grey', 60)}}
     color: ${getColor('grey', 80)}}
-  ` : css`
-    border: 1px solid ${getColor('grey',80)}}
+  `
+      : css`
+    border: 1px solid ${getColor('grey', 80)}}
     cursor: pointer;
   `};
 `;
 
 const NoButton = styled(BooleanButton)`
   border-radius: 2px 0 0 2px;
-  
-  ${({value, readOnly}) => value === false ? css`
-    background: ${getColor('grey', readOnly ? 60 : 100)};
-    border-color: ${getColor('grey', readOnly ? 60 : 100)};
-    color: ${getColor('white')};
-  ` : css`
-    border-right-width: 0;
-  `}
-`
+
+  ${({value, readOnly}) =>
+    value === false
+      ? css`
+          background: ${getColor('grey', readOnly ? 60 : 100)};
+          border-color: ${getColor('grey', readOnly ? 60 : 100)};
+          color: ${getColor('white')};
+        `
+      : css`
+          border-right-width: 0;
+        `}
+`;
 
 const YesButton = styled(BooleanButton)`
   border-radius: 0 2px 2px 0;
-  
+
   ${({value, readOnly}) => {
     switch (value) {
       case true:
@@ -56,13 +64,12 @@ const YesButton = styled(BooleanButton)`
       case null:
         return css`
           border-left-width: 0;
-        `
+        `;
       default:
         return '';
     }
-  }
-}
-`
+  }}
+`;
 
 const ClearButton = styled.button`
   ${CommonStyle}
@@ -73,37 +80,37 @@ const ClearButton = styled.button`
   background: ${getColor('white')};
   color: ${getColor('grey', 100)};
   ${({readOnly}) => !readOnly && 'cursor: pointer'};
-`
+`;
 
 const BooleanInputEraseIcon = styled(EraseIcon)`
   vertical-align: bottom;
   margin-right: 6px;
-`
+`;
 
 const IconContainer = styled.span`
-  color: 1px solid ${getColor('grey',100)}}
+  color: 1px solid ${getColor('grey', 100)}}
   vertical-align: middle;
   margin-left: 10px;
-`
-const BooleanInputLockIcon = styled(LockIcon)`
-  
-`
+`;
+const BooleanInputLockIcon = styled(LockIcon)``;
 
-type BooleanInputProps = ({
-  clearable?: true;
-  value: boolean | null;
-  onChange?: (value: boolean | null) => void;
-} | {
-  clearable?: false;
-  value: boolean;
-  onChange?: (value: boolean) => void;
-}) & {
+type BooleanInputProps = (
+  | {
+      clearable?: true;
+      value: boolean | null;
+      onChange?: (value: boolean | null) => void;
+    }
+  | {
+      clearable?: false;
+      value: boolean;
+      onChange?: (value: boolean) => void;
+    }
+) & {
   readOnly?: boolean;
   yesLabel?: string;
   noLabel?: string;
   clearLabel?: string;
 };
-
 
 /**
  * Toggle is used to quickly switch between two possible states. They are commonly used for "yes/no" switches.
@@ -111,56 +118,71 @@ type BooleanInputProps = ({
  * value of the field.
  */
 const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
-  ({
-    value,
-    readOnly = false,
-    onChange,
-    clearable = false,
-    yesLabel = 'Yes',
-    noLabel = 'No',
-    clearLabel = 'Clear value',
-     ...rest
-  }: BooleanInputProps, forwardedRef: Ref<HTMLDivElement>) => {
-    const handleChange = useCallback((value: boolean | null) => {
-      if (!onChange) {
-        return;
-      }
-      onChange(value as boolean);
-    }, [onChange, readOnly]);
+  (
+    {
+      value,
+      readOnly = false,
+      onChange,
+      clearable = false,
+      yesLabel = 'Yes',
+      noLabel = 'No',
+      clearLabel = 'Clear value',
+      ...rest
+    }: BooleanInputProps,
+    forwardedRef: Ref<HTMLDivElement>
+  ) => {
+    const handleChange = useCallback(
+      (value: boolean | null) => {
+        if (!onChange) {
+          return;
+        }
+        onChange(value as boolean);
+      },
+      [onChange, readOnly]
+    );
 
     return (
-      <BooleanInputContainer
-        ref={forwardedRef}
-        aria-valuenow={value}
-        {...rest}
-      >
+      <BooleanInputContainer ref={forwardedRef} aria-valuenow={value} {...rest}>
         <NoButton
           value={value}
           readOnly={readOnly}
           disabled={readOnly}
-          onClick={() => { handleChange(false) }}
+          onClick={() => {
+            handleChange(false);
+          }}
           title={noLabel}
-        >{noLabel}</NoButton>
+        >
+          {noLabel}
+        </NoButton>
 
         <YesButton
           value={value}
           readOnly={readOnly}
           disabled={readOnly}
-          onClick={() => { handleChange(true) }}
+          onClick={() => {
+            handleChange(true);
+          }}
           title={yesLabel}
-        >{yesLabel}</YesButton>
+        >
+          {yesLabel}
+        </YesButton>
 
-        {value !== null && !readOnly && clearable &&
+        {value !== null && !readOnly && clearable && (
           <ClearButton
-            onClick={() => { handleChange(null) }}
-          ><BooleanInputEraseIcon size={16}/>{clearLabel}</ClearButton>
-        }
+            onClick={() => {
+              handleChange(null);
+            }}
+          >
+            <BooleanInputEraseIcon size={16} />
+            {clearLabel}
+          </ClearButton>
+        )}
 
-        {readOnly &&
+        {readOnly && (
           <IconContainer>
-            <BooleanInputLockIcon size={16}/>
+            <BooleanInputLockIcon size={16} />
           </IconContainer>
-        }
+        )}
       </BooleanInputContainer>
     );
   }
