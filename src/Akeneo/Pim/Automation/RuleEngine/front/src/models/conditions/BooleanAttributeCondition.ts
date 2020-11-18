@@ -8,12 +8,12 @@ import {
   getAttributeConditionModule,
 } from './AbstractAttributeCondition';
 
-const BooleanAttributeOperators = [Operator.EQUALS, Operator.NOT_EQUAL];
+const BooleanAttributeOperators = [Operator.EQUALS, Operator.NOT_EQUAL, Operator.IS_EMPTY, Operator.IS_NOT_EMPTY];
 
 type BooleanAttributeCondition = {
   field: string;
   operator: Operator;
-  value: boolean;
+  value?: boolean;
   scope?: string;
   locale?: string;
 };

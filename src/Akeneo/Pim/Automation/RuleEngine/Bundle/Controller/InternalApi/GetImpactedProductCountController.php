@@ -61,7 +61,8 @@ final class GetImpactedProductCountController
         $ruleDefinition->setCode('fake');
         $ruleDefinition->setContent(['conditions' => $conditions, 'actions' => []]);
 
-        try {
+        // try {
+
             $rule = $this->productRuleBuilder->build($ruleDefinition);
             $subjectSet = $this->productRuleSelector->select($rule);
 
@@ -75,8 +76,8 @@ final class GetImpactedProductCountController
                 'impacted_product_count' => $documentTypeFacet->getCountForKey(ProductInterface::class),
                 'impacted_product_model_count' => $documentTypeFacet->getCountForKey(ProductModelInterface::class),
             ]);
-        } catch (\LogicException | \InvalidArgumentException $e) {
-            return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
-        }
+        // } catch (\LogicException | \InvalidArgumentException $e) {
+        //     return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
+        // }
     }
 }

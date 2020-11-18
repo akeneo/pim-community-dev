@@ -125,4 +125,68 @@ describe('BooleanAttributeConditionLine', () => {
     const inputValue = screen.getByTestId('edit-rules-input-1-value');
     expect(inputValue).toBeChecked();
   });
+
+  it('should not display a value when boolean operator is empty', async () => {
+    fetchMock.mockResponse((request: Request) => {
+      if (request.url.includes('pim_enrich_attribute_rest_get')) {
+        return Promise.resolve(
+          JSON.stringify(
+            createAttribute({
+              code: 'auto_focus',
+              localizable: false,
+              scopable: false,
+              type: 'pim_catalog_boolean',
+              labels: {
+                en_US: 'Auto focus',
+              },
+            })
+          )
+        );
+      }
+
+      throw new Error(`The "${request.url}" url is not mocked.`);
+    });
+
+    const condition: BooleanAttributeCondition = {
+      field: 'auto_focus',
+      operator: Operator.IS_EMPTY
+    };
+
+    const defaultValues = {
+      content: {
+        conditions: [
+          {},
+          {
+            field: 'auto_focus',
+            operator: Operator.IS_EMPTY
+          },
+        ],
+      },
+    };
+
+    const toRegister = [
+      {name: 'content.conditions[1].value', type: 'custom'},
+      {name: 'content.conditions[1].operator', type: 'custom'},
+      {name: 'content.conditions[1].value', type: 'custom'},
+    ];
+
+    renderWithProviders(
+      <BooleanAttributeConditionLine
+        lineNumber={1}
+        currentCatalogLocale={'en_US'}
+        condition={condition}
+        locales={locales}
+        scopes={scopes}
+      />,
+      {all: true},
+      {defaultValues, toRegister}
+    );
+
+    expect(await screen.findByText('Auto focus')).toBeInTheDocument();
+
+    const inputOperator = screen.getByTestId('edit-rules-input-1-operator');
+    expect(inputOperator).toHaveValue(Operator.IS_EMPTY);
+
+    expect(await screen.queryByTestId('edit-rules-input-1-value')).not.toBeInTheDocument(); 
+  });
 });
