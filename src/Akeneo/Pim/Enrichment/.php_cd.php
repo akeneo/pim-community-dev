@@ -118,6 +118,7 @@ $rules = [
 
         // CXP-415 : Author
         'Akeneo\Platform\Component\EventQueue\Author',
+        'Akeneo\Platform\Component\EventQueue\BulkEvent',
 
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
@@ -245,6 +246,10 @@ $rules = [
 
         // TIP-1020: Move JobLauncherInterface
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+
+        // CXP-520 : Product Events
+        'Akeneo\Platform\Component\EventQueue\Author',
+        'Akeneo\Platform\Component\EventQueue\BulkEvent',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 
