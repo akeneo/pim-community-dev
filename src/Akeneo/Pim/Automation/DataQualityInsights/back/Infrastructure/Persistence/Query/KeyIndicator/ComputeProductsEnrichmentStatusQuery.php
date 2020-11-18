@@ -92,7 +92,7 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         return $result;
     }
 
-    private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, $numberOfMissingAttributes): ?bool
+    private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, $numberOfMissingAttributes): bool
     {
         if ($familyNumberOfAttributes === 0) {
             return true;
