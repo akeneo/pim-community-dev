@@ -108,7 +108,9 @@ pimee_catalog_rule:
             add_to_category: Add to category
             add_conditions: Add conditions
             products_count:
-                complete: "]-Inf, 1]{{ count }} product and product model|]1, +Inf[{{ count }} products and product models"
+                products: "]-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} products"
+                product_models: "]-Inf, 1]{{ count }} product model|]1, +Inf[{{ count }} product models"
+                products_and_product_models: "{{ products }} and {{ product_models }}"
                 pending: Calculating products and product models
                 error: Impossible to calculate products and product models
             product_selection: Product selection

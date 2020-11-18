@@ -1,5 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks';
-import {useProductsCount} from '../../../../../src/pages/EditRules/hooks';
+import {useProductAndProductModelCount} from '../../../../../src/pages/EditRules/hooks';
 import {Router} from '../../../../../src/dependenciesTools';
 import {httpGet} from '../../../../../src/fetch';
 
@@ -15,7 +15,7 @@ jest.mock('react-hook-form', () => {
   };
 });
 
-describe('useProductsCount', () => {
+describe('useProductAndProductModelCount', () => {
   test('it should get the products count according to the formValues', async () => {
     // Given
     // TODO Improve type here
@@ -25,6 +25,7 @@ describe('useProductsCount', () => {
         ok: true,
         json: () => ({
           impacted_product_count: '10',
+          impacted_product_model_count: '20',
         }),
       })
     );
@@ -48,7 +49,7 @@ describe('useProductsCount', () => {
 
     // When
     const {result, wait} = renderHook(() =>
-      useProductsCount(router, formValues)
+      useProductAndProductModelCount(router, formValues)
     );
     // Expect
     await wait(() => {
@@ -57,7 +58,11 @@ describe('useProductsCount', () => {
         `pimee_enrich_rule_definition_get_impacted_product_count?conditions={"conditions":"[{\\"field\\":\\"family\\",\\"value\\":[\\"camcorders\\"],\\"operator\\":\\"IN\\"}]"}`
       );
     });
-    expect(result.current).toEqual({status: 2, value: 10});
+    expect(result.current).toEqual({
+      status: 2,
+      productCount: 10,
+      productModelCount: 20,
+    });
   });
   test('it should return an error status', async () => {
     // Given
@@ -88,7 +93,7 @@ describe('useProductsCount', () => {
 
     // When
     const {result, wait} = renderHook(() =>
-      useProductsCount(router, formValues)
+      useProductAndProductModelCount(router, formValues)
     );
     // Expect
     await wait(() =>
@@ -97,6 +102,10 @@ describe('useProductsCount', () => {
         `pimee_enrich_rule_definition_get_impacted_product_count?conditions={"conditions":"[{\\"field\\":\\"family\\",\\"value\\":[\\"camcorders\\"],\\"operator\\":\\"IN\\"}]"}`
       )
     );
-    expect(result.current).toEqual({status: 1, value: -1});
+    expect(result.current).toEqual({
+      status: 1,
+      productCount: -1,
+      productModelCount: -1,
+    });
   });
 });

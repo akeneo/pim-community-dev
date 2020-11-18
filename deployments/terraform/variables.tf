@@ -70,4 +70,3 @@ variable "monitoring_authentication_token" {
 variable "pim_version" {
   default = ""
 }
-
