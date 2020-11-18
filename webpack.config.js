@@ -249,6 +249,10 @@ const webpackConfig = {
     // Map modules to variables for global use
     new webpack.ProvidePlugin({_: 'underscore', Backbone: 'backbone', $: 'jquery', jQuery: 'jquery'}),
 
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^lodash$/
+    }),
+
     // Ignore these directories when webpack watches for changes
     new webpack.WatchIgnorePlugin([
       /node_modules\/(?!@akeneo)/,
