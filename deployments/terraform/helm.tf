@@ -13,7 +13,7 @@ data "template_file" "helm_pim_config" {
     googleZone          = var.google_project_zone
     pimmaster_dns_name  = replace(google_dns_record_set.main.name, "/\\.$/", "")
     dnsZone             = replace(data.google_dns_managed_zone.main.dns_name, "/\\.$/", "")
-    mailgun_login_email = "${data.template_file.mailgun_login.rendered}@${var.mailgun_domain}"
+    mailgun_login_email = "${local.mailgun_login_email}"
     mailgun_password    = random_string.mailgun_password.result
     mailgun_host        = var.mailgun_host
     mailgun_port        = var.mailgun_port
