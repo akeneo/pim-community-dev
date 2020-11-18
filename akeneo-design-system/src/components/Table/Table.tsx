@@ -1,4 +1,4 @@
-import React, {ReactNode, SyntheticEvent, useContext, useEffect, useState} from 'react';
+import React, {ReactNode, SyntheticEvent, useContext} from 'react';
 import styled, {css} from 'styled-components';
 import {ArrowDownIcon, ArrowUpIcon} from '../../icons';
 import {Checkbox} from '..';
@@ -187,22 +187,29 @@ Table.Row = ({isSelected, onSelectToggle, children, ...rest}: TableRowProps) => 
   );
 };
 
-const TableCell = styled.td`
+const TableCell = styled.td<{primary: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   border-bottom: 1px solid ${getColor('grey', 60)};
   padding: 15px 10px;
+  ${props => props.primary && css`
+     color: ${getColor('purple', 100)};
+     font-style: italic;
+     font-weight: bold;
+     font-family: Lato
+  `}
 `;
 const CellContainer = styled.div`
   display: flex;
 `;
 
 type TableCellProps = {
+  primary?: boolean;
   children?: ReactNode;
 };
 
-Table.Cell = ({children}: TableCellProps) => {
+Table.Cell = ({primary = false, children}: TableCellProps) => {
   return (
-    <TableCell>
+    <TableCell primary={primary}>
       <CellContainer>
         {children}
       </CellContainer>
