@@ -149,7 +149,7 @@ describe('BooleanAttributeConditionLine', () => {
 
     const condition: BooleanAttributeCondition = {
       field: 'auto_focus',
-      operator: Operator.IS_EMPTY
+      operator: Operator.IS_EMPTY,
     };
 
     const defaultValues = {
@@ -158,7 +158,7 @@ describe('BooleanAttributeConditionLine', () => {
           {},
           {
             field: 'auto_focus',
-            operator: Operator.IS_EMPTY
+            operator: Operator.IS_EMPTY,
           },
         ],
       },
@@ -187,6 +187,8 @@ describe('BooleanAttributeConditionLine', () => {
     const inputOperator = screen.getByTestId('edit-rules-input-1-operator');
     expect(inputOperator).toHaveValue(Operator.IS_EMPTY);
 
-    expect(await screen.queryByTestId('edit-rules-input-1-value')).not.toBeInTheDocument(); 
+    expect(
+      await screen.queryByTestId('edit-rules-input-1-value')
+    ).not.toBeInTheDocument();
   });
 });
