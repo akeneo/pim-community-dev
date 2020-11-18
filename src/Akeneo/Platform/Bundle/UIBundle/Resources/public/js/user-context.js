@@ -11,8 +11,8 @@ define(['backbone', 'underscore', 'routing'], (Backbone, _, Routing) => {
        * @returns {Promise}
        */
       initialize: () => {
-        return fetch(Routing.generate('pim_user_user_rest_get_current')).then(response => {
-          contextData = response;
+        return fetch(Routing.generate('pim_user_user_rest_get_current')).then(async response => {
+          contextData = await response.json();
           contextData.uiLocale = contextData.user_default_locale;
           contextData.catalogLocale = contextData.catalog_default_locale;
           contextData.catalogScope = contextData.catalog_default_scope;
