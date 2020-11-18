@@ -132,27 +132,28 @@ type TableRowProps = {
   children?: ReactNode;
   onSelectToggle?: (isSelected: boolean) => {};
   isSelected?: boolean;
-  onClick: (event: SyntheticEvent) => {};
+  onClick?: (event: SyntheticEvent) => {};
 };
 
 const RowContainer = styled.tr<{isSelected: boolean} & AkeneoThemedProps>`
-  min-height: 54px;
   ${props =>
     props.isSelected &&
     css`
+    > td {
       background-color: ${getColor('blue', 20)};
-    `};
+    }`};
   &:hover {
-    background-color: ${getColor('grey', 20)};
     cursor: pointer;
   }
 
-  &:hover td {
+  &:hover > td {
+    background-color: ${getColor('grey', 20)};
     opacity: 1;
   }
 `;
 
 const CheckboxContainer = styled.td<{isVisible: boolean}>`
+  background: none !important;
   opacity: ${props => (props.isVisible ? 1 : 0)};
   cursor: auto;
 `;
@@ -169,15 +170,16 @@ Table.Row = ({isSelected, onSelectToggle, children, ...rest}: TableRowProps) => 
 
   const isCheckboxVisible = undefined !== amountSelectedRows && amountSelectedRows > 0;
 
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = (e: SyntheticEvent) => {
+    e.stopPropagation();
     undefined !== onSelectToggle && onSelectToggle(!isSelected);
   };
 
   return (
     <RowContainer isSelected={isSelected} {...rest}>
       {isSelectable && undefined !== isSelected &&
-        <CheckboxContainer isVisible={isCheckboxVisible}>
-          <Checkbox checked={isSelected} onChange={handleCheckboxChange} />
+        <CheckboxContainer isVisible={isCheckboxVisible} onClick={handleCheckboxChange}>
+          <Checkbox checked={isSelected} onChange={(_value, e) => {handleCheckboxChange(e)}} />
         </CheckboxContainer>
       }
       {children}
@@ -185,10 +187,27 @@ Table.Row = ({isSelected, onSelectToggle, children, ...rest}: TableRowProps) => 
   );
 };
 
-Table.Cell = styled.td`
+const TableCell = styled.td`
   color: ${getColor('grey', 140)};
   border-bottom: 1px solid ${getColor('grey', 60)};
-  padding: 0 10px;
+  padding: 15px 10px;
 `;
+const CellContainer = styled.div`
+  display: flex;
+`;
+
+type TableCellProps = {
+  children?: ReactNode;
+};
+
+Table.Cell = ({children}: TableCellProps) => {
+  return (
+    <TableCell>
+      <CellContainer>
+        {children}
+      </CellContainer>
+    </TableCell>
+  );
+}
 
 export {Table};
