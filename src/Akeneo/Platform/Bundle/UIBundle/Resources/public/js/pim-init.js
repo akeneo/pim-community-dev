@@ -72,7 +72,7 @@ define([
       if (window.flashMessages) {
         _.each(window.flashMessages, function (messages, type) {
           _.each(messages, function (message) {
-            messenger.notify(type, message);
+            messenger.notify({level: type, title: message});
           });
         });
       }
