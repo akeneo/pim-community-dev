@@ -177,6 +177,12 @@ pim_import_export:
     FAILED: Fehlgeschlagen
     ABANDONED: Abgebrochen
     UNKNOWN: Unbekannt
+  tracking:
+    completed: "Benötigte Zeit: {{ duration }}"
+    in_progress: "Geschätzte verbleibende Zeit: {{ duration }}"
+    not_started: "Ausstehend"
+    untrackable: Unverfolgbarer Schritt
+    estimating: "Verbleibende Zeit..."
 confirmation:
   remove:
     import_profile: Möchten Sie dieses Importprofil wirklich löschen?
