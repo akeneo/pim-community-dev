@@ -21,7 +21,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
     private EntityManagerClearerInterface $entityManagerClearer;
     private User $loggedUser;
     private User $otherUser;
-    private array $fixtureViews = [];
+    private array $fixtureViewIds = [];
 
     public function setUp(): void
     {
@@ -86,7 +86,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
     /** @test */
     public function it_edits_an_existing_view(): void
     {
-        $datagridView = $this->datagridViewRepository->find($this->fixtureViews['admin_view']);
+        $datagridView = $this->datagridViewRepository->find($this->fixtureViewIds['admin_view']);
         $this->assertNotNull($datagridView);
 
         $response = $this->callSaveController('product-grid', [
@@ -132,7 +132,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
     /** @test */
     public function it_cannot_edit_a_view_with_a_bad_datagrid_alias(): void
     {
-        $datagridView = $this->datagridViewRepository->find($this->fixtureViews['admin_view']);
+        $datagridView = $this->datagridViewRepository->find($this->fixtureViewIds['admin_view']);
         $this->assertNotNull($datagridView);
 
         $response = $this->callSaveController('unknown', [
@@ -151,7 +151,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
     /** @test */
     public function it_cannot_edit_a_view_not_owned(): void
     {
-        $datagridView = $this->datagridViewRepository->find($this->fixtureViews['mary_view']);
+        $datagridView = $this->datagridViewRepository->find($this->fixtureViewIds['mary_view']);
         $this->assertNotNull($datagridView);
 
         $response = $this->callSaveController('product-grid', [
@@ -191,7 +191,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
         $datagridView->setColumns(['identifier']);
         $datagridView->setFilters('filters');
         $this->datagridViewSaver->save($datagridView);
-        $this->fixtureViews['admin_view'] = $datagridView->getId();
+        $this->fixtureViewIds['admin_view'] = $datagridView->getId();
 
         $datagridView = new DatagridView();
         $datagridView->setDatagridAlias('product-grid');
@@ -201,7 +201,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
         $datagridView->setColumns(['identifier']);
         $datagridView->setFilters('filters');
         $this->datagridViewSaver->save($datagridView);
-        $this->fixtureViews['mary_view'] = $datagridView->getId();
+        $this->fixtureViewIds['mary_view'] = $datagridView->getId();
     }
 
     public function getConfiguration(): Configuration

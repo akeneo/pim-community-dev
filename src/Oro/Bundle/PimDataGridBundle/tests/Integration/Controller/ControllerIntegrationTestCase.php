@@ -133,24 +133,4 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
             $response->getContent()
         ));
     }
-
-    protected function assertContent(Response $response, string $expectedContent = ''): void
-    {
-        Assert::assertJsonStringEqualsJsonString(
-            $expectedContent,
-            $response->getContent(),
-            'Expected response content is not the same as the actual.'
-        );
-        Assert::assertEquals(
-            $expectedContent,
-            $response->getContent(),
-            'Expected response content is not the same as the actual.'
-        );
-    }
-
-    protected function assertResponse(Response $response, int $statusCode, string $expectedContent): void
-    {
-        $this->assertStatusCode($response, $statusCode);
-        $this->assertContent($response, $expectedContent);
-    }
 }
