@@ -731,7 +731,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
 
     public function wasUpdated(): bool
     {
-        return false;
+        return true;
     }
 
     public function cleanup(): void
