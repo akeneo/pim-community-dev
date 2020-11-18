@@ -1,0 +1,81 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {BooleanInput} from './BooleanInput.tsx';
+
+<Meta
+  title="Components/BooleanInput"
+  component={BooleanInput}
+  argTypes={{
+    value: {
+      control: {type: 'select', options: [true, false, null]},
+      description: 'Value of the input. Can be null if the input is clearable.',
+      table: {
+        defaultValue: { summary: 'null' },
+      },
+    },
+    readOnly: {
+      control: {type: 'boolean'},
+      description: 'Displays the value of the input, but does not allow changes.',
+    },
+    clearable: {
+      control: {type: 'boolean'},
+      description: 'Allow user to manage null value, and adds a button to clear the input.',
+    },
+    onChange: {
+      description: 'The handler called when clicking on Checkbox.',
+    }
+  }}
+  args={{}}
+/>
+
+# BooleanInput
+
+## Usage
+
+TODO @stephane
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {({value, ...args}) => {
+      return <BooleanInput
+        value={value}
+        {...args}
+      />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on value
+
+<Canvas>
+  <Story name="Value">
+    {args => {
+      return (
+        <>
+          <BooleanInput {...args}/>
+          <BooleanInput {...args} value={true} clearable={true}/>
+          <BooleanInput {...args} value={false} clearable={true}/>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="Readonly">
+    {args => {
+      return (
+        <>
+          <BooleanInput {...args} readOnly={true}/>
+          <BooleanInput {...args} value={true} readOnly={true}/>
+          <BooleanInput {...args} value={false} readOnly={true}/>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
