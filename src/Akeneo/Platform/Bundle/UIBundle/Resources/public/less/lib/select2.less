@@ -381,16 +381,29 @@
       }
 
       .select2-result-label-view {
-        .view-label {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          width: 100%;
-          display: block;
+        .view-line {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          column-gap: 5px;
 
-          &.view-label-current {
-            color: @AknLightPurple;
-            font-weight: bold;
+          .view-label {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+
+            &.view-label-current {
+              color: @AknLightPurple;
+              font-weight: bold;
+            }
+          }
+
+          .view-type {
+            display: block;
+            color: @AknGrey;
+            font-size: @AknFontSizeSmall;
+            font-weight: normal;
           }
         }
 

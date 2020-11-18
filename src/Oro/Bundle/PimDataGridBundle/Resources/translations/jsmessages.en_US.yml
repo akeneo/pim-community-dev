@@ -43,6 +43,7 @@ pim_datagrid:
     select: Please select view
     confirmation:
       remove: Are you sure you want to delete this view?
+    public_label: (Public)
 
   display_selector:
     label: Display
