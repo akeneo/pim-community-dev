@@ -1,7 +1,9 @@
+import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import LinkTo from '@storybook/addon-links/react';
 import {MessageBar, AnimateMessageBar} from './MessageBar.tsx';
 import {Link} from '../Link/Link';
+import {Button} from '../Button/Button';
 import * as Icons from '../../icons';
 
 <Meta
@@ -100,11 +102,14 @@ Icons can bring extra clarity. They should be placed at the left of the title. T
 <Canvas>
   <Story name="Animate">
     {args => {
+      const [id, setId] = useState(0);
+      const increment = () => setId(id + 1);
       return (
         <>
-          <AnimateMessageBar>
+          <AnimateMessageBar key={id}>
             <MessageBar {...args} title="Info" level="info" icon={<Icons.InfoRoundIcon />} />
           </AnimateMessageBar>
+          <Button onClick={increment}>Replay</Button>
         </>
       );
     }}

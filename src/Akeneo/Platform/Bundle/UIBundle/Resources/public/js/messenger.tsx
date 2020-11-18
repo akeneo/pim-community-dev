@@ -1,8 +1,16 @@
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {AnimateMessageBar, FlashMessage, IconProps, MessageBar, MessageBarLevel, pimTheme, uuid} from 'akeneo-design-system';
 import React, {ReactElement, ReactNode, useCallback} from 'react';
 import ReactDOM from 'react-dom';
 import styled, {ThemeProvider} from 'styled-components';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {
+  AnimateMessageBar,
+  FlashMessage,
+  IconProps,
+  MessageBar,
+  MessageBarLevel,
+  pimTheme,
+  uuid,
+} from 'akeneo-design-system';
 
 const Container = styled.div`
   display: flex;
@@ -23,12 +31,7 @@ const Notifications = ({
   notifications: IdentifiableFlashMessage[];
   onNotificationClosed: (identifier: string) => void;
 }) => {
-  const handleClose = useCallback(
-    (identifier: string) => () => {
-      onNotificationClosed(identifier);
-    },
-    []
-  );
+  const handleClose = useCallback((identifier: string) => () => onNotificationClosed(identifier), []);
 
   return (
     <Container>
@@ -43,7 +46,7 @@ const Notifications = ({
 
 let notifications: IdentifiableFlashMessage[] = [];
 
-const render = () => {
+const render = () =>
   ReactDOM.render(
     <ThemeProvider theme={pimTheme}>
       <DependenciesProvider>
@@ -58,10 +61,9 @@ const render = () => {
     </ThemeProvider>,
     document.getElementById('flash-messages')
   );
-};
 
 const isValidLevel = (level: string): level is MessageBarLevel =>
-  ['info', 'error', 'warning', 'success', undefined].includes(level)
+  ['info', 'error', 'warning', 'success', undefined].includes(level);
 
 interface Notifier {
   (level: MessageBarLevel, title: string, children?: ReactNode, icon?: ReactElement<IconProps>): void;
@@ -73,12 +75,14 @@ interface Notifier {
 }
 
 const isLegacyNotify = (
-  optionsOrChildren: {titleMessage: string} | ReactNode | undefined | null
+  optionsOrChildren: {titleMessage: string} | ReactNode
 ): optionsOrChildren is {titleMessage: string} =>
-  typeof optionsOrChildren === 'object' && null !== optionsOrChildren && 'titleMessage' in optionsOrChildren && typeof optionsOrChildren.titleMessage === 'string'
+  typeof optionsOrChildren === 'object' &&
+  null !== optionsOrChildren &&
+  ('titleMessage' in optionsOrChildren || 'flash' in optionsOrChildren);
 
 const notify: Notifier = (
-  level: MessageBarLevel|string,
+  level: MessageBarLevel | string,
   messageOrTitle: string,
   optionsOrChildren?: {titleMessage: string} | ReactNode,
   icon?: ReactElement<IconProps>
@@ -87,20 +91,24 @@ const notify: Notifier = (
     throw new Error(`Level must be one of the following: 'info', 'error', 'warning' or 'success'`);
   }
 
-  const flashMessage: FlashMessage = isLegacyNotify(optionsOrChildren) ?
-    convertLegacyFlashMessage(level, messageOrTitle, optionsOrChildren) :
-    {
-      level,
-      title: messageOrTitle,
-      children: optionsOrChildren,
-      icon
-    };
+  const flashMessage: FlashMessage = isLegacyNotify(optionsOrChildren)
+    ? convertLegacyFlashMessage(level, messageOrTitle, optionsOrChildren)
+    : {
+        level,
+        title: messageOrTitle,
+        children: optionsOrChildren,
+        icon,
+      };
 
   notifications.push({identifier: uuid(), ...flashMessage});
   render();
 };
 
-const convertLegacyFlashMessage = (level: MessageBarLevel, message?: string, options?: {titleMessage: string}): FlashMessage => {
+const convertLegacyFlashMessage = (
+  level: MessageBarLevel,
+  message?: string,
+  options?: {titleMessage: string}
+): FlashMessage => {
   if (undefined === message) {
     throw new Error('message property is required in the notify method');
   }
@@ -108,8 +116,8 @@ const convertLegacyFlashMessage = (level: MessageBarLevel, message?: string, opt
   return {
     level,
     title: options?.titleMessage ?? message,
-    children: options?.titleMessage ? message : null
-  }
-}
+    children: options?.titleMessage ? message : null,
+  };
+};
 
 module.exports = {notify};
