@@ -11,32 +11,28 @@ const TableContainer = styled.table`
 
 type TableProps = {
   isSelectable: boolean;
+  amountSelectedRows?: number;
   children?: ReactNode;
 };
 
-const SelectableContext = React.createContext({
+const SelectableContext = React.createContext<{
+  isSelectable: boolean;
+  amountSelectedRows?: number;
+}>({
   isSelectable: false,
-  count: 0,
-  setCount: count => {},
+  amountSelectedRows: undefined,
 });
 
-/**
- * TODO
- */
-const Table = ({isSelectable = false, children, ...rest}: TableProps) => {
-  const [selectedCount, setSelectedCount] = useState(0);
+const Table = ({isSelectable = false, amountSelectedRows, children, ...rest}: TableProps) => {
+  if (isSelectable && undefined === amountSelectedRows) {
+    throw Error('A selectable table should have the prop "amountSelectedRows"');
+  }
 
   return (
-    <SelectableContext.Provider value={{isSelectable, count: selectedCount, setCount: setSelectedCount}}>
-      <Counter />
+    <SelectableContext.Provider value={{isSelectable, amountSelectedRows}}>
       <TableContainer {...rest}>{children}</TableContainer>
     </SelectableContext.Provider>
   );
-};
-
-const Counter = () => {
-  const context = useContext(SelectableContext);
-  return <div>{context.count}</div>;
 };
 
 type TableHeaderProps = {
@@ -47,12 +43,12 @@ type TableHeaderProps = {
 const HeaderRowContainer = styled.tr``;
 
 Table.Header = ({children, ...rest}: TableHeaderProps) => {
-  const selectableContext = useContext(SelectableContext);
+  const {isSelectable} = useContext(SelectableContext);
 
   return (
     <thead>
       <HeaderRowContainer {...rest}>
-        {selectableContext.isSelectable && <th />}
+        {isSelectable && <th />}
         {children}
       </HeaderRowContainer>
     </thead>
@@ -162,38 +158,28 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
 `;
 
 Table.Row = ({isSelected, onSelectToggle, children, ...rest}: TableRowProps) => {
-  const selectableContext = useContext(SelectableContext);
-  const isSelectable = selectableContext.isSelectable;
-  if (isSelectable && (isSelected === undefined || onSelectToggle === undefined)) {
-    throw Error('Selectable row should provide an OnSelectToggle');
+  const {isSelectable, amountSelectedRows} = useContext(SelectableContext);
+
+  if (isSelectable && undefined === isSelected) {
+    throw Error('A row in a selectable table should have the prop "isSelected"');
+  }
+  if (isSelectable && undefined === onSelectToggle) {
+    throw Error('A row in a selectable table should have the prop "onSelectToggle"');
   }
 
-  const [previousIsSelected, setPreviousIsSelected] = useState(false);
+  const isCheckboxVisible = amountSelectedRows > 0;
 
-  useEffect(() => {
-    if (isSelected !== undefined && previousIsSelected !== isSelected) {
-      selectableContext.setCount(count => (isSelected ? count + 1 : count - 1));
-      setPreviousIsSelected(isSelected);
-    }
-
-    return () => {
-      //selectableContext.setCount(count => (isSelected ? count - 1 : count));
-    };
-  }, [isSelected]);
-
-  const handleSelect = () => {
-    if (!isSelectable || onSelectToggle === undefined) return;
-
-    onSelectToggle(!isSelected);
+  const handleCheckboxChange = () => {
+    undefined !== onSelectToggle && onSelectToggle(!isSelected);
   };
 
   return (
     <RowContainer isSelected={isSelected} {...rest}>
-      {isSelectable && isSelected !== undefined && (
-        <CheckboxContainer isVisible={selectableContext.count > 0}>
-          <Checkbox checked={isSelected} onChange={handleSelect} />
+      {isSelectable && undefined !== isSelected &&
+        <CheckboxContainer isVisible={isCheckboxVisible}>
+          <Checkbox checked={isSelected} onChange={handleCheckboxChange} />
         </CheckboxContainer>
-      )}
+      }
       {children}
     </RowContainer>
   );

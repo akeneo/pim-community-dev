@@ -39,7 +39,7 @@ TODO
     <Story name="Basic Table">
         {args => {
             return (
-                <Table selectable={true}>
+                <Table selectable={true} amountSelectedRows={0}>
                     <Table.Header>
                         <Table.HeaderCell>Icon</Table.HeaderCell>
                         <Table.HeaderCell sortable={true} onDirectionChange={(direction) => {}} direction='DESC'>Name</Table.HeaderCell>
@@ -132,7 +132,7 @@ TODO
                         {
                             sortedData.map((row) => {
                                 return (
-                                    <Table.Row>
+                                    <Table.Row key={row.name}>
                                         <Table.Cell>{row.name}</Table.Cell>
                                         <Table.Cell>{row.family}</Table.Cell>
                                         <Table.Cell>{row.order}</Table.Cell>
@@ -193,7 +193,7 @@ TODO
                 },
             ];
             return (
-                <Table isSelectable={true}>
+                <Table isSelectable={true} amountSelectedRows={selectedLines.length}>
                     <Table.Header>
                         <Table.HeaderCell>Name</Table.HeaderCell>
                         <Table.HeaderCell>Family</Table.HeaderCell>
