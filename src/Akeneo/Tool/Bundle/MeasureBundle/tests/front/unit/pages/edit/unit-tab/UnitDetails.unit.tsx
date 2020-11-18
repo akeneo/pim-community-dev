@@ -1,5 +1,5 @@
 import React from 'react';
-import {act, getByRole, getByText, fireEvent, waitForElement, screen, waitFor} from '@testing-library/react';
+import {act, fireEvent, screen, waitFor} from '@testing-library/react';
 import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
@@ -48,10 +48,7 @@ const measurementFamily = {
   is_locked: false,
 };
 
-let container;
-beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
+beforeAll(() => {
   const mockFetch = jest.fn().mockImplementationOnce(route => {
     switch (route) {
       case 'pim_localization_locale_index':
@@ -73,9 +70,7 @@ beforeEach(() => {
   global.fetch = mockFetch;
 });
 
-afterEach(() => {
-  document.body.removeChild(container);
-  container = null;
+afterAll(() => {
   global.fetch && global.fetch.mockClear();
   delete global.fetch;
 });
@@ -125,7 +120,7 @@ test('It allows symbol edition', async () => {
     />
   );
 
-  act(() => {
+  await act(async () => {
     const symbolInput = screen.getByRole('unit-symbol-input') as HTMLInputElement;
     fireEvent.change(symbolInput, {target: {value: 'm^2'}});
   });
@@ -154,7 +149,7 @@ test('It allows convertion value edition', async () => {
     />
   );
 
-  act(() => {
+  await act(async () => {
     const operationValueInput = screen.getByRole('operation-value-input') as HTMLInputElement;
     fireEvent.change(operationValueInput, {target: {value: '2'}});
   });
@@ -226,25 +221,19 @@ test('It allows to delete the unit', async () => {
 });
 
 test('It does not render if the selected unit is not found', async () => {
-  let selectedUnitCode = 'NOT_FOUND';
-  let updatedMeasurementFamily = measurementFamily;
-  const onMeasurementFamilyChange = newMeasurementFamily => {
-    updatedMeasurementFamily = newMeasurementFamily;
-  };
-  const selectUnitCode = newSelectedUnitCode => {
-    selectedUnitCode = newSelectedUnitCode;
-  };
-  const errors = [];
+  const selectedUnitCode = 'NOT_FOUND';
 
   renderWithProviders(
     <UnitDetails
       measurementFamily={measurementFamily}
       selectedUnitCode={selectedUnitCode}
-      onMeasurementFamilyChange={onMeasurementFamilyChange}
-      selectUnitCode={selectUnitCode}
-      errors={errors}
+      onMeasurementFamilyChange={jest.fn()}
+      selectUnitCode={jest.fn()}
+      errors={[]}
     />
   );
 
-  expect(container.children.length).toBe(0);
+  await waitFor(() => {
+    expect(screen.queryByText('measurements.unit.title')).not.toBeInTheDocument();
+  });
 });

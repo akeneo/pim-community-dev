@@ -23,6 +23,11 @@ const getFormSectionByTitle = (title: string): HTMLElement => {
   return header.parentElement as HTMLElement;
 };
 
+afterAll(() => {
+  global.fetch && global.fetch.mockClear();
+  delete global.fetch;
+});
+
 test('It renders without errors', async () => {
   renderWithProviders(<CreateMeasurementFamily isOpen={true} onClose={() => {}} />);
 });

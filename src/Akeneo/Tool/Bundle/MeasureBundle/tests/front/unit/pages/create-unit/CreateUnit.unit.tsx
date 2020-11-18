@@ -24,6 +24,11 @@ const changeOperationValue = (index: number, value: string) => {
   fireEvent.change(inputs[index], {target: {value: value}});
 };
 
+afterAll(() => {
+  global.fetch && global.fetch.mockClear();
+  delete global.fetch;
+});
+
 const measurementFamily = Object.freeze({
   code: 'custom_metric',
   labels: {
