@@ -108,7 +108,6 @@ pimee_catalog_rule:
       add_to_category: 添加到类别
       add_conditions: 添加条件
       products_count:
-        complete: "]-Inf, 1]{{ count }} 个产品和产品模型|]1, +Inf[{{ count }} 个产品和产品模型"
         pending: 计算产品和产品模型
         error: 无法计算产品和产品模型
       product_selection: 产品选择
