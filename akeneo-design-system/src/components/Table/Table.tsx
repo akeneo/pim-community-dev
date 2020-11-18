@@ -41,7 +41,7 @@ type TableHeaderProps = {
 
 const HeaderRowContainer = styled.tr``;
 
-Table.Header = ({children, ...rest}: TableHeaderProps) => {
+const TableHeader = ({children, ...rest}: TableHeaderProps) => {
   const {isSelectable} = useContext(SelectableContext);
 
   return (
@@ -62,7 +62,7 @@ export enum TableSortDirection {
 
 type TableHeaderCellProps = {
   sortable?: boolean;
-  onDirectionChange?: (direction: TableSortDirection) => {};
+  onDirectionChange?: (direction: TableSortDirection) => void;
   direction?: TableSortDirection;
   children?: ReactNode;
 };
@@ -72,6 +72,7 @@ const HeaderCellContainer = styled.th<{sortable: boolean; isSorted: boolean} & A
   height: 44px;
   text-align: left;
   color: ${props => (props.isSorted ? getColor('purple', 100) : getColor('grey', 100))};
+  font-weight: normal;
 
   ${props =>
     props.sortable &&
@@ -86,9 +87,12 @@ const HeaderCellContentContainer = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  + svg {
+    vertical-align: middle;
+  }
 `;
 
-Table.HeaderCell = ({sortable = false, onDirectionChange, direction, children, ...rest}: TableHeaderCellProps) => {
+const TableHeaderCell = ({sortable = false, onDirectionChange, direction, children, ...rest}: TableHeaderCellProps) => {
   if (sortable && (onDirectionChange === undefined || direction === undefined)) {
     throw Error('Sortable header should provide onDirectionChange and direction props');
   }
@@ -126,29 +130,39 @@ Table.HeaderCell = ({sortable = false, onDirectionChange, direction, children, .
   );
 };
 
-Table.Body = styled.tbody``;
+const TableBody = styled.tbody``;
 
 type TableRowProps = {
   children?: ReactNode;
-  onSelectToggle?: (isSelected: boolean) => {};
+  onSelectToggle?: (isSelected: boolean) => void;
   isSelected?: boolean;
-  onClick?: (event: SyntheticEvent) => {};
+  onClick?: (event: SyntheticEvent) => void;
 };
 
-const RowContainer = styled.tr<{isSelected: boolean} & AkeneoThemedProps>`
+const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean} & AkeneoThemedProps>`
   ${props =>
     props.isSelected &&
     css`
-    > td {
-      background-color: ${getColor('blue', 20)};
-    }`};
-  &:hover {
-    cursor: pointer;
-  }
+      > td {
+        background-color: ${getColor('blue', 20)};
+      }
+    `};
+
+  ${props =>
+    props.isClickable &&
+    css`
+      &:hover {
+        cursor: pointer;
+      }
+    `}
 
   &:hover > td {
-    background-color: ${getColor('grey', 20)};
     opacity: 1;
+    ${props =>
+      props.isClickable &&
+      css`
+        background-color: ${getColor('grey', 20)};
+      `}
   }
 `;
 
@@ -158,7 +172,7 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
   cursor: auto;
 `;
 
-Table.Row = ({isSelected, onSelectToggle, children, ...rest}: TableRowProps) => {
+const TableRow = ({isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps) => {
   const {isSelectable, amountSelectedRows} = useContext(SelectableContext);
 
   if (isSelectable && undefined === isSelected) {
@@ -176,29 +190,36 @@ Table.Row = ({isSelected, onSelectToggle, children, ...rest}: TableRowProps) => 
   };
 
   return (
-    <RowContainer isSelected={isSelected} {...rest}>
-      {isSelectable && undefined !== isSelected &&
+    <RowContainer isClickable={undefined !== onClick} isSelected={isSelected} onClick={onClick} {...rest}>
+      {isSelectable && undefined !== isSelected && (
         <CheckboxContainer isVisible={isCheckboxVisible} onClick={handleCheckboxChange}>
-          <Checkbox checked={isSelected} onChange={(_value, e) => {handleCheckboxChange(e)}} />
+          <Checkbox
+            checked={isSelected}
+            onChange={(_value, e) => {
+              handleCheckboxChange(e);
+            }}
+          />
         </CheckboxContainer>
-      }
+      )}
       {children}
     </RowContainer>
   );
 };
 
-const TableCell = styled.td<{primary: boolean} & AkeneoThemedProps>`
+const TableCellContainer = styled.td<{primary: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   border-bottom: 1px solid ${getColor('grey', 60)};
   padding: 15px 10px;
-  ${props => props.primary && css`
-     color: ${getColor('purple', 100)};
-     font-style: italic;
-     font-weight: bold;
-     font-family: Lato
-  `}
+  ${props =>
+    props.primary &&
+    css`
+      color: ${getColor('purple', 100)};
+      font-style: italic;
+      font-weight: bold;
+      font-family: Lato;
+    `}
 `;
-const CellContainer = styled.div`
+const TableCellInnerContainer = styled.div`
   display: flex;
 `;
 
@@ -207,14 +228,18 @@ type TableCellProps = {
   children?: ReactNode;
 };
 
-Table.Cell = ({primary = false, children}: TableCellProps) => {
+const TableCell = ({primary = false, children}: TableCellProps) => {
   return (
-    <TableCell primary={primary}>
-      <CellContainer>
-        {children}
-      </CellContainer>
-    </TableCell>
+    <TableCellContainer primary={primary}>
+      <TableCellInnerContainer>{children}</TableCellInnerContainer>
+    </TableCellContainer>
   );
-}
+};
+
+Table.Header = TableHeader;
+Table.HeaderCell = TableHeaderCell;
+Table.Body = TableBody;
+Table.Row = TableRow;
+Table.Cell = TableCell;
 
 export {Table};
