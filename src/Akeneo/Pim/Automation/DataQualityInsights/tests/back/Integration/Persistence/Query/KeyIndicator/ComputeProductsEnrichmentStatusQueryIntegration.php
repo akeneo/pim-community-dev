@@ -4,14 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\KeyIndicator;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsEnrichmentStatusQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -22,27 +14,30 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  */
 final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityInsightsTestCase
 {
-    /** @var CriterionEvaluationRepositoryInterface */
-    private $productCriterionEvaluationRepository;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
-    }
-
     public function test_it_computes_products_enrichment_status()
     {
         $this->createChannel('ecommerce', ['locales' => ['en_US', 'fr_FR']]);
         $this->createChannel('mobile', ['locales' => ['en_US']]);
 
-        foreach (['name', 'title', 'description', 'weight'] as $attribute) {
-            $this->createAttribute($attribute);
+        foreach (['name', 'title', 'weight'] as $attribute) {
+            $this->createAttribute($attribute, ['scopable' => false]);
         }
+        $this->createAttribute('description', ['scopable' => true]);
 
-        $this->createFamily('family_with_3_attributes', ['attributes' => ['sku', 'name', 'description']]);
-        $this->createFamily('family_with_5_attributes', ['attributes' => ['sku', 'name', 'title', 'description', 'weight']]);
+        $this->createFamily(
+            'family_with_3_attributes',
+            [
+                'attributes' => ['sku', 'name', 'description'],
+                'attribute_requirements' => ['ecommerce' => ['sku'], 'mobile' => ['sku', 'name']],
+            ],
+        );
+        $this->createFamily(
+            'family_with_5_attributes',
+            [
+                'attributes' => ['sku', 'name', 'title', 'description', 'weight'],
+                'attribute_requirements' => ['ecommerce' => ['sku', 'name', 'title'], 'mobile' => ['sku']]
+            ]
+        );
 
         $expectedProductsEnrichmentStatus = [];
         $expectedProductsEnrichmentStatus += $this->givenProductSampleA();
@@ -51,7 +46,6 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
         $this->givenNotInvolvedProduct();
 
         $productIds = array_keys($expectedProductsEnrichmentStatus);
-        $productIds[] = 12346; // Unknown product
         $productIds = array_map(fn(int $productId) => new ProductId($productId), $productIds);
 
         $productsEnrichmentStatus = $this->get(ComputeProductsEnrichmentStatusQuery::class)->compute($productIds);
@@ -61,89 +55,56 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
 
     private function givenProductSampleA(): array
     {
-        $productId = $this->createProductWithoutEvaluations('sample_A', ['family' => 'family_with_3_attributes'])->getId();
+        $productId = $this->createProduct('sample_A', [
+            'family' => 'family_with_3_attributes',
+            'values' => [
+                'sku' => [['scope' => null, 'locale' => null, 'data' => '123456789']],
+                'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
+                'description' => [['scope' => 'mobile', 'locale' => null, 'data' => 'Sample A']],
+            ]
+        ])->getId();
 
         $expectedEnrichmentStatus = [$productId => [
             'ecommerce' => [
-                'en_US' => true,
+                'en_US' => false,
                 'fr_FR' => false,
             ],
             'mobile' => [
-                'en_US' => null,
+                'en_US' => true,
             ]
         ]];
-
-        $requiredCompletenessResult = $this->buildEnrichmentEvaluationResult([
-            'ecommerce' => [
-                'en_US' => [],
-                'fr_FR' => ['name'],
-            ]
-        ]);
-        $nonRequiredCompletenessResult = $this->buildEnrichmentEvaluationResult([
-            'ecommerce' => [
-                'en_US' => [],
-                'fr_FR' => [],
-            ]
-        ]);
-
-        $this->saveEnrichmentEvaluations(new ProductId($productId), $requiredCompletenessResult, $nonRequiredCompletenessResult);
 
         return $expectedEnrichmentStatus;
     }
 
     private function givenProductSampleB(): array
     {
-        $productId = $this->createProductWithoutEvaluations('sample_B', ['family' => 'family_with_5_attributes'])->getId();
+        $productId = $this->createProduct('sample_B', [
+            'family' => 'family_with_5_attributes',
+            'values' => [
+                'sku' => [['scope' => null, 'locale' => null, 'data' => '987654321']],
+                'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
+                'title' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
+                'description' => [['scope' => 'ecommerce', 'locale' => null, 'data' => 'Sample A']],
+            ]
+        ])->getId();
 
         $expectedEnrichmentStatus = [$productId => [
             'ecommerce' => [
                 'en_US' => true,
-                'fr_FR' => false,
+                'fr_FR' => true,
             ],
             'mobile' => [
                 'en_US' => false,
             ]
         ]];
 
-        $requiredCompletenessResult = $this->buildEnrichmentEvaluationResult([
-            'ecommerce' => [
-                'en_US' => ['height'],
-                'fr_FR' => ['name'],
-            ],
-        ]);
-        $nonRequiredCompletenessResult = $this->buildEnrichmentEvaluationResult([
-            'ecommerce' => [
-                'en_US' => [],
-                'fr_FR' => ['description'],
-            ],
-            'mobile' => [
-                'en_US' => ['brand', 'picture'],
-            ]
-        ]);
-
-        $this->saveEnrichmentEvaluations(new ProductId($productId), $requiredCompletenessResult, $nonRequiredCompletenessResult);
-
         return $expectedEnrichmentStatus;
     }
 
     private function givenNotInvolvedProduct(): void
     {
-        $productId = $this->createProductWithoutEvaluations('not_involved_product', ['family' => 'family_with_5_attributes'])->getId();
-
-        $requiredCompletenessResult = $this->buildEnrichmentEvaluationResult([
-            'ecommerce' => [
-                'en_US' => [],
-                'fr_FR' => ['name'],
-            ]
-        ]);
-        $nonRequiredCompletenessResult = $this->buildEnrichmentEvaluationResult([
-            'ecommerce' => [
-                'en_US' => ['description', 'title'],
-                'fr_FR' => [],
-            ]
-        ]);
-
-        $this->saveEnrichmentEvaluations(new ProductId($productId), $requiredCompletenessResult, $nonRequiredCompletenessResult);
+        $this->createProduct('not_involved_product', ['family' => 'family_with_5_attributes'])->getId();
     }
 
     private function givenProductWithoutEvaluations(): array
@@ -162,45 +123,5 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
                 'en_US' => null,
             ]
         ]];
-    }
-
-    private function buildEnrichmentEvaluationResult(array $attributesWithoutValue): Write\CriterionEvaluationResult
-    {
-        $evaluationResult = new Write\CriterionEvaluationResult();
-
-        foreach ($attributesWithoutValue as $channel => $localeAttributes) {
-            $channel = new ChannelCode($channel);
-            foreach ($localeAttributes as $locale => $attributes) {
-                $rateByAttributes = !empty($attributes) ? array_fill_keys($attributes, 0) : [];
-                $evaluationResult->addRateByAttributes($channel, new LocaleCode($locale), $rateByAttributes);
-            }
-        }
-
-        return $evaluationResult;
-    }
-
-    private function saveEnrichmentEvaluations(ProductId $productId, Write\CriterionEvaluationResult $requiredCompletenessResult, Write\CriterionEvaluationResult $nonRequiredCompletenessResult): void
-    {
-        $requiredCompleteness = new Write\CriterionEvaluation(
-            new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE),
-            $productId,
-            CriterionEvaluationStatus::done()
-        );
-        $nonRequiredCompleteness = new Write\CriterionEvaluation(
-            new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE),
-            $productId,
-            CriterionEvaluationStatus::done()
-        );
-
-        $evaluations = (new Write\CriterionEvaluationCollection())
-            ->add($requiredCompleteness)
-            ->add($nonRequiredCompleteness);
-
-        $this->productCriterionEvaluationRepository->create($evaluations);
-
-        $requiredCompleteness->end($requiredCompletenessResult);
-        $nonRequiredCompleteness->end($nonRequiredCompletenessResult);
-
-        $this->productCriterionEvaluationRepository->update($evaluations);
     }
 }
