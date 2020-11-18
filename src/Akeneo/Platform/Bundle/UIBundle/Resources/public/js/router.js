@@ -38,6 +38,7 @@ define([
     indexRoute: null,
     loadingMask: null,
     currentController: null,
+    root: null,
 
     /**
      * {@inheritdoc}
@@ -59,6 +60,10 @@ define([
      */
     index: function () {
       return this.defaultRoute(this.generate(this.indexRoute));
+    },
+
+    setRoot: function(element) {
+      this.root = element;
     },
 
     /**
@@ -92,8 +97,11 @@ define([
             this.currentController.remove();
           }
 
-          $('#container').empty();
-          var $view = $('<div class="view"/>').appendTo($('#container'));
+          // todo clean this
+          this.root.innerHTML = '';
+          const view = document.createElement('div');
+          view.setAttribute('class', 'view');
+          this.root.appendChild(view);
 
           if (controller.feature && !FeatureFlags.isEnabled(controller.feature)) {
             this.hideLoadingMask();
@@ -101,13 +109,13 @@ define([
             return this.notFound();
           }
 
-          if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
-            this.hideLoadingMask();
+          // if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
+          //   this.hideLoadingMask();
 
-            return this.displayErrorPage(__('error.forbidden'), '403');
-          }
+          //   return this.displayErrorPage(__('error.forbidden'), '403');
+          // }
 
-          controller.el = $view;
+          controller.el = this.root;
           this.currentController = new controller.class(controller);
           this.currentController.setActive(true);
           this.currentController
