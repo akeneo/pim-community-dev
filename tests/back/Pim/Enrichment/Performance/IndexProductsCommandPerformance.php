@@ -28,7 +28,7 @@ class IndexProductsCommandPerformance extends KernelTestCase
         $profileConfig->setTitle('Reindex all products');
 
         // Original value was 32.
-        $profileConfig->assert('metrics.sql.queries.count < 35', 'SQL queries');
+        $profileConfig->assert('metrics.sql.queries.count < 40', 'SQL queries');
         // Original value: 15.7s
         $profileConfig->assert('main.wall_time < 20s', 'Total time');
         // Original value: 152MB
