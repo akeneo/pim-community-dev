@@ -230,7 +230,9 @@ abstract class WithRemovedAttributeTestCase extends TestCase
 
     protected function createProduct(array $data = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct('new_product_' . rand());
+        $identifier = $data['identifier'] ?? 'new_product_' . rand();
+
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
 
         /** @var ConstraintViolationList $constraintList */
