@@ -13,7 +13,7 @@ class CountProductsWithRemovedAttributeIntegration extends WithRemovedAttributeT
 
         $count = $this->getCountProductsWithRemovedAttribute()->count(['an_attribute', 'a_third_attribute']);
 
-        self::assertEquals(2, $count);
+        self::assertEquals(3, $count);
     }
 
     private function getCountProductsWithRemovedAttribute(): CountProductsWithRemovedAttributeInterface

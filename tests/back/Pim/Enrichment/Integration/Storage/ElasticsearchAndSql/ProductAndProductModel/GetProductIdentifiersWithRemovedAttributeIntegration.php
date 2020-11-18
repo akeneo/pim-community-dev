@@ -16,7 +16,7 @@ class GetProductIdentifiersWithRemovedAttributeIntegration extends WithRemovedAt
         $batchCount = 0;
         foreach ($result as $batch) {
             $batchCount++;
-            self::assertEquals(['product_1', 'product_2', 'product_3'], $batch);
+            self::assertEquals(['product_1', 'product_2', 'product_3', 'product_4'], $batch);
         }
         self::assertEquals(1, $batchCount);
     }

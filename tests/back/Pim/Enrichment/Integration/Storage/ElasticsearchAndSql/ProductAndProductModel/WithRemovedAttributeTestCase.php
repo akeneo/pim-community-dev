@@ -153,6 +153,28 @@ abstract class WithRemovedAttributeTestCase extends TestCase
             ],
         ]);
 
+        // Simple product
+        $this->createProduct([
+            'identifier' => 'product_4',
+            'family' => 'a_second_family',
+            'values' => [
+                'a_second_attribute' => [
+                    [
+                        'data' => 'foo',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+                'a_third_attribute' => [
+                    [
+                        'data' => 'barfoo',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+        ]);
+
         // Product model with only one level of variations
         $this->createProductModel([
             'code' => 'a_product_model',
