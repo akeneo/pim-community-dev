@@ -4,7 +4,7 @@ import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CheckIcon, CloseIcon, DangerIcon, IconProps, InfoIcon} from '../../icons';
 import {LinkProps, Link} from '../../components';
 
-type MessageBarLevel = 'info' | 'success' | 'warning' | 'danger';
+type MessageBarLevel = 'info' | 'success' | 'warning' | 'error';
 
 const IconContainer = styled.div`
   padding: 0 25px;
@@ -151,15 +151,13 @@ const AnimateMessageBar = ({children}: {children: ReactElement<MessageBarProps>}
     setMounting(true);
   }, []);
 
-  const onClose = useCallback(() => {
-    setUnmounting(true);
-
-    const timeoutId = setTimeout(() => {
+  const onClose = () => {
+    // We need to detach the unmounting to avoid rendering the component in another render
+    setTimeout(() => setUnmounting(true), 0);
+    setTimeout(() => {
       children.props.onClose();
     }, ANIMATION_DURATION);
-
-    return () => clearTimeout(timeoutId);
-  }, []);
+  };
 
   return (
     <AnimateContainer mounting={mounting} unmounting={unmounting}>
@@ -194,7 +192,7 @@ const getLevelColor = (level: MessageBarLevel): ((props: AkeneoThemedProps) => s
       return getColor('green', 100);
     case 'warning':
       return getColor('yellow', 120);
-    case 'danger':
+    case 'error':
       return getColor('red', 100);
   }
 };
@@ -206,7 +204,7 @@ const getDuration = (level: MessageBarLevel): number => {
     case 'info':
     case 'warning':
       return 5;
-    case 'danger':
+    case 'error':
       return 8;
   }
 };
@@ -218,7 +216,7 @@ const getLevelIcon = (level: MessageBarLevel): ReactElement => {
     case 'info':
       return <InfoIcon />;
     case 'warning':
-    case 'danger':
+    case 'error':
       return <DangerIcon />;
   }
 };
@@ -256,7 +254,7 @@ type FlashMessage = {
    * Content of the MessageBar.
    */
   children?: ReactNode;
-}
+};
 
 type MessageBarProps = FlashMessage & {
   /**

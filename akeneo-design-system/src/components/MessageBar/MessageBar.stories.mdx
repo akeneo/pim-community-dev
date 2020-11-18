@@ -8,7 +8,7 @@ import * as Icons from '../../icons';
   title="Components/MessageBar"
   component={MessageBar}
   argTypes={{
-    level: {control: {type: 'select', options: ['info', 'success', 'warning', 'danger']}},
+    level: {control: {type: 'select', options: ['info', 'success', 'warning', 'error']}},
     icon: {control: {type: 'select', options: Object.keys(Icons)}},
     children: {control: {type: 'text'}},
     onClose: {action: 'Closing the MessageBar'},
@@ -38,7 +38,7 @@ We recommend that the body of the message holds within two lines maximum. Be des
 
 ### Close
 
-We recommend that messages automatically disappear after 3 seconds for success, 5s for info & warning and 8s for danger.
+We recommend that messages automatically disappear after 3 seconds for success, 5s for info & warning and 8s for error.
 Manual closing instead of the timer if there is a Link component in the message.
 
 > ##### ⚠️ &nbsp; Important messages are persistent until the user closes them.
@@ -69,7 +69,7 @@ Icons can bring extra clarity. They should be placed at the left of the title. T
           <MessageBar {...args} title="Info" level="info" icon={<Icons.InfoRoundIcon />} />
           <MessageBar {...args} title="Success" level="success" icon={<Icons.GiftIcon />} />
           <MessageBar {...args} title="Warning" level="warning" icon={<Icons.HelpIcon />} />
-          <MessageBar {...args} title="Danger" level="danger" icon={<Icons.DangerIcon />} />
+          <MessageBar {...args} title="Error" level="error" icon={<Icons.DangerIcon />} />
         </>
       );
     }}

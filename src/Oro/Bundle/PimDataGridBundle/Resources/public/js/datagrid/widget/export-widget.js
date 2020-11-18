@@ -1,12 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'oro/messenger', 'oro/error', 'routing'], function (
-  $,
-  _,
-  Backbone,
-  messenger,
-  Error,
-  Routing
-) {
-  'use strict';
+define(['jquery', 'underscore', 'backbone', 'oro/messenger', 'oro/error', 'routing',
+'akeneo-design-system',
+], function ($, _, Backbone, messenger, Error, Routing, React, {Link}) {
 
   return Backbone.View.extend({
     action: null,
@@ -23,18 +17,19 @@ define(['jquery', 'underscore', 'backbone', 'oro/messenger', 'oro/error', 'routi
       $.get(this.action.getLinkWithParameters())
         .done(function (data) {
           const jobUrl = '#' + Routing.generate('pim_enrich_job_tracker_show', {id: data.job_id});
-          const jobLink = _.template(JobExportLinkTemplate)({
-            url: jobUrl,
-            label: _.__('pim_datagrid.mass_action.quick_export.job_link_label'),
-          });
-          const messageTitle = _.__('pim_datagrid.mass_action.quick_export.success');
-          const message = _.__('pim_datagrid.mass_action.quick_export.success_message', {
-            job_link: jobLink,
-          });
+          const message = React.createElement(
+            'span',
+            null,
+            _.__('pim_datagrid.mass_action.quick_export.flash.message')
+          );
+          const link = React.createElement(
+            Link,
+            {href: jobUrl},
+            _.__('pim_datagrid.mass_action.quick_export.flash.link')
+          );
+          const children = React.createElement('span', null, message, link);
 
-          messenger.notify('success', message, {
-            messageTitle: messageTitle,
-          });
+          messenger.notify('success', title, children);
         })
         .fail(function (jqXHR) {
           if (jqXHR.status === 401) {
