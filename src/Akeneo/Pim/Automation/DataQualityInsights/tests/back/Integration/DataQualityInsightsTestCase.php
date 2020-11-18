@@ -305,6 +305,14 @@ SQL;
         return intval($localeId);
     }
 
+    protected function resetProductsScores(): void
+    {
+        $this->get('database_connection')->executeQuery(<<<SQL
+TRUNCATE TABLE pim_data_quality_insights_product_score;
+SQL
+        );
+    }
+
     private function formatValidationErrorMessage(string $mainMessage, ConstraintViolationListInterface $errors): string
     {
         $errorMessage = '';
