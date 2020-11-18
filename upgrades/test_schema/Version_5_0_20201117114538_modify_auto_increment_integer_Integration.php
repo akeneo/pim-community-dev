@@ -32,15 +32,18 @@ final class Version_5_0_20201117114538_modify_auto_increment_integer_Integration
             ->getSchemaManager()
             ->listTableColumns('pim_catalog_completeness');
 
-        $found = false;
-        foreach($tableColumns as $column) {
-            if ($column->getName() === 'id') {
-                $this->assertTrue($column->getType() instanceOf Doctrine\DBAL\Types\BigIntType);
-                $found=true;
-            }
-        }
+        $sql = <<<SQL
+select data_type
+from information_schema.COLUMNS
+where
+  TABLE_NAME='pim_catalog_completeness'
+  and COLUMN_NAME='id';
+SQL;
+        $result = $this->get('database_connection')
+            ->executeQuery($sql)
+            ->fetchColumn();
 
-        $this->assertTrue($found); // ← we need to ensure there is a ID column hence we have tested it correctly
+        $this->assertEquals('bigint', $result);
     }
 
     private function ensureCompletenessUsesNormalInt(): void {
