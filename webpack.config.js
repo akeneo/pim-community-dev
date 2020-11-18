@@ -40,6 +40,12 @@ const webpackConfig = {
           filename: "vendor.min.js",
           chunks: "all"
         },
+        illustrations: {
+          test: /[\\/]node_modules[\\/]akeneo-design-system[\\/]lib[\\/]illustrations[\\/]/,
+          name: "illustrations",
+          filename: "illustrations.min.js",
+          chunks: "all"
+        },
         main: {
           filename: 'main.min.js'
         }
