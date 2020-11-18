@@ -1,7 +1,6 @@
 extensions:
     pim-menu:
         module: pim/menu/menu
-        parent: pim-app
         targetZone: menu
 
     # Logo
