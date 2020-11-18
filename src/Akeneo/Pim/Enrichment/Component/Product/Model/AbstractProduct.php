@@ -282,7 +282,7 @@ abstract class AbstractProduct implements ProductInterface
     public function getValues(): WriteValueCollection
     {
         if (!$this->isVariant()) {
-            return $this->values;
+            return WriteValueCollection::fromCollection($this->values);
         }
 
         $values = WriteValueCollection::fromCollection($this->values);
@@ -652,7 +652,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         foreach ($this->getAssociations() as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
-                return clone $association;
+                return $association;
             }
         }
 
@@ -805,15 +805,8 @@ abstract class AbstractProduct implements ProductInterface
             return $needleAssociation;
         }
 
-        $needleAssociationType = $needleAssociation->getAssociationType();
         foreach ($this->associations as $current) {
-            if (
-                $current->getReference() === $needleAssociation->getReference() ||
-                (
-                    null !== $needleAssociationType &&
-                    null !== $this->getAssociationForType($needleAssociationType)
-                )
-            ) {
+            if ($current->getReference() === $needleAssociation->getReference()) {
                 return $current;
             }
         }

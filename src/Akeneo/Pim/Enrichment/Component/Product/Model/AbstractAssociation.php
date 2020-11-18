@@ -235,8 +235,8 @@ abstract class AbstractAssociation implements AssociationInterface
 
     public function __clone()
     {
-        $this->products = clone $this->products;
-        $this->productModels = clone $this->productModels;
-        $this->groups = clone $this->groups;
+        $this->products = clone $this->getProducts();
+        $this->productModels = clone $this->getProductModels();
+        $this->groups = clone $this->getGroups();
     }
 }
