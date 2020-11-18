@@ -10,6 +10,13 @@ const router = require('pim/router');
 const $ = require('jquery');
 const Backbone = require('backbone');
 
+//needed to have require available in twig files
+require('require-polyfill');
+
+//TODO: remove later as we should be able to not use them anymore
+require('jquery-ui');
+require('bootstrap');
+
 const App = ({formBuilder}: {formBuilder: any}) => {
   const menuRef = useRef(null);
   const containerRef = useRef(null);
