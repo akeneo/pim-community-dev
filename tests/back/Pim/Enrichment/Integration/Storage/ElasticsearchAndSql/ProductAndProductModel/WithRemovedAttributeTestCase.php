@@ -10,13 +10,16 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 abstract class WithRemovedAttributeTestCase extends TestCase
 {
-    const ATTRIBUTE_ONLY_ON_ONE_PRODUCT = 'attribute_only_on_one_product';
-    const ATTRIBUTE_ONLY_ON_ONE_PRODUCT_MODEL = 'attribute_only_on_one_product_model';
-    const ATTRIBUTE_ONLY_ON_ONE_SUB_PRODUCT_MODEL = 'attribute_only_on_one_sub_product_model';
-    const ATTRIBUTE_ONLY_ON_ONE_PRODUCT_VARIANT = 'attribute_only_on_one_product_variant';
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->loadFixtures();
+    }
 
     /**
      * @inheritDoc
@@ -28,98 +31,120 @@ abstract class WithRemovedAttributeTestCase extends TestCase
 
     protected function loadFixtures(): void
     {
-        $family = $this->createFamily([
-            'code' => 'family_'.uniqid(),
-        ]);
-
         $this->createAttribute([
-            'code' => self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT,
+            'code' => 'an_attribute',
             'type' => 'pim_catalog_text',
             'group' => 'other',
         ]);
 
         $this->createAttribute([
-            'code' => self::ATTRIBUTE_ONLY_ON_ONE_SUB_PRODUCT_MODEL,
+            'code' => 'a_second_attribute',
             'type' => 'pim_catalog_text',
             'group' => 'other',
         ]);
 
         $this->createAttribute([
-            'code' => self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT_VARIANT,
+            'code' => 'a_third_attribute',
             'type' => 'pim_catalog_text',
             'group' => 'other',
         ]);
 
-        $this->createProduct([
-            'identifier' => 'product_'.uniqid(),
-            'family' => $family->getCode(),
-            'values' => [
-                self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT => [
-                    [
-                        'data' => 'foobar',
-                        'locale' => null,
-                        'scope' => null,
-                    ],
-                ],
-            ],
-        ]);
-
-        $attributeFirstAxis = $this->createAttribute([
-            'code' => 'attribute_axis_'.uniqid(),
+        $this->createAttribute([
+            'code' => 'a_forth_attribute',
             'type' => 'pim_catalog_boolean',
             'group' => 'other',
         ]);
-        $attributeSecondAxis = $this->createAttribute([
-            'code' => 'attribute_axis_'.uniqid(),
+
+        $this->createAttribute([
+            'code' => 'a_fifth_attribute',
             'type' => 'pim_catalog_boolean',
             'group' => 'other',
         ]);
-        $attributeOnlyOnProductModels = $this->createAttribute([
-            'code' => self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT_MODEL,
-            'type' => 'pim_catalog_text',
-            'group' => 'other',
+
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => [
+                'sku',
+                'an_attribute',
+                'a_second_attribute',
+                'a_forth_attribute',
+                'a_fifth_attribute',
+            ],
         ]);
 
-        $family->addAttribute($attributeFirstAxis);
-        $family->addAttribute($attributeSecondAxis);
-        $family->addAttribute($attributeOnlyOnProductModels);
+        $this->createFamily([
+            'code' => 'a_second_family',
+            'attributes' => [
+                'sku',
+                'a_second_attribute',
+                'a_third_attribute',
+            ],
+        ]);
 
-        $this->get('pim_catalog.saver.family')->save($family);
-
-        $familyVariantWithOneLevel = $this->createFamilyVariant([
-            'code' => 'family_variant_'.uniqid(),
+        $this->createFamilyVariant([
+            'code' => 'a_family_variant',
             'variant_attribute_sets' => [
                 [
-                    'axes' => [$attributeFirstAxis->getCode()],
-                    'attributes' => [self::ATTRIBUTE_ONLY_ON_ONE_SUB_PRODUCT_MODEL],
+                    'axes' => ['a_forth_attribute'],
+                    'attributes' => [],
                     'level' => 1,
                 ],
             ],
-            'family' => $family->getCode(),
+            'family' => 'a_family',
         ]);
 
-        $familyVariantWithTwoLevels = $this->createFamilyVariant([
-            'code' => 'family_variant_'.uniqid(),
+        $this->createFamilyVariant([
+            'code' => 'a_second_family_variant',
             'variant_attribute_sets' => [
                 [
-                    'axes' => [$attributeFirstAxis->getCode()],
-                    'attributes' => [self::ATTRIBUTE_ONLY_ON_ONE_SUB_PRODUCT_MODEL],
+                    'axes' => ['a_forth_attribute'],
+                    'attributes' => ['an_attribute'],
                     'level' => 1,
                 ],
                 [
-                    'axes' => [$attributeSecondAxis->getCode()],
-                    'attributes' => [self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT_VARIANT],
+                    'axes' => ['a_fifth_attribute'],
+                    'attributes' => ['a_second_attribute'],
                     'level' => 2,
                 ],
             ],
-            'family' => $family->getCode(),
+            'family' => 'a_family',
         ]);
 
-        $productModelWithoutVariants = $this->createProductModel([
-            'code' => 'product_model_'.rand(),
-            'family_variant' => $familyVariantWithOneLevel->getCode(),
+        // Simple product
+        $this->createProduct([
+            'identifier' => 'product_1',
+            'family' => 'a_family',
             'values' => [
-                self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT_MODEL => [
+                'an_attribute' => [
+                    [
+                        'data' => 'foo',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+                'a_second_attribute' => [
+                    [
+                        'data' => 'bar',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+        ]);
+
+        // Simple product
+        $this->createProduct([
+            'identifier' => 'product_2',
+            'family' => 'a_second_family',
+            'values' => [
+                'a_second_attribute' => [
+                    [
+                        'data' => 'foo',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+                'a_third_attribute' => [
                     [
                         'data' => 'foobar',
                         'locale' => null,
@@ -129,47 +154,50 @@ abstract class WithRemovedAttributeTestCase extends TestCase
             ],
         ]);
 
-        $productModelWithOneVariant = $this->createProductModel([
-            'code' => 'product_model_'.rand(),
-            'family_variant' => $familyVariantWithOneLevel->getCode(),
+        // Product model with only one level of variations
+        $this->createProductModel([
+            'code' => 'a_product_model',
+            'family_variant' => 'a_family_variant',
+            'values' => [
+                'an_attribute' => [
+                    [
+                        'data' => 'foo',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+                'a_second_attribute' => [
+                    [
+                        'data' => 'bar',
+                        'locale' => null,
+                        'scope' => null,
+                    ],
+                ],
+            ],
+        ]);
+
+        // Product model with only two level of variations
+        $this->createProductModel([
+            'code' => 'a_second_product_model',
+            'family_variant' => 'a_second_family_variant',
             'values' => [],
         ]);
 
-        $this->createVariantProduct('new_variant_product_'.rand(), [
-            'categories' => ['master'],
-            'parent' => $productModelWithOneVariant->getCode(),
+        //Sub product model for the second level of variations
+        $this->createProductModel([
+            'code' => 'a_sub_product_model',
+            'parent' => 'a_second_product_model',
             'values' => [
-                $attributeFirstAxis->getCode() => [
+                'an_attribute' => [
                     [
+                        'data' => 'foo',
                         'locale' => null,
                         'scope' => null,
-                        'data' => 'true',
                     ],
                 ],
-            ],
-        ]);
-
-        $productModelWithOneSubModel = $this->createProductModel([
-            'code' => 'product_model_'.rand(),
-            'family_variant' => $familyVariantWithOneLevel->getCode(),
-            'values' => [],
-        ]);
-
-        $subProductModel = $this->createProductModel([
-            'code' => 'product_model_'.rand(),
-            'family_variant' => $familyVariantWithTwoLevels->getCode(),
-            'parent' => $productModelWithOneSubModel->getCode(),
-            'values' => [
-                $attributeFirstAxis->getCode() => [
+                'a_forth_attribute' => [
                     [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'true',
-                    ],
-                ],
-                self::ATTRIBUTE_ONLY_ON_ONE_SUB_PRODUCT_MODEL => [
-                    [
-                        'data' => 'foobar',
+                        'data' => true,
                         'locale' => null,
                         'scope' => null,
                     ],
@@ -177,77 +205,60 @@ abstract class WithRemovedAttributeTestCase extends TestCase
             ],
         ]);
 
-        $this->createVariantProduct('new_variant_product_'.rand(), [
-            'parent' => $subProductModel->getCode(),
+        // Variant product for the two level of variations
+        $this->createProduct([
+            'identifier' => 'product_3',
+            'parent' => 'a_sub_product_model',
             'values' => [
-                $attributeSecondAxis->getCode() => [
+                'a_second_attribute' => [
                     [
+                        'data' => 'foo',
                         'locale' => null,
                         'scope' => null,
-                        'data' => 'true',
+                    ],
+                ],
+                'a_fifth_attribute' => [
+                    [
+                        'data' => true,
+                        'locale' => null,
+                        'scope' => null,
                     ],
                 ],
             ],
         ]);
     }
 
-    private function createProduct(array $data = []): ProductInterface
+    protected function createProduct(array $data = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct('new_product_'.rand());
+        $product = $this->get('pim_catalog.builder.product')->createProduct('new_product_' . rand());
         $this->get('pim_catalog.updater.product')->update($product, $data);
 
+        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertEquals(0, $constraintList->count());
-
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-
-        return $product;
-    }
-
-    private function createVariantProduct(string $identifier, array $data = []): ProductInterface
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertEquals(0, $constraintList->count());
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-
-        return $product;
-    }
-
-    protected function createRandomProductWithAttributes(array $attributesCodes): ProductInterface
-    {
-        $family = $this->createFamily([
-            'code' => 'family_'.uniqid(),
-        ]);
-
-        $values = [];
-        foreach ($attributesCodes as $attributeCode) {
-            $values[$attributeCode] = [
-                [
-                    'data' => 'some text',
-                    'locale' => null,
-                    'scope' => null,
-                ],
-            ];
+        foreach ($constraintList as $constraintViolation) {
+            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath(), $constraintViolation->getInvalidValue());
         }
+        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a product');
 
-        return $this->createProduct([
-            'identifier' => 'new_product_'.uniqid(),
-            'family' => $family->getCode(),
-            'values' => $values,
-        ]);
+
+        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+
+        return $product;
     }
 
-    private function createProductModel(array $data = []): ProductModelInterface
+    protected function createProductModel(array $data = []): ProductModelInterface
     {
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+
+        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('pim_catalog.validator.product')->validate($productModel);
-        Assert::assertEquals(0, $constraintList->count());
+        foreach ($constraintList as $constraintViolation) {
+            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath());
+        }
+
+        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a product model');
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
@@ -255,144 +266,52 @@ abstract class WithRemovedAttributeTestCase extends TestCase
         return $productModel;
     }
 
-    protected function createRandomProductModelWithAttributes(array $attributesCodes): ProductModelInterface
-    {
-        $axisAttribute = $this->createAttribute([
-            'code' => 'new_attribute_axis_'.uniqid(),
-            'type' => 'pim_catalog_boolean',
-            'group' => 'other',
-        ]);
-
-        $family = $this->createFamily([
-            'code' => 'new_family_'.uniqid(),
-        ]);
-        $family->addAttribute($axisAttribute);
-
-        $values = [];
-        foreach ($attributesCodes as $attributeCode) {
-            $values[$attributeCode] = [
-                [
-                    'data' => 'some text',
-                    'locale' => null,
-                    'scope' => null,
-                ],
-            ];
-            $attribute = $this->get('pim_catalog.repository.attribute')->findOneBy(['code' => $attributeCode]);
-            $family->addAttribute($attribute);
-        }
-
-        $errors = $this->get('validator')->validate($family);
-        Assert::assertCount(0, $errors);
-
-        $this->get('pim_catalog.saver.family')->save($family);
-
-        $familyVariant = $this->createFamilyVariant([
-            'code' => 'new_family_variant_'.uniqid(),
-            'variant_attribute_sets' => [
-                [
-                    'axes' => [$axisAttribute->getCode()],
-                    'attributes' => [],
-                    'level' => 1,
-                ],
-            ],
-            'family' => $family->getCode(),
-        ]);
-
-        return $this->createProductModel([
-            'code' => 'new_product_model_'.rand(),
-            'family_variant' => $familyVariant->getCode(),
-            'values' => $values,
-        ]);
-    }
-
     protected function createFamilyVariant(array $data = []): FamilyVariantInterface
     {
         $family = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update($family, $data);
+
+        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('validator')->validate($family);
-        Assert::assertEquals(0, $constraintList->count());
+        foreach ($constraintList as $constraintViolation) {
+            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath());
+        }
+
+        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a family variant');
         $this->get('pim_catalog.saver.family_variant')->save($family);
 
         return $family;
     }
 
-//    protected function createProductModelsWithAttributes(int $count, array $attributesCodes)
-//    {
-//        $axisAttribute = $this->createAttribute([
-//            'code' => 'new_attribute_'.uniqid(),
-//            'type' => 'pim_catalog_boolean',
-//            'group' => 'other',
-//        ]);
-//
-//        $family = $this->createFamily(['code' => 'new_family_'.uniqid()]);
-//        $family->addAttribute($axisAttribute);
-//
-//        $productModelValues = [];
-//        $i = 0;
-//        while ($i < $numberOfProductValues) {
-//            $attribute = $this->createAttribute([
-//                'code' => 'new_attribute_'.rand(),
-//                'type' => 'pim_catalog_text',
-//                'group' => 'other',
-//            ]);
-//
-//            $family->addAttribute($attribute);
-//            $productModelValues[$attribute->getCode()] = [
-//                ['data' => rand().' some text random', 'locale' => null, 'scope' => null],
-//            ];
-//            $i++;
-//        }
-//
-//        $errors = $this->get('validator')->validate($family);
-//        Assert::assertCount(0, $errors);
-//
-//        $this->get('pim_catalog.saver.family')->save($family);
-//
-//        $familyVariant = $this->createFamilyVariant([
-//            'code' => 'new_family_variant_'.rand(),
-//            'variant_attribute_sets' => [
-//                [
-//                    'axes' => [$axisAttribute->getCode()],
-//                    'attributes' => [],
-//                    'level' => 1,
-//                ],
-//            ],
-//            'family' => $family->getCode(),
-//        ]);
-//
-//        $this->createProductModel([
-//            'code' => 'new_product_model_'.rand(),
-//            'family_variant' => $familyVariant->getCode(),
-//            'values' => $productModelValues,
-//        ]);
-//    }
-
-    private function createFamily(array $data = []): FamilyInterface
+    protected function createFamily(array $data = []): FamilyInterface
     {
         $family = $this->get('pim_catalog.factory.family')->create();
         $this->get('pim_catalog.updater.family')->update($family, $data);
+
+        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('validator')->validate($family);
-        Assert::assertEquals(0, $constraintList->count());
+        foreach ($constraintList as $constraintViolation) {
+            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath(), $constraintViolation->getInvalidValue());
+        }
+
+        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a family');
         $this->get('pim_catalog.saver.family')->save($family);
 
         return $family;
-    }
-
-    protected function createTextAttribute(string $code): AttributeInterface
-    {
-        return $this->createAttribute([
-            'code' => $code,
-            'type' => 'pim_catalog_text',
-            'group' => 'other',
-        ]);
     }
 
     protected function createAttribute(array $data = []): AttributeInterface
     {
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+
+        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('validator')->validate($attribute);
-        Assert::assertEquals(0, $constraintList->count());
+        foreach ($constraintList as $constraintViolation) {
+            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath(), $constraintViolation->getInvalidValue());
+        }
+
+        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create an attribute');
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         return $attribute;

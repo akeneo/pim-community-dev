@@ -6,30 +6,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductModelsWithRemovedA
 
 class CountProductModelsWithRemovedAttributeIntegration extends WithRemovedAttributeTestCase
 {
-    public function setUp(): void
+    public function test_it_only_counts_product_models_with_a_removed_attribute()
     {
-        parent::setUp();
-        $this->loadFixtures();
-    }
+        $this->removeAttribute('an_attribute');
+        $this->removeAttribute('a_third_attribute');
 
-    public function test_it_only_count_product_models_with_a_removed_attribute()
-    {
-        $this->removeAttribute(self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT_MODEL);
+        $count = $this->getCountProductModelsWithRemovedAttribute()->count(['an_attribute', 'a_third_attribute']);
 
-        $expectedCount = 1;
-        $count = $this->getCountProductModelsWithRemovedAttribute()->count([self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT_MODEL]);
-
-        self::assertEquals($expectedCount, $count);
-    }
-
-    public function test_it_does_not_count_products()
-    {
-        $this->removeAttribute(self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT);
-
-        $expectedCount = 0;
-        $count = $this->getCountProductModelsWithRemovedAttribute()->count([self::ATTRIBUTE_ONLY_ON_ONE_PRODUCT]);
-
-        self::assertEquals($expectedCount, $count);
+        self::assertEquals(2, $count);
     }
 
     private function getCountProductModelsWithRemovedAttribute(): CountProductModelsWithRemovedAttributeInterface
