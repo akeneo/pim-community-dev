@@ -1,6 +1,6 @@
-import React, { Ref } from 'react';
+import React, { Ref, useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import { AkeneoThemedProps, getColor, getFontSize } from "../../../theme";
+import { AkeneoThemedProps, CommonStyle, getColor } from "../../../theme";
 import { EraseIcon, LockIcon } from "../../../icons";
 
 const BooleanInputContainer = styled.div``;
@@ -9,25 +9,23 @@ const BooleanButton = styled.button<{
   value?: boolean,
   readOnly: boolean,
 } & AkeneoThemedProps>`
+  ${CommonStyle}
   height: 40px;
   width: 60px;
   display: inline-block;
   line-height: 36px;
-  font-family: 'Lato';
   text-align: center;
   vertical-align: middle;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   background: ${getColor('white')};
-  font-size: ${getFontSize('default')};
   
   ${({readOnly}) => readOnly ? css`
     border: 1px solid ${getColor('grey',60)}}
     color: ${getColor('grey', 80)}}
   ` : css`
     border: 1px solid ${getColor('grey',80)}}
-    color: ${getColor('grey', 120)}}
     cursor: pointer;
   `};
 `;
@@ -57,23 +55,24 @@ const YesButton = styled(BooleanButton)`
         `;
       case null:
         return css`
-          border-left-width: ${({value}) => value !== false ? '' : '0'};
+          border-left-width: 0;
         `
+      default:
+        return '';
     }
   }
 }
 `
 
 const ClearButton = styled.button`
-  font-family: 'Lato';
+  ${CommonStyle}
   border: 0;
   margin-left: 5px;
   padding: 5px;
   vertical-align: middle;
-  font-size: ${getFontSize('default')};
   background: ${getColor('white')};
   color: ${getColor('grey', 100)};
-  cursor: ${({readOnly}) => readOnly ? 'inherit' : 'pointer'};
+  ${({readOnly}) => !readOnly && 'cursor: pointer'};
 `
 
 const BooleanInputEraseIcon = styled(EraseIcon)`
@@ -81,12 +80,16 @@ const BooleanInputEraseIcon = styled(EraseIcon)`
   margin-right: 6px;
 `
 
-const BooleanInputLockIcon = styled(LockIcon)`
+const IconContainer = styled.span`
+  color: 1px solid ${getColor('grey',100)}}
   vertical-align: middle;
   margin-left: 10px;
 `
+const BooleanInputLockIcon = styled(LockIcon)`
+  
+`
 
-type BooleanInputProps = {
+type BooleanInputProps = ({
   clearable?: true;
   value: boolean | null;
   onChange?: (value: boolean | null) => void;
@@ -94,7 +97,7 @@ type BooleanInputProps = {
   clearable?: false;
   value: boolean;
   onChange?: (value: boolean) => void;
-} & {
+}) & {
   readOnly?: boolean;
   yesLabel?: string;
   noLabel?: string;
@@ -103,11 +106,13 @@ type BooleanInputProps = {
 
 
 /**
- * TODO @stephane
+ * Toggle is used to quickly switch between two possible states. They are commonly used for "yes/no" switches.
+ * The boolean can in some cases have a 3rd state, EMPTY. In this case, a clear button allows the user to empty the
+ * value of the field.
  */
 const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   ({
-    value = null,
+    value,
     readOnly = false,
     onChange,
     clearable = false,
@@ -116,40 +121,45 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
     clearLabel = 'Clear value',
      ...rest
   }: BooleanInputProps, forwardedRef: Ref<HTMLDivElement>) => {
-    const handleChange = (value: boolean | null) => {
-      if (!onChange || readOnly) {
+    const handleChange = useCallback((value: boolean | null) => {
+      if (!onChange) {
         return;
       }
       onChange(value as boolean);
-    }
+    }, [onChange, readOnly]);
 
     return (
       <BooleanInputContainer
         ref={forwardedRef}
+        aria-valuenow={value}
         {...rest}
       >
         <NoButton
           value={value}
           readOnly={readOnly}
           disabled={readOnly}
-          onClick={handleChange(false)}
+          onClick={() => { handleChange(false) }}
           title={noLabel}
         >{noLabel}</NoButton>
+
         <YesButton
           value={value}
           readOnly={readOnly}
           disabled={readOnly}
-          onClick={handleChange(true)}
+          onClick={() => { handleChange(true) }}
           title={yesLabel}
         >{yesLabel}</YesButton>
+
         {value !== null && !readOnly && clearable &&
           <ClearButton
-            onClick={handleChange(null)}
+            onClick={() => { handleChange(null) }}
           ><BooleanInputEraseIcon size={16}/>{clearLabel}</ClearButton>
         }
+
         {readOnly &&
-          <BooleanInputLockIcon size={16} color="#a1a9b7"/>
-          /* I can't success to put a color in the LockIcon ; it's a grey100 :( */
+          <IconContainer>
+            <BooleanInputLockIcon size={16}/>
+          </IconContainer>
         }
       </BooleanInputContainer>
     );
