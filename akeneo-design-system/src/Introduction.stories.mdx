@@ -7,6 +7,16 @@ to be featured on the Introduction Story, add its name to this list -->
 
 export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle', 'SectionTitle', 'Title'];
 
+export const getComponentLink = componentName => {
+  switch (componentName) {
+    case 'Button':
+    case 'IconButton':
+      return `Components/Buttons/${componentName}`;
+    default:
+      return `Components/${componentName}`;
+  }
+};
+
 <Meta title="Introduction" />
 
 <style>{`
@@ -141,12 +151,13 @@ export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle', 'SectionTitle',
   {Object.keys(Components)
     .filter(componentName => !COMPONENTS_EXCLUDE.includes(componentName))
     .map(componentName => (
-      <a key={componentName} class="link-item" onClick={linkTo(`Components/${componentName}`, 'Standard')}>
+      <a key={componentName} class="link-item" onClick={linkTo(getComponentLink(componentName), 'Standard')}>
         <div
           class="link-icon"
           style={{
-            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName
+            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-${getComponentLink(componentName)
               .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+              .replace(/\//g, '-')
               .toLowerCase()}-standard-correctly-1-snap.png")`,
           }}
         ></div>
