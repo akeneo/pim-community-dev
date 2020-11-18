@@ -141,85 +141,81 @@ define([
       loadingMask.render().$el.appendTo(this.$el.parent());
       loadingMask.show();
 
-      FetcherRegistry.initialize().then(
-        function () {
-          FetcherRegistry.getFetcher('channel')
-            .fetch(this.attributes.channel)
-            .then(
-              function (channel) {
-                return $.when(FetcherRegistry.getFetcher('category').fetch(channel.category_tree)).then(
-                  function (category) {
-                    this.$el.html(
-                      this.template({
-                        tree: category,
-                        label: i18n.getLabel(category.labels, UserContext.get('uiLocale'), category.code),
-                      })
-                    );
-
-                    var selectedCategories = this.attributes.categories;
-
-                    this.$('.root')
-                      .jstree(
-                        _.extend(this.config, {
-                          json_data: {
-                            ajax: {
-                              dataType: 'json',
-                              method: 'POST',
-                              url: function (node) {
-                                if (-1 === node && 0 < selectedCategories.length) {
-                                  // First load of the tree: get the checked categories
-                                  return Routing.generate('pim_enrich_category_rest_list_selected_children', {
-                                    identifier: category.code,
-                                  });
-                                }
-
-                                return Routing.generate('pim_enrich_categorytree_children', {
-                                  _format: 'json',
-                                });
-                              }.bind(this),
-                              data: function (node) {
-                                if (-1 === node) {
-                                  return {
-                                    id: this.get_container().data('tree-id'),
-                                    selected: selectedCategories,
-                                  };
-                                }
-
-                                return {id: node.attr('id').replace('node_', '')};
-                              },
-                            },
-                          },
-                        })
-                      )
-                      .on(
-                        'check_node.jstree',
-                        function (event, data) {
-                          this.checkNode(data);
-                        }.bind(this)
-                      )
-                      .on(
-                        'uncheck_node.jstree',
-                        function (event, data) {
-                          this.uncheckNode(data);
-                        }.bind(this)
-                      )
-                      .on(
-                        'load_node.jstree',
-                        function (event, data) {
-                          this.loadNode(data);
-                        }.bind(this)
-                      );
-                  }.bind(this)
+      FetcherRegistry.getFetcher('channel')
+        .fetch(this.attributes.channel)
+        .then(
+          function (channel) {
+            return $.when(FetcherRegistry.getFetcher('category').fetch(channel.category_tree)).then(
+              function (category) {
+                this.$el.html(
+                  this.template({
+                    tree: category,
+                    label: i18n.getLabel(category.labels, UserContext.get('uiLocale'), category.code),
+                  })
                 );
-              }.bind(this)
-            )
-            .done(
-              function () {
-                this.$el.parent().find('.loading-mask').remove();
+
+                var selectedCategories = this.attributes.categories;
+
+                this.$('.root')
+                  .jstree(
+                    _.extend(this.config, {
+                      json_data: {
+                        ajax: {
+                          dataType: 'json',
+                          method: 'POST',
+                          url: function (node) {
+                            if (-1 === node && 0 < selectedCategories.length) {
+                              // First load of the tree: get the checked categories
+                              return Routing.generate('pim_enrich_category_rest_list_selected_children', {
+                                identifier: category.code,
+                              });
+                            }
+
+                            return Routing.generate('pim_enrich_categorytree_children', {
+                              _format: 'json',
+                            });
+                          }.bind(this),
+                          data: function (node) {
+                            if (-1 === node) {
+                              return {
+                                id: this.get_container().data('tree-id'),
+                                selected: selectedCategories,
+                              };
+                            }
+
+                            return {id: node.attr('id').replace('node_', '')};
+                          },
+                        },
+                      },
+                    })
+                  )
+                  .on(
+                    'check_node.jstree',
+                    function (event, data) {
+                      this.checkNode(data);
+                    }.bind(this)
+                  )
+                  .on(
+                    'uncheck_node.jstree',
+                    function (event, data) {
+                      this.uncheckNode(data);
+                    }.bind(this)
+                  )
+                  .on(
+                    'load_node.jstree',
+                    function (event, data) {
+                      this.loadNode(data);
+                    }.bind(this)
+                  );
               }.bind(this)
             );
-        }.bind(this)
-      );
+          }.bind(this)
+        )
+        .done(
+          function () {
+            this.$el.parent().find('.loading-mask').remove();
+          }.bind(this)
+        );
     },
   });
 });

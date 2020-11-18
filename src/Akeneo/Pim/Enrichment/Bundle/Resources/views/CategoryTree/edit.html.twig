@@ -45,12 +45,10 @@
                 PageTitle.render('pim_enrich_categorytree_edit', { 'category.label': '{{ form.vars.value.label }}' });
                 {% endif %}
 
-                FetcherRegistry.initialize().done(function () {
-                    FormBuilder.build('pim-menu-user-navigation').then(function (form) {
-                        $('.user-menu').append(form.el);
-                        form.render();
-                    }.bind(this));
-                });
+                FormBuilder.build('pim-menu-user-navigation').then(function (form) {
+                    $('.user-menu').append(form.el);
+                    form.render();
+                }.bind(this));
             });
         }
     );
