@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'backbone', 'underscore', 'routing'], ($, Backbone, _, Routing) => {
+define(['backbone', 'underscore', 'routing'], (Backbone, _, Routing) => {
   var contextData = {};
 
   return _.extend(
@@ -11,7 +11,7 @@ define(['jquery', 'backbone', 'underscore', 'routing'], ($, Backbone, _, Routing
        * @returns {Promise}
        */
       initialize: () => {
-        return $.get(Routing.generate('pim_user_user_rest_get_current')).then(response => {
+        return fetch(Routing.generate('pim_user_user_rest_get_current')).then(response => {
           contextData = response;
           contextData.uiLocale = contextData.user_default_locale;
           contextData.catalogLocale = contextData.catalog_default_locale;

@@ -3,8 +3,8 @@
 define(['jquery', 'pim/user-context', 'translator-lib'], function ($, UserContext, Translator) {
   return {
     fetch: function () {
-      return $.getJSON('js/translation/' + UserContext.get('uiLocale') + '.js').then(function (messages) {
-        Translator.fromJSON(messages);
+      return fetch('js/translation/' + UserContext.get('uiLocale') + '.js').then(async function (messages) {
+        Translator.fromJSON(await messages.json());
       });
     },
   };

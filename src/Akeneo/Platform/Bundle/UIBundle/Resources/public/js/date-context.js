@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'routing'], ($, Routing) => {
+define(['routing'], (Routing) => {
   var contextData = {};
 
   return {
@@ -10,7 +10,7 @@ define(['jquery', 'routing'], ($, Routing) => {
      * @returns {Promise}
      */
     initialize: () => {
-      return $.get(Routing.generate('pim_localization_format_date')).then(response => (contextData = response));
+      return fetch(Routing.generate('pim_localization_format_date')).then(response => (contextData = response));
     },
 
     /**

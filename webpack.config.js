@@ -59,7 +59,7 @@ const webpackConfig = {
   },
   mode: (isProd ? 'production' : 'development'),
   target: 'web',
-  entry: ['babel-polyfill', path.resolve(rootDir, './public/bundles/pimui/js/index.js')],
+  entry: ['babel-polyfill', path.resolve(rootDir, './public/bundles/pimui/js/index.tsx')],
   output: {
     path: path.resolve('./public/dist/'),
     publicPath: '/dist/',
