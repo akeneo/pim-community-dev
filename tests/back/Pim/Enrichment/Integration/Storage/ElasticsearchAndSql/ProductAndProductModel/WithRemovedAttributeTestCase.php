@@ -10,7 +10,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Validator\ConstraintViolationList;
 
 abstract class WithRemovedAttributeTestCase extends TestCase
 {
@@ -234,15 +233,8 @@ abstract class WithRemovedAttributeTestCase extends TestCase
 
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
-
-        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
-        foreach ($constraintList as $constraintViolation) {
-            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath(), $constraintViolation->getInvalidValue());
-        }
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a product');
-
-
         $this->get('pim_catalog.saver.product')->save($product);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
@@ -253,16 +245,9 @@ abstract class WithRemovedAttributeTestCase extends TestCase
     {
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
-
-        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('pim_catalog.validator.product')->validate($productModel);
-        foreach ($constraintList as $constraintViolation) {
-            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath());
-        }
-
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a product model');
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         return $productModel;
@@ -272,13 +257,7 @@ abstract class WithRemovedAttributeTestCase extends TestCase
     {
         $family = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update($family, $data);
-
-        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('validator')->validate($family);
-        foreach ($constraintList as $constraintViolation) {
-            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath());
-        }
-
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a family variant');
         $this->get('pim_catalog.saver.family_variant')->save($family);
 
@@ -289,13 +268,7 @@ abstract class WithRemovedAttributeTestCase extends TestCase
     {
         $family = $this->get('pim_catalog.factory.family')->create();
         $this->get('pim_catalog.updater.family')->update($family, $data);
-
-        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('validator')->validate($family);
-        foreach ($constraintList as $constraintViolation) {
-            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath(), $constraintViolation->getInvalidValue());
-        }
-
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a family');
         $this->get('pim_catalog.saver.family')->save($family);
 
@@ -306,13 +279,7 @@ abstract class WithRemovedAttributeTestCase extends TestCase
     {
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
-
-        /** @var ConstraintViolationList $constraintList */
         $constraintList = $this->get('validator')->validate($attribute);
-        foreach ($constraintList as $constraintViolation) {
-            dump($constraintViolation->getMessage(), $constraintViolation->getPropertyPath(), $constraintViolation->getInvalidValue());
-        }
-
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create an attribute');
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
