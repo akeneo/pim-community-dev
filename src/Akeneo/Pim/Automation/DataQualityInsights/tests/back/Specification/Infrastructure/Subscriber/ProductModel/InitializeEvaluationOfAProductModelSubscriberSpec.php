@@ -2,18 +2,8 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
@@ -35,7 +25,6 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         CreateCriteriaEvaluations $createCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateAxesRates $consolidateAxesRates,
         GetDescendantVariantProductIdsQueryInterface $getDescendantVariantProductIdsQuery,
         DescendantProductModelIdsQueryInterface $getDescendantProductModelIdsQuery,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations
@@ -45,7 +34,6 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
             $createCriteriaEvaluations,
             $logger,
             $evaluatePendingCriteria,
-            $consolidateAxesRates,
             $getDescendantVariantProductIdsQuery,
             $getDescendantProductModelIdsQuery,
             $createProductsCriteriaEvaluations
@@ -96,7 +84,6 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createCriteriaEvaluations,
         $evaluatePendingCriteria,
-        $consolidateAxesRates,
         ProductModelInterface $productModel
     ) {
         $productModel->getId()->willReturn(12345);
@@ -104,7 +91,6 @@ class InitializeEvaluationOfAProductModelSubscriberSpec extends ObjectBehavior
         $createCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
 
         $evaluatePendingCriteria->evaluateSynchronousCriteria([12345])->shouldBeCalled();
-        $consolidateAxesRates->consolidate([12345])->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($productModel->getWrappedObject(), ['unitary' => true]));
     }

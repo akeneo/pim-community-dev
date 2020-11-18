@@ -38,4 +38,20 @@ final class ProductEvaluation
     {
         return $this->axesEvaluations;
     }
+
+    // @todo: Refactor to remove axes stuff
+    public function getCriteriaEvaluations(): CriterionEvaluationCollection
+    {
+        $criteriaEvaluations = new CriterionEvaluationCollection();
+
+        /** @var AxisEvaluation $axesEvaluation */
+        foreach ($this->axesEvaluations as $axesEvaluation) {
+            /** @var CriterionEvaluation $criteriaEvaluation */
+            foreach ($axesEvaluation->getCriteriaEvaluations() as $criteriaEvaluation) {
+                $criteriaEvaluations->add($criteriaEvaluation);
+            }
+        }
+
+        return $criteriaEvaluations;
+    }
 }
