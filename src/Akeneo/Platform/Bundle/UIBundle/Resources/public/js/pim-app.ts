@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import BaseView = require('pimui/js/view/base');
-
+debugger;
 const messenger = require('oro/messenger');
 const mediator = require('oro/mediator');
 const FetcherRegistry = require('pim/fetcher-registry');
