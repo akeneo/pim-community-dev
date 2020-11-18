@@ -116,14 +116,6 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         $this->assertProductScoreExists($productScoreB);
     }
 
-    private function resetProductsScores(): void
-    {
-        $this->get('database_connection')->executeQuery(<<<SQL
-TRUNCATE TABLE pim_data_quality_insights_product_score;
-SQL
-        );
-    }
-
     private function assertCountProductsScores(int $expectedCount): void
     {
         $countProductsScores = $this->get('database_connection')->executeQuery(<<<SQL

@@ -124,6 +124,12 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEmptyScoresQuery: ~
+
     akeneo.pim.automation.data_quality_insights.query.get_evaluable_product_values:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetEvaluableProductValuesQuery
         arguments:
