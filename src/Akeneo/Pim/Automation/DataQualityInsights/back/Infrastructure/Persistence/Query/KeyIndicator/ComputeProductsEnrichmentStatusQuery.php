@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProd
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\ResultStatement;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -37,60 +38,79 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 
     public function compute(array $productIds): array
     {
-        $productIdsByFamilyId = $this->groupProductsByFamily($productIds);
+        $productIds = array_map(fn (ProductId $productId) => $productId->toInt(), $productIds);
 
-        //To handle a edge case where there is only product(s) without families
-        if (empty($productIdsByFamilyId)) {
-            return [];
-        }
-
-        $numberOfAttributesByFamilyId = $this->getNumberOfAttributesByFamilyId(array_keys($productIdsByFamilyId));
+        $localesByChannel = $this->getLocalesByChannelQuery->getArray();
 
         $productsEnrichmentStatus = [];
-        foreach ($productIdsByFamilyId as $familyId => $familyProductIds) {
-            $productsEnrichmentStatus += $this->getProductEnrichmentStatusByChannelAndLocale($familyProductIds, $numberOfAttributesByFamilyId[$familyId] ?? 0);
+        foreach ($productIds as $productId) {
+            foreach ($localesByChannel as $channel => $locales) {
+                foreach ($locales as $locale) {
+                    $productsEnrichmentStatus[$productId][$channel][$locale] = null;
+                }
+            }
+        }
+
+        $stmt = $this->getProductsEvaluations($productIds);
+
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $productsEnrichmentStatus[$row['product_id']] = $this->computeProductEnrichmentStatus(json_decode($row['results'], true), $localesByChannel);
         }
 
         return $productsEnrichmentStatus;
     }
 
-    private function getProductEnrichmentStatusByChannelAndLocale(array $productIds, int $familyNumberOfAttributes): array
+    private function computeProductEnrichmentStatus(array $evaluations, $localesByChannel): array
     {
-        $localesByChannel = $this->getLocalesByChannelQuery->getArray();
-        $numberOfEmptyValuesByProduct = $this->retrieveNumberOfEmptyValuesByProduct($productIds);
+        $nonRequiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE];
+        $requiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE];
 
-        $productEnrichmentStatus = [];
-        foreach ($productIds as $productId) {
-            $numberOfEmptyValues = $numberOfEmptyValuesByProduct[$productId] ?? [];
-            foreach ($localesByChannel as $channel => $locales) {
-                foreach ($locales as $locale) {
-                    $productEnrichmentStatus[$productId][$channel][$locale] =
-                        $this->computeEnrichmentRatioStatus($familyNumberOfAttributes, $numberOfEmptyValues[$channel.$locale] ?? null);
+        $result = [];
+        foreach ($localesByChannel as $channel => $locales) {
+            foreach ($locales as $locale) {
+                //Handle the products without family (so the completeness couldn't be calculated)
+                if (
+                    !isset($nonRequiredAttributesEvaluation['data']['attributes_with_rates'][$channel][$locale]) ||
+                    !isset($requiredAttributesEvaluation['data']['attributes_with_rates'][$channel][$locale]) ||
+                    !isset($nonRequiredAttributesEvaluation['data']['total_number_of_attributes'][$channel][$locale]) ||
+                    !isset($requiredAttributesEvaluation['data']['total_number_of_attributes'][$channel][$locale])
+                ) {
+                    $result[$channel][$locale] = null;
+                    continue;
                 }
+
+                $missingNonRequiredAttributesNumber = count($nonRequiredAttributesEvaluation['data']['attributes_with_rates'][$channel][$locale]);
+                $missingRequiredAttributesNumber = count($requiredAttributesEvaluation['data']['attributes_with_rates'][$channel][$locale]);
+
+                $numberOfNonRequiredAttributes = $nonRequiredAttributesEvaluation['data']['total_number_of_attributes'][$channel][$locale];
+                $numberOfRequiredAttributes = $requiredAttributesEvaluation['data']['total_number_of_attributes'][$channel][$locale];
+
+                $result[$channel][$locale] = $this->computeEnrichmentRatioStatus($numberOfNonRequiredAttributes + $numberOfRequiredAttributes, $missingNonRequiredAttributesNumber + $missingRequiredAttributesNumber);
             }
         }
 
-        return $productEnrichmentStatus;
+        return $result;
     }
 
-    private function retrieveNumberOfEmptyValuesByProduct(array $productIds): array
+    private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, $numberOfMissingAttributes): bool
     {
-        $selectQueryParts = [];
-        foreach ($this->getLocalesByChannelQuery->getArray() as $channel => $locales) {
-            foreach ($locales as $locale) {
-                $selectQueryParts[] = "SUM(JSON_LENGTH(JSON_EXTRACT(result, '$.data.attributes_with_rates.$channel.$locale'))) as $channel$locale";
-            }
+        if ($familyNumberOfAttributes === 0) {
+            return true;
         }
-        $fieldsQuery = join(',', $selectQueryParts);
 
+        return ($familyNumberOfAttributes - $numberOfMissingAttributes) / $familyNumberOfAttributes * 100 >= self::GOOD_ENRICHMENT_RATIO;
+    }
+
+    private function getProductsEvaluations(array $productIds): ResultStatement
+    {
         $query = <<<SQL
-SELECT product_id, $fieldsQuery
+SELECT product_id, JSON_OBJECTAGG(criterion_code, result) as results
 FROM pim_data_quality_insights_product_criteria_evaluation
 WHERE product_id IN(:productIds) AND criterion_code IN(:criterionCodes)
-GROUP BY product_id;
+GROUP BY product_id
 SQL;
 
-        $stmt = $this->db->executeQuery(
+        return $this->db->executeQuery(
             $query,
             [
                 'productIds' => $productIds,
@@ -104,66 +124,5 @@ SQL;
                 'criterionCodes' => Connection::PARAM_STR_ARRAY,
             ]
         );
-
-        $numberOfEmptyValuesByProduct = [];
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $numberOfEmptyValuesByProduct[$row['product_id']] = $row;
-        }
-
-        return $numberOfEmptyValuesByProduct;
-    }
-
-    private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, $numberOfMissingAttributes): ?bool
-    {
-        if (null === $numberOfMissingAttributes || 0 === $familyNumberOfAttributes) {
-            return null;
-        }
-
-        return ($familyNumberOfAttributes - $numberOfMissingAttributes) / $familyNumberOfAttributes * 100 >= self::GOOD_ENRICHMENT_RATIO;
-    }
-
-    private function getNumberOfAttributesByFamilyId(array $familyIds): array
-    {
-        $query = <<<SQL
-SELECT family_id, count(attribute_id) number_of_attributes 
-FROM pim_catalog_family_attribute
-where family_id IN(:familyIds)
-GROUP BY family_id
-SQL;
-        $rows = $this->db->executeQuery(
-            $query,
-            ['familyIds' => $familyIds],
-            ['familyIds' => Connection::PARAM_INT_ARRAY]
-        )->fetchAll(\PDO::FETCH_ASSOC);
-        $numberOfAttributesByFamily = [];
-        foreach ($rows as $row) {
-            $numberOfAttributesByFamily[(int) $row['family_id']] = (int) $row['number_of_attributes'];
-        }
-
-        return $numberOfAttributesByFamily;
-    }
-
-    private function groupProductsByFamily(array $productIds): array
-    {
-        $productIds = array_map(fn (ProductId $productId) => $productId->toInt(), $productIds);
-
-        $query = <<<SQL
-SELECT JSON_OBJECTAGG(products_by_family.family_id, products_by_family.product_ids)
-FROM (
-    SELECT family_id, JSON_ARRAYAGG(product.id) AS product_ids
-    FROM pim_catalog_product product
-    INNER JOIN pim_catalog_family family ON(family.id = product.family_id)
-    WHERE product.id IN (:productIds)
-    AND family_id IS NOT NULL
-    GROUP BY family_id
-) as products_by_family
-SQL;
-
-        $result = $this->db->executeQuery($query, ['productIds' => $productIds], ['productIds' => Connection::PARAM_INT_ARRAY])->fetchColumn();
-        if (!$result) {
-            return [];
-        }
-
-        return json_decode($result, true);
     }
 }

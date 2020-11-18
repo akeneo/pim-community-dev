@@ -1,8 +1,8 @@
 import {
   computeProductsNumberToWorkOn,
-  computeTipMessage
-} from "@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicator";
-import {keyIndicatorsTips} from "@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicatorsTips";
+  computeTipMessage,
+} from '@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicator';
+import {keyIndicatorsTips} from '@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicatorsTips';
 
 test('Compute products number to work on', () => {
   expect(computeProductsNumberToWorkOn(1)).toEqual(1);
