@@ -79,7 +79,9 @@ class ProductReverter
 
         $currentObject = $this->registry->getRepository($class)->find($resourceId);
 
-        $currentObject->getValues()->clear();
+        $values = $currentObject->getValues();
+        $values->clear();
+        $currentObject->setValues($values);
 
         $standardProduct = $this->getStandardProductFromVersion($version);
         $this->productUpdater->update($currentObject, $standardProduct);

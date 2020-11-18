@@ -34,6 +34,7 @@ class RemoveUniqueAttributeValuesSpec extends ObjectBehavior
         $valueCollection->getAttributeCodes()->willReturn($attributeCodes);
         $getUniqueAttributeCodes->all()->willReturn(['unique_attribute_code']);
         $valueCollection->removeByAttributeCode(Argument::type('string'))->shouldBeCalledOnce();
+        $product->setValues($valueCollection)->shouldBeCalled();
 
         $this->fromProduct($product)->shouldReturn($product);
     }
