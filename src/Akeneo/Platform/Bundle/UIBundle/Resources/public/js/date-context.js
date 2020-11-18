@@ -10,7 +10,7 @@ define(['routing'], (Routing) => {
      * @returns {Promise}
      */
     initialize: () => {
-      return fetch(Routing.generate('pim_localization_format_date')).then(response => (contextData = response));
+      return fetch(Routing.generate('pim_localization_format_date')).then(async response => (contextData = await response.json()));
     },
 
     /**
