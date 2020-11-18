@@ -2,23 +2,18 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\CriterionNotFoundException;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CriteriaEvaluationRegistry
 {
-    private $criterionEvaluationServices;
+    private array $criterionEvaluationServices;
 
     public function __construct(iterable $criterionEvaluationServices)
     {
@@ -44,8 +39,14 @@ class CriteriaEvaluationRegistry
      */
     public function getCriterionCodes(): array
     {
-        return array_map(function (string $code) {
-            return new CriterionCode($code);
-        }, array_keys($this->criterionEvaluationServices));
+        return array_values(array_map(
+            fn (EvaluateCriterionInterface $evaluateCriterion) => $evaluateCriterion->getCode(),
+            $this->criterionEvaluationServices
+        ));
+    }
+
+    public function getCriterionCoefficient(CriterionCode $code): int
+    {
+        return $this->get($code)->getCoefficient();
     }
 }
