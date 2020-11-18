@@ -6,7 +6,6 @@ const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
 
-
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');

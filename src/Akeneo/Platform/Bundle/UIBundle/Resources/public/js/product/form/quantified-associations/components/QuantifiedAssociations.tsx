@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
 import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
-import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button} from 'akeneo-design-system';
+import {BrokenLinkIcon, useIllustration, Helper, Button} from 'akeneo-design-system';
 import {
   SearchBar,
   NoDataSection,
@@ -137,6 +137,8 @@ const QuantifiedAssociations = ({
     (row: Row) => setRowCollection(rowCollection => updateRowInCollection(rowCollection, row)),
     []
   );
+
+  const AssociationTypesIllustration = useIllustration('AssociationTypesIllustration');
 
   return (
     <>

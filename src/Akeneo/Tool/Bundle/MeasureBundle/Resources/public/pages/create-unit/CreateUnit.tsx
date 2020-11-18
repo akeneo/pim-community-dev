@@ -1,5 +1,5 @@
 import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
-import {Helper, MeasurementIllustration, Button} from 'akeneo-design-system';
+import {Helper, Button, useIllustration} from 'akeneo-design-system';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
@@ -100,6 +100,8 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   useShortcut(Key.Escape, handleClose);
   useShortcut(Key.Enter, handleAdd);
   useShortcut(Key.NumpadEnter, handleAdd);
+
+  const MeasurementIllustration = useIllustration('MeasurementIllustration');
 
   return (
     <Modal>

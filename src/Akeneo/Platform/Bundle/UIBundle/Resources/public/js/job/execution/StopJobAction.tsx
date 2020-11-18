@@ -1,6 +1,6 @@
 import React from 'react';
 import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Button, ButtonProps, ExportIllustration, Helper, Modal, SectionTitle, Title} from 'akeneo-design-system';
+import {Button, ButtonProps, useIllustration, Helper, Modal, SectionTitle, Title} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
 
 type StopJobActionProps = {
@@ -21,6 +21,8 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
     await fetch(stopRoute);
     onStop();
   };
+
+  const ExportIllustration = useIllustration('ExportIllustration');
 
   if (!isStoppable || !isGranted('pim_importexport_stop_job')) return null;
 

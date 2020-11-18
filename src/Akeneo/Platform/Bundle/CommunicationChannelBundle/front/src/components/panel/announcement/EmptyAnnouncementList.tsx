@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {NewsIllustration} from 'akeneo-design-system';
+import {useIllustration} from 'akeneo-design-system';
 
 type EmptyAnnouncementListProps = {
   text: string;
@@ -24,6 +24,8 @@ const Text = styled.p`
 `;
 
 const EmptyAnnouncementList = ({text}: EmptyAnnouncementListProps): JSX.Element => {
+  const NewsIllustration = useIllustration('NewsIllustration');
+
   return (
     <Container>
       <IllustrationContainer>

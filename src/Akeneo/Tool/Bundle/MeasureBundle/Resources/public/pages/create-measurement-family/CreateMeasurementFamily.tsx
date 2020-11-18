@@ -1,5 +1,5 @@
 import React, {FormEvent, useCallback, useState} from 'react';
-import {Helper, MeasurementIllustration, Button} from 'akeneo-design-system';
+import {Helper, Button, useIllustration} from 'akeneo-design-system';
 import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
@@ -60,6 +60,8 @@ const CreateMeasurementFamily = ({onClose}: CreateMeasurementFamilyProps) => {
       notify(NotificationLevel.ERROR, __('measurements.create_family.flash.error'));
     }
   }, [form, locale, saveMeasurementFamily, notify, __, handleClose, setErrors]);
+
+  const MeasurementIllustration = useIllustration('MeasurementIllustration');
 
   return (
     <Modal>

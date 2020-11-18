@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from 'akeneomeasure/model/measurement-family';
-import {MeasurementIllustration} from 'akeneo-design-system';
+import {useIllustration} from 'akeneo-design-system';
 import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
 import {UnitCode} from 'akeneomeasure/model/unit';
 import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
@@ -46,6 +46,8 @@ const UnitTab = ({
   const [searchValue, setSearchValue] = useState('');
 
   const filteredUnits = measurementFamily.units.filter(filterOnLabelOrCode(searchValue, locale));
+
+  const MeasurementIllustration = useIllustration('MeasurementIllustration');
 
   return (
     <TabContainer>

@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
 import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
-import {MeasurementIllustration, Link, Button, Information} from 'akeneo-design-system';
+import {Link, Button, Information, useIllustration} from 'akeneo-design-system';
 import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
 import {
   sortMeasurementFamily,
@@ -66,6 +66,8 @@ const List = () => {
   const measurementFamiliesCount = null === measurementFamilies ? 0 : measurementFamilies.length;
   const filteredMeasurementFamiliesCount =
     null === filteredMeasurementFamilies ? 0 : filteredMeasurementFamilies.length;
+
+  const MeasurementIllustration = useIllustration('MeasurementIllustration');
 
   return (
     <>

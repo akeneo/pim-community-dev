@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {DeleteIllustration, Button} from 'akeneo-design-system';
+import {useIllustration, Button} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   useShortcut,
@@ -34,6 +34,8 @@ const ConfirmDeleteModal = ({description, onConfirm, onCancel}: ConfirmModalProp
   const __ = useTranslate();
 
   useShortcut(Key.Escape, onCancel);
+
+  const DeleteIllustration = useIllustration('DeleteIllustration');
 
   return (
     <Modal>
