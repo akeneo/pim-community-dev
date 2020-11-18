@@ -1,5 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import ReactDOM from 'react-dom';
+import Backbone from 'backbone';
+
 const fetcherRegistry = require('pim/fetcher-registry');
 const dateContext = require('pim/date-context');
 const userContext = require('pim/user-context');
@@ -15,8 +17,11 @@ const App = ({formBuilder}: {formBuilder: any}) => {
         menuRef.current.appendChild(view.el);
         view.render();
       }
-    })
-  }, [])
+    });
+
+    debugger;
+    Backbone.history.start();
+  }, []);
 
   return (
     <>
@@ -41,6 +46,7 @@ setTimeout(async () => {
 
   // TODO:
   // pim/page-title
+
 
   ReactDOM.render((
   <App formBuilder={formBuilder}/>), document.getElementById('app'));
