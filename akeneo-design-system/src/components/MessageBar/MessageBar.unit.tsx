@@ -10,17 +10,17 @@ test('it renders its children properly', () => {
   render(
     <>
       <MessageBar icon={<InfoIcon />} title="Only a title" onClose={jest.fn()} />
-      <MessageBar level="info" icon={<InfoIcon />} title="Title" onClose={jest.fn()}>
+      <MessageBar level="info" title="Title" onClose={jest.fn()}>
         MessageBar Info
       </MessageBar>
-      <MessageBar level="success" icon={<InfoIcon />} title="Title" onClose={jest.fn()}>
+      <MessageBar level="success" title="Title" onClose={jest.fn()}>
         MessageBar Success
       </MessageBar>
-      <MessageBar level="warning" icon={<InfoIcon />} title="Title" onClose={jest.fn()}>
+      <MessageBar level="warning" title="Title" onClose={jest.fn()}>
         MessageBar Warning
       </MessageBar>
-      <MessageBar level="danger" icon={<InfoIcon />} title="Title" onClose={jest.fn()}>
-        MessageBar Danger
+      <MessageBar level="error" title="Title" onClose={jest.fn()}>
+        MessageBar Error
       </MessageBar>
     </>
   );
@@ -29,7 +29,7 @@ test('it renders its children properly', () => {
   expect(screen.getByText('MessageBar Info')).toBeInTheDocument();
   expect(screen.getByText('MessageBar Success')).toBeInTheDocument();
   expect(screen.getByText('MessageBar Warning')).toBeInTheDocument();
-  expect(screen.getByText('MessageBar Danger')).toBeInTheDocument();
+  expect(screen.getByText('MessageBar Error')).toBeInTheDocument();
 });
 
 test('it calls the onClose handler when clicking on the close button', () => {

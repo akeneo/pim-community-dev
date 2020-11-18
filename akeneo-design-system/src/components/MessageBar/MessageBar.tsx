@@ -1,13 +1,14 @@
 import React, {ReactNode, ReactElement, isValidElement, useEffect, useState, useCallback} from 'react';
-import styled from 'styled-components';
+import styled, {keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {CloseIcon, IconProps} from '../../icons';
+import {CheckIcon, CloseIcon, DangerIcon, IconProps, InfoIcon} from '../../icons';
 import {LinkProps, Link} from '../../components';
 
-type MessageBarLevel = 'info' | 'success' | 'warning' | 'danger';
+type MessageBarLevel = 'info' | 'success' | 'warning' | 'error';
 
 const IconContainer = styled.div`
   padding: 0 25px;
+  display: inline-flex;
 `;
 
 const Progress = styled.svg.attrs(({ratio}: {ratio: number; level: MessageBarLevel}) => ({
@@ -96,10 +97,34 @@ const CloseButton = styled.button<{autoHide: boolean} & AkeneoThemedProps>`
   }
 `;
 
+const MessageBarHideAnimation = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  90% {
+    transform: translateX(calc(100% + 50px));
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(calc(100% + 50px));
+    max-height: 0;
+  }
+`;
+
+const MessageBarDisplayAnimation = keyframes`
+  0% {
+    transform: translateX(calc(100% + 50px));
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
+
 const ANIMATION_DURATION = 1000;
-const AnimateContainer = styled.div<{mounted: boolean}>`
-  transition: transform ${ANIMATION_DURATION}ms ease-in-out;
-  transform: translateX(${({mounted}) => (mounted ? 0 : 'calc(100% + 50px)')});
+const AnimateContainer = styled.div<{unmounting: boolean}>`
+  animation: ${({unmounting}) => (unmounting ? MessageBarHideAnimation : MessageBarDisplayAnimation)}
+    ${ANIMATION_DURATION}ms forwards;
+  max-height: 150px;
 `;
 
 const AnimateMessageBar = ({children}: {children: ReactElement<MessageBarProps>}) => {
@@ -107,19 +132,17 @@ const AnimateMessageBar = ({children}: {children: ReactElement<MessageBarProps>}
     throw new Error('Only MessageBar element can be passed to AnimateMessageBar');
   }
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  const onClose = useCallback(() => {
-    setMounted(false);
+  const [unmounting, setUnmounting] = useState(false);
 
+  const onClose = () => {
+    // We need to detach the unmounting to avoid rendering the component in another render
+    setTimeout(() => setUnmounting(true), 0);
     setTimeout(() => {
       children.props.onClose();
     }, ANIMATION_DURATION);
-  }, []);
+  };
 
-  return <AnimateContainer mounted={mounted}>{React.cloneElement(children, {onClose})}</AnimateContainer>;
+  return <AnimateContainer unmounting={unmounting}>{React.cloneElement(children, {onClose})}</AnimateContainer>;
 };
 
 const Container = styled.div<{level: MessageBarLevel} & AkeneoThemedProps>`
@@ -129,6 +152,7 @@ const Container = styled.div<{level: MessageBarLevel} & AkeneoThemedProps>`
   max-width: 500px;
   padding: 10px 20px 10px 0;
   box-shadow: 2px 4px 8px 0 rgba(9, 30, 66, 0.25);
+  background-color: ${getColor('white')};
 
   ${Title}, ${IconContainer} {
     color: ${({level}) => getLevelColor(level)};
@@ -147,20 +171,32 @@ const getLevelColor = (level: MessageBarLevel): ((props: AkeneoThemedProps) => s
       return getColor('green', 100);
     case 'warning':
       return getColor('yellow', 120);
-    case 'danger':
+    case 'error':
       return getColor('red', 100);
   }
 };
 
-const getDuration = (level: MessageBarLevel): number => {
+const getLevelDuration = (level: MessageBarLevel): number => {
   switch (level) {
     case 'success':
       return 3;
     case 'info':
     case 'warning':
       return 5;
-    case 'danger':
+    case 'error':
       return 8;
+  }
+};
+
+const getLevelIcon = (level: MessageBarLevel): ReactElement => {
+  switch (level) {
+    case 'success':
+      return <CheckIcon />;
+    case 'info':
+      return <InfoIcon />;
+    case 'warning':
+    case 'error':
+      return <DangerIcon />;
   }
 };
 
@@ -177,7 +213,7 @@ const useOver = () => {
   return [over, onMouseOver, onMouseOut] as const;
 };
 
-type MessageBarProps = {
+type FlashMessage = {
   /**
    * Defines the level of the MessageBar, changing the color accent.
    */
@@ -191,12 +227,7 @@ type MessageBarProps = {
   /**
    * Icon to display.
    */
-  icon: ReactElement<IconProps>;
-
-  /**
-   * Handler called when the MessageBar is closed.
-   */
-  onClose: () => void;
+  icon?: ReactElement<IconProps>;
 
   /**
    * Content of the MessageBar.
@@ -204,11 +235,18 @@ type MessageBarProps = {
   children?: ReactNode;
 };
 
+type MessageBarProps = FlashMessage & {
+  /**
+   * Handler called when the MessageBar is closed.
+   */
+  onClose: () => void;
+};
+
 /**
  * A message bar is a message that communicates information to the user.
  */
 const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBarProps) => {
-  const duration = getDuration(level);
+  const duration = getLevelDuration(level);
   const autoHide = !React.Children.toArray(children).some(
     child => isValidElement<LinkProps>(child) && child.type === Link
   );
@@ -251,7 +289,7 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
 
   return (
     <Container level={level} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
-      <IconContainer>{React.cloneElement(icon, {size: 24})}</IconContainer>
+      <IconContainer>{React.cloneElement(icon ?? getLevelIcon(level), {size: 24})}</IconContainer>
       <Content>
         <Title>{title}</Title>
         {children}
@@ -272,3 +310,4 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
 };
 
 export {MessageBar, AnimateMessageBar};
+export type {MessageBarLevel, FlashMessage};
