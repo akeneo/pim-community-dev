@@ -246,7 +246,7 @@ test('It notifies when a root error is detected', async () => {
     );
   });
 
-  expect(dependencies.notify).toBeCalledWith({level: 'danger', title: 'an.error.occured'});
+  expect(dependencies.notify).toBeCalledWith({level: 'error', title: 'an.error.occured'});
 });
 
 test('It notifies when a product error is detected', async () => {
@@ -271,7 +271,7 @@ test('It notifies when a product error is detected', async () => {
     );
   });
 
-  expect(dependencies.notify).toBeCalledWith({level: 'danger', title: 'a.product.error.occured'});
+  expect(dependencies.notify).toBeCalledWith({level: 'error', title: 'a.product.error.occured'});
 });
 
 test('It notifies when a product model error is detected', async () => {
@@ -296,5 +296,5 @@ test('It notifies when a product model error is detected', async () => {
     );
   });
 
-  expect(dependencies.notify).toBeCalledWith({level: 'danger', title: 'a.product.model.error.occured'});
+  expect(dependencies.notify).toBeCalledWith({level: 'error', title: 'a.product.model.error.occured'});
 });
