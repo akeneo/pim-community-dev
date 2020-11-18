@@ -5,7 +5,7 @@ enum NotificationLevel {
   INFO = 'info',
   SUCCESS = 'success',
   WARNING = 'warning',
-  ERROR = 'danger',
+  ERROR = 'error',
 }
 
 type Notify = (notification: FlashMessage) => void;

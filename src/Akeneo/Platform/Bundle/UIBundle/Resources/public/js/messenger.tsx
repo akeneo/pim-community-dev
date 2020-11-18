@@ -60,7 +60,14 @@ const render = () => {
   );
 };
 
+const isValidFlashMessage = (flash: any): flash is FlashMessage =>
+  ['info', 'error', 'warning', 'success', undefined].includes(flash.level);
+
 const notify = (flashMessage: FlashMessage) => {
+  if (!isValidFlashMessage(flashMessage)) {
+    throw new Error(`Flash message must be a valid FlashMessage, received: ${JSON.stringify(flashMessage)}`);
+  }
+
   notifications.push({identifier: uuid(), ...flashMessage});
   render();
 };

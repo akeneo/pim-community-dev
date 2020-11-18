@@ -4,7 +4,7 @@ export enum NotificationLevel {
     INFO = 'info',
     SUCCESS = 'success',
     WARNING = 'warning',
-    ERROR = 'danger',
+    ERROR = 'error',
 }
 
 export type Notify = (flashMessage: FlashMessage) => void;
