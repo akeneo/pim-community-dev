@@ -84,11 +84,7 @@ jobs:
       # To check if the build is working, the directory `example` contains an integration of the lib
       # with a few tests. In the next step we will build this example and validate that it's working properly
       - name: Install example project dependencies
-<<<<<<< HEAD
         run: cd akeneo-design-system/example && rm -rf node_modules/akeneo-design-system && yarn install --check-files
-=======
-        run: cd akeneo-design-system/example ; rm -r node_modules/akeneo-design-system ; yarn install --check-files
->>>>>>> Fixing unit
 
       - name: Launch example integration tests
         run: cd akeneo-design-system/example && yarn test
