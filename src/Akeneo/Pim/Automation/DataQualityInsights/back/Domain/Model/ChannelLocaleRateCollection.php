@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
 final class ChannelLocaleRateCollection implements \IteratorAggregate
@@ -76,6 +77,11 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
         return $this->rates->mapWith(function (Rate $rate) {
             return $rate->toInt();
         });
+    }
+
+    public function toArrayIntRank(): array
+    {
+        return $this->rates->mapWith(fn (Rate $rate) => Rank::fromRate($rate)->toInt());
     }
 
     public function mapWith(\Closure $callback): array

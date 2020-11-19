@@ -2,12 +2,12 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductAxesRanksQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetDataQualityInsightsPropertiesForProductProjection:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductAxesRanksQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators'
         tags:
