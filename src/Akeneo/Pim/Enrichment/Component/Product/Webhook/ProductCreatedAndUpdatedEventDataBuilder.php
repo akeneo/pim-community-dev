@@ -11,8 +11,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProd
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
@@ -36,9 +38,6 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
         $this->connectorProductNormalizer = $connectorProductNormalizer;
     }
 
-    /**
-     * @param BulkEventInterface $event
-     */
     public function supports(object $event): bool
     {
         if (false === $event instanceof BulkEventInterface) {
@@ -57,43 +56,66 @@ class ProductCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterf
     /**
      * @param BulkEventInterface $bulkEvent
      */
-    public function build(object $bulkEvent, UserInterface $user): array
+    public function build(object $bulkEvent, UserInterface $user): EventDataCollection
     {
-        if (false === $this->supports($bulkEvent)) {
-            throw new \InvalidArgumentException();
-        }
+        $products = $this->getConnectorProducts($this->getProductIdentifiers($bulkEvent->getEvents()), $user->getId());
 
-        $identifiers = [];
+        $collection = new EventDataCollection();
 
         /** @var ProductCreated|ProductUpdated $event */
         foreach ($bulkEvent->getEvents() as $event) {
+            $product = $products[$event->getIdentifier()] ?? null;
+
+            if (null === $product) {
+                $collection->setEventDataError($event, new ProductNotFoundException($event->getIdentifier()));
+
+                continue;
+            }
+
+            $data = [
+                'resource' => $this->connectorProductNormalizer->normalizeConnectorProduct($product),
+            ];
+            $collection->setEventData($event, $data);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @param (ProductCreated|ProductUpdated)[] $events
+     *
+     * @return string[]
+     */
+    private function getProductIdentifiers(array $events): array
+    {
+        $identifiers = [];
+        foreach ($events as $event) {
             $identifiers[] = $event->getIdentifier();
         }
 
-        $pqb = $this->pqbFactory->create(['limit' => count($identifiers)]);
-        $pqb->addFilter('identifier', Operators::IN_LIST, $identifiers);
+        return $identifiers;
+    }
 
-        $products = $this->getConnectorProductsQuery->fromProductQueryBuilder(
-            $pqb,
-            $user->getId(),
-            null,
-            null,
-            null
-        )->connectorProducts();
+    /**
+     * @param string[] $identifiers
+     *
+     * @return array<string, (ConnectorProduct|null)>
+     */
+    private function getConnectorProducts(array $identifiers, int $userId): array
+    {
+        $pqb = $this->pqbFactory
+            ->create(['limit' => count($identifiers)])
+            ->addFilter('identifier', Operators::IN_LIST, $identifiers);
 
-        $resources = array_reduce(
-            $products,
-            function (array $resources, ConnectorProduct $product) {
-                $resources[$product->identifier()] = [
-                    'resource' => $this->connectorProductNormalizer->normalizeConnectorProduct($product)
-                ];
-                return $resources;
-            },
-            array_fill_keys($identifiers, null)
-        );
+        $result = $this->getConnectorProductsQuery
+            ->fromProductQueryBuilder($pqb, $userId, null, null, null)
+            ->connectorProducts();
 
-        // TODO: Log products not found.
+        $products = array_fill_keys($identifiers, null);
+        foreach ($result as $product) {
+            $products[$product->identifier()] = $product;
+        }
 
-        return array_values($resources);
+        return $products;
     }
 }

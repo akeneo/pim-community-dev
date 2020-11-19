@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFoundException;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -43,7 +44,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
     /**
      * @param ProductModelUpdated|ProductModelCreated $event
      */
-    public function build(object $event, UserInterface $user): array
+    public function build(object $event, UserInterface $user): EventDataCollection
     {
         if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
@@ -61,8 +62,9 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
             throw new ProductModelNotFoundException($data['code']);
         }
 
-        return [
-            'resource' => $this->externalApiNormalizer->normalize($productModel, 'external_api'),
-        ];
+        return (new EventDataCollection())
+            ->setEventData($event, [
+                'resource' => $this->externalApiNormalizer->normalize($productModel, 'external_api'),
+            ]);
     }
 }

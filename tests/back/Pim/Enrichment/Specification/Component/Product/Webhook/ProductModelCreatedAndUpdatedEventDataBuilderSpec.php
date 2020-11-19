@@ -14,8 +14,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelCreatedAndUpdate
 use Akeneo\Platform\Component\EventQueue\Author;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -69,13 +71,17 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productModel->setCode('polo_col_mao');
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $event = new ProductModelCreated($author, ['code' => 'polo_col_mao']);
 
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
-        $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
+        $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao']);
 
-        $this->build(new ProductModelCreated($author, ['code' => 'polo_col_mao']), $user)->shouldReturn(
-            ['resource' => ['code' => 'polo_col_mao'],]
-        );
+        $expectedCollection = new EventDataCollection();
+        $expectedCollection->setEventData($event, ['resource' => ['code' => 'polo_col_mao']]);
+
+        $collection = $this->build($event, $user)->getWrappedObject();
+
+        Assert::assertEquals($expectedCollection, $collection);
     }
 
     public function it_builds_product_model_updated_event(
@@ -87,21 +93,27 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productModel->setCode('polo_col_mao');
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $event = new ProductModelUpdated($author, ['code' => 'polo_col_mao']);
 
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel);
-        $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao',]);
+        $externalApiNormalizer->normalize($productModel, 'external_api')->willReturn(['code' => 'polo_col_mao']);
 
-        $this->build(new ProductModelUpdated($author, ['code' => 'polo_col_mao']), $user)->shouldReturn(
-            ['resource' => ['code' => 'polo_col_mao'],]
-        );
+        $expectedCollection = new EventDataCollection();
+        $expectedCollection->setEventData($event, ['resource' => ['code' => 'polo_col_mao']]);
+
+        $collection = $this->build($event, $user)->getWrappedObject();
+
+        Assert::assertEquals($expectedCollection, $collection);
     }
 
     public function it_does_not_build_other_business_event(UserInterface $user): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new ProductCreated($author, ['identifier' => '1']), $user]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('build', [
+            new ProductCreated($author, ['identifier' => '1']),
+            $user,
+        ]);
     }
 
     public function it_does_not_build_if_product_model_was_not_found($productModelRepository, UserInterface $user): void
@@ -110,8 +122,10 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
 
         $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn(null);
 
-        $this->shouldThrow(ProductModelNotFoundException::class)
-            ->during('build', [new ProductModelUpdated($author, ['code' => 'polo_col_mao']), $user]);
+        $this->shouldThrow(ProductModelNotFoundException::class)->during('build', [
+            new ProductModelUpdated($author, ['code' => 'polo_col_mao']),
+            $user,
+        ]);
     }
 
     public function it_raises_a_not_granted_category_exception($productModelRepository, UserInterface $user)
@@ -121,11 +135,14 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
 
         $author = Author::fromNameAndType('julia', 'ui');
 
-        $productModelRepository->findOneByIdentifier('polo_col_mao')->willReturn($productModel)->willThrow(
-            AccessDeniedException::class
-        );
+        $productModelRepository
+            ->findOneByIdentifier('polo_col_mao')
+            ->willReturn($productModel)
+            ->willThrow(AccessDeniedException::class);
 
-        $this->shouldThrow(NotGrantedCategoryException::class)
-            ->during('build', [new ProductModelCreated($author, ['code' => 'polo_col_mao']), $user]);
+        $this->shouldThrow(NotGrantedCategoryException::class)->during('build', [
+            new ProductModelCreated($author, ['code' => 'polo_col_mao']),
+            $user,
+        ]);
     }
 }

@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -42,44 +43,16 @@ class WebhookEventBuilder
 
         $eventDataBuilder = $this->getEventDataBuilder($event);
 
+        $eventDataCollection = $eventDataBuilder->build($event, $context['user']);
+
+        $events = [];
         if ($event instanceof EventInterface) {
-            $data = $eventDataBuilder->build($event, $context['user']);
-
-            return [
-                new WebhookEvent(
-                    $event->getName(),
-                    $event->getUuid(),
-                    date(\DateTimeInterface::ATOM, $event->getTimestamp()),
-                    $event->getAuthor(),
-                    $context['pim_source'],
-                    $data
-                )
-            ];
-        }
-
-        if ($event instanceof BulkEventInterface) {
+            $events = [$event];
+        } else {
             $events = $event->getEvents();
-            $eventsData = $eventDataBuilder->build($event, $context['user']);
-
-            $webhookEvents = [];
-            foreach ($events as $i => $event) {
-                if (null === $eventsData[$i]) {
-                    // TODO: Log event data not built.
-
-                    continue;
-                }
-                $webhookEvents[] = new WebhookEvent(
-                    $event->getName(),
-                    $event->getUuid(),
-                    date(\DateTimeInterface::ATOM, $event->getTimestamp()),
-                    $event->getAuthor(),
-                    $context['pim_source'],
-                    $eventsData[$i]
-                );
-            }
-
-            return $webhookEvents;
         }
+
+        return $this->buildWebhookEvents($events, $eventDataCollection, $context);
     }
 
     /**
@@ -109,5 +82,43 @@ class WebhookEventBuilder
         }
 
         throw new WebhookEventDataBuilderNotFoundException($event);
+    }
+
+    /**
+     * @param array<EventInterface> $events
+     * @param array<mixed> $context
+     *
+     * @return array<WebhookEvent>
+     */
+    private function buildWebhookEvents(array $events, EventDataCollection $eventDataCollection, array $context): array
+    {
+        $webhookEvents = [];
+
+        foreach ($events as $event) {
+            $data = $eventDataCollection->getEventData($event);
+
+            if (null === $data) {
+                // TODO: Log event data not built.
+
+                continue;
+            }
+
+            if ($data instanceof \Throwable) {
+                // TODO: Log error.
+
+                continue;
+            }
+
+            $webhookEvents[] = new WebhookEvent(
+                $event->getName(),
+                $event->getUuid(),
+                date(\DateTimeInterface::ATOM, $event->getTimestamp()),
+                $event->getAuthor(),
+                $context['pim_source'],
+                $data,
+            );
+        }
+
+        return $webhookEvents;
     }
 }
