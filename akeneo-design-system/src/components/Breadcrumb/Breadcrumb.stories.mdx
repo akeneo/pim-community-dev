@@ -1,7 +1,11 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Breadcrumb} from './Breadcrumb.tsx';
 
-<Meta title="Components/Breadcrumb" component={Breadcrumb} />
+<Meta
+  title="Components/Breadcrumb"
+  component={Breadcrumb}
+  argTypes={{children: {table: {type: {summary: 'ReactElement<LinkProps>[]'}}}}}
+/>
 
 # Breadcrumb
 
