@@ -11,6 +11,7 @@ use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 
@@ -52,7 +53,10 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
             ['space_battleship']
         )->willReturn(true);
 
-        $eventDataBuilder->build($event, $user)->willReturn(['resource' => ['identifier' => 'cruiser']]);
+        $collection = new EventDataCollection();
+        $collection->setEventData($event, ['resource' => ['identifier' => 'cruiser']]);
+
+        $eventDataBuilder->build($event, $user)->willReturn($collection);
 
         $this->build($event, $user);
     }

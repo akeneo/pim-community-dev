@@ -8,6 +8,7 @@ use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
@@ -37,7 +38,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
     /**
      * @param EventInterface $event
      */
-    public function build(object $event, UserInterface $user): array
+    public function build(object $event, UserInterface $user): EventDataCollection
     {
         if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
