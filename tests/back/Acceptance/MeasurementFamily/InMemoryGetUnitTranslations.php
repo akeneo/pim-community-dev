@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Acceptance\MeasurementFamily;
 
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -22,11 +23,15 @@ class InMemoryGetUnitTranslations implements GetUnitTranslations
         return static::$unitTranslations[$key] ?? [];
     }
 
+    /**
+     * @param string[] $unitTranslations For example ['code1' => 'translation1', 'code2' => 'translation2', ...]
+     */
     public static function saveUnitTranslations(
         string $measurementFamilyCode,
         string $localeCode,
         array $unitTranslations
-    ) {
+    ): void {
+        Assert::allString($unitTranslations);
         $key = static::buildKey($measurementFamilyCode, $localeCode);
 
         static::$unitTranslations[$key] = $unitTranslations;
