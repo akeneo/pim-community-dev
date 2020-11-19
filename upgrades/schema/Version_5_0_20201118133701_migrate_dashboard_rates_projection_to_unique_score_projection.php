@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -17,14 +16,13 @@ final class Version_5_0_20201118133701_migrate_dashboard_rates_projection_to_uni
 
     private ?Connection $db;
 
-    private ?CachedGetLocalesByChannelQuery $getLocalesByChannelQuery;
+    private ?array $cachedChannelLocaleArray;
 
     public function up(Schema $schema) : void
     {
         $this->disableMigrationWarning();
 
         $this->db = $this->container->get('database_connection');
-        $this->getLocalesByChannelQuery = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery');
 
         foreach ($this->getLinesToMigrate(self::BULK_SIZE) as $linesToMigrate) {
             $this->migrateLines($linesToMigrate);
@@ -63,7 +61,7 @@ SQL;
     private function computeScoreProjection(array $axesRanks): array
     {
         $scoreProjection = [];
-        foreach ($this->getLocalesByChannelQuery->getArray() as $channel => $locales) {
+        foreach ($this->getLocalesByChannelQuery() as $channel => $locales) {
             foreach ($locales as $locale) {
                 if (!isset($axesRanks['enrichment'][$channel][$locale])) {
                     continue;
@@ -82,7 +80,7 @@ SQL;
     private function computeAverageRanks(array $averageRanksByAxes): array
     {
         $averageRanks = [];
-        foreach ($this->getLocalesByChannelQuery->getArray() as $channel => $locales) {
+        foreach ($this->getLocalesByChannelQuery() as $channel => $locales) {
             foreach ($locales as $locale) {
                 if (!isset($averageRanksByAxes['enrichment'][$channel][$locale])) {
                     continue;
@@ -105,20 +103,6 @@ SQL;
         $average = intval(round(($rank1 + $rank2) / 2));
 
         return 'rank_' . $average;
-    }
-
-    private function initMysqlSchema(): void
-    {
-        $this->db->executeQuery(<<<SQL
-DROP TABLE IF EXISTS pim_data_quality_insights_dashboard_scores_projection;
-CREATE TABLE pim_data_quality_insights_dashboard_scores_projection (
-    type VARCHAR(15) NOT NULL,
-    code VARCHAR(100) NOT NULL,
-    scores JSON NOT NULL,
-    PRIMARY KEY (type, code)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-SQL
-        );
     }
 
     private function getLinesToMigrate(int $bulkSize): \Iterator
@@ -145,6 +129,32 @@ SQL;
     public function down(Schema $schema) : void
     {
         $this->throwIrreversibleMigrationException();
+    }
+
+    public function getLocalesByChannelQuery(): array
+    {
+        if (null !== $this->cachedChannelLocaleArray) {
+            return $this->cachedChannelLocaleArray;
+        }
+
+        $query = <<<SQL
+SELECT channel.code AS channelCode, locale.code AS localeCode
+FROM pim_catalog_channel_locale
+INNER JOIN pim_catalog_channel channel on pim_catalog_channel_locale.channel_id = channel.id
+INNER JOIN pim_catalog_locale locale on pim_catalog_channel_locale.locale_id = locale.id
+ORDER BY channelCode, localeCode;
+SQL;
+
+        $statement = $this->db->executeQuery($query);
+
+        $channelsLocales = [];
+        foreach ($statement->fetchAll() as $channelLocale) {
+            $channelsLocales[$channelLocale['channelCode']][] = $channelLocale['localeCode'];
+        }
+
+        $this->cachedChannelLocaleArray = $channelsLocales;
+
+        return $channelsLocales;
     }
 
     public function setContainer(ContainerInterface $container = null)

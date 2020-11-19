@@ -2,7 +2,6 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -17,14 +16,13 @@ final class Version_5_0_20201118133700_migrate_product_axis_rate_to_unique_score
 
     private ?Connection $db;
 
-    private ?CachedGetLocalesByChannelQuery $getLocalesByChannelQuery;
+    private ?array $cachedChannelLocaleArray;
 
     public function up(Schema $schema) : void
     {
         $this->disableMigrationWarning();
 
         $this->db = $this->container->get('database_connection');
-        $this->getLocalesByChannelQuery = $this->container->get('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery');
 
         $lastProduct = 0;
         while ($productsToMigrate = $this->getProductsToMigrateFrom($lastProduct, self::BULK_SIZE)) {
@@ -96,7 +94,7 @@ SQL;
     private function computeUniqueScores(array $rates): array
     {
         $uniqueScores = [];
-        foreach ($this->getLocalesByChannelQuery->getArray() as $channel => $locales) {
+        foreach ($this->getLocalesByChannelQuery() as $channel => $locales) {
             foreach ($locales as $locale) {
                 $enrichmentRate = $rates['enrichment'][$channel][$locale] ?? null;
                 $consistency = $rates['consistency'][$channel][$locale] ?? null;
@@ -113,6 +111,32 @@ SQL;
         }
 
         return $uniqueScores;
+    }
+
+    public function getLocalesByChannelQuery(): array
+    {
+        if (null !== $this->cachedChannelLocaleArray) {
+            return $this->cachedChannelLocaleArray;
+        }
+
+        $query = <<<SQL
+SELECT channel.code AS channelCode, locale.code AS localeCode
+FROM pim_catalog_channel_locale
+INNER JOIN pim_catalog_channel channel on pim_catalog_channel_locale.channel_id = channel.id
+INNER JOIN pim_catalog_locale locale on pim_catalog_channel_locale.locale_id = locale.id
+ORDER BY channelCode, localeCode;
+SQL;
+
+        $statement = $this->db->executeQuery($query);
+
+        $channelsLocales = [];
+        foreach ($statement->fetchAll() as $channelLocale) {
+            $channelsLocales[$channelLocale['channelCode']][] = $channelLocale['localeCode'];
+        }
+
+        $this->cachedChannelLocaleArray = $channelsLocales;
+
+        return $channelsLocales;
     }
 
     public function setContainer(ContainerInterface $container = null)
