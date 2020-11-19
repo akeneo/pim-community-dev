@@ -1,9 +1,9 @@
 import {validateAgainstSchema} from '../../../../src/tools/validator';
-const Ajv = require('ajv');
 
 console.error = jest.fn();
 
 afterEach(() => {
+  // @ts-ignore
   console.error.mockClear();
 });
 

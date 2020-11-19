@@ -62,7 +62,7 @@ define([
       return this.defaultRoute(this.generate(this.indexRoute));
     },
 
-    setRoot: function(element) {
+    setRoot: function (element) {
       this.root = element;
     },
 

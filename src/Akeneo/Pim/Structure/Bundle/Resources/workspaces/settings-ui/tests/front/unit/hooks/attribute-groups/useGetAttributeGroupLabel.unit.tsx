@@ -2,10 +2,8 @@ import {useGetAttributeGroupLabel} from '@akeneo-pim-community/settings-ui/src/h
 import {AttributeGroup} from '@akeneo-pim-community/settings-ui/src/models';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {anAttributeGroup} from '../../../utils/provideAttributeGroupHelper';
-import React from 'react';
-import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 
-const renderUseAttributeGroupLabel = (group: AttributeGroup) => {
+const renderUseAttributeGroupLabel = (_group: AttributeGroup) => {
   return renderHookWithProviders(() => useGetAttributeGroupLabel());
 };
 

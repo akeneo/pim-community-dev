@@ -30,8 +30,8 @@ const Content = styled.div`
 `;
 
 const App = ({formBuilder}: {formBuilder: any}) => {
-  const menuRef = useRef(null);
-  const containerRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const initialize = async () => {
     await Promise.all([fetcherRegistry.initialize(), dateContext.initialize(), userContext.initialize()]);
@@ -39,7 +39,7 @@ const App = ({formBuilder}: {formBuilder: any}) => {
     await initTranslator.fetch();
 
     formBuilder.build('pim-menu').then((view: any) => {
-      if (menuRef.current !== null) {
+      if (null !== menuRef.current) {
         menuRef.current.appendChild(view.el);
         view.render();
       }

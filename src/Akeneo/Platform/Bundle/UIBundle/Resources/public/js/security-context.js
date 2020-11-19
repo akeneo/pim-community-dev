@@ -10,7 +10,9 @@ define(['jquery', 'routing'], ($, Routing) => {
      * @returns {Promise}
      */
     initialize: () => {
-      return fetch(Routing.generate('pim_user_security_rest_get')).then(async response => (contextData = await response.json()));
+      return fetch(Routing.generate('pim_user_security_rest_get')).then(
+        async response => (contextData = await response.json())
+      );
     },
 
     /**
