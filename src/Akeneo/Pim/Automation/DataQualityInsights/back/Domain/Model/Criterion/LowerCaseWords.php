@@ -20,6 +20,8 @@ final class LowerCaseWords
 {
     public const CRITERION_CODE = 'consistency_textarea_lowercase_words';
 
+    public const CRITERION_COEFFICIENT = 1;
+
     private const POINTS_TO_SUBTRACT_PER_ERROR = 24;
 
     /** @var CriterionCode */

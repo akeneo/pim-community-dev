@@ -32,6 +32,8 @@ final class EvaluateAttributeSpelling implements EvaluateCriterionInterface
 {
     public const CRITERION_CODE = 'consistency_attribute_spelling';
 
+    public const CRITERION_COEFFICIENT = 1;
+
     private $localesByChannelQuery;
 
     private $getProductFamilyAttributeCodesQuery;
@@ -116,5 +118,10 @@ final class EvaluateAttributeSpelling implements EvaluateCriterionInterface
     public function getCode(): CriterionCode
     {
         return new CriterionCode(self::CRITERION_CODE);
+    }
+
+    public function getCoefficient(): int
+    {
+        return self::CRITERION_COEFFICIENT;
     }
 }

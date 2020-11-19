@@ -27,6 +27,8 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
 {
     public const CRITERION_CODE = 'consistency_textarea_uppercase_words';
 
+    public const CRITERION_COEFFICIENT = 1;
+
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
 
@@ -38,6 +40,11 @@ final class EvaluateUppercaseWords implements EvaluateCriterionInterface
     public function getCode(): CriterionCode
     {
         return new CriterionCode(self::CRITERION_CODE);
+    }
+
+    public function getCoefficient(): int
+    {
+        return self::CRITERION_COEFFICIENT;
     }
 
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
