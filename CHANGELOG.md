@@ -204,6 +204,7 @@
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct` to
     - remove the `setFamilyId()` method
     - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
+- Remove the `findDatagridViewByAlias()` method in `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface`
 
 ### CLI commands
 
