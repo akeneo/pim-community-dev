@@ -1,8 +1,9 @@
-import React, {ReactNode, ReactElement, isValidElement, useEffect, useState, useCallback} from 'react';
+import React, {ReactNode, ReactElement, isValidElement, useEffect, useState, useCallback, useRef} from 'react';
 import styled, {keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CheckIcon, CloseIcon, DangerIcon, IconProps, InfoIcon} from '../../icons';
 import {Link} from '../../components';
+import {useAutoFocus} from '../../hooks';
 
 type MessageBarLevel = 'info' | 'success' | 'warning' | 'error';
 
@@ -282,6 +283,9 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
     setRemaining(remaining => remaining - 1);
   }, []);
 
+  const ref = useRef(null);
+  useAutoFocus(ref);
+
   const countDownFinished = -1 === remaining;
   const remainingDisplay = countDownFinished ? '' : Math.min(remaining + 1, duration);
 
@@ -293,7 +297,7 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
       onMouseOut={onMouseOut}
     >
       <IconContainer>{React.cloneElement(icon ?? getLevelIcon(level), {size: 24})}</IconContainer>
-      <Content>
+      <Content ref={ref} tabIndex={-1}>
         <Title>{title}</Title>
         {children}
       </Content>
