@@ -54,7 +54,7 @@ EOF
     command = <<EOF
 # If you've changed mailgun_email, this command will fail
 # Thereby, you should first do a terraform destroy of this resource with the previous mailgun_email value
-curl -s --user 'api:${self.triggers.mailgun_api_key}' -X DELETE \
+curl -s --user 'api:${var.mailgun_api_key}' -X DELETE \
 		https://api.mailgun.net/v3/domains/${self.triggers.mailgun_domain}/credentials/${self.triggers.mailgun_login_email}
 EOF
 
