@@ -24,7 +24,7 @@ jobs:
           cache-name: cache-node-modules
         with:
           path: '**/akeneo-design-system/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/akeneo-design-system/yarn.lock') }}
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/akeneo-design-system/yarn.lock') }}
 
       - name: Install node modules
         run: cd akeneo-design-system && yarn install
@@ -60,7 +60,7 @@ jobs:
           cache-name: cache-jest-cache
         with:
           path: /tmp/jest/**
-          key: ${{ runner.os }}-jest-tmp
+          key: ${{ runner.os }}-jest-cache
 
       - name: Launch unit tests
         run: cd akeneo-design-system && yarn test:unit:run
@@ -79,7 +79,7 @@ jobs:
           cache-name: cache-example-node-modules
         with:
           path: '**/akeneo-design-system/example/node_modules'
-          key: ${{ runner.os }}-example-node-modules-${{ hashFiles('**/akeneo-design-system/example/yarn.lock') }}
+          key: ${{ runner.os }}-example-project-node-modules-${{ hashFiles('**/akeneo-design-system/example/yarn.lock') }}
 
       # To check if the build is working, the directory `example` contains an integration of the lib
       # with a few tests. In the next step we will build this example and validate that it's working properly
