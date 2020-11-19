@@ -74,7 +74,6 @@ class RegisterQualityFilter
             'akeneo_data_quality_insights.attribute_grid.quality.to_improve' => Quality::TO_IMPROVE,
         ];
 
-        /* @todo DAPI-1436
         $activeLocales = $this->localeRepository->getActivatedLocales();
         foreach ($activeLocales as $activeLocale) {
             $choices[
@@ -84,7 +83,6 @@ class RegisterQualityFilter
                 )
             ] = $activeLocale->getReference();
         }
-        */
 
         return $choices;
     }

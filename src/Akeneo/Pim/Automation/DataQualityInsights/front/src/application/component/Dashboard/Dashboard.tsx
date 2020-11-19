@@ -8,7 +8,7 @@ import {keyIndicatorsTips} from '@akeneo-pim-community/data-quality-insights/src
 import {KeyIndicatorsProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/KeyIndicatorsContext';
 import {EEKeyIndicatorsTips} from '../../helper/Dashboard/EEKeyIndicatorsTips';
 import {DashboardContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/DashboardContext';
-//import {PimEnterpriseKeyIndicators} from './PimEnterpriseKeyIndicators'; @todo DAPI-1436
+import {PimEnterpriseKeyIndicators} from './PimEnterpriseKeyIndicators';
 
 interface DataQualityInsightsDashboardProps {
   timePeriod: string;
@@ -43,14 +43,14 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                 />
 
                 <KeyIndicatorsProvider tips={{...EEKeyIndicatorsTips, ...keyIndicatorsTips}}>
-                  {/* @todo DAPI-1436
+                  {
                   <PimEnterpriseKeyIndicators
                     family={familyCode}
                     category={categoryCode}
                     locale={catalogLocale}
                     channel={catalogChannel}
                   />
-                  */}
+                  }
                 </KeyIndicatorsProvider>
 
                 <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
