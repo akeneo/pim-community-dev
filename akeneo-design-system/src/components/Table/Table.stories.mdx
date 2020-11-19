@@ -6,6 +6,7 @@ import {Badge} from '..';
 <Meta
   title="Components/Table"
   component={Table}
+  subcomponents={{'Table.Header': Table.Header, 'Table.HeaderCell': Table.HeaderCell, 'Table.Body': Table.Body,' Table.Row': Table.Row, 'Table.Cell': Table.Cell }}
   argTypes={{
     level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
   }}
