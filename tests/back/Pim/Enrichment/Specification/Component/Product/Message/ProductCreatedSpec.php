@@ -21,7 +21,7 @@ class ProductCreatedSpec extends ObjectBehavior
             Author::fromNameAndType('julia', Author::TYPE_UI),
             ['identifier' => 'product_identifier'],
             1598968800,
-            '523e4557-e89b-12d3-a456-426614174000'
+            '523e4557-e89b-12d3-a456-426614174000',
         );
     }
 
@@ -35,16 +35,18 @@ class ProductCreatedSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(Event::class);
     }
 
-    public function it_validates_the_data(): void
+    public function it_validates_the_product_identifier(): void
     {
         $this->beConstructedWith(
             Author::fromNameAndType('julia', Author::TYPE_UI),
             [],
             1598968800,
-            '523e4557-e89b-12d3-a456-426614174000'
+            '523e4557-e89b-12d3-a456-426614174000',
         );
 
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->shouldThrow(
+            new \InvalidArgumentException('Expected the key "identifier" to exist.'),
+        )->duringInstantiation();
     }
 
     public function it_returns_the_name(): void

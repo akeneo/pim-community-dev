@@ -67,7 +67,10 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     {
         $bulkEvent = new BulkEvent([
             new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1']),
-            new ProductRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), []),
+            new ProductRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), [
+                'identifier' => '1',
+                'category_codes' => [],
+            ]),
         ]);
 
         $this->supports($bulkEvent)->shouldReturn(false);

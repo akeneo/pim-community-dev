@@ -31,23 +31,25 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->supports(new ProductModelRemoved($author, ['data']))->shouldReturn(true);
+        $this->supports(
+            new ProductModelRemoved($author, ['code' => 'product_model_code', 'category_codes' => []]),
+        )->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_business_event(): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->supports(new ProductCreated($author, ['identifier' => '1']))->shouldReturn(false);
+        $this->supports(new ProductCreated($author, ['identifier' => 'product_identifier']))->shouldReturn(false);
     }
 
     public function it_builds_product_model_removed_event(UserInterface $user): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $event = new ProductModelRemoved($author, ['code' => 'product_identifier']);
+        $event = new ProductModelRemoved($author, ['code' => 'product_model_code', 'category_codes' => []]);
 
         $expectedCollection = new EventDataCollection();
-        $expectedCollection->setEventData($event, ['resource' => ['code' => 'product_identifier']]);
+        $expectedCollection->setEventData($event, ['resource' => ['code' => 'product_model_code']]);
 
         $collection = $this->build($event, $user)->getWrappedObject();
 

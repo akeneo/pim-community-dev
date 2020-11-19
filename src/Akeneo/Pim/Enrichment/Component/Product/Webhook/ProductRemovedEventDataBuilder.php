@@ -29,11 +29,8 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
             throw new \InvalidArgumentException();
         }
 
-        $data = $event->getData();
-
-        return (new EventDataCollection())
-            ->setEventData($event, [
-                'resource' => ['identifier' => $data['identifier']]
-            ]);
+        return (new EventDataCollection())->setEventData($event, [
+            'resource' => ['identifier' => $event->getIdentifier()],
+        ]);
     }
 }

@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Message;
 
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\Event;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Webmozart\Assert\Assert;
 
 /**
@@ -17,13 +18,10 @@ class ProductCreated extends Event
     /**
      * @var array{identifier: string} $data
      */
-    public function __construct(
-        Author $author,
-        array $data,
-        int $timestamp = null,
-        string $uuid = null
-    ) {
+    public function __construct(Author $author, array $data, int $timestamp = null, string $uuid = null)
+    {
         Assert::keyExists($data, 'identifier');
+        Assert::stringNotEmpty($data['identifier']);
 
         parent::__construct($author, $data, $timestamp, $uuid);
     }
