@@ -1,5 +1,6 @@
 ## Bug fixes
 
+- PIM-9560: Reference entities are blocked after using the filter.
 - PIM-9332: Bump resource's memory limits for flexibility environments
 - PIM-9388: Fix product link rules for scopable/localizable asset collection attributes
 - PIM-9389: Unfriendly page title in create rule page.
