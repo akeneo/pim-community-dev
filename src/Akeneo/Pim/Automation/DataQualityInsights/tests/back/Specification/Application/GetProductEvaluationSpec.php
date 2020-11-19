@@ -12,7 +12,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -31,16 +30,14 @@ class GetProductEvaluationSpec extends ObjectBehavior
 {
     public function let(
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        GetLatestProductScoresQueryInterface $getLatestProductScoresQuery,
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
         CriteriaEvaluationRegistry $criteriaEvaluationRegistry
     ) {
-        $this->beConstructedWith($getCriteriaEvaluationsByProductIdQuery, $getLatestProductScoresQuery, $getLocalesByChannelQuery, $criteriaEvaluationRegistry);
+        $this->beConstructedWith($getCriteriaEvaluationsByProductIdQuery, $getLocalesByChannelQuery, $criteriaEvaluationRegistry);
     }
 
     public function it_gives_the_evaluation_of_a_product(
         $getCriteriaEvaluationsByProductIdQuery,
-        $getLatestProductScoresQuery,
         $criteriaEvaluationRegistry,
         $getLocalesByChannelQuery
     ) {
@@ -58,14 +55,12 @@ class GetProductEvaluationSpec extends ObjectBehavior
         ]);
 
         $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($this->givenProductCriteriaEvaluations($productId));
-        $getLatestProductScoresQuery->byProductId($productId)->willReturn($this->givenProductScores());
 
         $this->get($productId)->shouldBeLike($this->getExpectedProductEvaluation());
     }
 
     public function it_handle_deprecated_improvable_attribute_structure(
         $getCriteriaEvaluationsByProductIdQuery,
-        $getLatestProductScoresQuery,
         $criteriaEvaluationRegistry,
         $getLocalesByChannelQuery
     ) {
@@ -80,35 +75,27 @@ class GetProductEvaluationSpec extends ObjectBehavior
 
         $productId = new ProductId(39);
         $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($this->givenDeprecatedCriteriaEvaluations($productId));
-        $getLatestProductScoresQuery->byProductId($productId)->willReturn((new ChannelLocaleRateCollection())
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(50)));
 
         $expectedEvaluation = [
             "ecommerce" => [
                 "en_US" => [
-                    "score" => [
-                        "value" => 50,
-                        "rank" => "E",
+                    [
+                        "code" =>"consistency_spelling",
+                        "rate" => [
+                            "value" => null,
+                            "rank" => null,
+                        ],
+                        "improvable_attributes" => [],
+                        "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                     ],
-                    "criteria" => [
-                        [
-                            "code" =>"consistency_spelling",
-                            "rate" => [
-                                "value" => null,
-                                "rank" => null,
-                            ],
-                            "improvable_attributes" => [],
-                            "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                    [
+                        "code" => "consistency_textarea_lowercase_words",
+                        "rate" => [
+                            "value" => 50,
+                            "rank" => "E",
                         ],
-                        [
-                            "code" => "consistency_textarea_lowercase_words",
-                            "rate" => [
-                                "value" => 50,
-                                "rank" => "E",
-                            ],
-                            "improvable_attributes" => ["short_description", "long_description"],
-                            "status" => CriterionEvaluationResultStatus::DONE,
-                        ],
+                        "improvable_attributes" => ["short_description", "long_description"],
+                        "status" => CriterionEvaluationResultStatus::DONE,
                     ],
                 ],
             ],
@@ -209,129 +196,99 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ));
     }
 
-    private function givenProductScores(): ChannelLocaleRateCollection
-    {
-        $channelEcommerce = new ChannelCode('ecommerce');
-        $channelMobile = new ChannelCode('mobile');
-        $localeEn = new LocaleCode('en_US');
-
-        return (new ChannelLocaleRateCollection())
-            ->addRate($channelEcommerce, $localeEn, new Rate(87))
-            ->addRate($channelMobile, $localeEn, new Rate(90))
-        ;
-    }
-
     private function getExpectedProductEvaluation(): array
     {
         return [
             "ecommerce" => [
                 "en_US" => [
-                    "score" => [
-                        "value" => 87,
-                        "rank" => "B",
+                    [
+                        "code" => "completeness_of_required_attributes",
+                        "rate" => [
+                            "value" => 95,
+                            "rank" => "A",
+                        ],
+                        "improvable_attributes" => ["long_description"],
+                        "status" => CriterionEvaluationResultStatus::DONE,
                     ],
-                    "criteria" => [
-                        [
-                            "code" => "completeness_of_required_attributes",
-                            "rate" => [
-                                "value" => 95,
-                                "rank" => "A",
-                            ],
-                            "improvable_attributes" => ["long_description"],
-                            "status" => CriterionEvaluationResultStatus::DONE,
+                    [
+                        "code" => "completeness_of_non_required_attributes",
+                        "rate" => [
+                            "value" => 70,
+                            "rank" => "C",
                         ],
-                        [
-                            "code" => "completeness_of_non_required_attributes",
-                            "rate" => [
-                                "value" => 70,
-                                "rank" => "C",
-                            ],
-                            "improvable_attributes" => ["title", "meta_title"],
-                            "status" => CriterionEvaluationResultStatus::DONE,
+                        "improvable_attributes" => ["title", "meta_title"],
+                        "status" => CriterionEvaluationResultStatus::DONE,
+                    ],
+                    [
+                        "code" =>"consistency_spelling",
+                        "rate" => [
+                            "value" => 88,
+                            "rank" => "B",
                         ],
-                        [
-                            "code" =>"consistency_spelling",
-                            "rate" => [
-                                "value" => 88,
-                                "rank" => "B",
-                            ],
-                            "improvable_attributes" => [
-                                "description",
-                            ],
-                            "status" => CriterionEvaluationResultStatus::DONE,
+                        "improvable_attributes" => [
+                            "description",
                         ],
+                        "status" => CriterionEvaluationResultStatus::DONE,
                     ],
                 ],
                 "fr_FR" => [
-                    "score" => [
-                        "value" => null,
-                        "rank" => null,
+                    [
+                        "code" => "completeness_of_required_attributes",
+                        "rate" => [
+                            "value" => null,
+                            "rank" => null,
+                        ],
+                        "improvable_attributes" => [],
+                        "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                     ],
-                    "criteria" => [
-                        [
-                            "code" => "completeness_of_required_attributes",
-                            "rate" => [
-                                "value" => null,
-                                "rank" => null,
-                            ],
-                            "improvable_attributes" => [],
-                            "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                    [
+                        "code" => "completeness_of_non_required_attributes",
+                        "rate" => [
+                            "value" => null,
+                            "rank" => null,
                         ],
-                        [
-                            "code" => "completeness_of_non_required_attributes",
-                            "rate" => [
-                                "value" => null,
-                                "rank" => null,
-                            ],
-                            "improvable_attributes" => [],
-                            "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                        "improvable_attributes" => [],
+                        "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                    ],
+                    [
+                        "code" =>"consistency_spelling",
+                        "rate" => [
+                            "value" => null,
+                            "rank" => null,
                         ],
-                        [
-                            "code" =>"consistency_spelling",
-                            "rate" => [
-                                "value" => null,
-                                "rank" => null,
-                            ],
-                            "improvable_attributes" => [],
-                            "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
-                        ],
+                        "improvable_attributes" => [],
+                        "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
                     ],
                 ],
             ],
             "mobile" => [
                 "en_US" => [
-                    "score" => [
-                        "value" => 90,
-                        "rank" => "A",
+                    [
+                        "code" =>"completeness_of_required_attributes",
+                        "rate" => [
+                            "value" => 70,
+                            "rank" => "C",
+                        ],
+                        "improvable_attributes" => ["title", "name"],
+                        "status" => CriterionEvaluationResultStatus::DONE,
                     ],
-                    "criteria" => [
-                        [
-                            "code" =>"completeness_of_required_attributes",
-                            "rate" => [
-                                "value" => 70,
-                                "rank" => "C",
-                            ],
-                            "improvable_attributes" => ["title", "name"],
-                            "status" => CriterionEvaluationResultStatus::DONE,
+                    [
+                        "code" => "completeness_of_non_required_attributes",
+                        "rate" => [
+                            "value" => null,
+                            "rank" => null,
                         ],
-                        [
-                            "code" => "completeness_of_non_required_attributes",
-                            "rate" => [
-                                "value" => null,
-                                "rank" => null,
-                            ],
-                            "improvable_attributes" => [],
-                            "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                        "improvable_attributes" => [],
+                        "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                    ],
+                    [
+                        "code" =>"consistency_spelling",
+                        "rate" => [
+                            "value" => 100,
+                            "rank" => "A",
                         ],
-                        [
-                            "code" =>"consistency_spelling",
-                            "rate" => [
-                                "value" => 100,
-                                "rank" => "A",
-                            ],
-                            "improvable_attributes" => [],
-                            "status" => CriterionEvaluationResultStatus::DONE,
-                        ],
+                        "improvable_attributes" => [],
+                        "status" => CriterionEvaluationResultStatus::DONE,
                     ],
                 ],
             ],
