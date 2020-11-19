@@ -2,17 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRankCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
@@ -25,18 +17,20 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\tests\back\Specification\Domain\Model\Axis\Consistency;
 use PhpSpec\ObjectBehavior;
 
-final class GetRatesForProductProjectionSpec extends ObjectBehavior
+final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends ObjectBehavior
 {
     public function let(
         GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
-        GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery
+        GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
+        ComputeProductsKeyIndicators $computeProductsKeyIndicators
     ) {
-        $this->beConstructedWith($getLatestProductAxesRanksQuery, $getProductIdsFromProductIdentifiersQuery);
+        $this->beConstructedWith($getLatestProductAxesRanksQuery, $getProductIdsFromProductIdentifiersQuery, $computeProductsKeyIndicators);
     }
 
-    public function it_returns_product_rates_from_product_identifiers(
-        GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
-        GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery
+    public function it_returns_additional_properties_from_product_identifiers(
+        $getLatestProductAxesRanksQuery,
+        $getProductIdsFromProductIdentifiersQuery,
+        $computeProductsKeyIndicators
     ) {
         $productId42 = new ProductId(42);
         $productId123 = new ProductId(123);
@@ -75,6 +69,47 @@ final class GetRatesForProductProjectionSpec extends ObjectBehavior
                 ),
         ]);
 
+        $productsKeyIndicators = [
+            42 => [
+                'ecommerce' => [
+                    'en_US' => [
+                        'good_enrichment' => true,
+                        'has_image' => true,
+                    ],
+                    'fr_FR' => [
+                        'good_enrichment' => false,
+                        'has_image' => null,
+                    ],
+                ],
+                'mobile' => [
+                    'en_US' => [
+                        'good_enrichment' => null,
+                        'has_image' => false,
+                    ],
+                ],
+            ],
+            123 => [
+                'ecommerce' => [
+                    'en_US' => [
+                        'good_enrichment' => true,
+                        'has_image' => true,
+                    ],
+                    'fr_FR' => [
+                        'good_enrichment' => false,
+                        'has_image' => true,
+                    ],
+                ],
+                'mobile' => [
+                    'en_US' => [
+                        'good_enrichment' => false,
+                        'has_image' => true,
+                    ],
+                ],
+            ],
+        ];
+
+        $computeProductsKeyIndicators->compute($productIds)->willReturn($productsKeyIndicators);
+
         $this->fromProductIdentifiers($productIdentifiers)->shouldReturn([
             'product_1' => [
                 'rates' => [
@@ -93,6 +128,7 @@ final class GetRatesForProductProjectionSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'data_quality_insights' => ['key_indicators' => $productsKeyIndicators[42]],
             ],
             'product_2' => [
                 'rates' => [
@@ -102,9 +138,11 @@ final class GetRatesForProductProjectionSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'data_quality_insights' => ['key_indicators' => $productsKeyIndicators[123]],
             ],
             'product_without_rates' => [
                 'rates' => [],
+                'data_quality_insights' => ['key_indicators' => []],
             ],
         ]);
     }
