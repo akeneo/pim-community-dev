@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Attribute;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ComputeAttributeQuality;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ConsolidateAttributeQuality;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\Structure\AttributeLabelsSpellingEvaluatedEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\Structure\AttributeOptionLabelsSpellingEvaluatedEvent;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeLocaleQuality;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\AttributeQualityRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Psr\Log\LoggerInterface;
@@ -23,23 +24,20 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class UpdateAttributeQualitySubscriber implements EventSubscriberInterface
 {
-    /** @var ComputeAttributeQuality */
-    private $computeAttributeQuality;
+    private ConsolidateAttributeQuality $consolidateAttributeQuality;
 
-    /** @var AttributeQualityRepositoryInterface */
-    private $attributeQualityRepository;
+    private AttributeQualityRepositoryInterface $attributeQualityRepository;
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
-        ComputeAttributeQuality $computeAttributeQuality,
+        ConsolidateAttributeQuality $consolidateAttributeQuality,
         AttributeQualityRepositoryInterface $attributeQualityRepository,
         LoggerInterface $logger
     ) {
-        $this->computeAttributeQuality = $computeAttributeQuality;
         $this->attributeQualityRepository = $attributeQualityRepository;
         $this->logger = $logger;
+        $this->consolidateAttributeQuality = $consolidateAttributeQuality;
     }
 
     public static function getSubscribedEvents()
@@ -63,11 +61,10 @@ final class UpdateAttributeQualitySubscriber implements EventSubscriberInterface
     private function updateAttributeQuality(AttributeCode $attributeCode): void
     {
         try {
-            $quality = $this->computeAttributeQuality->byAttributeCode($attributeCode);
-            $this->attributeQualityRepository->save($attributeCode, $quality);
+            $this->consolidateAttributeQuality->byAttributeCode($attributeCode);
         } catch (\Throwable $exception) {
-            $this->logger->error(sprintf('Unable to update quality of attribute "%s"', $attributeCode),
-                ['error_code' => 'unable_to_update_attribute_quality', 'error_message' => $exception->getMessage()]
+            $this->logger->error(sprintf('Unable to consolidate quality of attribute "%s"', $attributeCode),
+                ['error_code' => 'unable_to_consolidate_attribute_quality', 'error_message' => $exception->getMessage()]
             );
         }
     }

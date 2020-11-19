@@ -152,10 +152,13 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeOptionCodesToEvaluateQuery'
             - '@event_dispatcher'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ComputeAttributeQuality:
+    Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ConsolidateAttributeQuality:
         arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeSpellcheckQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeOptionSpellcheckQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeQualityRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeLocaleQualityRepository'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWord:
         arguments:
@@ -195,3 +198,19 @@ services:
 
     akeneo.pim.automation.data_quality_insights.synchronous_criterion_evaluations_filter:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\PimEnterpriseSynchronousCriterionEvaluationsFilter
+
+    akeneo.pim.automation.data_quality_insights.get_key_indicators:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetKeyIndicators
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery'
+            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
+            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
+            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithPerfectSpelling::CODE
+
+    akeneo.pimee.automation.data_quality_insights.get_key_indicators:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\PimEnterpriseGetKeyIndicators
+        decorates: akeneo.pim.automation.data_quality_insights.get_key_indicators
+        decoration_inner_name: akeneo.pim.automation.data_quality_insights.get_key_indicators.community
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.get_key_indicators.community'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeAttributesWithPerfectSpellingQuery'

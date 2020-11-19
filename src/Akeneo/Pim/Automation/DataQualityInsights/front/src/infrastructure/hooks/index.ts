@@ -14,6 +14,7 @@ import useFetchTextAnalysis from './EditorHighlight/Spellcheck/useFetchTextAnaly
 import useGetPopover from './EditorHighlight/useGetPopover';
 import useGetWidget from './EditorHighlight/useGetWidget';
 import useFetchIgnoreTextIssue from './EditorHighlight/Spellcheck/useFetchIgnoreTextIssue';
+import {useGetSpellcheckSupportedLocales} from './Common/useGetSpellcheckSupportedLocales';
 
 export {
   useFetchProductDataQualityEvaluation,
@@ -31,4 +32,5 @@ export {
   useGetWidget as useGetSpellcheckWidget,
   useFetchIgnoreTextIssue,
   useProductEvaluation,
+  useGetSpellcheckSupportedLocales,
 };

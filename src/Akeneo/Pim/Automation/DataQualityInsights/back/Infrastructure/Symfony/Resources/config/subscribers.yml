@@ -46,7 +46,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Attribute\UpdateAttributeQualitySubscriber:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ComputeAttributeQuality'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ConsolidateAttributeQuality'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeQualityRepository'
             - '@logger'
         tags:

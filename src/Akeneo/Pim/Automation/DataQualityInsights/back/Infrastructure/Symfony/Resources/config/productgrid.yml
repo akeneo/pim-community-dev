@@ -31,3 +31,29 @@ services:
             - ['rates_consistency']
         tags:
             - { name: pim_catalog.elasticsearch.query.sorter, priority: 30 }
+# @todo DAPI-1436
+#    akeneo.pim.automation.data_quality_insights.product_grid.filter.spelling_quality:
+#        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\KeyIndicatorFilter
+#        arguments:
+#            - '@form.factory'
+#            - '@pim_filter.product_utility'
+#            - 'data_quality_insights_spelling_quality'
+#        tags:
+#            - { name: oro_filter.extension.orm_filter.filter, type: data_quality_insights_spelling_quality }
+#
+#    akeneo.pim.automation.data_quality_insights.product_grid.register_filter.spelling_quality:
+#        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterKeyIndicatorFilter
+#        arguments:
+#            - '@akeneo.pim.automation.data_quality_insights.feature'
+#            - 'data_quality_insights_spelling_quality'
+#            - 'akeneo_data_quality_insights.product_grid.filter_label.spelling_quality'
+#        tags:
+#            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
+#
+#    akeneo.pim.automation.data_quality_insights.product_grid.elasticsearch.spelling_quality_filter:
+#        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\KeyIndicatorFilter
+#        arguments:
+#            - 'data_quality_insights_spelling_quality'
+#            - 'values_perfect_spelling'
+#        tags:
+#            - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }

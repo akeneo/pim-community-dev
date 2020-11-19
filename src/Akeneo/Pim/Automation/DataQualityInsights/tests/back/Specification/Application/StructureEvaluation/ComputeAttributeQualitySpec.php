@@ -13,237 +13,262 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\ComputeAttributeQuality;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheckCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckResultByLocaleCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttributeOptionSpellcheckQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttributeSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\Quality;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
 use PhpSpec\ObjectBehavior;
+use Webmozart\Assert\Assert;
 
+
+/*
+ * Matrix of expected quality (global or for a locale)
+ *
+ *  Attribute spellcheck | Options Spellcheck | Quality
+ * ----------------------|--------------------|------------
+ *  not evaluated        | good               | processing
+ *  not evaluated        | to_improve         | processing
+ *  not evaluated        | n_a                | processing
+ *  good                 | good               | good
+ *  good                 | to_improve         | to_improve
+ *  good                 | n_a                | good
+ *  to_improve           | good               | to_improve
+ *  to_improve           | to_improve         | to_improve
+ *  to_improve           | n_a                | to_improve
+ *  n_a                  | good               | good
+ *  n_a                  | to_improve         | to_improve
+ *  n_a                  | n_a                | n_a
+ */
 final class ComputeAttributeQualitySpec extends ObjectBehavior
 {
-    public function let(
-        GetAttributeSpellcheckQueryInterface $getAttributeSpellcheckQuery,
-        GetAttributeOptionSpellcheckQueryInterface $getAttributeOptionSpellcheckQuery
-    ) {
-        $this->beConstructedWith($getAttributeSpellcheckQuery, $getAttributeOptionSpellcheckQuery);
-    }
-
-    public function it_is_processing_if_there_is_still_no_spellcheck_whatever_the_options_spellchecks(
-        $getAttributeSpellcheckQuery,
-        $getAttributeOptionSpellcheckQuery
-    ) {
-        $attributeCode = new AttributeCode('color');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(null);
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->shouldNotBeCalled();
-
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::processing());
-    }
-
-    public function it_is_to_improve_if_the_attribute_spellcheck_is_to_improve_whatever_the_options_spellchecks(
-        $getAttributeSpellcheckQuery,
-        $getAttributeOptionSpellcheckQuery
-    ) {
-        $attributeCode = new AttributeCode('color');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(new AttributeSpellcheck(
-            $attributeCode,
-            new \DateTimeImmutable(),
-            (new SpellcheckResultByLocaleCollection())
-                ->add(new LocaleCode('en_US'), SpellCheckResult::good())
-                ->add(new LocaleCode('fr_FR'), SpellCheckResult::toImprove())
-        ));
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->shouldNotBeCalled();
-
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::toImprove());
-    }
-
-    public function it_is_to_improve_if_the_attribute_spellcheck_is_not_to_improve_but_there_is_a_option_spellcheck_to_improve(
-        $getAttributeSpellcheckQuery,
-        $getAttributeOptionSpellcheckQuery
-    ) {
-        $attributeCode = new AttributeCode('color');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAnAttributeSpellcheckGood($attributeCode)
-        );
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAttributeOptionsSpellchecksWithOneToImprove($attributeCode)
-        );
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::toImprove());
-
-        $attributeCode = new AttributeCode('material');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAnAttributeSpellcheckNotApplicable($attributeCode)
-        );
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAttributeOptionsSpellchecksWithOneToImprove($attributeCode)
-        );
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::toImprove());
-    }
-
-    public function it_is_good_if_the_attribute_spellcheck_is_good_and_there_are_no_options_spellchecks(
-        $getAttributeSpellcheckQuery,
-        $getAttributeOptionSpellcheckQuery
-    ) {
-        $attributeCode = new AttributeCode('color');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAnAttributeSpellcheckGood($attributeCode)
-        );
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            new AttributeOptionSpellcheckCollection()
-        );
-
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::good());
-    }
-
-    public function it_is_good_if_the_attribute_spellcheck_is_good_and_there_are_only_good_option_spellchecks(
-        $getAttributeSpellcheckQuery,
-        $getAttributeOptionSpellcheckQuery
-    ) {
-        $attributeCode = new AttributeCode('color');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAnAttributeSpellcheckGood($attributeCode)
-        );
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenOnlyGoodAttributeOptionsSpellchecks($attributeCode)
-        );
-
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::good());
-    }
-
-    public function it_is_good_if_the_attribute_spellcheck_is_good_and_there_are_only_not_applicable_option_spellchecks(
-        $getAttributeSpellcheckQuery,
-        $getAttributeOptionSpellcheckQuery
-    ) {
-        $attributeCode = new AttributeCode('color');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAnAttributeSpellcheckGood($attributeCode)
-        );
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenOnlyNotApplicableAttributeOptionsSpellchecks($attributeCode)
-        );
-
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::good());
-    }
-
-    public function it_is_good_if_the_attribute_spellcheck_is_not_applicable_but_there_are_only_good_option_spellchecks(
-        $getAttributeSpellcheckQuery,
-        $getAttributeOptionSpellcheckQuery
-    ) {
-        $attributeCode = new AttributeCode('color');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAnAttributeSpellcheckNotApplicable($attributeCode)
-        );
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenOnlyGoodAttributeOptionsSpellchecks($attributeCode)
-        );
-
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::good());
-    }
-
-    public function it_is_not_applicable_if_the_attribute_spellcheck_is_not_applicable_an_there_are_no_options_spellchecks(
-        $getAttributeSpellcheckQuery,
-        $getAttributeOptionSpellcheckQuery
-    ) {
-        $attributeCode = new AttributeCode('color');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAnAttributeSpellcheckNotApplicable($attributeCode)
-        );
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            new AttributeOptionSpellcheckCollection()
-        );
-
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::notApplicable());
-    }
-
-    public function it_is_not_applicable_if_the_attribute_spellcheck_is_not_applicable_an_there_are_only_not_applicable_options_spellchecks(
-        $getAttributeSpellcheckQuery,
-        $getAttributeOptionSpellcheckQuery
-    ) {
-        $attributeCode = new AttributeCode('color');
-        $getAttributeSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenAnAttributeSpellcheckNotApplicable($attributeCode)
-        );
-        $getAttributeOptionSpellcheckQuery->getByAttributeCode($attributeCode)->willReturn(
-            $this->givenOnlyNotApplicableAttributeOptionsSpellchecks($attributeCode)
-        );
-
-        $this->byAttributeCode($attributeCode)->shouldBeLike(Quality::notApplicable());
-    }
-
-    private function givenAnAttributeSpellcheckGood(AttributeCode $attributeCode): AttributeSpellcheck
+    public function it_computes_the_global_quality_of_an_attribute()
     {
-        return new AttributeSpellcheck(
-            $attributeCode,
-            new \DateTimeImmutable(),
-            (new SpellcheckResultByLocaleCollection())
-                ->add(new LocaleCode('en_US'), SpellCheckResult::good())
-        );
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            null,
+            $this->givenAttributeOptionsSpellcheckGood()
+        ), Quality::processing());
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            null,
+            $this->givenAttributeOptionsSpellcheckToImprove()
+        ), Quality::processing());
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            null,
+            $this->givenAttributeOptionsSpellcheckNotApplicable()
+        ), Quality::processing());
+
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            $this->givenAttributeSpellcheckGood(),
+            $this->givenAttributeOptionsSpellcheckGood()
+        ), Quality::good());
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            $this->givenAttributeSpellcheckGood(),
+            $this->givenAttributeOptionsSpellcheckNotApplicable()
+        ), Quality::good());
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            $this->givenAttributeSpellcheckNotApplicable(),
+            $this->givenAttributeOptionsSpellcheckGood()
+        ), Quality::good());
+
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            $this->givenAttributeSpellcheckGood(),
+            $this->givenAttributeOptionsSpellcheckToImprove()
+        ), Quality::toImprove());
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            $this->givenAttributeSpellcheckToImprove(),
+            $this->givenAttributeOptionsSpellcheckGood()
+        ), Quality::toImprove());
+         Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            $this->givenAttributeSpellcheckToImprove(),
+            $this->givenAttributeOptionsSpellcheckToImprove()
+        ), Quality::toImprove());
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            $this->givenAttributeSpellcheckToImprove(),
+            $this->givenAttributeOptionsSpellcheckNotApplicable()
+        ), Quality::toImprove());
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            $this->givenAttributeSpellcheckNotApplicable(),
+            $this->givenAttributeOptionsSpellcheckToImprove()
+        ), Quality::toImprove());
+
+        Assert::eq(ComputeAttributeQuality::computeGlobalQuality(
+            $this->givenAttributeSpellcheckNotApplicable(),
+            $this->givenAttributeOptionsSpellcheckNotApplicable()
+        ), Quality::notApplicable());
     }
 
-    private function givenAnAttributeSpellcheckNotApplicable(AttributeCode $attributeCode): AttributeSpellcheck
+    public function it_computes_the_quality_of_an_attribute_for_a_given_locale()
     {
-        return new AttributeSpellcheck(
-            $attributeCode,
+        $enUS = new LocaleCode('en_US');
+
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            null,
+            $this->givenAttributeOptionsSpellcheckGoodInEnglishAnToImproveInFrench()
+        ), Quality::processing());
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            null,
+            $this->givenAttributeOptionsSpellcheckToImproveInEnglishAndGoodInFrench()
+        ), Quality::processing());
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            null,
+            $this->givenAttributeOptionsSpellcheckNotApplicableInEnglish()
+        ), Quality::processing());
+
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            $this->givenAttributeSpellcheckGoodInEnglishAnToImproveInFrench(),
+            $this->givenAttributeOptionsSpellcheckGoodInEnglishAnToImproveInFrench()
+        ), Quality::good());
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            $this->givenAttributeSpellcheckGoodInEnglishAnToImproveInFrench(),
+            $this->givenAttributeOptionsSpellcheckNotApplicableInEnglish()
+        ), Quality::good());
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            $this->givenAttributeSpellcheckNotApplicableInEnglish(),
+            $this->givenAttributeOptionsSpellcheckGoodInEnglishAnToImproveInFrench()
+        ), Quality::good());
+
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            $this->givenAttributeSpellcheckGoodInEnglishAnToImproveInFrench(),
+            $this->givenAttributeOptionsSpellcheckToImproveInEnglishAndGoodInFrench()
+        ), Quality::toImprove());
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            $this->givenAttributeSpellcheckToImproveInEnglishAndGoodInFrench(),
+            $this->givenAttributeOptionsSpellcheckGoodInEnglishAnToImproveInFrench()
+        ), Quality::toImprove());
+         Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            $this->givenAttributeSpellcheckToImproveInEnglishAndGoodInFrench(),
+            $this->givenAttributeOptionsSpellcheckToImproveInEnglishAndGoodInFrench()
+        ), Quality::toImprove());
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            $this->givenAttributeSpellcheckToImproveInEnglishAndGoodInFrench(),
+            $this->givenAttributeOptionsSpellcheckNotApplicableInEnglish()
+        ), Quality::toImprove());
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            $this->givenAttributeSpellcheckNotApplicableInEnglish(),
+            $this->givenAttributeOptionsSpellcheckToImproveInEnglishAndGoodInFrench()
+        ), Quality::toImprove());
+
+        Assert::eq(ComputeAttributeQuality::computeLocaleQuality(
+            $enUS,
+            $this->givenAttributeSpellcheckNotApplicableInEnglish(),
+            $this->givenAttributeOptionsSpellcheckNotApplicableInEnglish()
+        ), Quality::notApplicable());
+    }
+
+
+    private function buildAttributeSpellcheck(array $resultByLocale): AttributeSpellcheck
+    {
+        $spellcheckResults = new SpellcheckResultByLocaleCollection();
+        foreach ($resultByLocale as $locale => $result) {
+            $spellcheckResults->add(new LocaleCode($locale), $result);
+        }
+
+        return new AttributeSpellcheck(new AttributeCode('color'), new \DateTimeImmutable(), $spellcheckResults);
+    }
+
+    private function buildAttributeOptionSpellcheck(array $resultByLocale): AttributeOptionSpellcheck
+    {
+        $spellcheckResults = new SpellcheckResultByLocaleCollection();
+        foreach ($resultByLocale as $locale => $result) {
+            $spellcheckResults->add(new LocaleCode($locale), $result);
+        }
+
+        return new AttributeOptionSpellcheck(
+            new AttributeOptionCode(new AttributeCode('color'), 'red'),
             new \DateTimeImmutable(),
-            new SpellcheckResultByLocaleCollection()
+            $spellcheckResults
         );
     }
 
-    private function givenAttributeOptionsSpellchecksWithOneToImprove(AttributeCode $attributeCode): AttributeOptionSpellcheckCollection
+    public function givenAttributeSpellcheckNotApplicable(): AttributeSpellcheck
+    {
+        return $this->buildAttributeSpellcheck([]);
+    }
+
+    private function givenAttributeSpellcheckNotApplicableInEnglish(): AttributeSpellcheck
+    {
+        return $this->buildAttributeSpellcheck(['fr_FR' => SpellCheckResult::toImprove()]);
+    }
+
+    public function givenAttributeSpellcheckToImprove(): AttributeSpellcheck
+    {
+        return $this->buildAttributeSpellcheck(['en_US' => SpellCheckResult::toImprove()]);
+    }
+
+    public function givenAttributeSpellcheckGood(): AttributeSpellcheck
+    {
+        return $this->buildAttributeSpellcheck(['en_US' => SpellCheckResult::good()]);
+    }
+
+    private function givenAttributeSpellcheckGoodInEnglishAnToImproveInFrench(): AttributeSpellcheck
+    {
+        return $this->buildAttributeSpellcheck([
+            'en_US' => SpellCheckResult::good(),
+            'fr_FR' => SpellCheckResult::toImprove(),
+        ]);
+    }
+
+    private function givenAttributeSpellcheckToImproveInEnglishAndGoodInFrench(): AttributeSpellcheck
+    {
+        return $this->buildAttributeSpellcheck([
+            'en_US' => SpellCheckResult::toImprove(),
+            'fr_FR' => SpellCheckResult::good(),
+        ]);
+    }
+
+    public function givenAttributeOptionsSpellcheckToImprove(): AttributeOptionSpellcheckCollection
     {
         return (new AttributeOptionSpellcheckCollection())
-            ->add($this->givenAnAttributeOptionSpellcheckGood($attributeCode, 'A'))
-            ->add($this->givenAnAttributeOptionSpellcheckNotApplicable($attributeCode, 'B'))
-            ->add($this->givenAnAttributeOptionSpellcheckToImprove($attributeCode, 'C'));
+            ->add($this->buildAttributeOptionSpellcheck(['en_US' => SpellCheckResult::toImprove()]));
     }
 
-    private function givenOnlyGoodAttributeOptionsSpellchecks(AttributeCode $attributeCode): AttributeOptionSpellcheckCollection
+    public function givenAttributeOptionsSpellcheckNotApplicable(): AttributeOptionSpellcheckCollection
     {
         return (new AttributeOptionSpellcheckCollection())
-            ->add($this->givenAnAttributeOptionSpellcheckGood($attributeCode, 'A'))
-            ->add($this->givenAnAttributeOptionSpellcheckGood($attributeCode, 'B'));
+            ->add($this->buildAttributeOptionSpellcheck([]));
     }
 
-    private function givenOnlyNotApplicableAttributeOptionsSpellchecks(AttributeCode $attributeCode): AttributeOptionSpellcheckCollection
+    private function givenAttributeOptionsSpellcheckNotApplicableInEnglish(): AttributeOptionSpellcheckCollection
     {
         return (new AttributeOptionSpellcheckCollection())
-            ->add($this->givenAnAttributeOptionSpellcheckNotApplicable($attributeCode, 'A'))
-            ->add($this->givenAnAttributeOptionSpellcheckNotApplicable($attributeCode, 'B'));
+            ->add($this->buildAttributeOptionSpellcheck(['fr_FR' => SpellCheckResult::good()]));
     }
 
-    private function givenAnAttributeOptionSpellcheckToImprove(AttributeCode $attributeCode, string $option): AttributeOptionSpellcheck
+    public function givenAttributeOptionsSpellcheckGood(): AttributeOptionSpellcheckCollection
     {
-        return new AttributeOptionSpellcheck(
-            new AttributeOptionCode($attributeCode, $option),
-            new \DateTimeImmutable(),
-            (new SpellcheckResultByLocaleCollection())
-                ->add(new LocaleCode('en_US'), SpellCheckResult::good())
-                ->add(new LocaleCode('fr_FR'), SpellCheckResult::toImprove())
-        );
+        return (new AttributeOptionSpellcheckCollection())
+            ->add($this->buildAttributeOptionSpellcheck(['en_US' => SpellCheckResult::good()]));
     }
 
-    private function givenAnAttributeOptionSpellcheckGood(AttributeCode $attributeCode, string $option): AttributeOptionSpellcheck
+    private function givenAttributeOptionsSpellcheckGoodInEnglishAnToImproveInFrench(): AttributeOptionSpellcheckCollection
     {
-        return new AttributeOptionSpellcheck(
-            new AttributeOptionCode($attributeCode, $option),
-            new \DateTimeImmutable(),
-            (new SpellcheckResultByLocaleCollection())
-                ->add(new LocaleCode('en_US'), SpellCheckResult::good())
-        );
+        return (new AttributeOptionSpellcheckCollection())
+            ->add($this->buildAttributeOptionSpellcheck(['en_US' => SpellCheckResult::good()]))
+            ->add($this->buildAttributeOptionSpellcheck(['fr_FR' => SpellCheckResult::toImprove()]))
+        ;
     }
 
-    private function givenAnAttributeOptionSpellcheckNotApplicable(AttributeCode $attributeCode, string $option): AttributeOptionSpellcheck
+    private function givenAttributeOptionsSpellcheckToImproveInEnglishAndGoodInFrench(): AttributeOptionSpellcheckCollection
     {
-        return new AttributeOptionSpellcheck(
-            new AttributeOptionCode($attributeCode, $option),
-            new \DateTimeImmutable(),
-            new SpellcheckResultByLocaleCollection()
-        );
+        return (new AttributeOptionSpellcheckCollection())
+            ->add($this->buildAttributeOptionSpellcheck(['en_US' => SpellCheckResult::toImprove()]))
+            ->add($this->buildAttributeOptionSpellcheck(['fr_FR' => SpellCheckResult::good()]))
+        ;
     }
 }
