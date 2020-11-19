@@ -249,7 +249,7 @@ const EditRulesContent: React.FC<Props> = ({
               {translate('pimee_catalog_rule.form.edit.header.description')}
               <br />
               <a
-                href='https://help.akeneo.com/pim/serenity/articles/get-started-with-the-rules-engine.html'
+                href='https://help.akeneo.com/pim/serenity/articles/manage-your-rules.html'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='AknDescriptionHeader-link'>

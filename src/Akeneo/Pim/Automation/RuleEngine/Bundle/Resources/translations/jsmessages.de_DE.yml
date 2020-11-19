@@ -108,7 +108,9 @@ pimee_catalog_rule:
       add_to_category: Zu Kategorie hinzufügen
       add_conditions: Füge Bedingungen hinzu
       products_count:
-        complete: "]-Inf, 1]{{ count }} Produkt- und Produktmodell|]1, +Inf[{{ count }} Produkte und Produktmodelle"
+        products: "]-Inf, 1]{{ count }} Produkt|]1, +Inf[{{ count }} Produkte"
+        product_models: "]-Inf, 1]{{ count }} Produktmodell|]1, +Inf[{{ count }} Produktmodelle"
+        products_and_product_models: "{{ products }} und {{ product_models }}"
         pending: Berechne Produkte und Produktmodelle
         error: Berechnung von Produkten und Produktmodellen nicht möglich
       product_selection: Produktauswahl
@@ -346,6 +348,7 @@ pimee_catalog_rule:
         date_to: Enddatum wählen
         date_past: Datum in der Vergangenheit
         date_future: Datum in der Zukunft
+        date_present: Jetzt
       day: "]-Inf, 1] Tag|]1, +Inf[ Tage"
       week: "]-Inf, 1] Woche|]1, +Inf[ Wochen"
       month: "]-Inf, 1] Monat|]1, +Inf[ Monate"
