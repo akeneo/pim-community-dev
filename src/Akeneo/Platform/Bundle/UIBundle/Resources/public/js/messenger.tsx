@@ -1,7 +1,7 @@
 import React, {ReactElement, ReactNode, useCallback} from 'react';
 import ReactDOM from 'react-dom';
 import styled, {ThemeProvider} from 'styled-components';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   AnimateMessageBar,
   FlashMessage,
@@ -11,7 +11,6 @@ import {
   pimTheme,
   uuid,
 } from 'akeneo-design-system';
-const translate = require('oro/translator');
 
 const Container = styled.div`
   display: flex;
@@ -33,12 +32,13 @@ const Notifications = ({
   onNotificationClosed: (identifier: string) => void;
 }) => {
   const handleClose = useCallback((identifier: string) => () => onNotificationClosed(identifier), []);
+  const translate = useTranslate();
 
   return (
     <Container>
       {notifications.map(({identifier, ...props}) => (
         <AnimateMessageBar key={identifier}>
-          <MessageBar {...props} onClose={handleClose(identifier)} closeIconTitle={translate('pim_common.close')} />
+          <MessageBar {...props} onClose={handleClose(identifier)} dismissTitle={translate('pim_common.close')} />
         </AnimateMessageBar>
       ))}
     </Container>

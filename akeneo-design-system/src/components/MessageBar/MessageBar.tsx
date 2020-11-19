@@ -134,7 +134,7 @@ const AnimateMessageBar = ({children}: {children: ReactElement<MessageBarProps>}
     throw new Error('Only MessageBar element can be passed to AnimateMessageBar');
   }
 
-  const [unmounting, setUnmounting] = useState(false);
+  const [unmounting, setUnmounting] = useState<boolean>(false);
 
   const onClose = () => {
     // We need to detach the unmounting to avoid rendering the component in another render
@@ -227,11 +227,6 @@ type FlashMessage = {
   title: string;
 
   /**
-   * The translated title to dismiss the notification
-   */
-  dismissTitle: string;
-
-  /**
    * Icon to display.
    */
   icon?: ReactElement<IconProps>;
@@ -243,6 +238,11 @@ type FlashMessage = {
 };
 
 type MessageBarProps = FlashMessage & {
+  /**
+   * The translated title to dismiss the notification.
+   */
+  dismissTitle: string;
+
   /**
    * Handler called when the MessageBar is closed.
    */

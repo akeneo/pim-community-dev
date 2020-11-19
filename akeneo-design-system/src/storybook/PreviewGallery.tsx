@@ -61,12 +61,8 @@ const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
 `;
 
 const MessageBarContainer = styled.div`
-  display: flex;
   width: 500px;
   height: 100px;
-  flex-direction: column-reverse;
-  z-index: 100000;
-  gap: 10px;
 `;
 
 export {StoryStyle, PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content, MessageBarContainer};
