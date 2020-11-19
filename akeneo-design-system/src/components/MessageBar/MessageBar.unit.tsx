@@ -9,17 +9,17 @@ jest.useFakeTimers();
 test('it renders its children properly', () => {
   render(
     <>
-      <MessageBar icon={<InfoIcon />} title="Only a title" onClose={jest.fn()} />
-      <MessageBar level="info" title="Title" onClose={jest.fn()}>
+      <MessageBar icon={<InfoIcon />} title="Only a title" onClose={jest.fn()} dismissTitle="Dismiss notification" />
+      <MessageBar level="info" title="Title" onClose={jest.fn()} dismissTitle="Dismiss notification">
         MessageBar Info
       </MessageBar>
-      <MessageBar level="success" title="Title" onClose={jest.fn()}>
+      <MessageBar level="success" title="Title" onClose={jest.fn()} dismissTitle="Dismiss notification">
         MessageBar Success
       </MessageBar>
-      <MessageBar level="warning" title="Title" onClose={jest.fn()}>
+      <MessageBar level="warning" title="Title" onClose={jest.fn()} dismissTitle="Dismiss notification">
         MessageBar Warning
       </MessageBar>
-      <MessageBar level="error" title="Title" onClose={jest.fn()}>
+      <MessageBar level="error" title="Title" onClose={jest.fn()} dismissTitle="Dismiss notification">
         MessageBar Error
       </MessageBar>
     </>
@@ -36,7 +36,13 @@ test('it calls the onClose handler when clicking on the close button', () => {
   const onClose = jest.fn();
 
   render(
-    <MessageBar level="info" icon={<InfoIcon />} title="Title" onClose={onClose}>
+    <MessageBar
+      level="info"
+      icon={<InfoIcon />}
+      title="Title"
+      onClose={onClose}
+      dismissTitle="Dismiss the notification"
+    >
       MessageBar Info
     </MessageBar>
   );
@@ -50,7 +56,13 @@ test('it stops the counter if we over the element', () => {
   const onClose = jest.fn();
 
   render(
-    <MessageBar level="info" icon={<InfoIcon />} title="Title" onClose={onClose}>
+    <MessageBar
+      level="info"
+      icon={<InfoIcon />}
+      title="Title"
+      onClose={onClose}
+      dismissTitle="Dismiss the notification"
+    >
       MessageBar Info
     </MessageBar>
   );
@@ -74,7 +86,13 @@ test('it calls the onClose handler automatically after the appropriate duration'
   const onClose = jest.fn();
 
   render(
-    <MessageBar level="info" icon={<InfoIcon />} title="Title" onClose={onClose}>
+    <MessageBar
+      level="info"
+      icon={<InfoIcon />}
+      title="Title"
+      onClose={onClose}
+      dismissTitle="Dismiss the notification"
+    >
       MessageBar Info
     </MessageBar>
   );
@@ -90,7 +108,13 @@ test('it does not call the onClose handler automatically if there is a Link comp
   const onClose = jest.fn();
 
   render(
-    <MessageBar level="info" icon={<InfoIcon />} title="Title" onClose={onClose}>
+    <MessageBar
+      level="info"
+      icon={<InfoIcon />}
+      title="Title"
+      onClose={onClose}
+      dismissTitle="Dismiss the notification"
+    >
       MessageBar Info <Link>Take me there</Link>
     </MessageBar>
   );
@@ -107,7 +131,13 @@ test('It can animate a MessageBar', () => {
 
   render(
     <AnimateMessageBar>
-      <MessageBar level="info" icon={<InfoIcon />} title="Title" onClose={onClose}>
+      <MessageBar
+        level="info"
+        icon={<InfoIcon />}
+        title="Title"
+        onClose={onClose}
+        dismissTitle="Dismiss the notification"
+      >
         MessageBar Info <Link>Take me there</Link>
       </MessageBar>
     </AnimateMessageBar>

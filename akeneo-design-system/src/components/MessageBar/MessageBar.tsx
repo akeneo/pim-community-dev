@@ -109,6 +109,7 @@ const MessageBarHideAnimation = keyframes`
   100% {
     transform: translateX(calc(100% + 50px));
     max-height: 0;
+    opacity: 0;
   }
 `;
 
@@ -226,6 +227,11 @@ type FlashMessage = {
   title: string;
 
   /**
+   * The translated title to dismiss the notification
+   */
+  dismissTitle: string;
+
+  /**
    * Icon to display.
    */
   icon?: ReactElement<IconProps>;
@@ -246,7 +252,7 @@ type MessageBarProps = FlashMessage & {
 /**
  * A message bar is a message that communicates information to the user.
  */
-const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBarProps) => {
+const MessageBar = ({level = 'info', title, icon, dismissTitle, onClose, children}: MessageBarProps) => {
   const duration = getLevelDuration(level);
   const autoHide = !React.Children.toArray(children).some(child => isValidElement(child) && child.type === Link);
 
@@ -291,18 +297,20 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
 
   return (
     <Container
+      ref={ref}
+      tabIndex={-1}
       role={'error' === level ? 'alert' : 'status'}
       level={level}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
     >
-      <IconContainer>{React.cloneElement(icon ?? getLevelIcon(level), {size: 24})}</IconContainer>
-      <Content ref={ref} tabIndex={-1}>
+      <IconContainer aria-hidden="true">{React.cloneElement(icon ?? getLevelIcon(level), {size: 24})}</IconContainer>
+      <Content>
         <Title>{title}</Title>
         {children}
       </Content>
-      <CloseButton onClick={onClose} autoHide={autoHide && !countDownFinished}>
-        <Timer>
+      <CloseButton onClick={onClose} autoHide={autoHide && !countDownFinished} title={dismissTitle}>
+        <Timer aria-hidden="true">
           {remainingDisplay}
           {autoHide && (
             <Progress ratio={remaining / duration} level={level}>

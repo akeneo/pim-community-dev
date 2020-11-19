@@ -11,6 +11,7 @@ import {
   pimTheme,
   uuid,
 } from 'akeneo-design-system';
+const translate = require('oro/translator');
 
 const Container = styled.div`
   display: flex;
@@ -37,7 +38,7 @@ const Notifications = ({
     <Container>
       {notifications.map(({identifier, ...props}) => (
         <AnimateMessageBar key={identifier}>
-          <MessageBar {...props} onClose={handleClose(identifier)} />
+          <MessageBar {...props} onClose={handleClose(identifier)} closeIconTitle={translate('pim_common.close')} />
         </AnimateMessageBar>
       ))}
     </Container>
