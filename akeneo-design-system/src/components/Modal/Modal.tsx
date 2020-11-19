@@ -96,7 +96,9 @@ type ModalProps = {
 const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) => {
   useShortcut(Key.Escape, onClose);
 
-  const containerRef = useRef(document.createElement('div'));
+  const portalNode = document.createElement('div');
+  portalNode.setAttribute('id', 'modal-root');
+  const containerRef = useRef(portalNode);
 
   useEffect(() => {
     document.body.appendChild(containerRef.current);
