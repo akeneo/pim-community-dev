@@ -298,7 +298,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         $this->removeAttribute('a_third_attribute');
     }
 
-    protected function createProduct(array $data = []): ProductInterface
+    private function createProduct(array $data = []): ProductInterface
     {
         $this->productBuilder
             ->init()
@@ -331,7 +331,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         return $product;
     }
 
-    protected function createProductModel(array $data = []): ProductModelInterface
+    private function createProductModel(array $data = []): ProductModelInterface
     {
         $productModel = $this->productModelBuilder->build($data, true);
         $this->productModelSaver->save($productModel);
@@ -340,7 +340,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         return $productModel;
     }
 
-    protected function createFamilyVariant(array $data = []): FamilyVariantInterface
+    private function createFamilyVariant(array $data = []): FamilyVariantInterface
     {
         $familyVariant = $this->familyVariantBuilder->build($data, true);
         $this->familyVariantSaver->save($familyVariant);
@@ -348,7 +348,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         return $familyVariant;
     }
 
-    protected function createFamily(array $data = []): FamilyInterface
+    private function createFamily(array $data = []): FamilyInterface
     {
         $family = $this->familyBuilder->build($data, true);
         $this->familySaver->save($family);
@@ -356,7 +356,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         return $family;
     }
 
-    protected function createAttribute(array $data = []): AttributeInterface
+    private function createAttribute(array $data = []): AttributeInterface
     {
         $attribute = $this->attributeBuilder->build($data, true);
         $this->attributeSaver->save($attribute);
@@ -364,7 +364,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         return $attribute;
     }
 
-    public function removeAttribute(string $attributeCode)
+    private function removeAttribute(string $attributeCode)
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => $attributeCode]);
 
