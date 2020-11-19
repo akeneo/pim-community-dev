@@ -2,7 +2,6 @@ import React, {Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
 import {EraseIcon, LockIcon} from '../../../icons';
-import {useTranslate} from '../../../hooks/useTranslate';
 
 const BooleanInputContainer = styled.div``;
 
@@ -62,7 +61,7 @@ const YesButton = styled(BooleanButton)`
           border-color: ${getColor('green', readOnly ? 60 : 100)};
           color: ${getColor('white')};
         `;
-      case null:
+      case false:
         return css`
           border-left-width: 0;
         `;
@@ -108,6 +107,9 @@ type BooleanInputProps = (
     }
 ) & {
   readOnly?: boolean;
+  yesLabel?: string;
+  noLabel?: string;
+  clearLabel?: string;
 };
 
 /**
@@ -117,11 +119,18 @@ type BooleanInputProps = (
  */
 const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (
-    {value, readOnly = false, onChange, clearable = false, ...rest}: BooleanInputProps,
+    {
+      value,
+      readOnly = false,
+      onChange,
+      clearable = false,
+      yesLabel = 'Yes',
+      noLabel = 'No',
+      clearLabel = 'Clear value',
+      ...rest
+    }: BooleanInputProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
-    const translate = useTranslate();
-
     const handleChange = useCallback(
       (value: boolean | null) => {
         if (!onChange) {
@@ -147,9 +156,9 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
           onClick={() => {
             handleChange(false);
           }}
-          title={translate('No')}
+          title={noLabel}
         >
-          {translate('No')}
+          {noLabel}
         </NoButton>
 
         <YesButton
@@ -159,9 +168,9 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
           onClick={() => {
             handleChange(true);
           }}
-          title={translate('Yes')}
+          title={yesLabel}
         >
-          {translate('Yes')}
+          {yesLabel}
         </YesButton>
 
         {value !== null && !readOnly && clearable && (
@@ -171,7 +180,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
             }}
           >
             <BooleanInputEraseIcon size={16} />
-            {translate('Clear value')}
+            {clearLabel}
           </ClearButton>
         )}
 

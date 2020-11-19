@@ -1,7 +1,6 @@
 import React from 'react';
 import {BooleanInput} from './BooleanInput';
 import {fireEvent, render, screen} from '../../../storybook/test-util';
-import {TranslateContext, Translate} from '../../../hooks/useTranslate';
 
 test('it renders default component', () => {
   render(<BooleanInput value={true} />);
@@ -10,20 +9,8 @@ test('it renders default component', () => {
   expect(screen.getByText('No')).toBeInTheDocument();
 });
 
-test('it translate labels', () => {
-  const translate: Translate = id => {
-    return {
-      Yes: 'Oui',
-      No: 'Non',
-      'Clear value': 'Effacer la valeur',
-    }[id] as string;
-  };
-
-  render(
-    <TranslateContext.Provider value={translate}>
-      <BooleanInput value={true} clearable={true} />
-    </TranslateContext.Provider>
-  );
+test('it displays custom labels', () => {
+  render(<BooleanInput value={true} clearable={true} noLabel="Non" yesLabel="Oui" clearLabel="Effacer la valeur" />);
 
   expect(screen.getByText('Oui')).toBeInTheDocument();
   expect(screen.getByText('Non')).toBeInTheDocument();

@@ -22,9 +22,18 @@ import {BooleanInput} from './BooleanInput.tsx';
     },
     onChange: {
       description: 'The handler called when clicking on Checkbox.',
+    },
+    yesLabel: {
+      description: 'The label for the Yes button'
+    },
+    noLabel: {
+      description: 'The label for the No button'
+    },
+    clearLabel: {
+      description: 'The label for the Clear value button'
     }
   }}
-  args={{}}
+  args={{value: null}}
 />
 
 # BooleanInput
@@ -39,8 +48,10 @@ The boolean can in some cases have a 3rd state, EMPTY. In this case, a clear but
 <Canvas>
   <Story name="Standard">
     {({value, ...args}) => {
+      const [liveValue, setValue] = React.useState(value);
       return <BooleanInput
-        value={value}
+        value={liveValue}
+        onChange={setValue}
         {...args}
       />;
     }}
@@ -50,6 +61,7 @@ The boolean can in some cases have a 3rd state, EMPTY. In this case, a clear but
 <ArgsTable story="Standard" />
 
 ## Variation on value
+
 
 <Canvas>
   <Story name="Value">
@@ -72,7 +84,7 @@ The boolean can in some cases have a 3rd state, EMPTY. In this case, a clear but
     {args => {
       return (
         <>
-          <BooleanInput {...args} readOnly={true}/>
+          <BooleanInput {...args} value={null} readOnly={true}/>
           <BooleanInput {...args} value={true} readOnly={true}/>
           <BooleanInput {...args} value={false} readOnly={true}/>
         </>
