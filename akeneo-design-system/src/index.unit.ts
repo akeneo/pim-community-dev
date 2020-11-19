@@ -8,7 +8,11 @@ const getSubfolders = (paths: string[]) =>
       ...folders,
       ...fs
         .readdirSync(path, {withFileTypes: true})
-        .filter(file => file.isDirectory())
+        .filter(
+          directory =>
+            directory.isDirectory() &&
+            fs.readdirSync(path + '/' + directory.name, {withFileTypes: true}).some(file => file.isFile())
+        )
         .map(folder => folder.name),
     ],
     []
@@ -22,7 +26,11 @@ const getFiles = (path: string) =>
 
 describe('Every module is exported correctly', () => {
   const exportNames = Object.keys(Exports);
-  const components = [...getSubfolders(['src/components']), ...getFiles('src/icons'), ...getFiles('src/illustrations')];
+  const components = [
+    ...getSubfolders(['src/components', 'src/components/Input']),
+    ...getFiles('src/icons'),
+    ...getFiles('src/illustrations'),
+  ];
 
   test.each(components)(
     `Test %s is exported correctly.

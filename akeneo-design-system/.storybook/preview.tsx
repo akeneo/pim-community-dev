@@ -5,12 +5,12 @@ import {themes} from '../src/theme';
 import {StoryStyle} from '../src/storybook/PreviewGallery';
 import { TranslateContext } from "../src/hooks/useTranslate";
 
-const fakeTranslate = (id, _placeholder, _count) => {
+const dummyTranslate = (id, _placeholder, _count) => {
   return id;
 }
 
 addDecorator(story => <StoryStyle>
-  <TranslateContext.Provider value={fakeTranslate}>
+  <TranslateContext.Provider value={dummyTranslate}>
     {story()}
   </TranslateContext.Provider>
 </StoryStyle>);
