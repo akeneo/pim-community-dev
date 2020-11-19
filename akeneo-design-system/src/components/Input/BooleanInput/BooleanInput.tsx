@@ -133,10 +133,16 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
     );
 
     return (
-      <BooleanInputContainer ref={forwardedRef} {...rest}>
+      <BooleanInputContainer
+        role="switch"
+        aria-checked={null === value ? undefined : value}
+        ref={forwardedRef}
+        {...rest}
+      >
         <NoButton
           value={value}
           readOnly={readOnly}
+          aria-readonly={readOnly}
           disabled={readOnly}
           onClick={() => {
             handleChange(false);
