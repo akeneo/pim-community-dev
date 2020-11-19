@@ -1,4 +1,5 @@
 # 4.0.x
+- PIM-9565: Fix StandardToFlat boolean value converter
 
 # 4.0.72 (2020-11-16)
 
