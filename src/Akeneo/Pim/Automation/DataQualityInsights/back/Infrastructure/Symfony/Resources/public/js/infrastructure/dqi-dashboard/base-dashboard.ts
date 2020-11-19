@@ -1,0 +1,93 @@
+import BaseView = require('pimui/js/view/base');
+
+import {
+  DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY,
+  DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
+} from '@akeneo-pim-community/data-quality-insights/src';
+import ReactDOM from 'react-dom';
+
+interface SectionConfig {
+  align: string;
+}
+interface LocaleEvent {
+  localeCode: string;
+}
+interface ScopeEvent {
+  scopeCode: string;
+}
+
+type DashboardChangeTimePeriodEvent = {
+  timePeriod: string;
+};
+
+type DashboardFilterOnFamilyEvent = {
+  familyCode: string;
+};
+
+type DashboardFilterOnCategoryEvent = {
+  categoryCode: string;
+};
+
+class BaseDashboard extends BaseView {
+  public readonly config: SectionConfig = {
+    align: 'left',
+  };
+
+  // @todo revert it to "weekly" DAPI-1436
+  protected timePeriod: string = 'daily';
+
+  protected familyCode: string | null = null;
+
+  protected categoryCode: string | null = null;
+
+  protected readonly axes = [];
+
+  constructor(options: any) {
+    super(options);
+
+    this.axes = options.config.axes;
+  }
+
+  configure(): JQueryPromise<any> {
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD, ((
+      event: CustomEvent<DashboardChangeTimePeriodEvent>
+    ) => {
+      this.timePeriod = event.detail.timePeriod;
+      this.render();
+    }) as EventListener);
+
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, ((
+      event: CustomEvent<DashboardFilterOnFamilyEvent>
+    ) => {
+      this.familyCode = event.detail.familyCode;
+      this.categoryCode = null;
+      this.render();
+    }) as EventListener);
+
+    window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY, ((
+      event: CustomEvent<DashboardFilterOnCategoryEvent>
+    ) => {
+      this.categoryCode = event.detail.categoryCode;
+      this.familyCode = null;
+      this.render();
+    }) as EventListener);
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (_: LocaleEvent) => {
+      this.render();
+    });
+    this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', (_: ScopeEvent) => {
+      this.render();
+    });
+
+    return BaseView.prototype.configure.apply(this, arguments);
+  }
+
+  remove() {
+    ReactDOM.unmountComponentAtNode(this.el);
+
+    return super.remove();
+  }
+}
+
+export = BaseDashboard;
