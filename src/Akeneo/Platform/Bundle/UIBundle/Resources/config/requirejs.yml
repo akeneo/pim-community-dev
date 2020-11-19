@@ -485,7 +485,6 @@ config:
     pim/form/system/config/tab/loading-message: pimui/js/form/system/tab/loading-message
 
     # Templates
-    pim/template/flash-message:              pimui/js/templates/flash-message.html
     pim/template/system/tab/loading-message: pimui/js/templates/system/tab/loading-message.html
 
     # Navigation
@@ -1170,7 +1169,6 @@ config:
     pim/template/menu/logo:                              pimui/templates/menu/logo.html
 
     pim/template/app:                                    pimui/templates/app.html
-    pim/template/common/flash:                           pimui/templates/common/flash.html
     pim/template/common/breadcrumbs:                     pimui/templates/common/breadcrumbs.html
 
     pim/template/group/tab/properties/general:           pimui/templates/group/tab/properties/general.html

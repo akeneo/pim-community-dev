@@ -16,8 +16,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column-reverse;
   position: fixed;
-  bottom: 40px;
-  right: 40px;
+  bottom: 44px;
+  right: 44px;
   z-index: 100000;
   gap: 10px;
 `;
