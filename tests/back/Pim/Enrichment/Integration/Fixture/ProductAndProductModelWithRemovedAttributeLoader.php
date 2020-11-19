@@ -1,34 +1,100 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
+namespace AkeneoTest\Pim\Enrichment\Integration\Fixture;
+
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-abstract class WithRemovedAttributeTestCase extends TestCase
+class ProductAndProductModelWithRemovedAttributeLoader
 {
-    public function setUp(): void
-    {
-        parent::setUp();
+    private $productFactory;
+    private $productUpdater;
+    private $productValidator;
+    private $productSaver;
+    private $productModelFactory;
+    private $productModelUpdater;
+    private $productModelValidator;
+    private $productModelSaver;
+    private $familyVariantFactory;
+    private $familyVariantUpdater;
+    private $familyVariantSaver;
+    private $familyFactory;
+    private $familyUpdater;
+    private $familySaver;
+    private $attributeFactory;
+    private $attributeUpdater;
+    private $attributeSaver;
+    private $attributeRepository;
+    private $attributeRemover;
+    private $entityValidator;
+    private $productAndProductModelEsClient;
 
-        $this->loadFixtures();
+    public function __construct(
+        ProductBuilder $productFactory,
+        ProductUpdater $productUpdater,
+        ValidatorInterface $productValidator,
+        ProductSaver $productSaver,
+        SimpleFactoryInterface $productModelFactory,
+        ObjectUpdaterInterface $productModelUpdater,
+        ValidatorInterface $productModelValidator,
+        BaseSaver $productModelSaver,
+        SimpleFactoryInterface $familyVariantFactory,
+        ObjectUpdaterInterface $familyVariantUpdater,
+        BaseSaver $familyVariantSaver,
+        SimpleFactoryInterface $familyFactory,
+        ObjectUpdaterInterface $familyUpdater,
+        FamilySaver $familySaver,
+        SimpleFactoryInterface $attributeFactory,
+        ObjectUpdaterInterface $attributeUpdater,
+        AttributeSaver $attributeSaver,
+        AttributeRepository $attributeRepository,
+        BaseRemover $attributeRemover,
+        ValidatorInterface $entityValidator,
+        Client $productAndProductModelEsClient
+    )
+    {
+
+        $this->productFactory = $productFactory;
+        $this->productUpdater = $productUpdater;
+        $this->productValidator = $productValidator;
+        $this->productSaver = $productSaver;
+        $this->productModelFactory = $productModelFactory;
+        $this->productModelUpdater = $productModelUpdater;
+        $this->productModelValidator = $productModelValidator;
+        $this->productModelSaver = $productModelSaver;
+        $this->familyVariantFactory = $familyVariantFactory;
+        $this->familyVariantUpdater = $familyVariantUpdater;
+        $this->familyVariantSaver = $familyVariantSaver;
+        $this->familyFactory = $familyFactory;
+        $this->familyUpdater = $familyUpdater;
+        $this->familySaver = $familySaver;
+        $this->attributeFactory = $attributeFactory;
+        $this->attributeUpdater = $attributeUpdater;
+        $this->attributeSaver = $attributeSaver;
+        $this->attributeRepository = $attributeRepository;
+        $this->attributeRemover = $attributeRemover;
+        $this->entityValidator = $entityValidator;
+        $this->productAndProductModelEsClient = $productAndProductModelEsClient;
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
-    }
-
-    protected function loadFixtures(): void
+    public function load(): void
     {
         $this->createAttribute([
             'code' => 'an_attribute',
@@ -247,75 +313,78 @@ abstract class WithRemovedAttributeTestCase extends TestCase
                 ],
             ],
         ]);
+
+        $this->removeAttribute('an_attribute');
+        $this->removeAttribute('a_third_attribute');
     }
 
     protected function createProduct(array $data = []): ProductInterface
     {
         $identifier = $data['identifier'] ?? 'new_product_' . rand();
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
+        $product = $this->productFactory->createProduct($identifier);
+        $this->productUpdater->update($product, $data);
+        $constraintList = $this->productValidator->validate($product);
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a product');
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->productSaver->save($product);
+        $this->productAndProductModelEsClient->refreshIndex();
 
         return $product;
     }
 
     protected function createProductModel(array $data = []): ProductModelInterface
     {
-        $productModel = $this->get('pim_catalog.factory.product_model')->create();
-        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
-        $constraintList = $this->get('pim_catalog.validator.product')->validate($productModel);
+        $productModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($productModel, $data);
+        $constraintList = $this->productModelValidator->validate($productModel);
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a product model');
-        $this->get('pim_catalog.saver.product_model')->save($productModel);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->productModelSaver->save($productModel);
+        $this->productAndProductModelEsClient->refreshIndex();
 
         return $productModel;
     }
 
     protected function createFamilyVariant(array $data = []): FamilyVariantInterface
     {
-        $family = $this->get('pim_catalog.factory.family_variant')->create();
-        $this->get('pim_catalog.updater.family_variant')->update($family, $data);
-        $constraintList = $this->get('validator')->validate($family);
+        $family = $this->familyVariantFactory->create();
+        $this->familyVariantUpdater->update($family, $data);
+        $constraintList = $this->entityValidator->validate($family);
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a family variant');
-        $this->get('pim_catalog.saver.family_variant')->save($family);
+        $this->familyVariantSaver->save($family);
 
         return $family;
     }
 
     protected function createFamily(array $data = []): FamilyInterface
     {
-        $family = $this->get('pim_catalog.factory.family')->create();
-        $this->get('pim_catalog.updater.family')->update($family, $data);
-        $constraintList = $this->get('validator')->validate($family);
+        $family = $this->familyFactory->create();
+        $this->familyUpdater->update($family, $data);
+        $constraintList = $this->entityValidator->validate($family);
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a family');
-        $this->get('pim_catalog.saver.family')->save($family);
+        $this->familySaver->save($family);
 
         return $family;
     }
 
     protected function createAttribute(array $data = []): AttributeInterface
     {
-        $attribute = $this->get('pim_catalog.factory.attribute')->create();
-        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraintList = $this->get('validator')->validate($attribute);
+        $attribute = $this->attributeFactory->create();
+        $this->attributeUpdater->update($attribute, $data);
+        $constraintList = $this->entityValidator->validate($attribute);
         Assert::assertEquals(0, $constraintList->count(), 'Impossible to create an attribute');
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
+        $this->attributeSaver->save($attribute);
 
         return $attribute;
     }
 
-    protected function removeAttribute(string $attributeCode)
+    public function removeAttribute(string $attributeCode)
     {
-        $attribute = $this->get('pim_catalog.repository.attribute')->findOneBy(['code' => $attributeCode]);
+        $attribute = $this->attributeRepository->findOneBy(['code' => $attributeCode]);
 
         if (null == $attribute) {
             throw new \LogicException(sprintf('Attribute %s not found', $attributeCode));
         }
 
-        $this->get('pim_catalog.remover.attribute')->remove($attribute);
+        $this->attributeRemover->remove($attribute);
     }
 }

@@ -183,6 +183,13 @@ services:
             - '@pim_catalog.updater.attribute'
             - '@validator'
 
+    akeneo_integration_tests.base.family.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@validator'
+
     akeneo_integration_tests.catalog.product_model.builder:
         class: 'Akeneo\Test\Common\EntityWithValue\Builder\ProductModel'
         shared: false
@@ -203,3 +210,28 @@ services:
         decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
         arguments:
             - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'
+
+    akeneo_integration_tests.fixture.loader.product_and_product_model_with_removed_attribute:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\ProductAndProductModelWithRemovedAttributeLoader'
+        arguments:
+            $productFactory: '@pim_catalog.builder.product'
+            $productUpdater: '@pim_catalog.updater.product'
+            $productValidator: '@pim_catalog.validator.product'
+            $productSaver: '@pim_catalog.saver.product'
+            $productModelFactory: '@pim_catalog.factory.product_model'
+            $productModelUpdater: '@pim_catalog.updater.product_model'
+            $productModelValidator: '@pim_catalog.validator.product_model'
+            $productModelSaver: '@pim_catalog.saver.product_model'
+            $familyVariantFactory: '@pim_catalog.factory.family_variant'
+            $familyVariantUpdater: '@pim_catalog.updater.family_variant'
+            $familyVariantSaver: '@pim_catalog.saver.family_variant'
+            $familyFactory: '@pim_catalog.factory.family'
+            $familyUpdater: '@pim_catalog.updater.family'
+            $familySaver: '@pim_catalog.saver.family'
+            $attributeFactory: '@pim_catalog.factory.attribute'
+            $attributeUpdater: '@pim_catalog.updater.attribute'
+            $attributeSaver: '@pim_catalog.saver.attribute'
+            $attributeRepository: '@pim_catalog.repository.attribute'
+            $attributeRemover: '@pim_catalog.remover.attribute'
+            $entityValidator: '@validator'
+            $productAndProductModelEsClient: '@akeneo_elasticsearch.client.product_and_product_model'
