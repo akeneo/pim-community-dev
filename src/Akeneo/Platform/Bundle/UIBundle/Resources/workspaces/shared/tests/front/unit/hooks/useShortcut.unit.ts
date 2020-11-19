@@ -3,12 +3,13 @@
 import '@testing-library/jest-dom/extend-expect';
 import {useShortcut} from '../../../../src/hooks/useShortcut';
 import {renderHook} from '@testing-library/react-hooks';
+import {Key} from '@akeneo-pim-community/shared';
 
 test('It can register listener on keyboard events', async () => {
   let callbackHasBeenCalled = false;
 
   renderHook(() =>
-    useShortcut(' ', () => {
+    useShortcut(Key.Space, () => {
       callbackHasBeenCalled = true;
     })
   );
@@ -21,7 +22,7 @@ test('It does nothing if the key does not match', async () => {
   let callbackHasBeenCalled = false;
 
   renderHook(() =>
-    useShortcut('Enter', () => {
+    useShortcut(Key.Enter, () => {
       callbackHasBeenCalled = true;
     })
   );

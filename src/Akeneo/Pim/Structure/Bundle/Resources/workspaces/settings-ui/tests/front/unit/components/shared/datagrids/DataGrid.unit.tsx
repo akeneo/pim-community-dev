@@ -10,7 +10,7 @@ const renderDataGridWithProviders = (dataSource: any[], content: JSX.Element) =>
   return render(
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
-        <DataGrid dataSource={[]} handleAfterMove={() => {}} compareData={() => -1}>
+        <DataGrid dataSource={dataSource} handleAfterMove={() => {}} compareData={() => -1}>
           {content}
         </DataGrid>
       </ThemeProvider>

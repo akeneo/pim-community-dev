@@ -12,7 +12,7 @@ import {act} from 'react-test-renderer';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge';
 
 const FeatureFlags = require('pim/feature-flags');
-FeatureFlags.isEnabled.mockImplementation((feature: string) => false);
+FeatureFlags.isEnabled.mockImplementation((_feature: string) => false);
 
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/fetchers/attributeGroupsFetcher');
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/fetchers/attributeGroupDqiStatusFetcher');
@@ -79,7 +79,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
   });
 
   test('it loads the attribute groups list with the DQI feature', async () => {
-    FeatureFlags.isEnabled.mockImplementation((feature: string) => true);
+    FeatureFlags.isEnabled.mockImplementation((_feature: string) => true);
 
     const groupA = anAttributeGroup('groupA', 1234, undefined, 3);
     const groupB = anAttributeGroup('groupB', 4321, undefined, 1);

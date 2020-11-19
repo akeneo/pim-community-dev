@@ -1,6 +1,6 @@
 'use strict';
 
-define(['routing'], (Routing) => {
+define(['routing'], Routing => {
   var contextData = {};
 
   return {
@@ -10,7 +10,9 @@ define(['routing'], (Routing) => {
      * @returns {Promise}
      */
     initialize: () => {
-      return fetch(Routing.generate('pim_localization_format_date')).then(async response => (contextData = await response.json()));
+      return fetch(Routing.generate('pim_localization_format_date')).then(
+        async response => (contextData = await response.json())
+      );
     },
 
     /**
