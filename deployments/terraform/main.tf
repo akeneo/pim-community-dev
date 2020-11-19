@@ -18,11 +18,8 @@ provider "helm" {
 
 locals {
   pfid                = "srnt-${var.instance_name}"
-  mailgun_login_email = "${data.template_file.mailgun_login.rendered}@${var.mailgun_domain}"
-}
-
-data "template_file" "mailgun_login" {
-  template = format("%s-%s", local.pfid, var.google_project_id)
+  mailgun_login_name  = format("%s-%s", local.pfid, var.google_project_id)
+  mailgun_login_email = "${local.mailgun_login_name}@${var.mailgun_domain}"
 }
 
 resource "random_string" "mailgun_password" {
@@ -35,15 +32,16 @@ resource "null_resource" "mailgun_credential" {
     mailgun_password    = random_string.mailgun_password.result
     mailgun_login_email = local.mailgun_login_email
     mailgun_domain      = var.mailgun_domain
+    mailgun_api_key     = var.mailgun_api_key
   }
 
   provisioner "local-exec" {
     interpreter = ["/usr/bin/env", "bash", "-c"]
 
     command = <<EOF
-curl -s --user 'api:${var.mailgun_api_key}' \
-		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials \
-		-F login='${local.mailgun_login_email}' \
+curl -s --user 'api:${self.triggers.mailgun_api_key}' \
+		https://api.mailgun.net/v3/domains/${self.triggers.mailgun_domain}/credentials \
+		-F login='${self.triggers.mailgun_login_email}' \
 		-F password='${random_string.mailgun_password.result}'
 EOF
 
@@ -56,8 +54,8 @@ EOF
     command = <<EOF
 # If you've changed mailgun_email, this command will fail
 # Thereby, you should first do a terraform destroy of this resource with the previous mailgun_email value
-curl -s --user 'api:${var.mailgun_api_key}' -X DELETE \
-		https://api.mailgun.net/v3/domains/${var.mailgun_domain}/credentials/${local.mailgun_login_email}
+curl -s --user 'api:${self.triggers.mailgun_api_key}' -X DELETE \
+		https://api.mailgun.net/v3/domains/${self.triggers.mailgun_domain}/credentials/${self.triggers.mailgun_login_email}
 EOF
 
   }

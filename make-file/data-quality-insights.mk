@@ -9,7 +9,6 @@ data-quality-insights-coupling-back:
 .PHONY: data-quality-insights-phpstan
 data-quality-insights-phpstan: var/cache/dev
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/phpstan.neon.dist
-	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/back
 
 .PHONY: data-quality-insights-unit-back
 data-quality-insights-unit-back:

@@ -43,12 +43,14 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                 />
 
                 <KeyIndicatorsProvider tips={{...EEKeyIndicatorsTips, ...keyIndicatorsTips}}>
+                  {
                   <PimEnterpriseKeyIndicators
                     family={familyCode}
                     category={categoryCode}
                     locale={catalogLocale}
                     channel={catalogChannel}
                   />
+                  }
                 </KeyIndicatorsProvider>
 
                 <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel} />

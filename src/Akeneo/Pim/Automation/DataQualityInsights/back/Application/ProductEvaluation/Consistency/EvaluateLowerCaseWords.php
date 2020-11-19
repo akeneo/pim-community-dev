@@ -44,6 +44,11 @@ final class EvaluateLowerCaseWords implements EvaluateCriterionInterface
         return $this->criterion->getCode();
     }
 
+    public function getCoefficient(): int
+    {
+        return LowerCaseWords::CRITERION_COEFFICIENT;
+    }
+
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();

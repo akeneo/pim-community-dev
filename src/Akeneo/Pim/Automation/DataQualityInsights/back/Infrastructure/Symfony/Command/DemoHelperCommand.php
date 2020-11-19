@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\DictionarySource;
@@ -30,41 +31,27 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DemoHelperCommand extends Command
 {
-    /** @var DictionarySource */
-    private $productValueInDatabaseDictionarySource;
+    private DictionarySource $productValueInDatabaseDictionarySource;
 
-    /** @var AspellDictionaryGenerator */
-    private $aspellDictionaryGenerator;
+    private AspellDictionaryGenerator $aspellDictionaryGenerator;
 
-    /** @var ConsolidateDashboardRates */
-    private $consolidateDashboardRates;
+    private ConsolidateDashboardRates $consolidateDashboardRates;
 
-    /** @var DashboardRatesProjectionRepository */
-    private $dashboardRatesProjectionRepository;
+    private DashboardRatesProjectionRepository $dashboardRatesProjectionRepository;
 
-    /** @var Connection */
-    private $db;
+    private Connection $db;
 
-    /** @var CreateCriteriaEvaluations */
-    private $createProductsCriteriaEvaluations;
+    private CreateCriteriaEvaluations $createProductsCriteriaEvaluations;
 
-    /** @var EvaluatePendingCriteria */
-    private $evaluatePendingCriteria;
+    private EvaluatePendingCriteria $evaluatePendingCriteria;
 
-    /** @var ConsolidateAxesRates */
-    private $consolidateProductAxisRates;
+    private ConsolidateProductScores $consolidateProductScores;
 
-    /** @var UpdateProductsIndex */
-    private $updateProductsIndex;
+    private UpdateProductsIndex $updateProductsIndex;
 
-    /** @var CreateCriteriaEvaluations */
-    private $createProductModelsCriteriaEvaluations;
+    private CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations;
 
-    /** @var EvaluatePendingCriteria */
-    private $evaluateProductModelsPendingCriteria;
-
-    /** @var ConsolidateAxesRates */
-    private $consolidateProductModelsAxisRates;
+    private EvaluatePendingCriteria $evaluateProductModelsPendingCriteria;
 
     public function __construct(
         DictionarySource $productValueInDatabaseDictionarySource,
@@ -74,12 +61,13 @@ final class DemoHelperCommand extends Command
         Connection $db,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateAxesRates $consolidateProductAxisRates,
+        ConsolidateProductScores $consolidateProductScores,
         UpdateProductsIndex $updateProductsIndex,
         CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations,
-        EvaluatePendingCriteria $evaluateProductModelsPendingCriteria,
-        ConsolidateAxesRates $consolidateProductModelsAxisRates
+        EvaluatePendingCriteria $evaluateProductModelsPendingCriteria
     ) {
+        parent::__construct();
+
         $this->productValueInDatabaseDictionarySource = $productValueInDatabaseDictionarySource;
         $this->aspellDictionaryGenerator = $aspellDictionaryGenerator;
         $this->consolidateDashboardRates = $consolidateDashboardRates;
@@ -87,13 +75,10 @@ final class DemoHelperCommand extends Command
         $this->db = $db;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
-        $this->consolidateProductAxisRates = $consolidateProductAxisRates;
+        $this->consolidateProductScores = $consolidateProductScores;
         $this->updateProductsIndex = $updateProductsIndex;
         $this->createProductModelsCriteriaEvaluations = $createProductModelsCriteriaEvaluations;
         $this->evaluateProductModelsPendingCriteria = $evaluateProductModelsPendingCriteria;
-        $this->consolidateProductModelsAxisRates = $consolidateProductModelsAxisRates;
-
-        parent::__construct();
     }
 
     protected function configure()
@@ -428,7 +413,7 @@ final class DemoHelperCommand extends Command
 
         $this->createProductsCriteriaEvaluations->createAll($productIds);
         $this->evaluatePendingCriteria->evaluateAllCriteria($ids);
-        $this->consolidateProductAxisRates->consolidate($ids);
+        $this->consolidateProductScores->consolidate($ids);
         $this->updateProductsIndex->execute($ids);
     }
 
@@ -440,6 +425,5 @@ final class DemoHelperCommand extends Command
 
         $this->createProductModelsCriteriaEvaluations->createAll($productIds);
         $this->evaluateProductModelsPendingCriteria->evaluateAllCriteria($ids);
-        $this->consolidateProductModelsAxisRates->consolidate($ids);
     }
 }

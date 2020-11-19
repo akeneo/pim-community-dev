@@ -1,21 +1,19 @@
 import ReactDOM from 'react-dom';
-import React from "react";
+import React from 'react';
 import {DashboardHelper} from '@akeneo-pim-community/data-quality-insights/src/index';
-import {Dashboard} from "@akeneo-pim-ee/data-quality-insights/src/application/component/Dashboard/Dashboard";
+import {Dashboard} from '@akeneo-pim-ee/data-quality-insights/src/application/component/Dashboard/Dashboard';
 
 const UserContext = require('pim/user-context');
 const BaseDashboard = require('akeneo/data-quality-insights/view/dqi-dashboard/base-dashboard');
 
 class SectionView extends BaseDashboard {
-
   render() {
-
     const catalogLocale: string = UserContext.get('catalogLocale');
     const catalogChannel: string = UserContext.get('catalogScope');
 
     ReactDOM.render(
       <div>
-        <DashboardHelper/>
+        <DashboardHelper />
         <Dashboard
           timePeriod={this.timePeriod}
           catalogLocale={catalogLocale}
