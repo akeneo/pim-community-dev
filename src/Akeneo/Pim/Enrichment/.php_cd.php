@@ -118,6 +118,7 @@ $rules = [
 
         // CXP-415 : Author
         'Akeneo\Platform\Component\EventQueue\Author',
+        'Akeneo\Platform\Component\EventQueue\BulkEvent',
 
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
@@ -129,8 +130,8 @@ $rules = [
         'Psr\Log\LoggerInterface',
 
         // Event queue: business event
-        'Akeneo\Platform\Component\EventQueue\BusinessEventInterface',
-        'Akeneo\Platform\Component\EventQueue\BusinessEvent',
+        'Akeneo\Platform\Component\EventQueue\EventInterface',
+        'Akeneo\Platform\Component\EventQueue\Event',
 
         // Webhook API: event data building
         'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',
@@ -245,6 +246,10 @@ $rules = [
 
         // TIP-1020: Move JobLauncherInterface
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+
+        // CXP-520 : Product Events
+        'Akeneo\Platform\Component\EventQueue\Author',
+        'Akeneo\Platform\Component\EventQueue\BulkEvent',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

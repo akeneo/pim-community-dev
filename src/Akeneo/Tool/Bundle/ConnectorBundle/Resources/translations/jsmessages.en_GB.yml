@@ -10,6 +10,7 @@ batch_jobs:
     compute_data_related_to_family_products: Compute products data
     compute_family_variant_structure_changes: Compute family variant structure changes
     compute_completeness_of_products_family: Compute completeness of products family
+    delete_products_and_product_models: Mass delete products
   csv_product_export:
     label: Product export in CSV
     export.label: Product export
