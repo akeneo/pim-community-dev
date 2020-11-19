@@ -1,10 +1,8 @@
-import React, {PropsWithChildren} from 'react';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {useDataGridState, useInitialDataGridState} from '@akeneo-pim-community/settings-ui/src/hooks/shared';
 import {
   AfterMoveRowHandler,
   CompareRowDataHandler,
-  DataGridStateProvider,
 } from '@akeneo-pim-community/settings-ui/src/components/shared/providers';
 import {aDragEvent, aListOfData} from '../../../utils/provideDataGridHelper';
 
@@ -43,6 +41,7 @@ describe('useInitialDataGridState', () => {
 
     expect(result.current.draggedData).toBeNull();
     expect(result.current.draggedIndex).toBe(-1);
+    // @ts-ignore
     expect(result.current.isDraggable).toBeFalsy();
     expect(result.current.dataSource).toEqual([]);
     expect(result.current.isDragged).toBeDefined();

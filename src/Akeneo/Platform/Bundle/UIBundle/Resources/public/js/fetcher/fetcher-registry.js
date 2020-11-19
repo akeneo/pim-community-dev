@@ -10,7 +10,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'require-context'], function
      */
     initialize: function () {
       if (null === this.initializePromise) {
-        this.initializePromise = new Promise((resolve) => {
+        this.initializePromise = new Promise(resolve => {
           const fetcherList = __moduleConfig.fetchers;
           const defaultFetcher = 'pim/base-fetcher';
           const fetchers = {};

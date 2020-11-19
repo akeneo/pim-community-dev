@@ -192,6 +192,7 @@ const webpackConfig = {
             loader: 'ts-loader',
             options: {
               transpileOnly: !isStrict,
+              allowTsInNodeModules: true,
               configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
               getCustomTransformers: () => ({ before: [styledComponentsTransformer] })

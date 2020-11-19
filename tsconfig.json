@@ -21,7 +21,9 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
+  "exclude": ["**/tests/**/*"],
   "include": [
+    "node_modules/@akeneo-pim-community",
     "public/bundles",
     "frontend/types.d.ts"
   ]
