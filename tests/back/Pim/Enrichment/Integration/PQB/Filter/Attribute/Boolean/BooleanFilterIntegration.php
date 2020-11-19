@@ -63,7 +63,7 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testOperatorEmpty()
     {
         $result = $this->executeFilter([['a_yes_no', Operators::IS_EMPTY, '']]);
-        $this->assert($result, ['empty']);
+        $this->assert($result, []); // The 'empty' product does not belong to a family having boolean as attribute.
     }
 
     public function testErrorDataIsMalformed()
