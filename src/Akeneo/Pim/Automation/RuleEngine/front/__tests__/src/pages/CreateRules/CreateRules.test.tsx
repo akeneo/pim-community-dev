@@ -12,14 +12,6 @@ describe('CreateRules', () => {
     // Then
     expect(await screen.findByText('pim_menu.item.rule /')).toBeInTheDocument();
     expect(
-      screen.getByText('pimee_catalog_rule.form.creation.helper')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        'pimee_catalog_rule.form.helper.product_selection_doc_link'
-      )
-    ).toBeInTheDocument();
-    expect(
       screen.getByText('pimee_catalog_rule.form.creation.cross_link')
     ).toBeInTheDocument();
   });
