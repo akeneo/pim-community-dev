@@ -190,6 +190,13 @@ services:
             - '@pim_catalog.updater.family'
             - '@validator'
 
+    akeneo_integration_tests.base.family_variant.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+
     akeneo_integration_tests.catalog.product_model.builder:
         class: 'Akeneo\Test\Common\EntityWithValue\Builder\ProductModel'
         shared: false
@@ -214,22 +221,15 @@ services:
     akeneo_integration_tests.fixture.loader.product_and_product_model_with_removed_attribute:
         class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\ProductAndProductModelWithRemovedAttributeLoader'
         arguments:
-            $productFactory: '@pim_catalog.builder.product'
-            $productUpdater: '@pim_catalog.updater.product'
-            $productValidator: '@pim_catalog.validator.product'
+            $productBuilder: '@akeneo_integration_tests.catalog.product.builder'
             $productSaver: '@pim_catalog.saver.product'
-            $productModelFactory: '@pim_catalog.factory.product_model'
-            $productModelUpdater: '@pim_catalog.updater.product_model'
-            $productModelValidator: '@pim_catalog.validator.product_model'
+            $productModelBuilder: '@akeneo_integration_tests.base.product_model.builder'
             $productModelSaver: '@pim_catalog.saver.product_model'
-            $familyVariantFactory: '@pim_catalog.factory.family_variant'
-            $familyVariantUpdater: '@pim_catalog.updater.family_variant'
+            $familyVariantBuilder: '@akeneo_integration_tests.base.family_variant.builder'
             $familyVariantSaver: '@pim_catalog.saver.family_variant'
-            $familyFactory: '@pim_catalog.factory.family'
-            $familyUpdater: '@pim_catalog.updater.family'
+            $familyBuilder: '@akeneo_integration_tests.base.family.builder'
             $familySaver: '@pim_catalog.saver.family'
-            $attributeFactory: '@pim_catalog.factory.attribute'
-            $attributeUpdater: '@pim_catalog.updater.attribute'
+            $attributeBuilder: '@akeneo_integration_tests.base.attribute.builder'
             $attributeSaver: '@pim_catalog.saver.attribute'
             $attributeRepository: '@pim_catalog.repository.attribute'
             $attributeRemover: '@pim_catalog.remover.attribute'

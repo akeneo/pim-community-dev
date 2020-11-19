@@ -4,42 +4,35 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Fixture;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\ProductUpdater;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Test\Common\EntityBuilder as AttributeBuilder;
+use Akeneo\Test\Common\EntityBuilder as FamilyBuilder;
+use Akeneo\Test\Common\EntityBuilder as FamilyVariantBuilder;
+use Akeneo\Test\Common\EntityBuilder as ProductModelBuilder;
+use Akeneo\Test\Common\EntityWithValue\Builder\Product as ProductBuilder;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
-use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductAndProductModelWithRemovedAttributeLoader
 {
-    private $productFactory;
-    private $productUpdater;
-    private $productValidator;
+    private $productBuilder;
     private $productSaver;
-    private $productModelFactory;
-    private $productModelUpdater;
-    private $productModelValidator;
+    private $productModelBuilder;
     private $productModelSaver;
-    private $familyVariantFactory;
-    private $familyVariantUpdater;
+    private $familyVariantBuilder;
     private $familyVariantSaver;
-    private $familyFactory;
-    private $familyUpdater;
+    private $familyBuilder;
     private $familySaver;
-    private $attributeFactory;
-    private $attributeUpdater;
+    private $attributeBuilder;
     private $attributeSaver;
     private $attributeRepository;
     private $attributeRemover;
@@ -47,22 +40,15 @@ class ProductAndProductModelWithRemovedAttributeLoader
     private $productAndProductModelEsClient;
 
     public function __construct(
-        ProductBuilder $productFactory,
-        ProductUpdater $productUpdater,
-        ValidatorInterface $productValidator,
+        ProductBuilder $productBuilder,
         ProductSaver $productSaver,
-        SimpleFactoryInterface $productModelFactory,
-        ObjectUpdaterInterface $productModelUpdater,
-        ValidatorInterface $productModelValidator,
+        ProductModelBuilder $productModelBuilder,
         BaseSaver $productModelSaver,
-        SimpleFactoryInterface $familyVariantFactory,
-        ObjectUpdaterInterface $familyVariantUpdater,
+        FamilyVariantBuilder $familyVariantBuilder,
         BaseSaver $familyVariantSaver,
-        SimpleFactoryInterface $familyFactory,
-        ObjectUpdaterInterface $familyUpdater,
+        FamilyBuilder $familyBuilder,
         FamilySaver $familySaver,
-        SimpleFactoryInterface $attributeFactory,
-        ObjectUpdaterInterface $attributeUpdater,
+        AttributeBuilder $attributeBuilder,
         AttributeSaver $attributeSaver,
         AttributeRepository $attributeRepository,
         BaseRemover $attributeRemover,
@@ -71,22 +57,15 @@ class ProductAndProductModelWithRemovedAttributeLoader
     )
     {
 
-        $this->productFactory = $productFactory;
-        $this->productUpdater = $productUpdater;
-        $this->productValidator = $productValidator;
+        $this->productBuilder = $productBuilder;
         $this->productSaver = $productSaver;
-        $this->productModelFactory = $productModelFactory;
-        $this->productModelUpdater = $productModelUpdater;
-        $this->productModelValidator = $productModelValidator;
+        $this->productModelBuilder = $productModelBuilder;
         $this->productModelSaver = $productModelSaver;
-        $this->familyVariantFactory = $familyVariantFactory;
-        $this->familyVariantUpdater = $familyVariantUpdater;
+        $this->familyVariantBuilder = $familyVariantBuilder;
         $this->familyVariantSaver = $familyVariantSaver;
-        $this->familyFactory = $familyFactory;
-        $this->familyUpdater = $familyUpdater;
+        $this->familyBuilder = $familyBuilder;
         $this->familySaver = $familySaver;
-        $this->attributeFactory = $attributeFactory;
-        $this->attributeUpdater = $attributeUpdater;
+        $this->attributeBuilder = $attributeBuilder;
         $this->attributeSaver = $attributeSaver;
         $this->attributeRepository = $attributeRepository;
         $this->attributeRemover = $attributeRemover;
@@ -295,6 +274,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         // Variant product for the two level of variations
         $this->createProduct([
             'identifier' => 'product_3',
+            'family' => 'a_family',
             'parent' => 'a_sub_product_model',
             'values' => [
                 'a_second_attribute' => [
@@ -320,12 +300,31 @@ class ProductAndProductModelWithRemovedAttributeLoader
 
     protected function createProduct(array $data = []): ProductInterface
     {
-        $identifier = $data['identifier'] ?? 'new_product_' . rand();
+        $this->productBuilder
+            ->init()
+            ->withIdentifier($data['identifier'] ?? 'new_product_' . uniqid())
+            ->withFamily($data['family'] ?? 'a_family')
+        ;
 
-        $product = $this->productFactory->createProduct($identifier);
-        $this->productUpdater->update($product, $data);
-        $constraintList = $this->productValidator->validate($product);
-        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a product');
+        if (!empty($data['values'])) {
+            foreach ($data["values"] as $attribute => $value) {
+                foreach ($value as $valueByChannelAnLocale) {
+                    $this->productBuilder->withValue(
+                        $attribute,
+                        array_key_exists('data', $valueByChannelAnLocale) ? $valueByChannelAnLocale['data'] : '',
+                        $valueByChannelAnLocale['locale'] ?? '',
+                        $valueByChannelAnLocale['channel'] ?? '',
+                    );
+                }
+            }
+        }
+
+        if (!empty($data['parent'])) {
+            $this->productBuilder->withParent($data['parent']);
+        }
+
+        $product = $this->productBuilder->build();
+
         $this->productSaver->save($product);
         $this->productAndProductModelEsClient->refreshIndex();
 
@@ -334,10 +333,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
 
     protected function createProductModel(array $data = []): ProductModelInterface
     {
-        $productModel = $this->productModelFactory->create();
-        $this->productModelUpdater->update($productModel, $data);
-        $constraintList = $this->productModelValidator->validate($productModel);
-        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a product model');
+        $productModel = $this->productModelBuilder->build($data, true);
         $this->productModelSaver->save($productModel);
         $this->productAndProductModelEsClient->refreshIndex();
 
@@ -346,21 +342,15 @@ class ProductAndProductModelWithRemovedAttributeLoader
 
     protected function createFamilyVariant(array $data = []): FamilyVariantInterface
     {
-        $family = $this->familyVariantFactory->create();
-        $this->familyVariantUpdater->update($family, $data);
-        $constraintList = $this->entityValidator->validate($family);
-        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a family variant');
-        $this->familyVariantSaver->save($family);
+        $familyVariant = $this->familyVariantBuilder->build($data, true);
+        $this->familyVariantSaver->save($familyVariant);
 
-        return $family;
+        return $familyVariant;
     }
 
     protected function createFamily(array $data = []): FamilyInterface
     {
-        $family = $this->familyFactory->create();
-        $this->familyUpdater->update($family, $data);
-        $constraintList = $this->entityValidator->validate($family);
-        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create a family');
+        $family = $this->familyBuilder->build($data, true);
         $this->familySaver->save($family);
 
         return $family;
@@ -368,10 +358,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
 
     protected function createAttribute(array $data = []): AttributeInterface
     {
-        $attribute = $this->attributeFactory->create();
-        $this->attributeUpdater->update($attribute, $data);
-        $constraintList = $this->entityValidator->validate($attribute);
-        Assert::assertEquals(0, $constraintList->count(), 'Impossible to create an attribute');
+        $attribute = $this->attributeBuilder->build($data, true);
         $this->attributeSaver->save($attribute);
 
         return $attribute;
