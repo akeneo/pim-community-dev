@@ -1,6 +1,7 @@
 import React from 'react';
 import {BooleanInput} from './BooleanInput';
 import {fireEvent, render, screen} from '../../../storybook/test-util';
+import {TranslateContext, Translate} from '../../../hooks/useTranslate';
 
 test('it renders default component', () => {
   render(<BooleanInput value={true} />);
@@ -9,12 +10,24 @@ test('it renders default component', () => {
   expect(screen.getByText('No')).toBeInTheDocument();
 });
 
-test('it renders with custom labels', () => {
-  render(<BooleanInput value={false} clearable={true} yesLabel={'Oui'} noLabel={'Non'} clearLabel={'Effacer'} />);
+test('it translate labels', () => {
+  const translate: Translate = id => {
+    return {
+      Yes: 'Oui',
+      No: 'Non',
+      'Clear value': 'Effacer la valeur',
+    }[id] as string;
+  };
+
+  render(
+    <TranslateContext.Provider value={translate}>
+      <BooleanInput value={true} clearable={true} />
+    </TranslateContext.Provider>
+  );
 
   expect(screen.getByText('Oui')).toBeInTheDocument();
   expect(screen.getByText('Non')).toBeInTheDocument();
-  expect(screen.getByText('Effacer')).toBeInTheDocument();
+  expect(screen.getByText('Effacer la valeur')).toBeInTheDocument();
 });
 
 test('it does not allow clear if this is readonly', () => {
