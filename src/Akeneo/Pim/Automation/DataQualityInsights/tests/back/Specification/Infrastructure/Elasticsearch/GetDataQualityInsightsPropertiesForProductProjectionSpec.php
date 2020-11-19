@@ -5,30 +5,27 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRankCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\AxisRankCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductAxesRanksQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
-use Akeneo\Pim\Automation\DataQualityInsights\tests\back\Specification\Domain\Model\Axis\Consistency;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
 final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends ObjectBehavior
 {
     public function let(
-        GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
+        GetLatestProductScoresQueryInterface $getProductScoresQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
         ComputeProductsKeyIndicators $computeProductsKeyIndicators
     ) {
-        $this->beConstructedWith($getLatestProductAxesRanksQuery, $getProductIdsFromProductIdentifiersQuery, $computeProductsKeyIndicators);
+        $this->beConstructedWith($getProductScoresQuery, $getProductIdsFromProductIdentifiersQuery, $computeProductsKeyIndicators);
     }
 
     public function it_returns_additional_properties_from_product_identifiers(
-        $getLatestProductAxesRanksQuery,
+        $getProductScoresQuery,
         $getProductIdsFromProductIdentifiersQuery,
         $computeProductsKeyIndicators
     ) {
@@ -46,27 +43,18 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
 
         $getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers)->willReturn($productIds);
 
-        $consistency = new Consistency();
-        $enrichment = new Enrichment();
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $getLatestProductAxesRanksQuery->byProductIds($productIds)->willReturn([
-            42 => (new AxisRankCollection())
-                ->add($enrichment->getCode(), (new ChannelLocaleRankCollection())
-                    ->addRank($channelMobile, $localeEn, Rank::fromInt(2))
-                    ->addRank($channelMobile, $localeFr, Rank::fromInt(5))
-                    ->addRank($channelEcommerce, $localeEn, Rank::fromInt(3))
-                )
-                ->add($consistency->getCode(), (new ChannelLocaleRankCollection())
-                    ->addRank($channelMobile, $localeEn, Rank::fromInt(1))
-                ),
-            123 => (new AxisRankCollection())
-                ->add($enrichment->getCode(), (new ChannelLocaleRankCollection())
-                    ->addRank($channelMobile, $localeEn, Rank::fromInt(4))
-                ),
+        $getProductScoresQuery->byProductIds($productIds)->willReturn([
+            42 => (new ChannelLocaleRateCollection)
+                ->addRate($channelMobile, $localeEn, new Rate(81))
+                ->addRate($channelMobile, $localeFr, new Rate(30))
+                ->addRate($channelEcommerce, $localeEn, new Rate(73)),
+            123 => (new ChannelLocaleRateCollection)
+                ->addRate($channelMobile, $localeEn, new Rate(66)),
         ]);
 
         $productsKeyIndicators = [
@@ -112,8 +100,8 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
 
         $this->fromProductIdentifiers($productIdentifiers)->shouldReturn([
             'product_1' => [
-                'rates' => [
-                    'enrichment' => [
+                'data_quality_insights' => [
+                    'scores' => [
                         'mobile' => [
                             'en_US' => 2,
                             'fr_FR' => 5,
@@ -122,27 +110,21 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                             'en_US' => 3,
                         ],
                     ],
-                    'consistency' => [
-                        'mobile' => [
-                            'en_US' => 1,
-                        ],
-                    ],
+                    'key_indicators' => $productsKeyIndicators[42]
                 ],
-                'data_quality_insights' => ['key_indicators' => $productsKeyIndicators[42]],
             ],
             'product_2' => [
-                'rates' => [
-                    'enrichment' => [
+                'data_quality_insights' => [
+                    'scores' => [
                         'mobile' => [
                             'en_US' => 4,
                         ],
                     ],
+                    'key_indicators' => $productsKeyIndicators[123]
                 ],
-                'data_quality_insights' => ['key_indicators' => $productsKeyIndicators[123]],
             ],
             'product_without_rates' => [
-                'rates' => [],
-                'data_quality_insights' => ['key_indicators' => []],
+                'data_quality_insights' => ['scores' => [], 'key_indicators' => []],
             ],
         ]);
     }
