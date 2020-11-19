@@ -779,6 +779,61 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
+            ->filterProductIdentifiers($productIdentifiersToKeep)
+            ->filterProductModelCodes($productModelCodesToKeep);
+        $this->wasUpdated = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function mergeQuantifiedAssociations(QuantifiedAssociationCollection $quantifiedAssociations): void
+    {
+        if ($this->quantifiedAssociationCollection === null) {
+            return;
+        }
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->merge($quantifiedAssociations);
+        $this->wasUpdated = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): void
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->patchQuantifiedAssociations(
+            $submittedQuantifiedAssociations
+        );
+        $this->wasUpdated = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clearQuantifiedAssociations(): void
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->clearQuantifiedAssociations();
+        $this->wasUpdated = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function wasUpdated(): bool
     {
         return $this->wasUpdated;
@@ -790,6 +845,18 @@ abstract class AbstractProduct implements ProductInterface
     public function cleanup(): void
     {
         $this->wasUpdated = false;
+    }
+
+    public function __clone()
+    {
+        $this->values = clone $this->values;
+        $this->categories = clone $this->categories;
+        $this->groups = clone $this->groups;
+        $clonedAssociations = $this->associations->map(
+            fn (AssociationInterface $association): AssociationInterface => clone $association
+        );
+        $this->associations = $clonedAssociations;
+        $this->quantifiedAssociationCollection = clone $this->quantifiedAssociationCollection;
     }
 
     /**
@@ -948,17 +1015,5 @@ abstract class AbstractProduct implements ProductInterface
         $associationsCollection->add($association);
 
         return $associationsCollection;
-    }
-
-    public function __clone()
-    {
-        $this->values = clone $this->values;
-        $this->categories = clone $this->categories;
-        $this->groups = clone $this->groups;
-        $clonedAssociations = $this->associations->map(
-            fn (AssociationInterface $association): AssociationInterface => clone $association
-        );
-        $this->associations = $clonedAssociations;
-        $this->quantifiedAssociationCollection = clone $this->quantifiedAssociationCollection;
     }
 }
