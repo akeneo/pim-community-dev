@@ -9,5 +9,5 @@ extensions:
         module: akeneo/data-quality-insights/infrastructure/pim-view/product-edit-form/data-quality-insights-app
         parent: pim-product-edit-form
         targetZone: content
-        position: 10
+        position: 110
         feature: data_quality_insights
