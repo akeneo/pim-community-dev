@@ -227,7 +227,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $progressBar = new ProgressBar($output, $countProducts + $countProductModels);
         $progressBar->start();
 
-        $updateProgressBar = function(int $count) use ($progressBar) {
+        $updateProgressBar = function (int $count) use ($progressBar) {
             $progressBar->advance($count);
         };
 
