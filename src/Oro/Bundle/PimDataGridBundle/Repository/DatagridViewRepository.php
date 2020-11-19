@@ -23,8 +23,9 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
         return $this->createQueryBuilder('v')
             ->select('v.datagridAlias')
             ->distinct(true)
-            ->where('v.type = :type OR v.owner = :owner')
-                ->setParameter('type', DatagridView::TYPE_PUBLIC)
+            ->where('v.type = :public_type OR (v.type = :private_type AND v.owner = :owner)')
+                ->setParameter('public_type', DatagridView::TYPE_PUBLIC)
+                ->setParameter('private_type', DatagridView::TYPE_PRIVATE)
                 ->setParameter('owner', $user)
             ->getQuery()
             ->execute();
@@ -44,8 +45,9 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
         }
 
         $qb = $this->createQueryBuilder('v')
-            ->where('v.type = :type OR v.owner = :owner')
-                ->setParameter('type', DatagridView::TYPE_PUBLIC)
+            ->where('v.type = :public_type OR (v.type = :private_type AND v.owner = :owner)')
+                ->setParameter('public_type', DatagridView::TYPE_PUBLIC)
+                ->setParameter('private_type', DatagridView::TYPE_PRIVATE)
                 ->setParameter('owner', $user)
             ->andWhere('v.datagridAlias = :alias')
                 ->setParameter('alias', $alias)
