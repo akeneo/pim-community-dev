@@ -21,7 +21,7 @@ test('it removes the last step `href` if it is provided', () => {
   );
 
   expect(screen.getByText('First')).toHaveAttribute('href', '#');
-  expect(screen.getByText('Second')).not.toHaveAttribute('href');
+  expect(screen.getByText('Second')).toHaveAttribute('disabled');
 });
 
 test('it respects Breadcrumb accessibility standards', () => {

@@ -45,7 +45,7 @@ const Breadcrumb = ({children, ...rest}: BreadcrumbProps) => {
         const isLastStep = childrenCount - 1 === index;
 
         return isLastStep ? (
-          React.cloneElement(child, {'aria-current': 'page', href: undefined})
+          React.cloneElement(child, {'aria-current': 'page', disabled: true})
         ) : (
           <>
             {child}
