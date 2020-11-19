@@ -1,5 +1,6 @@
 import React, {useRef, useEffect} from 'react';
 import ReactDOM from 'react-dom';
+import styled from 'styled-components';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 const dateContext = require('pim/date-context');
@@ -16,6 +17,17 @@ require('require-polyfill');
 //TODO: remove later as we should be able to not use them anymore
 require('jquery-ui');
 require('bootstrap');
+
+// Style fix
+const Container = styled.div`
+  display: flex;
+  height: 100vh;
+`;
+
+const Content = styled.div`
+  flex: 1;
+  height: 100vh;
+`;
 
 const App = ({formBuilder}: {formBuilder: any}) => {
   const menuRef = useRef(null);
@@ -49,8 +61,10 @@ const App = ({formBuilder}: {formBuilder: any}) => {
           <div className="flash-messages-holder AknDefault-flashList"></div>
         </div>
       </div>
-      <div ref={menuRef}></div>
-      <div ref={containerRef} id="container" className="AknDefault-container"></div>
+      <Container>
+        <div ref={menuRef}></div>
+        <Content ref={containerRef} id="container" className="AknDefault-container"></Content>
+      </Container>
       <div id="overlay" className="AknOverlay"></div>
       <div data-drop-zone="communication-channel-panel"></div>
     </>
