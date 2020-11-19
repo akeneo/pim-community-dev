@@ -109,13 +109,13 @@ define([
             return this.notFound();
           }
 
-          // if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
-          //   this.hideLoadingMask();
+          if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
+            this.hideLoadingMask();
 
-          //   return this.displayErrorPage(__('error.forbidden'), '403');
-          // }
+            return this.displayErrorPage(__('error.forbidden'), '403');
+          }
 
-          controller.el = this.root;
+          controller.el = view;
           this.currentController = new controller.class(controller);
           this.currentController.setActive(true);
           this.currentController
