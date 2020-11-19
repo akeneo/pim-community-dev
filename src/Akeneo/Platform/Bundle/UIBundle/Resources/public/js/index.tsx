@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const fetcherRegistry = require('pim/fetcher-registry');
 const dateContext = require('pim/date-context');
 const userContext = require('pim/user-context');
+const securityContext = require('pim/security-context');
 const initTranslator = require('pim/init-translator');
 const formBuilder = require('pim/form-builder');
 const router = require('pim/router');
@@ -34,7 +35,12 @@ const App = ({formBuilder}: {formBuilder: any}) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const initialize = async () => {
-    await Promise.all([fetcherRegistry.initialize(), dateContext.initialize(), userContext.initialize()]);
+    await Promise.all([
+      fetcherRegistry.initialize(),
+      dateContext.initialize(),
+      userContext.initialize(),
+      securityContext.initialize(),
+    ]);
     router.setRoot(containerRef.current);
     await initTranslator.fetch();
 
