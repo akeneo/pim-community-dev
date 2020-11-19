@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface;
@@ -61,20 +52,26 @@ final class EvaluateCompletenessSpec extends ObjectBehavior
             ->addMissingAttributes($channelMobile, $localeFr, ['name', 'weight'])
             ->addRate($channelPrint, $localeEn, new Rate(92))
             ->addMissingAttributes($channelPrint, $localeEn, ['description'])
+            ->addTotalNumberOfAttributes($channelMobile, $localeEn, 2)
+            ->addTotalNumberOfAttributes($channelMobile, $localeFr, 6)
+            ->addTotalNumberOfAttributes($channelPrint, $localeEn, 3)
         );
 
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addRate($channelMobile, $localeEn, new Rate(100))
             ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelMobile, $localeEn, [])
+            ->addData('total_number_of_attributes', $channelMobile, $localeEn, 2)
 
             ->addRate($channelMobile, $localeFr, new Rate(85))
             ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelMobile, $localeFr, ['name' => 0, 'weight' => 0])
+            ->addData('total_number_of_attributes', $channelMobile, $localeFr, 6)
 
             ->addRate($channelPrint, $localeEn, new Rate(92))
             ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelPrint, $localeEn, ['description' => 0])
+            ->addData('total_number_of_attributes', $channelPrint, $localeEn, 3)
 
             ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::notApplicable())
         ;
