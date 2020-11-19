@@ -12,10 +12,10 @@ use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
  */
 class WebhookEventDataBuilderNotFoundException extends \RuntimeException implements EventBuildingExceptionInterface
 {
-    public function __construct(string $businessEventName)
+    public function __construct(object $event)
     {
         parent::__construct(
-            sprintf('Webhook event data builder was not found for business event "%s"', $businessEventName)
+            sprintf('Webhook event data builder was not found for class %s', get_class($event))
         );
     }
 }

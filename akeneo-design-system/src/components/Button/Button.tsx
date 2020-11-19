@@ -191,4 +191,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 export {Button};
-export type {ButtonProps};
+export type {ButtonProps, ButtonSize};

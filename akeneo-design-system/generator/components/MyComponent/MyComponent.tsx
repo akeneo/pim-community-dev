@@ -6,18 +6,18 @@ const MyComponentContainer = styled.div<{level: string}>``;
 
 type MyComponentProps = {
   /**
-   * TODO
+   * TODO.
    */
   level?: 'primary' | 'warning' | 'danger';
 
   /**
-   * TODO
+   * TODO.
    */
   children?: ReactNode;
 };
 
 /**
- * TODO
+ * TODO.
  */
 const MyComponent = React.forwardRef<HTMLDivElement, MyComponentProps>(
   ({level = 'primary', children, ...rest}: MyComponentProps, forwardedRef: Ref<HTMLDivElement>) => {

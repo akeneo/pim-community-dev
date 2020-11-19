@@ -25,37 +25,25 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $this->shouldImplement(EventDataBuilderInterface::class);
     }
 
-    public function it_supports_product_model_removed_event(UserInterface $user): void
+    public function it_supports_product_model_removed_event(): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
         $this->supports(new ProductModelRemoved($author, ['data']))->shouldReturn(true);
     }
 
-    public function it_does_not_supports_other_business_event(UserInterface $user): void
+    public function it_does_not_supports_other_business_event(): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->supports(new ProductCreated($author, ['data']))->shouldReturn(false);
+        $this->supports(new ProductCreated($author, ['identifier' => '1']))->shouldReturn(false);
     }
 
     public function it_builds_product_model_removed_event(UserInterface $user): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->build(new ProductModelRemoved($author, ['code' => 'product_identifier']))->shouldReturn(
+        $this->build(new ProductModelRemoved($author, ['code' => 'product_identifier']), $user)->shouldReturn(
             [
                 'resource' => ['code' => 'product_identifier'],
             ]
@@ -64,15 +52,14 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_does_not_build_other_business_event(UserInterface $user): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
         $this->shouldThrow(new \InvalidArgumentException())->during(
             'build',
-            [new ProductCreated($author, ['code' => 'product_identifier'])]
+            [
+                new ProductCreated($author, ['identifier' => '1']),
+                $user
+            ]
         );
     }
 }

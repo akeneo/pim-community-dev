@@ -8,15 +8,15 @@ namespace Akeneo\Platform\Component\EventQueue;
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface BusinessEventInterface
+interface EventInterface
 {
-    public function name(): string;
+    public function getName(): string;
 
-    public function author(): Author;
+    public function getAuthor(): Author;
 
-    public function data(): array;
+    public function getData(): array;
 
-    public function timestamp(): int;
+    public function getTimestamp(): int;
 
-    public function uuid(): string;
+    public function getUuid(): string;
 }
