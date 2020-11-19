@@ -40,7 +40,7 @@ We recommend that the body of the message holds within two lines maximum. Be des
 
 ### Close
 
-We recommend that messages automatically disappear after 3 seconds for success, 5s for info & warning and 8s for error.
+When no link is present, the MessageBar automatically disappears after 3 seconds for success, 5s for info & warning and 8s for error.
 Manual closing instead of the timer if there is a Link component in the message.
 
 > ##### ⚠️ &nbsp; Important messages are persistent until the user closes them.
@@ -102,14 +102,14 @@ Icons can bring extra clarity. They should be placed at the left of the title. T
 <Canvas>
   <Story name="Animate">
     {args => {
-      const [id, setId] = useState(0);
-      const increment = () => setId(id + 1);
+      const [key, setKey] = useState(false);
+      const toggle = () => setKey(!key);
       return (
         <>
-          <AnimateMessageBar key={id}>
+          <AnimateMessageBar key={key}>
             <MessageBar {...args} title="Info" level="info" icon={<Icons.InfoRoundIcon />} />
           </AnimateMessageBar>
-          <Button onClick={increment}>Replay</Button>
+          <Button onClick={toggle}>Replay</Button>
         </>
       );
     }}

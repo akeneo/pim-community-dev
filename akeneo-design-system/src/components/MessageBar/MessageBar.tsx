@@ -2,7 +2,7 @@ import React, {ReactNode, ReactElement, isValidElement, useEffect, useState, use
 import styled, {keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CheckIcon, CloseIcon, DangerIcon, IconProps, InfoIcon} from '../../icons';
-import {LinkProps, Link} from '../../components';
+import {Link} from '../../components';
 
 type MessageBarLevel = 'info' | 'success' | 'warning' | 'error';
 
@@ -247,9 +247,7 @@ type MessageBarProps = FlashMessage & {
  */
 const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBarProps) => {
   const duration = getLevelDuration(level);
-  const autoHide = !React.Children.toArray(children).some(
-    child => isValidElement<LinkProps>(child) && child.type === Link
-  );
+  const autoHide = !React.Children.toArray(children).some(child => isValidElement(child) && child.type === Link);
 
   const [remaining, setRemaining] = useState<number>(autoHide ? duration : 0);
   const [over, onMouseOver, onMouseOut] = useOver();
@@ -288,7 +286,12 @@ const MessageBar = ({level = 'info', title, icon, onClose, children}: MessageBar
   const remainingDisplay = countDownFinished ? '' : Math.min(remaining + 1, duration);
 
   return (
-    <Container level={level} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+    <Container
+      role={'error' === level ? 'alert' : 'status'}
+      level={level}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
+    >
       <IconContainer>{React.cloneElement(icon ?? getLevelIcon(level), {size: 24})}</IconContainer>
       <Content>
         <Title>{title}</Title>
