@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -63,19 +64,17 @@ class WebhookRequestLog
      *  message: string,
      *  success: bool,
      *  response: array{status_code: int}|null,
-     *  event: array{
+     *  events: array<array{
      *      uuid: string,
      *      author: string,
      *      author_type: string,
      *      name: string,
      *      timestamp: int|null,
-     *  },
+     *  }>,
      * }
      */
     public function toLog(): array
     {
-        $date = \DateTime::createFromFormat(\DateTime::ATOM, $this->webhookRequest->event()->eventDate());
-
         return [
             'type' => 'webhook.send_request',
             'duration' => $this->getDuration(),
@@ -83,13 +82,16 @@ class WebhookRequestLog
             'message' => $this->message,
             'success' => $this->success,
             'response' => $this->response ? ['status_code' => $this->response->getStatusCode()] : null,
-            'event' => [
-                'uuid' => $this->webhookRequest->event()->eventId(),
-                'author' => $this->webhookRequest->event()->author()->name(),
-                'author_type' => $this->webhookRequest->event()->author()->type(),
-                'name' => $this->webhookRequest->event()->action(),
-                'timestamp' => ($date) ? $date->getTimestamp() : null,
-            ],
+            'events' => array_map(function (WebhookEvent $event) {
+                $date = \DateTime::createFromFormat(\DateTime::ATOM, $event->eventDate());
+                return [
+                    'uuid' => $event->eventId(),
+                    'author' => $event->author()->name(),
+                    'author_type' => $event->author()->type(),
+                    'name' => $event->action(),
+                    'timestamp' => $date ? $date->getTimestamp() : null,
+                ];
+            }, $this->webhookRequest->apiEvents()),
         ];
     }
 

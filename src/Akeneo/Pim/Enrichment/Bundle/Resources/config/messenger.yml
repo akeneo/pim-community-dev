@@ -1,9 +1,16 @@
+# TODO: To move to Platform
 services:
     pim_enrich.messenger.serializer.business_event:
         class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
         arguments:
-            - !tagged pim_enrich.messenger.normalizer.business_event
+            - !tagged pim_enrich.messenger.normalizer
 
-    Akeneo\Platform\Component\EventQueue\BusinessEventNormalizer:
+    Akeneo\Platform\Component\EventQueue\EventNormalizer:
         tags:
-            - { name: pim_enrich.messenger.normalizer.business_event, priority: 0 }
+            - { name: pim_enrich.messenger.normalizer, priority: 0 }
+
+    Akeneo\Platform\Component\EventQueue\BulkEventNormalizer:
+        arguments:
+          - '@Akeneo\Platform\Component\EventQueue\EventNormalizer'
+        tags:
+            - { name: pim_enrich.messenger.normalizer, priority: 10 }
