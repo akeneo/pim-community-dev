@@ -23,6 +23,7 @@ final class Version_5_0_20201118133700_migrate_product_axis_rate_to_unique_score
         $this->disableMigrationWarning();
 
         $this->db = $this->container->get('database_connection');
+        $this->cachedChannelLocaleArray = null;
 
         $lastProduct = 0;
         while ($productsToMigrate = $this->getProductsToMigrateFrom($lastProduct, self::BULK_SIZE)) {

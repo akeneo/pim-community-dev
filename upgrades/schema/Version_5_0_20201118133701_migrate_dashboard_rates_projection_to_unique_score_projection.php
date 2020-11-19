@@ -23,6 +23,7 @@ final class Version_5_0_20201118133701_migrate_dashboard_rates_projection_to_uni
         $this->disableMigrationWarning();
 
         $this->db = $this->container->get('database_connection');
+        $this->cachedChannelLocaleArray = null;
 
         foreach ($this->getLinesToMigrate(self::BULK_SIZE) as $linesToMigrate) {
             $this->migrateLines($linesToMigrate);
