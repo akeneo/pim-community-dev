@@ -16,6 +16,8 @@ akeneo_data_quality_insights:
         title: Konsistenz
         attributes_link: Alle verbesserbaren Attribute anzeigen
         success: Ihre Produktdaten sind konsistent. Herzlichen Glückwunsch!
+    messages:
+      add_image_attribute_recommendation: Ein Bild sagt mehr als tausend Wörter. Sie sollten eine Asset-Sammlung oder ein Bild-Attribut hinzufügen, um die Datenqualität dieses Artikels zu verbessern.
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: Alle verbesserbaren Attribute
