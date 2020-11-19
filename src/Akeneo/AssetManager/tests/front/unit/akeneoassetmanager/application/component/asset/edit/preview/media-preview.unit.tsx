@@ -1,6 +1,6 @@
 import * as React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {render} from '@testing-library/react';
+import {fireEvent, render} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
@@ -9,6 +9,9 @@ import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-l
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
+
+const routing = require('routing');
+jest.mock('routing');
 
 const mediaLinkImageAttribute = {
   identifier: 'media_link_image_attribute_identifier',
@@ -53,6 +56,28 @@ describe('Tests media preview component', () => {
 
     expect(container.querySelector('[data-role="empty-preview"]')).toBeInTheDocument();
     expect(getByText('pim_asset_manager.asset_preview.empty_main_media')).toBeInTheDocument();
+  });
+
+  test('It renders a media preview imposible to generate', () => {
+    routing.generate = jest
+      .fn()
+      .mockImplementation((route: string, parameters: any) => route + '?' + new URLSearchParams(parameters).toString());
+
+    const {container} = render(
+      <ThemeProvider theme={akeneoTheme}>
+        <Provider store={createStore(() => ({reloadPreview: false}))}>
+          <MediaPreview data={mediaFileData} label="" attribute={mediaFileAttribute} />
+        </Provider>
+      </ThemeProvider>
+    );
+
+    const previewImg = container.querySelector('[data-role="media-data-preview"]');
+    fireEvent(previewImg, new Event('error'));
+
+    expect(previewImg).toHaveAttribute(
+      'src',
+      'akeneo_asset_manager_image_preview?type=thumbnail&attributeIdentifier=UNKNOWN&data='
+    );
   });
 
   test('It renders a media file preview', () => {

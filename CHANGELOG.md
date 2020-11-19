@@ -72,6 +72,7 @@
 - RUL-271: Rule engine - As Peter, I'd like to add a condition on a relative date for created/updated fields
 - PIM-9506: Make "image" the default media type for media link asset attributes
 - PIM-9452: Add a command to update ES max field limit on Serenity upgrade (Helm hook)
+- PIM-9562: default asset preview and thumbnail
 
 ## New features
 

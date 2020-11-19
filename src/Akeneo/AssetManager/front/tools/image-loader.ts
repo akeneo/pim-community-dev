@@ -23,10 +23,13 @@ export const clearImageLoadingQueue = () => {
 };
 
 const loadImage = (imagePath: string) => {
-  return new Promise<void>((resolve: any) => {
+  return new Promise<void>((resolve: any, reject: any) => {
     const downloadingImage = new Image();
     downloadingImage.onload = () => {
       resolve();
+    };
+    downloadingImage.onerror = () => {
+      reject(new Error('Cannot load image ' + imagePath));
     };
     downloadingImage.src = imagePath;
   });
