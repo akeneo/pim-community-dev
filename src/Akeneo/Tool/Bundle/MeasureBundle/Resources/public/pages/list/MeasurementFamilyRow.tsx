@@ -13,7 +13,7 @@ type MeasurementFamilyRowProps = {
 };
 
 const MeasurementFamilyRow = ({measurementFamily}: MeasurementFamilyRowProps) => {
-  const locale = useUserContext().get('catalogLocale');
+  const locale = useUserContext().get('uiLocale');
   const history = useHistory();
   const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
 
