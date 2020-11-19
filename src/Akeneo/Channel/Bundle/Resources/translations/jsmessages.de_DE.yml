@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Kategorie-Strukturbaum
     do_not_convert: Werden nicht konvertiert
+    measurement: Messeinstellungen
     label_conversion_units: Wählen Sie eine Konvertierungseinheit für jedes Messattribut aus, das während des Produkt-Exports verwendet wird
   module:
     create:

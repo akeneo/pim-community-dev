@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment;
 
@@ -13,9 +14,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class EvaluateImageEnrichment implements EvaluateCriterionInterface
 {
     public const CRITERION_CODE = 'enrichment_image';
+
+    public const CRITERION_COEFFICIENT = 2;
 
     private CalculateProductCompletenessInterface $completenessCalculator;
 
@@ -84,5 +91,10 @@ class EvaluateImageEnrichment implements EvaluateCriterionInterface
             ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelCode, $localeCode, $attributesRates)
         ;
+    }
+
+    public function getCoefficient(): int
+    {
+        return self::CRITERION_COEFFICIENT;
     }
 }

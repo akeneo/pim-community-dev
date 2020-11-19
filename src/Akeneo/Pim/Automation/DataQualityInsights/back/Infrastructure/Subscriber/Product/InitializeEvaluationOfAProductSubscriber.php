@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -14,35 +14,34 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberInterface
 {
-    /** @var FeatureFlag */
-    private $dataQualityInsightsFeature;
+    private FeatureFlag $dataQualityInsightsFeature;
 
-    /** @var CreateCriteriaEvaluations */
-    private $createProductsCriteriaEvaluations;
+    private CreateCriteriaEvaluations $createProductsCriteriaEvaluations;
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /** @var EvaluatePendingCriteria */
-    private $evaluatePendingCriteria;
+    private EvaluatePendingCriteria $evaluatePendingCriteria;
 
-    /** @var ConsolidateAxesRates */
-    private $consolidateProductAxisRates;
+    private ConsolidateProductScores $consolidateProductScores;
 
     public function __construct(
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateAxesRates $consolidateProductAxisRates
+        ConsolidateProductScores $consolidateProductScores
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->logger = $logger;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
-        $this->consolidateProductAxisRates = $consolidateProductAxisRates;
+        $this->consolidateProductScores = $consolidateProductScores;
     }
 
     public static function getSubscribedEvents()
@@ -71,7 +70,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
         $productId = intval($subject->getId());
         $this->initializeCriteria($productId);
         $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productId]);
-        $this->consolidateProductAxisRates->consolidate([$productId]);
+        $this->consolidateProductScores->consolidate([$productId]);
     }
 
     private function initializeCriteria($productId)

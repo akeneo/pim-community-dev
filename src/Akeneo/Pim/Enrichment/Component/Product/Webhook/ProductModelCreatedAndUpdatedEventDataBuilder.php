@@ -8,11 +8,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFoundException;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -36,28 +35,21 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
         $this->externalApiNormalizer = $externalApiNormalizer;
     }
 
-    public function supports(BusinessEventInterface $businessEvent): bool
+    public function supports(object $event): bool
     {
-        return $businessEvent instanceof ProductModelUpdated || $businessEvent instanceof ProductModelCreated;
+        return $event instanceof ProductModelUpdated || $event instanceof ProductModelCreated;
     }
 
     /**
-     * @param ProductModelUpdated|ProductModelCreated $businessEvent
-     * @param array<mixed> $context
-     *
-     * @return array<mixed>
-     *
-     * @throws \InvalidArgumentException
-     * @throws ProductModelNotFoundException
-     * @throws ExceptionInterface
+     * @param ProductModelUpdated|ProductModelCreated $event
      */
-    public function build(BusinessEventInterface $businessEvent, array $context = []): array
+    public function build(object $event, UserInterface $user): array
     {
-        if (false === $this->supports($businessEvent)) {
+        if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
         }
 
-        $data = $businessEvent->data();
+        $data = $event->getData();
 
         try {
             $productModel = $this->productModelRepository->findOneByIdentifier($data['code']);

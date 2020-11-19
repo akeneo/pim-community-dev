@@ -4,28 +4,44 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
-use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\NotGrantedCategoryException;
-use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder;
+use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Prophecy\Argument;
+use Symfony\Component\Routing\RouterInterface;
 
 class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
 {
     public function let(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        NormalizerInterface $externalApiNormalizer
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        GetConnectorProducts $getConnectorProductsQuery,
+        ProductValueNormalizer $productValuesNormalizer,
+        RouterInterface $router
     ): void {
-        $this->beConstructedWith($productRepository, $externalApiNormalizer);
+        $connectorProductNormalizer = new ConnectorProductNormalizer(
+            new ValuesNormalizer($productValuesNormalizer->getWrappedObject(), $router->getWrappedObject()),
+            new DateTimeNormalizer()
+        );
+        $productValuesNormalizer->normalize(Argument::type(ReadValueCollection::class), 'standard')->willReturn([]);
+
+        $this->beConstructedWith($pqbFactory, $getConnectorProductsQuery, $connectorProductNormalizer);
     }
 
     public function it_is_initializable()
@@ -34,138 +50,154 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $this->shouldImplement(EventDataBuilderInterface::class);
     }
 
-    public function it_supports_product_created_event(UserInterface $user): void
+    public function it_supports_a_bulk_event_of_product_created_and_updated_events(): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $bulkEvent = new BulkEvent([
+            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1']),
+            new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '2'])
+        ]);
 
-        $this->supports(new ProductCreated($author, ['data']))->shouldReturn(true);
+        $this->supports($bulkEvent)->shouldReturn(true);
     }
 
-    public function it_supports_product_updated_event(UserInterface $user): void
+    public function it_does_not_support_a_bulk_event_of_unsupported_product_events(): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $bulkEvent = new BulkEvent([
+            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1']),
+            new ProductRemoved(Author::fromNameAndType('julia', Author::TYPE_UI), [])
+        ]);
 
-        $this->supports(new ProductUpdated($author, ['data']))->shouldReturn(true);
+        $this->supports($bulkEvent)->shouldReturn(false);
     }
 
-    public function it_does_not_supports_other_business_event(UserInterface $user): void
+    public function it_does_not_support_an_individual_event(): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $event = new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => '1']);
 
-        $this->supports(new ProductRemoved($author, ['data']))->shouldReturn(false);
+        $this->supports($event)->shouldReturn(false);
     }
 
-
-    public function it_builds_product_created_event(
-        $productRepository,
-        $externalApiNormalizer,
+    public function it_builds_a_bulk_event_of_product_created_and_updated_event(
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        GetConnectorProducts $getConnectorProductsQuery,
+        ProductQueryBuilderInterface $pqb,
         UserInterface $user
     ): void {
-        $product = new Product();
-        $product->setId(1);
-        $product->setIdentifier('product_identifier');
+        $user->getId()->willReturn(10);
 
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $bulkEvent = new BulkEvent([
+            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => 'blue_jean']),
+            new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => 'red_jean'])
+        ]);
 
-        $productRepository->findOneByIdentifier('product_identifier')->willReturn($product);
-        $externalApiNormalizer->normalize($product, 'external_api')->willReturn(
+        $blueJeanProduct = $this->buildConnectorProduct(1, 'blue_jean');
+        $redJeanProduct = $this->buildConnectorProduct(2, 'red_jean');
+        $productList = new ConnectorProductList(2, [$blueJeanProduct, $redJeanProduct]);
+
+        $pqbFactory->create(['limit' => 2])->willReturn($pqb);
+        $pqb->addFilter('identifier', Operators::IN_LIST, ['blue_jean', 'red_jean'])
+            ->willReturn($pqb);
+        $getConnectorProductsQuery->fromProductQueryBuilder(
+            $pqb,
+            10,
+            null,
+            null,
+            null
+        )->willReturn($productList);
+
+        $this->build($bulkEvent, $user)->shouldBeLike(
             [
-                'identifier' => 'product_identifier',
-            ]
-        );
-
-        $this->build(new ProductCreated($author, ['identifier' => 'product_identifier']))->shouldReturn(
-            [
-                'resource' => ['identifier' => 'product_identifier'],
+                ['resource' => [
+                    'identifier' => 'blue_jean',
+                    'created' => '2020-04-23T15:55:50+00:00',
+                    'updated' => '2020-04-25T15:55:50+00:00',
+                    'enabled' => true,
+                    'family' => null,
+                    'categories' => [],
+                    'groups' => [],
+                    'parent' => null,
+                    'values' => (object) [],
+                    'associations' => (object) [],
+                    'quantified_associations' => (object) [],
+                ]],
+                ['resource' => [
+                    'identifier' => 'red_jean',
+                    'created' => '2020-04-23T15:55:50+00:00',
+                    'updated' => '2020-04-25T15:55:50+00:00',
+                    'enabled' => true,
+                    'family' => null,
+                    'categories' => [],
+                    'groups' => [],
+                    'parent' => null,
+                    'values' => (object) [],
+                    'associations' => (object) [],
+                    'quantified_associations' => (object) [],
+                ]],
             ]
         );
     }
 
-    public function it_builds_product_updated_event(
-        $productRepository,
-        $externalApiNormalizer,
+    public function it_builds_a_bulk_event_of_product_created_and_updated_event_if_a_product_as_been_removed(
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        GetConnectorProducts $getConnectorProductsQuery,
+        ProductQueryBuilderInterface $pqb,
         UserInterface $user
     ): void {
-        $product = new Product();
-        $product->setId(1);
-        $product->setIdentifier('product_identifier');
+        $user->getId()->willReturn(10);
 
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $blueJeanProduct = $this->buildConnectorProduct(1, 'blue_jean');
+        $productList = new ConnectorProductList(1, [$blueJeanProduct]);
 
-        $productRepository->findOneByIdentifier('product_identifier')->willReturn($product);
-        $externalApiNormalizer->normalize($product, 'external_api')->willReturn(
+        $pqbFactory->create(['limit' => 2])->willReturn($pqb);
+        $getConnectorProductsQuery->fromProductQueryBuilder(
+            $pqb,
+            10,
+            null,
+            null,
+            null
+        )->willReturn($productList);
+
+        $bulkEvent = new BulkEvent([
+            new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => 'blue_jean']),
+            new ProductUpdated(Author::fromNameAndType('julia', Author::TYPE_UI), ['identifier' => 'red_jean'])
+        ]);
+
+        $this->build($bulkEvent, $user)->shouldBeLike(
             [
-                'identifier' => 'product_identifier',
+                ['resource' => [
+                    'identifier' => 'blue_jean',
+                    'created' => '2020-04-23T15:55:50+00:00',
+                    'updated' => '2020-04-25T15:55:50+00:00',
+                    'enabled' => true,
+                    'family' => null,
+                    'categories' => [],
+                    'groups' => [],
+                    'parent' => null,
+                    'values' => (object) [],
+                    'associations' => (object) [],
+                    'quantified_associations' => (object) [],
+                ]],
+                null,
             ]
         );
+    }
 
-        $this->build(new ProductUpdated($author, ['identifier' => 'product_identifier']))->shouldReturn(
-            [
-                'resource' => ['identifier' => 'product_identifier'],
-            ]
+    private function buildConnectorProduct(int $id, string $identifier)
+    {
+        return new ConnectorProduct(
+            $id,
+            $identifier,
+            new \DateTimeImmutable('2020-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2020-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            null,
+            [],
+            [],
+            null,
+            [],
+            [],
+            [],
+            new ReadValueCollection()
         );
-    }
-
-    public function it_does_not_build_other_business_event(UserInterface $user): void
-    {
-        $product = new Product();
-        $product->setId(1);
-        $product->setIdentifier('product_identifier');
-
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
-
-        $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [new ProductRemoved($author, ['identifier' => 'product_identifier'])]);
-    }
-
-    public function it_does_not_build_if_product_was_not_found($productRepository, UserInterface $user): void
-    {
-        $productRepository->findOneByIdentifier('product_identifier')->willReturn(null);
-
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
-
-        $this->shouldThrow(ProductNotFoundException::class)
-            ->during('build', [new ProductCreated($author, ['identifier' => 'product_identifier'])]);
-    }
-
-    public function it_raises_a_not_granted_category_exception($productRepository)
-    {
-        $product = new Product();
-        $product->setId(1);
-        $product->setIdentifier('product_identifier');
-        $author = Author::fromNameAndType('julia', 'ui');
-
-        $productRepository->findOneByIdentifier('product_identifier')->willThrow(AccessDeniedException::class);
-
-        $this->shouldThrow(NotGrantedCategoryException::class)
-            ->during('build', [new ProductCreated($author, ['identifier' => 'product_identifier'])]);
     }
 }

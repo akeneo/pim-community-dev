@@ -6,7 +6,7 @@ import {
   CRITERION_IN_PROGRESS,
   CriterionEvaluationResult,
 } from '../../../../../domain/Evaluation.interface';
-import Criterion from './Criterion';
+import {Criterion} from './Criterion';
 import {evaluationPlaceholder} from '../../../../helper';
 
 interface AxisEvaluationProps {

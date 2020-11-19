@@ -67,6 +67,7 @@ akeneo_data_quality_insights:
   attribute_group:
     helper_dqi_link: Plus d'informations sur notre centre d'aide.
     activation: Activation
+    dqi_status: État de la qualité des données
     activated: Activé
     disabled: Désactivé
 pim_title:

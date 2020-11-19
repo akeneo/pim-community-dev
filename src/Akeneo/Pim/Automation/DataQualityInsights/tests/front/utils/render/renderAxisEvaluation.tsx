@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
 import AxisEvaluation from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
 import Evaluation from '@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface';
-import Criterion from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import {Criterion} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
 
 const renderEnrichmentEvaluation = (evaluation: Evaluation) => {
   return renderWithRedux(

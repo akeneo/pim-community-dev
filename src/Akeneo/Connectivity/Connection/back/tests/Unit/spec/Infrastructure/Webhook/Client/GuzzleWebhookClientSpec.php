@@ -10,7 +10,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\GuzzleWebhookClient;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -42,7 +41,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(GuzzleWebhookClient::class);
     }
 
-    public function it_sends_webhook_requests_in_bulk(UserInterface $user): void
+    public function it_sends_webhook_requests_in_bulk(): void
     {
         $container = [];
         $history = Middleware::history($container);
@@ -57,34 +56,33 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             []
         );
 
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
         $request1 = new WebhookRequest(
             new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook1'),
-            new WebhookEvent(
-                'product.created',
-                '7abae2fe-759a-4fce-aa43-f413980671b3',
-                '2020-01-01T00:00:00+00:00',
-                $author,
-                'staging.akeneo.com',
-                ['data_1']
-            )
+            [
+                new WebhookEvent(
+                    'product.created',
+                    '7abae2fe-759a-4fce-aa43-f413980671b3',
+                    '2020-01-01T00:00:00+00:00',
+                    $author,
+                    'staging.akeneo.com',
+                    ['data_1']
+                )
+            ]
         );
 
         $request2 = new WebhookRequest(
             new ActiveWebhook('erp', 1, 'a_secret', 'http://localhost/webhook2'),
-            new WebhookEvent(
-                'product.created',
-                '7abae2fe-759a-4fce-aa43-f413980671b3',
-                '2020-01-01T00:00:00+00:00',
-                $author,
-                'staging.akeneo.com',
-                ['data_2']
-            )
+            [
+                new WebhookEvent(
+                    'product.created',
+                    '7abae2fe-759a-4fce-aa43-f413980671b3',
+                    '2020-01-01T00:00:00+00:00',
+                    $author,
+                    'staging.akeneo.com',
+                    ['data_2']
+                )
+            ]
         );
 
         $this->bulkSend([$request1, $request2]);
@@ -94,9 +92,10 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         // Request 1
 
         $request = $this->findRequest($container, 'http://localhost/webhook1');
+
         Assert::assertNotNull($request);
 
-        $body = '{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_1"]}';
+        $body = '[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_1"]}]';
         Assert::assertEquals($body, (string)$request->getBody());
 
         $timestamp = (int)$request->getHeader(GuzzleWebhookClient::HEADER_REQUEST_TIMESTAMP)[0];
@@ -108,7 +107,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $request = $this->findRequest($container, 'http://localhost/webhook2');
         Assert::assertNotNull($request);
 
-        $body = '{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_2"]}';
+        $body = '[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_2"]}]';
         Assert::assertEquals($body, (string)$request->getBody());
 
         $timestamp = (int)$request->getHeader(GuzzleWebhookClient::HEADER_REQUEST_TIMESTAMP)[0];
