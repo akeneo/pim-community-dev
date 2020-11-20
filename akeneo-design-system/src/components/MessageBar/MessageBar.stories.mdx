@@ -12,7 +12,10 @@ import * as Icons from '../../icons';
   component={MessageBar}
   argTypes={{
     level: {control: {type: 'select', options: ['info', 'success', 'warning', 'error']}},
-    icon: {control: {type: 'select', options: Object.keys(Icons)}},
+    icon: {
+      control: {type: 'select', options: Object.keys(Icons)},
+      table: {type: {summary: 'ReactElement<IconProps>'}},
+    },
     children: {control: {type: 'text'}},
     onClose: {action: 'Closing the MessageBar'},
   }}

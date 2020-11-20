@@ -1,47 +1,47 @@
-import '@testing-library/jest-dom/extend-expect';
 import {renderHook} from '@testing-library/react-hooks';
 import {act} from '@testing-library/react';
 import {useAutoFocus} from './useAutoFocus';
 
-test('It sets automatically the focus on the given ref', () => {
-  const mockFocus = jest.fn();
-  const ref = {
-    current: {
-      focus: mockFocus,
-    },
-  };
+const button = document.createElement('button');
+document.body.appendChild(button);
 
-  // @ts-ignore
+const ref = {
+  current: button,
+};
+
+afterEach(() => {
+  button.blur();
+});
+
+test('It sets automatically the focus on the given ref', () => {
   renderHook(() => useAutoFocus(ref));
-  expect(mockFocus).toHaveBeenCalledTimes(1);
+  expect(button).toHaveFocus();
 });
 
 test('I can request the focus on the given ref', () => {
-  const mockFocus = jest.fn();
-  const ref = {
-    current: {
-      focus: mockFocus,
-    },
-  };
-
-  // @ts-ignore
   const {result} = renderHook(() => useAutoFocus(ref));
   const focus = result.current;
+
+  expect(button).toHaveFocus();
+
+  act(() => {
+    button.blur();
+  });
+
+  expect(button).not.toHaveFocus();
 
   act(() => {
     focus();
   });
 
-  expect(mockFocus).toHaveBeenCalledTimes(2);
+  expect(button).toHaveFocus();
 });
 
 test('It does not try to focus if the current ref is null', () => {
-  const mockFocus = jest.fn();
   const ref = {
     current: null,
   };
 
-  // @ts-ignore
   renderHook(() => useAutoFocus(ref));
-  expect(mockFocus).not.toHaveBeenCalled();
+  expect(button).not.toHaveFocus();
 });

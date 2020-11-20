@@ -24,16 +24,6 @@
     "react/display-name": "off",
     "react/prop-types": "off"
   },
-  "overrides": [
-    {
-      "files": ["*.unit.ts"],
-      "rules": {
-        "@typescript-eslint/ban-ts-comment": "off",
-        "@typescript-eslint/no-unsafe-return": "off",
-        "@typescript-eslint/no-unsafe-call": "off"
-      }
-    }
-  ],
   "ignorePatterns": ["src/illustrations/**", "src/icons/**"],
   "settings": {
     "react": {
