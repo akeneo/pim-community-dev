@@ -45,21 +45,21 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->supports(new ProductModelCreated($author, ['data']))->shouldReturn(true);
+        $this->supports(new ProductModelCreated($author, ['code' => 'product_model_code']))->shouldReturn(true);
     }
 
     public function it_supports_product_model_updated_event(): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->supports(new ProductModelUpdated($author, ['data']))->shouldReturn(true);
+        $this->supports(new ProductModelUpdated($author, ['code' => 'product_model_code']))->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_business_event(): void
     {
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->supports(new ProductCreated($author, ['identifier' => '1']))->shouldReturn(false);
+        $this->supports(new ProductCreated($author, ['identifier' => 'product_identifier']))->shouldReturn(false);
     }
 
     public function it_builds_product_model_created_event(

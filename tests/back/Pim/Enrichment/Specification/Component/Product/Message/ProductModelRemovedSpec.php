@@ -19,9 +19,9 @@ class ProductModelRemovedSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['data'],
+            ['code' => 'product_model_code', 'category_codes' => ['category_code_1', 'category_code_2']],
             1598968800,
-            '523e4557-e89b-12d3-a456-426614174000'
+            '523e4557-e89b-12d3-a456-426614174000',
         );
     }
 
@@ -33,6 +33,32 @@ class ProductModelRemovedSpec extends ObjectBehavior
     public function it_is_an_event(): void
     {
         $this->shouldBeAnInstanceOf(Event::class);
+    }
+
+    public function it_validates_the_product_model_code(): void
+    {
+        $this->beConstructedWith(
+            Author::fromNameAndType('julia', Author::TYPE_UI),
+            [],
+            1598968800,
+            '523e4557-e89b-12d3-a456-426614174000',
+        );
+
+        $this->shouldThrow(new \InvalidArgumentException('Expected the key "code" to exist.'))->duringInstantiation();
+    }
+
+    public function it_validates_the_category_codes(): void
+    {
+        $this->beConstructedWith(
+            Author::fromNameAndType('julia', Author::TYPE_UI),
+            ['code' => 'product_model_code'],
+            1598968800,
+            '523e4557-e89b-12d3-a456-426614174000',
+        );
+
+        $this->shouldThrow(
+            new \InvalidArgumentException('Expected the key "category_codes" to exist.'),
+        )->duringInstantiation();
     }
 
     public function it_returns_the_name(): void
@@ -47,7 +73,10 @@ class ProductModelRemovedSpec extends ObjectBehavior
 
     public function it_returns_the_data(): void
     {
-        $this->getData()->shouldReturn(['data']);
+        $this->getData()->shouldReturn([
+            'code' => 'product_model_code',
+            'category_codes' => ['category_code_1', 'category_code_2'],
+        ]);
     }
 
     public function it_returns_the_timestamp(): void
@@ -58,5 +87,15 @@ class ProductModelRemovedSpec extends ObjectBehavior
     public function it_returns_the_uuid(): void
     {
         $this->getUuid()->shouldReturn('523e4557-e89b-12d3-a456-426614174000');
+    }
+
+    public function it_returns_the_product_model_code(): void
+    {
+        $this->getCode()->shouldReturn('product_model_code');
+    }
+
+    public function it_returns_the_category_codes(): void
+    {
+        $this->getCategoryCodes()->shouldReturn(['category_code_1', 'category_code_2']);
     }
 }

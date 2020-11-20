@@ -50,21 +50,18 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
             throw new \InvalidArgumentException();
         }
 
-        $data = $event->getData();
-
         try {
-            $productModel = $this->productModelRepository->findOneByIdentifier($data['code']);
+            $productModel = $this->productModelRepository->findOneByIdentifier($event->getCode());
         } catch (AccessDeniedException $e) {
             throw new NotGrantedCategoryException($e->getMessage(), $e);
         }
 
         if (null === $productModel) {
-            throw new ProductModelNotFoundException($data['code']);
+            throw new ProductModelNotFoundException($event->getCode());
         }
 
-        return (new EventDataCollection())
-            ->setEventData($event, [
-                'resource' => $this->externalApiNormalizer->normalize($productModel, 'external_api'),
-            ]);
+        return (new EventDataCollection())->setEventData($event, [
+            'resource' => $this->externalApiNormalizer->normalize($productModel, 'external_api'),
+        ]);
     }
 }
