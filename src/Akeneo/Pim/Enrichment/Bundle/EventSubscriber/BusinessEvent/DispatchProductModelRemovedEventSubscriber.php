@@ -50,8 +50,8 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
 
         $author = Author::fromUser($user);
         $data = [
-            'identifier' => $productModel->getIdentifier(),
-            'categories' => $productModel->getCategoryCodes(),
+            'code' => $productModel->getCode(),
+            'category_codes' => $productModel->getCategoryCodes(),
         ];
 
         $event = new ProductModelRemoved($author, $data);

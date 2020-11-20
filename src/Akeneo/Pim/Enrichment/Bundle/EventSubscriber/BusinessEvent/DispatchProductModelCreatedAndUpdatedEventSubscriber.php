@@ -58,7 +58,7 @@ final class DispatchProductModelCreatedAndUpdatedEventSubscriber implements Even
 
         $author = Author::fromUser($user);
         $data = [
-            'identifier' => $productModel->getIdentifier()
+            'code' => $productModel->getCode()
         ];
 
         $event = null;

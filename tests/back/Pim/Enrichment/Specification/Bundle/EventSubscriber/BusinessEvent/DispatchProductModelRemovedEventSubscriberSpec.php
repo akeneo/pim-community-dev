@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelRemovedEventSubscriber;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\User;
@@ -45,7 +44,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $security
     ) {
         $productModel = new ProductModel();
-        $productModel->setCode('product_identifier');
+        $productModel->setCode('product_model_code');
 
         $messageBus = $this->getMessageBus();
         $this->beConstructedWith($security, $messageBus);
@@ -77,7 +76,7 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($security, $messageBus);
 
         $productModel = new ProductModel();
-        $productModel->setCode('product_model_identifier');
+        $productModel->setCode('product_model_code');
 
         $security->getUser()->willReturn(null);
 
