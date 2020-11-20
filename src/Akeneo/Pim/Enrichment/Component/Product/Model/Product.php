@@ -9,6 +9,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelProduct extends AbstractProduct implements ProductInterface
+class Product extends AbstractProduct implements ProductInterface
 {
 }
