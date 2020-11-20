@@ -78,7 +78,7 @@ define([
         okText: __('pim_common.save'),
         okCloses: false,
         content: this.templateModalContent({
-          fields: this.templateInput({ __ }),
+          fields: this.templateInput({__}),
         }),
       });
 
