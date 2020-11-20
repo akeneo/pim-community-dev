@@ -232,7 +232,8 @@ JSON;
         $envelopes = $transport->get();
 
         $this->assertCount(2, $envelopes);
-        $this->assertInstanceOf(ProductModelCreated::class, $envelopes[0]->getMessage());
+        $this->assertInstanceOf(BulkEvent::class, $envelopes[0]->getMessage());
+        $this->assertContainsOnlyInstancesOf(ProductModelCreated::class, $envelopes[0]->getMessage()->getEvents());
         $this->assertInstanceOf(ProductModelRemoved::class, $envelopes[1]->getMessage());
     }
 
