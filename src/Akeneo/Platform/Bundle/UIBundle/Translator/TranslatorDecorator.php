@@ -16,10 +16,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class TranslatorDecorator implements LegacyTranslatorInterface, TranslatorInterface
 {
-    /** @var TranslatorInterface */
-    private $symfonyTranslator;
+    private LegacyTranslatorInterface $symfonyTranslator;
 
-    public function __construct(TranslatorInterface $symfonyTranslator)
+    public function __construct(LegacyTranslatorInterface $symfonyTranslator)
     {
         $this->symfonyTranslator = $symfonyTranslator;
     }
