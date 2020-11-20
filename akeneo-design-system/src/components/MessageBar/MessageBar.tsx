@@ -57,19 +57,16 @@ const Timer = styled.div`
 
 const Icon = styled(CloseIcon)``;
 
-//TODO TransparentButton in the DSM?
 const CloseButton = styled.button<{autoHide: boolean} & AkeneoThemedProps>`
   position: relative;
   width: 24px;
   height: 24px;
   color: ${getColor('grey', 100)};
-  padding: 0;
   border: 0;
   background: none;
   cursor: pointer;
   display: inline-flex;
   font-size: ${getFontSize('bigger')};
-  overflow: visible;
 
   & > * {
     position: absolute;
@@ -91,7 +88,6 @@ const CloseButton = styled.button<{autoHide: boolean} & AkeneoThemedProps>`
     ${Icon} {
       opacity: 1;
     }
-
     ${Timer} {
       opacity: 0;
     }
@@ -102,8 +98,9 @@ const MessageBarHideAnimation = keyframes`
   0% {
     transform: translateX(0);
   }
-  90% {
+  75% {
     transform: translateX(calc(100% + 50px));
+    max-height: 150px;
     opacity: 0;
   }
   100% {
@@ -313,7 +310,7 @@ const MessageBar = ({level = 'info', title, icon, dismissTitle, onClose, childre
         <Timer aria-hidden="true">
           {remainingDisplay}
           {autoHide && (
-            <Progress ratio={remaining / duration} level={level}>
+            <Progress ratio={Math.max(0, remaining / duration)} level={level}>
               <circle r="50%" cx="50%" cy="50%" />
             </Progress>
           )}
