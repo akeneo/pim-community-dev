@@ -3,7 +3,6 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Fixture;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
@@ -19,7 +18,7 @@ use Akeneo\Test\Common\EntityBuilder as ProductModelBuilder;
 use Akeneo\Test\Common\EntityWithValue\Builder\Product as ProductBuilder;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover;
-use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductAndProductModelWithRemovedAttributeLoader
@@ -41,11 +40,11 @@ class ProductAndProductModelWithRemovedAttributeLoader
 
     public function __construct(
         ProductBuilder $productBuilder,
-        ProductSaver $productSaver,
+        SaverInterface $productSaver,
         ProductModelBuilder $productModelBuilder,
-        BaseSaver $productModelSaver,
+        SaverInterface $productModelSaver,
         FamilyVariantBuilder $familyVariantBuilder,
-        BaseSaver $familyVariantSaver,
+        SaverInterface $familyVariantSaver,
         FamilyBuilder $familyBuilder,
         FamilySaver $familySaver,
         AttributeBuilder $attributeBuilder,
@@ -313,7 +312,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
                         $attribute,
                         array_key_exists('data', $valueByChannelAnLocale) ? $valueByChannelAnLocale['data'] : '',
                         $valueByChannelAnLocale['locale'] ?? '',
-                        $valueByChannelAnLocale['channel'] ?? '',
+                        $valueByChannelAnLocale['channel'] ?? ''
                     );
                 }
             }
