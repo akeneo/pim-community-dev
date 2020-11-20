@@ -85,7 +85,7 @@ define([
       modal.open();
 
       const $submitButton = modal.$el.find('.ok').addClass('AknButton--disabled');
-      const $typeSelector = modal.$el.find('#new-view-type-switcher');
+      const $typeSelector = modal.$el.find('.AknCreateView-typeSelector');
 
       modal.on('ok', this.saveView.bind(this, modal));
       modal.on(
