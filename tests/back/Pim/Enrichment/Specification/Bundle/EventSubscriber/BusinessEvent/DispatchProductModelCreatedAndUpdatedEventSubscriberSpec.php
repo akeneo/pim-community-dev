@@ -67,7 +67,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'polo_col_mao'], $event->getData());
+        Assert::assertEquals(['code' => 'polo_col_mao'], $event->getData());
     }
 
     function it_dispatches_a_single_product_model_updated_event($security)
@@ -95,7 +95,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'polo_col_mao'], $event->getData());
+        Assert::assertEquals(['code' => 'polo_col_mao'], $event->getData());
     }
 
     function it_dispatches_multiple_product_model_events_in_bulk($security)
@@ -109,9 +109,9 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $this->beConstructedWith($security, $messageBus, 10);
 
         $productModel1 = new ProductModel();
-        $productModel1->setCode('product_model_identifier_1');
+        $productModel1->setCode('product_model_code_1');
         $productModel2 = new ProductModel();
-        $productModel2->setCode('product_model_identifier_2');
+        $productModel2->setCode('product_model_code_2');
 
         $this->createAndDispatchProductModelEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false]));
         $this->createAndDispatchProductModelEvents(new GenericEvent($productModel2, ['is_new' => false, 'unitary' => false]));
@@ -127,12 +127,12 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_model_identifier_1'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_1'], $event->getData());
 
         $event = $events[1];
         Assert::assertInstanceOf(ProductModelUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_model_identifier_2'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_2'], $event->getData());
     }
 
     function it_dispatches_a_batch_of_product_model_events_once_the_max_bulk_size_is_reached($security)
@@ -146,11 +146,11 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $this->beConstructedWith($security, $messageBus, 2); // Bulk size of 2
 
         $productModel1 = new ProductModel();
-        $productModel1->setCode('product_model_identifier_1');
+        $productModel1->setCode('product_model_code_1');
         $productModel2 = new ProductModel();
-        $productModel2->setCode('product_model_identifier_2');
+        $productModel2->setCode('product_model_code_2');
         $productModel3 = new ProductModel();
-        $productModel3->setCode('product_model_identifier_3');
+        $productModel3->setCode('product_model_code_3');
 
         $this->createAndDispatchProductModelEvents(new GenericEvent($productModel1, ['is_new' => true, 'unitary' => false]));
         $this->createAndDispatchProductModelEvents(new GenericEvent($productModel2, ['is_new' => false, 'unitary' => false]));
@@ -167,12 +167,12 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_model_identifier_1'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_1'], $event->getData());
 
         $event = $events[1];
         Assert::assertInstanceOf(ProductModelUpdated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_model_identifier_2'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_2'], $event->getData());
 
         /** @var EventInterface[] */
         $events = $messageBus->messages[1]->getEvents();
@@ -181,7 +181,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $event = $events[0];
         Assert::assertInstanceOf(ProductModelCreated::class, $event);
         Assert::assertEquals(Author::fromUser($user), $event->getAuthor());
-        Assert::assertEquals(['identifier' => 'product_model_identifier_3'], $event->getData());
+        Assert::assertEquals(['code' => 'product_model_code_3'], $event->getData());
     }
 
     function it_only_supports_product_model_event($security)
@@ -200,7 +200,7 @@ class DispatchProductModelCreatedAndUpdatedEventSubscriberSpec extends ObjectBeh
         $this->beConstructedWith($security, $messageBus, 10);
 
         $productModel = new ProductModel();
-        $productModel->setCode('product_model_identifier');
+        $productModel->setCode('product_model_code');
 
         $security->getUser()->willReturn(null);
 
