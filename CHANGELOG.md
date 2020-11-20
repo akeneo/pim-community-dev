@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9502: Fix integer size in MySQL auto_increment in completeness table
 - PIM-9486: System Information sections Registered bundles and PHP extensions repeat a high number of times
 - PIM-9514: Fix check on API completness for product model
 - PIM-9408: Fix attribute group's updated_at field udpate
