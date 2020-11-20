@@ -14,6 +14,7 @@ import * as Illustrations from '../../illustrations';
     isOpen: false,
     children: 'Modal text',
     illustration: undefined,
+    closeTitle: 'Close',
   }}
 />
 
@@ -80,7 +81,7 @@ It can be used with or without an Illustration and adapts its content accordingl
 The Modal Component also exposes a `BottomButtons` Component that is helpful to display Buttons at the bottom of the Modal children. It can be used as simply as this:
 
 ```jsx
-<Modal>
+<Modal {...props}>
   Lorem ipsum dolor sit amet
   <Modal.BottomButtons>
     <Button>Cancel</Button>

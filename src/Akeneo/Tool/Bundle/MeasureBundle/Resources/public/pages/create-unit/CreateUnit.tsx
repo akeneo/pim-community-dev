@@ -28,7 +28,7 @@ type CreateUnitProps = {
 };
 
 const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitProps) => {
-  const __ = useTranslate();
+  const translate = useTranslate();
   const notify = useNotify();
   const locale = useUserContext().get('uiLocale');
   const config = useContext(ConfigContext);
@@ -50,7 +50,7 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
     try {
       setErrors([]);
 
-      const formValidationErrors = validateCreateUnitForm(form, measurementFamily, __);
+      const formValidationErrors = validateCreateUnitForm(form, measurementFamily, translate);
       if (0 < formValidationErrors.length) {
         setErrors(formValidationErrors);
         return;
@@ -72,7 +72,7 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
       }
     } catch (error) {
       console.error(error);
-      notify(NotificationLevel.ERROR, __('measurements.add_unit.flash.error'));
+      notify(NotificationLevel.ERROR, translate('measurements.add_unit.flash.error'));
     }
   }, [
     form,
@@ -85,25 +85,32 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
     clearForm,
     handleClose,
     setErrors,
-    __,
+    translate,
   ]);
 
   useShortcut(Key.Enter, handleAdd);
   useShortcut(Key.NumpadEnter, handleAdd);
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} illustration={<MeasurementIllustration />}>
+    <Modal
+      closeTitle={translate('pim_common.close')}
+      isOpen={isOpen}
+      onClose={handleClose}
+      illustration={<MeasurementIllustration />}
+    >
       <SectionTitle color="brand">
-        {__('measurements.title.measurement')} / {measurementFamilyLabel}
+        {translate('measurements.title.measurement')} / {measurementFamilyLabel}
       </SectionTitle>
-      <Title>{__('measurements.unit.add_new')}</Title>
+      <Title>{translate('measurements.unit.add_new')}</Title>
       <Subsection>
-        {measurementFamily.is_locked && <Helper level="warning">{__('measurements.unit.will_be_read_only')}</Helper>}
+        {measurementFamily.is_locked && (
+          <Helper level="warning">{translate('measurements.unit.will_be_read_only')}</Helper>
+        )}
         <FormGroup>
           <TextField
             ref={firstFieldRef}
             id="measurements.unit.create.code"
-            label={__('pim_common.code')}
+            label={translate('pim_common.code')}
             value={form.code}
             onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('code', e.currentTarget.value)}
             required={true}
@@ -111,7 +118,7 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
           />
           <TextField
             id="measurements.unit.create.label"
-            label={__('pim_common.label')}
+            label={translate('pim_common.label')}
             value={form.label}
             onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('label', e.currentTarget.value)}
             flag={locale}
@@ -119,7 +126,7 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
           />
           <TextField
             id="measurements.unit.create.symbol"
-            label={__('measurements.form.input.symbol')}
+            label={translate('measurements.form.input.symbol')}
             value={form.symbol}
             onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('symbol', e.currentTarget.value)}
             errors={errors.filter(error => error.propertyPath === 'symbol')}
@@ -131,7 +138,7 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
           />
           <CheckboxField
             id="measurements.unit.create_another"
-            label={__('measurements.unit.create_another')}
+            label={translate('measurements.unit.create_another')}
             value={createAnotherUnit}
             onChange={(checked: boolean) => setCreateAnotherUnit(checked)}
           />
@@ -139,7 +146,7 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
       </Subsection>
       <Modal.BottomButtons>
         <Button onClick={handleAdd} disabled={config.units_max <= measurementFamily.units.length}>
-          {__('pim_common.add')}
+          {translate('pim_common.add')}
         </Button>
       </Modal.BottomButtons>
     </Modal>

@@ -6,17 +6,21 @@ import {ActivityIcon} from '../../icons';
 test('it renders its children properly', () => {
   render(
     <>
-      <IconButton icon={<ActivityIcon />} />
-      <IconButton size="small" icon={<ActivityIcon />} />
+      <IconButton title="Icon button" icon={<ActivityIcon />} />
+      <IconButton title="Icon button" size="small" icon={<ActivityIcon />} />
     </>
   );
 
-  expect(screen.getAllByRole('button').length).toEqual(2);
+  expect(screen.getAllByTitle('Icon button').length).toEqual(2);
 });
 
 test('it does not render other children than the given Icon', () => {
-  //@ts-expect-error This other child should not be displayed
-  render(<IconButton icon={<ActivityIcon />}>Other child</IconButton>);
+  render(
+    //@ts-expect-error This other child should not be displayed
+    <IconButton title="Icon button" icon={<ActivityIcon />}>
+      Other child
+    </IconButton>
+  );
 
   expect(screen.queryByText('Other child')).not.toBeInTheDocument();
 });
@@ -24,11 +28,11 @@ test('it does not render other children than the given Icon', () => {
 test('IconButton supports forwardRef', () => {
   const ref = {current: null};
 
-  render(<IconButton icon={<ActivityIcon />} ref={ref} />);
+  render(<IconButton title="Icon button" icon={<ActivityIcon />} ref={ref} />);
   expect(ref.current).not.toBe(null);
 });
 
 test('IconButton supports ...rest props', () => {
-  render(<IconButton icon={<ActivityIcon />} data-testid="my_value" />);
+  render(<IconButton title="Icon button" icon={<ActivityIcon />} data-testid="my_value" />);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });

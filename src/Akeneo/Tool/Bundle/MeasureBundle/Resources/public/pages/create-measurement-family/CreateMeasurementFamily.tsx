@@ -20,7 +20,7 @@ type CreateMeasurementFamilyProps = {
 };
 
 const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps) => {
-  const __ = useTranslate();
+  const translate = useTranslate();
   const notify = useNotify();
   const locale = useUserContext().get('uiLocale');
 
@@ -36,7 +36,7 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
 
       switch (response.success) {
         case true:
-          notify(NotificationLevel.SUCCESS, __('measurements.create_family.flash.success'));
+          notify(NotificationLevel.SUCCESS, translate('measurements.create_family.flash.success'));
           handleClose(measurementFamily.code);
           break;
 
@@ -46,20 +46,25 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
       }
     } catch (error) {
       console.error(error);
-      notify(NotificationLevel.ERROR, __('measurements.create_family.flash.error'));
+      notify(NotificationLevel.ERROR, translate('measurements.create_family.flash.error'));
     }
-  }, [form, locale, saveMeasurementFamily, notify, __, handleClose, setErrors]);
+  }, [form, locale, saveMeasurementFamily, notify, translate, handleClose, setErrors]);
 
   return (
-    <Modal isOpen={isOpen} onClose={() => handleClose()} illustration={<MeasurementIllustration />}>
-      <SectionTitle color="brand">{__('measurements.title.measurement')}</SectionTitle>
-      <Title>{__('measurements.family.add_new_measurement_family')}</Title>
+    <Modal
+      closeTitle={translate('pim_common.close')}
+      isOpen={isOpen}
+      onClose={() => handleClose()}
+      illustration={<MeasurementIllustration />}
+    >
+      <SectionTitle color="brand">{translate('measurements.title.measurement')}</SectionTitle>
+      <Title>{translate('measurements.family.add_new_measurement_family')}</Title>
       <Subsection>
-        <SubsectionHeader>{__('pim_common.properties')}</SubsectionHeader>
+        <SubsectionHeader>{translate('pim_common.properties')}</SubsectionHeader>
         <FormGroup>
           <TextField
             id="measurements.measurement_family.create.family_code"
-            label={__('pim_common.code')}
+            label={translate('pim_common.code')}
             value={form.family_code}
             onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('family_code', e.currentTarget.value)}
             required={true}
@@ -67,7 +72,7 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
           />
           <TextField
             id="measurements.measurement_family.create.family_label"
-            label={__('pim_common.label')}
+            label={translate('pim_common.label')}
             value={form.family_label}
             onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('family_label', e.currentTarget.value)}
             flag={locale}
@@ -76,12 +81,12 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
         </FormGroup>
       </Subsection>
       <Subsection>
-        <SubsectionHeader>{__('measurements.family.standard_unit')}</SubsectionHeader>
-        <Helper level="warning">{__('measurements.family.standard_unit_is_not_editable_after_creation')}</Helper>
+        <SubsectionHeader>{translate('measurements.family.standard_unit')}</SubsectionHeader>
+        <Helper level="warning">{translate('measurements.family.standard_unit_is_not_editable_after_creation')}</Helper>
         <FormGroup>
           <TextField
             id="measurements.measurement_family.create.standard_unit_code"
-            label={__('pim_common.code')}
+            label={translate('pim_common.code')}
             value={form.standard_unit_code}
             onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('standard_unit_code', e.currentTarget.value)}
             required={true}
@@ -89,7 +94,7 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
           />
           <TextField
             id="measurements.measurement_family.create.standard_unit_label"
-            label={__('pim_common.label')}
+            label={translate('pim_common.label')}
             value={form.standard_unit_label}
             onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('standard_unit_label', e.currentTarget.value)}
             flag={locale}
@@ -97,7 +102,7 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
           />
           <TextField
             id="measurements.measurement_family.create.standard_unit_symbol"
-            label={__('measurements.form.input.symbol')}
+            label={translate('measurements.form.input.symbol')}
             value={form.standard_unit_symbol}
             onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('standard_unit_symbol', e.currentTarget.value)}
             errors={getErrorsForPath(errors, 'units[0][symbol]')}
@@ -105,7 +110,7 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
         </FormGroup>
       </Subsection>
       <Modal.BottomButtons>
-        <Button onClick={handleSave}>{__('pim_common.save')}</Button>
+        <Button onClick={handleSave}>{translate('pim_common.save')}</Button>
       </Modal.BottomButtons>
     </Modal>
   );

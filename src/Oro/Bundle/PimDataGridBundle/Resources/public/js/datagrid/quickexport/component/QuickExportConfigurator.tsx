@@ -36,7 +36,7 @@ const QuickExportConfigurator = ({
       >
         {translate('pim_datagrid.mass_action_group.quick_export.label')}
       </Button>
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
+      <Modal closeTitle={translate('pim_common.close')} isOpen={isModalOpen} onClose={closeModal}>
         <Modal.TopRightButtons>
           <Button
             title={translate('pim_common.export')}

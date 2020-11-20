@@ -34,6 +34,11 @@ type IconButtonProps = Override<
      * The Icon to display.
      */
     icon: ReactElement<IconProps>;
+
+    /**
+     * The title of the button.
+     */
+    title: string;
   }
 >;
 

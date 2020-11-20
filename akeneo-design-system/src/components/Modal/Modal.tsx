@@ -75,25 +75,30 @@ type ModalProps = {
   isOpen: boolean;
 
   /**
-   * The handler to call when the Modal is closed.
-   */
-  onClose: () => void;
-
-  /**
    * Illustration to display.
    */
   illustration?: ReactElement<IllustrationProps>;
 
   /**
+   * Title of the close button.
+   */
+  closeTitle: string;
+
+  /**
    * The content of the modal.
    */
   children?: ReactNode;
+
+  /**
+   * The handler to call when the Modal is closed.
+   */
+  onClose: () => void;
 };
 
 /**
  * The Modal Component is used to display a secondary window over the content.
  */
-const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) => {
+const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   useShortcut(Key.Escape, onClose);
 
   const portalNode = document.createElement('div');
@@ -112,7 +117,7 @@ const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) =
 
   return createPortal(
     <ModalContainer {...rest}>
-      <ModalCloseButton level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
+      <ModalCloseButton title={closeTitle} level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
       {undefined === illustration ? (
         children
       ) : (

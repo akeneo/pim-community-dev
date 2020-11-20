@@ -13,7 +13,12 @@ const ConfirmDeleteModal = ({isOpen, description, onConfirm, onCancel}: ConfirmM
   const translate = useTranslate();
 
   return (
-    <Modal isOpen={isOpen} onClose={onCancel} illustration={<DeleteIllustration />}>
+    <Modal
+      closeTitle={translate('pim_common.close')}
+      isOpen={isOpen}
+      onClose={onCancel}
+      illustration={<DeleteIllustration />}
+    >
       <SectionTitle color="brand">{translate('measurements.title.measurement')}</SectionTitle>
       <Title>{translate('pim_common.confirm_deletion')}</Title>
       {description}
