@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9565: Fix StandardToFlat boolean value converter
 - PIM-9550: Add attribute codes as an argument to the command "pim:product:clean-removed-attributes"
 
 # 4.0.72 (2020-11-16)
