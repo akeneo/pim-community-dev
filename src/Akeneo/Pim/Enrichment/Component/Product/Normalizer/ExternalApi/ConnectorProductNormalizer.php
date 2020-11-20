@@ -56,6 +56,7 @@ final class ConnectorProductNormalizer
             'updated' => $this->dateTimeNormalizer->normalize($connectorProduct->updatedDate()),
             'associations' => empty($connectorProduct->associations()) ? (object) [] : $connectorProduct->associations(),
             'quantified_associations' => empty($connectorProduct->quantifiedAssociations()) ? (object) [] : $connectorProduct->quantifiedAssociations(),
+            'quality_scores' => $connectorProduct->qualityScores()->toArray(),
         ];
 
         if (!empty($connectorProduct->metadata())) {

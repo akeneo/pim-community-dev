@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\QualityScores;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
@@ -58,6 +59,8 @@ final class ConnectorProduct
     /** @var ReadValueCollection */
     private $values;
 
+    private QualityScores $qualityScores;
+
     public function __construct(
         int $id,
         string $identifier,
@@ -71,7 +74,8 @@ final class ConnectorProduct
         array $associations,
         array $quantifiedAssociations,
         array $metadata,
-        ReadValueCollection $values
+        ReadValueCollection $values,
+        QualityScores $qualityScores
     ) {
         $this->id = $id;
         $this->identifier = $identifier;
@@ -86,6 +90,7 @@ final class ConnectorProduct
         $this->associations = $associations;
         $this->quantifiedAssociations = $quantifiedAssociations;
         $this->metadata = $metadata;
+        $this->qualityScores = $qualityScores;
     }
 
     public function id(): int
@@ -158,6 +163,11 @@ final class ConnectorProduct
         return $this->values->getAttributeCodes();
     }
 
+    public function qualityScores(): QualityScores
+    {
+        return $this->qualityScores;
+    }
+
     /**
      * The value cannot be an object.
      *
@@ -178,7 +188,8 @@ final class ConnectorProduct
             $this->associations,
             $this->quantifiedAssociations,
             array_merge($this->metadata, [$key => $value]),
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -236,7 +247,8 @@ final class ConnectorProduct
             $this->associations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $values
+            $values,
+            $this->qualityScores
         );
     }
 
@@ -263,7 +275,8 @@ final class ConnectorProduct
             $this->associations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $values
+            $values,
+            $this->qualityScores
         );
     }
 
@@ -338,7 +351,8 @@ final class ConnectorProduct
             $filteredAssociations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -370,7 +384,8 @@ final class ConnectorProduct
             $this->associations,
             $filteredQuantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -402,7 +417,8 @@ final class ConnectorProduct
             $this->associations,
             $filteredQuantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -431,7 +447,8 @@ final class ConnectorProduct
             $filteredAssociations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -452,7 +469,8 @@ final class ConnectorProduct
             $this->associations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 }

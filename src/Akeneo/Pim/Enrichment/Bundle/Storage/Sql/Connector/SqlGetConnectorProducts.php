@@ -118,7 +118,8 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             $this->getValuesAndPropertiesFromProductIdentifiers->fetchByProductIdentifiers($productIdentifiers),
             $this->fetchAssociationsIndexedByProductIdentifier($productIdentifiers),
             $this->fetchQuantifiedAssociationsIndexedByProductIdentifier($productIdentifiers),
-            $this->fetchCategoryCodesIndexedByProductIdentifier($productIdentifiers)
+            $this->fetchCategoryCodesIndexedByProductIdentifier($productIdentifiers),
+            $this->fetchQualityScoreIndexedByProductIdentifier($productIdentifiers)
         );
 
         $rawValuesIndexedByProductIdentifier = [];
@@ -164,7 +165,8 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $row['associations'] ?? [],
                 $row['quantified_associations'] ?? [],
                 [],
-                $filteredRawValuesIndexedByProductIdentifier[$identifier]
+                $filteredRawValuesIndexedByProductIdentifier[$identifier],
+                $row['quality_scores']
             );
         }
 
@@ -264,5 +266,43 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         }
 
         return $quantifiedAssociationsIndexedByIdentifier;
+    }
+
+    private function fetchQualityScoreIndexedByProductIdentifier(array $productIdentifiers): array
+    {
+        $qualityScores = [];
+
+        //TODO add a query in constructor of this service
+        //Following code is a mock
+        $queryResults = [];
+        foreach($productIdentifiers as $identifier)
+        {
+            $queryResults[$identifier] = new QualityScores();
+        }
+        //end mock
+
+        foreach ($queryResults
+                 as $productIdentifier => $productQualityScores) {
+            $qualityScores[$productIdentifier] = ['quality_scores' => $productQualityScores];
+        }
+
+        return $qualityScores;
+    }
+}
+
+class QualityScores{
+
+    public function toArray()
+    {
+        return [
+            'ecommerce' => [
+                'en_US' => 'A',
+                'fr_FR' => 'B',
+            ],
+            'print' => [
+                'en_US' => 'C',
+                'fr_FR' => 'E',
+            ]
+        ];
     }
 }
