@@ -21,6 +21,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * REST Controller for Datagrid Views.
@@ -99,21 +100,12 @@ class DatagridViewController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function typesAction(Request $request): JsonResponse
+    public function typesAction(): JsonResponse
     {
-        $result = [];
         $user = $this->tokenStorage->getToken()->getUser();
-        $types = $this->datagridViewRepo->getDatagridViewTypeByUser($user);
-        foreach ($types as $type) {
-            $result[] = $type['datagridAlias'];
-        }
+        Assert::isInstanceOf($user, UserInterface::class);
 
-        return new JsonResponse($result);
+        return new JsonResponse($this->datagridViewRepo->getDatagridViewAliasesByUser($user));
     }
 
     /**
