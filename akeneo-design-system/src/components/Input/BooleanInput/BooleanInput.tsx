@@ -99,17 +99,18 @@ type BooleanInputProps = (
       clearable?: true;
       value: boolean | null;
       onChange?: (value: boolean | null) => void;
+      clearLabel: string;
     }
   | {
       clearable?: false;
       value: boolean;
       onChange?: (value: boolean) => void;
+      clearLabel?: string;
     }
 ) & {
-  readOnly?: boolean;
-  yesLabel?: string;
-  noLabel?: string;
-  clearLabel?: string;
+  readOnly: boolean;
+  yesLabel: string;
+  noLabel: string;
 };
 
 /**
@@ -119,24 +120,15 @@ type BooleanInputProps = (
  */
 const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (
-    {
-      value,
-      readOnly = false,
-      onChange,
-      clearable = false,
-      yesLabel = 'Yes',
-      noLabel = 'No',
-      clearLabel = 'Clear value',
-      ...rest
-    }: BooleanInputProps,
+    {value, readOnly, onChange, clearable = false, yesLabel, noLabel, clearLabel, ...rest}: BooleanInputProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const handleChange = useCallback(
-      (value: boolean | null) => {
+      value => {
         if (!onChange) {
           return;
         }
-        onChange(value as boolean);
+        onChange(value);
       },
       [onChange, readOnly]
     );
