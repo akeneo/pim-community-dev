@@ -238,18 +238,18 @@ const Edit = () => {
   return (
     <>
       <Prompt when={isModified} message={() => __('pim_ui.flash.unsaved_changes')} />
-      {isAddUnitModalOpen && (
-        <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={handleNewUnit} />
-      )}
-
-      {isConfirmDeleteMeasurementFamilyModalOpen && (
-        <ConfirmDeleteModal
-          description={__('measurements.family.delete.confirm')}
-          onConfirm={handleRemoveMeasurementFamily}
-          onCancel={closeConfirmDeleteMeasurementFamilyModal}
-        />
-      )}
-
+      <CreateUnit
+        isOpen={isAddUnitModalOpen}
+        measurementFamily={measurementFamily}
+        onClose={closeAddUnitModal}
+        onNewUnit={handleNewUnit}
+      />
+      <ConfirmDeleteModal
+        isOpen={isConfirmDeleteMeasurementFamilyModalOpen}
+        description={__('measurements.family.delete.confirm')}
+        onConfirm={handleRemoveMeasurementFamily}
+        onCancel={closeConfirmDeleteMeasurementFamilyModal}
+      />
       <PageHeader
         userButtons={
           <PimView

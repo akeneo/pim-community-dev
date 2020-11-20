@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import LinkTo from '@storybook/addon-links/react';
 import {useArgs, updateArgs} from '@storybook/client-api';
@@ -18,6 +19,7 @@ import * as Illustrations from '../../illustrations';
     isOpen: false,
     children: 'Modal text',
     illustration: undefined,
+    closeTitle: 'Close',
   }}
 />
 
@@ -61,12 +63,12 @@ It can be used with or without an Illustration and adapts its content accordingl
 <Canvas>
   <Story name="With Illustration">
     {args => {
-      const [{isOpen}, updateArgs] = useArgs();
-      const open = () => updateArgs({isOpen: true});
-      const close = () => updateArgs({isOpen: false});
+      const [isOpen, setOpen] = useState(false);
+      const open = () => setOpen(true);
+      const close = () => setOpen(false);
       return (
         <>
-          <Modal {...args} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
+          <Modal {...args} isOpen={isOpen} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
             Such nice Illustration
             <Modal.BottomButtons>
               <Button onClick={close}>Close</Button>
@@ -84,7 +86,7 @@ It can be used with or without an Illustration and adapts its content accordingl
 The Modal Component also exposes a `BottomButtons` Component that is helpful to display Buttons at the bottom of the Modal children. It can be used as simply as this:
 
 ```jsx
-<Modal>
+<Modal {...props}>
   Lorem ipsum dolor sit amet
   <Modal.BottomButtons>
     <Button>Cancel</Button>
