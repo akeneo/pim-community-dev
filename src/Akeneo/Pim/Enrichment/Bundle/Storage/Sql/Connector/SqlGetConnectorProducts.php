@@ -275,8 +275,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
         //TODO add a query in constructor of this service
         //Following code is a mock
         $queryResults = [];
-        foreach($productIdentifiers as $identifier)
-        {
+        foreach ($productIdentifiers as $identifier) {
             $queryResults[$identifier] = new QualityScores();
         }
         //end mock
@@ -290,8 +289,8 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
     }
 }
 
-class QualityScores{
-
+class QualityScores
+{
     public function toArray()
     {
         return [
