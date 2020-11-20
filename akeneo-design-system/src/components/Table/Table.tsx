@@ -1,8 +1,12 @@
-import React, {ReactNode, SyntheticEvent, useContext} from 'react';
-import styled, {css} from 'styled-components';
-import {ArrowDownIcon, ArrowUpIcon} from '../../icons';
-import {Checkbox} from '..';
-import {AkeneoThemedProps, getColor} from '../../theme';
+import React, {ReactNode} from 'react';
+import styled from 'styled-components';
+import {TableCell} from './TableCell/TableCell';
+import {TableHeader} from './TableHeader/TableHeader';
+import {TableHeaderCell} from './TableHeaderCell/TableHeaderCell';
+import {TableActionCell} from './TableActionCell/TableActionCell';
+import {TableRow} from './TableRow/TableRow';
+import {SelectableContext} from './SelectableContext';
+import {TableBody} from './TableBody/TableBody';
 
 const TableContainer = styled.table`
   border-collapse: collapse;
@@ -10,18 +14,21 @@ const TableContainer = styled.table`
 `;
 
 type TableProps = {
+  /**
+   * Define if rows can be selected
+   */
   isSelectable?: boolean;
+
+  /**
+   *
+   */
   amountSelectedRows?: number;
+
+  /**
+   * The content of the table
+   */
   children?: ReactNode;
 };
-
-const SelectableContext = React.createContext<{
-  isSelectable: boolean;
-  amountSelectedRows?: number;
-}>({
-  isSelectable: false,
-  amountSelectedRows: undefined,
-});
 
 const Table = ({isSelectable = false, amountSelectedRows, children, ...rest}: TableProps) => {
   if (isSelectable && undefined === amountSelectedRows) {
@@ -35,211 +42,11 @@ const Table = ({isSelectable = false, amountSelectedRows, children, ...rest}: Ta
   );
 };
 
-type TableHeaderProps = {
-  children?: ReactNode;
-};
-
-const HeaderRowContainer = styled.tr``;
-
-const TableHeader = ({children, ...rest}: TableHeaderProps) => {
-  const {isSelectable} = useContext(SelectableContext);
-
-  return (
-    <thead>
-      <HeaderRowContainer {...rest}>
-        {isSelectable && <th />}
-        {children}
-      </HeaderRowContainer>
-    </thead>
-  );
-};
-
-export enum TableSortDirection {
-  DESC = 'descending',
-  ASC = 'ascending',
-  NONE = 'none',
-}
-
-type TableHeaderCellProps = {
-  sortable?: boolean;
-  onDirectionChange?: (direction: TableSortDirection) => void;
-  direction?: TableSortDirection;
-  children?: ReactNode;
-};
-
-const HeaderCellContainer = styled.th<{sortable: boolean; isSorted: boolean} & AkeneoThemedProps>`
-  background: linear-gradient(to top, #67768a 1px, white 0px);
-  height: 44px;
-  text-align: left;
-  color: ${props => (props.isSorted ? getColor('purple', 100) : getColor('grey', 100))};
-  font-weight: normal;
-
-  ${props =>
-    props.sortable &&
-    css`
-      cursor: pointer;
-    `};
-`;
-
-const HeaderCellContentContainer = styled.span`
-  color: ${getColor('grey', 140)};
-  padding: 0 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  + svg {
-    vertical-align: middle;
-  }
-`;
-
-const TableHeaderCell = ({sortable = false, onDirectionChange, direction, children, ...rest}: TableHeaderCellProps) => {
-  if (sortable && (onDirectionChange === undefined || direction === undefined)) {
-    throw Error('Sortable header should provide onDirectionChange and direction props');
-  }
-
-  const handleClick = () => {
-    if (!sortable || onDirectionChange === undefined) return;
-
-    switch (direction) {
-      case TableSortDirection.ASC:
-        onDirectionChange(TableSortDirection.DESC);
-        break;
-      case TableSortDirection.DESC:
-      case TableSortDirection.NONE:
-        onDirectionChange(TableSortDirection.ASC);
-        break;
-    }
-  };
-
-  return (
-    <HeaderCellContainer
-      isSorted={direction !== TableSortDirection.NONE}
-      sortable={sortable}
-      aria-sort={direction}
-      onClick={handleClick}
-      {...rest}
-    >
-      <HeaderCellContentContainer>{children}</HeaderCellContentContainer>
-      {sortable &&
-        (direction == TableSortDirection.DESC || direction == TableSortDirection.NONE ? (
-          <ArrowDownIcon size={14} />
-        ) : (
-          <ArrowUpIcon size={14} />
-        ))}
-    </HeaderCellContainer>
-  );
-};
-
-const TableBody = styled.tbody``;
-
-type TableRowProps = {
-  children?: ReactNode;
-  onSelectToggle?: (isSelected: boolean) => void;
-  isSelected?: boolean;
-  onClick?: (event: SyntheticEvent) => void;
-};
-
-const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean} & AkeneoThemedProps>`
-  ${props =>
-    props.isSelected &&
-    css`
-      > td {
-        background-color: ${getColor('blue', 20)};
-      }
-    `};
-
-  ${props =>
-    props.isClickable &&
-    css`
-      &:hover {
-        cursor: pointer;
-      }
-    `}
-
-  &:hover > td {
-    opacity: 1;
-    ${props =>
-      props.isClickable &&
-      css`
-        background-color: ${getColor('grey', 20)};
-      `}
-  }
-`;
-
-const CheckboxContainer = styled.td<{isVisible: boolean}>`
-  background: none !important;
-  opacity: ${props => (props.isVisible ? 1 : 0)};
-  cursor: auto;
-`;
-
-const TableRow = ({isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps) => {
-  const {isSelectable, amountSelectedRows} = useContext(SelectableContext);
-
-  if (isSelectable && undefined === isSelected) {
-    throw Error('A row in a selectable table should have the prop "isSelected"');
-  }
-  if (isSelectable && undefined === onSelectToggle) {
-    throw Error('A row in a selectable table should have the prop "onSelectToggle"');
-  }
-
-  const isCheckboxVisible = undefined !== amountSelectedRows && amountSelectedRows > 0;
-
-  const handleCheckboxChange = (e: SyntheticEvent) => {
-    e.stopPropagation();
-    undefined !== onSelectToggle && onSelectToggle(!isSelected);
-  };
-
-  return (
-    <RowContainer isClickable={undefined !== onClick} isSelected={isSelected} onClick={onClick} {...rest}>
-      {isSelectable && undefined !== isSelected && (
-        <CheckboxContainer isVisible={isCheckboxVisible} onClick={handleCheckboxChange}>
-          <Checkbox
-            checked={isSelected}
-            onChange={(_value, e) => {
-              handleCheckboxChange(e);
-            }}
-          />
-        </CheckboxContainer>
-      )}
-      {children}
-    </RowContainer>
-  );
-};
-
-const TableCellContainer = styled.td<{primary: boolean} & AkeneoThemedProps>`
-  color: ${getColor('grey', 140)};
-  border-bottom: 1px solid ${getColor('grey', 60)};
-  padding: 15px 10px;
-  ${props =>
-    props.primary &&
-    css`
-      color: ${getColor('purple', 100)};
-      font-style: italic;
-      font-weight: bold;
-      font-family: Lato;
-    `}
-`;
-const TableCellInnerContainer = styled.div`
-  display: flex;
-`;
-
-type TableCellProps = {
-  primary?: boolean;
-  children?: ReactNode;
-};
-
-const TableCell = ({primary = false, children}: TableCellProps) => {
-  return (
-    <TableCellContainer primary={primary}>
-      <TableCellInnerContainer>{children}</TableCellInnerContainer>
-    </TableCellContainer>
-  );
-};
-
 Table.Header = TableHeader;
 Table.HeaderCell = TableHeaderCell;
 Table.Body = TableBody;
 Table.Row = TableRow;
 Table.Cell = TableCell;
+Table.ActionCell = TableActionCell;
 
 export {Table};
