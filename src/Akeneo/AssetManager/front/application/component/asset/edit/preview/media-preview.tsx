@@ -83,14 +83,20 @@ const DisconnectedMediaDataPreview = ({
     attributeIdentifier: attribute.identifier,
     data: getMediaData(mediaData),
   });
-
   const [regenerate, doRegenerate, refreshedUrl] = useRegenerate(url);
+  const [previewError, setPreviewError] = React.useState(false);
 
   React.useEffect(() => {
     if (reloadPreview) {
       doRegenerate();
     }
   }, [reloadPreview]);
+
+  const handlePreviewError = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
+    (event.target as HTMLInputElement).setAttribute('src', emptyMediaUrl);
+    setPreviewError(true);
+  };
 
   return (
     <>
@@ -99,9 +105,9 @@ const DisconnectedMediaDataPreview = ({
           <ImagePlaceholder alt={label} data-role="media-data-preview" />
         </div>
       ) : (
-        <Image src={refreshedUrl} alt={label} data-role="media-data-preview" />
+        <Image src={refreshedUrl} alt={label} data-role="media-data-preview" onError={handlePreviewError} />
       )}
-      {attribute.media_type === MediaTypes.other && (
+      {(previewError || attribute.media_type === MediaTypes.other) && (
         <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
           {__('pim_asset_manager.asset_preview.other_main_media')}
         </Message>

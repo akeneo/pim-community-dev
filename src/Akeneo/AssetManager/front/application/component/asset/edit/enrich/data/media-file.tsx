@@ -21,6 +21,7 @@ import Import from 'akeneoassetmanager/application/component/app/illustration/im
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
+import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
 const FileUploadContainer = styled(Container).attrs(() => ({className: 'AknImage-uploader'}))`
   position: relative;
@@ -88,13 +89,17 @@ const FileUploader = ({
 
       try {
         const image = await imageUploader.upload(file, () => {});
-        await loadImage(
-          getMediaPreviewUrl({
-            type: MediaPreviewType.Thumbnail,
-            attributeIdentifier: value.attribute.identifier,
-            data: image?.filePath || '',
-          })
-        );
+        try {
+          await loadImage(
+            getMediaPreviewUrl({
+              type: MediaPreviewType.Thumbnail,
+              attributeIdentifier: value.attribute.identifier,
+              data: image?.filePath || '',
+            })
+          );
+        } catch (error) {
+          console.error(error);
+        }
         onChange(setValueData(value, image));
       } catch (error) {
         console.error(error);
@@ -159,6 +164,7 @@ const View = ({
     attributeIdentifier: value.attribute.identifier,
     data: getMediaData(value.data),
   });
+  const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
 
   const label = getLabelInCollection(
     value.attribute.labels,
@@ -171,7 +177,11 @@ const View = ({
     <FileUploader value={value} readOnly={!canEditData} onChange={onChange} />
   ) : (
     <Container>
-      <Thumbnail src={mediaPreviewUrl} alt={__('pim_asset_manager.attribute.media_type_preview')} />
+      <Thumbnail
+        src={mediaPreviewUrl}
+        alt={__('pim_asset_manager.attribute.media_type_preview')}
+        onError={event => (event.target as HTMLInputElement).setAttribute('src', emptyMediaUrl)}
+      />
       <MediaFileLabel readOnly={!canEditData}>{value.data?.originalFilename}</MediaFileLabel>
       <Actions>
         {canEditData && (

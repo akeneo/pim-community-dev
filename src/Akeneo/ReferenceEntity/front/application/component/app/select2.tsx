@@ -48,10 +48,16 @@ export default class Select2 extends React.Component<Select2Props & any> {
     }
 
     if (prevProps.value !== value && value.length === 0) {
-      // The re-render can bring some problem when the value becomes empty (see PIM-8479)
-      // but we need to set the value in any case (see PIM-9263).
-      $el.val(null).trigger('change');
-
+      // Workaround for PIM-9560 : setting $el.val() with empty value in the record option filter
+      // causes crash during the call of rest/reference_entity/ref_entity/record
+      // The following condition excludes this filter.
+      if ('record-option-selector' !== this.props.className) {
+        // The re-render can bring some problem when the value becomes empty (see PIM-8479)
+        // but we need to set the value in any case (see PIM-9263).
+        // PIM-9560 : set to null for single select, [] for multi-select
+        let emptyVal = 'object' === typeof value ? [] : null;
+        $el.val(emptyVal).trigger('change');
+      }
       return;
     }
 

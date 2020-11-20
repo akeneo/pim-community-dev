@@ -13,6 +13,7 @@ import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/r
 import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
+import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 
 type MainMediaThumbnailProps = {
   asset: EditionAsset;
@@ -47,6 +48,7 @@ const Img = styled.img`
 
 export const DisconnectedMainMediaThumbnail = ({asset, context, reloadPreview}: MainMediaThumbnailProps) => {
   const url = getMediaPreviewUrl(getEditionAssetMainMediaThumbnail(asset, context.channel, context.locale));
+  const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
   const label = getEditionAssetLabel(asset, context.locale);
   const [regenerate, doRegenerate, refreshedUrl] = useRegenerate(url);
 
@@ -62,7 +64,11 @@ export const DisconnectedMainMediaThumbnail = ({asset, context, reloadPreview}: 
     </div>
   ) : (
     <Container>
-      <Img alt={__('pim_asset_manager.asset.img', {label})} src={refreshedUrl} />
+      <Img
+        alt={__('pim_asset_manager.asset.img', {label})}
+        src={refreshedUrl}
+        onError={event => (event.target as HTMLInputElement).setAttribute('src', emptyMediaUrl)}
+      />
     </Container>
   );
 };
