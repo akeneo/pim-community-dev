@@ -17,6 +17,13 @@ extensions:
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
 
+    akeneo-product-data_quality_insights_enrichment-filter:
+        module: pim/filter/product/data_quality_insights_enrichment
+        config:
+            neverEmpty: true
+            operators:
+                - IN
+
     akeneo-product-model-completeness-filter:
         module: pim/filter/product/completeness
         config:

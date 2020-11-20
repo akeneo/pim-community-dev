@@ -301,6 +301,9 @@ extensions:
                     field: completeness
                     view: akeneo-product-completeness-filter
                 -
+                    field: data_quality_insights_enrichment
+                    view: akeneo-product-data_quality_insights_enrichment-filter
+                -
                     field: updated
                     view: akeneo-product-updated-filter
                 -
