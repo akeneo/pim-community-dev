@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {TableCell} from '../TableCell/TableCell';
 import React, {ReactNode, SyntheticEvent} from 'react';
-import {Button} from '../../';
+import {Button, ButtonProps} from '../../';
 
 const TableActionCellContainer = styled(TableCell)`
   > div {
@@ -18,7 +18,7 @@ type ActionCellProps = {
 
 const TableActionCell = ({children, ...rest}: ActionCellProps) => {
   const decoratedChildren = React.Children.map(children, child => {
-    if (!React.isValidElement(child) || child.type !== Button) return child;
+    if (!React.isValidElement<ButtonProps>(child) || child.type !== Button) return child;
 
     return React.cloneElement(child, {
       onClick: (e: SyntheticEvent) => {
