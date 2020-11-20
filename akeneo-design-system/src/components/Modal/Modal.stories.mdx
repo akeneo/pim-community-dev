@@ -8,7 +8,12 @@ import * as Illustrations from '../../illustrations';
 <Meta
   title="Components/Modal"
   component={Modal}
-  argTypes={{illustration: {control: {type: 'select', options: [undefined, ...Object.keys(Illustrations)]}}}}
+  argTypes={{
+    illustration: {
+      control: {type: 'select', options: [undefined, ...Object.keys(Illustrations)]},
+      table: {type: {summary: 'ReactElement<IllustrationProps>'}},
+    },
+  }}
   args={{
     isOpen: false,
     children: 'Modal text',
