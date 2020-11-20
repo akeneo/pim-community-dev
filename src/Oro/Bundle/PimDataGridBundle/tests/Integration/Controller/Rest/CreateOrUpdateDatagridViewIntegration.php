@@ -84,7 +84,7 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
     }
 
     /** @test */
-    public function it_edits_an_existing_view(): void
+    public function it_edits_an_existing_public_view(): void
     {
         $datagridView = $this->datagridViewRepository->find($this->fixtureViewIds['admin_view']);
         $this->assertNotNull($datagridView);
@@ -110,6 +110,36 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
         $this->assertSame('Edited view', $datagridView->getLabel());
         $this->assertSame($this->loggedUser->getUsername(), $datagridView->getOwner()->getUsername());
         $this->assertSame(DatagridView::TYPE_PUBLIC, $datagridView->getType(), 'Type cannot be changed');
+        $this->assertSame(['identifier', 'created', 'updated' , 'enabled'], $datagridView->getColumns());
+    }
+
+    /** @test */
+    public function it_edits_an_existing_private_view(): void
+    {
+        $datagridView = $this->datagridViewRepository->find($this->fixtureViewIds['admin_private_view']);
+        $this->assertNotNull($datagridView);
+
+        $response = $this->callSaveController('product-grid', [
+            'view' => [
+                'id' => $datagridView->getId(),
+                'label' => 'Edited private view',
+                'type' => DatagridView::TYPE_PUBLIC,
+                'columns' => 'identifier,created,updated,enabled',
+                'filters' => 'i=1&p=25&s[updated]=1&f[scope][value]=ecommerce&f[category][value][treeId]=1&f[category][value][categoryId]=-2&f[category][type]=1&t=product-grid',
+            ],
+        ]);
+
+        $this->assertStatusCode($response, Response::HTTP_OK);
+        $id = \json_decode($response->getContent(), true)['id'] ?? null;
+
+        $this->assertIsInt($id);
+        $this->entityManagerClearer->clear();
+        $datagridView = $this->datagridViewRepository->find($id);
+        $this->assertNotNull($datagridView);
+        $this->assertSame('product-grid', $datagridView->getDatagridAlias());
+        $this->assertSame('Edited private view', $datagridView->getLabel());
+        $this->assertSame($this->loggedUser->getUsername(), $datagridView->getOwner()->getUsername());
+        $this->assertSame(DatagridView::TYPE_PRIVATE, $datagridView->getType(), 'Type cannot be changed');
         $this->assertSame(['identifier', 'created', 'updated' , 'enabled'], $datagridView->getColumns());
     }
 
@@ -153,7 +183,19 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
     {
         $datagridView = $this->datagridViewRepository->find($this->fixtureViewIds['mary_view']);
         $this->assertNotNull($datagridView);
+        $response = $this->callSaveController('product-grid', [
+            'view' => [
+                'id' => $datagridView->getId(),
+                'label' => 'Edited view',
+                'type' => DatagridView::TYPE_PUBLIC,
+                'columns' => 'identifier,created,updated,enabled',
+                'filters' => 'i=1&p=25&s[updated]=1&f[scope][value]=ecommerce&f[category][value][treeId]=1&f[category][value][categoryId]=-2&f[category][type]=1&t=product-grid',
+            ],
+        ]);
+        $this->assertStatusCode($response, Response::HTTP_FORBIDDEN);
 
+        $datagridView = $this->datagridViewRepository->find($this->fixtureViewIds['mary_private_view']);
+        $this->assertNotNull($datagridView);
         $response = $this->callSaveController('product-grid', [
             'view' => [
                 'id' => $datagridView->getId(),
@@ -163,7 +205,6 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
                 'filters' => 'i=1&p=25&s[updated]=1&f[scope][value]=ecommerce&f[category][value][treeId]=1&f[category][value][categoryId]=-2&f[category][type]=1&t=product-grid',
             ],
         ]);
-
         $this->assertStatusCode($response, Response::HTTP_FORBIDDEN);
     }
 
@@ -195,6 +236,16 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
 
         $datagridView = new DatagridView();
         $datagridView->setDatagridAlias('product-grid');
+        $datagridView->setLabel('a private view');
+        $datagridView->setType(DatagridView::TYPE_PRIVATE);
+        $datagridView->setOwner($this->loggedUser);
+        $datagridView->setColumns(['identifier']);
+        $datagridView->setFilters('filters');
+        $this->datagridViewSaver->save($datagridView);
+        $this->fixtureViewIds['admin_private_view'] = $datagridView->getId();
+
+        $datagridView = new DatagridView();
+        $datagridView->setDatagridAlias('product-grid');
         $datagridView->setLabel('Mary\'s view');
         $datagridView->setType(DatagridView::TYPE_PUBLIC);
         $datagridView->setOwner($this->otherUser);
@@ -202,6 +253,16 @@ class CreateOrUpdateDatagridViewIntegration extends ControllerIntegrationTestCas
         $datagridView->setFilters('filters');
         $this->datagridViewSaver->save($datagridView);
         $this->fixtureViewIds['mary_view'] = $datagridView->getId();
+
+        $datagridView = new DatagridView();
+        $datagridView->setDatagridAlias('product-grid');
+        $datagridView->setLabel('Mary\'s private view');
+        $datagridView->setType(DatagridView::TYPE_PRIVATE);
+        $datagridView->setOwner($this->otherUser);
+        $datagridView->setColumns(['identifier']);
+        $datagridView->setFilters('filters');
+        $this->datagridViewSaver->save($datagridView);
+        $this->fixtureViewIds['mary_private_view'] = $datagridView->getId();
     }
 
     public function getConfiguration(): Configuration
