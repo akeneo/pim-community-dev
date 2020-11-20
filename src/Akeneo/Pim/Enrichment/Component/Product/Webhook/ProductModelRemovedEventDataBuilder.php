@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
@@ -22,16 +23,14 @@ class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
     /**
      * @param ProductModelRemoved $event
      */
-    public function build(object $event, UserInterface $user): array
+    public function build(object $event, UserInterface $user): EventDataCollection
     {
         if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
         }
 
-        $data = $event->getData();
-
-        return [
-            'resource' => ['code' => $data['code']]
-        ];
+        return (new EventDataCollection())->setEventData($event, [
+            'resource' => ['code' => $event->getCode()],
+        ]);
     }
 }

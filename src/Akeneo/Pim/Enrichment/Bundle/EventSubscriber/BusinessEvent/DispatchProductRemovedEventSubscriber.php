@@ -44,14 +44,14 @@ final class DispatchProductRemovedEventSubscriber implements EventSubscriberInte
             return;
         }
 
-        if (null === $user = $this->getUser()) {
+        if (null === ($user = $this->getUser())) {
             return;
         }
 
         $author = Author::fromUser($user);
         $data = [
             'identifier' => $product->getIdentifier(),
-            'categories' => $product->getCategoryCodes(),
+            'category_codes' => $product->getCategoryCodes(),
         ];
 
         $event = new ProductRemoved($author, $data);
