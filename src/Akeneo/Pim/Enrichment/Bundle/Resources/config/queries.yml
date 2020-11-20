@@ -277,3 +277,28 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '%pim_job_product_batch_size%'
+
+    akeneo.pim.enrichment.product.query.count_products_with_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\CountProductsWithRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\CountProductModelsWithRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.product.query.count_products_and_product_models_with_inherited_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\CountProductsAndProductModelsWithInheritedRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductIdentifiersWithRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductModelIdentifiersWithRemovedAttribute
+        arguments:
+            - '@akeneo_elasticsearch.client.product_and_product_model'
