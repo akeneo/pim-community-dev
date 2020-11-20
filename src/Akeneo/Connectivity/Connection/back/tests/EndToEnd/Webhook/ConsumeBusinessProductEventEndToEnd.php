@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\CategoryLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
@@ -13,12 +14,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -27,17 +30,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
 {
-    /** @var ConnectionLoader */
-    private $connectionLoader;
-
-    /** @var WebhookLoader */
-    private $webhookLoader;
-
-    /** @var ProductLoader */
-    private $productLoader;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
+    private ConnectionLoader $connectionLoader;
+    private WebhookLoader $webhookLoader;
+    private ProductLoader $productLoader;
+    private CategoryLoader $categoryLoader;
+    private NormalizerInterface $normalizer;
 
     protected function setUp(): void
     {
@@ -46,7 +43,10 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->webhookLoader = $this->get('akeneo_connectivity.connection.fixtures.webhook_loader');
         $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
+        $this->categoryLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.category');
         $this->normalizer = $this->get('pim_catalog.normalizer.standard.product');
+
+        $this->categoryLoader->create(['code' => 'category']);
     }
 
     public function test_it_sends_a_product_created_webhook_event()
@@ -60,7 +60,7 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
         );
 
         $this->webhookLoader->initWebhook($connection->code());
-        $product = $this->productLoader->create('product_created_test', []);
+        $product = $this->productLoader->create('product_created_test', ['categories' => ['category']]);
 
         /** @var HandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
@@ -75,16 +75,18 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
         $container = [];
         $history = Middleware::history($container);
         $handlerStack->push($history);
-        $message = new ProductCreated(
-            $author,
-            $this->normalizer->normalize($product, 'standard')
-        );
+        $message = new BulkEvent([
+            new ProductCreated(
+                $author,
+                $this->normalizer->normalize($product, 'standard')
+            )
+        ]);
 
         /** @var $businessEventHandler BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $container);
+        Assert::assertCount(1, $container);
     }
 
     public function test_it_sends_a_product_updated_webhook_event()
@@ -97,7 +99,7 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
             false
         );
         $this->webhookLoader->initWebhook($connection->code());
-        $product = $this->productLoader->create('product_updated_test', []);
+        $product = $this->productLoader->create('product_updated_test', ['categories' => ['category']]);
 
         /** @var HandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
@@ -113,16 +115,18 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
         $history = Middleware::history($container);
         $handlerStack->push($history);
 
-        $message = new ProductUpdated(
-            $author,
-            $this->normalizer->normalize($product, 'standard')
-        );
+        $message = new BulkEvent([
+            new ProductUpdated(
+                $author,
+                $this->normalizer->normalize($product, 'standard')
+            )
+        ]);
 
         /** @var $businessEventHandler BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);
 
-        $this->assertCount(1, $container);
+        Assert::assertCount(1, $container);
     }
 
     public function test_it_sends_a_product_removed_webhook_event()
@@ -134,8 +138,9 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
             FlowType::DATA_DESTINATION,
             false
         );
+
         $this->webhookLoader->initWebhook($connection->code());
-        $product = $this->productLoader->create('product_to_remove_test', []);
+        $product = $this->productLoader->create('product_to_remove_test', ['categories' => ['category']]);
 
         /** @var HandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');

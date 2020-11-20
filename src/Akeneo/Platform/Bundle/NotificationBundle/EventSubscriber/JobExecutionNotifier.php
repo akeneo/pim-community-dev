@@ -7,6 +7,7 @@ use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryRegistr
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -63,6 +64,10 @@ class JobExecutionNotifier implements EventSubscriberInterface
 
         $user = $jobParameters->get('user_to_notify');
         if (null === $user) {
+            return;
+        }
+
+        if (ExitStatus::STOPPED === $jobExecution->getExitStatus()->getExitCode()) {
             return;
         }
 

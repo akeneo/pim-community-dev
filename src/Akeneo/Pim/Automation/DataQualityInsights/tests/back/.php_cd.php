@@ -29,6 +29,7 @@ $rules = [
             //External dependencies
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Application'),
 
@@ -109,6 +110,10 @@ $rules = [
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
             'Oro\Bundle\FilterBundle\Filter\FilterUtility',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface',
+            'Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource',
+            'Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource',
+
 
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager',
@@ -116,6 +121,10 @@ $rules = [
             'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage',
             'Doctrine\ORM\EntityManager',
             'Symfony\Component\Process',
+
+            //Necessary for the Dashboard
+            'Akeneo\Tool\Component\Classification\Model\CategoryInterface',
+            'Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface',
 
             //Security
             'Oro\Bundle\SecurityBundle\SecurityFacade',
@@ -142,6 +151,7 @@ $rules = [
             'GuzzleHttp\Exception',
             'Mekras\Speller',
             'League\Flysystem',
+            'Webmozart\Assert\Assert',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
         ]

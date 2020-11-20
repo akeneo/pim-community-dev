@@ -12,8 +12,7 @@ namespace Akeneo\Tool\Component\Batch\Job;
  */
 class RuntimeErrorException extends \RuntimeException
 {
-    /** @var array */
-    protected $messageParameters;
+    protected array $messageParameters;
 
     /**
      * @param string $message

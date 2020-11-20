@@ -28,9 +28,7 @@ define([
   'pim/form-builder',
   'pim/security-context',
   'pim/i18n',
-  'react',
-  'react-dom',
-  'pimui/js/product/form/quantified-associations/QuantifiedAssociationsTab',
+  'pimui/js/product/form/quantified-associations/components/QuantifiedAssociations',
   '@akeneo-pim-community/shared',
 ], function (
   $,
@@ -52,9 +50,7 @@ define([
   FormBuilder,
   securityContext,
   {getLabel},
-  React,
-  ReactDOM,
-  {QuantifiedAssociationsTab},
+  {QuantifiedAssociations},
   {filterErrors}
 ) {
   let state = {};
@@ -261,7 +257,7 @@ define([
 
     unmountQuantifiedAssociations: function () {
       const quantifiedAssociationsNode = document.getElementById('product-quantified-associations');
-      if (quantifiedAssociationsNode) ReactDOM.unmountComponentAtNode(quantifiedAssociationsNode);
+      if (quantifiedAssociationsNode) this.unmountReact();
     },
 
     /**
@@ -319,7 +315,7 @@ define([
         `quantifiedAssociations.${associationTypeCode}`
       );
 
-      const Component = React.createElement(QuantifiedAssociationsTab, {
+      const props = {
         quantifiedAssociations,
         parentQuantifiedAssociations,
         errors,
@@ -350,8 +346,8 @@ define([
               };
             })
           ),
-      });
-      ReactDOM.render(Component, this.$('#product-quantified-associations')[0]);
+      };
+      this.renderReact(QuantifiedAssociations, props, this.$('#product-quantified-associations')[0]);
     },
 
     /**

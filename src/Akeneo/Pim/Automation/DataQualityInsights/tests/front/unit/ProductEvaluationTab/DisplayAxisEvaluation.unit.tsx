@@ -1,16 +1,11 @@
-import React from 'react';
-import {Provider} from 'react-redux';
-
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render} from '@testing-library/react';
-
-import AxisEvaluation from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
+import {fireEvent} from '@testing-library/react';
 import {Evaluation} from '@akeneo-pim-community/data-quality-insights/src/domain';
-import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
 import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
 } from '@akeneo-pim-community/data-quality-insights/src/application/listener';
+import {renderConsistencyEvaluation, renderEnrichmentEvaluation} from '../../utils/render';
 
 const UserContext = require('pim/user-context');
 
@@ -26,8 +21,8 @@ UserContext.get.mockReturnValue('en_US');
 
 describe('Product evaluation tab', () => {
   test('Consistency axis with ongoing criterion evaluation, 2 criteria with recommendations, 1 perfect criterion and 1 not applicable criterion', async () => {
-    const {queryAllByTestId, getByText, queryByText, queryAllByText, getAllByTestId} = renderWithRedux(
-      <AxisEvaluation axis={'consistency'} evaluation={evaluation1} />
+    const {queryAllByTestId, getByText, queryByText, queryAllByText, getAllByTestId} = renderConsistencyEvaluation(
+      evaluation1
     );
     assertAxisTitleIsDisplayed(getByText);
     assertAxisGradingInProgressMessageIsDisplayed(getByText);
@@ -69,8 +64,8 @@ describe('Product evaluation tab', () => {
   });
 
   test('Consistency axis with an error, 2 criteria with recommendations, 1 perfect criterion and 1 not applicable criterion', async () => {
-    const {queryAllByTestId, getByText, queryByText, queryAllByText, getAllByTestId} = renderWithRedux(
-      <AxisEvaluation axis={'consistency'} evaluation={evaluation2} />
+    const {queryAllByTestId, getByText, queryByText, queryAllByText, getAllByTestId} = renderConsistencyEvaluation(
+      evaluation2
     );
     assertAxisTitleIsDisplayed(getByText);
     assertAxisGradingInProgressMessageIsNotDisplayed(queryByText);
@@ -110,9 +105,7 @@ describe('Product evaluation tab', () => {
   });
 
   test('Consistency axis with 4 perfect results and 1 not applicable criterion', async () => {
-    const {getByText, queryByText, queryAllByText, queryAllByTestId} = renderWithRedux(
-      <AxisEvaluation axis={'consistency'} evaluation={evaluation3} />
-    );
+    const {getByText, queryByText, queryAllByText, queryAllByTestId} = renderConsistencyEvaluation(evaluation3);
     assertAxisTitleIsDisplayed(getByText);
     assertAxisGradingInProgressMessageIsNotDisplayed(queryByText);
     assertAxisErrorMessageIsNotDisplayed(queryByText);
@@ -153,7 +146,7 @@ describe('Product evaluation tab', () => {
   });
 
   test('Enrichment axis with 2 criteria with recommendations', async () => {
-    const {queryByText} = renderWithRedux(<AxisEvaluation axis={'enrichment'} evaluation={evaluation4} />);
+    const {queryByText} = renderEnrichmentEvaluation(evaluation4);
     assertAllAttributesLinkClickSendsAnEvent(queryByText, 'enrichment', ['power_requirements', 'weight']);
   });
 });
@@ -388,51 +381,3 @@ const evaluation4: Evaluation = {
     value: 35,
   },
 };
-
-function renderWithRedux(ui: React.ReactElement) {
-  const initialState = {
-    catalogContext: {channel: 'ecommerce', locale: 'en_US'},
-    product: {
-      categories: [],
-      enabled: true,
-      family: 'led_tvs',
-      identifier: null,
-      meta: {
-        id: 1,
-        label: {},
-        attributes_for_this_level: [],
-        level: null,
-        model_type: 'product',
-      },
-      created: null,
-      updated: null,
-    },
-    families: {
-      led_tvs: {
-        code: 'led_tvs',
-        attributes: [
-          {
-            code: 'description',
-            type: 'text',
-            group: '',
-            validation_rule: null,
-            validation_regexp: null,
-            wysiwyg_enabled: null,
-            localizable: true,
-            scopable: true,
-            labels: {
-              en_US: 'Product description',
-            },
-            is_read_only: true,
-            meta: {id: 1},
-          },
-        ],
-        attribute_as_label: 'description',
-        labels: {
-          en_US: 'LED TVs',
-        },
-      },
-    },
-  };
-  return render(<Provider store={createStoreWithInitialState(initialState)}>{ui}</Provider>);
-}

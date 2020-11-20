@@ -9,6 +9,7 @@ services:
             -
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.prepare_products_criteria_evaluation'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.prepare_product_models_criteria_evaluation'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
             - name: akeneo_batch.job.not_visible
@@ -21,6 +22,7 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_and_product_models_criteria'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
             - name: akeneo_batch.job.not_visible
@@ -36,6 +38,7 @@ services:
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.remove_evaluations_without_product'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.log_metrics'
+            - true
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
             - name: akeneo_batch.job.not_visible
@@ -103,7 +106,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
             - '@akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate'
             - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
             - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'

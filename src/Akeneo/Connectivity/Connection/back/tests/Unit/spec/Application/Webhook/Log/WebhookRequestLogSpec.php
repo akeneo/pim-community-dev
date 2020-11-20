@@ -16,18 +16,27 @@ class WebhookRequestLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $author = Author::fromNameAndType('Julia', Author::TYPE_UI);
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
-        $event = new WebhookEvent(
-            'product.created',
-            '79fc4791-86d6-4d3b-93c5-76b787af9497',
-            '2020-01-01T00:00:00+00:00',
-            $author,
-            'staging.akeneo.com',
-            ['data']
-        );
+        $events = [
+            new WebhookEvent(
+                'product.created',
+                '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                '2020-01-01T00:00:00+00:00',
+                Author::fromNameAndType('julia', Author::TYPE_UI),
+                'staging.akeneo.com',
+                ['data']
+            ),
+            new WebhookEvent(
+                'product.updated',
+                '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
+                '2020-01-01T00:00:00+00:00',
+                Author::fromNameAndType('julia', Author::TYPE_UI),
+                'staging.akeneo.com',
+                ['data']
+            )
+        ];
 
-        $webhookRequest = new WebhookRequest($webhook, $event);
+        $webhookRequest = new WebhookRequest($webhook, $events);
 
         $this->beConstructedWith(
             $webhookRequest,
@@ -58,13 +67,22 @@ class WebhookRequestLogSpec extends ObjectBehavior
             'response' => [
                 'status_code' => 200,
             ],
-            'event' => [
-                'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                'author' => 'Julia',
-                'author_type' => 'ui',
-                'name' => 'product.created',
-                'timestamp' => 1577836800,
-            ],
+            'events' => [
+                [
+                    'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                    'author' => 'julia',
+                    'author_type' => 'ui',
+                    'name' => 'product.created',
+                    'timestamp' => 1577836800,
+                ],
+                [
+                    'uuid' => '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
+                    'author' => 'julia',
+                    'author_type' => 'ui',
+                    'name' => 'product.updated',
+                    'timestamp' => 1577836800,
+                ],
+            ]
         ]);
     }
 
@@ -84,13 +102,22 @@ class WebhookRequestLogSpec extends ObjectBehavior
             'message' => 'a message',
             'success' => false,
             'response' => null,
-            'event' => [
-                'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                'author' => 'Julia',
-                'author_type' => 'ui',
-                'name' => 'product.created',
-                'timestamp' => 1577836800,
-            ],
+            'events' => [
+                [
+                    'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                    'author' => 'julia',
+                    'author_type' => 'ui',
+                    'name' => 'product.created',
+                    'timestamp' => 1577836800,
+                ],
+                [
+                    'uuid' => '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
+                    'author' => 'julia',
+                    'author_type' => 'ui',
+                    'name' => 'product.updated',
+                    'timestamp' => 1577836800,
+                ],
+            ]
         ]);
     }
 

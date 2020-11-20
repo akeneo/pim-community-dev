@@ -1,9 +1,11 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Button} from './Button.tsx';
+import {Link} from '../Link/Link.tsx';
+import LinkTo from '@storybook/addon-links/react';
 
 <Meta
-  title="Components/Button"
+  title="Components/Buttons/Button"
   component={Button}
   argTypes={{
     level: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'warning', 'danger']}},
@@ -11,10 +13,11 @@ import {Button} from './Button.tsx';
     disabled: {control: {type: 'boolean'}},
     size: {control: {type: 'select', options: ['default', 'small']}},
     onClick: {action: 'Click on the button'},
+    children: {control: {type: 'text'}},
   }}
   args={{
     level: 'primary',
-    children: 'Primary'
+    children: 'Primary',
   }}
 />
 
@@ -32,9 +35,13 @@ Do not use buttons as navigational elements. Instead, use links to take the user
 
 ### Labels
 
-Button labels should clearly indicate the action of the button. Use active verbs, such as Add or Delete. Use sentence-style capitalization (only the first word in a phrase and any proper nouns capitalized) and no more than three words for button labels.
+Button labels should clearly indicate the action of the button. Use active verbs, such as Add or Delete. Use no more than three words for button labels.
 
 For sets of buttons, use specific labels, such as Save or Discard, instead of using OK and Cancel. This is particularly helpful when the user is confirming an action.
+
+### IconButton
+
+If you only need to display an Icon as your button, check out the <LinkTo kind="Components/Buttons/IconButton" story="Standard">IconButton component</LinkTo>.
 
 ## Playground
 
@@ -43,7 +50,7 @@ Use this playground to test the button component
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Button {...args}/>;
+      return <Button {...args} />;
     }}
   </Story>
 </Canvas>
@@ -128,6 +135,28 @@ Use this playground to test the button component
           </Button>
           <Button {...args} size="small">
             Small
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Usage with `href` prop
+
+If you want your button to act like a <LinkTo kind="Components/Link" story="Standard">Link</LinkTo> (with "open in a new tab" feature of cmd/ctrl + click), use the `href` prop to specify your link.
+
+<Canvas>
+  <Story name="Link">
+    {args => {
+      delete args.onClick;
+      return (
+        <>
+          <Button {...args} href="https://google.com" target="_blank">
+            I am a Link
+          </Button>
+          <Button {...args} disabled={true} href="https://google.com" target="_blank">
+            I am a disabled Link
           </Button>
         </>
       );

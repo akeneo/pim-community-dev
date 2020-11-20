@@ -24,7 +24,7 @@ class FamilyFilter extends ChoiceFilter
         $rootAlias = current($qb->getRootAliases());
 
         $qb
-            ->innerJoin($rootAlias . '.families', 'f', 'WITH', 'f.id IN(:families)')
+            ->innerJoin($rootAlias . '.families', 'f', 'WITH', 'f.code IN(:families)')
             ->setParameter(':families', $data['value']);
 
         return true;
