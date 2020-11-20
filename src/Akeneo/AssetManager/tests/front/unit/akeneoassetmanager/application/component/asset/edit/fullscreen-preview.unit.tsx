@@ -41,7 +41,7 @@ describe('Tests fullscreen preview component', () => {
 
     fireEvent.click(container.querySelector('#anchor'));
 
-    expect(container.querySelector('[data-role="media-data-preview"]')).toBeInTheDocument();
+    expect(container.querySelector('[data-role="empty-preview"]')).toBeInTheDocument();
   });
 
   test('It closes the modal when clicking on the close button', async () => {

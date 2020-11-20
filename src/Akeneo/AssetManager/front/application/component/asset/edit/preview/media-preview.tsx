@@ -3,24 +3,24 @@ import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {
-  NormalizedMediaLinkAttribute,
   MEDIA_LINK_ATTRIBUTE_TYPE,
+  NormalizedMediaLinkAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
 import {
-  NormalizedMediaFileAttribute,
   MEDIA_FILE_ATTRIBUTE_TYPE,
+  NormalizedMediaFileAttribute,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import MediaLinkData, {
+  getVimeoEmbedUrl,
   getYouTubeEmbedUrl,
   isMediaLinkData,
-  getVimeoEmbedUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import useImageLoader from 'akeneoassetmanager/application/hooks/image-loader';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import {MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
-import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
+import {emptyMediaPreview, MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import {getMediaData, isDataEmpty, MediaData} from 'akeneoassetmanager/domain/model/asset/data';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {connect} from 'react-redux';
@@ -52,18 +52,43 @@ const ImagePlaceholder = styled.div<{alt: string}>`
 type LazyLoadedImageProps = {
   src: string;
   alt: string;
+  media_type: string;
   isLoading?: boolean;
 };
 
-const LazyLoadedImage = React.memo(({src, alt, isLoading = false, ...props}: LazyLoadedImageProps) => {
+const LazyLoadedImage = React.memo(({src, alt, media_type, isLoading = false, ...props}: LazyLoadedImageProps) => {
   const loadedSrc = useImageLoader(src);
 
-  return undefined === loadedSrc || isLoading ? (
-    <div className="AknLoadingPlaceHolderContainer">
-      <ImagePlaceholder alt={alt} {...props} />
-    </div>
-  ) : (
-    <Image src={loadedSrc} alt={alt} {...props} />
+  if (isLoading) {
+    return (
+      <div className="AknLoadingPlaceHolderContainer">
+        <ImagePlaceholder alt={alt} {...props} />
+      </div>
+    )
+  }
+
+  if (undefined === loadedSrc) {
+    return (
+      <>
+        <Image src={getMediaPreviewUrl(emptyMediaPreview())} alt={alt} data-role="empty-preview"/>
+        <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
+          {__('pim_asset_manager.asset_preview.other_main_media')}
+        </Message>
+      </>
+    )
+  }
+
+  const dataRole = loadedSrc === getMediaPreviewUrl(emptyMediaPreview()) ? 'empty-preview' : 'media-data-preview';
+
+  return (
+    <>
+      <Image src={loadedSrc} alt={alt}  {...props} data-role={dataRole}/>
+      {media_type === MediaTypes.other && (
+        <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
+          {__('pim_asset_manager.asset_preview.other_main_media')}
+        </Message>
+      )}
+    </>
   );
 });
 
@@ -93,15 +118,13 @@ const DisconnectedMediaDataPreview = ({
   }, [reloadPreview]);
 
   return (
-    <>
-      <LazyLoadedImage isLoading={regenerate} src={url} alt={label} data-role="media-data-preview" />
-
-      {attribute.media_type === MediaTypes.other && (
-        <Message title={__('pim_asset_manager.asset_preview.other_main_media')}>
-          {__('pim_asset_manager.asset_preview.other_main_media')}
-        </Message>
-      )}
-    </>
+    <LazyLoadedImage
+      isLoading={regenerate}
+      src={url}
+      alt={label}
+      data-role="media-data-preview"
+      media_type={attribute.media_type}
+    />
   );
 };
 
@@ -134,7 +157,7 @@ const MediaLinkPreview = ({
 
 export const EmptyMediaPreview = ({label = ''}: {label?: string}) => (
   <>
-    <LazyLoadedImage src={getMediaPreviewUrl(emptyMediaPreview())} alt={label} data-role="empty-preview" />
+    <LazyLoadedImage src={getMediaPreviewUrl(emptyMediaPreview())} alt={label} data-role="empty-preview" media_type=""/>
     <Message title={__('pim_asset_manager.asset_preview.empty_main_media')}>
       {__('pim_asset_manager.asset_preview.empty_main_media')}
     </Message>

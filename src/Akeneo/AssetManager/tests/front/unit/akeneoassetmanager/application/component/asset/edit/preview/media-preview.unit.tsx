@@ -10,6 +10,12 @@ import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 
+jest.mock('akeneoassetmanager/application/hooks/image-loader', () => {
+  return jest.fn((url: string): string => {
+    return url;
+  })
+})
+
 const mediaLinkImageAttribute = {
   identifier: 'media_link_image_attribute_identifier',
   type: MEDIA_LINK_ATTRIBUTE_TYPE,
@@ -64,7 +70,7 @@ describe('Tests media preview component', () => {
       </ThemeProvider>
     );
 
-    expect(container.querySelector('[data-role="media-data-preview"]')).toBeInTheDocument();
+    expect(container.querySelector('[data-role="empty-preview"]')).toBeInTheDocument();
   });
 
   test('It renders a media file reloaded preview', () => {
@@ -93,7 +99,7 @@ describe('Tests media preview component', () => {
       </ThemeProvider>
     );
 
-    expect(container.querySelector('[data-role="media-data-preview"]')).toBeInTheDocument();
+    expect(container.querySelector('[data-role="empty-preview"]')).toBeInTheDocument();
   });
 
   test('It renders a media link youtube preview', () => {

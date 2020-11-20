@@ -279,7 +279,7 @@ test('It can display the previous asset in the collection', async () => {
 
   fireEvent.click(container.querySelector(`[title="pim_asset_manager.asset_preview.previous"]`));
 
-  expect(container.querySelector('[data-role="media-data-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
+  expect(container.querySelector('[data-role="empty-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
   document.body.removeChild(container);
 });
 
@@ -347,7 +347,7 @@ test('It can display the next asset in the collection', async () => {
 
   fireEvent.click(container.querySelector(`[title="pim_asset_manager.asset_preview.next"]`));
 
-  expect(container.querySelector('[data-role="media-data-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
+  expect(container.querySelector('[data-role="empty-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
   document.body.removeChild(container);
 });
 
@@ -391,7 +391,7 @@ test('It can select an asset from the carousel', async () => {
     fireEvent.click(container.querySelector(`[data-role="carousel-thumbnail-iphone7_pack"]`));
   });
 
-  expect(container.querySelector('[data-role="media-data-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
+  expect(container.querySelector('[data-role="empty-preview"]')).toHaveAttribute('alt', 'iphone7_pack label');
 
   document.body.removeChild(container);
 });
