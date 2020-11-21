@@ -181,7 +181,7 @@ pim_import_export:
     completed: "Time spent: {{ duration }}"
     in_progress: "Estimated time left: {{ duration }}"
     not_started: "Pending"
-    untrackable: Untrackable step
+    untrackable: Estimated time left unknown
     estimating: "Estimating time remaining..."
 confirmation:
   remove:
