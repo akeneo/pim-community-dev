@@ -109,7 +109,7 @@ pim_enrich:
     family:
       index: Listaa perheet
       create: Luo perhe
-      edit_properties: Muokkaa perheen attribuutteja
+      edit_properties: Muokkaa perheen ominaisuuksia
       edit_attributes: Muokkaa perheen attribuutteja
       edit_variants: Muokkaa varianttiperhettä
       remove: Poista perhe
