@@ -5,6 +5,7 @@ const rootDir = process.cwd();
 const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
+const typescriptIsTransformer = require('typescript-is/lib/transform-inline/transformer').default
 
 
 const WebpackShellPlugin = require('webpack-shell-plugin');
@@ -193,10 +194,9 @@ const webpackConfig = {
           {
             loader: 'ts-loader',
             options: {
-              transpileOnly: !isStrict,
               configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
-              getCustomTransformers: () => ({ before: [styledComponentsTransformer] })
+              getCustomTransformers: program => ({ before: [styledComponentsTransformer, typescriptIsTransformer(program)] })
             },
           },
           {

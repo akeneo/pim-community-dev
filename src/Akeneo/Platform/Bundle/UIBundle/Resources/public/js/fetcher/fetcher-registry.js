@@ -8,30 +8,29 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'require-context'], function
     /**
      * @return Promise
      */
-    initialize: function () {
+    initialize: async () => {
       if (null === this.initializePromise) {
-        var fetcherList = __moduleConfig.fetchers;
-        var deferred = $.Deferred();
-        var defaultFetcher = 'pim/base-fetcher';
-        var fetchers = {};
+        this.initializePromise = new Promise(resolve => {
+          const fetcherList = __moduleConfig.fetchers;
+          const defaultFetcher = 'pim/base-fetcher';
+          const fetchers = {};
 
-        _.each(fetcherList, function (config, name) {
-          config = _.isString(config) ? {module: config} : config;
-          config.options = config.options || {};
-          fetchers[name] = config;
+          fetcherList.forEach((config, name) => {
+            config = _.isString(config) ? {module: config} : config;
+            config.options = config.options || {};
+            fetchers[name] = config;
+          });
+
+          for (const fetcher in fetcherList) {
+            const moduleName = fetcherList[fetcher].module || defaultFetcher;
+            const ResolvedModule = requireContext(moduleName);
+            fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options);
+            fetchers[fetcher].options = fetcherList[fetcher].options;
+          }
+
+          this.fetchers = fetchers;
+          resolve();
         });
-
-        for (var fetcher in fetcherList) {
-          var moduleName = fetcherList[fetcher].module || defaultFetcher;
-          var ResolvedModule = requireContext(moduleName);
-          fetchers[fetcher].loadedModule = new ResolvedModule(fetchers[fetcher].options);
-          fetchers[fetcher].options = fetcherList[fetcher].options;
-        }
-
-        this.fetchers = fetchers;
-        deferred.resolve();
-
-        this.initializePromise = deferred.promise();
       }
 
       return this.initializePromise;
@@ -45,6 +44,9 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'require-context'], function
      * @return Fetcher
      */
     getFetcher: function (entityType) {
+      if (null === this.initializePromise) {
+        throw new Error('Cannot call getFetcher before fetcherRegistry initialization');
+      }
       var fetcher = this.fetchers[entityType] || this.fetchers.default;
 
       return fetcher.loadedModule;

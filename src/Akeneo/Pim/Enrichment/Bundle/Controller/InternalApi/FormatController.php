@@ -86,7 +86,7 @@ class FormatController
                 ],
                 'timezone'       => $this->userContext->getUserTimezone(),
                 'language'       => $locale,
-                '12_hour_format' => false !== strpos($timeFormatter->getPattern(), 'a')
+                'twelveHourFormat' => false !== strpos($timeFormatter->getPattern(), 'a')
             ]
         );
     }

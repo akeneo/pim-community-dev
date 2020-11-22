@@ -1,4 +1,8 @@
-'use strict';
+'use strict'
+
+import {dateContext} from 'pimui/js/date-context';
+
+
 /**
  * Date field
  *
@@ -7,14 +11,13 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
-  'jquery',
-  'pim/field',
-  'underscore',
-  'pim/template/product/field/date',
-  'datepicker',
-  'pim/date-context',
-], function ($, Field, _, fieldTemplate, Datepicker, DateContext) {
+define(['jquery', 'pim/field', 'underscore', 'pim/template/product/field/date', 'datepicker'], function (
+  $,
+  Field,
+  _,
+  fieldTemplate,
+  Datepicker
+) {
   return Field.extend({
     fieldTemplate: _.template(fieldTemplate),
     events: {
@@ -22,9 +25,9 @@ define([
       'click .field-input:first input[type="text"]': 'click',
     },
     datetimepickerOptions: {
-      format: DateContext.get('date').format,
-      defaultFormat: DateContext.get('date').defaultFormat,
-      language: DateContext.get('language'),
+      format: dateContext.get('date').format,
+      defaultFormat: dateContext.get('date').defaultFormat,
+      language: dateContext.get('language'),
     },
     renderInput: function (context) {
       return this.fieldTemplate(context);

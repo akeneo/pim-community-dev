@@ -1,5 +1,7 @@
 'use strict';
 
+import {dateContext} from 'pimui/js/date-context';
+
 define([
   'jquery',
   'underscore',
@@ -12,7 +14,6 @@ define([
   'pim/i18n',
   'jquery.select2',
   'datepicker',
-  'pim/date-context',
   'pim/formatter/date',
 ], function (
   $,
@@ -26,7 +27,6 @@ define([
   i18n,
   initSelect2,
   Datepicker,
-  DateContext,
   DateFormatter
 ) {
   return BaseFilter.extend({
@@ -38,9 +38,9 @@ define([
 
     /* Date widget options */
     datetimepickerOptions: {
-      format: DateContext.get('date').format,
-      defaultFormat: DateContext.get('date').defaultFormat,
-      language: DateContext.get('language'),
+      format: dateContext.get('date').format,
+      defaultFormat: dateContext.get('date').defaultFormat,
+      language: dateContext.get('language'),
     },
 
     /* Model date format */
@@ -82,7 +82,7 @@ define([
       var operator = this.getOperator();
 
       if ('SINCE LAST JOB' !== operator && 'SINCE LAST N DAYS' !== operator) {
-        value = DateFormatter.format(value, this.modelDateFormat, DateContext.get('date').format);
+        value = DateFormatter.format(value, this.modelDateFormat, dateContext.get('date').format);
       }
 
       return this.template({
@@ -132,7 +132,7 @@ define([
       }
 
       if ('>' === operator) {
-        value = DateFormatter.format(value, DateContext.get('date').format, this.modelDateFormat);
+        value = DateFormatter.format(value, dateContext.get('date').format, this.modelDateFormat);
       } else if ('SINCE LAST JOB' === operator) {
         value = this.getParentForm().getFormData().code;
       }

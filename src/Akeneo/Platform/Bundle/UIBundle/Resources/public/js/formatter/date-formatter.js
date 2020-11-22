@@ -1,4 +1,5 @@
 'use strict';
+import {dateContext} from 'pimui/js/date-context';
 
 /**
  * Format a date according to specified format.
@@ -8,15 +9,15 @@
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'datepicker', 'pim/date-context'], function ($, _, Datepicker, DateContext) {
+define(['jquery', 'underscore', 'datepicker'], function ($, _, Datepicker) {
   return {
     /**
      * Date widget options
      */
     datetimepickerOptions: {
-      format: DateContext.get('date').format,
-      defaultFormat: DateContext.get('date').defaultFormat,
-      language: DateContext.get('language'),
+      format: dateContext.get('date').format,
+      defaultFormat: dateContext.get('date').defaultFormat,
+      language: dateContext.get('language'),
     },
 
     /**

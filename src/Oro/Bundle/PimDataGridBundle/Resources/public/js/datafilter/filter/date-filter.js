@@ -1,3 +1,5 @@
+import {dateContext} from 'pimui/js/date-context';
+
 /* global define */
 define([
   'jquery',
@@ -5,10 +7,9 @@ define([
   'oro/translator',
   'oro/datafilter/choice-filter',
   'datepicker',
-  'pim/date-context',
   'pim/formatter/date',
   'pim/template/datagrid/filter/date-filter',
-], function ($, _, __, ChoiceFilter, Datepicker, DateContext, DateFormatter, template) {
+], function ($, _, __, ChoiceFilter, Datepicker, DateFormatter, template) {
   'use strict';
 
   /**
@@ -52,9 +53,9 @@ define([
      * @property
      */
     datetimepickerOptions: {
-      format: DateContext.get('date').format,
-      defaultFormat: DateContext.get('date').defaultFormat,
-      language: DateContext.get('language'),
+      format: dateContext.get('date').format,
+      defaultFormat: dateContext.get('date').defaultFormat,
+      language: dateContext.get('language'),
     },
 
     /**

@@ -254,12 +254,10 @@
                         $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
                     });
 
-                    FetcherRegistry.initialize().done(function () {
-                        FormBuilder.build('pim-menu-user-navigation').then(function (form) {
-                            $('.user-menu').append(form.el);
-                            form.render();
-                        }.bind(this));
-                    });
+                    FormBuilder.build('pim-menu-user-navigation').then(function (form) {
+                        $('.user-menu').append(form.el);
+                        form.render();
+                    }.bind(this));
                 });
             }
         );

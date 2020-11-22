@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import BaseView = require('pimui/js/view/base');
-
+import {dateContext} from 'pimui/js/date-context';
 const messenger = require('oro/messenger');
 const mediator = require('oro/mediator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -10,7 +10,6 @@ const initTranslator = require('pim/init-translator');
 const initLayout = require('oro/init-layout');
 const initSignin = require('pimuser/js/init-signin');
 const pageTitle = require('pim/page-title');
-const DateContext = require('pim/date-context');
 const UserContext = require('pim/user-context');
 const template = require('pim/template/app');
 
@@ -36,7 +35,8 @@ class PimApp extends BaseView {
     this.listenTo(mediator, 'pim-app:overlay:show', this.showOverlay);
     this.listenTo(mediator, 'pim-app:overlay:hide', this.hideOverlay);
 
-    return $.when(FetcherRegistry.initialize(), DateContext.initialize(), UserContext.initialize())
+    const deferred = $.Deferred();
+    Promise.all([FetcherRegistry.initialize(), dateContext.initialize(), UserContext.initialize()])
       .then(initTranslator.fetch)
       .then(() => {
         messenger.showQueuedMessages();
@@ -45,8 +45,12 @@ class PimApp extends BaseView {
 
         pageTitle.set('Akeneo PIM');
 
-        return super.configure();
+        super.configure().then(() => {
+          deferred.resolve();
+        });
       });
+
+    return deferred.promise();
   }
 
   public render(): BaseView {

@@ -1,4 +1,6 @@
-'use strict';
+'use strict'
+
+import {dateContext} from 'pimui/js/date-context';
 
 define([
   'jquery',
@@ -8,9 +10,8 @@ define([
   'pim/template/filter/attribute/date',
   'datepicker',
   'pim/formatter/date',
-  'pim/date-context',
   'jquery.select2',
-], function ($, _, __, BaseFilter, template, Datepicker, DateFormatter, DateContext) {
+], function ($, _, __, BaseFilter, template, Datepicker, DateFormatter) {
   return BaseFilter.extend({
     shortname: 'date',
     template: _.template(template),
@@ -22,9 +23,9 @@ define([
      * Date widget options
      */
     datetimepickerOptions: {
-      format: DateContext.get('date').format,
-      defaultFormat: DateContext.get('date').defaultFormat,
-      language: DateContext.get('language'),
+      format: dateContext.get('date').format,
+      defaultFormat: dateContext.get('date').defaultFormat,
+      language: dateContext.get('language'),
     },
 
     /**
@@ -88,7 +89,7 @@ define([
      * {@inherit}
      */
     renderInput: function () {
-      var dateFormat = DateContext.get('date').format;
+      var dateFormat = dateContext.get('date').format;
       var value = this.getValue();
       var startValue = DateFormatter.format(value, this.modelDateFormat, dateFormat);
       var endValue = null;
@@ -121,7 +122,7 @@ define([
       var operator = this.$('[name="filter-operator"]').val();
 
       if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) {
-        var dateFormat = DateContext.get('date').format;
+        var dateFormat = dateContext.get('date').format;
         var startValue = this.$('[name="filter-value-start"]').val();
         var formattedStartVal = DateFormatter.format(startValue, dateFormat, this.modelDateFormat);
         var valueEndField = this.$('[name="filter-value-end"]');

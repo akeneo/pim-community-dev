@@ -1,10 +1,7 @@
+import {dateContext} from 'pimui/js/date-context';
+
 /* global define */
-define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'], function (
-  $,
-  _,
-  DateFilter,
-  DateContext
-) {
+define(['jquery', 'underscore', 'oro/datafilter/date-filter'], function ($, _, DateFilter) {
   'use strict';
   /**
    * Datetime filter: filter type as option + interval begin and end dates
@@ -27,12 +24,12 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pim/date-context'
      * @property
      */
     datetimepickerOptions: {
-      format: DateContext.get('time').format,
-      defaultFormat: DateContext.get('time').defaultFormat,
-      language: DateContext.get('language'),
+      format: dateContext.get('time').format,
+      defaultFormat: dateContext.get('time').defaultFormat,
+      language: dateContext.get('language'),
       pickTime: true,
       pickSeconds: false,
-      pick12HourFormat: DateContext.get('12_hour_format'),
+      pick12HourFormat: dateContext.get('twelveHourFormat'),
     },
   });
 });

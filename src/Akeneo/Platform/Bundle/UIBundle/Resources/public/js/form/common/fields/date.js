@@ -1,9 +1,12 @@
+'use strict'
+
+import {dateContext} from 'pimui/js/date-context';
+
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-'use strict';
 
 define([
   'jquery',
@@ -11,9 +14,8 @@ define([
   'pim/form/common/fields/field',
   'datepicker',
   'pim/formatter/date',
-  'pim/date-context',
   'pim/template/form/common/fields/date',
-], function ($, _, BaseField, Datepicker, DateFormatter, DateContext, template) {
+], function ($, _, BaseField, Datepicker, DateFormatter, template) {
   return BaseField.extend({
     events: {
       'change input': function (event) {
@@ -29,7 +31,7 @@ define([
      * {@inheritdoc}
      */
     renderInput: function (templateContext) {
-      var value = DateFormatter.format(this.getModelValue(), this.modelDateFormat, DateContext.get('date').format);
+      var value = DateFormatter.format(this.getModelValue(), this.modelDateFormat, dateContext.get('date').format);
 
       return this.template(
         _.extend(templateContext, {
@@ -44,9 +46,9 @@ define([
      */
     postRender: function () {
       Datepicker.init(this.$('.date-wrapper'), {
-        format: DateContext.get('date').format,
-        defaultFormat: DateContext.get('date').defaultFormat,
-        language: DateContext.get('language'),
+        format: dateContext.get('date').format,
+        defaultFormat: dateContext.get('date').defaultFormat,
+        language: dateContext.get('language'),
       }).on(
         'changeDate',
         function () {
@@ -62,7 +64,7 @@ define([
      * {@inheritdoc}
      */
     getFieldValue: function (field) {
-      var dateFormat = DateContext.get('date').format;
+      var dateFormat = dateContext.get('date').format;
       var value = $(field).val();
 
       return DateFormatter.format(value, dateFormat, this.modelDateFormat);

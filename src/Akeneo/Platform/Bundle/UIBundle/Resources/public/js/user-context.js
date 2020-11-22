@@ -10,13 +10,14 @@ define(['jquery', 'backbone', 'underscore', 'routing'], ($, Backbone, _, Routing
        *
        * @returns {Promise}
        */
-      initialize: () => {
-        return $.get(Routing.generate('pim_user_user_rest_get_current')).then(response => {
-          contextData = response;
-          contextData.uiLocale = contextData.user_default_locale;
-          contextData.catalogLocale = contextData.catalog_default_locale;
-          contextData.catalogScope = contextData.catalog_default_scope;
-        });
+      initialize: async () => {
+        const response = await fetch(Routing.generate('pim_user_user_rest_get_current'));
+        const data = await response.json();
+
+        contextData = data;
+        contextData.uiLocale = contextData.user_default_locale;
+        contextData.catalogLocale = contextData.catalog_default_locale;
+        contextData.catalogScope = contextData.catalog_default_scope;
       },
 
       /**
