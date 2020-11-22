@@ -72,6 +72,11 @@ const Scrollable = styled.div<{height: number}>`
   height: ${({height}) => height}px;
 `;
 
+const SpaceContainer = styled.div<{width: number; height: number}>`
+  width: ${({width}) => `${width}px`};
+  height: ${({height}) => `${height}px`};
+`;
+
 export {
   StoryStyle,
   PreviewGrid,
@@ -82,4 +87,5 @@ export {
   Content,
   MessageBarContainer,
   Scrollable,
+  SpaceContainer,
 };

@@ -1,0 +1,83 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Dropdown} from './Dropdown.tsx';
+import {SpaceContainer} from '../../storybook/PreviewGallery.tsx';
+
+<Meta
+  title="Components/Dropdown"
+  component={Dropdown}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'Dropdown text'}}
+/>
+
+# Dropdown
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <SpaceContainer height={200}>
+          <Dropdown {...args}>
+            <Dropdown.Action>
+              <Dropdown.Button>yolo</Dropdown.Button>
+            </Dropdown.Action>
+            <Dropdown.Overlay>
+              <Dropdown.Header>
+                <Dropdown.Title>Elements</Dropdown.Title>
+              </Dropdown.Header>
+              <Dropdown.ItemCollection>
+                <Dropdown.Item>Item 1</Dropdown.Item>
+                <Dropdown.Item>Item 3</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+              </Dropdown.ItemCollection>
+            </Dropdown.Overlay>
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Dropdown {...args} level="primary">
+            Primary
+          </Dropdown>
+          <Dropdown {...args} level="warning">
+            Warning
+          </Dropdown>
+          <Dropdown {...args} level="danger">
+            Danger
+          </Dropdown>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
