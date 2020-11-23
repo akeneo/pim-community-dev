@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.73 (2020-11-23)
+
 ## Bug fixes
 
 - PIM-9527: default asset preview and thumbnail
