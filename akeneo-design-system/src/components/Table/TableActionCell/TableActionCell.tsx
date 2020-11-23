@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {TableCell, TableCellProps} from '../TableCell/TableCell';
+import {TableCell} from '../TableCell/TableCell';
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import {Button, ButtonProps} from '../../';
 
@@ -11,10 +11,10 @@ const TableActionCellContainer = styled(TableCell)`
 
 type ActionCellProps = {
   /**
-   * Content of the cell
+   * Multiple buttons
    */
   children?: ReactNode;
-} & TableCellProps;
+};
 
 const TableActionCell = React.forwardRef<HTMLTableCellElement, ActionCellProps>(
   ({children, ...rest}: ActionCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
