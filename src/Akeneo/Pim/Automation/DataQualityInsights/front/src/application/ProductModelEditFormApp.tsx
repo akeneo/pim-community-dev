@@ -48,7 +48,7 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
 
         <AxesContextProvider axes={['enrichment', 'consistency']}>
           <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation}>
-            <AxisEvaluation axis={'enrichment'} showRate={false}>
+            <AxisEvaluation axis={'enrichment'}>
               <Criterion code={'completeness_of_non_required_attributes'}>
                 <Icon type={EditIcon} />
               </Criterion>
@@ -57,7 +57,7 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
               </Criterion>
             </AxisEvaluation>
 
-            <AxisEvaluation axis={'consistency'} showRate={false}>
+            <AxisEvaluation axis={'consistency'}>
               <Criterion code={'consistency_spelling'}>
                 <Icon type={EditIcon} />
               </Criterion>
