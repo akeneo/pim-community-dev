@@ -133,6 +133,43 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($booleanAttribute, Operators::IS_NOT_EMPTY, false);
     }
 
+    function it_adds_a_filter_with_operator_empty(
+        $attributePathResolver,
+        AttributeInterface $booleanAttribute,
+        SearchQueryBuilder $sqb
+    ) {
+        $booleanAttribute->getCode()->willReturn('boolean');
+        $booleanAttribute->getBackendType()->willReturn('boolean');
+
+        $attributePathResolver->getAttributePaths($booleanAttribute)->willReturn([
+            'values.boolean-boolean.ecommerce.en_US',
+            'values.boolean-boolean.ecommerce.fr_FR'
+        ]);
+
+        $sqb->addMustNot([
+            'bool' => [
+                'should' => [
+                    ['exists' => ['field' => 'values.boolean-boolean.ecommerce.en_US']],
+                    ['exists' => ['field' => 'values.boolean-boolean.ecommerce.fr_FR']]
+                ],
+                'minimum_should_match' => 1
+            ]
+        ])->shouldBeCalled();
+
+        $sqb->addFilter([
+            'bool' => [
+                'should' => [
+                    ['terms' => ['attributes_for_this_level' => ['boolean']]],
+                    ['terms' => ['attributes_of_ancestors' => ['boolean']]]
+                ],
+                'minimum_should_match' => 1
+            ]
+        ])->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addAttributeFilter($booleanAttribute, Operators::IS_EMPTY, false);
+    }
+
     function it_throws_an_exception_when_the_search_query_builder_is_not_initialized(
         AttributeInterface $booleanAttribute
     ) {

@@ -107,6 +107,41 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
                 $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
+            case Operators::IS_EMPTY:
+                $mustNotClauses = array_map(function ($attributePath) {
+                    return [
+                        'exists' => [
+                            'field' => $attributePath,
+                        ],
+                    ];
+                }, $attributePaths);
+
+                $mustNotClause = $this->addBooleanClause($mustNotClauses);
+                $this->searchQueryBuilder->addMustNot($mustNotClause);
+
+                $attributeInEntityClauses = [
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
+                        ],
+                    ],
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
+                        ],
+                    ]
+                ];
+
+                $this->searchQueryBuilder->addFilter(
+                    [
+                        'bool' => [
+                            'should' => $attributeInEntityClauses,
+                            'minimum_should_match' => 1,
+                        ],
+                    ]
+                );
+                break;
+
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }

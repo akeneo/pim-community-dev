@@ -11,6 +11,7 @@ use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 
@@ -49,10 +50,13 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $categoryAccessRepository->isCategoryCodesGranted(
             $user,
             Attributes::VIEW_ITEMS,
-            ['space_battleship']
+            ['clothes']
         )->willReturn(true);
 
-        $eventDataBuilder->build($event, $user)->willReturn(['resource' => ['identifier' => 'cruiser']]);
+        $collection = new EventDataCollection();
+        $collection->setEventData($event, ['resource' => ['identifier' => 'blue_jean']]);
+
+        $eventDataBuilder->build($event, $user)->willReturn($collection);
 
         $this->build($event, $user);
     }
@@ -69,25 +73,13 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $categoryAccessRepository->isCategoryCodesGranted(
             $user,
             Attributes::VIEW_ITEMS,
-            ['space_battleship']
+            ['clothes']
         )->willReturn(false);
 
-        $eventDataBuilder->build($event)->willReturn(['resource' => ['identifier' => 'cruiser']]);
+        $eventDataBuilder->build($event)->willReturn(['resource' => ['identifier' => 'blue_jean']]);
 
         $this
             ->shouldThrow(NotGrantedProductException::class)
-            ->during('build', [$event, $user]);
-    }
-
-    public function it_throws_an_error_if_the_business_event_data_does_not_provide_categories(
-        $eventDataBuilder
-    ): void {
-        $user = new User();
-        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), []);
-        $eventDataBuilder->supports($event)->willReturn(true);
-
-        $this
-            ->shouldThrow(\UnexpectedValueException::class)
             ->during('build', [$event, $user]);
     }
 
@@ -105,15 +97,8 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
     private function getProduct(): array
     {
         return [
-            'identifier' => 'cruiser',
-            'family' => 'battleship',
-            'parent' => null,
-            'groups' => [],
-            'categories' => ['space_battleship'],
-            'enabled' => true,
-            'values' => ['sku' => [['locale' => null, 'scope' => null, 'data' => 'battleship']]],
-            'created' => '2016-06-14T13:12:50+02:00',
-            'updated' => '2016-06-14T13:12:50+02:00',
+            'identifier' => 'blue_jean',
+            'category_codes' => ['clothes'],
         ];
     }
 }

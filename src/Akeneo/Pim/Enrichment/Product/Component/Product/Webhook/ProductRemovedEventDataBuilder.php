@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
@@ -35,29 +36,21 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
     }
 
     /**
-     * @param EventInterface $event
+     * @param ProductRemoved $event
      */
-    public function build(object $event, UserInterface $user): array
+    public function build(object $event, UserInterface $user): EventDataCollection
     {
         if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
         }
 
-        $categoryCodes = $event->getData()['categories'] ?? null;
-        if (null === $categoryCodes) {
-            throw new \UnexpectedValueException(
-                'Business event data must provide a "categories" index.'
-            );
-        }
-
         $isProductGranted = $this->categoryAccessRepository->isCategoryCodesGranted(
             $user,
             Attributes::VIEW_ITEMS,
-            $categoryCodes
+            $event->getCategoryCodes()
         );
         if (false === $isProductGranted) {
-            $productIdentifier = $event->getData()['identifier'] ?? '';
-            throw new NotGrantedProductException($user->getUsername(), $productIdentifier);
+            throw new NotGrantedProductException($user->getUsername(), $event->getIdentifier());
         }
 
         return $this->eventDataBuilder->build($event, $user);
