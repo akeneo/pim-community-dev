@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BooleanInput } from "akeneo-design-system";
-import { pimTheme } from 'akeneo-design-system';
-import { ThemeProvider } from "styled-components";
+import {BooleanInput} from 'akeneo-design-system';
+import {pimTheme} from 'akeneo-design-system';
+import {ThemeProvider} from 'styled-components';
 
 const Field = require('pim/field');
 const translate = require('oro/translator');
