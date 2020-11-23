@@ -52,3 +52,8 @@ services:
         public: true
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAllAttributeGroupsActivationQuery'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductQualityScoreController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductScores'
