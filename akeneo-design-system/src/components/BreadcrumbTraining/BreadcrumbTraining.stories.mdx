@@ -1,0 +1,71 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {BreadcrumbTraining} from './BreadcrumbTraining.tsx';
+
+<Meta
+  title="Components/BreadcrumbTraining"
+  component={BreadcrumbTraining}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'BreadcrumbTraining text'}}
+/>
+
+# BreadcrumbTraining
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <BreadcrumbTraining>
+        <BreadcrumbTraining.Level color="grey" gradient={120}>
+          First
+        </BreadcrumbTraining.Level>
+        <BreadcrumbTraining.Separator>
+          /
+        </BreadcrumbTraining.Separator>
+        <BreadcrumbTraining.Level href="http://www.google.com" color="grey" gradient={120}>
+          Second
+        </BreadcrumbTraining.Level>
+        <BreadcrumbTraining.Separator>
+          /
+        </BreadcrumbTraining.Separator>
+        <BreadcrumbTraining.Level color="grey" gradient={100}>
+          Third
+        </BreadcrumbTraining.Level>
+      </BreadcrumbTraining>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <BreadcrumbTraining {...args} level="primary">
+            Primary
+          </BreadcrumbTraining>
+          <BreadcrumbTraining {...args} level="warning">
+            Warning
+          </BreadcrumbTraining>
+          <BreadcrumbTraining {...args} level="danger">
+            Danger
+          </BreadcrumbTraining>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

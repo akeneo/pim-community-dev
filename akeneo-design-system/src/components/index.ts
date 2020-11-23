@@ -10,3 +10,4 @@ export * from './Link/Link';
 export * from './Modal/Modal';
 export * from './ProgressBar/ProgressBar';
 export * from './Input/BooleanInput/BooleanInput';
+export * from './BreadcrumbTraining/BreadcrumbTraining';
