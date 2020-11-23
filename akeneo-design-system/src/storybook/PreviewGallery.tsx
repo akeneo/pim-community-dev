@@ -19,6 +19,16 @@ PreviewGrid.defaultProps = {
   width: 140,
 };
 
+const InputPreviewContainer = styled.div`
+  color: #555;
+  padding-left: 10px;
+  border-left: 1px solid #1ea7fd;
+  cursor: pointer;
+`;
+const InputPreviewDescription = styled.p`
+  margin-bottom: 10px;
+`;
+
 const PreviewCard = styled.div`
   display: flex;
   flex-direction: column;
@@ -60,4 +70,14 @@ const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
   margin-top: 30px;
 `;
 
-export {StoryStyle, PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content};
+export {
+  StoryStyle,
+  PreviewGrid,
+  PreviewCard,
+  PreviewContainer,
+  InputPreviewContainer,
+  InputPreviewDescription,
+  LabelContainer,
+  Subtitle,
+  Content,
+};

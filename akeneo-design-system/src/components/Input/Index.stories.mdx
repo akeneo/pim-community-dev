@@ -1,0 +1,36 @@
+import {Canvas, Meta, Story, ArgsTable} from '@storybook/addon-docs/blocks';
+import {InputPreviewContainer, InputPreviewDescription} from '../../storybook/PreviewGallery';
+import {pimTheme} from '../../theme/pim/index';
+import {linkTo} from '@storybook/addon-links';
+import * as Inputs from '.';
+
+<Meta title="Components/Inputs" />
+
+# Form inputs
+
+<Story name="Index">
+  <div>
+    {Object.keys(Inputs).map(inputName => {
+      return (
+        <InputPreviewContainer
+          key={inputName}
+          onClick={linkTo(`Components/Inputs/${inputName}`, 'Standard')}
+          href={`index.html?path=/docs/components-inputs-${inputName
+            .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+            .replace(/\//g, '-')
+            .toLowerCase()}--standard`}
+        >
+          <h2>{inputName.replace('Input', '')}:</h2>
+          <InputPreviewDescription>{Inputs[inputName].__docgenInfo.description}</InputPreviewDescription>
+          <img
+            width="768"
+            src={`./all-visual-tsx-visual-tests-renders-components-${inputName
+              .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+              .replace(/\//g, '-')
+              .toLowerCase()}-standard-correctly-1-snap.png`}
+          />
+        </InputPreviewContainer>
+      );
+    })}
+  </div>
+</Story>
