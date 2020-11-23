@@ -1,7 +1,9 @@
 import BaseView = require('pimui/js/view/base');
 import ReactDOM from 'react-dom';
 import React from 'react';
-import {BackLinkButton, BACK_LINK_SESSION_STORAGE_KEY} from '@akeneo-pim-community/data-quality-insights';
+import {BACK_LINK_SESSION_STORAGE_KEY, BackLinkButton} from '@akeneo-pim-community/data-quality-insights';
+import {pimTheme} from 'akeneo-design-system';
+import {ThemeProvider} from 'styled-components';
 
 const mediator = require('oro/mediator');
 
@@ -29,11 +31,13 @@ class BackLink extends BaseView {
     const backLinkParams = JSON.parse(backLink);
 
     ReactDOM.render(
-      <BackLinkButton
-        label={backLinkParams.label}
-        route={backLinkParams.route}
-        routeParams={backLinkParams.routeParams}
-      />,
+      <ThemeProvider theme={pimTheme}>
+        <BackLinkButton
+          label={backLinkParams.label}
+          route={backLinkParams.route}
+          routeParams={backLinkParams.routeParams}
+        />
+      </ThemeProvider>,
       this.el
     );
     return this;

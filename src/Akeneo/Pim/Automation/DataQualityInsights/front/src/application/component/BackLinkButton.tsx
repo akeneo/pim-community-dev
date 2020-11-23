@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {Button} from 'akeneo-design-system';
 
 const Router = require('pim/router');
 
@@ -8,16 +9,19 @@ interface BackLinkButtonProps {
   route: string;
   routeParams?: [];
 }
-const Button = styled.div`
-  top: -4px;
+
+const Container = styled.div`
+  margin-top: -4px;
   margin-right: 10px;
 `;
 
 const BackLinkButton = ({label, route, routeParams}: BackLinkButtonProps) => {
   return (
-    <Button className="AknButton AknButton--micro" onClick={() => Router.redirectToRoute(route, routeParams)}>
-      {label}
-    </Button>
+    <Container>
+      <Button ghost size="small" level={'tertiary'} onClick={() => Router.redirectToRoute(route, routeParams)}>
+        {label}
+      </Button>
+    </Container>
   );
 };
 
