@@ -13,9 +13,24 @@ class Version_5_0_20201118133701_migrate_dashboard_rates_projection_to_unique_sc
 
     private const MIGRATION_LABEL = '_5_0_20201118133701_migrate_dashboard_rates_projection_to_unique_score_projection';
 
+    public function test_nothing_to_migrate_if_no_consolidations(): void
+    {
+        $this->ensureDashboardRatesTableIsCreatedAndEmpty();
+
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
+
+        $query = <<<SQL
+    SELECT count(scores) as total FROM pim_data_quality_insights_dashboard_scores_projection
+    SQL;
+
+        $result = $this->getConnection()->executeQuery($query)->fetchColumn();
+
+        $this->assertEquals($result, 0);
+    }
+
     public function test_migrate_from_two_axis_to_one_unique_score(): void
     {
-        $this->ensureDashboardRatesTableIsCreated();
+        $this->ensureDashboardRatesTableIsCreatedAndEmpty();
 
         //CE kind of consolidation with enrichment axis only
         $this->getConnection()->executeQuery(<<<SQL
@@ -69,7 +84,7 @@ SQL);
         return $this->get('database_connection');
     }
 
-    private function ensureDashboardRatesTableIsCreated(): void
+    private function ensureDashboardRatesTableIsCreatedAndEmpty(): void
     {
         $this->getConnection()->executeQuery(<<<SQL
 CREATE TABLE IF NOT EXISTS pim_data_quality_insights_dashboard_rates_projection (

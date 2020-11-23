@@ -82,6 +82,11 @@ SQL;
             $productsUniqueScores[] = sprintf("(%d, '%s', '%s')", $productRates['product_id'], $productRates['evaluated_at'], json_encode($uniqueScores));
         }
 
+        if(0 === count($productsUniqueScores))
+        {
+            return;
+        }
+
         $productsUniqueScores = implode(',', $productsUniqueScores);
 
         $query = <<<SQL

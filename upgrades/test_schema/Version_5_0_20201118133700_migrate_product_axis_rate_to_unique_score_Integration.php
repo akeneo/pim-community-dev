@@ -13,9 +13,24 @@ class Version_5_0_20201118133700_migrate_product_axis_rate_to_unique_score_Integ
 
     private const MIGRATION_LABEL = '_5_0_20201118133700_migrate_product_axis_rate_to_unique_score';
 
+    public function test_nothing_to_migrate_if_no_evaluations(): void
+    {
+        $this->ensureProductAxisRatesTableIsCreatedAndEmpty();
+
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
+
+        $query = <<<SQL
+    SELECT count(scores) as total FROM pim_data_quality_insights_product_score
+    SQL;
+
+        $result = $this->getConnection()->executeQuery($query)->fetchColumn();
+
+        $this->assertEquals($result, 0);
+    }
+
     public function test_migrate_from_two_axis_to_one_unique_score(): void
     {
-        $this->ensureProductAxisRatesTableIsCreated();
+        $this->ensureProductAxisRatesTableIsCreatedAndEmpty();
 
         $this->getConnection()->executeQuery(<<<SQL
 INSERT IGNORE INTO pim_catalog_product (id, product_model_id, is_enabled, identifier, raw_values, created, updated)
@@ -74,7 +89,7 @@ SQL);
         return $this->get('database_connection');
     }
 
-    private function ensureProductAxisRatesTableIsCreated(): void
+    private function ensureProductAxisRatesTableIsCreatedAndEmpty(): void
     {
         $this->getConnection()->executeQuery(<<<SQL
 CREATE TABLE IF NOT EXISTS pim_data_quality_insights_product_axis_rates (
@@ -90,4 +105,5 @@ TRUNCATE TABLE pim_data_quality_insights_product_axis_rates;
 TRUNCATE TABLE pim_data_quality_insights_product_score;
 SQL);
     }
+
 }
