@@ -36,15 +36,15 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
         <AxesContextProvider axes={axes}>
           <DashboardContextProvider>
             <div id="data-quality-insights-activity-dashboard">
-              <div className="AknSubsection">
-                <Overview
-                  catalogLocale={catalogLocale}
-                  catalogChannel={catalogChannel}
-                  timePeriod={timePeriod}
-                  familyCode={familyCode}
-                  categoryCode={categoryCode}
-                />
-                {
+            <div className="AknSubsection">
+              <Overview
+                catalogLocale={catalogLocale}
+                catalogChannel={catalogChannel}
+                timePeriod={timePeriod}
+                familyCode={familyCode}
+                categoryCode={categoryCode}
+              />
+              {
                 <KeyIndicatorsProvider tips={keyIndicatorsTips}>
                   <KeyIndicators
                     channel={catalogChannel}
@@ -101,11 +101,9 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                     </KeyIndicator>
                   </KeyIndicators>
                 </KeyIndicatorsProvider>
-                }
-                <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
-              </div>
+                }<Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
             </div>
-          </DashboardContextProvider>
+          </div></DashboardContextProvider>
         </AxesContextProvider>
       </ThemeProvider>
     </DependenciesProvider>

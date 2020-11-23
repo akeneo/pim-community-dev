@@ -1,6 +1,29 @@
 import React, {FunctionComponent} from 'react';
+import styled, {css} from 'styled-components';
 
 const __ = require('oro/translator');
+
+type BulletProps = {
+  color?: string;
+};
+const Bullet = styled.span<BulletProps>(
+  ({theme, color = 'grey80'}) => css`
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 8px 0 5px;
+    border: none;
+    border-radius: 8px;
+    background: ${() => theme.color[color]};
+  `
+);
+
+const Legend = styled.span`
+  height: 13px;
+  margin-right: 10px;
+  color: ${({theme}) => theme.color.grey140};
+  font-size: ${({theme}) => theme.fontSize.small};
+`;
 
 interface AxisChartHeaderProps {
   axisName: string;
@@ -13,24 +36,26 @@ const Header: FunctionComponent<AxisChartHeaderProps> = ({axisName, displayLegen
       <span className="AknSubsection-AxisTitle">{axisName}</span>
       {displayLegend && (
         <div className="AknSubsection-ChartLegend">
-          <span className="AknBadge AknBadge--small AknBadge--highlight--excellent" />
-          <span className="AknSubsection-legend">
+          <Legend>
+            <Bullet color={'green60'} />
             {__(`akeneo_data_quality_insights.dqi_dashboard.legend.excellent`)}
-          </span>
-          <span className="AknBadge AknBadge--small AknBadge--highlight--good" />
-          <span className="AknSubsection-legend">{__(`akeneo_data_quality_insights.dqi_dashboard.legend.good`)}</span>
-          <span className="AknBadge AknBadge--small AknBadge--highlight--average" />
-          <span className="AknSubsection-legend">
+          </Legend>
+          <Legend>
+            <Bullet color={'green100'} />
+            {__(`akeneo_data_quality_insights.dqi_dashboard.legend.good`)}
+          </Legend>
+          <Legend>
+            <Bullet color={'yellow60'} />
             {__(`akeneo_data_quality_insights.dqi_dashboard.legend.average`)}
-          </span>
-          <span className="AknBadge AknBadge--small AknBadge--highlight--below-average" />
-          <span className="AknSubsection-legend">
+          </Legend>
+          <Legend>
+            <Bullet color={'red60'} />
             {__(`akeneo_data_quality_insights.dqi_dashboard.legend.below_average`)}
-          </span>
-          <span className="AknBadge AknBadge--small AknBadge--highlight--to-improve" />
-          <span className="AknSubsection-legend">
+          </Legend>
+          <Legend>
+            <Bullet color={'red100'} />
             {__(`akeneo_data_quality_insights.dqi_dashboard.legend.to_improve`)}
-          </span>
+          </Legend>
         </div>
       )}
     </header>

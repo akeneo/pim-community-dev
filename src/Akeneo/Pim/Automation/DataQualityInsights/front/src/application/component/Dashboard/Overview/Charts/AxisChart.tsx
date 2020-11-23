@@ -1,32 +1,40 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack, VictoryTooltip} from 'victory';
-import {
-  NO_RATE_COLOR,
-  RANK_1_COLOR,
-  RANK_2_COLOR,
-  RANK_3_COLOR,
-  RANK_4_COLOR,
-  RANK_5_COLOR,
-} from '../../../../../domain';
 import {useGetDashboardChartScalingSizeRatio} from '../../../../../infrastructure/hooks';
 import Tooltip from './Tooltip';
+import {useTheme} from 'akeneo-design-system';
 
 const INITIAL_CHART_WIDTH = 1000;
 const INITIAL_CHART_HEIGHT = 268;
 
 interface AxisChartProps {
   dataset: any;
-  padding: number;
-  barRatio: number;
   dateFormatCallback: {(date: string, index: number): string};
 }
 
-const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartProps) => {
+const AxisChart = ({dataset, dateFormatCallback}: AxisChartProps) => {
+  const theme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const {upScalingRatio, downScalingRatio} = useGetDashboardChartScalingSizeRatio(
     chartContainerRef,
     INITIAL_CHART_WIDTH
   );
+  const [colorScale, setColorScale] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!theme) {
+      return;
+    }
+
+    setColorScale([
+      theme.color.red100,
+      theme.color.red60,
+      theme.color.yellow60,
+      theme.color.green100,
+      theme.color.green60,
+      theme.color.grey80,
+    ]);
+  }, [theme]);
 
   let dates: any[] = [];
   if (Object.entries(dataset).length > 0) {
@@ -38,7 +46,9 @@ const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartPr
       <VictoryChart
         height={INITIAL_CHART_HEIGHT}
         width={INITIAL_CHART_WIDTH}
-        padding={{top: 0, bottom: 65, left: padding, right: padding}}
+        padding={{top: 0, bottom: 65, left: 35, right: 0}}
+        domain={{ x: [0, 8], y: [0, 100] }}
+        domainPadding={{ x: 0, y: 12.5 }}
       >
         <VictoryAxis
           tickValues={dates}
@@ -47,7 +57,7 @@ const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartPr
             axis: {strokeWidth: 0},
             tickLabels: {
               fontSize: Math.ceil(11 * downScalingRatio),
-              fill: '#67768a',
+              fill: theme?.color.grey120,
               padding: Math.ceil(27 * downScalingRatio),
               fontFamily: 'Lato',
               textTransform: 'capitalize',
@@ -56,43 +66,35 @@ const AxisChart = ({dataset, padding, barRatio, dateFormatCallback}: AxisChartPr
         />
         <VictoryAxis
           dependentAxis
-          domain={[0, 100]}
           orientation="left"
           standalone={false}
-          tickValues={[0, 33, 66, 100]}
+          tickValues={[0, 25, 50, 75, 100]}
+          tickFormat={(value: number) => (value > 0 ? `${value}%` : '')}
           style={{
             grid: {
-              stroke: '#e8ebee',
+              stroke: theme?.color.grey60,
               strokeWidth: 1,
             },
             tickLabels: {
-              fontSize: 0,
+              fontSize: Math.ceil(11 * downScalingRatio),
+              fill: theme?.color.grey120,
+              fontFamily: 'Lato',
             },
             axis: {
               strokeWidth: 0,
             },
           }}
         />
-        <VictoryStack
-          domain={{y: [0, 100]}}
-          colorScale={[
-            `${RANK_5_COLOR}`,
-            `${RANK_4_COLOR}`,
-            `${RANK_3_COLOR}`,
-            `${RANK_2_COLOR}`,
-            `${RANK_1_COLOR}`,
-            `${NO_RATE_COLOR}`,
-          ]}
-        >
+        <VictoryStack colorScale={colorScale}>
           {Object.values(dataset).map((data: any, i: number) => {
             return (
               <VictoryBar
                 key={i}
                 name={`bar-${i}`}
                 data={data}
-                barRatio={barRatio}
                 labels={() => ''}
                 alignment="middle"
+                barWidth={10}
                 labelComponent={
                   <VictoryTooltip
                     flyoutComponent={
