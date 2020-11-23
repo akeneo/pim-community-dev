@@ -39,7 +39,7 @@ class ProductSaverSpec extends ObjectBehavior
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         ProductInterface $product
     ) {
-        $product->wasUpdated()->willReturn(true);
+        $product->isDirty()->willReturn(true);
         $product->getId()->willReturn(null);
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
@@ -65,7 +65,7 @@ class ProductSaverSpec extends ObjectBehavior
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         ProductInterface $product
     ) {
-        $product->wasUpdated()->willReturn(true);
+        $product->isDirty()->willReturn(true);
         $product->getId()->willReturn(1);
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
@@ -90,7 +90,7 @@ class ProductSaverSpec extends ObjectBehavior
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         ProductInterface $product
     ) {
-        $product->wasUpdated()->willReturn(false);
+        $product->isDirty()->willReturn(false);
 
         $uniqueDataSynchronizer->synchronize($product)->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
@@ -107,9 +107,9 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface $product2
     ) {
         $product1->getId()->willReturn(42);
-        $product1->wasUpdated()->willReturn(true);
+        $product1->isDirty()->willReturn(true);
         $product2->getId()->willReturn(44);
-        $product2->wasUpdated()->willReturn(true);
+        $product2->isDirty()->willReturn(true);
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
@@ -151,9 +151,9 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface $product2
     ) {
         $product1->getId()->willReturn(null);
-        $product1->wasUpdated()->willReturn(true);
+        $product1->isDirty()->willReturn(true);
         $product2->getId()->willReturn(42);
-        $product2->wasUpdated()->willReturn(true);
+        $product2->isDirty()->willReturn(true);
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
@@ -182,11 +182,11 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface $product3
     ) {
         $product1->getId()->willReturn(1);
-        $product1->wasUpdated()->willReturn(true);
+        $product1->isDirty()->willReturn(true);
         $product2->getId()->willReturn(2);
-        $product2->wasUpdated()->willReturn(false);
+        $product2->isDirty()->willReturn(false);
         $product3->getId()->willReturn(3);
-        $product3->wasUpdated()->willReturn(true);
+        $product3->isDirty()->willReturn(true);
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
@@ -218,9 +218,9 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3
     ) {
-        $product1->wasUpdated()->willReturn(false);
-        $product2->wasUpdated()->willReturn(false);
-        $product3->wasUpdated()->willReturn(false);
+        $product1->isDirty()->willReturn(false);
+        $product2->isDirty()->willReturn(false);
+        $product3->isDirty()->willReturn(false);
 
         $uniqueDataSynchronizer->synchronize(Argument::any())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();

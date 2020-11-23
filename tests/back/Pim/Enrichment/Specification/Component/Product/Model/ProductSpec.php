@@ -387,7 +387,7 @@ class ProductSpec extends ObjectBehavior
     {
         $this->setEnabled(false);
         $this->cleanup();
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_category_is_added(CategoryInterface $category)
@@ -395,7 +395,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->addCategory($category);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_an_already_existing_category_is_added(
@@ -405,7 +405,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->addCategory($category);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_category_is_removed(CategoryInterface $category)
@@ -414,7 +414,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeCategory($category);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_a_non_existing_category_is_removed(CategoryInterface $category)
@@ -422,7 +422,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeCategory($category);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_setting_or_removing_categories(
@@ -433,7 +433,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setCategories(new ArrayCollection([$category2->getWrappedObject()]));
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_updated_when_setting_the_same_categories(
@@ -444,7 +444,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setCategories(new ArrayCollection([$category2->getWrappedObject(), $category1->getWrappedObject()]));
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_group_is_added(GroupInterface $group)
@@ -452,7 +452,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->addGroup($group);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_an_existing_group_is_added(GroupInterface $group)
@@ -461,7 +461,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->addGroup($group);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_group_is_removed(GroupInterface $group)
@@ -470,7 +470,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeGroup($group);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_a_non_existing_group_is_removed(GroupInterface $group)
@@ -478,7 +478,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeGroup($group);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_setting_or_removing_groups(GroupInterface $group1, GroupInterface $group2)
@@ -487,7 +487,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setGroups(new ArrayCollection([$group2->getWrappedObject()]));
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_setting_the_same_groups(GroupInterface $group1, GroupInterface $group2)
@@ -496,7 +496,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setGroups(new ArrayCollection([$group2->getWrappedObject(), $group1->getWrappedObject()]));
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_changing_the_identifier()
@@ -505,7 +505,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setIdentifier('baz');
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_setting_the_same_identifier()
@@ -514,21 +514,21 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setIdentifier('foo');
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_updating_the_status()
     {
         $this->cleanup();
         $this->setEnabled(false);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_the_status_is_not_updated()
     {
         $this->cleanup();
         $this->setEnabled(true);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_updating_the_parent_model(
@@ -539,7 +539,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setParent($otherProductModel);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_setting_the_same_parent_model(ProductModelInterface $parent)
@@ -548,7 +548,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setParent($parent);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_changing_the_family_variant(
@@ -559,7 +559,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setFamilyVariant($otherFamilyVariant);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_setting_the_same_family_variant(
@@ -569,7 +569,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setFamilyVariant($familyVariant);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_value_is_added()
@@ -577,7 +577,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
         $this->addValue(ScalarValue::value('name', 'My great product'));
 
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_a_value_fails_to_be_added()
@@ -586,7 +586,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->addValue(ScalarValue::value('name', 'Another name'));
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_value_is_removed()
@@ -596,7 +596,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeValue($value);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_a_value_fails_to_be_removed()
@@ -604,7 +604,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
         $this->removeValue(ScalarValue::value('name', 'My great product'));
 
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_setting_new_values()
@@ -618,7 +618,7 @@ class ProductSpec extends ObjectBehavior
             )
         );
 
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_updated_when_setting_a_new_value()
@@ -633,7 +633,7 @@ class ProductSpec extends ObjectBehavior
                 ]
             )
         );
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_setting_the_same_values()
@@ -650,7 +650,7 @@ class ProductSpec extends ObjectBehavior
                 ]
             )
         );
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_removing_a_value()
@@ -666,13 +666,13 @@ class ProductSpec extends ObjectBehavior
                 ]
             )
         );
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_updated_when_filtering_quantified_associations()
     {
         $this->filterQuantifiedAssociations(['foo', 'bar'], ['baz']);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_updated_when_patching_quantified_associations(
@@ -695,14 +695,14 @@ class ProductSpec extends ObjectBehavior
             ],
         ]);
         $this->mergeQuantifiedAssociations($quantifiedAssociations);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_updated_when_clearing_quantified_associations()
     {
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
         $this->clearQuantifiedAssociations();
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_updated_when_adding_a_non_empty_association(
@@ -717,7 +717,7 @@ class ProductSpec extends ObjectBehavior
         $association->setOwner($this)->shouldBeCalled();
 
         $this->addAssociation($association);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_adding_an_empty_association(
@@ -735,7 +735,7 @@ class ProductSpec extends ObjectBehavior
         $association->setOwner($this)->shouldBeCalled();
 
         $this->addAssociation($association);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_not_updated_when_adding_an_already_existing_association()
@@ -752,7 +752,7 @@ class ProductSpec extends ObjectBehavior
             ->shouldThrow(\LogicException::class)
             ->during('addAssociation', [$upsellAssociation]);
 
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_throws_an_exception_if_a_similar_association_already_exists()
@@ -783,7 +783,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeAssociation($association);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_an_empty_association_is_removed()
@@ -797,7 +797,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeAssociation($upsellAssociation);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_not_updated_when_removing_a_non_existent_association(
@@ -806,7 +806,7 @@ class ProductSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeAssociation($association);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     // TODO: the product should only be updated when associated products, models and/or groups are added or removed
@@ -814,6 +814,6 @@ class ProductSpec extends ObjectBehavior
         AssociationInterface $association
     ) {
         $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
-        $this->wasUpdated()->shouldbe(true);
+        $this->isDirty()->shouldbe(true);
     }
 }

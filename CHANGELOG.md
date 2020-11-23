@@ -204,11 +204,13 @@
 - Change `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface` interface to add `getWithVariants()`
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup` to replace `Doctrine\DBAL\Driver\Connection $connection` by `Doctrine\DBAL\Connection $connection`
 - Add `clearCache` method in `Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface`
-- Remove method `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface::setFamilyId()`
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface` to
+    - remove the `setFamilyId()` method
+    - add `isDirty()` and `cleanup()` methods
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct` to
     - remove the `setFamilyId()` method
     - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
-    - add `wasUpdated()` and `cleanup()` methods
+    - add `isDirty()` and `cleanup()` methods 
 - Remove the `findDatagridViewByAlias()` method in `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface`
 
 ### CLI commands

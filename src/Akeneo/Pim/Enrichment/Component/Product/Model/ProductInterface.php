@@ -198,7 +198,7 @@ interface ProductInterface extends
      *
      * @return bool
      */
-    public function wasUpdated(): bool;
+    public function isDirty(): bool;
 
     /**
      * Resets the updated state (to false)

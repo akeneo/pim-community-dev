@@ -45,7 +45,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     public function save($product, array $options = [])
     {
         $this->validateProduct($product);
-        if (!$product->wasUpdated() && true !== ($options['force_save'] ?? false)) {
+        if (!$product->isDirty() && true !== ($options['force_save'] ?? false)) {
             return;
         }
 
@@ -79,7 +79,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
                 array_filter(
                     $products,
                     function (ProductInterface $product): bool {
-                        return $product->wasUpdated();
+                        return $product->isDirty();
                     }
                 )
             );

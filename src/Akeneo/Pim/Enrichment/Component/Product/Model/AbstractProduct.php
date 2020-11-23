@@ -28,7 +28,6 @@ abstract class AbstractProduct implements ProductInterface
     /** @var int|string */
     protected $id;
 
-    /** @var array */
     protected array $rawValues;
 
     /** @var \DateTime */
@@ -50,7 +49,6 @@ abstract class AbstractProduct implements ProductInterface
     /** @var Collection */
     protected $categories;
 
-    /** @var bool $enabled */
     protected bool $enabled = true;
 
     /** @var Collection */
@@ -81,7 +79,7 @@ abstract class AbstractProduct implements ProductInterface
     /** @var FamilyVariantInterface|null */
     protected $familyVariant;
 
-    protected bool $wasUpdated = false;
+    protected bool $dirty = false;
 
     /**
      * Constructor
@@ -157,7 +155,7 @@ abstract class AbstractProduct implements ProductInterface
     public function addValue(ValueInterface $value)
     {
         if (true === $this->values->add($value)) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -169,7 +167,7 @@ abstract class AbstractProduct implements ProductInterface
     public function removeValue(ValueInterface $value)
     {
         if (true === $this->values->remove($value)) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -240,7 +238,7 @@ abstract class AbstractProduct implements ProductInterface
     public function setFamily(FamilyInterface $family = null)
     {
         if ($family !== $this->family) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
         $this->family = $family;
 
@@ -270,7 +268,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if ($identifierValue !== $this->identifier) {
             $this->identifier = $identifierValue;
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -299,13 +297,13 @@ abstract class AbstractProduct implements ProductInterface
         foreach ($formerValues as $formerValue) {
             $matching = $values->getSame($formerValue);
             if (null === $matching || !$formerValue->isEqual($matching)) {
-                $this->wasUpdated = true;
+                $this->dirty = true;
             }
         }
         foreach ($values as $value) {
             $matching = $formerValues->getSame($value);
             if (null === $matching) {
-                $this->wasUpdated = true;
+                $this->dirty = true;
             }
         }
         $this->values = $values;
@@ -382,7 +380,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
             $this->categories->add($category);
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -418,7 +416,7 @@ abstract class AbstractProduct implements ProductInterface
     public function removeCategory(BaseCategoryInterface $category)
     {
         if (true === $this->categories->removeElement($category)) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -485,7 +483,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if ($enabled !== $this->enabled) {
             $this->enabled = $enabled;
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -543,7 +541,7 @@ abstract class AbstractProduct implements ProductInterface
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
             $group->addProduct($this);
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -555,7 +553,7 @@ abstract class AbstractProduct implements ProductInterface
     public function removeGroup(GroupInterface $group)
     {
         if (true === $this->groups->removeElement($group)) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -591,7 +589,7 @@ abstract class AbstractProduct implements ProductInterface
             $newAssociation->getProductModels()->count() > 0 ||
             $newAssociation->getGroups()->count() > 0
         ) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -612,7 +610,7 @@ abstract class AbstractProduct implements ProductInterface
                 $similarAssociation->getGroups()->count() > 0
             )
         ) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -665,7 +663,7 @@ abstract class AbstractProduct implements ProductInterface
     public function setAssociations(Collection $associations): EntityWithAssociationsInterface
     {
         $this->associations = $associations;
-        $this->wasUpdated = true;
+        $this->dirty = true;
 
         return $this;
     }
@@ -721,7 +719,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if ($parent !== $this->parent) {
             $this->parent = $parent;
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
     }
 
@@ -740,7 +738,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         if ($familyVariant !== $this->familyVariant) {
             $this->familyVariant = $familyVariant;
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
     }
 
@@ -788,7 +786,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
             ->filterProductIdentifiers($productIdentifiersToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
-        $this->wasUpdated = true;
+        $this->dirty = true;
     }
 
     /**
@@ -800,7 +798,7 @@ abstract class AbstractProduct implements ProductInterface
             return;
         }
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->merge($quantifiedAssociations);
-        $this->wasUpdated = true;
+        $this->dirty = true;
     }
 
     /**
@@ -815,7 +813,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->patchQuantifiedAssociations(
             $submittedQuantifiedAssociations
         );
-        $this->wasUpdated = true;
+        $this->dirty = true;
     }
 
     /**
@@ -828,15 +826,15 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->clearQuantifiedAssociations();
-        $this->wasUpdated = true;
+        $this->dirty = true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function wasUpdated(): bool
+    public function isDirty(): bool
     {
-        return $this->wasUpdated;
+        return $this->dirty;
     }
 
     /**
@@ -844,7 +842,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function cleanup(): void
     {
-        $this->wasUpdated = false;
+        $this->dirty = false;
     }
 
     public function __clone()
