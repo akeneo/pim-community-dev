@@ -28,7 +28,6 @@ import {
 import ProductEditFormApp from './application/ProductEditFormApp';
 import ProductModelEditFormApp from './application/ProductModelEditFormApp';
 import {DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/TabContent';
-import {DATA_QUALITY_INSIGHTS_AXIS_RATES_OVERVIEW_SIDEBAR_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/Sidebar';
 
 import fetchProductDataQualityEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
 import fetchProductModelEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
@@ -60,7 +59,6 @@ export {
   ProductEditFormApp,
   ProductModelEditFormApp,
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,
-  DATA_QUALITY_INSIGHTS_AXIS_RATES_OVERVIEW_SIDEBAR_CONTAINER_ELEMENT_ID,
   PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   fetchProductDataQualityEvaluation,

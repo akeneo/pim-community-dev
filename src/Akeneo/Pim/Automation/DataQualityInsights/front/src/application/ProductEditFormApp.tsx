@@ -4,7 +4,6 @@ import {productEditFormStore} from '../infrastructure/store';
 import {CatalogContextListener, PageContextListener, ProductContextListener} from './listener';
 import {Product} from '../domain';
 import {fetchProduct, fetchProductDataQualityEvaluation} from '../infrastructure/fetcher';
-import {AxisRatesOverviewPortal} from './component/ProductEditForm';
 import {AxesContextProvider} from './context/AxesContext';
 import {DataQualityInsightsTabContent} from './component/ProductEditForm/TabContent';
 import AttributesTabContent from './component/ProductEditForm/TabContent/AttributesTabContent';
@@ -63,7 +62,6 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                 </Criterion>
               </AxisEvaluation>
             </DataQualityInsightsTabContent>
-            <AxisRatesOverviewPortal />
           </AxesContextProvider>
         </Provider>
       </ThemeProvider>

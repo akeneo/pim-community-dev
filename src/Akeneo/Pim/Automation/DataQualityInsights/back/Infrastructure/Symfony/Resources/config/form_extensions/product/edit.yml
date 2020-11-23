@@ -6,13 +6,6 @@ extensions:
         position: 101
         feature: data_quality_insights
 
-    akeneo-data-quality-insights-product-edit-form-axis-rates:
-        module: akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-overview
-        parent: pim-product-edit-form-meta
-        targetZone: meta
-        position: 71
-        feature: data_quality_insights
-
     pim-product-edit-form-data-quality-insights-app:
         module: akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-app
         parent: pim-product-edit-form
