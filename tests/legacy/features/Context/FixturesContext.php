@@ -637,10 +637,6 @@ class FixturesContext extends BaseFixturesContext
     public function theFollowingDatagridViews(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            if (!isset($data['type'])) {
-                $data['type'] = DatagridView::TYPE_PUBLIC;
-            }
-
             $this->createDatagridView($data);
         }
     }
@@ -2444,6 +2440,7 @@ class FixturesContext extends BaseFixturesContext
         $view->setFilters(urlencode($data['filters']));
         $view->setColumns($columns);
         $view->setOwner($this->getUser('Peter'));
+        $view->setType($data['type'] ?? DatagridView::TYPE_PUBLIC);
 
         $this->validate($view);
         $this->getContainer()->get('pim_datagrid.saver.datagrid_view')->save($view);
