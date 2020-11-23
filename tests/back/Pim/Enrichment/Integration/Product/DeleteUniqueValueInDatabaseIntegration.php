@@ -87,7 +87,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
     private function deleteUniqueValueForAttribute(string $attributeCode): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $uniqueValue = $product->getValue('name');
+        $uniqueValue = $product->getValue($attributeCode);
         if (null !== $uniqueValue) {
             $product->removeValue($uniqueValue);
         }
