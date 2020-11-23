@@ -7,6 +7,10 @@ type Props = {
 }
 
 const QualityScore: FC<Props> = ({score, className}) => {
+  if(score === 'N/A'){
+    return (<>N/A</>);
+  }
+
   return (<Container score={score} className={className}>{score}</Container>);
 };
 

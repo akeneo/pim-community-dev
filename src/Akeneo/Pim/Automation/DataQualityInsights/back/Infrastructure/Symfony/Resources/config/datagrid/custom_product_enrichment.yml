@@ -5,7 +5,7 @@ datagrid:
                 label:         Quality score
                 data_name:     data_quality_insights_score
                 type:          field
-                frontend_type: rate-badge
+                frontend_type: quality-score-badge
         sorters:
             columns:
                 data_quality_insights_score:
