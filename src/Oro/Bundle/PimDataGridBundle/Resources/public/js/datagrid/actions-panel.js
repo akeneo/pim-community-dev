@@ -16,22 +16,9 @@ define([
   'pim/template/datagrid/actions-group',
   'pim/form',
   'oro/mediator',
-  'react',
-  'react-dom',
   'pimdatagrid/datagrid/quickexport/component/QuickExportConfigurator',
   'pim/user-context',
-], function (
-  _,
-  __,
-  Backbone,
-  groupTemplate,
-  BaseForm,
-  mediator,
-  React,
-  ReactDOM,
-  {QuickExportConfigurator},
-  UserContext
-) {
+], function (_, __, Backbone, groupTemplate, BaseForm, mediator, {QuickExportConfigurator}, UserContext) {
   const ActionsPanel = BaseForm.extend({
     appendToGrid: false,
 
@@ -137,8 +124,7 @@ define([
         function (groupLaunchers, groupName) {
           const button = this.el.querySelector(`.${this.getGroupClassname(groupName)}`);
           const isProductGrid = 'product-grid' === groupLaunchers[0]?.action.datagrid.name || false;
-
-          const Component = React.createElement(QuickExportConfigurator, {
+          const props = {
             showWithLabelsSelect: isProductGrid,
             onActionLaunch: formValue => {
               const actionName = `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}_${
@@ -162,9 +148,9 @@ define([
               launcher.action.run();
             },
             getProductCount: () => this.getParent().count,
-          });
+          };
 
-          ReactDOM.render(Component, button);
+          this.renderReact(QuickExportConfigurator, props, button);
         }.bind(this)
       );
 

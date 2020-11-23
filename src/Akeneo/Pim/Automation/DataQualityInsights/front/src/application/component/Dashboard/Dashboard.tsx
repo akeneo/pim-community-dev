@@ -5,6 +5,16 @@ import {AxesContextProvider} from '../../context/AxesContext';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
+//@todo DAPI-1436
+//import {KeyIndicators} from './KeyIndicators/KeyIndicators';
+//import {AssetCollectionIcon, EditIcon, pimTheme} from 'akeneo-design-system';
+/*
+import {KeyIndicator} from './index';
+import {KeyIndicatorsProvider} from '../../context/KeyIndicatorsContext';
+import {keyIndicatorsTips} from '../../helper/Dashboard/KeyIndicatorsTips';
+import {redirectToProductGridFilteredByKeyIndicator} from '../../../infrastructure/ProductGridRouter';
+*/
+import {DashboardContextProvider} from '../../context/DashboardContext';
 
 interface DataQualityInsightsDashboardProps {
   timePeriod: string;
@@ -27,7 +37,8 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
         <AxesContextProvider axes={axes}>
-          <div id="data-quality-insights-activity-dashboard">
+          <DashboardContextProvider>
+            <div id="data-quality-insights-activity-dashboard">
             <div className="AknSubsection">
               <Overview
                 catalogLocale={catalogLocale}
@@ -36,9 +47,66 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
                 familyCode={familyCode}
                 categoryCode={categoryCode}
               />
-              <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
+              {/* @todo DAPI-1436
+                <KeyIndicatorsProvider tips={keyIndicatorsTips}>
+                  <KeyIndicators
+                    channel={catalogChannel}
+                    locale={catalogLocale}
+                    family={familyCode}
+                    category={categoryCode}
+                  >
+                    <KeyIndicator
+                      type="has_image"
+                      title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.has_image.title'}
+                      resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
+                      followResults={(
+                        channelCode: string,
+                        localeCode: string,
+                        familyCode: string | null,
+                        categoryId: string | null,
+                        rootCategoryId: string | null
+                      ) => {
+                        redirectToProductGridFilteredByKeyIndicator(
+                          'data_quality_insights_images_quality',
+                          channelCode,
+                          localeCode,
+                          familyCode,
+                          categoryId,
+                          rootCategoryId
+                        );
+                      }}
+                    >
+                      <AssetCollectionIcon />
+                    </KeyIndicator>
+
+                    <KeyIndicator
+                      type="good_enrichment"
+                      title={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.good_enrichment.title'}
+                      resultsMessage={'akeneo_data_quality_insights.dqi_dashboard.key_indicators.products_to_work_on'}
+                      followResults={(
+                        channelCode: string,
+                        localeCode: string,
+                        familyCode: string | null,
+                        categoryId: string | null,
+                        rootCategoryId: string | null
+                      ) => {
+                        redirectToProductGridFilteredByKeyIndicator(
+                          'data_quality_insights_enrichment_quality',
+                          channelCode,
+                          localeCode,
+                          familyCode,
+                          categoryId,
+                          rootCategoryId
+                        );
+                      }}
+                    >
+                      <EditIcon />
+                    </KeyIndicator>
+                  </KeyIndicators>
+                </KeyIndicatorsProvider>
+                */}<Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
             </div>
-          </div>
+          </div></DashboardContextProvider>
         </AxesContextProvider>
       </ThemeProvider>
     </DependenciesProvider>

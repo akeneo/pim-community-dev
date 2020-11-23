@@ -34,3 +34,19 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompleteness'
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
+
+    akeneo.pim.automation.data_quality_insights.application.evaluate_product_image_enrichment:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment
+        arguments:
+            - '@akeneo.pim.automation.calculate_product_image_enrichment'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
+        tags:
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
+
+    akeneo.pim.automation.data_quality_insights.application.evaluate_product_model_image_enrichment:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment
+        arguments:
+            - '@akeneo.pim.automation.calculate_product_model_image_enrichment'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
+        tags:
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }

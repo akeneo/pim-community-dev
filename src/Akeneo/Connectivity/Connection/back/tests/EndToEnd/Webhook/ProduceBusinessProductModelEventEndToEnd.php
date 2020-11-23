@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 
@@ -111,7 +112,11 @@ JSON;
         $envelopes = $transport->get();
 
         $this->assertCount(1, $envelopes);
-        $this->assertInstanceOf(ProductModelCreated::class, $envelopes[0]->getMessage());
+
+        /** @var BulkEvent */
+        $bulkEvent = $envelopes[0]->getMessage();
+        $this->assertInstanceOf(BulkEvent::class, $bulkEvent);
+        $this->assertContainsOnlyInstancesOf(ProductModelCreated::class, $bulkEvent->getEvents());
     }
 
     public function test_update_product_model_add_business_event_to_queue()
@@ -181,7 +186,11 @@ JSON;
         $envelopes = $transport->get();
 
         $this->assertCount(1, $envelopes);
-        $this->assertInstanceOf(ProductModelUpdated::class, $envelopes[0]->getMessage());
+
+        /** @var BulkEvent */
+        $bulkEvent = $envelopes[0]->getMessage();
+        $this->assertInstanceOf(BulkEvent::class, $bulkEvent);
+        $this->assertContainsOnlyInstancesOf(ProductModelUpdated::class, $bulkEvent->getEvents());
     }
 
     public function test_remove_product_model_add_business_event_to_queue()
@@ -223,7 +232,8 @@ JSON;
         $envelopes = $transport->get();
 
         $this->assertCount(2, $envelopes);
-        $this->assertInstanceOf(ProductModelCreated::class, $envelopes[0]->getMessage());
+        $this->assertInstanceOf(BulkEvent::class, $envelopes[0]->getMessage());
+        $this->assertContainsOnlyInstancesOf(ProductModelCreated::class, $envelopes[0]->getMessage()->getEvents());
         $this->assertInstanceOf(ProductModelRemoved::class, $envelopes[1]->getMessage());
     }
 

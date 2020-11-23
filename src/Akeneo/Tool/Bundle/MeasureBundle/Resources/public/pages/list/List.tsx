@@ -69,8 +69,7 @@ const List = () => {
 
   return (
     <>
-      {isCreateModalOpen && <CreateMeasurementFamily onClose={handleModalClose} />}
-
+      <CreateMeasurementFamily isOpen={isCreateModalOpen} onClose={handleModalClose} />
       <PageHeader
         userButtons={
           <PimView

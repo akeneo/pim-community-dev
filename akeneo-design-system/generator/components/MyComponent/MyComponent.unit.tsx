@@ -11,14 +11,14 @@ test('it renders its children properly', () => {
 // Those tests should pass directly if you follow the contributing guide.
 // If you add required props to your Component, these tests will fail
 // and you will need to add these required props here as well
-describe('MyComponent supports forwardRef', () => {
+test('MyComponent supports forwardRef', () => {
   const ref = {current: null};
 
   render(<MyComponent ref={ref} />);
   expect(ref.current).not.toBe(null);
 });
 
-describe('MyComponent supports ...rest props', () => {
-  const {container} = render(<MyComponent data-my-attribute="my_value" />);
-  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+test('MyComponent supports ...rest props', () => {
+  render(<MyComponent data-testid="my_value" />);
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });

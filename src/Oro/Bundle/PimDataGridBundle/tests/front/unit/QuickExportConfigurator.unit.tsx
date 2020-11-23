@@ -1,13 +1,13 @@
 import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render} from '@testing-library/react';
+import {fireEvent} from '@testing-library/react';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {QuickExportConfigurator} from '../../../Resources/public/js/datagrid/quickexport/component/QuickExportConfigurator';
 
 test('it displays a button and no modal initially', () => {
   const onActionLaunch = jest.fn();
   const getProductCount = jest.fn(() => 3);
 
-  const {getByTitle, queryByTitle} = render(
+  const {getByTitle, queryByTitle} = renderWithProviders(
     <QuickExportConfigurator
       showWithLabelsSelect={true}
       onActionLaunch={onActionLaunch}
@@ -23,7 +23,7 @@ test('it does not call the action launch if an option is not set', () => {
   const onActionLaunch = jest.fn();
   const getProductCount = jest.fn(() => 3);
 
-  const {getByTitle} = render(
+  const {getByTitle} = renderWithProviders(
     <QuickExportConfigurator
       showWithLabelsSelect={true}
       onActionLaunch={onActionLaunch}
@@ -44,7 +44,7 @@ test('it does call the action launch if every option is set', () => {
   const onActionLaunch = jest.fn();
   const getProductCount = jest.fn(() => 3);
 
-  const {getByTitle, getByText} = render(
+  const {getByTitle, getByText} = renderWithProviders(
     <QuickExportConfigurator
       showWithLabelsSelect={true}
       onActionLaunch={onActionLaunch}
@@ -73,7 +73,7 @@ test('it does not display the with-labels select if specified', () => {
   const onActionLaunch = jest.fn();
   const getProductCount = jest.fn(() => 3);
 
-  const {queryByText} = render(
+  const {queryByText} = renderWithProviders(
     <QuickExportConfigurator
       showWithLabelsSelect={false}
       onActionLaunch={onActionLaunch}

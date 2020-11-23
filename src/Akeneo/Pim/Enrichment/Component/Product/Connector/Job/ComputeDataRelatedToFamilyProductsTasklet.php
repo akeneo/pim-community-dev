@@ -12,6 +12,8 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\RewindableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -34,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface
+class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -96,6 +98,11 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $this->stepExecution = $stepExecution;
     }
 
+    public function totalItems(): int
+    {
+        return $this->computeProductsToProcess();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -116,12 +123,13 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
             if (null === $family) {
                 $this->stepExecution->incrementSummaryInfo('skip');
+
                 continue;
             }
 
             $skippedProducts = [];
             $productsToSave = [];
-            $products = $this->getProductsForFamily($family);
+            $products = $this->getProductsForFamilies([$family->getCode()]);
 
             foreach ($products as $product) {
                 if ($product->isVariant()) {
@@ -129,6 +137,8 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
                     if (!$this->isValid($product)) {
                         $this->stepExecution->incrementSummaryInfo('skip');
+                        $this->stepExecution->incrementProcessedItems();
+
                         $skippedProducts[] = $product;
                     } else {
                         $productsToSave[] = $product;
@@ -182,19 +192,58 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
 
         $this->productSaver->saveAll($products);
         $this->stepExecution->incrementSummaryInfo('process', count($products));
+        $this->stepExecution->incrementProcessedItems(count($products));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return CursorInterface
-     */
-    private function getProductsForFamily(FamilyInterface $family): CursorInterface
+    private function getProductsForFamilies(array $familyCodes): CursorInterface
     {
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
+        $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
 
         return $pqb->execute();
+    }
+
+    /**
+     * Quentin raised some concerns regarding the ability to rewind the familyReader (which can be seen as a cursor)
+     * in a shared environment.
+     *
+     * @throws \Exception
+     */
+    private function computeProductsToProcess(): int
+    {
+        if (!$this->familyReader instanceof RewindableItemReaderInterface) {
+            return 0;
+        }
+        $this->familyReader->rewind();
+
+        $familyCodes = [];
+        $totalProductsToProcess = 0;
+        while (true) {
+            try {
+                $familyItem = $this->familyReader->read();
+                if (null === $familyItem) {
+                    break;
+                }
+            } catch (InvalidItemException $e) {
+                continue;
+            }
+            $familyCodes[] = $familyItem['code'];
+
+            if (\count($familyCodes) % 100 === 0) {
+                $totalProductsToProcess += $this->countProducts($familyCodes);
+                $familyCodes = [];
+            }
+        }
+        $totalProductsToProcess += $this->countProducts($familyCodes);
+
+        $this->familyReader->rewind();
+
+        return $totalProductsToProcess;
+    }
+
+    private function countProducts(array $familyCodes): int
+    {
+        return $this->getProductsForFamilies($familyCodes)->count();
     }
 }

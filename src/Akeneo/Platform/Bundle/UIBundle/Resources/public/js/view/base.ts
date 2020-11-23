@@ -1,3 +1,8 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import * as _ from 'underscore';
 import * as JQuery from 'jquery';
 import * as Backbone from 'backbone';
@@ -15,6 +20,7 @@ const mediator = require('oro/mediator');
 class BaseView extends Backbone.View<any> implements View {
   private parent: View | null = null;
   private extensions: {[code: string]: View};
+  private reactRef: Element | null = null;
 
   readonly preUpdateEventName: string = 'pim_enrich:form:entity:pre_update';
   readonly postUpdateEventName: string = 'pim_enrich:form:entity:post_update';
@@ -239,6 +245,45 @@ class BaseView extends Backbone.View<any> implements View {
     zone.appendChild(extension.el);
 
     extension.render();
+  }
+
+  /**
+   * Render a React component with the given props wrapped with PIM theme & legacy providers inside the given container
+   */
+  renderReact(
+    componentType: string | React.FunctionComponent | React.ComponentClass,
+    props: React.Attributes,
+    container: Element
+  ) {
+    this.reactRef = container;
+    ReactDOM.render(
+      React.createElement(
+        ThemeProvider,
+        {theme: pimTheme},
+        React.createElement(DependenciesProvider, null, React.createElement(componentType, props))
+      ),
+      this.reactRef
+    );
+  }
+
+  /**
+   * Unmount the React ref if present
+   */
+  unmountReact() {
+    if (null !== this.reactRef) {
+      ReactDOM.unmountComponentAtNode(this.reactRef);
+      this.reactRef = null;
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  remove(): BaseView {
+    super.remove();
+    this.unmountReact();
+
+    return this;
   }
 
   /**

@@ -115,6 +115,12 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdentifierFromProductIdQuery'
             - '@akeneo.pim.automation.completeness_product_non_required_attributes_calculator'
 
+    akeneo.pim.automation.calculate_product_image_enrichment:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductCompleteness
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdentifierFromProductIdQuery'
+            - '@akeneo.pim.automation.completeness_product_image_enrichment_calculator'
+
     akeneo.pim.automation.completeness_product_required_attributes_calculator:
         class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
         arguments:
@@ -126,6 +132,12 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetNonRequiredAttributesMasksQuery'
+
+    akeneo.pim.automation.completeness_product_image_enrichment_calculator:
+        class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
+        arguments:
+            - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
+            - '@akeneo.pim.automation.data_quality_insights.query.product.get_enrichment_images_masks'
 
     akeneo.pim.automation.calculate_product_model_completeness_of_required_attributes:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductModelCompleteness
@@ -139,6 +151,13 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetNonRequiredProductModelAttributesMaskQuery'
+            - '@pim_catalog.repository.product_model'
+
+    akeneo.pim.automation.calculate_product_model_image_enrichment:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductModelCompleteness
+        arguments:
+            - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
+            - '@akeneo.pim.automation.data_quality_insights.query.product_model.get_enrichment_images_masks'
             - '@pim_catalog.repository.product_model'
 
     akeneo.pim.automation.data_quality_insights.mark_product_criteria_to_evaluate:
@@ -173,3 +192,16 @@ services:
 
     akeneo.pim.automation.data_quality_insights.synchronous_criterion_evaluations_filter:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\SynchronousCriterionEvaluationsFilter
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
+            - !tagged akeneo.pim.automation.data_quality_insights.compute_key_indicator_query
+
+    akeneo.pim.automation.data_quality_insights.get_key_indicators:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetKeyIndicators
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery'
+            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
+            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
+

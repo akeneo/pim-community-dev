@@ -168,6 +168,20 @@ pim_import_export:
     6: Echoué
     7: Abandonné
     8: Inconnu
+  job_status:
+    COMPLETED: Terminé
+    STARTING: Démarrage
+    STARTED: Démarré
+    STOPPING: En cours d'arrêt
+    STOPPED: Arrêté
+    FAILED: Echoué
+    ABANDONED: Abandonné
+    UNKNOWN: Inconnu
+  tracking:
+    completed: "Temps écoulé : {{ duration }}"
+    in_progress: "Temps restant estimé : {{ duration }}"
+    untrackable: Temps restant inconnu
+    estimating: "Estimation du temps restant..."
 confirmation:
   remove:
     import_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?

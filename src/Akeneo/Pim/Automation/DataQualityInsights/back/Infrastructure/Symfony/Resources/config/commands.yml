@@ -32,3 +32,4 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
         tags:
             - { name: 'console.command' }
+

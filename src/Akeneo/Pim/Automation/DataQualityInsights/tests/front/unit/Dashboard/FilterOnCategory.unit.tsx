@@ -1,12 +1,13 @@
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render, waitForElement} from '@testing-library/react';
+import {fireEvent, render, waitFor} from '@testing-library/react';
 
 import fetchCategoryTrees from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryTrees';
 import fetchCategoryChildren from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryChildren';
 import CategoryFilter from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Overview/Filters/CategoryFilter';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '@akeneo-pim-community/data-quality-insights/src';
+import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
 
 const UserContext = require('pim/user-context');
 
@@ -26,7 +27,7 @@ describe('Dashboard > filter on category', () => {
     fetchCategoryTrees.mockResolvedValue(categoryTrees);
     fetchCategoryChildren.mockResolvedValueOnce(masterChildren).mockResolvedValueOnce(cameraChildren);
 
-    const {getByTestId, getByText, baseElement} = render(<CategoryFilter categoryCode={null} />);
+    const {getByTestId, getByText, baseElement} = renderDashboardWithProvider(<CategoryFilter categoryCode={null} />);
 
     await openCategoryFilterModal(getByTestId);
     await navigateToDigitalCamerasCategory(getByText, getByTestId);
@@ -41,23 +42,23 @@ describe('Dashboard > filter on category', () => {
 
 async function openCategoryFilterModal(getByTestId) {
   fireEvent.click(getByTestId('dqiCategoryFilter'));
-  await waitForElement(() => getByTestId('dqiModal'));
+  await waitFor(() => getByTestId('dqiModal'));
 }
 
 async function navigateToDigitalCamerasCategory(getByText, getByTestId) {
-  const cameraCategory = await waitForElement(() => getByText('Cameras'));
+  const cameraCategory = await waitFor(() => getByText('Cameras'));
   expect(cameraCategory).toBeTruthy();
 
-  const cameraChildOpeningIcon = await waitForElement(() => getByTestId('dqiChildOpeningIcon_4'));
+  const cameraChildOpeningIcon = await waitFor(() => getByTestId('dqiChildOpeningIcon_4'));
   expect(cameraChildOpeningIcon).toBeTruthy();
   fireEvent.click(cameraChildOpeningIcon);
 }
 
 async function selectDigitalCamerasCategory(getByText, getByTestId) {
-  const digitalCameraLabel = await waitForElement(() => getByText('Digital cameras'));
+  const digitalCameraLabel = await waitFor(() => getByText('Digital cameras'));
   fireEvent.click(digitalCameraLabel);
 
-  const digitalCameraNode = await waitForElement(() => getByTestId('dqiChildNode_5'));
+  const digitalCameraNode = await waitFor(() => getByTestId('dqiChildNode_5'));
   expect(digitalCameraNode.className.includes('jstree-checked')).toBeTruthy();
 }
 

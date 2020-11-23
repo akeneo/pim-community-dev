@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Axis
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\AxisRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Axis;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
@@ -330,6 +331,18 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ]
         ];
 
+        $imageEnrichmentRates = (new ChannelLocaleRateCollection())
+            ->addRate($channelCodeEcommerce, $localeCodeEn, new Rate(100));
+
+        $imageEnrichmentStatus = (new CriterionEvaluationResultStatusCollection())
+            ->add($channelCodeEcommerce, $localeCodeEn, CriterionEvaluationResultStatus::done());
+
+        $imageEnrichmentAttributesData = [
+            "attributes_with_rates" => [
+                "ecommerce" => ["picture" => 100]
+            ]
+        ];
+
         $enrichmentCriteriaEvaluations = (new CriterionEvaluationCollection())
             ->add($this->generateCriterionEvaluation(
                 $productId,
@@ -346,6 +359,14 @@ class GetProductEvaluationSpec extends ObjectBehavior
                 $completenessOfRequiredAttributesRates,
                 $completenessOfRequiredAttributesStatus,
                 $completenessOfRequiredAttributesData
+            ))
+            ->add($this->generateCriterionEvaluation(
+                $productId,
+                EvaluateImageEnrichment::CRITERION_CODE,
+                CriterionEvaluationStatus::DONE,
+                $imageEnrichmentRates,
+                $imageEnrichmentStatus,
+                $imageEnrichmentAttributesData
             ))
         ;
 
@@ -457,6 +478,15 @@ class GetProductEvaluationSpec extends ObjectBehavior
                                 "improvable_attributes" => ["title", "meta_title"],
                                 "status" => CriterionEvaluationResultStatus::DONE,
                             ],
+                            [
+                                "code" => "enrichment_image",
+                                "rate" => [
+                                    "value" => 100,
+                                    "rank" => "A",
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::DONE,
+                            ],
                         ],
                     ],
                     "fr_FR" => [
@@ -476,6 +506,15 @@ class GetProductEvaluationSpec extends ObjectBehavior
                             ],
                             [
                                 "code" => "completeness_of_non_required_attributes",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" => "enrichment_image",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,
@@ -504,6 +543,15 @@ class GetProductEvaluationSpec extends ObjectBehavior
                             ],
                             [
                                 "code" => "completeness_of_non_required_attributes",
+                                "rate" => [
+                                    "value" => null,
+                                    "rank" => null,
+                                ],
+                                "improvable_attributes" => [],
+                                "status" => CriterionEvaluationResultStatus::IN_PROGRESS,
+                            ],
+                            [
+                                "code" => "enrichment_image",
                                 "rate" => [
                                     "value" => null,
                                     "rank" => null,

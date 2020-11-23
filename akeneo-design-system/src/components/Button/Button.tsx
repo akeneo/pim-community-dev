@@ -1,17 +1,16 @@
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
-import {Key, Override} from '../../shared';
-import {useShortcut} from '../../hooks';
+import {Override} from '../../shared';
 
 type ButtonSize = 'small' | 'default';
 
 type ButtonProps = Override<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>,
   {
     /**
      * Level of the button defining it's color and outline.
-     * Possible values are: primary, secondary, tertiary, danger and ghost.
+     * Possible values are: primary, secondary, tertiary, warning & danger.
      */
     level?: Level;
 
@@ -33,7 +32,12 @@ type ButtonProps = Override<
     /**
      * Function called when the user clicks on the button or hit enter when focused.
      */
-    onClick: (event: SyntheticEvent) => void;
+    onClick?: (event: SyntheticEvent) => void;
+
+    /**
+     * Url to go to if the button is clicked. This allow your button to open in a new tab in case of cmd/ctrl + click
+     */
+    href?: string;
 
     /**
      * Accessibility label to describe shortly the button.
@@ -53,13 +57,15 @@ type ButtonProps = Override<
     /**
      * Children of the button.
      */
-    children: ReactNode;
+    children?: ReactNode;
   }
 >;
 
-const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} & AkeneoThemedProps) => {
-  const {level, ghost, disabled} = props;
-
+const getColorStyle = ({
+  level,
+  ghost,
+  disabled,
+}: {level: Level; ghost: boolean; disabled: boolean} & AkeneoThemedProps) => {
   if (ghost) {
     return css`
       color: ${getColorForLevel(level, disabled ? 80 : 120)};
@@ -93,7 +99,7 @@ const getColorStyle = (props: {level: Level; ghost: boolean; disabled: boolean} 
   `;
 };
 
-const Container = styled.button<
+const ContainerStyle = css<
   {
     level: Level;
     ghost: boolean;
@@ -101,22 +107,31 @@ const Container = styled.button<
     size: ButtonSize;
   } & AkeneoThemedProps
 >`
+  display: inline-block;
   border-width: 1px;
-  border-style: ${props => (props.ghost ? 'solid' : 'none')};
   font-size: ${getFontSize('default')};
   font-weight: 400;
   text-transform: uppercase;
-  padding: ${props => (props.size === 'small' ? '0 10px' : '0 15px')};
   border-radius: 16px;
-  height: ${props => (props.size === 'small' ? '24px' : '32px')};
+  border-style: ${({ghost}) => (ghost ? 'solid' : 'none')};
+  padding: ${({size}) => (size === 'small' ? '0 10px' : '0 15px')};
+  height: ${({size}) => (size === 'small' ? '24px' : '32px')};
+  line-height: ${({size}) => (size === 'small' ? 24 : 32) - 2}px;
+  outline-color: ${({level}) => getColorForLevel(level, 100)};
+  cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
+  font-family: inherit;
+  transition: background-color 0.1s ease;
 
   ${getColorStyle}
+`;
 
-  cursor: pointer;
+const ButtonContainer = styled.button`
+  ${ContainerStyle}
+`;
 
-  &:disabled {
-    cursor: not-allowed;
-  }
+const LinkContainer = styled.a`
+  text-decoration: none;
+  ${ContainerStyle}
 `;
 
 /**
@@ -130,6 +145,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost = false,
       disabled = false,
       size = 'default',
+      href,
       ariaDescribedBy,
       ariaLabel,
       ariaLabelledBy,
@@ -140,10 +156,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
-    const ref = useShortcut(Key.Enter, disabled ? () => null : onClick, forwardedRef);
+    if (undefined !== href && undefined !== onClick) {
+      throw new Error('Button cannot have both `href` and `onClick` props');
+    }
+
+    const handleAction = (event: SyntheticEvent) => {
+      if (disabled || undefined === onClick) return;
+
+      onClick(event);
+    };
+
+    const Component = undefined !== href ? LinkContainer : ButtonContainer;
 
     return (
-      <Container
+      <Component
         level={level}
         ghost={ghost}
         disabled={disabled}
@@ -152,16 +178,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-disabled={disabled}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
-        ref={ref}
+        ref={forwardedRef}
         role="button"
         type={type}
-        onClick={disabled ? null : onClick}
+        onClick={handleAction}
+        href={disabled ? undefined : href}
         {...rest}
       >
         {children}
-      </Container>
+      </Component>
     );
   }
 );
 
 export {Button};
+export type {ButtonProps, ButtonSize};

@@ -72,7 +72,13 @@ pim_datagrid:
       error: Action was not performed
       no_items: Please, select item to perform action.
     show:
-      title: Show
+      title: View
+    stop:
+      title: Stop
+      confirmation:
+        title: Stop {{ jobLabel }}
+        content: Do you really want to stop this job?
+        ok: Stop the job
 
   filters:
     common:

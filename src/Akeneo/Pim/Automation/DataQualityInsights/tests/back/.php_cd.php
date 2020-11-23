@@ -29,6 +29,7 @@ $rules = [
             //External dependencies
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Application'),
 
@@ -120,6 +121,10 @@ $rules = [
             'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage',
             'Doctrine\ORM\EntityManager',
             'Symfony\Component\Process',
+
+            //Necessary for the Dashboard
+            'Akeneo\Tool\Component\Classification\Model\CategoryInterface',
+            'Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface',
 
             //Security
             'Oro\Bundle\SecurityBundle\SecurityFacade',

@@ -1,0 +1,54 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Breadcrumb} from './Breadcrumb.tsx';
+
+<Meta
+  title="Components/Breadcrumb"
+  component={Breadcrumb}
+  argTypes={{children: {table: {type: {summary: 'Breadcrumb.Step[]'}}}}}
+/>
+
+# Breadcrumb
+
+Breadcrumbs are an important navigation component that shows content hierarchy. They allow users to be aware of their current location in the hierarchical structure of the application. Breadcrumbs enable users to quickly move up to a parent level.
+
+## Usage
+
+Breadcrumbs are very effective for products and experience with a large amount of content organized in a multi-level hierarchy. Breadcrumbs should be considered secondary navigation and should never completely replace the main navigation. The last level is always the current page, this one is not clickable.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <Breadcrumb {...args}>
+          <Breadcrumb.Step href="#">first</Breadcrumb.Step>
+          <Breadcrumb.Step href="#">second</Breadcrumb.Step>
+          <Breadcrumb.Step>third</Breadcrumb.Step>
+        </Breadcrumb>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on steps
+
+<Canvas>
+  <Story name="Steps">
+    {args => {
+      return (
+        <>
+          <Breadcrumb {...args}>
+            <Breadcrumb.Step href="#variation-on-steps">first</Breadcrumb.Step>
+            <Breadcrumb.Step>second</Breadcrumb.Step>
+          </Breadcrumb>
+          <Breadcrumb {...args}>
+            <Breadcrumb.Step>Only one</Breadcrumb.Step>
+          </Breadcrumb>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

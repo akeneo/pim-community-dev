@@ -1,4 +1,4 @@
-import React, {Fragment, FunctionComponent} from 'react';
+import React, {Children, FC, FunctionComponent, ReactElement} from 'react';
 import {get as _get} from 'lodash';
 import AxisEvaluation from './DataQualityInsights/AxisEvaluation';
 import {
@@ -35,9 +35,10 @@ const isProductEvaluationPending = (evaluation: ProductEvaluation | undefined, c
   return axisInProgress.length > 0;
 };
 
-const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTabContentProps> = ({
+const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> = ({
+  children,
   productEvaluationFetcher,
-}: DataQualityInsightsTabContentProps) => {
+}) => {
   const {locale, channel} = useCatalogContext();
   const productEvaluation = useFetchProductDataQualityEvaluation(productEvaluationFetcher);
   const {evaluatedGroups, allGroupsEvaluated} = useProductEvaluatedAttributeGroups();
@@ -58,20 +59,22 @@ const BaseDataQualityInsightsTabContent: FunctionComponent<DataQualityInsightsTa
               locale={locale}
             />
           )}
-          {Object.entries(productEvaluation).map(([code, axisEvaluationData]) => {
-            const axisEvaluation: Evaluation = _get(axisEvaluationData, [channel, locale], {
-              rate: {
-                value: null,
-                rank: null,
-              },
-              criteria: [],
-            });
+          {Children.map(children, child => {
+            const element = child as ReactElement;
+            if (element.type === AxisEvaluation) {
+              const axisEvaluation: Evaluation = _get(productEvaluation, [element.props.axis, channel, locale], {
+                rate: {
+                  value: null,
+                  rank: null,
+                },
+                criteria: [],
+              });
 
-            return (
-              <Fragment key={`axis-${code}`}>
-                {axisEvaluation && <AxisEvaluation evaluation={axisEvaluation} axis={code} />}
-              </Fragment>
-            );
+              return React.cloneElement(element, {
+                evaluation: axisEvaluation,
+              });
+            }
+            return child;
           })}
         </>
       )}

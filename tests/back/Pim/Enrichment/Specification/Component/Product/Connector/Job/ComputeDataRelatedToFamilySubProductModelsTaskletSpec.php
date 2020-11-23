@@ -154,6 +154,9 @@ class ComputeDataRelatedToFamilySubProductModelsTaskletSpec extends ObjectBehavi
         $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalledTimes(1);
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalledTimes(1);
+
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(2);
         $cacheClearer->clear()->shouldBeCalledTimes(2);
@@ -210,6 +213,9 @@ class ComputeDataRelatedToFamilySubProductModelsTaskletSpec extends ObjectBehavi
 
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalledTimes(1);
+
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(1);
         $cacheClearer->clear()->shouldBeCalledTimes(2);

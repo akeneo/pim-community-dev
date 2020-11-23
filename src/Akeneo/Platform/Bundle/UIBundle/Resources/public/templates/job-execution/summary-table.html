@@ -16,9 +16,17 @@
         </tr>
         <% } else { %>
             <% _.each(stepExecutions, function (stepExecution, stepIndex) { %>
+                <% var statusLevel = 'success'; %>
+                <% statusLevel = (stepExecution.warnings.length > 0) ? 'warning' : statusLevel %>
+                <% statusLevel = (stepExecution.errors.length > 0 || stepExecution.failures.length > 0) ? 'important' : statusLevel %>
+
                 <tr class="AknGrid-bodyRow">
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--noWrap AknGrid-bodyCell--highlight"><%- translateStepExecutionLabel(stepExecution) %></td>
-                    <td class="AknGrid-bodyCell"><%- stepExecution.status %></td>
+                    <td class="AknGrid-bodyCell">
+                        <span class="AknBadge AknBadge--<%- statusLevel %>">
+                            <%- stepExecution.status %>
+                        </span>
+                    </td>
                     <td class="AknGrid-bodyCell">
                         <% if (_.size(stepExecution.summary) > 0) { %>
                         <table class="AknGrid AknGrid--condensed">
@@ -60,9 +68,9 @@
                                 <% }) %>
                             </ul>
                             <a class="data" data-step-index="<%- stepIndex %>" data-warning-index="<%- warningIndex %>">
-                                <%- warning.expanded ? __('job_execution.summary.hide_item') : __('job_execution.summary.display_item')%>
+                                <%- expandedWarnings[stepIndex] && expandedWarnings[stepIndex].includes(warningIndex) ? __('job_execution.summary.hide_item') : __('job_execution.summary.display_item')%>
                             </a>
-                            <table class="AknGrid AknGrid--condensed AknGrid--unclickable <%- warning.expanded ? '' : 'hide'%>">
+                            <table class="AknGrid AknGrid--condensed AknGrid--unclickable <%- expandedWarnings[stepIndex] && expandedWarnings[stepIndex].includes(warningIndex) ? '' : 'hide'%>">
                                 <% _.each(warning.item, function (value, key) { %>
                                 <tr class="AknGrid-bodyRow">
                                     <td class="AknGrid-bodyCell"><%- key %></td>

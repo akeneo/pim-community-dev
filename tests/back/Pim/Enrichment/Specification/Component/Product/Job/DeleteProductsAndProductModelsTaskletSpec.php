@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -29,7 +30,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ObjectFilterInterface $filter,
         EntityManagerClearerInterface $cacheClearer,
         CountProductModelsAndChildrenProductModelsInterface $countProductModelsAndChildrenProductModels,
-        CountVariantProductsInterface $countVariantProducts
+        CountVariantProductsInterface $countVariantProducts,
+        JobStopper $jobStopper
     ) {
         $this->beConstructedWith(
             $pqbFactory,
@@ -39,7 +41,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
             $filter,
             2,
             $countProductModelsAndChildrenProductModels,
-            $countVariantProducts
+            $countVariantProducts,
+            $jobStopper
         );
     }
 
@@ -67,7 +70,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         CursorInterface $variantProductsCursor,
         ProductInterface $product123,
         ProductInterface $product456,
-        ProductInterface $product789
+        ProductInterface $product789,
+        JobStopper $jobStopper
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -124,6 +128,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $cacheClearer->clear()->shouldBeCalledTimes(2);
 
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
         $this->execute();
     }
 
@@ -145,7 +151,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         CursorInterface $variantProductsCursor,
         ProductModelInterface $productModel123,
         ProductModelInterface $productModel456,
-        ProductModelInterface $productModel789
+        ProductModelInterface $productModel789,
+        JobStopper $jobStopper
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -208,6 +215,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $cacheClearer->clear()->shouldBeCalledTimes(2);
 
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
         $this->execute();
     }
 
@@ -232,7 +241,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductModelInterface $productModel3,
         ProductInterface $product4,
         ProductInterface $product5,
-        ProductInterface $product6
+        ProductInterface $product6,
+        JobStopper $jobStopper
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -316,6 +326,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $cacheClearer->clear()->shouldBeCalledTimes(3);
 
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
         $this->execute();
     }
 
@@ -338,7 +350,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        JobStopper $jobStopper
     ) {
         $this->setStepExecution($stepExecution);
         $filters = [
@@ -423,6 +436,8 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
 
         $cacheClearer->clear()->shouldBeCalledTimes(2);
 
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
         $this->execute();
     }
 
@@ -438,5 +453,53 @@ class DeleteProductsAndProductModelsTaskletSpec extends ObjectBehavior
                 )
             )
             ->during('execute');
+    }
+
+    function it_computes_the_total_items_to_delete(
+        $pqbFactory,
+        $productRemover,
+        $productModelRemover,
+        $filter,
+        $cacheClearer,
+        $countProductModelsAndChildrenProductModels,
+        $countVariantProducts,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        ProductQueryBuilderInterface $rootProductModelPQB,
+        ProductQueryBuilderInterface $subProductModelPQB,
+        ProductQueryBuilderInterface $variantProductsPQB,
+        CursorInterface $rootProductModelCursor,
+        CursorInterface $subProductModelCursor,
+        CursorInterface $variantProductsCursor
+    ) {
+        $this->setStepExecution($stepExecution);
+        $filters = [
+            [
+                'field' => 'id',
+                'operator' => 'IN',
+                'values' => ['product_123', 'product_456', 'product_789']
+            ]
+        ];
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($filters);
+
+        $pqbFactory->create(['filters' => $filters])
+            ->willReturn($rootProductModelPQB, $subProductModelPQB, $variantProductsPQB);
+
+        $rootProductModelPQB->addFilter('parent', Operators::IS_EMPTY, null)->shouldBeCalled();
+        $rootProductModelPQB->execute()->willReturn($rootProductModelCursor);
+        $rootProductModelCursor->count()->willReturn(2);
+
+        $subProductModelPQB->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class)->shouldBeCalled();
+        $subProductModelPQB->addFilter('parent', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
+        $subProductModelPQB->execute()->willReturn($subProductModelCursor);
+        $subProductModelCursor->count()->willReturn(1);
+
+        $variantProductsPQB->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
+        $variantProductsPQB->execute()->willReturn($variantProductsCursor);
+        $variantProductsCursor->count()->willReturn(1);
+
+        $this->totalItems()->shouldReturn(4);
     }
 }
