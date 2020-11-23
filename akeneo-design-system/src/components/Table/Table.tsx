@@ -7,6 +7,7 @@ import {TableActionCell} from './TableActionCell/TableActionCell';
 import {TableRow} from './TableRow/TableRow';
 import {SelectableContext} from './SelectableContext';
 import {TableBody} from './TableBody/TableBody';
+import {TableImageCell} from './TableImageCell/TableImageCell';
 
 const TableContainer = styled.table`
   border-collapse: collapse;
@@ -20,9 +21,10 @@ type TableProps = {
   isSelectable?: boolean;
 
   /**
-   *
+   * Define if the checkbox should be always displayed or displayed on hover
+   * This props should be true when one element is checked
    */
-  amountSelectedRows?: number;
+  displayCheckbox?: boolean;
 
   /**
    * The content of the table
@@ -30,13 +32,9 @@ type TableProps = {
   children?: ReactNode;
 };
 
-const Table = ({isSelectable = false, amountSelectedRows, children, ...rest}: TableProps) => {
-  if (isSelectable && undefined === amountSelectedRows) {
-    throw Error('A selectable table should have the prop "amountSelectedRows"');
-  }
-
+const Table = ({isSelectable = false, displayCheckbox = false, children, ...rest}: TableProps) => {
   return (
-    <SelectableContext.Provider value={{isSelectable, amountSelectedRows}}>
+    <SelectableContext.Provider value={{isSelectable, displayCheckbox}}>
       <TableContainer {...rest}>{children}</TableContainer>
     </SelectableContext.Provider>
   );
@@ -48,5 +46,6 @@ Table.Body = TableBody;
 Table.Row = TableRow;
 Table.Cell = TableCell;
 Table.ActionCell = TableActionCell;
+Table.ImageCell = TableImageCell;
 
 export {Table};

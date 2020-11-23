@@ -8,6 +8,7 @@ import {rows, sortRows} from './shared-stories-data';
   title="Components/Table"
   component={Table}
   subcomponents={{
+      'Table': Table,
       'Table.Header': Table.Header,
       'Table.HeaderCell': Table.HeaderCell,
       'Table.Body': Table.Body,
@@ -21,47 +22,76 @@ import {rows, sortRows} from './shared-stories-data';
 
 ## Usage
 
-TODO
+Data tables allow users to analyze, compare, filter, sort, and manipulate data for information and actions.
 
-### TODO
+To browse many information at once, for example, view multiple products and their status.
+Quickly select and execute bulk actions, such as deleting multiple products, exporting multiple products ...
+To compare information, for example how many products are completed versus how many are in progress.
 
-TODO
-
-## Playground
+## Basic table
 <Canvas>
   <Story name="Standard">
-      {args => {
-          return (
-              <Table {...args}>
-                  <Table.Header>
-                      <Table.HeaderCell>Icon</Table.HeaderCell>
-                      <Table.HeaderCell>Name</Table.HeaderCell>
-                      <Table.HeaderCell>Family</Table.HeaderCell>
-                      <Table.HeaderCell>Order</Table.HeaderCell>
-                      <Table.HeaderCell>Genus</Table.HeaderCell>
-                      <Table.HeaderCell>Conservation status</Table.HeaderCell>
-                      <Table.HeaderCell>Actions</Table.HeaderCell>
-                  </Table.Header>
-                  <Table.Body>
-                      <Table.Row>
-                          <Table.Cell>
-                              <img width={44} src='https://res.cloudinary.com/teepublic/image/private/s--_MbNlVzr--/t_Preview/b_rgb:ffffff,c_limit,f_auto,h_630,q_90,w_630/v1493316151/production/designs/1531821_1.jpg'/>
-                          </Table.Cell>
-                          <Table.Cell isHighlighted>Giant panda</Table.Cell>
-                          <Table.Cell>Ursidae</Table.Cell>
-                          <Table.Cell>Carnivora</Table.Cell>
-                          <Table.Cell>Ursus</Table.Cell>
-                          <Table.Cell><Badge level='warning'>vu</Badge></Table.Cell>
-                          <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
-                      </Table.Row>
-                  </Table.Body>
-              </Table>
-          );
-      }}
+      <Table>
+          <Table.Header>
+              <Table.HeaderCell>Image</Table.HeaderCell>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Family</Table.HeaderCell>
+              <Table.HeaderCell>Order</Table.HeaderCell>
+              <Table.HeaderCell>Genus</Table.HeaderCell>
+              <Table.HeaderCell>Conservation status</Table.HeaderCell>
+              <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Header>
+          <Table.Body>
+              <Table.Row>
+                  <Table.ImageCell src='https://picsum.photos/seed/akeneo/200/140' alt='The al'/>
+                  <Table.Cell isHighlighted>Giant panda</Table.Cell>
+                  <Table.Cell>Ursidae</Table.Cell>
+                  <Table.Cell>Carnivora</Table.Cell>
+                  <Table.Cell>Ursus</Table.Cell>
+                  <Table.Cell><Badge level='warning'>vu</Badge></Table.Cell>
+                  <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
+              </Table.Row>
+          </Table.Body>
+      </Table>
   </Story>
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## Table with image cell
+<Canvas>
+    <Story name="Table with image cell">
+        <Table>
+            <Table.Header>
+                <Table.HeaderCell>Image</Table.HeaderCell>
+                <Table.HeaderCell>Image type</Table.HeaderCell>
+                <Table.HeaderCell>Actions</Table.HeaderCell>
+            </Table.Header>
+            <Table.Body>
+                <Table.Row>
+                    <Table.ImageCell fit='contain' isStacked={false} src='https://picsum.photos/seed/akeneo/200/140' alt='Fit contain'/>
+                    <Table.Cell>Fit contain</Table.Cell>
+                    <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.ImageCell fit='cover' isStacked={false} src='https://picsum.photos/seed/akeneo/200/140' alt='Fit cover'/>
+                    <Table.Cell>Fit cover</Table.Cell>
+                    <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.ImageCell fit='contain' isStacked={true} src='https://picsum.photos/seed/akeneo/200/140' alt='Stacked fit cover'/>
+                    <Table.Cell>Stacked fit cover</Table.Cell>
+                    <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.ImageCell fit='cover' isStacked={true} src='https://picsum.photos/seed/akeneo/200/140' alt='Stacked fit contain'/>
+                    <Table.Cell>Stacked fit contain</Table.Cell>
+                    <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
+                </Table.Row>
+            </Table.Body>
+        </Table>
+    </Story>
+</Canvas>
 
 ## Sortable header
 <Canvas>
@@ -87,6 +117,7 @@ TODO
             return (
                 <Table>
                     <Table.Header>
+                        <Table.HeaderCell>Image</Table.HeaderCell>
                         <Table.HeaderCell isSortable={true} onDirectionChange={handleDirectionChange('name')} sortDirection={computeDirection('name')}>Name</Table.HeaderCell>
                         <Table.HeaderCell isSortable={true} onDirectionChange={handleDirectionChange('family')} sortDirection={computeDirection('family')}>Family</Table.HeaderCell>
                         <Table.HeaderCell>Order</Table.HeaderCell>
@@ -99,6 +130,7 @@ TODO
                             sortedRows.map((row) => {
                                 return (
                                     <Table.Row key={row.name}>
+                                        <Table.ImageCell src={row.image} alt='The alt'/>
                                         <Table.Cell isHighlighted>{row.name}</Table.Cell>
                                         <Table.Cell>{row.family}</Table.Cell>
                                         <Table.Cell>{row.order}</Table.Cell>
@@ -133,8 +165,9 @@ TODO
                 }
             }
             return (
-                <Table isSelectable={true} amountSelectedRows={selectedLines.length}>
+                <Table isSelectable={true} displayCheckbox={selectedLines.length > 0}>
                     <Table.Header>
+                        <Table.HeaderCell>Image</Table.HeaderCell>
                         <Table.HeaderCell>Name</Table.HeaderCell>
                         <Table.HeaderCell>Family</Table.HeaderCell>
                         <Table.HeaderCell>Order</Table.HeaderCell>
@@ -147,6 +180,7 @@ TODO
                             rows.map((row) => {
                                 return (
                                     <Table.Row key={row.id} onSelectToggle={() => {handleToggleSelected(row.id)}} isSelected={selectedLines.indexOf(row.id) !== -1}>
+                                        <Table.ImageCell src={row.image} alt='The alt'/>
                                         <Table.Cell isHighlighted>{row.name}</Table.Cell>
                                         <Table.Cell>{row.family}</Table.Cell>
                                         <Table.Cell>{row.order}</Table.Cell>
@@ -183,6 +217,7 @@ TODO
             return (
                 <Table>
                     <Table.Header>
+                        <Table.HeaderCell>Image</Table.HeaderCell>
                         <Table.HeaderCell>Name</Table.HeaderCell>
                         <Table.HeaderCell>Family</Table.HeaderCell>
                         <Table.HeaderCell>Order</Table.HeaderCell>
@@ -196,6 +231,7 @@ TODO
                             data.map((row) => {
                                 return (
                                     <Table.Row key={row.id} onClick={() => handleClick(row.id)}>
+                                        <Table.ImageCell src={row.image} alt='The alt'/>
                                         <Table.Cell isHighlighted>{row.name}</Table.Cell>
                                         <Table.Cell>{row.family}</Table.Cell>
                                         <Table.Cell>{row.order}</Table.Cell>
@@ -222,7 +258,7 @@ TODO
 <Canvas>
     <Story name="Complex table">
         {args => {
-            const [selectedLines, setSelectedLines] = useState([]);
+            const [selectedLines, setSelectedLines] = useState([2]);
             const handleToggleSelected = (lineId) => {
                 if (selectedLines.indexOf(lineId) === -1) {
                     setSelectedLines([...selectedLines, lineId]);
@@ -239,8 +275,9 @@ TODO
                 })
             }
             return (
-                <Table isSelectable={true} amountSelectedRows={selectedLines.length}>
+                <Table isSelectable={true} displayCheckbox={selectedLines.length > 0}>
                     <Table.Header>
+                        <Table.HeaderCell>Image</Table.HeaderCell>
                         <Table.HeaderCell>Name</Table.HeaderCell>
                         <Table.HeaderCell>Family</Table.HeaderCell>
                         <Table.HeaderCell>Order</Table.HeaderCell>
@@ -254,6 +291,7 @@ TODO
                             data.map((row) => {
                                 return (
                                     <Table.Row key={row.id} onClick={() => handleClick(row.id)} onSelectToggle={() => {handleToggleSelected(row.id)}} isSelected={selectedLines.indexOf(row.id) !== -1}>
+                                        <Table.ImageCell src={row.image} alt='The alt'/>
                                         <Table.Cell isHighlighted>{row.name}</Table.Cell>
                                         <Table.Cell>{row.family}</Table.Cell>
                                         <Table.Cell>{row.order}</Table.Cell>
@@ -263,7 +301,7 @@ TODO
                                         </Table.Cell>
                                         <Table.Cell>{row.count}</Table.Cell>
                                         <Table.ActionCell>
-                                            <Button level='primary' onClick={() => console.log('ofofofo')} ghost>Button</Button>
+                                            <Button level='primary' onClick={() => {}} ghost>Button</Button>
                                         </Table.ActionCell>
                                     </Table.Row>
                                 )

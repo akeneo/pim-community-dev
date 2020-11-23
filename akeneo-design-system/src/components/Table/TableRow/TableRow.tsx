@@ -1,8 +1,8 @@
-import React, {ReactNode, SyntheticEvent} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../..';
-import {useSelectableContext} from '../SelectableContext';
+import {SelectableContext} from '../SelectableContext';
 
 type TableRowProps = {
   /**
@@ -11,12 +11,12 @@ type TableRowProps = {
   children?: ReactNode;
 
   /**
-   * Function called when the user clicks on the row checkbox
+   * Function called when the user clicks on the row checkbox, required when table is selectable
    */
   onSelectToggle?: (isSelected: boolean) => void;
 
   /**
-   * Define if the row is selected
+   * Define if the row is selected, required when table is selectable
    */
   isSelected?: boolean;
 
@@ -27,8 +27,8 @@ type TableRowProps = {
 };
 
 const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean} & AkeneoThemedProps>`
-  ${props =>
-    props.isSelected &&
+  ${({isSelected}) =>
+    isSelected &&
     css`
       > td {
         background-color: ${getColor('blue', 20)};
@@ -59,42 +59,48 @@ const RowContainer = styled.tr<{isSelected: boolean; isClickable: boolean} & Ake
 
 const CheckboxContainer = styled.td<{isVisible: boolean}>`
   background: none !important;
-  opacity: ${props => (props.isVisible ? 1 : 0)};
+  opacity: ${({isVisible}) => (isVisible ? 1 : 0)};
   cursor: auto;
 `;
 
-const TableRow = ({isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps) => {
-  const {isSelectable, amountSelectedRows} = useSelectableContext();
+const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
+  ({isSelected, onSelectToggle, onClick, children, ...rest}: TableRowProps, forwardedRef: Ref<HTMLTableRowElement>) => {
+    const {isSelectable, displayCheckbox} = React.useContext(SelectableContext);
+    if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
+      throw Error('A row in a selectable table should have the prop "isSelected" and "onSelectToggle"');
+    }
 
-  if (isSelectable && undefined === isSelected) {
-    throw Error('A row in a selectable table should have the prop "isSelected"');
+    const handleCheckboxChange = (e: SyntheticEvent) => {
+      e.stopPropagation();
+      undefined !== onSelectToggle && onSelectToggle(!isSelected);
+    };
+
+    return (
+      <RowContainer
+        ref={forwardedRef}
+        isClickable={undefined !== onClick}
+        isSelected={!!isSelected}
+        onClick={onClick}
+        {...rest}
+      >
+        {(isSelectable || isSelected) && (
+          <CheckboxContainer
+            aria-hidden={!displayCheckbox && !isSelected}
+            isVisible={displayCheckbox || !!isSelected}
+            onClick={handleCheckboxChange}
+          >
+            <Checkbox
+              checked={!!isSelected}
+              onChange={(_value, e) => {
+                handleCheckboxChange(e);
+              }}
+            />
+          </CheckboxContainer>
+        )}
+        {children}
+      </RowContainer>
+    );
   }
-  if (isSelectable && undefined === onSelectToggle) {
-    throw Error('A row in a selectable table should have the prop "onSelectToggle"');
-  }
-
-  const isCheckboxVisible = undefined !== amountSelectedRows && amountSelectedRows > 0;
-
-  const handleCheckboxChange = (e: SyntheticEvent) => {
-    e.stopPropagation();
-    undefined !== onSelectToggle && onSelectToggle(!isSelected);
-  };
-
-  return (
-    <RowContainer isClickable={undefined !== onClick} isSelected={isSelected} onClick={onClick} {...rest}>
-      {isSelectable && undefined !== isSelected && (
-        <CheckboxContainer isVisible={isCheckboxVisible} onClick={handleCheckboxChange}>
-          <Checkbox
-            checked={isSelected}
-            onChange={(_value, e) => {
-              handleCheckboxChange(e);
-            }}
-          />
-        </CheckboxContainer>
-      )}
-      {children}
-    </RowContainer>
-  );
-};
+);
 
 export {TableRow};
