@@ -70,6 +70,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
         code:
             - Type: string
             - NotBlank: ~
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCode: {}
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Attribute code may contain only letters, numbers and underscore
