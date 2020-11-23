@@ -67,6 +67,9 @@ class ProductModel implements ProductModelInterface
      */
     protected $quantifiedAssociationCollection;
 
+    /** @var bool */
+    protected bool $wasUpdated = false;
+
     /**
      * Create an instance of ProductModel.
      */
@@ -109,7 +112,10 @@ class ProductModel implements ProductModelInterface
      */
     public function setCode(string $code): void
     {
-        $this->code = $code;
+        if ($code !== $this->code) {
+            $this->code = $code;
+            $this->wasUpdated = true;
+        }
     }
 
     /**
@@ -168,6 +174,19 @@ class ProductModel implements ProductModelInterface
      */
     public function setValues(WriteValueCollection $values)
     {
+        $formerValues = WriteValueCollection::fromCollection($this->values ?? new WriteValueCollection());
+        foreach ($formerValues as $formerValue) {
+            $matching = $values->getSame($formerValue);
+            if (null === $matching || !$formerValue->isEqual($matching)) {
+                $this->wasUpdated = true;
+            }
+        }
+        foreach ($values as $value) {
+            $matching = $formerValues->getSame($value);
+            if (null === $matching) {
+                $this->wasUpdated = true;
+            }
+        }
         $this->values = $values;
 
         return $this;
@@ -193,9 +212,11 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addValue(ValueInterface $value): ProductModelInterface
+    public function addValue(ValueInterface $value)
     {
-        $this->values->add($value);
+        if (true === $this->values->add($value)) {
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
@@ -203,9 +224,11 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeValue(ValueInterface $value): ProductModelInterface
+    public function removeValue(ValueInterface $value)
     {
-        $this->values->remove($value);
+        if (true === $this->values->remove($value)) {
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
@@ -275,9 +298,11 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeCategory(CategoryInterface $category): ProductModelInterface
+    public function removeCategory(CategoryInterface $category)
     {
-        $this->categories->removeElement($category);
+        if (true === $this->categories->removeElement($category)) {
+            $this->wasUpdated = true;
+        }
 
         return $this;
     }
@@ -285,10 +310,11 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addCategory(CategoryInterface $category): ProductModelInterface
+    public function addCategory(CategoryInterface $category)
     {
         if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
             $this->categories->add($category);
+            $this->wasUpdated = true;
         }
 
         return $this;
@@ -299,7 +325,25 @@ class ProductModel implements ProductModelInterface
      */
     public function setCategories(Collection $categories): void
     {
-        $this->categories = $categories;
+        $formerCategories = $this->getCategories();
+        $categoriesToAdd = $categories->filter(
+            function (CategoryInterface $category) use (
+                $formerCategories
+            ) {
+                return !$formerCategories->contains($category);
+            }
+        );
+        foreach ($categoriesToAdd as $categoryToAdd) {
+            $this->addCategory($categoryToAdd);
+        }
+        $categoriesToRemove = $formerCategories->filter(
+            function (Categoryinterface $category) use ($categories) {
+                return !$categories->contains($category);
+            }
+        );
+        foreach ($categoriesToRemove as $categoryToRemove) {
+            $this->removeCategory($categoryToRemove);
+        }
     }
 
     /**
@@ -342,7 +386,9 @@ class ProductModel implements ProductModelInterface
      */
     public function removeProduct(ProductInterface $product): ProductModelInterface
     {
-        $this->products->removeElement($product);
+        if (true === $this->products->removeElement($product)) {
+            $product->setParent(null);
+        }
 
         return $this;
     }
@@ -360,7 +406,10 @@ class ProductModel implements ProductModelInterface
      */
     public function setParent(ProductModelInterface $parent = null): void
     {
-        $this->parent = $parent;
+        if ($parent !== $this->parent) {
+            $this->parent = $parent;
+            $this->wasUpdated = true;
+        }
     }
 
     /**
@@ -376,8 +425,8 @@ class ProductModel implements ProductModelInterface
      */
     public function addProductModel(ProductModelInterface $child): ProductModelInterface
     {
-        $child->setParent($this);
         if (!$this->productModels->contains($child)) {
+            $child->setParent($this);
             $this->productModels->add($child);
         }
 
@@ -389,7 +438,9 @@ class ProductModel implements ProductModelInterface
      */
     public function removeProductModel(ProductModelInterface $children): ProductModelInterface
     {
-        $this->productModels->removeElement($children);
+        if (true === $this->productModels->removeElement($children)) {
+            $children->setParent(null);
+        }
 
         return $this;
     }
@@ -423,7 +474,10 @@ class ProductModel implements ProductModelInterface
      */
     public function setFamilyVariant(FamilyVariantInterface $familyVariant): void
     {
-        $this->familyVariant = $familyVariant;
+        if ($familyVariant !== $this->familyVariant) {
+            $this->familyVariant = $familyVariant;
+            $this->wasUpdated = true;
+        }
     }
 
     /**
@@ -673,6 +727,22 @@ class ProductModel implements ProductModelInterface
         $allAssociations = $this->getAncestryAssociations($this, $associations);
 
         return $allAssociations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wasUpdated(): bool
+    {
+        return $this->wasUpdated;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function cleanup(): void
+    {
+        $this->wasUpdated = false;
     }
 
     /**

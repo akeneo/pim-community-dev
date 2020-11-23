@@ -133,4 +133,16 @@ interface ProductModelInterface extends
      * @return ValueInterface|null
      */
     public function getImage(): ?ValueInterface;
+
+    /**
+     * Whether the product model was updated or not
+     *
+     * @return bool
+     */
+    public function wasUpdated(): bool;
+
+    /**
+     * Resets the updated state (to false)
+     */
+    public function cleanup(): void;
 }
