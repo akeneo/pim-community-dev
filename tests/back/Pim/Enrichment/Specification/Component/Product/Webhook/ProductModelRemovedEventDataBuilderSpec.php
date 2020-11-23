@@ -9,8 +9,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\Assert;
 
 class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 {
@@ -25,54 +27,42 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $this->shouldImplement(EventDataBuilderInterface::class);
     }
 
-    public function it_supports_product_model_removed_event(UserInterface $user): void
+    public function it_supports_product_model_removed_event(): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->supports(new ProductModelRemoved($author, ['data']))->shouldReturn(true);
+        $this->supports(
+            new ProductModelRemoved($author, ['code' => 'product_model_code', 'category_codes' => []]),
+        )->shouldReturn(true);
     }
 
-    public function it_does_not_supports_other_business_event(UserInterface $user): void
+    public function it_does_not_supports_other_business_event(): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->supports(new ProductCreated($author, ['data']))->shouldReturn(false);
+        $this->supports(new ProductCreated($author, ['identifier' => 'product_identifier']))->shouldReturn(false);
     }
 
     public function it_builds_product_model_removed_event(UserInterface $user): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $event = new ProductModelRemoved($author, ['code' => 'product_model_code', 'category_codes' => []]);
 
-        $this->build(new ProductModelRemoved($author, ['code' => 'product_identifier']))->shouldReturn(
-            [
-                'resource' => ['code' => 'product_identifier'],
-            ]
-        );
+        $expectedCollection = new EventDataCollection();
+        $expectedCollection->setEventData($event, ['resource' => ['code' => 'product_model_code']]);
+
+        $collection = $this->build($event, $user)->getWrappedObject();
+
+        Assert::assertEquals($expectedCollection, $collection);
     }
 
     public function it_does_not_build_other_business_event(UserInterface $user): void
     {
-        $user->getUsername()->willReturn('julia');
-        $user->getFirstName()->willReturn('Julia');
-        $user->getLastName()->willReturn('Doe');
-        $user->isApiUser()->willReturn(false);
-        $author = Author::fromUser($user->getWrappedObject());
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
 
-        $this->shouldThrow(new \InvalidArgumentException())->during(
-            'build',
-            [new ProductCreated($author, ['code' => 'product_identifier'])]
-        );
+        $this->shouldThrow(new \InvalidArgumentException())->during('build', [
+            new ProductCreated($author, ['identifier' => '1']),
+            $user,
+        ]);
     }
 }

@@ -9,7 +9,7 @@ module.exports = {
   transform: {'^.+\\.tsx?$': 'ts-jest', '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx'},
   transformIgnorePatterns: ['/node_modules/'],
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.ts?(x)'],
+  collectCoverageFrom: ['src/**/*.ts?(x)', '!**/*.visual.ts?(x)'],
   cacheDirectory: '/tmp/jest',
   coveragePathIgnorePatterns: [
       'src/illustrations',
@@ -17,7 +17,6 @@ module.exports = {
       'src/theme',
       'src/storybook',
       'generator',
-      'src/all.visual.tsx',
       'src/shared/PreviewGallery'
   ],
   coverageReporters: ['text-summary', 'html'],

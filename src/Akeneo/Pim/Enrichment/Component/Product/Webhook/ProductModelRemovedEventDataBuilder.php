@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -14,29 +15,22 @@ use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
  */
 class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
 {
-    public function supports(BusinessEventInterface $businessEvent): bool
+    public function supports(object $event): bool
     {
-        return $businessEvent instanceof ProductModelRemoved;
+        return $event instanceof ProductModelRemoved;
     }
 
     /**
-     * @param ProductModelRemoved $businessEvent
-     * @param array<mixed> $context
-     *
-     * @return array<mixed>
-     *
-     * @throws \InvalidArgumentException
+     * @param ProductModelRemoved $event
      */
-    public function build(BusinessEventInterface $businessEvent, array $context = []): array
+    public function build(object $event, UserInterface $user): EventDataCollection
     {
-        if (false === $this->supports($businessEvent)) {
+        if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
         }
 
-        $data = $businessEvent->data();
-
-        return [
-            'resource' => ['code' => $data['code']]
-        ];
+        return (new EventDataCollection())->setEventData($event, [
+            'resource' => ['code' => $event->getCode()],
+        ]);
     }
 }

@@ -167,6 +167,7 @@ pim_enrich:
     job_tracker:
       index: Voir les processus exécutés
       view_all_jobs: Voir toutes les tâches dans le traqueur de processus
+      stop_job: Arrêter une tâche en cours
   acl_group:
     association_type: Types d'association
     attribute: Attributs

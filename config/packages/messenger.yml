@@ -1,4 +1,5 @@
 framework:
     messenger:
         routing:
-            'Akeneo\Platform\Component\EventQueue\BusinessEvent': business_event
+            'Akeneo\Platform\Component\EventQueue\Event': business_event
+            'Akeneo\Platform\Component\EventQueue\BulkEvent': business_event

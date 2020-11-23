@@ -5,7 +5,7 @@ import {Link} from '../Link/Link.tsx';
 import LinkTo from '@storybook/addon-links/react';
 
 <Meta
-  title="Components/Button"
+  title="Components/Buttons/Button"
   component={Button}
   argTypes={{
     level: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'warning', 'danger']}},
@@ -38,6 +38,10 @@ Do not use buttons as navigational elements. Instead, use links to take the user
 Button labels should clearly indicate the action of the button. Use active verbs, such as Add or Delete. Use no more than three words for button labels.
 
 For sets of buttons, use specific labels, such as Save or Discard, instead of using OK and Cancel. This is particularly helpful when the user is confirming an action.
+
+### IconButton
+
+If you only need to display an Icon as your button, check out the <LinkTo kind="Components/Buttons/IconButton" story="Standard">IconButton component</LinkTo>.
 
 ## Playground
 

@@ -2,6 +2,7 @@ import React, {ReactElement, ReactNode, useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
+import {IconButton} from '../../components';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
@@ -24,16 +25,10 @@ const ModalContainer = styled.div`
   cursor: default;
 `;
 
-const ModalCloseButton = styled.button`
-  background: none;
-  border: none;
-  margin: 0;
-  padding: 0;
+const ModalCloseButton = styled(IconButton)`
   position: absolute;
   top: 40px;
   left: 40px;
-  cursor: pointer;
-  color: ${getColor('grey', 100)};
 `;
 
 const ModalContent = styled.div`
@@ -52,7 +47,7 @@ const ModalChildren = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px 0;
-  width: 480px;
+  min-width: 480px;
 `;
 
 //TODO extract to Typography RAC-331
@@ -80,28 +75,35 @@ type ModalProps = {
   isOpen: boolean;
 
   /**
-   * The handler to call when the Modal is closed.
-   */
-  onClose: () => void;
-
-  /**
    * Illustration to display.
    */
   illustration?: ReactElement<IllustrationProps>;
 
   /**
+   * Title of the close button.
+   */
+  closeTitle: string;
+
+  /**
    * The content of the modal.
    */
   children?: ReactNode;
+
+  /**
+   * The handler to call when the Modal is closed.
+   */
+  onClose: () => void;
 };
 
 /**
  * The Modal Component is used to display a secondary window over the content.
  */
-const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) => {
+const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   useShortcut(Key.Escape, onClose);
 
-  const containerRef = useRef(document.createElement('div'));
+  const portalNode = document.createElement('div');
+  portalNode.setAttribute('id', 'modal-root');
+  const containerRef = useRef(portalNode);
 
   useEffect(() => {
     document.body.appendChild(containerRef.current);
@@ -115,9 +117,7 @@ const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) =
 
   return createPortal(
     <ModalContainer {...rest}>
-      <ModalCloseButton onClick={onClose}>
-        <CloseIcon size={20} />
-      </ModalCloseButton>
+      <ModalCloseButton title={closeTitle} level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
       {undefined === illustration ? (
         children
       ) : (
@@ -136,6 +136,13 @@ Modal.BottomButtons = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 20px;
+`;
+
+Modal.TopRightButtons = styled(Modal.BottomButtons)`
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  margin: 0;
 `;
 
 export {Modal, SectionTitle, Title};
