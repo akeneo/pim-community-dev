@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import {act, fireEvent, getByLabelText, getByText} from '@testing-library/react';
+import {act, fireEvent, getByLabelText, screen} from '@testing-library/react';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 declare global {
   namespace NodeJS {
@@ -18,28 +18,18 @@ const changeTextInputValue = async (container: HTMLElement, label: string, value
   await fireEvent.change(input, {target: {value: value}});
 };
 
-const getFormSectionByTitle = (container: HTMLElement, title: string): HTMLElement => {
-  const header = getByText(container, title);
+const getFormSectionByTitle = (title: string): HTMLElement => {
+  const header = screen.getByText(title);
   return header.parentElement as HTMLElement;
 };
 
-let container: HTMLElement;
-
-beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  document.body.removeChild(container);
+afterAll(() => {
   global.fetch && global.fetch.mockClear();
   delete global.fetch;
 });
 
 test('It renders without errors', async () => {
-  await act(async () => {
-    renderDOMWithProviders(<CreateMeasurementFamily onClose={() => {}} />, container);
-  });
+  renderWithProviders(<CreateMeasurementFamily isOpen={true} onClose={() => {}} />);
 });
 
 test('I can fill the fields and save', async () => {
@@ -50,21 +40,18 @@ test('I can fill the fields and save', async () => {
 
   global.fetch = mockFetch;
 
-  await act(async () => {
-    renderDOMWithProviders(<CreateMeasurementFamily onClose={mockOnClose} />, container);
-  });
+  renderWithProviders(<CreateMeasurementFamily isOpen={true} onClose={mockOnClose} />);
 
   await act(async () => {
-    const propertiesSection = getFormSectionByTitle(container, 'pim_common.properties');
+    const propertiesSection = getFormSectionByTitle('pim_common.properties');
     await changeTextInputValue(propertiesSection, 'pim_common.code', 'custom_metric');
     await changeTextInputValue(propertiesSection, 'pim_common.label', 'My custom metric');
-    const standardUnitSection = getFormSectionByTitle(container, 'measurements.family.standard_unit');
+    const standardUnitSection = getFormSectionByTitle('measurements.family.standard_unit');
     await changeTextInputValue(standardUnitSection, 'pim_common.code', 'METER');
     await changeTextInputValue(standardUnitSection, 'pim_common.label', 'Meters');
     await changeTextInputValue(standardUnitSection, 'measurements.form.input.symbol', 'm');
 
-    const button = getByText(container, 'pim_common.save');
-    await fireEvent.click(button);
+    fireEvent.click(screen.getByText('pim_common.save'));
   });
 
   expect(mockFetch).toHaveBeenCalled();

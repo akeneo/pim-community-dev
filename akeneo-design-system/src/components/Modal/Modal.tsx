@@ -47,7 +47,7 @@ const ModalChildren = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px 0;
-  width: 480px;
+  min-width: 480px;
 `;
 
 //TODO extract to Typography RAC-331
@@ -75,25 +75,30 @@ type ModalProps = {
   isOpen: boolean;
 
   /**
-   * The handler to call when the Modal is closed.
-   */
-  onClose: () => void;
-
-  /**
    * Illustration to display.
    */
   illustration?: ReactElement<IllustrationProps>;
 
   /**
+   * Title of the close button.
+   */
+  closeTitle: string;
+
+  /**
    * The content of the modal.
    */
   children?: ReactNode;
+
+  /**
+   * The handler to call when the Modal is closed.
+   */
+  onClose: () => void;
 };
 
 /**
  * The Modal Component is used to display a secondary window over the content.
  */
-const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) => {
+const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   useShortcut(Key.Escape, onClose);
 
   const portalNode = document.createElement('div');
@@ -112,7 +117,7 @@ const Modal = ({isOpen, onClose, illustration, children, ...rest}: ModalProps) =
 
   return createPortal(
     <ModalContainer {...rest}>
-      <ModalCloseButton level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
+      <ModalCloseButton title={closeTitle} level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
       {undefined === illustration ? (
         children
       ) : (
@@ -131,6 +136,13 @@ Modal.BottomButtons = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 20px;
+`;
+
+Modal.TopRightButtons = styled(Modal.BottomButtons)`
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  margin: 0;
 `;
 
 export {Modal, SectionTitle, Title};

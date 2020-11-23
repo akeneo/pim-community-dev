@@ -52,13 +52,13 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
             return;
         }
 
-        if (null === $user = $this->getUser()) {
+        if (null === ($user = $this->getUser())) {
             return;
         }
 
         $author = Author::fromUser($user);
         $data = [
-            'identifier' => $product->getIdentifier()
+            'identifier' => $product->getIdentifier(),
         ];
 
         $event = null;
@@ -77,8 +77,7 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
         $this->events[] = $event;
 
         if (count($this->events) >= $this->maxBulkSize) {
-            $this->messageBus->dispatch(new BulkEvent($this->events));
-            $this->events = [];
+            $this->dispatchBufferedProductEvents();
         }
     }
 

@@ -1,3 +1,4 @@
+export * from './Breadcrumb/Breadcrumb';
 export * from './Card/Card';
 export * from './Checkbox/Checkbox';
 export * from './Badge/Badge';
@@ -8,3 +9,4 @@ export * from './Information/Information';
 export * from './Link/Link';
 export * from './Modal/Modal';
 export * from './ProgressBar/ProgressBar';
+export * from './Input/BooleanInput/BooleanInput';

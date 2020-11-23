@@ -19,9 +19,9 @@ class ProductRemovedSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             Author::fromNameAndType('julia', Author::TYPE_UI),
-            ['data'],
+            ['identifier' => 'product_identifier', 'category_codes' => ['category_code_1', 'category_code_2']],
             1598968800,
-            '523e4557-e89b-12d3-a456-426614174000'
+            '523e4557-e89b-12d3-a456-426614174000',
         );
     }
 
@@ -33,6 +33,34 @@ class ProductRemovedSpec extends ObjectBehavior
     public function it_is_an_event(): void
     {
         $this->shouldBeAnInstanceOf(Event::class);
+    }
+
+    public function it_validates_the_product_identifier(): void
+    {
+        $this->beConstructedWith(
+            Author::fromNameAndType('julia', Author::TYPE_UI),
+            [],
+            1598968800,
+            '523e4557-e89b-12d3-a456-426614174000',
+        );
+
+        $this->shouldThrow(
+            new \InvalidArgumentException('Expected the key "identifier" to exist.'),
+        )->duringInstantiation();
+    }
+
+    public function it_validates_the_category_codes(): void
+    {
+        $this->beConstructedWith(
+            Author::fromNameAndType('julia', Author::TYPE_UI),
+            ['identifier' => 'product_identifier'],
+            1598968800,
+            '523e4557-e89b-12d3-a456-426614174000',
+        );
+
+        $this->shouldThrow(
+            new \InvalidArgumentException('Expected the key "category_codes" to exist.'),
+        )->duringInstantiation();
     }
 
     public function it_returns_the_name(): void
@@ -47,7 +75,10 @@ class ProductRemovedSpec extends ObjectBehavior
 
     public function it_returns_the_data(): void
     {
-        $this->getData()->shouldReturn(['data']);
+        $this->getData()->shouldReturn([
+            'identifier' => 'product_identifier',
+            'category_codes' => ['category_code_1', 'category_code_2'],
+        ]);
     }
 
     public function it_returns_the_timestamp(): void
@@ -58,5 +89,15 @@ class ProductRemovedSpec extends ObjectBehavior
     public function it_returns_the_uuid(): void
     {
         $this->getUuid()->shouldReturn('523e4557-e89b-12d3-a456-426614174000');
+    }
+
+    public function it_returns_the_product_identifier(): void
+    {
+        $this->getIdentifier()->shouldReturn('product_identifier');
+    }
+
+    public function it_returns_the_category_codes(): void
+    {
+        $this->getCategoryCodes()->shouldReturn(['category_code_1', 'category_code_2']);
     }
 }

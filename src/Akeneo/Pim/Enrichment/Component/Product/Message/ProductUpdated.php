@@ -14,13 +14,13 @@ use Webmozart\Assert\Assert;
  */
 class ProductUpdated extends Event
 {
-    public function __construct(
-        Author $author,
-        array $data,
-        int $timestamp = null,
-        string $uuid = null
-    ) {
+    /**
+     * @var array{identifier: string} $data
+     */
+    public function __construct(Author $author, array $data, int $timestamp = null, string $uuid = null)
+    {
         Assert::keyExists($data, 'identifier');
+        Assert::stringNotEmpty($data['identifier']);
 
         parent::__construct($author, $data, $timestamp, $uuid);
     }

@@ -19,10 +19,10 @@ const useShortcut = <NodeType extends HTMLElement>(
         event.stopImmediatePropagation();
         callback(event);
 
-        return false;
+        return true;
       }
 
-      return true;
+      return false;
     },
     [key, callback]
   );
@@ -37,8 +37,8 @@ const useShortcut = <NodeType extends HTMLElement>(
       element.addEventListener('keydown', memoizedCallback);
       return () => element.removeEventListener('keydown', memoizedCallback);
     } else {
-      document.addEventListener('keydown', memoizedCallback);
-      return () => document.removeEventListener('keydown', memoizedCallback);
+      window.addEventListener('keydown', memoizedCallback);
+      return () => window.removeEventListener('keydown', memoizedCallback);
     }
   }, [memoizedCallback, ref]);
 

@@ -111,7 +111,7 @@ final class DispatchProductModelBusinessEventSubscriber implements EventSubscrib
     {
         return [
             'code' => $productModel->getCode(),
-            'categories' => $productModel->getCategoryCodes(),
+            'category_codes' => $productModel->getCategoryCodes(),
         ];
     }
 }
