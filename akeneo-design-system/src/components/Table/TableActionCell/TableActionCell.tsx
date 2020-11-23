@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import {TableCell} from '../TableCell/TableCell';
-import React, {ReactNode, SyntheticEvent} from 'react';
+import {TableCell, TableCellProps} from '../TableCell/TableCell';
+import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import {Button, ButtonProps} from '../../';
 
 const TableActionCellContainer = styled(TableCell)`
@@ -14,21 +14,27 @@ type ActionCellProps = {
    * Content of the cell
    */
   children?: ReactNode;
-};
+} & TableCellProps;
 
-const TableActionCell = ({children, ...rest}: ActionCellProps) => {
-  const decoratedChildren = React.Children.map(children, child => {
-    if (!React.isValidElement<ButtonProps>(child) || child.type !== Button) return child;
+const TableActionCell = React.forwardRef<HTMLTableCellElement, ActionCellProps>(
+  ({children, ...rest}: ActionCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
+    const decoratedChildren = React.Children.map(children, child => {
+      if (!React.isValidElement<ButtonProps>(child) || child.type !== Button) return child;
 
-    return React.cloneElement(child, {
-      onClick: (e: SyntheticEvent) => {
-        e.stopPropagation();
-        child.props.onClick && child.props.onClick(e);
-      },
+      return React.cloneElement(child, {
+        onClick: (e: SyntheticEvent) => {
+          e.stopPropagation();
+          child.props.onClick && child.props.onClick(e);
+        },
+      });
     });
-  });
 
-  return <TableActionCellContainer {...rest}>{decoratedChildren}</TableActionCellContainer>;
-};
+    return (
+      <TableActionCellContainer ref={forwardedRef} {...rest}>
+        {decoratedChildren}
+      </TableActionCellContainer>
+    );
+  }
+);
 
 export {TableActionCell};

@@ -1,6 +1,5 @@
-import React, {ReactNode} from 'react';
-import styled from 'styled-components';
-import {useSelectableContext} from '../SelectableContext';
+import React, {ReactNode, Ref} from 'react';
+import {SelectableContext} from '../SelectableContext';
 
 type TableHeaderProps = {
   /**
@@ -9,19 +8,19 @@ type TableHeaderProps = {
   children?: ReactNode;
 };
 
-const HeaderRowContainer = styled.tr``;
+const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
+  ({children, ...rest}: TableHeaderProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
+    const {isSelectable} = React.useContext(SelectableContext);
 
-const TableHeader = ({children, ...rest}: TableHeaderProps) => {
-  const {isSelectable} = useSelectableContext();
-
-  return (
-    <thead>
-      <HeaderRowContainer {...rest}>
-        {isSelectable && <th />}
-        {children}
-      </HeaderRowContainer>
-    </thead>
-  );
-};
+    return (
+      <thead ref={forwardedRef}>
+        <tr {...rest}>
+          {isSelectable && <th />}
+          {children}
+        </tr>
+      </thead>
+    );
+  }
+);
 
 export {TableHeader};

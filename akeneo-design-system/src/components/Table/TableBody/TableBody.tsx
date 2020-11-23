@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {ReactNode, Ref} from 'react';
 
 type TableBodyProps = {
   /**
@@ -7,8 +7,14 @@ type TableBodyProps = {
   children?: ReactNode;
 };
 
-const TableBody = ({children, ...rest}: TableBodyProps) => {
-  return <tbody {...rest}>{children}</tbody>;
-};
+const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
+  ({children, ...rest}: TableBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
+    return (
+      <tbody ref={forwardedRef} {...rest}>
+        {children}
+      </tbody>
+    );
+  }
+);
 
 export {TableBody};
