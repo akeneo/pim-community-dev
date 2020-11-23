@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9554: Discrepancy on the user dashboard due to difference between UI locale and catalog locale
 - PIM-9486: System Information sections Registered bundles and PHP extensions repeat a high number of times
 - PIM-9514: Fix check on API completness for product model
 - PIM-9408: Fix attribute group's updated_at field udpate
@@ -66,6 +67,8 @@
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 - RAC-54: Add a new type of associations: Association with quantity
 - RAC-123: Add possibility to export product/product model with labels instead of code
+- RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI	
+- RAC-277: Add job progress and remaining time in the UI
 
 ## Improvements
 
