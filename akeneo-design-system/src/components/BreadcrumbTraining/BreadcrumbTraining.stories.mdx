@@ -4,10 +4,6 @@ import {BreadcrumbTraining} from './BreadcrumbTraining.tsx';
 <Meta
   title="Components/BreadcrumbTraining"
   component={BreadcrumbTraining}
-  argTypes={{
-    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
-  }}
-  args={{level: 'primary', children: 'BreadcrumbTraining text'}}
 />
 
 # BreadcrumbTraining
@@ -25,20 +21,15 @@ TODO
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <BreadcrumbTraining>
-        <BreadcrumbTraining.Level color="grey" gradient={120}>
+      return <BreadcrumbTraining {...args}>
+        <span>Yolo</span>
+        <BreadcrumbTraining.Level>
           First
         </BreadcrumbTraining.Level>
-        <BreadcrumbTraining.Separator>
-          /
-        </BreadcrumbTraining.Separator>
-        <BreadcrumbTraining.Level href="http://www.google.com" color="grey" gradient={120}>
+        <BreadcrumbTraining.Level href="http://www.google.com">
           Second
         </BreadcrumbTraining.Level>
-        <BreadcrumbTraining.Separator>
-          /
-        </BreadcrumbTraining.Separator>
-        <BreadcrumbTraining.Level color="grey" gradient={100}>
+        <BreadcrumbTraining.Level>
           Third
         </BreadcrumbTraining.Level>
       </BreadcrumbTraining>;

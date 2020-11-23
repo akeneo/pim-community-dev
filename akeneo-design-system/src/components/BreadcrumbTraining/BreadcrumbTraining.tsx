@@ -1,12 +1,16 @@
-import React, {ReactNode} from 'react';
+import React, {isValidElement, ReactNode} from 'react';
 import styled from 'styled-components';
+import {AkeneoThemedProps, getColor} from '../../theme';
 
 //TODO be sure to select the appropriate container element here
-const BreadcrumbTrainingContainer = styled.div<{level: string}>``;
-const Level = styled.a<{color: string, gradient: number}>`
-color:blue;
+const BreadcrumbTrainingContainer = styled.div<{ color: string }>``;
+
+const Level = styled.a<{ color: string, gradient: number } & AkeneoThemedProps>`
+color:${props => getColor(props.color, props.gradient)};
+text-transform: uppercase;
+text-decoration: none;
 `;
-const Separator = styled.span<{color: string, gradient: number}>`
+const Separator = styled.span<{ color: string, gradient: number }>`
 margin: 0 0.5rem;
 `;
 
@@ -14,7 +18,7 @@ type BreadcrumbTrainingProps = {
   /**
    * TODO.
    */
-  level?: 'primary' | 'warning' | 'danger';
+  color?: 'blue' | 'red' | 'yellow';
 
   /**
    * TODO.
@@ -25,12 +29,20 @@ type BreadcrumbTrainingProps = {
 /**
  * TODO.
  */
-const BreadcrumbTraining = ({level = 'primary', children, ...rest}: BreadcrumbTrainingProps) => {
-    return (
-      <BreadcrumbTrainingContainer level={level} {...rest}>
-        {children}
-      </BreadcrumbTrainingContainer>
-    );
+const BreadcrumbTraining = ({color = 'blue', children, ...rest}: BreadcrumbTrainingProps) => {
+  const decoratedChildren = React.Children.map(children, (child) => {
+    if (!(isValidElement(child) && Level === child.type)) {
+      return null;
+    }
+
+    return <>{React.cloneElement(child, {color, gradient: 120})}<Separator>/</Separator></>;
+  });
+
+  return (
+    <BreadcrumbTrainingContainer color={color} {...rest}>
+      {decoratedChildren}
+    </BreadcrumbTrainingContainer>
+  );
 };
 
 BreadcrumbTraining.Level = Level;
