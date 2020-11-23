@@ -1254,7 +1254,10 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iShouldSeeTheView($not, $viewLabel)
     {
-        $availableViews = $this->getCurrentPage()->getAvailableViews();
+        $availableViews = array_map(
+            fn (string $availableView) => trim(str_replace('(Public)', '', $availableView)),
+            $this->getCurrentPage()->getAvailableViews(),
+        );
 
         if (
                 ('' !== $not && in_array($viewLabel, $availableViews)) ||
