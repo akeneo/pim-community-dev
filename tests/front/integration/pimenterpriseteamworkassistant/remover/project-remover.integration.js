@@ -1,4 +1,4 @@
-const timeout = 5000;
+const timeout = 10000;
 
 describe('Pimenterpriseteamworkassistant > remover > project', () => {
   let page = global.__PAGE__;
