@@ -74,13 +74,8 @@ class DatagridViewController
     /**
      * Return the list of all Datagrid Views that belong to the current user for the given $alias grid.
      * Response data is in Json format and is paginated.
-     *
-     * @param Request $request
-     * @param string  $alias
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request, $alias)
+    public function indexAction(Request $request, string $alias): JsonResponse
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
@@ -111,12 +106,8 @@ class DatagridViewController
     /**
      * Return the Datagrid View that belongs to the current user, with the given view $identifier.
      * Response data is in Json format, 404 is sent if there is no result.
-     *
-     * @param string $identifier
-     *
-     * @return JsonResponse|NotFoundHttpException
      */
-    public function getAction($identifier)
+    public function getAction(string $identifier): JsonResponse
     {
         $view = $this->datagridViewRepo->find($identifier);
         if (null === $view) {
@@ -204,13 +195,8 @@ class DatagridViewController
      *
      * If any errors occur during the process, a Json response is sent with {'errors' => 'Error message'}.
      * If success, return an empty Json response with code 204 (No content).
-     *
-     * @param Request $request
-     * @param string  $identifier
-     *
-     * @return Response
      */
-    public function removeAction(Request $request, $identifier)
+    public function removeAction(Request $request, string $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -235,12 +221,8 @@ class DatagridViewController
      * Response data is in Json format.
      *
      * Eg.: ['sku', 'name', 'brand']
-     *
-     * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function defaultViewColumnsAction($alias)
+    public function defaultViewColumnsAction(string $alias): JsonResponse
     {
         $columns = $this->datagridViewManager->getDefaultColumns($alias);
 
@@ -250,12 +232,8 @@ class DatagridViewController
     /**
      * Return the current user default Datagrid View object for the grid with the given $alias.
      * Response data is in Json format.
-     *
-     * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function getUserDefaultDatagridViewAction($alias)
+    public function getUserDefaultDatagridViewAction(string $alias): JsonResponse
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $view = $user->getDefaultGridView($alias);
@@ -269,12 +247,8 @@ class DatagridViewController
 
     /**
      * List available datagrid columns
-     *
-     * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function listColumnsAction($alias)
+    public function listColumnsAction(string $alias): JsonResponse
     {
         return new JsonResponse($this->datagridViewManager->getColumnChoices($alias));
     }
