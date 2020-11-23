@@ -27,6 +27,7 @@ class ProductSpec extends ObjectBehavior
     function it_has_family(FamilyInterface $family)
     {
         $family->getId()->willReturn(42);
+        $family->getCode()->willReturn('clothes');
         $this->setFamily($family);
         $this->getFamily()->shouldReturn($family);
         $this->getFamilyId()->shouldReturn(42);
@@ -94,6 +95,7 @@ class ProductSpec extends ObjectBehavior
     ) {
         $attributes->contains($attribute)->willReturn(false);
         $family->getAttributes()->willReturn($attributes);
+        $family->getCode()->willReturn('furniture');
         $this->setFamily($family);
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
     }
@@ -105,6 +107,7 @@ class ProductSpec extends ObjectBehavior
     ) {
         $attributes->contains($attribute)->willReturn(true);
         $family->getAttributes()->willReturn($attributes);
+        $family->getCode()->willReturn('furniture');
         $this->setFamily($family);
         $this->hasAttributeInfamily($attribute)->shouldReturn(true);
     }
@@ -121,15 +124,14 @@ class ProductSpec extends ObjectBehavior
     ) {
         $familyAttributes->contains($attribute)->willReturn(true);
         $family->getAttributes()->willReturn($familyAttributes);
+        $family->getCode()->willReturn('furniture');
         $this->setFamily($family);
 
         $this->isAttributeEditable($attribute)->shouldReturn(true);
     }
 
     function it_is_not_attribute_removable_if_attribute_is_an_identifier(
-        AttributeInterface $attribute,
-        FamilyInterface $family,
-        ArrayCollection $familyAttributes
+        AttributeInterface $attribute
     ) {
         $attribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
 
@@ -143,6 +145,7 @@ class ProductSpec extends ObjectBehavior
     ) {
         $familyAttributes->contains($attribute)->willReturn(true);
         $family->getAttributes()->willReturn($familyAttributes);
+        $family->getCode()->willReturn('furniture');
 
         $this->setFamily($family);
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
@@ -158,6 +161,7 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attributeAsLabel
     ) {
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getCode()->willReturn('gardening');
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -181,6 +185,7 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attributeAsLabel
     ) {
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getCode()->willReturn('gardening');
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(true);
@@ -221,6 +226,7 @@ class ProductSpec extends ObjectBehavior
         ValueInterface $identifier
     ) {
         $family->getAttributeAsLabel()->willReturn(null);
+        $family->getCode()->willReturn('gardening');
 
         $identifier->getData()->willReturn('shovel');
         $identifier->getAttributeCode()->willReturn('name');
@@ -239,6 +245,7 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attributeAsLabel
     ) {
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getCode()->willReturn('gardening');
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isScopable()->willReturn(false);
@@ -256,6 +263,7 @@ class ProductSpec extends ObjectBehavior
     ) {
         $attributeAsImage->getCode()->willReturn('picture');
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
+        $family->getCode()->willReturn('gardening');
 
         $pictureValue->getAttributeCode()->willReturn('picture');
         $pictureValue->getScopeCode()->willReturn(null);
@@ -283,6 +291,7 @@ class ProductSpec extends ObjectBehavior
         FamilyInterface $family
     ) {
         $family->getAttributeAsImage()->willReturn(null);
+        $family->getCode()->willReturn('gardening');
 
         $this->setFamily($family);
 
@@ -294,8 +303,8 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attributeAsImage
     ) {
         $attributeAsImage->getCode()->willReturn('picture');
-
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
+        $family->getCode()->willReturn('gardening');
 
         $values = new WriteValueCollection();
 
@@ -312,6 +321,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_is_a_variant_product(ProductModelInterface $parent)
     {
+        $parent->getCode()->willReturn('model_1');
         $this->setParent($parent);
         $this->isVariant()->shouldReturn(true);
     }
@@ -335,7 +345,6 @@ class ProductSpec extends ObjectBehavior
 
     function it_has_values_of_its_parent_when_it_is_variant(
         ProductModelInterface $productModel,
-        \Iterator $iterator,
         ValueInterface $value,
         ValueInterface $otherValue
     ) {
@@ -345,6 +354,7 @@ class ProductSpec extends ObjectBehavior
 
         $valueCollection = new WriteValueCollection([$value->getWrappedObject()]);
         $this->setValues($valueCollection);
+        $productModel->getCode()->willReturn('model_parent');
         $this->setParent($productModel);
 
         $otherValue->getAttributeCode()->willReturn('otherValue');
@@ -366,6 +376,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_has_a_variation_level(ProductModelInterface $productModel)
     {
+        $productModel->getCode()->willReturn('model_parent');
         $this->setParent($productModel);
         $productModel->getVariationLevel()->willReturn(7);
         $this->getVariationLevel()->shouldReturn(8);
@@ -373,12 +384,14 @@ class ProductSpec extends ObjectBehavior
 
     function it_has_a_product_model(ProductModelInterface $productModel)
     {
+        $productModel->getCode()->willReturn('model_parent');
         $this->setParent($productModel);
         $this->getParent()->shouldReturn($productModel);
     }
 
     function it_has_a_family_variant(FamilyVariantInterface $familyVariant)
     {
+        $familyVariant->getCode()->willReturn('by_size');
         $this->setFamilyVariant($familyVariant);
         $this->getFamilyVariant()->shouldReturn($familyVariant);
     }
@@ -535,8 +548,11 @@ class ProductSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         ProductModelInterface $otherProductModel
     ) {
+        $productModel->getCode()->willReturn('former_parent');
         $this->setParent($productModel);
         $this->cleanup();
+
+        $otherProductModel->getCode()->willReturn('new_parent');
 
         $this->setParent($otherProductModel);
         $this->isDirty()->shouldBe(true);
@@ -544,6 +560,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_is_not_updated_when_setting_the_same_parent_model(ProductModelInterface $parent)
     {
+        $parent->getCode()->willReturn('parent');
         $this->setParent($parent);
         $this->cleanup();
 
@@ -555,9 +572,11 @@ class ProductSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyVariantInterface $otherFamilyVariant
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $this->setFamilyVariant($familyVariant);
         $this->cleanup();
 
+        $otherFamilyVariant->getCode()->willReturn('by_color_and_size');
         $this->setFamilyVariant($otherFamilyVariant);
         $this->isDirty()->shouldBe(true);
     }
@@ -565,6 +584,7 @@ class ProductSpec extends ObjectBehavior
     function it_is_not_updated_when_setting_the_same_family_variant(
         FamilyVariantInterface $familyVariant
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $this->setFamilyVariant($familyVariant);
         $this->cleanup();
 

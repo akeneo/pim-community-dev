@@ -237,7 +237,9 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setFamily(FamilyInterface $family = null)
     {
-        if ($family !== $this->family) {
+        $formerFamilyCode = $this->family ? $this->family->getCode() : null;
+        $newFamilyCode = $family ? $family->getCode() : null;
+        if ($formerFamilyCode !== $newFamilyCode) {
             $this->dirty = true;
         }
         $this->family = $family;
@@ -298,12 +300,16 @@ abstract class AbstractProduct implements ProductInterface
             $matching = $values->getSame($formerValue);
             if (null === $matching || !$formerValue->isEqual($matching)) {
                 $this->dirty = true;
+                break;
             }
         }
-        foreach ($values as $value) {
-            $matching = $formerValues->getSame($value);
-            if (null === $matching) {
-                $this->dirty = true;
+        if (!$this->dirty) {
+            foreach ($values as $value) {
+                $matching = $formerValues->getSame($value);
+                if (null === $matching) {
+                    $this->dirty = true;
+                    break;
+                }
             }
         }
         $this->values = $values;
@@ -717,10 +723,12 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setParent(ProductModelInterface $parent = null): void
     {
-        if ($parent !== $this->parent) {
-            $this->parent = $parent;
+        $formerParentCode = $this->parent ? $this->parent->getCode() : null;
+        $newParentCode = $parent ? $parent->getCode() : null;
+        if ($formerParentCode !== $newParentCode) {
             $this->dirty = true;
         }
+        $this->parent = $parent;
     }
 
     /**
@@ -736,10 +744,12 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setFamilyVariant(FamilyVariantInterface $familyVariant): void
     {
-        if ($familyVariant !== $this->familyVariant) {
-            $this->familyVariant = $familyVariant;
+        $formerFamilyVariantCode = $this->familyVariant ? $this->familyVariant->getCode() : null;
+        $newFamilyVariantCode = $familyVariant ? $familyVariant->getCode() : null;
+        if ($formerFamilyVariantCode !== $newFamilyVariantCode) {
             $this->dirty = true;
         }
+        $this->familyVariant = $familyVariant;
     }
 
     /**
