@@ -48,4 +48,3 @@ const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
 );
 
 export {TableCell};
-export type {TableCellProps};

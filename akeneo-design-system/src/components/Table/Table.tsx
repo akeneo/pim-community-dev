@@ -40,6 +40,14 @@ const Table = ({isSelectable = false, displayCheckbox = false, children, ...rest
   );
 };
 
+TableHeader.displayName = 'Table.Header';
+TableHeaderCell.displayName = 'Table.HeaderCell';
+TableBody.displayName = 'Table.Body';
+TableRow.displayName = 'Table.Row';
+TableCell.displayName = 'Table.Cell';
+TableImageCell.displayName = 'Table.ImageCell';
+TableActionCell.displayName = 'Table.ActionCell';
+
 Table.Header = TableHeader;
 Table.HeaderCell = TableHeaderCell;
 Table.Body = TableBody;
