@@ -165,7 +165,7 @@ class WriteValueCollectionFactory
                                     $e->getPropertyValue()
                                 )
                             );
-                        } catch (InvalidPropertyTypeException $e) {
+                        } catch (\TypeError | InvalidPropertyTypeException $e) {
                             $this->logger->warning(
                                 sprintf(
                                     'Tried to load a product value for attribute "%s" that does not have the ' .
@@ -173,7 +173,6 @@ class WriteValueCollectionFactory
                                     $attribute->getCode()
                                 )
                             );
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, null);
                         }
                     }
                 }

@@ -24,7 +24,11 @@ final class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFi
         $result = array_reduce(
             $this->iterableToArray($this->nonExistentValueFilters),
             function (OnGoingFilteredRawValues $onGoingFilteredRawValues, NonExistentValuesFilter $obsoleteValuesFilter): OnGoingFilteredRawValues {
-                return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
+                try {
+                    return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
+                } catch (\TypeError $ex) {
+                    return $onGoingFilteredRawValues;
+                }
             },
             $onGoingFilteredRawValues
         );

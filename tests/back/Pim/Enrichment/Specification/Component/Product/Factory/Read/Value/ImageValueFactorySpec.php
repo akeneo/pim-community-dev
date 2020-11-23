@@ -89,6 +89,12 @@ final class ImageValueFactorySpec extends ObjectBehavior
         $this->shouldThrow(InvalidPropertyException::class)->during('create', [$attribute, null, null, 'a_file']);
     }
 
+    public function it_throws_an_exception_if_provided_data_is_not_a_string()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $this->shouldThrow(InvalidPropertyException::class)->during('create', [$attribute, null, null, ['an_array']]);
+    }
+
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
     {
         return new Attribute('an_attribute', AttributeTypes::IMAGE, [], $isLocalizable, $isScopable, null, false);

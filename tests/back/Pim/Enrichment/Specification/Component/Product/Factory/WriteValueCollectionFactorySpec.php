@@ -400,7 +400,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
 
         $logger->warning(
             Argument::containingString('Tried to load a product value with the property "image" that does not exist.')
-        );
+        )->shouldBeCalled();
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
@@ -408,7 +408,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         $actualValues->shouldHaveCount(0);
     }
 
-    function it_creates_empty_value_if_wrong_format_when_creating_a_values_collection_from_the_storage_format(
+    function it_skips_value_if_wrong_format_when_creating_a_values_collection_from_the_storage_format(
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
@@ -461,16 +461,15 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         $valueFactory->create($referenceData, null, null, 'empty_image', true)->willThrow(
             new InvalidPropertyTypeException('attribute', 'image', static::class)
         );
-        $valueFactory->create($referenceData, null, null, 'empty_image', true)->willReturn($value1);
 
         $logger->warning(
             Argument::containingString('Tried to load a product value for attribute "image" that does not have the good type.')
-        );
+        )->shouldBeCalled();
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(WriteValueCollection::class);
-        $actualValues->shouldHaveCount(1);
+        $actualValues->shouldHaveCount(0);
     }
 
     function it_does_not_filter_falsy_values(
