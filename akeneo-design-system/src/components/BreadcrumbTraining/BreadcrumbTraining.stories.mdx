@@ -8,13 +8,11 @@ import {BreadcrumbTraining} from './BreadcrumbTraining.tsx';
 
 # BreadcrumbTraining
 
+Breadcrumbs are an important navigation component that shows content hierarchy. They allow users to be aware of their current location in the hierarchical structure of the application. Breadcrumbs enable users to quickly move up to a parent level.
+
 ## Usage
 
-TODO
-
-### TODO
-
-TODO
+Breadcrumbs are very effective for products and experience with a large amount of content organized in a multi-level hierarchy. Breadcrumbs should be considered secondary navigation and should never completely replace the main navigation. The last level is always the current page, this one is not clickable.
 
 ## Playground
 
@@ -22,7 +20,6 @@ TODO
   <Story name="Standard">
     {args => {
       return <BreadcrumbTraining {...args}>
-        <span>Yolo</span>
         <BreadcrumbTraining.Level>
           First
         </BreadcrumbTraining.Level>
@@ -39,22 +36,46 @@ TODO
 
 <ArgsTable story="Standard" />
 
-## Variation on level
+## Variation on colors
 
 <Canvas>
   <Story name="Level">
     {args => {
       return (
         <>
-          <BreadcrumbTraining {...args} level="primary">
-            Primary
+          <BreadcrumbTraining {...args} color="red">
+              <BreadcrumbTraining.Level>
+                First
+              </BreadcrumbTraining.Level>
+              <BreadcrumbTraining.Level href="http://www.google.com">
+                Second
+              </BreadcrumbTraining.Level>
+              <BreadcrumbTraining.Level>
+                Third
+              </BreadcrumbTraining.Level>
           </BreadcrumbTraining>
-          <BreadcrumbTraining {...args} level="warning">
-            Warning
-          </BreadcrumbTraining>
-          <BreadcrumbTraining {...args} level="danger">
-            Danger
-          </BreadcrumbTraining>
+          <BreadcrumbTraining {...args} color="blue">
+            <BreadcrumbTraining.Level>
+              First
+            </BreadcrumbTraining.Level>
+            <BreadcrumbTraining.Level href="http://www.google.com">
+              Second
+            </BreadcrumbTraining.Level>
+            <BreadcrumbTraining.Level>
+              Third
+            </BreadcrumbTraining.Level>
+        </BreadcrumbTraining>
+        <BreadcrumbTraining {...args} color="yellow">
+          <BreadcrumbTraining.Level>
+            First
+          </BreadcrumbTraining.Level>
+          <BreadcrumbTraining.Level href="http://www.google.com">
+            Second
+          </BreadcrumbTraining.Level>
+          <BreadcrumbTraining.Level>
+            Third
+          </BreadcrumbTraining.Level>
+      </BreadcrumbTraining>
         </>
       );
     }}
