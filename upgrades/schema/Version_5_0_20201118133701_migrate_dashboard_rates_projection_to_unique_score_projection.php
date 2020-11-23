@@ -50,6 +50,11 @@ final class Version_5_0_20201118133701_migrate_dashboard_rates_projection_to_uni
             $dashboardProjections[] = sprintf("('%s', '%s', '%s')", $line['type'], $line['code'], json_encode($scores));
         }
 
+        if(0 === count($dashboardProjections))
+        {
+            return;
+        }
+
         $dashboardProjections = implode(',', $dashboardProjections);
 
         $query = <<<SQL
