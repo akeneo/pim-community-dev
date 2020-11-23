@@ -1170,7 +1170,6 @@ config:
 
     pim/template/app:                                    pimui/templates/app.html
     pim/template/common/flash:                           pimui/templates/common/flash.html
-    pim/template/common/breadcrumbs:                     pimui/templates/common/breadcrumbs.html
 
     pim/template/group/tab/properties/general:           pimui/templates/group/tab/properties/general.html
     pim/template/group/meta/product-count:               pimui/templates/group/meta/product-count.html
