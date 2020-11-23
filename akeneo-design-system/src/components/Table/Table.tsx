@@ -32,6 +32,9 @@ type TableProps = {
   children?: ReactNode;
 };
 
+/**
+ * Tables allow users to analyze and manipulate data.
+ */
 const Table = ({isSelectable = false, displayCheckbox = false, children, ...rest}: TableProps) => {
   return (
     <SelectableContext.Provider value={{isSelectable, displayCheckbox}}>
