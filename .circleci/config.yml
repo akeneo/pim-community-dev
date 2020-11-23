@@ -433,26 +433,27 @@ jobs:
                 command: |
                     LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
                     echo $LATEST_RELEASE
-                    INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    INSTANCE_NAME_PREFIX=pimup INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
           - run:
                 name: Upgrade
                 command: |
-                    INSTANCE_NAME=pimup-$IMAGE_TAG make deploy-serenity
+                    INSTANCE_NAME_PREFIX=pimup INSTANCE_NAME=pimup-$CIRCLE_SHA1 make deploy-serenity
           - run:
                 name: Production tests on upgraded env
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG make test-prod
+                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 make test-prod
           - run:
                 name: Check that upgrader pod ran
-                command: kubectl get pods --namespace=srnt-pimup-$IMAGE_TAG | grep pim-upgrader
+                command: kubectl get pods --namespace=srnt-pimup-$CIRCLE_SHA1 | grep pim-upgrader
           - run:
                 name: Prepare infrastructure artifacts
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG make prepare-infrastructure-artifacts
+                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: INSTANCE_NAME_PREFIX=pimup make delete
+                command: INSTANCE_NAME_PREFIX=pimup INSTANCE_NAME=pimup-$CIRCLE_SHA1 make delete
                 when: always
 
   release:
