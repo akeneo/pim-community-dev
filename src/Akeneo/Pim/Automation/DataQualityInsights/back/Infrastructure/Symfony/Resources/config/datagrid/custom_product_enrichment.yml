@@ -1,6 +1,6 @@
 datagrid:
     product-grid:
-        other_columns:
+        columns:
             data_quality_insights_score:
                 label:         Quality score
                 data_name:     data_quality_insights_score
