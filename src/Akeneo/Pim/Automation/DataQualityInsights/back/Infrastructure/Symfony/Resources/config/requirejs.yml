@@ -20,6 +20,9 @@ config:
         akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/locale-switcher.ts
         akeneo/data-quality-insights/view/dqi-dashboard/channel-switcher: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/channel-switcher.ts
 
+        ## Back button
+        akeneo/data-quality-insights/view/back-link: akeneodataqualityinsights/js/infrastructure/pim-view/back-link.tsx
+
         # View
         ## Product Edit Form
         akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-overview: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-overview.tsx
@@ -33,3 +36,4 @@ config:
 
         ## Attribute group
         akeneo/data-quality-insights/infrastructure/attribute-group/dqi-activation: akeneodataqualityinsights/js/infrastructure/attribute-group/dqi-activation.tsx
+
