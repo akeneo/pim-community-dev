@@ -21,7 +21,6 @@ import {
   Recommendation,
   ToImproveEnrichmentImageMessage,
 } from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
-import {AxisRatesOverviewPortal} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm';
 import {fetchProductDataQualityEvaluation} from '@akeneo-pim-community/data-quality-insights/src';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
 import {followNotApplicableEnrichmentImageRecommendation} from '@akeneo-pim-community/data-quality-insights/src/application/user-actions';
@@ -107,7 +106,6 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                 </Criterion>
               </AxisEvaluation>
             </DataQualityInsightsTabContent>
-            <AxisRatesOverviewPortal />
           </AxesContextProvider>
         </Provider>
       </ThemeProvider>
