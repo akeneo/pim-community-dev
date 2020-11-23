@@ -637,6 +637,10 @@ class FixturesContext extends BaseFixturesContext
     public function theFollowingDatagridViews(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
+            if (!isset($data['type'])) {
+                $data['type'] = DatagridView::TYPE_PUBLIC;
+            }
+
             $this->createDatagridView($data);
         }
     }
