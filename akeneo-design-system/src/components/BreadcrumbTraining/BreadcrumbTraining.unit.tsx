@@ -3,19 +3,15 @@ import {BreadcrumbTraining} from './BreadcrumbTraining';
 import {render, screen} from '../../storybook/test-util';
 
 test('it renders its children properly', () => {
-  render(<BreadcrumbTraining>BreadcrumbTraining content</BreadcrumbTraining>);
+  render(
+    <BreadcrumbTraining>
+      <BreadcrumbTraining.Level>First</BreadcrumbTraining.Level>
+      <span>yolo</span>
+    </BreadcrumbTraining>
+  );
 
-  expect(screen.getByText('BreadcrumbTraining content')).toBeInTheDocument();
-});
-
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
-test('BreadcrumbTraining supports forwardRef', () => {
-  const ref = {current: null};
-
-  render(<BreadcrumbTraining ref={ref} />);
-  expect(ref.current).not.toBe(null);
+  expect(screen.getByText('First')).toBeInTheDocument();
+  expect(screen.queryByText('yolo')).not.toBeInTheDocument();
 });
 
 test('BreadcrumbTraining supports ...rest props', () => {

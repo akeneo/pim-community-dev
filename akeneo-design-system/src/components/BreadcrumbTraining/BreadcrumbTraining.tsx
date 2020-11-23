@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
 //TODO be sure to select the appropriate container element here
-const BreadcrumbTrainingContainer = styled.nav<{ color: string }>``;
+const BreadcrumbTrainingContainer = styled.nav<{color: string}>``;
 
-const Level = styled.a<{ color: string, gradient: number } & AkeneoThemedProps>`
-color:${props => getColor(props.color, props.gradient)};
-text-transform: uppercase;
-text-decoration: none;
+const Level = styled.a<{color: string; gradient: number} & AkeneoThemedProps>`
+  color: ${props => getColor(props.color, props.gradient)};
+  text-transform: uppercase;
+  text-decoration: none;
 `;
-const Separator = styled.span<{ color: string, gradient: number }>`
-margin: 0 0.5rem;
+const Separator = styled.span<AkeneoThemedProps>`
+  margin: 0 0.5rem;
+  color: ${() => getColor('grey', 120)};
 `;
 
 type BreadcrumbTrainingProps = {
@@ -40,7 +41,12 @@ const BreadcrumbTraining = ({color = 'blue', children, ...rest}: BreadcrumbTrain
       return React.cloneElement(child, {color, gradient: 100, 'aria-current': 'page'});
     }
 
-    return <>{React.cloneElement(child, {color, gradient: 120})}<Separator aria-hidden={true}>/</Separator></>;
+    return (
+      <>
+        {React.cloneElement(child, {color, gradient: 120})}
+        <Separator aria-hidden={true}>/</Separator>
+      </>
+    );
   });
 
   return (
