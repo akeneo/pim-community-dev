@@ -67,7 +67,7 @@
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 - RAC-54: Add a new type of associations: Association with quantity
 - RAC-123: Add possibility to export product/product model with labels instead of code
-- RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI	
+- RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI
 - RAC-277: Add job progress and remaining time in the UI
 
 ## Improvements
