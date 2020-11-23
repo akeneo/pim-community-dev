@@ -144,6 +144,9 @@ rules:
                   - field: sku
                   - field: processor
                     locale: en_US
+                  - field: processor
+                    locale: en_US
+                    unit_label_locale: en_US
                   - field: price
                     currency: EUR
                   - field: release_date
@@ -225,6 +228,7 @@ rules:
                   - field: sku
                   - field: processor
                     locale: en_US
+                    unit_label_locale: fr_FR
                   - field: price
                     currency: EUR
                   - field: release_date

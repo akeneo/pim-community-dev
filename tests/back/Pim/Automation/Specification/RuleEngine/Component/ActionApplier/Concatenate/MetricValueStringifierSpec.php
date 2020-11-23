@@ -15,14 +15,16 @@ namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier
 
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\MetricValueStringifier;
 use Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\ValueStringifierInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use PhpSpec\ObjectBehavior;
 
 class MetricValueStringifierSpec extends ObjectBehavior
 {
-    function let()
+    function let(GetUnitTranslations $getUnitTranslations)
     {
-        $this->beConstructedWith(['type1', 'type2']);
+        $this->beConstructedWith($getUnitTranslations, ['type1', 'type2']);
     }
 
     function it_is_initializable()
@@ -57,5 +59,38 @@ class MetricValueStringifierSpec extends ObjectBehavior
         $value->getAmount()->willReturn('1.6131344166');
         $value->getUnit()->willReturn('m');
         $this->stringify($value)->shouldBe('1.6131344166 m');
+    }
+
+    function it_stringifies_a_metric_value_with_an_unit_label_locale(
+        GetUnitTranslations $getUnitTranslations,
+        MetricValue $value,
+        MetricInterface $metric
+    ) {
+        $metric->getFamily()->willReturn('familyCode');
+        $value->getAmount()->willReturn('1.0000');
+        $value->getUnit()->willReturn('m');
+        $value->getData()->willReturn($metric);
+
+        $getUnitTranslations->byMeasurementFamilyCodeAndLocale('familyCode', 'en_US')->willReturn([
+            'km' => 'kilometer',
+            'm' => 'meter',
+        ]);
+
+        $this->stringify($value, ['unit_label_locale' => 'en_US'])->shouldBe('1 meter');
+    }
+
+    function it_stringifies_a_metric_value_with_an_unknown_unit_label_locale(
+        GetUnitTranslations $getUnitTranslations,
+        MetricValue $value,
+        MetricInterface $metric
+    ) {
+        $metric->getFamily()->willReturn('familyCode');
+        $value->getAmount()->willReturn('1.0000');
+        $value->getUnit()->willReturn('m');
+        $value->getData()->willReturn($metric);
+
+        $getUnitTranslations->byMeasurementFamilyCodeAndLocale('familyCode', 'unknown')->willReturn([]);
+
+        $this->stringify($value, ['unit_label_locale' => 'unknown'])->shouldBe('1 m');
     }
 }

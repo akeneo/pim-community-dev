@@ -20,6 +20,9 @@ Akeneo\Pim\Automation\RuleEngine\Component\Command\DTO\ProductSource:
         labelLocale:
             - Type: string
             - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
+        unitLabelLocale:
+            - Type: string
+            - \Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive: ~
         format:
             - Type: string
         currency:

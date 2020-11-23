@@ -43,6 +43,7 @@ type Props = {
   locales: Locale[];
   scopes: IndexedScopes;
   isCurrencyRequired: boolean;
+  context?: string;
 };
 
 const AttributePropertiesSelector: React.FC<Props> = ({
@@ -52,6 +53,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   scopes,
   locales,
   isCurrencyRequired,
+  context,
 }) => {
   const translate = useTranslate();
   const {watch, errors, setValue} = useFormContext();
@@ -67,6 +69,7 @@ const AttributePropertiesSelector: React.FC<Props> = ({
   const scopeFormName = `${baseFormName}.scope`;
   const currencyFormName = `${baseFormName}.currency`;
   const formatFormName = `${baseFormName}.format`;
+  const unitLabelLocaleFormName = `${baseFormName}.unit_label_locale`;
 
   useEffect(() => {
     const getAttribute = async (
@@ -108,14 +111,16 @@ const AttributePropertiesSelector: React.FC<Props> = ({
     return 'undefined' !== typeof error;
   };
 
-  const hasOptions = [
-    AttributeType.OPTION_SIMPLE_SELECT,
-    AttributeType.OPTION_MULTI_SELECT,
-    AttributeType.REFERENCE_ENTITY_COLLECTION,
-    AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
-    AttributeType.DATE,
-    AttributeType.PRICE_COLLECTION,
-  ].includes(attribute?.type as AttributeType);
+  const hasOptions: boolean =
+    [
+      AttributeType.OPTION_SIMPLE_SELECT,
+      AttributeType.OPTION_MULTI_SELECT,
+      AttributeType.REFERENCE_ENTITY_COLLECTION,
+      AttributeType.REFERENCE_ENTITY_SIMPLE_SELECT,
+      AttributeType.DATE,
+      AttributeType.PRICE_COLLECTION,
+    ].includes(attribute?.type as AttributeType) ||
+    ('concatenate' === context && AttributeType.METRIC === attribute?.type);
 
   return (
     <>
@@ -239,6 +244,38 @@ const AttributePropertiesSelector: React.FC<Props> = ({
             }}
             allowClear={!isCurrencyRequired}
             containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase select2-container-operation-field-option`}
+          />
+        </span>
+      )}
+      {'concatenate' === context && AttributeType.METRIC === attribute?.type && (
+        <span
+          className={
+            'AknRuleOperation-element AknRuleOperation-elementLocale' +
+            (isFullFormFieldInError(unitLabelLocaleFormName)
+              ? ' select2-container-error'
+              : '')
+          }>
+          <Controller
+            as={<input type='hidden' />}
+            name={unitLabelLocaleFormName}
+          />
+          <LocaleSelector
+            data-testid={`edit-rules-action-operation-list-${operationLineNumber}-unit-locale`}
+            allowClear={true}
+            availableLocales={locales}
+            value={watch(unitLabelLocaleFormName)}
+            hiddenLabel
+            placeholder={translate(
+              'pimee_catalog_rule.form.edit.actions.concatenate.unit_label_locale'
+            )}
+            onChange={(localeCode: LocaleCode) => {
+              setValue(
+                unitLabelLocaleFormName,
+                localeCode != '' ? localeCode : undefined
+              );
+            }}
+            containerCssClass={`select2-container-left-glued select2-container-as-option select2-container-uppercase select2-container-operation-field-option`}
+            displayAsCode={true}
           />
         </span>
       )}

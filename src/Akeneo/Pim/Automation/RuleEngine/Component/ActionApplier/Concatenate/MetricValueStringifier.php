@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use Webmozart\Assert\Assert;
 
 /**
@@ -23,17 +24,44 @@ use Webmozart\Assert\Assert;
  */
 final class MetricValueStringifier extends AbstractValueStringifier implements ValueStringifierInterface
 {
+    public const UNIT_LABEL_LOCALE_KEY = 'unit_label_locale';
+
+    private GetUnitTranslations $getUnitTranslations;
+    private array $cacheUnitTranslations = [];
+
+    public function __construct(GetUnitTranslations $getUnitTranslations, array $attributeTypes)
+    {
+        parent::__construct($attributeTypes);
+
+        $this->getUnitTranslations = $getUnitTranslations;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function stringify(ValueInterface $value, array $options = []): string
     {
         Assert::isInstanceOf($value, MetricValueInterface::class);
-        if (null === $value->getAmount() || null === $value->getUnit()) {
+        $unitCode = $value->getUnit();
+        if (null === $value->getAmount() || null === $unitCode) {
             return '';
         }
 
-        return sprintf('%s %s', $this->formatNumber($value->getAmount()), $value->getUnit());
+        $unitLabelLocaleCode = $options[static::UNIT_LABEL_LOCALE_KEY] ?? null;
+        $unitLabel = null;
+        if (null !== $unitLabelLocaleCode) {
+            $metric = $value->getData();
+
+            if (null !== $metric) {
+                $unitTranslations = $this->getUnitTranslationsForMeasurementFamilyAndLocale(
+                    $metric->getFamily(),
+                    $unitLabelLocaleCode
+                );
+                $unitLabel = $unitTranslations[$unitCode] ?? null;
+            }
+        }
+
+        return sprintf('%s %s', $this->formatNumber($value->getAmount()), $unitLabel ?? $unitCode);
     }
 
     /**
@@ -50,5 +78,21 @@ final class MetricValueStringifier extends AbstractValueStringifier implements V
         }
 
         return rtrim($number, '.0');
+    }
+
+    private function getUnitTranslationsForMeasurementFamilyAndLocale(
+        string $measurementFamilyCode,
+        string $localeCode
+    ): array {
+        $key = sprintf('%s-%s', $measurementFamilyCode, $localeCode);
+
+        if (!array_key_exists($key, $this->cacheUnitTranslations)) {
+            $this->cacheUnitTranslations[$key] = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale(
+                $measurementFamilyCode,
+                $localeCode
+            );
+        }
+
+        return $this->cacheUnitTranslations[$key];
     }
 }

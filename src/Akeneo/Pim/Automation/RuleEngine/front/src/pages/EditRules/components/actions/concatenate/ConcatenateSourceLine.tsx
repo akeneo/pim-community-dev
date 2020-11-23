@@ -66,6 +66,7 @@ const ConcatenateSourceLine: React.FC<OperationLineProps> = ({
               locales={locales}
               scopes={scopes}
               isCurrencyRequired={false}
+              context={'concatenate'}
             />
           )}
           {null !== source.text && 'undefined' !== typeof source.text && (

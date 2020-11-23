@@ -72,6 +72,9 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
 
+    akeneo_measurement.public_api.get_unit_translations:
+        class: AkeneoTest\Acceptance\MeasurementFamily\InMemoryGetUnitTranslations
+
     # In EE GrantedCategoryFieldSetter is used in place of CategoryFieldSetter.
     # As the entity manager is used in it (need MySQL server), the acceptance tests don't work.
     # We fix that by using CategoryFieldSetter and skip permission checks.

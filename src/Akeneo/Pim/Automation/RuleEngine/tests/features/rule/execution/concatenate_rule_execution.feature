@@ -14,6 +14,7 @@ Feature: Execute concatenate rules
     And the family "camcorders"
     And the product "75024" of the family "camcorders"
     And the product "75025" of the family "camcorders"
+    And the Frequency measurement family
     And I have permission to execute rules
 
   @acceptance-back
@@ -28,7 +29,7 @@ Feature: Execute concatenate rules
     Given A rule that concatenates given attribute values to a text attribute value
     When I execute the concatenate rule on products
     Then no exception has been thrown
-    And the en_US unscoped name of "75025" should be "Crown Bolt this is the "description" SKU75025 100 MEGAHERTZ 99 EUR 2015-01-01 01/01/2015 40 color1 couleur 1 hdmi, usb, wi_fi HDMI, USB, Sans fil starck fr starck starck, ikea fr starck, fr ikea"
+    And the en_US unscoped name of "75025" should be "Crown Bolt this is the "description" SKU75025 100 MEGAHERTZ 100 Megahertz 99 EUR 2015-01-01 01/01/2015 40 color1 couleur 1 hdmi, usb, wi_fi HDMI, USB, Sans fil starck fr starck starck, ikea fr starck, fr ikea"
     And the en_US unscoped name of "75024" should be "75024"
 
   @acceptance-back
