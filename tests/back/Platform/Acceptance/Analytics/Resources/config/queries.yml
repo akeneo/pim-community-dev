@@ -7,3 +7,6 @@ services:
 
     pim_analytics.query.media_count:
         class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\MediaCountInMemory
+
+    pim_analytics.query.is_demo_catalog:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\IsDemoCatalogInMemory
