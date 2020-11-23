@@ -68,7 +68,7 @@ class ProductModel implements ProductModelInterface
     protected $quantifiedAssociationCollection;
 
     /** @var bool */
-    protected bool $wasUpdated = false;
+    protected bool $dirty = false;
 
     /**
      * Create an instance of ProductModel.
@@ -114,7 +114,7 @@ class ProductModel implements ProductModelInterface
     {
         if ($code !== $this->code) {
             $this->code = $code;
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
     }
 
@@ -178,13 +178,17 @@ class ProductModel implements ProductModelInterface
         foreach ($formerValues as $formerValue) {
             $matching = $values->getSame($formerValue);
             if (null === $matching || !$formerValue->isEqual($matching)) {
-                $this->wasUpdated = true;
+                $this->dirty = true;
+                break;
             }
         }
-        foreach ($values as $value) {
-            $matching = $formerValues->getSame($value);
-            if (null === $matching) {
-                $this->wasUpdated = true;
+        if (!$this->dirty) {
+            foreach ($values as $value) {
+                $matching = $formerValues->getSame($value);
+                if (null === $matching) {
+                    $this->dirty = true;
+                    break;
+                }
             }
         }
         $this->values = $values;
@@ -215,7 +219,7 @@ class ProductModel implements ProductModelInterface
     public function addValue(ValueInterface $value)
     {
         if (true === $this->values->add($value)) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -227,7 +231,7 @@ class ProductModel implements ProductModelInterface
     public function removeValue(ValueInterface $value)
     {
         if (true === $this->values->remove($value)) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -301,7 +305,7 @@ class ProductModel implements ProductModelInterface
     public function removeCategory(CategoryInterface $category)
     {
         if (true === $this->categories->removeElement($category)) {
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -314,7 +318,7 @@ class ProductModel implements ProductModelInterface
     {
         if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
             $this->categories->add($category);
-            $this->wasUpdated = true;
+            $this->dirty = true;
         }
 
         return $this;
@@ -406,10 +410,12 @@ class ProductModel implements ProductModelInterface
      */
     public function setParent(ProductModelInterface $parent = null): void
     {
-        if ($parent !== $this->parent) {
-            $this->parent = $parent;
-            $this->wasUpdated = true;
+        $formerParentCode = $this->parent ? $this->parent->getCode() : null;
+        $newParentCode = $parent ? $parent->getCode() : null;
+        if ($formerParentCode !== $newParentCode) {
+            $this->dirty = true;
         }
+        $this->parent = $parent;
     }
 
     /**
@@ -474,10 +480,12 @@ class ProductModel implements ProductModelInterface
      */
     public function setFamilyVariant(FamilyVariantInterface $familyVariant): void
     {
-        if ($familyVariant !== $this->familyVariant) {
-            $this->familyVariant = $familyVariant;
-            $this->wasUpdated = true;
+        $formerFamilyVariantCode = $this->familyVariant ? $this->familyVariant->getCode() : null;
+        $newFamilyVariantCode = $familyVariant ? $familyVariant->getCode() : null;
+        if ($formerFamilyVariantCode !== $newFamilyVariantCode) {
+            $this->dirty = true;
         }
+        $this->familyVariant = $familyVariant;
     }
 
     /**
@@ -639,6 +647,61 @@ class ProductModel implements ProductModelInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
+            ->filterProductIdentifiers($productIdentifiersToKeep)
+            ->filterProductModelCodes($productModelCodesToKeep);
+        $this->dirty = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function mergeQuantifiedAssociations(QuantifiedAssociationCollection $quantifiedAssociations): void
+    {
+        if ($this->quantifiedAssociationCollection === null) {
+            return;
+        }
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->merge($quantifiedAssociations);
+        $this->dirty = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function patchQuantifiedAssociations(array $submittedQuantifiedAssociations): void
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->patchQuantifiedAssociations(
+            $submittedQuantifiedAssociations
+        );
+        $this->dirty = true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clearQuantifiedAssociations(): void
+    {
+        if (null === $this->quantifiedAssociationCollection) {
+            return;
+        }
+
+        $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->clearQuantifiedAssociations();
+        $this->dirty = true;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
@@ -732,9 +795,9 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function wasUpdated(): bool
+    public function isDirty(): bool
     {
-        return $this->wasUpdated;
+        return $this->dirty;
     }
 
     /**
@@ -742,7 +805,7 @@ class ProductModel implements ProductModelInterface
      */
     public function cleanup(): void
     {
-        $this->wasUpdated = false;
+        $this->dirty = false;
     }
 
     /**

@@ -3,15 +3,19 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\IdMapping;
+use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -95,6 +99,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
@@ -117,6 +122,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
@@ -138,6 +144,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn(null);
 
@@ -152,6 +159,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
@@ -170,6 +178,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
@@ -193,6 +202,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
@@ -219,6 +229,7 @@ class ProductModelSpec extends ObjectBehavior
         AttributeInterface $attributeAsImage,
         FileInfoInterface $fileInfo
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
         $attributeAsImage->getCode()->willReturn('picture');
@@ -237,6 +248,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsImage()->willReturn(null);
 
@@ -250,6 +262,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attributeAsImage
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsImage()->willReturn($attributeAsImage);
         $attributeAsImage->getCode()->willReturn('picture');
@@ -279,6 +292,7 @@ class ProductModelSpec extends ObjectBehavior
 
         $otherValue = OptionsValue::localizableValue('color', ['red', 'blue'], 'en_US');
         $parentValues = new WriteValueCollection([$otherValue]);
+        $productModel->getCode()->willReturn('parent');
         $productModel->getValuesForVariation()->willReturn($parentValues);
         $productModel->getParent()->willReturn(null);
         $this->setParent($productModel);
@@ -291,6 +305,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
@@ -439,7 +454,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_is_updated_when_changing_the_code()
     {
         $this->setCode('foo');
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_setting_the_same_code()
@@ -448,48 +463,54 @@ class ProductModelSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setCode('foo');
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_updating_the_parent_model(
         ProductModelInterface $productModel,
         ProductModelInterface $otherProductModel
     ) {
+        $productModel->getCode()->willReturn('parent');
         $this->setParent($productModel);
         $this->cleanup();
 
+        $otherProductModel->getCode()->willReturn('other_parent');
         $this->setParent($otherProductModel);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_setting_the_same_parent_model(ProductModelInterface $parent)
     {
+        $parent->getCode()->willReturn('parent');
         $this->setParent($parent);
         $this->cleanup();
 
         $this->setParent($parent);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_changing_the_family_variant(
         FamilyVariantInterface $familyVariant,
         FamilyVariantInterface $otherFamilyVariant
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $this->setFamilyVariant($familyVariant);
         $this->cleanup();
 
+        $otherFamilyVariant->getCode()->willReturn('by_color_and_size');
         $this->setFamilyVariant($otherFamilyVariant);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_setting_the_same_family_variant(
         FamilyVariantInterface $familyVariant
     ) {
+        $familyVariant->getCode()->willReturn('by_size');
         $this->setFamilyVariant($familyVariant);
         $this->cleanup();
 
         $this->setFamilyVariant($familyVariant);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_category_is_added(CategoryInterface $category)
@@ -497,7 +518,7 @@ class ProductModelSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->addCategory($category);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_an_already_existing_category_is_added(
@@ -507,7 +528,7 @@ class ProductModelSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->addCategory($category);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_category_is_removed(CategoryInterface $category)
@@ -516,7 +537,7 @@ class ProductModelSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeCategory($category);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_a_non_existing_category_is_removed(CategoryInterface $category)
@@ -524,7 +545,7 @@ class ProductModelSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeCategory($category);
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_setting_or_removing_categories(
@@ -535,7 +556,7 @@ class ProductModelSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setCategories(new ArrayCollection([$category2->getWrappedObject()]));
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_updated_when_setting_the_same_categories(
@@ -546,14 +567,14 @@ class ProductModelSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->setCategories(new ArrayCollection([$category2->getWrappedObject(), $category1->getWrappedObject()]));
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_value_is_added()
     {
         $this->addValue(ScalarValue::value('name', 'My great product'));
 
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_a_value_fails_to_be_added()
@@ -562,7 +583,7 @@ class ProductModelSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->addValue(ScalarValue::value('name', 'Another name'));
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_a_value_is_removed()
@@ -572,14 +593,14 @@ class ProductModelSpec extends ObjectBehavior
         $this->cleanup();
 
         $this->removeValue($value);
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_a_value_fails_to_be_removed()
     {
         $this->removeValue(ScalarValue::value('name', 'My great product'));
 
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_setting_new_values()
@@ -592,7 +613,7 @@ class ProductModelSpec extends ObjectBehavior
             )
         );
 
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_updated_when_setting_a_new_value()
@@ -607,7 +628,7 @@ class ProductModelSpec extends ObjectBehavior
                 ]
             )
         );
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
     }
 
     function it_is_not_updated_when_setting_the_same_values()
@@ -624,7 +645,7 @@ class ProductModelSpec extends ObjectBehavior
                 ]
             )
         );
-        $this->wasUpdated()->shouldBe(false);
+        $this->isDirty()->shouldBe(false);
     }
 
     function it_is_updated_when_removing_a_value()
@@ -640,7 +661,60 @@ class ProductModelSpec extends ObjectBehavior
                 ]
             )
         );
-        $this->wasUpdated()->shouldBe(true);
+        $this->isDirty()->shouldBe(true);
+    }
+
+    function it_is_updated_when_filtering_quantified_associations()
+    {
+        $this->filterQuantifiedAssociations(['foo', 'bar'], ['baz']);
+        $this->isDirty()->shouldBe(true);
+    }
+
+    function it_is_updated_when_patching_quantified_associations(
+        QuantifiedAssociationCollection $quantifiedAssociations
+    ) {
+        $quantifiedAssociations->normalize()->willReturn(
+            [
+                'type' => [
+                    'products' => [
+                        [
+                            'identifier' => 'foo',
+                            'quantity' => 2,
+                        ]
+                    ],
+                    'product_models' => [
+                        [
+                            'identifier' => 'bar',
+                            'quantity' => 1
+                        ],
+                    ],
+                ],
+            ]
+        );
+        $this->mergeQuantifiedAssociations($quantifiedAssociations);
+        $this->isDirty()->shouldBe(true);
+    }
+
+    function it_is_updated_when_clearing_quantified_associations()
+    {
+        $this->isDirty()->shouldBe(false);
+        $this->clearQuantifiedAssociations();
+        $this->isDirty()->shouldBe(true);
+    }
+
+    function it_is_updated_when_adding_a_non_empty_association(
+        AssociationInterface $association,
+        AssociationTypeInterface $associationType
+    ) {
+        $associationType->getCode()->willReturn('X_SELL');
+        $association->getAssociationType()->willReturn($associationType);
+        $association->getProducts()->willReturn(new ArrayCollection([new Product()]));
+        $this->cleanup();
+
+        $association->setOwner($this)->shouldBeCalled();
+
+        $this->addAssociation($association);
+        $this->isDirty()->shouldBe(true);
     }
 
     private function someRawQuantifiedAssociations(): array
