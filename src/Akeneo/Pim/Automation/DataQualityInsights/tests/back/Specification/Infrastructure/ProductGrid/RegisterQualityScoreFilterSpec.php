@@ -23,7 +23,7 @@ class RegisterQualityScoreFilterSpec extends ObjectBehavior
         DatagridConfiguration $datagridConfiguration,
         $featureFlag
     ) {
-        $datagridConfiguration->getName()->willReturn('product_grid');
+        $datagridConfiguration->getName()->willReturn('product-grid');
         $buildBefore->getConfig()->willReturn($datagridConfiguration);
         $featureFlag->isEnabled()->willReturn(true);
 
@@ -50,7 +50,7 @@ class RegisterQualityScoreFilterSpec extends ObjectBehavior
         DatagridConfiguration $datagridConfiguration,
         $featureFlag
     ) {
-        $datagridConfiguration->getName()->willReturn('product_grid');
+        $datagridConfiguration->getName()->willReturn('product-grid');
         $buildBefore->getConfig()->willReturn($datagridConfiguration);
         $featureFlag->isEnabled()->willReturn(false);
 
