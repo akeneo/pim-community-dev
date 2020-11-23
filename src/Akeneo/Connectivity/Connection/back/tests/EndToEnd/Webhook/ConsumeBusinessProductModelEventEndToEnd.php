@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use GuzzleHttp\Handler\MockHandler;
@@ -77,9 +78,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $history = Middleware::history($container);
         $handlerStack->push($history);
 
-        $message = new ProductModelCreated($author, [
-            'code' => $productModel->getCode(),
-        ]);
+        $message = new BulkEvent([new ProductModelCreated($author, ['code' => $productModel->getCode()])]);
 
         /** @var $businessEventHandler BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
@@ -109,9 +108,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $history = Middleware::history($container);
         $handlerStack->push($history);
 
-        $message = new ProductModelUpdated($author, [
-            'code' => $productModel->getCode(),
-        ]);
+        $message = new BulkEvent([new ProductModelUpdated($author, ['code' => $productModel->getCode()])]);
 
         /** @var $businessEventHandler BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
