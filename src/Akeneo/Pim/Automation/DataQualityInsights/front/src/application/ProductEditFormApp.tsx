@@ -33,6 +33,8 @@ import {
   followAttributeOptionSpellingCriterion,
   followAttributeSpellingCriterion,
 } from './user-actions';
+import QualityScorePortal
+  from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/QualityScorePortal';
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -106,6 +108,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                 </Criterion>
               </AxisEvaluation>
             </DataQualityInsightsTabContent>
+            <QualityScorePortal/>
           </AxesContextProvider>
         </Provider>
       </ThemeProvider>

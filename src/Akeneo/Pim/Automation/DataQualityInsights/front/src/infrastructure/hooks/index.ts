@@ -2,7 +2,6 @@ import useFetchProductDataQualityEvaluation from '@akeneo-pim-community/data-qua
 import useProductFamily from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useProductFamily';
 import useCatalogContext from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useCatalogContext';
 import useProduct from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useProduct';
-import useFetchProductAxisRates from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useFetchProductAxisRates';
 import {usePageContext} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
 import useProductEvaluation from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks/ProductEditForm/useProductEvaluation';
 
@@ -21,7 +20,6 @@ export {
   useProductFamily,
   useCatalogContext,
   useProduct,
-  useFetchProductAxisRates,
   usePageContext,
   useGetWidgetsList as useGetEditorHighlightWidgetsList,
   useGetEditorBoundingRect as useGetEditorHighlightBoundingRect,
