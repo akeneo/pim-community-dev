@@ -12,7 +12,6 @@ import {evaluationPlaceholder} from '../../../../helper';
 interface AxisEvaluationProps {
   evaluation?: Evaluation;
   axis: string;
-  showRate?: boolean;
 }
 
 const isAxisInError = (criteria: CriterionEvaluationResult[]) => {
@@ -34,7 +33,6 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({
   children,
   evaluation = evaluationPlaceholder,
   axis,
-  showRate = true,
 }) => {
   const criteria = evaluation.criteria || [];
   const axisHasError: boolean = isAxisInError(criteria);
@@ -46,7 +44,7 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({
 
   return (
     <div className="AknSubsection AxisEvaluationContainer">
-      <AxisHeader evaluation={evaluation} axis={axis} showRate={showRate} />
+      <AxisHeader evaluation={evaluation} axis={axis} />
 
       {axisHasError && <AxisError />}
       {axisGradingInProgress && !axisHasError && <AxisGradingInProgress />}
