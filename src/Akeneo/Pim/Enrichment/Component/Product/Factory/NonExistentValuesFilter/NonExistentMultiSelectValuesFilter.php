@@ -92,7 +92,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
 
         $uniqueOptionCodes = [];
         foreach ($optionCodes as $attributeCode => $optionCodeForThisAttribute) {
-            foreach($optionCodeForThisAttribute as $value) {
+            foreach ($optionCodeForThisAttribute as $value) {
                 if (!is_scalar($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $attributeCode,
