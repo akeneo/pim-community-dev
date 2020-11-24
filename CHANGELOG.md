@@ -217,7 +217,7 @@
 - Change the `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface` to:
     - remove the `findDatagridViewByAlias()` method
     - rename the `getDatagridViewTypeByUser()` method to `getDatagridViewAliasesByUser()` and add type hint on the return (array)
-    - add type hint on the return of the `findDatagridViewBySearch()` method (array)
+    - add type hint on the return of the `findDatagridViewBySearch()` method (`Doctrine\Common\Collections\Collection`)
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet` to
     - add `Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface $jobRepository`
 

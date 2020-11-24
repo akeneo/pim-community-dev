@@ -7,6 +7,7 @@ namespace Oro\Bundle\PimDataGridBundle\tests\Integration\Repository;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Webmozart\Assert\Assert;
@@ -46,12 +47,11 @@ class DatagridViewRepositoryIntegration extends TestCase
         $view6Id = $this->createDatagridView('view 6', 'product-grid', DatagridView::TYPE_PUBLIC, $juliaUser)->getId();
 
         $result = $this->datagridViewRepository->findDatagridViewBySearch($adminUser, 'product-grid');
-        Assert::isArray($result);
-        Assert::notEmpty($result);
+        Assert::notSame($result->count(), 0);
         Assert::isInstanceOf($result[0], DatagridView::class);
         Assert::same(array_map(function ($view) {
             return $view->getId();
-        }, $result), [$view1Id, $view2Id, $view3Id, $view4Id, $view6Id]);
+        }, $result->toArray()), [$view1Id, $view2Id, $view3Id, $view4Id, $view6Id]);
     }
 
     public function test_that_it_filters_by_ids(): void
@@ -66,7 +66,7 @@ class DatagridViewRepositoryIntegration extends TestCase
         ]);
         Assert::same(array_map(function ($view) {
             return $view->getId();
-        }, $result), [$view1Id, $view2Id]);
+        }, $result->toArray()), [$view1Id, $view2Id]);
     }
 
     public function test_it_returns_view_aliases_for_a_given_user(): void

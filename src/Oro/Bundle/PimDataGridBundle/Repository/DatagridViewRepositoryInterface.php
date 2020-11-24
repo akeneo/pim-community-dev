@@ -3,7 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Repository;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Datagrid view repository interface
@@ -25,12 +25,12 @@ interface DatagridViewRepositoryInterface
      * The search is applied on label with the given $term.
      * You can pass $options to add limit or page info.
      *
-     * @return DatagridView[]
+     * Returns a collection of DatagridView objects
      */
     public function findDatagridViewBySearch(
         UserInterface $user,
         string $alias,
         string $term = '',
         array $options = []
-    ): array;
+    ): Collection;
 }
