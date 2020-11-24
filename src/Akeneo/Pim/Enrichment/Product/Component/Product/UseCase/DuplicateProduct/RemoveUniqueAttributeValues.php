@@ -44,6 +44,7 @@ class RemoveUniqueAttributeValues
                 $valueCollection->removeByAttributeCode($attributeCode);
             }
         }
+        $product->setValues($valueCollection);
 
         return $product;
     }

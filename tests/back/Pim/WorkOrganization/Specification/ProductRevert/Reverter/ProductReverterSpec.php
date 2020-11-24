@@ -56,6 +56,7 @@ class ProductReverterSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($productValueCollection);
         $productValueCollection->clear()->shouldBecalled();
+        $product->setValues($productValueCollection)->shouldBeCalled();
 
         $registry->getRepository('foo')->willReturn($repository);
         $repository->find('baz')->willReturn($product);
@@ -101,6 +102,7 @@ class ProductReverterSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($productValueCollection);
         $productValueCollection->clear()->shouldBecalled();
+        $product->setValues($productValueCollection)->shouldBeCalled();
 
         $registry->getRepository('foo')->willReturn($repository);
         $repository->find('baz')->willReturn($product);
@@ -146,6 +148,7 @@ class ProductReverterSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($productValueCollection);
         $productValueCollection->clear()->shouldBecalled();
+        $product->setValues($productValueCollection)->shouldBeCalled();
 
         $registry->getRepository('foo')->willReturn($repository);
         $repository->find('baz')->willReturn($product);
@@ -191,6 +194,7 @@ class ProductReverterSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($productValueCollection);
         $productValueCollection->clear()->shouldBecalled();
+        $product->setValues($productValueCollection)->shouldBeCalled();
 
         $registry->getRepository('foo')->willReturn($repository);
         $repository->find('baz')->willReturn($product);
@@ -235,6 +239,7 @@ class ProductReverterSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($productValueCollection);
         $productValueCollection->clear()->shouldBecalled();
+        $product->setValues($productValueCollection)->shouldBeCalled();
 
         $registry->getRepository('foo')->willReturn($repository);
         $repository->find('baz')->willReturn($product);
