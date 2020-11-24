@@ -56,6 +56,13 @@ SQL;
         return [
             ['a_text', 'some_text', false], // this attribute should not be skipped
             ['a_price', 'some_text', true],
+            ['a_price', [
+                'unit' => 'SQUARE_METER',
+                'amount' => '10.0000',
+                'family' => 'Area',
+                'base_data' => '10',
+                'base_unit' => 'SQUARE_METER',
+            ], true],
             ['a_ref_data_multi_select', 'some_text', true],
             ['a_multi_select', 'some_text', true],
             ['a_file', 'some_text', true],
