@@ -1,16 +1,15 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 import CategoryModal from '../../CategoryModal/CategoryModal';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '../../../../constant';
 import {useDashboardContext} from '../../../../context/DashboardContext';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-const __ = require('oro/translator');
-
-interface CategoryFilterProps {
+interface Props {
   categoryCode: string | null;
 }
 
-const CategoryFilter: FunctionComponent<CategoryFilterProps> = ({categoryCode}) => {
+const CategoryFilter: FC<Props> = ({categoryCode}) => {
   const [selectedCategoryCode, setSelectedCategoryCode] = useState<string | null>(null);
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState<string | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
@@ -18,6 +17,7 @@ const CategoryFilter: FunctionComponent<CategoryFilterProps> = ({categoryCode}) 
   const [modalElement, setModalElement] = useState<HTMLDivElement | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const {updateDashboardFilters} = useDashboardContext();
+  const translate = useTranslate();
 
   useEffect(() => {
     setSelectedCategoryCode(categoryCode);
@@ -71,9 +71,11 @@ const CategoryFilter: FunctionComponent<CategoryFilterProps> = ({categoryCode}) 
     <>
       <div className="AknFilterBox-filterContainer">
         <div className="AknFilterBox-filter" onClick={() => setShowModal(true)} data-testid={'dqiCategoryFilter'}>
-          <span className="AknFilterBox-filterLabel">{__('pim_enrich.entity.category.uppercase_label')}</span>
+          <span className="AknFilterBox-filterLabel">{translate('pim_enrich.entity.category.uppercase_label')}</span>
           <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
-            <span>{selectedCategoryCode && selectedCategoryLabel ? selectedCategoryLabel : __('pim_common.all')}</span>
+            <span>
+              {selectedCategoryCode && selectedCategoryLabel ? selectedCategoryLabel : translate('pim_common.all')}
+            </span>
           </button>
         </div>
       </div>
@@ -87,8 +89,8 @@ const CategoryFilter: FunctionComponent<CategoryFilterProps> = ({categoryCode}) 
             isVisible={showModal}
             selectedCategories={selectedCategoryCode === null ? [] : [selectedCategoryCode]}
             withCheckBox={false}
-            subtitle={__('akeneo_data_quality_insights.dqi_dashboard.category_modal_filter.subtitle')}
-            description={__('akeneo_data_quality_insights.dqi_dashboard.category_modal_filter.message')}
+            subtitle={translate('akeneo_data_quality_insights.dqi_dashboard.category_modal_filter.subtitle')}
+            description={translate('akeneo_data_quality_insights.dqi_dashboard.category_modal_filter.message')}
             errorMessage={null}
           />,
           modalElement
@@ -97,4 +99,4 @@ const CategoryFilter: FunctionComponent<CategoryFilterProps> = ({categoryCode}) 
   );
 };
 
-export default CategoryFilter;
+export {CategoryFilter};

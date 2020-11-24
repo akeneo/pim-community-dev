@@ -1,7 +1,6 @@
 import React, {FunctionComponent} from 'react';
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD} from '../../../../constant/Dashboard';
-
-const __ = require('oro/translator');
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD} from '../../../../constant';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const handleTimePeriodChange = (value: string) => {
   window.dispatchEvent(
@@ -18,6 +17,7 @@ interface TimePeriodFilterProps {
 }
 
 const TimePeriodFilter: FunctionComponent<TimePeriodFilterProps> = ({timePeriod}) => {
+  const translate = useTranslate();
   return (
     <div className="AknFilterBox-filterContainer AknDropdown">
       <button
@@ -26,42 +26,42 @@ const TimePeriodFilter: FunctionComponent<TimePeriodFilterProps> = ({timePeriod}
         data-toggle="dropdown"
       >
         <span className="AknFilterBox-filterLabel">
-          {__('akeneo_data_quality_insights.dqi_dashboard.time_period.label')}
+          {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.label')}
         </span>
         <span className="AknActionButton-highlight">
-          <span>{__(`akeneo_data_quality_insights.dqi_dashboard.time_period.${timePeriod}`)}</span>
+          <span>{translate(`akeneo_data_quality_insights.dqi_dashboard.time_period.${timePeriod}`)}</span>
           <span className="AknActionButton-caret" />
         </span>
       </button>
       <ul className="AknDropdown-menu">
         <div className="AknDropdown-menuTitle">
-          {__('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
+          {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
         </div>
         <li>
           <a
             className={`AknDropdown-menuLink ${timePeriod === 'daily' ? 'AknDropdown-menuLink--active' : ''}`}
-            data-label={__('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
+            data-label={translate('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
             onClick={() => handleTimePeriodChange('daily')}
           >
-            {__('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
+            {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.daily')}
           </a>
         </li>
         <li>
           <a
             className={`AknDropdown-menuLink ${timePeriod === 'weekly' ? 'AknDropdown-menuLink--active' : ''}`}
-            data-label={__('akeneo_data_quality_insights.dqi_dashboard.time_period.weekly')}
+            data-label={translate('akeneo_data_quality_insights.dqi_dashboard.time_period.weekly')}
             onClick={() => handleTimePeriodChange('weekly')}
           >
-            {__('akeneo_data_quality_insights.dqi_dashboard.time_period.weekly')}
+            {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.weekly')}
           </a>
         </li>
         <li>
           <a
             className={`AknDropdown-menuLink ${timePeriod === 'monthly' ? 'AknDropdown-menuLink--active' : ''}`}
-            data-label={__('akeneo_data_quality_insights.dqi_dashboard.time_period.monthly')}
+            data-label={translate('akeneo_data_quality_insights.dqi_dashboard.time_period.monthly')}
             onClick={() => handleTimePeriodChange('monthly')}
           >
-            {__('akeneo_data_quality_insights.dqi_dashboard.time_period.monthly')}
+            {translate('akeneo_data_quality_insights.dqi_dashboard.time_period.monthly')}
           </a>
         </li>
       </ul>
@@ -69,4 +69,4 @@ const TimePeriodFilter: FunctionComponent<TimePeriodFilterProps> = ({timePeriod}
   );
 };
 
-export default TimePeriodFilter;
+export {TimePeriodFilter};
