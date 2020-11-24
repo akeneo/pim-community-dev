@@ -6,7 +6,10 @@ const EmptyChartPlaceholder: FC = () => {
   return (
     <>
       <div className="AknAssetPreview-imageContainer">
-        <img src={'bundles/pimui/images/illustrations/Project.svg'} alt="illustrations/Project.svg" />
+        <img
+          src={'bundles/akeneodataqualityinsights/images/empty-key-indicators.svg'}
+          alt="illustrations/Project.svg"
+        />
       </div>
       <div className="AknInfoBlock">
         <p>{translate(`akeneo_data_quality_insights.dqi_dashboard.no_data_title`)}</p>

@@ -14,7 +14,7 @@ type Props = {
   categoryCode: string | null;
 };
 
-const showOverviewPlaceholder = (dataset: ScoreDistributionByDate | null) => {
+const showPlaceholder = (dataset: ScoreDistributionByDate | null) => {
   return (
     dataset !== null && (isEmpty(dataset) || Object.entries(dataset).every(([_, ranksData]) => isEmpty(ranksData)))
   );
@@ -22,7 +22,7 @@ const showOverviewPlaceholder = (dataset: ScoreDistributionByDate | null) => {
 
 const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [chart, setChart] = useState<ReactElement>();
+  const [chart, setChart] = useState<ReactElement|null>(null);
   const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode);
 
   useEffect(() => {
@@ -30,8 +30,13 @@ const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, tim
       return;
     }
 
-    const formattedDataset = formatBackendRanksToVictoryFormat(dataset);
-    setChart(<TimePeriodAxisChart dataset={formattedDataset} timePeriod={timePeriod} />);
+    try {
+      const formattedDataset = formatBackendRanksToVictoryFormat(dataset);
+      setChart(<TimePeriodAxisChart dataset={formattedDataset} timePeriod={timePeriod} />);
+    }
+    catch (error) {
+      console.error(error);
+    }
 
     setIsLoading(false);
   }, [dataset]);
@@ -40,10 +45,17 @@ const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, tim
     setIsLoading(true);
   }, [catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode]);
 
+  const isPlaceholderVisible: boolean = showPlaceholder(dataset) || chart === null;
+
   return (
     <>
-      <Header timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode} />
-      {showOverviewPlaceholder(dataset) ? (
+      <Header
+        timePeriod={timePeriod}
+        familyCode={familyCode}
+        categoryCode={categoryCode}
+        showFilters={!isPlaceholderVisible}
+      />
+      {isPlaceholderVisible ? (
         <EmptyChartPlaceholder />
       ) : (
         <>
