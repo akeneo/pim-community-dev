@@ -14,7 +14,7 @@ type Props = {
   periodDomain: [number, number];
 };
 
-const AxisChart: FC<Props> = ({dataset, dateFormatCallback, periodDomain}) => {
+const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback, periodDomain}) => {
   const theme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const {upScalingRatio, downScalingRatio} = useGetDashboardChartScalingSizeRatio(
@@ -118,4 +118,4 @@ const AxisChart: FC<Props> = ({dataset, dateFormatCallback, periodDomain}) => {
   );
 };
 
-export {AxisChart};
+export {ScoreDistributionChart};

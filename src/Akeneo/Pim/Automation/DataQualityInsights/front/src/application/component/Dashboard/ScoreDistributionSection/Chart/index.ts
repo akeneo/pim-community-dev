@@ -1,4 +1,4 @@
-export * from './AxisChart';
+export * from './ScoreDistributionChart';
 export * from './EmptyChartPlaceholder';
 export * from './Legend';
-export * from './TimePeriodAxisChart';
+export * from './ScoreDistributionChartByTimePeriod';

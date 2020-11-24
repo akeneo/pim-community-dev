@@ -3,7 +3,7 @@ import {isEmpty} from 'lodash';
 import {useFetchDqiDashboardData} from '../../../../infrastructure/hooks';
 import {formatBackendRanksToVictoryFormat} from '../../../helper/Dashboard';
 import {Header} from './Header';
-import {EmptyChartPlaceholder, Legend, TimePeriodAxisChart} from './Chart';
+import {EmptyChartPlaceholder, Legend, ScoreDistributionChartByTimePeriod} from './Chart';
 import {ScoreDistributionByDate, TimePeriod} from '../../../../domain';
 
 type Props = {
@@ -32,7 +32,7 @@ const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, tim
 
     try {
       const formattedDataset = formatBackendRanksToVictoryFormat(dataset);
-      setChart(<TimePeriodAxisChart dataset={formattedDataset} timePeriod={timePeriod} />);
+      setChart(<ScoreDistributionChartByTimePeriod dataset={formattedDataset} timePeriod={timePeriod} />);
     }
     catch (error) {
       console.error(error);

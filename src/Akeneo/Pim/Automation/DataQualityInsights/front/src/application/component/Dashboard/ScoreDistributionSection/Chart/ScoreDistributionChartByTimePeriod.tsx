@@ -1,7 +1,7 @@
 import {isEmpty} from 'lodash';
 import React, {FC, useMemo} from 'react';
 import {EmptyChartPlaceholder} from './EmptyChartPlaceholder';
-import {AxisChart} from './AxisChart';
+import {ScoreDistributionChart} from './ScoreDistributionChart';
 import {dailyCallback, monthlyCallback, weeklyCallback} from '../../../../helper/Dashboard';
 import {ScoreDistributionChartDataset, TimePeriod} from '../../../../../domain';
 
@@ -20,7 +20,7 @@ export interface Props {
   timePeriod: TimePeriod;
 }
 
-const TimePeriodAxisChart: FC<Props> = ({dataset, timePeriod}) => {
+const ScoreDistributionChartByTimePeriod: FC<Props> = ({dataset, timePeriod}) => {
   const callback = useMemo(() => {
     if (timePeriod === 'daily') {
       return dailyCallback;
@@ -48,10 +48,10 @@ const TimePeriodAxisChart: FC<Props> = ({dataset, timePeriod}) => {
       {isEmptyChartDataset(dataset) ? (
         <EmptyChartPlaceholder />
       ) : (
-        <AxisChart dataset={dataset} periodDomain={domain} dateFormatCallback={callback} />
+        <ScoreDistributionChart dataset={dataset} periodDomain={domain} dateFormatCallback={callback} />
       )}
     </>
   );
 };
 
-export {TimePeriodAxisChart};
+export {ScoreDistributionChartByTimePeriod};
