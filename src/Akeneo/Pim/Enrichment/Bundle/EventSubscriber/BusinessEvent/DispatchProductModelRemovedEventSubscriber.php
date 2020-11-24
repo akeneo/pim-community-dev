@@ -72,7 +72,7 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
         $this->events[] = $event;
 
         if (count($this->events) >= $this->maxBulkSize) {
-            $this->dispatchBufferedProductEvents();
+            $this->dispatchBufferedProductModelEvents();
         }
     }
 
