@@ -274,7 +274,7 @@ class FixturesContext extends BaseFixturesContext
         );
 
         $this->refresh($product);
-        $this->getProductSaver()->save($product);
+        $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($identifier);
     }
 
     /**
@@ -2087,25 +2087,17 @@ class FixturesContext extends BaseFixturesContext
     public function theFollowingAssociationsForTheProduct(ProductInterface $owner, TableNode $values)
     {
         $rows = $values->getHash();
+        $data = [];
 
         foreach ($rows as $row) {
-            $association = $owner->getAssociationForTypeCode($row['type']);
-
-            if (null === $association) {
-                $associationType = $this->getContainer()
-                    ->get('pim_catalog.repository.association_type')
-                    ->findOneBy(['code' => $row['type']]);
-
-                $association = new ProductAssociation();
-                $association->setAssociationType($associationType);
-                $owner->addAssociation($association);
-            }
-
-            $association->addProduct($this->getProduct($row['products']));
+            Assert::assertArrayHasKey('type', $row);
+            Assert::assertArrayHasKey('products', $row);
+            $data[$row['type']] = [
+                'products' => [$row['products']],
+            ];
         }
-        $missingAssociationAdder = $this->getContainer()->get('pim_catalog.association.missing_association_adder');
-        $missingAssociationAdder->addMissingAssociations($owner);
 
+        $this->getContainer()->get('pim_catalog.updater.product')->update($owner, ['associations' => $data]);
         $this->getProductSaver()->save($owner);
     }
 

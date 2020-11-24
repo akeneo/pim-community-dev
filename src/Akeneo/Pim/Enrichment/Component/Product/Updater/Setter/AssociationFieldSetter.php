@@ -13,6 +13,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\Collection;
+use Webmozart\Assert\Assert;
 
 /**
  * Sets the association field
@@ -92,9 +94,10 @@ class AssociationFieldSetter extends AbstractFieldSetter
 
     private function updateAssociations(EntityWithAssociationsInterface $entity, array $data): void
     {
+        $associations = $entity->getAssociations();
         foreach ($data as $typeCode => $items) {
             $typeCode = (string)$typeCode;
-            $association = $entity->getAssociationForTypeCode($typeCode);
+            $association = $this->getAssociationForTypeCode($associations, $typeCode);
             if (null === $association) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
@@ -114,6 +117,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 $this->updateAssociatedGroups($association, $items['groups']);
             }
         }
+        $entity->setAssociations($associations);
     }
 
     private function updateAssociatedProducts(AssociationInterface $association, array $productsIdentifiers): void
@@ -358,5 +362,17 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 );
             }
         }
+    }
+
+    private function getAssociationForTypeCode(Collection $associations, string $typeCode): ?AssociationInterface
+    {
+        foreach ($associations as $association) {
+            Assert::isInstanceOf($association, AssociationInterface::class);
+            if ($typeCode === $association->getAssociationType()->getCode()) {
+                return $association;
+            }
+        }
+
+        return null;
     }
 }
