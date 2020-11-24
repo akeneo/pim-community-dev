@@ -194,6 +194,7 @@ class CleanValuesOfRemovedAttributesSpec extends ObjectBehavior
             false,
             null,
             null,
+            false,
             'a_backend_type',
             []
         );
