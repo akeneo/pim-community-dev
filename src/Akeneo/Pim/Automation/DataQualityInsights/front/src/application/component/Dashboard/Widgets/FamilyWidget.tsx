@@ -8,10 +8,10 @@ import Rate from '@akeneo-pim-community/data-quality-insights/src/application/co
 import FamilyModal from './FamilyModal';
 import {uniq as _uniq} from 'lodash';
 import {redirectToProductGridFilteredByFamily} from '../../../../infrastructure/ProductGridRouter';
-import {useAxesContext} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
-
-const __ = require('oro/translator');
-const UserContext = require('pim/user-context');
+import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {SeeInGrid} from './SeeInGrid';
+import {RemoveItem} from './RemoveItem';
+import {AddItem} from './AddItem';
 
 const MAX_WATCHED_FAMILIES = 20;
 const LOCAL_STORAGE_KEY = 'data-quality-insights:dashboard:widgets:families';
@@ -26,12 +26,13 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
   const [showModal, setShowModal] = useState<boolean>(false);
   const [watchedFamilyCodes, setWatchedFamilyCodes] = useState<string[]>([]);
   const [familyCodesToWatch, setFamilyCodesToWatch] = useState<string[]>([]);
-  const axesContext = useAxesContext();
+  const translate = useTranslate();
+  const userContext = useUserContext();
 
-  const ratesByFamily = useFetchWidgetFamilies(catalogChannel, catalogLocale, watchedFamilyCodes);
-  const families: Family[] = useFetchFamiliesByCodes(ratesByFamily);
+  const averageScoreByFamilies = useFetchWidgetFamilies(catalogChannel, catalogLocale, watchedFamilyCodes);
+  const families: Family[] = useFetchFamiliesByCodes(averageScoreByFamilies);
 
-  const uiLocale = UserContext.get('uiLocale');
+  const uiLocale = userContext.get('uiLocale');
 
   const onSelectFamily = (jQueryEvent: any) => {
     const selectedFamilies = jQueryEvent.val.filter((familyCode: string) => !watchedFamilyCodes.includes(familyCode));
@@ -81,10 +82,10 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
 
   const header = (
     <div className="AknSubsection-title AknSubsection-title--glued">
-      <span>{__('pim_enrich.entity.family.plural_label')}</span>
-      <div className="AknButton AknButton--micro" onClick={() => setShowModal(true)}>
-        {__('akeneo_data_quality_insights.dqi_dashboard.widgets.add_families')}
-      </div>
+      <span>{translate('pim_enrich.entity.family.plural_label')}</span>
+      <AddItem add={() => setShowModal(true)}>
+        {translate('akeneo_data_quality_insights.dqi_dashboard.widgets.add_families')}
+      </AddItem>
     </div>
   );
 
@@ -95,19 +96,19 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
       onSelectFamily={onSelectFamily}
       isVisible={showModal}
       canAddMoreFamilies={watchedFamilyCodes.length + familyCodesToWatch.length <= MAX_WATCHED_FAMILIES}
-      errorMessage={__('akeneo_data_quality_insights.dqi_dashboard.widgets.family_modal.max_families_msg', {
-        count: MAX_WATCHED_FAMILIES,
+      errorMessage={translate('akeneo_data_quality_insights.dqi_dashboard.widgets.family_modal.max_families_msg', {
+        count: `${MAX_WATCHED_FAMILIES}`,
       })}
     />
   );
 
-  if (Object.keys(ratesByFamily).length === 0) {
+  if (Object.keys(averageScoreByFamilies).length === 0) {
     return (
       <>
         {header}
         <div className="no-family">
           <img src="bundles/pimui/images/illustrations/Family.svg" />
-          <p>{__('akeneo_data_quality_insights.dqi_dashboard.widgets.no_family_helper_msg')}</p>
+          <p>{translate('akeneo_data_quality_insights.dqi_dashboard.widgets.no_family_helper_msg')}</p>
         </div>
         {modalElement && createPortal(familyModal, modalElement)}
       </>
@@ -120,57 +121,43 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
       <table className="AknGrid AknGrid--unclickable">
         <tbody className="AknGrid-body">
           <tr>
-            <th className="AknGrid-headerCell">{__('Title')}</th>
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">
-              {__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)}
+            <th className="AknGrid-headerCell">
+              {translate('akeneo_data_quality_insights.dqi_dashboard.widgets.title')}
             </th>
-            {axesContext.axes.includes('consistency') && (
-              <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">
-                {__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}
-              </th>
-            )}
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
+            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">
+              {translate(`akeneo_data_quality_insights.dqi_dashboard.widgets.score`)}
+            </th>
+            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate" />
+            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate" />
           </tr>
 
-          {Object.keys(ratesByFamily).length > 0 &&
-            Object.entries(ratesByFamily).map(([familyCode, ratesByAxis]: [string, any], index: number) => {
-              let family: Family | undefined = undefined;
-              if (Object.keys(families).length > 0) {
-                family = Object.values(families).find((family: any) => family.code === familyCode);
-              }
-              return (
-                <tr key={index} className="AknGrid-bodyRow">
-                  <td className="AknGrid-bodyCell AknGrid-bodyCell--highlight familyName">
-                    {family && (family.labels[uiLocale] ? family.labels[uiLocale] : '[' + family.code + ']')}
-                  </td>
-                  <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
-                    <Rate value={ratesByAxis.enrichment ? Ranks[ratesByAxis.enrichment] : null} />
-                  </td>
-                  {axesContext.axes.includes('consistency') && (
-                    <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
-                      <Rate value={ratesByAxis.consistency ? Ranks[ratesByAxis.consistency] : null} />
+          {Object.keys(averageScoreByFamilies).length > 0 &&
+            Object.entries(averageScoreByFamilies).map(
+              ([familyCode, averageScoreRank]: [string, any], index: number) => {
+                let family: Family | undefined = undefined;
+                if (Object.keys(families).length > 0) {
+                  family = Object.values(families).find((family: any) => family.code === familyCode);
+                }
+                return (
+                  <tr key={index} className="AknGrid-bodyRow">
+                    <td className="AknGrid-bodyCell AknGrid-bodyCell--highlight familyName">
+                      {family && (family.labels[uiLocale] ? family.labels[uiLocale] : '[' + family.code + ']')}
                     </td>
-                  )}
-                  <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
-                    <div
-                      className="AknButton AknButton--micro"
-                      onClick={() => redirectToProductGridFilteredByFamily(catalogChannel, catalogLocale, familyCode)}
-                    >
-                      {__('akeneo_data_quality_insights.dqi_dashboard.widgets.see_in_grid')}
-                    </div>
-                  </td>
-                  <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
-                    <img
-                      style={{cursor: 'pointer'}}
-                      width="16"
-                      src="/bundles/pimui/images/icon-delete-slategrey.svg"
-                      onClick={() => onRemoveFamily(familyCode)}
-                    />
-                  </td>
-                </tr>
-              );
-            })}
+                    <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
+                      <Rate value={averageScoreRank ? Ranks[averageScoreRank] : null} />
+                    </td>
+                    <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
+                      <SeeInGrid
+                        follow={() => redirectToProductGridFilteredByFamily(catalogChannel, catalogLocale, familyCode)}
+                      />
+                    </td>
+                    <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
+                      <RemoveItem remove={() => onRemoveFamily(familyCode)} />
+                    </td>
+                  </tr>
+                );
+              }
+            )}
         </tbody>
       </table>
 
