@@ -10,7 +10,7 @@ CI ?= 0
 
 .PHONY: help
 help: #Doc: display this help
-	@echo "$$(grep -hE '^\S+:.*#Doc:' $(MAKEFILE_LIST) | sed -e 's/:.*#Doc:\s*/:/' -e 's/^\(.\+\):\(.*\)/\\e[1;1m \1\\e[0m:\2/' | column -c2 -t -s :)"
+	@echo "$$(grep -hE '^\S+:.*#Doc:' $(MAKEFILE_LIST) | sed -e 's/:.*#Doc:\s*/:/' -e 's/^\(.\+\):\(.*\)/\1:-\ \2/' | column -c2 -t -s :)"
 
 ## Include all *.mk files
 include make-file/*.mk
