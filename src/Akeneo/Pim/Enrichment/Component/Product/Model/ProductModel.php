@@ -166,7 +166,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getValuesForVariation(): WriteValueCollection
     {
-        return $this->values;
+        return WriteValueCollection::fromCollection($this->values);
     }
 
     /**
@@ -576,21 +576,26 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addAssociation(AssociationInterface $association): EntityWithAssociationsInterface
+    public function addAssociation(AssociationInterface $newAssociation): EntityWithAssociationsInterface
     {
-        if (!$this->associations->contains($association)) {
-            $associationType = $association->getAssociationType();
-            if (null !== $associationType && null !== $this->getAssociationForType($associationType)) {
-                throw new \LogicException(
-                    sprintf(
-                        'Cannot add an association of type %s because the product model already has one',
-                        $associationType->getCode()
-                    )
-                );
-            }
+        $currentAssociation = $this->getSimilarAssociation($newAssociation);
+        if ($currentAssociation) {
+            throw new \LogicException(
+                sprintf(
+                    'Can not add an association of type %s because the product already has one',
+                    $currentAssociation->getAssociationType()->getCode()
+                )
+            );
+        }
 
-            $this->associations->add($association);
-            $association->setOwner($this);
+        $newAssociation->setOwner($this);
+        $this->associations->add($newAssociation);
+        if (
+            $newAssociation->getProducts()->count() > 0 ||
+            $newAssociation->getProductModels()->count() > 0 ||
+            $newAssociation->getGroups()->count() > 0
+        ) {
+            $this->dirty = true;
         }
 
         return $this;
@@ -601,7 +606,18 @@ class ProductModel implements ProductModelInterface
      */
     public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
-        $this->associations->removeElement($association);
+        $similarAssociation = $this->getSimilarAssociation($association);
+        if (
+            null !== $similarAssociation &&
+            true === $this->associations->removeElement($similarAssociation) &&
+            (
+                $similarAssociation->getProducts()->count() > 0 ||
+                $similarAssociation->getProductModels()->count() > 0 ||
+                $similarAssociation->getGroups()->count() > 0
+            )
+        ) {
+            $this->dirty = true;
+        }
 
         return $this;
     }
@@ -611,7 +627,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getAssociations()
     {
-        return $this->associations;
+        return new ArrayCollection($this->associations->toArray());
     }
 
     /**
@@ -642,6 +658,7 @@ class ProductModel implements ProductModelInterface
     public function setAssociations(Collection $associations): EntityWithAssociationsInterface
     {
         $this->associations = $associations;
+        $this->dirty = true;
 
         return $this;
     }
@@ -730,6 +747,28 @@ class ProductModel implements ProductModelInterface
         }
 
         return $this->getAllValues($parent, $valueCollection);
+    }
+
+    /**
+     * Should be handled by an AssociationsCollection->contains()
+     *
+     * @param AssociationInterface $needleAssociation
+     *
+     * @return AssociationInterface|null
+     */
+    private function getSimilarAssociation(AssociationInterface $needleAssociation): ?AssociationInterface
+    {
+        if ($this->associations->contains($needleAssociation)) {
+            return $needleAssociation;
+        }
+
+        foreach ($this->associations as $current) {
+            if ($current->getReference() === $needleAssociation->getReference()) {
+                return $current;
+            }
+        }
+
+        return null;
     }
 
     /**
