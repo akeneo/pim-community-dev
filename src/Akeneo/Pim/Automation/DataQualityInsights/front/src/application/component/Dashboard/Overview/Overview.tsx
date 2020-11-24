@@ -1,12 +1,13 @@
 import React, {ReactElement, useEffect, useState} from 'react';
 import {isEmpty} from 'lodash';
 import {useFetchDqiDashboardData} from '../../../../infrastructure/hooks';
-import {Dataset, formatBackendRanksToVictoryFormat} from '../../../helper/Dashboard/FormatBackendRanksToVictoryFormat';
+import {formatBackendRanksToVictoryFormat} from '../../../helper/Dashboard';
 import Filters from './Filters';
 import Header from './Charts/Header';
 import EmptyChartPlaceholder from './Charts/EmptyChartPlaceholder';
 import TimePeriodAxisChart from './Charts/TimePeriodAxisChart';
-import {AxesContextState, useAxesContext} from '../../../context/AxesContext';
+import {ScoreDistributionByDate} from '../../../../domain';
+
 const __ = require('oro/translator');
 
 interface DataQualityOverviewChartProps {
@@ -17,17 +18,9 @@ interface DataQualityOverviewChartProps {
   categoryCode: string | null;
 }
 
-const showOverviewPlaceholder = (dataset: Dataset | null, axesContext: AxesContextState) => {
+const showOverviewPlaceholder = (dataset: ScoreDistributionByDate | null) => {
   return (
-    dataset !== null &&
-    (isEmpty(dataset) ||
-      // @ts-ignore
-      ((isEmpty(dataset['enrichment']) ||
-        Object.entries(dataset['enrichment']).every(([_, ranksData]) => isEmpty(ranksData))) &&
-        // @ts-ignore
-        (!axesContext.axes.includes('consistency') ||
-          isEmpty(dataset['consistency']) ||
-          Object.entries(dataset['consistency']).every(([_, ranksData]) => isEmpty(ranksData)))))
+    dataset !== null && (isEmpty(dataset) || Object.entries(dataset).every(([_, ranksData]) => isEmpty(ranksData)))
   );
 };
 
@@ -39,10 +32,7 @@ const Overview = ({
   categoryCode,
 }: DataQualityOverviewChartProps) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [enrichmentChart, setEnrichmentChart] = useState<ReactElement>();
-  const [consistencyChart, setConsistencyChart] = useState<ReactElement>();
-  const axesContext = useAxesContext();
-
+  const [chart, setChart] = useState<ReactElement>();
   const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode);
 
   useEffect(() => {
@@ -50,13 +40,8 @@ const Overview = ({
       return;
     }
 
-    const enrichmentChartDataset = formatBackendRanksToVictoryFormat(dataset, 'enrichment');
-    setEnrichmentChart(<TimePeriodAxisChart dataset={enrichmentChartDataset} timePeriod={timePeriod} />);
-
-    if (axesContext.axes.includes('consistency')) {
-      const consistencyChartDataset = formatBackendRanksToVictoryFormat(dataset, 'consistency');
-      setConsistencyChart(<TimePeriodAxisChart dataset={consistencyChartDataset} timePeriod={timePeriod} />);
-    }
+    const formattedDataset = formatBackendRanksToVictoryFormat(dataset);
+    setChart(<TimePeriodAxisChart dataset={formattedDataset} timePeriod={timePeriod} />);
 
     setIsLoading(false);
   }, [dataset]);
@@ -68,7 +53,7 @@ const Overview = ({
   return (
     <>
       <Filters timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode} />
-      {showOverviewPlaceholder(dataset, axesContext) ? (
+      {showOverviewPlaceholder(dataset) ? (
         <EmptyChartPlaceholder />
       ) : (
         <>
@@ -78,21 +63,8 @@ const Overview = ({
           />
           <div className="AknDataQualityInsights-chart">
             {isLoading && <div className="AknLoadingMask" />}
-            {enrichmentChart}
+            {chart}
           </div>
-
-          {axesContext.axes.includes('consistency') && (
-            <>
-              <Header
-                axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}
-                displayLegend={false}
-              />
-              <div className="AknDataQualityInsights-chart">
-                {isLoading && <div className="AknLoadingMask" />}
-                {consistencyChart}
-              </div>
-            </>
-          )}
         </>
       )}
     </>

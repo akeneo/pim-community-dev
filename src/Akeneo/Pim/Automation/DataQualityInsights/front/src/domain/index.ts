@@ -58,3 +58,4 @@ export {
   Tip,
   ProductQualityScore,
 };
+export * from './Score';
