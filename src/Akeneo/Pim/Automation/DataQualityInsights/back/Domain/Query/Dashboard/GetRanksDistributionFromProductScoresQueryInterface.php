@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 
-interface GetRanksDistributionFromProductAxisRatesQueryInterface
+interface GetRanksDistributionFromProductScoresQueryInterface
 {
     public function forWholeCatalog(\DateTimeImmutable $date): RanksDistributionCollection;
 

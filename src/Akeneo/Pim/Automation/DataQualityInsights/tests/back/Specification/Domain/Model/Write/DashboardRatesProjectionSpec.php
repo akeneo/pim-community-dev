@@ -113,26 +113,13 @@ final class DashboardRatesProjectionSpec extends ObjectBehavior
     private function buildRandomRanksDistributionCollection(): RanksDistributionCollection
     {
         return new RanksDistributionCollection([
-            "consistency" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => rand(1, 100),
-                        "rank_2" => rand(1, 100),
-                        "rank_3" => rand(1, 100),
-                        "rank_4" => rand(1, 100),
-                        "rank_5" => rand(1, 100)
-                    ],
-                ],
-            ],
-            "enrichment" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => rand(1, 100),
-                        "rank_2" => rand(1, 100),
-                        "rank_3" => rand(1, 100),
-                        "rank_4" => rand(1, 100),
-                        "rank_5" => rand(1, 100)
-                    ],
+            "ecommerce" => [
+                "en_US" => [
+                    "rank_1" => rand(1, 100),
+                    "rank_2" => rand(1, 100),
+                    "rank_3" => rand(1, 100),
+                    "rank_4" => rand(1, 100),
+                    "rank_5" => rand(1, 100)
                 ],
             ],
         ]);

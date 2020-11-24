@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
@@ -21,17 +12,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
 final class DashboardRatesProjection
 {
-    /** @var DashboardProjectionType */
-    private $type;
+    private DashboardProjectionType $type;
 
-    /** @var DashboardProjectionCode */
-    private $code;
+    private DashboardProjectionCode $code;
 
-    /** @var ConsolidationDate */
-    private $consolidationDate;
+    private ConsolidationDate $consolidationDate;
 
-    /** @var RanksDistributionCollection */
-    private $ranksDistributionCollection;
+    private RanksDistributionCollection $ranksDistributionCollection;
 
     public function __construct(
         DashboardProjectionType $type,

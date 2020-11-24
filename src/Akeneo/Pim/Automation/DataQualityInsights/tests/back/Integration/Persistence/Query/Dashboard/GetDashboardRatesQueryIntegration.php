@@ -115,40 +115,20 @@ final class GetDashboardRatesQueryIntegration extends TestCase
     private function getRanksDistributionCollection(): RanksDistributionCollection
     {
         return new RanksDistributionCollection([
-            "consistency" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => 12,
-                        "rank_2" => 28,
-                        "rank_3" => 10,
-                        "rank_4" => 50,
-                        "rank_5" => 10
-                    ],
-                    "fr_FR" => [
-                        "rank_1" => 30,
-                        "rank_2" => 10,
-                        "rank_3" => 20,
-                        "rank_4" => 20,
-                        "rank_5" => 20
-                    ],
+            "ecommerce" => [
+                "en_US" => [
+                    "rank_1" => 12,
+                    "rank_2" => 28,
+                    "rank_3" => 10,
+                    "rank_4" => 50,
+                    "rank_5" => 10
                 ],
-            ],
-            "enrichment" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => 10,
-                        "rank_2" => 50,
-                        "rank_3" => 10,
-                        "rank_4" => 28,
-                        "rank_5" => 12
-                    ],
-                    "fr_FR" => [
-                        "rank_1" => 20,
-                        "rank_2" => 20,
-                        "rank_3" => 20,
-                        "rank_4" => 10,
-                        "rank_5" => 30
-                    ],
+                "fr_FR" => [
+                    "rank_1" => 30,
+                    "rank_2" => 10,
+                    "rank_3" => 20,
+                    "rank_4" => 20,
+                    "rank_5" => 20
                 ],
             ],
         ]);
