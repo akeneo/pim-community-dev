@@ -7,16 +7,11 @@ import {TimePeriodFilter} from '@akeneo-pim-community/data-quality-insights/src/
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD} from '@akeneo-pim-community/data-quality-insights/src';
 import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
 
-//const UserContext = require('pim/user-context');
-
-//jest.mock('pim/user-context');
-
 beforeEach(() => {
   jest.resetModules();
 });
 
 window.dispatchEvent = jest.fn();
-//UserContext.get.mockReturnValue('en_US');
 
 describe('Dashboard > change time period', () => {
   test('time period can be changed to weekly on the dashboard', async () => {

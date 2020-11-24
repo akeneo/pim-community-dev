@@ -9,9 +9,6 @@ import {CategoryFilter} from '@akeneo-pim-community/data-quality-insights/src/ap
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '@akeneo-pim-community/data-quality-insights/src';
 import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
 
-const UserContext = require('pim/user-context');
-
-jest.mock('pim/user-context');
 jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryTrees');
 jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryChildren');
 
@@ -20,7 +17,6 @@ beforeEach(() => {
 });
 
 window.dispatchEvent = jest.fn();
-UserContext.get.mockReturnValue('en_US');
 
 describe('Dashboard > filter on category', () => {
   test('dashboard can be filtered on "Digital cameras" category', async () => {

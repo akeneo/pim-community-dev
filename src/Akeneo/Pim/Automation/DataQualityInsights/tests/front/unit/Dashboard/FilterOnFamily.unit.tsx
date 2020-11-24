@@ -8,9 +8,6 @@ import fetchFamilies from '@akeneo-pim-community/data-quality-insights/src/infra
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '@akeneo-pim-community/data-quality-insights/src';
 import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
 
-const UserContext = require('pim/user-context');
-
-jest.mock('pim/user-context');
 jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies');
 
 beforeEach(() => {
@@ -18,7 +15,6 @@ beforeEach(() => {
 });
 
 window.dispatchEvent = jest.fn();
-UserContext.get.mockReturnValue('en_US');
 
 describe('Dashboard > filter on family', () => {
   test('dashboard can be filtered on "Mugs" family', async () => {
