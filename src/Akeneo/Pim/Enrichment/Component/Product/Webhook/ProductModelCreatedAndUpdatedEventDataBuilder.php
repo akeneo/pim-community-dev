@@ -107,7 +107,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
     {
         $pqb = $this->pqbFactory
             ->create(['limit' => count($codes)])
-            ->addFilter('code', Operators::IN_LIST, $codes);
+            ->addFilter('identifier', Operators::IN_LIST, $codes);
 
         $result = $this->getConnectorProductModelsQuery
             ->fromProductQueryBuilder($pqb, $userId, null, null, null)
