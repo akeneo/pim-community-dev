@@ -58,6 +58,7 @@
 - PIM-9533: Update wysiwyg editor's style in order to differentiate new paragraphs from mere line breaks
 - PIM-9548: Mitigate deadlock issues on category API
 - PIM-9540: Do not strip HTML tags on textarea content before indexing them in ES and fix newline_pattern char filter
+- PIM-9539: Fix the display of long attribute labels or codes on variant attributes page
 
 ## New features
 
