@@ -23,24 +23,12 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
         return $this->createQueryBuilder('v')
             ->select('v.datagridAlias')
             ->distinct(true)
+            ->where('v.type = :public_type OR (v.type = :private_type AND v.owner = :owner)')
+                ->setParameter('public_type', DatagridView::TYPE_PUBLIC)
+                ->setParameter('private_type', DatagridView::TYPE_PRIVATE)
+                ->setParameter('owner', $user)
             ->getQuery()
             ->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findDatagridViewByAlias($alias)
-    {
-        $queryBuilder = $this->createQueryBuilder('v')
-            ->andWhere('v.type = :type')
-            ->andWhere('v.datagridAlias = :alias')
-            ->setParameters([
-                'type'  => DatagridView::TYPE_PUBLIC,
-                'alias' => $alias
-            ]);
-
-        return $queryBuilder;
     }
 
     /**
@@ -57,8 +45,10 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
         }
 
         $qb = $this->createQueryBuilder('v')
-            ->where('v.type = :type')
-                ->setParameter('type', DatagridView::TYPE_PUBLIC)
+            ->where('v.type = :public_type OR (v.type = :private_type AND v.owner = :owner)')
+                ->setParameter('public_type', DatagridView::TYPE_PUBLIC)
+                ->setParameter('private_type', DatagridView::TYPE_PRIVATE)
+                ->setParameter('owner', $user)
             ->andWhere('v.datagridAlias = :alias')
                 ->setParameter('alias', $alias)
             ->andWhere('v.label LIKE :term')

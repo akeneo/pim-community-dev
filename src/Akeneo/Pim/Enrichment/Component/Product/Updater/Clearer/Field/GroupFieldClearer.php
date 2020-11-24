@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Webmozart\Assert\Assert;
 
 /**
@@ -43,6 +44,6 @@ final class GroupFieldClearer implements ClearerInterface
             sprintf('The clearer does not handle the "%s" property.', $property)
         );
 
-        $entity->getGroups()->clear();
+        $entity->setGroups(new ArrayCollection());
     }
 }

@@ -292,7 +292,7 @@ class UserUpdater implements ObjectUpdaterInterface
         }
 
         $defaultGridView = $this->gridViewRepository->findOneBy([
-            'type' => DatagridView::TYPE_PUBLIC,
+            'type' => [DatagridView::TYPE_PUBLIC, DatagridView::TYPE_PRIVATE],
             'datagridAlias' => $alias,
             'id' => $code
         ]);
