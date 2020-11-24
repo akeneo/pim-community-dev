@@ -38,12 +38,14 @@ final class AssociationFieldClearer implements ClearerInterface
         if ($entity instanceof EntityWithAssociationsInterface) {
             // getAssociations() can return an array or a Collection. We handle both.
             // We cannot clear the association directly, doctrine does not understand. We have to clear the
-            // products,m product models and groups of each assocations.
-            foreach ($entity->getAssociations() as $association) {
+            // products, product models and groups of each assocations.
+            $associations = $entity->getAssociations();
+            foreach ($associations as $association) {
                 $association->getProducts()->clear();
                 $association->getProductModels()->clear();
                 $association->getGroups()->clear();
             }
+            $entity->setAssociations($associations);
         }
     }
 }
