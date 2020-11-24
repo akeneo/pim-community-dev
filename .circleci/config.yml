@@ -139,7 +139,7 @@ jobs:
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
-      parallelism: 10
+      parallelism: 15
       steps:
           - attach_workspace:
                 at: ~/
