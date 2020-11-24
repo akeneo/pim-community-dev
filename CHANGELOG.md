@@ -50,7 +50,8 @@
 - PIM-9528: Fix asset code changed into lower case in create asset/upload asset UI
 - PIM-9537: Fix importing reference entities with wrong code fails the import
 - PIM-9541: Fix API users shown in Project contributors search
-- PIM-9545: Fix possible memory leak in large import jobs 
+- PIM-9545: Fix possible memory leak in large import jobs
+- PIM-9564: Use original filename instead of data for MediaFile attributes in naming convention
 
 ## Improvements
 

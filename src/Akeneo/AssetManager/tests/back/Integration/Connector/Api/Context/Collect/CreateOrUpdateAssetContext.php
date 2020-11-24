@@ -209,7 +209,7 @@ class CreateOrUpdateAssetContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, 'house_12.jpg');
+        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, 'path/to/house_12.jpg', 'house_12.jpg');
         $this->loadMediaFileAttribute('PresentationView', 'thumbnail', 'Thumbnail', 2);
         $this->loadTextAttribute('PresentationView', 'title', 3);
         $this->loadNumberAttribute('PresentationView', 'length', 4);
@@ -232,7 +232,7 @@ class CreateOrUpdateAssetContext implements Context
         $this->activatedLocales->save(LocaleIdentifier::fromCode('en_US'));
         $this->activatedLocales->save(LocaleIdentifier::fromCode('fr_FR'));
 
-        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, 'house_12.jpg');
+        $this->loadMediaFileAttribute('PresentationView', 'main_image', 'Main Image', 1, 'path/to/house_12.jpg', 'house_12.jpg');
         $this->loadMediaFileAttribute('PresentationView', 'thumbnail', 'Thumbnail', 2);
         $this->loadNumberAttribute('PresentationView', 'length', 3);
         $this->loadPresentationViewAssetFamily('PresentationView', NamingConvention::createFromNormalized([
@@ -759,7 +759,7 @@ class CreateOrUpdateAssetContext implements Context
 
         $this->uploadImageResponse = $this->webClientHelper->requestFromFile(
             $client,
-            self::REQUEST_CONTRACT_DIR ."successful_image_upload.json"
+            self::REQUEST_CONTRACT_DIR . "successful_image_upload.json"
         );
     }
 
@@ -770,7 +770,7 @@ class CreateOrUpdateAssetContext implements Context
     {
         $this->webClientHelper->assertJsonFromFile(
             $this->uploadImageResponse,
-            self::REQUEST_CONTRACT_DIR ."successful_image_upload.json"
+            self::REQUEST_CONTRACT_DIR . "successful_image_upload.json"
         );
     }
 
@@ -805,8 +805,8 @@ class CreateOrUpdateAssetContext implements Context
                 TransformationCollection::create([
                     Transformation::create(
                         TransformationLabel::fromString('label'),
-                        Source::createFromNormalized(['attribute' => 'cover_image', 'channel'=> null, 'locale' => null]),
-                        Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
+                        Source::createFromNormalized(['attribute' => 'cover_image', 'channel' => null, 'locale' => null]),
+                        Target::createFromNormalized(['attribute' => 'thumbnail', 'channel' => null, 'locale' => null]),
                         OperationCollection::create([
                             ThumbnailOperation::create(['width' => 100, 'height' => 80]),
                         ]),
@@ -838,8 +838,8 @@ class CreateOrUpdateAssetContext implements Context
             TransformationCollection::create([
                 Transformation::create(
                     TransformationLabel::fromString('label'),
-                    Source::createFromNormalized(['attribute' => 'main_image', 'channel'=> null, 'locale' => null]),
-                    Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
+                    Source::createFromNormalized(['attribute' => 'main_image', 'channel' => null, 'locale' => null]),
+                    Target::createFromNormalized(['attribute' => 'thumbnail', 'channel' => null, 'locale' => null]),
                     OperationCollection::create([
                         ThumbnailOperation::create(['width' => 100, 'height' => 80]),
                     ]),
@@ -916,7 +916,7 @@ class CreateOrUpdateAssetContext implements Context
         $this->attributeRepository->create($name);
     }
 
-    private function loadMediaFileAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order, string $filePath = null): void
+    private function loadMediaFileAttribute(string $assetFamilyIdentifier, string $code, string $label, int $order, string $filePath = null, string $filename = 'image.jpg'): void
     {
         $name = MediaFileAttribute::create(
             AttributeIdentifier::create($assetFamilyIdentifier, $code, 'fingerprint'),
@@ -936,7 +936,7 @@ class CreateOrUpdateAssetContext implements Context
         if (null !== $filePath) {
             $this->findFileData->save([
                 'filePath' => $filePath,
-                'originalFilename' => 'image.jpg',
+                'originalFilename' => $filename,
                 'size' => 128,
                 'mimeType' => 'image/jpeg',
                 'extension' => 'jpg',
