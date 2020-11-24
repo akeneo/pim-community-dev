@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Platform\Acceptance\Analytics\Query\Sql;
+namespace AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory;
 
 use Akeneo\Tool\Component\Analytics\ApiConnectionCountQuery;
 
