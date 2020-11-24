@@ -456,6 +456,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         $value1->getScopeCode()->willReturn(null);
         $value1->getAttributeCode()->willReturn('image');
         $value1->getData()->willReturn('empty_image');
+        $referenceData->getCode()->willReturn('reference');
 
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
         $valueFactory->create($referenceData, null, null, 'empty_image', true)->willThrow(
@@ -463,7 +464,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         );
 
         $logger->warning(
-            Argument::containingString('Tried to load a product value for attribute "image" that does not have the good type.')
+            Argument::containingString('Tried to load a product value for attribute "reference" that does not have the good type in database.')
         )->shouldBeCalled();
 
         $actualValues = $this->createFromStorageFormat($rawValues);
