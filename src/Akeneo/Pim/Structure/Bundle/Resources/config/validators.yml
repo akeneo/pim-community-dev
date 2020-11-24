@@ -87,7 +87,7 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
 
-    pim_catalog.validator.constraint.blaclisted_attribute_code:
+    pim_catalog.validator.constraint.blacklisted_attribute_code:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCodeValidator'
         arguments:
             - '@akeneo.pim.structure.query.is_attribute_code_blacklisted'
