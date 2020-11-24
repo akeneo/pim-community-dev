@@ -17,7 +17,7 @@ type Family = {
 
 type Props = {
   familyCode: string | null;
-}
+};
 
 const FamilyLabel = styled.span`
   text-transform: capitalize;

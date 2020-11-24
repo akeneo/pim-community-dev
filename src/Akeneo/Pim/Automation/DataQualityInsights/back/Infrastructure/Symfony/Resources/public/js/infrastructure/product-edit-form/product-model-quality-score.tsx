@@ -10,7 +10,7 @@ class ProductModelQualityScore extends BaseView {
   public render() {
     ReactDOM.render(
       <ThemeProvider theme={pimTheme}>
-        <QualityScoreBar currentScore={null}/>
+        <QualityScoreBar currentScore={null} />
       </ThemeProvider>,
       this.el
     );

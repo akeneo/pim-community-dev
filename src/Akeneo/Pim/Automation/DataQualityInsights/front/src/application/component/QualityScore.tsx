@@ -4,14 +4,18 @@ import styled, {css} from 'styled-components';
 type Props = {
   score: string;
   className?: string;
-}
+};
 
 const QualityScore: FC<Props> = ({score, className}) => {
-  if(score === 'N/A'){
-    return (<>N/A</>);
+  if (score === 'N/A') {
+    return <>N/A</>;
   }
 
-  return (<Container score={score} className={className}>{score}</Container>);
+  return (
+    <Container score={score} className={className}>
+      {score}
+    </Container>
+  );
 };
 
 const Container = styled.div<{score: string}>`
@@ -23,7 +27,7 @@ const Container = styled.div<{score: string}>`
   text-transform: uppercase;
   font-weight: bold;
   border-radius: 4px;
-  
+
   ${props => props.score === 'A' && AScore}
   ${props => props.score === 'B' && BScore}
   ${props => props.score === 'C' && CScore}

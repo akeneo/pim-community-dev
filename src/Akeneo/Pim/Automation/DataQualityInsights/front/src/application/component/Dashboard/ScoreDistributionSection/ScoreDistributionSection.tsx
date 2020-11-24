@@ -22,7 +22,7 @@ const showPlaceholder = (dataset: ScoreDistributionByDate | null) => {
 
 const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [chart, setChart] = useState<ReactElement|null>(null);
+  const [chart, setChart] = useState<ReactElement | null>(null);
   const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode);
 
   useEffect(() => {
@@ -33,8 +33,7 @@ const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, tim
     try {
       const formattedDataset = formatBackendRanksToVictoryFormat(dataset);
       setChart(<ScoreDistributionChartByTimePeriod dataset={formattedDataset} timePeriod={timePeriod} />);
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
     }
 

@@ -6,9 +6,7 @@ const QualityScoreProductHeader = () => {
   const {channel, locale} = useCatalogContext();
   const score = useFetchProductQualityScore(channel, locale);
 
-  return (
-    <QualityScoreBar currentScore={score ? score : null}/>
-  );
+  return <QualityScoreBar currentScore={score ? score : null} />;
 };
 
 export {QualityScoreProductHeader};
