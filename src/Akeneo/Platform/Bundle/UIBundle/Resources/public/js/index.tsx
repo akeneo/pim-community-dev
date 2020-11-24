@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useCallback, useState} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
@@ -8,10 +8,10 @@ const userContext = require('pim/user-context');
 const securityContext = require('pim/security-context');
 const initTranslator = require('pim/init-translator');
 const formBuilder = require('pim/form-builder');
-const router = require('pim/router');
+const controllerRegistry = require('pim/controller-registry');
 const $ = require('jquery');
-const Backbone = require('backbone');
-
+const routeMatcher = require('pim/route-matcher');
+const router = require('pim/router');
 //needed to have require available in twig files
 require('require-polyfill');
 
@@ -30,18 +30,47 @@ const Content = styled.div`
   height: 100vh;
 `;
 
+const Router = ({path}: {path: string}) => {
+  const pageRef = useRef<HTMLDivElement>(null);
+  let page = null;
+
+  useEffect(() => {
+    let cleanedPath = path;
+    if (cleanedPath.indexOf('/') !== 0) {
+      cleanedPath = '/' + cleanedPath;
+    }
+
+    if (cleanedPath.indexOf('|') !== -1) {
+      cleanedPath = cleanedPath.substring(0, cleanedPath.indexOf('|'));
+    }
+
+    (async () => {
+      const route = routeMatcher.match.apply(routeMatcher, [path]);
+      const controller = await controllerRegistry.get(route.name);
+      if (controller.class && null !== pageRef.current) {
+        router.setRoot(pageRef.current);
+        router.defaultRoute(path);
+      }
+    })();
+  }, [path]);
+
+  return (
+    <Content ref={pageRef} className="AknDefault-container">
+      {page}
+    </Content>
+  );
+};
+
 const App = ({formBuilder}: {formBuilder: any}) => {
   const menuRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  const initialize = async () => {
+  const initialize = useCallback(async () => {
     await Promise.all([
       fetcherRegistry.initialize(),
       dateContext.initialize(),
       userContext.initialize(),
       securityContext.initialize(),
     ]);
-    router.setRoot(containerRef.current);
     await initTranslator.fetch();
 
     formBuilder.build('pim-menu').then((view: any) => {
@@ -50,14 +79,20 @@ const App = ({formBuilder}: {formBuilder: any}) => {
         view.render();
       }
     });
+  }, []);
 
-    Backbone.history.start();
-  };
+  const [hash, setHash] = useState(window.location.hash);
+  const hashChange = useCallback(() => {
+    setHash(window.location.hash);
+  }, []);
 
   useEffect(() => {
     $(() => {
       initialize();
     });
+
+    window.addEventListener('hashchange', hashChange, false);
+    window.addEventListener('popstate', hashChange, false);
   }, []);
 
   return (
@@ -69,7 +104,7 @@ const App = ({formBuilder}: {formBuilder: any}) => {
       </div>
       <Container>
         <div ref={menuRef}></div>
-        <Content ref={containerRef} id="container" className="AknDefault-container"></Content>
+        <Router path={hash} />
       </Container>
       <div id="overlay" className="AknOverlay"></div>
       <div data-drop-zone="communication-channel-panel"></div>

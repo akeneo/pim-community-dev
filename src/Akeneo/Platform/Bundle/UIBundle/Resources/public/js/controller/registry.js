@@ -14,13 +14,12 @@ define(['jquery', 'require-context'], function ($, requireContext) {
      * @return {Promise}
      */
     get: function (name) {
-      var deferred = $.Deferred();
-      var controller = controllers[name] || defaultController;
-      var Controller = requireContext(controller.module);
-      controller.class = Controller;
-      deferred.resolve(controller);
-
-      return deferred.promise();
+      return new Promise(resolve => {
+        const controller = controllers[name] || defaultController;
+        const Controller = requireContext(controller.module);
+        controller.class = Controller;
+        resolve(controller);
+      })
     },
   };
 });

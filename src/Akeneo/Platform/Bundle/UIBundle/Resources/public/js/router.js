@@ -91,7 +91,7 @@ define([
       this.showLoadingMask();
       this.triggerStart(route);
 
-      ControllerRegistry.get(route.name).done(
+      ControllerRegistry.get(route.name).then(
         function (controller) {
           if (this.currentController) {
             this.currentController.remove();
@@ -237,7 +237,7 @@ define([
       }
 
       fragment = fragment.indexOf('#') === 0 ? fragment : '#' + fragment;
-      Backbone.history.navigate(fragment, options);
+      window.history.pushState({}, 'Akeneo PIM', fragment);
     },
 
     /**
