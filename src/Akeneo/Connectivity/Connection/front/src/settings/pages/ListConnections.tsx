@@ -1,13 +1,6 @@
 import React, {useEffect} from 'react';
 import {useHistory} from 'react-router';
-import {
-    ApplyButton,
-    Helper,
-    HelperLink,
-    HelperTitle,
-    PageContent,
-    PageHeader,
-} from '../../common';
+import {ApplyButton, Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';

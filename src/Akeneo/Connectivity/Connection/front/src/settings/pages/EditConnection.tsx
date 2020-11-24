@@ -2,13 +2,7 @@ import {Formik, FormikHelpers, useFormikContext} from 'formik';
 import React, {useEffect} from 'react';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
-import {
-    ApplyButton,
-    DropdownLink,
-    PageContent,
-    PageHeader,
-    SecondaryActionsDropdownButton,
-} from '../../common';
+import {ApplyButton, DropdownLink, PageContent, PageHeader, SecondaryActionsDropdownButton} from '../../common';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {Connection} from '../../model/connection';

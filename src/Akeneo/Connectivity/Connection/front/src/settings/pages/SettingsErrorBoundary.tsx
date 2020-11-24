@@ -18,7 +18,7 @@ const SettingsBreadcrumb = () => {
             </Breadcrumb.Step>
         </Breadcrumb>
     );
-}
+};
 
 export class SettingsErrorBoundary extends Component<unknown, {hasError: boolean}> {
     constructor(props: unknown) {

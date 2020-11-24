@@ -18,7 +18,7 @@ const AuditBreadcrumb = () => {
             </Breadcrumb.Step>
         </Breadcrumb>
     );
-}
+};
 
 export class AuditErrorBoundary extends Component<unknown, {hasError: boolean}> {
     constructor(props: unknown) {
