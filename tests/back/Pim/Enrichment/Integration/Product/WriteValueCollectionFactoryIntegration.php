@@ -14,7 +14,7 @@ class WriteValueCollectionFactoryIntegration extends TestCase
     /**
      * @dataProvider matrix
      */
-    public function test_if_product_values_with_wrong_attribute_type_are_skipped(string $attributeCode, $value, bool $skipped): void
+    public function test_if_product_values_with_wrong_attribute_type_are_skipped(string $attributeCode, $value, bool $isSkipped): void
     {
         /** @var Product $product */
         $product = $this->get('pim_catalog.builder.product')->createProduct('my_product', 'familyA');
@@ -45,7 +45,7 @@ SQL;
         /** @var WriteValueCollection $writeValueCollection */
         $writeValueCollection = $writeValueCollectionFactory->createFromStorageFormat($rawValues);
 
-        Assert::eq($skipped, !in_array($attributeCode, $writeValueCollection->getAttributeCodes()));
+        Assert::eq($isSkipped, !in_array($attributeCode, $writeValueCollection->getAttributeCodes()));
     }
 
     public function matrix(): array
