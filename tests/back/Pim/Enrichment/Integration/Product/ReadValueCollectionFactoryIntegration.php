@@ -63,6 +63,10 @@ SQL;
                 'base_data' => '10',
                 'base_unit' => 'SQUARE_METER',
             ], true],
+            ['a_metric', [
+                ['amount' => '10.00', 'currency' => 'EUR'],
+                ['amount' => null, 'currency' => 'USB'],
+            ], true],
             ['a_ref_data_multi_select', 'some_text', true],
             ['a_multi_select', 'some_text', true],
             ['a_file', 'some_text', true],
