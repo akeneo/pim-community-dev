@@ -18,6 +18,7 @@ use Akeneo\Test\Common\EntityBuilder as ProductModelBuilder;
 use Akeneo\Test\Common\EntityWithValue\Builder\Product as ProductBuilder;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -50,7 +51,7 @@ class ProductAndProductModelWithRemovedAttributeLoader
         AttributeBuilder $attributeBuilder,
         AttributeSaver $attributeSaver,
         AttributeRepository $attributeRepository,
-        BaseRemover $attributeRemover,
+        RemoverInterface $attributeRemover,
         ValidatorInterface $entityValidator,
         Client $productAndProductModelEsClient
     )
