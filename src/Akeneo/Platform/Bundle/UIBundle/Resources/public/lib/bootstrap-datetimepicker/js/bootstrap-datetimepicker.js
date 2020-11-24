@@ -980,7 +980,7 @@
             pattern: new RegExp(dateFormatComponents[component].getPattern(this)),
             property: dateFormatComponents[component].property,
             start: pos,
-            end: pos += component.length,
+            end: (pos += component.length),
           });
         } else {
           components.push(escapeRegExp(component));
