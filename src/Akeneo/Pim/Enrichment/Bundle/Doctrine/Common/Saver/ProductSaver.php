@@ -59,9 +59,9 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->persist($product);
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
-
         $product->cleanup();
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
     }
 
     /**
