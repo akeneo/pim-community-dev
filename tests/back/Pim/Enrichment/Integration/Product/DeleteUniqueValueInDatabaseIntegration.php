@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Common\EntityBuilder;
@@ -31,30 +32,6 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
         Assert::assertTrue((bool) $isValueExistingInUniqueTable, 'Unique value should exist in database.');
 
         $this->deleteUniqueValueForAttribute('name');
-
-        $isValueExistingInUniqueTable = $this
-            ->get('database_connection')
-            ->fetchColumn('SELECT EXISTS(SELECT * FROM pim_catalog_product_unique_data where attribute_id = :attribute_id)', [
-                'attribute_id' => $attributeId
-            ], 0);
-
-        Assert::assertFalse((bool) $isValueExistingInUniqueTable, 'Unique value is not deleted in pim_catalog_product_unique_data when deleting a product value.');
-    }
-
-    public function test_that_unique_value_is_deleted_in_database_when_values_are_set_at_null()
-    {
-        $attributeId = $this->createAttributeWithUniqueConstraint('name');
-        $this->createProductWithUniqueValue('name', 'my_unique_value');
-
-        $isValueExistingInUniqueTable = $this
-            ->get('database_connection')
-            ->fetchColumn('SELECT EXISTS(SELECT * FROM pim_catalog_product_unique_data WHERE attribute_id = :attribute_id)', [
-                'attribute_id' => $attributeId
-            ], 0);
-
-        Assert::assertTrue((bool) $isValueExistingInUniqueTable, 'Unique value should exist in database.');
-
-        $this->setUniqueValueAtNullForAttribute('name');
 
         $isValueExistingInUniqueTable = $this
             ->get('database_connection')
@@ -107,23 +84,13 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
         $this->get('pim_catalog.validator.unique_value_set')->reset();
     }
 
-    private function setUniqueValueAtNullForAttribute(string $attributeCode): void
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $product->getValues()->removeByAttributeCode($attributeCode);
-        $product->getValues()->add(ScalarValue::value('name', null));
-
-        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
-        $this->assertEquals(0, $constraintList->count());
-
-        $this->get('pim_catalog.saver.product')->save($product);
-    }
-
-
     private function deleteUniqueValueForAttribute(string $attributeCode): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
-        $product->getValues()->removeByAttributeCode($attributeCode);
+        $uniqueValue = $product->getValue($attributeCode);
+        if (null !== $uniqueValue) {
+            $product->removeValue($uniqueValue);
+        }
         $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
         $this->assertEquals(0, $constraintList->count());
 

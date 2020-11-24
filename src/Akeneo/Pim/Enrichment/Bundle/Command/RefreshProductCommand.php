@@ -81,7 +81,7 @@ class RefreshProductCommand extends Command
             $productsToSave[$product instanceof ProductModelInterface ? 'product_models' : 'products'][] = $product;
         }
 
-        $this->productSaver->saveAll($productsToSave['products']);
+        $this->productSaver->saveAll($productsToSave['products'], ['force_save' => true]);
         $this->productModelSaver->saveAll($productsToSave['product_models']);
 
         return 0;
