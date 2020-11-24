@@ -19,7 +19,6 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\Assert;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ValidatorBuilderInterface;
 
