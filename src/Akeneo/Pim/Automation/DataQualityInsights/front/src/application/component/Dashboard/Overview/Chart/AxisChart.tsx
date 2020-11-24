@@ -1,18 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {VictoryAxis, VictoryBar, VictoryChart, VictoryStack, VictoryTooltip} from 'victory';
 import {useGetDashboardChartScalingSizeRatio} from '../../../../../infrastructure/hooks';
-import Tooltip from './Tooltip';
+import {Tooltip} from './Tooltip';
 import {useTheme} from 'akeneo-design-system';
+import {ScoreDistributionChartDataset} from '../../../../../domain';
 
 const INITIAL_CHART_WIDTH = 1000;
 const INITIAL_CHART_HEIGHT = 268;
 
-interface AxisChartProps {
-  dataset: any;
+type Props = {
+  dataset: ScoreDistributionChartDataset;
   dateFormatCallback: {(date: string, index: number): string};
-}
+};
 
-const AxisChart = ({dataset, dateFormatCallback}: AxisChartProps) => {
+const AxisChart: FC<Props> = ({dataset, dateFormatCallback}) => {
   const theme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const {upScalingRatio, downScalingRatio} = useGetDashboardChartScalingSizeRatio(
@@ -47,8 +48,8 @@ const AxisChart = ({dataset, dateFormatCallback}: AxisChartProps) => {
         height={INITIAL_CHART_HEIGHT}
         width={INITIAL_CHART_WIDTH}
         padding={{top: 0, bottom: 65, left: 35, right: 0}}
-        domain={{ x: [0, 8], y: [0, 100] }}
-        domainPadding={{ x: 0, y: 12.5 }}
+        domain={{x: [0, 8], y: [0, 100]}}
+        domainPadding={{x: 0, y: 12.5}}
       >
         <VictoryAxis
           tickValues={dates}
@@ -100,7 +101,7 @@ const AxisChart = ({dataset, dateFormatCallback}: AxisChartProps) => {
                     flyoutComponent={
                       <Tooltip
                         y={30}
-                        data={dataset}
+                        dataset={dataset}
                         upScalingRatio={upScalingRatio}
                         downScalingRatio={downScalingRatio}
                       />
@@ -116,4 +117,4 @@ const AxisChart = ({dataset, dateFormatCallback}: AxisChartProps) => {
   );
 };
 
-export default AxisChart;
+export {AxisChart};

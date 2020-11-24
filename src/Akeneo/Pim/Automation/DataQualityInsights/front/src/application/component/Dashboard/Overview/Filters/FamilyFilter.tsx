@@ -1,12 +1,10 @@
-import React, {ChangeEvent, FunctionComponent, useEffect, useRef, useState} from 'react';
+import React, {ChangeEvent, FC, useEffect, useRef, useState} from 'react';
+import styled from 'styled-components';
 import useFetchFamilies from '../../../../../infrastructure/hooks/Dashboard/useFetchFamilies';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '../../../../constant';
-import styled from 'styled-components';
 import {debounce} from 'lodash';
 import {useDashboardContext} from '../../../../context/DashboardContext';
-
-const __ = require('oro/translator');
-const UserContext = require('pim/user-context');
+import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 
 type Labels = {
   [localeCode: string]: string;
@@ -17,7 +15,7 @@ type Family = {
   labels: Labels;
 };
 
-interface FamilyFilterProps {
+type Props = {
   familyCode: string | null;
 }
 
@@ -25,13 +23,16 @@ const FamilyLabel = styled.span`
   text-transform: capitalize;
 `;
 
-const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
+const FamilyFilter: FC<Props> = ({familyCode}) => {
   const [isFilterDisplayed, setIsFilterDisplayed] = useState(false);
   const [filteredFamilies, setFilteredFamilies] = useState<Family[]>([]);
   const [searchString, setSearchString] = useState(null);
   const {updateDashboardFilters} = useDashboardContext();
 
-  const uiLocale = UserContext.get('uiLocale');
+  const translate = useTranslate();
+  const userContext = useUserContext();
+
+  const uiLocale = userContext.get('uiLocale');
   let families: Family[] = useFetchFamilies(isFilterDisplayed, uiLocale);
   const ref = useRef(null);
 
@@ -84,7 +85,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
     };
   }, []);
 
-  let currentFamilyLabel = __('pim_common.all');
+  let currentFamilyLabel = translate('pim_common.all');
   if (familyCode !== null && Object.keys(families).length > 0) {
     const currentFamily: any = Object.values(families).find((family: any) => family.code === familyCode);
     currentFamilyLabel = currentFamily.labels[uiLocale];
@@ -93,7 +94,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
   return (
     <div className="AknFilterBox-filterContainer">
       <div className="AknFilterBox-filter" onClick={() => setIsFilterDisplayed(true)} data-testid={'dqiFamilyFilter'}>
-        <span className="AknFilterBox-filterLabel">{__('pim_enrich.entity.family.uppercase_label')}</span>
+        <span className="AknFilterBox-filterLabel">{translate('pim_enrich.entity.family.uppercase_label')}</span>
         <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
           <span> {currentFamilyLabel ? currentFamilyLabel : '[' + familyCode + ']'}</span>
           <span className="AknFilterBox-filterCaret" />
@@ -110,7 +111,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
             <div className="ui-multiselect-filter">
               <input
                 autoFocus={true}
-                placeholder={__('pim_enrich.entity.family.uppercase_label')}
+                placeholder={translate('pim_enrich.entity.family.uppercase_label')}
                 type="search"
                 onChange={(event: ChangeEvent<HTMLInputElement>) => {
                   event.persist();
@@ -123,7 +124,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
             {(searchString === '' || searchString === null) && (
               <li className={familyCode === null ? 'ui-state-active' : ''}>
                 <label onClick={() => handleClickFamily(null)} className={familyCode === null ? 'ui-state-active' : ''}>
-                  <FamilyLabel>{__('pim_common.all')}</FamilyLabel>
+                  <FamilyLabel>{translate('pim_common.all')}</FamilyLabel>
                 </label>
               </li>
             )}
@@ -150,4 +151,4 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
   );
 };
 
-export default FamilyFilter;
+export {FamilyFilter};

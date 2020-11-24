@@ -1,18 +1,18 @@
-import React, {FunctionComponent} from 'react';
+import React, {FC} from 'react';
 import {FlyoutProps} from 'victory';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {ScoreDistributionChartDataset} from '../../../../../domain';
 
-const __ = require('oro/translator');
-
-interface TooltipProps extends FlyoutProps {
+type Props = FlyoutProps & {
   datum?: {x: string; _group: number; _stack: number};
   x?: any;
   y: any;
-  data: any;
+  dataset: ScoreDistributionChartDataset;
   upScalingRatio: number;
   downScalingRatio: number;
-}
+};
 
-export const calculateAverageGrade = (data: any, datum: any) => {
+const calculateAverageGrade = (data: any, datum: any) => {
   const letterRankMap = new Map([
     [1, 'E'],
     [2, 'D'],
@@ -33,12 +33,14 @@ export const calculateAverageGrade = (data: any, datum: any) => {
   return letterRankMap.get(average);
 };
 
-const Tooltip: FunctionComponent<TooltipProps> = ({datum, x, y, data, upScalingRatio, downScalingRatio}) => {
+const Tooltip: FC<Props> = ({datum, x, y, dataset, upScalingRatio, downScalingRatio}) => {
+  const translate = useTranslate();
+
   if (datum === undefined || datum._stack === 6) {
     return <></>;
   }
 
-  const averageGrade = calculateAverageGrade(data, datum);
+  const averageGrade = calculateAverageGrade(dataset, datum);
 
   return (
     <g
@@ -54,30 +56,32 @@ const Tooltip: FunctionComponent<TooltipProps> = ({datum, x, y, data, upScalingR
               <ul className="AknMessageBox-list">
                 <li>
                   <span className="AknDataQualityInsightsRate AknDataQualityInsightsRate-A">A</span>
-                  <span className="rate-value">{Math.round(data['rank_1'][datum._group].y)}%</span>
+                  <span className="rate-value">{Math.round(dataset['rank_1'][datum._group].y)}%</span>
                 </li>
                 <li>
                   <span className="AknDataQualityInsightsRate AknDataQualityInsightsRate-B">B</span>
-                  <span className="rate-value">{Math.round(data['rank_2'][datum._group].y)}%</span>
+                  <span className="rate-value">{Math.round(dataset['rank_2'][datum._group].y)}%</span>
                 </li>
                 <li>
                   <span className="AknDataQualityInsightsRate AknDataQualityInsightsRate-C">C</span>
-                  <span className="rate-value">{Math.round(data['rank_3'][datum._group].y)}%</span>
+                  <span className="rate-value">{Math.round(dataset['rank_3'][datum._group].y)}%</span>
                 </li>
                 <li>
                   <span className="AknDataQualityInsightsRate AknDataQualityInsightsRate-D">D</span>
-                  <span className="rate-value">{Math.round(data['rank_4'][datum._group].y)}%</span>
+                  <span className="rate-value">{Math.round(dataset['rank_4'][datum._group].y)}%</span>
                 </li>
                 <li>
                   <span className="AknDataQualityInsightsRate AknDataQualityInsightsRate-E">E</span>
-                  <span className="rate-value">{Math.round(data['rank_5'][datum._group].y)}%</span>
+                  <span className="rate-value">{Math.round(dataset['rank_5'][datum._group].y)}%</span>
                 </li>
               </ul>
               <div className="AknHoverBox-footer">
                 <span className={`AknDataQualityInsightsRate AknDataQualityInsightsRate-${averageGrade}`}>
                   {averageGrade}
                 </span>
-                <span className="rate-value">{__(`akeneo_data_quality_insights.dqi_dashboard.average_grade`)}</span>
+                <span className="rate-value">
+                  {translate(`akeneo_data_quality_insights.dqi_dashboard.average_grade`)}
+                </span>
               </div>
             </div>
           </div>
@@ -87,4 +91,4 @@ const Tooltip: FunctionComponent<TooltipProps> = ({datum, x, y, data, upScalingR
   );
 };
 
-export default Tooltip;
+export {Tooltip, calculateAverageGrade};

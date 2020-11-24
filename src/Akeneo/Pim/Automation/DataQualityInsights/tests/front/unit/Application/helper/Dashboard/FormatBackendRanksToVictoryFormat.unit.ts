@@ -4,20 +4,18 @@ const dates = ['2020-01-30', '2020-01-31', '2020-02-01', '2020-02-02', '2020-02-
 
 describe('Dashboard convert backend ranks to Victory format', () => {
   test('An empty dataset should not return any ranks', () => {
-    expect(formatBackendRanksToVictoryFormat({}, 'consistency')).toMatchObject({});
+    expect(formatBackendRanksToVictoryFormat({})).toMatchObject({});
   });
 
   test('No axis rates should return data for only the rank 6', () => {
     const backendRanks = {
-      consistency: {
-        '2020-01-30': {},
-        '2020-01-31': {},
-        '2020-02-01': {},
-        '2020-02-02': {},
-        '2020-02-03': {},
-        '2020-02-04': {},
-        '2020-02-05': {},
-      },
+      '2020-01-30': {},
+      '2020-01-31': {},
+      '2020-02-01': {},
+      '2020-02-02': {},
+      '2020-02-03': {},
+      '2020-02-04': {},
+      '2020-02-05': {},
     };
     const rates0 = dates.map((date: string) => {
       return {x: date, y: 0};
@@ -33,56 +31,54 @@ describe('Dashboard convert backend ranks to Victory format', () => {
       rank_1: rates0,
       rank_6: rates100,
     };
-    const ranks = formatBackendRanksToVictoryFormat(backendRanks, 'consistency');
+    const ranks = formatBackendRanksToVictoryFormat(backendRanks);
     expect(ranks).toMatchObject(expectedConsistencyRanks);
   });
 
   test('No ranks for 1 day is handled correctly', () => {
     const backendRanks = {
-      consistency: {
-        '2020-01-30': {
-          rank_1: 10,
-          rank_2: 20,
-          rank_3: 30,
-          rank_4: 15,
-          rank_5: 25,
-        },
-        '2020-01-31': {
-          rank_1: 10,
-          rank_2: 20,
-          rank_3: 30,
-          rank_4: 15,
-          rank_5: 25,
-        },
-        '2020-02-01': {
-          rank_1: 10,
-          rank_2: 20,
-          rank_3: 30,
-          rank_4: 15,
-          rank_5: 25,
-        },
-        '2020-02-02': {
-          rank_1: 10,
-          rank_2: 20,
-          rank_3: 30,
-          rank_4: 15,
-          rank_5: 25,
-        },
-        '2020-02-03': {
-          rank_1: 10,
-          rank_2: 20,
-          rank_3: 30,
-          rank_4: 15,
-          rank_5: 25,
-        },
-        '2020-02-04': {},
-        '2020-02-05': {
-          rank_1: 10,
-          rank_2: 20,
-          rank_3: 30,
-          rank_4: 15,
-          rank_5: 25,
-        },
+      '2020-01-30': {
+        rank_1: 10,
+        rank_2: 20,
+        rank_3: 30,
+        rank_4: 15,
+        rank_5: 25,
+      },
+      '2020-01-31': {
+        rank_1: 10,
+        rank_2: 20,
+        rank_3: 30,
+        rank_4: 15,
+        rank_5: 25,
+      },
+      '2020-02-01': {
+        rank_1: 10,
+        rank_2: 20,
+        rank_3: 30,
+        rank_4: 15,
+        rank_5: 25,
+      },
+      '2020-02-02': {
+        rank_1: 10,
+        rank_2: 20,
+        rank_3: 30,
+        rank_4: 15,
+        rank_5: 25,
+      },
+      '2020-02-03': {
+        rank_1: 10,
+        rank_2: 20,
+        rank_3: 30,
+        rank_4: 15,
+        rank_5: 25,
+      },
+      '2020-02-04': {},
+      '2020-02-05': {
+        rank_1: 10,
+        rank_2: 20,
+        rank_3: 30,
+        rank_4: 15,
+        rank_5: 25,
       },
     };
     const expectedConsistencyRanks = {
@@ -141,7 +137,7 @@ describe('Dashboard convert backend ranks to Victory format', () => {
         {x: '2020-02-05', y: 0},
       ],
     };
-    const ranks = formatBackendRanksToVictoryFormat(backendRanks, 'consistency');
+    const ranks = formatBackendRanksToVictoryFormat(backendRanks);
     expect(ranks).toMatchObject(expectedConsistencyRanks);
   });
 });

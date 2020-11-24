@@ -1,22 +1,18 @@
-import React, {ReactElement, useEffect, useState} from 'react';
+import React, {FC, ReactElement, useEffect, useState} from 'react';
 import {isEmpty} from 'lodash';
 import {useFetchDqiDashboardData} from '../../../../infrastructure/hooks';
 import {formatBackendRanksToVictoryFormat} from '../../../helper/Dashboard';
-import Filters from './Filters';
-import Header from './Charts/Header';
-import EmptyChartPlaceholder from './Charts/EmptyChartPlaceholder';
-import TimePeriodAxisChart from './Charts/TimePeriodAxisChart';
+import {Header} from './Header';
+import {EmptyChartPlaceholder, Legend, TimePeriodAxisChart} from './Chart';
 import {ScoreDistributionByDate} from '../../../../domain';
 
-const __ = require('oro/translator');
-
-interface DataQualityOverviewChartProps {
+type Props = {
   catalogLocale: string;
   catalogChannel: string;
   timePeriod: string;
   familyCode: string | null;
   categoryCode: string | null;
-}
+};
 
 const showOverviewPlaceholder = (dataset: ScoreDistributionByDate | null) => {
   return (
@@ -24,13 +20,7 @@ const showOverviewPlaceholder = (dataset: ScoreDistributionByDate | null) => {
   );
 };
 
-const Overview = ({
-  catalogChannel,
-  catalogLocale,
-  timePeriod,
-  familyCode,
-  categoryCode,
-}: DataQualityOverviewChartProps) => {
+const Overview: FC<Props> = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [chart, setChart] = useState<ReactElement>();
   const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode);
@@ -52,15 +42,12 @@ const Overview = ({
 
   return (
     <>
-      <Filters timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode} />
+      <Header timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode} />
       {showOverviewPlaceholder(dataset) ? (
         <EmptyChartPlaceholder />
       ) : (
         <>
-          <Header
-            axisName={__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)}
-            displayLegend={true}
-          />
+          <Legend />
           <div className="AknDataQualityInsights-chart">
             {isLoading && <div className="AknLoadingMask" />}
             {chart}
