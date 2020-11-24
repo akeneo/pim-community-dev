@@ -169,7 +169,7 @@ class WriteValueCollectionFactory
                             $this->logger->warning(
                                 sprintf(
                                     'Tried to load a product value for attribute "%s" that does not have the ' .
-                                    'good type in database.',
+                                    'expected type in database.',
                                     $attribute->getCode()
                                 )
                             );

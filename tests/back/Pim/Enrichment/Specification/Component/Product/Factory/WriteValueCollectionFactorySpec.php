@@ -464,7 +464,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         );
 
         $logger->warning(
-            Argument::containingString('Tried to load a product value for attribute "reference" that does not have the good type in database.')
+            Argument::containingString('Tried to load a product value for attribute "reference" that does not have the expected type in database.')
         )->shouldBeCalled();
 
         $actualValues = $this->createFromStorageFormat($rawValues);
