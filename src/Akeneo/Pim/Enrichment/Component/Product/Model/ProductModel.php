@@ -847,6 +847,17 @@ class ProductModel implements ProductModelInterface
         $this->dirty = false;
     }
 
+    public function __clone()
+    {
+        $this->values = clone $this->values;
+        $this->categories = clone $this->categories;
+        $clonedAssociations = $this->associations->map(
+            fn (AssociationInterface $association): AssociationInterface => clone $association
+        );
+        $this->associations = $clonedAssociations;
+        $this->quantifiedAssociationCollection = clone $this->quantifiedAssociationCollection;
+    }
+
     /**
      * @param ProductModelInterface $entity
      * @param Collection            $associationsCollection
