@@ -16,7 +16,7 @@ define([
   'pim/form',
   'pim/template/grid/view-selector/create-view',
   'pim/template/form/creation/modal',
-  'pim/template/grid/view-selector/create-view-label-input',
+  'pim/template/grid/view-selector/create-view-inputs',
   'pim/datagrid/state',
   'pim/saver/datagrid-view',
   'oro/messenger',
@@ -42,6 +42,7 @@ define([
     events: {
       'click .create': 'promptCreateView',
     },
+    isPrivateView: true,
 
     /**
      * {@inheritdoc}
@@ -77,16 +78,14 @@ define([
         okText: __('pim_common.save'),
         okCloses: false,
         content: this.templateModalContent({
-          fields: this.templateInput({
-            placeholder: __('pim_datagrid.view_selector.placeholder'),
-            label: __('pim_datagrid.view_selector.choose_label'),
-          }),
+          fields: this.templateInput({__}),
         }),
       });
 
       modal.open();
 
       const $submitButton = modal.$el.find('.ok').addClass('AknButton--disabled');
+      const $typeSelector = modal.$el.find('.AknCreateView-typeSelector');
 
       modal.on('ok', this.saveView.bind(this, modal));
       modal.on(
@@ -109,6 +108,10 @@ define([
           $submitButton.trigger('click');
         }
       });
+      $typeSelector.on('click', () => {
+        $typeSelector.toggleClass('AknSelectButton--selected');
+        this.isPrivateView = !this.isPrivateView;
+      });
     },
 
     /**
@@ -127,6 +130,7 @@ define([
         filters: gridState.filters,
         columns: gridState.columns,
         label: modal.$('input[name="new-view-label"]').val(),
+        type: this.isPrivateView ? 'private' : 'public',
       };
 
       DatagridViewSaver.save(newView, this.getRoot().gridAlias)

@@ -2440,6 +2440,7 @@ class FixturesContext extends BaseFixturesContext
         $view->setFilters(urlencode($data['filters']));
         $view->setColumns($columns);
         $view->setOwner($this->getUser('Peter'));
+        $view->setType($data['type'] ?? DatagridView::TYPE_PUBLIC);
 
         $this->validate($view);
         $this->getContainer()->get('pim_datagrid.saver.datagrid_view')->save($view);
