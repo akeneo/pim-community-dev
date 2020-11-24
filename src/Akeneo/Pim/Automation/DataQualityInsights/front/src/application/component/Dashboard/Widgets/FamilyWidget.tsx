@@ -4,7 +4,6 @@ import useFetchWidgetFamilies from '../../../../infrastructure/hooks/Dashboard/u
 import useFetchFamiliesByCodes from '../../../../infrastructure/hooks/Dashboard/useFetchFamiliesByCodes';
 import Family from '../../../../domain/Family.interface';
 import {Ranks} from '../../../../domain/Rate.interface';
-import Rate from '@akeneo-pim-community/data-quality-insights/src/application/component/Rate';
 import FamilyModal from './FamilyModal';
 import {uniq as _uniq} from 'lodash';
 import {redirectToProductGridFilteredByFamily} from '../../../../infrastructure/ProductGridRouter';
@@ -12,6 +11,7 @@ import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge'
 import {SeeInGrid} from './SeeInGrid';
 import {RemoveItem} from './RemoveItem';
 import {AddItem} from './AddItem';
+import {QualityScore} from '../../QualityScore';
 
 const MAX_WATCHED_FAMILIES = 20;
 const LOCAL_STORAGE_KEY = 'data-quality-insights:dashboard:widgets:families';
@@ -144,7 +144,7 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
                       {family && (family.labels[uiLocale] ? family.labels[uiLocale] : '[' + family.code + ']')}
                     </td>
                     <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
-                      <Rate value={averageScoreRank ? Ranks[averageScoreRank] : null} />
+                      <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : null} />
                     </td>
                     <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
                       <SeeInGrid

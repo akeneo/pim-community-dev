@@ -1,6 +1,5 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import useFetchWidgetCategories from '../../../../infrastructure/hooks/Dashboard/useFetchWidgetCategories';
-import Rate from '@akeneo-pim-community/data-quality-insights/src/application/component/Rate';
 import {Ranks} from '../../../../domain/Rate.interface';
 import CategoryModal from '../CategoryModal/CategoryModal';
 import {uniqBy as _uniqBy, xorBy as _xorBy} from 'lodash';
@@ -10,6 +9,7 @@ import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {SeeInGrid} from './SeeInGrid';
 import {RemoveItem} from './RemoveItem';
 import {AddItem} from './AddItem';
+import {QualityScore} from '../../QualityScore';
 
 const MAX_WATCHED_CATEGORIES = 20;
 const LOCAL_STORAGE_KEY = 'data-quality-insights:dashboard:widgets:categories';
@@ -149,7 +149,7 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
                       {category.label ? category.label : '[' + category.code + ']'}
                     </td>
                     <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
-                      <Rate value={averageScoreRank ? Ranks[averageScoreRank] : null} />
+                      <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : null} />
                     </td>
                     <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
                       <SeeInGrid
