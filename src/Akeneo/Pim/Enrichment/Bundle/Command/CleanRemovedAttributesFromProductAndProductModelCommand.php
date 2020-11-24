@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
-use Akeneo\Pim\Enrichment\Bundle\Product\RemoveAttributesValuesFromProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesRemover\CleanValuesOfRemovedAttributesInterface;
@@ -30,27 +29,18 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 {
     protected static $defaultName = 'pim:product:clean-removed-attributes';
 
-    /** @var EntityManagerClearerInterface */
-    private $entityManagerClearer;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
-    /** @var string */
-    private $kernelRootDir;
-
-    /** @var int */
-    private $productBatchSize;
-
-    /** @var CleanValuesOfRemovedAttributesInterface|null */
-    private $cleanValuesOfRemovedAttributes;
+    private EntityManagerClearerInterface $entityManagerClearer;
+    private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
+    private string $kernelRootDir;
+    private int $productBatchSize;
+    private ?CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes;
 
     public function __construct(
         EntityManagerClearerInterface $entityManagerClearer,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         string $kernelRootDir,
         int $productBatchSize,
-        CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes = null
+        CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes
     ) {
         parent::__construct();
 
@@ -76,14 +66,11 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // TODO @merge master Remove this condition
-        if (null !== $this->cleanValuesOfRemovedAttributes) {
-            $attributesCodes = $input->getArgument('attributes');
+        $attributesCodes = $input->getArgument('attributes');
 
-            if (!empty($attributesCodes)) {
-                $this->cleanValues($attributesCodes, $input, $output);
-                return;
-            }
+        if (!empty($attributesCodes)) {
+            $this->cleanValues($attributesCodes, $input, $output);
+            return 0;
         }
 
         $io = new SymfonyStyle($input, $output);
@@ -118,13 +105,6 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         return 0;
     }
 
-    /**
-     * Get products
-     *
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     *
-     * @return CursorInterface
-     */
     private function getProducts(ProductQueryBuilderFactoryInterface $pqbFactory): CursorInterface
     {
         $pqb = $pqbFactory->create();
@@ -134,13 +114,6 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
     /**
      * Iterate over given products to launch clean commands
-     *
-     * @param  CursorInterface               $products
-     * @param  ProgressBar                   $progressBar
-     * @param  int                           $productBatchSize
-     * @param  EntityManagerClearerInterface $cacheClearer
-     * @param  string                        $env
-     * @param  string                        $rootDir
      */
     private function cleanProducts(
         CursorInterface $products,
@@ -174,10 +147,6 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
     /**
      * Lanches the clean command on given ids
-     *
-     * @param array  $productIds
-     * @param string $env
-     * @param string $rootDir
      */
     private function launchCleanTask(array $productIds, string $env, string $rootDir)
     {
