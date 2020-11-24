@@ -1,8 +1,12 @@
-import {dateContext} from 'pimui/js/date-context';
+'use strict';
 
 /* global define */
-define(['jquery', 'underscore', 'oro/datafilter/date-filter'], function ($, _, DateFilter) {
-  'use strict';
+define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'pimui/js/date-context'], function (
+  $,
+  _,
+  DateFilter,
+  {dateContext}
+) {
   /**
    * Datetime filter: filter type as option + interval begin and end dates
    *

@@ -1,5 +1,4 @@
 'use strict';
-import {dateContext} from 'pimui/js/date-context';
 
 /**
  * Format a date according to specified format.
@@ -9,7 +8,7 @@ import {dateContext} from 'pimui/js/date-context';
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'datepicker'], function ($, _, Datepicker) {
+define(['jquery', 'underscore', 'datepicker', 'pimui/js/date-context'], function ($, _, Datepicker, {dateContext}) {
   return {
     /**
      * Date widget options

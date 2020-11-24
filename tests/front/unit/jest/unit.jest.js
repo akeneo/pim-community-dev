@@ -25,7 +25,7 @@ const unitConfig = {
   moduleNameMapper: {
     '^require-context$': `${__dirname}/../../../../frontend/webpack/require-context.js`,
     '^module-registry$': `${__dirname}/../../../../public/js/module-registry.js`,
-    'pim/fetcher-registry': '<rootDir>/public/bundles/pimui/js/fetcher/fetcher-registry.js',
+    'pim/fetcher-registry': '<rootDir>/public/bundles/pimui/js/fetcher/fetcher-registry.ts',
     'pim/router': '<rootDir>/public/bundles/pimui/js/router.js',
     routing: '<rootDir>/public/bundles/pimui/js/fos-routing-wrapper.js',
     routes: '<rootDir>/public/js/routes.js',

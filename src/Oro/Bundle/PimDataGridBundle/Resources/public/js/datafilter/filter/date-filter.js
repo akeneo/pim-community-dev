@@ -1,4 +1,4 @@
-import {dateContext} from 'pimui/js/date-context';
+'use strict';
 
 /* global define */
 define([
@@ -9,9 +9,8 @@ define([
   'datepicker',
   'pim/formatter/date',
   'pim/template/datagrid/filter/date-filter',
-], function ($, _, __, ChoiceFilter, Datepicker, DateFormatter, template) {
-  'use strict';
-
+  'pimui/js/date-context',
+], function ($, _, __, ChoiceFilter, Datepicker, DateFormatter, template, {dateContext}) {
   /**
    * Date filter: filter type as option + interval begin and end dates
    *

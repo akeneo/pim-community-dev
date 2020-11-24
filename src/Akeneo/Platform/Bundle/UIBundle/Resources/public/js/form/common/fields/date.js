@@ -1,6 +1,4 @@
-'use strict'
-
-import {dateContext} from 'pimui/js/date-context';
+'use strict';
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -15,7 +13,8 @@ define([
   'datepicker',
   'pim/formatter/date',
   'pim/template/form/common/fields/date',
-], function ($, _, BaseField, Datepicker, DateFormatter, template) {
+  'pimui/js/date-context',
+], function ($, _, BaseField, Datepicker, DateFormatter, template, {dateContext}) {
   return BaseField.extend({
     events: {
       'change input': function (event) {

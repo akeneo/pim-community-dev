@@ -1,7 +1,5 @@
 'use strict';
 
-import {dateContext} from 'pimui/js/date-context';
-
 define([
   'jquery',
   'underscore',
@@ -15,6 +13,7 @@ define([
   'jquery.select2',
   'datepicker',
   'pim/formatter/date',
+  'pimui/js/date-context',
 ], function (
   $,
   _,
@@ -27,7 +26,8 @@ define([
   i18n,
   initSelect2,
   Datepicker,
-  DateFormatter
+  DateFormatter,
+  {dateContext}
 ) {
   return BaseFilter.extend({
     shortname: 'updated',
