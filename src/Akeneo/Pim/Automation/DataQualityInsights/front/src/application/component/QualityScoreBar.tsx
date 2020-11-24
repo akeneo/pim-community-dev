@@ -45,7 +45,7 @@ const Container = styled.div<Props>`
 `;
 
 const NoScoreStyle = css`
-  opacity: 0.7;
+  opacity: 0.3;
 `;
 
 const SelectedScore = styled(QualityScore)`
