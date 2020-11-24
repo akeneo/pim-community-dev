@@ -729,7 +729,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         return null !== $this->getParent();
     }
 
-    public function wasUpdated(): bool
+    public function isDirty(): bool
     {
         return true;
     }
