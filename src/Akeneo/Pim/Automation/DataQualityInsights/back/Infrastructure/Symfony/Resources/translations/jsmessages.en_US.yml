@@ -125,6 +125,7 @@ akeneo_data_quality_insights:
     product_edit_form:
         attribute_filter:
             all_missing_attributes: All missing attributes
+        back_to_products: Back to products
 
     attribute_group:
         helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups activated on data quality.
@@ -146,3 +147,4 @@ akeneo_data_quality_insights:
 
 pim_title:
     akeneo_data_quality_insights_dashboard: Data Quality Insights
+
