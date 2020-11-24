@@ -87,6 +87,13 @@ CREATE TABLE pim_data_quality_insights_attribute_group_activation (
     activated TINYINT NOT NULL,
     updated_at DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE pim_data_quality_insights_dashboard_scores_projection (
+    type VARCHAR(15) NOT NULL,
+    code VARCHAR(100) NOT NULL,
+    scores JSON NOT NULL,
+    PRIMARY KEY (type, code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 
         $this->dbalConnection->executeQuery($query);

@@ -18,35 +18,15 @@ use PhpSpec\ObjectBehavior;
 
 final class RanksDistributionCollectionSpec extends ObjectBehavior
 {
-    public function it_throws_an_exception_if_the_ranks_per_channel_are_malformed()
-    {
-        $this->beConstructedWith([
-            "consistency" => null,
-            "enrichment" => [
-              "ecommerce" => [
-                  "en_US" => [
-                      "rank_1" => 33,
-                  ]
-              ]
-            ]
-        ]);
-
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
     public function it_throws_an_exception_if_the_ranks_per_locale_are_malformed()
     {
         $this->beConstructedWith([
-            "consistency" => [
-              "mobile" => null,
+            "mobile" => null,
+            "ecommerce" => [
+                "en_US" => [
+                  "rank_1" => 33,
+                ]
             ],
-            "enrichment" => [
-              "ecommerce" => [
-                  "en_US" => [
-                      "rank_1" => 33,
-                  ]
-              ]
-            ]
         ]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
@@ -55,18 +35,14 @@ final class RanksDistributionCollectionSpec extends ObjectBehavior
     public function it_throws_an_exception_if_the_ranks_are_malformed()
     {
         $this->beConstructedWith([
-            "consistency" => [
-              "mobile" => [
-                  "en_US" => null,
-              ],
+            "mobile" => [
+                "en_US" => null,
             ],
-            "enrichment" => [
-              "ecommerce" => [
-                  "en_US" => [
-                      "rank_1" => 33,
-                  ]
-              ]
-            ]
+            "ecommerce" => [
+                "en_US" => [
+                    "rank_1" => 33,
+                ],
+            ],
         ]);
 
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
@@ -75,39 +51,23 @@ final class RanksDistributionCollectionSpec extends ObjectBehavior
     public function it_returns_the_average_ranks()
     {
         $this->beConstructedWith([
-            "consistency" => [
-              "mobile" => [
-                  "en_US" => [
-                      'rank_1' => 10,
-                      'rank_2' => 42,
-                      'rank_3' => 5,
-                  ],
-                  "fr_FR" => [
-                      "rank_3" => 33,
-                  ]
-              ],
+            "mobile" => [
+                "en_US" => [
+                    'rank_1' => 10,
+                    'rank_2' => 42,
+                    'rank_3' => 5,
+                ],
+                "fr_FR" => [
+                    "rank_3" => 33,
+                ]
             ],
-            "enrichment" => [
-              "ecommerce" => [
-                  "en_US" => [
-                      "rank_1" => 33,
-                  ]
-              ]
-            ]
         ]);
 
         $this->getAverageRanks()->shouldBeLike([
-            "consistency" => [
-              "mobile" => [
-                  "en_US" => Rank::fromString('rank_2'),
-                  "fr_FR" => Rank::fromString('rank_3'),
-              ],
+            "mobile" => [
+                "en_US" => Rank::fromString('rank_2'),
+                "fr_FR" => Rank::fromString('rank_3'),
             ],
-            "enrichment" => [
-              "ecommerce" => [
-                  "en_US" => Rank::fromString('rank_1'),
-              ]
-            ]
         ]);
     }
 }
