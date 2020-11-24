@@ -7,13 +7,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Types\Type;
 use Webmozart\Assert\Assert;
 
 class WriteValueCollectionFactoryIntegration extends TestCase
 {
     /**
-     * @test
      * @dataProvider matrix
      */
     public function test_if_product_values_with_wrong_attribute_type_are_skipped(string $attributeCode, $value, bool $skipped): void

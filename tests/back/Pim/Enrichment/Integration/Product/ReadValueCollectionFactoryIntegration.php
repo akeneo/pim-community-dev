@@ -3,10 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -14,7 +12,6 @@ use Webmozart\Assert\Assert;
 class ReadValueCollectionFactoryIntegration extends TestCase
 {
     /**
-     * @test
      * @dataProvider matrix
      */
     public function test_if_product_values_with_wrong_attribute_type_are_skipped(string $attributeCode, $value, bool $skipped): void
