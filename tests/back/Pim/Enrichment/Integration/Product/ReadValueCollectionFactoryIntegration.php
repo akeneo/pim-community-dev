@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Webmozart\Assert\Assert;
 
 class ReadValueCollectionFactoryIntegration extends TestCase
 {
@@ -22,7 +21,7 @@ class ReadValueCollectionFactoryIntegration extends TestCase
         $readValueCollectionFactory = $this->get('akeneo.pim.enrichment.factory.read.value_collection');
         $readValueCollection = $readValueCollectionFactory->createFromStorageFormat($rawValues);
 
-        Assert::eq($isSkipped, !in_array($attributeCode, $readValueCollection->getAttributeCodes()));
+        $this->assertEquals($isSkipped, !in_array($attributeCode, $readValueCollection->getAttributeCodes()));
     }
 
     public function matrix(): array

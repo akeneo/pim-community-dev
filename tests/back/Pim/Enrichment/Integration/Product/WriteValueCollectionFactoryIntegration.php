@@ -6,7 +6,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Webmozart\Assert\Assert;
 
 class WriteValueCollectionFactoryIntegration extends TestCase
 {
@@ -22,7 +21,7 @@ class WriteValueCollectionFactoryIntegration extends TestCase
         $writeValueCollectionFactory = $this->get('pim_catalog.factory.value_collection');
         $writeValueCollection = $writeValueCollectionFactory->createFromStorageFormat($rawValues);
 
-        Assert::eq($isSkipped, !in_array($attributeCode, $writeValueCollection->getAttributeCodes()));
+        $this->assertEquals($isSkipped, !in_array($attributeCode, $writeValueCollection->getAttributeCodes()));
     }
 
     public function matrix(): array
