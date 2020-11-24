@@ -10,9 +10,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 
 class AssociationFieldAdderSpec extends ObjectBehavior
@@ -102,18 +104,27 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productRepository,
         MissingAssociationAdder $missingAssociationAdder,
         ProductInterface $product,
+        AssociationTypeInterface $associationType,
         AssociationInterface $xsellAssociation,
         ProductInterface $associated1,
         ProductInterface $associated2
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $associationType->getCode()->willReturn('X_SELL');
+        $xsellAssociation->getAssociationType()->willReturn($associationType);
+
+        $associations = new ArrayCollection([
+            $xsellAssociation->getWrappedObject(),
+        ]);
+        $product->getAssociations()->willReturn($associations);
 
         $productRepository->findOneByIdentifier('associated_1')->willReturn($associated1);
         $productRepository->findOneByIdentifier('associated_2')->willReturn($associated2);
 
-        $product->getAssociationForTypeCode('X_SELL')->willReturn($xsellAssociation);
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $xsellAssociation->addProduct($associated1)->shouldBeCalled();
         $xsellAssociation->addProduct($associated2)->shouldBeCalled();
+
+        $product->setAssociations($associations)->shouldBeCalled();
 
         $data = [
             'X_SELL' => [
@@ -128,18 +139,26 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productModelRepository,
         MissingAssociationAdder $missingAssociationAdder,
         ProductInterface $product,
+        AssociationTypeInterface $associationType,
         AssociationInterface $xsellAssociation,
         ProductModelInterface $model1,
         ProductModelInterface $model2
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $associationType->getCode()->willReturn('X_SELL');
+        $xsellAssociation->getAssociationType()->willReturn($associationType);
+
+        $associations = new ArrayCollection([
+            $xsellAssociation->getWrappedObject(),
+        ]);
+        $product->getAssociations()->willReturn($associations);
 
         $productModelRepository->findOneByIdentifier('model_1')->willReturn($model1);
         $productModelRepository->findOneByIdentifier('model_2')->willReturn($model2);
 
-        $product->getAssociationForTypeCode('X_SELL')->willReturn($xsellAssociation);
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $xsellAssociation->addProductModel($model1)->shouldBeCalled();
         $xsellAssociation->addProductModel($model2)->shouldBeCalled();
+        $product->setAssociations($associations)->shouldBeCalled()->willReturn($product);
 
         $data = [
             'X_SELL' => [
@@ -154,18 +173,28 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
         ProductInterface $product,
+        AssociationTypeInterface $associationType,
         AssociationInterface $xsellAssociation,
         GroupInterface $blackFriday,
         GroupInterface $halloween
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $associationType->getCode()->willReturn('X_SELL');
+        $xsellAssociation->getAssociationType()->willReturn($associationType);
+
+        $associations = new ArrayCollection([
+            $xsellAssociation->getWrappedObject(),
+        ]);
+        $product->getAssociations()->willReturn($associations);
+
 
         $groupRepository->findOneByIdentifier('black_friday')->willReturn($blackFriday);
         $groupRepository->findOneByIdentifier('halloween')->willReturn($halloween);
 
-        $product->getAssociationForTypeCode('X_SELL')->willReturn($xsellAssociation);
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $xsellAssociation->addGroup($blackFriday)->shouldBeCalled();
         $xsellAssociation->addGroup($halloween)->shouldBeCalled();
+
+        $product->setAssociations($associations)->shouldBeCalled()->willReturn($product);
 
         $data = [
             'X_SELL' => [
@@ -182,7 +211,9 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
         ProductInterface $product,
+        AssociationTypeInterface $xsellType,
         AssociationInterface $xsellAssociation,
+        AssociationTypeInterface $upsellType,
         AssociationInterface $upsellAssociation,
         ProductInterface $assocProductOne,
         ProductInterface $assocProductTwo,
@@ -193,10 +224,16 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         GroupInterface $assocGroupOne,
         GroupInterface $assocGroupTwo
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $xsellType->getCode()->willReturn('xsell');
+        $xsellAssociation->getAssociationType()->willReturn($xsellType);
+        $upsellType->getCode()->willReturn('upsell');
+        $upsellAssociation->getAssociationType()->willReturn($upsellType);
 
-        $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-        $product->getAssociationForTypeCode('upsell')->willReturn($upsellAssociation);
+        $associations = new ArrayCollection([
+            $xsellAssociation->getWrappedObject(),
+            $upsellAssociation->getWrappedObject(),
+        ]);
+        $product->getAssociations()->willReturn($associations);
 
         $productRepository->findOneByIdentifier('assocProductOne')->willReturn($assocProductOne);
         $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
@@ -209,6 +246,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('assocGroupOne')->willReturn($assocGroupOne);
         $groupRepository->findOneByIdentifier('assocGroupTwo')->willReturn($assocGroupTwo);
 
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $xsellAssociation->addProduct($assocProductOne)->shouldBeCalled();
         $xsellAssociation->addProduct($assocProductTwo)->shouldBeCalled();
         $xsellAssociation->addGroup($assocGroupOne)->shouldBeCalled();
@@ -218,6 +256,8 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $upsellAssociation->addProduct($assocProductThree)->shouldBeCalled();
         $upsellAssociation->addProductModel($assocProductModelThree)->shouldBeCalled();
         $upsellAssociation->addGroup($assocGroupTwo)->shouldBeCalled();
+
+        $product->setAssociations($associations)->shouldBeCalled()->willReturn($product);
 
         $this->addFieldData(
             $product,
@@ -238,18 +278,23 @@ class AssociationFieldAdderSpec extends ObjectBehavior
     }
 
     function it_adds_association_field_even_when_the_association_type_code_is_a_string_representing_an_integer(
-        $productRepository,
-        $groupRepository,
-        $missingAssociationAdder,
+        IdentifiableObjectRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $groupRepository,
+        MissingAssociationAdder $missingAssociationAdder,
         ProductInterface $product,
+        AssociationTypeInterface $associationType,
         AssociationInterface $assoc666,
         ProductInterface $assocProductOne,
         ProductInterface $assocProductTwo,
         GroupInterface $assocGroupOne,
         GroupInterface $assocGroupTwo
     ) {
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('666')->willReturn($assoc666);
+        $associationType->getCode()->willReturn('666');
+        $assoc666->getAssociationType()->willReturn($associationType);
+        $associations = new ArrayCollection([
+            $assoc666->getWrappedObject(),
+        ]);
+        $product->getAssociations()->willReturn($associations);
 
         $productRepository->findOneByIdentifier('assocProductOne')->willReturn($assocProductOne);
         $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
@@ -257,9 +302,12 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('assocGroupOne')->willReturn($assocGroupOne);
         $groupRepository->findOneByIdentifier('assocGroupTwo')->willReturn($assocGroupTwo);
 
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $assoc666->addProduct($assocProductOne)->shouldBeCalled();
         $assoc666->addProduct($assocProductTwo)->shouldBeCalled();
         $assoc666->addGroup($assocGroupOne)->shouldBeCalled();
+
+        $product->setAssociations($associations)->shouldBeCalled()->willReturn($product);
 
         $this->addFieldData(
             $product,
@@ -275,12 +323,11 @@ class AssociationFieldAdderSpec extends ObjectBehavior
     }
 
     function it_fails_if_one_of_the_association_type_code_does_not_exist(
-        $missingAssociationAdder,
+        MissingAssociationAdder $missingAssociationAdder,
         ProductInterface $product
     ) {
-        $product->getAssociations()->willReturn([]);
+        $product->getAssociations()->willReturn(new ArrayCollection());
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('non valid association type code')->willReturn(null);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -301,12 +348,15 @@ class AssociationFieldAdderSpec extends ObjectBehavior
     }
 
     function it_fails_if_one_of_the_associated_product_does_not_exist(
-        $missingAssociationAdder,
-        $productRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        IdentifiableObjectRepositoryInterface $productRepository,
         ProductInterface $product,
+        AssociationTypeInterface $associationType,
         AssociationInterface $xsellAssociation
     ) {
-        $product->getAssociations()->willReturn([$xsellAssociation]);
+        $associationType->getCode()->willReturn('xsell');
+        $xsellAssociation->getAssociationType()->willReturn($associationType);
+        $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
 
@@ -331,12 +381,15 @@ class AssociationFieldAdderSpec extends ObjectBehavior
     }
 
     function it_fails_if_one_of_the_associated_group_does_not_exist(
-        $missingAssociationAdder,
-        $groupRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        IdentifiableObjectRepositoryInterface $groupRepository,
         ProductInterface $product,
+        AssociationTypeInterface $associationType,
         AssociationInterface $xsellAssociation
     ) {
-        $product->getAssociations()->willReturn([$xsellAssociation]);
+        $associationType->getCode()->willReturn('xsell');
+        $xsellAssociation->getAssociationType()->willReturn($associationType);
+        $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
         $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
 
