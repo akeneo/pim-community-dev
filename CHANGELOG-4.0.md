@@ -1,5 +1,22 @@
 # 4.0.x
 
+# 4.0.73 (2020-11-23)
+
+## Bug fixes
+
+- PIM-9565: Fix StandardToFlat boolean value converter
+- PIM-9550: Add attribute codes as an argument to the command "pim:product:clean-removed-attributes"
+
+# 4.0.72 (2020-11-16)
+
+# 4.0.71 (2020-11-12)
+
+# 4.0.70 (2020-11-09)
+
+## Bug fixes
+
+- PIM-9555: Fix PurgeJobExecutionCommand with 0 day option
+
 # 4.0.69 (2020-11-05)
 
 # 4.0.68 (2020-10-30)

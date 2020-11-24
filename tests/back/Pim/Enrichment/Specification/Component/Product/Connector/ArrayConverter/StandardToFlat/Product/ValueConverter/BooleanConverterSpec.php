@@ -20,9 +20,13 @@ class BooleanConverterSpec extends ObjectBehavior
         $columnsResolver->resolveFlatAttributeName('auto_lock', 'de_DE', null)
             ->willReturn('auto_lock-de_DE');
 
+        $columnsResolver->resolveFlatAttributeName('auto_lock', 'en_US', null)
+            ->willReturn('auto_lock-en_US');
+
         $expected = [
             'auto_lock-fr_FR' => '1',
             'auto_lock-de_DE' => '0',
+            'auto_lock-en_US' => '',
         ];
 
         $data = [
@@ -35,6 +39,11 @@ class BooleanConverterSpec extends ObjectBehavior
                 'locale' => 'de_DE',
                 'scope'  => null,
                 'data'   => false,
+            ],
+            [
+                'locale' => 'en_US',
+                'scope' => null,
+                'data' => null,
             ],
         ];
 

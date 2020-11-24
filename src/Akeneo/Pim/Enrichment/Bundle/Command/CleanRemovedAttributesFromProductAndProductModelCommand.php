@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
+use Akeneo\Pim\Enrichment\Bundle\Product\RemoveAttributesValuesFromProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesRemover\CleanValuesOfRemovedAttributesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -39,11 +42,15 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     /** @var int */
     private $productBatchSize;
 
+    /** @var CleanValuesOfRemovedAttributesInterface|null */
+    private $cleanValuesOfRemovedAttributes;
+
     public function __construct(
         EntityManagerClearerInterface $entityManagerClearer,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         string $kernelRootDir,
-        int $productBatchSize
+        int $productBatchSize,
+        CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes = null
     ) {
         parent::__construct();
 
@@ -51,6 +58,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->kernelRootDir = $kernelRootDir;
         $this->productBatchSize = $productBatchSize;
+        $this->cleanValuesOfRemovedAttributes = $cleanValuesOfRemovedAttributes;
     }
 
     /**
@@ -59,7 +67,8 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Removes all values of deleted attributes on all products and product models');
+            ->setDescription('Removes all values of deleted attributes on all products and product models')
+            ->addArgument('attributes', InputArgument::OPTIONAL | InputArgument::IS_ARRAY);
     }
 
     /**
@@ -67,6 +76,16 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        // TODO @merge master Remove this condition
+        if (null !== $this->cleanValuesOfRemovedAttributes) {
+            $attributesCodes = $input->getArgument('attributes');
+
+            if (!empty($attributesCodes)) {
+                $this->cleanValues($attributesCodes, $input, $output);
+                return;
+            }
+        }
+
         $io = new SymfonyStyle($input, $output);
         $env = $input->getOption('env');
 
@@ -165,5 +184,60 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:product:refresh', sprintf('--env=%s', $env), implode(',', $productIds)]);
         $process->setTimeout(null);
         $process->run();
+    }
+
+    private function cleanValues(
+        array $attributesCodes,
+        InputInterface $input,
+        OutputInterface $output
+    ): void {
+        $this->cleanValuesOfRemovedAttributes->validateRemovedAttributesCodes($attributesCodes);
+
+        $countProducts = $this->cleanValuesOfRemovedAttributes->countProductsWithRemovedAttribute($attributesCodes);
+        $countProductModels = $this->cleanValuesOfRemovedAttributes->countProductModelsWithRemovedAttribute($attributesCodes);
+        $countProductVariants = $this->cleanValuesOfRemovedAttributes->countProductsAndProductModelsWithInheritedRemovedAttribute($attributesCodes);
+
+        if (0 === $countProducts + $countProductModels) {
+            $output->writeln('There is no product with those attributes.');
+            return;
+        }
+
+        $io = new SymfonyStyle($input, $output);
+        $io->title('Clean removed attributes values');
+
+        $confirmMessage = sprintf(
+            "This command will remove the values of the attributes: \n ".
+            "%s".
+            "This will update: \n".
+            " - %d product model(s) (and %d product variant(s)) \n".
+            " - %d product(s) \n".
+            "Do you want to proceed?",
+            implode(array_map(function (string $attributeCode) {
+                return sprintf(" - %s \n ", $attributeCode);
+            }, $attributesCodes)),
+            $countProductModels,
+            $countProductVariants,
+            $countProducts
+        );
+
+        $answer = $io->confirm($confirmMessage, true);
+
+        if (!$answer) {
+            return;
+        }
+
+        $progressBar = new ProgressBar($output, $countProducts + $countProductModels);
+        $progressBar->start();
+
+        $updateProgressBar = function (int $count) use ($progressBar) {
+            $progressBar->advance($count);
+        };
+
+        $this->cleanValuesOfRemovedAttributes->cleanProductModelsWithRemovedAttribute($attributesCodes, $updateProgressBar);
+        sleep(1);
+        $this->cleanValuesOfRemovedAttributes->cleanProductsWithRemovedAttribute($attributesCodes, $updateProgressBar);
+
+        $progressBar->finish();
+        $io->newLine();
     }
 }
