@@ -1,9 +1,9 @@
 import {isEmpty} from 'lodash';
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {EmptyChartPlaceholder} from './EmptyChartPlaceholder';
 import {AxisChart} from './AxisChart';
 import {dailyCallback, monthlyCallback, weeklyCallback} from '../../../../helper/Dashboard';
-import {ScoreDistributionChartDataset} from '../../../../../domain';
+import {ScoreDistributionChartDataset, TimePeriod} from '../../../../../domain';
 
 const isEmptyChartDataset = (dataset: ScoreDistributionChartDataset): boolean => {
   if (isEmpty(dataset) || isEmpty(dataset['rank_6'])) {
@@ -17,20 +17,38 @@ const isEmptyChartDataset = (dataset: ScoreDistributionChartDataset): boolean =>
 
 export interface Props {
   dataset: ScoreDistributionChartDataset;
-  timePeriod: string;
+  timePeriod: TimePeriod;
 }
 
 const TimePeriodAxisChart: FC<Props> = ({dataset, timePeriod}) => {
+  const callback = useMemo(() => {
+    if (timePeriod === 'daily') {
+      return dailyCallback;
+    }
+    if (timePeriod === 'monthly') {
+      return monthlyCallback;
+    }
+
+    return weeklyCallback;
+  }, [timePeriod]);
+
+  const domain: [number, number] = useMemo(() => {
+    if (timePeriod === 'daily') {
+      return [0, 8];
+    }
+    if (timePeriod === 'monthly') {
+      return [0, 7];
+    }
+
+    return [0, 5];
+  }, [timePeriod]);
+
   return (
     <>
       {isEmptyChartDataset(dataset) ? (
         <EmptyChartPlaceholder />
       ) : (
-        <>
-          {timePeriod === 'daily' && <AxisChart dataset={dataset} dateFormatCallback={dailyCallback} />}
-          {timePeriod === 'weekly' && <AxisChart dataset={dataset} dateFormatCallback={weeklyCallback} />}
-          {timePeriod === 'monthly' && <AxisChart dataset={dataset} dateFormatCallback={monthlyCallback} />}
-        </>
+        <AxisChart dataset={dataset} periodDomain={domain} dateFormatCallback={callback} />
       )}
     </>
   );

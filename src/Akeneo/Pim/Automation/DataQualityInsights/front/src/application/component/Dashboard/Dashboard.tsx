@@ -12,9 +12,10 @@ import {keyIndicatorsTips} from '../../helper/Dashboard/KeyIndicatorsTips';
 import {redirectToProductGridFilteredByKeyIndicator} from '../../../infrastructure/ProductGridRouter';
 
 import {DashboardContextProvider} from '../../context/DashboardContext';
+import {TimePeriod} from '../../../domain';
 
 interface DataQualityInsightsDashboardProps {
-  timePeriod: string;
+  timePeriod: TimePeriod;
   catalogLocale: string;
   catalogChannel: string;
   familyCode: string | null;

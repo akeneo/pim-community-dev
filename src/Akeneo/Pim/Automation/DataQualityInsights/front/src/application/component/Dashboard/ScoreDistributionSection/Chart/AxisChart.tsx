@@ -11,9 +11,10 @@ const INITIAL_CHART_HEIGHT = 268;
 type Props = {
   dataset: ScoreDistributionChartDataset;
   dateFormatCallback: {(date: string, index: number): string};
+  periodDomain: [number, number];
 };
 
-const AxisChart: FC<Props> = ({dataset, dateFormatCallback}) => {
+const AxisChart: FC<Props> = ({dataset, dateFormatCallback, periodDomain}) => {
   const theme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const {upScalingRatio, downScalingRatio} = useGetDashboardChartScalingSizeRatio(
@@ -48,7 +49,7 @@ const AxisChart: FC<Props> = ({dataset, dateFormatCallback}) => {
         height={INITIAL_CHART_HEIGHT}
         width={INITIAL_CHART_WIDTH}
         padding={{top: 0, bottom: 65, left: 35, right: 0}}
-        domain={{x: [0, 8], y: [0, 100]}}
+        domain={{x: periodDomain, y: [0, 100]}}
         domainPadding={{x: 0, y: 12.5}}
       >
         <VictoryAxis

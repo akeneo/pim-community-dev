@@ -4,12 +4,12 @@ import {useFetchDqiDashboardData} from '../../../../infrastructure/hooks';
 import {formatBackendRanksToVictoryFormat} from '../../../helper/Dashboard';
 import {Header} from './Header';
 import {EmptyChartPlaceholder, Legend, TimePeriodAxisChart} from './Chart';
-import {ScoreDistributionByDate} from '../../../../domain';
+import {ScoreDistributionByDate, TimePeriod} from '../../../../domain';
 
 type Props = {
   catalogLocale: string;
   catalogChannel: string;
-  timePeriod: string;
+  timePeriod: TimePeriod;
   familyCode: string | null;
   categoryCode: string | null;
 };

@@ -18,27 +18,25 @@ import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
+  DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_MODEL_LEVEL_CHANGED,
   PRODUCT_TAB_CHANGED,
-  DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
 } from './application/listener';
 
 import ProductEditFormApp from './application/ProductEditFormApp';
 import ProductModelEditFormApp from './application/ProductModelEditFormApp';
 import {DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/TabContent';
 
-import fetchProductDataQualityEvaluation
-  from './infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
+import fetchProductDataQualityEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
 import fetchProductModelEvaluation from './infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
-
-import {CriterionEvaluationResult, ProductEvaluation} from './domain';
-
 import {AttributeGroupDQIActivation} from './application/component/AttributeGroup/AttributeGroupDQIActivation';
 import {QualityScoreBar} from './application/component/QualityScoreBar';
 import {CONTAINER_ELEMENT_ID as DATA_QUALITY_INSIGHTS_PRODUCT_QUALITY_SCORE_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/QualityScorePortal';
+
+export {CriterionEvaluationResult, ProductEvaluation, TimePeriod} from './domain';
 
 export {
   Rate,
@@ -67,8 +65,6 @@ export {
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   fetchProductDataQualityEvaluation,
   fetchProductModelEvaluation,
-  ProductEvaluation,
-  CriterionEvaluationResult,
   AttributeGroupDQIActivation,
   QualityScoreBar,
   DATA_QUALITY_INSIGHTS_PRODUCT_QUALITY_SCORE_CONTAINER_ELEMENT_ID,
