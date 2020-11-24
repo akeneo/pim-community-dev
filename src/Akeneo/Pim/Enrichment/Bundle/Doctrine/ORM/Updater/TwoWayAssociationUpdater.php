@@ -78,9 +78,7 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
             }
         }
 
-        $owner->removeAssociation($associationToUpdate);
-        $associationToUpdate->addProduct($associatedProduct);
-        $owner->addAssociation($associationToUpdate);
+        $owner->addAssociatedProduct($associatedProduct, '');
     }
 
     /**

@@ -571,12 +571,116 @@ abstract class AbstractProduct implements ProductInterface
         return (string) $this->getLabel();
     }
 
+    public function hasAssociationForTypeCode(string $associationTypeCode): bool
+    {
+        return null !== $this->getAssociationForTypeCode($associationTypeCode);
+    }
+
+    public function addAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if (!$association->hasProduct($product)) {
+            $association->addProduct($product);
+            $this->dirty = true;
+        }
+    }
+
+    public function removeAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if ($association->hasProduct($product)) {
+            $association->removeProduct($product);
+            $this->dirty = true;
+        }
+    }
+
+    public function getAssociatedProducts(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? $association->getProducts() : null;
+    }
+
+    public function addAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if (!$association->getProductModels()->contains($productModel)) {
+            $association->addProductModel($productModel);
+            $this->dirty = true;
+        }
+    }
+
+    public function removeAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if ($association->getProductModels()->contains($productModel)) {
+            $association->removeProductModel($productModel);
+            $this->dirty = true;
+        }
+    }
+
+    public function getAssociatedProductModels(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? $association->getProductModels() : null;
+    }
+
+    public function addAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if (!$association->getGroups()->contains($group)) {
+            $association->addGroup($group);
+            $this->dirty = true;
+        }
+    }
+
+    public function removeAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if ($association->getGroups()->contains($group)) {
+            $association->removeGroup($group);
+            $this->dirty = true;
+        }
+    }
+
+    public function getAssociatedGroups(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? $association->getGroups() : null;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function addAssociation(AssociationInterface $newAssociation): EntityWithAssociationsInterface
     {
-        $currentAssociation = $this->getSimilarAssociation($newAssociation);
+        $currentAssociation = $this->getAssociationForTypeCode($newAssociation->getAssociationType()->getCode());
         if ($currentAssociation) {
             throw new \LogicException(
                 sprintf(
@@ -604,7 +708,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
-        $similarAssociation = $this->getSimilarAssociation($association);
+        $similarAssociation = $this->getAssociationForTypeCode($association->getAssociationType()->getCode());
         if (
             null !== $similarAssociation &&
             true === $this->associations->removeElement($similarAssociation) &&
@@ -645,20 +749,6 @@ abstract class AbstractProduct implements ProductInterface
     public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
     {
         return $this->getAssociationForTypeCode($type->getCode());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
-    {
-        foreach ($this->getAssociations() as $association) {
-            if ($association->getAssociationType()->getCode() === $typeCode) {
-                return $association;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -865,22 +955,11 @@ abstract class AbstractProduct implements ProductInterface
         $this->quantifiedAssociationCollection = clone $this->quantifiedAssociationCollection;
     }
 
-    /**
-     * Should be handled by an AssociationsCollection->contains()
-     *
-     * @param AssociationInterface $needleAssociation
-     *
-     * @return AssociationInterface|null
-     */
-    private function getSimilarAssociation(AssociationInterface $needleAssociation): ?AssociationInterface
+    protected function getAssociationForTypeCode($typeCode): ?AssociationInterface
     {
-        if ($this->associations->contains($needleAssociation)) {
-            return $needleAssociation;
-        }
-
-        foreach ($this->associations as $current) {
-            if ($current->getReference() === $needleAssociation->getReference()) {
-                return $current;
+        foreach ($this->getAssociations() as $association) {
+            if ($association->getAssociationType()->getCode() === $typeCode) {
+                return $association;
             }
         }
 
