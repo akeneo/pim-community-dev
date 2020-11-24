@@ -33,6 +33,13 @@ class QualityScoreFilter extends AbstractFieldFilter implements FieldFilterInter
             throw InvalidPropertyTypeException::arrayExpected($field, static::class, $values);
         }
 
+        $values = array_map(fn($value) => intval($value), $values);
+
+        file_put_contents('/srv/pim/var/logs/export.txt', json_encode($values) . PHP_EOL, FILE_APPEND);
+        file_put_contents('/srv/pim/var/logs/export.txt', json_encode($locale) . PHP_EOL, FILE_APPEND);
+        file_put_contents('/srv/pim/var/logs/export.txt', json_encode($channel) . PHP_EOL, FILE_APPEND);
+
+
         $ratesEnrichmentField = sprintf('rates.enrichment.%s.%s', $channel, $locale);
         $ratesConsistencyField = sprintf('rates.consistency.%s.%s', $channel, $locale);
         $avgRatesConditions = implode(' || ', array_map(fn ($scoreValue) => sprintf("avgRates == %d", $scoreValue), $values));
