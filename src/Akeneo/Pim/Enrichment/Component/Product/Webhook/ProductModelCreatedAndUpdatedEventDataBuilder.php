@@ -40,7 +40,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderI
 
     public function supports(object $event): bool
     {
-        dump($event);
+//        dump($event);
 
         if (false === $event instanceof BulkEventInterface) {
             return false;

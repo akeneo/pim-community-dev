@@ -111,7 +111,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         ]);
 
         $pqbFactory->create(['limit' => 2])->willReturn($pqb);
-        $pqb->addFilter('code', Operators::IN_LIST, ['jean', 'shoes'])->willReturn($pqb);
+        $pqb->addFilter('identifier', Operators::IN_LIST, ['jean', 'shoes'])->willReturn($pqb);
         $getConnectorProductModelsQuery->fromProductQueryBuilder($pqb, 10, null, null, null)
             ->willReturn($productModelList);
 
@@ -161,7 +161,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         $productList = new ConnectorProductModelList(1, [$this->buildConnectorProductModel(1, 'jean')]);
 
         $pqbFactory->create(['limit' => 2])->willReturn($pqb);
-        $pqb->addFilter('code', Operators::IN_LIST, ['jean', 'shoes'])->willReturn($pqb);
+        $pqb->addFilter('identifier', Operators::IN_LIST, ['jean', 'shoes'])->willReturn($pqb);
         $getConnectorProductModelsQuery->fromProductQueryBuilder($pqb, 10, null, null, null)
             ->willReturn($productList);
 
