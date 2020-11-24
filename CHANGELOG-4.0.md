@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9568: Fix performance issue when saving a big product group
+
 # 4.0.73 (2020-11-23)
 
 ## Bug fixes
