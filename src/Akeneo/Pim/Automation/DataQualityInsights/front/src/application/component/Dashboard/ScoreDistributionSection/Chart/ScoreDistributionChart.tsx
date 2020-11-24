@@ -5,16 +5,17 @@ import {Tooltip} from './Tooltip';
 import {useTheme} from 'akeneo-design-system';
 import {ScoreDistributionChartDataset} from '../../../../../domain';
 
-const INITIAL_CHART_WIDTH = 1000;
-const INITIAL_CHART_HEIGHT = 268;
+const INITIAL_CHART_WIDTH = 600;
+const INITIAL_CHART_HEIGHT = 280;
 
 type Props = {
   dataset: ScoreDistributionChartDataset;
   dateFormatCallback: {(date: string, index: number): string};
   periods: number;
+  domainPadding: number;
 };
 
-const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback,  periods}) => {
+const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback,  periods, domainPadding}) => {
   const theme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const {upScalingRatio, downScalingRatio} = useGetDashboardChartScalingSizeRatio(
@@ -48,9 +49,9 @@ const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback,  period
       <VictoryChart
         height={INITIAL_CHART_HEIGHT}
         width={INITIAL_CHART_WIDTH}
-        padding={{top: 0, bottom: 35, left: 35, right: 5}}
+        padding={{top: 0, bottom: Math.ceil(40 * downScalingRatio), left: Math.ceil(40 * downScalingRatio), right: 5}}
         domain={{x: [1, periods], y: [0, 100]}}
-        domainPadding={{x: 30, y: [0, 12.5]}}
+        domainPadding={{x: domainPadding, y: [0, 12.5]}}
       >
         <VictoryAxis
           tickValues={dates}

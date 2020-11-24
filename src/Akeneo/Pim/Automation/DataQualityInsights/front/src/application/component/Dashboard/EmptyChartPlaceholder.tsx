@@ -18,5 +18,4 @@ const EmptyChartPlaceholder: FC = () => {
     </>
   );
 };
-
 export {EmptyChartPlaceholder};

@@ -3,8 +3,10 @@ import {isEmpty} from 'lodash';
 import {useFetchDqiDashboardData} from '../../../../infrastructure/hooks';
 import {formatBackendRanksToVictoryFormat} from '../../../helper/Dashboard';
 import {Header} from './Header';
-import {EmptyChartPlaceholder, Legend, ScoreDistributionChartByTimePeriod} from './Chart';
+import {Legend, ScoreDistributionChartByTimePeriod} from './Chart';
 import {ScoreDistributionByDate, TimePeriod} from '../../../../domain';
+import {EmptyChartPlaceholder} from '../EmptyChartPlaceholder';
+import styled from 'styled-components';
 
 type Props = {
   catalogLocale: string;
@@ -47,7 +49,7 @@ const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, tim
   const isPlaceholderVisible: boolean = showPlaceholder(dataset) || chart === null;
 
   return (
-    <>
+    <Container>
       <Header timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode} />
       {isPlaceholderVisible ? (
         <EmptyChartPlaceholder />
@@ -60,8 +62,13 @@ const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, tim
           </div>
         </>
       )}
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding-left: 20px;
+  flex: 1 0 50%;
+`;
 
 export {ScoreDistributionSection};

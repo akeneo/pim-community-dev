@@ -95,6 +95,11 @@ akeneo_data_quality_insights:
 
         score_distribution:
             title: Quality score distribution
+        quality_score_evolution:
+            title: Quality score evolution
+            current_score: is your current catalog quality score for this scope.
+            current_month_label: This month
+            no_catalog_score: We couldn’t calculate you current quality score.
 
     product_evaluation:
         criteria:

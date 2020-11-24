@@ -1,9 +1,9 @@
 import {isEmpty} from 'lodash';
 import React, {FC, useMemo} from 'react';
-import {EmptyChartPlaceholder} from './EmptyChartPlaceholder';
 import {ScoreDistributionChart} from './ScoreDistributionChart';
 import {dailyCallback, monthlyCallback, weeklyCallback} from '../../../../helper/Dashboard';
 import {ScoreDistributionChartDataset, TimePeriod} from '../../../../../domain';
+import {EmptyChartPlaceholder} from '../../EmptyChartPlaceholder';
 
 const isEmptyChartDataset = (dataset: ScoreDistributionChartDataset): boolean => {
   if (isEmpty(dataset) || isEmpty(dataset['rank_6'])) {
@@ -43,12 +43,20 @@ const ScoreDistributionChartByTimePeriod: FC<Props> = ({dataset, timePeriod}) =>
     return 4;
   }, [timePeriod]);
 
+  const domainPadding: number = useMemo(() => {
+    if (timePeriod === 'weekly') {
+      return 80;
+    }
+
+    return 30;
+  }, [timePeriod]);
+
   return (
     <>
       {isEmptyChartDataset(dataset) ? (
         <EmptyChartPlaceholder />
       ) : (
-        <ScoreDistributionChart dataset={dataset} periods={periods} dateFormatCallback={callback} />
+        <ScoreDistributionChart dataset={dataset} periods={periods} dateFormatCallback={callback} domainPadding={domainPadding} />
       )}
     </>
   );

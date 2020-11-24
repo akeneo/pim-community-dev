@@ -200,3 +200,6 @@ services:
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
 
+    Akeneo\Pim\Automation\DataQualityInsights\Application\GetCatalogProductScoreEvolution:
+        arguments:
+            - '@database_connection'
