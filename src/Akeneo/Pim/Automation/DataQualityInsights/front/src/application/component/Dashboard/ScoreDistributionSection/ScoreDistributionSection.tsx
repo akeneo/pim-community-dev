@@ -20,7 +20,7 @@ const showOverviewPlaceholder = (dataset: ScoreDistributionByDate | null) => {
   );
 };
 
-const Overview: FC<Props> = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}) => {
+const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [chart, setChart] = useState<ReactElement>();
   const dataset = useFetchDqiDashboardData(catalogChannel, catalogLocale, timePeriod, familyCode, categoryCode);
@@ -58,4 +58,4 @@ const Overview: FC<Props> = ({catalogChannel, catalogLocale, timePeriod, familyC
   );
 };
 
-export default Overview;
+export {ScoreDistributionSection};
