@@ -138,6 +138,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         $user->getId()->willReturn(null);
         $user->getUsername()->willReturn(UserInterface::SYSTEM_USER_NAME);
 
+        $values->getIterator()->willReturn(new \ArrayIterator([]));
         $product = new Product();
         $product->setValues($values->getWrappedObject());
 

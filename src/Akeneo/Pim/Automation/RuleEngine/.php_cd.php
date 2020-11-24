@@ -64,6 +64,8 @@ $rules = [
         'Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException',
         'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',
         'Webmozart\Assert\Assert',
+        'Akeneo\Tool\Bundle\MeasureBundle\PublicApi',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi',
 
         // used for validation
         'Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface',
@@ -75,9 +77,6 @@ $rules = [
         // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\AttributeTypes',
-        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
-        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
-        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues',
 
         // TIP-961: Remove dependency to ProductRepositoryInterface
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',

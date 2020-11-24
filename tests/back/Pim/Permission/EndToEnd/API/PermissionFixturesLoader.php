@@ -682,7 +682,7 @@ class PermissionFixturesLoader
                 'parent' => 'colored_sweat_edit',
             ],
             'colored_sized_shoes_edit' => ['categories' => ['edit_category'], 'parent' => 'colored_shoes_edit'],
-            'colored_sized_sweat_own' => ['categories' => ['category_without_right'], 'parent' => 'colored_jacket_own'],
+            'colored_sized_sweat_own' => ['categories' => [], 'parent' => 'colored_jacket_own'],
             'colored_sized_shoes_own' => ['categories' => ['own_category'], 'parent' => 'colored_shoes_own'],
             'colored_sized_trousers' => ['parent' => 'colored_trousers'],
         ];

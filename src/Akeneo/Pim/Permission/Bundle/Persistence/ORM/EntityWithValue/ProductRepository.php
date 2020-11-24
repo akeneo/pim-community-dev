@@ -205,7 +205,10 @@ class ProductRepository extends EntityRepository implements
     {
         $this->denyNotGrantedCategorizedEntity->denyIfNotGranted($product);
 
-        return $this->filteredProductFactory->create($product);
+        $product = $this->filteredProductFactory->create($product);
+        $product->cleanup();
+
+        return $product;
     }
 
     /**
@@ -220,7 +223,9 @@ class ProductRepository extends EntityRepository implements
         $filteredProducts = [];
         foreach ($products as $product) {
             $this->denyNotGrantedCategorizedEntity->denyIfNotGranted($product);
-            $filteredProducts[] = $this->filteredProductFactory->create($product);
+            $filteredProduct = $this->filteredProductFactory->create($product);
+            $filteredProduct->cleanup();
+            $filteredProducts[] = $filteredProduct;
         }
 
         return $filteredProducts;

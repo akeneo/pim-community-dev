@@ -120,6 +120,7 @@ create-ci-release-files: create-ci-values create-pim-main-tf
 create-ci-values: $(INSTANCE_DIR)
 	@echo "=========================================================="
 	@echo "Deploy namespace : $(PFID)"
+	@echo " - with instance name prefix : $(INSTANCE_NAME_PREFIX)"
 	@echo " - with image tag : $(IMAGE_TAG)"
 	@echo " - on cluster : $(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)"
 	@echo " - URL : $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"
@@ -197,7 +198,16 @@ endif
 	PFID=$(PFID) \
 	PIM_SRC_DIR=$(PIM_SRC_DIR) \
 	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
-	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp && cat $(INSTANCE_DIR)/main.tf.json
+	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG))
+		@echo "We deploy the checkout version of PIM"
+    else
+		@echo "We deploy a custom pim version : $(IMAGE_TAG)"
+		yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=$(IMAGE_TAG)"
+    endif
+endif
+	cat $(INSTANCE_DIR)/main.tf.json
 
 .PHONY: test-prod
 test-prod:

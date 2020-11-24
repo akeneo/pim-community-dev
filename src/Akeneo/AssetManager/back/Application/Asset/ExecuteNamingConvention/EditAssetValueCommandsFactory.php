@@ -91,7 +91,8 @@ class EditAssetValueCommandsFactory
                 }
 
                 throw new AttributeNotFoundException(sprintf(
-                    'Attribute "%s" does not exist for this asset family', $attributeCode
+                    'Attribute "%s" does not exist for this asset family',
+                    $attributeCode
                 ));
             }
 

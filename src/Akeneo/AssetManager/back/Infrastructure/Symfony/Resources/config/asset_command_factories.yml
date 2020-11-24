@@ -64,6 +64,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetValueCommandsFactory'
+            - '@akeneo_assetmanager.application.registry.asset.edit_asset_value_command_factory_registry'
 
     Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetValueCommandsFactory:
         arguments:

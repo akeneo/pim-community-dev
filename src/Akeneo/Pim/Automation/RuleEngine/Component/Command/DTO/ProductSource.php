@@ -12,6 +12,7 @@ final class ProductSource
     public $scope;
     public $locale;
     public $labelLocale;
+    public $unitLabelLocale;
     public $format;
     public $currency;
     public $text;
@@ -23,6 +24,7 @@ final class ProductSource
         $this->scope = $data['scope'] ?? null;
         $this->locale = $data['locale'] ?? null;
         $this->labelLocale = $data['label_locale'] ?? null;
+        $this->unitLabelLocale = $data['unit_label_locale'] ?? null;
         $this->format = $data['format'] ?? null;
         $this->currency = $data['currency'] ?? null;
         $this->text = $data['text'] ?? null;
@@ -43,6 +45,7 @@ final class ProductSource
         Assert::nullOrStringNotEmpty($this->scope);
         Assert::nullOrStringNotEmpty($this->locale);
         Assert::nullOrStringNotEmpty($this->labelLocale);
+        Assert::nullOrStringNotEmpty($this->unitLabelLocale);
         Assert::nullOrStringNotEmpty($this->format);
         Assert::nullOrStringNotEmpty($this->currency);
 
@@ -51,6 +54,7 @@ final class ProductSource
             'scope' => $this->scope,
             'locale' => $this->locale,
             'label_locale' => $this->labelLocale,
+            'unit_label_locale' => $this->unitLabelLocale,
             'format' => $this->format,
             'currency' => $this->currency,
         ],

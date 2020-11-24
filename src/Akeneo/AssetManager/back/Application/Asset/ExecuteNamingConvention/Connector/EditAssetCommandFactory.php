@@ -15,6 +15,7 @@ namespace Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connecto
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryRegistryInterface;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetValueCommandsFactory;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\InvalidNamingConventionSourceAttributeType;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\NamingConventionException;
@@ -37,29 +38,24 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
  */
 class EditAssetCommandFactory
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var EditAssetValueCommandsFactory */
-    private $editAssetValueCommandsFactory;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
+    private AttributeRepositoryInterface $attributeRepository;
+    private EditAssetValueCommandsFactory $editAssetValueCommandsFactory;
+    private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        EditAssetValueCommandsFactory $editAssetValueCommandsFactory
+        EditAssetValueCommandsFactory $editAssetValueCommandsFactory,
+        EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry
     ) {
         $this->assetFamilyRepository = $assetFamilyRepository;
         $this->attributeRepository = $attributeRepository;
         $this->editAssetValueCommandsFactory = $editAssetValueCommandsFactory;
+        $this->editValueCommandFactoryRegistry = $editValueCommandFactoryRegistry;
     }
 
     /**
-     * @param array                 $normalizedCommand
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
-     * @return EditAssetCommand
      * @throws NamingConventionException
      */
     public function create(array $normalizedCommand, AssetFamilyIdentifier $assetFamilyIdentifier): EditAssetCommand
@@ -87,9 +83,6 @@ class EditAssetCommandFactory
     }
 
     /**
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
-     * @param NamingConvention      $namingConvention
-     * @param array                 $normalizedCommand
      * @return AbstractEditValueCommand[]
      * @throws NamingConventionPatternNotMatch
      * @throws InvalidNamingConventionSourceAttributeType
@@ -109,6 +102,7 @@ class EditAssetCommandFactory
                 $namingConvention->getSource()->getLocaleReference()->normalize(),
                 $normalizedCommand['values']
             );
+
         if (null === $stringDataValue) {
             return [];
         }
@@ -152,8 +146,13 @@ class EditAssetCommandFactory
 
         foreach ($normalizedValues[$sourceAttributeCode] as $normalizedValue) {
             if ($normalizedValue['channel'] === $channel && $normalizedValue['locale'] === $locale) {
-                if ($sourceAttribute instanceof MediaFileAttribute
-                    || $sourceAttribute instanceof MediaLinkAttribute
+                if ($sourceAttribute instanceof MediaFileAttribute) {
+                    $editValueCommandFactory = $this->editValueCommandFactoryRegistry->getFactory($sourceAttribute, $normalizedValue);
+                    $editAssetValueCommand = $editValueCommandFactory->create($sourceAttribute, $normalizedValue);
+
+                    return $editAssetValueCommand->originalFilename;
+                } elseif (
+                    $sourceAttribute instanceof MediaLinkAttribute
                     || $sourceAttribute instanceof TextAttribute
                 ) {
                     return $normalizedValue['data'];

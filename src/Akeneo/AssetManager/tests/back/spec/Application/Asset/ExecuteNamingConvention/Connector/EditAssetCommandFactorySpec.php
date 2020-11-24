@@ -15,6 +15,9 @@ namespace spec\Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Con
 
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditValueCommand;
 use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommand;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileValueCommandFactory;
+use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditValueCommandFactoryRegistryInterface;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Connector\EditAssetCommandFactory;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\EditAssetValueCommandsFactory;
 use Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\Exception\InvalidNamingConventionSourceAttributeType;
@@ -44,12 +47,14 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
     function let(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
-        EditAssetValueCommandsFactory $editAssetValueCommandsFactory
+        EditAssetValueCommandsFactory $editAssetValueCommandsFactory,
+        EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry
     ) {
         $this->beConstructedWith(
             $assetFamilyRepository,
             $attributeRepository,
-            $editAssetValueCommandsFactory
+            $editAssetValueCommandsFactory,
+            $editValueCommandFactoryRegistry
         );
     }
 
@@ -95,7 +100,9 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         NamingConvention $namingConvention,
         Source $source,
         MediaFileAttribute $attribute,
-        AbstractEditValueCommand $editAssetValueCommand
+        AbstractEditValueCommand $editAssetValueCommand,
+        EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
+        EditMediaFileValueCommandFactory $editMediaFileValueCommandFactory
     ) {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('family');
         $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier)->willReturn($assetFamily);
@@ -105,6 +112,7 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
         $source->getProperty()->willReturn('image');
         $source->getChannelReference()->willReturn(ChannelReference::createfromNormalized(null));
         $source->getLocaleReference()->willReturn(LocaleReference::createfromNormalized(null));
+        $editImageCommand = new EditMediaFileValueCommand($attribute->getWrappedObject(), null, null, 'path/to/my_file.png', 'my_file.png', null, null, null, null);
 
         $attributeRepository->getByCodeAndAssetFamilyIdentifier(AttributeCode::fromString('image'), $assetFamilyIdentifier)
             ->willReturn($attribute);
@@ -117,18 +125,17 @@ class EditAssetCommandFactorySpec extends ObjectBehavior
             'values' => [
                 'image' => [
                     [
-                        'channel' => 'ecommerce',
-                        'locale' => null,
-                        'data' => 'my_file2.png',
-                    ],
-                    [
                         'channel' => null,
                         'locale' => null,
-                        'data' => 'my_file.png',
-                    ],
+                        'data' => 'path/to/my_file.png',
+                    ]
                 ],
             ],
         ];
+
+        $editValueCommandFactoryRegistry->getFactory($attribute, $normalizedCommand['values']['image'][0])->willReturn($editMediaFileValueCommandFactory);
+        $editMediaFileValueCommandFactory->create($attribute, $normalizedCommand['values']['image'][0])->willReturn($editImageCommand);
+
         $editAssetCommand = $this->create($normalizedCommand, $assetFamilyIdentifier);
         $editAssetCommand->shouldBeAnInstanceOf(EditAssetCommand::class);
         $editAssetCommand->assetFamilyIdentifier->shouldBe('family');

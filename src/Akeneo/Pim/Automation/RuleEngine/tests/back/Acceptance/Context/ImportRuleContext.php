@@ -72,6 +72,9 @@ rules:
                   - field: sku
                   - field: processor
                     locale: en_US
+                  - field: processor
+                    locale: en_US
+                    unit_label_locale: en_US
                   - field: price
                     currency: EUR
                   - field: release_date
@@ -233,6 +236,9 @@ rules:
                   - text: "akeneo"
                     new_line: ~
                   - locale: en_US
+                  - field: processor
+                    locale: unknown1
+                    unit_label_locale: unknown2
               to:
                   field: description
                   locale: en_US

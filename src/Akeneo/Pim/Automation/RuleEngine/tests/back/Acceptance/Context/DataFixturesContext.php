@@ -60,6 +60,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use AkeneoTest\Acceptance\MeasurementFamily\InMemoryGetUnitTranslations;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -257,12 +258,12 @@ final class DataFixturesContext implements Context
     }
 
     /**
-     * @given the :measurementFamily measurement family
+     * @Given the :measurementFamily measurement family
      */
     public function theMeasurementFamily(string $measurementFamily)
     {
         if ('Frequency' !== $measurementFamily) {
-            throw new NotImplementedException('Not implmented yet');
+            throw new NotImplementedException('Not implemented yet');
         }
 
         $this->measurementFamilyRepository->save(
@@ -300,6 +301,12 @@ final class DataFixturesContext implements Context
                 ]
             )
         );
+
+        InMemoryGetUnitTranslations::saveUnitTranslations('Frequency', 'en_US', [
+            'HERTZ' => 'Hertz',
+            'KILOHERTZ' => 'Kilohertz',
+            'MEGAHERTZ' => 'Megahertz',
+        ]);
     }
 
     /**

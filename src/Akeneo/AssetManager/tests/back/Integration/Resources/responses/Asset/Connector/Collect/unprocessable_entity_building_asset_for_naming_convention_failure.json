@@ -25,7 +25,7 @@
                     {
                         "channel": null,
                         "locale": null,
-                        "data": "house_12.jpg"
+                        "data": "path/to/house_12.jpg"
                     }
                 ]
             }

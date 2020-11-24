@@ -121,9 +121,17 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         $XSELLForFilteredProduct->getGroups()->willReturn([]);
         $associationTypeXSELLForFilteredProduct->getCode()->willReturn('X_SELL');
 
-        $associationSetter->setFieldData($fullProduct, 'associations', [
-            'X_SELL' => ['products' => ['product_b', 'product_c', 'product_d'], 'product_models' => ['product_model_a', 'product_model_b']]
-        ])->shouldBeCalled();
+        $associationSetter->setFieldData(
+            $fullProduct,
+            'associations',
+            [
+                'X_SELL' => [
+                    'products' => ['product_b', 'product_c', 'product_d'],
+                    'product_models' => ['product_model_a', 'product_model_b'],
+                    'groups' => [],
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
     }
@@ -200,10 +208,18 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         $UPSELLForFilteredProduct->getGroups()->willReturn([]);
         $associationTypeUPSELLForFilteredProduct->getCode()->willReturn('UPSELL');
 
-        $associationSetter->setFieldData($fullProduct, 'associations', [
-            'X_SELL' => ['products' => ['product_b'], 'product_models' => ['product_model_a']],
-            'UPSELL' => ['products' => ['product_c', 'product_d'], "product_models" => ["product_model_a"]]
-        ])->shouldBeCalled();
+        $associationSetter->setFieldData(
+            $fullProduct,
+            'associations',
+            [
+                'X_SELL' => ['products' => ['product_b'], 'product_models' => ['product_model_a'], 'groups' => []],
+                'UPSELL' => [
+                    'products' => ['product_c', 'product_d'],
+                    'product_models' => ['product_model_a'],
+                    'groups' => [],
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
     }
@@ -277,9 +293,17 @@ class NotGrantedAssociatedProductMergerSpec extends ObjectBehavior
         $XSELLForFilteredProduct->getGroups()->willReturn([]);
         $associationTypeXSELLForFilteredProduct->getCode()->willReturn('X_SELL');
 
-        $associationSetter->setFieldData($fullProduct, 'associations', [
-            'X_SELL' => ['products' => ['product_b'], 'product_models' => ['product_model_b', 'product_model_a']]
-        ])->shouldBeCalled();
+        $associationSetter->setFieldData(
+            $fullProduct,
+            'associations',
+            [
+                'X_SELL' => [
+                    'products' => ['product_b'],
+                    'product_models' => ['product_model_b', 'product_model_a'],
+                    'groups' => [],
+                ],
+            ]
+        )->shouldBeCalled();
 
         $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
     }
