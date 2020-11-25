@@ -30,9 +30,6 @@ test('it renders stacked image', () => {
   expect(screen.getByAltText('my image')).toBeInTheDocument();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
 test('Table.ImageCell supports forwardRef', () => {
   const ref = {current: null};
   render(

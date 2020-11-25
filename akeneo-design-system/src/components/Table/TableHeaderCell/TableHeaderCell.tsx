@@ -51,13 +51,18 @@ const HeaderCellContentContainer = styled.span`
     vertical-align: middle;
   }
 `;
+
 const TableHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableHeaderCellProps>(
   (
-    {isSortable = false, onDirectionChange, sortDirection = 'none', children, ...rest}: TableHeaderCellProps,
+    {isSortable = false, onDirectionChange, sortDirection, children, ...rest}: TableHeaderCellProps,
     forwardedRef: Ref<HTMLTableHeaderCellElement>
   ) => {
-    if (isSortable && onDirectionChange === undefined) {
+    if (isSortable && (onDirectionChange === undefined || sortDirection === undefined)) {
       throw Error('Sortable header should provide onDirectionChange and direction props');
+    }
+
+    if (!isSortable && (onDirectionChange !== undefined || sortDirection !== undefined)) {
+      throw Error('Not sortable header does not provide onDirectionChange and direction props');
     }
 
     const handleClick = () => {
@@ -84,7 +89,7 @@ const TableHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableHeader
       >
         <HeaderCellContentContainer ref={forwardedRef}>{children}</HeaderCellContentContainer>
         {isSortable &&
-          (sortDirection == 'descending' || sortDirection == 'none' ? (
+          (sortDirection === 'descending' || sortDirection === 'none' ? (
             <ArrowDownIcon size={14} />
           ) : (
             <ArrowUpIcon size={14} />

@@ -87,9 +87,6 @@ test('it renders table with checkbox when it is selectable and row is selected',
   expect(screen.queryByRole('checkbox')).toBeInTheDocument();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
 test('Table supports ...rest props', () => {
   render(<Table data-testid="my_value" />);
 

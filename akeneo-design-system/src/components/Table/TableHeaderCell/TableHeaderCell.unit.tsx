@@ -21,7 +21,7 @@ test('it calls onDirectionChange handler when user clicks on sortable cell', () 
   render(
     <Table>
       <Table.Header>
-        <Table.HeaderCell isSortable={true} onDirectionChange={onDirectionChange}>
+        <Table.HeaderCell isSortable={true} onDirectionChange={onDirectionChange} sortDirection="none">
           An header
         </Table.HeaderCell>
         <Table.HeaderCell>Another header</Table.HeaderCell>
@@ -73,23 +73,25 @@ test('it calls onDirectionChange handler when user clicks on sortable ascending 
   expect(onDirectionChange).toBeCalledWith('descending');
 });
 
-test('it does not calls onDirectionChange handler when header is not sortable', () => {
+test('it throws when onDirectionChange is given on not sortable row', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
   const onDirectionChange = jest.fn();
-  render(
-    <Table>
-      <Table.Header>
-        <Table.HeaderCell isSortable={false} onDirectionChange={onDirectionChange} sortDirection="descending">
-          An header
-        </Table.HeaderCell>
-        <Table.HeaderCell>Another header</Table.HeaderCell>
-      </Table.Header>
-    </Table>
-  );
+  const headerCellRender = () =>
+    render(
+      <Table>
+        <Table.Header>
+          <Table.HeaderCell isSortable={false} onDirectionChange={onDirectionChange} sortDirection="descending">
+            An header
+          </Table.HeaderCell>
+          <Table.HeaderCell>Another header</Table.HeaderCell>
+        </Table.Header>
+      </Table>
+    );
 
-  const header = screen.getByText('An header');
-  fireEvent.click(header);
+  expect(headerCellRender).toThrowError();
 
-  expect(onDirectionChange).not.toBeCalled();
+  mockConsole.mockRestore();
 });
 
 test('it throws when onDirectionChange is not given on sortable row', () => {
@@ -103,14 +105,12 @@ test('it throws when onDirectionChange is not given on sortable row', () => {
         </Table.Header>
       </Table>
     );
+
   expect(headerCellRender).toThrowError();
 
   mockConsole.mockRestore();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
 test('Table.HeaderCell supports forwardRef', () => {
   const ref = {current: null};
   render(
