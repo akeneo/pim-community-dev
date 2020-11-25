@@ -20,12 +20,16 @@ define(['oro/translator', 'pim/form'], function (__, BaseForm) {
      * {@inheritdoc}
      */
     configure: function () {
+      this.registerTab();
+
+      return BaseForm.prototype.configure.apply(this, arguments);
+    },
+
+    registerTab: function () {
       this.trigger('tab:register', {
         code: this.code,
         label: __(this.config.label),
       });
-
-      return BaseForm.prototype.configure.apply(this, arguments);
     },
 
     /**
