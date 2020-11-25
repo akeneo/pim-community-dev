@@ -9,7 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresP
 use Doctrine\DBAL\Connection;
 
 /**
- * Example of a JSON string stored in the column "rates" of a projection entry:
+ * Example of a JSON string stored in the column "scores" of a projection entry:
  * {
  *    "daily": {
  *      "2019-12-19": {
@@ -121,14 +121,14 @@ SQL;
     {
         $query = <<<SQL
 UPDATE pim_data_quality_insights_dashboard_scores_projection
-SET scores = JSON_MERGE_PATCH(scores, :rates)
+SET scores = JSON_MERGE_PATCH(scores, :scores)
 WHERE type = :type AND code = :code 
   AND (
       NOT JSON_CONTAINS_PATH(scores, 'one', '$.average_ranks_consolidated_at')
       OR JSON_UNQUOTE(JSON_EXTRACT(scores, '$.average_ranks_consolidated_at')) < :consolidated_at
   );
 SQL;
-        $rates = [
+        $scores = [
             'average_ranks' => $ratesProjection->getAverageRanks(),
             'average_ranks_consolidated_at' => $ratesProjection->getConsolidationDate()->format('Y-m-d H:i:s')
         ];
@@ -136,7 +136,7 @@ SQL;
         $this->db->executeQuery($query, [
             'type' => $ratesProjection->getType(),
             'code' => $ratesProjection->getCode(),
-            'rates' => json_encode($rates),
+            'scores' => json_encode($scores),
             'consolidated_at' => $ratesProjection->getConsolidationDate()->format('Y-m-d H:i:s')
         ]);
     }
