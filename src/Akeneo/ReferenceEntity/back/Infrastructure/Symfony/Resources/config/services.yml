@@ -82,11 +82,11 @@ services:
             - { name: kernel.event_subscriber }
 
     akeneo_referenceentity.infrastructure.reference_entity.subscribers.refresh_record_subscriber:
-            class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Subscribers\RefreshRecordsSubscriber
-            arguments:
-                - '@pim_catalog.command_launcher'
-            tags:
-                - { name: kernel.event_subscriber }
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Subscribers\RefreshRecordsSubscriber
+        arguments:
+            - '@pim_catalog.command_launcher'
+        tags:
+            - { name: kernel.event_subscriber }
 
     Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexRecordsCommand:
         arguments:
@@ -97,3 +97,15 @@ services:
             - '%record_index_name%'
         tags:
             - { name: console.command }
+
+    # form providers
+    akeneo_referenceentity.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -
+                csv_reference_entity_record_export: pim-job-instance-csv-reference-entity-record-export
+                xlsx_reference_entity_record_export: pim-job-instance-xlsx-reference-entity-record-export
+                csv_reference_entity_record_import: pim-job-instance-csv-reference-entity-record-import
+                xlsx_reference_entity_record_import: pim-job-instance-xlsx-reference-entity-record-import
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }

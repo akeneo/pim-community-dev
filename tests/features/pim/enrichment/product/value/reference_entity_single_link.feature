@@ -8,19 +8,19 @@ Feature: Validate asset multiple link attribute of a product
     And the "designers" reference entity with:
       | labels               |
       | {"en_US": "Stylist"} |
-    And the "starck" record for entity "designers" with:
+    And the "starck" record for "designers" entity with:
       | labels                       |
       | {"en_US": "Philippe Starck"} |
-    And the "dyson" record for entity "designers" with:
+    And the "dyson" record for "designers" entity with:
       | labels                    |
       | {"en_US": "James Dyson"} |
     And the "colors" reference entity with:
       | labels             |
       | {"en_US": "Color"} |
-    And the "red" record for entity "colors" with:
+    And the "red" record for "colors" entity with:
       | labels           |
       | {"en_US": "Red"} |
-    And the "blue" record for entity "colors" with:
+    And the "blue" record for "colors" entity with:
       | labels            |
       | {"en_US": "Blue"} |
     And the following attributes:

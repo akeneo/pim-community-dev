@@ -13,7 +13,6 @@ import {
 
 import {CriterionEvaluationResult, ProductEvaluation} from './domain';
 
-import BackLinkButton from './application/component/BackLinkButton';
 import {
   DATA_QUALITY_INSIGHTS_AXIS_RATES_OVERVIEW_SIDEBAR_CONTAINER_ELEMENT_ID,
   DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,
@@ -36,5 +35,4 @@ export {
   AttributeEditFormApp,
   AttributeCreateFormApp,
   BACK_LINK_SESSION_STORAGE_KEY,
-  BackLinkButton,
 };

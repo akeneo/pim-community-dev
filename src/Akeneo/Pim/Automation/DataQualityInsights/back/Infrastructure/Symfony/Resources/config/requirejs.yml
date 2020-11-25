@@ -16,7 +16,5 @@ config:
         ## Product Grid
         oro/datagrid/quality-badge-cell: akeneopimenterprisedataqualityinsights/js/infrastructure/attribute-grid/cell/quality-badge-cell.tsx
 
-        akeneo/data-quality-insights/view/back-link: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/back-link.tsx
-
         #Dashboard
         akeneo/data-quality-insights/view/dqi-dashboard/section: akeneopimenterprisedataqualityinsights/js/infrastructure/dqi-dashboard/section.tsx

@@ -70,6 +70,10 @@ class EditRecordValueCommandValidator extends ConstraintValidator
 
     private function validateCommand(EditRecordValueCommand $command): void
     {
+        if ('' === $command->recordCode || null === $command->recordCode) {
+            return;
+        }
+
         $recordsFound = $this->recordExists->withReferenceEntityAndCode(
             ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
             RecordCode::fromString($command->recordCode)

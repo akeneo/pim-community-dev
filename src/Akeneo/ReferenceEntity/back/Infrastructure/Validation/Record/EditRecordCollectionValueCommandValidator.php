@@ -69,12 +69,20 @@ class EditRecordCollectionValueCommandValidator extends ConstraintValidator
 
     private function validateCommand(EditRecordCollectionValueCommand $command): void
     {
+        $recordCodes = array_filter(
+            $command->recordCodes,
+            fn (?string $code): bool => null !== $code && '' !== $code
+        );
+        if (0 === count($recordCodes)) {
+            return;
+        }
+
         $foundRecords = $this->existingRecordCodes->find(
             ReferenceEntityIdentifier::fromString($command->attribute->getRecordType()->normalize()),
-            $command->recordCodes
+            $recordCodes
         );
 
-        $missingRecords = array_diff($command->recordCodes, $foundRecords);
+        $missingRecords = array_diff($recordCodes, $foundRecords);
 
         if (!empty($missingRecords)) {
             $this->context->buildViolation(EditRecordCollectionValueCommandConstraint::ERROR_MESSAGE)

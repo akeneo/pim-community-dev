@@ -28,7 +28,7 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class UploadMediaFileAction
 {
-    private const FILE_STORAGE_ALIAS = 'catalogStorage';
+    public const FILE_STORAGE_ALIAS = 'catalogStorage';
 
     /** @var FileStorerInterface */
     private $fileStorer;

@@ -58,6 +58,11 @@ services:
             - '@database_connection'
             - '@akeneo_referenceentity.infrastructure.persistence.record.hydrator.bulk_record_item'
 
+    akeneo_referenceentity.infrastructure.persistence.query.find_record_identifiers_by_reference_entity:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordIdentifiersByReferenceEntity
+        arguments:
+            - '@database_connection'
+
     akeneo_referenceentity.infrastructure.persistence.query.reference_entity_has_records:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\ReferenceEntity\SqlReferenceEntityHasRecords
         arguments:

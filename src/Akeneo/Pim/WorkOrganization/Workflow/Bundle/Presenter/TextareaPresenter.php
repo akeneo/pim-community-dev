@@ -45,7 +45,7 @@ class TextareaPresenter extends AbstractProductValuePresenter
     }
 
     /**
-     * Explode text into separated paragraphs
+     * Explode text into separated tags
      *
      * @param string $text
      *
@@ -53,8 +53,18 @@ class TextareaPresenter extends AbstractProductValuePresenter
      */
     protected function explodeText($text)
     {
-        preg_match_all('/<p>(.*?)<\/p>/', $text, $matches);
+        /**
+         * <(\w+)[^>]*> : any opening html tag, we capture the tag name
+         * (?:(?!<\/\1).)* : anything but the closing of the previously captured html tag
+         * <\/\1> : closing of the captured html tag
+         */
+        $pattern = '/<(\w+)[^>]*>(?:(?!<\/\1).)*<\/\1>/';
+        preg_match_all($pattern, $text, $matches);
 
-        return !empty($matches[0]) ? $matches[0] : [$text];
+        if (empty($matches[0]) || implode('', $matches[0]) !== $text) {
+            return [$text];
+        }
+
+        return $matches[0];
     }
 }

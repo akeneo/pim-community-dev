@@ -5,6 +5,7 @@ import ReferenceEntityListItem from 'akeneoreferenceentity/domain/model/referenc
 const __ = require('oro/translator');
 const _ = require('underscore');
 const UserContext = require('pim/user-context');
+const Property = require('pim/common/property');
 const template = _.template(require('pim/template/form/common/fields/select'));
 
 /**
@@ -20,6 +21,7 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
     this.events = {
       'change select': function(event: any) {
         this.errors = [];
+        this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.getTabCode());
         this.updateModel(this.getFieldValue(event.target));
         this.getRoot().render();
       },
@@ -46,10 +48,10 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
   renderInput(templateContext: any) {
     return template({
       ...templateContext,
-      value: this.getFormData()[this.fieldName],
+      value: Property.accessProperty(this.getFormData(), this.fieldName),
       choices: this.getChoices(),
       multiple: false,
-      readOnly: undefined !== this.getFormData().meta,
+      readOnly: this.isReadOnly(),
       labels: {
         defaultLabel: __('pim_enrich.entity.attribute.property.reference_entity.default_label'),
       },
@@ -81,6 +83,33 @@ class ReferenceEntityField extends (BaseField as {new (config: any): any}) {
    */
   getFieldValue(field: any) {
     return $(field).val();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  isReadOnly() {
+    if (undefined !== this.config.readOnly) {
+      return this.config.readOnly;
+    }
+
+    return undefined !== this.getFormData()?.meta?.id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected getFieldErrors(errors: any) {
+    if (Array.isArray(errors)) {
+      return BaseField.prototype.getFieldErrors.apply(this, arguments);
+    }
+
+    const error = Property.accessProperty(errors, this.fieldName, null);
+    if (error === null) {
+      return [];
+    } else {
+      return [{message: error}];
+    }
   }
 }
 

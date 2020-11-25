@@ -59,7 +59,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                 <Criterion code={'enrichment_image'}>
                   <Recommendation
                     type={'not_applicable'}
-                    follow={() => followNotApplicableEnrichmentImageRecommendation(product.family)}
+                    follow={() => followNotApplicableEnrichmentImageRecommendation(product)}
                   >
                     <NotApplicableEnrichmentImageMessage />
                   </Recommendation>

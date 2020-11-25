@@ -39,12 +39,14 @@ class AkeneoReferenceEntityExtension extends Extension
         $loader->load('enrichment.yml');
         $loader->load('filters.yml');
         $loader->load('handlers.yml');
+        $loader->load('jobs.yml');
         $loader->load('onboarder.yml');
         $loader->load('parameters.yml');
         $loader->load('persistence.yml');
         $loader->load('product_value.yml');
         $loader->load('serializer.yml');
         $loader->load('services.yml');
+        $loader->load('steps.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
         $loader->load('search/services.yml');

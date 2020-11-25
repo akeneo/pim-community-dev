@@ -166,4 +166,31 @@ class EditAttributeOptionContext implements Context
 
         $this->attributeRepository->create($optionAttribute);
     }
+
+    /**
+     * @Given /^the "([^"]*)" options? attribute contains "([^"]*)" options?$/
+     */
+    public function theAttributeOptionContainsOptions(string $attributeCode, string $options): void
+    {
+        $referenceEntityIdentifier = ReferenceEntityIdentifier::fromString('designer');
+        $attributes = $this->attributeRepository->findByReferenceEntity($referenceEntityIdentifier);
+        foreach ($attributes as $attribute) {
+            if ($attributeCode === $attribute->getCode()->__toString()) {
+                $attribute->setOptions(
+                    array_map(
+                        fn (string $option) => AttributeOption::create(
+                            OptionCode::fromString($option),
+                            LabelCollection::fromArray(['en_US' => $option])
+                        ),
+                        explode(',', $options)
+                    )
+                );
+                $this->attributeRepository->update($attribute);
+
+                return;
+            }
+        }
+
+        throw new \Exception(sprintf('The "%s" attribute is not found.', $attributeCode));
+    }
 }
