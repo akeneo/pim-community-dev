@@ -101,6 +101,21 @@ final class EditReferenceEntityContext implements Context
     }
 
     /**
+     * @Given /^the "([^"]+)" reference entity$/
+     */
+    public function theReferenceEntity(string $referenceEntityIdentifier)
+    {
+        $createCommand = new CreateReferenceEntityCommand($referenceEntityIdentifier, []);
+
+        $violations = $this->validator->validate($createCommand);
+        if ($violations->count() > 0) {
+            throw new \LogicException(sprintf('Cannot create reference entity: %s', $violations->get(0)->getMessage()));
+        }
+
+        ($this->createReferenceEntityHandler)($createCommand);
+    }
+
+    /**
      * @When /^the user updates the reference entity "([^"]*)" with:$/
      */
     public function theUserUpdatesTheReferenceEntityWith(string $identifier, TableNode $updateTable)

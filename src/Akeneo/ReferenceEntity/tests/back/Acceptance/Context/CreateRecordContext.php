@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\AttributeAsLabelReference;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -67,7 +68,7 @@ final class CreateRecordContext implements Context
     }
 
     /**
-     * @given /^the "([^"]+)" record for entity "([^"]+)" with:$/
+     * @Given /^the "([^"]+)" record for "([^"]+)" entity with:$/
      * @When /^the user creates a record "([^"]+)" for entity "([^"]+)" with:$/
      */
     public function theUserCreatesARecordWith(
@@ -109,6 +110,23 @@ final class CreateRecordContext implements Context
             $actualRecord,
             $attributeAsLabel
         );
+    }
+
+    /**
+     * @Then there is no ':recordCode' record in the ':referenceEntityIdentifier' reference entity
+     */
+    public function thereIsNoRecordForTheReferenceEntity(string $recordCode, string $referenceEntityIdentifier): void
+    {
+        try {
+            $this->recordRepository->getByReferenceEntityAndCode(
+                ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+                RecordCode::fromString($recordCode)
+            );
+        } catch (RecordNotFoundException $e) {
+            return;
+        }
+
+        throw new \Exception('The record exists.');
     }
 
     private function assertSameLabels(array $expectedLabels, Record $record, AttributeAsLabelReference $attributeAsLabel)

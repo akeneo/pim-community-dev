@@ -1,0 +1,48 @@
+services:
+    pim_connector.step.csv_reference_entity_record.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_referenceentity.job.reader.database.reference_entity_record'
+            - '@akeneo_referenceentity.job.processor.normalization.reference_entity_record'
+            - '@akeneo_referenceentity.job.writer.csv_file.reference_entity_record'
+            - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_connector.step.xlsx_reference_entity_record.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_referenceentity.job.reader.database.reference_entity_record'
+            - '@akeneo_referenceentity.job.processor.normalization.reference_entity_record'
+            - '@akeneo_referenceentity.job.writer.xlsx_file.reference_entity_record'
+            - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_connector.step.csv_reference_entity_record.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_referenceentity.job.reader.file.csv_reference_entity_record'
+            - '@akeneo_referenceentity.job.processor.denormalization.create_and_edit_record_command'
+            - '@akeneo_referenceentity.job.writer.handle.record.database'
+            - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_connector.step.xlsx_reference_entity_record.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_referenceentity.job.reader.file.xlsx_reference_entity_record'
+            - '@akeneo_referenceentity.job.processor.denormalization.create_and_edit_record_command'
+            - '@akeneo_referenceentity.job.writer.handle.record.database'
+            - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'

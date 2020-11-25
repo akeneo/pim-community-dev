@@ -1,0 +1,179 @@
+parameters:
+    akeneo_referenceentity.job_name.csv_reference_entity_record_export: 'csv_reference_entity_record_export'
+    akeneo_referenceentity.job_name.xlsx_reference_entity_record_export: 'xlsx_reference_entity_record_export'
+    akeneo_referenceentity.job_name.csv_reference_entity_record_import: 'csv_reference_entity_record_import'
+    akeneo_referenceentity.job_name.xlsx_reference_entity_record_import: 'xlsx_reference_entity_record_import'
+
+services:
+    # Jobs
+    pim_connector.job.csv_reference_entity_record_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%akeneo_referenceentity.job_name.csv_reference_entity_record_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_reference_entity_record.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_reference_entity_record_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%akeneo_referenceentity.job_name.xlsx_reference_entity_record_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_reference_entity_record.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.csv_reference_entity_record_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%akeneo_referenceentity.job_name.csv_reference_entity_record_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_reference_entity_record.import'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.xlsx_reference_entity_record_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%akeneo_referenceentity.job_name.xlsx_reference_entity_record_import%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.xlsx_reference_entity_record.import'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    # Job providers
+    akeneo_referenceentity.job.provider.csv_reference_entity_record_export:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Provider\CsvReferenceEntityRecordExport'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_referenceentity.job.provider.xlsx_reference_entity_record_export:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Provider\XlsxReferenceEntityRecordExport'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_referenceentity.job.job_parameters.constraint_collection_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport'
+        arguments:
+            -
+                - '%akeneo_referenceentity.job_name.csv_reference_entity_record_import%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_referenceentity.job.job_parameters.constraint_collection_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - '%akeneo_referenceentity.job_name.xlsx_reference_entity_record_import%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    akeneo_referenceentity.job.job_parameters.default_values_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport'
+        arguments:
+            -
+                - '%akeneo_referenceentity.job_name.csv_reference_entity_record_import%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    akeneo_referenceentity.job.job_parameters.default_values_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - '%akeneo_referenceentity.job_name.xlsx_reference_entity_record_import%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Readers
+    akeneo_referenceentity.job.reader.database.reference_entity_record:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Reader\Database\RecordReader'
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_record_identifiers_by_reference_entity'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.record'
+
+    akeneo_referenceentity.job.reader.file.csv_reference_entity_record:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Reader\File\Csv\RecordReader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@akeneo_referenceentity.job.array_converter.flat_to_standard.reference_entity_record'
+
+    akeneo_referenceentity.job.reader.file.xlsx_reference_entity_record:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Reader\File\Xlsx\RecordReader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@akeneo_referenceentity.job.array_converter.flat_to_standard.reference_entity_record'
+
+    # Processors
+    akeneo_referenceentity.job.processor.normalization.reference_entity_record:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Processor\Normalization\RecordProcessor'
+        arguments:
+            - '@akeneo_referenceentity.job.processor.bulk_media_fetcher'
+
+    akeneo_referenceentity.job.processor.denormalization.create_and_edit_record_command:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Processor\Denormalization\RecordProcessor'
+        arguments:
+            - '@akeneo_referenceentity.application.factory.record.connector.edit_record_command_factory'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.record_exists'
+            - '@validator'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_image_attribute_codes'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+
+    akeneo_referenceentity.job.processor.bulk_media_fetcher:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Processor\BulkMediaFetcher'
+        arguments:
+            - '@akeneo_file_storage.file_storage.file.output_file_fetcher'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    # Writers
+    akeneo_referenceentity.job.writer.csv_file.reference_entity_record:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Writer\File\Csv\RecordWriter'
+        arguments:
+            - '@akeneo_referenceentity.job.array_converter.standard_to_flat.reference_entity_record'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+
+    akeneo_referenceentity.job.writer.xlsx_file.reference_entity_record:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Writer\File\Xlsx\RecordWriter'
+        arguments:
+            - '@akeneo_referenceentity.job.array_converter.standard_to_flat.reference_entity_record'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_indexed_by_identifier'
+            - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+
+    akeneo_referenceentity.job.writer.handle.record.database:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\Writer\Record\RecordWriter'
+        arguments:
+            - '@akeneo_referenceentity.application.record.create_record_handler'
+            - '@akeneo_referenceentity.application.record.edit_record_handler'
+
+    # Converters
+    akeneo_referenceentity.job.array_converter.standard_to_flat.reference_entity_record:
+        class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\ArrayConverter\StandardToFlat\Record'
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
+
+    akeneo_referenceentity.job.array_converter.flat_to_standard.reference_entity_record:
+       class: 'Akeneo\ReferenceEntity\Infrastructure\Connector\ArrayConverter\FlatToStandard\Record'
+       arguments:
+           - '@pim_connector.array_convertor.checker.fields_requirement'
+           - '@akeneo_referenceentity.infrastructure.persistence.query.find_attributes_details'
