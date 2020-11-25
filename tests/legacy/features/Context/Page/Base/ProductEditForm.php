@@ -175,9 +175,10 @@ class ProductEditForm extends Form
             return $this->findFieldContainer($label)->find('css', $selector);
         }, sprintf('Cannot find "%s" sub container', $label));
 
-        $field = $this->spin(function () use ($subContainer) {
-            return $subContainer->find('css', '.field-input input, .field-input textarea');
-        }, sprintf('Cannot find ".field-input input" or ".field-input textarea" in sub container "%s"', $label));
+        $selectors = ['.field-input input', '.field-input textarea', '.field-input *[role=switch]'];
+        $field = $this->spin(function () use ($subContainer, $selectors) {
+            return $subContainer->find('css', join(',', $selectors));
+        }, sprintf('Cannot find %s in subcontainer "%s"', join(', ', $selectors), $label));
 
         return $field;
     }
