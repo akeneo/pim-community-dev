@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactController from '../react/react-controller';
-import {Index} from 'akeneomeasure/index';
+// import {Index} from 'akeneomeasure/index';
 import {measurementsDependencies} from '../dependencies';
 
 const mediator = require('oro/mediator');
@@ -8,7 +8,7 @@ const __ = require('oro/translator');
 
 class SettingsController extends ReactController {
   reactElementToMount() {
-    return <Index dependencies={measurementsDependencies} />;
+    return <div />;
   }
 
   routeGuardToUnmount() {
