@@ -1,6 +1,13 @@
 import React, {useRef, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useLocation
+} from 'react-router-dom';
 
 const fetcherRegistry = require('pim/fetcher-registry');
 const dateContext = require('pim/date-context');
@@ -10,7 +17,8 @@ const initTranslator = require('pim/init-translator');
 const formBuilder = require('pim/form-builder');
 const router = require('pim/router');
 const $ = require('jquery');
-const Backbone = require('backbone');
+const routeMatcher = require('pim/route-matcher');
+const controllerRegistry = require('pim/controller-registry');
 
 //needed to have require available in twig files
 require('require-polyfill');
@@ -29,6 +37,27 @@ const Content = styled.div`
   flex: 1;
   height: 100vh;
 `;
+
+const BackboneRouter = () => {
+  const location = useLocation();
+  const pageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    (async () => {
+//      const route = routeMatcher.match.apply(routeMatcher, [`#${location.pathname}`]);
+//      const controller = await controllerRegistry.get(route.name);
+//  if (controller.class && null !== pageRef.current) {
+      if (null !== pageRef.current) {
+        router.setRoot(pageRef.current);
+        router.defaultRoute(location.pathname);
+      }
+    })();
+  }, [location]);
+
+  return (
+    <div ref={pageRef} />
+  );
+};
 
 const App = ({formBuilder}: {formBuilder: any}) => {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -51,7 +80,8 @@ const App = ({formBuilder}: {formBuilder: any}) => {
       }
     });
 
-    Backbone.history.start();
+
+    //Backbone.history.start();
   };
 
   useEffect(() => {
@@ -62,17 +92,29 @@ const App = ({formBuilder}: {formBuilder: any}) => {
 
   return (
     <>
-      <div>
-        <div id="flash-messages" className="AknDefault-flashContainer">
-          <div className="flash-messages-holder AknDefault-flashList"></div>
+      <Router>
+        <div>
+          <div id="flash-messages" className="AknDefault-flashContainer">
+            <div className="flash-messages-holder AknDefault-flashList"></div>
+          </div>
         </div>
-      </div>
-      <Container>
-        <div ref={menuRef}></div>
-        <Content ref={containerRef} id="container" className="AknDefault-container"></Content>
-      </Container>
-      <div id="overlay" className="AknOverlay"></div>
-      <div data-drop-zone="communication-channel-panel"></div>
+        <Container>
+          <div ref={menuRef}></div>
+          <Content id="container" className="AknDefault-container">
+              <Link to='/about'>My link</Link>
+              <Switch>
+                <Route path="/about">
+                  It works
+                </Route>
+                <Route path="*">
+                  <BackboneRouter />
+                </Route>
+              </Switch>
+          </Content>
+        </Container>
+        <div id="overlay" className="AknOverlay"></div>
+        <div data-drop-zone="communication-channel-panel"></div>
+      </Router>
     </>
   );
 };
