@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Component\Batch\Query;
+namespace Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql;
 
+use Akeneo\Tool\Component\Batch\Query\CreateJobInstanceInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -11,7 +12,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlCreateJobInstance implements SqlCreateJobInstanceInterface
+final class SqlCreateJobInstance implements CreateJobInstanceInterface
 {
     /** @var Connection */
     private $connection;

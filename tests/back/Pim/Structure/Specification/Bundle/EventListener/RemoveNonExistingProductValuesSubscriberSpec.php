@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\Batch\Query\SqlCreateJobInstanceInterface;
+use Akeneo\Tool\Component\Batch\Query\CreateJobInstanceInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
@@ -26,7 +26,7 @@ class RemoveNonExistingProductValuesSubscriberSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         JobInstanceRepository $jobInstanceRepository,
         JobLauncherInterface $jobLauncher,
-        SqlCreateJobInstanceInterface $createJobInstance
+        CreateJobInstanceInterface $createJobInstance
     ) {
         $this->beConstructedWith($tokenStorage, $jobInstanceRepository, $jobLauncher, 'job_name', $createJobInstance);
     }

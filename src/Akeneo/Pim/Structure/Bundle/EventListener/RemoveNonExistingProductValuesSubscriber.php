@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\Batch\Query\SqlCreateJobInstanceInterface;
+use Akeneo\Tool\Component\Batch\Query\CreateJobInstanceInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -33,7 +33,7 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
     /** @var string */
     private $jobName;
 
-    /** @var SqlCreateJobInstanceInterface|null */
+    /** @var CreateJobInstanceInterface|null */
     public $createJobInstance;
 
     public function __construct(
@@ -41,7 +41,7 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
         JobInstanceRepository $jobInstanceRepository,
         JobLauncherInterface $jobLauncher,
         string $jobName,
-        SqlCreateJobInstanceInterface $createJobInstance = null // @todo remove nullable on master
+        CreateJobInstanceInterface $createJobInstance = null // @todo remove nullable on master
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->jobInstanceRepository = $jobInstanceRepository;

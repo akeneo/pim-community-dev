@@ -9,7 +9,7 @@ namespace Akeneo\Tool\Component\Batch\Query;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface SqlCreateJobInstanceInterface
+interface CreateJobInstanceInterface
 {
     public function createJobInstance(array $params): int;
 }
