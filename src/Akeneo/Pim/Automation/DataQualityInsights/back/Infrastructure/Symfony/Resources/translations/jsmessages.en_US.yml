@@ -36,6 +36,7 @@ akeneo_data_quality_insights:
             add_families: Add families
             add_categories: Add categories
             title: Title
+            score: Score
             no_family_helper_msg: Select the families for which you wish to measure data quality
             no_category_helper_msg: Select the categories for which you wish to measure data quality
             see_in_grid: See in grid
