@@ -62,7 +62,7 @@ services:
             - '@database_connection'
             - 'pim_data_quality_insights_product_model_axis_rates'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardRatesQuery:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardScoresQuery:
         arguments:
             - '@database_connection'
 

@@ -2,19 +2,10 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -22,7 +13,6 @@ use Doctrine\DBAL\Connection;
  * {
  *    "daily": {
  *      "2019-12-19": {
- *        "enrichment": {
  *          "ecommerce": {
  *            "en_US": {
  *              "rank_1": 123,
@@ -34,20 +24,16 @@ use Doctrine\DBAL\Connection;
  *            "fr_FR": {
  *              "rank_1": 123,
  *            }
- *          }
- *        },
- *        "consistency": {
+ *          },
  *          "print": {
  *            "en_US": {
  *              "rank_1": 123
  *            }
  *          }
- *        }
  *      }
  *    },
  *    "weekly": {
  *      "2019-12-28": {
- *        "enrichment": {
  *          "ecommerce": {
  *            "en_US": {
  *              "rank_3": 123,
@@ -55,34 +41,22 @@ use Doctrine\DBAL\Connection;
  *              "rank_5": 87
  *            }
  *          }
- *        },
- *        "consistency": {
- *          "ecommerce": {
- *            "en_US": {
- *              "rank_1": 123
- *            }
- *          }
- *        }
  *      }
  *    },
  *    "monthly": {
  *      "2019-12-31": {
- *        "enrichment": {
  *          "ecommerce": {
  *            "en_US": {
  *              "rank_3": 123,
  *              "rank_4": 345,
  *              "rank_5": 42
  *            }
- *          }
- *        },
- *        "consistency": {
+ *          },
  *          "print": {
  *            "en_US": {
  *              "rank_1": 123
  *            }
  *          }
- *        }
  *      }
  *    },
  *    "average_ranks": {
@@ -94,10 +68,9 @@ use Doctrine\DBAL\Connection;
  *    "average_ranks_consolidated_at" => "2020-01-24 14:42:35"
  *  }
  */
-final class DashboardRatesProjectionRepository implements DashboardRatesProjectionRepositoryInterface
+final class DashboardScoresProjectionRepository implements DashboardScoresProjectionRepositoryInterface
 {
-    /** @var Connection */
-    private $db;
+    private Connection $db;
 
     public function __construct(Connection $db)
     {
@@ -107,15 +80,15 @@ final class DashboardRatesProjectionRepository implements DashboardRatesProjecti
     public function save(Write\DashboardRatesProjection $ratesProjection): void
     {
         $query = <<<SQL
-INSERT INTO pim_data_quality_insights_dashboard_rates_projection (type, code, rates)
-VALUES (:type, :code, :rates)
-ON DUPLICATE KEY UPDATE rates = JSON_MERGE_PATCH(rates, :rates);
+INSERT INTO pim_data_quality_insights_dashboard_scores_projection (type, code, scores)
+VALUES (:type, :code, :scores)
+ON DUPLICATE KEY UPDATE scores = JSON_MERGE_PATCH(scores, :scores);
 SQL;
 
         $this->db->executeQuery($query, [
             'type' => $ratesProjection->getType(),
             'code' => $ratesProjection->getCode(),
-            'rates' => json_encode($ratesProjection->getRanksDistributionsPerTimePeriod())
+            'scores' => json_encode($ratesProjection->getRanksDistributionsPerTimePeriod())
         ]);
 
         $this->saveAverageRanks($ratesProjection);
@@ -137,8 +110,8 @@ SQL;
         $pathsToRemove = implode(', ', $pathsToRemove);
 
         $query = <<<SQL
-UPDATE pim_data_quality_insights_dashboard_rates_projection
-SET rates = JSON_REMOVE(rates, $pathsToRemove)
+UPDATE pim_data_quality_insights_dashboard_scores_projection
+SET scores = JSON_REMOVE(scores, $pathsToRemove)
 SQL;
 
         $this->db->executeQuery($query);
@@ -147,12 +120,12 @@ SQL;
     private function saveAverageRanks(Write\DashboardRatesProjection $ratesProjection): void
     {
         $query = <<<SQL
-UPDATE pim_data_quality_insights_dashboard_rates_projection
-SET rates = JSON_MERGE_PATCH(rates, :rates)
+UPDATE pim_data_quality_insights_dashboard_scores_projection
+SET scores = JSON_MERGE_PATCH(scores, :rates)
 WHERE type = :type AND code = :code 
   AND (
-      NOT JSON_CONTAINS_PATH(rates, 'one', '$.average_ranks_consolidated_at')
-      OR JSON_UNQUOTE(JSON_EXTRACT(rates, '$.average_ranks_consolidated_at')) < :consolidated_at
+      NOT JSON_CONTAINS_PATH(scores, 'one', '$.average_ranks_consolidated_at')
+      OR JSON_UNQUOTE(JSON_EXTRACT(scores, '$.average_ranks_consolidated_at')) < :consolidated_at
   );
 SQL;
         $rates = [

@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Co
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
@@ -25,7 +25,7 @@ use Prophecy\Argument;
 class PurgeOutdatedDataSpec extends ObjectBehavior
 {
     public function let(
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository,
+        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository,
         ProductAxisRateRepositoryInterface $productAxisRateRepository,
         ProductAxisRateRepositoryInterface $productModelAxisRateRepository
     ) {
@@ -37,7 +37,7 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
     }
 
     public function it_purges_dashboard_projection_rates(
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
+        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository
     ) {
         $purgeDate = new \DateTimeImmutable('2020-03-27');
         $daily = TimePeriod::daily();

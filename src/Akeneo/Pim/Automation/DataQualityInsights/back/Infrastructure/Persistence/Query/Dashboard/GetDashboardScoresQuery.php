@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetDashboardRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetDashboardScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
@@ -15,10 +15,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\ResultStatement;
 
-final class GetDashboardRatesQuery implements GetDashboardRatesQueryInterface
+final class GetDashboardScoresQuery implements GetDashboardScoresQueryInterface
 {
-    /** @var Connection */
-    private $db;
+    private Connection $db;
 
     public function __construct(Connection $db)
     {
@@ -28,8 +27,8 @@ final class GetDashboardRatesQuery implements GetDashboardRatesQueryInterface
     public function byCatalog(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod): ?Read\DashboardRates
     {
         $sql = <<<'SQL'
-SELECT rates
-FROM pim_data_quality_insights_dashboard_rates_projection
+SELECT scores
+FROM pim_data_quality_insights_dashboard_scores_projection
 WHERE type = :type
 SQL;
 
@@ -41,8 +40,8 @@ SQL;
     public function byCategory(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, CategoryCode $category): ?Read\DashboardRates
     {
         $sql = <<<'SQL'
-SELECT rates
-FROM pim_data_quality_insights_dashboard_rates_projection
+SELECT scores
+FROM pim_data_quality_insights_dashboard_scores_projection
 WHERE type = :type
 AND code = :code
 SQL;
@@ -58,8 +57,8 @@ SQL;
     public function byFamily(ChannelCode $channel, LocaleCode $locale, TimePeriod $timePeriod, FamilyCode $family): ?Read\DashboardRates
     {
         $sql = <<<'SQL'
-SELECT rates
-FROM pim_data_quality_insights_dashboard_rates_projection
+SELECT scores
+FROM pim_data_quality_insights_dashboard_scores_projection
 WHERE type = :type
 AND code = :code
 SQL;

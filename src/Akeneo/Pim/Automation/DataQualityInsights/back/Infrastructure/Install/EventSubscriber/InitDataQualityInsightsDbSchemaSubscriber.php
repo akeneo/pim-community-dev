@@ -75,13 +75,6 @@ CREATE TABLE pim_data_quality_insights_product_score (
     CONSTRAINT FK_dqi_product_score FOREIGN KEY (product_id) REFERENCES pim_catalog_product (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE pim_data_quality_insights_dashboard_rates_projection (
-    type VARCHAR(15) NOT NULL,
-    code VARCHAR(100) NOT NULL,
-    rates JSON NOT NULL,
-    PRIMARY KEY (type, code)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 CREATE TABLE pim_data_quality_insights_attribute_group_activation (
     attribute_group_code VARCHAR(100) NOT NULL PRIMARY KEY,
     activated TINYINT NOT NULL,

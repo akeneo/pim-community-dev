@@ -2,45 +2,34 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-final class DashboardRatesProjectionRepositoryIntegration extends TestCase
+final class DashboardScoresProjectionRepositoryIntegration extends TestCase
 {
-    /** @var Connection */
-    private $db;
+    private Connection $db;
 
-    /** @var DashboardRatesProjectionRepositoryInterface */
-    private $repository;
+    private DashboardScoresProjectionRepositoryInterface $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->db = $this->get('database_connection');
-        $this->repository = $this->get(DashboardRatesProjectionRepository::class);
+        $this->repository = $this->get(DashboardScoresProjectionRepository::class);
     }
 
     public function test_it_purges_rates_for_given_dates()
@@ -85,12 +74,10 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
     public function test_it_does_not_save_outdated_average_ranks()
     {
         $youngestRanksDistributionCollection = new RanksDistributionCollection([
-            "consistency" => ["ecommerce" => ["en_US" => ["rank_4" => 50]]],
-            "enrichment" => ["ecommerce" => ["en_US" => ["rank_2" => 50]]]
+            "ecommerce" => ["en_US" => ["rank_4" => 50]]
         ]);
         $youngestAverageRanks = [
-            "consistency" => ["ecommerce" => ["en_US" => "rank_4"]],
-            "enrichment" => ["ecommerce" => ["en_US" => "rank_2"]]
+            "ecommerce" => ["en_US" => "rank_4"],
         ];
         $youngestConsolidationDate = new ConsolidationDate(new \DateTimeImmutable('2019-12-19 12:34:41'));
 
@@ -98,8 +85,7 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
         $this->assertCatalogAverageRanksEquals($youngestAverageRanks);
 
         $olderRanksDistributionCollection = new RanksDistributionCollection([
-            "consistency" => ["ecommerce" => ["en_US" => ["rank_1" => 50]]],
-            "enrichment" => ["ecommerce" => ["en_US" => ["rank_3" => 50]]]
+            "ecommerce" => ["en_US" => ["rank_1" => 50]],
         ]);
         $olderConsolidationDate = $youngestConsolidationDate->modify('-1 second');
 
@@ -107,12 +93,10 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
         $this->assertCatalogAverageRanksEquals($youngestAverageRanks);
 
         $youngerRanksDistributionCollection = new RanksDistributionCollection([
-            "consistency" => ["ecommerce" => ["en_US" => ["rank_3" => 50]]],
-            "enrichment" => ["ecommerce" => ["en_US" => ["rank_5" => 50]]]
+            "ecommerce" => ["en_US" => ["rank_3" => 50]],
         ]);
         $youngerAverageRanks = [
-            "consistency" => ["ecommerce" => ["en_US" => "rank_3"]],
-            "enrichment" => ["ecommerce" => ["en_US" => "rank_5"]]
+            "ecommerce" => ["en_US" => "rank_3"],
         ];
         $youngerConsolidationDate = $youngestConsolidationDate->modify('+1 second');
 
@@ -147,40 +131,20 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
     private function getRanksDistributionCollection(): RanksDistributionCollection
     {
         return new RanksDistributionCollection([
-            "consistency" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => 12,
-                        "rank_2" => 28,
-                        "rank_3" => 10,
-                        "rank_4" => 50,
-                        "rank_5" => 10
-                    ],
-                    "fr_FR" => [
-                        "rank_1" => 30,
-                        "rank_2" => 10,
-                        "rank_3" => 20,
-                        "rank_4" => 20,
-                        "rank_5" => 20
-                    ],
+            "ecommerce" => [
+                "en_US" => [
+                    "rank_1" => 12,
+                    "rank_2" => 28,
+                    "rank_3" => 10,
+                    "rank_4" => 50,
+                    "rank_5" => 10
                 ],
-            ],
-            "enrichment" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => 10,
-                        "rank_2" => 50,
-                        "rank_3" => 10,
-                        "rank_4" => 28,
-                        "rank_5" => 12
-                    ],
-                    "fr_FR" => [
-                        "rank_1" => 20,
-                        "rank_2" => 20,
-                        "rank_3" => 20,
-                        "rank_4" => 10,
-                        "rank_5" => 30
-                    ],
+                "fr_FR" => [
+                    "rank_1" => 30,
+                    "rank_2" => 10,
+                    "rank_3" => 20,
+                    "rank_4" => 20,
+                    "rank_5" => 20
                 ],
             ],
         ]);
@@ -197,8 +161,8 @@ final class DashboardRatesProjectionRepositoryIntegration extends TestCase
 
         $query = <<<SQL
 SELECT COUNT(*) AS nb_rates
-FROM pim_data_quality_insights_dashboard_rates_projection
-WHERE JSON_CONTAINS_PATH(rates, 'one', $path)
+FROM pim_data_quality_insights_dashboard_scores_projection
+WHERE JSON_CONTAINS_PATH(scores, 'one', $path)
 SQL;
 
         $count = intval($this->db->executeQuery($query)->fetchColumn());
@@ -209,8 +173,8 @@ SQL;
     private function assertCatalogAverageRanksEquals(array $expectedAverageRanks): void
     {
         $query = <<<SQL
-SELECT JSON_EXTRACT(rates, '$.average_ranks') as average_ranks
-FROM pim_data_quality_insights_dashboard_rates_projection
+SELECT JSON_EXTRACT(scores, '$.average_ranks') as average_ranks
+FROM pim_data_quality_insights_dashboard_scores_projection
 WHERE type = :type AND code = :code
 SQL;
 

@@ -46,8 +46,8 @@ final class GetAverageRanksQuery implements GetAverageRanksQueryInterface
         $query = <<<SQL
 SELECT
     code,
-    JSON_UNQUOTE(JSON_EXTRACT(rates, $path)) AS average_rank
-FROM pim_data_quality_insights_dashboard_rates_projection
+    JSON_UNQUOTE(JSON_EXTRACT(scores, $path)) AS average_rank
+FROM pim_data_quality_insights_dashboard_scores_projection
 WHERE type = :type AND code IN (:codes)
 SQL;
 
