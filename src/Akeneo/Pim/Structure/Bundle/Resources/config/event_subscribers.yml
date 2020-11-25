@@ -21,6 +21,13 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_catalog.event_subscriber.blacklist_attribute_code_on_attribute_deletion:
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\BlacklistAttributeCodeOnAttributeDeletion'
+        arguments:
+            - '@pim_catalog.manager.attribute_code_blacklister'
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.save_family_variants_on_family_update:
         class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber'
         arguments:

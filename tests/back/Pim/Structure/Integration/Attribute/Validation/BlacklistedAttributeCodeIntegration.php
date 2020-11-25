@@ -28,17 +28,8 @@ class BlackListedAttributeCodeIntegration extends AbstractAttributeTestCase
 
     private function blacklistAttributeCode(string $attributeCode)
     {
-        $blacklistAttributeCodeSql = <<<SQL
-        INSERT INTO `pim_catalog_attribute_blacklist` (`attribute_code`)
-        VALUES
-            (:attribute_code);
-        SQL;
-
-        /** @var Connection $connection */
-        $connection = $this->get('database_connection');
-        $connection->executeUpdate($blacklistAttributeCodeSql, [
-            ':attribute_code' => $attributeCode
-        ]);
+        $blacklister = $this->get('pim_catalog.manager.attribute_code_blacklister');
+        $blacklister->blacklist('new_blacklisted_attribute');
     }
 
     private function createAttributeByCode(string $attributeCode): AttributeInterface
