@@ -3,8 +3,6 @@
 namespace Oro\Bundle\PimDataGridBundle\Repository;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
@@ -46,7 +44,7 @@ SQL;
         string $alias,
         string $term = '',
         array $options = []
-    ): Collection {
+    ): array {
         $options += ['limit' => 20, 'page' => 1];
         $offset = (int) $options['limit'] * ((int) $options['page'] - 1);
 
@@ -72,7 +70,7 @@ SQL;
             $qb->setParameter('ids', $identifiers);
         }
 
-        return new ArrayCollection($qb->getQuery()->execute());
+        return $qb->getQuery()->execute();
     }
 
     private function getConnection(): Connection

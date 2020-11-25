@@ -47,11 +47,12 @@ class DatagridViewRepositoryIntegration extends TestCase
         $view6Id = $this->createDatagridView('view 6', 'product-grid', DatagridView::TYPE_PUBLIC, $juliaUser)->getId();
 
         $result = $this->datagridViewRepository->findDatagridViewBySearch($adminUser, 'product-grid');
-        Assert::notSame($result->count(), 0);
+        Assert::isArray($result);
+        Assert::notEmpty($result);
         Assert::isInstanceOf($result[0], DatagridView::class);
         Assert::same(array_map(function ($view) {
             return $view->getId();
-        }, $result->toArray()), [$view1Id, $view2Id, $view3Id, $view4Id, $view6Id]);
+        }, $result), [$view1Id, $view2Id, $view3Id, $view4Id, $view6Id]);
     }
 
     public function test_that_it_filters_by_ids(): void
@@ -66,7 +67,7 @@ class DatagridViewRepositoryIntegration extends TestCase
         ]);
         Assert::same(array_map(function ($view) {
             return $view->getId();
-        }, $result->toArray()), [$view1Id, $view2Id]);
+        }, $result), [$view1Id, $view2Id]);
     }
 
     public function test_it_returns_view_aliases_for_a_given_user(): void

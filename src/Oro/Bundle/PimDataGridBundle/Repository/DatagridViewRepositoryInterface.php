@@ -3,7 +3,6 @@
 namespace Oro\Bundle\PimDataGridBundle\Repository;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * Datagrid view repository interface
@@ -32,5 +31,5 @@ interface DatagridViewRepositoryInterface
         string $alias,
         string $term = '',
         array $options = []
-    ): Collection;
+    ): array;
 }
