@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
+namespace spec\Akeneo\Tool\Component\StorageUtils\Validator\Constraints;
 
+use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
