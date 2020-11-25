@@ -267,7 +267,10 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     {
         $this->denyNotGrantedCategorizedEntity->denyIfNotGranted($productModel);
 
-        return $this->filteredProductModelFactory->create($productModel);
+        $filteredProductModel = $this->filteredProductModelFactory->create($productModel);
+        $filteredProductModel->cleanup();
+
+        return $filteredProductModel;
     }
 
     /**
@@ -282,7 +285,9 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         $filteredProductModels = [];
         foreach ($productModels as $productModel) {
             $this->denyNotGrantedCategorizedEntity->denyIfNotGranted($productModel);
-            $filteredProductModels[] = $this->filteredProductModelFactory->create($productModel);
+            $filteredProductModel = $this->filteredProductModelFactory->create($productModel);
+            $filteredProductModel->cleanup();
+            $filteredProductModels[] = $filteredProductModel;
         }
 
         return $filteredProductModels;
