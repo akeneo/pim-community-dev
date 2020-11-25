@@ -361,9 +361,10 @@ jobs:
           - run:
                 name: Latest SaaS prod deployment on kubernetes
                 command: |
-                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-                    LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
+                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
+                    LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
                     echo $LATEST_RELEASE
+                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
                     INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
           - run:
                 name: Upgrade
