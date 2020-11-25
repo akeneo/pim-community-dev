@@ -32,15 +32,15 @@ const ScoreDistributionChartByTimePeriod: FC<Props> = ({dataset, timePeriod}) =>
     return weeklyCallback;
   }, [timePeriod]);
 
-  const domain: [number, number] = useMemo(() => {
+  const periods: number = useMemo(() => {
     if (timePeriod === 'daily') {
-      return [0, 8];
+      return 7;
     }
     if (timePeriod === 'monthly') {
-      return [0, 7];
+      return 6;
     }
 
-    return [0, 5];
+    return 4;
   }, [timePeriod]);
 
   return (
@@ -48,7 +48,7 @@ const ScoreDistributionChartByTimePeriod: FC<Props> = ({dataset, timePeriod}) =>
       {isEmptyChartDataset(dataset) ? (
         <EmptyChartPlaceholder />
       ) : (
-        <ScoreDistributionChart dataset={dataset} periodDomain={domain} dateFormatCallback={callback} />
+        <ScoreDistributionChart dataset={dataset} periods={periods} dateFormatCallback={callback} />
       )}
     </>
   );

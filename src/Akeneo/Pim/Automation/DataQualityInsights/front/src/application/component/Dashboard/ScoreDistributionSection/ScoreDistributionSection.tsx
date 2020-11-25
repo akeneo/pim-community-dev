@@ -48,12 +48,7 @@ const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, tim
 
   return (
     <>
-      <Header
-        timePeriod={timePeriod}
-        familyCode={familyCode}
-        categoryCode={categoryCode}
-        showFilters={!isPlaceholderVisible}
-      />
+      <Header timePeriod={timePeriod} familyCode={familyCode} categoryCode={categoryCode} />
       {isPlaceholderVisible ? (
         <EmptyChartPlaceholder />
       ) : (

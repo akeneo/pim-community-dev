@@ -11,10 +11,10 @@ const INITIAL_CHART_HEIGHT = 268;
 type Props = {
   dataset: ScoreDistributionChartDataset;
   dateFormatCallback: {(date: string, index: number): string};
-  periodDomain: [number, number];
+  periods: number;
 };
 
-const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback, periodDomain}) => {
+const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback,  periods}) => {
   const theme = useTheme();
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const {upScalingRatio, downScalingRatio} = useGetDashboardChartScalingSizeRatio(
@@ -48,9 +48,9 @@ const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback, periodD
       <VictoryChart
         height={INITIAL_CHART_HEIGHT}
         width={INITIAL_CHART_WIDTH}
-        padding={{top: 0, bottom: 65, left: 35, right: 0}}
-        domain={{x: periodDomain, y: [0, 100]}}
-        domainPadding={{x: 0, y: 12.5}}
+        padding={{top: 0, bottom: 35, left: 35, right: 5}}
+        domain={{x: [1, periods], y: [0, 100]}}
+        domainPadding={{x: 30, y: [0, 12.5]}}
       >
         <VictoryAxis
           tickValues={dates}
