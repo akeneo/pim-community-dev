@@ -208,11 +208,11 @@
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface` to
     - remove the `setFamilyId()` method
     - add `isDirty()` and `cleanup()` methods
+- Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory`
+- Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct` to
     - remove the `setFamilyId()` method
     - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
-    - add `isDirty()` and `cleanup()` methods 
-- Remove the `findDatagridViewByAlias()` method in `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface`
 
 ### CLI commands
 

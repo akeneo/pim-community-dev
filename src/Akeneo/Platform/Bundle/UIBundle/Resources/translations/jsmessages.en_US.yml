@@ -170,6 +170,7 @@ pim_common:
     before: Before
     by: by
     cancel: Cancel
+    clear_value: Clear value
     close: Close
     code: Code
     completeness: Completeness

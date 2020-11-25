@@ -1,8 +1,8 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
+namespace spec\Akeneo\Tool\Component\StorageUtils\Validator\Constraints;
 
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator;
+use Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator;
 use PhpSpec\ObjectBehavior;
 
 class WritableDirectorySpec extends ObjectBehavior
