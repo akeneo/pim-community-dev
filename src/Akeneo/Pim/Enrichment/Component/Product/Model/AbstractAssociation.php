@@ -79,7 +79,6 @@ abstract class AbstractAssociation implements AssociationInterface
     {
         if (!$this->owner) {
             $this->owner = $owner;
-            $owner->addAssociation($this);
         }
 
         return $this;
@@ -232,5 +231,12 @@ abstract class AbstractAssociation implements AssociationInterface
         }
 
         return $this->owner->getIdentifier() . '.' . $this->associationType->getCode();
+    }
+
+    public function __clone()
+    {
+        $this->products = clone $this->getProducts();
+        $this->productModels = clone $this->getProductModels();
+        $this->groups = clone $this->getGroups();
     }
 }

@@ -1223,7 +1223,7 @@ config:
     pim/template/filter/attribute/date:             pimui/templates/filter/attribute/date.html
 
     # Grid view selector
-    pim/template/grid/view-selector/create-view-label-input: pimui/templates/grid/view-selector-create-view-label-input.html
+    pim/template/grid/view-selector/create-view-inputs: pimui/templates/grid/view-selector-create-view-inputs.html
     pim/template/grid/view-selector/line: pimui/templates/grid/view-selector-line.html
     pim/template/grid/view-selector/create-view: pimui/templates/grid/view-selector-create-view.html
     pim/template/grid/view-selector/save-view: pimui/templates/grid/view-selector-save-view.html
