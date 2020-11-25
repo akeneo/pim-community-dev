@@ -92,6 +92,7 @@
     "mutationobserver-shim": "^0.3.5",
     "prettier": "^2.1.1",
     "raw-loader": "1.0.0",
+    "react-router": "^5.2.0",
     "react-test-renderer": "^16.8.0",
     "read-pkg": "4.0.1",
     "redux-devtools-extension": "^2.13.2",
