@@ -12,6 +12,7 @@ import {SeeInGrid} from './SeeInGrid';
 import {RemoveItem} from './RemoveItem';
 import {AddItem} from './AddItem';
 import {QualityScore} from '../../QualityScore';
+import {Cell, HeaderCell, Row, Table} from './Table';
 
 const MAX_WATCHED_FAMILIES = 20;
 const LOCAL_STORAGE_KEY = 'data-quality-insights:dashboard:widgets:families';
@@ -118,48 +119,42 @@ const FamilyWidget: FunctionComponent<FamilyWidgetProps> = ({catalogChannel, cat
   return (
     <>
       {header}
-      <table className="AknGrid AknGrid--unclickable">
-        <tbody className="AknGrid-body">
-          <tr>
-            <th className="AknGrid-headerCell">
-              {translate('akeneo_data_quality_insights.dqi_dashboard.widgets.title')}
-            </th>
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">
-              {translate(`akeneo_data_quality_insights.dqi_dashboard.widgets.score`)}
-            </th>
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate" />
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate" />
-          </tr>
+      <Table>
+        <Row isHeader={true}>
+          <HeaderCell>{translate('akeneo_data_quality_insights.dqi_dashboard.widgets.title')}</HeaderCell>
+          <HeaderCell align={'center'} width={48}>
+            {translate(`akeneo_data_quality_insights.dqi_dashboard.widgets.score`)}
+          </HeaderCell>
+          <HeaderCell />
+          <HeaderCell />
+        </Row>
 
-          {Object.keys(averageScoreByFamilies).length > 0 &&
-            Object.entries(averageScoreByFamilies).map(
-              ([familyCode, averageScoreRank]: [string, any], index: number) => {
-                let family: Family | undefined = undefined;
-                if (Object.keys(families).length > 0) {
-                  family = Object.values(families).find((family: any) => family.code === familyCode);
-                }
-                return (
-                  <tr key={index} className="AknGrid-bodyRow">
-                    <td className="AknGrid-bodyCell AknGrid-bodyCell--highlight familyName">
-                      {family && (family.labels[uiLocale] ? family.labels[uiLocale] : '[' + family.code + ']')}
-                    </td>
-                    <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
-                      <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : null} />
-                    </td>
-                    <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
-                      <SeeInGrid
-                        follow={() => redirectToProductGridFilteredByFamily(catalogChannel, catalogLocale, familyCode)}
-                      />
-                    </td>
-                    <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
-                      <RemoveItem remove={() => onRemoveFamily(familyCode)} />
-                    </td>
-                  </tr>
-                );
-              }
-            )}
-        </tbody>
-      </table>
+        {Object.keys(averageScoreByFamilies).length > 0 &&
+          Object.entries(averageScoreByFamilies).map(([familyCode, averageScoreRank]: [string, any], index: number) => {
+            let family: Family | undefined = undefined;
+            if (Object.keys(families).length > 0) {
+              family = Object.values(families).find((family: any) => family.code === familyCode);
+            }
+            return (
+              <Row key={index}>
+                <Cell highlight={true}>
+                  {family && (family.labels[uiLocale] ? family.labels[uiLocale] : '[' + family.code + ']')}
+                </Cell>
+                <Cell align={'center'}>
+                  <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : 'N/A'} />
+                </Cell>
+                <Cell action={true}>
+                  <SeeInGrid
+                    follow={() => redirectToProductGridFilteredByFamily(catalogChannel, catalogLocale, familyCode)}
+                  />
+                </Cell>
+                <Cell action={true}>
+                  <RemoveItem remove={() => onRemoveFamily(familyCode)} />
+                </Cell>
+              </Row>
+            );
+          })}
+      </Table>
 
       {modalElement && createPortal(familyModal, modalElement)}
     </>

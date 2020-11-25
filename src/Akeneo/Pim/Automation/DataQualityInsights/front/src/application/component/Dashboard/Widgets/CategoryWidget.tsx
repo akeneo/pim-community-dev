@@ -10,6 +10,7 @@ import {SeeInGrid} from './SeeInGrid';
 import {RemoveItem} from './RemoveItem';
 import {AddItem} from './AddItem';
 import {QualityScore} from '../../QualityScore';
+import {Cell, HeaderCell, Row, Table} from './Table';
 
 const MAX_WATCHED_CATEGORIES = 20;
 const LOCAL_STORAGE_KEY = 'data-quality-insights:dashboard:widgets:categories';
@@ -125,54 +126,48 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
   return (
     <>
       {header}
-      <table className="AknGrid AknGrid--unclickable">
-        <tbody className="AknGrid-body">
-          <tr>
-            <th className="AknGrid-headerCell">
-              {translate('akeneo_data_quality_insights.dqi_dashboard.widgets.title')}
-            </th>
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">
-              {translate(`akeneo_data_quality_insights.dqi_dashboard.widgets.score`)}
-            </th>
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate" />
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate" />
-          </tr>
-          {Object.entries(averageScoreByCategories).map(
-            ([categoryCode, averageScoreRank]: [string, any], index: number) => {
-              const category = watchedCategories.find(
-                (watchedCategory: Category) => watchedCategory.code === categoryCode
-              );
-              return (
-                category && (
-                  <tr key={index} className="AknGrid-bodyRow">
-                    <td className="AknGrid-bodyCell AknGrid-bodyCell--highlight categoryName">
-                      {category.label ? category.label : '[' + category.code + ']'}
-                    </td>
-                    <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
-                      <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : null} />
-                    </td>
-                    <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
-                      <SeeInGrid
-                        follow={() =>
-                          redirectToProductGridFilteredByCategory(
-                            catalogChannel,
-                            catalogLocale,
-                            category.id,
-                            category.rootCategoryId
-                          )
-                        }
-                      />
-                    </td>
-                    <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
-                      <RemoveItem remove={() => onRemoveCategory(categoryCode)} />
-                    </td>
-                  </tr>
-                )
-              );
-            }
-          )}
-        </tbody>
-      </table>
+      <Table>
+        <Row isHeader={true}>
+          <HeaderCell>{translate('akeneo_data_quality_insights.dqi_dashboard.widgets.title')}</HeaderCell>
+          <HeaderCell align={'center'} width={48}>
+            {translate(`akeneo_data_quality_insights.dqi_dashboard.widgets.score`)}
+          </HeaderCell>
+          <HeaderCell />
+          <HeaderCell />
+        </Row>
+        {Object.entries(averageScoreByCategories).map(
+          ([categoryCode, averageScoreRank]: [string, any], index: number) => {
+            const category = watchedCategories.find(
+              (watchedCategory: Category) => watchedCategory.code === categoryCode
+            );
+            return (
+              category && (
+                <Row key={index}>
+                  <Cell highlight={true}>{category.label ? category.label : '[' + category.code + ']'}</Cell>
+                  <Cell align={'center'}>
+                    <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : 'N/A'} />
+                  </Cell>
+                  <Cell action={true}>
+                    <SeeInGrid
+                      follow={() =>
+                        redirectToProductGridFilteredByCategory(
+                          catalogChannel,
+                          catalogLocale,
+                          category.id,
+                          category.rootCategoryId
+                        )
+                      }
+                    />
+                  </Cell>
+                  <Cell action={true}>
+                    <RemoveItem remove={() => onRemoveCategory(categoryCode)} />
+                  </Cell>
+                </Row>
+              )
+            );
+          }
+        )}
+      </Table>
       {categoryModal}
     </>
   );
