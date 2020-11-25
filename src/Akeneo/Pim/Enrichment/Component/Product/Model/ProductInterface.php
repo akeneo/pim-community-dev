@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
@@ -28,7 +29,8 @@ interface ProductInterface extends
     EntityWithFamilyInterface,
     EntityWithFamilyVariantInterface,
     EntityWithAssociationsInterface,
-    EntityWithQuantifiedAssociationsInterface
+    EntityWithQuantifiedAssociationsInterface,
+    StateUpdatedAware
 {
     /**
      * Get the ID of the product
@@ -192,16 +194,4 @@ interface ProductInterface extends
      * @return Collection
      */
     public function getCategoriesForVariation(): Collection;
-
-    /**
-     * Whether the product was updated
-     *
-     * @return bool
-     */
-    public function isDirty(): bool;
-
-    /**
-     * Resets the updated state (to false)
-     */
-    public function cleanup(): void;
 }
