@@ -83,7 +83,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $businessEvent,
             [
                 'user' => $magentoUser,
-                'pim_source' => 'staging.akeneo.com'
+                'pim_source' => 'staging.akeneo.com',
+                'webhook_connection_code' => $webhook->connectionCode(),
             ]
         )->willReturn(
             [
@@ -158,7 +159,14 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $connectionUserForFakeSubscription->execute()->willReturn(1234);
 
         $webhookUserAuthenticator->authenticate(1234)->willReturn($magentoUser);
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $magentoUser])->willReturn(
+        $builder->build(
+            $businessEvent,
+            [
+                'pim_source' => 'staging.akeneo.com',
+                'user' => $magentoUser,
+                'webhook_connection_code' => SendBusinessEventToWebhooksHandler::FAKE_CONNECTION_CODE,
+            ]
+        )->willReturn(
             [
                 new WebhookEvent(
                     'product.created',
@@ -267,7 +275,14 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator->authenticate(12)->willReturn($magentoUser);
         $webhookUserAuthenticator->authenticate(42)->willReturn($erpUser);
 
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $magentoUser])->willReturn(
+        $builder->build(
+            $businessEvent,
+            [
+                'pim_source' => 'staging.akeneo.com',
+                'user' => $magentoUser,
+                'webhook_connection_code' => $magentoWebhook->connectionCode(),
+            ]
+        )->willReturn(
             [
                 new WebhookEvent(
                     'product.created',
@@ -334,7 +349,14 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
         $webhookUserAuthenticator->authenticate(0)->willReturn($user);
-        $builder->build($businessEvent, ['pim_source' => 'staging.akeneo.com', 'user' => $user])->willThrow(
+        $builder->build(
+            $businessEvent,
+            [
+                'pim_source' => 'staging.akeneo.com',
+                'user' => $user,
+                'webhook_connection_code' => $webhook->connectionCode(),
+            ]
+        )->willThrow(
             \Exception::class
         );
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookConnectionFilterLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventBuildLog;
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventDataBuilderErrorLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -17,7 +17,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActive
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
-use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -82,7 +81,7 @@ final class SendBusinessEventToWebhooksHandler
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
-                $filteredEvent = $this->filterConnectionOwnEvents($user->getUsername(), $event);
+                $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
                 if (null === $filteredEvent) {
                     continue;
                 }
@@ -93,6 +92,7 @@ final class SendBusinessEventToWebhooksHandler
                         [
                             'user' => $user,
                             'pim_source' => $this->pimSource,
+                            'webhook_connection_code' => $webhook->connectionCode(),
                         ]
                     );
 
@@ -104,9 +104,8 @@ final class SendBusinessEventToWebhooksHandler
                         $webhook,
                         $webhookEvents
                     );
-                } catch (\Throwable $error) {
-                    // Handle error gracefully and continue the processing of other webhooks.
-                    $this->handleError($error, $webhook, $filteredEvent);
+                } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
+                    $this->logger->warning($dataBuilderNotFoundException->getMessage());
                 }
             }
         };
@@ -130,14 +129,19 @@ final class SendBusinessEventToWebhooksHandler
      *
      * @return EventInterface|BulkEventInterface|null
      */
-    private function filterConnectionOwnEvents(string $username, object $event): ?object
+    private function filterConnectionOwnEvents(ActiveWebhook $webhook, string $username, object $event): ?object
     {
         if ($event instanceof BulkEventInterface) {
             $events = array_filter(
                 $event->getEvents(),
-                function (EventInterface $event) use ($username) {
+                function (EventInterface $event) use ($username, $webhook) {
                     if ($username === $event->getAuthor()->name()) {
-                        // TODO: Log skipped event.
+                        $this->logger->info(
+                            json_encode(
+                                (new WebhookConnectionFilterLog($event, $webhook->connectionCode()))->toLog(),
+                                JSON_THROW_ON_ERROR
+                            )
+                        );
 
                         return false;
                     }
@@ -153,42 +157,17 @@ final class SendBusinessEventToWebhooksHandler
         }
 
         if ($event instanceof EventInterface && $username === $event->getAuthor()->name()) {
-            // TODO: Log skipped event.
+            $this->logger->info(
+                json_encode(
+                    (new WebhookConnectionFilterLog($event, $webhook->connectionCode()))->toLog(),
+                    JSON_THROW_ON_ERROR
+                )
+            );
 
             return null;
         }
 
         return $event;
-    }
-
-    /**
-     * @param EventInterface|BulkEventInterface $event
-     */
-    private function handleError(\Throwable $error, ActiveWebhook $webhook, object $event): void
-    {
-        if ($error instanceof WebhookEventDataBuilderNotFoundException) {
-            $this->logger->warning($error->getMessage());
-
-            return;
-        }
-
-        if ($error instanceof EventBuildingExceptionInterface) {
-            $this->logger->warning(
-                json_encode(
-                    (new WebhookEventDataBuilderErrorLog($error->getMessage(), $webhook, $event))->toLog(),
-                    JSON_THROW_ON_ERROR
-                )
-            );
-
-            return;
-        }
-
-        $this->logger->critical(
-            json_encode(
-                (new WebhookEventDataBuilderErrorLog((string)$error, $webhook, $event))->toLog(),
-                JSON_THROW_ON_ERROR
-            )
-        );
     }
 
     /**
