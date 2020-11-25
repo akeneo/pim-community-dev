@@ -15,7 +15,6 @@ import {
 
 import {CriterionEvaluationResult, ProductEvaluation} from './domain';
 
-import BackLinkButton from './application/component/BackLinkButton';
 import {DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,} from '@akeneo-pim-community/data-quality-insights/src';
 
 export {
@@ -34,5 +33,4 @@ export {
   AttributeEditFormApp,
   AttributeCreateFormApp,
   BACK_LINK_SESSION_STORAGE_KEY,
-  BackLinkButton,
 };

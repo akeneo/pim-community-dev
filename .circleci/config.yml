@@ -139,7 +139,7 @@ jobs:
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
-      parallelism: 10
+      parallelism: 15
       steps:
           - attach_workspace:
                 at: ~/
@@ -431,8 +431,8 @@ jobs:
           - run:
                 name: Latest SaaS prod deployment on kubernetes
                 command: |
-                    LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
-                    echo $LATEST_RELEASE
+                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
+                    LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     INSTANCE_NAME_PREFIX=pimup INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
           - run:

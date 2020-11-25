@@ -1,5 +1,21 @@
 # 4.0.x
 
+# 4.0.73 (2020-11-23)
+
+## Bug fixes
+
+- PIM-9527: default asset preview and thumbnail
+
+# 4.0.72 (2020-11-16)
+
+# 4.0.71 (2020-11-12)
+
+## Bug fixes
+
+- PIM-9556: Fix proposal diff rendering for wysiwyg-enabled textarea attributes
+
+# 4.0.70 (2020-11-09)
+
 # 4.0.69 (2020-11-05)
 
 ## Bug fixes:
