@@ -5,11 +5,12 @@ services:
             - '@database_connection'
 
     akeneo_monitoring.status_checker.pub_sub:
-        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\PubSubStatusChecker'
+        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\PubSub\PubSubStatusChecker'
         arguments:
             - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
             - '%env(GOOGLE_CLOUD_PROJECT)%'
             - '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_WEBHOOK)%'
 
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker'
