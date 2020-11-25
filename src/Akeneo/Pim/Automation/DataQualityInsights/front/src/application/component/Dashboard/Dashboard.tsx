@@ -2,16 +2,17 @@ import React, {FunctionComponent} from 'react';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {Overview, Widgets} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
+import {ScoreDistributionSection, Widgets} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
 import {keyIndicatorsTips} from '@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicatorsTips';
 import {KeyIndicatorsProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/KeyIndicatorsContext';
 import {EEKeyIndicatorsTips} from '../../helper/Dashboard/EEKeyIndicatorsTips';
 import {DashboardContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/DashboardContext';
+import {TimePeriod} from '@akeneo-pim-community/data-quality-insights/src/domain';
 import {PimEnterpriseKeyIndicators} from './PimEnterpriseKeyIndicators';
 
 interface DataQualityInsightsDashboardProps {
-  timePeriod: string;
+  timePeriod: TimePeriod;
   catalogLocale: string;
   catalogChannel: string;
   familyCode: string | null;
@@ -34,7 +35,7 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
           <DashboardContextProvider>
             <div id="data-quality-insights-activity-dashboard">
               <div className="AknSubsection">
-                <Overview
+                <ScoreDistributionSection
                   catalogLocale={catalogLocale}
                   catalogChannel={catalogChannel}
                   timePeriod={timePeriod}
