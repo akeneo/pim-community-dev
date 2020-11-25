@@ -156,6 +156,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
         <YesButton
           value={value}
           readOnly={readOnly}
+          aria-readonly={readOnly}
           disabled={readOnly}
           onClick={() => {
             handleChange(true);

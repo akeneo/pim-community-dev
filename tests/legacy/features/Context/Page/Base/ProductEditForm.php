@@ -160,7 +160,7 @@ class ProductEditForm extends Form
     {
         if (1 === preg_match('/ in (.{1,3})$/', $label)) {
             // Price in EUR
-            list($label, $currency) = explode(' in ', $label);
+            [$label, $currency] = explode(' in ', $label);
             $fieldContainer = $this->findFieldContainer($label);
 
             return $this->findCompoundField($fieldContainer, $currency);
@@ -175,9 +175,10 @@ class ProductEditForm extends Form
             return $this->findFieldContainer($label)->find('css', $selector);
         }, sprintf('Cannot find "%s" sub container', $label));
 
-        $field = $this->spin(function () use ($subContainer) {
-            return $subContainer->find('css', '.field-input input, .field-input textarea');
-        }, sprintf('Cannot find ".field-input input" or ".field-input textarea" in sub container "%s"', $label));
+        $selectors = ['.field-input input', '.field-input textarea', '.field-input *[role=switch]'];
+        $field = $this->spin(function () use ($subContainer, $selectors) {
+            return $subContainer->find('css', join(',', $selectors));
+        }, sprintf('Cannot find %s in subcontainer "%s"', join(', ', $selectors), $label));
 
         return $field;
     }
@@ -246,7 +247,7 @@ class ProductEditForm extends Form
     protected function fillMetricField(NodeElement $fieldContainer, $value)
     {
         if (false !== strpos($value, ' ')) {
-            list($text, $select) = explode(' ', $value);
+            [$text, $select] = explode(' ', $value);
         } else {
             $text   = $value;
             $select = null;
@@ -312,7 +313,7 @@ class ProductEditForm extends Form
         $currency = null;
 
         if (false !== strpos($value, ' ')) {
-            list($amount, $currency) = explode(' ', $value);
+            [$amount, $currency] = explode(' ', $value);
         }
 
         // it happens when we want to set an empty price
@@ -656,17 +657,23 @@ class ProductEditForm extends Form
     protected function isSwitchFieldChecked(NodeElement $fieldContainer)
     {
         $widget = $this->spin(function () use ($fieldContainer) {
-            return $fieldContainer->find('css', '.field-input .switch.has-switch');
-        }, 'Cannot find ".switch.has-switch" in switch field');
+            return $fieldContainer->find('css', '.field-input .switch.has-switch, .field-input *[role=switch]');
+        }, 'Cannot find any switch component in the switch field');
 
-        if ($widget->find('css', '.switch-on')) {
-            return true;
-        }
-        if ($widget->find('css', '.switch-off')) {
-            return false;
-        }
+        if ($widget->hasClass('has-switch')) {
+            // Legacy switch
+            if ($widget->find('css', '.switch-on')) {
+                return true;
+            }
+            if ($widget->find('css', '.switch-off')) {
+                return false;
+            }
 
-        throw new \LogicException(sprintf('Switch "%s" is in an undefined state', $fieldContainer->name));
+            throw new \LogicException(sprintf('Switch "%s" is in an undefined state', $fieldContainer->name));
+        } else {
+            // BooleanInput.tsx from DSM
+            return $widget->getAttribute('aria-checked') === 'true';
+        }
     }
 
     /**
