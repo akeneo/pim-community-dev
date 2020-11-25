@@ -1,9 +1,9 @@
 import React, {ReactNode, Ref} from 'react';
-import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor} from '../../../theme';
+import styled from 'styled-components';
+import {getColor} from '../../../theme';
 import {Image} from '../..';
 
-const TableCellContainer = styled.td<{isHighlighted: boolean} & AkeneoThemedProps>`
+const TableCellContainer = styled.td`
   color: ${getColor('grey', 140)};
   border-bottom: 1px solid ${getColor('grey', 60)};
   padding: 15px 10px;
@@ -12,14 +12,6 @@ const TableCellContainer = styled.td<{isHighlighted: boolean} & AkeneoThemedProp
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-
-  ${({isHighlighted}) =>
-    isHighlighted &&
-    css`
-      color: ${getColor('purple', 100)};
-      font-style: italic;
-      font-weight: bold;
-    `}
 `;
 
 const TableCellInnerContainer = styled.div`
@@ -28,20 +20,15 @@ const TableCellInnerContainer = styled.div`
 
 type TableCellProps = {
   /**
-   * Define that cell information is important
-   */
-  isHighlighted?: boolean;
-
-  /**
    * Content of the cell
    */
   children?: ReactNode;
 };
 
 const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
-  ({isHighlighted = false, children, ...rest}: TableCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
+  ({children, ...rest}: TableCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
     return (
-      <TableCellContainer ref={forwardedRef} isHighlighted={isHighlighted} {...rest}>
+      <TableCellContainer ref={forwardedRef} {...rest}>
         <TableCellInnerContainer>
           {React.Children.map(children, child => {
             if (!React.isValidElement(child) || child.type !== Image) return children;

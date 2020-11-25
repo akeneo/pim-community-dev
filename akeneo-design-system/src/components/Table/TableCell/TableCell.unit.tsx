@@ -11,7 +11,7 @@ test('it renders its children properly', () => {
           <Table.Cell>
             <Image src="my_image.png" alt="My image" />
           </Table.Cell>
-          <Table.Cell isHighlighted>A value</Table.Cell>
+          <Table.Cell>A value</Table.Cell>
           <Table.Cell>Another value</Table.Cell>
         </Table.Row>
       </Table.Body>
