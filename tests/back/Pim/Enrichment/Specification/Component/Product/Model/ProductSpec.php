@@ -4,9 +4,11 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -55,23 +57,6 @@ class ProductSpec extends ObjectBehavior
 
         $this->setAssociations(new ArrayCollection([$upsellAssociation, $xSellAssociation]));
         $this->getAssociationForType($upsellType)->shouldBeLike($upsellAssociation);
-    }
-
-    function it_returns_association_from_an_association_type_code()
-    {
-        $upsellAssociation = new ProductAssociation();
-        $upsellType = new AssociationType();
-        $upsellType->setCode('UPSELL');
-        $upsellAssociation->setAssociationType($upsellType);
-
-        $xSellAssociation = new ProductAssociation();
-        $xSellType = new AssociationType();
-        $xSellType->setCode('X_SELL');
-        $xSellAssociation->setAssociationType($xSellType);
-
-        $this->setAssociations(new ArrayCollection([$upsellAssociation, $xSellAssociation]));
-
-        $this->getAssociationForTypeCode('X_SELL')->shouldBeLike($xSellAssociation);
     }
 
     function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection()
@@ -794,15 +779,18 @@ class ProductSpec extends ObjectBehavior
             ->during('addAssociation', [$anotherUpsellAssociation]);
     }
 
-    function it_is_updated_when_a_non_empty_association_is_removed(
-        AssociationInterface $association
-    ) {
-        $association->getProducts()->willReturn(new ArrayCollection([new Product()]));
+    function it_is_updated_when_a_non_empty_association_is_removed()
+    {
+        $upsellAssociation = new ProductAssociation();
+        $upsellType = new AssociationType();
+        $upsellType->setCode('UPSELL');
+        $upsellAssociation->setAssociationType($upsellType);
+        $upsellAssociation->addProduct(new Product());
 
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $this->setAssociations(new ArrayCollection([$upsellAssociation]));
         $this->cleanup();
 
-        $this->removeAssociation($association);
+        $this->removeAssociation($upsellAssociation);
         $this->isDirty()->shouldBe(true);
     }
 
@@ -820,12 +808,16 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(false);
     }
 
-    function it_is_not_updated_when_removing_a_non_existent_association(
-        AssociationInterface $association
-    ) {
+    function it_is_not_updated_when_removing_a_non_existent_association()
+    {
+        $upsellAssociation = new ProductAssociation();
+        $upsellType = new AssociationType();
+        $upsellType->setCode('UPSELL');
+        $upsellAssociation->setAssociationType($upsellType);
+
         $this->cleanup();
 
-        $this->removeAssociation($association);
+        $this->removeAssociation($upsellAssociation);
         $this->isDirty()->shouldBe(false);
     }
 
@@ -835,5 +827,336 @@ class ProductSpec extends ObjectBehavior
     ) {
         $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
         $this->isDirty()->shouldbe(true);
+    }
+
+    public function it_knows_if_it_has_an_association_for_a_given_type(): void
+    {
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+
+        $this->hasAssociationForTypeCode('x_sell')->shouldReturn(false);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+
+        $this->hasAssociationForTypeCode('x_sell')->shouldReturn(true);
+    }
+
+    public function it_adds_a_product_to_an_association(
+        AssociationInterface $association
+    ): void {
+        $product = new Product();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $association->getAssociationType()->willReturn($xsellType);
+        $association->hasProduct($product)->willReturn(false);
+        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+
+        $association->addProduct($product)->shouldBeCalled();
+
+        $this->addAssociatedProduct($product, 'x_sell');
+    }
+
+    public function it_is_updated_if_a_product_is_added_to_an_association(): void {
+        $product = new Product();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->addAssociatedProduct($product, 'x_sell');
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_if_a_product_to_add_to_an_association_already_exists(): void {
+        $product = new Product();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+        $xsellAssociation->addProduct($product);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->addAssociatedProduct($product, 'x_sell');
+        $this->isDirty()->shouldBe(false);
+    }
+
+    public function it_removes_a_product_from_an_association(
+        AssociationInterface $association
+    ): void {
+        $product = new Product();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $association->getAssociationType()->willReturn($xsellType);
+        $association->hasProduct($product)->willReturn(true);
+        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+
+        $association->removeProduct($product)->shouldBeCalled();
+
+        $this->removeAssociatedProduct($product, 'x_sell');
+    }
+
+    public function it_is_updated_if_a_product_is_removed_from_an_association(): void {
+        $product = new Product();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+        $xsellAssociation->addProduct($product);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->removeAssociatedProduct($product, 'x_sell');
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_if_a_product_to_remove_from_an_association_does_not_exist(): void {
+        $product = new Product();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->removeAssociatedProduct($product, 'x_sell');
+        $this->isDirty()->shouldBe(false);
+    }
+
+    public function it_returns_associated_products_in_terms_of_an_association_type(): void
+    {
+        $plate = new Product();
+        $spoon = new Product();
+
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+        $xsellAssociation->addProduct($plate);
+        $xsellAssociation->addProduct($spoon);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+
+        $this->getAssociatedProducts('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
+    }
+
+    public function it_adds_a_product_model_to_an_association(
+        AssociationInterface $association
+    ): void {
+        $productModel = new ProductModel();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $association->getAssociationType()->willReturn($xsellType);
+        $association->hasProduct($productModel)->willReturn(false);
+        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
+        $association->addProductModel($productModel)->shouldBeCalled();
+
+        $this->addAssociatedProductModel($productModel, 'x_sell');
+    }
+
+    public function it_is_updated_if_a_product_model_is_added_to_an_association(): void {
+        $productModel = new ProductModel();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->addAssociatedProductModel($productModel, 'x_sell');
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_if_a_product_model_to_add_to_an_association_already_exists(): void {
+        $productModel = new ProductModel();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+        $xsellAssociation->addProductModel($productModel);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->addAssociatedProductModel($productModel, 'x_sell');
+        $this->isDirty()->shouldBe(false);
+    }
+
+    public function it_removes_a_product_model_from_an_association(
+        AssociationInterface $association
+    ): void {
+        $productModel = new ProductModel();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $association->getAssociationType()->willReturn($xsellType);
+
+        $association->getProductModels()->willReturn(new ArrayCollection([$productModel]));
+        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+
+        $association->removeProductModel($productModel)->shouldBeCalled();
+
+        $this->removeAssociatedProductModel($productModel, 'x_sell');
+    }
+
+    public function it_is_updated_if_a_product_model_is_removed_from_an_association(): void {
+        $productModel = new ProductModel();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+        $xsellAssociation->addProductModel($productModel);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->removeAssociatedProductModel($productModel, 'x_sell');
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_if_a_product_model_to_remove_from_an_association_does_not_exist(): void {
+        $productModel = new ProductModel();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->removeAssociatedProductModel($productModel, 'x_sell');
+        $this->isDirty()->shouldBe(false);
+    }
+
+    public function it_returns_associated_product_models_in_terms_of_an_association_type(): void
+    {
+        $plate = new ProductModel();
+        $spoon = new ProductModel();
+
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+        $xsellAssociation->addProductModel($plate);
+        $xsellAssociation->addProductModel($spoon);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+
+        $this->getAssociatedProductModels('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
+    }
+
+    public function it_adds_a_group_to_an_association(
+        AssociationInterface $association
+    ): void {
+        $group = new Group();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $association->getAssociationType()->willReturn($xsellType);
+        $association->getGroups()->willReturn(new ArrayCollection([]));
+        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+
+        $association->addGroup($group)->shouldBeCalled();
+
+        $this->addAssociatedGroup($group, 'x_sell');
+    }
+
+    public function it_is_updated_if_a_group_is_added_to_an_association(): void {
+        $group = new Group();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->addAssociatedGroup($group, 'x_sell');
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_if_a_group_to_add_to_an_association_already_exists(): void {
+        $group = new Group();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+        $xsellAssociation->addGroup($group);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->addAssociatedGroup($group, 'x_sell');
+        $this->isDirty()->shouldBe(false);
+    }
+
+    public function it_removes_a_group_from_an_association(
+        AssociationInterface $association
+    ): void {
+        $group = new Group();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $association->getAssociationType()->willReturn($xsellType);
+        $association->getGroups()->willReturn(new ArrayCollection([$group]));
+        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+
+        $association->removeGroup($group)->shouldBeCalled();
+
+        $this->removeAssociatedGroup($group, 'x_sell');
+    }
+
+    public function it_is_updated_if_a_group_is_removed_from_an_association(): void {
+        $group = new Group();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+        $xsellAssociation->addGroup($group);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->removeAssociatedGroup($group, 'x_sell');
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_if_a_group_to_remove_from_an_association_does_not_exist(): void {
+        $group = new Group();
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->cleanup();
+
+        $this->removeAssociatedGroup($group, 'x_sell');
+        $this->isDirty()->shouldBe(false);
+    }
+
+    public function it_returns_associated_groups_in_terms_of_an_association_type(): void
+    {
+        $plate = new Group();
+        $spoon = new Group();
+
+        $xsellAssociation = new ProductAssociation();
+        $xsellType = new AssociationType();
+        $xsellType->setCode('x_sell');
+        $xsellAssociation->setAssociationType($xsellType);
+        $xsellAssociation->addGroup($plate);
+        $xsellAssociation->addGroup($spoon);
+
+        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+
+        $this->getAssociatedGroups('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
     }
 }

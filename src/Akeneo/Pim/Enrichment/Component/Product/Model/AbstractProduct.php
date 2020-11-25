@@ -30,60 +30,42 @@ abstract class AbstractProduct implements ProductInterface
 
     protected array $rawValues;
 
-    /** @var \DateTime */
-    protected $created;
+    protected \DateTime $created;
 
-    /** @var \DateTime */
-    protected $updated;
+    protected \DateTime $updated;
 
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
-     *
-     * @var WriteValueCollection
      */
-    protected $values;
+    protected WriteValueCollection $values;
 
-    /** @var FamilyInterface|null */
-    protected $family;
+    protected ?FamilyInterface $family = null;
 
-    /** @var Collection */
-    protected $categories;
+    protected Collection $categories;
 
     protected bool $enabled = true;
 
-    /** @var Collection */
-    protected $groups;
+    protected Collection $groups;
 
-    /** @var Collection */
-    protected $associations;
+    protected Collection $associations;
 
     /**
      * Not persisted.
-     *
-     * @var QuantifiedAssociationCollection|null
      */
-    protected $quantifiedAssociationCollection;
+    protected ?QuantifiedAssociationCollection $quantifiedAssociationCollection = null;
 
-    /** @var Collection */
-    protected $completenesses;
+    protected Collection $completenesses;
 
-    /** @var string|null */
-    protected $identifier;
+    protected ?string $identifier = null;
 
-    /** @var Collection */
-    protected $uniqueData;
+    protected Collection $uniqueData;
 
-    /** @var ProductModelInterface|null */
-    protected $parent;
+    protected ?ProductModelInterface $parent = null;
 
-    /** @var FamilyVariantInterface|null */
-    protected $familyVariant;
+    protected ?FamilyVariantInterface $familyVariant = null;
 
     protected bool $dirty = false;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->values = new WriteValueCollection();
@@ -955,7 +937,7 @@ abstract class AbstractProduct implements ProductInterface
         $this->quantifiedAssociationCollection = clone $this->quantifiedAssociationCollection;
     }
 
-    protected function getAssociationForTypeCode($typeCode): ?AssociationInterface
+    protected function getAssociationForTypeCode(string $typeCode): ?AssociationInterface
     {
         foreach ($this->getAssociations() as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {

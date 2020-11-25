@@ -20,59 +20,41 @@ class ProductModel implements ProductModelInterface
 {
     use EntityWithQuantifiedAssociationTrait;
 
-    /** @var int */
-    protected $id;
+    protected ?int $id = null;
 
-    /** @var string */
-    protected $code;
+    protected ?string $code = null;
 
     /** @var array|object */
     protected $rawValues;
 
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
-     *
-     * @var WriteValueCollection
      */
-    protected $values;
+    protected WriteValueCollection $values;
 
-    /** @var \DateTime $created */
-    protected $created;
+    protected \DateTime $created;
 
-    /** @var \DateTime $updated */
-    protected $updated;
+    protected \DateTime $updated;
 
-    /** @var Collection $categories */
-    protected $categories;
+    protected Collection $categories;
 
-    /** @var Collection $categories */
-    protected $products;
+    protected Collection $products;
 
-    /** @var ProductModelInterface */
-    protected $parent;
+    protected ?ProductModelInterface $parent = null;
 
-    /** @var Collection */
-    protected $productModels;
+    protected Collection $productModels;
 
-    /** @var FamilyVariantInterface */
-    protected $familyVariant;
+    protected ?FamilyVariantInterface $familyVariant = null;
 
-    /** @var Collection $associations */
-    protected $associations;
+    protected Collection $associations;
 
     /**
      * Not persisted.
-     *
-     * @var QuantifiedAssociationCollection|null
      */
-    protected $quantifiedAssociationCollection;
+    protected ?QuantifiedAssociationCollection $quantifiedAssociationCollection = null;
 
-    /** @var bool */
     protected bool $dirty = false;
 
-    /**
-     * Create an instance of ProductModel.
-     */
     public function __construct()
     {
         $this->values = new WriteValueCollection();
@@ -635,28 +617,6 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
-    {
-        return $this->getAssociationForTypeCode($type->getCode());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
-    {
-        foreach ($this->associations as $association) {
-            if ($association->getAssociationType()->getCode() === $typeCode) {
-                return $association;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setAssociations(Collection $associations): EntityWithAssociationsInterface
     {
         $this->associations = $associations;
@@ -726,6 +686,159 @@ class ProductModel implements ProductModelInterface
     public function __toString()
     {
         return (string) $this->getLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllAssociations()
+    {
+        $associations = new ArrayCollection($this->associations->toArray());
+        $allAssociations = $this->getAncestryAssociations($this, $associations);
+
+        return $allAssociations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDirty(): bool
+    {
+        return $this->dirty;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function cleanup(): void
+    {
+        $this->dirty = false;
+    }
+
+    public function __clone()
+    {
+        $this->values = clone $this->values;
+        $this->categories = clone $this->categories;
+        $clonedAssociations = $this->associations->map(
+            fn (AssociationInterface $association): AssociationInterface => clone $association
+        );
+        $this->associations = $clonedAssociations;
+        $this->quantifiedAssociationCollection = clone $this->quantifiedAssociationCollection;
+    }
+
+    public function hasAssociationForTypeCode(string $associationTypeCode): bool
+    {
+        return null !== $this->getAssociationForTypeCode($associationTypeCode);
+    }
+
+    public function addAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if (!$association->hasProduct($product)) {
+            $association->addProduct($product);
+            $this->dirty = true;
+        }
+    }
+
+    public function removeAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if ($association->hasProduct($product)) {
+            $association->removeProduct($product);
+            $this->dirty = true;
+        }
+    }
+
+    public function getAssociatedProducts(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? $association->getProducts() : null;
+    }
+
+    public function addAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if (!$association->getProductModels()->contains($productModel)) {
+            $association->addProductModel($productModel);
+            $this->dirty = true;
+        }
+    }
+
+    public function removeAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if ($association->getProductModels()->contains($productModel)) {
+            $association->removeProductModel($productModel);
+            $this->dirty = true;
+        }
+    }
+
+    public function getAssociatedProductModels(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? $association->getProductModels() : null;
+    }
+
+    public function addAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if (!$association->getGroups()->contains($group)) {
+            $association->addGroup($group);
+            $this->dirty = true;
+        }
+    }
+
+    public function removeAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException();
+        }
+
+        if ($association->getGroups()->contains($group)) {
+            $association->removeGroup($group);
+            $this->dirty = true;
+        }
+    }
+
+    public function getAssociatedGroups(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? $association->getGroups() : null;
+    }
+
+    protected function getAssociationForTypeCode($typeCode): ?AssociationInterface
+    {
+        foreach ($this->getAssociations() as $association) {
+            if ($association->getAssociationType()->getCode() === $typeCode) {
+                return $association;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -820,44 +933,6 @@ class ProductModel implements ProductModelInterface
         }
 
         return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllAssociations()
-    {
-        $associations = new ArrayCollection($this->associations->toArray());
-        $allAssociations = $this->getAncestryAssociations($this, $associations);
-
-        return $allAssociations;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isDirty(): bool
-    {
-        return $this->dirty;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function cleanup(): void
-    {
-        $this->dirty = false;
-    }
-
-    public function __clone()
-    {
-        $this->values = clone $this->values;
-        $this->categories = clone $this->categories;
-        $clonedAssociations = $this->associations->map(
-            fn (AssociationInterface $association): AssociationInterface => clone $association
-        );
-        $this->associations = $clonedAssociations;
-        $this->quantifiedAssociationCollection = clone $this->quantifiedAssociationCollection;
     }
 
     /**

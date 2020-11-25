@@ -1,50 +1,42 @@
 <?php
+declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Collections\Collection;
-use Webmozart\Assert\Assert;
 
 /**
- * Association field adder
- *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AssociationFieldAdder extends AbstractFieldAdder
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productRepository;
+    protected IdentifiableObjectRepositoryInterface $productRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productModelRepository;
+    protected IdentifiableObjectRepositoryInterface $productModelRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $groupRepository;
+    protected IdentifiableObjectRepositoryInterface $groupRepository;
 
-    /** @var MissingAssociationAdder */
-    private $missingAssociationAdder;
+    private MissingAssociationAdder $missingAssociationAdder;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param MissingAssociationAdder               $missingAssociationAdder
-     * @param array                                 $supportedFields
-     */
+    private AssociationTypeRepositoryInterface $associationTypeRepository;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
@@ -52,6 +44,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
         $this->groupRepository = $groupRepository;
         $this->missingAssociationAdder = $missingAssociationAdder;
         $this->supportedFields = $supportedFields;
+        $this->associationTypeRepository = $associationTypeRepository;
     }
 
     /**
@@ -71,50 +64,57 @@ class AssociationFieldAdder extends AbstractFieldAdder
      *     },
      * }
      */
-    public function addFieldData($product, $field, $data, array $options = [])
+    public function addFieldData($entity, $field, $data, array $options = []): void
     {
+        if (!$entity instanceof EntityWithAssociationsInterface) {
+            throw InvalidObjectException::objectExpected($entity, EntityWithAssociationsInterface::class);
+        }
+
         $this->checkData($field, $data);
-        $this->missingAssociationAdder->addMissingAssociations($product);
-        $this->addProductsAndGroupsToAssociations($product, $data);
+        $this->missingAssociationAdder->addMissingAssociations($entity);
+        $this->addProductsAndGroupsToAssociations($entity, $data);
     }
 
     /**
      * Add products and groups to associations
      *
-     * @param ProductInterface|ProductModelInterface $product
+     * @param ProductInterface|ProductModelInterface $entity
      * @param mixed                                  $data
      *
      * @throws InvalidPropertyException
      */
-    protected function addProductsAndGroupsToAssociations($product, $data)
+    protected function addProductsAndGroupsToAssociations($entity, $data): void
     {
-        $associations = $product->getAssociations();
         foreach ($data as $typeCode => $items) {
-            $association = $this->getAssociationForTypeCode($associations, $typeCode);
-            if (null === $association) {
+            /** @var AssociationTypeInterface $associationType */
+            $associationType = $this->associationTypeRepository->findOneByIdentifier($typeCode);
+            if (null === $associationType || $associationType->isQuantified()) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
                     'association type code',
-                    'The association type does not exist',
+                    'The association type does not exist or is quantified',
                     static::class,
                     $typeCode
                 );
             }
-            $this->addAssociatedProducts($association, $items['products'] ?? []);
-            $this->addAssociatedGroups($association, $items['groups'] ?? []);
-            $this->addAssociatedProductModels($association, $items['product_models'] ?? []);
+            $this->addAssociatedProducts($associationType,$items['products'] ?? [], $entity);
+            $this->addAssociatedGroups($associationType, $items['groups'] ?? [], $entity);
+            $this->addAssociatedProductModels($associationType, $items['product_models'] ?? [], $entity);
         }
-        $product->setAssociations($associations);
     }
 
     /**
-     * @param AssociationInterface $association
-     * @param array                $productsIdentifiers
+     * @param AssociationTypeInterface $associationType
+     * @param array $productsIdentifiers
+     * @param ProductInterface|ProductModelInterface $entity
      *
      * @throws InvalidPropertyException
      */
-    protected function addAssociatedProducts(AssociationInterface $association, $productsIdentifiers)
-    {
+    protected function addAssociatedProducts(
+        AssociationTypeInterface $associationType,
+        array $productsIdentifiers,
+        $entity
+    ): void {
         foreach ($productsIdentifiers as $productIdentifier) {
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
             if (null === $associatedProduct) {
@@ -126,18 +126,22 @@ class AssociationFieldAdder extends AbstractFieldAdder
                     $productIdentifier
                 );
             }
-            $association->addProduct($associatedProduct);
+            $entity->addAssociatedProduct($associatedProduct, $associationType->getCode());
         }
     }
 
     /**
-     * @param AssociationInterface $association
-     * @param array                $productModelsIdentifiers
+     * @param AssociationTypeInterface $associationType
+     * @param array $productModelsIdentifiers
+     * @param ProductInterface|ProductModelInterface $entity
      *
      * @throws InvalidPropertyException
      */
-    protected function addAssociatedProductModels(AssociationInterface $association, $productModelsIdentifiers)
-    {
+    protected function addAssociatedProductModels(
+        AssociationTypeInterface $associationType,
+        array $productModelsIdentifiers,
+        $entity
+    ): void {
         foreach ($productModelsIdentifiers as $productModelIdentifier) {
             $associatedProductModel = $this->productModelRepository->findOneByIdentifier($productModelIdentifier);
             if (null === $associatedProductModel) {
@@ -149,17 +153,18 @@ class AssociationFieldAdder extends AbstractFieldAdder
                     $productModelIdentifier
                 );
             }
-            $association->addProductModel($associatedProductModel);
+            $entity->addAssociatedProduct($associatedProductModel, $associationType->getCode());
         }
     }
 
     /**
-     * @param AssociationInterface $association
-     * @param array                $groupsCodes
+     * @param AssociationTypeInterface $associationType
+     * @param array $groupsCodes
+     * @param ProductInterface|ProductModelInterface $entity
      *
      * @throws InvalidPropertyException
      */
-    protected function addAssociatedGroups(AssociationInterface $association, $groupsCodes)
+    protected function addAssociatedGroups(AssociationTypeInterface $associationType, array $groupsCodes, $entity): void
     {
         foreach ($groupsCodes as $groupCode) {
             $associatedGroup = $this->groupRepository->findOneByIdentifier($groupCode);
@@ -172,19 +177,11 @@ class AssociationFieldAdder extends AbstractFieldAdder
                     $groupCode
                 );
             }
-            $association->addGroup($associatedGroup);
+            $entity->addAssociatedGroup($associatedGroup, $associationType->getCode());
         }
     }
 
-    /**
-     * Check if data are valid
-     *
-     * @param string $field
-     * @param mixed  $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
@@ -200,15 +197,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
         }
     }
 
-    /**
-     * @param string $field
-     * @param array  $data
-     * @param string $assocTypeCode
-     * @param mixed  $items
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
+    protected function checkAssociationData(string $field, array $data, string $assocTypeCode, $items): void
     {
         if (!is_array($items) || !is_string($assocTypeCode) ||
             (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']))) {
@@ -242,15 +231,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
         }
     }
 
-    /**
-     * @param string $field
-     * @param string $assocTypeCode
-     * @param array  $data
-     * @param array  $items
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkAssociationItems($field, $assocTypeCode, array $data, array $items)
+    protected function checkAssociationItems(string $field, string $assocTypeCode, array $data, array $items): void
     {
         foreach ($items as $code) {
             if (!is_string($code)) {
@@ -262,17 +243,5 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 );
             }
         }
-    }
-
-    private function getAssociationForTypeCode(Collection $associations, string $typeCode): ?AssociationInterface
-    {
-        foreach ($associations as $association) {
-            Assert::isInstanceOf($association, AssociationInterface::class);
-            if ($typeCode === $association->getAssociationType()->getCode()) {
-                return $association;
-            }
-        }
-
-        return null;
     }
 }

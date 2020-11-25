@@ -1,14 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -23,43 +23,30 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class AssociationFieldSetter extends AbstractFieldSetter
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productRepository;
+    protected IdentifiableObjectRepositoryInterface $productRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productModelRepository;
+    protected IdentifiableObjectRepositoryInterface $productModelRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $groupRepository;
+    protected IdentifiableObjectRepositoryInterface $groupRepository;
 
-    /** @var TwoWayAssociationUpdaterInterface */
-    private $twoWayAssociationUpdater;
+    private MissingAssociationAdder $missingAssociationAdder;
 
-    /** @var MissingAssociationAdder */
-    private $missingAssociationAdder;
+    private AssociationTypeRepositoryInterface $associationTypeRepository;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param IdentifiableObjectRepositoryInterface $groupRepository
-     * @param TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater
-     * @param MissingAssociationAdder $missingAssociationAdder
-     * @param array $supportedFields
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
-        $this->twoWayAssociationUpdater = $twoWayAssociationUpdater;
         $this->missingAssociationAdder = $missingAssociationAdder;
         $this->supportedFields = $supportedFields;
+        $this->associationTypeRepository = $associationTypeRepository;
     }
 
     /**
@@ -79,10 +66,10 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *     },
      * }
      */
-    public function setFieldData($entity, $field, $data, array $options = [])
+    public function setFieldData($entity, $field, $data, array $options = []): void
     {
-        if (!$entity instanceof EntityWithValuesInterface) {
-            throw InvalidObjectException::objectExpected($entity, EntityWithValuesInterface::class);
+        if (!$entity instanceof EntityWithAssociationsInterface) {
+            throw InvalidObjectException::objectExpected($entity, EntityWithAssociationsInterface::class);
         }
 
         $this->checkData($field, $data);
@@ -94,38 +81,40 @@ class AssociationFieldSetter extends AbstractFieldSetter
     {
         foreach ($data as $typeCode => $items) {
             $typeCode = (string) $typeCode;
-            if (!$entity->hasAssociationForTypeCode($typeCode)) {
+            /** @var AssociationTypeInterface $associationType */
+            $associationType = $this->associationTypeRepository->findOneByIdentifier($typeCode);
+            if (null === $associationType || $associationType->isQuantified()) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
                     'association type code',
-                    'The association type does not exist',
+                    'The association type does not exist or is quantified',
                     static::class,
                     $typeCode
                 );
             }
             if (isset($items['products'])) {
-                $this->updateAssociatedProducts($entity, $typeCode, $items['products']);
+                $this->updateAssociatedProducts($entity, $associationType, $items['products']);
             }
             if (isset($items['product_models'])) {
-                $this->updateAssociatedProductModels($entity, $typeCode, $items['product_models']);
+                $this->updateAssociatedProductModels($entity, $associationType, $items['product_models']);
             }
             if (isset($items['groups'])) {
-                $this->updateAssociatedGroups($entity, $typeCode, $items['groups']);
+                $this->updateAssociatedGroups($entity, $associationType, $items['groups']);
             }
         }
     }
 
     private function updateAssociatedProducts(
         EntityWithAssociationsInterface $owner,
-        string $typeCode,
+        AssociationTypeInterface $associationType,
         array $productsIdentifiers
     ): void {
         $productsIdentifiers = array_unique($productsIdentifiers);
-        foreach ($owner->getAssociatedProducts($typeCode) as $associatedProduct) {
+        foreach ($owner->getAssociatedProducts($associationType->getCode()) as $associatedProduct) {
             $index = array_search($associatedProduct->getIdentifier(), $productsIdentifiers);
 
             if (false === $index) {
-                $this->removeAssociatedProduct($owner, $associatedProduct, $typeCode);
+                $this->removeAssociatedProduct($owner, $associatedProduct, $associationType);
             } else {
                 unset($productsIdentifiers[$index]);
             }
@@ -142,48 +131,110 @@ class AssociationFieldSetter extends AbstractFieldSetter
                     $productIdentifier
                 );
             }
-            $this->addAssociatedProduct($owner, $associatedProduct, $typeCode);
+            $this->addAssociatedProduct($owner, $associatedProduct, $associationType);
         }
     }
 
     private function addAssociatedProduct(
         EntityWithAssociationsInterface $owner,
         ProductInterface $associatedProduct,
-        string $typeCode
+        AssociationTypeInterface $associationType
     ): void {
-        $owner->addAssociatedProduct($associatedProduct, $typeCode);
+        $owner->addAssociatedProduct($associatedProduct, $associationType->getCode());
 
-        // TODO
-        if ($association->getAssociationType()->isTwoWay()) {
-            $this->createInversedAssociation($association, $associatedProduct);
+        if ($associationType->isTwoWay()) {
+            $this->createInversedAssociation($associationType, $owner, $associatedProduct);
+        }
+    }
+
+    /**
+     * @param AssociationTypeInterface $associationType
+     * @param EntityWithAssociationsInterface $owner
+     * @param ProductInterface|ProductModelInterface $associatedEntity
+     * TODO PHP8 type hint with the two interfaces
+     *
+     * @throws \LogicException
+     */
+    private function createInversedAssociation(
+        AssociationTypeInterface $associationType,
+        EntityWithAssociationsInterface $owner,
+        $associatedEntity
+    ): void {
+        if (!$associatedEntity->hasAssociationForTypeCode($associationType->getCode())) {
+            $this->missingAssociationAdder->addMissingAssociations($owner);
+        }
+        if ($owner instanceof ProductInterface) {
+            $associatedEntity->addAssociatedProduct($owner, $associationType->getCode());
+        } elseif ($owner instanceof ProductModelInterface) {
+            $associatedEntity->addAssociatedProductModel($owner, $associationType->getCode());
+        } else {
+            throw new \LogicException(
+                sprintf(
+                    'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
+                    ProductInterface::class,
+                    ProductModelInterface::class,
+                    get_class($associatedEntity)
+                )
+            );
+        }
+    }
+
+    /**
+     * @param AssociationTypeInterface $associationType
+     * @param EntityWithAssociationsInterface $owner
+     * @param ProductInterface|ProductModelInterface $associatedEntity
+     * TODO PHP8 type hint with the two interfaces
+     *
+     * @throws \LogicException
+     */
+    private function removeInversedAssociation(
+        AssociationTypeInterface $associationType,
+        EntityWithAssociationsInterface $owner,
+        $associatedEntity
+    ): void {
+        if (!$associatedEntity->hasAssociationForTypeCode($associationType->getCode())) {
+            $this->missingAssociationAdder->addMissingAssociations($owner);
+        }
+        if ($owner instanceof ProductInterface) {
+            $associatedEntity->removeAssociatedProduct($owner, $associationType->getCode());
+        } elseif ($owner instanceof ProductModelInterface) {
+            $associatedEntity->removeAssociatedProductModel($owner, $associationType->getCode());
+        } else {
+            throw new \LogicException(
+                sprintf(
+                    'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
+                    ProductInterface::class,
+                    ProductModelInterface::class,
+                    get_class($associatedEntity)
+                )
+            );
         }
     }
 
     private function removeAssociatedProduct(
         EntityWithAssociationsInterface $owner,
         ProductInterface $associatedProduct,
-        string $typeCode
+        AssociationTypeInterface $associationType
     ): void {
-        $owner->removeAssociatedProduct($associatedProduct, $typeCode);
+        $owner->removeAssociatedProduct($associatedProduct, $associationType->getCode());
 
-        // TODO
-        if ($association->getAssociationType()->isTwoWay()) {
-            $this->removeInversedAssociation($association, $associatedProduct);
+        if ($associationType->isTwoWay()) {
+            $this->removeInversedAssociation($associationType, $owner, $associatedProduct);
         }
     }
 
     private function updateAssociatedProductModels(
         EntityWithAssociationsInterface $owner,
-        string $typeCode,
+        AssociationTypeInterface $associationType,
         array $productModelsIdentifiers
     ): void {
         $productModelsIdentifiers = array_unique($productModelsIdentifiers);
 
-        foreach ($owner->getAssociatedProductModels($typeCode) as $associatedProductModel) {
+        foreach ($owner->getAssociatedProductModels($associationType->getCode()) as $associatedProductModel) {
             $index = array_search($associatedProductModel->getCode(), $productModelsIdentifiers);
 
             if (false === $index) {
-                $this->removeAssociatedProductModel($owner, $associatedProductModel, $typeCode);
+                $this->removeAssociatedProductModel($owner, $associatedProductModel, $associationType);
             } else {
                 unset($productModelsIdentifiers[$index]);
             }
@@ -200,48 +251,46 @@ class AssociationFieldSetter extends AbstractFieldSetter
                     $productModelIdentifier
                 );
             }
-            $this->addAssociatedProductModel($owner, $associatedProductModel, $typeCode);
+            $this->addAssociatedProductModel($owner, $associatedProductModel, $associationType);
         }
     }
 
     private function addAssociatedProductModel(
         EntityWithAssociationsInterface $owner,
         ProductModelInterface $associatedProductModel,
-        string $typeCode
+        AssociationTypeInterface $associationType
     ): void {
-        $owner->addAssociatedProductModel($associatedProductModel, $typeCode);
+        $owner->addAssociatedProductModel($associatedProductModel, $associationType->getCode());
 
-        // TODO
-        if ($association->getAssociationType()->isTwoWay()) {
-            $this->createInversedAssociation($association, $associatedProductModel);
+        if ($associationType->isTwoWay()) {
+            $this->createInversedAssociation($associationType, $owner, $associatedProductModel);
         }
     }
 
     private function removeAssociatedProductModel(
         EntityWithAssociationsInterface $owner,
         ProductModelInterface $associatedProductModel,
-        string $typeCode
+        AssociationTypeInterface $associationType
     ): void {
-        $owner->removeAssociatedProductModel($associatedProductModel, $typeCode);
+        $owner->removeAssociatedProductModel($associatedProductModel, $associationType->getCode());
 
-        // TODO
-        if ($association->getAssociationType()->isTwoWay()) {
-            $this->removeInversedAssociation($association, $associatedProductModel);
+        if ($associationType->isTwoWay()) {
+            $this->removeInversedAssociation($associationType, $owner, $associatedProductModel);
         }
     }
 
     private function updateAssociatedGroups(
         EntityWithAssociationsInterface $owner,
-        string $typeCode,
+        AssociationTypeInterface $associationType,
         array $groupsCodes
     ): void {
         $groupsCodes = array_unique($groupsCodes);
 
-        foreach ($owner->getAssociatedGroups($typeCode) as $associatedGroup) {
+        foreach ($owner->getAssociatedGroups($associationType->getCode()) as $associatedGroup) {
             $index = array_search($associatedGroup->getCode(), $groupsCodes);
 
             if (false === $index) {
-                $owner->removeAssociatedGroup($associatedGroup, $typeCode);
+                $owner->removeAssociatedGroup($associatedGroup, $associationType->getCode());
             } else {
                 unset($groupsCodes[$index]);
             }
@@ -258,22 +307,8 @@ class AssociationFieldSetter extends AbstractFieldSetter
                     $groupCode
                 );
             }
-            $owner->addAssociatedGroup($associatedGroup, $typeCode);
+            $owner->addAssociatedGroup($associatedGroup, $associationType->getCode());
         }
-    }
-
-    private function createInversedAssociation(
-        AssociationInterface $association,
-        EntityWithAssociationsInterface $associatedEntity
-    ): void {
-        $this->twoWayAssociationUpdater->createInversedAssociation($association, $associatedEntity);
-    }
-
-    private function removeInversedAssociation(
-        AssociationInterface $association,
-        EntityWithAssociationsInterface $associatedEntity
-    ): void {
-        $this->twoWayAssociationUpdater->removeInversedAssociation($association, $associatedEntity);
     }
 
     /**
@@ -281,20 +316,12 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *
      * @param EntityWithAssociationsInterface $entity
      */
-    protected function addMissingAssociations(EntityWithAssociationsInterface $entity)
+    protected function addMissingAssociations(EntityWithAssociationsInterface $entity): void
     {
         $this->missingAssociationAdder->addMissingAssociations($entity);
     }
 
-    /**
-     * Check if data are valid
-     *
-     * @param string $field
-     * @param mixed $data
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkData($field, $data)
+    protected function checkData(string $field, $data): void
     {
         if (!is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
@@ -310,15 +337,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
         }
     }
 
-    /**
-     * @param string $field
-     * @param array $data
-     * @param string $assocTypeCode
-     * @param mixed $items
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
+    protected function checkAssociationData(string $field, array $data, string $assocTypeCode, $items): void
     {
         if (!is_array($items) || !is_string($assocTypeCode) ||
             (!isset($items['products']) && !isset($items['groups']) && !isset($items['product_models']))
@@ -353,15 +372,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
         }
     }
 
-    /**
-     * @param string $field
-     * @param string $assocTypeCode
-     * @param array $data
-     * @param array $items
-     *
-     * @throws InvalidPropertyTypeException
-     */
-    protected function checkAssociationItems($field, $assocTypeCode, array $data, array $items)
+    protected function checkAssociationItems(string $field, string $assocTypeCode, array $data, array $items): void
     {
         foreach ($items as $code) {
             if (!is_string($code)) {

@@ -10,7 +10,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -24,10 +23,9 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        TwoWayAssociationUpdaterInterface $associationUpdater,
         MissingAssociationAdder $missingAssociationAdder
     ) {
-        $this->beConstructedWith($productRepository, $productModelRepository, $groupRepository, $associationUpdater, $missingAssociationAdder, ['associations']);
+        $this->beConstructedWith($productRepository, $productModelRepository, $groupRepository, $missingAssociationAdder, ['associations']);
     }
 
     function it_is_a_setter()
