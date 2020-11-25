@@ -66,15 +66,13 @@ const TableHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableHeader
     }
 
     const handleClick = () => {
-      if (!isSortable || onDirectionChange === undefined) return;
-
       switch (sortDirection) {
         case 'ascending':
-          onDirectionChange('descending');
+          onDirectionChange && onDirectionChange('descending');
           break;
         case 'descending':
         case 'none':
-          onDirectionChange('ascending');
+          onDirectionChange && onDirectionChange('ascending');
           break;
       }
     };

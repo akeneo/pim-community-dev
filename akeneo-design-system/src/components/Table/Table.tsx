@@ -7,7 +7,6 @@ import {TableActionCell} from './TableActionCell/TableActionCell';
 import {TableRow} from './TableRow/TableRow';
 import {SelectableContext} from './SelectableContext';
 import {TableBody} from './TableBody/TableBody';
-import {TableImageCell} from './TableImageCell/TableImageCell';
 
 const TableContainer = styled.table`
   border-collapse: collapse;
@@ -48,7 +47,6 @@ TableHeaderCell.displayName = 'Table.HeaderCell';
 TableBody.displayName = 'Table.Body';
 TableRow.displayName = 'Table.Row';
 TableCell.displayName = 'Table.Cell';
-TableImageCell.displayName = 'Table.ImageCell';
 TableActionCell.displayName = 'Table.ActionCell';
 
 Table.Header = TableHeader;
@@ -57,6 +55,5 @@ Table.Body = TableBody;
 Table.Row = TableRow;
 Table.Cell = TableCell;
 Table.ActionCell = TableActionCell;
-Table.ImageCell = TableImageCell;
 
 export {Table};
