@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
@@ -28,21 +28,18 @@ final class PurgeOutdatedData
     public const CONSOLIDATION_RETENTION_MONTHS = 15;
     public const CONSOLIDATION_RETENTION_YEARS = 3;
 
-    /** @var DashboardRatesProjectionRepositoryInterface */
-    private $dashboardRatesProjectionRepository;
+    private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
 
-    /** @var ProductAxisRateRepositoryInterface */
-    private $productAxisRateRepository;
+    private ProductAxisRateRepositoryInterface $productAxisRateRepository;
 
-    /** @var ProductAxisRateRepositoryInterface */
-    private $productModelAxisRateRepository;
+    private ProductAxisRateRepositoryInterface $productModelAxisRateRepository;
 
     public function __construct(
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository,
+        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository,
         ProductAxisRateRepositoryInterface $productAxisRateRepository,
         ProductAxisRateRepositoryInterface $productModelAxisRateRepository
     ) {
-        $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
+        $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
         $this->productAxisRateRepository = $productAxisRateRepository;
         $this->productModelAxisRateRepository = $productModelAxisRateRepository;
     }
@@ -71,7 +68,7 @@ final class PurgeOutdatedData
                 $purgeDate->modify(sprintf('-%d YEAR', self::CONSOLIDATION_RETENTION_YEARS))->modify('Last day of december last year')
             );
 
-        $this->dashboardRatesProjectionRepository->purgeRates($purgeDates);
+        $this->dashboardScoresProjectionRepository->purgeRates($purgeDates);
     }
 
     public function purgeProductAxisRatesFrom(\DateTimeImmutable $date): void

@@ -9,7 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesP
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAllCategoryCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAllFamilyCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetRanksDistributionFromProductScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
@@ -23,7 +23,7 @@ class ConsolidateDashboardRatesSpec extends ObjectBehavior
         GetRanksDistributionFromProductScoresQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
         GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery,
         GetAllFamilyCodesQueryInterface $getAllFamilyCodesQuery,
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
+        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository
     ) {
         $this->beConstructedWith($getRanksDistributionFromProductAxisRatesQuery, $getAllCategoryCodesQuery, $getAllFamilyCodesQuery, $dashboardRatesProjectionRepository);
     }
@@ -32,7 +32,7 @@ class ConsolidateDashboardRatesSpec extends ObjectBehavior
         GetRanksDistributionFromProductScoresQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
         GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery,
         GetAllFamilyCodesQueryInterface $getAllFamilyCodesQuery,
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
+        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository
     ) {
         $dateTime = new \DateTimeImmutable('2020-01-19');
         $consolidationDate = new ConsolidationDate($dateTime);

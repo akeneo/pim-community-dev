@@ -24,23 +24,21 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetAverageRanksQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository;
 use Akeneo\Test\Integration\TestCase;
 
 final class GetAverageRanksQueryIntegration extends TestCase
 {
-    /** @var GetAverageRanksQuery */
-    private $query;
+    private GetAverageRanksQuery $query;
 
-    /** @var DashboardRatesProjectionRepository */
-    private $repository;
+    private DashboardScoresProjectionRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->query = $this->get(GetAverageRanksQuery::class);
-        $this->repository = $this->get(DashboardRatesProjectionRepository::class);
+        $this->repository = $this->get(DashboardScoresProjectionRepository::class);
     }
 
     protected function getConfiguration()

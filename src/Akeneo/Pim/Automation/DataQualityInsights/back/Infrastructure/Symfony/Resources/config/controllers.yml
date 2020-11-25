@@ -5,7 +5,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardOverviewController:
         public: true
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardRatesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardScoresQuery'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardWidgetFamiliesController:
         public: true

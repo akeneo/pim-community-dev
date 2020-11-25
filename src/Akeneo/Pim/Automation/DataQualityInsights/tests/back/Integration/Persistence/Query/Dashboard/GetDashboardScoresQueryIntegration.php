@@ -2,21 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Dashboard;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\DashboardRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
@@ -25,29 +16,22 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjec
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardRatesQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetDashboardScoresQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Connection;
 
-final class GetDashboardRatesQueryIntegration extends TestCase
+final class GetDashboardScoresQueryIntegration extends TestCase
 {
-    /** @var Connection */
-    private $db;
+    private DashboardScoresProjectionRepositoryInterface $repository;
 
-    /** @var DashboardRatesProjectionRepositoryInterface */
-    private $repository;
-
-    /** @var GetDashboardRatesQuery */
-    private $query;
+    private GetDashboardScoresQuery $query;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->db = $this->get('database_connection');
-        $this->repository = $this->get(DashboardRatesProjectionRepository::class);
-        $this->query = $this->get(GetDashboardRatesQuery::class);
+        $this->repository = $this->get(DashboardScoresProjectionRepository::class);
+        $this->query = $this->get(GetDashboardScoresQuery::class);
     }
 
     protected function getConfiguration()

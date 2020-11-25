@@ -40,11 +40,11 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetRanksDistributionFromProductScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAllCategoryCodesQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAllFamilyCodesQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_axis_rate'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_model_axis_rate'
 
