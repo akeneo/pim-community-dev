@@ -5,6 +5,7 @@ export * from './Badge/Badge';
 export * from './Button/Button';
 export * from './Helper/Helper';
 export * from './IconButton/IconButton';
+export * from './Image/Image';
 export * from './Input/BooleanInput/BooleanInput';
 export * from './Information/Information';
 export * from './Link/Link';

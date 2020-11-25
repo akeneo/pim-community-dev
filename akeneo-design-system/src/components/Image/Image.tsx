@@ -1,8 +1,11 @@
 import React, {Ref} from 'react';
 import styled from 'styled-components';
-import {TableCell} from '../TableCell/TableCell';
 
-const TableImageCellContainer = styled.img<{fit: 'cover' | 'contain'}>`
+const Container = styled.div`
+  display: inline-block;
+`;
+
+const ImageContainer = styled.img<{fit: 'cover' | 'contain'}>`
   background: white;
   position: relative;
   height: 44px;
@@ -31,7 +34,7 @@ const StackedLayerContainer = styled.div`
   }
 `;
 
-type TableImageCellProps = {
+type ImageProps = {
   /**
    * Define the image source
    */
@@ -53,18 +56,15 @@ type TableImageCellProps = {
   isStacked?: boolean;
 };
 
-const TableImageCell = React.forwardRef<HTMLTableCellElement, TableImageCellProps>(
-  (
-    {alt, src, fit = 'cover', isStacked = false, ...rest}: TableImageCellProps,
-    forwardedRef: Ref<HTMLTableCellElement>
-  ) => {
+const Image = React.forwardRef<HTMLImageElement, ImageProps>(
+  ({alt, src, fit = 'cover', isStacked = false, ...rest}: ImageProps, forwardedRef: Ref<HTMLImageElement>) => {
     return (
-      <TableCell ref={forwardedRef} {...rest}>
+      <Container>
         {isStacked && <StackedLayerContainer />}
-        <TableImageCellContainer fit={fit} src={src} alt={alt} />
-      </TableCell>
+        <ImageContainer ref={forwardedRef} fit={fit} src={src} alt={alt} {...rest} />
+      </Container>
     );
   }
 );
 
-export {TableImageCell};
+export {Image};

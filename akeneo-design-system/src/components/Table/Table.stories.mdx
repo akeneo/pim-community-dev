@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas, StoryTable} from '@storybook/addon-docs/blocks';
 import {Table} from './Table.tsx';
-import {Badge, Button} from '..';
+import {Badge, Button, Image} from '..';
 import {rows, sortRows} from './shared-stories-data';
 
 <Meta
@@ -14,7 +14,6 @@ import {rows, sortRows} from './shared-stories-data';
     'Table.Body': Table.Body,
     'Table.Row': Table.Row,
     'Table.Cell': Table.Cell,
-    'Table.ImageCell': Table.ImageCell,
     'Table.ActionCell': Table.ActionCell
   }}
 />
@@ -44,7 +43,7 @@ To compare information, for example how many products are completed versus how m
       </Table.Header>
       <Table.Body>
         <Table.Row>
-          <Table.ImageCell src='https://picsum.photos/seed/akeneo/200/140' alt='The alt'/>
+          <Table.Cell><Image src='https://picsum.photos/seed/akeneo/200/140' alt='The alt' /></Table.Cell>
           <Table.Cell isHighlighted>Giant panda</Table.Cell>
           <Table.Cell>Ursidae</Table.Cell>
           <Table.Cell>Carnivora</Table.Cell>
@@ -58,41 +57,6 @@ To compare information, for example how many products are completed versus how m
 </Canvas>
 
 <ArgsTable story="Standard" />
-
-## Table with image cell
-<Canvas>
-  <Story name="Table with image cell">
-    <Table>
-      <Table.Header>
-        <Table.HeaderCell>Image</Table.HeaderCell>
-        <Table.HeaderCell>Image type</Table.HeaderCell>
-        <Table.HeaderCell>Actions</Table.HeaderCell>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.ImageCell fit='contain' isStacked={false} src='https://picsum.photos/seed/akeneo/200/140' alt='Fit contain'/>
-          <Table.Cell>Fit contain</Table.Cell>
-          <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
-        </Table.Row>
-        <Table.Row>
-          <Table.ImageCell fit='cover' isStacked={false} src='https://picsum.photos/seed/akeneo/200/140' alt='Fit cover'/>
-          <Table.Cell>Fit cover</Table.Cell>
-          <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
-        </Table.Row>
-        <Table.Row>
-        <Table.ImageCell fit='contain' isStacked={true} src='https://picsum.photos/seed/akeneo/200/140' alt='Stacked fit cover'/>
-          <Table.Cell>Stacked fit cover</Table.Cell>
-          <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
-        </Table.Row>
-        <Table.Row>
-          <Table.ImageCell fit='cover' isStacked={true} src='https://picsum.photos/seed/akeneo/200/140' alt='Stacked fit contain'/>
-          <Table.Cell>Stacked fit contain</Table.Cell>
-          <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  </Story>
-</Canvas>
 
 ## Sortable header
 <Canvas>
@@ -182,7 +146,7 @@ To compare information, for example how many products are completed versus how m
               rows.map((row) => {
                 return (
                   <Table.Row key={row.id} onSelectToggle={() => {handleToggleSelected(row.id)}} isSelected={selectedLines.indexOf(row.id) !== -1}>
-                    <Table.ImageCell src={row.image} alt='The alt'/>
+                    <Table.Cell><Image src={row.image} alt='The alt' /></Table.Cell>
                     <Table.Cell isHighlighted>{row.name}</Table.Cell>
                     <Table.Cell>{row.family}</Table.Cell>
                     <Table.Cell>{row.order}</Table.Cell>
@@ -233,7 +197,7 @@ To compare information, for example how many products are completed versus how m
               data.map((row) => {
                 return (
                   <Table.Row key={row.id} onClick={() => handleClick(row.id)}>
-                    <Table.ImageCell src={row.image} alt='The alt'/>
+                    <Table.Cell><Image src={row.image} alt='The alt' /></Table.Cell>
                     <Table.Cell isHighlighted>{row.name}</Table.Cell>
                     <Table.Cell>{row.family}</Table.Cell>
                     <Table.Cell>{row.order}</Table.Cell>
@@ -293,7 +257,7 @@ To compare information, for example how many products are completed versus how m
               data.map((row) => {
                 return (
                   <Table.Row key={row.id} onClick={() => handleClick(row.id)} onSelectToggle={() => {handleToggleSelected(row.id)}} isSelected={selectedLines.indexOf(row.id) !== -1}>
-                    <Table.ImageCell src={row.image} alt='The alt'/>
+                    <Table.Cell><Image src={row.image} alt='The alt' /></Table.Cell>
                     <Table.Cell isHighlighted>{row.name}</Table.Cell>
                     <Table.Cell>{row.family}</Table.Cell>
                     <Table.Cell>{row.order}</Table.Cell>
