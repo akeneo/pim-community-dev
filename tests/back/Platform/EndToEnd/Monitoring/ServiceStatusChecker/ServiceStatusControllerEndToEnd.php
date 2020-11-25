@@ -37,6 +37,10 @@ final class ServiceStatusControllerEndToEnd extends TestCase
                 'smtp' => [
                     'ok' => true,
                     'message' => 'OK'
+                ],
+                'pub_sub' => [
+                    'ok' => true,
+                    'message' => 'OK'
                 ]
             ]
         ];

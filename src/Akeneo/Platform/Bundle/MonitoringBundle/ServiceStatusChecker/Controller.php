@@ -25,38 +25,33 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 final class Controller
 {
-    /** @var MysqlChecker */
-    private $mysqlChecker;
-
-    /** @var ElasticsearchChecker */
-    private $elasticsearchChecker;
-
-    /** @var FileStorageChecker */
-    private $fileStorageChecker;
-
-    /** @var string */
-    private $authenticationToken;
-
-    /** @var SmtpChecker */
-    private $smtpChecker;
+    private MysqlChecker $mysqlChecker;
+    private ElasticsearchChecker $elasticsearchChecker;
+    private FileStorageChecker $fileStorageChecker;
+    private string $authenticationToken;
+    private StatusChecker $pubSubStatusChecker;
+    private SmtpChecker $smtpChecker;
 
     public function __construct(
         MysqlChecker $mysqlChecker,
         ElasticsearchChecker $elasticsearchChecker,
         FileStorageChecker $fileStorageChecker,
         SmtpChecker $smtpChecker,
+        StatusChecker $pubSubStatusChecker,
         string $authenticationToken
     ) {
         $this->mysqlChecker = $mysqlChecker;
         $this->elasticsearchChecker = $elasticsearchChecker;
         $this->fileStorageChecker = $fileStorageChecker;
         $this->authenticationToken = $authenticationToken;
+        $this->pubSubStatusChecker = $pubSubStatusChecker;
         $this->smtpChecker = $smtpChecker;
     }
 
     public function getAction(Request $request): JsonResponse
     {
         $authenticationToken = $request->headers->get('X-AUTH-TOKEN', null);
+
         if (null === $authenticationToken || $authenticationToken !== $this->authenticationToken) {
             throw new AccessDeniedHttpException();
         }
@@ -65,13 +60,15 @@ final class Controller
         $esStatus = $this->elasticsearchChecker->status();
         $fileStorageStatus = $this->fileStorageChecker->status();
         $smtpStatus = $this->smtpChecker->status();
+        $pubSubStatus = $this->pubSubStatusChecker->status();
 
         $responseStatus = Response::HTTP_OK;
 
-        if (!$mysqlStatus->isOk() ||
-            !$esStatus->isOk() ||
-            !$fileStorageStatus->isOk() ||
-            !$smtpStatus->isOk()
+        if (!$mysqlStatus->isOk()
+            || !$esStatus->isOk()
+            || !$fileStorageStatus->isOk()
+            || !$smtpStatus->isOk()
+            || !$pubSubStatus->isOk()
         ) {
             $responseStatus = Response::HTTP_INTERNAL_SERVER_ERROR;
         }
@@ -80,22 +77,26 @@ final class Controller
             [
                 'service_status' => [
                     'mysql' => [
-                            'ok' => $mysqlStatus->isOk(),
-                            'message' => $mysqlStatus->getMessage()
+                        'ok' => $mysqlStatus->isOk(),
+                        'message' => $mysqlStatus->getMessage(),
                     ],
                     'elasticsearch' => [
-                            'ok' => $esStatus->isOk(),
-                            'message' => $esStatus->getMessage()
+                        'ok' => $esStatus->isOk(),
+                        'message' => $esStatus->getMessage(),
                     ],
                     'file_storage' => [
-                            'ok' => $fileStorageStatus->isOk(),
-                            'message' => $fileStorageStatus->getMessage()
+                        'ok' => $fileStorageStatus->isOk(),
+                        'message' => $fileStorageStatus->getMessage(),
                     ],
                     'smtp' => [
                         'ok' => $smtpStatus->isOk(),
-                        'message' => $smtpStatus->getMessage()
-                    ]
-                ]
+                        'message' => $smtpStatus->getMessage(),
+                    ],
+                    'pub_sub' => [
+                        'ok' => $pubSubStatus->isOk(),
+                        'message' => $pubSubStatus->getMessage(),
+                    ],
+                ],
             ],
             $responseStatus
         );

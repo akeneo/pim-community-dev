@@ -4,6 +4,13 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_monitoring.status_checker.pub_sub:
+        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\PubSubStatusChecker'
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
+
     Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker:
         class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker'
         arguments:
@@ -27,4 +34,5 @@ services:
             - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\ElasticsearchChecker'
             - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\FileStorageChecker'
             - '@Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\SmtpChecker'
+            - '@akeneo_monitoring.status_checker.pub_sub'
             - '%monitoring_authentication_token%'
