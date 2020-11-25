@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9559: Override clean removed attributes command in EE to also clean proposals
+
 # 4.0.74 (2020-11-25)
 
 ## Bug fixes

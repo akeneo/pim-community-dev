@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
-use Akeneo\Pim\Enrichment\Bundle\Product\RemoveAttributesValuesFromProductAndProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ValuesRemover\CleanValuesOfRemovedAttributesInterface;
@@ -31,19 +30,19 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     protected static $defaultName = 'pim:product:clean-removed-attributes';
 
     /** @var EntityManagerClearerInterface */
-    private $entityManagerClearer;
+    protected $entityManagerClearer;
 
     /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
+    protected $productQueryBuilderFactory;
 
     /** @var string */
-    private $kernelRootDir;
+    protected $kernelRootDir;
 
     /** @var int */
-    private $productBatchSize;
+    protected $productBatchSize;
 
     /** @var CleanValuesOfRemovedAttributesInterface|null */
-    private $cleanValuesOfRemovedAttributes;
+    protected $cleanValuesOfRemovedAttributes;
 
     public function __construct(
         EntityManagerClearerInterface $entityManagerClearer,
@@ -82,6 +81,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
             if (!empty($attributesCodes)) {
                 $this->cleanValues($attributesCodes, $input, $output);
+
                 return;
             }
         }
@@ -91,8 +91,10 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
         $io->title('Clean removed attributes values');
         $answer = $io->confirm(
-            'This command with removes all values of deleted attributes on all products and product models' . "\n" .
-            'Do you want to proceed?', true);
+            'This command will remove all values of deleted attributes on all products and product models' . "\n" .
+                'Do you want to proceed?',
+            true
+        );
 
         if (!$answer) {
             $io->text('That\'s ok, see you!');
@@ -118,12 +120,8 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
     /**
      * Get products
-     *
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     *
-     * @return CursorInterface
      */
-    private function getProducts(ProductQueryBuilderFactoryInterface $pqbFactory): CursorInterface
+    protected function getProducts(ProductQueryBuilderFactoryInterface $pqbFactory): CursorInterface
     {
         $pqb = $pqbFactory->create();
 
@@ -132,15 +130,8 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
     /**
      * Iterate over given products to launch clean commands
-     *
-     * @param  CursorInterface               $products
-     * @param  ProgressBar                   $progressBar
-     * @param  int                           $productBatchSize
-     * @param  EntityManagerClearerInterface $cacheClearer
-     * @param  string                        $env
-     * @param  string                        $rootDir
      */
-    private function cleanProducts(
+    protected function cleanProducts(
         CursorInterface $products,
         ProgressBar $progressBar,
         int $productBatchSize,
@@ -172,10 +163,6 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
     /**
      * Lanches the clean command on given ids
-     *
-     * @param array  $productIds
-     * @param string $env
-     * @param string $rootDir
      */
     private function launchCleanTask(array $productIds, string $env, string $rootDir)
     {
@@ -184,7 +171,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $process->run();
     }
 
-    private function cleanValues(
+    protected function cleanValues(
         array $attributesCodes,
         InputInterface $input,
         OutputInterface $output
@@ -204,12 +191,12 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $io->title('Clean removed attributes values');
 
         $confirmMessage = sprintf(
-            "This command will remove the values of the attributes: \n ".
-            "%s".
-            "This will update: \n".
-            " - %d product model(s) (and %d product variant(s)) \n".
-            " - %d product(s) \n".
-            "Do you want to proceed?",
+            "This command will remove the values of the attributes: \n " .
+                "%s" .
+                "This will update: \n" .
+                " - %d product model(s) (and %d product variant(s)) \n" .
+                " - %d product(s) \n" .
+                "Do you want to proceed?",
             implode(array_map(function (string $attributeCode) {
                 return sprintf(" - %s \n ", $attributeCode);
             }, $attributesCodes)),
