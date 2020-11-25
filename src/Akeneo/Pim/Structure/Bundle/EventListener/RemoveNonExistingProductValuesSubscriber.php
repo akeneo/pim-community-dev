@@ -21,11 +21,20 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberInterface
 {
-    private TokenStorageInterface $tokenStorage;
-    private JobInstanceRepository $jobInstanceRepository;
-    private JobLauncherInterface $jobLauncher;
-    private string $jobName;
-    private ?SqlCreateJobInstanceInterface $createJobInstance;
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
+    /** @var JobInstanceRepository */
+    private $jobInstanceRepository;
+
+    /** @var JobLauncherInterface */
+    private $jobLauncher;
+
+    /** @var string */
+    private $jobName;
+
+    /** @var SqlCreateJobInstanceInterface|null */
+    public $createJobInstance;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
