@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Eval
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\DictionarySource;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
@@ -18,7 +19,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
@@ -36,7 +36,7 @@ final class DemoHelperCommand extends Command
 
     private ConsolidateDashboardRates $consolidateDashboardRates;
 
-    private DashboardRatesProjectionRepository $dashboardRatesProjectionRepository;
+    private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
 
     private Connection $db;
 
@@ -56,7 +56,7 @@ final class DemoHelperCommand extends Command
         DictionarySource $productValueInDatabaseDictionarySource,
         AspellDictionaryGenerator $aspellDictionaryGenerator,
         ConsolidateDashboardRates $consolidateDashboardRates,
-        DashboardRatesProjectionRepository $dashboardRatesProjectionRepository,
+        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository,
         Connection $db,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluatePendingCriteria,
@@ -70,7 +70,7 @@ final class DemoHelperCommand extends Command
         $this->productValueInDatabaseDictionarySource = $productValueInDatabaseDictionarySource;
         $this->aspellDictionaryGenerator = $aspellDictionaryGenerator;
         $this->consolidateDashboardRates = $consolidateDashboardRates;
-        $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
+        $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
         $this->db = $db;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
@@ -258,7 +258,7 @@ final class DemoHelperCommand extends Command
             );
 
             foreach ($ratesProjections as $ratesProjection) {
-                $this->dashboardRatesProjectionRepository->save($ratesProjection);
+                $this->dashboardScoresProjectionRepository->save($ratesProjection);
             }
 
             $io->writeln(sprintf('    Fake consolidation for <info>%s</info> projection type and <info>%s</info> projection code', $result['type'], $result['code']));
