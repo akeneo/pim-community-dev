@@ -277,3 +277,15 @@ services:
 
     akeneo_file_storage.file_storage.file.file_storer:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer
+
+    akeneo_referenceentity.test.event_dispatcher:
+        class: 'AkeneoEnterprise\Test\Acceptance\EventDispatcher\EventDispatcherMock'
+        decorates: event_dispatcher
+        arguments:
+            - '@akeneo_referenceentity.test.event_dispatcher.inner'
+
+    akeneo_batch.job_repository:
+        class: Akeneo\ReferenceEntity\Common\Fake\NullJobRepository
+
+    akeneo_batch.query.get_job_execution_status:
+        class: Akeneo\ReferenceEntity\Common\Fake\InMemoryGetJobExecutionStatus

@@ -15,8 +15,10 @@ namespace Akeneo\ReferenceEntity\Acceptance\Context;
 
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
 use Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateAttributeHandler;
+use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindAttributesDetails;
 use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\ReferenceEntity\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeNotFoundException;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
@@ -30,23 +32,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAttributeContext implements Context
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
-    /** @var CreateAttributeCommandFactoryRegistryInterface */
-    private $commandFactoryRegistry;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var CreateAttributeHandler */
-    private $handler;
-
-    /** @var ExceptionContext */
-    private $exceptionContext;
-
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private AttributeRepositoryInterface $attributeRepository;
+    private CreateAttributeCommandFactoryRegistryInterface $commandFactoryRegistry;
+    private ValidatorInterface $validator;
+    private CreateAttributeHandler $handler;
+    private ExceptionContext $exceptionContext;
+    private ConstraintViolationsContext $constraintViolationsContext;
+    private InMemoryFindAttributesDetails $findAttributesDetails;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -54,7 +46,8 @@ class CreateAttributeContext implements Context
         ValidatorInterface $validator,
         ConstraintViolationsContext $constraintViolationsContext,
         CreateAttributeHandler $handler,
-        ExceptionContext $exceptionContext
+        ExceptionContext $exceptionContext,
+        InMemoryFindAttributesDetails $findAttributesDetails
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->handler = $handler;
@@ -62,6 +55,58 @@ class CreateAttributeContext implements Context
         $this->commandFactoryRegistry = $commandFactoryRegistry;
         $this->validator = $validator;
         $this->constraintViolationsContext = $constraintViolationsContext;
+        $this->findAttributesDetails = $findAttributesDetails;
+    }
+
+    /**
+     * @Given /^a "([^"]*)" (\w+) attribute linked to the "([^"]*)" reference entity with:$/
+     */
+    public function theUserCreatesAnAttributeLinkedToTheReferenceEntityWith(
+        string $attributeCode,
+        string $type,
+        string $referenceEntityIdentifier,
+        TableNode $attributeData
+    ): void {
+        $attributeData = current($attributeData->getHash());
+
+        $attributeData['type'] = $type;
+        $attributeData['identifier']['identifier'] = $attributeCode;
+        $attributeData['identifier']['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['reference_entity_identifier'] = $referenceEntityIdentifier;
+        $attributeData['code'] = $attributeCode;
+        $attributeData['order'] = (int) ($attributeData['order'] ?? 1);
+        $attributeData['is_required'] = json_decode($attributeData['is_required'] ?? 'false');
+        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
+        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
+        $attributeData['labels'] = json_decode($attributeData['labels'] ?? '[]', true);
+        if (array_key_exists('max_length', $attributeData)) {
+            $attributeData['max_length'] = (int) $attributeData['max_length'];
+        }
+
+        $attributeData['is_textarea'] = array_key_exists('is_textarea', $attributeData)
+            ? json_decode($attributeData['is_textarea'])
+            : null;
+        $attributeData['is_rich_text_editor'] = array_key_exists('is_rich_text_editor', $attributeData)
+            ? json_decode($attributeData['is_rich_text_editor'])
+            : null;
+        $attributeData['regular_expression'] = array_key_exists('regular_expression', $attributeData)
+            ? json_decode($attributeData['regular_expression'])
+            : null;
+
+        $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
+        $this->constraintViolationsContext->addViolations($this->validator->validate($command));
+        ($this->handler)($command);
+
+        $attributeDetails = new AttributeDetails();
+        $attributeDetails->referenceEntityIdentifier = $referenceEntityIdentifier;
+        $attributeDetails->code = $attributeCode;
+        $attributeDetails->type = $type;
+        $attributeDetails->valuePerChannel = $attributeData['value_per_channel'];
+        $attributeDetails->valuePerLocale = $attributeData['value_per_locale'];
+        $attributeDetails->isRequired = $attributeData['is_required'];
+        $attributeDetails->labels = $attributeData['labels'];
+        $attributeDetails->order = $attributeData['order'];
+        $this->findAttributesDetails->save($attributeDetails);
     }
 
     /**

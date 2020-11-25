@@ -1923,6 +1923,84 @@ final class EditRecordContext implements Context
         Assert::same($expectedCount, $recordsCount);
     }
 
+    /**
+     * @Then /^the value of the (\w+) (\w+) (\w+) of the \'([^\']*)\' record in \'([^\']*)\' reference entity is \'([^\']*)\'$/
+     */
+    public function theValueOfTheOfTheRecordInReferenceEntityIs(
+        string $localeCode,
+        string $scopeCode,
+        string $attributeCode,
+        string $recordCode,
+        string $referenceEntityIdentifier,
+        string $expectedValue
+    ): void {
+        $record = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            RecordCode::fromString($recordCode)
+        );
+
+        $attribute = $this->attributeRepository->getByReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            $attributeCode
+        );
+        Assert::notNull($attribute, 'The attribute is not found');
+
+        $value = $record->findValue(
+            ValueKey::create(
+                $attribute->getIdentifier(),
+                ChannelReference::createfromNormalized($scopeCode === 'unscoped' ? null : $scopeCode),
+                LocaleReference::createfromNormalized($localeCode === 'unlocalized' ? null : $localeCode)
+            )
+        );
+        if (null === $value && '' === $expectedValue) {
+            return;
+        }
+
+        Assert::notNull($value, 'No value is found');
+        Assert::notNull($value->getData(), 'No data is found');
+        Assert::eq($value->getData()->normalize(), \json_decode($expectedValue, true), sprintf(
+            'Expected: %s, got %s',
+            $expectedValue,
+            \json_encode($value->getData()->normalize())
+        ));
+    }
+
+    /**
+     * @Then /^there is no value for the (\w+) (\w+) (\w+) of the \'([^\']*)\' record in \'([^\']*)\' reference entity$/
+     */
+    public function thereIsNoValueForTheOfTheRecordInReferenceEntityIs(
+        string $localeCode,
+        string $scopeCode,
+        string $attributeCode,
+        string $recordCode,
+        string $referenceEntityIdentifier
+    ): void {
+        $record = $this->recordRepository->getByReferenceEntityAndCode(
+            ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
+            RecordCode::fromString($recordCode)
+        );
+
+        $attribute = $this->attributeRepository->getByReferenceEntityAndCode(
+            $referenceEntityIdentifier,
+            $attributeCode
+        );
+        Assert::notNull($attribute, 'The attribute is not found');
+
+        $value = $record->findValue(
+            ValueKey::create(
+                $attribute->getIdentifier(),
+                ChannelReference::createfromNormalized($scopeCode === 'unscoped' ? null : $scopeCode),
+                LocaleReference::createfromNormalized($localeCode === 'unlocalized' ? null : $localeCode)
+            )
+        );
+        if (null === $value) {
+            return;
+        }
+
+        $data = $value->getData();
+        Assert::null($data, sprintf('The is a value for the record: %s', \json_encode($data->normalize())));
+    }
+
     private function createReferenceEntity(): void
     {
         $createCommand = new CreateReferenceEntityCommand(

@@ -97,12 +97,14 @@ class EditTextValueCommandValidator extends ConstraintValidator
     private function checkTextLength(EditTextValueCommand $command)
     : ConstraintViolationListInterface
     {
+        $intMaxLength = $command->attribute->getMaxLength()->intValue();
+        if (null === $intMaxLength || 0 >= $intMaxLength) {
+            return new ConstraintViolationList();
+        }
+
         $validator = Validation::createValidator();
         $violations = $validator->validate($command->text, [
-            new Constraints\Length([
-                'min' => 0,
-                'max' => $command->attribute->getMaxLength()->intValue(),
-            ]),
+            new Constraints\Length(['max' => $intMaxLength]),
         ]);
 
         return $violations;
