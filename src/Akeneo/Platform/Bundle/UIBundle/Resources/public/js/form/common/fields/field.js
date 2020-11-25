@@ -62,6 +62,7 @@ define([
       this.render();
 
       if (this.errors.length) {
+        this.getRoot().trigger('pim_enrich:form:form-tabs:add-error', this.getTabCode());
         this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.getTabCode());
       }
     },
