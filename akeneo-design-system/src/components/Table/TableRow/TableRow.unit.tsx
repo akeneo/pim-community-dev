@@ -7,14 +7,14 @@ test('it renders its children properly', () => {
     <Table>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>An value</Table.Cell>
+          <Table.Cell>A value</Table.Cell>
           <Table.Cell>Another value</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
   );
 
-  expect(screen.getByText('An value')).toBeInTheDocument();
+  expect(screen.getByText('A value')).toBeInTheDocument();
   expect(screen.getByText('Another value')).toBeInTheDocument();
 });
 
@@ -24,7 +24,7 @@ test('it calls onSelectToggle handler when user clicks on selectable row', () =>
     <Table isSelectable={true}>
       <Table.Body>
         <Table.Row onSelectToggle={onSelectToggle} isSelected={true}>
-          <Table.Cell>An value</Table.Cell>
+          <Table.Cell>A value</Table.Cell>
           <Table.Cell>Another value</Table.Cell>
         </Table.Row>
       </Table.Body>
@@ -43,7 +43,7 @@ test('it calls onClick handler when user clicks on row', () => {
     <Table>
       <Table.Body>
         <Table.Row onClick={onClick}>
-          <Table.Cell>An value</Table.Cell>
+          <Table.Cell>A value</Table.Cell>
           <Table.Cell>Another value</Table.Cell>
         </Table.Row>
       </Table.Body>
@@ -63,7 +63,7 @@ test('it throws when onSelectToggle is not given on selectable table', () => {
       <Table isSelectable={true}>
         <Table.Body>
           <Table.Row isSelected={true}>
-            <Table.Cell>An value</Table.Cell>
+            <Table.Cell>A value</Table.Cell>
             <Table.Cell>Another value</Table.Cell>
           </Table.Row>
         </Table.Body>
@@ -84,7 +84,7 @@ test('it throws when isSelected is not given on selectable table', () => {
       <Table isSelectable={true}>
         <Table.Body>
           <Table.Row onSelectToggle={onSelectToggle}>
-            <Table.Cell>An value</Table.Cell>
+            <Table.Cell>A value</Table.Cell>
             <Table.Cell>Another value</Table.Cell>
           </Table.Row>
         </Table.Body>
@@ -96,16 +96,13 @@ test('it throws when isSelected is not given on selectable table', () => {
   mockConsole.mockRestore();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
 test('Table.Row supports forwardRef', () => {
   const ref = {current: null};
   render(
     <Table>
       <Table.Body>
         <Table.Row ref={ref}>
-          <Table.Cell>An value</Table.Cell>
+          <Table.Cell>A value</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>

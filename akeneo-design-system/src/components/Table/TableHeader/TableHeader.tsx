@@ -15,6 +15,7 @@ const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
     return (
       <thead ref={forwardedRef}>
         <tr {...rest}>
+          {/* Add new column for checkbox to be displayed properly in the tbody */}
           {isSelectable && <th />}
           {children}
         </tr>

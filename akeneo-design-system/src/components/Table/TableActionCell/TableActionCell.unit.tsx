@@ -1,23 +1,24 @@
 import React from 'react';
 import {Table} from '../Table';
 import {fireEvent, render, screen} from '../../../storybook/test-util';
-import {Button} from '../..';
+import {Button, IconButton} from '../..';
+import {AkeneoIcon} from '../../../icons';
 
 test('it renders its children properly', () => {
   render(
     <Table>
       <Table.Body>
         <Table.Row>
-          <Table.ActionCell>An value</Table.ActionCell>
+          <Table.ActionCell>A value</Table.ActionCell>
         </Table.Row>
       </Table.Body>
     </Table>
   );
 
-  expect(screen.getByText('An value')).toBeInTheDocument();
+  expect(screen.getByText('A value')).toBeInTheDocument();
 });
 
-test('it event stop propagation when user click on button', () => {
+test('it event stop propagation when user click on Button', () => {
   const onRowClick = jest.fn();
   const onButtonClick = jest.fn();
 
@@ -40,16 +41,36 @@ test('it event stop propagation when user click on button', () => {
   expect(onRowClick).not.toBeCalled();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
+test('it event stop propagation when user click on IconButton', () => {
+  const onRowClick = jest.fn();
+  const onIconButtonClick = jest.fn();
+
+  render(
+    <Table>
+      <Table.Body>
+        <Table.Row onClick={onRowClick}>
+          <Table.ActionCell>
+            <IconButton icon={<AkeneoIcon />} title="an icon button" onClick={onIconButtonClick} />
+          </Table.ActionCell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
+
+  const iconButton = screen.getByTitle('an icon button');
+  fireEvent.click(iconButton);
+
+  expect(onIconButtonClick).toBeCalled();
+  expect(onRowClick).not.toBeCalled();
+});
+
 test('Table.ActionCell supports forwardRef', () => {
   const ref = {current: null};
   render(
     <Table>
       <Table.Body>
         <Table.Row>
-          <Table.ActionCell ref={ref}>An value</Table.ActionCell>
+          <Table.ActionCell ref={ref}>A value</Table.ActionCell>
         </Table.Row>
       </Table.Body>
     </Table>

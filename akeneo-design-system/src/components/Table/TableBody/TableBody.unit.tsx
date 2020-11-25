@@ -7,18 +7,15 @@ test('it renders its children properly', () => {
     <Table>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>An value</Table.Cell>
+          <Table.Cell>A value</Table.Cell>
         </Table.Row>
       </Table.Body>
     </Table>
   );
 
-  expect(screen.getByText('An value')).toBeInTheDocument();
+  expect(screen.getByText('A value')).toBeInTheDocument();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
 test('Table.Body supports forwardRef', () => {
   const ref = {current: null};
   render(
