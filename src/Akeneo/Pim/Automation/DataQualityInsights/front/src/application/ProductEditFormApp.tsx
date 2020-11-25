@@ -53,7 +53,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                   <Icon type={AssetCollectionIcon} />
                   <Recommendation
                     type={'not_applicable'}
-                    follow={() => followNotApplicableEnrichmentImageRecommendation(product.family)}
+                    follow={() => followNotApplicableEnrichmentImageRecommendation(product)}
                   >
                     <NotApplicableEnrichmentImageMessage />
                   </Recommendation>
