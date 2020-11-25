@@ -6,27 +6,24 @@ type Props = {
   timePeriod: string;
   familyCode: string | null;
   categoryCode: string | null;
-  showFilters: boolean;
 };
 
-const Header: FC<Props> = ({timePeriod, familyCode, categoryCode, showFilters}) => {
+const Header: FC<Props> = ({timePeriod, familyCode, categoryCode}) => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
 
   return (
     <div className="AknSubsection-title AknSubsection-title--glued">
       <span>{translate('akeneo_data_quality_insights.dqi_dashboard.score_distribution.title')}</span>
-      {showFilters && (
-        <div className="AknFilterBox AknFilterBox--search">
-          <div className="AknFilterBox-list filter-box">
-            <TimePeriodFilter timePeriod={timePeriod} />
+      <div className="AknFilterBox AknFilterBox--search">
+        <div className="AknFilterBox-list filter-box">
+          <TimePeriodFilter timePeriod={timePeriod} />
 
-            {isGranted('pim_enrich_product_category_list') && <CategoryFilter categoryCode={categoryCode} />}
+          {isGranted('pim_enrich_product_category_list') && <CategoryFilter categoryCode={categoryCode} />}
 
-            <FamilyFilter familyCode={familyCode} />
-          </div>
+          <FamilyFilter familyCode={familyCode} />
         </div>
-      )}
+      </div>
     </div>
   );
 };
