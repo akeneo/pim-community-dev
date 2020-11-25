@@ -75,9 +75,9 @@ class RemoveNonExistingProductValuesTaskletSpec extends ObjectBehavior
         $productModelRepository->getItemsFromIdentifiers(['code3'])->willReturn([$productModel]);
 
         $productSaver->saveAll([$product1, $product2], ['force_save' => true])->shouldBeCalled();
-        $productModelSaver->saveAll([$productModel])->shouldBeCalled();
+        $productModelSaver->saveAll([$productModel], ['force_save' => true])->shouldBeCalled();
         $productSaver->saveAll([], ['force_save' => true])->shouldBeCalled();
-        $productModelSaver->saveAll([])->shouldBeCalled();
+        $productModelSaver->saveAll([], ['force_save' => true])->shouldBeCalled();
         $entityManagerClearer->clear()->shouldBeCalled();
 
         $this->execute();

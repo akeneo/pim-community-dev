@@ -107,7 +107,7 @@ final class RemoveNonExistingProductValuesTasklet implements TaskletInterface
             $this->productSaver->saveAll($products, ['force_save' => true]);
 
             $productModels = $this->productModelRepository->getItemsFromIdentifiers($identifiers);
-            $this->productModelSaver->saveAll($productModels);
+            $this->productModelSaver->saveAll($productModels, ['force_save' => true]);
 
             $this->entityManagerClearer->clear();
         }
