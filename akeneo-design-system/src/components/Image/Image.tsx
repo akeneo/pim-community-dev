@@ -1,37 +1,29 @@
 import React, {Ref} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
-const Container = styled.div`
-  display: inline-block;
-`;
-
-const ImageContainer = styled.img<{fit: 'cover' | 'contain'}>`
+const ImageContainer = styled.img<{fit: 'cover' | 'contain'; height?: number; width?: number; isStacked: boolean}>`
   background: white;
-  position: relative;
-  height: 44px;
-  width: 44px;
   border: 1px solid #ccd1d8;
   object-fit: ${({fit}) => fit};
-`;
-
-const StackedLayerContainer = styled.div`
-  position: absolute;
-  border: 1px solid #ccd1d8;
-  background: white;
-  height: 44px;
-  width: 44px;
   transform: translate(4px, -4px);
 
-  :after {
-    content: '';
-    position: absolute;
-    border: 1px solid #ccd1d8;
-    background: white;
-    height: 44px;
-    width: 44px;
-    top: 1px;
-    right: 1px;
-  }
+  ${({isStacked}) =>
+    isStacked &&
+    css`
+      box-shadow: 1px -1px 0 0 white, 2px -2px 0 0 #ccd1d8, 3px -3px 0 0 white, 4px -4px 0 0 #ccd1d8;
+    `}
+
+  ${({height}) =>
+    height &&
+    css`
+      height: ${height}px;
+    `}
+
+  ${({width}) =>
+    width &&
+    css`
+      height: ${width}px;
+    `}
 `;
 
 type ImageProps = {
@@ -46,6 +38,16 @@ type ImageProps = {
   alt: string;
 
   /**
+   * The width of the image
+   */
+  width?: number;
+
+  /**
+   * The height of the image
+   */
+  height?: number;
+
+  /**
    * Should the image cover all the container or be contained in it.
    */
   fit?: 'cover' | 'contain';
@@ -57,13 +59,8 @@ type ImageProps = {
 };
 
 const Image = React.forwardRef<HTMLImageElement, ImageProps>(
-  ({alt, src, fit = 'cover', isStacked = false, ...rest}: ImageProps, forwardedRef: Ref<HTMLImageElement>) => {
-    return (
-      <Container>
-        {isStacked && <StackedLayerContainer />}
-        <ImageContainer ref={forwardedRef} fit={fit} src={src} alt={alt} {...rest} />
-      </Container>
-    );
+  ({fit = 'cover', isStacked = false, ...rest}: ImageProps, forwardedRef: Ref<HTMLImageElement>) => {
+    return <ImageContainer ref={forwardedRef} fit={fit} isStacked={isStacked} {...rest} />;
   }
 );
 

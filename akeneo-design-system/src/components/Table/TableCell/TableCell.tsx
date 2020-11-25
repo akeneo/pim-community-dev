@@ -1,6 +1,7 @@
 import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
+import {Image} from '../..';
 
 const TableCellContainer = styled.td<{isHighlighted: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
@@ -41,7 +42,16 @@ const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
   ({isHighlighted = false, children, ...rest}: TableCellProps, forwardedRef: Ref<HTMLTableCellElement>) => {
     return (
       <TableCellContainer ref={forwardedRef} isHighlighted={isHighlighted} {...rest}>
-        <TableCellInnerContainer>{children}</TableCellInnerContainer>
+        <TableCellInnerContainer>
+          {React.Children.map(children, child => {
+            if (!React.isValidElement(child) || child.type !== Image) return children;
+
+            return React.cloneElement(child, {
+              width: 44,
+              height: 44,
+            });
+          })}
+        </TableCellInnerContainer>
       </TableCellContainer>
     );
   }
