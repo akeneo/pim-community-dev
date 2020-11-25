@@ -16,7 +16,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.webhook.guzzle_client'
             - '@akeneo_connectivity.connection.webhook.serializer.json_encoder'
-            - '@logger'
+            - '@monolog.logger.event_api'
             - 
                 concurrency: '%webhook_concurrency%'
                 timeout: '%webhook_timeout%'
