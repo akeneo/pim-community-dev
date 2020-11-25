@@ -1,12 +1,16 @@
 import React from 'react';
 import {Table} from '../Table';
 import {render, screen} from '../../../storybook/test-util';
+import {Image} from '../..';
 
 test('it renders its children properly', () => {
   render(
     <Table>
       <Table.Body>
         <Table.Row>
+          <Table.Cell>
+            <Image src="my_image.png" alt="My image" />
+          </Table.Cell>
           <Table.Cell isHighlighted>A value</Table.Cell>
           <Table.Cell>Another value</Table.Cell>
         </Table.Row>
@@ -14,6 +18,7 @@ test('it renders its children properly', () => {
     </Table>
   );
 
+  expect(screen.getByAltText('My image')).toBeInTheDocument();
   expect(screen.getByText('A value')).toBeInTheDocument();
   expect(screen.getByText('Another value')).toBeInTheDocument();
 });
