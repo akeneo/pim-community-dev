@@ -574,11 +574,7 @@ abstract class AbstractProduct implements ProductInterface
     public function removeAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
-        if (null === $association) {
-            throw new \LogicException();
-        }
-
-        if ($association->hasProduct($product)) {
+        if ($association instanceof AssociationInterface && $association->hasProduct($product)) {
             $association->removeProduct($product);
             $this->dirty = true;
         }
@@ -607,11 +603,7 @@ abstract class AbstractProduct implements ProductInterface
     public function removeAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
-        if (null === $association) {
-            throw new \LogicException();
-        }
-
-        if ($association->getProductModels()->contains($productModel)) {
+        if ($association instanceof AssociationInterface && $association->getProductModels()->contains($productModel)) {
             $association->removeProductModel($productModel);
             $this->dirty = true;
         }
@@ -627,11 +619,7 @@ abstract class AbstractProduct implements ProductInterface
     public function addAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
-        if (null === $association) {
-            throw new \LogicException();
-        }
-
-        if (!$association->getGroups()->contains($group)) {
+        if ($association instanceof AssociationInterface && !$association->getGroups()->contains($group)) {
             $association->addGroup($group);
             $this->dirty = true;
         }

@@ -79,7 +79,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
      * Add products and groups to associations
      *
      * @param ProductInterface|ProductModelInterface $entity
-     * @param mixed                                  $data
+     * @param mixed $data
      *
      * @throws InvalidPropertyException
      */
@@ -97,7 +97,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
                     $typeCode
                 );
             }
-            $this->addAssociatedProducts($associationType,$items['products'] ?? [], $entity);
+            $this->addAssociatedProducts($associationType, $items['products'] ?? [], $entity);
             $this->addAssociatedGroups($associationType, $items['groups'] ?? [], $entity);
             $this->addAssociatedProductModels($associationType, $items['product_models'] ?? [], $entity);
         }
@@ -127,6 +127,9 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 );
             }
             $entity->addAssociatedProduct($associatedProduct, $associationType->getCode());
+            if ($associationType->isTwoWay()) {
+                $this->addInversedAssociation($associatedProduct, $associationType->getCode(), $entity);
+            }
         }
     }
 
@@ -153,7 +156,10 @@ class AssociationFieldAdder extends AbstractFieldAdder
                     $productModelIdentifier
                 );
             }
-            $entity->addAssociatedProduct($associatedProductModel, $associationType->getCode());
+            $entity->addAssociatedProductModel($associatedProductModel, $associationType->getCode());
+            if ($associationType->isTwoWay()) {
+                $this->addInversedAssociation($associatedProductModel, $associationType->getCode(), $entity);
+            }
         }
     }
 
@@ -192,7 +198,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
         }
 
         foreach ($data as $assocTypeCode => $items) {
-            $assocTypeCode = (string) $assocTypeCode;
+            $assocTypeCode = (string)$assocTypeCode;
             $this->checkAssociationData($field, $data, $assocTypeCode, $items);
         }
     }
@@ -242,6 +248,19 @@ class AssociationFieldAdder extends AbstractFieldAdder
                     $data
                 );
             }
+        }
+    }
+
+    private function addInversedAssociation(
+        EntityWithAssociationsInterface $owner,
+        string $associationTypeCode,
+        $entityToAssociate
+    ) {
+        $this->missingAssociationAdder->addMissingAssociations($owner);
+        if ($entityToAssociate instanceof ProductInterface) {
+            $owner->addAssociatedProduct($entityToAssociate, $associationTypeCode);
+        } elseif ($entityToAssociate instanceof ProductModelInterface) {
+            $owner->addAssociatedProductModel($entityToAssociate, $associationTypeCode);
         }
     }
 }

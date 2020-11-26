@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -35,17 +38,41 @@ final class AssociationFieldClearer implements ClearerInterface
             sprintf('The clearer does not handle the "%s" property.', $property)
         );
 
-        if ($entity instanceof EntityWithAssociationsInterface) {
-            // getAssociations() can return an array or a Collection. We handle both.
-            // We cannot clear the association directly, doctrine does not understand. We have to clear the
-            // products, product models and groups of each assocations.
-            $associations = $entity->getAssociations();
-            foreach ($associations as $association) {
-                $association->getProducts()->clear();
-                $association->getProductModels()->clear();
-                $association->getGroups()->clear();
+        if (!$entity instanceof EntityWithAssociationsInterface) {
+            throw InvalidObjectException::objectExpected($entity, EntityWithAssociationsInterface::class);
+        }
+
+        foreach ($entity->getAssociations() as $association) {
+            $associationType = $association->getAssociationType();
+            $typeCode = $associationType->getCode();
+
+            foreach ($entity->getAssociatedProducts($typeCode) as $associatedProduct) {
+                $entity->removeAssociatedProduct($associatedProduct, $typeCode);
+                if ($associationType->isTwoWay()) {
+                    $this->removeInversedAssociation($associatedProduct, $typeCode, $entity);
+                }
             }
-            $entity->setAssociations($associations);
+            foreach ($entity->getAssociatedProductModels($typeCode) as $associatedProductModel) {
+                $entity->removeAssociatedProductModel($associatedProductModel, $typeCode);
+                if ($associationType->isTwoWay()) {
+                    $this->removeInversedAssociation($associatedProductModel, $typeCode, $entity);
+                }
+            }
+            foreach ($entity->getAssociatedGroups($typeCode) as $associatedGroup) {
+                $entity->removeAssociatedGroup($associatedGroup, $typeCode);
+            }
+        }
+    }
+
+    private function removeInversedAssociation(
+        EntityWithAssociationsInterface $owner,
+        string $associationTypeCode,
+        $associatedEntity
+    ): void {
+        if ($associatedEntity instanceof ProductInterface) {
+            $owner->removeAssociatedProduct($associatedEntity, $associationTypeCode);
+        } elseif ($associatedEntity instanceof ProductModelInterface) {
+            $owner->removeAssociatedProductModel($associatedEntity, $associationTypeCode);
         }
     }
 }
