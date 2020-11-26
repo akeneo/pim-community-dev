@@ -59,6 +59,7 @@ services:
             - '@pim_analytics.query.email_domains'
             - '@pim_analytics.query.api_connection_count'
             - '@pim_analytics.query.media_count'
+            - '@pim_analytics.query.is_demo_catalog'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }

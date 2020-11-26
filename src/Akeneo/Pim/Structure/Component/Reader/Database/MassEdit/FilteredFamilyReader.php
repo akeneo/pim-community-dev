@@ -5,7 +5,6 @@ namespace Akeneo\Pim\Structure\Component\Reader\Database\MassEdit;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Item\RewindableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -17,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, RewindableItemReaderInterface, TrackableItemReaderInterface
+class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, TrackableItemReaderInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -37,12 +36,6 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     public function __construct(FamilyRepositoryInterface $familyRepository)
     {
         $this->familyRepository = $familyRepository;
-    }
-
-    /** @TODO: remove this in RAC-341 */
-    public function rewind(): void
-    {
-        $this->initialize();
     }
 
     public function totalItems(): int

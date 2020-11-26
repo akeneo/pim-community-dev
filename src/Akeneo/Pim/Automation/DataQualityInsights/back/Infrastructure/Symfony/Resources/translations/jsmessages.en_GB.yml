@@ -83,3 +83,4 @@ akeneo_data_quality_insights:
     all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to deactivate attribute groups to in our help center.</a>
 pim_title:
   akeneo_data_quality_insights_dashboard: Data Quality Insights
+
