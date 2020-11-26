@@ -371,15 +371,8 @@ jobs:
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
-              name: Set the type to srnt by default
-              command: |
-                  if [ -z "$TYPE" ];
-                  then
-                      echo export TYPE="srnt" >> $BASH_ENV
-                  fi
-          - run:
               name: Remove env on kubernetes
-              command: TYPE=${TYPE} make delete
+              command: make delete
               when: always
 
   test_upgrade_from_32:

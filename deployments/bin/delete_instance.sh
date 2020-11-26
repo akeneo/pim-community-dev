@@ -11,9 +11,10 @@ if [[ ${INSTANCE_NAME} == "" ]]; then
         exit 9
 fi
 if [[ ${TYPE} == "" ]]; then
-        echo "ERR : You must choose a product type for the instance to delete"
-        exit 9
+        echo "WARN : set default value srnt for instance type to delete"
+        TYPE="srnt"
 fi
+
 
 #
 PFID="${TYPE}-${INSTANCE_NAME}"
