@@ -2,6 +2,8 @@
 
 ## Bug fixes
 
+- PIM-9575: Prepend hash to navigate actions URLs
+- PIM-9559: Dispatch event when clean removed attributes command is over
 - PIM-9573: Create remove_non_existing_product_values job instance at runtime
 
 # 4.0.74 (2020-11-25)
