@@ -83,9 +83,17 @@ jobs:
       - run:
           name: Build css
           command: make css
+      - restore_cache:
+          keys:
+            - akeneo-design-system-tsbuild-{{ .Branch }}
+            - akeneo-design-system-tsbuild
       - run:
           name: Build Javascript
           command: make javascript-dev
+      - save_cache:
+          key: akeneo-design-system-tsbuild-{{ .Branch }}
+          paths:
+            - vendor/akeneo/pim-community-dev/akeneo-design-system/tsconfig.build.tsbuildinfo
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
