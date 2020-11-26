@@ -438,7 +438,7 @@ measures_config:
                 convert: [{'mul': '0.001'}]
                 symbol: hPa
             MILLIBAR:
-                convert: [{'mul': '1000'}]
+                convert: [{'mul': '0.001'}]
                 symbol: mBar
             ATM:
                 convert: [{'mul': '0.986923'}]
