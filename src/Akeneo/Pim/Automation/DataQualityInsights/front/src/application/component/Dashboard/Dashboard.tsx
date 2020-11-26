@@ -1,6 +1,6 @@
 import React, {FunctionComponent} from 'react';
 import {pimTheme} from 'akeneo-design-system';
-import {ThemeProvider} from 'styled-components';
+import styled, {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ScoreDistributionSection, Widgets} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
@@ -10,6 +10,7 @@ import {EEKeyIndicatorsTips} from '../../helper/Dashboard/EEKeyIndicatorsTips';
 import {DashboardContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/DashboardContext';
 import {TimePeriod} from '@akeneo-pim-community/data-quality-insights/src/domain';
 import {PimEnterpriseKeyIndicators} from './PimEnterpriseKeyIndicators';
+import {QualityScoreEvolutionSection} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/QualityScoreEvolutionSection';
 
 interface DataQualityInsightsDashboardProps {
   timePeriod: TimePeriod;
@@ -35,13 +36,21 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
           <DashboardContextProvider>
             <div id="data-quality-insights-activity-dashboard">
               <div className="AknSubsection">
-                <ScoreDistributionSection
-                  catalogLocale={catalogLocale}
-                  catalogChannel={catalogChannel}
-                  timePeriod={timePeriod}
-                  familyCode={familyCode}
-                  categoryCode={categoryCode}
-                />
+                <Overview>
+                  <QualityScoreEvolutionSection
+                    locale={catalogLocale}
+                    channel={catalogChannel}
+                    familyCode={familyCode}
+                    categoryCode={categoryCode}
+                  />
+                  <ScoreDistributionSection
+                    catalogLocale={catalogLocale}
+                    catalogChannel={catalogChannel}
+                    timePeriod={timePeriod}
+                    familyCode={familyCode}
+                    categoryCode={categoryCode}
+                  />
+                </Overview>
 
                 <KeyIndicatorsProvider tips={{...EEKeyIndicatorsTips, ...keyIndicatorsTips}}>
                   {
@@ -63,5 +72,9 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
     </DependenciesProvider>
   );
 };
+
+const Overview = styled.div`
+  display: flex;
+`;
 
 export {Dashboard};
