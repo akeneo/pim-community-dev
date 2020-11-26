@@ -78,8 +78,11 @@ jobs:
           environment:
             YARN_REGISTRY: "http://registry.yarnpkg.com"
       - run:
-          name: Install asset
+          name: Install assets
           command: make assets
+      - run:
+          name: Build css
+          command: make css
       - run:
           name: Build Javascript
           command: make javascript-dev
