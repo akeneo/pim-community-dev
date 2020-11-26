@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistribution;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CatalogQualityScorevolution;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\ResultStatement;
 
@@ -84,34 +82,10 @@ SQL;
         }
 
         $scores = json_decode($result, true);
-        if (empty($scores)) {
+        if (empty($scores) || !array_key_exists('monthly', $scores)) {
             return $productScoreEvolution;
         }
 
-        $monthlyTimePeriodDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))->isLastDayOfMonth() ?
-            new \DateTimeImmutable() :
-            (new \DateTimeImmutable())->setTimestamp(strtotime(date('Y-m-t')));
-
-        $data = [];
-        for ($i = 5; $i >= 0; $i--) {
-            $newDate = $monthlyTimePeriodDateFormat->modify('last day of '.$i.' month ago');
-            $data[$newDate->format('Y-m-d')] = null;
-        }
-
-        foreach (array_keys($data) as $period) {
-            if (isset($scores['monthly'][$period][$channel][$locale])) {
-                $ranksDistribution = new RanksDistribution($scores['monthly'][$period][$channel][$locale]);
-                $data[$period] = $ranksDistribution->getAverageRank()->toLetter();
-            }
-        }
-
-        $currentAverageRank = isset($scores['average_ranks'][$channel][$locale]) ? (Rank::fromString($scores['average_ranks'][$channel][$locale]))->toLetter() : null;
-
-        $data[array_key_last($data)] = $currentAverageRank;
-
-        $productScoreEvolution['average_rank'] = $currentAverageRank;
-        $productScoreEvolution['data'] = $data;
-
-        return $productScoreEvolution;
+        return (new CatalogQualityScorevolution($scores, $channel, $locale))->toArray();
     }
 }
