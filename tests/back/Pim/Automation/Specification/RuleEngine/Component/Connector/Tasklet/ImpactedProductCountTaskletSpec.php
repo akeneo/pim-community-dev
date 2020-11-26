@@ -15,13 +15,13 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -41,6 +41,12 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
+    function it_track_processed_items()
+    {
+        $this->shouldImplement(TrackableTaskletInterface::class);
+        $this->isTrackable()->shouldReturn(true);
+    }
+
     function it_executes_impacted_product_by_rules(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         DryRunnerInterface $productRuleRunner,
@@ -54,7 +60,7 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         CursorInterface $cursor1,
         CursorInterface $cursor2,
         JobParameters $jobParameters,
-        JobRepositoryInterface  $jobRepository,
+        JobRepositoryInterface $jobRepository,
         JobStopper $jobStopper
     ) {
         $configuration = [
@@ -63,6 +69,7 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('ruleIds')->willReturn($configuration['ruleIds']);
 
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
         $ruleDefinitionRepo->findBy(['id' => [1, 2]])->willReturn([$ruleDefinition1, $ruleDefinition2]);
 
         $productRuleRunner->dryRun($ruleDefinition1)->willReturn($ruleSubjectSet1);
@@ -78,7 +85,8 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $ruleDefinition1->setImpactedSubjectCount(1000)->willReturn($ruleDefinition2);
 
         $stepExecution->incrementSummaryInfo('rule_calculated')->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
+
         $jobRepository->updateStepExecution($stepExecution);
 
         $saver->saveAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
@@ -86,16 +94,5 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
-    }
-
-    public function it_counts_the_number_of_rules_it_will_process(
-        StepExecution $stepExecution,
-        JobParameters $jobParameters
-    ) {
-        $configuration = ['ruleIds' => [1, 2]];
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('ruleIds')->willReturn($configuration['ruleIds']);
-
-        $this->totalItems()->shouldReturn(2);
     }
 }

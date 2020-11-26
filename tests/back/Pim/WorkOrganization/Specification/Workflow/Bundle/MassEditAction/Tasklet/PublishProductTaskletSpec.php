@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -60,6 +61,12 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $this->beAnInstanceOf(StepExecutionAwareInterface::class);
     }
 
+    function it_track_processed_items()
+    {
+        $this->shouldImplement(TrackableTaskletInterface::class);
+        $this->isTrackable()->shouldReturn(true);
+    }
+
     function it_executes_a_mass_publish_operation_with_a_configuration(
         $paginatorFactory,
         $manager,
@@ -93,14 +100,16 @@ class PublishProductTaskletSpec extends ObjectBehavior
                 $product2
             ]
         ];
-        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
+        $cursor->count()->willReturn(2);
+        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
         $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
 
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
 
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(2);
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
 
@@ -145,6 +154,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
                 $product2
             ]
         ];
+        $cursor->count()->willReturn(2);
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
         $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
@@ -153,6 +163,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
 
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
@@ -174,39 +185,5 @@ class PublishProductTaskletSpec extends ObjectBehavior
     function it_sets_the_step_execution(StepExecution $stepExecution)
     {
         $this->setStepExecution($stepExecution)->shouldReturn($this);
-    }
-
-    function it_counts_the_total_item_to_process(
-        $paginatorFactory,
-        $cursor,
-        $stepExecution,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        JobParameters $jobParameters
-    ) {
-        $configuration = [
-            'filters' => [
-                [
-                    'field'    => 'sku',
-                    'operator' => 'IN',
-                    'value'    => ['1000', '1001']
-                ]
-            ],
-            'actions' => []
-        ];
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filters')->willReturn($configuration['filters']);
-        $jobParameters->get('actions')->willReturn($configuration['actions']);
-
-        $productsPage = [
-            [
-                $product1,
-                $product2
-            ]
-        ];
-        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
-        $cursor->count()->willReturn(2);
-
-        $this->totalItems()->shouldReturn(2);
     }
 }

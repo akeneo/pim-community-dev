@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet;
 
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -56,6 +57,12 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         $this->beAnInstanceOf(StepExecutionAwareInterface::class);
     }
 
+    function it_track_processed_items()
+    {
+        $this->shouldImplement(TrackableTaskletInterface::class);
+        $this->isTrackable()->shouldReturn(true);
+    }
+
     function it_executes_a_mass_publish_operation_with_a_configuration(
         $paginatorFactory,
         $manager,
@@ -89,11 +96,13 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
             ]
         ];
 
+        $cursor->count()->willReturn(2);
         $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
 
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(true);
 
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(2);
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
 
@@ -135,6 +144,8 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
                 $pubProduct2
             ]
         ];
+
+        $cursor->count()->willReturn(2);
         $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
 
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
@@ -145,6 +156,7 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $pubProduct2)->willReturn(false);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
 
         $stepExecution->addWarning(
@@ -163,40 +175,5 @@ class UnpublishProductTaskletSpec extends ObjectBehavior
     function it_sets_the_step_execution(StepExecution $stepExecution)
     {
         $this->setStepExecution($stepExecution)->shouldReturn($this);
-    }
-
-    function it_counts_the_total_items_that_will_be_processed(
-        $paginatorFactory,
-        $cursor,
-        $pqbFactory,
-        $pqb,
-        StepExecution $stepExecution,
-        PublishedProductInterface $pubProduct1,
-        PublishedProductInterface $pubProduct2,
-        JobParameters $jobParameters
-    ) {
-        $filters = [
-            [
-                'field'    => 'sku',
-                'operator' => 'IN',
-                'value'    => ['1000', '1001']
-            ]
-        ];
-
-        $this->setStepExecution($stepExecution);
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('filters')->willReturn($filters);
-        $pqbFactory->create(['filters' => $filters])->willReturn($pqb);
-
-        $paginator = [
-            [
-                $pubProduct1,
-                $pubProduct2
-            ]
-        ];
-        $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
-        $cursor->count()->willReturn(2);
-
-        $this->totalItems()->shouldReturn(2);
     }
 }

@@ -107,6 +107,9 @@ services:
         arguments:
             - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor'
             - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetCodesByAssetFamily'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
+            - '@akeneo_batch.job_repository'
+            - 100
         public: false
 
     akeneo_assetmanager.tasklet.execute_naming_convention:
@@ -114,6 +117,9 @@ services:
         arguments:
             - '@Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention\ExecuteNamingConvention'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
+            - '@akeneo_batch.job_repository'
+            - 100
         public: false
 
     akeneo_assetmanager.tasklet.compute_transformations:
@@ -126,4 +132,7 @@ services:
             - '@Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor'
             - '@akeneo_assetmanager.application.asset.edit_asset_handler'
             - '@validator'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
+            - '@akeneo_batch.job_repository'
+            - 100
         public: false
