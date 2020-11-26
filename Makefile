@@ -60,7 +60,7 @@ javascript-test: dsm
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css javascript-test javascript-dev
+front: assets css javascript-dev
 
 ##
 ## Back

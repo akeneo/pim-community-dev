@@ -111,9 +111,7 @@ jobs:
           command: make assets
       - run:
           name: Build Javascript
-          command: |
-              make javascript-test
-              make javascript-dev
+          command: make javascript-dev
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
@@ -268,12 +266,15 @@ jobs:
         - run:
             name: Front unit tests
             command: make unit-front
-        - run:
-            name: Front acceptance tests
-            command: make acceptance-front
-        - run:
-            name: Front integration tests
-            command: make integration-front
+#        - run:
+#            name: Build Javascript for tests
+#            command: make javascript-test
+#        - run:
+#            name: Front acceptance tests
+#            command: make acceptance-front
+#        - run:
+#            name: Front integration tests
+#            command: make integration-front
 
   test_back_performance:
     machine:
