@@ -35,3 +35,4 @@ akeneo_data_quality_insights:
       no_category_helper_msg: Selecteer de categorieën waarvoor je de gegevenskwaliteit wilt meten
     time_axis:
       day: dag
+
