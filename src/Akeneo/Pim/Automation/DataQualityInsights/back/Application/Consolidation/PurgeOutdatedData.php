@@ -2,20 +2,10 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
@@ -30,18 +20,9 @@ final class PurgeOutdatedData
 
     private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
 
-    private ProductAxisRateRepositoryInterface $productAxisRateRepository;
-
-    private ProductAxisRateRepositoryInterface $productModelAxisRateRepository;
-
-    public function __construct(
-        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository,
-        ProductAxisRateRepositoryInterface $productAxisRateRepository,
-        ProductAxisRateRepositoryInterface $productModelAxisRateRepository
-    ) {
+    public function __construct(DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository)
+    {
         $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
-        $this->productAxisRateRepository = $productAxisRateRepository;
-        $this->productModelAxisRateRepository = $productModelAxisRateRepository;
     }
 
     public function purgeDashboardProjectionRatesFrom(\DateTimeImmutable $date): void
@@ -69,12 +50,5 @@ final class PurgeOutdatedData
             );
 
         $this->dashboardScoresProjectionRepository->purgeRates($purgeDates);
-    }
-
-    public function purgeProductAxisRatesFrom(\DateTimeImmutable $date): void
-    {
-        $purgeDate = $date->modify(sprintf('-%d DAY', self::CONSOLIDATION_RETENTION_DAYS));
-        $this->productAxisRateRepository->purgeUntil($purgeDate);
-        $this->productModelAxisRateRepository->purgeUntil($purgeDate);
     }
 }
