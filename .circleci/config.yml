@@ -162,7 +162,7 @@ jobs:
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
-      parallelism: 10
+      parallelism: 15
       steps:
           - attach_workspace:
                 at: ~/
@@ -194,7 +194,7 @@ jobs:
   test_back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
-    parallelism: 20
+    parallelism: 40
     steps:
       - attach_workspace:
           at: ~/
@@ -640,6 +640,7 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_performance
                     - test_upgrade_from_last_release
+
           - ready_to_build_only_ce?:
                 type: approval
                 filters:
@@ -665,18 +666,15 @@ workflows:
           - test_back_phpunit:
                 name: test_back_phpunit_ce
                 requires:
-                    - test_back_static_and_acceptance_ce
-                    - test_front_static_acceptance_and_integration_ce
+                    - build_dev_ce
           - test_back_data_migrations:
                 name: test_back_data_migrations_ce
                 requires:
-                    - test_back_static_and_acceptance_ce
-                    - test_front_static_acceptance_and_integration_ce
+                    - test_back_phpunit_ce
           - test_back_behat_legacy:
                 name: test_back_behat_legacy_ce
                 requires:
                     - test_back_phpunit_ce
-                    - test_back_data_migrations_ce
 
   nightly:
       triggers:
