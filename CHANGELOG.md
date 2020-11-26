@@ -59,6 +59,7 @@
 - PIM-9548: Mitigate deadlock issues on category API
 - PIM-9540: Do not strip HTML tags on textarea content before indexing them in ES and fix newline_pattern char filter
 - PIM-9539: Fix the display of long attribute labels or codes on variant attributes page
+- PIM-9569: Fix memory usage issue when adding a group to a product
 
 ## New features
 
