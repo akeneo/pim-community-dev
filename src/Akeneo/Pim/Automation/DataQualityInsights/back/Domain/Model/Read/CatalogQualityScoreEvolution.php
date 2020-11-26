@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistribution;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 
-final class CatalogQualityScorevolution
+final class CatalogQualityScoreEvolution
 {
     private const NUMBER_OF_PAST_MONTHS_TO_RETURN = 5;
 

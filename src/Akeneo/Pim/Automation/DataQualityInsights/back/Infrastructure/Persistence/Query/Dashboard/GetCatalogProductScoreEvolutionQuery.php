@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CatalogQualityScorevolution;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CatalogQualityScoreEvolution;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetCatalogProductScoreEvolutionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
@@ -13,7 +14,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\ResultStatement;
 
-final class GetCatalogProductScoreEvolution
+final class GetCatalogProductScoreEvolutionQuery implements GetCatalogProductScoreEvolutionQueryInterface
 {
     private Connection $db;
 
@@ -86,6 +87,6 @@ SQL;
             return $productScoreEvolution;
         }
 
-        return (new CatalogQualityScorevolution($scores, $channel, $locale))->toArray();
+        return (new CatalogQualityScoreEvolution($scores, $channel, $locale))->toArray();
     }
 }

@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
-final class CatalogQualityScorevolutionSpec extends ObjectBehavior
+final class CatalogQualityScoreEvolutionSpec extends ObjectBehavior
 {
     public function it_returns_catalog_score_evolution()
     {

@@ -229,3 +229,7 @@ services:
             $connection: '@database_connection'
             $attributeTypes:
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::IMAGE
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetCatalogProductScoreEvolutionQuery:
+        arguments:
+            - '@database_connection'

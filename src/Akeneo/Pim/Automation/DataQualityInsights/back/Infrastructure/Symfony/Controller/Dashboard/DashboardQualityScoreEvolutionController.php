@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetCatalogProductScoreEvolution;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetCatalogProductScoreEvolutionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class DashboardQualityScoreEvolutionController
 {
-    private GetCatalogProductScoreEvolution $getCatalogProductScoreEvolution;
+    private GetCatalogProductScoreEvolutionQueryInterface $getCatalogProductScoreEvolution;
 
-    public function __construct(GetCatalogProductScoreEvolution $getCatalogProductScoreEvolution)
+    public function __construct(GetCatalogProductScoreEvolutionQueryInterface $getCatalogProductScoreEvolution)
     {
         $this->getCatalogProductScoreEvolution = $getCatalogProductScoreEvolution;
     }
@@ -35,8 +34,6 @@ final class DashboardQualityScoreEvolutionController
             } else {
                 $qualityScoreEvolution = $this->getCatalogProductScoreEvolution->byCatalog(new ChannelCode($channel), new LocaleCode($locale));
             }
-
-
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
