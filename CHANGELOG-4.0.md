@@ -3,7 +3,7 @@
 ## Bug fixes
 
 - PIM-9575: Prepend hash to navigate actions URLs
-- PIM-9559: Override clean removed attributes command in EE to also clean proposals
+- PIM-9559: Dispatch event when clean removed attributes command is over
 
 # 4.0.74 (2020-11-25)
 
