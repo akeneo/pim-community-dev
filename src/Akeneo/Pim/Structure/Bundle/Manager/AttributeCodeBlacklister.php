@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Structure\Component\Manager;
+namespace Akeneo\Pim\Structure\Bundle\Manager;
 
 use Doctrine\DBAL\Connection;
 

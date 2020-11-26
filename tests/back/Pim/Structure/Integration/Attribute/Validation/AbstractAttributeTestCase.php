@@ -431,6 +431,14 @@ abstract class AbstractAttributeTestCase extends TestCase
     }
 
     /**
+     * @return AttributeInterface
+     */
+    protected function deleteAttribute(AttributeInterface $attribute)
+    {
+        return $this->get('pim_catalog.remover.attribute')->remove($attribute);
+    }
+
+    /**
      * @param AttributeInterface $attribute
      * @param array                                                    $data
      */

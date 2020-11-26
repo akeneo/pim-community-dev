@@ -5,6 +5,6 @@ services:
             - '@pim_catalog.saver.attribute_option'
 
     pim_catalog.manager.attribute_code_blacklister:
-        class: 'Akeneo\Pim\Structure\Component\Manager\AttributeCodeBlacklister'
+        class: 'Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister'
         arguments:
             - '@database_connection'
