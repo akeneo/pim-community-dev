@@ -121,6 +121,10 @@ final class DashboardRates
 
     private function fillMissingDates(array $result, array $lastDates): array
     {
-        return array_replace($lastDates, $result);
+        foreach ($lastDates as $date => $value) {
+            $lastDates[$date] = $result[$date] ?? [];
+        }
+
+        return $lastDates;
     }
 }

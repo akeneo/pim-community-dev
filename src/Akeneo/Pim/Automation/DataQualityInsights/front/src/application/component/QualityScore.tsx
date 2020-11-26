@@ -2,12 +2,12 @@ import React, {FC} from 'react';
 import styled, {css} from 'styled-components';
 
 type Props = {
-  score: string;
+  score: string | null;
   className?: string;
 };
 
 const QualityScore: FC<Props> = ({score, className}) => {
-  if (score === 'N/A') {
+  if (score === 'N/A' || score === null) {
     return <>N/A</>;
   }
 

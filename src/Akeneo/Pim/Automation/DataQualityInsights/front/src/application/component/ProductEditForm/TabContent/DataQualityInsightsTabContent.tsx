@@ -58,8 +58,8 @@ const BaseDataQualityInsightsTabContent: FC<DataQualityInsightsTabContentProps> 
     }
   });
 
-  // @ts-ignore
   const productEvaluation: ProductEvaluation | undefined =
+    // @ts-ignore
     newEvaluation && convertEvaluationToLegacyFormat(axes, newEvaluation);
 
   const hasEvaluation = channel && locale && !isProductEvaluationPending(productEvaluation, channel, locale);
