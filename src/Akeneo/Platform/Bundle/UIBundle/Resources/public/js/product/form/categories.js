@@ -9,8 +9,8 @@ define(['underscore', 'pim/product-edit-form/categories'], function(_, Categorie
     /**
      * {@inheritdoc}
      */
-    isVisible: function() {
-      return _.result(_.result(this.getFormData(), 'meta', {}), 'is_owner', false);
+    isReadOnly: function() {
+      return !_.result(_.result(this.getFormData(), 'meta', {}), 'is_owner', false);
     },
   });
 });

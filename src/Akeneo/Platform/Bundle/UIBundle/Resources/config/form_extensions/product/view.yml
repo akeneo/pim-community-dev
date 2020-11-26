@@ -184,6 +184,16 @@ extensions:
         targetZone: container
         position: 120
 
+    pimee-product-edit-form-categories:
+        module: pimee/product-edit-form/categories
+        parent: pimee-product-view-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_categories_view
+        position: 125
+        config:
+            itemCategoryListRoute: pim_enrich_product_listcategories
+            itemCategoryTreeRoute: pim_enrich_product_category_rest_list
+
     pimee-product-view-comments:
         module: pim/product-edit-form/comments
         parent: pimee-product-view-column-tabs
