@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
@@ -58,6 +59,7 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
     public function execute()
     {
         $dryRun = $this->stepExecution->getJobParameters()->get('dry_run');
+        $this->stepExecution->setTotalItems($this->getTotalItemImpacted());
         $this->stepExecution->setSummary(
             [
                 'read_rules' => 0,
@@ -116,13 +118,36 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
         } else {
             $ruleDefinitions = $this->ruleDefinitionRepository->findEnabledOrderedByPriority();
         }
+
         foreach ($ruleDefinitions as $ruleDefinition) {
             yield $ruleDefinition;
         }
     }
 
-    public function totalItems(): int
+    public function isTrackable(): bool
     {
-        return iterator_count($this->getRuleDefinitions());
+        return true;
+    }
+
+    private function getTotalItemImpacted(): int
+    {
+        $totalProductsImpacted = 0;
+        foreach ($this->getRuleDefinitions() as $ruleDefinition) {
+            $totalProductsImpacted += $this->countProducts($ruleDefinition);
+        }
+
+        return $totalProductsImpacted;
+    }
+
+    private function countProducts(RuleDefinition $ruleDefinition)
+    {
+        $ruleSubjectSet = $this->dryRuleRunner->dryRun($ruleDefinition);
+        if (null === $ruleSubjectSet) {
+            throw new \RuntimeException(
+                sprintf('Impossible to dry run rule definition of id %s', (string) $ruleDefinition->getId())
+            );
+        }
+
+        return $ruleSubjectSet->getSubjectsCursor()->count();
     }
 }

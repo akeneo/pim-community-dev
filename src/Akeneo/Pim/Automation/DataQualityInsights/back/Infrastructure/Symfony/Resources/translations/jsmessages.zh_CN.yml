@@ -24,7 +24,6 @@ akeneo_data_quality_insights:
       original_text_title: 原始值
       suggestions_title: 提案
       ignore_all_suggestions_button_label: 忽略
-    back_to_products: 返回到产品
   attribute_grid:
     quality:
       to_improve: 要改善

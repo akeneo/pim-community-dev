@@ -7,6 +7,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCalculati
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Job\ProjectCalculation\ProjectCalculationTasklet;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProductRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -52,6 +53,12 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution)->shouldReturn(null);
     }
 
+    function it_track_processed_items()
+    {
+        $this->shouldImplement(TrackableTaskletInterface::class);
+        $this->isTrackable()->shouldReturn(true);
+    }
+
     function it_calculates_a_project(
         ProductRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $projectRepository,
@@ -62,7 +69,8 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         ProjectInterface $project,
         ProductInterface $product,
         ProductInterface $otherProduct,
-        JobParameters $jobParameters
+        JobParameters $jobParameters,
+        CursorInterface $cursor
     ) {
         $this->setStepExecution($stepExecution);
 
@@ -70,14 +78,17 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $jobParameters->get('project_code')->willReturn('project_code');
 
         $projectRepository->findOneByIdentifier('project_code')->willReturn($project);
-
-        $productRepository->findByProject($project)->willReturn([$product, $otherProduct]);
+        $productRepository->findByProject($project)->willReturn(
+            new ArrayCursor([$product->getWrappedObject(), $otherProduct->getWrappedObject()])
+        );
 
         $chainCalculationStep->execute($product, $project);
         $chainCalculationStep->execute($otherProduct, $project);
 
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('processed_products')->shouldBeCalledTimes(2);
-        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
+
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
         $projectSaver->save($project);
 
@@ -101,12 +112,14 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willreturn($jobParameters);
         $jobParameters->get('project_code')->willReturn('project_code');
         $projectRepository->findOneByIdentifier('project_code')->willReturn($project);
-        $productRepository->findByProject($project)->willReturn(array_fill(0, 1001, $product));
+        $productRepository->findByProject($project)->willReturn(new ArrayCursor(array_fill(0, 1001, $product->getWrappedObject())));
 
         $chainCalculationStep->execute($product, $project)->shouldBeCalled();
+        $stepExecution->setTotalItems(1001)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('processed_products')->shouldBeCalledTimes(1001);
-        $stepExecution->incrementProcessedItems(1000)->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(1)->shouldBeCalled();
+
+        $stepExecution->incrementProcessedItems(1000)->shouldBeCalledOnce();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalledOnce();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $cacheClearer->clear()->shouldBeCalled();
@@ -115,38 +128,8 @@ class ProjectCalculationTaskletSpec extends ObjectBehavior
 
         $this->execute()->shouldReturn(null);
     }
+}
 
-    function it_counts_the_total_items_to_process(
-        $productRepository,
-        $projectRepository,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters,
-        ProjectInterface $project,
-        CursorInterface $cursor
-    ) {
-        $this->setStepExecution($stepExecution);
-
-        $stepExecution->getJobParameters()->willreturn($jobParameters);
-        $jobParameters->get('project_code')->willReturn('project_code');
-
-        $projectRepository->findOneByIdentifier('project_code')->willReturn($project);
-        $productRepository->findByProject($project)->willReturn($cursor);
-        $cursor->count()->willReturn(2);
-
-        $this->totalItems()->shouldReturn(2);
-    }
-
-    function it_tells_the_total_item_is_0_if_the_project_does_not_exist(
-        $projectRepository,
-        StepExecution $stepExecution,
-        JobParameters $jobParameters
-    ) {
-        $this->setStepExecution($stepExecution);
-
-        $stepExecution->getJobParameters()->willreturn($jobParameters);
-        $jobParameters->get('project_code')->willReturn('project_code');
-        $projectRepository->findOneByIdentifier('project_code')->willReturn(null);
-
-        $this->totalItems()->shouldReturn(0);
-    }
+class ArrayCursor extends \ArrayIterator implements CursorInterface
+{
 }

@@ -61,6 +61,8 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $ruleIds = $jobParameters->get('ruleIds');
+
+        $this->stepExecution->setTotalItems(count($ruleIds));
         foreach (array_chunk($ruleIds, self::CHUNK_SIZE) as $ruleIdsChunk) {
             if ($this->jobStopper->isStopping($this->stepExecution)) {
                 $this->jobStopper->stop($this->stepExecution);
@@ -74,7 +76,8 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
 
                 $this->stepExecution->incrementSummaryInfo('rule_calculated');
             }
-            $this->stepExecution->incrementProcessedItems(count($ruleDefinitions));
+
+            $this->stepExecution->incrementProcessedItems(count($ruleIdsChunk));
             $this->jobRepository->updateStepExecution($this->stepExecution);
 
             $this->saver->saveAll($ruleDefinitions);
@@ -92,8 +95,8 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
         return $this;
     }
 
-    public function totalItems(): int
+    public function isTrackable(): bool
     {
-        return \count($this->stepExecution->getJobParameters()->get('ruleIds'));
+        return true;
     }
 }

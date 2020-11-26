@@ -72,13 +72,14 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
     public function postExecute(GenericEvent $event): void
     {
         $this->stepExecution->incrementSummaryInfo('executed_rules');
-        $this->stepExecution->incrementProcessedItems();
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     public function postSave(SavedSubjectsEvent $event): void
     {
-        $this->stepExecution->incrementSummaryInfo('updated_entities', count($event->getSubjects()));
+        $updatedEntitiesCount = count($event->getSubjects());
+        $this->stepExecution->incrementSummaryInfo('updated_entities', $updatedEntitiesCount);
+        $this->stepExecution->incrementProcessedItems($updatedEntitiesCount);
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
@@ -98,6 +99,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
             new DataInvalidItem($event->getSubject())
         );
         $this->stepExecution->incrementSummaryInfo('skipped_invalid');
+        $this->stepExecution->incrementProcessedItems();
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
@@ -120,6 +122,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         );
         $this->stepExecution->addWarning($message, [], new DataInvalidItem($subject));
         $this->stepExecution->incrementSummaryInfo('skipped_invalid');
+        $this->stepExecution->incrementProcessedItems();
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 

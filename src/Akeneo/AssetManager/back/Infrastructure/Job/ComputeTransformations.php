@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\FileData;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInterface;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
@@ -28,12 +29,14 @@ use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFa
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ComputeTransformations implements TaskletInterface
+class ComputeTransformations implements TaskletInterface, TrackableTaskletInterface
 {
     private const SUPPORTED_MIME_TYPES = [
         'image/jpeg',
@@ -42,32 +45,21 @@ class ComputeTransformations implements TaskletInterface
         'image/gif',
         'image/psd',
     ];
-    /** @var StepExecution */
-    private $stepExecution;
 
-    /** @var FindAssetIdentifiersByAssetFamilyInterface */
-    private $findIdentifiersByAssetFamily;
-
-    /** @var GetTransformations */
-    private $getTransformations;
-
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
-
-    /** @var GetOutdatedVariationSource */
-    private $getOutdatedVariationSource;
-
-    /** @var TransformationExecutor */
-    private $transformationExecutor;
-
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    private ?StepExecution $stepExecution;
+    private FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily;
+    private GetTransformations $getTransformations;
+    private AssetRepositoryInterface $assetRepository;
+    private GetOutdatedVariationSource $getOutdatedVariationSource;
+    private TransformationExecutor $transformationExecutor;
+    private EditAssetHandler $editAssetHandler;
+    private ValidatorInterface $validator;
+    private CountAssetsInterface $countAssets;
+    private JobRepositoryInterface $jobRepository;
+    private int $batchSize;
 
     /** @var TransformationCollection[] */
     private $cachedTransformationsPerAssetFamily = [];
-
-    /** @var ValidatorInterface */
-    private $validator;
 
     public function __construct(
         FindAssetIdentifiersByAssetFamilyInterface $findIdentifiersByAssetFamily,
@@ -76,7 +68,10 @@ class ComputeTransformations implements TaskletInterface
         GetOutdatedVariationSource $getOutdatedVariationSource,
         TransformationExecutor $transformationExecutor,
         EditAssetHandler $editAssetHandler,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        CountAssetsInterface $countAssets,
+        JobRepositoryInterface $jobRepository,
+        int $batchSize
     ) {
         $this->findIdentifiersByAssetFamily = $findIdentifiersByAssetFamily;
         $this->getTransformations = $getTransformations;
@@ -85,6 +80,9 @@ class ComputeTransformations implements TaskletInterface
         $this->transformationExecutor = $transformationExecutor;
         $this->editAssetHandler = $editAssetHandler;
         $this->validator = $validator;
+        $this->countAssets = $countAssets;
+        $this->jobRepository = $jobRepository;
+        $this->batchSize = $batchSize;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -92,16 +90,23 @@ class ComputeTransformations implements TaskletInterface
         $this->stepExecution = $stepExecution;
     }
 
+    public function isTrackable(): bool
+    {
+        return true;
+    }
+
     public function execute(): void
     {
         $assetIdentifiers = [];
+        $totalItems = 0;
 
         if ($this->stepExecution->getJobParameters()->has('asset_family_identifier')) {
-            $assetIdentifiers = $this->findIdentifiersByAssetFamily->find(
-                AssetFamilyIdentifier::fromString(
-                    $this->stepExecution->getJobParameters()->get('asset_family_identifier')
-                )
+            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(
+                $this->stepExecution->getJobParameters()->get('asset_family_identifier')
             );
+
+            $assetIdentifiers = $this->findIdentifiersByAssetFamily->find($assetFamilyIdentifier);
+            $totalItems = $this->countAssets->forAssetFamily($assetFamilyIdentifier);
         } elseif ($this->stepExecution->getJobParameters()->has('asset_identifiers')) {
             $assetIdentifiers = array_map(
                 function (string $assetIdentifier): AssetIdentifier {
@@ -109,8 +114,11 @@ class ComputeTransformations implements TaskletInterface
                 },
                 $this->stepExecution->getJobParameters()->get('asset_identifiers')
             );
+
+            $totalItems = count($assetIdentifiers);
         }
 
+        $this->stepExecution->setTotalItems($totalItems);
         $this->doExecute($assetIdentifiers);
     }
 
@@ -121,9 +129,11 @@ class ComputeTransformations implements TaskletInterface
     {
         $workingDirectory = $this->stepExecution->getJobExecution()->getExecutionContext()->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
+        $batchCount = 0;
         foreach ($assetIdentifiers as $assetIdentifier) {
             $commands = [];
             $transformedFilesCount = 0;
+            $batchCount++;
 
             try {
                 $asset = $this->assetRepository->getByIdentifier($assetIdentifier);
@@ -218,6 +228,16 @@ class ComputeTransformations implements TaskletInterface
                 ));
                 $this->stepExecution->incrementSummaryInfo('transformations', $transformedFilesCount);
             }
+
+            $this->stepExecution->incrementProcessedItems();
+            if ($batchCount >= $this->batchSize) {
+                $this->jobRepository->updateStepExecution($this->stepExecution);
+                $batchCount = 0;
+            }
+        }
+
+        if ($batchCount > 0) {
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 

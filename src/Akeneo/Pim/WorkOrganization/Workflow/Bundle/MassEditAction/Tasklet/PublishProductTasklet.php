@@ -73,6 +73,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         $cursor = $this->getProductsCursor($jobParameters->get('filters'));
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
+        $this->stepExecution->setTotalItems($cursor->count());
         foreach ($paginator as $productsPage) {
             if ($this->jobStopper->isStopping($this->stepExecution)) {
                 $this->jobStopper->stop($this->stepExecution);
@@ -134,10 +135,8 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         return $pqb;
     }
 
-    public function totalItems(): int
+    public function isTrackable(): bool
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-
-        return $this->getProductsCursor($jobParameters->get('filters'))->count();
+        return true;
     }
 }

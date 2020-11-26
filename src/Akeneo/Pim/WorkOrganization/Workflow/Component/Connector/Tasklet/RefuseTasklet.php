@@ -40,6 +40,7 @@ class RefuseTasklet extends AbstractReviewTasklet implements TrackableTaskletInt
         $productModelDrafts = $this->productModelDraftRepository->findByIds($jobParameters->get('productModelDraftIds'));
         $context = ['comment' => $jobParameters->get('comment')];
 
+        $this->stepExecution->setTotalItems(count($productDrafts ?? []) + count($productModelDrafts ?? []));
         if (null !== $productDrafts && !$this->jobStopper->isStopping($this->stepExecution)) {
             $this->processDrafts($productDrafts, $context);
         }
@@ -113,12 +114,8 @@ class RefuseTasklet extends AbstractReviewTasklet implements TrackableTaskletInt
         }
     }
 
-    public function totalItems(): int
+    public function isTrackable(): bool
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $productDraftCount = \count($jobParameters->get('productDraftIds'));
-        $productModelDraftCount = \count($jobParameters->get('productModelDraftIds'));
-
-        return $productDraftCount + $productModelDraftCount;
+        return true;
     }
 }
