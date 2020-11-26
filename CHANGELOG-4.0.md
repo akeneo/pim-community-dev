@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9575: Prepend hash to navigate actions URLs
+
 # 4.0.74 (2020-11-25)
 
 ## Bug fixes
