@@ -75,8 +75,12 @@ class DatagridViewController
      * Return the list of all Datagrid Views that belong to the current user for the given $alias grid.
      * Response data is in Json format and is paginated.
      */
-    public function indexAction(Request $request, string $alias): JsonResponse
+    public function indexAction(Request $request, string $alias): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $user = $this->tokenStorage->getToken()->getUser();
 
         $options = $request->query->get('options', []);
