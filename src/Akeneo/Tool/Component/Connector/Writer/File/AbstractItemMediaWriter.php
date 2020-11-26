@@ -320,9 +320,16 @@ abstract class AbstractItemMediaWriter implements
                     if (is_dir($tmpDirectory . $exportDirectory)) {
                         $files = iterator_to_array($finder->files()->in($tmpDirectory . $exportDirectory));
                         if (!empty($files)) {
-                            $path = $exportDirectory . current($files)->getFilename();
-                            $this->writtenFiles[$tmpDirectory . $path] = $path;
-                            $item['values'][$attributeCode][$index]['data'] = $path;
+                            if (array_key_exists('paths', $value)) {
+                                foreach ($files as $file) {
+                                    $path = $exportDirectory . $file->getFilename();
+                                    $this->writtenFiles[$tmpDirectory . $path] = $path;
+                                }
+                            } else {
+                                $path = $exportDirectory . current($files)->getFilename();
+                                $this->writtenFiles[$tmpDirectory . $path] = $path;
+                                $item['values'][$attributeCode][$index]['data'] = $path;
+                            }
                         }
                     }
                 }
