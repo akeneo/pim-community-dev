@@ -282,6 +282,7 @@ services:
             - '@akeneo.pim.enrichment.product_model.query.count_product_models_and_children_product_models'
             - '@akeneo.pim.enrichment.product_model.query.count_variant_products'
             - '@akeneo_batch.job.job_stopper'
+            - '@akeneo_batch.job_repository'
 
     # CSV Quick Export steps ------------------------------------------------------------------------------------------
     pim_enrich.step.csv_product.quick_export:

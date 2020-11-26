@@ -78,6 +78,10 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
      */
     public function execute()
     {
+        if ($this->attributeGroupReader instanceof TrackableItemReaderInterface) {
+            $this->stepExecution->setTotalItems($this->attributeGroupReader->totalItems());
+        }
+
         while (true) {
             try {
                 $attributeGroupItem = $this->attributeGroupReader->read();
@@ -128,15 +132,6 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
         }
     }
 
-    public function totalItems(): int
-    {
-        if ($this->attributeGroupReader instanceof TrackableItemReaderInterface) {
-            return $this->attributeGroupReader->totalItems();
-        }
-
-        return 0;
-    }
-
     private function updateProgressWithSkipped(): void
     {
         $this->stepExecution->incrementSummaryInfo('skip');
@@ -149,5 +144,10 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, Tr
         $this->stepExecution->incrementSummaryInfo('process');
         $this->stepExecution->incrementProcessedItems();
         $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    public function isTrackable(): bool
+    {
+        return $this->attributeGroupReader instanceof TrackableItemReaderInterface;
     }
 }
