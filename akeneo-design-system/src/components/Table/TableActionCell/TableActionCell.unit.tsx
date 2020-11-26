@@ -18,7 +18,7 @@ test('it renders its children properly', () => {
   expect(screen.getByText('A value')).toBeInTheDocument();
 });
 
-test('it event stop propagation when user click on Button', () => {
+test('it stops event propagation when the user clicks on a Button', () => {
   const onRowClick = jest.fn();
   const onButtonClick = jest.fn();
 
@@ -41,7 +41,7 @@ test('it event stop propagation when user click on Button', () => {
   expect(onRowClick).not.toBeCalled();
 });
 
-test('it event stop propagation when user click on IconButton', () => {
+test('it stops event propagation when the user clicks on an IconButton', () => {
   const onRowClick = jest.fn();
   const onIconButtonClick = jest.fn();
 

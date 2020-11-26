@@ -28,10 +28,10 @@ type TableHeaderCellProps = {
 };
 
 const HeaderCellContainer = styled.th<{isSortable: boolean; isSorted: boolean} & AkeneoThemedProps>`
-  background: linear-gradient(to top, #67768a 1px, white 0px);
+  background: linear-gradient(to top, ${getColor('grey', 120)} 1px, ${getColor('white')} 0px);
   height: 44px;
   text-align: left;
-  color: ${({isSorted}) => (isSorted ? getColor('purple', 100) : getColor('grey', 100))};
+  color: ${({isSorted}) => getColor(isSorted ? 'brand' : 'grey', 100)};
   font-weight: normal;
 
   ${({isSortable}) =>
