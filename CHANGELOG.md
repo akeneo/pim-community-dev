@@ -60,6 +60,7 @@
 - PIM-9540: Do not strip HTML tags on textarea content before indexing them in ES and fix newline_pattern char filter
 - PIM-9539: Fix the display of long attribute labels or codes on variant attributes page
 
+
 ## New features
 
 - MET-197: Add possibility to define that an association type is two way & automatically create inversed association when association type is two way
