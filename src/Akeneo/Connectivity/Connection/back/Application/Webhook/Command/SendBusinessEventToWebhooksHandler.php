@@ -59,8 +59,6 @@ final class SendBusinessEventToWebhooksHandler
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
     {
-        $startTime = microtime(true);
-
         $webhooks = $this->selectActiveWebhooksQuery->execute();
         $isFake = false;
 
@@ -78,6 +76,9 @@ final class SendBusinessEventToWebhooksHandler
         $event = $command->event();
 
         $requests = function () use ($event, $webhooks) {
+            $cumulatedTimeMs = 0;
+            $startTime = microtime(true);
+
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
@@ -100,22 +101,26 @@ final class SendBusinessEventToWebhooksHandler
                         continue;
                     }
 
+                    $cumulatedTimeMs += (int) round((microtime(true) - $startTime) * 1000);
+
                     yield new WebhookRequest(
                         $webhook,
                         $webhookEvents
                     );
+
+                    $startTime = microtime(true);
                 } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
                     $this->logger->warning($dataBuilderNotFoundException->getMessage());
                 }
             }
-        };
 
-        $this->logger->info(
-            json_encode(
-                (new EventSubscriptionEventBuildLog(count($webhooks), $event, $startTime, microtime(true)))->toLog(),
-                JSON_THROW_ON_ERROR
-            )
-        );
+            $this->logger->info(
+                json_encode(
+                    (new EventSubscriptionEventBuildLog(count($webhooks), $event, $cumulatedTimeMs))->toLog(),
+                    JSON_THROW_ON_ERROR
+                )
+            );
+        };
 
         if ($isFake) {
             $this->client->bulkFakeSend($requests());
