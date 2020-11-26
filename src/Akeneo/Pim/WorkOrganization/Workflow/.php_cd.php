@@ -137,7 +137,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface',
-        'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
+        'Akeneo\Pim\Structure\Bundle\Event\AttributeEvents',
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes',
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
@@ -269,4 +269,3 @@ $rules = [
 $config = new Configuration($rules, $finder);
 
 return $config;
-
