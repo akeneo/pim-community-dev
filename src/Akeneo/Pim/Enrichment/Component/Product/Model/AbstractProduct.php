@@ -545,7 +545,6 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
-            $group->addProduct($this);
             $this->dirty = true;
         }
 
