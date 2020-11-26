@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuil
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -46,18 +47,26 @@ class WebhookEventBuilder
     public function build(object $event, array $context = []): array
     {
         $context = $this->resolveOptions($context);
-
         $eventDataBuilder = $this->getEventDataBuilder($event);
+        $webhookEvents = [];
 
-        $eventDataCollection = $eventDataBuilder->build($event, $context['user']);
-
-        if ($event instanceof EventInterface) {
-            $events = [$event];
-        } else {
-            $events = $event->getEvents();
+        // TODO: Remove try/catch when BulkEvent refactoring is completed
+        try {
+            $eventDataCollection = $eventDataBuilder->build($event, $context['user']);
+            $events = $event instanceof EventInterface ? [$event] : $event->getEvents();
+            $webhookEvents = $this->buildWebhookEvents($events, $eventDataCollection, $context);
+        } catch (EventBuildingExceptionInterface $exception) {
+            $this->logger->warning(
+                json_encode(
+                    (new WebhookEventDataBuilderErrorLog(
+                        $exception->getMessage(), $context['webhook_connection_code'], $event
+                    ))->toLog(),
+                    JSON_THROW_ON_ERROR
+                )
+            );
         }
 
-        return $this->buildWebhookEvents($events, $eventDataCollection, $context);
+        return $webhookEvents;
     }
 
     /**
