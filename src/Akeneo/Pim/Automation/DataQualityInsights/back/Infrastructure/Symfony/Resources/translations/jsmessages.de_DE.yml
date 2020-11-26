@@ -83,3 +83,4 @@ akeneo_data_quality_insights:
     all_groups_evaluated: Alle Attributgruppen dieses Produktes werden bei der Berechnung des Qualitätsscore berücksichtigt. Um die relevanteste Qualität zu erhalten, lernt <a href="{{ link }}" target="_blank">in unserem Hilfe-Center Attributgruppen zu deaktivieren.</a>
 pim_title:
   akeneo_data_quality_insights_dashboard: Datenqualitätseinsichten
+
