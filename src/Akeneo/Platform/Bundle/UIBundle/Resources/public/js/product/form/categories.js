@@ -127,6 +127,10 @@ define([
             'POST'
           );
 
+          if (this.isReadOnly()) {
+            this.treeAssociate.lock(false);
+          }
+
           this.delegateEvents();
 
           this.onLoadedEvent = this.lockCategories.bind(this);
@@ -283,6 +287,10 @@ define([
      */
     isVisible: function () {
       return true;
+    },
+
+    isReadOnly: function () {
+      return false;
     },
   });
 });
