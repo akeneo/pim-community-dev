@@ -63,6 +63,9 @@ type ImageProps = {
   isStacked?: boolean;
 } & React.ImgHTMLAttributes<HTMLImageElement>;
 
+/**
+ * Image allow to embed an image in a page
+ */
 const Image = React.forwardRef<HTMLImageElement, ImageProps>(
   ({fit = 'cover', isStacked = false, ...rest}: ImageProps, forwardedRef: Ref<HTMLImageElement>) => {
     return <ImageContainer ref={forwardedRef} fit={fit} isStacked={isStacked} {...rest} />;
