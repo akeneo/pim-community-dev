@@ -58,3 +58,10 @@ extensions:
         targetZone: content
         config:
             axes: [enrichment]
+
+    akeneo-data-quality-insights-dqi-dashboard-filters:
+        module: akeneo/data-quality-insights/view/dqi-dashboard/filters
+        parent: akeneo-data-quality-insights-dqi-dashboard-index
+        targetZone: context
+        position: 120
+

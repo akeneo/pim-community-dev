@@ -1,13 +1,33 @@
 import React, {FC, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
-import CategoryModal from '../../CategoryModal/CategoryModal';
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '../../../../constant';
-import {useDashboardContext} from '../../../../context/DashboardContext';
+import CategoryModal from '../CategoryModal/CategoryModal';
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '../../../constant';
+import {useDashboardContext} from '../../../context/DashboardContext';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import styled from 'styled-components';
 
 interface Props {
   categoryCode: string | null;
 }
+
+const Container = styled.div.attrs(() => ({
+  className: 'AknDropdown AknButtonList-item',
+}))`
+  position: relative;
+`;
+const Toggle = styled.button.attrs(() => ({
+  className: 'AknActionButton AknActionButton--withoutBorder',
+}))`
+  color: ${({theme}) => theme.color.grey140};
+  font-size: ${({theme}) => theme.fontSize.default};
+  white-space: nowrap;
+`;
+
+const ToggleSelection = styled.span`
+  color: ${({theme}) => theme.color.purple100};
+  font-size: ${({theme}) => theme.fontSize.default};
+  margin-left: 3px;
+`;
 
 const CategoryFilter: FC<Props> = ({categoryCode}) => {
   const [selectedCategoryCode, setSelectedCategoryCode] = useState<string | null>(null);
@@ -69,16 +89,14 @@ const CategoryFilter: FC<Props> = ({categoryCode}) => {
 
   return (
     <>
-      <div className="AknFilterBox-filterContainer">
-        <div className="AknFilterBox-filter" onClick={() => setShowModal(true)} data-testid={'dqiCategoryFilter'}>
-          <span className="AknFilterBox-filterLabel">{translate('pim_enrich.entity.category.uppercase_label')}</span>
-          <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
-            <span>
-              {selectedCategoryCode && selectedCategoryLabel ? selectedCategoryLabel : translate('pim_common.all')}
-            </span>
-          </button>
-        </div>
-      </div>
+      <Container>
+        <Toggle onClick={() => setShowModal(true)} data-testid={'dqiCategoryFilter'}>
+          {translate('pim_enrich.entity.category.uppercase_label')}:
+          <ToggleSelection>
+            {selectedCategoryCode && selectedCategoryLabel ? selectedCategoryLabel : translate('pim_common.all')}
+          </ToggleSelection>
+        </Toggle>
+      </Container>
 
       {modalElement &&
         createPortal(

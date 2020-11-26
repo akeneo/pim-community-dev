@@ -5,7 +5,7 @@ import {fireEvent, waitFor} from '@testing-library/react';
 
 import fetchCategoryTrees from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryTrees';
 import fetchCategoryChildren from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchCategoryChildren';
-import {CategoryFilter} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/ScoreDistributionSection/Filters/CategoryFilter';
+import {CategoryFilter} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Filters/CategoryFilter';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '@akeneo-pim-community/data-quality-insights/src';
 import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
 

@@ -1,10 +1,11 @@
 import React, {ChangeEvent, FC, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
-import useFetchFamilies from '../../../../../infrastructure/hooks/Dashboard/useFetchFamilies';
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '../../../../constant';
+import useFetchFamilies from '../../../../infrastructure/hooks/Dashboard/useFetchFamilies';
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '../../../constant';
 import {debounce} from 'lodash';
-import {useDashboardContext} from '../../../../context/DashboardContext';
+import {useDashboardContext} from '../../../context/DashboardContext';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {ArrowDownIcon} from 'akeneo-design-system';
 
 type Labels = {
   [localeCode: string]: string;
@@ -21,6 +22,41 @@ type Props = {
 
 const FamilyLabel = styled.span`
   text-transform: capitalize;
+`;
+
+const Container = styled.div.attrs(() => ({
+  className: 'AknDropdown AknButtonList-item',
+}))`
+  position: relative;
+`;
+const Toggle = styled.button.attrs(() => ({
+  className: 'AknActionButton AknActionButton--withoutBorder',
+}))`
+  color: ${({theme}) => theme.color.grey140};
+  font-size: ${({theme}) => theme.fontSize.default};
+  white-space: nowrap;
+`;
+
+const ToggleCaret = styled(ArrowDownIcon).attrs(() => ({
+  size: 12,
+}))`
+  color: ${({theme}) => theme.color.grey120};
+  margin-left: 3px;
+  vertical-align: middle;
+`;
+
+const ToggleSelection = styled.span`
+  color: ${({theme}) => theme.color.purple100};
+  font-size: ${({theme}) => theme.fontSize.default};
+  margin-left: 3px;
+`;
+
+const Menu = styled.div.attrs(() => ({
+  className:
+    'AknDropdown-menu ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-filterCriteria select-filter-widget multiselect-filter-widget',
+}))`
+  color: ${({theme}) => theme.color.grey140};
+  font-size: ${({theme}) => theme.fontSize.default};
 `;
 
 const FamilyFilter: FC<Props> = ({familyCode}) => {
@@ -92,21 +128,17 @@ const FamilyFilter: FC<Props> = ({familyCode}) => {
   }
 
   return (
-    <div className="AknFilterBox-filterContainer">
-      <div className="AknFilterBox-filter" onClick={() => setIsFilterDisplayed(true)} data-testid={'dqiFamilyFilter'}>
-        <span className="AknFilterBox-filterLabel">{translate('pim_enrich.entity.family.uppercase_label')}</span>
-        <button type="button" className="AknFilterBox-filterCriteria ui-multiselect">
-          <span> {currentFamilyLabel ? currentFamilyLabel : '[' + familyCode + ']'}</span>
-          <span className="AknFilterBox-filterCaret" />
-        </button>
-      </div>
+    <Container>
+      <Toggle onClick={() => setIsFilterDisplayed(true)} data-testid={'dqiFamilyFilter'}>
+        {translate('pim_enrich.entity.family.uppercase_label')}:
+        <ToggleSelection>
+          {currentFamilyLabel ? currentFamilyLabel : '[' + familyCode + ']'}
+          <ToggleCaret />
+        </ToggleSelection>
+      </Toggle>
 
       {isFilterDisplayed && (
-        <div
-          ref={ref}
-          id="AknFamily-filter"
-          className="ui-multiselect-menu ui-widget ui-widget-content ui-corner-all AknFilterBox-filterCriteria select-filter-widget multiselect-filter-widget"
-        >
+        <Menu ref={ref} id="AknFamily-filter">
           <div className="ui-widget-header ui-corner-all ui-multiselect-header ui-helper-clearfix ui-multiselect-hasfilter">
             <div className="ui-multiselect-filter">
               <input
@@ -145,9 +177,9 @@ const FamilyFilter: FC<Props> = ({familyCode}) => {
                 );
               })}
           </ul>
-        </div>
+        </Menu>
       )}
-    </div>
+    </Container>
   );
 };
 

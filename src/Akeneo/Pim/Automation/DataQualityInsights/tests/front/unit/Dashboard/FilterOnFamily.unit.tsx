@@ -3,7 +3,7 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, waitFor} from '@testing-library/react';
 
-import {FamilyFilter} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/ScoreDistributionSection/Filters/FamilyFilter';
+import {FamilyFilter} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Filters/FamilyFilter';
 import fetchFamilies from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '@akeneo-pim-community/data-quality-insights/src';
 import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
