@@ -2,3 +2,6 @@ framework:
     messenger:
         transports:
             business_event: 'in-memory://'
+        routing:
+            'Akeneo\Platform\Component\EventQueue\Event': business_event
+            'Akeneo\Platform\Component\EventQueue\BulkEvent': business_event
