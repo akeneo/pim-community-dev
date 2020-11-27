@@ -33,7 +33,8 @@ class EventSubscriptionSkipOwnEventLogSpec extends ObjectBehavior
                 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf'
             );
 
-        $this->beConstructedWith($event, 'ecommerce');
+
+        $this->beConstructedThrough('fromEvent', [$event, 'ecommerce']);
     }
 
     public function it_is_initializable(): void

@@ -17,10 +17,15 @@ class EventSubscriptionSkipOwnEventLog
     private EventInterface $event;
     private string $connectionCode;
 
-    public function __construct(EventInterface $event, string $connectionCode)
+    private function __construct(EventInterface $event, string $connectionCode)
     {
         $this->event = $event;
         $this->connectionCode = $connectionCode;
+    }
+
+    public static function fromEvent(EventInterface $event, string $connectionCode): self
+    {
+        return new self($event, $connectionCode);
     }
 
     /**

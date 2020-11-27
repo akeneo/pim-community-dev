@@ -138,7 +138,7 @@ final class SendBusinessEventToWebhooksHandler
                     if ($username === $event->getAuthor()->name()) {
                         $this->logger->info(
                             json_encode(
-                                (new EventSubscriptionSkipOwnEventLog($event, $webhook->connectionCode()))->toLog(),
+                                (EventSubscriptionSkipOwnEventLog::fromEvent($event, $webhook->connectionCode()))->toLog(),
                                 JSON_THROW_ON_ERROR
                             )
                         );
@@ -159,7 +159,7 @@ final class SendBusinessEventToWebhooksHandler
         if ($event instanceof EventInterface && $username === $event->getAuthor()->name()) {
             $this->logger->info(
                 json_encode(
-                    (new EventSubscriptionSkipOwnEventLog($event, $webhook->connectionCode()))->toLog(),
+                    (EventSubscriptionSkipOwnEventLog::fromEvent($event, $webhook->connectionCode()))->toLog(),
                     JSON_THROW_ON_ERROR
                 )
             );
