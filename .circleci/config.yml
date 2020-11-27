@@ -316,15 +316,6 @@ jobs:
         - run:
             name: Front unit tests
             command: make unit-front
-#        - run:
-#            name: Build Javascript for tests
-#            command:  make javascript-test
-#        - run:
-#            name: Front acceptance tests
-#            command: make acceptance-front
-#        - run:
-#            name: Front integration tests
-#            command: make integration-front
 
   test_back_performance:
     machine:
