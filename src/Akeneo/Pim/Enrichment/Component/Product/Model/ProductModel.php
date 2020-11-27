@@ -156,7 +156,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getValues(): WriteValueCollection
     {
-        $values = WriteValueCollection::fromCollection($this->values);
+        $values = clone $this->values;
 
         return $this->getAllValues($this, $values);
     }
@@ -166,7 +166,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getValuesForVariation(): WriteValueCollection
     {
-        return WriteValueCollection::fromCollection($this->values);
+        return clone $this->values;
     }
 
     /**
