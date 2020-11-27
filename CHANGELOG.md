@@ -60,6 +60,7 @@
 - PIM-9540: Do not strip HTML tags on textarea content before indexing them in ES and fix newline_pattern char filter
 - PIM-9539: Fix the display of long attribute labels or codes on variant attributes page
 - PIM-9580: Fix conversion operation for ATM, PSI, TORR & MMHG
+- PIM-9569: Fix memory usage issue when adding a group to a product
 
 ## New features
 
@@ -84,10 +85,12 @@
 - RAC-178: When launching a job, the notification contains a link to the job status
 - PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
 - BH-138: clear Locale cache on save
-- CXP-493: Do not save products when if were not actually updated. In order to do so, the product now returns copies of
+- CXP-493: Do not save products when they were not actually updated. In order to do so, the product now returns copies of
   its collections (values, categories, groups and associations). Practically, this means that such a collection cannot be directly
   updated "from outside" anymore (e.g: `$product->getCategories()->add($category)` **won't update the product anymore**,
   you should now use `$product->addCategory($category)` to achieve it)  
+- CXP-544: Do not save product models when they were not actually updated. As for products, the product model
+  will now return copies of its collections (values, categories and associations)
 
 # Technical Improvements
 
@@ -208,9 +211,8 @@
 - Add `clearCache` method in `Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface`
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface` to
     - remove the `setFamilyId()` method
-    - add `isDirty()` and `cleanup()` methods
-- Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory`
-- Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
+    - extend the new `Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware` interface (with `isDirty()` and `cleanup()` methods)
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface` to extend the new `Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware` interface (with `isDirty()` and `cleanup()` methods)    
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct` to
     - remove the `setFamilyId()` method
     - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
@@ -221,6 +223,9 @@
     - add type hint on the return of the `findDatagridViewBySearch()` method (`Doctrine\Common\Collections\Collection`)
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet` to
     - add `Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface $jobRepository`
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel` to add `isDirty()` and `cleanup()` methods
+- Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory`
+- Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 
 ### CLI commands
 

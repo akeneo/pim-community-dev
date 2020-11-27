@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
@@ -60,7 +60,7 @@ final class LoadEntityWithValuesSubscriber implements EventSubscriber
 
         $values = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
         $entity->setValues($values);
-        if ($entity instanceof ProductInterface) {
+        if ($entity instanceof StateUpdatedAware) {
             $entity->cleanup();
         }
     }

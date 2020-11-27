@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
-use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 
@@ -12,10 +11,13 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebhookEventDataBuilderErrorLog
+class EventSubscriptionDataBuildErrorLog
 {
+    const TYPE = 'event_api.event_data_build_error';
+
     private string $message;
-    private ActiveWebhook $webhook;
+    private string $connectionCode;
+    private int $userId;
 
     /** @var EventInterface|BulkEventInterface */
     private object $event;
@@ -25,11 +27,13 @@ class WebhookEventDataBuilderErrorLog
      */
     public function __construct(
         string $message,
-        ActiveWebhook $webhook,
+        string $connectionCode,
+        int $userId,
         object $event
     ) {
         $this->message = $message;
-        $this->webhook = $webhook;
+        $this->connectionCode = $connectionCode;
+        $this->userId = $userId;
         $this->event = $event;
     }
 
@@ -37,10 +41,8 @@ class WebhookEventDataBuilderErrorLog
      * @return array{
      *  type: string,
      *  message: string,
-     *  webhook: array{
-            connection_code: string,
-     *      user_id: int,
-     *  },
+     *  connection_code: string,
+     *  user_id: int,
      *  events: array<array{
      *      uuid: string,
      *      author: string,
@@ -61,21 +63,22 @@ class WebhookEventDataBuilderErrorLog
         }
 
         return [
-            'type' => 'webhook.event_build',
+            'type' => self::TYPE,
             'message' => $this->message,
-            'webhook' => [
-                'connection_code' => $this->webhook->connectionCode(),
-                'user_id' => $this->webhook->userId(),
-            ],
-            'events' => array_map(function (EventInterface $event) {
-                return [
-                    'uuid' => $event->getUuid(),
-                    'author' => $event->getAuthor()->name(),
-                    'author_type' => $event->getAuthor()->type(),
-                    'name' => $event->getName(),
-                    'timestamp' => $event->getTimestamp(),
-                ];
-            }, $events),
+            'connection_code' => $this->connectionCode,
+            'user_id' => $this->userId,
+            'events' => array_map(
+                function (EventInterface $event) {
+                    return [
+                        'uuid' => $event->getUuid(),
+                        'author' => $event->getAuthor()->name(),
+                        'author_type' => $event->getAuthor()->type(),
+                        'name' => $event->getName(),
+                        'timestamp' => $event->getTimestamp(),
+                    ];
+                },
+                $events
+            ),
         ];
     }
 }

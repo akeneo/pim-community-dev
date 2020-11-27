@@ -4,25 +4,17 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventDataBuilderErrorLog;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use PhpSpec\ObjectBehavior;
 
-class WebhookEventDataBuilderErrorLogSpec extends ObjectBehavior
+class EventSubscriptionEventBuildLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $webhook = new ActiveWebhook(
-            'ecommerce',
-            1,
-            'secret1234',
-            'https://test.com'
-        );
-
         $event = new BulkEvent([
             new ProductCreated(
                 Author::fromNameAndType('julia', Author::TYPE_UI),
@@ -39,26 +31,25 @@ class WebhookEventDataBuilderErrorLogSpec extends ObjectBehavior
         ]);
 
         $this->beConstructedWith(
-            'Webhook event building failed',
-            $webhook,
-            $event
+            10,
+            $event,
+            1603935007.832,
+            1603935029.121
         );
     }
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(WebhookEventDataBuilderErrorLog::class);
+        $this->shouldBeAnInstanceOf(EventSubscriptionEventBuildLog::class);
     }
 
     public function it_returns_the_log(): void
     {
         $this->toLog()->shouldReturn([
-            'type' => 'webhook.event_build',
-            'message' => 'Webhook event building failed',
-            'webhook' => [
-                'connection_code' => 'ecommerce',
-                'user_id' => 1,
-            ],
+            'type' => EventSubscriptionEventBuildLog::TYPE,
+            'subscription_count' => 10,
+            'event_count' => 2,
+            'duration' => 21289,
             'events' => [
                 [
                     'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',
@@ -80,35 +71,27 @@ class WebhookEventDataBuilderErrorLogSpec extends ObjectBehavior
 
     public function it_returns_the_log_for_a_single_event(): void
     {
-        $webhook = new ActiveWebhook(
-            'ecommerce',
-            1,
-            'secret1234',
-            'https://test.com'
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+
+        $event = new ProductCreated(
+            $author,
+            ['identifier' => '1'],
+            1603935337,
+            'fe904867-9428-4d97-bfa9-7aa13c0ee0bf'
         );
 
-        $event = new BulkEvent([
-            new ProductCreated(
-                Author::fromNameAndType('julia', Author::TYPE_UI),
-                ['identifier' => '1'],
-                1603935337,
-                'fe904867-9428-4d97-bfa9-7aa13c0ee0bf'
-            )
-        ]);
-
         $this->beConstructedWith(
-            'Webhook event building failed',
-            $webhook,
-            $event
+            10,
+            $event,
+            1603935007.832,
+            1603935029.121
         );
 
         $this->toLog()->shouldReturn([
-            'type' => 'webhook.event_build',
-            'message' => 'Webhook event building failed',
-            'webhook' => [
-                'connection_code' => 'ecommerce',
-                'user_id' => 1,
-            ],
+            'type' => EventSubscriptionEventBuildLog::TYPE,
+            'subscription_count' => 10,
+            'event_count' => 1,
+            'duration' => 21289,
             'events' => [
                 [
                     'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',

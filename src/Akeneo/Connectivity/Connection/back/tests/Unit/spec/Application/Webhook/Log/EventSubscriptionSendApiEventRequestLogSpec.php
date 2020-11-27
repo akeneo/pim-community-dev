@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookRequestLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
@@ -12,7 +12,7 @@ use Akeneo\Platform\Component\EventQueue\Author;
 use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 
-class WebhookRequestLogSpec extends ObjectBehavior
+class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -47,7 +47,7 @@ class WebhookRequestLogSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(WebhookRequestLog::class);
+        $this->shouldBeAnInstanceOf(EventSubscriptionSendApiEventRequestLog::class);
     }
 
     public function it_returns_the_log_with_response()
@@ -57,7 +57,7 @@ class WebhookRequestLogSpec extends ObjectBehavior
         $this->setResponse(new Response());
 
         $this->toLog()->shouldReturn([
-            'type' => 'webhook.send_request',
+            'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
             'duration' => 21289,
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -94,7 +94,7 @@ class WebhookRequestLogSpec extends ObjectBehavior
         $this->setResponse(null);
 
         $this->toLog()->shouldReturn([
-            'type' => 'webhook.send_request',
+            'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
             'duration' => 21289,
             'headers' => [
                 'Content-Type' => 'application/json',

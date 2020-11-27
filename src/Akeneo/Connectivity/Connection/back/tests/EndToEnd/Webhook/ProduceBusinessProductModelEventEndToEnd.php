@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -177,6 +178,9 @@ JSON;
         "family": "family",
         "family_variant": "family_variant",
         "values": {
+            "text": [
+                {"locale": null, "scope": null, "data": "Lorem ipsum"}
+            ]
         }
     }
 JSON;
