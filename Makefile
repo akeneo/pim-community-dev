@@ -24,7 +24,8 @@ include make-file/*.mk
 node_modules:
 	$(YARN_RUN) install --frozen-lockfile
 
-public/js/extensions.json:
+.PHONY: javascript-extensions
+javascript-extensions:
 	$(YARN_RUN) run update-extensions
 
 .PHONY: dsm
@@ -43,22 +44,22 @@ css:
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod: dsm public/js/extensions.json
+javascript-prod: dsm javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: dsm public/js/extensions.json
+javascript-dev: dsm javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: javascript-dev-strict
-javascript-dev-strict: dsm public/js/extensions.json
+javascript-dev-strict: dsm javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev --strict
 
 .PHONY: javascript-test
-javascript-test: dsm public/js/extensions.json
+javascript-test: dsm javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-test
 
