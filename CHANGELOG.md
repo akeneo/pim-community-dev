@@ -214,7 +214,10 @@
     - remove the `setFamilyId()` method
     - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
     - add `isDirty()` and `cleanup()` methods 
-- Remove the `findDatagridViewByAlias()` method in `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface`
+- Change the `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface` to:
+    - remove the `findDatagridViewByAlias()` method
+    - rename the `getDatagridViewTypeByUser()` method to `getDatagridViewAliasesByUser()` and add type hint on the return (array)
+    - add type hint on the return of the `findDatagridViewBySearch()` method (`Doctrine\Common\Collections\Collection`)
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet` to
     - add `Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface $jobRepository`
 
