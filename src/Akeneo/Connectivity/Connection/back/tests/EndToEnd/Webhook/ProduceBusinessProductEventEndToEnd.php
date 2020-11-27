@@ -111,7 +111,9 @@ JSON;
 
         $envelopes = $transport->get();
         $this->assertCount(1, $envelopes);
-        $this->assertInstanceOf(ProductRemoved::class, $envelopes[0]->getMessage());
+
+        $this->assertInstanceOf(BulkEvent::class, $envelopes[0]->getMessage());
+        $this->assertContainsOnlyInstancesOf(ProductRemoved::class, $envelopes[0]->getMessage()->getEvents());
     }
 
     protected function getConfiguration(): Configuration
