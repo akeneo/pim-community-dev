@@ -83,6 +83,7 @@ class ProjectCalculationTasklet implements TaskletInterface, TrackableTaskletInt
         $project = $this->project();
         $products = $this->productRepository->findByProject($project);
 
+        $this->stepExecution->setTotalItems($products->count());
         $handledProductsCount = 0;
         foreach ($products as $product) {
             $this->calculationStep->execute($product, $project);
@@ -105,16 +106,9 @@ class ProjectCalculationTasklet implements TaskletInterface, TrackableTaskletInt
         }
     }
 
-    public function totalItems(): int
+    public function isTrackable(): bool
     {
-        $project = $this->project();
-        if (null === $project) {
-            return 0;
-        }
-
-        $products = $this->productRepository->findByProject($project);
-
-        return $products->count();
+        return true;
     }
 
     private function project(): ?ProjectInterface

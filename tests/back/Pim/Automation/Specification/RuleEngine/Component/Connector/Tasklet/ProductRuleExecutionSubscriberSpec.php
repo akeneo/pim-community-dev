@@ -76,15 +76,13 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
     function it_updates_step_execution_summary_after_applying_a_rule(StepExecution $stepExecution, JobRepositoryInterface $jobRepository)
     {
         $stepExecution->incrementSummaryInfo('executed_rules')->shouldBeCalled();
-        $stepExecution->incrementProcessedItems()->shouldBeCalled();
-        $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
-
         $this->postExecute(new GenericEvent(new RuleDefinition()));
     }
 
     function it_updates_step_execution_summary_after_saving_rule_subjects(StepExecution $stepExecution, JobRepositoryInterface $jobRepository)
     {
         $stepExecution->incrementSummaryInfo('updated_entities', 2)->shouldBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalled();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $this->postSave(new SavedSubjectsEvent(new RuleDefinition(), [new Product(), new ProductModel()]));
@@ -112,6 +110,7 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
             Argument::type(DataInvalidItem::class)
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_invalid')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $this->skipInvalid(new SkippedSubjectRuleEvent($rule, $product->getWrappedObject(), $reasons));
@@ -131,6 +130,7 @@ class ProductRuleExecutionSubscriberSpec extends ObjectBehavior
             Argument::type(DataInvalidItem::class)
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_invalid')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalled();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $rule = (new RuleDefinition())->setCode('my_rule');

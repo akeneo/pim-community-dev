@@ -24,7 +24,6 @@ akeneo_data_quality_insights:
       original_text_title: Original
       suggestions_title: Propositions
       ignore_all_suggestions_button_label: Ignorer
-    back_to_products: Retour au produit
   attribute_grid:
     quality:
       to_improve: A améliorer

@@ -25,6 +25,10 @@ yarn.lock: package.json #Doc: run YARN install
 node_modules: yarn.lock #Doc: run YARN install --check-files
 	$(YARN_RUN) install --frozen-lockfile --check-files
 
+.PHONY: javascript-extensions
+javascript-extensions:
+	$(YARN_RUN) run update-extensions
+
 .PHONY: dsm
 dsm: #Doc: install & build the PIM DSM
 	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
@@ -41,32 +45,32 @@ css: #Doc: build PIM CSS
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod: dsm #Doc: clean & yarn run webpack in production environement
+javascript-prod: dsm javascript-extensions #Doc: clean & yarn run webpack in production environement
 	$(NODE_RUN) rm -rf public/dist
 	$(DOCKER_COMPOSE) run -e EDITION=cloud --rm node yarn run webpack
 
 .PHONY: javascript-prod-onprem-paas
-javascript-prod-onprem-paas: dsm #Doc: clean & yarn run webpack
+javascript-prod-onprem-paas: dsm javascript-extensions #Doc: clean & yarn run webpack
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: dsm #Doc: clean & run webpack dev
+javascript-dev: dsm javascript-extensions #Doc: clean & run webpack dev
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: javascript-dev-strict
-javascript-dev-strict: dsm #Doc: clean & run webpack dev --strict
+javascript-dev-strict: javascript-extensions #Doc: clean & run webpack dev --strict
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev --strict
 
 .PHONY: javascript-test
-javascript-test: dsm #Doc: clean & run webpack test
+javascript-test: dsm javascript-extensions #Doc: clean & run webpack test
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css javascript-test javascript-dev #Doc: build the front-end
+front: assets css javascript-dev #Doc: build the front-end
 
 ##
 ## Back
@@ -121,7 +125,6 @@ pim-behat: #Doc: run docker-compose up, clean symfony cache, reinstall assets, b
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
-	$(MAKE) javascript-test
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database

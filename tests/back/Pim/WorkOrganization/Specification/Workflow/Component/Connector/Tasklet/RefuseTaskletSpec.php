@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Tasklet;
 
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -43,6 +44,12 @@ class RefuseTaskletSpec extends ObjectBehavior
             $jobStopper
         );
         $this->setStepExecution($stepExecution);
+    }
+
+    function it_track_processed_items()
+    {
+        $this->shouldImplement(TrackableTaskletInterface::class);
+        $this->isTrackable()->shouldReturn(true);
     }
 
     function it_refuses_proposals(
@@ -87,6 +94,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $productModel)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($productModelDraft)->willReturn(true);
 
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(3);
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
         $this->setStepExecution($stepExecution);
@@ -144,6 +152,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $permissionHelper->canEditOneChangeToReview($productModelDraft)->willReturn(true);
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(1);
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
@@ -202,6 +211,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $permissionHelper->canEditOneChangeToReview($productModelDraft)->willReturn(false);
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(1);
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(3);
@@ -251,6 +261,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($productDraft2)->willReturn(true);
 
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(2);
         $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
         $this->setStepExecution($stepExecution);
@@ -262,17 +273,5 @@ class RefuseTaskletSpec extends ObjectBehavior
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
 
         $this->execute();
-    }
-
-    function it_counts_the_total_of_item_to_process(
-        $stepExecution,
-        JobParameters $jobParameters
-    ) {
-        $configuration = ['productDraftIds' => [1, 2], 'productModelDraftIds' => [1, 2], 'comment' => 'Please fix the typo.'];
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('productDraftIds')->willReturn($configuration['productDraftIds']);
-        $jobParameters->get('productModelDraftIds')->willReturn($configuration['productModelDraftIds']);
-
-        $this->totalItems()->shouldReturn(4);
     }
 }

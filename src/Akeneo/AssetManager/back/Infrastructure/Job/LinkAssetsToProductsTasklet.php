@@ -16,8 +16,11 @@ namespace Akeneo\AssetManager\Infrastructure\Job;
 use Akeneo\AssetManager\Application\Asset\LinkAssets\RuleTemplateExecutor;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetCodesByAssetFamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -27,23 +30,27 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class LinkAssetsToProductsTasklet implements TaskletInterface
+class LinkAssetsToProductsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
-    /** @var RuleTemplateExecutor */
-    private $ruleTemplateExecutor;
-
-    /** @var FindAssetCodesByAssetFamilyInterface */
-    private $findAssetCodesByAssetFamily;
-
-    /** @var StepExecution */
-    private $stepExecution;
+    private RuleTemplateExecutor $ruleTemplateExecutor;
+    private FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily;
+    private ?StepExecution $stepExecution;
+    private CountAssetsInterface $countAssets;
+    private JobRepositoryInterface $jobRepository;
+    private int $batchSize;
 
     public function __construct(
         RuleTemplateExecutor $ruleExecutor,
-        FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily
+        FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily,
+        CountAssetsInterface $countAssets,
+        JobRepositoryInterface $jobRepository,
+        int $batchSize
     ) {
         $this->ruleTemplateExecutor = $ruleExecutor;
         $this->findAssetCodesByAssetFamily = $findAssetCodesByAssetFamily;
+        $this->countAssets = $countAssets;
+        $this->jobRepository = $jobRepository;
+        $this->batchSize = $batchSize;
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -51,21 +58,29 @@ class LinkAssetsToProductsTasklet implements TaskletInterface
         $this->stepExecution = $stepExecution;
     }
 
+    public function isTrackable(): bool
+    {
+        return true;
+    }
+
     public function execute(): void
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($this->stepExecution->getJobParameters()->get('asset_family_identifier'));
 
-        $assetCodes = $this->stepExecution->getJobParameters()->has('asset_codes')
-            ? array_map(
-                function (string $assetCode) {
-                    return AssetCode::fromString($assetCode);
-                },
-                $this->stepExecution->getJobParameters()->get('asset_codes')
-            )
-            : $this->findAssetCodesByAssetFamily->find($assetFamilyIdentifier)
-            ;
+        if ($this->stepExecution->getJobParameters()->has('asset_codes')) {
+            $assetCodes = array_map(function (string $assetCode) {
+                return AssetCode::fromString($assetCode);
+            }, $this->stepExecution->getJobParameters()->get('asset_codes'));
+            $totalItems = count($assetCodes);
+        } else {
+            $assetCodes = $this->findAssetCodesByAssetFamily->find($assetFamilyIdentifier);
+            $totalItems = $this->countAssets->forAssetFamily($assetFamilyIdentifier);
+        }
 
+        $batchCount = 0;
+        $this->stepExecution->setTotalItems($totalItems);
         foreach ($assetCodes as $assetCode) {
+            $batchCount++;
             try {
                 $errors = $this->ruleTemplateExecutor->execute($assetFamilyIdentifier, $assetCode);
                 foreach ($errors as $error) {
@@ -75,6 +90,17 @@ class LinkAssetsToProductsTasklet implements TaskletInterface
                 $message = sprintf('The asset could not be linked to products: %s', $e->getMessage());
                 $this->stepExecution->addWarning($message, [], new DataInvalidItem(['asset_code' => (string)$assetCode]));
             }
+
+            $this->stepExecution->incrementProcessedItems();
+
+            if ($batchCount >= $this->batchSize) {
+                $this->jobRepository->updateStepExecution($this->stepExecution);
+                $batchCount = 0;
+            }
+        }
+
+        if ($batchCount > 0) {
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 }
