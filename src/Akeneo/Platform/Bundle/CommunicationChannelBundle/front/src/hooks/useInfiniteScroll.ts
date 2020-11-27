@@ -6,6 +6,7 @@ import {
   infiniteScrollNextResultsFetched,
   infiniteScrollResultsNotFetched,
 } from '../actions/infiniteScrollActions';
+import {useIsMounted} from './useIsMounted';
 
 type ResultsResponse = {
   items: any[];
@@ -28,22 +29,28 @@ const useInfiniteScroll = (
   threshold: number = 4000
 ): [ResultsResponse, (searchAfter: string | null) => void] => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const isMounted = useIsMounted();
 
-  const handleFetchingResults = useCallback(async (searchAfter: string | null) => {
-    try {
-      dispatch(infiniteScrollFetchingResults());
-      const data = await fetch(searchAfter);
+  const handleFetchingResults = useCallback(
+    async (searchAfter: string | null) => {
+      try {
+        dispatch(infiniteScrollFetchingResults());
+        const data = await fetch(searchAfter);
 
-      if (null === searchAfter) {
-        dispatch(infiniteScrollFirstResultsFetched(data));
-      } else {
-        const lastAppend = data.length == 0;
-        dispatch(infiniteScrollNextResultsFetched(data, lastAppend));
+        if (isMounted.current) {
+          if (null === searchAfter) {
+            dispatch(infiniteScrollFirstResultsFetched(data));
+          } else {
+            const lastAppend = data.length == 0;
+            dispatch(infiniteScrollNextResultsFetched(data, lastAppend));
+          }
+        }
+      } catch (error) {
+        dispatch(infiniteScrollResultsNotFetched());
       }
-    } catch (error) {
-      dispatch(infiniteScrollResultsNotFetched());
-    }
-  }, []);
+    },
+    [isMounted.current]
+  );
 
   const hasToAppendItems = (scrollableElement: HTMLElement, lastAppend: boolean, isFetching: boolean) => {
     const scrollPosition = scrollableElement.scrollTop;
