@@ -1,13 +1,15 @@
 import React, {FC} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Breadcrumb, BreadcrumbItem} from '@akeneo-pim-community/shared';
+import {useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Breadcrumb} from 'akeneo-design-system';
 
 const AttributeGroupsBreadcrumb: FC = () => {
   const translate = useTranslate();
+  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
+
   return (
     <Breadcrumb>
-      <BreadcrumbItem>{translate('pim_menu.tab.settings')}</BreadcrumbItem>
-      <BreadcrumbItem>{translate('pim_enrich.entity.attribute_group.plural_label')}</BreadcrumbItem>
+      <Breadcrumb.Step href={settingsHref}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
+      <Breadcrumb.Step>{translate('pim_enrich.entity.attribute_group.plural_label')}</Breadcrumb.Step>
     </Breadcrumb>
   );
 };
