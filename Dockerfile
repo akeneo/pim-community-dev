@@ -170,6 +170,7 @@ RUN mkdir var && \
     composer dump-env prod && \
     bin/console pim:installer:assets --clean && \
     yarnpkg install --frozen-lockfile && \
+    yarnpkg run update-extensions && \
     yarnpkg run less && \
     (test -d vendor/akeneo/pim-community-dev/akeneo-design-system && \
         { yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile;yarnpkg --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system run lib:build; } || \
