@@ -2,7 +2,7 @@ import React from 'react';
 import {usePopoverState, Popover, PopoverDisclosure} from 'reakit/Popover';
 import styled from 'styled-components';
 import {useTranslate} from '../../dependenciesTools/hooks';
-import {color} from '../../theme';
+import {useTheme} from 'akeneo-design-system';
 
 type Props = {
   predefinedFormats: {[key: string]: string};
@@ -50,6 +50,7 @@ export const DateFormatSelector: React.FC<Props> = ({
   defaultFormat,
 }) => {
   const translate = useTranslate();
+  const theme = useTheme();
   const popover = usePopoverState({gutter: 0, placement: 'top-end'});
   const PopoverButton = (
     <button type='button'>
@@ -60,7 +61,7 @@ export const DateFormatSelector: React.FC<Props> = ({
   const PopoverButtonProps = {
     style: {
       backgroundColor: 'white',
-      border: `1px solid ${color.purple100}`,
+      border: `1px solid ${theme.color.brand100}`,
       borderRadius: '2px',
       cursor: 'pointer',
       height: '40px',
@@ -69,7 +70,7 @@ export const DateFormatSelector: React.FC<Props> = ({
       padding: '0 41px 0 15px',
       margin: '0 10px 0 0',
       display: 'table-cell',
-      color: color.grey100,
+      color: theme.color.grey100,
       borderLeftWidth: 0,
       borderBottomLeftRadius: 0,
       borderTopLeftRadius: 0,

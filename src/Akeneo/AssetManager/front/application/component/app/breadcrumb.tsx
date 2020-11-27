@@ -1,70 +1,43 @@
-import * as React from 'react';
-const router = require('pim/router');
+import React from 'react';
+import {Breadcrumb} from 'akeneo-design-system';
+import {useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-class InvalidItemTypeError extends Error {}
-
-export type BreadcrumbConfiguration = BreadcrumbItem[];
-
-interface BreadcrumbItem {
-  action: {
-    type: string;
-    route?: string;
-    parameters?: {[key: string]: string | number};
-  };
-  label: string;
-}
-
-const renderItem = (item: BreadcrumbItem, key: number, last: boolean) => {
-  switch (item.action.type) {
-    case 'redirect':
-      return renderRedirect(item, key, last);
-    case 'display':
-      return renderDisplay(item, key, last);
-    default:
-      throw new InvalidItemTypeError(
-        `The action type "${item.action.type}" is not supported by the Breadcrumb component`
-      );
-  }
+type AssetFamilyBreadcrumbProps = {
+  assetFamilyLabel: string;
 };
 
-const renderRedirect = (item: BreadcrumbItem, key: number, last: boolean) => {
-  const path = `#${router.generate(item.action.route, item.action.parameters ? item.action.parameters : {})}`;
+const AssetFamilyBreadcrumb = ({assetFamilyLabel}: AssetFamilyBreadcrumbProps) => {
+  const translate = useTranslate();
+  const indexHref = `#${useRoute('akeneo_asset_manager_asset_family_index')}`;
 
   return (
-    <a
-      key={key}
-      onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
-        event.preventDefault();
-
-        if (path !== window.location.hash) {
-          router.redirect(path, {trigger: true});
-        }
-
-        return false;
-      }}
-      title={item.label}
-      href={path}
-      className={`AknBreadcrumb-item AknBreadcrumb-item--routable ${last ? 'AknBreadcrumb-item--final' : ''}`}
-    >
-      {item.label}
-    </a>
+    <Breadcrumb>
+      <Breadcrumb.Step href={indexHref}>{translate('pim_asset_manager.asset_family.breadcrumb')}</Breadcrumb.Step>
+      <Breadcrumb.Step>{assetFamilyLabel}</Breadcrumb.Step>
+    </Breadcrumb>
   );
 };
 
-const renderDisplay = (item: BreadcrumbItem, key: number, last: boolean) => {
+type AssetBreadcrumbProps = {
+  assetFamilyIdentifier: string;
+  assetCode: string;
+};
+
+const AssetBreadcrumb = ({assetFamilyIdentifier, assetCode}: AssetBreadcrumbProps) => {
+  const translate = useTranslate();
+  const indexHref = `#${useRoute('akeneo_asset_manager_asset_family_index')}`;
+  const assetFamilyHref = `#${useRoute('akeneo_asset_manager_asset_family_edit', {
+    identifier: assetFamilyIdentifier,
+    tab: 'attribute',
+  })}`;
+
   return (
-    <span key={key} className={`AknBreadcrumb-item ${last ? 'AknBreadcrumb-item--final' : ''}`} title={item.label}>
-      {item.label}
-    </span>
+    <Breadcrumb>
+      <Breadcrumb.Step href={indexHref}>{translate('pim_asset_manager.asset_family.breadcrumb')}</Breadcrumb.Step>
+      <Breadcrumb.Step href={assetFamilyHref}>{assetFamilyIdentifier}</Breadcrumb.Step>
+      <Breadcrumb.Step>{assetCode}</Breadcrumb.Step>
+    </Breadcrumb>
   );
 };
 
-const Breadcrumb = ({items}: {items: BreadcrumbItem[]}) => {
-  return (
-    <div className="AknBreadcrumb">
-      {items.map((item: BreadcrumbItem, key: number) => renderItem(item, key, key === items.length - 1))}
-    </div>
-  );
-};
-
-export default Breadcrumb;
+export {AssetFamilyBreadcrumb, AssetBreadcrumb};

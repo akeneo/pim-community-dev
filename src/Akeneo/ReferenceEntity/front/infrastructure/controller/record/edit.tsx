@@ -25,6 +25,9 @@ import {createCode} from 'akeneoreferenceentity/domain/model/record/code';
 import {createIdentifier as createReferenceEntityIdentifier} from 'akeneoreferenceentity/domain/model/reference-entity/identifier';
 import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/locale';
 import {updateAttributeList} from 'akeneoreferenceentity/application/action/product/attribute';
+import {ThemeProvider} from 'styled-components';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {pimTheme} from 'akeneo-design-system';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -77,7 +80,11 @@ class RecordEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <RecordView />
+            <DependenciesProvider>
+              <ThemeProvider theme={pimTheme}>
+                <RecordView />
+              </ThemeProvider>
+            </DependenciesProvider>
           </Provider>,
           this.el
         );

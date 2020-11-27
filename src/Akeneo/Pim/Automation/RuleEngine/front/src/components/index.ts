@@ -1,5 +1,4 @@
 export * from './AkeneoSpinner';
-export * from './Breadcrumb';
 export * from './Buttons';
 export * from './Content';
 export * from './Header';

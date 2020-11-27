@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {EditState as State} from 'akeneoassetmanager/application/reducer/asset/edit';
 import sidebarProvider from 'akeneoassetmanager/application/configuration/sidebar';
-import Breadcrumb from 'akeneoassetmanager/application/component/app/breadcrumb';
+import {AssetBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import __ from 'akeneoassetmanager/tools/translator';
 import PimView from 'akeneoassetmanager/infrastructure/component/pim-view';
 import {saveAsset} from 'akeneoassetmanager/application/action/asset/edit';
@@ -141,33 +141,9 @@ class AssetEditView extends React.Component<EditProps> {
                     <div>
                       <div className="AknTitleContainer-line">
                         <div className="AknTitleContainer-breadcrumbs">
-                          <Breadcrumb
-                            items={[
-                              {
-                                action: {
-                                  type: 'redirect',
-                                  route: 'akeneo_asset_manager_asset_family_index',
-                                },
-                                label: __('pim_asset_manager.asset_family.breadcrumb'),
-                              },
-                              {
-                                action: {
-                                  type: 'redirect',
-                                  route: 'akeneo_asset_manager_asset_family_edit',
-                                  parameters: {
-                                    identifier: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
-                                    tab: 'attribute',
-                                  },
-                                },
-                                label: assetFamilyIdentifierStringValue(asset.assetFamily.identifier),
-                              },
-                              {
-                                action: {
-                                  type: 'display',
-                                },
-                                label: asset.code,
-                              },
-                            ]}
+                          <AssetBreadcrumb
+                            assetFamilyIdentifier={assetFamilyIdentifierStringValue(asset.assetFamily.identifier)}
+                            assetCode={asset.code}
                           />
                         </div>
                         <div className="AknTitleContainer-buttonsContainer">

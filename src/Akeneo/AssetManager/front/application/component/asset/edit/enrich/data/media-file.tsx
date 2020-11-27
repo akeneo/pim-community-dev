@@ -60,7 +60,7 @@ const ThumbnailPlaceholder = styled.div`
   width: 40px;
   height: 40px;
   margin-right: 15px;
-  border: 1px solid ${props => props.theme.color.grey70};
+  border: 1px solid ${props => props.theme.color.grey60};
   display: flex;
   flex-direction: column;
   justify-content: center;

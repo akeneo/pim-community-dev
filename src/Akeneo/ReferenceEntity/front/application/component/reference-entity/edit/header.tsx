@@ -1,5 +1,4 @@
 import * as React from 'react';
-import BreadCrumb, {BreadcrumbConfiguration} from 'akeneoreferenceentity/application/component/app/breadcrumb';
 import __ from 'akeneoreferenceentity/tools/translator';
 import EditState from 'akeneoreferenceentity/application/component/app/edit-state';
 import Image from 'akeneoreferenceentity/application/component/app/image';
@@ -24,7 +23,7 @@ interface OwnProps {
   isDirty: boolean;
   isLoading?: boolean;
   displayActions?: boolean; // @todo : It will be mandatory (more convenience for the spike)
-  breadcrumbConfiguration: BreadcrumbConfiguration;
+  breadcrumb: React.ReactNode;
   onLocaleChanged?: (locale: Locale) => void;
   onChannelChanged?: (channel: Channel) => void;
 }
@@ -78,7 +77,7 @@ class Header extends React.Component<HeaderProps> {
       isDirty,
       isLoading,
       displayActions,
-      breadcrumbConfiguration,
+      breadcrumb,
       context,
       structure,
       events,
@@ -91,9 +90,7 @@ class Header extends React.Component<HeaderProps> {
           <div className="AknTitleContainer-mainContainer">
             <div>
               <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-breadcrumbs">
-                  <BreadCrumb items={breadcrumbConfiguration} />
-                </div>
+                <div className="AknTitleContainer-breadcrumbs">{breadcrumb}</div>
                 <div className="AknTitleContainer-buttonsContainer">
                   <div className={`AknLoadingIndicator ${true === isLoading ? '' : 'AknLoadingIndicator--hidden'}`} />
                   <div className="AknTitleContainer-userMenuContainer user-menu">

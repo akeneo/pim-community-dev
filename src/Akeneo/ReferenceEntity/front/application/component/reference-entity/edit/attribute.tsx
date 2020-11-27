@@ -13,7 +13,7 @@ import ReferenceEntity, {
 import {attributeEditionStartByIdentifier} from 'akeneoreferenceentity/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoreferenceentity/application/component/attribute/edit';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
-import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {RefEntityBreadcrumb} from 'akeneoreferenceentity/application/component/app/breadcrumb';
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeIcon} from 'akeneoreferenceentity/application/configuration/attribute';
@@ -223,7 +223,9 @@ class AttributesView extends React.Component<CreateProps> {
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={false}
-          breadcrumbConfiguration={breadcrumbConfiguration}
+          breadcrumb={
+            <RefEntityBreadcrumb referenceEntityIdentifier={this.props.referenceEntity.getIdentifier().stringValue()} />
+          }
           displayActions={this.props.rights.attribute.create}
         />
         <div className="AknSubsection">

@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {ThemeProvider} from 'styled-components';
-import * as akeneoTheme from '../../theme';
 import {useBackboneRouter, useTranslate} from '../../dependenciesTools/hooks';
 import {EditRulesContent} from './EditRulesContent';
 import {FullScreenError} from '../../components/FullScreenError';
@@ -8,6 +7,7 @@ import {RuleDefinition} from '../../models';
 import {useInitEditRules} from './hooks';
 import {AkeneoSpinner} from '../../components';
 import {useSecurity} from '../../dependenciesTools/hooks/useSecurity';
+import {pimTheme} from 'akeneo-design-system';
 
 type Props = {
   ruleDefinitionCode: string;
@@ -28,7 +28,7 @@ const EditRules: React.FC<Props> = ({ruleDefinitionCode, setIsDirty}) => {
   );
 
   return (
-    <ThemeProvider theme={akeneoTheme}>
+    <ThemeProvider theme={pimTheme}>
       {error.status ? (
         <FullScreenError
           statusCode={error.statusCode}

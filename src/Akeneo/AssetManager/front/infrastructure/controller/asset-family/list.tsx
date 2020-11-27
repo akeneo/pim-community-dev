@@ -2,12 +2,13 @@ import * as $ from 'jquery';
 import * as ReactDOM from 'react-dom';
 import * as React from 'react';
 import Library, {LibraryDataProvider} from 'akeneoassetmanager/application/component/library/library';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {ThemeProvider} from 'styled-components';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import assetAttributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
+import {pimTheme} from 'akeneo-design-system';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -29,12 +30,14 @@ class AssetFamilyListController extends BaseController {
     mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-asset-family'});
 
     ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <Library
-          dataProvider={dataProvider}
-          initialContext={{locale: userContext.get('catalogLocale'), channel: userContext.get('catalogScope')}}
-        />
-      </ThemeProvider>,
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <Library
+            dataProvider={dataProvider}
+            initialContext={{locale: userContext.get('catalogLocale'), channel: userContext.get('catalogScope')}}
+          />
+        </ThemeProvider>
+      </DependenciesProvider>,
       this.el
     );
 

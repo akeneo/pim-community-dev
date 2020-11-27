@@ -4,7 +4,7 @@ import {EditState as State} from 'akeneoreferenceentity/application/reducer/reco
 import Sidebar from 'akeneoreferenceentity/application/component/app/sidebar';
 import {Tab} from 'akeneoreferenceentity/application/reducer/sidebar';
 import sidebarProvider from 'akeneoreferenceentity/application/configuration/sidebar';
-import Breadcrumb from 'akeneoreferenceentity/application/component/app/breadcrumb';
+import {RefEntityBreadcrumb} from 'akeneoreferenceentity/application/component/app/breadcrumb';
 import Image from 'akeneoreferenceentity/application/component/app/image';
 import __ from 'akeneoreferenceentity/tools/translator';
 import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
@@ -156,33 +156,9 @@ class RecordEditView extends React.Component<EditProps> {
                     <div>
                       <div className="AknTitleContainer-line">
                         <div className="AknTitleContainer-breadcrumbs">
-                          <Breadcrumb
-                            items={[
-                              {
-                                action: {
-                                  type: 'redirect',
-                                  route: 'akeneo_reference_entities_reference_entity_index',
-                                },
-                                label: __('pim_reference_entity.reference_entity.breadcrumb'),
-                              },
-                              {
-                                action: {
-                                  type: 'redirect',
-                                  route: 'akeneo_reference_entities_reference_entity_edit',
-                                  parameters: {
-                                    identifier: record.getReferenceEntityIdentifier().stringValue(),
-                                    tab: 'record',
-                                  },
-                                },
-                                label: record.getReferenceEntityIdentifier().stringValue(),
-                              },
-                              {
-                                action: {
-                                  type: 'display',
-                                },
-                                label: record.getCode().stringValue(),
-                              },
-                            ]}
+                          <RefEntityBreadcrumb
+                            referenceEntityIdentifier={record.getReferenceEntityIdentifier().stringValue()}
+                            recordCode={record.getCode().stringValue()}
                           />
                         </div>
                         <div className="AknTitleContainer-buttonsContainer">

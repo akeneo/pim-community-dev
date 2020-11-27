@@ -7,7 +7,7 @@ import {
   NormalizedReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
-import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {RefEntityBreadcrumb} from 'akeneoreferenceentity/application/component/app/breadcrumb';
 import PermissionCollectionEditor from 'akeneoreferenceentity/tools/component/permission';
 import {FormState} from 'akeneoreferenceentity/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoreferenceentity/domain/event/reference-entity/permission';
@@ -76,7 +76,7 @@ class Permission extends React.Component<StateProps & DispatchProps> {
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
           isDirty={this.props.permission.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration}
+          breadcrumb={<RefEntityBreadcrumb referenceEntityIdentifier={referenceEntity.getIdentifier().stringValue()} />}
         />
         <div className="AknSubsection">
           <header className="AknSubsection-title AknSubsection-title--sticky AknSubsection-title--withHeader">

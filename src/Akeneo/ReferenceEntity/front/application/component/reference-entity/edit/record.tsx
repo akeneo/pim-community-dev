@@ -11,7 +11,7 @@ import ReferenceEntity, {
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
 import {recordCreationStart} from 'akeneoreferenceentity/domain/event/record/create';
 import {deleteAllReferenceEntityRecords, deleteRecord} from 'akeneoreferenceentity/application/action/record/delete';
-import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {RefEntityBreadcrumb} from 'akeneoreferenceentity/application/component/app/breadcrumb';
 import {
   completenessFilterUpdated,
   filterUpdated,
@@ -200,7 +200,7 @@ class Records extends React.Component<StateProps & DispatchProps, {cellViews: Ce
           withChannelSwitcher={true}
           isDirty={false}
           isLoading={grid.isLoading}
-          breadcrumbConfiguration={breadcrumbConfiguration}
+          breadcrumb={<RefEntityBreadcrumb referenceEntityIdentifier={referenceEntity.getIdentifier().stringValue()} />}
           onLocaleChanged={events.onLocaleChanged}
           onChannelChanged={events.onChannelChanged}
           displayActions={this.props.rights.record.create || this.props.rights.record.deleteAll}

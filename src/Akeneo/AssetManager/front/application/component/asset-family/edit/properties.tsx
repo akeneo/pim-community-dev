@@ -12,7 +12,7 @@ import {deleteAssetFamily} from 'akeneoassetmanager/application/action/asset-fam
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
-import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
@@ -95,7 +95,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={form.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
+          breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
           displayActions={rights.assetFamily.edit}
         />
         <div className="AknSubsection">

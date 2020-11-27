@@ -32,7 +32,7 @@ const CollapseButton = styled.div`
   width: 280px;
   background: url(/bundles/pimui/images/icon-panelClose.svg) no-repeat 20px center;
   background-size: 30px;
-  background-color: ${(props: ThemedProps<void>) => props.theme.color.grey60};
+  background-color: ${(props: ThemedProps<void>) => props.theme.color.grey20};
   cursor: pointer;
   opacity: 0.8;
   position: absolute;
@@ -57,7 +57,7 @@ const ColumnContainer = styled.div<{isCollapsed: boolean}>`
   position: relative;
   transition: flex-basis 0.3s ease-in-out, width 0.3s ease-in-out;
   order: -10;
-  background-color: ${(props: ThemedProps<{isCollapsed: boolean}>) => props.theme.color.grey60};
+  background-color: ${(props: ThemedProps<{isCollapsed: boolean}>) => props.theme.color.grey20};
   border-right: 1px solid ${(props: ThemedProps<{isCollapsed: boolean}>) => props.theme.color.grey80};
   flex-shrink: 0;
   height: 100%;

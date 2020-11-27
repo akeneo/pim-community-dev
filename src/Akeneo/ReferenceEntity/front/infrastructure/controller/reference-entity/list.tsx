@@ -12,6 +12,9 @@ import {
   catalogChannelChanged,
   uiLocaleChanged,
 } from 'akeneoreferenceentity/domain/event/user';
+import {ThemeProvider} from 'styled-components';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {pimTheme} from 'akeneo-design-system';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -37,7 +40,11 @@ class ReferenceEntityListController extends BaseController {
 
     ReactDOM.render(
       <Provider store={store}>
-        <ReferenceEntityView />
+        <DependenciesProvider>
+          <ThemeProvider theme={pimTheme}>
+            <ReferenceEntityView />
+          </ThemeProvider>
+        </DependenciesProvider>
       </Provider>,
       this.el
     );

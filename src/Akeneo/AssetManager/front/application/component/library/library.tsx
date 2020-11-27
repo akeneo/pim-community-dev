@@ -19,7 +19,6 @@ import UploadModal from 'akeneoassetmanager/application/asset-upload/component/m
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
 import {CreateAssetFamilyModal} from 'akeneoassetmanager/application/component/asset-family/create';
-import {useRedirect} from 'akeneoassetmanager/application/hooks/router';
 import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
 import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
@@ -42,11 +41,12 @@ import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/att
 import {clearImageLoadingQueue} from 'akeneoassetmanager/tools/image-loader';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
 import {useScroll} from 'akeneoassetmanager/application/hooks/scroll';
 import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
 import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanager/tools/filters/completeness';
 import notify from 'akeneoassetmanager/tools/notify';
+import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -116,22 +116,26 @@ const SecondaryActions = ({
   );
 };
 
-const useRoute = () => {
-  const redirect = useRedirect();
+const useRoutes = () => {
+  const {generate, redirect} = useRouter();
   const redirectToAsset = React.useCallback((assetFamilyIdentifier: AssetFamilyIdentifier, assetCode: AssetCode) => {
     clearImageLoadingQueue();
-    redirect('akeneo_asset_manager_asset_edit', {
-      assetCode,
-      assetFamilyIdentifier,
-      tab: 'enrich',
-    });
+    redirect(
+      generate('akeneo_asset_manager_asset_edit', {
+        assetCode,
+        assetFamilyIdentifier,
+        tab: 'enrich',
+      })
+    );
   }, []);
   const redirectToAssetFamily = React.useCallback((identifier: AssetFamilyIdentifier) => {
     clearImageLoadingQueue();
-    redirect('akeneo_asset_manager_asset_family_edit', {
-      identifier,
-      tab: 'attribute',
-    });
+    redirect(
+      generate('akeneo_asset_manager_asset_family_edit', {
+        identifier,
+        tab: 'attribute',
+      })
+    );
   }, []);
   return {redirectToAsset, redirectToAssetFamily};
 };
@@ -202,7 +206,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     }
   );
   const filterViews = useFilterViews(currentAssetFamilyIdentifier, dataProvider);
-  const {redirectToAsset, redirectToAssetFamily} = useRoute();
+  const {redirectToAsset, redirectToAssetFamily} = useRoutes();
 
   const hasMediaLinkAsMainMedia =
     null !== currentAssetFamily && isMediaLinkAttribute(getAttributeAsMainMedia(currentAssetFamily));
@@ -305,11 +309,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             withChannelSwitcher={true}
             isDirty={false}
             isLoading={false}
-            breadcrumbConfiguration={breadcrumbConfiguration(
-              currentAssetFamilyIdentifier,
-              currentAssetFamilyLabel,
-              'property'
-            )}
+            breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={currentAssetFamilyLabel} />}
             displayActions={true}
           />
         </Header>

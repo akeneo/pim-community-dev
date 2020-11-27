@@ -26,7 +26,7 @@ const Container = styled.div<ContainerProps>`
   height: 18px;
   border-radius: 2px;
   background-color: ${(props: ThemedProps<ContainerProps>) =>
-    props.checked ? props.theme.color.blue100 : props.theme.color.grey60};
+    props.checked ? props.theme.color.blue100 : props.theme.color.grey20};
   border: 1px solid
     ${(props: ThemedProps<ContainerProps>) => (props.checked ? props.theme.color.blue120 : props.theme.color.grey80)};
   transition: background-color 0.2s ease-out;
