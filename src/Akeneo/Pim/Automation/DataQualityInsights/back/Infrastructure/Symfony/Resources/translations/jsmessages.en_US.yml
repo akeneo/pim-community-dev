@@ -129,6 +129,9 @@ akeneo_data_quality_insights:
                 help_center_link: Learn how data quality insights can help you improve your data quality in our help center.
             add_image_attribute_recommendation: An image is worth a thousand words. You should add an image attribute to improve the data quality of this product.
             fill_image_attribute_recommendation: In our experience, images really make a difference. You should add at least one image to improve the data quality of this product.
+            not_applicable:
+                message: This criteria is not applicable in your context.
+                help_center_link: Find out why in our Help Center.
 
     product_edit_form:
         attribute_filter:
@@ -156,4 +159,3 @@ akeneo_data_quality_insights:
 
 pim_title:
     akeneo_data_quality_insights_dashboard: Data Quality Insights
-
