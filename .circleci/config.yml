@@ -78,19 +78,11 @@ jobs:
           environment:
             YARN_REGISTRY: "http://registry.yarnpkg.com"
       - run:
-          name: Check PIM requirements
-          command: |
-              C='mysql elasticsearch' make up
-              docker/wait_docker_up.sh
-              make check-requirements
-      - run:
           name: Install asset
           command: make assets
       - run:
           name: Build Javascript
-          command: |
-              make javascript-test
-              make javascript-dev
+          command: make javascript-test && make javascript-dev
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
@@ -136,6 +128,69 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+  test_back_integration_bounded_contexts:
+      machine:
+          image: ubuntu-1604:201903-01
+      parallelism: 15
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=test make database
+          - run:
+                name: Data Quality
+                command: make data-quality-insights-integration-back
+          - run:
+                name: Asset Manager
+                command: make asset-manager-integration-back
+          - run:
+                name: Rules Engine
+                command: make rule-engine-integration-back
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
+
+  test_back_integration_reference_entities:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+                name: Change owner on project dir in order to archive the project into the workspace
+                command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: Start containers
+                command: |
+                    docker load -i php-pim-image.tar
+                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
+          - run:
+                name: Install database
+                command: APP_ENV=test make database
+          - run:
+                name: Reference Entities
+                command: make reference-entity-integration-back
+          - store_test_results:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/tests/phpunit
+          - store_artifacts:
+                path: var/logs
+
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
@@ -168,50 +223,10 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  test_back_integration_bounded_contexts:
-      machine:
-          image: ubuntu-1604:201903-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - run:
-                name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
-          - run:
-                name: Start containers
-                command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
-                    docker/wait_docker_up.sh
-          - run:
-                name: Install database
-                command: APP_ENV=test make database
-          - run:
-                name: PhpUnit Integration
-                command: make var/tests/phpunit
-          - run:
-                name: Data Quality
-                command: make data-quality-insights-integration-back
-          - run:
-                name: Asset Manager
-                command: make asset-manager-integration-back
-          - run:
-                name: Rules Engine
-                command: make rule-engine-integration-back
-          - run:
-                name: Reference Entities
-                command: make reference-entity-integration-back
-          - store_test_results:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/tests/phpunit
-          - store_artifacts:
-                path: var/logs
-
   test_back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
-    parallelism: 20
+    parallelism: 40
     steps:
       - attach_workspace:
           at: ~/
@@ -264,7 +279,7 @@ jobs:
               name: Success
               command: echo "The build has run with success! Let's merge :)"
 
-  test_front_static_acceptance_and_integration:
+  test_front_code_style:
       machine:
           image: ubuntu-1604:201903-01
       steps:
@@ -282,6 +297,19 @@ jobs:
         - run:
             name: Front linter
             command: make lint-front
+
+  test_front_static_acceptance_and_integration:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+        - attach_workspace:
+            at: ~/
+        - run:
+              name: Create yarn cache folder
+              command: mkdir -p  ~/.cache/yarn
+        - run:
+              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
             name: Front unit tests
             command: make unit-front
@@ -371,15 +399,8 @@ jobs:
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
-              name: Set the type to srnt by default
-              command: |
-                  if [ -z "$TYPE" ];
-                  then
-                      echo export TYPE="srnt" >> $BASH_ENV
-                  fi
-          - run:
               name: Remove env on kubernetes
-              command: TYPE=${TYPE} make delete
+              command: make delete
               when: always
 
   test_upgrade_from_32:
@@ -582,6 +603,7 @@ jobs:
                 command: |
                     make delete_pr_environments_hourly
 
+
   delete_pr_environment:
       environment:
           <<: *envVarsDeployDev
@@ -596,6 +618,7 @@ jobs:
                     if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
                     echo "remove env from 'deploy_pr_environment'"
                     INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete-serenity
+
 
   test_back_missing_structure_migrations:
       machine:
@@ -620,6 +643,12 @@ jobs:
         -   run:
                 name: Change owner on project dir after restoring cache
                 command: sudo chown -R 1000:1000 ../project
+        - run:
+                name: Check PIM requirements
+                command: |
+                    C='mysql elasticsearch' make up
+                    docker/wait_docker_up.sh
+                    make check-requirements
         -   run:
                 name: Test missing database and index structure migrations
                 command: vendor/akeneo/pim-community-dev/.circleci/detect_structure_changes.sh $CIRCLE_BRANCH
@@ -824,6 +853,7 @@ workflows:
           - build_prod:
                 requires:
                     - checkout
+
           - test_deploy:
                 requires:
                     - build_prod
@@ -853,6 +883,9 @@ workflows:
                 requires:
                     - deploy_pr_environment?
 
+          - test_front_code_style:
+                requires:
+                    - build_dev
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -862,46 +895,51 @@ workflows:
 
           - test_back_missing_structure_migrations:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - build_dev
           - test_back_phpunit:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_dev
           - test_back_integration_bounded_contexts:
                 requires:
-                    - test_back_static_and_acceptance
+                    - build_dev
+          - test_back_integration_reference_entities:
+                requires:
+                    - build_dev
+
+          - test_back_performance:
+                requires:
                     - test_front_static_acceptance_and_integration
+                    - test_back_phpunit
+                    - test_back_integration_bounded_contexts
+                    - test_back_integration_reference_entities
+
           - test_onboarder_bundle:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
-
-          - test_back_data_migrations:
-                requires:
-                    - test_back_missing_structure_migrations
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
-                    - test_onboarder_bundle
+                    - test_back_integration_reference_entities
+
           - test_back_behat_legacy:
                 requires:
-                    - test_back_missing_structure_migrations
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
-                    - test_onboarder_bundle
-          - test_back_performance:
-                requires:
-                    - test_back_missing_structure_migrations
-                    - test_back_integration_bounded_contexts
-                    - test_back_phpunit
-                    - test_onboarder_bundle
+                    - test_back_integration_reference_entities
 
           - pull_request_success:
                 requires:
-                    - test_back_data_migrations
-                    - test_back_behat_legacy
                     - test_back_performance
+                    - test_back_behat_legacy
                     - test_upgrade_from_last_release
+                    - test_onboarder_bundle
+                    - test_back_missing_structure_migrations
+                    - test_back_data_migrations
 
   growth_edition_release:
       triggers:
@@ -981,16 +1019,28 @@ workflows:
           - test_upgrade_from_last_release:
                 requires:
                     - build_prod
+          - test_front_code_style:
+                requires:
+                    - build_dev
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
+          - test_back_missing_structure_migrations:
+                requires:
+                    - build_dev
           - test_back_phpunit:
                 requires:
                     - build_dev
           - test_back_integration_bounded_contexts:
+                requires:
+                    - build_dev
+          - test_back_integration_reference_entities:
+                requires:
+                    - build_dev
+          - test_back_performance:
                 requires:
                     - build_dev
           - test_onboarder_bundle:
@@ -1002,15 +1052,13 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
-          - test_back_performance:
-                requires:
-                    - build_dev
           - release:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
+                    - test_back_integration_reference_entities
                     - test_onboarder_bundle
                     - test_back_performance
                     - test_back_behat_legacy
@@ -1045,10 +1093,13 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - test_back_phpunit:
+          - test_back_integration_bounded_contexts:
                 requires:
                     - build_dev
-          - test_back_integration_bounded_contexts:
+          - test_back_integration_reference_entities:
+                requires:
+                    - build_dev
+          - test_back_phpunit:
                 requires:
                     - build_dev
           - test_onboarder_bundle:
@@ -1067,6 +1118,8 @@ workflows:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
+                    - test_back_integration_bounded_contexts
+                    - test_back_integration_reference_entities
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
                     - test_onboarder_bundle
