@@ -1,8 +1,10 @@
-services:
-    pimee_catalog.webhook.event_data_builder.product_removed:
-        class: Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\ProductRemovedEventDataBuilder
-        decorates: pim_catalog.webhook.event_data_builder.product_removed
-        decoration_inner_name: pim_catalog.webhook.event_data_builder.base_product_removed
-        arguments:
-            - '@pim_catalog.webhook.event_data_builder.base_product_removed'
-            - '@pimee_security.repository.category_access'
+# TODO CXP-567
+
+# services:
+#     pimee_catalog.webhook.event_data_builder.product_removed:
+#         class: Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\ProductRemovedEventDataBuilder
+#         decorates: pim_catalog.webhook.event_data_builder.product_removed
+#         decoration_inner_name: pim_catalog.webhook.event_data_builder.base_product_removed
+#         arguments:
+#             - '@pim_catalog.webhook.event_data_builder.base_product_removed'
+#             - '@pimee_security.repository.category_access'
