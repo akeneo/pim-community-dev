@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -17,20 +18,36 @@ class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
 {
     public function supports(object $event): bool
     {
-        return $event instanceof ProductModelRemoved;
+        if (false === $event instanceof BulkEventInterface) {
+            return false;
+        }
+
+        foreach ($event->getEvents() as $event) {
+            if (false === $event instanceof ProductModelRemoved) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
-     * @param ProductModelRemoved $event
+     * @param BulkEventInterface $bulkEvent
      */
-    public function build(object $event, UserInterface $user): EventDataCollection
+    public function build(object $bulkEvent, UserInterface $user): EventDataCollection
     {
-        if (false === $this->supports($event)) {
-            throw new \InvalidArgumentException();
+        $collection = new EventDataCollection();
+
+        /** @var ProductModelRemoved $event */
+        foreach ($bulkEvent->getEvents() as $event) {
+            $data = [
+                'resource' => [
+                    'code' => $event->getCode()
+                ],
+            ];
+            $collection->setEventData($event, $data);
         }
 
-        return (new EventDataCollection())->setEventData($event, [
-            'resource' => ['code' => $event->getCode()],
-        ]);
+        return $collection;
     }
 }
