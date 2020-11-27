@@ -91,7 +91,6 @@
     "loader-utils": "1.2.3",
     "mutationobserver-shim": "^0.3.5",
     "prettier": "^2.1.1",
-    "puppeteer": "^1.1.1",
     "raw-loader": "1.0.0",
     "react-test-renderer": "^16.8.0",
     "read-pkg": "4.0.1",
@@ -106,7 +105,6 @@
     "webpack-cleanup-plugin": "0.5.1",
     "webpack-cli": "^3.2.3",
     "webpack-livereload-plugin": "2.2.0",
-    "webpack-shell-plugin": "^0.5.0",
     "write-file-webpack-plugin": "4.5.0",
     "yamljs": "0.3.0"
   },
