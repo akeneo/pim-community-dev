@@ -59,6 +59,7 @@
 - PIM-9548: Mitigate deadlock issues on category API
 - PIM-9540: Do not strip HTML tags on textarea content before indexing them in ES and fix newline_pattern char filter
 - PIM-9539: Fix the display of long attribute labels or codes on variant attributes page
+- PIM-9569: Fix memory usage issue when adding a group to a product
 
 ## New features
 
@@ -214,7 +215,10 @@
     - remove the `setFamilyId()` method
     - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
     - add `isDirty()` and `cleanup()` methods 
-- Remove the `findDatagridViewByAlias()` method in `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface`
+- Change the `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface` to:
+    - remove the `findDatagridViewByAlias()` method
+    - rename the `getDatagridViewTypeByUser()` method to `getDatagridViewAliasesByUser()` and add type hint on the return (array)
+    - add type hint on the return of the `findDatagridViewBySearch()` method (`Doctrine\Common\Collections\Collection`)
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet` to
     - add `Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface $jobRepository`
 
