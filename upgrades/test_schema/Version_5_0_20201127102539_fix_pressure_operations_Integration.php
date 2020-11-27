@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
 
-final class Version_5_0_20200504084844_add_quantified_column_on_association_type_Integration extends TestCase
+final class Version_5_0_20201127102539_fix_pressure_operations_Integration extends TestCase
 {
     use ExecuteMigrationTrait;
 
