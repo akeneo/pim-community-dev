@@ -93,7 +93,7 @@ class CleanValuesOfRemovedAttributes implements CleanValuesOfRemovedAttributesIn
     {
         foreach ($this->getProductIdentifiersWithRemovedAttribute->nextBatch($attributesCodes, self::BATCH_SIZE) as $identifiers) {
             $products = $this->productRepository->findBy(['identifier' => $identifiers]);
-            $this->productSaver->saveAll($products);
+            $this->productSaver->saveAll($products, ['force_save' => true]);
 
             if (null !== $progress) {
                 $progress(count($products));
@@ -112,7 +112,7 @@ class CleanValuesOfRemovedAttributes implements CleanValuesOfRemovedAttributesIn
     {
         foreach ($this->getProductModelIdentifiersWithRemovedAttribute->nextBatch($attributesCodes, self::BATCH_SIZE) as $identifiers) {
             $productModels = $this->productModelRepository->findBy(['code' => $identifiers]);
-            $this->productModelSaver->saveAll($productModels);
+            $this->productModelSaver->saveAll($productModels, ['force_save' => true]);
 
             if (null !== $progress) {
                 $progress(count($productModels));
