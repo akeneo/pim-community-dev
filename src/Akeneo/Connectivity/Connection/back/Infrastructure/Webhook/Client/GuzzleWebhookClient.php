@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookRequestLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -69,7 +69,7 @@ class GuzzleWebhookClient implements WebhookClient
                     self::HEADER_REQUEST_TIMESTAMP => $timestamp,
                 ];
 
-                $logs[] = new WebhookRequestLog($webhookRequest, $headers, microtime(true));
+                $logs[] = new EventSubscriptionSendApiEventRequestLog($webhookRequest, $headers, microtime(true));
 
                 $request = new Request('POST', $webhookRequest->url(), $headers, $body);
 
@@ -134,7 +134,7 @@ class GuzzleWebhookClient implements WebhookClient
                     self::HEADER_REQUEST_TIMESTAMP => $timestamp,
                 ];
 
-                $logs[] = new WebhookRequestLog($webhookRequest, $headers, microtime(true));
+                $logs[] = new EventSubscriptionSendApiEventRequestLog($webhookRequest, $headers, microtime(true));
 
                 $request = new Request('POST', $webhookRequest->url(), $headers, $body);
 

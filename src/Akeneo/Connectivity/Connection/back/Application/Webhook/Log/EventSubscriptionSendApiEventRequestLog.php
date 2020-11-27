@@ -12,8 +12,10 @@ use Psr\Http\Message\ResponseInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebhookRequestLog
+class EventSubscriptionSendApiEventRequestLog
 {
+    const TYPE = 'event_api.send_api_event_request';
+
     private WebhookRequest $webhookRequest;
     /** @var array<string, int|string> */
     private array $headers;
@@ -76,7 +78,7 @@ class WebhookRequestLog
     public function toLog(): array
     {
         return [
-            'type' => 'webhook.send_request',
+            'type' => self::TYPE,
             'duration' => $this->getDuration(),
             'headers' => $this->headers,
             'message' => $this->message,

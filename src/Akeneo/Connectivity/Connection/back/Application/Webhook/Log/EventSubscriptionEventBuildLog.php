@@ -11,8 +11,10 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebhookEventBuildLog
+class EventSubscriptionEventBuildLog
 {
+    const TYPE = 'event_api.event_build';
+
     private int $subscriptionCount;
     /** @var EventInterface|BulkEventInterface */
     private object $event;
@@ -60,19 +62,22 @@ class WebhookEventBuildLog
         }
 
         return [
-            'type' => 'webhook.event_build',
+            'type' => self::TYPE,
             'subscription_count' => $this->subscriptionCount,
             'event_count' => count($events),
             'duration' => $this->getDuration(),
-            'events' => array_map(function (EventInterface $event) {
-                return [
-                    'uuid' => $event->getUuid(),
-                    'author' => $event->getAuthor()->name(),
-                    'author_type' => $event->getAuthor()->type(),
-                    'name' => $event->getName(),
-                    'timestamp' => $event->getTimestamp(),
-                ];
-            }, $events),
+            'events' => array_map(
+                function (EventInterface $event) {
+                    return [
+                        'uuid' => $event->getUuid(),
+                        'author' => $event->getAuthor()->name(),
+                        'author_type' => $event->getAuthor()->type(),
+                        'name' => $event->getName(),
+                        'timestamp' => $event->getTimestamp(),
+                    ];
+                },
+                $events
+            ),
         ];
     }
 
