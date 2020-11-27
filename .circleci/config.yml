@@ -113,6 +113,9 @@ jobs:
           name: Build css
           command: make css
       - run:
+          name: Build DSM
+          command: make dsm
+      - run:
           name: Build Javascript
           command: make javascript-dev
       - run:
