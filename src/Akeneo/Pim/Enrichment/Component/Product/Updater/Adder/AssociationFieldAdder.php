@@ -256,7 +256,9 @@ class AssociationFieldAdder extends AbstractFieldAdder
         string $associationTypeCode,
         $entityToAssociate
     ) {
-        $this->missingAssociationAdder->addMissingAssociations($owner);
+        if (!$owner->hasAssociationForTypeCode($associationTypeCode)) {
+            $this->missingAssociationAdder->addMissingAssociations($owner);
+        }
         if ($entityToAssociate instanceof ProductInterface) {
             $owner->addAssociatedProduct($entityToAssociate, $associationTypeCode);
         } elseif ($entityToAssociate instanceof ProductModelInterface) {
