@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventBuildLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use PhpSpec\ObjectBehavior;
 
-class WebhookEventBuildLogSpec extends ObjectBehavior
+class EventSubscriptionEventBuildLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -40,13 +40,13 @@ class WebhookEventBuildLogSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(WebhookEventBuildLog::class);
+        $this->shouldBeAnInstanceOf(EventSubscriptionEventBuildLog::class);
     }
 
     public function it_returns_the_log(): void
     {
         $this->toLog()->shouldReturn([
-            'type' => 'webhook.event_build',
+            'type' => EventSubscriptionEventBuildLog::TYPE,
             'subscription_count' => 10,
             'event_count' => 2,
             'duration' => 21289,
@@ -88,7 +88,7 @@ class WebhookEventBuildLogSpec extends ObjectBehavior
         );
 
         $this->toLog()->shouldReturn([
-            'type' => 'webhook.event_build',
+            'type' => EventSubscriptionEventBuildLog::TYPE,
             'subscription_count' => 10,
             'event_count' => 1,
             'duration' => 21289,

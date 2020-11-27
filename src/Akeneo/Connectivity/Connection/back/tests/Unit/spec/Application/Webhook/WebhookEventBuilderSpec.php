@@ -57,7 +57,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
             [
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
-                'webhook_connection_code' => 'ecommerce',
+                'connection_code' => 'ecommerce',
             ]
         )->shouldBeLike(
             [
@@ -89,7 +89,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
                 [
                     'pim_source' => 'staging.akeneo.com',
                     'user' => $user,
-                    'webhook_connection_code' => 'ecommerce',
+                    'connection_code' => 'ecommerce',
                 ],
             ]
         );

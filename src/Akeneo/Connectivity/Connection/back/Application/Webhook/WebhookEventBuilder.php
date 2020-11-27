@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventDataBuilderErrorLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionDataBuildErrorLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -58,8 +58,11 @@ class WebhookEventBuilder
         } catch (EventBuildingExceptionInterface $exception) {
             $this->logger->warning(
                 json_encode(
-                    (new WebhookEventDataBuilderErrorLog(
-                        $exception->getMessage(), $context['webhook_connection_code'], $event
+                    (new EventSubscriptionDataBuildErrorLog(
+                        $exception->getMessage(),
+                        $context['connection_code'],
+                        $context['user']->getId(),
+                        $event
                     ))->toLog(),
                     JSON_THROW_ON_ERROR
                 )
@@ -77,10 +80,10 @@ class WebhookEventBuilder
     private function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['user', 'pim_source', 'webhook_connection_code']);
+        $resolver->setRequired(['user', 'pim_source', 'connection_code']);
         $resolver->setAllowedTypes('user', UserInterface::class);
         $resolver->setAllowedTypes('pim_source', 'string');
-        $resolver->setAllowedTypes('webhook_connection_code', 'string');
+        $resolver->setAllowedTypes('connection_code', 'string');
 
         return $resolver->resolve($options);
     }
@@ -119,8 +122,11 @@ class WebhookEventBuilder
             if ($data instanceof \Throwable) {
                 $this->logger->warning(
                     json_encode(
-                        (new WebhookEventDataBuilderErrorLog(
-                            $data->getMessage(), $context['webhook_connection_code'], $event
+                        (new EventSubscriptionDataBuildErrorLog(
+                            $data->getMessage(),
+                            $context['connection_code'],
+                            $context['user']->getId(),
+                            $event
                         ))->toLog(),
                         JSON_THROW_ON_ERROR
                     )

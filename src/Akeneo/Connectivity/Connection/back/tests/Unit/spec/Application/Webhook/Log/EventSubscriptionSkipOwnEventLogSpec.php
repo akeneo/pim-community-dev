@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookConnectionFilterLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSkipOwnEventLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Platform\Component\EventQueue\Author;
@@ -14,7 +14,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebhookConnectionFilterLogSpec extends ObjectBehavior
+class EventSubscriptionSkipOwnEventLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -38,16 +38,15 @@ class WebhookConnectionFilterLogSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(WebhookConnectionFilterLog::class);
+        $this->shouldBeAnInstanceOf(EventSubscriptionSkipOwnEventLog::class);
     }
 
     public function it_returns_the_log(): void
     {
         $this->toLog()->shouldReturn(
             [
-                'type' => WebhookConnectionFilterLog::TYPE,
-                'message' => WebhookConnectionFilterLog::MESSAGE,
-                'webhook_connection_code' => 'ecommerce',
+                'type' => EventSubscriptionSkipOwnEventLog::TYPE,
+                'connection_code' => 'ecommerce',
                 'event' => [
                     'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',
                     'author' => 'julia',

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Log;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventDataBuilderErrorLog;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionDataBuildErrorLog;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use PhpSpec\ObjectBehavior;
 
-class WebhookEventDataBuilderErrorLogSpec extends ObjectBehavior
+class EventSubscriptionDataBuildErrorLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
@@ -33,21 +32,22 @@ class WebhookEventDataBuilderErrorLogSpec extends ObjectBehavior
             ]
         );
 
-        $this->beConstructedWith('Webhook event building failed', 'ecommerce', $event);
+        $this->beConstructedWith('Webhook event building failed', 'ecommerce', 42, $event);
     }
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(WebhookEventDataBuilderErrorLog::class);
+        $this->shouldBeAnInstanceOf(EventSubscriptionDataBuildErrorLog::class);
     }
 
     public function it_returns_the_log(): void
     {
         $this->toLog()->shouldReturn(
             [
-                'type' => 'webhook.event_build',
+                'type' => EventSubscriptionDataBuildErrorLog::TYPE,
                 'message' => 'Webhook event building failed',
-                'webhook_connection_code' => 'ecommerce',
+                'connection_code' => 'ecommerce',
+                'user_id' => 42,
                 'events' => [
                     [
                         'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',
@@ -81,13 +81,14 @@ class WebhookEventDataBuilderErrorLogSpec extends ObjectBehavior
             ]
         );
 
-        $this->beConstructedWith('Webhook event building failed', 'ecommerce', $event);
+        $this->beConstructedWith('Webhook event building failed', 'ecommerce', 42, $event);
 
         $this->toLog()->shouldReturn(
             [
-                'type' => 'webhook.event_build',
+                'type' => EventSubscriptionDataBuildErrorLog::TYPE,
                 'message' => 'Webhook event building failed',
-                'webhook_connection_code' => 'ecommerce',
+                'connection_code' => 'ecommerce',
+                'user_id' => 42,
                 'events' => [
                     [
                         'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',

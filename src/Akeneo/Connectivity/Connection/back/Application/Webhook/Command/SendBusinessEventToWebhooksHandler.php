@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookConnectionFilterLog;
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\WebhookEventBuildLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSkipOwnEventLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -92,7 +92,7 @@ final class SendBusinessEventToWebhooksHandler
                         [
                             'user' => $user,
                             'pim_source' => $this->pimSource,
-                            'webhook_connection_code' => $webhook->connectionCode(),
+                            'connection_code' => $webhook->connectionCode(),
                         ]
                     );
 
@@ -112,7 +112,7 @@ final class SendBusinessEventToWebhooksHandler
 
         $this->logger->info(
             json_encode(
-                (new WebhookEventBuildLog(count($webhooks), $event, $startTime, microtime(true)))->toLog(),
+                (new EventSubscriptionEventBuildLog(count($webhooks), $event, $startTime, microtime(true)))->toLog(),
                 JSON_THROW_ON_ERROR
             )
         );
@@ -138,7 +138,7 @@ final class SendBusinessEventToWebhooksHandler
                     if ($username === $event->getAuthor()->name()) {
                         $this->logger->info(
                             json_encode(
-                                (new WebhookConnectionFilterLog($event, $webhook->connectionCode()))->toLog(),
+                                (new EventSubscriptionSkipOwnEventLog($event, $webhook->connectionCode()))->toLog(),
                                 JSON_THROW_ON_ERROR
                             )
                         );
@@ -159,7 +159,7 @@ final class SendBusinessEventToWebhooksHandler
         if ($event instanceof EventInterface && $username === $event->getAuthor()->name()) {
             $this->logger->info(
                 json_encode(
-                    (new WebhookConnectionFilterLog($event, $webhook->connectionCode()))->toLog(),
+                    (new EventSubscriptionSkipOwnEventLog($event, $webhook->connectionCode()))->toLog(),
                     JSON_THROW_ON_ERROR
                 )
             );

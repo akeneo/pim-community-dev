@@ -84,7 +84,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             [
                 'user' => $magentoUser,
                 'pim_source' => 'staging.akeneo.com',
-                'webhook_connection_code' => $webhook->connectionCode(),
+                'connection_code' => $webhook->connectionCode(),
             ]
         )->willReturn(
             [
@@ -164,7 +164,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             [
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $magentoUser,
-                'webhook_connection_code' => SendBusinessEventToWebhooksHandler::FAKE_CONNECTION_CODE,
+                'connection_code' => SendBusinessEventToWebhooksHandler::FAKE_CONNECTION_CODE,
             ]
         )->willReturn(
             [
@@ -280,7 +280,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             [
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $magentoUser,
-                'webhook_connection_code' => $magentoWebhook->connectionCode(),
+                'connection_code' => $magentoWebhook->connectionCode(),
             ]
         )->willReturn(
             [
@@ -354,7 +354,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             [
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
-                'webhook_connection_code' => $webhook->connectionCode(),
+                'connection_code' => $webhook->connectionCode(),
             ]
         )->willThrow(
             \Exception::class

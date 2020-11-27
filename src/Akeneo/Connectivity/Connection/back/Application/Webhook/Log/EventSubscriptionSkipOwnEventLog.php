@@ -10,10 +10,9 @@ use Akeneo\Platform\Component\EventQueue\EventInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebhookConnectionFilterLog
+class EventSubscriptionSkipOwnEventLog
 {
-    const TYPE = 'webhook.skip_event';
-    const MESSAGE = 'Current connection owns event: skip.';
+    const TYPE = 'event_api.skip_own_event';
 
     private EventInterface $event;
     private string $connectionCode;
@@ -27,8 +26,7 @@ class WebhookConnectionFilterLog
     /**
      * @return array{
      *  type: string,
-     *  message: string,
-     *  webhook_connection_code: string,
+     *  connection_code: string,
      *  event: array{
      *      uuid: string,
      *      author: string,
@@ -42,8 +40,7 @@ class WebhookConnectionFilterLog
     {
         return [
             'type' => self::TYPE,
-            'message' => self::MESSAGE,
-            'webhook_connection_code' => $this->connectionCode,
+            'connection_code' => $this->connectionCode,
             'event' => [
                 'uuid' => $this->event->getUuid(),
                 'author' => $this->event->getAuthor()->name(),
