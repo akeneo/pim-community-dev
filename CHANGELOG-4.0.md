@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.75 (2020-11-27)
+
 ## Bug fixes
 
 - PIM-9559: Clean product & product models draft changes when after running clean removed attributes command
