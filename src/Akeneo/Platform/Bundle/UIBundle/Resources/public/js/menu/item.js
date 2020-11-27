@@ -18,9 +18,6 @@ define([
 ], function (_, __, BaseForm, router, Routing, template, mediator) {
   return BaseForm.extend({
     template: _.template(template),
-    events: {
-      'click .navigation-item': 'redirect',
-    },
     active: false,
 
     /**
@@ -75,12 +72,9 @@ define([
      * @param {Event} event
      */
     redirect: function (event) {
-      if (!_.has(event, 'extension')) {
+      if (_.has(event, 'extension')) {
         event.stopPropagation();
         event.preventDefault();
-      }
-
-      if (!(event.metaKey || event.ctrlKey) && (!_.has(event, 'extension') || event.extension === this.code)) {
         router.redirectToRoute(this.getRoute(), this.getRouteParams());
       }
     },

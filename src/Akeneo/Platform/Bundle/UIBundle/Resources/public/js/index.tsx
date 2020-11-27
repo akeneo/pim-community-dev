@@ -2,7 +2,7 @@ import React, {useRef, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import styled, {ThemeProvider} from 'styled-components';
 import {HashRouter as Router, Switch, Route, useLocation} from 'react-router-dom';
-import {DependenciesProvider, PimView} from '@akeneo-pim-community/legacy-bridge';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
 import {pimTheme} from 'akeneo-design-system';
 import {Index as Measurements} from 'akeneomeasure';
@@ -78,7 +78,6 @@ const App = () => {
         view.render();
       }
     });
-
   };
 
   useEffect(() => {
