@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\BooleanValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -17,7 +18,21 @@ final class BooleanValueFactory extends ScalarValueFactory implements ValueFacto
 {
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        return parent::createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+        $attributeCode = $attribute->code();
+
+        if ($attribute->isLocalizableAndScopable()) {
+            return new BooleanValue($attributeCode, $data, $channelCode, $localeCode);
+        }
+
+        if ($attribute->isScopable()) {
+            return new BooleanValue($attributeCode, $data, $channelCode, null);
+        }
+
+        if ($attribute->isLocalizable()) {
+            return new BooleanValue($attributeCode, $data, null, $localeCode);
+        }
+
+        return new BooleanValue($attributeCode, $data, null, null);
     }
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface

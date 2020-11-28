@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\TextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -15,6 +16,25 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 final class TextValueFactory extends ScalarValueFactory implements ValueFactory
 {
+    public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
+    {
+        $attributeCode = $attribute->code();
+
+        if ($attribute->isLocalizableAndScopable()) {
+            return new TextValue($attributeCode, $data, $channelCode, $localeCode);
+        }
+
+        if ($attribute->isScopable()) {
+            return new TextValue($attributeCode, $data, $channelCode, null);
+        }
+
+        if ($attribute->isLocalizable()) {
+            return new TextValue($attributeCode, $data, null, $localeCode);
+        }
+
+        return new TextValue($attributeCode, $data, null, null);
+    }
+
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         if (!is_scalar($data) || (is_string($data) && '' === trim($data))) {
