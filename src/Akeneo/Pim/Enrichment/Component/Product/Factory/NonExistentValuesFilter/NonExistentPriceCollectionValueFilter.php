@@ -55,6 +55,10 @@ final class NonExistentPriceCollectionValueFilter implements NonExistentValuesFi
                     }
 
                     foreach ($valuesIndexedByLocale as $locale => $value) {
+                        if (!\is_array($value)) {
+                            continue;
+                        }
+
                         $amountByCurrency = [];
                         foreach ($value as $price) {
                             if (isset($price['amount']) && isset($price['currency'])) {
