@@ -83,7 +83,7 @@ class ReadValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        $values[] = $this->valueFactory->createWithoutCheckingData(
+                        $values[] = $this->valueFactory->createByCheckingData(
                             $attribute,
                             $channelCode,
                             $localeCode,

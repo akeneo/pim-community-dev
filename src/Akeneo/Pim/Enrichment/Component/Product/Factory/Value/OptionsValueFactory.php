@@ -39,14 +39,14 @@ final class OptionsValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),
                 static::class,
                 $data
             );
         }
-        
+
         try {
             Assert::allString($data);
         } catch (\Exception $exception) {

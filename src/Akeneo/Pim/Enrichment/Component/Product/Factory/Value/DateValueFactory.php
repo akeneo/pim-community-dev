@@ -39,7 +39,7 @@ final class DateValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_string($data)) {
+        if (!\is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->code(),
                 static::class,

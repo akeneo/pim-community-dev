@@ -47,7 +47,7 @@ final class MetricValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),
                 static::class,

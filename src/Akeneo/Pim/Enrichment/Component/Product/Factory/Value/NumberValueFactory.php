@@ -17,7 +17,7 @@ final class NumberValueFactory extends ScalarValueFactory implements ValueFactor
 {
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_scalar($data) || (is_string($data) && '' === trim($data))) {
+        if (!\is_scalar($data) || (\is_string($data) && '' === \trim($data))) {
             throw InvalidPropertyTypeException::numericExpected(
                 $attribute->code(),
                 static::class,

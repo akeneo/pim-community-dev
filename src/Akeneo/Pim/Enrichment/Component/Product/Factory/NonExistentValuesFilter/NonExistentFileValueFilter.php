@@ -55,7 +55,7 @@ final class NonExistentFileValueFilter implements NonExistentValuesFilter
                 $fileValues = [];
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
-                        if (!is_array($value)) {
+                        if (!\is_array($value)) {
                             $fileValues[$channel][$locale] = $existingEntities[$value] ?? null;
                         }
                     }
@@ -79,7 +79,7 @@ final class NonExistentFileValueFilter implements NonExistentValuesFilter
             foreach ($valueCollection as $values) {
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
-                        if (!is_array($value)) {
+                        if (!\is_array($value)) {
                             $fileKeys[] = $value;
                         }
                     }
