@@ -22,8 +22,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductPdfController
 {
-    protected ProductRepositoryInterface $productRepository;
-    protected RendererRegistry $rendererRegistry;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
+    /** @var RendererRegistry */
+    protected $rendererRegistry;
 
     public function __construct(ProductRepositoryInterface $productRepository, RendererRegistry $rendererRegistry)
     {
