@@ -28,6 +28,7 @@ const Container = styled.div.attrs(() => ({
   className: 'AknDropdown AknButtonList-item',
 }))`
   position: relative;
+  margin-top: -2px;
 `;
 const Toggle = styled.button.attrs(() => ({
   className: 'AknActionButton AknActionButton--withoutBorder',
@@ -37,12 +38,11 @@ const Toggle = styled.button.attrs(() => ({
   white-space: nowrap;
 `;
 
-const ToggleCaret = styled(ArrowDownIcon).attrs(() => ({
-  size: 12,
-}))`
+const ToggleCaret = styled(ArrowDownIcon)`
   color: ${({theme}) => theme.color.grey120};
   margin-left: 3px;
   vertical-align: middle;
+  margin-top: -3px;
 `;
 
 const ToggleSelection = styled.span`
@@ -133,7 +133,7 @@ const FamilyFilter: FC<Props> = ({familyCode}) => {
         {translate('pim_enrich.entity.family.uppercase_label')}:
         <ToggleSelection>
           {currentFamilyLabel ? currentFamilyLabel : '[' + familyCode + ']'}
-          <ToggleCaret />
+          <ToggleCaret size={16} />
         </ToggleSelection>
       </Toggle>
 

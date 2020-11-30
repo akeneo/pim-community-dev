@@ -14,6 +14,7 @@ const Container = styled.div.attrs(() => ({
   className: 'AknDropdown AknButtonList-item',
 }))`
   position: relative;
+  margin-top: -2px;
 `;
 const Toggle = styled.button.attrs(() => ({
   className: 'AknActionButton AknActionButton--withoutBorder',
