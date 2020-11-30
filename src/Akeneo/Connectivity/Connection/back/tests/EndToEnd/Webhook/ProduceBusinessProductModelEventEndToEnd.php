@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -177,6 +178,9 @@ JSON;
         "family": "family",
         "family_variant": "family_variant",
         "values": {
+            "text": [
+                {"locale": null, "scope": null, "data": "Lorem ipsum"}
+            ]
         }
     }
 JSON;
@@ -232,9 +236,12 @@ JSON;
         $envelopes = $transport->get();
 
         $this->assertCount(2, $envelopes);
+
         $this->assertInstanceOf(BulkEvent::class, $envelopes[0]->getMessage());
         $this->assertContainsOnlyInstancesOf(ProductModelCreated::class, $envelopes[0]->getMessage()->getEvents());
-        $this->assertInstanceOf(ProductModelRemoved::class, $envelopes[1]->getMessage());
+
+        $this->assertInstanceOf(BulkEvent::class, $envelopes[1]->getMessage());
+        $this->assertContainsOnlyInstancesOf(ProductModelRemoved::class, $envelopes[1]->getMessage()->getEvents());
     }
 
     protected function getConfiguration(): Configuration

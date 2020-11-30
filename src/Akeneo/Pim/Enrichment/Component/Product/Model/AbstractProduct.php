@@ -281,11 +281,10 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValues(): WriteValueCollection
     {
+        $values = clone $this->values;
         if (!$this->isVariant()) {
-            return WriteValueCollection::fromCollection($this->values);
+            return $values;
         }
-
-        $values = WriteValueCollection::fromCollection($this->values);
 
         return $this->getAllValues($this, $values);
     }
@@ -546,7 +545,6 @@ abstract class AbstractProduct implements ProductInterface
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
-            $group->addProduct($this);
             $this->dirty = true;
         }
 
@@ -765,7 +763,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValuesForVariation(): WriteValueCollection
     {
-        return WriteValueCollection::fromCollection($this->values);
+        return clone $this->values;
     }
 
     /**

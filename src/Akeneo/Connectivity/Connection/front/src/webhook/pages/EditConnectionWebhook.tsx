@@ -3,18 +3,19 @@ import {FormContext, useForm, useFormContext} from 'react-hook-form';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
-import {ApplyButton, Breadcrumb, BreadcrumbItem, PageContent, PageHeader, Section} from '../../common/components';
+import {ApplyButton, PageContent, PageHeader, Section} from '../../common/components';
 import {Loading} from '../../common/components/Loading';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
 import {isErr} from '../../shared/fetch-result/result';
-import {BreadcrumbRouterLink} from '../../shared/router';
+import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {EditForm} from '../components/EditForm';
 import {EventSubscriptionHelper} from '../components/EventSubscriptionHelper';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
 import {useWebhook} from '../hooks/api/use-webhook';
 import {Webhook} from '../model/Webhook';
+import {Breadcrumb} from 'akeneo-design-system';
 
 export type FormInput = {
     connectionCode: string;
@@ -27,6 +28,7 @@ export const EditConnectionWebhook: FC = () => {
     const history = useHistory();
     const generateMediaUrl = useMediaUrlGenerator();
     const formMethods = useForm<FormInput>();
+    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
 
     const {connectionCode} = useParams<{connectionCode: string}>();
     const fetchedWebhook = useWebhook(connectionCode);
@@ -51,15 +53,15 @@ export const EditConnectionWebhook: FC = () => {
 
     const breadcrumb = (
         <Breadcrumb>
-            <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
+            <Breadcrumb.Step href={systemHref}>
                 <Translate id='pim_menu.tab.system' />
-            </BreadcrumbRouterLink>
-            <BreadcrumbItem onClick={() => history.push('/connections')}>
+            </Breadcrumb.Step>
+            <Breadcrumb.Step href={history.createHref({pathname: '/connections'})}>
                 <Translate id='pim_menu.item.connection_settings' />
-            </BreadcrumbItem>
-            <BreadcrumbItem>
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>
                 <Translate id='akeneo_connectivity.connection.webhook.title' />
-            </BreadcrumbItem>
+            </Breadcrumb.Step>
         </Breadcrumb>
     );
 

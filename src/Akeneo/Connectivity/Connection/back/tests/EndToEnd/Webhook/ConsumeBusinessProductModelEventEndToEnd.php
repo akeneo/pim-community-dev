@@ -143,6 +143,10 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
             'category_codes' => $productModel->getCategoryCodes(),
         ]);
 
+        $message = new BulkEvent([
+            new ProductModelRemoved($author, ['code' => $productModel->getCode(), 'category_codes' => $productModel->getCategoryCodes()])
+        ]);
+
         /** @var $businessEventHandler BusinessEventHandler */
         $businessEventHandler = $this->get(BusinessEventHandler::class);
         $businessEventHandler->__invoke($message);

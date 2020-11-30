@@ -16,7 +16,7 @@ class DefaultViewDataTransformerSpec extends ObjectBehavior
 
     function it_transforms_the_given_user($datagridViewRepo, UserInterface $julia, DatagridView $productView)
     {
-        $datagridViewRepo->getDatagridViewTypeByUser($julia)->willReturn([['datagridAlias' => 'product-grid'], ['datagridAlias' => 'category']]);
+        $datagridViewRepo->getDatagridViewAliasesByUser($julia)->willReturn(['product-grid', 'category']);
 
         $julia->getDefaultGridView('product-grid')->willReturn($productView);
         $julia->getDefaultGridView('category')->willReturn(null);

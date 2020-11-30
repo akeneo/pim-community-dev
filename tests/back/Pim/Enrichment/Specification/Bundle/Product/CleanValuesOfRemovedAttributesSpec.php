@@ -106,11 +106,11 @@ class CleanValuesOfRemovedAttributesSpec extends ObjectBehavior
         $getProductModelIdentifiersWithRemovedAttribute->nextBatch($removedAttributes, Argument::type('integer'))->willReturn($codes);
 
         $productModelRepository->findBy(['code' => $codes[0]])->willReturn($productModelsBatch1);
-        $productModelSaver->saveAll($productModelsBatch1)->shouldBeCalled();
+        $productModelSaver->saveAll($productModelsBatch1, ['force_save' => true])->shouldBeCalled();
         $clearer->clear()->shouldBeCalled();
 
         $productModelRepository->findBy(['code' => $codes[1]])->willReturn($productModelsBatch2);
-        $productModelSaver->saveAll($productModelsBatch2)->shouldBeCalled();
+        $productModelSaver->saveAll($productModelsBatch2, ['force_save' => true])->shouldBeCalled();
         $clearer->clear()->shouldBeCalled();
 
         $this->cleanProductModelsWithRemovedAttribute($removedAttributes, null);
@@ -133,7 +133,7 @@ class CleanValuesOfRemovedAttributesSpec extends ObjectBehavior
 
         $getProductIdentifiersWithRemovedAttribute->nextBatch($removedAttributes, Argument::type('integer'))->willReturn($batchOfIdentifiers);
         $productRepository->findBy(['identifier' => ['a_product', 'a_second_product']])->willReturn($products);
-        $productSaver->saveAll($products)->shouldBeCalled();
+        $productSaver->saveAll($products, ['force_save' => true])->shouldBeCalled();
 
         $clearer->clear()->shouldBeCalled();
 

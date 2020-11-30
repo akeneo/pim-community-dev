@@ -24,6 +24,10 @@ include make-file/*.mk
 node_modules:
 	$(YARN_RUN) install --frozen-lockfile
 
+.PHONY: javascript-extensions
+javascript-extensions:
+	$(YARN_RUN) run update-extensions
+
 .PHONY: dsm
 dsm:
 	$(YARN_RUN) --cwd=akeneo-design-system install --frozen-lockfile
@@ -40,27 +44,27 @@ css:
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod: dsm
+javascript-prod: dsm javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: dsm
+javascript-dev: dsm javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: javascript-dev-strict
-javascript-dev-strict: dsm
+javascript-dev-strict: dsm javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev --strict
 
 .PHONY: javascript-test
-javascript-test: dsm
+javascript-test: dsm javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css javascript-test javascript-dev
+front: assets css javascript-dev
 
 ##
 ## Back
