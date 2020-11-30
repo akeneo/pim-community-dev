@@ -1,5 +1,7 @@
 # 3.2.x
 
+# 3.2.77 (2020-11-30)
+
 ## Bug fixes
 
 - [Backport] Fix fatal error on display product model associations when they have more than 25 products associated
