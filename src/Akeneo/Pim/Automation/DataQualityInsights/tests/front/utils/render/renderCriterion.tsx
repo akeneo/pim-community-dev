@@ -2,7 +2,7 @@ import React, {FC, ReactElement} from 'react';
 import {CriterionEvaluationResult} from '@akeneo-pim-community/data-quality-insights/src';
 import Evaluation from '@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
-import {renderWithAppContextHelper} from './renderWithAppContextHelper';
+import {renderWithProductEditFormContextHelper} from './renderWithProductEditFormContextHelper';
 import {Criterion} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
 import {
   AllowFollowingCriterionRecommendation,
@@ -34,7 +34,7 @@ const renderCriterion = (
     </AxesContextProvider>
   );
 
-  return renderWithAppContextHelper(<Component />, appState);
+  return renderWithProductEditFormContextHelper(<Component />, appState);
 };
 
 export {renderCriterion};

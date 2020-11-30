@@ -7,7 +7,7 @@ import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
 
-const renderWithAppContextHelper = (ui: ReactElement, appState = {}) => {
+const renderWithProductEditFormContextHelper = (ui: ReactElement, appState = {}) => {
   const store = createStoreWithInitialState(appState);
 
   const Wrapper: FC = ({children}) => (
@@ -23,4 +23,4 @@ const renderWithAppContextHelper = (ui: ReactElement, appState = {}) => {
   });
 };
 
-export {renderWithAppContextHelper};
+export {renderWithProductEditFormContextHelper};

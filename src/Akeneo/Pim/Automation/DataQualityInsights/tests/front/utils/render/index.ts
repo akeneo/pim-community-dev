@@ -1,4 +1,4 @@
-export * from './renderWithAppContextHelper';
+export * from './renderWithProductEditFormContextHelper';
 export * from './renderCriterion';
 export * from './renderAttribute';
 export * from './renderAttributesList';
