@@ -82,7 +82,7 @@ class RefreshProductCommand extends Command
         }
 
         $this->productSaver->saveAll($productsToSave['products'], ['force_save' => true]);
-        $this->productModelSaver->saveAll($productsToSave['product_models']);
+        $this->productModelSaver->saveAll($productsToSave['product_models'], ['force_save' => true]);
 
         return 0;
     }

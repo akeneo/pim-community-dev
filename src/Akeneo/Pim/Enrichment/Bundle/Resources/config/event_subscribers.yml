@@ -195,6 +195,7 @@ services:
         arguments:
             - '@security.helper'
             - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '%webhook_max_bulk_size%'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -210,5 +211,6 @@ services:
         arguments:
             - '@security.helper'
             - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '%webhook_max_bulk_size%'
         tags:
             - { name: kernel.event_subscriber }

@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -22,17 +23,23 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
 {
     private Security $security;
     private MessageBusInterface $messageBus;
+    private int $maxBulkSize;
 
-    public function __construct(Security $security, MessageBusInterface $messageBus)
+    /** @var array<ProductModelRemoved> */
+    private array $events = [];
+
+    public function __construct(Security $security, MessageBusInterface $messageBus, int $maxBulkSize)
     {
         $this->security = $security;
         $this->messageBus = $messageBus;
+        $this->maxBulkSize = $maxBulkSize;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_REMOVE => 'createAndDispatchProductModelEvents',
+            StorageEvents::POST_SAVE_ALL => 'dispatchBufferedProductModelEvents',
         ];
     }
 
@@ -56,7 +63,25 @@ final class DispatchProductModelRemovedEventSubscriber implements EventSubscribe
 
         $event = new ProductModelRemoved($author, $data);
 
-        $this->messageBus->dispatch($event);
+        if ($postSaveEvent->hasArgument('unitary') && true === $postSaveEvent->getArgument('unitary')) {
+            $this->messageBus->dispatch(new BulkEvent([$event]));
+
+            return;
+        }
+
+        $this->events[] = $event;
+
+        if (count($this->events) >= $this->maxBulkSize) {
+            $this->dispatchBufferedProductModelEvents();
+        }
+    }
+
+    public function dispatchBufferedProductModelEvents(): void
+    {
+        if (count($this->events) > 0) {
+            $this->messageBus->dispatch(new BulkEvent($this->events));
+            $this->events = [];
+        }
     }
 
     private function getUser(): ?UserInterface

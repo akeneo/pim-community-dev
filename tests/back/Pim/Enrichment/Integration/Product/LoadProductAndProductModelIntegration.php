@@ -11,7 +11,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LoadProductIntegration extends TestCase
+class LoadProductAndProductModelIntegration extends TestCase
 {
     public function test_product_is_not_dirty_after_fetching_it_from_database()
     {
@@ -58,6 +58,52 @@ class LoadProductIntegration extends TestCase
 
         $baz = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz');
         Assert::assertFalse($baz->isDirty(), 'The product should not be dirty after loading it from the database');
+    }
+
+    public function test_product_model_is_not_dirty_after_fetching_it_from_database()
+    {
+        $this->createProductModel(
+            [
+                'code' => 'baz',
+                'family_variant' => 'familyVariantA1',
+                'values' => [
+                    'a_number_integer' => [['locale' => null, 'scope' => null, 'data' => 42]],
+                    'a_multi_select' => [['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']]],
+                ],
+                'categories' => ['categoryA'],
+                'associations' => [
+                    'X_SELL' => [
+                        'products' => ['foo'],
+                        'product_models' => ['bar'],
+                        'groups' => ['groupB'],
+                    ],
+                    'TWOWAY' => [
+                        'products' => ['foo'],
+                        'product_models' => ['bar'],
+                    ]
+                ],
+                'quantified_associations' => [
+                    'QUANTIFIED' => [
+                        'products' => [
+                            [
+                                'identifier' => 'foo',
+                                'quantity' => 2,
+                            ],
+                        ],
+                        'product_models' => [
+                            [
+                                'identifier' => 'bar',
+                                'quantity' => 5,
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        $baz = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('baz');
+        Assert::assertFalse($baz->isDirty(), 'The product model should not be dirty after loading it from the database');
     }
 
     protected function setUp(): void

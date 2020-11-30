@@ -125,9 +125,8 @@ class ConsumeBusinessProductEventEndToEnd extends ApiTestCase
         $history = Middleware::history($container);
         $handlerStack->push($history);
 
-        $message = new ProductRemoved($author, [
-            'identifier' => $product->getIdentifier(),
-            'category_codes' => $product->getCategoryCodes(),
+        $message = new BulkEvent([
+            new ProductRemoved($author, ['identifier' => $product->getIdentifier(), 'category_codes' => $product->getCategoryCodes()])
         ]);
 
         /** @var $businessEventHandler BusinessEventHandler */

@@ -2110,24 +2110,31 @@ class FixturesContext extends BaseFixturesContext
     public function theFollowingAssociationsForTheProductModel(ProductModelInterface $owner, TableNode $values)
     {
         $rows = $values->getHash();
+        $associations = [];
 
         foreach ($rows as $row) {
-            $association = $owner->getAssociationForTypeCode($row['type']);
-
-            if (null === $association) {
-                $associationType = $this->getContainer()
-                    ->get('pim_catalog.repository.association_type')
-                    ->findOneBy(['code' => $row['type']]);
-
-                $association = new ProductModelAssociation();
-                $association->setAssociationType($associationType);
-                $owner->addAssociation($association);
+            $type = $row['type'];
+            if (!isset($associations[$type])) {
+                $associations[$type] = [
+                    'products' => [],
+                    'product_models' => [],
+                    'groups' => [],
+                ];
             }
-
-            $association->addProduct($this->getProduct($row['products']));
+            if (isset($row['products'])) {
+                $associations[$type]['products'][] = $row['products'];
+            }
+            if (isset($row['product_modelss'])) {
+                $associations[$type]['product_models'][] = $row['product_models'];
+            }
+            if (isset($row['groups'])) {
+                $associations[$type]['groups'][] = $row['groups'];
+            }
         }
-        $missingAssociationAdder = $this->getContainer()->get('pim_catalog.association.missing_association_adder');
-        $missingAssociationAdder->addMissingAssociations($owner);
+
+        $this->getContainer()->get('pim_catalog.updater.product_model')->update($owner, [
+            'associations' => $associations
+        ]);
 
         $this->getProductModelSaver()->save($owner);
     }

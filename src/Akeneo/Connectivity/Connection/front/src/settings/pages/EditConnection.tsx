@@ -2,15 +2,7 @@ import {Formik, FormikHelpers, useFormikContext} from 'formik';
 import React, {useEffect} from 'react';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
-import {
-    ApplyButton,
-    Breadcrumb,
-    BreadcrumbItem,
-    DropdownLink,
-    PageContent,
-    PageHeader,
-    SecondaryActionsDropdownButton,
-} from '../../common';
+import {ApplyButton, DropdownLink, PageContent, PageHeader, SecondaryActionsDropdownButton} from '../../common';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {Connection} from '../../model/connection';
@@ -18,7 +10,7 @@ import {FlowType} from '../../model/flow-type.enum';
 import {WrongCredentialsCombinations} from '../../model/wrong-credentials-combinations';
 import {fetchResult} from '../../shared/fetch-result';
 import {isErr, isOk} from '../../shared/fetch-result/result';
-import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
+import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {connectionFetched, connectionUpdated} from '../actions/connections-actions';
 import {wrongCredentialsCombinationsFetched} from '../actions/wrong-credentials-combinations-actions';
@@ -33,6 +25,7 @@ import {
     useWrongCredentialsCombinationsDispatch,
     useWrongCredentialsCombinationsState,
 } from '../wrong-credentials-combinations-context';
+import {Breadcrumb} from 'akeneo-design-system';
 
 export type FormValues = {
     label: string;
@@ -170,17 +163,19 @@ const HeaderContent = ({connection}: {connection: Connection}) => {
     const history = useHistory();
     const formik = useFormikContext<FormValues>();
     const generateMediaUrl = useMediaUrlGenerator();
+    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
 
     return (
         <PageHeader
             breadcrumb={
                 <Breadcrumb>
-                    <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
+                    <Breadcrumb.Step href={systemHref}>
                         <Translate id='pim_menu.tab.system' />
-                    </BreadcrumbRouterLink>
-                    <BreadcrumbItem onClick={() => history.push('/connections')} isLast={false}>
+                    </Breadcrumb.Step>
+                    <Breadcrumb.Step href={history.createHref({pathname: '/connections'})}>
                         <Translate id='pim_menu.item.connection_settings' />
-                    </BreadcrumbItem>
+                    </Breadcrumb.Step>
+                    <Breadcrumb.Step>{connection.label}</Breadcrumb.Step>
                 </Breadcrumb>
             }
             buttons={[

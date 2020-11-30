@@ -4,6 +4,7 @@ namespace spec\Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use PhpSpec\ObjectBehavior;
 
@@ -23,7 +24,7 @@ class InvalidItemsCollectorSpec extends ObjectBehavior
         );
     }
 
-    function it_collects_invalid_items_from_event(InvalidItemEvent $event, FileInvalidItem $invalidItem)
+    function it_collects_invalid_items_from_event(InvalidItemEvent $event, DataInvalidItem $invalidItem)
     {
         $item = [
             'sku'        => 'sku-001',
@@ -45,9 +46,9 @@ class InvalidItemsCollectorSpec extends ObjectBehavior
         InvalidItemEvent $event1,
         InvalidItemEvent $event2,
         InvalidItemEvent $event3,
-        FileInvalidItem $invalidItem1,
-        FileInvalidItem $invalidItem2,
-        FileInvalidItem $invalidItem3
+        DataInvalidItem $invalidItem1,
+        DataInvalidItem $invalidItem2,
+        DataInvalidItem $invalidItem3
     ) {
         $item1 = [
             'sku'        => 'sku-001',
@@ -91,16 +92,10 @@ class InvalidItemsCollectorSpec extends ObjectBehavior
         InvalidItemEvent $event,
         FileInvalidItem $invalidItem
     ) {
-        $item = [
-            'sku'        => 'sku-001',
-            'name_en-us' => 'Black shoes',
-            'name_fr-fr' => 'Chaussures noires',
-        ];
 
         $event->getItem()->willReturn($invalidItem);
-        $invalidItem->getInvalidData()->willReturn($item);
-
-        $hashKeyItem = md5(serialize($item));
+        $invalidItem->getItemPosition()->willReturn(3);
+        $hashKeyItem = md5(serialize(['position' => 3]));
 
         $this->collect($event);
         $this->getInvalidItems()->shouldReturn([$hashKeyItem => $invalidItem]);
