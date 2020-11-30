@@ -33,8 +33,7 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
     /** @var string */
     private $jobName;
 
-    /** @var CreateJobInstanceInterface|null */
-    public $createJobInstance;
+    public CreateJobInstanceInterface $createJobInstance;
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
