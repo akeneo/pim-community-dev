@@ -41,6 +41,7 @@ class BlackListedAttributeCodeIntegration extends AbstractAttributeTestCase
                 'group'            => 'attributeGroupA'
             ]
         );
+        $this->saveAttribute($attribute);
 
         return $attribute;
     }
