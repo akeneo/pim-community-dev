@@ -37,8 +37,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     private int $productBatchSize;
     private ?CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes;
 
-    /** @var EventDispatcher|null */
-    private $eventDispatcher;
+    private EventDispatcher $eventDispatcher;
 
     public function __construct(
         EntityManagerClearerInterface $entityManagerClearer,
