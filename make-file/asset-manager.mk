@@ -53,22 +53,22 @@
 #
 
 .PHONY: asset-manager-coupling-back
-asset-manager-coupling-back:
+asset-manager-coupling-back: #Doc: launch coupling detector for asset manager files
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back
 
 .PHONY: asset-manager-lint-back
-asset-manager-lint-back:
+asset-manager-lint-back: #Doc: launch PHP linter for the asset-manager
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/AssetManager/tests/back/phpstan.neon.dist
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/AssetManager/back
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/Enrichment/AssetManager/
 
 .PHONY: asset-manager-static-back
-asset-manager-static-back:
+asset-manager-static-back: #Doc: launch PHP static analyzer for the asset manager
 	$(PHP_RUN) src/Akeneo/AssetManager/tests/check-fake-implementations.php
 	$(PHP_RUN) src/Akeneo/AssetManager/tests/check-requests-contracts-with-json-schemas.php
 
 .PHONY: asset-manager-unit-back
-asset-manager-unit-back: var/tests/phpspec
+asset-manager-unit-back: var/tests/phpspec #Doc: launch PHP unit test for the asset-manager
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/asset-manager.xml
 else
@@ -76,15 +76,15 @@ else
 endif
 
 .PHONY: asset-manager-acceptance-back
-asset-manager-acceptance-back: var/tests/behat/asset-manager
+asset-manager-acceptance-back: var/tests/behat/asset-manager #Doc: launch Behat tests for the asset-manager
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/AssetManager/tests/back/behat.yml.dist --format pim --out var/tests/behat/asset-manager --format progress --out std --colors $(O)
 
 .PHONY: asset-manager-acceptance-front
-asset-manager-acceptance-front:
+asset-manager-acceptance-front: #Doc: launch YARN acceptance tests for the asset-manager
 	$(YARN_RUN) acceptance-am
 
 .PHONY: asset-manager-integration-back
-asset-manager-integration-back: var/tests/phpunit
+asset-manager-integration-back: var/tests/phpunit #Doc: launch PHPUnit integration test for the asset-manager
 ifeq ($(CI),true)
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/AssetManager/tests/back --log-junit var/tests/phpunit/phpunit_$$(uuidgen).xml --testsuite AssetFamily_Integration_Test
 else

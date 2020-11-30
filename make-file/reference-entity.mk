@@ -53,16 +53,16 @@
 #
 
 .PHONY: reference-entity-coupling-back
-reference-entity-coupling-back:
+reference-entity-coupling-back: #Doc: launch PHP coupling detector for reference-entity
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back
 
 .PHONY: reference-entity-lint-back
-reference-entity-lint-back:
+reference-entity-lint-back: #Doc: launch PHP linter for reference-entity
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration src/Akeneo/ReferenceEntity/tests/back/phpstan.neon.dist
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/ReferenceEntity/back
 
 .PHONY: reference-entity-unit-back
-reference-entity-unit-back: var/tests/phpspec
+reference-entity-unit-back: var/tests/phpspec #Doc: launch PHPSec for reference-entity
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/reference-entity.xml
 else
@@ -70,15 +70,15 @@ else
 endif
 
 .PHONY: reference-entity-acceptance-back
-reference-entity-acceptance-back:
+reference-entity-acceptance-back: #Doc: launch Behat acceptance tests for reference-entity
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/ReferenceEntity/tests/back/behat.yml.dist --format pim --out var/tests/behat/reference-entity --format progress --out std --colors
 
 .PHONY: reference-entity-acceptance-front
-reference-entity-acceptance-front:
+reference-entity-acceptance-front: #Doc: launch YARN acceptance tests for reference-entity
 	$(YARN_RUN) acceptance-re
 
 .PHONY: reference-entity-integration-back
-reference-entity-integration-back: var/tests/phpunit
+reference-entity-integration-back: var/tests/phpunit #Doc: launch PHP unit tests for reference-entity
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh src/Akeneo/ReferenceEntity/tests/back vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php ReferenceEntity_Integration_Test
 else

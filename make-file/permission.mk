@@ -53,5 +53,5 @@
 #
 
 .PHONY: permission-coupling-back
-permission-coupling-back:
+permission-coupling-back: #Doc: launch coupling detector for permission
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Permission/.php_cd.php src/Akeneo/Pim/Permission
