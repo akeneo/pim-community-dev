@@ -24,6 +24,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         apt-transport-https \
         ca-certificates \
         curl \
+        wget \
         libcurl4-openssl-dev \
         libssl-dev \
         gpg \
@@ -76,27 +77,26 @@ FROM base AS dev
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
-    apt-get --yes install git unzip curl \
-        default-mysql-client php7.3-xdebug procps perceptualdiff && \
+    apt-get --yes install gnupg &&\
+    sh -c 'wget -q -O - https://packages.blackfire.io/gpg.key |APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' &&\
+    sh -c 'echo "deb http://packages.blackfire.io/debian any main" >  /etc/apt/sources.list.d/blackfire.list' &&\
+    apt-get update && \
+    apt-get --yes install \
+        blackfire-agent \
+        blackfire-php \
+        git \
+        unzip \
+        curl \
+        default-mysql-client \
+        php7.3-xdebug \
+        procps \
+        perceptualdiff && \
     phpdismod xdebug && \
     mkdir /etc/php/7.3/enable-xdebug && \
     ln -s /etc/php/7.3/mods-available/xdebug.ini /etc/php/7.3/enable-xdebug/xdebug.ini && \
     sed -i "s#listen = /run/php/php7.3-fpm.sock#listen = 9000#g" /etc/php/7.3/fpm/pool.d/www.conf && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") && \
-    curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version && \
-    mkdir -p /tmp/blackfire && \
-    tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
-    mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so && \
-    printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.3/cli/conf.d/blackfire.ini && \
-    printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > /etc/php/7.3/fpm/conf.d/blackfire.ini && \
-    rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz && \
-    mkdir -p /tmp/blackfire && \
-    curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire && \
-    mv /tmp/blackfire/blackfire /usr/bin/blackfire && \
-    rm -Rf /tmp/blackfire
 
 COPY docker/build/xdebug.ini /etc/php/7.3/cli/conf.d/99-akeneo-xdebug.ini
 COPY docker/build/xdebug.ini /etc/php/7.3/fpm/conf.d/99-akeneo-xdebug.ini
