@@ -12,14 +12,11 @@ use Doctrine\DBAL\Connection;
  */
 class Locales
 {
-    /** @var null|array */
-    private $localeIdsByCodes;
+    private array $localeIdsByCodes;
 
-    /** @var null|array */
-    private $localeCodesByIds;
+    private array $localeCodesByIds;
 
-    /** @var Connection */
-    private $dbConnection;
+    private Connection $dbConnection;
 
     public function __construct(Connection $dbConnection)
     {

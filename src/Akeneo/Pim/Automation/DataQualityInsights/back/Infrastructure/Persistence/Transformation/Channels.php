@@ -12,14 +12,11 @@ use Doctrine\DBAL\Connection;
  */
 class Channels
 {
-    /** @var null|array */
-    private $channelIdsByCodes;
+    private array $channelIdsByCodes;
 
-    /** @var null|array */
-    private $channelCodesByIds;
+    private array $channelCodesByIds;
 
-    /** @var Connection */
-    private $dbConnection;
+    private Connection $dbConnection;
 
     public function __construct(Connection $dbConnection)
     {
