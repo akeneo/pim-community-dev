@@ -77,7 +77,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         if (!empty($attributesCodes)) {
             $this->cleanValues($attributesCodes, $input, $output);
 
-        $this->eventDispatcher->dispatch(AttributeEvents::POST_CLEAN);
+            $this->eventDispatcher->dispatch(AttributeEvents::POST_CLEAN);
 
             return 0;
         }
