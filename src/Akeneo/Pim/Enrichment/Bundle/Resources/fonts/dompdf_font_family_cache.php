@@ -1,12 +1,5 @@
 <?php
 
-if (!isset($rootDir)) {
-  $rootDir = '';
-}
-if (!isset($fontDir)) {
-  $fontDir = '';
-}
-
 return [
     'sans-serif' => [
         'normal' => $rootDir . '/lib/fonts/Helvetica',
