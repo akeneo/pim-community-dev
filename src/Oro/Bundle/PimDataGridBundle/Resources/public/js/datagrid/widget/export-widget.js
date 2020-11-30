@@ -22,7 +22,7 @@ define([
           const message = __('pim_datagrid.mass_action.quick_export.flash.message');
           const link = React.createElement(
             Link,
-            {href: `#${Routing.generate('pim_enrich_job_tracker_show', {id: data.job_id})}`},
+            {key: data.job_id, href: `#${Routing.generate('pim_enrich_job_tracker_show', {id: data.job_id})}`},
             __('pim_datagrid.mass_action.quick_export.flash.link')
           );
 
