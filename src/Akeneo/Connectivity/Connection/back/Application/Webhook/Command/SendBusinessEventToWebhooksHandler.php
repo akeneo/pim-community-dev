@@ -38,6 +38,7 @@ final class SendBusinessEventToWebhooksHandler
     private LoggerInterface $logger;
     private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
     private string $pimSource;
+    private ?\Closure $getTimeCallable;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -46,7 +47,8 @@ final class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
-        string $pimSource
+        string $pimSource,
+        ?callable $getTimeCallable = null
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
         $this->webhookUserAuthenticator = $webhookUserAuthenticator;
@@ -55,6 +57,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->logger = $logger;
         $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
         $this->pimSource = $pimSource;
+        $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -77,7 +80,7 @@ final class SendBusinessEventToWebhooksHandler
 
         $requests = function () use ($event, $webhooks) {
             $cumulatedTimeMs = 0;
-            $startTime = microtime(true);
+            $startTime = $this->getTime();
 
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
@@ -101,18 +104,20 @@ final class SendBusinessEventToWebhooksHandler
                         continue;
                     }
 
-                    $cumulatedTimeMs += (int) round((microtime(true) - $startTime) * 1000);
+                    $cumulatedTimeMs += $this->getTime() - $startTime;
 
                     yield new WebhookRequest(
                         $webhook,
                         $webhookEvents
                     );
 
-                    $startTime = microtime(true);
+                    $startTime = $this->getTime();
                 } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
                     $this->logger->warning($dataBuilderNotFoundException->getMessage());
                 }
             }
+
+            dump($cumulatedTimeMs);
 
             $this->logger->info(
                 json_encode(
@@ -173,6 +178,18 @@ final class SendBusinessEventToWebhooksHandler
         }
 
         return $event;
+    }
+
+    /**
+     * Get the current time in milliseconds.
+     */
+    private function getTime(): int
+    {
+        if (null !== $this->getTimeCallable) {
+            return call_user_func($this->getTimeCallable);
+        }
+
+        return (int) round(microtime(true) * 1000);
     }
 
     /**
