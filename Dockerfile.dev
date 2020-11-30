@@ -3,24 +3,26 @@ FROM akeneo/pim-php-base:master
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 
 RUN apt-get update && \
-    apt-get --yes install gnupg \
+    apt-get --yes install gnupg &&\
     sh -c 'wget -q -O - https://packages.blackfire.io/gpg.key |APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn apt-key add -' &&\
     sh -c 'echo "deb http://packages.blackfire.io/debian any main" >  /etc/apt/sources.list.d/blackfire.list' &&\
+    apt-get update && \
     apt-get --yes install \
         blackfire-agent \
         blackfire-php \
         curl \
-        git \
-        unzip \
         default-mysql-client \
+        git \
+        perceptualdiff \
         php7.4-xdebug \
         procps \
-        perceptualdiff && \
+        unzip &&\
     phpdismod xdebug && \
     mkdir /etc/php/7.4/enable-xdebug && \
     ln -s /etc/php/7.4/mods-available/xdebug.ini /etc/php/7.4/enable-xdebug/xdebug.ini && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
 COPY docker/build/xdebug.ini /etc/php/7.4/cli/conf.d/99-akeneo-xdebug.ini
 COPY docker/build/xdebug.ini /etc/php/7.4/fpm/conf.d/99-akeneo-xdebug.ini
 
