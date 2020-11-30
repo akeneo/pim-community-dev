@@ -11,3 +11,10 @@ datagrid:
                 data_quality_insights_score:
                     data_name: quality_score
                     sorter: data_quality_insights_score
+        filters:
+            columns:
+                data_quality_insights_score:
+                    label: Quality score
+                    data_name: data_quality_insights_score
+                    type: field
+                    frontend_type: quality-score-badge
