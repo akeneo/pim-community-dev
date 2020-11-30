@@ -36,7 +36,6 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
         TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds,
         string $tableName
     ) {
-
         $this->db = $db;
         $this->clock = $clock;
         $this->transformCriterionEvaluationResultIds = $transformCriterionEvaluationResultIds;

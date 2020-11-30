@@ -16,16 +16,21 @@ class Locales
 
     private array $localeCodesByIds;
 
+    private bool $localesLoaded;
+
     private Connection $dbConnection;
 
     public function __construct(Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
+        $this->localeIdsByCodes = [];
+        $this->localeCodesByIds = [];
+        $this->localesLoaded = false;
     }
 
     public function getIdByCode(string $code): ?int
     {
-        if (null === $this->localeIdsByCodes) {
+        if (false === $this->localesLoaded) {
             $this->loadLocales();
         }
 
@@ -34,7 +39,7 @@ class Locales
 
     public function getCodeById(int $id): ?string
     {
-        if (null === $this->localeCodesByIds) {
+        if (false === $this->localesLoaded) {
             $this->loadLocales();
         }
 
@@ -43,9 +48,6 @@ class Locales
 
     private function loadLocales(): void
     {
-        $this->localeIdsByCodes = [];
-        $this->localeCodesByIds = [];
-
         $locales = $this->dbConnection->executeQuery(
             'SELECT JSON_OBJECTAGG(id, code) FROM pim_catalog_locale WHERE is_activated = 1;'
         )->fetchColumn();
@@ -54,5 +56,7 @@ class Locales
             $this->localeCodesByIds = json_decode($locales, true);
             $this->localeIdsByCodes = array_flip($this->localeCodesByIds);
         }
+
+        $this->localesLoaded = true;
     }
 }

@@ -45,6 +45,12 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'total_number_of_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 4,
+                        'fr_FR' => 5,
+                    ],
+                ],
             ],
             'rates' => [
                 'ecommerce' => [
@@ -113,6 +119,32 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
         $this->shouldThrow(CriterionEvaluationResultTransformationFailedException::class)->during('transformToIds', [$invalidEvaluationResult]);
     }
 
+    public function it_throws_an_exception_if_the_evaluation_result_has_an_unknown_data_type()
+    {
+        $invalidEvaluationResult = [
+            'data' => [
+                'attributes_with_rates' => [
+                    'ecommerce' => [
+                        'en_US' => [
+                            'name' => 50,
+                            'description' => 0,
+                        ],
+                    ],
+                ],
+                'foo' => [
+                    'ecommerce' => [
+                        'en_US' => 4,
+                        'fr_FR' => 5,
+                    ],
+                ],
+            ],
+            'rates' => [],
+            'status' => [],
+        ];
+
+        $this->shouldThrow(CriterionEvaluationResultTransformationFailedException::class)->during('transformToIds', [$invalidEvaluationResult]);
+    }
+
     public function it_removes_unknown_channels($channels)
     {
         $channels->getIdByCode('foo')->willReturn(null);
@@ -133,6 +165,15 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                         'en_US' => [
                             'name' => 50,
                         ],
+                    ],
+                ],
+                'total_number_of_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 4,
+                        'fr_FR' => 5,
+                    ],
+                    'foo' => [
+                        'en_US' => 3,
                     ],
                 ],
             ],
@@ -179,6 +220,13 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'total_number_of_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 4,
+                        'fr_FR' => 5,
+                        'fo_FO' => 3,
+                    ],
+                ],
             ],
             'rates' => [
                 'ecommerce' => [
@@ -204,12 +252,20 @@ final class TransformCriterionEvaluationResultCodesSpec extends ObjectBehavior
         return [
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
                 1 => [
-                    58 => [
-                        12 => 50,
-                        34 => 0,
+                    1 => [
+                        58 => [
+                            12 => 50,
+                            34 => 0,
+                        ],
+                        90 => [
+                            34 => 20,
+                        ],
                     ],
-                    90 => [
-                        34 => 20,
+                ],
+                2 => [
+                    1 => [
+                        58 => 4,
+                        90 => 5,
                     ],
                 ],
             ],
