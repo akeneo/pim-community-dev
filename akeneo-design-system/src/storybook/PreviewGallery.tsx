@@ -61,8 +61,10 @@ const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
 `;
 
 const MessageBarContainer = styled.div`
-  width: 500px;
-  height: 100px;
+  padding: 5px;
+  width: 600px;
+  height: 110px;
+  overflow: clip;
 `;
 
 export {StoryStyle, PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content, MessageBarContainer};
