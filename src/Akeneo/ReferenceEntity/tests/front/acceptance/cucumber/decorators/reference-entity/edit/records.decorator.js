@@ -37,7 +37,7 @@ const Records = async (nodeElement, createElementDecorator, page) => {
   };
 
   const hasSuccessNotification = async () => {
-    await page.waitForSelector('.AknFlash--success');
+    await page.waitForSelector('[role="success"]');
 
     return true;
   };
@@ -88,7 +88,7 @@ const Records = async (nodeElement, createElementDecorator, page) => {
   };
 
   const hasErrorNotification = async () => {
-    await page.waitForSelector('.AknFlash--error');
+    await page.waitForSelector('[role="alert"]');
 
     return true;
   };

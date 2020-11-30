@@ -9,8 +9,6 @@ define([
   'jquery',
   'underscore',
   'oro/translator',
-  'backbone',
-  'routing',
   'pim/form',
   'oro/loading-mask',
   'oro/messenger',
@@ -29,8 +27,6 @@ define([
   $,
   _,
   __,
-  Backbone,
-  Routing,
   BaseForm,
   LoadingMask,
   messenger,
@@ -196,6 +192,12 @@ define([
             } else {
               this.validationErrors.push(response.responseJSON);
             }
+
+            this.validationErrors.forEach(error => {
+              if (500 === error.status_code) {
+                messenger.notify('error', error.status_text);
+              }
+            });
 
             this.render();
           }.bind(this)

@@ -87,7 +87,6 @@ Feature: Delete an attribute linked to an asset family
       | bio     | text  |
       | portrait | media_file |
     When the user cancel the deletion of attribute "bio"
-    Then the user should not see the delete notification
     And there should be the following attributes:
       | code     | type  |
       | name     | text  |

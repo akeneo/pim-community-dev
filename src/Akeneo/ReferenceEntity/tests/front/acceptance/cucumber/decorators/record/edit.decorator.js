@@ -95,7 +95,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
 
   const hasSuccessNotification = async () => {
     try {
-      await page.waitForSelector('.AknFlash--success');
+      await page.waitForSelector('[role="success"]');
     } catch (error) {
       return false;
     }
@@ -104,13 +104,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
   };
 
   const hasErrorNotification = async () => {
-    await page.waitForSelector('.AknFlash--error');
-
-    return true;
-  };
-
-  const hasNoNotification = async () => {
-    await page.waitForSelector('.AknFlash', {hidden: true});
+    await page.waitForSelector('[role="alert"]');
 
     return true;
   };
@@ -128,7 +122,6 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     getValidationMessageForCode,
     hasSuccessNotification,
     hasErrorNotification,
-    hasNoNotification,
   };
 };
 

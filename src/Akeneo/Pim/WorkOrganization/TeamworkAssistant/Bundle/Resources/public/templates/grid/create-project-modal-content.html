@@ -1,10 +1,4 @@
 <div class="control-group">
-    <% _.each(_.where(errors, {status_code: 500}), function (error) { %>
-        <div class="AknFlash AknFlash--danger">
-            <i class="icon-warning-sign"></i> <%- error.status_text %>
-        </div>
-    <% }); %>
-
     <div class="AknFieldContainer">
         <div class="AknFieldContainer-header">
             <label class="AknFieldContainer-label"><%- localeLabel %></label>
