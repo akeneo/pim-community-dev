@@ -187,7 +187,6 @@ final class Record implements ArrayConverterInterface
 
             $convertedItem['values'][$tokens[0]][] = $this->convertValue(
                 $directoryPath,
-                $referenceEntityIdentifier,
                 $attributeDetails,
                 $field,
                 $data
@@ -199,7 +198,6 @@ final class Record implements ArrayConverterInterface
 
     private function convertValue(
         string $directoryPath,
-        ReferenceEntityIdentifier $referenceEntityIdentifier,
         AttributeDetails $attributeDetails,
         string $field,
         string $data
