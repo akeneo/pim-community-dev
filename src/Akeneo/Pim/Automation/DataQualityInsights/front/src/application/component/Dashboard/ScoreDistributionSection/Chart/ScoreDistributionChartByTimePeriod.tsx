@@ -56,7 +56,12 @@ const ScoreDistributionChartByTimePeriod: FC<Props> = ({dataset, timePeriod}) =>
       {isEmptyChartDataset(dataset) ? (
         <EmptyChartPlaceholder />
       ) : (
-        <ScoreDistributionChart dataset={dataset} periods={periods} dateFormatCallback={callback} domainPadding={domainPadding} />
+        <ScoreDistributionChart
+          dataset={dataset}
+          periods={periods}
+          dateFormatCallback={callback}
+          domainPadding={domainPadding}
+        />
       )}
     </>
   );

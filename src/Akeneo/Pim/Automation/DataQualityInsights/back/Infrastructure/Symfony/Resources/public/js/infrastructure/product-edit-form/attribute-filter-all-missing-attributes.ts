@@ -44,7 +44,9 @@ class AttributeFilterAllMissingAttributes extends BaseForm {
     if (_has(data, axisCriteriaPath)) {
       const criteria = _get(data, axisCriteriaPath)
         // @ts-ignore
-        .filter((criterionEvaluation: CriterionEvaluationResult) => enrichmentCriteria.includes(criterionEvaluation.code));
+        .filter((criterionEvaluation: CriterionEvaluationResult) =>
+          enrichmentCriteria.includes(criterionEvaluation.code)
+        );
       // @ts-ignore
       criteria.map((criterion: CriterionEvaluationResult) => {
         attributes.push(...criterion.improvable_attributes);

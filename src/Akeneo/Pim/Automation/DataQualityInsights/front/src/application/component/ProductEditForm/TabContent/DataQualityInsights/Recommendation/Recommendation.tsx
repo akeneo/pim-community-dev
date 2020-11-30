@@ -37,17 +37,21 @@ const Recommendation: FC<Props> = ({children, type, follow}) => {
   if (type === 'not_applicable') {
     return (
       <span className="NotApplicableAttribute" onClick={follow}>
-        {
-          children ||
+        {children || (
           <>
             <span>
               {translate('akeneo_data_quality_insights.product_evaluation.messages.not_applicable.message')}&nbsp;
             </span>
-            <LinkableMessage href={'https://help.akeneo.com/pim/serenity/articles/understand-data-quality.html#in-your-data-quality-insights-panel-product-edit-form'} target={'_blank'}>
+            <LinkableMessage
+              href={
+                'https://help.akeneo.com/pim/serenity/articles/understand-data-quality.html#in-your-data-quality-insights-panel-product-edit-form'
+              }
+              target={'_blank'}
+            >
               {translate('akeneo_data_quality_insights.product_evaluation.messages.not_applicable.help_center_link')}
             </LinkableMessage>
           </>
-        }
+        )}
       </span>
     );
   }

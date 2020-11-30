@@ -19,7 +19,12 @@ const showPlaceholder = (dataset: RawScoreEvolutionData | null) => {
 
 const QualityScoreEvolutionSection: FC<Props> = ({categoryCode, familyCode, channel, locale}) => {
   const translate = useTranslate();
-  const dataset: RawScoreEvolutionData | null = useFetchQualityScoreEvolution(channel, locale, familyCode, categoryCode);
+  const dataset: RawScoreEvolutionData | null = useFetchQualityScoreEvolution(
+    channel,
+    locale,
+    familyCode,
+    categoryCode
+  );
   const [chart, setChart] = useState<ReactElement | null>(null);
 
   useEffect(() => {
@@ -30,17 +35,18 @@ const QualityScoreEvolutionSection: FC<Props> = ({categoryCode, familyCode, chan
     setChart(
       <>
         <AverageScoreLabel>
-          {dataset.average_rank === null ?
-            <>{translate('akeneo_data_quality_insights.dqi_dashboard.quality_score_evolution.no_catalog_score')}</> :
+          {dataset.average_rank === null ? (
+            <>{translate('akeneo_data_quality_insights.dqi_dashboard.quality_score_evolution.no_catalog_score')}</>
+          ) : (
             <>
-              <QualityScore score={dataset.average_rank}/>
+              <QualityScore score={dataset.average_rank} />
               <span style={{marginLeft: '8px'}}>
                 {translate('akeneo_data_quality_insights.dqi_dashboard.quality_score_evolution.current_score')}
               </span>
             </>
-          }
+          )}
         </AverageScoreLabel>
-        <QualityScoreEvolutionChart rawDataset={dataset.data}/>
+        <QualityScoreEvolutionChart rawDataset={dataset.data} />
       </>
     );
   }, [dataset]);
@@ -53,7 +59,7 @@ const QualityScoreEvolutionSection: FC<Props> = ({categoryCode, familyCode, chan
 
       <ChartContainer>
         {dataset === null && <div className="AknLoadingMask" />}
-        {showPlaceholder(dataset) ? <EmptyChartPlaceholder/> : chart}
+        {showPlaceholder(dataset) ? <EmptyChartPlaceholder /> : chart}
       </ChartContainer>
     </Container>
   );

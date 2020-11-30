@@ -3,9 +3,9 @@ import {fetchQualityScoreEvolution} from '../../fetcher';
 
 type RawScoreEvolutionData = {
   data: {
-    [date: string]: string | null
-  },
-  average_rank: string
+    [date: string]: string | null;
+  };
+  average_rank: string;
 };
 
 const useFetchQualityScoreEvolution = (

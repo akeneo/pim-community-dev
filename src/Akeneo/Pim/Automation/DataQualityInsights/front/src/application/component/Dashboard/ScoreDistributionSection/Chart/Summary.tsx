@@ -27,7 +27,7 @@ const Arrow = styled.div<ReversibleProps>`
   border-right: 10px solid;
   margin-top: 30px;
   color: ${({theme}) => theme.color.white};
-  
+
   ${({flip}) =>
     flip &&
     css`
@@ -82,7 +82,7 @@ const ScoreValue = styled.span`
 const Footer = styled.div`
   height: auto;
   width: auto;
-  border-top: solid 1px ${({theme}) => theme.color.grey60};;
+  border-top: solid 1px ${({theme}) => theme.color.grey60};
   line-height: 44px;
   display: flex;
   padding-top: 13px;

@@ -1,5 +1,5 @@
 import React, {FC, useRef} from 'react';
-import {VictoryAxis, VictoryChart, VictoryLine} from "victory";
+import {VictoryAxis, VictoryChart, VictoryLine} from 'victory';
 import {useTheme} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {useGetDashboardChartScalingSizeRatio} from '../../../../infrastructure/hooks';
@@ -17,10 +17,7 @@ const QualityScoreEvolutionChart: FC<Props> = ({rawDataset}) => {
   const theme = useTheme();
   const translate = useTranslate();
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
-  const {downScalingRatio} = useGetDashboardChartScalingSizeRatio(
-    chartContainerRef,
-    INITIAL_CHART_WIDTH
-  );
+  const {downScalingRatio} = useGetDashboardChartScalingSizeRatio(chartContainerRef, INITIAL_CHART_WIDTH);
 
   const formatMonthlyDate = (date: string, index: any) => {
     //The current month is displayed differently
@@ -33,21 +30,22 @@ const QualityScoreEvolutionChart: FC<Props> = ({rawDataset}) => {
     }
     const uiLocale = UserContext.get('uiLocale');
 
-    return new Intl.DateTimeFormat(uiLocale.replace('_', '-'), {month: 'short', year: '2-digit'}).format(new Date(date)).replace(/\s/g, '. ');
+    return new Intl.DateTimeFormat(uiLocale.replace('_', '-'), {month: 'short', year: '2-digit'})
+      .format(new Date(date))
+      .replace(/\s/g, '. ');
   };
 
-  const tickValues = [
-    'before',
-    ...Object.keys(rawDataset),
-    'after',
-  ];
+  const tickValues = ['before', ...Object.keys(rawDataset), 'after'];
 
   const data = [
-    { x: 'before', y: typeof rawDataset[Object.keys(rawDataset)[0]] === 'string' ? rawDataset[Object.keys(rawDataset)[0]] : null },
+    {
+      x: 'before',
+      y: typeof rawDataset[Object.keys(rawDataset)[0]] === 'string' ? rawDataset[Object.keys(rawDataset)[0]] : null,
+    },
     ...Object.entries(rawDataset).map(([date, _]) => {
       return {x: date, y: rawDataset[date]};
     }),
-    { x: 'after', y: rawDataset[Object.keys(rawDataset)[5]] },
+    {x: 'after', y: rawDataset[Object.keys(rawDataset)[5]]},
   ];
 
   return (
@@ -56,7 +54,7 @@ const QualityScoreEvolutionChart: FC<Props> = ({rawDataset}) => {
         height={INITIAL_CHART_HEIGHT}
         width={INITIAL_CHART_WIDTH}
         padding={{top: 0, bottom: Math.ceil(40 * downScalingRatio), left: Math.ceil(30 * downScalingRatio), right: 0}}
-        domainPadding={{ x: -60, y: [2, 12.5] }}
+        domainPadding={{x: -60, y: [2, 12.5]}}
       >
         <VictoryAxis
           tickValues={tickValues}
@@ -69,13 +67,13 @@ const QualityScoreEvolutionChart: FC<Props> = ({rawDataset}) => {
               padding: Math.ceil(27 * downScalingRatio),
               fontFamily: 'Lato',
               textTransform: 'capitalize',
-            }
+            },
           }}
         />
 
         <VictoryAxis
           dependentAxis
-          orientation='left'
+          orientation="left"
           standalone={false}
           tickValues={['E', 'D', 'C', 'B', 'A']}
           style={{
@@ -88,7 +86,7 @@ const QualityScoreEvolutionChart: FC<Props> = ({rawDataset}) => {
               fontSize: theme.fontSize.default,
               fill: theme.color.grey120,
               fontFamily: 'Lato',
-            }
+            },
           }}
         />
 
@@ -98,7 +96,7 @@ const QualityScoreEvolutionChart: FC<Props> = ({rawDataset}) => {
             data: {
               stroke: theme.color.grey80,
               strokeWidth: 3,
-              strokeLinejoin: 'round'
+              strokeLinejoin: 'round',
             },
           }}
           data={data}
