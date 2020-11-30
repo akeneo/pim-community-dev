@@ -60,6 +60,7 @@ services:
             - '@pim_analytics.query.api_connection_count'
             - '@pim_analytics.query.media_count'
             - '@pim_analytics.query.is_demo_catalog'
+            - '@pim_analytics.query.active_event_subscription_count'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
