@@ -10,14 +10,11 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\T
  */
 final class TransformCriterionEvaluationResultIds
 {
-    /** @var Attributes */
-    private $attributes;
+    private Attributes $attributes;
 
-    /** @var Channels */
-    private $channels;
+    private Channels $channels;
 
-    /** @var Locales */
-    private $locales;
+    private Locales $locales;
 
     public function __construct(Attributes $attributes, Channels $channels, Locales $locales)
     {

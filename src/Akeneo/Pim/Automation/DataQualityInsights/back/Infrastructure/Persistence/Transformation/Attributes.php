@@ -15,14 +15,11 @@ class Attributes
 {
     private const LRU_CACHE_SIZE = 1000;
 
-    /** @var Connection */
-    private $dbConnection;
+    private Connection $dbConnection;
 
-    /** @var LRUCache */
-    private $attributeIdsByCodes;
+    private LRUCache $attributeIdsByCodes;
 
-    /** @var LRUCache */
-    private $attributeCodesByIds;
+    private LRUCache $attributeCodesByIds;
 
     public function __construct(Connection $dbConnection)
     {

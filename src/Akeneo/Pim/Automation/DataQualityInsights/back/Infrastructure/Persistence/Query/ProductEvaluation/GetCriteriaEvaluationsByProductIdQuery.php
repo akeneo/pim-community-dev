@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
@@ -25,19 +16,19 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transfo
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluationsByProductIdQueryInterface
 {
-    /** @var Connection */
-    private $db;
+    private Connection $db;
 
-    /** @var Clock */
-    private $clock;
+    private Clock $clock;
 
-    /** @var string */
-    private $tableName;
+    private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds;
 
-    /** @var TransformCriterionEvaluationResultIds */
-    private $transformCriterionEvaluationResultIds;
+    private string $tableName;
 
     public function __construct(
         Connection $db,
@@ -45,10 +36,11 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
         TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds,
         string $tableName
     ) {
+
         $this->db = $db;
         $this->clock = $clock;
-        $this->tableName = $tableName;
         $this->transformCriterionEvaluationResultIds = $transformCriterionEvaluationResultIds;
+        $this->tableName = $tableName;
     }
 
     public function execute(ProductId $productId): Read\CriterionEvaluationCollection

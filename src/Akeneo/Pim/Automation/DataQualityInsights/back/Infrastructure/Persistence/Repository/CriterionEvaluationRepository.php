@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
@@ -19,13 +10,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transfo
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DeadlockException;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CriterionEvaluationRepository
 {
-    /** @var Connection */
-    protected $dbConnection;
+    private Connection $dbConnection;
 
-    /** @var TransformCriterionEvaluationResultCodes */
-    private $transformCriterionEvaluationResult;
+    private TransformCriterionEvaluationResultCodes $transformCriterionEvaluationResult;
 
     public function __construct(Connection $dbConnection, TransformCriterionEvaluationResultCodes $transformCriterionEvaluationResult)
     {

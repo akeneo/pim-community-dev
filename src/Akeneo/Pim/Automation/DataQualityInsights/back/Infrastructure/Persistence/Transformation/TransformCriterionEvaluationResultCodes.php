@@ -25,14 +25,11 @@ final class TransformCriterionEvaluationResultCodes
         CriterionEvaluationResultStatus::NOT_APPLICABLE => 4,
     ];
 
-    /** @var Attributes */
-    private $attributes;
+    private Attributes $attributes;
 
-    /** @var Channels */
-    private $channels;
+    private Channels $channels;
 
-    /** @var Locales */
-    private $locales;
+    private Locales $locales;
 
     public function __construct(Attributes $attributes, Channels $channels, Locales $locales)
     {

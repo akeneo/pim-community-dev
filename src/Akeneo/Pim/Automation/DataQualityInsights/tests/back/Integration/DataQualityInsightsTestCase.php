@@ -89,14 +89,6 @@ class DataQualityInsightsTestCase extends TestCase
         return $product;
     }
 
-    protected function createProductWithoutEvaluations(string $identifier, array $data = []): ProductInterface
-    {
-        $product = $this->createProduct($identifier, $data);
-        $this->deleteProductCriterionEvaluations($product->getId());
-
-        return $product;
-    }
-
     protected function createMinimalProductVariant(string $identifier, string $parent, string $axisOption, array $data = []): ProductInterface
     {
         Assert::oneOf($axisOption, self::MINIMAL_VARIANT_OPTIONS, 'Unknown minimal variant option');
