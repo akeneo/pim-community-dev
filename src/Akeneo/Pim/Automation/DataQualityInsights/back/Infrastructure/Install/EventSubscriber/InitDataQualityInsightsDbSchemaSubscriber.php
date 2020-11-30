@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber;
 
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
@@ -20,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class InitDataQualityInsightsDbSchemaSubscriber implements EventSubscriberInterface
 {
-    private $dbalConnection;
+    private Connection $dbalConnection;
 
     public function __construct(Connection $dbalConnection)
     {
@@ -55,15 +46,6 @@ CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
   result json DEFAULT NULL,
   PRIMARY KEY (product_id, criterion_code),
   INDEX status_index (status)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE pim_data_quality_insights_product_axis_rates (
-    product_id INT NOT NULL,
-    axis_code VARCHAR(40) NOT NULL,
-    evaluated_at DATE NOT NULL,
-    rates JSON NOT NULL,
-    PRIMARY KEY (product_id, axis_code, evaluated_at),
-    INDEX evaluated_at_index (evaluated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_product_score (

@@ -22,11 +22,6 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.get_key_indicators'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductAxesRatesController:
-        public: true
-        arguments:
-            - '@akeneo.pim.automation.data_quality_insights.get_product_axes_rates'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductEvaluationController:
         public: true
         arguments:

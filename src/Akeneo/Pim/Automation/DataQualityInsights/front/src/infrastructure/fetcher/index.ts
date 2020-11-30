@@ -1,6 +1,5 @@
 import fetchDqiDashboardData from './Dashboard/fetchDqiDashboardData';
 import fetchProductDataQualityEvaluation from './ProductEditForm/fetchProductDataQualityEvaluation';
-import fetchProductAxisRates from './ProductEditForm/fetchProductAxisRates';
 import fetchFamilyInformation from './ProductEditForm/fetchFamilyInformation';
 import fetchProduct from './ProductEditForm/fetchProduct';
 import {fetchAllAttributeGroupsDqiStatus} from './AttributeGroup/attributeGroupDqiStatusFetcher';
@@ -11,7 +10,6 @@ import {fetchQualityScoreEvolution} from './Dashboard/fetchQualityScoreEvolution
 export {
   fetchDqiDashboardData,
   fetchProductDataQualityEvaluation,
-  fetchProductAxisRates,
   fetchFamilyInformation,
   fetchProduct,
   fetchAllAttributeGroupsDqiStatus,

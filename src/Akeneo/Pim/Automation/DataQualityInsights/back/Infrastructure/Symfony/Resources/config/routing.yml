@@ -40,13 +40,6 @@ akeneo_data_quality_insights_dashboard_quality_score_evolution:
         _feature: data_quality_insights
     methods: [GET]
 
-akeneo_data_quality_insights_product_axis_rates:
-    path: /data-quality-insights/product-axes-rates/{productId}
-    defaults:
-        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductAxesRatesController
-        _feature: data_quality_insights
-    methods: [GET]
-
 akeneo_data_quality_insights_product_evaluation:
     path: /data-quality-insights/product-evaluation/{productId}
     defaults:
