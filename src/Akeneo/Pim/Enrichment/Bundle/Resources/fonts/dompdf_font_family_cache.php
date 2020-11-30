@@ -91,4 +91,4 @@ return [
         'italic' => $fontDir . '/NotoSansSC-Regular-Alphabetic',
         'bold_italic' => $fontDir . '/NotoSansSC-Regular-Alphabetic',
     ],
-] ?>
+];
