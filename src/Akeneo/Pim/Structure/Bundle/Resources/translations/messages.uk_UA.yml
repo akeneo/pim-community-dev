@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Параметри
+      value.title: Значення
+      history.title: Історія
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Неможливо видалити атрибут, який використовується в якості різновиду основи у сімействі різновидів
+  #Group type
+  group_type:
+    tab:
+      property.title: Властивості
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Сімейства
+      page_subtitle: Масове редагування (1 сімейство)|Масове редагування (%count% сімейств)
+      title: Виберіть операцію
+      subtitle: Оберіть операцію, яку ви хочете виконати для вибраного сімейства|Оберіть операцію, яку ви хочете виконати для %count% вибраних сімейств
+      confirm: Ви маєте намір оновити сімейство з наступною інформацією, будь ласка, підтвердіть. |Ви маєте намір оновити %count% сімейств з наступною інформацією, будь ласка, підтвердіть.
+      steps:
+        first: Виберіть сімейства
+        second: Виберіть операцію
+        third: Налаштування
+        fourth: Підтвердження
+pim_enrich_attribute_form:
+  code: Код
+  type: Тип атрибуту
+  reference_data_name: Ім'я довідкових даних
+  scopable: Значення в каналі
+  localizable: Значення в локалі
+  unique: Унікальне значення
+  availableLocales: Доступні локалі
+  locale_specific: Специфічно для локалі
+  group: Група атрибутів
+  useableAsGridFilter: Використовується в сітці

@@ -8,6 +8,9 @@ use Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrders
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -24,7 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
+class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -44,18 +47,22 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
     /** @var ValidatorInterface */
     private $validator;
 
+    private JobRepositoryInterface $jobRepository;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeGroupRepository,
         ItemReaderInterface $attributeGroupReader,
         SaverInterface $attributeGroupSaver,
         FindAttributeGroupOrdersEqualOrSuperiorTo $findAttributeGroupOrdersEqualOrSuperiorTo,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        JobRepositoryInterface $jobRepository
     ) {
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->attributeGroupReader = $attributeGroupReader;
         $this->attributeGroupSaver = $attributeGroupSaver;
         $this->findAttributeGroupOrdersEqualOrSuperiorTo = $findAttributeGroupOrdersEqualOrSuperiorTo;
         $this->validator = $validator;
+        $this->jobRepository = $jobRepository;
     }
 
     /**
@@ -71,6 +78,10 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
      */
     public function execute()
     {
+        if ($this->attributeGroupReader instanceof TrackableItemReaderInterface) {
+            $this->stepExecution->setTotalItems($this->attributeGroupReader->totalItems());
+        }
+
         while (true) {
             try {
                 $attributeGroupItem = $this->attributeGroupReader->read();
@@ -86,7 +97,7 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
             $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($attributeGroupItem['code']);
 
             if (null === $attributeGroup) {
-                $this->stepExecution->incrementSummaryInfo('skip');
+                $this->updateProgressWithSkipped();
 
                 continue;
             }
@@ -108,16 +119,35 @@ class EnsureConsistentAttributeGroupOrderTasklet implements TaskletInterface
                 $violations = $this->validator->validate($attributeGroup);
 
                 if ($violations->count() > 0) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
+                    $this->updateProgressWithSkipped();
 
                     continue;
                 }
 
                 $this->attributeGroupSaver->save($attributeGroup);
-                $this->stepExecution->incrementSummaryInfo('process');
+                $this->updateProgressWithProcessed();
             } else {
-                $this->stepExecution->incrementSummaryInfo('skip');
+                $this->updateProgressWithSkipped();
             }
         }
+    }
+
+    private function updateProgressWithSkipped(): void
+    {
+        $this->stepExecution->incrementSummaryInfo('skip');
+        $this->stepExecution->incrementProcessedItems();
+        $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    private function updateProgressWithProcessed(): void
+    {
+        $this->stepExecution->incrementSummaryInfo('process');
+        $this->stepExecution->incrementProcessedItems();
+        $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    public function isTrackable(): bool
+    {
+        return $this->attributeGroupReader instanceof TrackableItemReaderInterface;
     }
 }

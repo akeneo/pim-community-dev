@@ -79,7 +79,7 @@ describe('testing EditConnection page', () => {
 
         const history = createMemoryHistory({initialEntries: ['/connections/ecommerce/edit']});
 
-        const {getByText, getByLabelText} = renderWithProviders(
+        const {getByText, getByLabelText, findByText} = renderWithProviders(
             <Router history={history}>
                 <Route path='/connections/:code/edit'>
                     <UserContextProvider>
@@ -99,7 +99,7 @@ describe('testing EditConnection page', () => {
         );
         expect(fetchMock.mock.calls[1][0]).toEqual('akeneo_connectivity_connection_rest_get?code=ecommerce');
 
-        await waitForElement(() => getByText('Franklin'));
+        await findByText('akeneo_connectivity.connection.secondary_actions.title');
         expect(fetchMock).toBeCalledTimes(4);
         expect(fetchMock.mock.calls[2][0]).toEqual('pim_user_user_role_rest_index');
         expect(fetchMock.mock.calls[3][0]).toEqual('pim_user_user_group_rest_index');
@@ -153,7 +153,7 @@ describe('testing EditConnection page', () => {
             </Router>
         );
 
-        await findByText('Franklin');
+        await findByText('akeneo_connectivity.connection.secondary_actions.title');
 
         const labelInput = getByLabelText('akeneo_connectivity.connection.connection.label', {
             exact: false,

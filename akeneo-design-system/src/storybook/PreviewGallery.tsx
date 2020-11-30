@@ -1,5 +1,12 @@
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor} from '../theme';
+import {AkeneoThemedProps, CommonStyle, getColor} from '../theme';
+
+const StoryStyle = styled.div`
+  ${CommonStyle}
+  & > * {
+    margin: 0 10px 20px 0;
+  }
+`;
 
 const PreviewGrid = styled.div<{width: number}>`
   display: grid;
@@ -53,4 +60,4 @@ const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
   margin-top: 30px;
 `;
 
-export {PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content};
+export {StoryStyle, PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content};

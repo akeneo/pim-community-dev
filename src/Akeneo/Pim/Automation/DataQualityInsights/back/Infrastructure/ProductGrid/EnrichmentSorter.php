@@ -14,15 +14,19 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource;
 use Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource;
 use Oro\Bundle\PimDataGridBundle\Extension\Sorter\SorterInterface;
-use Webmozart\Assert\Assert;
 
 final class EnrichmentSorter implements SorterInterface
 {
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        Assert::isInstanceOf($datasource, ProductDatasource::class);
+        if (!$datasource instanceof ProductDatasource
+            && !$datasource instanceof ProductAndProductModelDatasource
+        ) {
+            throw new \InvalidArgumentException('Datasource must be a product datasource.');
+        }
 
         $datasource->getProductQueryBuilder()->addSorter($field, $direction);
     }

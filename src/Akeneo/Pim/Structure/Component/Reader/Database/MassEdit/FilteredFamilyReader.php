@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Structure\Component\Reader\Database\MassEdit;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface
+class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInterface, InitializableInterface, TrackableItemReaderInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -35,6 +36,14 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     public function __construct(FamilyRepositoryInterface $familyRepository)
     {
         $this->familyRepository = $familyRepository;
+    }
+
+    public function totalItems(): int
+    {
+        $filters = $this->getConfiguredFilters();
+        $familyIds = $this->getFamilyIds($filters);
+
+        return count($familyIds);
     }
 
     /**
@@ -87,13 +96,7 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
      */
     protected function getFamilies(array $filters)
     {
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value']);
-
-        $filter = current($filters);
-        $filter = $resolver->resolve($filter);
-
-        $familiesIds = $filter['value'];
+        $familiesIds = $this->getFamilyIds($filters);
 
         foreach ($familiesIds as $familyId) {
             $family = $this->familyRepository->find($familyId);
@@ -112,5 +115,16 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
         $jobParameters = $this->stepExecution->getJobParameters();
 
         return $jobParameters->get('filters');
+    }
+
+    protected function getFamilyIds(array $filters)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(['field', 'operator', 'value']);
+
+        $filter = current($filters);
+        $filter = $resolver->resolve($filter);
+
+        return $filter['value'];
     }
 }

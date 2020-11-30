@@ -85,11 +85,14 @@ abstract class AbstractPimCatalogTestCase extends TestCase
      *
      * @param array $actualProductIdentifiers
      * @param array $expectedProductIdentifiers
+     * @param bool $keepSorting
      */
-    protected function assertDocument(array $actualProductIdentifiers, array $expectedProductIdentifiers)
+    protected function assertDocument(array $actualProductIdentifiers, array $expectedProductIdentifiers, bool $keepSorting = false)
     {
-        sort($actualProductIdentifiers);
-        sort($expectedProductIdentifiers);
+        if ($keepSorting === false) {
+            sort($actualProductIdentifiers);
+            sort($expectedProductIdentifiers);
+        }
 
         $this->assertSame($expectedProductIdentifiers, $actualProductIdentifiers);
     }

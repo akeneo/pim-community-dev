@@ -1,0 +1,100 @@
+pim_title:
+  pim_user_index: Brukere
+  pim_user_role_index: Roller
+  pim_user_group_index: Brukergrupper
+  oro_config_configuration_system: Konfigurasjon
+  pim_user_edit: 'Bruker {{ username }} | Rediger'
+  pim_user_create: 'Brukere | Opprett'
+  pim_user_role_update: 'Rolle {{ role }} | Rediger'
+  pim_user_role_create: 'Rolle | Opprett'
+  pim_user_security_login: Logg inn
+  pim_user_reset_reset: Tilbakestilling av passord
+  pim_user_reset_request: Glemt passord
+  pim_user_reset_check_email: Nullstill passord | Sjekk e-post
+  pim_user_group_create: 'Grupper | Opprett'
+  pim_user_group_update: 'Gruppe {{ group }} | Rediger'
+confirmation:
+  remove:
+    user: Er du sikker på at du vil slette denne brukeren?
+    group: Er du sikker på at du vil slette denne gruppen?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: Brukeren kan ikke slettes
+          success: Brukeren er slettet
+      module:
+        delete:
+          confirm: Er du sikker på at du vil slette denne brukeren?
+pim_user_management:
+  entity:
+    user:
+      label: bruker
+      flash:
+        update:
+          success: Oppdatering av bruker vellykket.
+          fail: Brukeren kunne ikke oppdateres.
+          fields_not_ready: "Brukeren kan ikke lagres. Følgende felt er ikke klare: {{ fields }}"
+        create:
+          success: Bruker ble opprettet.
+      page_title:
+        index: "] -Inf, 1] {{ count }} bruker|] 1, Inf [{{ count }} brukere"
+      properties:
+        username: Brukernavn
+        name_prefix: Fornavn
+        first_name: Fornavn
+        middle_name: Mellomnavn
+        last_name: Etternavn
+        name_suffix: Etternavn
+        phone: Telefon
+        avatar: Profilbilde
+        email: Epost
+        catalog_locale: Katalogspråk
+        catalog_scope: Område for katalog
+        default_tree: Standardtre
+        default_asset_tree: Standard ressurs tre
+        product_grid_filters: Filter for produktliste
+        current_password: Nåværende passord
+        new_password: Nytt passord
+        new_password_repeat: Nytt passord (gjenta)
+        password: Passord
+        password_repeat: Passord (gjenta)
+        last_logged_in: Sist innlogget
+        login_count: Antall innlogginger
+        ui_locale: Språk grensesnitt
+        timezone: Tidssone
+        default_product_grid_view: Standard produktlistevisning
+        default_published_product_grid_view: Standard publiserte produkt rutenettvisning #EE Only
+        proposals_to_review_notification: Når nye forslaget til gjennomgang #EE Only
+        proposals_state_notifications: Når forslaget er akseptert eller avvist #EE Only
+      meta:
+        created: Opprettet
+        updated: Oppdatert
+      module:
+        create:
+          button: Opprett bruker
+        delete:
+          confirm: Er du sikker på at du vil slette denne brukeren?
+        update:
+          additional: Tillegg
+          groups_and_roles: Grupper og roller
+          password: Passord
+          interfaces: Grensesnitt
+          notifications: Varslinger #TODO EE Only
+    role:
+      plural_label: Roller
+      page_title:
+        index: "] -Inf, 1] {{ count }} rolle|] 1, Inf [{{ count }} roller"
+      module:
+        create:
+          button: Opprett rolle
+        delete:
+          confirm: Er du sikker på at du vil slette denne rollen?
+    group:
+      plural_label: Brukergrupper
+      page_title:
+        index: "]-Inf, 1]{{ count }} gruppe|]1, Inf[{{ count }} grupper"
+      module:
+        create:
+          button: Opprett gruppe

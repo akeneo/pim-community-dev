@@ -42,7 +42,7 @@ class BooleanConverter extends AbstractValueConverter implements ValueConverterI
                 $value['scope']
             );
 
-            $convertedItem[$flatName] = false === $value['data'] || null === $value['data'] ? '0' : '1';
+            $convertedItem[$flatName] = false === $value['data'] ? '0' : (true === $value['data'] ? '1' : '');
         }
 
         return $convertedItem;

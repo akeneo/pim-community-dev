@@ -18,20 +18,27 @@ $rules = [
             // Dependency on Symfony Validator to ease validation
             'Symfony\Component\Validator',
             'Symfony\Component\Security',
+            'Symfony\Component\OptionsResolver\OptionsResolver',
 
             'Doctrine\Common\Persistence\ObjectRepository',
 
             'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
 
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+
             // TODO: Fix serializer usage to not depends on FOSRestBundle inside Application.
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
 
+            'Psr\Http\Message\ResponseInterface',
             'Psr\Log\LoggerInterface',
 
             'Akeneo\Platform\Component\EventQueue',
             'Akeneo\Platform\Component\Webhook',
+
+            //CXP-462
+            'Akeneo\UserManagement\Component\Model\UserInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -132,7 +139,7 @@ $rules = [
             'Doctrine\DBAL',
 
             // Dependency on Elasticsearch
-            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client'
+            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 

@@ -139,7 +139,15 @@ class Base extends Page
     {
         $field = $this->findField($locator);
 
+        if ($field->getAttribute('role') === 'switch') {
+            // BooleanInput.tsx from DSM
+            $field->find('css', sprintf('*[title=%s]', $on ? 'Yes' : 'No'))->click();
+
+            return;
+        }
+
         $this->spin(function () use ($field, $on) {
+            // Legacy boolean
             if ($on !== $field->isChecked()) {
                 $switch = $this->getClosest($field, 'switch');
                 if (null === $switch) {

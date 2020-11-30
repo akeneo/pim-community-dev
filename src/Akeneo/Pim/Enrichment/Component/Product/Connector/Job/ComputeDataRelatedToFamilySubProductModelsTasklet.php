@@ -8,10 +8,10 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\KeepOnlyValu
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterface, InitializableInterface
+class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterface, InitializableInterface, TrackableTaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -113,47 +113,36 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
     public function execute()
     {
         $this->initialize();
-
-        while (true) {
-            try {
-                $familyItem = $this->familyReader->read();
-                if (null === $familyItem) {
-                    break;
-                }
-            } catch (InvalidItemException $e) {
-                continue;
-            }
-
-            $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
-            if (null === $family) {
-                $this->stepExecution->incrementSummaryInfo('skip');
-                continue;
-            }
-
-            $skippedProductModels = [];
-            $productModelsToSave = [];
-            $productModels = $this->getSubProductModelsForFamily($family);
-
-            foreach ($productModels as $productModel) {
-                $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel]);
-
-                if (!$this->isValid($productModel)) {
-                    $skippedProductModels[] = $productModel;
-                    $this->stepExecution->incrementSummaryInfo('skip');
-                } else {
-                    $productModelsToSave[] = $productModel;
-                }
-
-                if (0 === (count($productModelsToSave) + count($skippedProductModels)) % $this->batchSize) {
-                    $this->saveProductsModel($productModelsToSave);
-                    $productModelsToSave = [];
-                    $skippedProductModels = [];
-                    $this->cacheClearer->clear();
-                }
-            }
-
-            $this->saveProductsModel($productModelsToSave);
+        $familyCodes = $this->extractFamilyCodes();
+        if (empty($familyCodes)) {
+            return;
         }
+
+        $productModels = $this->getSubProductModelsForFamily($familyCodes);
+        $this->stepExecution->setTotalItems($productModels->count());
+
+        $skippedProductModels = [];
+        $productModelsToSave = [];
+        foreach ($productModels as $productModel) {
+            $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$productModel]);
+
+            if (!$this->isValid($productModel)) {
+                $skippedProductModels[] = $productModel;
+                $this->stepExecution->incrementSummaryInfo('skip');
+                $this->stepExecution->incrementProcessedItems(1);
+            } else {
+                $productModelsToSave[] = $productModel;
+            }
+
+            if (0 === (count($productModelsToSave) + count($skippedProductModels)) % $this->batchSize) {
+                $this->saveProductsModel($productModelsToSave);
+                $productModelsToSave = [];
+                $skippedProductModels = [];
+                $this->cacheClearer->clear();
+            }
+        }
+
+        $this->saveProductsModel($productModelsToSave);
     }
 
     /**
@@ -162,6 +151,13 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
     public function initialize()
     {
         $this->cacheClearer->clear();
+    }
+
+    private function countSubProductModels(array $familyCodes): int
+    {
+        $cursor = $this->getSubProductModelsForFamily($familyCodes);
+
+        return $cursor->count();
     }
 
     /**
@@ -187,20 +183,47 @@ class ComputeDataRelatedToFamilySubProductModelsTasklet implements TaskletInterf
 
         $this->productModelSaver->saveAll($productModels);
         $this->stepExecution->incrementSummaryInfo('process', count($productModels));
+        $this->stepExecution->incrementProcessedItems(count($productModels));
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return CursorInterface
-     */
-    private function getSubProductModelsForFamily(FamilyInterface $family): CursorInterface
+    private function extractFamilyCodes(): array
+    {
+        $familyCodes = [];
+        while (true) {
+            try {
+                $familyItem = $this->familyReader->read();
+                if (null === $familyItem) {
+                    break;
+                }
+            } catch (InvalidItemException $e) {
+                continue;
+            }
+
+            $family = $this->familyRepository->findOneByIdentifier($familyItem['code']);
+            if (null === $family) {
+                $this->stepExecution->incrementSummaryInfo('skip');
+
+                continue;
+            }
+
+            $familyCodes[] = $family->getCode();
+        }
+
+        return $familyCodes;
+    }
+
+    private function getSubProductModelsForFamily(array $familyCodes): CursorInterface
     {
         $pqb = $this->queryBuilderFactory->create();
-        $pqb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
+        $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
         $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);
 
         return $pqb->execute();
+    }
+
+    public function isTrackable(): bool
+    {
+        return true;
     }
 }

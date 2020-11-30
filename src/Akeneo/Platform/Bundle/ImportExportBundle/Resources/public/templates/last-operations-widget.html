@@ -37,13 +37,12 @@
             <td class="AknGrid-bodyCell">
                 <span class="AknBadge AknBadge--<%- status %>">
                     <%- operation.statusLabel %>
+                    <% if (parseInt(operation.status) === 2 || parseInt(operation.status) === 3) { %>
+                        <%- operation.tracking.currentStep %>/<%- operation.tracking.totalSteps %>
+                    <% } %>
                 </span>
             </td>
-            <td class="AknGrid-bodyCell">
-                <span class="AknBadge AknBadge--round AknBadge--<%- status %>">
-                    <%- counter %>
-                </span>
-            </td>
+            <td class="AknGrid-bodyCell"><%- (counter > 0) ? counter : '-' %></td>
             <td class="AknGrid-bodyCell AknGrid-bodyCell--right">
             <% if (operation.canSeeReport) { %>
                 <span class="AknButton AknButton--small AknButton--grey show-details-btn"

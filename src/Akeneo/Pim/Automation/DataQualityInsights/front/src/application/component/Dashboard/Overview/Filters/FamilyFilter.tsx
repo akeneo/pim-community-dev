@@ -1,8 +1,9 @@
 import React, {ChangeEvent, FunctionComponent, useEffect, useRef, useState} from 'react';
 import useFetchFamilies from '../../../../../infrastructure/hooks/Dashboard/useFetchFamilies';
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '../../../../constant/Dashboard';
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '../../../../constant';
 import styled from 'styled-components';
 import {debounce} from 'lodash';
+import {useDashboardContext} from '../../../../context/DashboardContext';
 
 const __ = require('oro/translator');
 const UserContext = require('pim/user-context');
@@ -28,6 +29,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
   const [isFilterDisplayed, setIsFilterDisplayed] = useState(false);
   const [filteredFamilies, setFilteredFamilies] = useState<Family[]>([]);
   const [searchString, setSearchString] = useState(null);
+  const {updateDashboardFilters} = useDashboardContext();
 
   const uiLocale = UserContext.get('uiLocale');
   let families: Family[] = useFetchFamilies(isFilterDisplayed, uiLocale);
@@ -63,6 +65,7 @@ const FamilyFilter: FunctionComponent<FamilyFilterProps> = ({familyCode}) => {
     );
     setIsFilterDisplayed(false);
     setSearchString(null);
+    updateDashboardFilters(familyCode, null);
   };
 
   const handleClickOutside = (event: MouseEvent) => {

@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-9554: Discrepancy on the user dashboard due to difference between UI locale and catalog locale
 - PIM-9486: System Information sections Registered bundles and PHP extensions repeat a high number of times
 - PIM-9514: Fix check on API completness for product model
 - PIM-9408: Fix attribute group's updated_at field udpate
@@ -48,6 +49,19 @@
 - PIM-9517: Fix locale selector default value on localizable attributes in product exports
 - PIM-9516: Recalculate completeness after a bulk set attribute requirements on families
 - PIM-9532: Fix the family selection in mass action when a filter on label is set
+- PIM-9535: Fix export with condition on localisable attribute does not work if selected locale is not changed
+- PIM-9542: Fix product creation if the family has a numeric code
+- PIM-9498: Add translation for 'Mass delete products' job
+- PIM-9538: Fix sorting on rule engine list page
+- PIM-9499: Fix warning display when a job is running with warnings
+- PIM-9545: Fix possible memory leak in large import jobs
+- PIM-9533: Update wysiwyg editor's style in order to differentiate new paragraphs from mere line breaks
+- PIM-9548: Mitigate deadlock issues on category API
+- PIM-9540: Do not strip HTML tags on textarea content before indexing them in ES and fix newline_pattern char filter
+- PIM-9539: Fix the display of long attribute labels or codes on variant attributes page
+- PIM-9580: Fix conversion operation for ATM, PSI, TORR & MMHG
+- PIM-9569: Fix memory usage issue when adding a group to a product
+- PIM-9571: Fix missing items on the invalid data file when importing product models
 
 ## New features
 
@@ -56,6 +70,8 @@
 - AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
 - RAC-54: Add a new type of associations: Association with quantity
 - RAC-123: Add possibility to export product/product model with labels instead of code
+- RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI
+- RAC-277: Add job progress and remaining time in the UI
 
 ## Improvements
 
@@ -70,6 +86,12 @@
 - RAC-178: When launching a job, the notification contains a link to the job status
 - PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
 - BH-138: clear Locale cache on save
+- CXP-493: Do not save products when they were not actually updated. In order to do so, the product now returns copies of
+  its collections (values, categories, groups and associations). Practically, this means that such a collection cannot be directly
+  updated "from outside" anymore (e.g: `$product->getCategories()->add($category)` **won't update the product anymore**,
+  you should now use `$product->addCategory($category)` to achieve it)  
+- CXP-544: Do not save product models when they were not actually updated. As for products, the product model
+  will now return copies of its collections (values, categories and associations)
 
 # Technical Improvements
 
@@ -77,6 +99,7 @@
 - CPM-38: Upgrade Symfony to 4.4.15
 - CPM-33: Upgrade node to 12.19
 - CPM-33: Upgrade npm to 6.14
+- PIM-9452: Add a command to update the ElasticSearch indexes max fields limit
 
 ## Classes
 
@@ -187,6 +210,23 @@
 - Change `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface` interface to add `getWithVariants()`
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup` to replace `Doctrine\DBAL\Driver\Connection $connection` by `Doctrine\DBAL\Connection $connection`
 - Add `clearCache` method in `Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface`
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface` to
+    - remove the `setFamilyId()` method
+    - extend the new `Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware` interface (with `isDirty()` and `cleanup()` methods)
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface` to extend the new `Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware` interface (with `isDirty()` and `cleanup()` methods)    
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct` to
+    - remove the `setFamilyId()` method
+    - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
+    - add `isDirty()` and `cleanup()` methods 
+- Change the `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface` to:
+    - remove the `findDatagridViewByAlias()` method
+    - rename the `getDatagridViewTypeByUser()` method to `getDatagridViewAliasesByUser()` and add type hint on the return (array)
+    - add type hint on the return of the `findDatagridViewBySearch()` method (`Doctrine\Common\Collections\Collection`)
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet` to
+    - add `Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface $jobRepository`
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel` to add `isDirty()` and `cleanup()` methods
+- Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory`
+- Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 
 ### CLI commands
 

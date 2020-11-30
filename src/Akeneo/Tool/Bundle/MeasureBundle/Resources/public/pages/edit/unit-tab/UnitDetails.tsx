@@ -69,13 +69,12 @@ const UnitDetails = ({
 
   return (
     <>
-      {isConfirmDeleteUnitModalOpen && (
-        <ConfirmDeleteModal
-          description={__('measurements.unit.delete.confirm')}
-          onConfirm={handleRemoveUnit}
-          onCancel={closeConfirmDeleteUnitModal}
-        />
-      )}
+      <ConfirmDeleteModal
+        isOpen={isConfirmDeleteUnitModalOpen}
+        description={__('measurements.unit.delete.confirm')}
+        onConfirm={handleRemoveUnit}
+        onCancel={closeConfirmDeleteUnitModal}
+      />
       <Container>
         <SubsectionHeader top={0}>
           {__('measurements.unit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Domain\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use PhpSpec\ObjectBehavior;
@@ -19,14 +20,16 @@ class WebhookRequestSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook'),
-            new WebhookEvent(
-                'product.created',
-                '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                '2020-01-01T00:00:00+00:00',
-                'julia',
-                'staging.akeneo.com',
-                ['data']
-            )
+            [
+                new WebhookEvent(
+                    'product.created',
+                    '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                    '2020-01-01T00:00:00+00:00',
+                    Author::fromNameAndType('julia', Author::TYPE_UI),
+                    'staging.akeneo.com',
+                    ['identifier' => '1']
+                )
+            ]
         );
     }
 
@@ -52,33 +55,36 @@ class WebhookRequestSpec extends ObjectBehavior
         $this->content()
             ->shouldReturn(
                 [
-                    'action' => 'product.created',
-                    'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                    'event_date' => '2020-01-01T00:00:00+00:00',
-                    'author' => 'julia',
-                    'pim_source' => 'staging.akeneo.com',
-                    'data' => ['data'],
-                ]
-            );
-    }
-
-    public function it_returns_metadata(): void
-    {
-        $this->metadata()
-            ->shouldReturn(
-                [
-                    'webhook' => [
-                        'connection_code' => 'ecommerce',
-                        'url' => 'http://localhost/webhook',
-                    ],
-                    'event' => [
+                    [
                         'action' => 'product.created',
                         'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
                         'event_date' => '2020-01-01T00:00:00+00:00',
                         'author' => 'julia',
+                        'author_type' => 'ui',
                         'pim_source' => 'staging.akeneo.com',
-                    ],
+                        'data' => ['identifier' => '1'],
+                    ]
                 ]
             );
+    }
+
+    public function it_returns_the_webhook(ActiveWebhook $webhook): void
+    {
+        $this->beConstructedWith(
+            $webhook,
+            []
+        );
+
+        $this->webhook()->shouldReturn($webhook);
+    }
+
+    public function it_returns_the_api_events(ActiveWebhook $webhook, WebhookEvent $webhookEvent): void
+    {
+        $this->beConstructedWith(
+            $webhook,
+            [$webhookEvent]
+        );
+
+        $this->apiEvents()->shouldReturn([$webhookEvent]);
     }
 }

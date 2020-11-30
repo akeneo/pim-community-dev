@@ -1,6 +1,10 @@
 var/tests/%:
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
+.PHONY: find-legacy-translations
+find-legacy-translations:
+	.circleci/find_legacy_translations.sh
+
 .PHONY: coupling-back
 coupling-back: structure-coupling-back user-management-coupling-back channel-coupling-back enrichment-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
 

@@ -6,15 +6,18 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -26,7 +29,7 @@ use Webmozart\Assert\Assert;
  * TODO refactor with Akeneo\Pim\Enrichment\Component\Product\Job\ComputeCompletenessOfProductsFamilyTasklet
  *            that work only for unitary update
  */
-class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface
+class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     private const BATCH_SIZE = 1000;
 
@@ -62,6 +65,11 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface
         $this->stepExecution = $stepExecution;
     }
 
+    public function isTrackable(): bool
+    {
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -71,27 +79,13 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface
             $this->familyReader->initialize();
         }
 
-        $familyCodes = [];
-
-        while (true) {
-            $family = $this->familyReader->read();
-
-            if (null === $family) {
-                break;
-            }
-
-            Assert::isInstanceOf($family, FamilyInterface::class);
-
-            $familyCodes[] = $family->getCode();
-        }
-
+        $familyCodes = $this->extractFamilyCodes();
         if (empty($familyCodes)) {
             return;
         }
 
-        $productQueryBuilder = $this->productQueryBuilderFactory->create();
-        $productQueryBuilder->addFilter('family', 'IN', $familyCodes);
-        $products = $productQueryBuilder->execute();
+        $products = $this->getProductsForFamilies($familyCodes);
+        $this->stepExecution->setTotalItems($products->count());
 
         $productsToCompute = [];
         foreach ($products as $product) {
@@ -114,7 +108,33 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface
         $completenessCollections = $this->completenessCalculator->fromProductIdentifiers($productIdentifiers);
         $this->saveProductCompletenesses->saveAll($completenessCollections);
 
+        $this->stepExecution->incrementProcessedItems(count($productIdentifiers));
         $this->stepExecution->incrementSummaryInfo('process', count($productIdentifiers));
         $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    private function extractFamilyCodes()
+    {
+        $familyCodes = [];
+        while (true) {
+            $family = $this->familyReader->read();
+            if (null === $family) {
+                break;
+            }
+
+            Assert::isInstanceOf($family, FamilyInterface::class);
+
+            $familyCodes[] = $family->getCode();
+        }
+
+        return $familyCodes;
+    }
+
+    private function getProductsForFamilies(array $familyCodes): CursorInterface
+    {
+        $productQueryBuilder = $this->productQueryBuilderFactory->create();
+        $productQueryBuilder->addFilter('family', Operators::IN_LIST, $familyCodes);
+
+        return $productQueryBuilder->execute();
     }
 }

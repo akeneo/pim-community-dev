@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Xlsx;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
@@ -19,7 +20,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -49,6 +50,15 @@ class Reader implements FileReaderInterface
         $this->fileIteratorFactory = $fileIteratorFactory;
         $this->converter = $converter;
         $this->options = $options;
+    }
+
+    public function totalItems(): int
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('filePath');
+        $iterator = $this->fileIteratorFactory->create($filePath, $this->options);
+
+        return max(iterator_count($iterator) - 1, 0);
     }
 
     /**

@@ -267,6 +267,7 @@ info:
 Created: 已创建
 Updated: 已更新
 Last update: 上次更新
+by: 由
 N/A: N/A
 Manage products: 管理产品
 Manage groups: 管理分组
@@ -482,6 +483,7 @@ oro.locale:
       parish: "行政区"
       state: "国家"
       island: "岛"
+      county: "县"
       area: "区域"
       prefecture: "县"
       department: "部门"

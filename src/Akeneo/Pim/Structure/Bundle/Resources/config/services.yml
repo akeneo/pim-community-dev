@@ -19,6 +19,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\InitDeletedAttributeSchemaSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
     pim_enrich.form.type.attribute_option_value:
         class: 'Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionValueType'
         arguments:
@@ -72,7 +78,8 @@ services:
 
     Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\RegisterFamilyFilter:
         arguments:
-            - '@pim_enrich.repository.family'
+            - '@akeneo.pim.structure.query.get_all_families_label_by_locale'
+            - '@pim_user.context.user'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.attribute-grid, method: buildBefore }
 

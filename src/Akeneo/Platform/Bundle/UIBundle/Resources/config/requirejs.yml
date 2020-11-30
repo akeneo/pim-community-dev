@@ -403,6 +403,7 @@ config:
           aclResourceId: pim_importexport_export_execution_show
         pim_enrich_job_tracker_show:
           module: pim/controller/job-execution
+          aclResourceId: pim_enrich_job_tracker_index
         oro_config_configuration_system:
           module: pim/controller/system
         pim_enrich_catalog_volume_index:
@@ -543,7 +544,8 @@ config:
     pim/tree/associate:                 pimui/js/tree-associate.jstree
     pim/tree/manage:                    pimui/js/tree-manage.jstree
     pim/attributeoptionview:            pimui/js/pim-attributeoptionview
-    pim/i18n:                           pimui/js/i18n.ts
+    pim/i18n:                           pimui/js/i18n
+    pim/intl-duration:                  pimui/js/intl-duration
     pim/user-context:                   pimui/js/user-context
     pim/date-context:                   pimui/js/date-context
     pim/error:                          pimui/js/error/error
@@ -723,6 +725,7 @@ config:
     oro/datagrid/edit-in-modal-action:                      pimui/js/datagrid/action/edit-in-modal-action
     oro/datagrid/delete-product-action:                     pimui/js/datagrid/action/delete-product-action
     oro/datagrid/toggle-product-action:                     pimui/js/datagrid/action/toggle-product-action
+    oro/datagrid/react-cell:                                pimui/js/datagrid/reactCell
 
     # Attribute group
     pim/attribute-group-form/tab/attribute: pimui/js/attribute-group/form/tab/attribute
@@ -762,8 +765,11 @@ config:
     pim/job/execution/summary-table:                             pimui/js/job/execution/summary-table
     pim/job/execution/auto-refresh:                              pimui/js/job/execution/auto-refresh
     pim/job/execution/show-profile:                              pimui/js/job/execution/show-profile
+    pim/job/execution/stop-job:                                  pimui/js/job/execution/stop-job
     pim/job/execution/download-archives-buttons:                 pimui/js/job/execution/download-archives-buttons
     pim/job/execution/download-log:                              pimui/js/job/execution/download-log
+    pim/job/execution/progress:                                  pimui/js/job/execution/progress
+    pim/job/execution/status:                                    pimui/js/job/execution/status
     pim/job/product/edit/content:                                pimui/js/job/product/edit/content
 
     # Filters
@@ -884,7 +890,6 @@ config:
     pim/form/common/user-main-image:                     pimui/js/form/common/user-main-image
     pim/form/common/meta/created:                        pimui/js/form/common/meta/created
     pim/form/common/meta/updated:                        pimui/js/form/common/meta/updated
-    pim/form/common/meta/status:                         pimui/js/form/common/meta/status
     pim/form/common/attributes:                          pimui/js/form/common/attributes
     pim/form/common/attributes/copy:                     pimui/js/form/common/attributes/copy
     pim/form/common/attributes/copy-field:               pimui/js/form/common/attributes/copy-field
@@ -942,7 +947,7 @@ config:
 
     # PEF fields
     pim/field:                  pimui/js/product/field/field
-    pim/boolean-field:          pimui/js/product/field/boolean-field
+    pim/boolean-field:          pimui/js/product/field/boolean-field.tsx
     pim/date-field:             pimui/js/product/field/date-field
     pim/media-field:            pimui/js/product/field/media-field
     pim/metric-field:           pimui/js/product/field/metric-field
@@ -1015,7 +1020,6 @@ config:
     pim/template/form/state:                                  pimui/templates/form/state.html
     pim/template/form/meta/created:                           pimui/templates/form/meta/created.html
     pim/template/form/meta/updated:                           pimui/templates/form/meta/updated.html
-    pim/template/form/meta/status:                            pimui/templates/form/meta/status.html
     pim/template/form/meta:                                   pimui/templates/form/meta.html
     pim/template/form/tab/attributes:                         pimui/templates/form/tab/attributes.html
     pim/template/form/save-buttons:                           pimui/templates/form/save-buttons.html
@@ -1115,7 +1119,6 @@ config:
     pim/template/product/meta/updated:                   pimui/templates/product/meta/updated.html
     pim/template/product/scope-switcher:                 pimui/templates/product/scope-switcher.html
     pim/template/product/field/field:                    pimui/templates/product/field/field.html
-    pim/template/product/field/boolean:                  pimui/templates/product/field/boolean.html
     pim/template/product/field/date:                     pimui/templates/product/field/date.html
     pim/template/product/field/media:                    pimui/templates/product/field/media.html
     pim/template/product/field/metric:                   pimui/templates/product/field/metric.html
@@ -1167,7 +1170,6 @@ config:
 
     pim/template/app:                                    pimui/templates/app.html
     pim/template/common/flash:                           pimui/templates/common/flash.html
-    pim/template/common/breadcrumbs:                     pimui/templates/common/breadcrumbs.html
 
     pim/template/group/tab/properties/general:           pimui/templates/group/tab/properties/general.html
     pim/template/group/meta/product-count:               pimui/templates/group/meta/product-count.html
@@ -1219,7 +1221,7 @@ config:
     pim/template/filter/attribute/date:             pimui/templates/filter/attribute/date.html
 
     # Grid view selector
-    pim/template/grid/view-selector/create-view-label-input: pimui/templates/grid/view-selector-create-view-label-input.html
+    pim/template/grid/view-selector/create-view-inputs: pimui/templates/grid/view-selector-create-view-inputs.html
     pim/template/grid/view-selector/line: pimui/templates/grid/view-selector-line.html
     pim/template/grid/view-selector/create-view: pimui/templates/grid/view-selector-create-view.html
     pim/template/grid/view-selector/save-view: pimui/templates/grid/view-selector-save-view.html

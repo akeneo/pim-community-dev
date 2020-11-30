@@ -2,7 +2,7 @@ akeneo_communication_channel:
   link:
     title: Ankündigungen
   panel:
-    title: Was gibt's Neues?
+    title: Ankündigungen
     list:
       empty: Im Moment gibt es keine Neuigkeiten. Bleiben Sie dran!
       error: Wir konnten die Nachrichten nicht abrufen. Bitte versuchen Sie es später erneut.
