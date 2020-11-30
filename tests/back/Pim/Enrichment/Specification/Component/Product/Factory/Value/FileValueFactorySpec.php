@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -89,6 +90,12 @@ final class FileValueFactorySpec extends ObjectBehavior
         $attribute = $this->getAttribute(false, false);
         $value = $this->createWithoutCheckingData($attribute, null, null, 'a_file');
         $value->shouldBeLike(MediaValue::value('an_attribute', $fileInfo));
+    }
+
+    public function it_throws_an_exception_if_provided_data_is_not_a_string()
+    {
+        $attribute = $this->getAttribute(false, false);
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('createByCheckingData', [$attribute, null, null, ['an_array']]);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
