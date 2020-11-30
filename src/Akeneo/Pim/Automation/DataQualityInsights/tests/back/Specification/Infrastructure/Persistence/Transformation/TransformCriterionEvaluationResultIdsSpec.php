@@ -35,12 +35,20 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
         $criterionEvaluationResultIds = [
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
                 1 => [
-                    58 => [
-                        12 => 50,
-                        34 => 0,
+                    1 => [
+                        58 => [
+                            12 => 50,
+                            34 => 0,
+                        ],
+                        90 => [
+                            34 => 20,
+                        ],
                     ],
-                    90 => [
-                        34 => 20,
+                ],
+                2 => [
+                    1 => [
+                        58 => 4,
+                        90 => 5,
                     ],
                 ],
             ],
@@ -66,9 +74,11 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
         $invalidEvaluationResult = [
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
                 1 => [
-                    58 => [
-                        12 => 50,
-                        34 => 0,
+                    1 => [
+                        58 => [
+                            12 => 50,
+                            34 => 0,
+                        ],
                     ],
                 ],
             ],
@@ -88,14 +98,16 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
         $invalidEvaluationResult = [
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
                 1 => [
-                    58 => [
-                        12 => 50,
-                        34 => 0,
+                    1 => [
+                        58 => [
+                            12 => 50,
+                            34 => 0,
+                        ],
+                        90 => [
+                            34 => 20,
+                        ],
                     ],
-                    90 => [
-                        34 => 20,
-                    ],
-                ],
+                ]
             ],
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
                 1 => [
@@ -114,6 +126,40 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
         $this->shouldThrow(CriterionEvaluationResultTransformationFailedException::class)->during('transformToCodes', [$invalidEvaluationResult]);
     }
 
+    public function it_throws_an_exception_if_the_evaluation_result_has_an_unknown_data_type()
+    {
+        $invalidEvaluationResult = [
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
+                1 => [
+                    1 => [
+                        58 => [
+                            12 => 50,
+                            34 => 0,
+                        ],
+                        90 => [
+                            34 => 20,
+                        ],
+                    ],
+                ],
+                42 => [
+                    1 => [
+                        58 => 4,
+                        90 => 5,
+                    ],
+                ],
+            ],
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
+                1 => [
+                    58 => 25,
+                    90 => 75,
+                ],
+            ],
+            TransformCriterionEvaluationResultCodes::PROPERTIES_ID['status'] => []
+        ];
+
+        $this->shouldThrow(CriterionEvaluationResultTransformationFailedException::class)->during('transformToCodes', [$invalidEvaluationResult]);
+    }
+
     public function it_removes_unknown_channels($channels)
     {
         $channels->getCodeById(42)->willReturn(null);
@@ -121,19 +167,30 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
         $criterionEvaluationResultIds = [
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
                 1 => [
-                    58 => [
-                        12 => 50,
-                        34 => 0,
+                    1 => [
+                        58 => [
+                            12 => 50,
+                            34 => 0,
+                        ],
+                        90 => [
+                            34 => 20,
+                        ],
                     ],
-                    90 => [
-                        34 => 20,
+                    42 => [
+                        58 => [
+                            12 => 100,
+                        ],
                     ],
                 ],
-                42 => [
-                    58 => [
-                        12 => 100,
+                2 => [
+                    1 => [
+                        58 => 4,
+                        90 => 5,
                     ],
-                ],
+                    42 => [
+                        58 => 6,
+                    ],
+                ]
             ],
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
                 1 => [
@@ -167,16 +224,25 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
         $criterionEvaluationResultIds = [
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
                 1 => [
-                    58 => [
-                        12 => 50,
-                        34 => 0,
+                    1 => [
+                        58 => [
+                            12 => 50,
+                            34 => 0,
+                        ],
+                        90 => [
+                            34 => 20,
+                        ],
+                        987 => [
+                            12 => 56,
+                        ]
                     ],
-                    90 => [
-                        34 => 20,
+                ],
+                2 => [
+                    1 => [
+                        58 => 4,
+                        90 => 5,
+                        987 => 6
                     ],
-                    987 => [
-                        12 => 56,
-                    ]
                 ],
             ],
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
@@ -211,6 +277,12 @@ final class TransformCriterionEvaluationResultIdsSpec extends ObjectBehavior
                         'fr_FR' => [
                             'description' => 20,
                         ],
+                    ],
+                ],
+                'total_number_of_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 4,
+                        'fr_FR' => 5,
                     ],
                 ],
             ],

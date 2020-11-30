@@ -27,18 +27,30 @@ final class TransformCriterionEvaluationResultIdsIntegration extends DataQuality
 
         $evaluationResult = [
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data'] => [
-                $ecommerceId => [
-                    $enUsId => [
-                        $nameId => 50,
-                        $descriptionId => 0,
+                TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates'] => [
+                    $ecommerceId => [
+                        $enUsId => [
+                            $nameId => 50,
+                            $descriptionId => 0,
+                        ],
+                        $frFrId => [
+                            $descriptionId => 20,
+                        ],
                     ],
-                    $frFrId => [
-                        $descriptionId => 20,
+                    $mobileId => [
+                        $enUsId => [$nameId => 0],
+                        $deDeId => [],
                     ],
                 ],
-                $mobileId => [
-                    $enUsId => [$nameId => 0],
-                    $deDeId => [],
+                TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes'] => [
+                    $ecommerceId => [
+                        $enUsId => 4,
+                        $frFrId => 4,
+                    ],
+                    $mobileId => [
+                        $enUsId => 6,
+                        $deDeId => 0,
+                    ],
                 ],
             ],
             TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => [
@@ -78,6 +90,16 @@ final class TransformCriterionEvaluationResultIdsIntegration extends DataQuality
                     'mobile' => [
                         'en_US' => ['name' => 0],
                         'de_DE' => [],
+                    ],
+                ],
+                'total_number_of_attributes' => [
+                    'ecommerce' => [
+                        'en_US' => 4,
+                        'fr_FR' => 4,
+                    ],
+                    'mobile' => [
+                        'en_US' => 6,
+                        'de_DE' => 0,
                     ],
                 ],
             ],

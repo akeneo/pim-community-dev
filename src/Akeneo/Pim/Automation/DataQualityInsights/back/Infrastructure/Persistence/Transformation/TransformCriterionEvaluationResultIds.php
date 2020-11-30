@@ -32,8 +32,7 @@ final class TransformCriterionEvaluationResultIds
         foreach ($evaluationResult as $propertyId => $propertyData) {
             switch ($propertyId) {
                 case $propertiesIds['data']:
-
-                    $propertyDataByCodes = $this->transformResultAttributeRatesIdsToCodes($propertyData);
+                    $propertyDataByCodes = $this->transformResultDataIdsToCodes($propertyData);
                     break;
                 case $propertiesIds['rates']:
                     $propertyDataByCodes = $this->transformRatesIdsToCodes($propertyData);
@@ -49,6 +48,26 @@ final class TransformCriterionEvaluationResultIds
         }
 
         return $resultByCodes;
+    }
+
+    private function transformResultDataIdsToCodes(array $resultDataByIds): array
+    {
+        $dataByCodes = [];
+        foreach ($resultDataByIds as $dataType => $dataByIds) {
+            switch ($dataType) {
+                case TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']:
+                    $dataByCodes['attributes_with_rates'] = $this->transformResultAttributeRatesIdsToCodes($dataByIds);
+                    break;
+                case TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes']:
+                    $dataByCodes['total_number_of_attributes'] =
+                        $this->transformChannelLocaleDataFromIdsToCodes($dataByIds, fn ($number) => $number);
+                    break;
+                default:
+                    throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown data type id "%s"', $dataType));
+            }
+        }
+
+        return $dataByCodes;
     }
 
     private function transformChannelLocaleDataFromIdsToCodes(array $channelLocaleData, \Closure $transformData): array
@@ -76,7 +95,7 @@ final class TransformCriterionEvaluationResultIds
 
     private function transformResultAttributeRatesIdsToCodes(array $resultAttributeIdsRates): array
     {
-        $attributesRates = $this->transformChannelLocaleDataFromIdsToCodes($resultAttributeIdsRates, function (array $attributeRates) {
+        return $this->transformChannelLocaleDataFromIdsToCodes($resultAttributeIdsRates, function (array $attributeRates) {
             $attributeCodesRates = [];
             $attributesCodes = $this->attributes->getCodesByIds(array_keys($attributeRates));
 
@@ -89,8 +108,6 @@ final class TransformCriterionEvaluationResultIds
 
             return $attributeCodesRates;
         });
-
-        return empty($attributesRates) ? [] : ['attributes_with_rates' => $attributesRates];
     }
 
     private function transformRatesIdsToCodes(array $ratesIds): array

@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\Products
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\ResultStatement;
 
@@ -25,10 +26,16 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 
     private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
 
-    public function __construct(Connection $db, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
-    {
+    private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds;
+
+    public function __construct(
+        Connection $db,
+        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
+        TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds
+    ) {
         $this->db = $db;
         $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
+        $this->transformCriterionEvaluationResultIds = $transformCriterionEvaluationResultIds;
     }
 
     public function getName(): string
@@ -54,7 +61,9 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         $stmt = $this->getProductsEvaluations($productIds);
 
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $productsEnrichmentStatus[$row['product_id']] = $this->computeProductEnrichmentStatus(json_decode($row['results'], true), $localesByChannel);
+            $evaluationResults = json_decode($row['results'], true);
+            $evaluationResults = array_map(fn (array $results) => $this->transformCriterionEvaluationResultIds->transformToCodes($results), $evaluationResults);
+            $productsEnrichmentStatus[$row['product_id']] = $this->computeProductEnrichmentStatus($evaluationResults, $localesByChannel);
         }
 
         return $productsEnrichmentStatus;
@@ -62,8 +71,8 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 
     private function computeProductEnrichmentStatus(array $evaluations, $localesByChannel): array
     {
-        $nonRequiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE];
-        $requiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE];
+        $nonRequiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE] ?? [];
+        $requiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE] ?? [];
 
         $result = [];
         foreach ($localesByChannel as $channel => $locales) {

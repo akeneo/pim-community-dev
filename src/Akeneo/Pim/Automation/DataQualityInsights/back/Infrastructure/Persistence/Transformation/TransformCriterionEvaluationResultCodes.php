@@ -18,6 +18,11 @@ final class TransformCriterionEvaluationResultCodes
         'status' => 3,
     ];
 
+    public const DATA_TYPES_ID = [
+        'attributes_with_rates' => 1,
+        'total_number_of_attributes' => 2,
+    ];
+
     public const STATUS_ID = [
         CriterionEvaluationResultStatus::DONE => 1,
         CriterionEvaluationResultStatus::IN_PROGRESS => 2,
@@ -42,16 +47,16 @@ final class TransformCriterionEvaluationResultCodes
     {
         $resultByIds = [];
 
-        foreach ($evaluationResult as $propertyCode => $propertyData) {
+        foreach ($evaluationResult as $propertyCode => $propertyValues) {
             switch ($propertyCode) {
                 case 'data':
-                    $propertyDataByIds = $this->transformResultAttributeRatesCodesToIds($propertyData);
+                    $propertyDataByIds = $this->transformResultDataCodesToIds($propertyValues);
                     break;
                 case 'rates':
-                    $propertyDataByIds = $this->transformRatesCodesToIds($propertyData);
+                    $propertyDataByIds = $this->transformRatesCodesToIds($propertyValues);
                     break;
                 case 'status':
-                    $propertyDataByIds = $this->transformStatusCodesToIds($propertyData);
+                    $propertyDataByIds = $this->transformStatusCodesToIds($propertyValues);
                     break;
                 default:
                     throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown property code "%s"', $propertyCode));
@@ -61,6 +66,27 @@ final class TransformCriterionEvaluationResultCodes
         }
 
         return $resultByIds;
+    }
+
+    private function transformResultDataCodesToIds(array $resultDataByCodes): array
+    {
+        $resultDataByIds = [];
+        foreach ($resultDataByCodes as $dataType => $dataByCodes) {
+            switch ($dataType) {
+                case 'attributes_with_rates':
+                    $resultDataByIds[self::DATA_TYPES_ID['attributes_with_rates']] =
+                        $this->transformResultAttributeRatesCodesToIds($dataByCodes);
+                    break;
+                case 'total_number_of_attributes':
+                    $resultDataByIds[self::DATA_TYPES_ID['total_number_of_attributes']] =
+                        $this->transformChannelLocaleDataFromCodesToIds($dataByCodes, fn ($number) => $number);
+                    break;
+                default:
+                    throw new CriterionEvaluationResultTransformationFailedException(sprintf('Unknown result data type "%s"', $dataType));
+            }
+        }
+
+        return $resultDataByIds;
     }
 
     private function transformChannelLocaleDataFromCodesToIds(array $channelLocaleData, \Closure $transformData): array
@@ -88,8 +114,6 @@ final class TransformCriterionEvaluationResultCodes
 
     private function transformResultAttributeRatesCodesToIds(array $resultAttributeCodesRates): array
     {
-        $resultAttributeCodesRates = $resultAttributeCodesRates['attributes_with_rates'] ?? [];
-
         return $this->transformChannelLocaleDataFromCodesToIds($resultAttributeCodesRates, function (array $attributeRates) {
             $attributeIdsRates = [];
             $attributesIds = $this->attributes->getIdsByCodes(array_keys($attributeRates));
@@ -107,9 +131,7 @@ final class TransformCriterionEvaluationResultCodes
 
     private function transformRatesCodesToIds(array $ratesCodes): array
     {
-        return $this->transformChannelLocaleDataFromCodesToIds($ratesCodes, function ($rate) {
-            return $rate;
-        });
+        return $this->transformChannelLocaleDataFromCodesToIds($ratesCodes, fn ($rate) => $rate);
     }
 
     private function transformStatusCodesToIds(array $statusCodes): array

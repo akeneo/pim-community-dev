@@ -16,16 +16,21 @@ class Channels
 
     private array $channelCodesByIds;
 
+    private bool $channelsLoaded;
+
     private Connection $dbConnection;
 
     public function __construct(Connection $dbConnection)
     {
         $this->dbConnection = $dbConnection;
+        $this->channelCodesByIds = [];
+        $this->channelIdsByCodes = [];
+        $this->channelsLoaded = false;
     }
 
     public function getIdByCode(string $code): ?int
     {
-        if (null === $this->channelIdsByCodes) {
+        if (false === $this->channelsLoaded) {
             $this->loadChannels();
         }
 
@@ -34,7 +39,7 @@ class Channels
 
     public function getCodeById(int $id): ?string
     {
-        if (null === $this->channelCodesByIds) {
+        if (false === $this->channelsLoaded) {
             $this->loadChannels();
         }
 
@@ -43,9 +48,6 @@ class Channels
 
     private function loadChannels(): void
     {
-        $this->channelIdsByCodes = [];
-        $this->channelCodesByIds = [];
-
         $channels = $this->dbConnection->executeQuery(
             'SELECT JSON_OBJECTAGG(id, code) FROM pim_catalog_channel;'
         )->fetchColumn();
@@ -54,5 +56,7 @@ class Channels
             $this->channelCodesByIds = json_decode($channels, true);
             $this->channelIdsByCodes = array_flip($this->channelCodesByIds);
         }
+
+        $this->channelsLoaded = true;
     }
 }
