@@ -946,7 +946,7 @@ config:
 
     # PEF fields
     pim/field:                  pimui/js/product/field/field
-    pim/boolean-field:          pimui/js/product/field/boolean-field
+    pim/boolean-field:          pimui/js/product/field/boolean-field.tsx
     pim/date-field:             pimui/js/product/field/date-field
     pim/media-field:            pimui/js/product/field/media-field
     pim/metric-field:           pimui/js/product/field/metric-field
@@ -1118,7 +1118,6 @@ config:
     pim/template/product/meta/updated:                   pimui/templates/product/meta/updated.html
     pim/template/product/scope-switcher:                 pimui/templates/product/scope-switcher.html
     pim/template/product/field/field:                    pimui/templates/product/field/field.html
-    pim/template/product/field/boolean:                  pimui/templates/product/field/boolean.html
     pim/template/product/field/date:                     pimui/templates/product/field/date.html
     pim/template/product/field/media:                    pimui/templates/product/field/media.html
     pim/template/product/field/metric:                   pimui/templates/product/field/metric.html
@@ -1169,7 +1168,6 @@ config:
     pim/template/menu/logo:                              pimui/templates/menu/logo.html
 
     pim/template/app:                                    pimui/templates/app.html
-    pim/template/common/breadcrumbs:                     pimui/templates/common/breadcrumbs.html
 
     pim/template/group/tab/properties/general:           pimui/templates/group/tab/properties/general.html
     pim/template/group/meta/product-count:               pimui/templates/group/meta/product-count.html
@@ -1221,7 +1219,7 @@ config:
     pim/template/filter/attribute/date:             pimui/templates/filter/attribute/date.html
 
     # Grid view selector
-    pim/template/grid/view-selector/create-view-label-input: pimui/templates/grid/view-selector-create-view-label-input.html
+    pim/template/grid/view-selector/create-view-inputs: pimui/templates/grid/view-selector-create-view-inputs.html
     pim/template/grid/view-selector/line: pimui/templates/grid/view-selector-line.html
     pim/template/grid/view-selector/create-view: pimui/templates/grid/view-selector-create-view.html
     pim/template/grid/view-selector/save-view: pimui/templates/grid/view-selector-save-view.html

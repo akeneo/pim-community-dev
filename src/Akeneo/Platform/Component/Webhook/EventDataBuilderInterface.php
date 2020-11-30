@@ -24,5 +24,5 @@ interface EventDataBuilderInterface
      *
      * @return array<mixed> Normalized data.
      */
-    public function build(object $event, UserInterface $user): array;
+    public function build(object $event, UserInterface $user): EventDataCollection;
 }

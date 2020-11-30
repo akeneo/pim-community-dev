@@ -120,6 +120,7 @@ const ContainerStyle = css<
   outline-color: ${({level}) => getColorForLevel(level, 100)};
   cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
   font-family: inherit;
+  transition: background-color 0.1s ease;
 
   ${getColorStyle}
 `;

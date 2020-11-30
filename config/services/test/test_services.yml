@@ -197,6 +197,13 @@ services:
             - '@pim_catalog.updater.family'
             - '@validator'
 
+    akeneo_integration_tests.base.family_variant.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+
     akeneo_integration_tests.catalog.product_model.builder:
         class: 'Akeneo\Test\Common\EntityWithValue\Builder\ProductModel'
         shared: false
@@ -217,3 +224,21 @@ services:
         decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
         arguments:
             - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'
+
+    akeneo_integration_tests.fixture.loader.product_and_product_model_with_removed_attribute:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\ProductAndProductModelWithRemovedAttributeLoader'
+        arguments:
+            $productBuilder: '@akeneo_integration_tests.catalog.product.builder'
+            $productSaver: '@pim_catalog.saver.product'
+            $productModelBuilder: '@akeneo_integration_tests.base.product_model.builder'
+            $productModelSaver: '@pim_catalog.saver.product_model'
+            $familyVariantBuilder: '@akeneo_integration_tests.base.family_variant.builder'
+            $familyVariantSaver: '@pim_catalog.saver.family_variant'
+            $familyBuilder: '@akeneo_integration_tests.base.family.builder'
+            $familySaver: '@pim_catalog.saver.family'
+            $attributeBuilder: '@akeneo_integration_tests.base.attribute.builder'
+            $attributeSaver: '@pim_catalog.saver.attribute'
+            $attributeRepository: '@pim_catalog.repository.attribute'
+            $attributeRemover: '@pim_catalog.remover.attribute'
+            $entityValidator: '@validator'
+            $productAndProductModelEsClient: '@akeneo_elasticsearch.client.product_and_product_model'

@@ -11,7 +11,7 @@ namespace Akeneo\Platform\Component\EventQueue;
 interface BulkEventInterface
 {
     /**
-     * @return array<Event>
+     * @return array<EventInterface>
      */
     public function getEvents(): array;
 }

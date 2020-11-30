@@ -26,7 +26,12 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
 
   return (
     <>
-      <Modal isOpen={isConfirmOpen} onClose={closeConfirm} illustration={<ExportIllustration />}>
+      <Modal
+        closeTitle={translate('pim_common.close')}
+        isOpen={isConfirmOpen}
+        onClose={closeConfirm}
+        illustration={<ExportIllustration />}
+      >
         <SectionTitle>{translate('pim_title.pim_enrich_job_tracker_index')} /</SectionTitle>
         <Title>{translate('pim_datagrid.action.stop.confirmation.title', {jobLabel})}</Title>
         <Helper level="info">{translate('pim_datagrid.action.stop.confirmation.content')}</Helper>

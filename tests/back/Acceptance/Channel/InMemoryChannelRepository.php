@@ -84,7 +84,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
     {
         return $this->channels->map(function (ChannelInterface $channel): string {
             return $channel->getCode();
-        })->toArray();
+        })->getValues();
     }
 
     /**

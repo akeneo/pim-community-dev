@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Manager\DatagridViewManager;
 use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,9 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * REST Controller for Datagrid Views.
@@ -30,38 +33,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class DatagridViewController
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var DatagridViewRepositoryInterface */
-    protected $datagridViewRepo;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var DatagridViewManager */
-    protected $datagridViewManager;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var CollectionFilterInterface */
-    protected $datagridViewFilter;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var SimpleFactoryInterface */
-    protected $factory;
+    protected NormalizerInterface $normalizer;
+    protected DatagridViewRepositoryInterface $datagridViewRepo;
+    protected TokenStorageInterface $tokenStorage;
+    protected DatagridViewManager $datagridViewManager;
+    protected SaverInterface $saver;
+    protected RemoverInterface $remover;
+    protected ValidatorInterface $validator;
+    protected TranslatorInterface $translator;
+    protected CollectionFilterInterface $datagridViewFilter;
+    protected ObjectUpdaterInterface $updater;
+    protected SimpleFactoryInterface $factory;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -92,17 +74,17 @@ class DatagridViewController
     /**
      * Return the list of all Datagrid Views that belong to the current user for the given $alias grid.
      * Response data is in Json format and is paginated.
-     *
-     * @param Request $request
-     * @param string  $alias
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request, $alias)
+    public function indexAction(Request $request, string $alias): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $user = $this->tokenStorage->getToken()->getUser();
 
-        $options = $request->query->get('options', ['limit' => 20, 'page' => 1]);
+        $options = $request->query->get('options', []);
+        $options = array_merge(['limit' => 20, 'page' => 1], $options);
         $term = $request->query->get('search', '');
 
         $views = $this->datagridViewRepo->findDatagridViewBySearch($user, $alias, $term, $options);
@@ -117,32 +99,19 @@ class DatagridViewController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function typesAction(Request $request): JsonResponse
+    public function typesAction(): JsonResponse
     {
-        $result = [];
         $user = $this->tokenStorage->getToken()->getUser();
-        $types = $this->datagridViewRepo->getDatagridViewTypeByUser($user);
-        foreach ($types as $type) {
-            $result[] = $type['datagridAlias'];
-        }
+        Assert::isInstanceOf($user, UserInterface::class);
 
-        return new JsonResponse($result);
+        return new JsonResponse($this->datagridViewRepo->getDatagridViewAliasesByUser($user));
     }
 
     /**
      * Return the Datagrid View that belongs to the current user, with the given view $identifier.
      * Response data is in Json format, 404 is sent if there is no result.
-     *
-     * @param string $identifier
-     *
-     * @return JsonResponse|NotFoundHttpException
      */
-    public function getAction($identifier)
+    public function getAction(string $identifier): JsonResponse
     {
         $view = $this->datagridViewRepo->find($identifier);
         if (null === $view) {
@@ -165,15 +134,10 @@ class DatagridViewController
      * If any errors occur during the writing process, a Json response is sent with {'errors' => 'Error message'}.
      * If success, return a Json response with the id of the saved View.
      *
-     * @param Request $request
-     * @param string  $alias
-     *
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException
-     *
-     * @return Response
      */
-    public function saveAction(Request $request, $alias)
+    public function saveAction(Request $request, string $alias): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -185,25 +149,32 @@ class DatagridViewController
             throw new BadRequestHttpException('Parameter "view" needed in the request.');
         }
 
+        $loggedUsername = $this->tokenStorage->getToken()->getUser()->getUsername();
         if (isset($view['id'])) {
             $creation = false;
-            $datagridView = $this->datagridViewRepo->find($view['id']);
+            $datagridView = $this->datagridViewRepo->findOneBy(['id' => $view['id'], 'datagridAlias' => $alias]);
+            if (null === $datagridView) {
+                throw new NotFoundHttpException();
+            }
+
+            $owner = $datagridView->getOwner();
+            if (!$owner instanceof UserInterface || $owner->getUsername() !== $loggedUsername) {
+                throw new AccessDeniedException();
+            }
+
+            // Once the view is created we cannot change its type.
+            unset($view['type']);
         } else {
             $creation = true;
             $datagridView = $this->factory->create();
 
-            $view['owner'] = $this->tokenStorage->getToken()->getUser()->getUsername();
+            $view['owner'] = $loggedUsername;
             $view['datagrid_alias'] = $alias;
-        }
-
-        if (null === $datagridView) {
-            throw new NotFoundHttpException();
         }
 
         $this->updater->update($datagridView, $view);
 
         $violations = $this->validator->validate($datagridView);
-
         if ($violations->count()) {
             $messages = [];
             foreach ($violations as $violation) {
@@ -228,13 +199,8 @@ class DatagridViewController
      *
      * If any errors occur during the process, a Json response is sent with {'errors' => 'Error message'}.
      * If success, return an empty Json response with code 204 (No content).
-     *
-     * @param Request $request
-     * @param string  $identifier
-     *
-     * @return Response
      */
-    public function removeAction(Request $request, $identifier)
+    public function removeAction(Request $request, string $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -259,12 +225,8 @@ class DatagridViewController
      * Response data is in Json format.
      *
      * Eg.: ['sku', 'name', 'brand']
-     *
-     * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function defaultViewColumnsAction($alias)
+    public function defaultViewColumnsAction(string $alias): JsonResponse
     {
         $columns = $this->datagridViewManager->getDefaultColumns($alias);
 
@@ -274,12 +236,8 @@ class DatagridViewController
     /**
      * Return the current user default Datagrid View object for the grid with the given $alias.
      * Response data is in Json format.
-     *
-     * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function getUserDefaultDatagridViewAction($alias)
+    public function getUserDefaultDatagridViewAction(string $alias): JsonResponse
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $view = $user->getDefaultGridView($alias);
@@ -293,12 +251,8 @@ class DatagridViewController
 
     /**
      * List available datagrid columns
-     *
-     * @param string $alias
-     *
-     * @return JsonResponse
      */
-    public function listColumnsAction($alias)
+    public function listColumnsAction(string $alias): JsonResponse
     {
         return new JsonResponse($this->datagridViewManager->getColumnChoices($alias));
     }

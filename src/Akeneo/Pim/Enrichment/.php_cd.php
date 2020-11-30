@@ -29,6 +29,9 @@ $rules = [
         // TODO: dependencies related to the front end, remove twig screens
         'Twig_SimpleFunction', // used by the category tree
 
+        // Event API
+        'Akeneo\Platform\Component\EventQueue',
+
         'Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated',
 
         // TIP-1008: Clean Provider system of Platform
@@ -116,10 +119,6 @@ $rules = [
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
 
-        // CXP-415 : Author
-        'Akeneo\Platform\Component\EventQueue\Author',
-        'Akeneo\Platform\Component\EventQueue\BulkEvent',
-
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
@@ -129,9 +128,9 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',
 
-        // Event queue: business event
-        'Akeneo\Platform\Component\EventQueue\EventInterface',
-        'Akeneo\Platform\Component\EventQueue\Event',
+        // Event API
+        'Akeneo\Platform\Component\EventQueue',
+        'Akeneo\Platform\Component\Webhook',
 
         // Webhook API: event data building
         'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',
@@ -246,10 +245,6 @@ $rules = [
 
         // TIP-1020: Move JobLauncherInterface
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
-
-        // CXP-520 : Product Events
-        'Akeneo\Platform\Component\EventQueue\Author',
-        'Akeneo\Platform\Component\EventQueue\BulkEvent',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

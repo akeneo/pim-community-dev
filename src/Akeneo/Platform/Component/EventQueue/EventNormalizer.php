@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\EventQueue;
 
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

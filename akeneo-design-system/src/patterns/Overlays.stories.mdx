@@ -24,7 +24,7 @@ Overlays interrupt the user workflow by design. They are the most effective when
       const close = () => setOpen(false);
       return (
         <>
-          <Modal isOpen={isOpen} onClose={close} illustration={<DeleteIllustration />}>
+          <Modal closeTitle="Close" isOpen={isOpen} onClose={close} illustration={<DeleteIllustration />}>
             <SectionTitle color="brand">Products</SectionTitle>
             <Title>Confirm deletion</Title>
             Are you sure you want to delete this product?
@@ -66,7 +66,7 @@ Overlays are composed of distinct areas: a header, the body, and sometimes an il
       const close = () => setOpen(false);
       return (
         <>
-          <Modal isOpen={isOpen} onClose={close}>
+          <Modal closeTitle="Close" isOpen={isOpen} onClose={close}>
             <SectionTitle color="brand">Entity type</SectionTitle>
             <Title>Title of Overlay</Title>
             Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices
@@ -100,7 +100,7 @@ Overlays are composed of distinct areas: a header, the body, and sometimes an il
       const close = () => setOpen(false);
       return (
         <>
-          <Modal isOpen={isOpen} onClose={close} illustration={<AddingValueIllustration />}>
+          <Modal closeTitle="Close" isOpen={isOpen} onClose={close} illustration={<AddingValueIllustration />}>
             <SectionTitle color="brand">Entity type</SectionTitle>
             <Title>Title of Overlay</Title>
             Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices

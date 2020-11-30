@@ -342,7 +342,7 @@ services:
         arguments:
             - '@pim_catalog.validator.helper.attribute_filter'
             - ['pim_catalog_boolean']
-            - ['=', '!=', 'NOT EMPTY']
+            - ['=', '!=', 'NOT EMPTY', 'EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }

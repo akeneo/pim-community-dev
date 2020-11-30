@@ -1,8 +1,24 @@
 import React, {Component} from 'react';
-import {Breadcrumb, PageContent, PageHeader, RuntimeError} from '../../common/components';
+import {PageContent, PageHeader, RuntimeError} from '../../common/components';
 import {PimView} from '../../infrastructure/pim-view/PimView';
-import {BreadcrumbRouterLink} from '../../shared/router';
+import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
+import {Breadcrumb} from 'akeneo-design-system';
+
+const AuditBreadcrumb = () => {
+    const dashboardHref = `#${useRoute('pim_dashboard_index')}`;
+
+    return (
+        <Breadcrumb>
+            <Breadcrumb.Step href={dashboardHref}>
+                <Translate id='pim_menu.tab.activity' />
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>
+                <Translate id='pim_menu.item.connection_audit' />
+            </Breadcrumb.Step>
+        </Breadcrumb>
+    );
+};
 
 export class AuditErrorBoundary extends Component<unknown, {hasError: boolean}> {
     constructor(props: unknown) {
@@ -19,13 +35,7 @@ export class AuditErrorBoundary extends Component<unknown, {hasError: boolean}> 
             return (
                 <>
                     <PageHeader
-                        breadcrumb={
-                            <Breadcrumb>
-                                <BreadcrumbRouterLink route={'pim_dashboard_index'} isLast={false}>
-                                    <Translate id='pim_menu.tab.activity' />
-                                </BreadcrumbRouterLink>
-                            </Breadcrumb>
-                        }
+                        breadcrumb={<AuditBreadcrumb />}
                         userButtons={
                             <PimView
                                 className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'

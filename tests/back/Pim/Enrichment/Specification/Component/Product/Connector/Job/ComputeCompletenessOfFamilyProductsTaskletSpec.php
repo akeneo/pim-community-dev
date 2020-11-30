@@ -47,7 +47,12 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(ComputeCompletenessOfFamilyProductsTasklet::class);
+    }
+
+    function it_track_processed_items()
+    {
         $this->shouldImplement(TrackableTaskletInterface::class);
+        $this->isTrackable()->shouldReturn(true);
     }
 
     function it_does_nothing_if_there_is_no_family(
@@ -103,6 +108,7 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         ])->shouldBeCalled()->willReturn(['completeness_collection']);
         $saveProductCompletenesses->saveAll(['completeness_collection'])->shouldBeCalled();
 
+        $stepExecution->setTotalItems(4)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('process', 4)->shouldBeCalled();
         $stepExecution->incrementProcessedItems(4)->shouldBeCalledOnce();
 
@@ -136,6 +142,7 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         $completenessCalculator->fromProductIdentifiers(Argument::type('array'))->shouldBeCalledTimes(2);
         $saveProductCompletenesses->saveAll(Argument::type('array'))->shouldBeCalledTimes(2);
 
+        $stepExecution->setTotalItems(1006)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('process', 1000)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process', 6)->shouldBeCalled();
         $stepExecution->incrementProcessedItems(1000)->shouldBeCalledOnce();
@@ -144,35 +151,6 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledTimes(2);
 
         $this->execute();
-    }
-
-    function it_does_not_count_total_item_when_reader_is_not_rewindable()
-    {
-        $this->totalItems()->shouldReturn(0);
-    }
-
-    function it_return_the_total_items_when_reader_is_rewindable(
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ProductQueryBuilderInterface $productQueryBuilder,
-        Reader $familyReader,
-        FamilyInterface $familyShoes,
-        FamilyInterface $familyAccessories
-    ) {
-        $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
-
-        $familyReader->read()->shouldBeCalledTimes(3)->willReturn($familyShoes, $familyAccessories, null);
-        $familyReader->rewind()->shouldBeCalledOnce();
-        $familyShoes->getCode()->willReturn('Shoes');
-        $familyAccessories->getCode()->willReturn('Accessories');
-
-        $productQueryBuilder->addFilter('family', 'IN', ['Shoes', 'Accessories'])->shouldBeCalled();
-        $productQueryBuilder->execute()->shouldBeCalled()->willReturn(
-            new ProductCursor(array_map(function (int $i): ProductInterface {
-                return (new Product())->setIdentifier('product_' . $i);
-            }, range(1, 1006)))
-        );
-
-        $this->totalItems()->shouldReturn(1006);
     }
 }
 

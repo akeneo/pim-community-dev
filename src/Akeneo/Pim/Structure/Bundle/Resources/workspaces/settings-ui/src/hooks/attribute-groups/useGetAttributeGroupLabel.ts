@@ -11,7 +11,7 @@ const useGetAttributeGroupLabel = (): GetAttributeGroupLabelHandler => {
 
   return useCallback(
     (group: AttributeGroup) => {
-      return getLabel(group.labels, userContext.get('uiLocale'), group.code);
+      return getLabel(group.labels, userContext.get('catalogLocale'), group.code);
     },
     [userContext]
   );

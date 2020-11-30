@@ -75,7 +75,7 @@ JSON;
 
         $data =
             <<<JSON
-    {"identifier": "product_update_test", "updated": "2020-10-01T11:56:12+02:00"}
+    {"identifier": "another_product_update_test"}
 JSON;
 
         $apiClient->request('PATCH', 'api/rest/v1/products/product_update_test', [], [], [], $data);
@@ -111,7 +111,9 @@ JSON;
 
         $envelopes = $transport->get();
         $this->assertCount(1, $envelopes);
-        $this->assertInstanceOf(ProductRemoved::class, $envelopes[0]->getMessage());
+
+        $this->assertInstanceOf(BulkEvent::class, $envelopes[0]->getMessage());
+        $this->assertContainsOnlyInstancesOf(ProductRemoved::class, $envelopes[0]->getMessage()->getEvents());
     }
 
     protected function getConfiguration(): Configuration

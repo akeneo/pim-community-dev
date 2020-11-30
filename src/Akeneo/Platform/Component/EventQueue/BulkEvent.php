@@ -15,7 +15,7 @@ class BulkEvent implements BulkEventInterface
     private array $events;
 
     /**
-     * @param array<Event> $events
+     * @param array<EventInterface> $events
      */
     public function __construct(array $events)
     {
@@ -25,7 +25,7 @@ class BulkEvent implements BulkEventInterface
     }
 
     /**
-     * @return array<Event>
+     * @return array<EventInterface>
      */
     public function getEvents(): array
     {

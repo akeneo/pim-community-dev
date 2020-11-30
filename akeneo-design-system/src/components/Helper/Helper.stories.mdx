@@ -9,7 +9,10 @@ import * as Icons from '../../icons';
   component={Helper}
   argTypes={{
     children: {control: {type: 'text'}},
-    icon: {control: {type: 'select', options: [undefined, ...Object.keys(Icons)]}},
+    icon: {
+      control: {type: 'select', options: [undefined, ...Object.keys(Icons)]},
+      table: {type: {summary: 'ReactElement<IconProps>'}},
+    },
   }}
   args={{
     children:

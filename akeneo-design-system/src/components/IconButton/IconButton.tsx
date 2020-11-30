@@ -34,6 +34,11 @@ type IconButtonProps = Override<
      * The Icon to display.
      */
     icon: ReactElement<IconProps>;
+
+    /**
+     * The title of the button.
+     */
+    title: string;
   }
 >;
 
@@ -57,3 +62,4 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 );
 
 export {IconButton};
+export type {IconButtonProps};
