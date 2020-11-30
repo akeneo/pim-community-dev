@@ -87,6 +87,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
 
+    pim_catalog.validator.constraint.blacklisted_attribute_code:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCodeValidator'
+        arguments:
+            - '@akeneo.pim.structure.query.is_attribute_code_blacklisted'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_blacklisted_attribute_code_validator }
+
     pim_structure.validator.constraint.association_type.should_not_be_two_way_and_quantified:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\AssociationType\ShouldNotBeTwoWayAndQuantifiedValidator'
         tags:
