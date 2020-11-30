@@ -40,7 +40,7 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
         JobInstanceRepository $jobInstanceRepository,
         JobLauncherInterface $jobLauncher,
         string $jobName,
-        CreateJobInstanceInterface $createJobInstance = null // @todo remove nullable on master
+        CreateJobInstanceInterface $createJobInstance
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->jobInstanceRepository = $jobInstanceRepository;
