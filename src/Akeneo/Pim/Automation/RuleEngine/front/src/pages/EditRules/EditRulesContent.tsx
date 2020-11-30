@@ -2,14 +2,7 @@ import React, {useEffect} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import {DialogDisclosure, useDialogState} from 'reakit/Dialog';
 import {FormContext} from 'react-hook-form';
-import * as akeneoTheme from '../../theme';
-import {
-  AkeneoSpinner,
-  BreadcrumbItem,
-  Content,
-  LastBreadcrumbItem,
-  RulesHeader,
-} from '../../components';
+import {AkeneoSpinner, Content, RulesHeader} from '../../components';
 import {EditRulesForm} from './components/EditRulesForm';
 import {
   generateAndRedirect,
@@ -29,6 +22,7 @@ import {httpDelete} from '../../fetch';
 import {NotificationLevel, Security} from '../../dependenciesTools';
 import {Dropdown} from '../../components/Dropdown';
 import {AlertDialog} from '../../components/AlertDialog/AlertDialog';
+import {Breadcrumb, pimTheme} from 'akeneo-design-system';
 
 const Illustration = styled.div`
   background-image: url('/bundles/akeneopimruleengine/assets/illustrations/rules.svg');
@@ -56,11 +50,11 @@ const EditRulesContent: React.FC<Props> = ({
   const router = useBackboneRouter();
   const notify = useNotify();
   const currentCatalogLocale = userContext.get('catalogLocale');
-  const [urlSettings, handleSettingsRoute] = generateAndRedirect(
+  const [urlSettings] = generateAndRedirect(
     router,
     'pim_enrich_attribute_index'
   );
-  const [urlRules, handleRulesRoute] = generateAndRedirect(
+  const [urlRules] = generateAndRedirect(
     router,
     'pimee_catalog_rule_rule_index'
   );
@@ -168,7 +162,7 @@ const EditRulesContent: React.FC<Props> = ({
   };
 
   return (
-    <ThemeProvider theme={akeneoTheme}>
+    <ThemeProvider theme={pimTheme}>
       {(pending || deletePending) && <AkeneoSpinner />}
       <RulesHeader
         buttonLabel='pim_common.save'
@@ -232,13 +226,15 @@ const EditRulesContent: React.FC<Props> = ({
           </Dropdown>
         }
         secondaryButton={<AddActionButton handleAddAction={handleAddAction} />}>
-        <BreadcrumbItem href={`#${urlSettings}`} onClick={handleSettingsRoute}>
-          {translate('pim_menu.tab.settings')}
-        </BreadcrumbItem>
-        <BreadcrumbItem href={`#${urlRules}`} onClick={handleRulesRoute}>
-          {translate('pim_menu.item.rule')}
-        </BreadcrumbItem>
-        <LastBreadcrumbItem>{translate('pim_common.edit')}</LastBreadcrumbItem>
+        <Breadcrumb>
+          <Breadcrumb.Step href={`#${urlSettings}`}>
+            {translate('pim_menu.tab.settings')}
+          </Breadcrumb.Step>
+          <Breadcrumb.Step href={`#${urlRules}`}>
+            {translate('pim_menu.item.rule')}
+          </Breadcrumb.Step>
+          <Breadcrumb.Step>{translate('pim_common.edit')}</Breadcrumb.Step>
+        </Breadcrumb>
       </RulesHeader>
       <Content>
         <div className='AknDescriptionHeader'>

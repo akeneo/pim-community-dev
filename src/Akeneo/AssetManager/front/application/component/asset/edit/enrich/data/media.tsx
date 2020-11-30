@@ -30,7 +30,7 @@ export const Container = styled.div`
 `;
 
 export const Thumbnail = styled.img`
-  border: 1px solid ${props => props.theme.color.grey70};
+  border: 1px solid ${props => props.theme.color.grey60};
   flex-shrink: 0;
   width: 40px;
   height: 40px;

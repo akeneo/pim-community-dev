@@ -9,8 +9,6 @@ import {redirectToAssetFamilyListItem} from 'akeneoassetmanager/application/acti
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import {BreadcrumbConfiguration} from 'akeneoassetmanager/application/component/app/breadcrumb';
 const router = require('pim/router');
 
 interface StateProps {
@@ -29,46 +27,6 @@ interface DispatchProps {
     backToAssetFamilyList: () => void;
   };
 }
-
-export const breadcrumbConfiguration = (
-  identifier: AssetFamilyIdentifier | null,
-  label: string,
-  tab?: string
-): BreadcrumbConfiguration => {
-  const indexAction = {
-    action: {
-      type: 'redirect',
-      route: 'akeneo_asset_manager_asset_family_index',
-    },
-    label: __('pim_asset_manager.asset_family.breadcrumb'),
-  };
-
-  if (null === identifier) return [indexAction];
-
-  const displayAssetFamilyAction = {
-    action: {
-      type: 'display',
-      parameters: {identifier},
-    },
-    label,
-  };
-
-  if (!tab) return [indexAction, displayAssetFamilyAction];
-
-  const editAssetFamilyAction = {
-    action: {
-      type: 'redirect',
-      route: 'akeneo_asset_manager_asset_family_edit',
-      parameters: {
-        identifier,
-        tab,
-      },
-    },
-    label,
-  };
-
-  return [indexAction, editAssetFamilyAction];
-};
 
 interface EditProps extends StateProps, DispatchProps {}
 

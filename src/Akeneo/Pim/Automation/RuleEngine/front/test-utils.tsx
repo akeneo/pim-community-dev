@@ -3,8 +3,8 @@ import {FormContext, useForm} from 'react-hook-form';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {ThemeProvider} from 'styled-components';
-import * as akeneoTheme from './src/theme';
 import {ApplicationDependenciesProvider} from './src/dependenciesTools';
+import {pimTheme} from 'akeneo-design-system';
 
 jest.mock('./src/dependenciesTools/provider/dependencies.ts');
 
@@ -21,7 +21,7 @@ const LegacyDependencies: React.FC = ({children}) => (
   <ApplicationDependenciesProvider>{children}</ApplicationDependenciesProvider>
 );
 
-const AkeneoThemeProvider: React.FC = ({children}) => <ThemeProvider theme={akeneoTheme}>{children}</ThemeProvider>;
+const AkeneoThemeProvider: React.FC = ({children}) => <ThemeProvider theme={pimTheme}>{children}</ThemeProvider>;
 
 type Context = {
   all?: boolean;

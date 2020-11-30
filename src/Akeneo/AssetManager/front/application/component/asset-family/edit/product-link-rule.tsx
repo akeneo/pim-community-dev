@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import __ from 'akeneoassetmanager/tools/translator';
-import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -220,7 +220,7 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
           isDirty={form.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
+          breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
         />
         <HelperSection>
           <AssetIllustration size={80} />

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoreferenceentity/tools/translator';
 import Table from 'akeneoreferenceentity/application/component/reference-entity/index/table';
-import Breadcrumb from 'akeneoreferenceentity/application/component/app/breadcrumb';
+import {Breadcrumb} from 'akeneo-design-system';
 import ReferenceEntity from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import PimView from 'akeneoreferenceentity/infrastructure/component/pim-view';
 import {redirectToReferenceEntity} from 'akeneoreferenceentity/application/action/reference-entity/router';
@@ -61,17 +61,9 @@ class ReferenceEntityListView extends React.Component<StateProps & DispatchProps
                 <div className="AknTitleContainer-mainContainer">
                   <div className="AknTitleContainer-line">
                     <div className="AknTitleContainer-breadcrumbs">
-                      <Breadcrumb
-                        items={[
-                          {
-                            action: {
-                              type: 'redirect',
-                              route: 'akeneo_reference_entities_reference_entity_edit',
-                            },
-                            label: __('pim_reference_entity.reference_entity.breadcrumb'),
-                          },
-                        ]}
-                      />
+                      <Breadcrumb>
+                        <Breadcrumb.Step>{__('pim_reference_entity.reference_entity.breadcrumb')}</Breadcrumb.Step>
+                      </Breadcrumb>
                     </div>
                     <div className="AknTitleContainer-buttonsContainer">
                       <PimView

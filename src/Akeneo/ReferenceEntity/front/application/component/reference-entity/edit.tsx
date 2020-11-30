@@ -25,16 +25,6 @@ interface DispatchProps {
   };
 }
 
-export const breadcrumbConfiguration = [
-  {
-    action: {
-      type: 'redirect',
-      route: 'akeneo_reference_entities_reference_entity_edit',
-    },
-    label: __('pim_reference_entity.reference_entity.breadcrumb'),
-  },
-];
-
 interface EditProps extends StateProps, DispatchProps {}
 
 class ReferenceEntityEditView extends React.Component<EditProps> {

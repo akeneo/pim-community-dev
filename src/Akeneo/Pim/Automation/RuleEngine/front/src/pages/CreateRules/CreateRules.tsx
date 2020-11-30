@@ -1,6 +1,5 @@
 import React from 'react';
 import {ThemeProvider} from 'styled-components';
-import * as akeneoTheme from '../../theme';
 import {
   generateAndRedirect,
   generateUrl,
@@ -18,6 +17,7 @@ import {httpPost} from '../../fetch';
 import {AkeneoSpinner} from '../../components';
 import {Payload} from '../../rules.types';
 import {LocaleCode} from '../../models';
+import {pimTheme} from 'akeneo-design-system';
 
 const transformFormData = (
   formData: FormDataInput,
@@ -94,7 +94,7 @@ const CreateRules: React.FC<Props> = ({originalRuleCode}) => {
   };
 
   return (
-    <ThemeProvider theme={akeneoTheme}>
+    <ThemeProvider theme={pimTheme}>
       <div className='AknFullPage'>
         {pending && <AkeneoSpinner />}
         <div className='AknFullPage-content AknFullPage-content--withIllustration'>

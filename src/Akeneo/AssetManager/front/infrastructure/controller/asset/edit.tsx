@@ -26,8 +26,9 @@ import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/local
 import {updateAttributeList} from 'akeneoassetmanager/application/action/product/attribute';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import Key from 'akeneoassetmanager/tools/key';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -80,9 +81,11 @@ class AssetEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <ThemeProvider theme={akeneoTheme}>
-              <AssetView />
-            </ThemeProvider>
+            <DependenciesProvider>
+              <ThemeProvider theme={pimTheme}>
+                <AssetView />
+              </ThemeProvider>
+            </DependenciesProvider>
           </Provider>,
           this.el
         );

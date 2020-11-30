@@ -14,7 +14,7 @@ import ReferenceEntity, {
   denormalizeReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
 import Header from 'akeneoreferenceentity/application/component/reference-entity/edit/header';
-import {breadcrumbConfiguration} from 'akeneoreferenceentity/application/component/reference-entity/edit';
+import {RefEntityBreadcrumb} from 'akeneoreferenceentity/application/component/app/breadcrumb';
 import File from 'akeneoreferenceentity/domain/model/file';
 const securityContext = require('pim/security-context');
 import DeleteModal from 'akeneoreferenceentity/application/component/app/delete-modal';
@@ -103,7 +103,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={this.props.form.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration}
+          breadcrumb={<RefEntityBreadcrumb referenceEntityIdentifier={referenceEntity.getIdentifier().stringValue()} />}
           displayActions={this.props.rights.referenceEntity.edit}
         />
         <div className="AknSubsection">

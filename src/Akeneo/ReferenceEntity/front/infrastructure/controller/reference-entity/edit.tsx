@@ -35,6 +35,9 @@ import {LocalePermission} from 'akeneoreferenceentity/domain/model/permission/lo
 import {Filter} from 'akeneoreferenceentity/application/reducer/grid';
 import {restoreFilters} from 'akeneoreferenceentity/application/action/record/search';
 import {gridStateStoragePath} from 'akeneoreferenceentity/infrastructure/middleware/grid';
+import {ThemeProvider} from 'styled-components';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {pimTheme} from 'akeneo-design-system';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -94,7 +97,11 @@ class ReferenceEntityEditController extends BaseController {
 
         ReactDOM.render(
           <Provider store={this.store}>
-            <ReferenceEntityView />
+            <DependenciesProvider>
+              <ThemeProvider theme={pimTheme}>
+                <ReferenceEntityView />
+              </ThemeProvider>
+            </DependenciesProvider>
           </Provider>,
           this.el
         );

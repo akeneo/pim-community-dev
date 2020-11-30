@@ -5,7 +5,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
-import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import PermissionCollectionEditor from 'akeneoassetmanager/tools/component/permission';
 import {FormState} from 'akeneoassetmanager/application/reducer/state';
 import {permissionEditionUpdated} from 'akeneoassetmanager/domain/event/asset-family/permission';
@@ -75,7 +75,7 @@ class Permission extends React.Component<StateProps & DispatchProps> {
           withLocaleSwitcher={false}
           withChannelSwitcher={false}
           isDirty={permission.state.isDirty}
-          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
+          breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
         />
         <div className="AknSubsection">
           <StickyHeader>

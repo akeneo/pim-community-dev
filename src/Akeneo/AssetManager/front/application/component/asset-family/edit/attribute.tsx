@@ -11,7 +11,7 @@ import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/
 import {attributeEditionStartByIdentifier} from 'akeneoassetmanager/application/action/attribute/edit';
 import AttributeEditForm from 'akeneoassetmanager/application/component/attribute/edit';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
-import {breadcrumbConfiguration} from 'akeneoassetmanager/application/component/asset-family/edit';
+import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/attribute';
@@ -230,7 +230,7 @@ class AttributesView extends React.Component<CreateProps> {
           withLocaleSwitcher={true}
           withChannelSwitcher={false}
           isDirty={false}
-          breadcrumbConfiguration={breadcrumbConfiguration(assetFamily.identifier, assetFamilyLabel)}
+          breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
           displayActions={rights.attribute.create}
         />
         <div className="AknSubsection">

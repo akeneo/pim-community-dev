@@ -78,11 +78,14 @@ jobs:
           environment:
             YARN_REGISTRY: "http://registry.yarnpkg.com"
       - run:
-          name: Install asset
+          name: Install assets
           command: make assets
       - run:
+          name: Build css
+          command: make css
+      - run:
           name: Build Javascript
-          command: make javascript-test && make javascript-dev
+          command: make javascript-dev
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
@@ -131,7 +134,6 @@ jobs:
   test_back_integration_bounded_contexts:
       machine:
           image: ubuntu-1604:201903-01
-      parallelism: 15
       steps:
           - attach_workspace:
                 at: ~/
@@ -313,12 +315,6 @@ jobs:
         - run:
             name: Front unit tests
             command: make unit-front
-        - run:
-            name: Front acceptance tests
-            command: make acceptance-front
-        - run:
-            name: Front integration tests
-            command: make integration-front
 
   test_back_performance:
     machine:
