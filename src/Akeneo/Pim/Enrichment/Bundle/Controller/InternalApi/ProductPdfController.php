@@ -37,10 +37,16 @@ class ProductPdfController
     /**
      * Generate Pdf and send it to the client for specific product
      *
+     * @param Request $request
+     * @param int     $id
+     *
      * @AclAncestor("pim_pdf_generator_product_download")
+     *
      * @throws HttpException
+     *
+     * @return Response
      */
-    public function downloadPdfAction(Request $request, int $id): Response
+    public function downloadPdfAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
         $renderingDate = new \DateTime('now');
@@ -76,9 +82,13 @@ class ProductPdfController
     /**
      * Find a product by its id or return a 404 response
      *
+     * @param int $id the product id
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return ProductInterface
      */
-    protected function findProductOr404(int $id): ProductInterface
+    protected function findProductOr404($id)
     {
         $product = $this->productRepository->find($id);
 
