@@ -78,7 +78,6 @@
         "guzzlehttp/guzzle": "6.5.5",
         "imagine/imagine": "0.7.1",
         "justinrainbow/json-schema": "^5.2",
-        "league/flysystem-aws-s3-v3": "^1.0",
         "league/flysystem-ziparchive": "1.0.3",
         "league/flysystem": "^1.0",
         "liip/imagine-bundle": "2.3.1",
@@ -150,6 +149,7 @@
         "liuggio/fastest": "1.6.*",
         "phpstan/phpstan": "^0.12.25",
         "phpstan/phpstan-symfony": "^0.12.6",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "mcustiel/phiremock": "1.12.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.7"
     },
