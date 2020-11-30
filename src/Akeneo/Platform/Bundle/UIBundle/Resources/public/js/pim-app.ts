@@ -2,7 +2,6 @@ import _ from 'underscore';
 import Backbone from 'backbone';
 import BaseView = require('pimui/js/view/base');
 
-const messenger = require('oro/messenger');
 const mediator = require('oro/mediator');
 const FetcherRegistry = require('pim/fetcher-registry');
 const init = require('pim/init');
@@ -39,8 +38,6 @@ class PimApp extends BaseView {
     return $.when(FetcherRegistry.initialize(), DateContext.initialize(), UserContext.initialize())
       .then(initTranslator.fetch)
       .then(() => {
-        messenger.showQueuedMessages();
-
         init();
 
         pageTitle.set('Akeneo PIM');

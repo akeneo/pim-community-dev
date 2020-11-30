@@ -60,4 +60,11 @@ const Content = styled.div<{width: number; height: number} & AkeneoThemedProps>`
   margin-top: 30px;
 `;
 
-export {StoryStyle, PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content};
+const MessageBarContainer = styled.div`
+  padding: 5px;
+  width: 600px;
+  height: 110px;
+  overflow: clip;
+`;
+
+export {StoryStyle, PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content, MessageBarContainer};
