@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9568: Fix performance issue when saving a big product group
+- RAC-388: Fix fatal error when an attribute is removed then re-created with the same code but another type.
 
 # 4.0.73 (2020-11-23)
 
