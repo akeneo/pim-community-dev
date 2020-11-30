@@ -5,6 +5,9 @@ services:
     pim_analytics.query.api_connection_count:
         class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\ApiConnectionCountInMemory
 
+    pim_analytics.query.active_event_subscription_count:
+        class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\ActiveEventSubscriptionCountInMemory
+
     pim_analytics.query.media_count:
         class: AkeneoTest\Platform\Acceptance\Analytics\Query\InMemory\MediaCountInMemory
 
