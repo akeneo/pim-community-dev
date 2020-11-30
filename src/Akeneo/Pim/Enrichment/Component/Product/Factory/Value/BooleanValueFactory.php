@@ -22,7 +22,7 @@ final class BooleanValueFactory extends ScalarValueFactory implements ValueFacto
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_bool($data)) {
+        if (!\is_bool($data)) {
             throw InvalidPropertyTypeException::booleanExpected(
                 $attribute->code(),
                 static::class,

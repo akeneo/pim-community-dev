@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
 /**

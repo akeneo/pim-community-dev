@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
 
 use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -55,6 +56,14 @@ final class NonExistentPriceCollectionValueFilter implements NonExistentValuesFi
                     }
 
                     foreach ($valuesIndexedByLocale as $locale => $value) {
+                        if (!\is_array($value)) {
+                            throw InvalidPropertyTypeException::arrayExpected(
+                                $attributeCode,
+                                static::class,
+                                $value
+                            );
+                        }
+
                         $amountByCurrency = [];
                         foreach ($value as $price) {
                             if (isset($price['amount']) && isset($price['currency'])) {

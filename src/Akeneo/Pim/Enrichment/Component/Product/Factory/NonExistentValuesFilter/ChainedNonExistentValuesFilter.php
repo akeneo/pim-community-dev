@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * The implementation of this non existent filter uses a pivot format internally.
@@ -59,7 +60,11 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
         $result = array_reduce(
             $this->iterableToArray($this->nonExistentValueFilters),
             function (OnGoingFilteredRawValues $onGoingFilteredRawValues, NonExistentValuesFilter $obsoleteValuesFilter): OnGoingFilteredRawValues {
-                return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
+                try {
+                    return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
+                } catch (\TypeError | InvalidPropertyTypeException $ex) {
+                    return $onGoingFilteredRawValues;
+                }
             },
             $onGoingFilteredRawValues
         );
