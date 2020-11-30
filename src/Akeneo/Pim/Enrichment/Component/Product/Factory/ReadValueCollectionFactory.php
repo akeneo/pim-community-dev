@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Psr\Log\LoggerInterface;
 
@@ -100,7 +101,7 @@ class ReadValueCollectionFactory
                                 $localeCode,
                                 $data
                             );
-                        } catch (\TypeError | InvalidPropertyTypeException $ex) {
+                        } catch (\TypeError | InvalidPropertyTypeException | InvalidPropertyException $ex) {
                             if (null !== $this->logger) {
                                 $this->logger->warning(
                                     sprintf(
