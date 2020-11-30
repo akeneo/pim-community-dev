@@ -77,19 +77,6 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
     {
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
 
-        // Create the job instance if the migration was not played
-        // @todo remove the whole block on master: the job should exists because we always play migrations
-        if (null === $jobInstance && null !== $this->createJobInstance) {
-            $this->createJobInstance->createJobInstance([
-                'code' => 'remove_non_existing_product_values',
-                'label' => 'Remove the non existing values of product and product models',
-                'job_name' => 'remove_non_existing_product_values',
-                'type' => 'remove_non_existing_product_values',
-            ]);
-
-            $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
-        }
-
         return $jobInstance;
     }
 }
