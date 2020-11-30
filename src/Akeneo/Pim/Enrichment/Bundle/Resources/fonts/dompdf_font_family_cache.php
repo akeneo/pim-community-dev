@@ -3,6 +3,9 @@
 if (!isset($rootDir)) {
   $rootDir = '';
 }
+if (!isset($fontDir)) {
+  $fontDir = '';
+}
 
 return [
     'sans-serif' => [
