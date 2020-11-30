@@ -6,19 +6,16 @@
         <style type="text/css">
             {% if (null != customFont) %}
                 @font-face {
-                    font-family: 'Custom font';
+                    font-family: "Custom font";
                     font-style: normal;
                     font-weight: 400;
                     src: url({{ customFont }}) format('truetype');
                 }
             {% endif %}
 
-            * {
-                font-family: 'fireflysung', monospace;
-                font-weight: 400 !important;
-            }
-
             body {
+                font-family: "Custom font", "DejaVu Sans", monospace;
+                font-weight: 400 !important;
                 font-size: 14px;
             }
 
@@ -79,6 +76,11 @@
                 padding: 5px;
                 width: 65%;
             }
+
+            .attributes.pim_catalog_text.asian-text .right-column,
+            .attributes.pim_catalog_textarea.asian-text .right-column {
+                font-family: 'fireflysung', "DejaVu Sans", monospace;
+            }
         </style>
     </head>
     <body>
@@ -118,7 +120,8 @@
                                     {% set manualHeight = attribute.label|length > (content|trim|length / 3) %}
                                 {% endif %}
 
-                                <div class="attributes"{% if manualHeight %} style="height: {{ (attribute.label|length / 30)|round(0, 'ceil') * 18 + 10 }}px"{% endif %}>
+                                <div class="attributes {{ attribute.type }} {% if contains_asian_characters(content) %}asian-text{% endif %}"
+                                        {% if manualHeight %} style="height: {{ (attribute.label|length / 30)|round(0, 'ceil') * 18 + 10 }}px"{% endif %}>
                                     <div class="left-column">
                                         {{ attribute.label }}
                                     </div>

@@ -22,16 +22,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductPdfController
 {
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
+    protected ProductRepositoryInterface $productRepository;
+    protected RendererRegistry $rendererRegistry;
 
-    /** @var RendererRegistry */
-    protected $rendererRegistry;
-
-    /**
-     * @param ProductRepositoryInterface $productRepository
-     * @param RendererRegistry           $rendererRegistry
-     */
     public function __construct(ProductRepositoryInterface $productRepository, RendererRegistry $rendererRegistry)
     {
         $this->productRepository = $productRepository;
@@ -41,16 +34,10 @@ class ProductPdfController
     /**
      * Generate Pdf and send it to the client for specific product
      *
-     * @param Request $request
-     * @param int     $id
-     *
      * @AclAncestor("pim_pdf_generator_product_download")
-     *
      * @throws HttpException
-     *
-     * @return Response
      */
-    public function downloadPdfAction(Request $request, $id)
+    public function downloadPdfAction(Request $request, int $id): Response
     {
         $product = $this->findProductOr404($id);
         $renderingDate = new \DateTime('now');
@@ -86,13 +73,9 @@ class ProductPdfController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param int $id the product id
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @return ProductInterface
      */
-    protected function findProductOr404($id)
+    protected function findProductOr404(int $id): ProductInterface
     {
         $product = $this->productRepository->find($id);
 
