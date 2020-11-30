@@ -77,10 +77,10 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
         if (!empty($attributesCodes)) {
             $this->cleanValues($attributesCodes, $input, $output);
-// @TODO merge master: remove null check
-                if (null !== $this->eventDispatcher) {
-                    $this->eventDispatcher->dispatch(AttributeEvents::POST_CLEAN);
-                }            return 0;
+
+        $this->eventDispatcher->dispatch(AttributeEvents::POST_CLEAN);
+
+            return 0;
         }
 
         $io = new SymfonyStyle($input, $output);
