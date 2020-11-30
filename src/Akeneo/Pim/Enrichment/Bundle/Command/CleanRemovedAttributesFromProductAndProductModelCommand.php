@@ -44,7 +44,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         string $kernelRootDir,
         int $productBatchSize,
-        CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes = null,
+        CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes,
         EventDispatcher $eventDispatcher
     ) {
         parent::__construct();
