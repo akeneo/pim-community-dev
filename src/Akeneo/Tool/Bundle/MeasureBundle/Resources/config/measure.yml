@@ -438,19 +438,19 @@ measures_config:
                 convert: [{'mul': '0.001'}]
                 symbol: hPa
             MILLIBAR:
-                convert: [{'mul': '1000'}]
+                convert: [{'mul': '0.001'}]
                 symbol: mBar
             ATM:
-                convert: [{'mul': '0.986923'}]
+                convert: [{'mul': '1.01325'}]
                 symbol: atm
             PSI:
-                convert: [{'mul': '14.50376985373022'}]
+                convert: [{'mul': '0.0689476'}]
                 symbol: PSI
             TORR:
-                convert: [{'mul': '750.06375541921'}]
+                convert: [{'mul': '0.00133322'}]
                 symbol: Torr
             MMHG:
-                convert: [{'mul': '750.06375541921'}]
+                convert: [{'mul': '0.00133322'}]
                 symbol: mmHg
     Energy:
         standard: JOULE
