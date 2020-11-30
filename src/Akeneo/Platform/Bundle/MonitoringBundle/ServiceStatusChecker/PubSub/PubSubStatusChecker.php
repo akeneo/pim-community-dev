@@ -16,25 +16,25 @@ use Google\Cloud\Core\Exception\ServiceException;
 class PubSubStatusChecker implements PubSubStatusCheckerInterface
 {
     private PubSubClientFactory $pubSubClientFactory;
-    private string $project;
+    private string $projectId;
     private string $topicName;
     private string $subscriptionName;
 
     public function __construct(
         PubSubClientFactory $pubSubClientFactory,
-        string $project,
+        string $projectId,
         string $topicName,
         string $subscriptionName
     ) {
         $this->pubSubClientFactory = $pubSubClientFactory;
-        $this->project = $project;
+        $this->projectId = $projectId;
         $this->topicName = $topicName;
         $this->subscriptionName = $subscriptionName;
     }
 
     public function status(): ServiceStatus
     {
-        $pubSubClient = $this->pubSubClientFactory->createPubSubClient(['projectId' => $this->project]);
+        $pubSubClient = $this->pubSubClientFactory->createPubSubClient(['projectId' => $this->projectId]);
 
         $topic = $pubSubClient->topic($this->topicName);
         $subscription = $topic->subscription($this->subscriptionName);
@@ -49,7 +49,7 @@ class PubSubStatusChecker implements PubSubStatusCheckerInterface
                 $subscription->modifyAckDeadline($messages[0], 0);
             }
         } catch (ServiceException $exception) {
-            return ServiceStatus::notOk('Unable to access Pub/Sub.');
+            return ServiceStatus::notOk(sprintf('Unable to access Pub/Sub: %s', $exception->getMessage()));
         }
 
         return ServiceStatus::ok();
