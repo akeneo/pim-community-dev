@@ -1,14 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import {akeneoTheme, opacity, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import Close from 'akeneoassetmanager/application/component/app/icon/close';
+import {opacity} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
-import Right from 'akeneoassetmanager/application/component/app/icon/right';
-import Left from 'akeneoassetmanager/application/component/app/icon/left';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 import {getAssetEditUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import ListAsset, {
   getListAssetMainMediaThumbnail,
   MoveDirection,
@@ -16,6 +12,7 @@ import ListAsset, {
   assetWillNotMoveInCollection,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
+import {ArrowLeftIcon, ArrowRightIcon, CloseIcon, EditIcon, AkeneoThemedProps, getColor} from 'akeneo-design-system';
 
 const Img = styled.img`
   width: 140px;
@@ -28,7 +25,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   padding: 10px;
-  background-color: ${(props: ThemedProps<void>) => opacity(props.theme.color.grey140, 0.6)};
+  background-color: ${(props: AkeneoThemedProps<void>) => opacity(props.theme.color.grey140, 0.6)};
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
   display: flex;
@@ -41,8 +38,8 @@ const Container = styled.div<{readonly: boolean}>`
   position: relative;
   width: 140px;
   height: 140px;
-  outline: 1px solid ${(props: ThemedProps<{readonly: boolean}>) => props.theme.color.grey100};
-  opacity: ${(props: ThemedProps<{readonly: boolean}>) => (props.readonly ? 0.4 : 1)};
+  outline: 1px solid ${(props: AkeneoThemedProps<{readonly: boolean}>) => props.theme.color.grey100};
+  opacity: ${(props: AkeneoThemedProps<{readonly: boolean}>) => (props.readonly ? 0.4 : 1)};
 
   &:hover ${Overlay} {
     opacity: 1;
@@ -52,6 +49,7 @@ const Container = styled.div<{readonly: boolean}>`
 const IconButton = styled(TransparentButton)`
   width: 22px;
   height: 22px;
+  color: ${getColor('grey', 100)};
 
   &:hover g {
     stroke: white;
@@ -77,6 +75,7 @@ const Action = styled.a`
   align-items: center;
   cursor: pointer;
   line-height: 14px;
+  color: ${getColor('white')};
 
   &:not(:first-child) {
     margin-top: 6px;
@@ -85,20 +84,19 @@ const Action = styled.a`
 
 const Label = styled.span`
   margin-left: 5px;
-  color: white;
-  font-size: ${(props: ThemedProps<{readonly: boolean}>) => props.theme.fontSize.small};
+  font-size: ${(props: AkeneoThemedProps<{readonly: boolean}>) => props.theme.fontSize.small};
 `;
 
 const RemoveAction = (props: any) => (
   <Action {...props}>
-    <Close size={14} color="white" />
+    <CloseIcon size={14} />
     <Label>{__('pim_asset_manager.asset_collection.remove_asset')}</Label>
   </Action>
 );
 
 const EditAction = (props: any) => (
   <Action {...props} className={'edit-asset-from-thumbnail'} target="_blank">
-    <Edit size={14} color="white" />
+    <EditIcon size={14} />
     <Label>{__('pim_asset_manager.asset_collection.edit_asset')}</Label>
   </Action>
 );
@@ -151,14 +149,14 @@ export const Thumbnail = ({
               onClick={() => onMove(MoveDirection.Before)}
               data-move-left={asset.code}
             >
-              <Left color={akeneoTheme.color.grey100} />
+              <ArrowLeftIcon />
             </MoveButton>
           ) : (
             <div />
           )}
           {!assetWillNotMoveInCollection(assetCollection, asset, MoveDirection.After) ? (
             <MoveButton title={moveAfterLabel} onClick={() => onMove(MoveDirection.After)} data-move-right={asset.code}>
-              <Right color={akeneoTheme.color.grey100} />
+              <ArrowRightIcon />
             </MoveButton>
           ) : (
             <div />

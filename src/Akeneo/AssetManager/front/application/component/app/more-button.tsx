@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import More from 'akeneoassetmanager/application/component/app/icon/more';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import __ from 'akeneoassetmanager/tools/translator';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 import Key from 'akeneoassetmanager/tools/key';
+import {MoreIcon, getColor, getFontSize} from 'akeneo-design-system';
 
 const Mask = styled.button`
   position: fixed;
@@ -34,8 +33,8 @@ const Panel = styled.ul`
 const Action = styled.li`
   white-space: nowrap;
   text-align: left;
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
+  font-size: ${getFontSize('default')};
+  color: ${getColor('grey', 120)};
   width: 100%;
   line-height: 34px;
   min-width: 120px;
@@ -66,10 +65,10 @@ const Button: React.FunctionComponent<{title: string; onAction: () => void}> = (
 
 const Title = styled.div`
   line-height: 44px;
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};
-  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  font-size: ${getFontSize('small')};
+  color: ${getColor('brand', 100)};
   text-transform: uppercase;
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  border-bottom: 1px solid ${getColor('brand', 100)};
   margin-bottom: 10px;
 `;
 const ActionList = styled.div``;
@@ -99,7 +98,7 @@ export const MoreButton = ({elements}: {elements: Element[]}) => {
         <Mask onClick={() => setOpen(false)}>{__('pim_asset_manager.asset_collection.dismiss_other_actions')}</Mask>
       ) : null}
       <Button title={__('pim_asset_manager.asset_collection.open_other_actions')} onAction={() => setOpen(true)}>
-        <More />
+        <MoreIcon />
       </Button>
       {isOpen ? (
         <Panel>

@@ -4,7 +4,7 @@ import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error'
 import Flag from 'akeneoassetmanager/tools/component/flag';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {createLocaleFromCode, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
-import {Asset} from 'akeneoassetmanager/application/component/app/illustration/asset';
+import {AssetsIllustration} from 'akeneo-design-system';
 import sanitize from 'akeneoassetmanager/tools/sanitize';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import assetFamilySaver from 'akeneoassetmanager/infrastructure/saver/asset-family';
@@ -109,7 +109,7 @@ export const CreateAssetFamilyModal = ({locale, onClose, onAssetFamilyCreated}: 
         <div className="AknFullPage">
           <div className="AknFullPage-content AknFullPage-content--withIllustration">
             <div>
-              <Asset className="AknFullPage-image" />
+              <AssetsIllustration />
             </div>
             <div>
               <div className="AknFormContainer">

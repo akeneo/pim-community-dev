@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
@@ -8,20 +8,17 @@ import {
   getYouTubeWatchUrl,
   getVimeoWatchUrl,
 } from 'akeneoassetmanager/domain/model/asset/data/media-link';
-import Download from 'akeneoassetmanager/application/component/app/icon/download';
 import {canCopyToClipboard, copyToClipboard, getImageDownloadUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-link/media-type';
-import {Copy} from 'akeneoassetmanager/application/component/app/icon/copy';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
-import ReloadIcon from 'akeneoassetmanager/application/component/app/icon/reload';
+import {CopyIcon, DownloadIcon, RefreshIcon, getColor} from 'akeneo-design-system';
 
 export const Container = styled.div`
   align-items: center;
   border-radius: 2px;
-  border: 1px solid ${props => props.theme.color.grey80};
+  border: 1px solid ${getColor('grey', 80)};
   display: flex;
   flex: 1;
   justify-content: center;
@@ -30,7 +27,7 @@ export const Container = styled.div`
 `;
 
 export const Thumbnail = styled.img`
-  border: 1px solid ${props => props.theme.color.grey60};
+  border: 1px solid ${getColor('grey', 60)};
   flex-shrink: 0;
   width: 40px;
   height: 40px;
@@ -48,12 +45,14 @@ export const ThumbnailPlaceholder = styled.div`
 export const Action = styled.a`
   display: flex;
   align-items: center;
+  color: ${getColor('grey', 100)};
 
   &:hover {
     cursor: pointer;
   }
 `;
 
+//TODO RAC-414 use DSM IconButton?
 export const Actions = styled.div<{margin?: number}>`
   display: flex;
   align-items: center;
@@ -72,7 +71,6 @@ Actions.defaultProps = {
 
 export const ActionLabel = styled.span`
   margin-left: 5px;
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey100};
 `;
 
 type ActionProps = {
@@ -97,7 +95,7 @@ export const DownloadAction = ({data, attribute, label, size, color}: ActionProp
 
   return (
     <Action title={title} href={url} download={fileName} target="_blank">
-      <Download size={size} color={color} title={title} />
+      <DownloadIcon size={size} color={color} />
       {label && <ActionLabel>{label}</ActionLabel>}
     </Action>
   );
@@ -117,7 +115,7 @@ export const CopyUrlAction = ({data, attribute, label, size, color}: ActionProps
 
   return (
     <Action title={title} onClick={() => copyToClipboard(url)}>
-      <Copy size={size} color={color} title={title} />
+      <CopyIcon size={size} color={color} />
       {label && <ActionLabel>{label}</ActionLabel>}
     </Action>
   );
@@ -129,7 +127,7 @@ export const ReloadAction = ({data, onReload, attribute, label, size, color}: Ac
 
   return (
     <Action title={title} onClick={onReload}>
-      <ReloadIcon size={size} color={color} title={title} />
+      <RefreshIcon size={size} color={color} />
       {label && <ActionLabel>{label}</ActionLabel>}
     </Action>
   );

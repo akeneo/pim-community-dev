@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditionAsset, {getEditionAssetMediaData} from 'akeneoassetmanager/domain/model/asset/edition-asset';
@@ -7,8 +7,6 @@ import {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
-import {Fullscreen} from 'akeneoassetmanager/application/component/app/icon/fullscreen';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import {
@@ -21,6 +19,7 @@ import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import {Subsection, SubsectionHeader} from 'akeneoassetmanager/application/component/app/subsection';
 import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
 import {connect} from 'react-redux';
+import {FullscreenIcon} from 'akeneo-design-system';
 
 const Container = styled.div`
   display: flex;
@@ -73,21 +72,11 @@ export const MainMediaPreview = connect(null, dispatch => ({
         <span>{__('pim_asset_manager.asset.enrich.main_media_preview')}</span>
         {!isDataEmpty(data) && (
           <Actions>
-            <ReloadAction
-              color={akeneoTheme.color.grey100}
-              size={20}
-              data={data}
-              attribute={attributeAsMainMedia}
-              onReload={onReloadPreview}
-            />
-            <CopyUrlAction color={akeneoTheme.color.grey100} size={20} data={data} attribute={attributeAsMainMedia} />
-            <DownloadAction color={akeneoTheme.color.grey100} size={20} data={data} attribute={attributeAsMainMedia} />
+            <ReloadAction size={20} data={data} attribute={attributeAsMainMedia} onReload={onReloadPreview} />
+            <CopyUrlAction size={20} data={data} attribute={attributeAsMainMedia} />
+            <DownloadAction size={20} data={data} attribute={attributeAsMainMedia} />
             <FullscreenPreview anchor={Action} label={attributeLabel} data={data} attribute={attributeAsMainMedia}>
-              <Fullscreen
-                title={__('pim_asset_manager.asset.button.fullscreen')}
-                color={akeneoTheme.color.grey100}
-                size={20}
-              />
+              <FullscreenIcon title={__('pim_asset_manager.asset.button.fullscreen')} size={20} />
             </FullscreenPreview>
           </Actions>
         )}

@@ -1,8 +1,6 @@
-import * as React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import {render, getByText} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
+import {screen} from '@testing-library/react';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
 
 test('It should render the rule notification when the attribute can be updated by a rule', () => {
@@ -13,14 +11,10 @@ test('It should render the rule notification when the attribute can be updated b
       rule: 'set_packshot',
     },
   ];
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />
-    </ThemeProvider>
-  );
+  renderWithProviders(<RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />);
 
-  expect(getByText('pim_asset_manager.asset_collection.notification.product_rule')).toBeInTheDocument();
-  expect(getByText('set_packshot')).toBeInTheDocument();
+  expect(screen.getByText('pim_asset_manager.asset_collection.notification.product_rule')).toBeInTheDocument();
+  expect(screen.getByText('set_packshot')).toBeInTheDocument();
 });
 
 test('It should render multiple rule notifications when the attribute can be updated by a rule', () => {
@@ -35,13 +29,9 @@ test('It should render multiple rule notifications when the attribute can be upd
       rule: 'set_packshot_image',
     },
   ];
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />
-    </ThemeProvider>
-  );
+  renderWithProviders(<RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />);
 
-  expect(getByText('set_packshot, set_packshot_image')).toBeInTheDocument();
+  expect(screen.getByText('set_packshot, set_packshot_image')).toBeInTheDocument();
 });
 
 test('It should not render the rule notification when the attribute can not be updated by a rule', () => {
@@ -52,11 +42,9 @@ test('It should not render the rule notification when the attribute can not be u
       rule: 'set_packshot',
     },
   ];
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />
-    </ThemeProvider>
+  const {container} = renderWithProviders(
+    <RuleNotification attributeCode={attributeCode} ruleRelations={ruleRelations} />
   );
 
-  expect(container).toBeEmpty();
+  expect(container).toBeEmptyDOMElement();
 });

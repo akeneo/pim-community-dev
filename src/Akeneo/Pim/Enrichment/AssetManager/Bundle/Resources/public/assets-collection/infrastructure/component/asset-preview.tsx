@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
@@ -7,9 +7,6 @@ import {CloseButton} from 'akeneoassetmanager/application/component/app/close-bu
 import {Modal, SubTitle, Title} from 'akeneoassetmanager/application/component/app/modal';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Carousel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/carousel';
-import Left from 'akeneoassetmanager/application/component/app/icon/left';
-import Right from 'akeneoassetmanager/application/component/app/icon/right';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -28,7 +25,6 @@ import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {Border, PreviewContainer} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
-import Edit from 'akeneoassetmanager/application/component/app/icon/edit';
 import {
   Action,
   ActionLabel,
@@ -36,6 +32,7 @@ import {
   DownloadAction,
   CopyUrlAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
+import {ArrowLeftIcon, ArrowRightIcon, EditIcon, getColor} from 'akeneo-design-system';
 
 const Container = styled.div`
   position: relative;
@@ -60,6 +57,7 @@ const Header = styled.div``;
 
 const ArrowButton = styled(TransparentButton)`
   margin: 0 10px;
+  color: ${getColor('grey', 100)};
 `;
 
 const StyledPreviewContainer = styled(PreviewContainer)`
@@ -79,7 +77,7 @@ type AssetPreviewProps = {
 
 const EditAction = ({url, label}: {url: string; label: string}) => (
   <Action className={'edit-asset-from-preview'} title={label} href={url} target="_blank">
-    <Edit />
+    <EditIcon />
     <ActionLabel title={label}>{label}</ActionLabel>
   </Action>
 );
@@ -118,7 +116,7 @@ export const AssetPreview = ({
       <Container>
         <CloseButton title={__('pim_asset_manager.close')} onClick={onClose} />
         <ArrowButton title={__('pim_asset_manager.asset_preview.previous')} onClick={setPreviousAsset}>
-          <Left size={44} color={akeneoTheme.color.grey100} />
+          <ArrowLeftIcon size={44} />
         </ArrowButton>
         <AssetContainer>
           <Header>
@@ -154,7 +152,7 @@ export const AssetPreview = ({
           />
         </AssetContainer>
         <ArrowButton title={__('pim_asset_manager.asset_preview.next')} onClick={setNextAsset}>
-          <Right size={44} color={akeneoTheme.color.grey100} />
+          <ArrowRightIcon size={44} />
         </ArrowButton>
       </Container>
     </Modal>

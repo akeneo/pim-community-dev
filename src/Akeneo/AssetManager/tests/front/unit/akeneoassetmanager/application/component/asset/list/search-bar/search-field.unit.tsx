@@ -1,68 +1,44 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import '@testing-library/jest-dom/extend-expect';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
-import {ThemeProvider} from 'styled-components';
+import React from 'react';
 import SearchField from 'akeneoassetmanager/application/component/asset/list/search-bar/search-field';
-import {render} from '@testing-library/react';
+import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {act} from 'react-dom/test-utils';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
-test('It displays an empty search field', async () => {
-  const {container, getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <SearchField value="" onChange={() => {}} />
-    </ThemeProvider>
-  );
-
-  expect(container.querySelector('input').value).toEqual('');
-  expect(getByText('Search')).toBeInTheDocument();
-});
-
-test('It displays a search value for the field', async () => {
-  const searchCriteria = 'SOME SEARCH';
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <SearchField value={searchCriteria} onChange={() => {}} />
-    </ThemeProvider>
-  );
-
-  expect(container.querySelector('input').value).toEqual(searchCriteria);
-});
-
-let container;
-beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
-});
-afterEach(() => {
-  document.body.removeChild(container);
-  container = null;
-});
+// We need to use fake timers because SearchField uses a debounce function
 jest.useFakeTimers();
+
+test('It displays an empty search field', () => {
+  renderWithProviders(<SearchField value="" onChange={jest.fn()} />);
+
+  const input = screen.getByPlaceholderText('pim_asset_manager.asset.grid.search') as HTMLInputElement;
+
+  expect(screen.getByPlaceholderText('pim_asset_manager.asset.grid.search')).toBeInTheDocument();
+  expect(input.value).toEqual('');
+});
+
+test('It displays a search value for the field', () => {
+  const searchCriteria = 'SOME SEARCH';
+
+  renderWithProviders(<SearchField value={searchCriteria} onChange={jest.fn()} />);
+
+  const input = screen.getByPlaceholderText('pim_asset_manager.asset.grid.search') as HTMLInputElement;
+
+  expect(input.value).toEqual(searchCriteria);
+});
+
 test('It calls the onChange callback when it is updated', async () => {
-  let isTriggered = false;
-  let actualValue = '';
-  await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <SearchField
-          value={actualValue}
-          onChange={newValue => {
-            actualValue = newValue;
-          }}
-        />
-      </ThemeProvider>,
-      container
-    );
-  });
+  const onChange = jest.fn();
+  let value = '';
+
+  renderWithProviders(<SearchField value={value} onChange={onChange} />);
 
   const newValue = 'SOME NEW SEARCH CRITERIA';
-  const searchInput = container.querySelector('input');
+  const input = screen.getByPlaceholderText('pim_asset_manager.asset.grid.search') as HTMLInputElement;
+
   await act(async () => {
-    await userEvent.type(searchInput, newValue);
+    await userEvent.type(input, newValue);
     jest.runAllTimers();
   });
 
-  expect(actualValue).toEqual(newValue);
+  expect(onChange).toBeCalledWith(newValue);
 });

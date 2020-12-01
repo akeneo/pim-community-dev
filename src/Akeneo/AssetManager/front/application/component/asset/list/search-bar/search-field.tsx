@@ -1,11 +1,9 @@
-import * as React from 'react';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
-import SearchIcon from 'akeneoassetmanager/application/component/app/icon/search';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import useDebounce from 'akeneoassetmanager/platform/hook/use-debounce';
 import {useFocus} from 'akeneoassetmanager/application/hooks/input';
+import {SearchIcon, getColor, getFontSize} from 'akeneo-design-system';
 
 type SearchFieldProps = {
   value: string;
@@ -25,8 +23,8 @@ const SearchInput = styled.input`
   flex: 1;
   outline: none;
   border: none;
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
+  color: ${getColor('grey', 120)};
+  font-size: ${getFontSize('default')};
 `;
 
 const SearchField = ({value, onChange}: SearchFieldProps) => {

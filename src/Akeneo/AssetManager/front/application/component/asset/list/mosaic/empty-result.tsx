@@ -1,8 +1,7 @@
-import * as React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
+import React from 'react';
 import styled from 'styled-components';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
+import {AssetsIllustration, getColor, getFontSize} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const EmptyContainer = styled.div`
   display: flex;
@@ -13,20 +12,22 @@ const EmptyContainer = styled.div`
 `;
 const Title = styled.div`
   margin-bottom: 10px;
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  font-size: ${getFontSize('title')};
+  color: ${getColor('grey', 140)};
 `;
 const SubTitle = styled.div`
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.bigger};
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
+  font-size: ${getFontSize('bigger')};
+  color: ${getColor('grey', 120)};
 `;
 
 const EmptyResult = () => {
+  const translate = useTranslate();
+
   return (
     <EmptyContainer>
-      <AssetIllustration size={256} />
-      <Title>{__('pim_asset_manager.asset_picker.no_result.title')}</Title>
-      <SubTitle>{__('pim_asset_manager.asset_picker.no_result.sub_title')}</SubTitle>
+      <AssetsIllustration size={256} />
+      <Title>{translate('pim_asset_manager.asset_picker.no_result.title')}</Title>
+      <SubTitle>{translate('pim_asset_manager.asset_picker.no_result.sub_title')}</SubTitle>
     </EmptyContainer>
   );
 };

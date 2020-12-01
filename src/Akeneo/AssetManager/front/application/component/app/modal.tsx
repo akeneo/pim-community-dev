@@ -2,9 +2,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {AssetFamily} from 'akeneoassetmanager/application/component/app/illustration/asset-family';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import Key from 'akeneoassetmanager/tools/key';
+import {AssetCategoriesIllustration} from 'akeneo-design-system';
 
 export const Modal = styled.div`
   display: flex;
@@ -79,7 +79,7 @@ export const ConfirmModal = ({
       <div className="AknFullPage modal-body">
         <div className="AknFullPage-content AknFullPage-content--withIllustration">
           <div>
-            <AssetFamily className="AknFullPage-image" />
+            <AssetCategoriesIllustration />
           </div>
           <div>
             <div className="AknFullPage-titleContainer">

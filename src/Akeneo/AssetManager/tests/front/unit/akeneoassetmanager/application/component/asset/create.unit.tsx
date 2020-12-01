@@ -1,9 +1,7 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {act, getByText, fireEvent, wait} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
+import {act, screen, fireEvent, waitFor} from '@testing-library/react';
 import {CreateModal} from 'akeneoassetmanager/application/component/asset/create';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 // This mock throws an error if the code is 'throw'
 jest.mock('akeneoassetmanager/infrastructure/saver/asset', () => ({
@@ -57,40 +55,15 @@ const assetFamily = {
 const localeCode = 'en_US';
 
 describe('Test Asset create modal component', () => {
-  let container: HTMLElement;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
+  test('It displays the Create Asset modal without errors', () => {
+    renderWithProviders(<CreateModal assetFamily={assetFamily} locale={localeCode} />);
   });
 
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
-  test('It displays the Create Asset modal without errors', async () => {
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <CreateModal assetFamily={assetFamily} locale={localeCode} />
-        </ThemeProvider>,
-        container
-      );
-    });
-  });
-
-  test('I can choose to create another asset by checking the createAnother checkbox', async () => {
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <CreateModal assetFamily={assetFamily} locale={localeCode} />
-        </ThemeProvider>,
-        container
-      );
-    });
+  test('I can choose to create another asset by checking the createAnother checkbox', () => {
+    renderWithProviders(<CreateModal assetFamily={assetFamily} locale={localeCode} />);
 
     const checkbox = document.getElementById('pim_asset_manager.asset.create.input.create_another');
-    const checkboxLabel = getByText(container, 'pim_asset_manager.asset.create.input.create_another');
+    const checkboxLabel = screen.getByText('pim_asset_manager.asset.create.input.create_another');
 
     expect(checkbox.getAttribute('data-checked')).toBe('false');
     fireEvent.click(checkbox);
@@ -99,15 +72,8 @@ describe('Test Asset create modal component', () => {
     expect(checkbox.getAttribute('data-checked')).toBe('false');
   });
 
-  test('I can set a code & a label', async () => {
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <CreateModal assetFamily={assetFamily} locale={localeCode} />
-        </ThemeProvider>,
-        container
-      );
-    });
+  test('I can set a code & a label', () => {
+    renderWithProviders(<CreateModal assetFamily={assetFamily} locale={localeCode} />);
 
     const codeInput = document.getElementById('pim_asset_manager.asset.create.input.code') as HTMLInputElement;
     const labelInput = document.getElementById('pim_asset_manager.asset.create.input.label') as HTMLInputElement;
@@ -128,22 +94,15 @@ describe('Test Asset create modal component', () => {
       assetCode = code;
       createAnother = anotherOne;
     });
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <CreateModal assetFamily={assetFamily} locale={localeCode} onAssetCreated={onAssetCreated} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<CreateModal assetFamily={assetFamily} locale={localeCode} onAssetCreated={onAssetCreated} />);
 
     const codeInput = document.getElementById('pim_asset_manager.asset.create.input.code') as HTMLInputElement;
     const labelInput = document.getElementById('pim_asset_manager.asset.create.input.label') as HTMLInputElement;
-    const submitButton = getByText(container, 'pim_asset_manager.asset.create.confirm');
+    const submitButton = screen.getByText('pim_asset_manager.asset.create.confirm');
 
     await act(async () => {
-      await wait(() => fireEvent.change(codeInput, {target: {value: 'fakeCode'}}));
-      await wait(() => fireEvent.change(labelInput, {target: {value: 'nice label'}}));
+      await waitFor(() => fireEvent.change(codeInput, {target: {value: 'fakeCode'}}));
+      await waitFor(() => fireEvent.change(labelInput, {target: {value: 'nice label'}}));
       fireEvent.click(submitButton);
       // Two clicks to check that onAssetCreated callback is called only once
       fireEvent.click(submitButton);
@@ -156,18 +115,11 @@ describe('Test Asset create modal component', () => {
 
   test('I can not create a single asset with invalid parameters', async () => {
     const onAssetCreated = jest.fn();
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <CreateModal assetFamily={assetFamily} locale={localeCode} onAssetCreated={onAssetCreated} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<CreateModal assetFamily={assetFamily} locale={localeCode} onAssetCreated={onAssetCreated} />);
 
     const codeInput = document.getElementById('pim_asset_manager.asset.create.input.code') as HTMLInputElement;
     const labelInput = document.getElementById('pim_asset_manager.asset.create.input.label') as HTMLInputElement;
-    const submitButton = getByText(container, 'pim_asset_manager.asset.create.confirm');
+    const submitButton = screen.getByText('pim_asset_manager.asset.create.confirm');
 
     await act(async () => {
       fireEvent.change(codeInput, {target: {value: null}});
@@ -183,20 +135,13 @@ describe('Test Asset create modal component', () => {
 
   test('It catches errors during Asset creation', async () => {
     const onAssetCreated = jest.fn();
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <CreateModal assetFamily={assetFamily} locale={localeCode} onAssetCreated={onAssetCreated} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<CreateModal assetFamily={assetFamily} locale={localeCode} onAssetCreated={onAssetCreated} />);
 
     const codeInput = document.getElementById('pim_asset_manager.asset.create.input.code') as HTMLInputElement;
-    const submitButton = getByText(container, 'pim_asset_manager.asset.create.confirm');
+    const submitButton = screen.getByText('pim_asset_manager.asset.create.confirm');
 
     await act(async () => {
-      await wait(() => fireEvent.change(codeInput, {target: {value: 'throw'}}));
+      await waitFor(() => fireEvent.change(codeInput, {target: {value: 'throw'}}));
       fireEvent.click(submitButton);
     });
 

@@ -1,12 +1,10 @@
-import * as React from 'react';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
 import styled from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {AttributeCode} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {ValidationError, getValidationErrorsForAttribute} from 'akeneoassetmanager/platform/model/validation-error';
-import ErrorIcon from 'akeneoassetmanager/platform/component/visual/icon/error';
 import {Separator} from 'akeneoassetmanager/application/component/app/separator';
 import {Context} from 'akeneoassetmanager/domain/model/context';
+import {DangerIcon, getColor} from 'akeneo-design-system';
 
 type ValidationErrorCollectionProps = {
   attributeCode: AttributeCode;
@@ -15,8 +13,8 @@ type ValidationErrorCollectionProps = {
 };
 
 const ErrorSection = styled.div`
-  background-color: ${(props: ThemedProps<void>) => props.theme.color.red20};
-  color: ${(props: ThemedProps<void>) => props.theme.color.red100};
+  background-color: ${getColor('red', 20)};
+  color: ${getColor('red', 100)};
   margin-top: 2px;
   height: 44px;
   width: 100%;
@@ -24,14 +22,15 @@ const ErrorSection = styled.div`
   padding: 10px;
 `;
 
-const ErrorSperator = styled(Separator)`
-  border-color: ${(props: ThemedProps<void>) => props.theme.color.red100};
+const ErrorSeparator = styled(Separator)`
+  border-color: ${getColor('red', 100)};
 `;
 
 const ErrorText = styled.div`
   font-size: 13px;
 `;
 
+//TODO RAC-413 replace this with DSM Helper?
 export const ValidationErrorCollection = ({attributeCode, context, errors}: ValidationErrorCollectionProps) => {
   const errorCollection = getValidationErrorsForAttribute(attributeCode, context, errors);
 
@@ -43,8 +42,8 @@ export const ValidationErrorCollection = ({attributeCode, context, errors}: Vali
     <React.Fragment>
       {errorCollection.map(({message}: ValidationError, index: number) => (
         <ErrorSection key={index}>
-          <ErrorIcon color={akeneoTheme.color.red100} />
-          <ErrorSperator />
+          <DangerIcon />
+          <ErrorSeparator />
           <ErrorText>{message}</ErrorText>
         </ErrorSection>
       ))}

@@ -4,7 +4,6 @@ import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
 import Key from 'akeneoassetmanager/tools/key';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {
   isMediaLinkData,
   mediaLinkDataFromString,
@@ -17,7 +16,6 @@ import {setValueData, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
-import {Fullscreen} from 'akeneoassetmanager/application/component/app/icon/fullscreen';
 import {
   Action,
   DownloadAction,
@@ -33,6 +31,7 @@ import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
 import {ViewGenerator} from 'akeneoassetmanager/application/configuration/value';
+import {FullscreenIcon} from 'akeneo-design-system';
 
 const MediaLinkInput = styled.input`
   ::placeholder {
@@ -126,21 +125,11 @@ const View = ({
       />
       {!isValueEmpty(value) && (
         <Actions>
-          <ReloadAction
-            color={akeneoTheme.color.grey100}
-            size={20}
-            onReload={onReloadPreview}
-            data={value.data}
-            attribute={value.attribute}
-          />
-          <CopyUrlAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
-          <DownloadAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
+          <ReloadAction size={20} onReload={onReloadPreview} data={value.data} attribute={value.attribute} />
+          <CopyUrlAction size={20} data={value.data} attribute={value.attribute} />
+          <DownloadAction size={20} data={value.data} attribute={value.attribute} />
           <FullscreenPreview anchor={Action} label={label} data={value.data} attribute={value.attribute}>
-            <Fullscreen
-              title={__('pim_asset_manager.asset.button.fullscreen')}
-              color={akeneoTheme.color.grey100}
-              size={20}
-            />
+            <FullscreenIcon title={__('pim_asset_manager.asset.button.fullscreen')} size={20} />
           </FullscreenPreview>
         </Actions>
       )}

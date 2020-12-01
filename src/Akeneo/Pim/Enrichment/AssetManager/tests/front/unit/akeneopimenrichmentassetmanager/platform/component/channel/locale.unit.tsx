@@ -1,11 +1,7 @@
-import * as React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import {render} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
+import {screen} from '@testing-library/react';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {LocaleLabel} from 'akeneoassetmanager/platform/component/channel/locale';
-import console = require('console');
-import {debug} from 'util';
 
 test('It should render the locale language with the flag', () => {
   const localeCode = 'en_US';
@@ -18,13 +14,9 @@ test('It should render the locale language with the flag', () => {
     },
   ];
 
-  const {container, getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <LocaleLabel localeCode={localeCode} locales={locales} />
-    </ThemeProvider>
-  );
+  const {container} = renderWithProviders(<LocaleLabel localeCode={localeCode} locales={locales} />);
 
-  expect(getByText('English')).toBeInTheDocument();
+  expect(screen.getByText('English')).toBeInTheDocument();
   expect(container.querySelector('i')).toMatchInlineSnapshot(`
     <i
       class="flag flag-us"
@@ -36,13 +28,9 @@ test('It should render the locale code when it has no locale defined', () => {
   const localeCode = 'en_US';
   const locales = [];
 
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <LocaleLabel localeCode={localeCode} locales={locales} />
-    </ThemeProvider>
-  );
+  renderWithProviders(<LocaleLabel localeCode={localeCode} locales={locales} />);
 
-  expect(getByText('en_US')).toBeInTheDocument();
+  expect(screen.getByText('en_US')).toBeInTheDocument();
 });
 
 test('It should render the locale code when it has no locale defined for the current locale code', () => {
@@ -56,11 +44,7 @@ test('It should render the locale code when it has no locale defined for the cur
     },
   ];
 
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <LocaleLabel localeCode={localeCode} locales={locales} />
-    </ThemeProvider>
-  );
+  renderWithProviders(<LocaleLabel localeCode={localeCode} locales={locales} />);
 
-  expect(getByText('fr_FR')).toBeInTheDocument();
+  expect(screen.getByText('fr_FR')).toBeInTheDocument();
 });

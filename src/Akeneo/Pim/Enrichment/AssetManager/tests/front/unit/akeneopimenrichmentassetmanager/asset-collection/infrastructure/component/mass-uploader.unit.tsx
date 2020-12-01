@@ -1,10 +1,7 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-
+import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {fireEvent, act} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {MassUploader} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/mass-uploader';
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 
@@ -57,7 +54,7 @@ const spin = async (container, selector, shouldExist = true) => {
 
 const dataProvider = {
   assetFamilyFetcher: {
-    fetch: assetFamilyIdentifier => {
+    fetch: () => {
       return new Promise(resolve => {
         act(() => {
           resolve({
@@ -92,15 +89,13 @@ test('It renders a mass uploader button and cancel it', async () => {
   document.body.appendChild(container);
 
   await act(async () => {
-    ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <MassUploader
-          assetFamilyIdentifier={'packshot'}
-          context={context}
-          onAssetCreated={() => {}}
-          dataProvider={dataProvider}
-        />
-      </ThemeProvider>,
+    renderDOMWithProviders(
+      <MassUploader
+        assetFamilyIdentifier={'packshot'}
+        context={context}
+        onAssetCreated={() => {}}
+        dataProvider={dataProvider}
+      />,
       container
     );
   });

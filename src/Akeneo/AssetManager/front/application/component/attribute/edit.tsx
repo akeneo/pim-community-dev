@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
@@ -23,9 +23,9 @@ import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/at
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
 import Key from 'akeneoassetmanager/tools/key';
-import Trash from 'akeneoassetmanager/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
+import {DeleteIcon} from 'akeneo-design-system';
 
 interface OwnProps {
   rights: {
@@ -296,7 +296,7 @@ class Edit extends React.Component<EditProps> {
                   onClick={() => this.setState({isDeleteModalOpen: true})}
                   style={{flex: 1}}
                 >
-                  <Trash color="#D4604F" className="AknButton-animatedIcon" />
+                  <DeleteIcon className="AknButton-animatedIcon" />
                   {__('pim_asset_manager.attribute.edit.delete')}
                 </span>
               ) : (

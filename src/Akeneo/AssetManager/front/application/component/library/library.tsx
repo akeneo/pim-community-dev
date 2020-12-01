@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import SearchBar from 'akeneoassetmanager/application/component/asset/list/search-bar';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
@@ -31,7 +31,6 @@ import {
   HelperText,
 } from 'akeneoassetmanager/platform/component/common/helper';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneoassetmanager/platform/component/common/no-data';
-import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {Link} from 'akeneoassetmanager/application/component/app/link';
 import {Column} from 'akeneoassetmanager/application/component/app/column';
 import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
@@ -47,6 +46,7 @@ import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanage
 import notify from 'akeneoassetmanager/tools/notify';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
+import {AssetsIllustration} from 'akeneo-design-system';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -329,7 +329,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           ) : null === currentAssetFamilyIdentifier ? (
             <>
               <HelperSection>
-                <AssetIllustration size={80} />
+                <AssetsIllustration size={80} />
                 <HelperSeparator />
                 <HelperTitle>
                   👋 {__('pim_asset_manager.asset_family.helper.title')}
@@ -343,7 +343,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 </HelperTitle>
               </HelperSection>
               <NoDataSection>
-                <AssetIllustration size={256} />
+                <AssetsIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset_family.title')}</NoDataTitle>
                 <NoDataText>
                   <Link onClick={() => setCreateAssetFamilyModalOpen(true)}>
@@ -355,7 +355,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           ) : 0 === searchResult.totalCount ? (
             <>
               <HelperSection>
-                <AssetIllustration size={80} />
+                <AssetsIllustration size={80} />
                 <HelperSeparator />
                 <HelperTitle>
                   👋 {__('pim_asset_manager.asset_family.helper.title')}
@@ -365,7 +365,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                 </HelperTitle>
               </HelperSection>
               <NoDataSection>
-                <AssetIllustration size={256} />
+                <AssetsIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset.title')}</NoDataTitle>
                 <NoDataText>
                   <Link onClick={() => setCreateAssetModalOpen(true)}>

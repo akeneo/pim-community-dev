@@ -1,10 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import Down from 'akeneoassetmanager/application/component/app/icon/down';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import Key from 'akeneoassetmanager/tools/key';
+import {ArrowDownIcon, getColor, AkeneoThemedProps} from 'akeneo-design-system';
 
 type ButtonProps = {
   buttonSize?: 'micro' | 'medium' | 'default';
@@ -40,7 +38,7 @@ const StyledButton = styled.div<ButtonProps>`
   text-transform: uppercase;
   white-space: nowrap;
 
-  ${(props: ThemedProps<ButtonProps>) => {
+  ${(props: AkeneoThemedProps<ButtonProps>) => {
     switch (props.buttonSize) {
       case 'micro':
         return `
@@ -72,7 +70,7 @@ const StyledButton = styled.div<ButtonProps>`
     }
   }}
 
-  ${(props: ThemedProps<ButtonProps>) => {
+  ${(props: AkeneoThemedProps<ButtonProps>) => {
     if ('outline' === props.color) {
       return `
         color: ${props.theme.color.grey120};
@@ -88,7 +86,7 @@ const StyledButton = styled.div<ButtonProps>`
     `;
   }}
 
-  ${(props: ThemedProps<ButtonProps>) =>
+  ${(props: AkeneoThemedProps<ButtonProps>) =>
     props.isDisabled &&
     `
       cursor: not-allowed;
@@ -125,8 +123,8 @@ const StyledMultipleButton = styled(Button)`
 `;
 
 const Item = styled.div<{isDisabled?: boolean}>`
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey120};
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.default};
+  color: ${(props: AkeneoThemedProps<void>) => props.theme.color.grey120};
+  font-size: ${(props: AkeneoThemedProps<void>) => props.theme.fontSize.default};
   text-transform: none;
   text-align: left;
   height: 34px;
@@ -140,6 +138,7 @@ const DownButton = styled.span`
   display: flex;
   align-items: center;
   padding-left: 15px;
+  color: ${getColor('white')};
 `;
 
 type Item = {
@@ -174,7 +173,7 @@ export const MultipleButton = ({items, children, ...props}: MultipleButtonProps)
           <StyledMultipleButton {...props} onClick={() => setOpen(true)}>
             <span>{children}</span>
             <DownButton>
-              <Down size={18} color={akeneoTheme.color.white} />
+              <ArrowDownIcon size={18} />
             </DownButton>
           </StyledMultipleButton>
           {isOpen && (

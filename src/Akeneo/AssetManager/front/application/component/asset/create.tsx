@@ -6,7 +6,7 @@ import {getErrorsView} from 'akeneoassetmanager/application/component/app/valida
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import {createLocaleFromCode, LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
-import {Asset} from 'akeneoassetmanager/application/component/app/illustration/asset';
+import {AssetsIllustration} from 'akeneo-design-system';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {sanitizeAssetCode} from 'akeneoassetmanager/tools/sanitizeAssetCode';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -119,7 +119,7 @@ export const CreateModal = ({assetFamily, locale, onClose, onAssetCreated}: Crea
         <div className="AknFullPage">
           <div className="AknFullPage-content AknFullPage-content--withIllustration">
             <div>
-              <Asset className="AknFullPage-image" />
+              <AssetsIllustration />
             </div>
             <div>
               <div className="AknFormContainer">

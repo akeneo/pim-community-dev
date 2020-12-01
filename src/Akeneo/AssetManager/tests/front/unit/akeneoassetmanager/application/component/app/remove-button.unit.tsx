@@ -5,6 +5,7 @@ import {ThemeProvider} from 'styled-components';
 import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {RemoveButton} from 'akeneoassetmanager/application/component/app/remove-button';
 
+//TODO RAC-414 use DSM IconButton, trash this file
 test('It should display a remove button', () => {
   const title = 'pim_asset_manager.asset_picker.basket.remove_one_asset';
   const onRemove = jest.fn();

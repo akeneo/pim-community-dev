@@ -1,8 +1,7 @@
-import * as React from 'react';
-import TickIcon from 'akeneoassetmanager/application/component/app/icon/tick';
+import React from 'react';
 import styled from 'styled-components';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import Key from 'akeneoassetmanager/tools/key';
+import {CheckIcon, AkeneoThemedProps, getColor} from 'akeneo-design-system';
 
 class InvalidArgumentError extends Error {}
 
@@ -10,13 +9,14 @@ type ContainerProps = {
   checked: boolean;
 };
 
-const Tick = styled(TickIcon)`
+const Tick = styled(CheckIcon)`
   animation: uncheckTick 0.2s ease-in forwards;
   stroke-dasharray: 17px;
   stroke-dashoffset: 0;
   opacity: 0;
   transition: opacity 0.1s ease-out;
   transition-delay: 0.2s;
+  color: ${getColor('white')};
 `;
 
 const Container = styled.div<ContainerProps>`
@@ -25,18 +25,19 @@ const Container = styled.div<ContainerProps>`
   width: 18px;
   height: 18px;
   border-radius: 2px;
-  background-color: ${(props: ThemedProps<ContainerProps>) =>
+  background-color: ${(props: AkeneoThemedProps<ContainerProps>) =>
     props.checked ? props.theme.color.blue100 : props.theme.color.grey20};
   border: 1px solid
-    ${(props: ThemedProps<ContainerProps>) => (props.checked ? props.theme.color.blue120 : props.theme.color.grey80)};
+    ${(props: AkeneoThemedProps<ContainerProps>) =>
+      props.checked ? props.theme.color.blue120 : props.theme.color.grey80};
   transition: background-color 0.2s ease-out;
 
-  ${(props: ThemedProps<ContainerProps>) => {
+  ${(props: AkeneoThemedProps<ContainerProps>) => {
     /* istanbul ignore next */
     return props.checked
       ? `
       &:focus {
-        border: 1px solid ${(props: ThemedProps<ContainerProps>) => props.theme.color.blue140};
+        border: 1px solid ${(props: AkeneoThemedProps<ContainerProps>) => props.theme.color.blue140};
       }
       ${Tick} {
           animation-delay: .2s;
@@ -82,7 +83,7 @@ const Checkbox = ({
         if (!readOnly) (onChange as (value: boolean) => void)(!value);
       }}
     >
-      <Tick />
+      <Tick size={18} />
     </Container>
   );
 };

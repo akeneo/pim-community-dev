@@ -1,8 +1,6 @@
-import * as React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import {render} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
+import {screen} from '@testing-library/react';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {ChannelLabel} from 'akeneoassetmanager/platform/component/channel/channel';
 
 test('It should render the channel label', () => {
@@ -25,13 +23,9 @@ test('It should render the channel label', () => {
     },
   ];
 
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <ChannelLabel channelCode={channelCode} locale={locale} channels={channels} />
-    </ThemeProvider>
-  );
+  renderWithProviders(<ChannelLabel channelCode={channelCode} locale={locale} channels={channels} />);
 
-  expect(getByText('E-commerce')).toBeInTheDocument();
+  expect(screen.getByText('E-commerce')).toBeInTheDocument();
 });
 
 test('It should render the channel code when it has no channels defined', () => {
@@ -39,13 +33,9 @@ test('It should render the channel code when it has no channels defined', () => 
   const locale = 'en_US';
   const channels = [];
 
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <ChannelLabel channelCode={channelCode} locale={locale} channels={channels} />
-    </ThemeProvider>
-  );
+  renderWithProviders(<ChannelLabel channelCode={channelCode} locale={locale} channels={channels} />);
 
-  expect(getByText('[ecommerce]')).toBeInTheDocument();
+  expect(screen.getByText('[ecommerce]')).toBeInTheDocument();
 });
 
 test('It should render the channel code when it has no channels defined for the current locale', () => {
@@ -68,11 +58,7 @@ test('It should render the channel code when it has no channels defined for the 
     },
   ];
 
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <ChannelLabel channelCode={channelCode} locale={locale} channels={channels} />
-    </ThemeProvider>
-  );
+  renderWithProviders(<ChannelLabel channelCode={channelCode} locale={locale} channels={channels} />);
 
-  expect(getByText('[ecommerce]')).toBeInTheDocument();
+  expect(screen.getByText('[ecommerce]')).toBeInTheDocument();
 });

@@ -1,11 +1,6 @@
-'use strict';
-
 import React from 'react';
-import * as ReactDOM from 'react-dom';
-import '@testing-library/jest-dom/extend-expect';
-import {wait, act, fireEvent, getByLabelText, getByTitle, getByText} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import {act, fireEvent, screen, waitFor} from '@testing-library/react';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import UploadModal from 'akeneoassetmanager/application/asset-upload/component/modal';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
 import {createFakeAssetFamily} from '../tools';
@@ -34,141 +29,102 @@ jest.mock('akeneoassetmanager/application/asset-upload/utils/file', () => ({
   ),
 }));
 
+const assetFamily = createFakeAssetFamily(false, false);
+const channels: Channel[] = [];
+const locales: Locale[] = [];
+
 describe('Test modal component', () => {
-  let container: HTMLElement;
+  test('It renders without errors', () => {
+    renderWithProviders(
+      <UploadModal
+        confirmLabel="pim_asset_manager.asset.upload.confirm"
+        locale="en_US"
+        assetFamily={assetFamily}
+        channels={channels}
+        locales={locales}
+        onCancel={jest.fn()}
+        onAssetCreated={jest.fn()}
+      />
+    );
 
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
+    expect(screen.getByText('pim_asset_manager.asset.upload.confirm')).toBeInTheDocument();
   });
 
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
-  test('It renders without errors', async () => {
-    const assetFamily = createFakeAssetFamily(false, false);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [];
-
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <UploadModal
-            confirmLabel="pim_asset_manager.asset.upload.confirm"
-            locale="en_US"
-            assetFamily={assetFamily}
-            channels={channels}
-            locales={locales}
-            onCancel={() => {}}
-            onAssetCreated={() => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
-  });
-
-  test('I can close the modal', async () => {
-    const assetFamily = createFakeAssetFamily(false, false);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [];
+  test('I can close the modal', () => {
     const onCancel = jest.fn();
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <UploadModal
-            confirmLabel="pim_asset_manager.asset.upload.confirm"
-            locale="en_US"
-            assetFamily={assetFamily}
-            channels={channels}
-            locales={locales}
-            onCancel={onCancel}
-            onAssetCreated={() => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(
+      <UploadModal
+        confirmLabel="pim_asset_manager.asset.upload.confirm"
+        locale="en_US"
+        assetFamily={assetFamily}
+        channels={channels}
+        locales={locales}
+        onCancel={onCancel}
+        onAssetCreated={jest.fn()}
+      />
+    );
 
-    const button = getByLabelText(container, 'pim_asset_manager.close');
-    fireEvent.click(button);
+    fireEvent.click(screen.getByTitle('pim_asset_manager.close'));
+
     expect(onCancel).toHaveBeenCalled();
   });
 
   test('I can drop a file and create the asset', async () => {
-    const assetFamily = createFakeAssetFamily(false, false);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [];
     const onAssetCreated = jest.fn();
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <UploadModal
-            confirmLabel="pim_asset_manager.asset.upload.confirm"
-            locale="en_US"
-            assetFamily={assetFamily}
-            channels={channels}
-            locales={locales}
-            onCancel={() => {}}
-            onAssetCreated={onAssetCreated}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(
+      <UploadModal
+        confirmLabel="pim_asset_manager.asset.upload.confirm"
+        locale="en_US"
+        assetFamily={assetFamily}
+        channels={channels}
+        locales={locales}
+        onCancel={jest.fn()}
+        onAssetCreated={onAssetCreated}
+      />
+    );
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
     await act(async () => {
-      const filesInput = getByLabelText(container, 'pim_asset_manager.asset.upload.drop_or_click_here');
-      fireEvent.change(filesInput, {target: {files: files}});
+      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
+      fireEvent.change(filesInput, {target: {files}});
 
       // Wait for the line to be Valid (uploaded & completed)
-      await wait(() => getByText(container, 'pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
+      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
 
-      const confirmButton = getByTitle(container, 'pim_asset_manager.asset.upload.confirm');
+      const confirmButton = screen.getByTitle('pim_asset_manager.asset.upload.confirm');
       fireEvent.click(confirmButton);
 
       // Wait for the line to be Created
-      await wait(() => getByText(container, 'pim_asset_manager.asset.upload.status.' + LineStatus.Created));
+      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Created));
     });
   });
 
   test('I can drop a file and dispatch its code being changed', async () => {
-    const assetFamily = createFakeAssetFamily(false, false);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [];
-
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <UploadModal
-            confirmLabel="pim_asset_manager.asset.upload.confirm"
-            locale="en_US"
-            assetFamily={assetFamily}
-            channels={channels}
-            locales={locales}
-            onCancel={() => {}}
-            onAssetCreated={() => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(
+      <UploadModal
+        confirmLabel="pim_asset_manager.asset.upload.confirm"
+        locale="en_US"
+        assetFamily={assetFamily}
+        channels={channels}
+        locales={locales}
+        onCancel={jest.fn()}
+        onAssetCreated={jest.fn()}
+      />
+    );
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
     await act(async () => {
-      const filesInput = getByLabelText(container, 'pim_asset_manager.asset.upload.drop_or_click_here');
+      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
       fireEvent.change(filesInput, {target: {files: files}});
 
       // Wait for the line to be Valid (uploaded & completed)
-      await wait(() => getByText(container, 'pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
+      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
 
-      const codeInput = getByLabelText(container, 'pim_asset_manager.asset.upload.list.code') as HTMLInputElement;
+      const codeInput = screen.getByLabelText('pim_asset_manager.asset.upload.list.code') as HTMLInputElement;
       fireEvent.change(codeInput, {target: {value: 'foobar'}});
 
       // There should be a way to test if the dispatch has been called there
@@ -177,37 +133,28 @@ describe('Test modal component', () => {
   });
 
   test('I can drop a file and dispatch a line being removed', async () => {
-    const assetFamily = createFakeAssetFamily(false, false);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [];
-
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <UploadModal
-            confirmLabel="pim_asset_manager.asset.upload.confirm"
-            locale="en_US"
-            assetFamily={assetFamily}
-            channels={channels}
-            locales={locales}
-            onCancel={() => {}}
-            onAssetCreated={() => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(
+      <UploadModal
+        confirmLabel="pim_asset_manager.asset.upload.confirm"
+        locale="en_US"
+        assetFamily={assetFamily}
+        channels={channels}
+        locales={locales}
+        onCancel={jest.fn()}
+        onAssetCreated={jest.fn()}
+      />
+    );
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
     await act(async () => {
-      const filesInput = getByLabelText(container, 'pim_asset_manager.asset.upload.drop_or_click_here');
+      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
       fireEvent.change(filesInput, {target: {files: files}});
 
       // Wait for the line to be Valid (uploaded & completed)
-      await wait(() => getByText(container, 'pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
+      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
 
-      const removeLineButton = getByLabelText(container, 'pim_asset_manager.asset.upload.remove');
+      const removeLineButton = screen.getByLabelText('pim_asset_manager.asset.upload.remove');
       fireEvent.click(removeLineButton);
 
       // There should be a way to test if the dispatch has been called there
@@ -216,37 +163,28 @@ describe('Test modal component', () => {
   });
 
   test('I can drop a file and dispatch all the lines being removed', async () => {
-    const assetFamily = createFakeAssetFamily(false, false);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [];
-
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <UploadModal
-            confirmLabel="pim_asset_manager.asset.upload.confirm"
-            locale="en_US"
-            assetFamily={assetFamily}
-            channels={channels}
-            locales={locales}
-            onCancel={() => {}}
-            onAssetCreated={() => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(
+      <UploadModal
+        confirmLabel="pim_asset_manager.asset.upload.confirm"
+        locale="en_US"
+        assetFamily={assetFamily}
+        channels={channels}
+        locales={locales}
+        onCancel={jest.fn()}
+        onAssetCreated={jest.fn()}
+      />
+    );
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
     await act(async () => {
-      const filesInput = getByLabelText(container, 'pim_asset_manager.asset.upload.drop_or_click_here');
+      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
       fireEvent.change(filesInput, {target: {files: files}});
 
       // Wait for the line to be Valid (uploaded & completed)
-      await wait(() => getByText(container, 'pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
+      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Valid));
 
-      const removeAllLinesButton = getByText(container, 'pim_asset_manager.asset.upload.remove_all');
+      const removeAllLinesButton = screen.getByText('pim_asset_manager.asset.upload.remove_all');
       fireEvent.click(removeAllLinesButton);
 
       // There should be a way to test if the dispatch has been called there
@@ -256,37 +194,29 @@ describe('Test modal component', () => {
 
   test('I can drop a file and dispatch an upload retry', async () => {
     uploadFile.mockImplementationOnce(() => Promise.reject());
-    const assetFamily = createFakeAssetFamily(false, false);
-    const channels: Channel[] = [];
-    const locales: Locale[] = [];
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <UploadModal
-            confirmLabel="pim_asset_manager.asset.upload.confirm"
-            locale="en_US"
-            assetFamily={assetFamily}
-            channels={channels}
-            locales={locales}
-            onCancel={() => {}}
-            onAssetCreated={() => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(
+      <UploadModal
+        confirmLabel="pim_asset_manager.asset.upload.confirm"
+        locale="en_US"
+        assetFamily={assetFamily}
+        channels={channels}
+        locales={locales}
+        onCancel={jest.fn()}
+        onAssetCreated={jest.fn()}
+      />
+    );
 
     const files = [new File(['foo'], 'foo.png', {type: 'image/png'})];
 
     await act(async () => {
-      const filesInput = getByLabelText(container, 'pim_asset_manager.asset.upload.drop_or_click_here');
+      const filesInput = screen.getByLabelText('pim_asset_manager.asset.upload.drop_or_click_here');
       fireEvent.change(filesInput, {target: {files: files}});
 
       // Wait for the line to be Invalid (uploaded failed)
-      await wait(() => getByText(container, 'pim_asset_manager.asset.upload.status.' + LineStatus.Invalid));
+      await waitFor(() => screen.getByText('pim_asset_manager.asset.upload.status.' + LineStatus.Invalid));
 
-      const retryUploadButton = getByLabelText(container, 'pim_asset_manager.asset.upload.retry');
+      const retryUploadButton = screen.getByLabelText('pim_asset_manager.asset.upload.retry');
       fireEvent.click(retryUploadButton);
 
       // There should be a way to test if the dispatch has been called there

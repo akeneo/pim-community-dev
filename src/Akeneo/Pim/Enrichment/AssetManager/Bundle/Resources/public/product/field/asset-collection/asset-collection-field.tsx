@@ -9,8 +9,9 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import {getMissingRequiredFields} from 'pimui/js/provider/to-fill-field-provider';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const Field = require('pim/field');
 const UserContext = require('pim/user-context');
@@ -39,12 +40,14 @@ class AssetCollectionField extends (Field as {new (config: any): any}) {
   renderIsDisabledMessage(templateContext: any): HTMLElement {
     const container = document.createElement('div');
     ReactDOM.render(
-      <ThemeProvider theme={akeneoTheme}>
-        <AssetSelectorLegacyHelper
-          label={templateContext.label}
-          isMissingRequired={this.isMissingRequired(templateContext)}
-        />
-      </ThemeProvider>,
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <AssetSelectorLegacyHelper
+            label={templateContext.label}
+            isMissingRequired={this.isMissingRequired(templateContext)}
+          />
+        </ThemeProvider>
+      </DependenciesProvider>,
       container
     );
     return container;

@@ -6,9 +6,9 @@ import styled, {css} from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import Line from 'akeneoassetmanager/application/asset-upload/model/line';
 import Row from 'akeneoassetmanager/application/asset-upload/component/row';
-import AssetBox from 'akeneoassetmanager/application/component/app/icon/asset-box';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
+import {AssetsIllustration} from 'akeneo-design-system';
 
 export const ColumnWidths = {
   asset: 78,
@@ -166,7 +166,7 @@ const LineList = ({
       </List>
       {lines.length === 0 && (
         <Placeholder>
-          <AssetBox />
+          <AssetsIllustration />
           <PlaceholderHelper>{__('pim_asset_manager.asset.upload.will_appear_here')}</PlaceholderHelper>
         </Placeholder>
       )}

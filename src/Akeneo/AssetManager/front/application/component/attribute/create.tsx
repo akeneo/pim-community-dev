@@ -21,7 +21,7 @@ import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import Key from 'akeneoassetmanager/tools/key';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
-import {Asset} from 'akeneoassetmanager/application/component/app/illustration/asset';
+import {AssetsIllustration} from 'akeneo-design-system';
 
 interface StateProps {
   context: {
@@ -131,7 +131,7 @@ class Create extends React.Component<CreateProps> {
           <div className="AknFullPage">
             <div className="AknFullPage-content AknFullPage-content--withIllustration" style={{overflowX: 'visible'}}>
               <div>
-                <Asset className="AknFullPage-image" />
+                <AssetsIllustration />
               </div>
               <div>
                 <div className="AknFullPage-titleContainer">

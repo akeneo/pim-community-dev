@@ -1,10 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
-import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import AssetItem from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker/basket/asset-item';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import ListAsset, {
@@ -14,6 +12,7 @@ import ListAsset, {
   emptyCollection,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {AssetsIllustration, getColor, getFontSize} from 'akeneo-design-system';
 
 type BasketProps = {
   dataProvider: any;
@@ -25,7 +24,7 @@ type BasketProps = {
 
 const Container = styled.div`
   width: 300px;
-  border-left: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border-left: 1px solid ${getColor('grey', 80)};
   padding: 0 20px 20px;
   flex-shrink: 0;
   display: flex;
@@ -34,9 +33,9 @@ const Container = styled.div`
 
 const Title = styled.div`
   line-height: 43px;
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.purple100};
-  color: ${(props: ThemedProps<void>) => props.theme.color.purple120};
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.small};
+  border-bottom: 1px solid ${getColor('brand', 100)};
+  color: ${getColor('brand', 120)};
+  font-size: ${getFontSize('small')};
   text-transform: uppercase;
 `;
 
@@ -46,7 +45,7 @@ const List = styled.ul`
 `;
 
 const Footer = styled.div`
-  border-top: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border-top: 1px solid ${getColor('grey', 80)};
   padding-top: 10px;
 `;
 
@@ -139,7 +138,7 @@ const EmptyResult = () => (
   <Container>
     <Title>{__('pim_asset_manager.asset_picker.basket.empty_title')}</Title>
     <IllustrationContainer>
-      <AssetIllustration size={128} />
+      <AssetsIllustration size={128} />
     </IllustrationContainer>
   </Container>
 );
