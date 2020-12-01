@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
@@ -20,7 +20,6 @@ import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error'
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {Link} from 'akeneoassetmanager/application/component/app/link';
 import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
-import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {
   HelperSection,
   HelperSeparator,
@@ -28,6 +27,7 @@ import {
   HelperText,
 } from 'akeneoassetmanager/platform/component/common/helper';
 import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
+import {AssetsIllustration} from 'akeneo-design-system';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -125,7 +125,7 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
         />
         <HelperSection>
-          <AssetIllustration size={80} />
+          <AssetsIllustration size={80} />
           <HelperSeparator />
           <HelperTitle>
             👋 {__('pim_asset_manager.asset_family.transformations.help.title')}

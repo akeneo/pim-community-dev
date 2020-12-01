@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import styled from 'styled-components';
 import {Pill} from 'akeneoassetmanager/application/component/app/pill';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
-import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
@@ -28,6 +27,7 @@ import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
+import {AssetsIllustration} from 'akeneo-design-system';
 
 const AssetCard = styled.div`
   display: flex;
@@ -179,7 +179,7 @@ export const AssetCollection = ({
           title={__('pim_asset_manager.asset_collection.no_asset_in_collection')}
           readonly={readonly}
         >
-          <AssetIllustration size={80} />
+          <AssetsIllustration size={80} />
           <Label>{__('pim_asset_manager.asset_collection.no_asset_in_collection')}</Label>
         </EmptyAssetCollection>
       )}

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
@@ -24,7 +24,6 @@ import {getErrorsViewStartedWith} from 'akeneoassetmanager/application/component
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
 import {Link} from 'akeneoassetmanager/application/component/app/link';
-import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {
   HelperSection,
   HelperSeparator,
@@ -35,6 +34,7 @@ import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
+import {AssetsIllustration} from 'akeneo-design-system';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -223,7 +223,7 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
           breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
         />
         <HelperSection>
-          <AssetIllustration size={80} />
+          <AssetsIllustration size={80} />
           <HelperSeparator />
           <HelperTitle>
             👋 {__('pim_asset_manager.asset_family.product_link_rules.help.title')}

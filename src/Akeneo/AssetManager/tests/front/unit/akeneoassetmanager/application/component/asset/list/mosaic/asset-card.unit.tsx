@@ -1,9 +1,6 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import '@testing-library/jest-dom/extend-expect';
-import {getByText, fireEvent, act} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
+import {screen, fireEvent, act} from '@testing-library/react';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 
@@ -19,92 +16,76 @@ const asset = {
 };
 jest.mock('akeneoassetmanager/tools/image-loader');
 
+loadImage.mockImplementation(
+  () =>
+    new Promise(resolve => {
+      act(() => resolve());
+    })
+);
+
 describe('Test Asset create modal component', () => {
-  let container: HTMLElement;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-    loadImage.mockImplementation(
-      url =>
-        new Promise(resolve => {
-          act(() => resolve());
-        })
-    );
-  });
-
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
   test('It displays an unselected asset card', async () => {
     const isSelected = false;
+    const {container} = renderWithProviders(
+      <AssetCard
+        asset={asset}
+        context={{locale: 'en_US', channel: 'ecommerce'}}
+        isSelected={isSelected}
+        onSelectionChange={() => {}}
+      />
+    );
+
     await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <AssetCard
-            asset={asset}
-            context={{locale: 'en_US', channel: 'ecommerce'}}
-            isSelected={isSelected}
-            onSelectionChange={() => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
+      await flushPromises();
     });
 
-    await flushPromises();
+    const image = screen.getByTestId('asset-card-image') as HTMLImageElement;
 
-    expect(container.querySelector('img')?.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
+    expect(image.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
     expect(container.querySelector('[data-checked="false"]')).toBeInTheDocument();
-    expect(getByText(container, asset.labels.en_US)).toBeInTheDocument();
+    expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
   });
 
   test('It displays selected asset card', async () => {
     const isSelected = true;
+    const {container} = renderWithProviders(
+      <AssetCard
+        asset={asset}
+        context={{locale: 'en_US', channel: 'ecommerce'}}
+        isSelected={isSelected}
+        onSelectionChange={() => {}}
+      />
+    );
+
     await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <AssetCard
-            asset={asset}
-            context={{locale: 'en_US', channel: 'ecommerce'}}
-            isSelected={isSelected}
-            onSelectionChange={() => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
+      await flushPromises();
     });
 
-    await flushPromises();
+    const image = screen.getByTestId('asset-card-image') as HTMLImageElement;
 
-    expect(container.querySelector('img')?.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
+    expect(image.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
     expect(container.querySelector('[data-checked="true"]')).toBeInTheDocument();
-    expect(getByText(container, asset.labels.en_US)).toBeInTheDocument();
+    expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
   });
 
   test('it can be selected when clicking on the checkbox', async () => {
     let isSelected = false;
     let selectedCode = null;
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <AssetCard
-            asset={asset}
-            context={{locale: 'en_US', channel: 'ecommerce'}}
-            isSelected={isSelected}
-            onSelectionChange={(code, value) => {
-              isSelected = value;
-              selectedCode = code;
-            }}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(
+      <AssetCard
+        asset={asset}
+        context={{locale: 'en_US', channel: 'ecommerce'}}
+        isSelected={isSelected}
+        onSelectionChange={(code, value) => {
+          isSelected = value;
+          selectedCode = code;
+        }}
+      />
+    );
 
-    act(() => {
-      fireEvent.click(container.querySelector('[data-checked]'));
+    await act(async () => {
+      await flushPromises();
+      fireEvent.click(screen.getByRole('checkbox'));
     });
 
     expect(isSelected).toEqual(true);
@@ -114,25 +95,21 @@ describe('Test Asset create modal component', () => {
   test('it can be selected when clicking on the asset card', async () => {
     let isSelected = false;
     let selectedCode = null;
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <AssetCard
-            asset={asset}
-            context={{locale: 'en_US', channel: 'ecommerce'}}
-            isSelected={isSelected}
-            onSelectionChange={(code, value) => {
-              isSelected = value;
-              selectedCode = code;
-            }}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(
+      <AssetCard
+        asset={asset}
+        context={{locale: 'en_US', channel: 'ecommerce'}}
+        isSelected={isSelected}
+        onSelectionChange={(code, value) => {
+          isSelected = value;
+          selectedCode = code;
+        }}
+      />
+    );
 
-    act(() => {
-      fireEvent.click(container.querySelector('[data-test-id="asset-card-image"]'));
+    await act(async () => {
+      await flushPromises();
+      fireEvent.click(screen.getByTestId('asset-card-image'));
     });
 
     expect(isSelected).toEqual(true);
@@ -146,26 +123,22 @@ describe('Test Asset create modal component', () => {
     const onClick = jest.fn().mockImplementation((code: string) => {
       assetCode = code;
     });
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <AssetCard
-            asset={asset}
-            context={{locale: 'en_US', channel: 'ecommerce'}}
-            isSelected={isSelected}
-            onClick={onClick}
-            onSelectionChange={(code, value) => {
-              isSelected = value;
-              selectedCode = code;
-            }}
-          />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(
+      <AssetCard
+        asset={asset}
+        context={{locale: 'en_US', channel: 'ecommerce'}}
+        isSelected={isSelected}
+        onClick={onClick}
+        onSelectionChange={(code, value) => {
+          isSelected = value;
+          selectedCode = code;
+        }}
+      />
+    );
 
-    act(() => {
-      fireEvent.click(container.querySelector('[data-test-id="asset-card-image"]'));
+    await act(async () => {
+      await flushPromises();
+      fireEvent.click(screen.getByTestId('asset-card-image'));
     });
 
     expect(isSelected).toEqual(false);
@@ -182,24 +155,20 @@ describe('Test Asset create modal component', () => {
         })
     );
     const isSelected = true;
+    renderWithProviders(
+      <AssetCard
+        asset={asset}
+        context={{locale: 'en_US', channel: 'ecommerce'}}
+        isSelected={isSelected}
+        onSelectionChange={() => {}}
+      />
+    );
+
     await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <AssetCard
-            asset={asset}
-            context={{locale: 'en_US', channel: 'ecommerce'}}
-            isSelected={isSelected}
-            onSelectionChange={() => {}}
-          />
-        </ThemeProvider>,
-        container
-      );
+      await flushPromises();
     });
 
-    await flushPromises();
-
-    expect(container.querySelector('img')).not.toBeInTheDocument();
-    expect(container.querySelector('[data-checked="true"]')).toBeInTheDocument();
-    expect(getByText(container, asset.labels.en_US)).toBeInTheDocument();
+    expect(screen.queryByTestId('asset-card-image')).not.toBeInTheDocument();
+    expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
   });
 });

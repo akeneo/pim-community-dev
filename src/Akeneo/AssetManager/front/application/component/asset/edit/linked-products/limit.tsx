@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {Scroll} from 'akeneoassetmanager/application/component/app/illustration/scroll';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/product/attribute';
 import {Button} from 'akeneoassetmanager/application/component/app/button';
 import {getProductIndexUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {updateDatagridStateWithFilterOnAssetCode} from 'akeneoassetmanager/tools/datagridstate';
+import {UsingIllustration} from 'akeneo-design-system';
 
 const Container = styled.div`
   margin-top: 40px;
@@ -63,7 +63,7 @@ export const Limit = ({assetCode, productCount, totalCount, attribute}: LimitPro
           </StyledButton>
         </a>
       )}
-      <Scroll />
+      <UsingIllustration />
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
@@ -35,7 +35,6 @@ import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Family} from 'akeneoassetmanager/platform/model/structure/family';
-import AssetIllustration from 'akeneoassetmanager/platform/component/visual/illustration/asset';
 import {
   HelperSection,
   HelperSeparator,
@@ -51,7 +50,6 @@ import {ValidationErrorCollection} from 'akeneoassetmanager/platform/component/c
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {MoreButton} from 'akeneoassetmanager/application/component/app/more-button';
 import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-picker';
-import LockIcon from 'akeneoassetmanager/platform/component/visual/icon/lock';
 import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
@@ -65,6 +63,7 @@ import {
   AttributeGroupCode,
   AttributeGroupCollection,
 } from 'akeneoassetmanager/platform/model/structure/attribute-group';
+import {AssetsIllustration, LockIcon} from 'akeneo-design-system';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -162,7 +161,7 @@ const DisplayValues = ({
           <SectionTitle>
             {!value.editable && (
               <LockIconContainer>
-                <LockIcon />
+                <LockIcon size={14} />
               </LockIconContainer>
             )}
             <AttributeBreadCrumb readonly={!value.editable}>{assetCollectionTitle}</AttributeBreadCrumb>
@@ -258,7 +257,7 @@ const List = ({
     ) : (
       <>
         <HelperSection>
-          <AssetIllustration size={80} />
+          <AssetsIllustration size={80} />
           <HelperSeparator />
           <HelperTitle>
             👋 {__('pim_asset_manager.asset_collection.helper.title')}
@@ -272,7 +271,7 @@ const List = ({
           </HelperTitle>
         </HelperSection>
         <NoDataSection>
-          <AssetIllustration size={256} />
+          <AssetsIllustration size={256} />
           <NoDataTitle>{__('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>
         </NoDataSection>
       </>

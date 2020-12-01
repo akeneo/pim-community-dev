@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
+use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\PubSub\PubSubStatusCheckerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ final class Controller
     private ElasticsearchChecker $elasticsearchChecker;
     private FileStorageChecker $fileStorageChecker;
     private string $authenticationToken;
-    private StatusChecker $pubSubStatusChecker;
+    private PubSubStatusCheckerInterface $pubSubStatusChecker;
     private SmtpChecker $smtpChecker;
 
     public function __construct(
@@ -37,7 +38,7 @@ final class Controller
         ElasticsearchChecker $elasticsearchChecker,
         FileStorageChecker $fileStorageChecker,
         SmtpChecker $smtpChecker,
-        StatusChecker $pubSubStatusChecker,
+        PubSubStatusCheckerInterface $pubSubStatusChecker,
         string $authenticationToken
     ) {
         $this->mysqlChecker = $mysqlChecker;
@@ -64,7 +65,8 @@ final class Controller
 
         $responseStatus = Response::HTTP_OK;
 
-        if (!$mysqlStatus->isOk()
+        if (
+            !$mysqlStatus->isOk()
             || !$esStatus->isOk()
             || !$fileStorageStatus->isOk()
             || !$smtpStatus->isOk()

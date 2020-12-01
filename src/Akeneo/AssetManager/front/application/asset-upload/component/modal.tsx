@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
 import {ConfirmButton, Modal} from 'akeneoassetmanager/application/component/app/modal';
@@ -17,7 +17,6 @@ import {
   removeLineAction,
 } from 'akeneoassetmanager/application/asset-upload/reducer/action';
 import FileDropZone from 'akeneoassetmanager/application/asset-upload/component/file-drop-zone';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {Reducer} from 'redux';
 import {onFileDrop, retryFileUpload} from 'akeneoassetmanager/application/asset-upload/reducer/thunks/upload';
@@ -30,16 +29,17 @@ import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 import Key from 'akeneoassetmanager/tools/key';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {getColor, getFontSize} from 'akeneo-design-system';
 
 const Header = styled.div`
-  background: ${(props: ThemedProps<void>) => props.theme.color.white};
+  background: ${getColor('white')};
   position: sticky;
   top: 0px;
   z-index: 2;
 
   :before {
     content: '';
-    background: ${(props: ThemedProps<void>) => props.theme.color.white};
+    background: ${getColor('white')};
     display: block;
     position: absolute;
     height: 40px;
@@ -49,7 +49,7 @@ const Header = styled.div`
 `;
 
 const Subtitle = styled.div`
-  color: ${(props: ThemedProps<void>) => props.theme.color.purple100};
+  color: ${getColor('brand', 100)};
   margin-bottom: 12px;
   text-align: center;
   text-transform: uppercase;
@@ -57,9 +57,9 @@ const Subtitle = styled.div`
 `;
 
 const Title = styled.div`
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
-  font-size: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
-  line-height: ${(props: ThemedProps<void>) => props.theme.fontSize.title};
+  color: ${getColor('grey', 140)};
+  font-size: ${getFontSize('title')};
+  line-height: ${getFontSize('title')};
   margin-bottom: 33px;
   text-align: center;
   width: 100%;

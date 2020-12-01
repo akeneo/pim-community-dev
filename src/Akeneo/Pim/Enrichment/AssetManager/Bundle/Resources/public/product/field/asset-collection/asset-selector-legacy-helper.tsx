@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import IconInfoIllustration from 'akeneoassetmanager/platform/component/visual/icon/info';
 import {Separator} from 'akeneoassetmanager/application/component/app/separator';
 import {NotificationSection, NotificationText} from 'akeneoassetmanager/platform/component/common/notification';
 import __ from 'akeneoassetmanager/tools/translator';
+import {InfoRoundIcon} from 'akeneo-design-system';
 
 const Container = styled.div`
   width: 460px;
@@ -20,12 +20,13 @@ type AssetSelectorLegacyHelperProps = {
   isMissingRequired: boolean;
 };
 
+//TODO RAC-413 replace this with a Helper
 const AssetSelectorLegacyHelper = ({label, isMissingRequired}: AssetSelectorLegacyHelperProps) => {
   return (
     <Container>
       <NotificationSection>
         <IconContainer>
-          <IconInfoIllustration />
+          <InfoRoundIcon />
         </IconContainer>
         <Separator />
         <NotificationText>

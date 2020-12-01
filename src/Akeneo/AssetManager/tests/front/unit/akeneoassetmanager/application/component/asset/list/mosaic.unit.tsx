@@ -1,8 +1,6 @@
-import * as React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import {render, fireEvent} from '@testing-library/react';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
+import {screen, fireEvent} from '@testing-library/react';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import Mosaic from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 
@@ -65,20 +63,14 @@ const assetCollection = [
 ];
 
 test('It displays an empty mosaic', () => {
-  const {getByText} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <Mosaic selection={[]} assetCollection={[]} context={context} onSelectionChange={() => {}} />
-    </ThemeProvider>
-  );
+  renderWithProviders(<Mosaic selection={[]} assetCollection={[]} context={context} onSelectionChange={() => {}} />);
 
-  expect(getByText('pim_asset_manager.asset_picker.no_result.title')).toBeInTheDocument();
+  expect(screen.getByText('pim_asset_manager.asset_picker.no_result.title')).toBeInTheDocument();
 });
 
 test('It displays an asset collection', () => {
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <Mosaic selection={[]} assetCollection={assetCollection} context={context} onSelectionChange={() => {}} />
-    </ThemeProvider>
+  const {container} = renderWithProviders(
+    <Mosaic selection={[]} assetCollection={assetCollection} context={context} onSelectionChange={() => {}} />
   );
 
   expect(container.querySelectorAll('[data-asset]').length).toEqual(3);
@@ -87,10 +79,8 @@ test('It displays an asset collection', () => {
 test('It displays selected assets', () => {
   const selection = ['iphone7_pack', 'SELECTED_ASSET_NOT_IN_RESULTS'];
 
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <Mosaic selection={selection} assetCollection={assetCollection} context={context} onSelectionChange={() => {}} />
-    </ThemeProvider>
+  const {container} = renderWithProviders(
+    <Mosaic selection={selection} assetCollection={assetCollection} context={context} onSelectionChange={() => {}} />
   );
 
   expect(container.querySelectorAll('[data-selected="true"]').length).toEqual(1);
@@ -98,17 +88,15 @@ test('It displays selected assets', () => {
 
 test('it can add an asset to the selection', () => {
   let newSelection = null;
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <Mosaic
-        selection={[]}
-        assetCollection={assetCollection}
-        context={context}
-        onSelectionChange={selectedAssets => {
-          newSelection = selectedAssets;
-        }}
-      />
-    </ThemeProvider>
+  const {container} = renderWithProviders(
+    <Mosaic
+      selection={[]}
+      assetCollection={assetCollection}
+      context={context}
+      onSelectionChange={selectedAssets => {
+        newSelection = selectedAssets;
+      }}
+    />
   );
 
   const firstCard = container.querySelector('[data-checked]');
@@ -120,17 +108,15 @@ test('it can add an asset to the selection', () => {
 test('it can remove an asset from the selection', () => {
   let newSelection = null;
   const initialSelection = [assetCollection[0].code];
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <Mosaic
-        selection={initialSelection}
-        assetCollection={assetCollection}
-        context={context}
-        onSelectionChange={selectedAssets => {
-          newSelection = selectedAssets;
-        }}
-      />
-    </ThemeProvider>
+  const {container} = renderWithProviders(
+    <Mosaic
+      selection={initialSelection}
+      assetCollection={assetCollection}
+      context={context}
+      onSelectionChange={selectedAssets => {
+        newSelection = selectedAssets;
+      }}
+    />
   );
 
   const firstCard = container.querySelector('[data-checked]');
@@ -142,10 +128,8 @@ test('it can remove an asset from the selection', () => {
 test('it can show the assets as links', () => {
   getAssetEditUrl = jest.fn().mockImplementation(asset => '#' + asset.code);
 
-  const {container} = render(
-    <ThemeProvider theme={akeneoTheme}>
-      <Mosaic selection={[]} assetCollection={assetCollection} context={context} assetHasLink={true} />
-    </ThemeProvider>
+  const {container} = renderWithProviders(
+    <Mosaic selection={[]} assetCollection={assetCollection} context={context} assetHasLink={true} />
   );
 
   const link = container.querySelector('a[href$="#' + assetCollection[0].code + '"]');

@@ -1,8 +1,7 @@
-import * as React from 'react';
-import __ from 'akeneoassetmanager/tools/translator';
+import React from 'react';
 import styled from 'styled-components';
-import ImportIcon from 'akeneoassetmanager/application/component/app/illustration/import';
-import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {ImportIllustration, getColor} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
   margin: 10px 0 24px;
@@ -32,7 +31,7 @@ const FileInput = styled.input`
 
 const Uploader = styled.div`
   align-items: center;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border: 1px solid ${getColor('grey', 80)};
   display: flex;
   flex-direction: column;
   height: 140px;
@@ -59,7 +58,7 @@ const Uploader = styled.div`
 
 const UploaderHelper = styled.div`
   margin: 17px 0 0;
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  color: ${getColor('grey', 140)};
 `;
 
 type FileDropZoneProps = {
@@ -67,17 +66,19 @@ type FileDropZoneProps = {
 };
 
 const FileDropZone = React.memo(({onDrop}: FileDropZoneProps) => {
+  const translate = useTranslate();
+
   return (
     <Container>
       <FileInput
         type="file"
         multiple
         onChange={onDrop}
-        aria-label={__('pim_asset_manager.asset.upload.drop_or_click_here')}
+        aria-label={translate('pim_asset_manager.asset.upload.drop_or_click_here')}
       />
       <Uploader>
-        <ImportIcon />
-        <UploaderHelper>{__(`pim_asset_manager.asset.upload.drop_or_click_here`)}</UploaderHelper>
+        <ImportIllustration />
+        <UploaderHelper>{translate(`pim_asset_manager.asset.upload.drop_or_click_here`)}</UploaderHelper>
       </Uploader>
     </Container>
   );

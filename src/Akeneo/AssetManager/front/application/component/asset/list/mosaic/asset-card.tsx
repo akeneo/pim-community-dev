@@ -107,7 +107,6 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
   return (
     <Container data-asset={asset.code} data-selected={isSelected} isDisabled={isDisabled}>
       <ImageContainer
-        data-test-id="asset-card-image"
         className={null === url ? 'AknLoadingPlaceHolder' : ''}
         isLoading={null === url}
         isSelectable={!!onClick}
@@ -120,7 +119,7 @@ const AssetCard = ({asset, context, isSelected, onSelectionChange, isDisabled, o
           }
         }}
       >
-        {null !== url && <Thumbnail src={url} />}
+        {null !== url && <Thumbnail data-testid="asset-card-image" src={url} />}
       </ImageContainer>
       {assetHasCompleteness(asset) && (
         <AssetCompleteness>

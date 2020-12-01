@@ -214,7 +214,7 @@ const AttributeEdit = async (nodeElement, createElementDecorator, page) => {
 
   const hasSuccessNotification = async () => {
     try {
-      await page.waitForSelector('.AknFlash--success', {timeout: 2000});
+      await page.waitForSelector('[role="success"]', {timeout: 2000});
     } catch (error) {
       return false;
     }

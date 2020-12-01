@@ -30,7 +30,6 @@ lint-back: #Doc: launch all PHP linter tests
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Automation --level 3
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Permission --level 3
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Structure --level 8
-	$(PHP_RUN) vendor/bin/phpstan analyse vendor/akeneo/pim-community-dev/src/Akeneo/Pim --level 2
 	$(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan reference-entity-lint-back asset-manager-lint-back connectivity-connection-lint-back communication-channel-lint-back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
@@ -39,7 +38,6 @@ lint-back: #Doc: launch all PHP linter tests
 .PHONY: lint-front
 lint-front: connectivity-connection-lint-front #Doc: launch all YARN linter tests
 	$(YARN_RUN) lint
-	$(YARN_RUN) run --cwd=vendor/akeneo/pim-community-dev/ lint
 	$(MAKE) rule-engine-lint-front
 	$(MAKE) rule-engine-types-check-front
 	$(MAKE) rule-engine-prettier-check-front

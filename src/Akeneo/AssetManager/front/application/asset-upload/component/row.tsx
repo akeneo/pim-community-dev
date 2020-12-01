@@ -1,15 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
 import styled, {css} from 'styled-components';
 import Line, {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
-import CrossIcon from 'akeneoassetmanager/application/component/app/icon/close';
-import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
 import {getAllErrorsOfLineByTarget, getStatusFromLine} from 'akeneoassetmanager/application/asset-upload/utils/utils';
 import Spacer from 'akeneoassetmanager/application/component/app/spacer';
 import {ColumnWidths} from 'akeneoassetmanager/application/asset-upload/component/line-list';
-import WarningIcon from 'akeneoassetmanager/application/component/app/icon/warning';
-import ReloadIcon from 'akeneoassetmanager/application/component/app/icon/reload';
 import Channel from 'akeneoassetmanager/domain/model/channel';
 import Select2, {Select2Options} from 'akeneoassetmanager/application/component/app/select2';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
@@ -18,15 +14,16 @@ import {
   getOptionsFromChannels,
   getOptionsFromLocales,
 } from 'akeneoassetmanager/application/asset-upload/utils/select2';
+import {CloseIcon, RefreshIcon, DangerIcon, getColor} from 'akeneo-design-system';
 
 const Container = styled.div<{status?: LineStatus; isReadOnly?: boolean}>`
-  border-bottom: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border-bottom: 1px solid ${getColor('grey', 80)};
   padding: 15px 0;
 
   ${props =>
     props.status === LineStatus.Invalid &&
     css`
-      background: ${(props: ThemedProps<void>) => props.theme.color.red20};
+      background: ${getColor('red', 20)};
       border-bottom: 1px solid #ffffff;
     `}
 
@@ -43,7 +40,7 @@ const Cells = styled.div`
   align-items: center;
 `;
 const Cell = styled.div<{width?: number}>`
-  color: ${(props: ThemedProps<void>) => props.theme.color.grey140};
+  color: ${getColor('grey', 140)};
   display: flex;
   flex-direction: column;
   flex-grow: 0;
@@ -65,9 +62,9 @@ const Thumbnail = styled.img`
   height: 48px;
   object-fit: cover;
   width: 48px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border: 1px solid ${getColor('grey', 80)};
 `;
-const RemoveLineButton = styled.button`
+const IconButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
@@ -76,20 +73,11 @@ const RemoveLineButton = styled.button`
   margin: -15px;
   padding: 7px 0 0 0;
   width: 54px;
-`;
-const RetryUploadButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  height: 54px;
-  line-height: 54px;
-  margin: -15px;
-  padding: 7px 0 0 0;
-  width: 54px;
+  color: ${getColor('grey', 100)};
 `;
 const Input = styled.input<{readOnly?: boolean; isValid?: boolean}>`
   border-radius: 2px;
-  border: 1px solid ${(props: ThemedProps<void>) => props.theme.color.grey80};
+  border: 1px solid ${getColor('grey', 80)};
   height: 40px;
   line-height: 40px;
   padding: 0 5px 0 15px;
@@ -98,7 +86,7 @@ const Input = styled.input<{readOnly?: boolean; isValid?: boolean}>`
   ${props =>
     props.isValid === false &&
     css`
-      border-color: ${(props: ThemedProps<void>) => props.theme.color.red100};
+      border-color: ${getColor('red', 100)};
     `}
 `;
 const Errors = styled.div`
@@ -108,7 +96,7 @@ const Errors = styled.div`
 `;
 const StyledError = styled.div`
   align-items: center;
-  color: ${(props: ThemedProps<void>) => props.theme.color.red100};
+  color: ${getColor('red', 100)};
   font-size: 11px;
   line-height: 16px;
   margin: 5px 0 0;
@@ -123,7 +111,7 @@ const StyledError = styled.div`
 
 const Error = ({message, ...props}: {message: string} & any) => (
   <StyledError {...props} aria-label={message}>
-    <WarningIcon color={akeneoTheme.color.red100} size={16} />
+    <DangerIcon size={16} />
     {message}
   </StyledError>
 );
@@ -275,16 +263,16 @@ const Row = React.memo(
           </Cell>
           <Cell width={ColumnWidths.retry}>
             {!isReadOnly && line.isFileUploadFailed && (
-              <RetryUploadButton onClick={handleRetryUpload} aria-label={__('pim_asset_manager.asset.upload.retry')}>
-                <ReloadIcon />
-              </RetryUploadButton>
+              <IconButton onClick={handleRetryUpload} aria-label={__('pim_asset_manager.asset.upload.retry')}>
+                <RefreshIcon />
+              </IconButton>
             )}
           </Cell>
           <Cell width={ColumnWidths.remove}>
             {!isReadOnly && (
-              <RemoveLineButton onClick={handleLineRemove} aria-label={__('pim_asset_manager.asset.upload.remove')}>
-                <CrossIcon />
-              </RemoveLineButton>
+              <IconButton onClick={handleLineRemove} aria-label={__('pim_asset_manager.asset.upload.remove')}>
+                <CloseIcon />
+              </IconButton>
             )}
           </Cell>
         </Cells>

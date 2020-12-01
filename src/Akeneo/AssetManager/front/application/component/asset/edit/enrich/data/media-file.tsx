@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
@@ -11,17 +11,14 @@ import {Container, Thumbnail, Actions} from 'akeneoassetmanager/application/comp
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreviewType} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {Action, DownloadAction} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
-import {Fullscreen} from 'akeneoassetmanager/application/component/app/icon/fullscreen';
 import {createEmptyFile} from 'akeneoassetmanager/domain/model/file';
-import Close from 'akeneoassetmanager/application/component/app/icon/close';
-import Import from 'akeneoassetmanager/application/component/app/illustration/import';
 import imageUploader from 'akeneoassetmanager/infrastructure/uploader/image';
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
 import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
+import {CloseIcon, FullscreenIcon, ImportIllustration} from 'akeneo-design-system';
 
 const FileUploadContainer = styled(Container).attrs(() => ({className: 'AknImage-uploader'}))`
   position: relative;
@@ -133,7 +130,7 @@ const FileUploader = ({
         readOnly={readOnly}
       />
       <ThumbnailPlaceholder>
-        <Import />
+        <ImportIllustration size={40} />
       </ThumbnailPlaceholder>
       <MediaFileLabelPlaceholder readOnly={readOnly}>
         {__(`pim_asset_manager.attribute.media_file.${readOnly ? 'read_only' : 'placeholder'}`)}
@@ -186,16 +183,12 @@ const View = ({
       <Actions>
         {canEditData && (
           <Action onClick={handleRemove}>
-            <Close title={__('pim_asset_manager.app.image.wide.remove')} size={20} color={akeneoTheme.color.grey100} />
+            <CloseIcon title={__('pim_asset_manager.app.image.wide.remove')} size={20} />
           </Action>
         )}
-        <DownloadAction color={akeneoTheme.color.grey100} size={20} data={value.data} attribute={value.attribute} />
+        <DownloadAction size={20} data={value.data} attribute={value.attribute} />
         <FullscreenPreview anchor={Action} label={label} data={value.data} attribute={value.attribute}>
-          <Fullscreen
-            title={__('pim_asset_manager.asset.button.fullscreen')}
-            color={akeneoTheme.color.grey100}
-            size={20}
-          />
+          <FullscreenIcon title={__('pim_asset_manager.asset.button.fullscreen')} size={20} />
         </FullscreenPreview>
       </Actions>
     </Container>

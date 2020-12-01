@@ -24,9 +24,10 @@ import {
 } from 'akeneopimenrichmentassetmanager/assets-collection/reducer/structure';
 import {errorsReceived, errorsRemovedAll} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/errors';
 import thunkMiddleware from 'redux-thunk';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {LegacyValue} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {isValidErrorCollection, denormalizeErrorCollection} from 'akeneoassetmanager/platform/model/validation-error';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {pimTheme} from 'akeneo-design-system';
 
 const Form = require('pim/form');
 const UserContext = require('pim/user-context');
@@ -101,9 +102,11 @@ class AssetTabForm extends (Form as {new (config: any): any}) {
 
     ReactDOM.render(
       <Provider store={this.store}>
-        <ThemeProvider theme={akeneoTheme}>
-          <List />
-        </ThemeProvider>
+        <DependenciesProvider>
+          <ThemeProvider theme={pimTheme}>
+            <List />
+          </ThemeProvider>
+        </DependenciesProvider>
       </Provider>,
       this.el
     );

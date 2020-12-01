@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 
+//TODO RAC-413 replace this with DSM Helper
 export const HelperSection = styled.div`
   background-color: ${(props: ThemedProps<void>) => props.theme.color.blue10};
   display: flex;

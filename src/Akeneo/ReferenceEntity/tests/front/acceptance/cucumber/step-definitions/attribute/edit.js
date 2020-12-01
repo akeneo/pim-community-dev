@@ -39,11 +39,4 @@ module.exports = async function(cucumber) {
 
     assert.strictEqual(isVisible, false);
   });
-
-  Then('the user should not see the delete notification', async function() {
-    const editPage = await getElement(this.page, 'Edit');
-    const hasNoNotification = await editPage.hasNoNotification();
-
-    assert.strictEqual(hasNoNotification, true);
-  });
 };

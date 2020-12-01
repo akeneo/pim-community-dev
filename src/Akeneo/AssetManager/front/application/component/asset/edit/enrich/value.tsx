@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import LocaleReference, {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
@@ -14,9 +14,8 @@ import {attributeIdentifierStringValue} from 'akeneoassetmanager/domain/model/at
 import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collection';
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
-import {Lock} from 'akeneoassetmanager/application/component/app/icon/lock';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
 import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/transformation';
+import {getColor, LockIcon} from 'akeneo-design-system';
 
 const NoZIndexFieldContainer = styled.div.attrs(() => ({className: 'AknFieldContainer'}))`
   z-index: unset;
@@ -25,7 +24,7 @@ const NoZIndexFieldContainer = styled.div.attrs(() => ({className: 'AknFieldCont
 const ValueLabel = styled.label`
   display: flex;
   flex-grow: 1;
-  color: ${props => props.theme.color.grey100};
+  color: ${getColor('grey', 100)};
   margin-bottom: 5px;
 
   > :first-child {
@@ -33,6 +32,7 @@ const ValueLabel = styled.label`
   }
 `;
 
+//TODO RAC-413 replace this with DSM Helper
 const Helper = styled.div`
   background-image: url('/bundles/pimui/images/icon-info.svg');
   background-size: 20px;
@@ -93,7 +93,7 @@ export default (
       >
         <div className="AknFieldContainer-header AknFieldContainer-header--light AknFieldContainer-header AknFieldContainer-header--light--small">
           <ValueLabel title={attributeLabel} htmlFor={`pim_asset_manager.asset.enrich.${value.attribute.code}`}>
-            {!canEditData && <Lock size={20} color={akeneoTheme.color.grey100} />}
+            {!canEditData && <LockIcon size={20} />}
             <span
               className={`AknBadge AknBadge--small AknBadge--highlight AknBadge--floating ${
                 value.attribute.is_required && isValueEmpty(value) ? '' : 'AknBadge--hidden'

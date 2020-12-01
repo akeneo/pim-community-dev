@@ -1,181 +1,97 @@
-'use strict';
-
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import '@testing-library/jest-dom/extend-expect';
-import {act, render} from '@testing-library/react';
-import {getByText, getByTitle} from '@testing-library/dom';
-import {ThemeProvider} from 'styled-components';
-import {akeneoTheme} from 'akeneoassetmanager/application/component/app/theme';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import RowStatus from 'akeneoassetmanager/application/asset-upload/component/row-status';
 import {LineStatus} from 'akeneoassetmanager/application/asset-upload/model/line';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 describe('Test row-status component', () => {
-  let container: HTMLElement;
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
+  test('It renders without errors', () => {
+    renderWithProviders(<RowStatus status={LineStatus.WaitingForUpload} progress={0} />);
   });
 
-  afterEach(() => {
-    document.body.removeChild(container);
-  });
-
-  test('It renders without errors', async () => {
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={LineStatus.WaitingForUpload} progress={0} />
-        </ThemeProvider>,
-        container
-      );
-    });
-  });
-
-  test('It renders the WaitingForUpload label', async () => {
+  test('It renders the WaitingForUpload label', () => {
     const status = LineStatus.WaitingForUpload;
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<RowStatus status={status} progress={0} />);
 
-    const label = getByText(container, 'pim_asset_manager.asset.upload.status.' + status);
+    const label = screen.getByText('pim_asset_manager.asset.upload.status.' + status);
     expect(label).not.toBeNull();
   });
 
-  test('It renders the Valid label', async () => {
+  test('It renders the Valid label', () => {
     const status = LineStatus.Valid;
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<RowStatus status={status} progress={0} />);
 
-    const label = getByText(container, 'pim_asset_manager.asset.upload.status.' + status);
+    const label = screen.getByText('pim_asset_manager.asset.upload.status.' + status);
     expect(label).not.toBeNull();
   });
 
-  test('It renders the Created label', async () => {
+  test('It renders the Created label', () => {
     const status = LineStatus.Created;
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<RowStatus status={status} progress={0} />);
 
-    const label = getByText(container, 'pim_asset_manager.asset.upload.status.' + status);
+    const label = screen.getByText('pim_asset_manager.asset.upload.status.' + status);
     expect(label).not.toBeNull();
   });
 
-  test('It renders the Invalid label', async () => {
+  test('It renders the Invalid label', () => {
     const status = LineStatus.Invalid;
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<RowStatus status={status} progress={0} />);
 
-    const label = getByText(container, 'pim_asset_manager.asset.upload.status.' + status);
+    const label = screen.getByText('pim_asset_manager.asset.upload.status.' + status);
     expect(label).not.toBeNull();
   });
 
-  test('It renders the Uploaded label', async () => {
+  test('It renders the Uploaded label', () => {
     const status = LineStatus.Uploaded;
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<RowStatus status={status} progress={0} />);
 
-    const label = getByText(container, 'pim_asset_manager.asset.upload.status.' + status);
+    const label = screen.getByText('pim_asset_manager.asset.upload.status.' + status);
     expect(label).not.toBeNull();
   });
 
-  test('It renders the UploadInProgress progress bar with the correct width', async () => {
+  test('It renders the UploadInProgress progress bar with the correct width', () => {
     const status = LineStatus.UploadInProgress;
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={0.4} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<RowStatus status={status} progress={0.4} />);
 
-    const progressBar = getByTitle(container, 'pim_asset_manager.asset.upload.status.' + status);
+    const progressBar = screen.getByTitle('pim_asset_manager.asset.upload.status.' + status);
 
     expect(progressBar).not.toBeNull();
     expect(progressBar.getAttribute('width')).toEqual('40');
   });
 
-  test('It renders the UploadInProgress progress bar even with a progress too low', async () => {
+  test('It renders the UploadInProgress progress bar even with a progress too low', () => {
     const status = LineStatus.UploadInProgress;
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={-0.4} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<RowStatus status={status} progress={-0.4} />);
 
-    const progressBar = getByTitle(container, 'pim_asset_manager.asset.upload.status.' + status);
+    const progressBar = screen.getByTitle('pim_asset_manager.asset.upload.status.' + status);
 
     expect(progressBar).not.toBeNull();
     expect(progressBar.getAttribute('width')).toEqual('0');
   });
 
-  test('It renders the UploadInProgress progress bar even with a progress too high', async () => {
+  test('It renders the UploadInProgress progress bar even with a progress too high', () => {
     const status = LineStatus.UploadInProgress;
 
-    await act(async () => {
-      ReactDOM.render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={status} progress={1.4} />
-        </ThemeProvider>,
-        container
-      );
-    });
+    renderWithProviders(<RowStatus status={status} progress={1.4} />);
 
-    const progressBar = getByTitle(container, 'pim_asset_manager.asset.upload.status.' + status);
+    const progressBar = screen.getByTitle('pim_asset_manager.asset.upload.status.' + status);
 
     expect(progressBar).not.toBeNull();
     expect(progressBar.getAttribute('width')).toEqual('100');
   });
 
-  test('It throws with an unknown status', async () => {
+  test('It throws with an unknown status', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
 
     expect(() => {
-      render(
-        <ThemeProvider theme={akeneoTheme}>
-          <RowStatus status={'something_else'} progress={0} />
-        </ThemeProvider>
-      );
+      renderWithProviders(<RowStatus status={'something_else'} progress={0} />);
     }).toThrow();
   });
 });
