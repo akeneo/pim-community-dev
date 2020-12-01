@@ -6,8 +6,8 @@ import {useGetDashboardChartScalingSizeRatio} from '../../../../infrastructure/h
 
 const UserContext = require('pim/user-context');
 
-const INITIAL_CHART_WIDTH = 600;
-const INITIAL_CHART_HEIGHT = 280;
+const INITIAL_CHART_WIDTH = 481;
+const INITIAL_CHART_HEIGHT = 250;
 
 type Props = {
   rawDataset: {[date: string]: string | null};

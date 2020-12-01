@@ -29,7 +29,9 @@ const Container = styled.header`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin: 20px 0 15px;
+  line-height: 20px;
+  height: 20px;
 `;
 
 const Legend: FC = () => {

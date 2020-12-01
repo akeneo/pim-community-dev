@@ -5,8 +5,8 @@ import {Tooltip} from './Tooltip';
 import {useTheme} from 'akeneo-design-system';
 import {ScoreDistributionChartDataset} from '../../../../../domain';
 
-const INITIAL_CHART_WIDTH = 600;
-const INITIAL_CHART_HEIGHT = 280;
+const INITIAL_CHART_WIDTH = 481;
+const INITIAL_CHART_HEIGHT = 250;
 
 type Props = {
   dataset: ScoreDistributionChartDataset;
