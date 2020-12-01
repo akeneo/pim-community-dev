@@ -10,8 +10,7 @@ import {
 import {fetchProduct} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher';
 import AttributesTabContent from './component/ProductEditForm/TabContent/AttributesTabContent';
 import {DataQualityInsightsTabContent} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent';
-import AxisEvaluation
-  from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
+import AxisEvaluation from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
 import {
   Criterion,
   Icon,
@@ -33,8 +32,7 @@ import {
   followAttributeOptionSpellingCriterion,
   followAttributeSpellingCriterion,
 } from './user-actions';
-import QualityScorePortal
-  from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/QualityScorePortal';
+import QualityScorePortal from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/QualityScorePortal';
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -108,7 +106,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                 </Criterion>
               </AxisEvaluation>
             </DataQualityInsightsTabContent>
-            <QualityScorePortal/>
+            <QualityScorePortal />
           </AxesContextProvider>
         </Provider>
       </ThemeProvider>

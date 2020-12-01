@@ -2,7 +2,10 @@ import React, {FunctionComponent} from 'react';
 import {pimTheme} from 'akeneo-design-system';
 import styled, {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {ScoreDistributionSection, Widgets} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
+import {
+  ScoreDistributionSection,
+  Widgets,
+} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
 import {keyIndicatorsTips} from '@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicatorsTips';
 import {KeyIndicatorsProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/KeyIndicatorsContext';
@@ -54,12 +57,12 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
 
                 <KeyIndicatorsProvider tips={{...EEKeyIndicatorsTips, ...keyIndicatorsTips}}>
                   {
-                  <PimEnterpriseKeyIndicators
-                    family={familyCode}
-                    category={categoryCode}
-                    locale={catalogLocale}
-                    channel={catalogChannel}
-                  />
+                    <PimEnterpriseKeyIndicators
+                      family={familyCode}
+                      category={categoryCode}
+                      locale={catalogLocale}
+                      channel={catalogChannel}
+                    />
                   }
                 </KeyIndicatorsProvider>
 

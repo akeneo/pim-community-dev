@@ -1,8 +1,6 @@
 import {AttributeCreateFormApp, AttributeEditFormApp, ProductEditFormApp, ProductModelEditFormApp} from './application';
-import fetchProductDataQualityEvaluation
-  from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
-import fetchProductModelEvaluation
-  from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
+import fetchProductDataQualityEvaluation from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductDataQualityEvaluation';
+import fetchProductModelEvaluation from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
 
 import {
   ATTRIBUTES_TAB_CONTENT_CONTAINER_ELEMENT_ID,
@@ -15,7 +13,7 @@ import {
 
 import {CriterionEvaluationResult, ProductEvaluation} from './domain';
 
-import {DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID,} from '@akeneo-pim-community/data-quality-insights/src';
+import {DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID} from '@akeneo-pim-community/data-quality-insights/src';
 
 export {
   ProductEditFormApp,

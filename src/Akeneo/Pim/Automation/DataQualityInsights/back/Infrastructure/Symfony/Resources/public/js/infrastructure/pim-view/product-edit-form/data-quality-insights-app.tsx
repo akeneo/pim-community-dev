@@ -101,15 +101,14 @@ class DataQualityInsightsApp extends BaseView {
       this.redirectToProductAssetsEdition();
     }) as EventListener);
 
-    window.addEventListener(
-      DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
-      () => {
-        const productData = this.getFormData();
-        const tab =
-          productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME : PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME;
-        this.changeTab(tab);
-      }
-    );
+    window.addEventListener(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB, () => {
+      const productData = this.getFormData();
+      const tab =
+        productData.meta.model_type === 'product_model'
+          ? PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME
+          : PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME;
+      this.changeTab(tab);
+    });
 
     this.listenTo(this.getRoot(), 'column-tab:select-tab', ({target}: TabEvent) => {
       window.dispatchEvent(
