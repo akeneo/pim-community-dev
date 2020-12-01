@@ -22,14 +22,16 @@ class AttributeExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('contains_asian_characters', [$this, 'containsAsianCharacters']),
+            new Twig_SimpleFunction('contains_han_characters', [$this, 'containsHanCharacters']),
         ];
     }
 
     /**
-     * Test an attribute content for Asian characters
+     * Test an attribute content for Han (Chinese, Japanese or Korean) characters
+     *
+     * @see https://en.wikipedia.org/wiki/Han_unification
      */
-    public function containsAsianCharacters(?string $text): bool
+    public function containsHanCharacters(?string $text): bool
     {
         if (null === $text) {
             return false;

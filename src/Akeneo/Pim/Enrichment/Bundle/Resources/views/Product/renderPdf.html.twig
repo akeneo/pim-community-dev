@@ -77,8 +77,8 @@
                 width: 65%;
             }
 
-            .attributes.pim_catalog_text.asian-text .right-column,
-            .attributes.pim_catalog_textarea.asian-text .right-column {
+            .attributes.pim_catalog_text.han-text .right-column,
+            .attributes.pim_catalog_textarea.han-text .right-column {
                 font-family: 'fireflysung', "DejaVu Sans", monospace;
             }
         </style>
@@ -120,7 +120,7 @@
                                     {% set manualHeight = attribute.label|length > (content|trim|length / 3) %}
                                 {% endif %}
 
-                                <div class="attributes {{ attribute.type }} {% if contains_asian_characters(content) %}asian-text{% endif %}"
+                                <div class="attributes {{ attribute.type }} {% if contains_han_characters(content) %}han-text{% endif %}"
                                         {% if manualHeight %} style="height: {{ (attribute.label|length / 30)|round(0, 'ceil') * 18 + 10 }}px"{% endif %}>
                                     <div class="left-column">
                                         {{ attribute.label }}
@@ -134,7 +134,6 @@
                                         {% else %}
                                             {{ content }}
                                         {% endif %}
-                                        &nbsp;
                                     </div>
                                 </div>
                             {% endblock %}
