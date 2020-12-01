@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-api-test"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+  - name: {{ .Release.Name }}-auth-test
+    image: curlimages/curl
+    env:
+      - name: TARGET
+        value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+    command: ["/bin/sh", "-c"]
+    args:
+    - echo "Testing API on ${TARGET}";
+      timeout 500 curl --retry 300 --retry-delay 30 -k ${TARGET} > /dev/null;
+      curl --retry 5 --retry-delay 5 -L -m 5 -w "%{http_code}" $TARGET/api/rest/v1/products | grep 401;
+  restartPolicy: Never
