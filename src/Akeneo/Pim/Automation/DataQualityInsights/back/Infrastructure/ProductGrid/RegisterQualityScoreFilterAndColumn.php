@@ -44,7 +44,6 @@ final class RegisterQualityScoreFilterAndColumn
         }
 
         $this->reorderQualityScoreColumn($datagridConfiguration);
-
     }
 
     private function unregisterQualityScoreFilter(DatagridConfiguration $datagridConfiguration): void

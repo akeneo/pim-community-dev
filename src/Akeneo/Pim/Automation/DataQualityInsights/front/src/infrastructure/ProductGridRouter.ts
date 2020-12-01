@@ -53,11 +53,7 @@ const buildFilters = (
   return filters.join('&');
 };
 
-const redirectToFilteredProductGrid = (
-  channelCode: string,
-  localeCode: string,
-  gridFilters: string
-) => {
+const redirectToFilteredProductGrid = (channelCode: string, localeCode: string, gridFilters: string) => {
   const productGridColumns = getDefaultProductGridColumns();
   DatagridState.set('product-grid', {
     columns: productGridColumns.join(','),
