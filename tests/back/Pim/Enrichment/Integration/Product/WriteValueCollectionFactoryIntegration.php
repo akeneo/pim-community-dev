@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\ValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Test\Integration\Configuration;
@@ -10,9 +11,9 @@ use Akeneo\Test\Integration\TestCase;
 class WriteValueCollectionFactoryIntegration extends TestCase
 {
     /**
-     * @dataProvider matrix
+     * @dataProvider validAttributeValue
      */
-    public function test_if_product_values_with_wrong_attribute_type_are_skipped(string $attributeCode, $value, bool $isSkipped): void
+    public function test_if_product_values_are_returned(string $attributeCode, $value): void
     {
         $product = $this->createProductWithForcedAttributeValue($attributeCode, $value);
         $rawValues = $product->getRawValues();
@@ -21,32 +22,54 @@ class WriteValueCollectionFactoryIntegration extends TestCase
         $writeValueCollectionFactory = $this->get('pim_catalog.factory.value_collection');
         $writeValueCollection = $writeValueCollectionFactory->createFromStorageFormat($rawValues);
 
-        $this->assertEquals($isSkipped, !in_array($attributeCode, $writeValueCollection->getAttributeCodes()));
+        $this->assertTrue(in_array($attributeCode, $writeValueCollection->getAttributeCodes()));
     }
 
-    public function matrix(): array
+    public function validAttributeValue(): array
     {
         return [
-            ['a_text', 'some_text', false], // this attribute should not be skipped
-            ['a_price', 'some_text', true],
+            ['a_text', 'some_text'],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidAttributeValue
+     */
+    public function test_if_product_values_with_wrong_attribute_type_are_skipped(string $attributeCode, $value): void
+    {
+        $product = $this->createProductWithForcedAttributeValue($attributeCode, $value);
+        $rawValues = $product->getRawValues();
+
+        /** @var WriteValueCollectionFactory $writeValueCollectionFactory */
+        $writeValueCollectionFactory = $this->get('pim_catalog.factory.value_collection');
+        $writeValueCollection = $writeValueCollectionFactory->createFromStorageFormat($rawValues);
+
+        $this->assertFalse(in_array($attributeCode, $writeValueCollection->getAttributeCodes()));
+    }
+
+    public function invalidAttributeValue(): array
+    {
+        return [
+            ['a_price', 'some_text'],
             ['a_price', [
                 'unit' => 'SQUARE_METER',
                 'amount' => '10.0000',
                 'family' => 'Area',
                 'base_data' => '10',
                 'base_unit' => 'SQUARE_METER',
-            ], true],
+            ]],
             ['a_metric', [
                 ['amount' => '10.00', 'currency' => 'EUR'],
                 ['amount' => null, 'currency' => 'USB'],
-            ], true],
-            ['a_ref_data_multi_select', 'some_text', true],
-            ['a_multi_select', 'some_text', true],
-            ['a_file', 'some_text', true],
+            ]],
+            ['a_ref_data_multi_select', 'some_text'],
+            ['a_multi_select', 'some_text'],
+            ['a_file', 'some_text'],
             ['a_text', [
                 ['amount' => '10.00', 'currency' => 'EUR'],
                 ['amount' => null, 'currency' => 'USB'],
-            ], true],
+            ]],
+            ['a_date', '4/0/6/c/406ce8a9874d27ee425cc4dfeb37370df669e671_foo.txt'],
         ];
     }
 
