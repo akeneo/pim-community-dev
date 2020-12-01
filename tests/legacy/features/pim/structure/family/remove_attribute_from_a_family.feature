@@ -41,7 +41,9 @@ Feature: Remove attribute from a family
     Then I should see the flash message "Cannot remove attribute used as label"
     When I remove the "variation_image" attribute
     Then I should see the flash message "Cannot remove used as the main picture"
+    And I press the "Close" button
     And I scroll down
+    And I press the "Close" button
     When I remove the "size" attribute
     Then I should see the flash message "Cannot remove this attribute used as a variant axis in a family variant"
     And I should see the text "size"

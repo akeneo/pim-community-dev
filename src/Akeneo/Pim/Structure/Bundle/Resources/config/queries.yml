@@ -105,3 +105,8 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetAllFamiliesLabelByLocaleQuery
         arguments:
             - '@database_connection'
+
+    akeneo.pim.structure.query.is_attribute_code_blacklisted:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\IsAttributeCodeBlacklisted
+        arguments:
+            - '@database_connection'

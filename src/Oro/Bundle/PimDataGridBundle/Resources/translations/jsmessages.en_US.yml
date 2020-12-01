@@ -36,7 +36,7 @@ pim_datagrid:
     create_view: Create view
     placeholder: Name of new view
     choose_label: Choose a label for the view
-    choose_type: I want to create a personal view
+    choose_type: I want to create a private view
     remove: Delete this view
     save_changes: Save this view
     default_view: Default view
