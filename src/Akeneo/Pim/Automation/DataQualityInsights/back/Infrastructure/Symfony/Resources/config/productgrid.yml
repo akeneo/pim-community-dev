@@ -20,9 +20,10 @@ services:
         tags:
             - { name: akeneo.pim.enrichment.product.grid.add_additional_product_properties }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterQualityScoreFilter:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterQualityScoreFilterAndColumn:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
 
