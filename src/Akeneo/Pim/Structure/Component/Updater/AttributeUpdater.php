@@ -41,6 +41,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
     /** @var TranslatableUpdater */
     protected $translatableUpdater;
+
     /** @var array */
     private $properties;
 
