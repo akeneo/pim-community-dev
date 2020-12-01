@@ -1,16 +1,17 @@
-import * as React from 'react';
+import React from 'react';
+import styled from 'styled-components';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import AssetCard, {AssetCardWithLink} from 'akeneoassetmanager/application/component/asset/list/mosaic/asset-card';
-import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import EmptyResult from 'akeneoassetmanager/application/component/asset/list/mosaic/empty-result';
-import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
 import ListAsset, {
   isAssetInCollection,
   addAssetToCollection,
   removeAssetFromAssetCodeCollection,
+  ASSET_COLLECTION_LIMIT,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
+import {Helper} from 'akeneo-design-system';
 
 const Container = styled.div`
   height: 100%;
@@ -56,7 +57,9 @@ const Mosaic = ({
 
   return (
     <React.Fragment>
-      {hasReachMaximumSelection && <AssetCollectionLimitNotification />}
+      {hasReachMaximumSelection && (
+        <Helper>{__('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}</Helper>
+      )}
       {assetCollection.length > 0 ? (
         <Container data-container="mosaic" ref={scrollContainerRef}>
           <Grid>

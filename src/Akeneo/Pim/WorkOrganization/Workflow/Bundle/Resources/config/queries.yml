@@ -93,3 +93,9 @@ services:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\GetPublishedVersionIdsByVersionIdsQuery
         arguments:
             - '@database_connection'
+
+    pimee_workflow.query.find_draft_ids_concerning_removed_attributes:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\FindDraftIdsConcerningRemovedAttributesQuery
+        arguments:
+            - '@database_connection'
+            - 100

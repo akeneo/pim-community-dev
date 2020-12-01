@@ -1,14 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
 import {AttributeCode} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import {getRulesForAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
-import {NotificationSection, NotificationText} from 'akeneoassetmanager/platform/component/common/notification';
-import {Separator} from 'akeneoassetmanager/application/component/app/separator';
-import {getColor, InfoRoundIcon} from 'akeneo-design-system';
+import {getColor, Helper} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-const Rule = styled.div`
+const RuleCodes = styled.span`
   color: ${getColor('blue', 80)};
   margin-left: 5px;
 `;
@@ -18,8 +16,8 @@ type RuleNotificationProps = {
   ruleRelations: RuleRelation[];
 };
 
-//TODO RAC-413 replace this with a Helper
-export const RuleNotification = ({attributeCode, ruleRelations}: RuleNotificationProps) => {
+const RuleNotification = ({attributeCode, ruleRelations}: RuleNotificationProps) => {
+  const translate = useTranslate();
   const ruleCodes = getRulesForAttribute(attributeCode, ruleRelations);
 
   if (ruleCodes.length === 0) {
@@ -27,12 +25,11 @@ export const RuleNotification = ({attributeCode, ruleRelations}: RuleNotificatio
   }
 
   return (
-    <NotificationSection>
-      <InfoRoundIcon />
-      <Separator />
-      <NotificationText>
-        {__('pim_asset_manager.asset_collection.notification.product_rule')} <Rule>{ruleCodes.join(', ')}</Rule>
-      </NotificationText>
-    </NotificationSection>
+    <Helper>
+      {translate('pim_asset_manager.asset_collection.notification.product_rule')}
+      <RuleCodes>{ruleCodes.join(', ')}</RuleCodes>
+    </Helper>
   );
 };
+
+export {RuleNotification};

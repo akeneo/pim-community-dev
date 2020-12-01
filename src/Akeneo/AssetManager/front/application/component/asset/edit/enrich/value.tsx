@@ -15,7 +15,7 @@ import {getLabelInCollection} from 'akeneoassetmanager/domain/model/label-collec
 import EditionAsset from 'akeneoassetmanager/domain/model/asset/edition-asset';
 import {getValuesForChannelAndLocale, isValueEmpty} from 'akeneoassetmanager/domain/model/asset/value';
 import {hasFieldAsTarget} from 'akeneoassetmanager/domain/model/asset-family/transformation';
-import {getColor, LockIcon} from 'akeneo-design-system';
+import {getColor, Helper, LockIcon} from 'akeneo-design-system';
 
 const NoZIndexFieldContainer = styled.div.attrs(() => ({className: 'AknFieldContainer'}))`
   z-index: unset;
@@ -30,19 +30,6 @@ const ValueLabel = styled.label`
   > :first-child {
     margin-right: 5px;
   }
-`;
-
-//TODO RAC-413 replace this with DSM Helper
-const Helper = styled.div`
-  background-image: url('/bundles/pimui/images/icon-info.svg');
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: left top;
-  color: ${({theme}) => theme.color.grey120};
-  font-size: ${({theme}) => theme.fontSize.small};
-  line-height: 20px;
-  padding-left: 26px;
-  margin-top: 6px;
 `;
 
 export default (
@@ -132,7 +119,9 @@ export default (
             />
           </ErrorBoundary>
         </div>
-        {isTransformationTarget && <Helper>{__('pim_asset_manager.attribute.used_as_transformation_target')}</Helper>}
+        {isTransformationTarget && (
+          <Helper inline={true}>{__('pim_asset_manager.attribute.used_as_transformation_target')}</Helper>
+        )}
         {getErrorsView(errors, value)}
       </NoZIndexFieldContainer>
     );

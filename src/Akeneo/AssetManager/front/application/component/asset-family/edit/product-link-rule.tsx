@@ -23,18 +23,11 @@ import Ajv from 'ajv';
 import {getErrorsViewStartedWith} from 'akeneoassetmanager/application/component/app/validation-error';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import {Link} from 'akeneoassetmanager/application/component/app/link';
-import {
-  HelperSection,
-  HelperSeparator,
-  HelperText,
-  HelperTitle,
-} from 'akeneoassetmanager/platform/component/common/helper';
 import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {ConfirmModal} from 'akeneoassetmanager/application/component/app/modal';
 import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asset-family/naming-convention.schema.json';
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
-import {AssetsIllustration} from 'akeneo-design-system';
+import {AssetsIllustration, Information, Link} from 'akeneo-design-system';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -222,20 +215,15 @@ class ProductLinkRule extends React.Component<StateProps & DispatchProps> {
           isDirty={form.state.isDirty}
           breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
         />
-        <HelperSection>
-          <AssetsIllustration size={80} />
-          <HelperSeparator />
-          <HelperTitle>
-            👋 {__('pim_asset_manager.asset_family.product_link_rules.help.title')}
-            <HelperText>
-              {__('pim_asset_manager.asset_family.product_link_rules.help.description')}
-              <br />
-              <Link href="https://help.akeneo.com/pim/v4/articles/assets-product-link-rules.html" target="_blank">
-                {__('pim_asset_manager.asset_family.product_link_rules.help.link')}
-              </Link>
-            </HelperText>
-          </HelperTitle>
-        </HelperSection>
+        <Information
+          illustration={<AssetsIllustration />}
+          title={`👋 ${__('pim_asset_manager.asset_family.product_link_rules.help.title')}`}
+        >
+          <p>{__('pim_asset_manager.asset_family.product_link_rules.help.description')}</p>
+          <Link href="https://help.akeneo.com/pim/v4/articles/assets-product-link-rules.html" target="_blank">
+            {__('pim_asset_manager.asset_family.product_link_rules.help.link')}
+          </Link>
+        </Information>
         <div className="AknSubsection">
           <header className="AknSubsection-title">
             <span className="group-label">
