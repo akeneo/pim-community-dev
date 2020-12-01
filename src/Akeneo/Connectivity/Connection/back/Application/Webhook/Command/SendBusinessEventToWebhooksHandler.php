@@ -117,8 +117,6 @@ final class SendBusinessEventToWebhooksHandler
                 }
             }
 
-            dump($cumulatedTimeMs);
-
             $this->logger->info(
                 json_encode(
                     (new EventSubscriptionEventBuildLog(count($webhooks), $event, $cumulatedTimeMs))->toLog(),
