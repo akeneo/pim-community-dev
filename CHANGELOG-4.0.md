@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9563: Fix default asset preview on asset family grid when cannot generate thumbnail
+- PIM-9557: Fix invalid impacted products count on published product grid
 
 # 4.0.75 (2020-11-27)
 
