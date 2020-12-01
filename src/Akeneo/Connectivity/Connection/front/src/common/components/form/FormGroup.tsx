@@ -35,9 +35,9 @@ export const FormGroup = ({children: control, controlId, label, errors, success,
                 <FormControlErrors errors={errors} />
             </div>
         )}
-        {success && (
+        {success || true && (
             <div className='AknFieldContainer-footer'>
-                <FormControlSuccess success={success} />
+                <FormControlSuccess success={'pim_common.close'} />
             </div>
         )}
     </div>
