@@ -9,7 +9,7 @@ jest.mock('akeneoassetmanager/infrastructure/saver/asset-family', () => ({
     ({code}: {code: string}) =>
       new Promise(resolve => {
         if ('' === code) {
-          resolve([{message: 'Code should not be empty', propertyPath: 'code'}]);
+          resolve([{messageTemplate: 'Code should not be empty', propertyPath: 'code'}]);
         }
         if ('throw' === code) {
           throw Error('Error');
@@ -63,10 +63,8 @@ describe('Test Asset Family create modal component', () => {
       fireEvent.click(submitButton);
     });
 
-    const errors = document.querySelectorAll('.error-message');
-
     expect(onAssetFamilyCreated).not.toHaveBeenCalled();
-    expect(errors.length).toBeGreaterThan(0);
+    expect(screen.getByText('Code should not be empty')).toBeInTheDocument();
   });
 
   test('It catches errors during Asset Family creation', async () => {

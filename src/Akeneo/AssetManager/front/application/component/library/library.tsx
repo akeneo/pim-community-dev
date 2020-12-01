@@ -24,14 +24,7 @@ import {getLocales} from 'akeneoassetmanager/application/reducer/structure';
 import {useChannels} from 'akeneoassetmanager/application/hooks/channel';
 import DeleteModal from 'akeneoassetmanager/application/component/app/delete-modal';
 import {deleteAllAssetFamilyAssets} from 'akeneoassetmanager/application/action/asset/delete';
-import {
-  HelperSection,
-  HelperSeparator,
-  HelperTitle,
-  HelperText,
-} from 'akeneoassetmanager/platform/component/common/helper';
 import {NoDataSection, NoDataTitle, NoDataText} from 'akeneoassetmanager/platform/component/common/no-data';
-import {Link} from 'akeneoassetmanager/application/component/app/link';
 import {Column} from 'akeneoassetmanager/application/component/app/column';
 import AssetFetcher from 'akeneoassetmanager/domain/fetcher/asset';
 import {ChannelFetcher} from 'akeneoassetmanager/application/hooks/channel';
@@ -46,7 +39,7 @@ import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanage
 import notify from 'akeneoassetmanager/tools/notify';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
-import {AssetsIllustration} from 'akeneo-design-system';
+import {AssetsIllustration, Information, Link} from 'akeneo-design-system';
 
 const Header = styled.div`
   padding-left: 40px;
@@ -328,20 +321,15 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             </>
           ) : null === currentAssetFamilyIdentifier ? (
             <>
-              <HelperSection>
-                <AssetsIllustration size={80} />
-                <HelperSeparator />
-                <HelperTitle>
-                  👋 {__('pim_asset_manager.asset_family.helper.title')}
-                  <HelperText>
-                    {__('pim_asset_manager.asset_family.helper.no_asset_family.text')}
-                    <br />
-                    <Link href="https://help.akeneo.com/pim/v4/articles/what-about-assets.html" target="_blank">
-                      {__('pim_asset_manager.asset_family.helper.no_asset_family.link')}
-                    </Link>
-                  </HelperText>
-                </HelperTitle>
-              </HelperSection>
+              <Information
+                illustration={<AssetsIllustration />}
+                title={`👋 ${__('pim_asset_manager.asset_family.helper.title')}`}
+              >
+                <p>{__('pim_asset_manager.asset_family.helper.no_asset_family.text')}</p>
+                <Link href="https://help.akeneo.com/pim/v4/articles/what-about-assets.html" target="_blank">
+                  {__('pim_asset_manager.asset_family.helper.no_asset_family.link')}
+                </Link>
+              </Information>
               <NoDataSection>
                 <AssetsIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset_family.title')}</NoDataTitle>
@@ -354,16 +342,12 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             </>
           ) : 0 === searchResult.totalCount ? (
             <>
-              <HelperSection>
-                <AssetsIllustration size={80} />
-                <HelperSeparator />
-                <HelperTitle>
-                  👋 {__('pim_asset_manager.asset_family.helper.title')}
-                  <HelperText>
-                    {__('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
-                  </HelperText>
-                </HelperTitle>
-              </HelperSection>
+              <Information
+                illustration={<AssetsIllustration />}
+                title={`👋 ${__('pim_asset_manager.asset_family.helper.title')}`}
+              >
+                {__('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
+              </Information>
               <NoDataSection>
                 <AssetsIllustration size={256} />
                 <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset.title')}</NoDataTitle>

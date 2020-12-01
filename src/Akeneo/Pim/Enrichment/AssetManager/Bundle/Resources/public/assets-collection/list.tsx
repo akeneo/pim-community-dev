@@ -35,12 +35,6 @@ import {Spacer} from 'akeneoassetmanager/application/component/app/spacer';
 import {AssetCollection} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection';
 import {hasValues, isValueComplete} from 'akeneopimenrichmentassetmanager/enrich/domain/model/product';
 import {Family} from 'akeneoassetmanager/platform/model/structure/family';
-import {
-  HelperSection,
-  HelperSeparator,
-  HelperText,
-  HelperTitle,
-} from 'akeneoassetmanager/platform/component/common/helper';
 import {NoDataSection, NoDataTitle} from 'akeneoassetmanager/platform/component/common/no-data';
 import {RuleRelation} from 'akeneoassetmanager/platform/model/structure/rule-relation';
 import {RuleNotification} from 'akeneoassetmanager/platform/component/rule-notification';
@@ -53,7 +47,6 @@ import {AssetPicker} from 'akeneopimenrichmentassetmanager/assets-collection/inf
 import {ResultCounter} from 'akeneoassetmanager/application/component/app/result-counter';
 import {addAssetsToCollection, emptyCollection} from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {Link} from 'akeneoassetmanager/application/component/app/link';
 import fetchAllChannels from 'akeneoassetmanager/infrastructure/fetcher/channel';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {MassUploader} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/mass-uploader';
@@ -63,7 +56,7 @@ import {
   AttributeGroupCode,
   AttributeGroupCollection,
 } from 'akeneoassetmanager/platform/model/structure/attribute-group';
-import {AssetsIllustration, LockIcon} from 'akeneo-design-system';
+import {AssetsIllustration, Information, Link, LockIcon} from 'akeneo-design-system';
 
 type ListStateProps = {
   attributes: Attribute[];
@@ -256,20 +249,15 @@ const List = ({
       />
     ) : (
       <>
-        <HelperSection>
-          <AssetsIllustration size={80} />
-          <HelperSeparator />
-          <HelperTitle>
-            👋 {__('pim_asset_manager.asset_collection.helper.title')}
-            <HelperText>
-              {__('pim_asset_manager.asset_collection.helper.text')}
-              <br />
-              <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html" target="_blank">
-                {__('pim_asset_manager.asset_collection.helper.link')}
-              </Link>
-            </HelperText>
-          </HelperTitle>
-        </HelperSection>
+        <Information
+          illustration={<AssetsIllustration />}
+          title={`👋  ${__('pim_asset_manager.asset_collection.helper.title')}`}
+        >
+          <p>{__('pim_asset_manager.asset_collection.helper.text')}</p>
+          <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html" target="_blank">
+            {__('pim_asset_manager.asset_collection.helper.link')}
+          </Link>
+        </Information>
         <NoDataSection>
           <AssetsIllustration size={256} />
           <NoDataTitle>{__('pim_asset_manager.asset_collection.no_asset.title')}</NoDataTitle>

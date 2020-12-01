@@ -1,6 +1,6 @@
 import React from 'react';
-import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import styled from 'styled-components';
+import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {Pill} from 'akeneoassetmanager/application/component/app/pill';
 import {akeneoTheme, ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
@@ -10,7 +10,6 @@ import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infra
 import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import Key from 'akeneoassetmanager/tools/key';
-import {AssetCollectionLimitNotification} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/asset-collection-limit-notification';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import ListAsset, {
   getAssetCodes,
@@ -21,13 +20,14 @@ import ListAsset, {
   moveAssetInCollection,
   getAssetLabel,
   isComplete,
+  ASSET_COLLECTION_LIMIT,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
 import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
-import {AssetsIllustration} from 'akeneo-design-system';
+import {AssetsIllustration, Helper} from 'akeneo-design-system';
 
 const AssetCard = styled.div`
   display: flex;
@@ -130,7 +130,11 @@ export const AssetCollection = ({
       {/* Collection is not empty and is loaded (we also need to check assetCodes because in this case we don't update the fetched assets */}
       {0 !== assetCodes.length ? (
         <React.Fragment>
-          {!canAddAssetToCollection(assetCodes) && <AssetCollectionLimitNotification />}
+          {!canAddAssetToCollection(assetCodes) && (
+            <Helper>
+              {__('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}
+            </Helper>
+          )}
           {assets.map((asset: ListAsset) => (
             <AssetCard key={asset.code} data-asset={asset.code}>
               <Thumbnail

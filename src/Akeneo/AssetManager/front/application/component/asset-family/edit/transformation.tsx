@@ -18,16 +18,9 @@ import Ajv from 'ajv';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-family/edit/form';
-import {Link} from 'akeneoassetmanager/application/component/app/link';
 import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
-import {
-  HelperSection,
-  HelperSeparator,
-  HelperTitle,
-  HelperText,
-} from 'akeneoassetmanager/platform/component/common/helper';
 import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
-import {AssetsIllustration} from 'akeneo-design-system';
+import {AssetsIllustration, Information, Link} from 'akeneo-design-system';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
 const securityContext = require('pim/security-context');
@@ -124,20 +117,15 @@ class Transformation extends React.Component<StateProps & DispatchProps, Transfo
           isDirty={form.state.isDirty}
           breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
         />
-        <HelperSection>
-          <AssetsIllustration size={80} />
-          <HelperSeparator />
-          <HelperTitle>
-            👋 {__('pim_asset_manager.asset_family.transformations.help.title')}
-            <HelperText>
-              {__('pim_asset_manager.asset_family.transformations.help.description')}
-              <br />
-              <Link href="https://help.akeneo.com/pim/v4/articles/assets-transformation.html" target="_blank">
-                {__('pim_asset_manager.asset_family.transformations.help.link')}
-              </Link>
-            </HelperText>
-          </HelperTitle>
-        </HelperSection>
+        <Information
+          illustration={<AssetsIllustration />}
+          title={`👋 ${__('pim_asset_manager.asset_family.transformations.help.title')}`}
+        >
+          <p>{__('pim_asset_manager.asset_family.transformations.help.description')}</p>
+          <Link href="https://help.akeneo.com/pim/v4/articles/assets-transformation.html" target="_blank">
+            {__('pim_asset_manager.asset_family.transformations.help.link')}
+          </Link>
+        </Information>
         <div className="AknSubsection">
           <header className="AknSubsection-title">
             <span className="group-label">{__('pim_asset_manager.asset_family.transformations.subsection')}</span>

@@ -9,7 +9,7 @@ jest.mock('akeneoassetmanager/infrastructure/saver/asset', () => ({
     ({code}: {code: string}) =>
       new Promise(resolve => {
         if ('' === code) {
-          resolve([{message: 'Code should not be empty', propertyPath: 'code'}]);
+          resolve([{messageTemplate: 'Code should not be empty', propertyPath: 'code'}]);
         }
         if ('throw' === code) {
           throw Error('Error');
@@ -127,10 +127,8 @@ describe('Test Asset create modal component', () => {
       fireEvent.click(submitButton);
     });
 
-    const errors = document.querySelectorAll('.error-message');
-
     expect(onAssetCreated).not.toHaveBeenCalled();
-    expect(errors.length).toBeGreaterThan(0);
+    expect(screen.getByText('Code should not be empty')).toBeInTheDocument();
   });
 
   test('It catches errors during Asset creation', async () => {
