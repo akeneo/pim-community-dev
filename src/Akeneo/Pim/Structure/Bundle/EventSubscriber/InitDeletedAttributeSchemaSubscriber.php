@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * The table used to store blacklisted attributes to avoid recreation before the cleanup job is finished
  *
- * We need to manually create the table.
+ * We need to manually create the table and insert the new job instance.
  */
 class InitDeletedAttributeSchemaSubscriber implements EventSubscriberInterface
 {
@@ -25,11 +25,12 @@ class InitDeletedAttributeSchemaSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InstallerEvents::POST_DB_CREATE => 'initDbSchema'
+            InstallerEvents::POST_DB_CREATE => 'createBlacklistTable',
+            InstallerEvents::POST_LOAD_FIXTURES => 'addJobInstance'
         ];
     }
 
-    public function initDbSchema(): void
+    public function createBlacklistTable(): void
     {
         $createTableSql = <<<SQL
 CREATE TABLE IF NOT EXISTS pim_catalog_attribute_blacklist (
@@ -39,14 +40,18 @@ CREATE TABLE IF NOT EXISTS pim_catalog_attribute_blacklist (
     CONSTRAINT `FK_BDE7D0925812C06B` FOREIGN KEY (`cleanup_job_execution_id`) REFERENCES `akeneo_batch_job_execution` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
-        $this->connection->exec($createTableSql);
 
+        $this->connection->exec($createTableSql);
+    }
+
+    public function addJobInstance(): void
+    {
         $insertSql = <<<SQL
 INSERT INTO akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type)
 VALUES (:code, :label, :job_name, :status, :connector, :raw_parameters, :type);
 SQL;
 
-        $this->connection->exec($insertSql, [
+        $this->connection->executeUpdate($insertSql, [
             'code'           => 'clean_removed_attribute_job',
             'label'          => 'Clean the removed attribute values in product',
             'job_name'       => 'clean_removed_attribute_job',
