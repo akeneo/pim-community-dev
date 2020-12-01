@@ -16,7 +16,7 @@ Feature: Datagrid views
   Scenario: Successfully display the default view
     Given I am on the products grid
     Then I should see the text "Default view"
-    Then I should see the columns ID, Image, Label, Family, Status, Complete, Created At, Updated At, Variant products
+    Then I should see the columns ID, Image, Label, Family, Status, Complete, Created At, Updated At, Variant products, Quality score
 
   Scenario: Successfully apply a view
     Given I am on the products grid
@@ -56,7 +56,7 @@ Feature: Datagrid views
     And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Some shoes"
     When I display the columns SKU, Name, Family and Manufacturer
-    Then I should see the columns Family, Name, Manufacturer, Sku
+    Then I should see the columns Family, Sku, Manufacturer and Name
     Then I should see the text "Nike"
     When I update the view
     And I apply the "Some shoes" view

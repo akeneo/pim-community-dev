@@ -13,7 +13,7 @@ beforeAll(() => {
 });
 
 const columnsWithDQI =
-  'identifier,image,label,family,enabled,data_quality_insights_score,completeness,created,updated,complete_variant_products';
+  'identifier,image,label,family,enabled,completeness,created,updated,complete_variant_products,success,data_quality_insights_score';
 
 test('Redirect to product grid filtered on a family', () => {
   redirectToProductGridFilteredByFamily('ecommerce', 'en_US', 'accessories');

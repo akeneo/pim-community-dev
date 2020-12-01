@@ -42,9 +42,6 @@ final class RegisterQualityScoreFilterAndColumn
             $this->unregisterQualityScoreSorter($datagridConfiguration);
             return;
         }
-
-        $this->reorderQualityScoreColumn($datagridConfiguration);
-
     }
 
     private function unregisterQualityScoreFilter(DatagridConfiguration $datagridConfiguration): void
@@ -68,36 +65,5 @@ final class RegisterQualityScoreFilterAndColumn
         $datagridConfiguration->offsetUnset(SorterConfiguration::COLUMNS_PATH);
         unset($defaultSorters['data_quality_insights_score']);
         $datagridConfiguration->offsetSetByPath(SorterConfiguration::COLUMNS_PATH, $defaultSorters);
-    }
-
-    private function reorderQualityScoreColumn(DatagridConfiguration $datagridConfiguration)
-    {
-        $gridParameters = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
-        if (isset($gridParameters['view']['id']) && $gridParameters['view']['id'] !== '0') {
-            return;
-        }
-
-        $columnsParameters = explode(',', $gridParameters['view']['columns']);
-        $successColumnPosition = array_search('success', $columnsParameters);
-        $qualityScoreColumnPosition = array_search('data_quality_insights_score', $columnsParameters);
-        if ($successColumnPosition === false || $qualityScoreColumnPosition === false) {
-            return;
-        }
-
-        $completenessColumnPosition = array_search('completeness', $columnsParameters);
-
-        $defaultColumns = $datagridConfiguration->offsetGet(FormatterConfiguration::COLUMNS_KEY);
-
-        $qualityScoreColumnDefinition = array_slice($defaultColumns, $qualityScoreColumnPosition, 1);
-        unset($defaultColumns['data_quality_insights_score']);
-
-        $columnsWithQualityScoreReordered = array_merge(
-            array_slice($defaultColumns, 0, $completenessColumnPosition),
-            $qualityScoreColumnDefinition,
-            array_slice($defaultColumns, $completenessColumnPosition)
-        );
-
-        $datagridConfiguration->offsetUnset(FormatterConfiguration::COLUMNS_KEY);
-        $datagridConfiguration->offsetAddToArray(FormatterConfiguration::COLUMNS_KEY, $columnsWithQualityScoreReordered);
     }
 }
