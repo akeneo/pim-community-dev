@@ -56,7 +56,7 @@ final class NonExistentPriceCollectionValueFilter implements NonExistentValuesFi
                     }
 
                     foreach ($valuesIndexedByLocale as $locale => $value) {
-                        if (!is_array($value)) {
+                        if (!\is_array($value)) {
                             throw InvalidPropertyTypeException::arrayExpected(
                                 $attributeCode,
                                 static::class,

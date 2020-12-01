@@ -32,7 +32,7 @@ class OptionValueFactory extends AbstractValueFactory
             return null;
         }
 
-        if (!is_string($data) && !is_numeric($data)) {
+        if (!\is_string($data) && !\is_numeric($data)) {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
                 static::class,

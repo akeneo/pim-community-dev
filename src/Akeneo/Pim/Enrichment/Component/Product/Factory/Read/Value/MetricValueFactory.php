@@ -54,7 +54,7 @@ final class MetricValueFactory implements ReadValueFactory
 
     private function validate(Attribute $attribute, $data): void
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),
                 static::class,

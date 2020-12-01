@@ -53,7 +53,7 @@ final class PriceCollectionValueFactory implements ReadValueFactory
 
     private function validate(Attribute $attribute, $data): void
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),
                 static::class,
@@ -62,7 +62,7 @@ final class PriceCollectionValueFactory implements ReadValueFactory
         }
 
         foreach ($data as $price) {
-            if (!is_array($price)) {
+            if (!\is_array($price)) {
                 throw InvalidPropertyTypeException::arrayOfArraysExpected(
                     $attribute->code(),
                     static::class,

@@ -34,7 +34,7 @@ class OptionsValueFactory extends AbstractValueFactory
             return [];
         }
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
@@ -43,7 +43,7 @@ class OptionsValueFactory extends AbstractValueFactory
         }
 
         foreach ($data as $value) {
-            if (!is_string($value)) {
+            if (!\is_string($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
                     sprintf('one of the options is not a string, "%s" given', gettype($value)),
@@ -53,7 +53,7 @@ class OptionsValueFactory extends AbstractValueFactory
             }
         }
 
-        sort($data);
+        \sort($data);
 
         return $data;
     }

@@ -102,7 +102,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
      */
     protected function prepareData(AttributeInterface $attribute, $data, ?string $channelCode)
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
@@ -111,7 +111,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
         }
 
         foreach ($data as $price) {
-            if (!is_array($price)) {
+            if (!\is_array($price)) {
                 throw InvalidPropertyTypeException::arrayOfArraysExpected(
                     $attribute->getCode(),
                     static::class,
@@ -119,7 +119,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
                 );
             }
 
-            if (!array_key_exists('amount', $price)) {
+            if (!\array_key_exists('amount', $price)) {
                 throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'amount',
@@ -128,7 +128,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
                 );
             }
 
-            if (!array_key_exists('currency', $price)) {
+            if (!\array_key_exists('currency', $price)) {
                 throw InvalidPropertyTypeException::arrayKeyExpected(
                     $attribute->getCode(),
                     'currency',
@@ -213,7 +213,7 @@ class PriceCollectionValueFactory implements ValueFactoryInterface
             $currencies[] = $price['currency'];
         }
 
-        $sort = array_multisort($currencies, SORT_ASC, $amounts, SORT_ASC, $arrayPrices);
+        $sort = \array_multisort($currencies, SORT_ASC, $amounts, SORT_ASC, $arrayPrices);
 
         if (false === $sort) {
             throw new \LogicException(

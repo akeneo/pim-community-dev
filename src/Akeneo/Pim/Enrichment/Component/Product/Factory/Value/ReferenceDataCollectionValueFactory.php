@@ -40,7 +40,7 @@ class ReferenceDataCollectionValueFactory extends AbstractValueFactory
             $data = [];
         }
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
@@ -49,7 +49,7 @@ class ReferenceDataCollectionValueFactory extends AbstractValueFactory
         }
 
         foreach ($data as $key => $value) {
-            if (!is_string($value)) {
+            if (!\is_string($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
                     sprintf('array key "%s" expects a string as value, "%s" given', $key, gettype($value)),
@@ -81,9 +81,9 @@ class ReferenceDataCollectionValueFactory extends AbstractValueFactory
             }
         }
 
-        $referenceDataCodes = array_unique($referenceDataCodes);
+        $referenceDataCodes = \array_unique($referenceDataCodes);
 
-        sort($referenceDataCodes);
+        \sort($referenceDataCodes);
 
         return $referenceDataCodes;
     }

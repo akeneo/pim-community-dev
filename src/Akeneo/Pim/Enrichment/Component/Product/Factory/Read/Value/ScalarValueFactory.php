@@ -17,7 +17,7 @@ abstract class ScalarValueFactory implements ReadValueFactory
 {
     public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_scalar($data)) {
+        if (!\is_scalar($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),
                 static::class,

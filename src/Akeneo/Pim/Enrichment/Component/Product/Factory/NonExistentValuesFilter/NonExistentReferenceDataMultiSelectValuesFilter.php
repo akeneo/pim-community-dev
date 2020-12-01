@@ -40,7 +40,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
                 foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $values) {
-                        if (is_array($values)) {
+                        if (\is_array($values)) {
                             $multiSelectValues[$channel][$locale] = array_values(array_intersect($values, $existingReferenceDataCodes[$attributeCode] ?? []));
                         }
                     }
@@ -86,7 +86,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                 $referenceDataName = $values['properties']['reference_data_name'];
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $values) {
-                        if (!is_array($values)) {
+                        if (!\is_array($values)) {
                             throw InvalidPropertyTypeException::arrayExpected(
                                 $attributeCode,
                                 static::class,
@@ -95,7 +95,7 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                         }
 
                         foreach ($values as $value) {
-                            if (!is_scalar($value)) {
+                            if (!\is_scalar($value)) {
                                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                                     $attributeCode,
                                     sprintf('one of the "%s" values is not a scalar', $attributeCode),
