@@ -49,7 +49,8 @@
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
             "Pimee\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/",
             "Akeneo\\Test\\Pim\\Automation\\RuleEngine\\": "src/Akeneo/Pim/Automation/RuleEngine/tests/back",
-            "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/"
+            "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/",
+            "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back"
         }
     },
     "require": {
