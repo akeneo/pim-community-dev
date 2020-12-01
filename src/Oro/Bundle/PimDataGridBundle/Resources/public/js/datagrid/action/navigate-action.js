@@ -41,7 +41,7 @@ define(['underscore', 'oro/mediator', 'oro/datagrid/model-action', 'pim/router']
       if (this.useDirectLauncherLink) {
         this.launcherOptions = _.extend(
           {
-            link: this.getLink(),
+            link: `#${this.getLink()}`,
             runAction: false,
           },
           this.launcherOptions
