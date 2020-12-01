@@ -674,3 +674,51 @@ services:
                 connector: '%pim_catalog.job.remove_non_existing_product_values.connector_name%'
                 type: '%pim_catalog.job.remove_non_existing_product_values.job_type%'
             - { name: akeneo_batch.job.not_visible }
+
+    # Clean removed attribute
+    pim_catalog.job.clean_removed_attribute:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'clean_removed_attribute'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.register_clean_job'
+                - '@pim_catalog.step.whitelist_attribute_code'
+            - true
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'Clean removed attribute'
+                type: 'clean_removed_attribute'
+            -
+                name: akeneo_batch.job.not_visible
+
+    pim_catalog.step.register_clean_job:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'register_clean_job'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.register_clean_job'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.register_clean_job:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\CleanRemovedAttribute\RegisterCleanJobTasklet'
+        arguments:
+            - '@pim_catalog.manager.attribute_code_blacklister'
+
+    pim_catalog.step.whitelist_attribute_code:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'whitelist_attribute_code'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.whitelist_attribute_code'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.whitelist_attribute_code:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\CleanRemovedAttribute\WhitelistAttributeCodeTasklet'
+        arguments:
+            - '@pim_catalog.manager.attribute_code_blacklister'
