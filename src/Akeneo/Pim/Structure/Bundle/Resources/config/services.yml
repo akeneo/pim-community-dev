@@ -16,6 +16,7 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '%pim_catalog.job.remove_non_existing_product_values.job_name%'
+            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
         tags:
             - { name: kernel.event_subscriber }
 

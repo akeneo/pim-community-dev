@@ -1,5 +1,15 @@
 # 4.0.x
 
+# 4.0.75 (2020-11-27)
+
+## Bug fixes
+
+- PIM-9575: Prepend hash to navigate actions URLs
+- PIM-9559: Dispatch event when clean removed attributes command is over
+- PIM-9573: Create remove_non_existing_product_values job instance at runtime
+
+# 4.0.74 (2020-11-25)
+
 ## Bug fixes
 
 - PIM-9568: Fix performance issue when saving a big product group
@@ -506,7 +516,7 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\EntityWithFamilyVariantNormalizer` to add
      `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer`,
      `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator` and remove
-     `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface` 
+     `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductNormalizer` to remove
     `Doctrine\Common\Persistence\ObjectManager`, `Akeneo\Pim\Enrichment\Component\Product\Manager\CompletenessManager`, `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`,
     `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface`, `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculatorInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface, and to add
@@ -569,15 +579,15 @@
 - Update class `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer`:
     - Remove implementation of `Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface`
     - Remove implementation of `Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface`
-    - Adds parameter `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface` 
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer` to 
+    - Adds parameter `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface`
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer` to
     - remove `Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface`
-    - remove `Symfony\Component\Serializer\Normalizer\NormalizerInterface` 
+    - remove `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
     - add `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetElasticsearchProductModelProjectionInterface`
 - Remove interface `Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface`, and its implementations `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness` and `Akeneo\Pim\Enrichment\Component\Product\Model\Completeness`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\IncompleteValuesNormalizer`
 - Remove classes `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValue`, `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollection`, `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\RequiredValueCollectionFactory`,
-    `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollection` and `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory` 
+    `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollection` and `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\IncompleteValueCollectionFactory`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer` to add `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` (attribute option repository)
 - Remove class `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter`
 - Remove class `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer`
@@ -668,7 +678,7 @@
 - Remove interface `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteCheckerInterface` and its concrete implementations:
     `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\ValueCompleteChecker`, `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MediaCompleteChecker`,
     `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\MetricCompleteChecker`, `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\PriceCompleteChecker`
-    and `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\SimpleCompleteChecker` 
+    and `Akeneo\Pim\Enrichment\Component\Product\Completeness\Checker\SimpleCompleteChecker`
 - Change constructors of `Akeneo\Platform\Bundle\ImportExportBundle\Controller\ExportExecutionController` and `Akeneo\Platform\Bundle\ImportExportBundle\Controller\ExportExecutionController` to remove
   - `Symfony\Bundle\FrameworkBundle\Templating\EngineInterface`,
   - `Symfony\Component\Translation\TranslatorInterface`,

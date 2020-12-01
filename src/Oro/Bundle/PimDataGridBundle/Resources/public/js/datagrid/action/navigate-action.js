@@ -37,7 +37,7 @@ function(_, mediator, ModelAction, router) {
 
             if (this.useDirectLauncherLink) {
                 this.launcherOptions = _.extend({
-                    link: this.getLink(),
+                    link: `#${this.getLink()}`,
                     runAction: false
                 }, this.launcherOptions);
             }

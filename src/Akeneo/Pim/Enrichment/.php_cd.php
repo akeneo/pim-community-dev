@@ -92,6 +92,7 @@ $rules = [
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Pim\Structure\Bundle\Event\AttributeEvents',
 
         // TODO: : EASY PICK! API PaginatorInterface should catch ServerErrorResponseException and throw its own exception,
         'Elasticsearch\Common\Exceptions\BadRequest400Exception',
