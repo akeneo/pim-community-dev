@@ -30,9 +30,9 @@ abstract class AbstractProduct implements ProductInterface
 
     protected array $rawValues;
 
-    protected \DateTime $created;
+    protected ?\DateTime $created = null;
 
-    protected \DateTime $updated;
+    protected ?\DateTime $updated = null;
 
     /**
      * Not persisted. Loaded on the fly via the $rawValues.
@@ -562,6 +562,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
+            // TODO error message
             throw new \LogicException();
         }
 
@@ -591,6 +592,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
+            // TODO error message
             throw new \LogicException();
         }
 
@@ -619,7 +621,11 @@ abstract class AbstractProduct implements ProductInterface
     public function addAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
-        if ($association instanceof AssociationInterface && !$association->getGroups()->contains($group)) {
+        if (null === $association) {
+            // TODO error message
+            throw new \LogicException();
+        }
+        if (!$association->getGroups()->contains($group)) {
             $association->addGroup($group);
             $this->dirty = true;
         }
@@ -628,11 +634,8 @@ abstract class AbstractProduct implements ProductInterface
     public function removeAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
-        if (null === $association) {
-            throw new \LogicException();
-        }
 
-        if ($association->getGroups()->contains($group)) {
+        if ($association instanceof AssociationInterface && $association->getGroups()->contains($group)) {
             $association->removeGroup($group);
             $this->dirty = true;
         }
