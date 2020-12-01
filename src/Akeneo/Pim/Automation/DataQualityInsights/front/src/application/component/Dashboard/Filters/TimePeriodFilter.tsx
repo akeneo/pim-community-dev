@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD} from '../../../../constant';
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD} from '../../../constant';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const handleTimePeriodChange = (value: string) => {
