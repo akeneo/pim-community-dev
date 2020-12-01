@@ -56,17 +56,29 @@ test('it does call the action launch if every option is set', () => {
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.csv'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.grid_context'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.with_labels'));
+  fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.with_media'));
   fireEvent.click(getByTitle('pim_common.export'));
 
-  expect(onActionLaunch).toHaveBeenCalledWith({context: 'grid-context', type: 'csv', 'with-labels': 'with-labels'});
+  expect(onActionLaunch).toHaveBeenCalledWith({
+    context: 'grid-context',
+    type: 'csv',
+    'with-labels': 'with-labels',
+    'with_media': 'true',
+  });
 
   fireEvent.click(getByTitle('pim_datagrid.mass_action_group.quick_export.label'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.xlsx'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.all_attributes'));
   fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.with_codes'));
+  fireEvent.click(getByText('pim_datagrid.mass_action.quick_export.configurator.without_media'));
   fireEvent.click(getByTitle('pim_common.export'));
 
-  expect(onActionLaunch).toHaveBeenCalledWith({context: 'all-attributes', type: 'xlsx', 'with-labels': 'with-codes'});
+  expect(onActionLaunch).toHaveBeenCalledWith({
+    context: 'all-attributes',
+    type: 'xlsx',
+    'with-labels': 'with-codes',
+    'with_media': 'false',
+  });
 });
 
 test('it does not display the with-labels select if specified', () => {

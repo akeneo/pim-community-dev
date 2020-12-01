@@ -23,8 +23,9 @@ const QuickExportConfigurator = ({
 
   const productCount = getProductCount();
   const readyToSubmit =
-    undefined !== formValue['type'] &&
-    undefined !== formValue['context'] &&
+    undefined !== formValue.type &&
+    undefined !== formValue.context &&
+    undefined !== formValue.with_media &&
     (undefined !== formValue['with-labels'] || !showWithLabelsSelect);
 
   return (
@@ -95,6 +96,14 @@ const QuickExportConfigurator = ({
               </Option>
             </Select>
           )}
+          <Select name="with_media">
+            <Option value="false" title={translate('pim_datagrid.mass_action.quick_export.configurator.without_media')}>
+              {translate('pim_datagrid.mass_action.quick_export.configurator.without_media')}
+            </Option>
+            <Option value="true" title={translate('pim_datagrid.mass_action.quick_export.configurator.with_media')}>
+              {translate('pim_datagrid.mass_action.quick_export.configurator.with_media')}
+            </Option>
+          </Select>
         </Form>
       </Modal>
     </>
