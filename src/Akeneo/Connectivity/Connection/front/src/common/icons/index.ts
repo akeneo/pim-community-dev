@@ -1,6 +1,3 @@
 import {CaretDownIcon, CaretUpIcon} from './CaretIcon';
 
-export {
-    CaretDownIcon,
-    CaretUpIcon,
-};
+export {CaretDownIcon, CaretUpIcon};
