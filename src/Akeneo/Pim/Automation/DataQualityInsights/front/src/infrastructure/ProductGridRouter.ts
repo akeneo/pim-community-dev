@@ -1,8 +1,6 @@
 const Router = require('pim/router');
 const DatagridState = require('pim/datagrid/state');
 
-const PRODUCT_GRID_QUALITY_SCORE_COLUMN = 'data_quality_insights_score';
-
 export const redirectToProductGridFilteredByFamily = (channelCode: string, localeCode: string, familyCode: string) => {
   const gridFilters = buildFilters(channelCode, familyCode, null, null, null);
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
@@ -58,10 +56,9 @@ const buildFilters = (
 const redirectToFilteredProductGrid = (
   channelCode: string,
   localeCode: string,
-  gridFilters: string,
-  redefineColumns = true
+  gridFilters: string
 ) => {
-  const productGridColumns = redefineColumns ? getProductGridColumnsWithQualityScore() : getDefaultProductGridColumns();
+  const productGridColumns = getDefaultProductGridColumns();
   DatagridState.set('product-grid', {
     columns: productGridColumns.join(','),
     filters: gridFilters,
@@ -73,26 +70,8 @@ const redirectToFilteredProductGrid = (
   window.location.href = '#' + Router.generate('pim_enrich_product_index', {dataLocale: localeCode});
 };
 
-const getProductGridColumnsWithQualityScore = () => {
-  let productGridColumns = getDefaultProductGridColumns();
-  if (!productGridColumns.includes(PRODUCT_GRID_QUALITY_SCORE_COLUMN)) {
-    productGridColumns.push(PRODUCT_GRID_QUALITY_SCORE_COLUMN);
-  }
-
-  return productGridColumns;
-};
-
 const getDefaultProductGridColumns = () => {
-  const storedProductGridColumns = DatagridState.get('product-grid', 'columns');
-  let productGridColumns: string[] = [];
-  if (storedProductGridColumns !== null) {
-    productGridColumns = storedProductGridColumns.split(',');
-  } else {
-    //If the user has never been to the product grid since its last login
-    productGridColumns = 'identifier,image,label,family,enabled,completeness,created,updated,complete_variant_products,success'.split(
-      ','
-    );
-  }
-
-  return productGridColumns;
+  return 'identifier,image,label,family,enabled,data_quality_insights_score,completeness,created,updated,complete_variant_products'.split(
+    ','
+  );
 };
