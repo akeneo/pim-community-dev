@@ -316,7 +316,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             new InvalidPropertyException('attribute', 'image', static::class)
         );
 
-        $logger->warning(
+        $logger->notice(
             Argument::containingString('Tried to load a product value with the property "empty_image" that does not exist.')
         )->shouldBeCalled();
 
@@ -373,7 +373,7 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             new InvalidPropertyTypeException('attribute', 'image', static::class)
         );
 
-        $logger->warning(
+        $logger->notice(
             Argument::containingString('Tried to load a product value with the property "empty_image" that does not exist.')
         )->shouldBeCalled();
 

@@ -345,7 +345,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
             new InvalidAttributeException('attribute', 'color', static::class)
         );
 
-        $logger->warning(Argument::containingString('Tried to load a product value with an invalid attribute "color".'));
+        $logger->notice(Argument::containingString('Tried to load a product value with an invalid attribute "color".'));
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
@@ -398,7 +398,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
             new InvalidPropertyException('attribute', 'image', static::class)
         );
 
-        $logger->warning(
+        $logger->notice(
             Argument::containingString('Tried to load a product value with the property "image" that does not exist.')
         )->shouldBeCalled();
 
@@ -463,7 +463,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
             new InvalidPropertyTypeException('attribute', 'image', static::class)
         );
 
-        $logger->warning(
+        $logger->notice(
             Argument::containingString('Tried to load a product value for attribute "reference" that does not have the expected type in database.')
         )->shouldBeCalled();
 
