@@ -156,7 +156,7 @@ class ValueCollectionFactory
                         } catch (InvalidPropertyException $e) {
                             // TODO merge master/4.0: remove check
                             if (null !== $this->logger) {
-                                $this->logger->warning(
+                                $this->logger->notice(
                                     sprintf(
                                         'Tried to load a product value with the property "%s" that does not exist.',
                                         $e->getPropertyValue()
@@ -166,7 +166,7 @@ class ValueCollectionFactory
                         } catch (\TypeError | InvalidPropertyTypeException $e) {
                             // TODO merge master/4.0: remove check
                             if (null !== $this->logger) {
-                                $this->logger->warning(
+                                $this->logger->notice(
                                     sprintf(
                                         'Tried to load a product value for attribute "%s" that does not have the '.
                                         'expected type in database.',
