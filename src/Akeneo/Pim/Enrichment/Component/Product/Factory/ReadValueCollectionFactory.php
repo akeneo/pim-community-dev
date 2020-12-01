@@ -25,11 +25,11 @@ class ReadValueCollectionFactory
     /** @var ChainedNonExistentValuesFilterInterface */
     private $chainedNonExistentValuesFilter;
 
-    // TODO merge master: property $logger should be nullable
+    // TODO merge master: remove the logger
     /** @var LoggerInterface|null */
     private $logger;
 
-    // TODO merge master: require LoggerInterface argument
+    // TODO merge master: remove the logger
     public function __construct(
         ValueFactory $valueFactory,
         GetAttributes $getAttributeByCodes,
