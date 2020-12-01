@@ -1,8 +1,8 @@
 import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
 
-const UserGroupsIllustration = ({title, size = 256}: IllustrationProps) => (
-  <svg width={size} height={size} viewBox="0 0 256 256">
+const UserGroupsIllustration = ({title, size = 256, ...props}: IllustrationProps) => (
+  <svg width={size} height={size} viewBox="0 0 256 256" {...props}>
     {title && <title>{title}</title>}
     <defs>
       <path id="UserGroupsIllustration_prefix__a" d="M23.5 207.528l191 .037H256V0H0l3.28 208.528z" />

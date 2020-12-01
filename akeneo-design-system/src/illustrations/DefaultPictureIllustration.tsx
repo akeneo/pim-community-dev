@@ -1,8 +1,8 @@
 import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
 
-const DefaultPictureIllustration = ({title, size = 256}: IllustrationProps) => (
-  <svg width={size} height={size} viewBox="0 0 256 256">
+const DefaultPictureIllustration = ({title, size = 256, ...props}: IllustrationProps) => (
+  <svg width={size} height={size} viewBox="0 0 256 256" {...props}>
     {title && <title>{title}</title>}
     <defs>
       <path id="DefaultPictureIllustration_prefix__a" d="M0 88.72h114.093V0H0z" />

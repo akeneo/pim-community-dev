@@ -2,8 +2,8 @@ import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
 import {useTheme} from '../hooks';
 
-const CityIllustration = ({title, size = 256}: IllustrationProps) => (
-  <svg width={size} height={size} viewBox="0 0 256 256">
+const CityIllustration = ({title, size = 256, ...props}: IllustrationProps) => (
+  <svg width={size} height={size} viewBox="0 0 256 256" {...props}>
     {title && <title>{title}</title>}
     <defs>
       <path id="prefix__aCityIllustration" d="M6.682 23.581L35.223 24l4.959-24L0 .5 4.682 24z" />
