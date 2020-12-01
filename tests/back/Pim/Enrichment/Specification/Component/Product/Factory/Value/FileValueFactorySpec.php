@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -35,13 +36,14 @@ final class FileValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::FILE);
     }
 
-    public function it_does_not_support_null()
+    public function it_does_not_support_null(FileInfoRepositoryInterface $fileInfoRepository)
     {
+        $fileInfoRepository->findOneByIdentifier('foo')->willReturn(null);
         $this->shouldThrow(InvalidPropertyException::class)->during('createByCheckingData', [
             $this->getAttribute(true, true),
             'ecommerce',
             'fr_FR',
-            null
+            'foo'
         ]);
     }
 

@@ -35,13 +35,14 @@ final class ImageValueFactorySpec extends ObjectBehavior
         $this->supportedAttributeType()->shouldReturn(AttributeTypes::IMAGE);
     }
 
-    public function it_does_not_support_null()
+    public function it_does_not_support_null(FileInfoRepositoryInterface $fileInfoRepository)
     {
+        $fileInfoRepository->findOneByIdentifier('foo')->willReturn(null);
         $this->shouldThrow(InvalidPropertyException::class)->during('createByCheckingData', [
             $this->getAttribute(true, true),
             'ecommerce',
             'fr_FR',
-            null
+            'foo'
         ]);
     }
 

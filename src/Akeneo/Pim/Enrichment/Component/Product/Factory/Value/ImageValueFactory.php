@@ -52,7 +52,7 @@ final class ImageValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!\is_string($data)) {
+        if (!\is_string($data) && !$data instanceof FileInfoInterface) {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->code(),
                 static::class,
