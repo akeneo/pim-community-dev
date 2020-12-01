@@ -2,8 +2,15 @@
 
 ## Bug fixes
 
-- [Backport] Fix fatal error on display product model associations when they have more than 25 products associated
 - RAC-384: Fix fatal error when an attribute is removed then re-created with the same code but another type.
+
+# 3.2.77 (2020-11-30)
+
+## Bug fixes
+
+- [Backport] Fix fatal error on display product model associations when they have more than 25 products associated
+- PIM-9578: Revert change on millibar conversion operation
+- PIM-9580: Fix conversion operation for ATM, PSI, TORR & MMHG
 
 # 3.2.76 (2020-10-22)
 
