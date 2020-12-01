@@ -34,18 +34,19 @@ class RegisterCleanJobTasklet implements TaskletInterface, TrackableTaskletInter
      */
     public function execute()
     {
-        $attributeCode = $this->setStepExecution
+        $attributeCode = $this->stepExecution
             ->getJobExecution()
             ->getJobParameters()
             ->get('attribute_code');
 
         if (!$attributeCode) {
-            throw new \InvalidArgumentException('the clean deleted attribute require an attribute code');
+            throw new \InvalidArgumentException('The clean removed attribute job requires an attribute code');
         }
 
+        //TODO what do we do when the attribute code is not blacklisted?
         $this->attributeCodeBlacklister->registerJob(
             $attributeCode,
-            $this->setStepExecution->getJobExecution()->getId()
+            $this->stepExecution->getJobExecution()->getId()
         );
     }
 }

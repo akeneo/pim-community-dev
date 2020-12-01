@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
+use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 final class Version_5_0_20201201092625_add_clean_removed_attribute_job extends AbstractMigration
 {
-    public function up(): void
+    public function up(Schema $schema): void
     {
         if ($this->jobExists('clean_removed_attribute_job')) {
             return;
@@ -29,7 +30,7 @@ SQL;
         ]);
     }
 
-    public function down(): void
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

@@ -31,7 +31,7 @@ class InitDeletedAttributeSchemaSubscriber implements EventSubscriberInterface
 
     public function initDbSchema(): void
     {
-        $sql = <<<SQL
+        $createTableSql = <<<SQL
 CREATE TABLE IF NOT EXISTS pim_catalog_attribute_blacklist (
     `attribute_code` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL PRIMARY KEY,
     `cleanup_job_execution_id` INTEGER DEFAULT NULL,
@@ -39,6 +39,21 @@ CREATE TABLE IF NOT EXISTS pim_catalog_attribute_blacklist (
     CONSTRAINT `FK_BDE7D0925812C06B` FOREIGN KEY (`cleanup_job_execution_id`) REFERENCES `akeneo_batch_job_execution` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
-        $this->connection->exec($sql);
+        $this->connection->exec($createTableSql);
+
+        $insertSql = <<<SQL
+INSERT INTO akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type)
+VALUES (:code, :label, :job_name, :status, :connector, :raw_parameters, :type);
+SQL;
+
+        $this->connection->exec($insertSql, [
+            'code'           => 'clean_removed_attribute_job',
+            'label'          => 'Clean the removed attribute values in product',
+            'job_name'       => 'clean_removed_attribute_job',
+            'status'         => 0,
+            'connector'      => 'internal',
+            'raw_parameters' => 'a:0:{}',
+            'type'           => 'clean_removed_attribute_job',
+        ]);
     }
 }

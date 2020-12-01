@@ -15,14 +15,14 @@ class AttributeCodeBlacklister
 
     public function blacklist(string $attributeCode)
     {
-        $blacklistAttributeCode = <<<SQL
+        $blacklistAttributeCodeSql = <<<SQL
 INSERT INTO `pim_catalog_attribute_blacklist` (`attribute_code`)
 VALUES
     (:attribute_code);
 SQL;
 
         $this->connection->executeUpdate(
-            $blacklistAttributeCode,
+            $blacklistAttributeCodeSql,
             [
                 ':attribute_code' => $attributeCode
             ]
@@ -31,14 +31,14 @@ SQL;
 
     public function registerJob(string $attributeCode, int $jobExecutionId)
     {
-        $blacklistAttributeCode = <<<SQL
+        $registerJobSql = <<<SQL
 UPDATE `pim_catalog_attribute_blacklist`
 SET `cleanup_job_execution_id` = :job_execution_id
 WHERE `attribute_code` = :attribute_code;
 SQL;
 
         $this->connection->executeUpdate(
-            $blacklistAttributeCode,
+            $registerJobSql,
             [
                 'attribute_code' => $attributeCode,
                 'job_execution_id' => $jobExecutionId
@@ -52,13 +52,13 @@ SQL;
 
     public function whitelist(string $attributeCode)
     {
-        $blacklistAttributeCode = <<<SQL
+        $whiteListSql = <<<SQL
 DELETE FROM `pim_catalog_attribute_blacklist`
 WHERE `attribute_code` = :attribute_code;
 SQL;
 
         $this->connection->executeUpdate(
-            $blacklistAttributeCode,
+            $whiteListSql,
             [
                 'attribute_code' => $attributeCode,
             ],

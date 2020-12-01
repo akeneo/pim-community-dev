@@ -22,6 +22,13 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
+    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.clean_removed_attributes:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\ConstraintCollectionProvider\CleanRemovedAttributes'
+        arguments:
+            - ['clean_removed_attribute_job']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
     akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_export:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
         arguments:

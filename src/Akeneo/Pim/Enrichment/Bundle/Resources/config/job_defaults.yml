@@ -23,6 +23,14 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
+    pim_catalog.job.job_parameters.default_values_provider.clean_removed_attribute:
+        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        arguments:
+            -
+                - 'clean_removed_attribute_job'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
     pim_connector.job.job_parameters.default_values_provider.product_csv_export:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\JobParameters\DefaultValueProvider\ProductCsvExport'
         arguments:
