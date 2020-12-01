@@ -1,11 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSkipOwnEventLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -39,6 +39,7 @@ final class SendBusinessEventToWebhooksHandler
     private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
     private string $pimSource;
     private ?\Closure $getTimeCallable;
+    private CacheClearerInterface $cacheClearer;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -47,6 +48,7 @@ final class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
+        CacheClearerInterface $cacheClearer,
         string $pimSource,
         ?callable $getTimeCallable = null
     ) {
@@ -58,6 +60,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
         $this->pimSource = $pimSource;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
+        $this->cacheClearer = $cacheClearer;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -132,6 +135,8 @@ final class SendBusinessEventToWebhooksHandler
         } else {
             $this->client->bulkSend($requests());
         }
+
+        $this->cacheClearer->clear();
     }
 
     /**
