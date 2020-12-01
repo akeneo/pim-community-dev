@@ -1,17 +1,16 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventListener;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Structure\Bundle\EventListener\RemoveNonExistingProductValuesSubscriber;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Query\CreateJobInstanceInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
@@ -26,9 +25,10 @@ class RemoveNonExistingProductValuesSubscriberSpec extends ObjectBehavior
     function let(
         TokenStorageInterface $tokenStorage,
         JobInstanceRepository $jobInstanceRepository,
-        JobLauncherInterface $jobLauncher
+        JobLauncherInterface $jobLauncher,
+        CreateJobInstanceInterface $createJobInstance
     ) {
-        $this->beConstructedWith($tokenStorage, $jobInstanceRepository, $jobLauncher, 'job_name');
+        $this->beConstructedWith($tokenStorage, $jobInstanceRepository, $jobLauncher, 'job_name', $createJobInstance);
     }
 
     function it_is_initializable()

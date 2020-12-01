@@ -148,21 +148,29 @@ class GroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $group
-     * @param array          $productIdentifiers
+     * @todo Find a better solution than a database query to determine what are the products that have been added.
+     *       (it will certainly cause a BC-break)
      */
     protected function setProducts(GroupInterface $group, array $productIdentifiers)
     {
+        $oldProductIdentifiers = [];
         foreach ($group->getProducts() as $product) {
-            $group->removeProduct($product);
+            $oldProductIdentifiers[] = $product->getIdentifier();
+            // Remove products that are no longer in the group
+            if (!in_array($product->getIdentifier(), $productIdentifiers)) {
+                $group->removeProduct($product);
+            }
         }
 
-        if (empty($productIdentifiers)) {
+        // Extract the products that are not already in the group to add them to it
+        $productIdentifiersToAdd = array_values(array_diff($productIdentifiers, $oldProductIdentifiers));
+
+        if (empty($productIdentifiersToAdd)) {
             return;
         }
 
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('identifier', Operators::IN_LIST, $productIdentifiers);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $productIdentifiersToAdd);
 
         $products = $pqb->execute();
 
