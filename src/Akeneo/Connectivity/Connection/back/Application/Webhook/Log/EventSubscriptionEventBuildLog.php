@@ -18,8 +18,7 @@ class EventSubscriptionEventBuildLog
     private int $subscriptionCount;
     /** @var EventInterface|BulkEventInterface */
     private object $event;
-    private float $startTime;
-    private float $endTime;
+    private int $durationMs;
 
     /**
      * @param EventInterface|BulkEventInterface $event
@@ -27,13 +26,11 @@ class EventSubscriptionEventBuildLog
     public function __construct(
         int $subscriptionCount,
         object $event,
-        float $startTime,
-        float $endTime
+        int $durationMs
     ) {
         $this->subscriptionCount = $subscriptionCount;
         $this->event = $event;
-        $this->startTime = $startTime;
-        $this->endTime = $endTime;
+        $this->durationMs = $durationMs;
     }
 
     /**
@@ -41,7 +38,7 @@ class EventSubscriptionEventBuildLog
      *  type: string,
      *  subscription_count: int,
      *  event_count: int,
-     *  duration: int,
+     *  duration_ms: int,
      *  events: array<array{
      *      uuid: string,
      *      author: string,
@@ -65,7 +62,7 @@ class EventSubscriptionEventBuildLog
             'type' => self::TYPE,
             'subscription_count' => $this->subscriptionCount,
             'event_count' => count($events),
-            'duration' => $this->getDuration(),
+            'duration_ms' => $this->durationMs,
             'events' => array_map(
                 function (EventInterface $event) {
                     return [
@@ -79,12 +76,5 @@ class EventSubscriptionEventBuildLog
                 $events
             ),
         ];
-    }
-
-    private function getDuration(): int
-    {
-        $duration = $this->endTime - $this->startTime;
-
-        return (int) round($duration * 1000);
     }
 }

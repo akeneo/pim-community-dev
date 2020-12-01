@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -22,6 +23,8 @@ use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
 use Psr\Log\NullLogger;
 use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -44,7 +47,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $builder,
             new NullLogger(),
             $connectionUserForFakeSubscription,
-            'staging.akeneo.com'
+            'staging.akeneo.com',
         );
     }
 
@@ -72,36 +75,33 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $magentoUser->defineAsApiUser();
 
         $author = Author::fromUser($juliaUser);
-        $businessEvent = $this->createBusinessEvent($author, ['data']);
+        $businessEvent = $this->createEvent($author, ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
         $webhook = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
 
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
         $webhookUserAuthenticator->authenticate(42)->willReturn($magentoUser);
-        $builder->build(
-            $businessEvent,
-            [
+        $builder
+            ->build($businessEvent, [
                 'user' => $magentoUser,
                 'pim_source' => 'staging.akeneo.com',
                 'connection_code' => $webhook->connectionCode(),
-            ]
-        )->willReturn(
-            [
+            ])
+            ->willReturn([
                 new WebhookEvent(
                     'product.created',
                     '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
                     '2020-01-01T00:00:00+00:00',
                     $author,
                     'staging.akeneo.com',
-                    ['data']
-                )
-            ]
-        );
+                    ['data'],
+                ),
+            ]);
 
-        $client->bulkSend(
-            Argument::that(
-                function (iterable $iterable) {
+        $client
+            ->bulkSend(
+                Argument::that(function (iterable $iterable) {
                     $requests = iterator_to_array($iterable);
 
                     Assert::assertCount(1, $requests);
@@ -119,15 +119,15 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                                 'author_type' => 'ui',
                                 'pim_source' => 'staging.akeneo.com',
                                 'data' => ['data'],
-                            ]
+                            ],
                         ],
-                        $requests[0]->content()
+                        $requests[0]->content(),
                     );
 
                     return true;
-                }
+                }),
             )
-        )->shouldBeCalled();
+            ->shouldBeCalled();
 
         $this->handle($command);
     }
@@ -152,36 +152,33 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $magentoUser->defineAsApiUser();
 
         $author = Author::fromUser($julia);
-        $businessEvent = $this->createBusinessEvent($author, ['data']);
+        $businessEvent = $this->createEvent($author, ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $selectActiveWebhooksQuery->execute()->willReturn([]);
         $connectionUserForFakeSubscription->execute()->willReturn(1234);
 
         $webhookUserAuthenticator->authenticate(1234)->willReturn($magentoUser);
-        $builder->build(
-            $businessEvent,
-            [
+        $builder
+            ->build($businessEvent, [
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $magentoUser,
                 'connection_code' => SendBusinessEventToWebhooksHandler::FAKE_CONNECTION_CODE,
-            ]
-        )->willReturn(
-            [
+            ])
+            ->willReturn([
                 new WebhookEvent(
                     'product.created',
                     '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
                     '2020-01-01T00:00:00+00:00',
                     $author,
                     'staging.akeneo.com',
-                    ['data']
-                )
-            ]
-        );
+                    ['data'],
+                ),
+            ]);
 
-        $client->bulkFakeSend(
-            Argument::that(
-                function (iterable $iterable) {
+        $client
+            ->bulkFakeSend(
+                Argument::that(function (iterable $iterable) {
                     $requests = iterator_to_array($iterable);
 
                     Assert::assertCount(3, $requests);
@@ -199,9 +196,9 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                                 'author_type' => 'ui',
                                 'pim_source' => 'staging.akeneo.com',
                                 'data' => ['data'],
-                            ]
+                            ],
                         ],
-                        $requests[0]->content()
+                        $requests[0]->content(),
                     );
                     Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
                     Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[1]->url());
@@ -216,9 +213,9 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                                 'author_type' => 'ui',
                                 'pim_source' => 'staging.akeneo.com',
                                 'data' => ['data'],
-                            ]
+                            ],
                         ],
-                        $requests[1]->content()
+                        $requests[1]->content(),
                     );
                     Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
                     Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[2]->url());
@@ -233,15 +230,15 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                                 'author_type' => 'ui',
                                 'pim_source' => 'staging.akeneo.com',
                                 'data' => ['data'],
-                            ]
+                            ],
                         ],
-                        $requests[2]->content()
+                        $requests[2]->content(),
                     );
 
                     return true;
-                }
+                }),
             )
-        )->shouldBeCalled();
+            ->shouldBeCalled();
 
         $this->handle($command);
     }
@@ -266,7 +263,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $magentoUser->defineAsApiUser();
 
         $erpAuthor = Author::fromUser($erpUser);
-        $businessEvent = $this->createBusinessEvent($erpAuthor, ['data']);
+        $businessEvent = $this->createEvent($erpAuthor, ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
         $erpWebhook = new ActiveWebhook('erp_source', 42, 'a_secret', 'http://localhost/');
         $magentoWebhook = new ActiveWebhook('ecommerce_destination', 12, 'a_secret', 'http://localhost/');
@@ -275,29 +272,26 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator->authenticate(12)->willReturn($magentoUser);
         $webhookUserAuthenticator->authenticate(42)->willReturn($erpUser);
 
-        $builder->build(
-            $businessEvent,
-            [
+        $builder
+            ->build($businessEvent, [
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $magentoUser,
                 'connection_code' => $magentoWebhook->connectionCode(),
-            ]
-        )->willReturn(
-            [
+            ])
+            ->willReturn([
                 new WebhookEvent(
                     'product.created',
                     '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
                     '2020-01-01T00:00:00+00:00',
                     $erpAuthor,
                     'staging.akeneo.com',
-                    ['data']
-                )
-            ]
-        );
+                    ['data'],
+                ),
+            ]);
 
-        $client->bulkSend(
-            Argument::that(
-                function (iterable $iterable) {
+        $client
+            ->bulkSend(
+                Argument::that(function (iterable $iterable) {
                     $requests = iterator_to_array($iterable);
 
                     Assert::assertCount(1, $requests);
@@ -315,16 +309,16 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                                 'author_type' => 'api',
                                 'pim_source' => 'staging.akeneo.com',
                                 'data' => ['data'],
-                            ]
+                            ],
                         ],
                         $requests[0]->content(),
-                        'Content is not equal'
+                        'Content is not equal',
                     );
 
                     return true;
-                }
+                }),
             )
-        )->shouldBeCalled();
+            ->shouldBeCalled();
 
         $this->handle($command);
     }
@@ -342,42 +336,114 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $user->setLastName('Doe');
 
         $author = Author::fromUser($user);
-        $businessEvent = $this->createBusinessEvent($author, ['data']);
+        $businessEvent = $this->createEvent($author, ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
 
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
         $webhookUserAuthenticator->authenticate(0)->willReturn($user);
-        $builder->build(
-            $businessEvent,
-            [
+        $builder
+            ->build($businessEvent, [
                 'pim_source' => 'staging.akeneo.com',
                 'user' => $user,
                 'connection_code' => $webhook->connectionCode(),
-            ]
-        )->willThrow(
-            \Exception::class
-        );
+            ])
+            ->willThrow(\Exception::class);
 
-        $client->bulkSend(
-            Argument::that(
-                function (iterable $iterable) {
+        $client
+            ->bulkSend(
+                Argument::that(function (iterable $iterable) {
                     $requests = iterator_to_array($iterable);
 
                     Assert::assertCount(0, $requests);
 
                     return true;
-                }
+                }),
             )
-        )->shouldBeCalled();
+            ->shouldBeCalled();
 
         $this->handle($command);
     }
 
-    private function createBusinessEvent(Author $author, array $data): EventInterface
+    public function it_logs_the_time_it_take_to_build_the_api_events(
+        $selectActiveWebhooksQuery,
+        $webhookUserAuthenticator,
+        $client,
+        $builder,
+        $connectionUserForFakeSubscription,
+        LoggerInterface $logger
+    ): void {
+        $getTimeIterable = (function () {
+            yield 2; // Start - subscription 1
+            yield 3; // End
+            yield 5; // Start - subscription 2
+            yield 8; // End
+            yield 13; // Start - (ignored)
+        })();
+
+        /** @var callable Mock a function that return the current time in milliseconds. */
+        $getTimeCallable = function () use ($getTimeIterable) {
+            $time = $getTimeIterable->current();
+            $getTimeIterable->next();
+            return $time;
+        };
+
+        $this->beConstructedWith(
+            $selectActiveWebhooksQuery,
+            $webhookUserAuthenticator,
+            $client,
+            $builder,
+            $logger,
+            $connectionUserForFakeSubscription,
+            'staging.akeneo.com',
+            $getTimeCallable,
+        );
+
+        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $bulkEvent = new BulkEvent([
+            $this->createEvent($author, ['data'])
+        ]);
+
+        $subscription1 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
+        $subscription2 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
+        $selectActiveWebhooksQuery->execute()->willReturn([$subscription1, $subscription2]);
+
+        $user = new User();
+        $user->setUsername('ecommerce_0000');
+        $webhookUserAuthenticator->authenticate(42)->willReturn($user);
+
+        $builder
+            ->build(Argument::cetera())
+            ->willReturn([
+                new WebhookEvent(
+                    'product.created',
+                    '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                    '2020-01-01T00:00:00+00:00',
+                    $author,
+                    'staging.akeneo.com',
+                    ['data'],
+                )
+            ]);
+
+        $client->bulkSend(Argument::that(function (iterable $iterable) {
+            iterator_to_array($iterable); // Call the iterator to run the code.
+            return true;
+        }))->shouldBeCalled();
+
+        $command = new SendBusinessEventToWebhooksCommand($bulkEvent);
+        $this->handle($command);
+
+        $expectedBuildTime = (3 - 2) + (8 - 5);
+        $log = new EventSubscriptionEventBuildLog(2, $bulkEvent, $expectedBuildTime);
+        $logger->info(json_encode($log->toLog()))->shouldBeCalled();
+    }
+
+    private function createEvent(Author $author, array $data): EventInterface
     {
-        return new class ($author, $data) extends Event
+        $timestamp = 1577836800;
+        $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
+        return new class ($author, $data, $timestamp, $uuid) extends Event
         {
             public function getName(): string
             {
