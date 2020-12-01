@@ -103,7 +103,7 @@ class ReadValueCollectionFactory
                             );
                         } catch (\TypeError | InvalidPropertyTypeException | InvalidPropertyException $ex) {
                             if (null !== $this->logger) {
-                                $this->logger->warning(
+                                $this->logger->notice(
                                     sprintf(
                                         'Tried to load a product value for attribute "%s" that does not have the '.
                                         'expected type in database.',
