@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9563: Fix default asset preview on asset family grid when cannot generate thumbnail
+
 # 4.0.75 (2020-11-27)
 
 ## Bug fixes
