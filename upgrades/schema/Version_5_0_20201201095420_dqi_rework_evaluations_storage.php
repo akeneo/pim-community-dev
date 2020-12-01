@@ -5,7 +5,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-final class Version_5_0_20201012085420_dqi_rework_evaluations_storage extends AbstractMigration
+final class Version_5_0_20201201095420_dqi_rework_evaluations_storage extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
