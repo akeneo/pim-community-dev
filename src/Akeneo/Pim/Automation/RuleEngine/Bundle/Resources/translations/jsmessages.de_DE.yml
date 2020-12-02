@@ -270,6 +270,7 @@ pimee_catalog_rule:
           line_break: Zeilenumbruch
           date_format: 'Wähle das Datumsformat:'
           label_locale: Label Gebietsschema
+          unit_label_locale: Gebietsschema
           remove_new_line_confirm:
             label: Zeilenumbruch von der Liste entfernen
             description: Das neue Ziel-Attribut akzeptiert keine Zeilenumbrüche. Diese Änderung wird alle Zeilenumbrüche entfernen.

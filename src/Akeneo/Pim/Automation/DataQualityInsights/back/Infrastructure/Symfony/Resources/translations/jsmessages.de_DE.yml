@@ -38,3 +38,50 @@ akeneo_data_quality_insights:
     popover:
       default_aria_label: Rechtschreibvorschläge
       aria_label: "Rechtschreibvorschläge für: {{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes_to_work_on: '{1}Sie haben <button>1 Attribut</button> zum Arbeiten. ]1, 200[Sie haben <button>{{ count }} Attribute</button> um zu arbeiten. [200, Inf[Sie haben mehr als <button>{{ count }} Attribute</button> um zu arbeiten.'
+      list:
+        has_image:
+          no_data: Ihre Asset-Sammlungen und Bild-Attribute scheinen leer zu sein. Sie sollten Bilder für diesen Schlüsselindikator hochladen, um die Qualität Ihrer Produkte hervorzuheben.
+        attributes_perfect_spelling:
+          title: Attribute korrekt gekennzeichnet
+          no_data: Ihre Attribut- und Optionenbezeichnungen scheinen leer zu sein. Sie sollten sie für diesen Schlüsselanzeiger bereichern, um die Qualität Ihrer Attribute hervorzuheben.
+          messages:
+            first_step:
+              message1: Sie haben Schwierigkeiten mit Attribut- und Optionen-Labels? Wie wäre es mit den Grundlagen <a href="{{ link }}" target="_blank">hier</a> zurückzukehren?
+              message2: Benötigen Sie Hilfe bei Ihren Attributen und Attributoptionen? Schaue <a href="{{ link }}" target="_blank">hier<a href="{{ link }}" target="_blank"> vorbei!
+            second_step:
+              message1: Werfen Sie einen Blick auf Ihre Attribute und Optionsbeschriftungen. Ihre Produkte werden danach noch besser aussehen.
+              message2: Es sieht so aus, als wären Sie irgendwo auf dem Weg verloren gegangen! Einige Ihrer Etiketten benötigen noch Arbeit.
+            third_step:
+              message1: Du bist fast fertig! Nur ein paar letzte Anpassungen und du hast alle gesetzt.
+              message2: Einige deiner Attribute und Labels benötigen noch ein wenig Arbeit, aber du bist auf dem richtigen Weg.
+            perfect_score_step:
+              message1: Dein Katalog ist lesbarer als je zuvor! Du hast eine großartige Arbeit geleistet!
+              message2: Tolle Arbeit an den Attribut- und Optionen-Labels!
+        values_perfect_spelling:
+          title: Produkte mit perfekter Rechtschreibung in Textproduktwerten
+          no_data: Ihre Textbereiche scheinen leer zu sein. Sie sollten sie für diesen Schlüsselindikator anreichern, um die Qualität Ihrer Produkte hervorzuheben.
+          messages:
+            first_step:
+              message1: Ihre Produkte verdienen es, richtig beschrieben zu werden. Überprüfen Sie die Schreibweise!
+              message2: Sie sind der beste Anwalt Ihrer Produkte. Sehen Sie sich die Schreibweise genauer an.
+              message3: Ihre Produktbeschreibungen sind das Image Ihrer Firma, lassen Sie uns diese Tippfehler loswerden!
+              message4: Je mehr Fehler du hast, desto schlechteren Eindruck gibst du ab. Gib auf die Rechtschreibung acht.
+            second_step:
+              message1: Du hast bereits tolle Produkte, jetzt brauchst du nur eine tolle Rechtschreibung!
+              message2: Ein Rechtschreibfehler kann Kunden fernhalten, arbeite gründlich!
+              message3: Einige Ihrer Produkte benötigen ein wenig Hilfe, um perfekt zu sein. Achte auf Tippfehler!
+            third_step:
+              message1: Großartige Rechtschreibung macht tatsächlich einen Unterschied, du bist noch nicht so weit!
+              message2: Fast geschafft, Du bist so nah an der perfekten Rechtschreibung!
+              message3: Sie sind ein paar Rechtschreibfehler von perfekten Produktwerten entfernt.
+              message4: Ein wenig mehr Anstrengungen bitte, um eine makellose Produktbeschreibung zu erreichen!
+            perfect_score_step:
+              message1: Perfekte Rechtschreibung in Ihrem gesamten Katalog. Gut gemacht!
+              message2: "Das ist beeindruckend: Ihre Produkte sind makellos!"
+              message3: Du hast eine erstaunliche Arbeit geleistet und hast 100% der Rechtschreibfehler beseitigt. Herzlichen Glückwunsch!
+  product_grid:
+    filter_label:
+      spelling_quality: Rechtschreibqualität
