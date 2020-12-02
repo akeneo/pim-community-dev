@@ -28,7 +28,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
 
-final class EvaluateAttributeSpelling implements EvaluateCriterionInterface
+final class EvaluateAttributeSpelling
 {
     public const CRITERION_CODE = 'consistency_attribute_spelling';
 
@@ -50,13 +50,13 @@ final class EvaluateAttributeSpelling implements EvaluateCriterionInterface
         $this->getAttributeSpellcheckQuery = $getAttributeSpellcheckQuery;
     }
 
-    public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult
+    public function evaluate(array $attributeCodes): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
-        $familyAttributeCodes = $this->getProductFamilyAttributeCodesQuery->execute($criterionEvaluation->getProductId());
-        $attributeSpellchecks = $this->getAttributeSpellcheckQuery->getByAttributeCodes($familyAttributeCodes);
+        $attributeCodes = $this->getProductFamilyAttributeCodesQuery->execute($criterionEvaluation->getProductId());
+        $attributeSpellchecks = $this->getAttributeSpellcheckQuery->getByAttributeCodes($attributeCodes);
 
-        $attributeRatesByLocale = $this->computeAttributeRatesByLocale($localesByChannel, $familyAttributeCodes, $attributeSpellchecks);
+        $attributeRatesByLocale = $this->computeAttributeRatesByLocale($localesByChannel, $attributeCodes, $attributeSpellchecks);
 
         $evaluationResult = new Write\CriterionEvaluationResult();
         foreach ($localesByChannel as $channelCode => $localeCodes) {
@@ -113,15 +113,5 @@ final class EvaluateAttributeSpelling implements EvaluateCriterionInterface
     private function calculateLocaleRate(array $localeRates): Rate
     {
         return new Rate((int) round(array_sum($localeRates) / count($localeRates), 0, PHP_ROUND_HALF_DOWN));
-    }
-
-    public function getCode(): CriterionCode
-    {
-        return new CriterionCode(self::CRITERION_CODE);
-    }
-
-    public function getCoefficient(): int
-    {
-        return self::CRITERION_COEFFICIENT;
     }
 }
