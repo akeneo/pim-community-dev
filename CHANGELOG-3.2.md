@@ -1,5 +1,11 @@
 # 3.2.x
 
+# 3.2.78 (2020-12-02)
+
+## Bug fixes
+
+- RAC-384: Fix fatal error when an attribute is removed then re-created with the same code but another type.
+
 # 3.2.77 (2020-11-30)
 
 ## Bug fixes

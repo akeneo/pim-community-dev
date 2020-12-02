@@ -19,7 +19,7 @@ final class ReferenceDataCollectionValueFactory implements ValueFactory
 {
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        $data = array_unique($data);
+        $data = \array_unique($data);
         $attributeCode = $attribute->code();
 
         if ($attribute->isLocalizableAndScopable()) {
@@ -39,7 +39,7 @@ final class ReferenceDataCollectionValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),
                 static::class,
@@ -58,8 +58,8 @@ final class ReferenceDataCollectionValueFactory implements ValueFactory
             );
         }
 
-        $data = array_unique($data);
-        sort($data);
+        $data = \array_unique($data);
+        \sort($data);
 
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
