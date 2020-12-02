@@ -1,13 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import FileModel from 'akeneoreferenceentity/domain/model/file';
 import {getImageShowUrl, getImageDownloadUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import imageUploader from 'akeneoreferenceentity/infrastructure/uploader/image';
 import loadImage from 'akeneoreferenceentity/tools/image-loader';
-import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import __ from 'akeneoreferenceentity/tools/translator';
-import Download from 'akeneoreferenceentity/application/component/app/icon/download';
-import Import from 'akeneoreferenceentity/application/component/app/illustration/import';
 import Key from 'akeneoreferenceentity/tools/key';
+import {DeleteIcon, DownloadIcon, ImportIllustration, pimTheme} from 'akeneo-design-system';
 const Messenger = require('oro/messenger');
 
 class Image extends React.Component<
@@ -162,13 +160,13 @@ class Image extends React.Component<
           <div className="AknImage-action">
             {!this.props.readOnly ? (
               <span className="AknImage-actionItem" onClick={this.remove.bind(this)}>
-                <Trash color="#ffffff" className="AknImage-actionItemIcon" />{' '}
+                <DeleteIcon color={pimTheme.color.white} className="AknImage-actionItemIcon" />{' '}
                 {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.remove`)}
               </span>
             ) : null}
             {this.props.image.isInStorage() ? (
               <a className="AknImage-actionItem" href={getImageDownloadUrl(this.props.image)} tabIndex={-1}>
-                <Download color="#ffffff" className="AknImage-actionItemIcon" />{' '}
+                <DownloadIcon color={pimTheme.color.white} className="AknImage-actionItemIcon" />{' '}
                 {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.download`)}
               </a>
             ) : null}
@@ -191,7 +189,7 @@ class Image extends React.Component<
         ) : null}
         {this.props.image.isEmpty() && undefined !== this.props.onImageChange ? (
           <div className="AknImage-uploader">
-            <Import className="AknImage-uploaderIllustration" />
+            <ImportIllustration className="AknImage-uploaderIllustration" />
             <span className="AknImage-uploaderHelper">
               {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.upload`)}
             </span>

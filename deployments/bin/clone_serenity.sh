@@ -82,6 +82,7 @@ kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/console akeneo:ela
 
 echo "- Anonymize"
 PODSQL=$(kubectl get pods --namespace=${PFID}|grep mysql|head -n 1|awk '{print $1}')
+kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE akeneo_connectivity_connection SET webhook_url = NULL, webhook_enabled = 0;"'
 kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE oro_user SET email = LOWER(CONCAT(SUBSTRING(CONCAT(\"support+clone_\", username), 1, 64), \"@akeneo.com\"));"'
 kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n || echo "WARN: User adminakeneo exists"'
 

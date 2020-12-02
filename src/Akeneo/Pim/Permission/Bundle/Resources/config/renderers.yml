@@ -2,6 +2,11 @@ parameters:
     pimee_security.renderer.product_pdf.class: Akeneo\Pim\Permission\Bundle\Pdf\ProductPdfRenderer
 
 services:
+    pim_pdf_generator.builder.dompdf:
+        class: 'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder'
+        arguments:
+            - '%pim_ce_dev_src_folder_location%/src'
+
     pimee_security.renderer.product_pdf:
         class: '%pimee_security.renderer.product_pdf.class%'
         arguments:

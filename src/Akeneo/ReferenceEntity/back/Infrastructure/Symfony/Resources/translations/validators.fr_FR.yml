@@ -96,4 +96,4 @@ pim_reference_entity:
   product_value:
     validation:
       record_should_exist: 'La propriété "%attribute_code%" attend un code d''enregistrement valide. L''enregistrement "%invalid_record%" n''existe pas'
-      records_should_exist: 'La propriété "%attribute_code%" attend un code d''enregistrement valide. Les enregistrements "%invalid_record%" n''existent pas'
+      records_should_exist: 'La propriété "%attribute_code%" attend un code d''enregistrement valide. Les enregistrements "%invalid_records%" n''existent pas'

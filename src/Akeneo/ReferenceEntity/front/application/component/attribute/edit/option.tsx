@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoreferenceentity/tools/translator';
 import {getLabel} from 'pimui/js/i18n';
@@ -23,9 +23,9 @@ import Locale from 'akeneoreferenceentity/domain/model/locale';
 import {saveOptions} from 'akeneoreferenceentity/application/action/attribute/edit';
 import {getErrorsView} from 'akeneoreferenceentity/application/component/app/validation-error';
 import {NormalizedAttribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
-import Close from 'akeneoreferenceentity/application/component/app/icon/close';
 import Flag from 'akeneoreferenceentity/tools/component/flag';
 import {NormalizedReferenceEntity} from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {CloseIcon, pimTheme} from 'akeneo-design-system';
 
 const securityContext = require('pim/security-context');
 
@@ -227,12 +227,12 @@ const optionRow = ({
           </td>
           <td>
             {displayDeleteRowButton ? (
-              <Close
+              <CloseIcon
                 onClick={() => onOptionEditionDelete(index)}
                 onKeyPress={(event: React.KeyboardEvent<SVGElement>) => {
                   if (Key.Space === event.key) onOptionEditionDelete(index);
                 }}
-                color="#67768A"
+                color={pimTheme.color.grey100}
                 className="AknOptionEditor-remove"
                 tabIndex={0}
               />
