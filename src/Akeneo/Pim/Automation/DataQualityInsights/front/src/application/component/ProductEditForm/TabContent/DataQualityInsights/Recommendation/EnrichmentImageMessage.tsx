@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Link} from 'akeneo-design-system';
 
-const Container = styled.span`
-  font-style: italic;
-`;
+const Container = styled.span``;
 
 const LinkableMessage = styled(Link)`
   text-decoration: none;

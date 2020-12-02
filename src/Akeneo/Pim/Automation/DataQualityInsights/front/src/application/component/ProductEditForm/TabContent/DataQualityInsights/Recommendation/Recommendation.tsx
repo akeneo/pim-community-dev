@@ -1,5 +1,4 @@
 import React, {FC} from 'react';
-import styled from 'styled-components';
 import {Link} from 'akeneo-design-system';
 
 const translate = require('oro/translator');
@@ -12,10 +11,6 @@ type Props = {
   type: RecommendationType;
   follow?: FollowRecommendationHandler;
 };
-
-const LinkableMessage = styled(Link)`
-  text-decoration: none;
-`;
 
 const Recommendation: FC<Props> = ({children, type, follow}) => {
   if (type === 'error') {
@@ -42,14 +37,14 @@ const Recommendation: FC<Props> = ({children, type, follow}) => {
             <span>
               {translate('akeneo_data_quality_insights.product_evaluation.messages.not_applicable.message')}&nbsp;
             </span>
-            <LinkableMessage
+            <Link
               href={
                 'https://help.akeneo.com/pim/serenity/articles/understand-data-quality.html#in-your-data-quality-insights-panel-product-edit-form'
               }
               target={'_blank'}
             >
               {translate('akeneo_data_quality_insights.product_evaluation.messages.not_applicable.help_center_link')}
-            </LinkableMessage>
+            </Link>
           </>
         )}
       </span>
