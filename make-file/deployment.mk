@@ -73,6 +73,7 @@ $(INSTANCE_DIR):
 
 .PHONY: terraform-init
 terraform-init: $(INSTANCE_DIR)
+	cd $(INSTANCE_DIR) && cat main.tf.json
 	cd $(INSTANCE_DIR) && terraform init $(TF_INPUT_FALSE) -upgrade
 
 .PHONY: terraform-plan
@@ -199,15 +200,13 @@ endif
 	PIM_SRC_DIR=$(PIM_SRC_DIR) \
 	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
-ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG))
-		@echo "We deploy the checkout version of PIM"
-    else
-		@echo "We deploy a custom pim version : $(IMAGE_TAG)"
-		yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=$(IMAGE_TAG)"
-    endif
+
+.PHONY: change-terraform-source-version
+change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=$(IMAGE_TAG)"
+ifeq ($(ACTIVATE_MONITORING),true)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform/monitoring?ref=$(IMAGE_TAG)"
 endif
-	cat $(INSTANCE_DIR)/main.tf.json
 
 .PHONY: test-prod
 test-prod:
@@ -227,13 +226,6 @@ ifeq ($(CI),true)
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 endif
 	bash $(PWD)/deployments/bin/release.sh ${OLD_IMAGE_TAG}
-
-.PHONY: deploy_latest_release_for_helpdesk
-deploy_latest_release_for_helpdesk:
-	RELEASE_TO_DEPLOY=$$(cd ${PIM_SRC_DIR}; git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$$" | sort -r | head -n 1); \
-	echo $${RELEASE_TO_DEPLOY};  \
-	INSTANCE_NAME=pimci-helpdesk IMAGE_TAG=$${RELEASE_TO_DEPLOY} make deploy-serenity && \
-	INSTANCE_NAME=pimci-helpdesk IMAGE_TAG=$${RELEASE_TO_DEPLOY} make slack_helpdesk
 
 .PHONY: slack_helpdesk
 slack_helpdesk:
