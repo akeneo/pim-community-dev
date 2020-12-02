@@ -9,7 +9,7 @@ type Props = {
 const Header: FC<Props> = ({timePeriod}) => {
   const translate = useTranslate();
   return (
-    <div className="AknSubsection-title AknSubsection-title--glued">
+    <div className="AknSubsection-title">
       <span>{translate('akeneo_data_quality_insights.dqi_dashboard.score_distribution.title')}</span>
       <div className="AknFilterBox AknFilterBox--search">
         <div className="AknFilterBox-list filter-box">

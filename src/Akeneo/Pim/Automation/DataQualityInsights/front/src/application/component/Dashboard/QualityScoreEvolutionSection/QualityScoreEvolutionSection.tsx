@@ -53,7 +53,7 @@ const QualityScoreEvolutionSection: FC<Props> = ({categoryCode, familyCode, chan
 
   return (
     <Container>
-      <div className="AknSubsection-title AknSubsection-title--glued">
+      <div className="AknSubsection-title">
         <span>{translate('akeneo_data_quality_insights.dqi_dashboard.quality_score_evolution.title')}</span>
       </div>
 
