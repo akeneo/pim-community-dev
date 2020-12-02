@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 class RegisterCleanJobTasklet implements TaskletInterface, TrackableTaskletInterface
 {
+    private StepExecution $stepExecution;
     private AttributeCodeBlacklister $attributeCodeBlacklister;
 
     public function __construct(

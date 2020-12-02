@@ -10,6 +10,8 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
 class CleanProductModelTasklet implements TaskletInterface, TrackableTaskletInterface
 {
+    private StepExecution $stepExecution;
+
     public function __construct()
     {
     }
