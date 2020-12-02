@@ -1,5 +1,4 @@
-import * as React from 'react';
-import Tick from 'akeneoreferenceentity/application/component/app/icon/tick';
+import React from 'react';
 import Permission, {
   RightLevel,
   PermissionCollection,
@@ -7,6 +6,7 @@ import Permission, {
 } from 'akeneoreferenceentity/domain/model/reference-entity/permission';
 import __ from 'akeneoreferenceentity/tools/translator';
 import Key from 'akeneoreferenceentity/tools/key';
+import {CheckIcon, pimTheme} from 'akeneo-design-system';
 
 type GroupName = string;
 
@@ -62,7 +62,9 @@ class PermissionEditor extends React.Component<PermissionEditorProps> {
                     }
                   }}
                 >
-                  {!isNoneLevel && pillIsLowerOrAtThisLevel ? <Tick className="AknPermission-pillTick" /> : null}
+                  {!isNoneLevel && pillIsLowerOrAtThisLevel ? (
+                    <CheckIcon color={pimTheme.color.white} size={18} className="AknPermission-pillTick" />
+                  ) : null}
                 </div>
                 <div
                   className={`AknPermission-barRight ${pillIsHigher ? 'AknPermission-barRight--active' : ''} ${

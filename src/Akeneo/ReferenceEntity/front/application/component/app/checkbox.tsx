@@ -1,5 +1,5 @@
-import * as React from 'react';
-import Tick from 'akeneoreferenceentity/application/component/app/icon/tick';
+import React from 'react';
+import {CheckIcon, pimTheme} from 'akeneo-design-system';
 
 class InvalidArgumentError extends Error {}
 
@@ -36,7 +36,7 @@ const Checkbox = ({
         if (!readOnly && onChange) onChange(!value);
       }}
     >
-      <Tick className="AknCheckbox-tickPath" />
+      <CheckIcon size={18} color={pimTheme.color.white} className="AknCheckbox-tickPath" />
     </div>
   );
 };

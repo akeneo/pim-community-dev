@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
@@ -23,11 +23,11 @@ import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoreferenceentity/application/configuration/attribute';
 import Key from 'akeneoreferenceentity/tools/key';
-import Trash from 'akeneoreferenceentity/application/component/app/icon/trash';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 import ReferenceEntity, {
   denormalizeReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
+import {DeleteIcon, pimTheme} from 'akeneo-design-system';
 
 interface OwnProps {
   rights: {
@@ -274,7 +274,7 @@ class Edit extends React.Component<EditProps> {
                   onClick={() => this.props.events.onOpenDeleteModal()}
                   style={{flex: 1}}
                 >
-                  <Trash color="#D4604F" className="AknButton-animatedIcon" />
+                  <DeleteIcon color={pimTheme.color.red100} className="AknButton-animatedIcon" />
                   {__('pim_reference_entity.attribute.edit.delete')}
                 </span>
               ) : (
