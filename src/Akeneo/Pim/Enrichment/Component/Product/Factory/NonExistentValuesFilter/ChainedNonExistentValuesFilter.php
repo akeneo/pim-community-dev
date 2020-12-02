@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -24,7 +26,11 @@ final class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFi
         $result = array_reduce(
             $this->iterableToArray($this->nonExistentValueFilters),
             function (OnGoingFilteredRawValues $onGoingFilteredRawValues, NonExistentValuesFilter $obsoleteValuesFilter): OnGoingFilteredRawValues {
-                return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
+                try {
+                    return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
+                } catch (\TypeError | InvalidPropertyTypeException $ex) {
+                    return $onGoingFilteredRawValues;
+                }
             },
             $onGoingFilteredRawValues
         );

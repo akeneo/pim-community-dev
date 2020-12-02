@@ -26,7 +26,7 @@ class DateValueFactory extends AbstractValueFactory
             return null;
         }
 
-        if (!is_string($data)) {
+        if (!\is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
                 static::class,
@@ -35,12 +35,12 @@ class DateValueFactory extends AbstractValueFactory
         }
 
         $matches = [];
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data, $matches)) {
+        if (!\preg_match('/^\d{4}-\d{2}-\d{2}/', $data, $matches)) {
             throw $this->buildInvalidDateException($attribute, $data);
         }
 
-        list($year, $month, $day) = explode('-', $matches[0]);
-        if (true !== checkdate($month, $day, $year)) {
+        list($year, $month, $day) = \explode('-', $matches[0]);
+        if (true !== \checkdate($month, $day, $year)) {
             throw InvalidPropertyException::validDateExpected(
                 $attribute->getCode(),
                 static::class,

@@ -151,7 +151,7 @@ class WriteValueCollectionFactory
                         try {
                             $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data, true);
                         } catch (InvalidAttributeException $e) {
-                            $this->logger->warning(
+                            $this->logger->notice(
                                 sprintf(
                                     'Tried to load a product value with an invalid attribute "%s". %s',
                                     $attributeCode,
@@ -159,21 +159,20 @@ class WriteValueCollectionFactory
                                 )
                             );
                         } catch (InvalidPropertyException $e) {
-                            $this->logger->warning(
+                            $this->logger->notice(
                                 sprintf(
                                     'Tried to load a product value with the property "%s" that does not exist.',
                                     $e->getPropertyValue()
                                 )
                             );
-                        } catch (InvalidPropertyTypeException $e) {
-                            $this->logger->warning(
+                        } catch (\TypeError | InvalidPropertyTypeException $e) {
+                            $this->logger->notice(
                                 sprintf(
                                     'Tried to load a product value for attribute "%s" that does not have the ' .
-                                    'good type in database.',
+                                    'expected type in database.',
                                     $attribute->getCode()
                                 )
                             );
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, null);
                         }
                     }
                 }

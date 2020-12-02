@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -19,6 +20,8 @@ final class PriceCollectionValueFactory implements ReadValueFactory
 {
     public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        $this->validate($attribute, $data);
+
         $sortedData = $this->sortByCurrency($data);
         $attributeCode = $attribute->code();
 
@@ -46,6 +49,45 @@ final class PriceCollectionValueFactory implements ReadValueFactory
     public function supportedAttributeType(): string
     {
         return AttributeTypes::PRICE_COLLECTION;
+    }
+
+    private function validate(Attribute $attribute, $data): void
+    {
+        if (!\is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
+        foreach ($data as $price) {
+            if (!\is_array($price)) {
+                throw InvalidPropertyTypeException::arrayOfArraysExpected(
+                    $attribute->code(),
+                    static::class,
+                    $data
+                );
+            }
+
+            if (!array_key_exists('amount', $price)) {
+                throw InvalidPropertyTypeException::arrayKeyExpected(
+                    $attribute->code(),
+                    'amount',
+                    static::class,
+                    $data
+                );
+            }
+
+            if (!array_key_exists('currency', $price)) {
+                throw InvalidPropertyTypeException::arrayKeyExpected(
+                    $attribute->code(),
+                    'currency',
+                    static::class,
+                    $data
+                );
+            }
+        }
     }
 
     /**

@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -16,6 +17,14 @@ abstract class ScalarValueFactory implements ReadValueFactory
 {
     public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        if (!\is_scalar($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
         $attributeCode = $attribute->code();
 
         if ($attribute->isLocalizableAndScopable()) {

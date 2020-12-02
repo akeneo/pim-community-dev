@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -17,7 +19,25 @@ final class DateValueFactory implements ReadValueFactory
 {
     public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        $date = new \DateTime($data);
+        if (!\is_string($data)) {
+            throw InvalidPropertyTypeException::stringExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
+        try {
+            $date = new \DateTime($data);
+        } catch (\Exception $ex) {
+            throw InvalidPropertyException::dateExpected(
+                $attribute->code(),
+                'yyyy-mm-dd',
+                static::class,
+                $data
+            );
+        }
+
         $attributeCode = $attribute->code();
 
         if ($attribute->isLocalizableAndScopable()) {

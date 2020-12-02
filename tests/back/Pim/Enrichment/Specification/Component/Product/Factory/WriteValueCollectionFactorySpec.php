@@ -345,7 +345,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
             new InvalidAttributeException('attribute', 'color', static::class)
         );
 
-        $logger->warning(Argument::containingString('Tried to load a product value with an invalid attribute "color".'));
+        $logger->notice(Argument::containingString('Tried to load a product value with an invalid attribute "color".'));
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
@@ -398,9 +398,9 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
             new InvalidPropertyException('attribute', 'image', static::class)
         );
 
-        $logger->warning(
+        $logger->notice(
             Argument::containingString('Tried to load a product value with the property "image" that does not exist.')
-        );
+        )->shouldBeCalled();
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
@@ -408,7 +408,7 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         $actualValues->shouldHaveCount(0);
     }
 
-    function it_creates_empty_value_if_wrong_format_when_creating_a_values_collection_from_the_storage_format(
+    function it_skips_value_if_wrong_format_when_creating_a_values_collection_from_the_storage_format(
         ValueFactory $valueFactory,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         LoggerInterface $logger,
@@ -456,21 +456,21 @@ class WriteValueCollectionFactorySpec extends ObjectBehavior
         $value1->getScopeCode()->willReturn(null);
         $value1->getAttributeCode()->willReturn('image');
         $value1->getData()->willReturn('empty_image');
+        $referenceData->getCode()->willReturn('reference');
 
         $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
         $valueFactory->create($referenceData, null, null, 'empty_image', true)->willThrow(
             new InvalidPropertyTypeException('attribute', 'image', static::class)
         );
-        $valueFactory->create($referenceData, null, null, 'empty_image', true)->willReturn($value1);
 
-        $logger->warning(
-            Argument::containingString('Tried to load a product value for attribute "image" that does not have the good type.')
-        );
+        $logger->notice(
+            Argument::containingString('Tried to load a product value for attribute "reference" that does not have the expected type in database.')
+        )->shouldBeCalled();
 
         $actualValues = $this->createFromStorageFormat($rawValues);
 
         $actualValues->shouldReturnAnInstanceOf(WriteValueCollection::class);
-        $actualValues->shouldHaveCount(1);
+        $actualValues->shouldHaveCount(0);
     }
 
     function it_does_not_filter_falsy_values(

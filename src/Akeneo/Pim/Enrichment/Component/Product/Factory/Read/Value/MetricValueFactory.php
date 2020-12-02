@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -26,6 +27,8 @@ final class MetricValueFactory implements ReadValueFactory
 
     public function create(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
+        $this->validate($attribute, $data);
+
         $data = $this->metricFactory->createMetric($attribute->metricFamily(), $data['unit'], $data['amount']);
         $attributeCode = $attribute->code();
 
@@ -47,5 +50,34 @@ final class MetricValueFactory implements ReadValueFactory
     public function supportedAttributeType(): string
     {
         return AttributeTypes::METRIC;
+    }
+
+    private function validate(Attribute $attribute, $data): void
+    {
+        if (!\is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
+        if (!array_key_exists('amount', $data)) {
+            throw InvalidPropertyTypeException::arrayKeyExpected(
+                $attribute->code(),
+                'amount',
+                static::class,
+                $data
+            );
+        }
+
+        if (!array_key_exists('unit', $data)) {
+            throw InvalidPropertyTypeException::arrayKeyExpected(
+                $attribute->code(),
+                'unit',
+                static::class,
+                $data
+            );
+        }
     }
 }

@@ -42,7 +42,7 @@ class MetricValueFactory extends AbstractValueFactory
             ];
         }
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->getCode(),
                 static::class,
@@ -50,7 +50,7 @@ class MetricValueFactory extends AbstractValueFactory
             );
         }
 
-        if (!array_key_exists('amount', $data)) {
+        if (!\array_key_exists('amount', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'amount',
@@ -59,7 +59,7 @@ class MetricValueFactory extends AbstractValueFactory
             );
         }
 
-        if (!array_key_exists('unit', $data)) {
+        if (!\array_key_exists('unit', $data)) {
             throw InvalidPropertyTypeException::arrayKeyExpected(
                 $attribute->getCode(),
                 'unit',

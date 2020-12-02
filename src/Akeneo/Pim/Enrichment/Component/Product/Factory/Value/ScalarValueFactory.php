@@ -26,7 +26,7 @@ class ScalarValueFactory extends AbstractValueFactory
             return;
         }
 
-        if (!is_scalar($data)) {
+        if (!\is_scalar($data)) {
             throw InvalidPropertyTypeException::scalarExpected(
                 $attribute->getCode(),
                 static::class,
@@ -34,14 +34,14 @@ class ScalarValueFactory extends AbstractValueFactory
             );
         }
 
-        if (is_string($data) && '' === trim($data)) {
+        if (\is_string($data) && '' === \trim($data)) {
             $data = null;
         }
 
         if (AttributeTypes::BOOLEAN === $attribute->getType() &&
             (1 === $data || '1' === $data || 0 === $data || '0' === $data)
         ) {
-            $data = boolval($data);
+            $data = \boolval($data);
         }
 
         return $data;

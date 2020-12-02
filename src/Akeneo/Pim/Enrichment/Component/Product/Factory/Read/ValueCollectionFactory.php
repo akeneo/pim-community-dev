@@ -7,6 +7,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\Chai
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -27,16 +30,23 @@ class ValueCollectionFactory
     /** @var EmptyValuesCleaner */
     private $emptyValuesCleaner;
 
+    // TODO merge master/4.0: property $logger should be nullable
+    /** @var LoggerInterface|null */
+    private $logger;
+
+    // TODO merge master/4.0: require LoggerInterface argument
     public function __construct(
         ReadValueFactory $valueFactory,
         GetAttributes $getAttributeByCodes,
         ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter,
-        EmptyValuesCleaner $emptyValuesCleaner
+        EmptyValuesCleaner $emptyValuesCleaner,
+        LoggerInterface $logger = null
     ) {
         $this->valueFactory = $valueFactory;
         $this->getAttributeByCodes = $getAttributeByCodes;
         $this->chainedNonExistentValuesFilter = $chainedNonExistentValuesFilter;
         $this->emptyValuesCleaner = $emptyValuesCleaner;
+        $this->logger = $logger;
     }
 
     public function createFromStorageFormat(array $rawValues): ReadValueCollection
@@ -141,7 +151,30 @@ class ValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                        try {
+                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                        } catch (InvalidPropertyException $e) {
+                            // TODO merge master/4.0: remove check
+                            if (null !== $this->logger) {
+                                $this->logger->notice(
+                                    sprintf(
+                                        'Tried to load a product value with the property "%s" that does not exist.',
+                                        $e->getPropertyValue()
+                                    )
+                                );
+                            }
+                        } catch (\TypeError | InvalidPropertyTypeException $e) {
+                            // TODO merge master/4.0: remove check
+                            if (null !== $this->logger) {
+                                $this->logger->notice(
+                                    sprintf(
+                                        'Tried to load a product value for attribute "%s" that does not have the '.
+                                        'expected type in database.',
+                                        $attribute->getCode()
+                                    )
+                                );
+                            }
+                        }
                     }
                 }
             }

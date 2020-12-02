@@ -40,7 +40,7 @@ class ReferenceDataValueFactory extends AbstractValueFactory
             return;
         }
 
-        if (!is_string($data)) {
+        if (!\is_string($data)) {
             throw InvalidPropertyTypeException::stringExpected(
                 $attribute->getCode(),
                 static::class,

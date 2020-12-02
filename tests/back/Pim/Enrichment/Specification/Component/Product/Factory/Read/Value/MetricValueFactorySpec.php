@@ -4,11 +4,15 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\MetricFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\MetricValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Read\Value\ReadValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -79,6 +83,54 @@ final class MetricValueFactorySpec extends ObjectBehavior
         $value->isLocalizable()->shouldBe(false);
         $value->isScopable()->shouldBe(false);
         $value->getData()->shouldBe($metric);
+    }
+
+    function it_throws_an_exception_if_data_is_not_an_array()
+    {
+        $data = 'a_string';
+        $exception = InvalidPropertyTypeException::arrayExpected(
+            'an_attribute',
+            MetricValueFactory::class,
+            $data
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$this->getAttribute(false, false), null, null, $data]);
+    }
+
+    function it_throws_an_exception_if_data_does_not_contains_the_amount()
+    {
+        $data = [
+            'unit' => 'SQUARE_METER',
+        ];
+        $exception = InvalidPropertyTypeException::arrayKeyExpected(
+            'an_attribute',
+            'amount',
+            MetricValueFactory::class,
+            $data
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$this->getAttribute(false, false), null, null, $data]);
+    }
+
+    function it_throws_an_exception_if_data_does_not_contains_the_unit()
+    {
+        $data = [
+            'amount' => '10.00',
+        ];
+        $exception = InvalidPropertyTypeException::arrayKeyExpected(
+            'an_attribute',
+            'unit',
+            MetricValueFactory::class,
+            $data
+        );
+
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$this->getAttribute(false, false), null, null, $data]);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute
