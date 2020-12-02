@@ -67,7 +67,7 @@ const QualityScoreEvolutionSection: FC<Props> = ({categoryCode, familyCode, chan
 
 const ChartContainer = styled.div`
   position: relative;
-  min-height: 280px;
+  min-height: 250px;
 `;
 
 const Container = styled.div`

@@ -5,8 +5,8 @@ import {Tooltip} from './Tooltip';
 import {useTheme} from 'akeneo-design-system';
 import {ScoreDistributionChartDataset} from '../../../../../domain';
 
-const INITIAL_CHART_WIDTH = 600;
-const INITIAL_CHART_HEIGHT = 280;
+const INITIAL_CHART_WIDTH = 481;
+const INITIAL_CHART_HEIGHT = 250;
 
 type Props = {
   dataset: ScoreDistributionChartDataset;
@@ -52,7 +52,7 @@ const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback, periods
         padding={{
           top: 0,
           bottom: Math.ceil(40 * downScalingRatio),
-          left: Math.ceil(40 * downScalingRatio),
+          left: Math.ceil(34 * downScalingRatio),
           right: 5,
         }}
         domain={{x: [1, periods], y: [0, 100]}}
@@ -64,9 +64,9 @@ const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback, periods
           style={{
             axis: {strokeWidth: 0},
             tickLabels: {
-              fontSize: Math.ceil(11 * downScalingRatio),
+              fontSize: Math.ceil(parseInt(theme.fontSize.small) * downScalingRatio),
               fill: theme?.color.grey120,
-              padding: Math.ceil(27 * downScalingRatio),
+              padding: Math.ceil(21 * downScalingRatio),
               fontFamily: 'Lato',
               textTransform: 'capitalize',
             },
@@ -84,8 +84,10 @@ const ScoreDistributionChart: FC<Props> = ({dataset, dateFormatCallback, periods
               strokeWidth: 1,
             },
             tickLabels: {
-              fontSize: Math.ceil(11 * downScalingRatio),
+              fontSize: Math.ceil(parseInt(theme.fontSize.small) * downScalingRatio),
               fill: theme?.color.grey120,
+              padding: Math.ceil(33 * downScalingRatio),
+              textAnchor: 'start',
               fontFamily: 'Lato',
             },
             axis: {

@@ -6,8 +6,8 @@ import {useGetDashboardChartScalingSizeRatio} from '../../../../infrastructure/h
 
 const UserContext = require('pim/user-context');
 
-const INITIAL_CHART_WIDTH = 600;
-const INITIAL_CHART_HEIGHT = 280;
+const INITIAL_CHART_WIDTH = 481;
+const INITIAL_CHART_HEIGHT = 250;
 
 type Props = {
   rawDataset: {[date: string]: string | null};
@@ -53,7 +53,12 @@ const QualityScoreEvolutionChart: FC<Props> = ({rawDataset}) => {
       <VictoryChart
         height={INITIAL_CHART_HEIGHT}
         width={INITIAL_CHART_WIDTH}
-        padding={{top: 0, bottom: Math.ceil(40 * downScalingRatio), left: Math.ceil(30 * downScalingRatio), right: 0}}
+        padding={{
+          top: 0,
+          bottom: Math.ceil(40 * downScalingRatio),
+          left: Math.ceil(21 * downScalingRatio),
+          right: 1,
+        }}
         domainPadding={{x: -60, y: [2, 12.5]}}
       >
         <VictoryAxis
@@ -62,9 +67,9 @@ const QualityScoreEvolutionChart: FC<Props> = ({rawDataset}) => {
           style={{
             axis: {strokeWidth: 0},
             tickLabels: {
-              fontSize: Math.ceil(11 * downScalingRatio),
+              fontSize: Math.ceil(parseInt(theme.fontSize.small) * downScalingRatio),
               fill: theme.color.grey120,
-              padding: Math.ceil(27 * downScalingRatio),
+              padding: Math.ceil(21 * downScalingRatio),
               fontFamily: 'Lato',
               textTransform: 'capitalize',
             },
@@ -83,8 +88,10 @@ const QualityScoreEvolutionChart: FC<Props> = ({rawDataset}) => {
             },
             axis: {strokeWidth: 0},
             tickLabels: {
-              fontSize: theme.fontSize.default,
+              fontSize: Math.ceil(parseInt(theme.fontSize.default) * downScalingRatio),
               fill: theme.color.grey120,
+              padding: Math.ceil(20 * downScalingRatio),
+              textAnchor: 'start',
               fontFamily: 'Lato',
             },
           }}

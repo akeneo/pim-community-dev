@@ -56,10 +56,10 @@ const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, tim
       ) : (
         <>
           <Legend />
-          <div className="AknDataQualityInsights-chart">
+          <ChartContainer>
             {isLoading && <div className="AknLoadingMask" />}
             {chart}
-          </div>
+          </ChartContainer>
         </>
       )}
     </Container>
@@ -69,6 +69,10 @@ const ScoreDistributionSection: FC<Props> = ({catalogChannel, catalogLocale, tim
 const Container = styled.div`
   padding-left: 20px;
   flex: 1 0 50%;
+`;
+const ChartContainer = styled.div`
+  position: relative;
+  min-height: 250px;
 `;
 
 export {ScoreDistributionSection};
