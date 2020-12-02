@@ -62,6 +62,7 @@ services:
             - 'data_quality_insights_enrichment_quality'
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
         tags:
+            - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
             - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
 
     akeneo.pim.automation.data_quality_insights.product_grid.filter.image_quality:
@@ -88,4 +89,5 @@ services:
             - 'data_quality_insights_images_quality'
             - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
         tags:
+            - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
             - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
