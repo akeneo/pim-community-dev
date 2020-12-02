@@ -39,7 +39,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
 
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
-                        if (is_array($value)) {
+                        if (\is_array($value)) {
                             $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($value, $optionCodes[$attributeCode] ?? []);
                         }
                     }
@@ -79,7 +79,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
             foreach ($valueCollection as $values) {
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
-                        if (is_array($value)) {
+                        if (\is_array($value)) {
                             foreach ($value as $optionCode) {
                                 $optionCodes[$attributeCode][] = $optionCode;
                             }
@@ -91,7 +91,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
 
         $uniqueOptionCodes = [];
         foreach ($optionCodes as $attributeCode => $optionCodeForThisAttribute) {
-            $uniqueOptionCodes[$attributeCode] = array_unique($optionCodeForThisAttribute);
+            $uniqueOptionCodes[$attributeCode] = \array_unique($optionCodeForThisAttribute);
         }
 
         return $uniqueOptionCodes;

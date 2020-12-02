@@ -48,9 +48,9 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
 
                 foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $values) {
-                        if (is_array($values)) {
-                            $multiSelectValues[$channel][$locale] = array_values(
-                                array_uintersect(
+                        if (\is_array($values)) {
+                            $multiSelectValues[$channel][$locale] = \array_values(
+                                \array_uintersect(
                                     $existingReferenceDataCodes[$attributeCode] ?? [],
                                     $values,
                                     'strcasecmp'
