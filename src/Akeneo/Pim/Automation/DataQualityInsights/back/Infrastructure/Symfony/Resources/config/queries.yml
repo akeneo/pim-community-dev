@@ -136,3 +136,7 @@ services:
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::IMAGE
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::ASSET_COLLECTION
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::LEGACY_ASSET_COLLECTION
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetFamilyAttributesCodesQuery:
+        arguments:
+            - '@database_connection'

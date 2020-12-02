@@ -13,47 +13,40 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttributeSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetProductFamilyAttributeCodesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
 
+/**
+ * For performance and data size reasons, this criterion is evaluated and its results stored by family for the products (not for product models)
+ * So this class doesn't implement "EvaluateCriterionInterface" to be able to evaluate by family as well as product model.
+ */
 final class EvaluateAttributeSpelling
 {
     public const CRITERION_CODE = 'consistency_attribute_spelling';
 
     public const CRITERION_COEFFICIENT = 1;
 
-    private $localesByChannelQuery;
+    private GetLocalesByChannelQueryInterface $localesByChannelQuery;
 
-    private $getProductFamilyAttributeCodesQuery;
-
-    private $getAttributeSpellcheckQuery;
+    private GetAttributeSpellcheckQueryInterface $getAttributeSpellcheckQuery;
 
     public function __construct(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        GetProductFamilyAttributeCodesQueryInterface $getProductFamilyAttributeCodesQuery,
         GetAttributeSpellcheckQueryInterface $getAttributeSpellcheckQuery
     ) {
         $this->localesByChannelQuery = $localesByChannelQuery;
-        $this->getProductFamilyAttributeCodesQuery = $getProductFamilyAttributeCodesQuery;
         $this->getAttributeSpellcheckQuery = $getAttributeSpellcheckQuery;
     }
 
-    public function evaluate(array $attributeCodes): Write\CriterionEvaluationResult
+    public function byAttributeCodes(array $attributeCodes): Write\CriterionEvaluationResult
     {
         $localesByChannel = $this->localesByChannelQuery->getChannelLocaleCollection();
-        $attributeCodes = $this->getProductFamilyAttributeCodesQuery->execute($criterionEvaluation->getProductId());
         $attributeSpellchecks = $this->getAttributeSpellcheckQuery->getByAttributeCodes($attributeCodes);
 
         $attributeRatesByLocale = $this->computeAttributeRatesByLocale($localesByChannel, $attributeCodes, $attributeSpellchecks);
