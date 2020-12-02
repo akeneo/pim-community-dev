@@ -693,7 +693,7 @@ services:
             -
                 name: akeneo_batch.job
                 connector: 'Clean removed attribute'
-                type: 'clean_removed_attribute'
+                type: 'clean_removed_attribute_job'
             -
                 name: akeneo_batch.job.not_visible
 

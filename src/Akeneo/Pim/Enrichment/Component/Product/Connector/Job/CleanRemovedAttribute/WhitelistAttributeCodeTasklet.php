@@ -41,7 +41,7 @@ class WhitelistAttributeCodeTasklet implements TaskletInterface, TrackableTaskle
             ->get('attribute_code');
 
         if (!$attributeCode) {
-            throw new \InvalidArgumentException('the clean deleted attribute require an attribute code');
+            throw new \InvalidArgumentException('The clean removed attribute job requires an attribute code');
         }
 
         $this->attributeCodeBlacklister->whitelist($attributeCode);

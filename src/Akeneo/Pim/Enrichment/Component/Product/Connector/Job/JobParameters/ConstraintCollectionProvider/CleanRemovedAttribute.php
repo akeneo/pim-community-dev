@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 
-final class CleanRemovedAttributes implements ConstraintCollectionProviderInterface
+final class CleanRemovedAttribute implements ConstraintCollectionProviderInterface
 {
     private array $supportedJobNames;
 

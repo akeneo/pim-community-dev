@@ -53,7 +53,7 @@ SQL;
 
         $this->connection->executeUpdate($insertSql, [
             'code'           => 'clean_removed_attribute_job',
-            'label'          => 'Clean the removed attribute values in product',
+            'label'          => 'Clean the removed attribute values in products and product models',
             'job_name'       => 'clean_removed_attribute_job',
             'status'         => 0,
             'connector'      => 'internal',
