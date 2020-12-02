@@ -19,9 +19,6 @@ CREATE TABLE IF NOT EXISTS pimee_dqi_family_criteria_evaluation (
   PRIMARY KEY (family_id, criterion_code),
   INDEX status_index (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO pimee_dqi_family_criteria_evaluation (family_id, criterion_code, status)
-SELECT id, 'consistency_attribute_spelling', 'pending' FROM pim_catalog_family;
 SQL
         );
 

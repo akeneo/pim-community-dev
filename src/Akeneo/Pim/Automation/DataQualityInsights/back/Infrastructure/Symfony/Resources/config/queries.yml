@@ -53,10 +53,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetProductFamilyAttributeCodesQuery:
-        arguments:
-            - '@database_connection'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetProductModelFamilyAttributeCodesQuery:
         arguments:
             - '@database_connection'
@@ -137,6 +133,6 @@ services:
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::ASSET_COLLECTION
                 - !php/const Akeneo\Pim\Structure\Component\AttributeTypes::LEGACY_ASSET_COLLECTION
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetFamilyAttributesCodesQuery:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetActivatedFamilyAttributesCodesQuery:
         arguments:
             - '@database_connection'

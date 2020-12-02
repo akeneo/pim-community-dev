@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyId;
 use Doctrine\DBAL\Connection;
 
-final class GetFamilyAttributesCodesQuery implements GetFamilyAttributesCodesQueryInterface
+final class GetActivatedFamilyAttributesCodesQuery implements GetFamilyAttributesCodesQueryInterface
 {
     private Connection $dbConnection;
 
@@ -32,8 +32,11 @@ final class GetFamilyAttributesCodesQuery implements GetFamilyAttributesCodesQue
         $query = <<<SQL
 SELECT attribute.code 
 FROM pim_catalog_family_attribute AS family_attribute 
-INNER JOIN pim_catalog_attribute AS attribute ON attribute.id = family_attribute.attribute_id
+    INNER JOIN pim_catalog_attribute AS attribute ON attribute.id = family_attribute.attribute_id
+    LEFT JOIN pim_catalog_attribute_group AS attribute_group ON attribute_group.id = attribute.group_id
+    LEFT JOIN pim_data_quality_insights_attribute_group_activation AS activation ON activation.attribute_group_code = attribute_group.code
 WHERE family_attribute.family_id = :familyId
+    AND (activation.activated IS NULL OR activation.activated = 1) 
 SQL;
 
         $attributesCodes = $this->dbConnection->executeQuery(
