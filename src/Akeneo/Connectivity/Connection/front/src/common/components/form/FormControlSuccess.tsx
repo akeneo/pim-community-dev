@@ -1,20 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Translate} from '../../../shared/translate';
-import {CheckGreenIcon} from '../../icons';
+import {CheckIcon, getColor} from 'akeneo-design-system';
 
 export const FormControlSuccess = ({success}: {success: string}) => (
     <OkStatus>
-        <CheckGreenIcon />
+        <CheckIcon />
         <Translate id={success} />
     </OkStatus>
 );
 
 const OkStatus = styled.span`
     display: flex;
-    align-items: baseline;
+    align-items: center;
     margin-top: 3px;
-    color: #67b373;
+    color: ${getColor('green', 100)};
     background-size: 20px;
     background-position: top left;
 `;

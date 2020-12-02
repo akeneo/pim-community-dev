@@ -2,8 +2,8 @@ import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
 import {useTheme} from '../hooks';
 
-const LocaleIllustration = ({title, size = 256}: IllustrationProps) => (
-  <svg width={size} height={size} viewBox="0 0 256 256">
+const LocaleIllustration = ({title, size = 256, ...props}: IllustrationProps) => (
+  <svg width={size} height={size} viewBox="0 0 256 256" {...props}>
     {title && <title>{title}</title>}
     <defs>
       <path id="LocaleIllustration_prefix__a" d="M22.414 10.085l21.086 64.5 45-2.619 38.5-22.38L118.719 0z" />

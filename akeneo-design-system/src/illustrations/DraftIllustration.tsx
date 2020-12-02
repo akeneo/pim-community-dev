@@ -2,8 +2,8 @@ import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
 import {useTheme} from '../hooks';
 
-const DraftIllustration = ({title, size = 256}: IllustrationProps) => (
-  <svg width={size} height={size} viewBox="0 0 256 256">
+const DraftIllustration = ({title, size = 256, ...props}: IllustrationProps) => (
+  <svg width={size} height={size} viewBox="0 0 256 256" {...props}>
     {title && <title>{title}</title>}
     <g fill="none" fillRule="evenodd">
       <path d="M226.526 216.291h6.973-6.973z" fill="#FFF" />

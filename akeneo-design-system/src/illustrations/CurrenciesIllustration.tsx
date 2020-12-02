@@ -1,8 +1,8 @@
 import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
 
-const CurrenciesIllustration = ({title, size = 256}: IllustrationProps) => (
-  <svg width={size} height={size} viewBox="0 0 256 256">
+const CurrenciesIllustration = ({title, size = 256, ...props}: IllustrationProps) => (
+  <svg width={size} height={size} viewBox="0 0 256 256" {...props}>
     {title && <title>{title}</title>}
     <defs>
       <path id="CurrenciesIllustration_prefix__a" d="M107.092 69.398l-1.63 28.363 7.5 18.783 39.5-25.581-2.5-39.5z" />

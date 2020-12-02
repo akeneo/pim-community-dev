@@ -6,3 +6,8 @@ services:
             - '%max_products_category_removal%'
         tags:
             - { name: twig.extension }
+
+    Akeneo\Pim\Enrichment\Bundle\Twig\AttributeExtension:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Twig\AttributeExtension'
+        tags:
+            - { name: twig.extension }
