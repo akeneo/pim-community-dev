@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Link} from 'akeneo-design-system';
 
-const Container = styled.span``;
-
 const LinkableMessage = styled(Link)`
   text-decoration: none;
 `;
@@ -13,11 +11,11 @@ const NotApplicableEnrichmentImageMessage: FC = () => {
   const translate = useTranslate();
 
   return (
-    <Container>
+    <span>
       <LinkableMessage>
         {translate('akeneo_data_quality_insights.product_evaluation.messages.add_image_attribute_recommendation')}
       </LinkableMessage>
-    </Container>
+    </span>
   );
 };
 
@@ -25,9 +23,9 @@ const ToImproveEnrichmentImageMessage: FC = () => {
   const translate = useTranslate();
 
   return (
-    <Container>
+    <span>
       {translate('akeneo_data_quality_insights.product_evaluation.messages.fill_image_attribute_recommendation')}
-    </Container>
+    </span>
   );
 };
 
