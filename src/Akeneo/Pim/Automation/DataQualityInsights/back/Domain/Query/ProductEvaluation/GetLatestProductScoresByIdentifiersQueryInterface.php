@@ -18,4 +18,6 @@ interface GetLatestProductScoresByIdentifiersQueryInterface
      * @return ChannelLocaleRateCollection[]
      */
     public function byProductIdentifiers(array $productIdentifiers): array;
+
+    public function byProductIdentifier(string $identifier): ChannelLocaleRateCollection;
 }

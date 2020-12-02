@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScores;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator;
@@ -161,6 +162,8 @@ class ProductController
     /** @var LoggerInterface */
     private $logger;
 
+    private GetProductsWithQualityScores $getProductsWithQualityScores;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -192,7 +195,8 @@ class ProductController
         WarmupQueryCache $warmupQueryCache,
         EventDispatcherInterface $eventDispatcher,
         DuplicateValueChecker $duplicateValueChecker,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        GetProductsWithQualityScores $getProductsWithQualityScores
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -225,6 +229,7 @@ class ProductController
         $this->eventDispatcher = $eventDispatcher;
         $this->duplicateValueChecker = $duplicateValueChecker;
         $this->logger = $logger;
+        $this->getProductsWithQualityScores = $getProductsWithQualityScores;
     }
 
     /**
@@ -309,6 +314,10 @@ class ProductController
 
             $product = $connectorProductsQuery->fromProductIdentifier($code, $user->getId());
             $this->eventDispatcher->dispatch(new ReadProductsEvent([$product->id()]));
+
+            if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
+                $product = $this->getProductsWithQualityScores->fromConnectorProduct($product);
+            }
         } catch (ObjectNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $code));
         }

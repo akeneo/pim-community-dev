@@ -23,6 +23,13 @@ final class GetLatestProductScoresByIdentifiersQuery implements GetLatestProduct
         $this->dbConnection = $dbConnection;
     }
 
+    public function byProductIdentifier(string $identifier): ChannelLocaleRateCollection
+    {
+        $productScores = $this->byProductIdentifiers([$identifier]);
+
+        return $productScores[$identifier] ?? new ChannelLocaleRateCollection();
+    }
+
     public function byProductIdentifiers(array $productIdentifiers): array
     {
         if (empty($productIdentifiers)) {

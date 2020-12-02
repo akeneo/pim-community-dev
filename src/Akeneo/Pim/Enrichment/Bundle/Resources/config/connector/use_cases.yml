@@ -27,7 +27,7 @@ services:
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
             - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options'
             - '@event_dispatcher'
-            - '@akeneo.pim.enrichment.use_cases.list_products_with_quality_scores'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
 
     pim_enrich.connector.use_cases.handler.list_product_models:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler'
@@ -115,8 +115,8 @@ services:
     akeneo.pim.enrichment.use_cases.validator.validate_granted_locales:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedLocales
 
-    akeneo.pim.enrichment.use_cases.list_products_with_quality_scores:
-        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsWithQualityScores
+    akeneo.pim.enrichment.use_cases.get_products_with_quality_scores:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScores
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery'
             - '@akeneo.pim.automation.data_quality_insights.feature'

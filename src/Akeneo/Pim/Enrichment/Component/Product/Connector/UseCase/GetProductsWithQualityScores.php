@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
@@ -19,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
-final class ListProductsWithQualityScores
+final class GetProductsWithQualityScores
 {
     private GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery;
 
@@ -33,7 +24,18 @@ final class ListProductsWithQualityScores
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
     }
 
-    public function fromConnectorProducts(ConnectorProductList $connectorProductList): ConnectorProductList
+    public function fromConnectorProduct(ConnectorProduct $product): ConnectorProduct
+    {
+        if (!$this->dataQualityInsightsFeature->isEnabled()) {
+            return $product->buildWithQualityScores(new ChannelLocaleRateCollection());
+        }
+
+        return $product->buildWithQualityScores(
+            $this->getLatestProductScoresByIdentifiersQuery->byProductIdentifier($product->identifier())
+        );
+    }
+
+    public function fromConnectorProductList(ConnectorProductList $connectorProductList): ConnectorProductList
     {
         if (!$this->dataQualityInsightsFeature->isEnabled()) {
             return $this->returnProductsWithEmptyQualityScores($connectorProductList);

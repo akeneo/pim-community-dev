@@ -54,7 +54,7 @@ final class ListProductsQueryHandler
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
-    private ListProductsWithQualityScores $listProductsWithQualityScores;
+    private GetProductsWithQualityScores $getProductsWithQualityScores;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -65,7 +65,7 @@ final class ListProductsQueryHandler
         GetConnectorProducts $getConnectorProductsQuery,
         GetConnectorProducts $getConnectorProductsQuerywithOptions,
         EventDispatcherInterface $eventDispatcher,
-        ListProductsWithQualityScores $listProductsWithQualityScores
+        GetProductsWithQualityScores $getProductsWithQualityScores
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
@@ -75,7 +75,7 @@ final class ListProductsQueryHandler
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
         $this->getConnectorProductsQuerywithOptions = $getConnectorProductsQuerywithOptions;
         $this->eventDispatcher = $eventDispatcher;
-        $this->listProductsWithQualityScores = $listProductsWithQualityScores;
+        $this->getProductsWithQualityScores = $getProductsWithQualityScores;
     }
 
     /**
@@ -124,7 +124,7 @@ final class ListProductsQueryHandler
         $this->eventDispatcher->dispatch(new ReadProductsEvent($productIds));
 
         if ($query->withQualityScores()) {
-            $connectorProductList = $this->listProductsWithQualityScores->fromConnectorProducts($connectorProductList);
+            $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList($connectorProductList);
         }
 
         return $connectorProductList;
