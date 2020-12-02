@@ -43,6 +43,7 @@ final class ConnectorProductNormalizer
     public function normalizeConnectorProduct(ConnectorProduct $connectorProduct): array
     {
         $values = $this->valuesNormalizer->normalize($connectorProduct->values());
+        $qualityScores = $connectorProduct->qualityScores();
 
         $normalizedProduct =  [
             'identifier' => $connectorProduct->identifier(),
@@ -57,6 +58,10 @@ final class ConnectorProductNormalizer
             'associations' => empty($connectorProduct->associations()) ? (object) [] : $connectorProduct->associations(),
             'quantified_associations' => empty($connectorProduct->quantifiedAssociations()) ? (object) [] : $connectorProduct->quantifiedAssociations(),
         ];
+
+        if ($qualityScores !== null) {
+            $normalizedProduct['quality_scores'] = $qualityScores->toArrayLetter();
+        }
 
         if (!empty($connectorProduct->metadata())) {
             $normalizedProduct['metadata'] = $connectorProduct->metadata();

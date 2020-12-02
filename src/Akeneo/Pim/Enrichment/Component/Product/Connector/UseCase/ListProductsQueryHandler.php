@@ -54,6 +54,8 @@ final class ListProductsQueryHandler
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
+    private ListProductsWithQualityScores $listProductsWithQualityScores;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
@@ -62,7 +64,8 @@ final class ListProductsQueryHandler
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProductsQuery,
         GetConnectorProducts $getConnectorProductsQuerywithOptions,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ListProductsWithQualityScores $listProductsWithQualityScores
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
@@ -72,6 +75,7 @@ final class ListProductsQueryHandler
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
         $this->getConnectorProductsQuerywithOptions = $getConnectorProductsQuerywithOptions;
         $this->eventDispatcher = $eventDispatcher;
+        $this->listProductsWithQualityScores = $listProductsWithQualityScores;
     }
 
     /**
@@ -118,6 +122,10 @@ final class ListProductsQueryHandler
             return $connectorProduct->id();
         }, $connectorProductList->connectorProducts());
         $this->eventDispatcher->dispatch(new ReadProductsEvent($productIds));
+
+        if ($query->withQualityScores()) {
+            $connectorProductList = $this->listProductsWithQualityScores->fromConnectorProducts($connectorProductList);
+        }
 
         return $connectorProductList;
     }

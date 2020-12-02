@@ -265,6 +265,7 @@ class ProductController
         $query->searchAfter = $request->query->get('search_after', null);
         $query->userId = $user->getId();
         $query->withAttributeOptions = $request->query->get('with_attribute_options', 'false');
+        $query->withQualityScores = $request->query->getAlpha('with_quality_scores', 'false');
 
         try {
             $this->listProductsQueryValidator->validate($query);
