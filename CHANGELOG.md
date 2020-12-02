@@ -52,6 +52,7 @@
 - PIM-9541: Fix API users shown in Project contributors search
 - PIM-9545: Fix possible memory leak in large import jobs
 - PIM-9564: Use original filename instead of data for MediaFile attributes in naming convention
+- PIM-9543: Print PDF content with Han (Chinese, Japanese, Korean) characters
 
 ## Improvements
 
