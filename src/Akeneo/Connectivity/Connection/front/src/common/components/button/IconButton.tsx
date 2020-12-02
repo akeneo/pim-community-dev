@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {getColor} from 'akeneo-design-system';
 
 export const IconButton = styled.button`
     background-color: transparent;
@@ -11,6 +12,7 @@ export const IconButton = styled.button`
     padding: 0;
     transition: opacity 0.1s ease-in;
     width: 24px;
+    color: ${getColor('grey', 100)};
 
     :hover {
         opacity: 1;
