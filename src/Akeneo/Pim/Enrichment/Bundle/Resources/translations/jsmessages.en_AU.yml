@@ -375,8 +375,6 @@ pim_datagrid:
         all_attributes: All attributes
         with_codes: With codes
         with_labels: With labels
-      success_message: "You can follow {{ job_link }}."
-      job_link_label: the progress of the execution here
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
     mass_delete: Mass delete

@@ -159,6 +159,7 @@ pim_common:
   before: Vor
   by: von
   cancel: Abbrechen
+  clear_value: Wert leeren
   close: Schließen
   code: Code
   completeness: Vollständigkeit

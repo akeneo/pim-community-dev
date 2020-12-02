@@ -41,6 +41,56 @@ akeneo_data_quality_insights:
       see_in_grid: Im Raster sehen
     time_axis:
       day: Tag
+    key_indicators:
+      title: Schlüsselindikatoren
+      products_to_work_on: '{1}Sie haben <button>1 Produkt</button> zum Arbeiten. ]1, 200[Sie haben <button>{{ count }} Artikel</button> zum Arbeiten. [200, Inf[Sie haben <button>mehr als {{ count }} Produkte</button> zum Arbeiten.'
+      list:
+        has_image:
+          title: Produkte mit einem Bild
+          no_data: Ihre Bildattribute scheinen leer zu sein. Sie sollten Bilder für diesen Schlüsselindikator hochladen, um die Qualität Ihrer Produkte hervorzuheben.
+          messages:
+            first_step:
+              message1: Ohne Bilder sehen Ihre Produkte nicht so gut aus, wie sie es verdienen.
+              message2: Ein erster Eindruck geht weit, pimpen Sie Ihre Assets, Ihre Kunden werden es Ihnen danken.
+              message3: Unsere Erfahrung nach machen Bilder wirklich einen Unterschied. Sie müssen möglicherweise mehr Zeit für Ihre Assets aufwenden.
+            second_step:
+              message1: Nur ein bisschen mehr Arbeit an Ihren Produktbildern und Sie sind bereit zu gehen.
+              message2: Ein Bild sagt mehr als tausend Wörter. Arbeiten Sie jetzt daran, sparen Sie später Zeit!
+              message3: Möglicherweise müssen Sie etwas Zeit mit Bildern aufwänden. Ihre Produkte werden viel besser aussehen.
+            third_step:
+              message1: Ziemlich gut, nur einige Bilder fehlen.
+              message2: Das ist schön, Sie sind so nah.
+              message3: Fügen Sie die letzten Feinschliff hinzu und es ist alles festgelegt.
+            perfect_score_step:
+              message1: Gut gemacht! Du bist nun startklar!
+              message2: Erstaunlich! Ihre Produkte sind schön und glänzend!
+              message3: Das ist perfekt.
+        good_enrichment:
+          title: Produkte mit einem guten Anreicherungsverhältnis
+          no_data: Bei Produkte, die als leer angesehen werden, sollten Sie Attribute für diesen Schlüsselindikator hinzufügen, um die Qualität Ihrer Produkte hervorzuheben.
+          messages:
+            first_step:
+              message1: Eine Möglichkeit, dieses Verhältnis zu verbessern, ist sicherzustellen, dass Sie sorgfältig die relevantesten Attribute definieren. <a href="{{ link }}" target="_blank">Schaue unser Hilfe-Center</a> an.
+              message2: Dein PIM ist dir immer noch zu geheimnisvoll? <a href="{{ link }}" target="_blank">Lerne das Beste daraus zu machen</a>.
+              message3: Unsere Teams haben das PIM entwickelt, du machst es lebendig!
+              message4: Detaillierte Produktinformationen machen für Ihre Kunden einen echten Unterschied. Sie können hier wirklich etwas bewirken!
+            second_step:
+              message1: Lassen Sie uns versuchen, ein wenig höher zu zielen! Ihre Kunden werden dankbar sein.
+              message2: Sie sind auf halbem Weg! Bleiben Sie dran und Ihre Produkte werden schön angereichert sein.
+              message3: Der Teufel steckt im Detail, auch in Ihrer Branche!
+              message4: Soll Ihre Produktanreicherung aufpoliert werden? Lernen Sie, wie Sie die wichtigsten Attribute <a href="{{ link }}" target="_blank">hier auswählen</a>.
+            third_step:
+              message1: So weit so gut, jetzt können Sie etwas weitergehen!
+              message2: Das ist ein wirklich gutes Verhältnis, aber würde nicht 100% schön aussehen?
+              message3: Einige Ihrer Produkte benötigen noch ein wenig Hilfe, um vollständig zu sein! Sie sind fast fertig!
+              message4: Es sind nur noch ein paar Keinigkeiten zu beheben und es wird perfekt sein.
+            perfect_score_step:
+              message1: Ihre Produkte verkaufen sich selbst! Großartige Arbeit.
+              message2: Was für ein Abenteuer, Sie können stolz auf Ihre Arbeit sein.
+              message3: Sie sind ein echter Meister dabei Ihren Katalog auf dem neuesten Stand zu halten.
+              message4: Herzlichen Glückwunsch, das ist makellos!
+      no_data: Leider haben wir noch nicht genügend Daten um die Schlüsselindikatoren anzuzeigen.
+      no_data_subtitle: Bitte kommen Sie später wieder.
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
@@ -72,6 +122,7 @@ akeneo_data_quality_insights:
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Alle fehlenden Attribute
+    back_to_products: Zurück zu den Produkten
   attribute_group:
     helper_dqi_info: Bei der Berechnung des Qualitätsscore werden nur Attribute berücksichtigt, die zu Attributgruppen gehören, die in der Datenqualität aktiviert sind.
     helper_dqi_link: Mehr Informationen über unser Hilfe-Center.
@@ -81,6 +132,13 @@ akeneo_data_quality_insights:
     disabled: Deaktiviert
     used_groups_helper: "Die folgenden Attributgruppen werden bei der Berechnung der Datenqualitätseinsichten berücksichtigt:"
     all_groups_evaluated: Alle Attributgruppen dieses Produktes werden bei der Berechnung des Qualitätsscore berücksichtigt. Um die relevanteste Qualität zu erhalten, lernt <a href="{{ link }}" target="_blank">in unserem Hilfe-Center Attributgruppen zu deaktivieren.</a>
+  product_grid:
+    filter_label:
+      enrichment_quality: Qualität der Anreicherung
+      images_quality: Bildqualität
+    filter_value:
+      good: Gut
+      to_improve: Zu verbessern
 pim_title:
   akeneo_data_quality_insights_dashboard: Datenqualitätseinsichten
 
