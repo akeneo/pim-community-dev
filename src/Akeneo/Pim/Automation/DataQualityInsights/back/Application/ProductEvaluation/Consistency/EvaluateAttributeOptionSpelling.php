@@ -30,6 +30,8 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
 {
     public const CRITERION_CODE = 'consistency_attribute_option_spelling';
 
+    public const CRITERION_COEFFICIENT = 1;
+
     private $localesByChannelQuery;
 
     private $getAttributeOptionSpellcheckQuery;
@@ -208,5 +210,10 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
     public function getCode(): CriterionCode
     {
         return new CriterionCode(self::CRITERION_CODE);
+    }
+
+    public function getCoefficient(): int
+    {
+        return self::CRITERION_COEFFICIENT;
     }
 }

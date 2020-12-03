@@ -13,15 +13,14 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\ProductValueInDatabaseDictionarySource'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
             - '@database_connection'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
-            - '@akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
-            - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
         tags:
             - { name: 'console.command' }
 

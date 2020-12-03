@@ -67,7 +67,6 @@ const initialProductEditFormState: ProductEditFormState = {
     attributeToImprove: null,
   },
   productEvaluation: {},
-  productAxesRates: {},
   families: {},
   product: {
     categories: [],

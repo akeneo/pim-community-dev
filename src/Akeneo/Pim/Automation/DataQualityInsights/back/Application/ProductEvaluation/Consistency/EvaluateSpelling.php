@@ -35,10 +35,12 @@ use Psr\Log\LoggerInterface;
  */
 class EvaluateSpelling implements EvaluateCriterionInterface
 {
-    const CRITERION_CODE = 'consistency_spelling';
+    public const CRITERION_CODE = 'consistency_spelling';
 
-    const TEXT_FAULT_WEIGHT = 24;
-    const TEXTAREA_FAULT_WEIGHT = 12;
+    public const CRITERION_COEFFICIENT = 2;
+
+    private const TEXT_FAULT_WEIGHT = 24;
+    private const TEXTAREA_FAULT_WEIGHT = 12;
 
     /** @var GetLocalesByChannelQueryInterface */
     private $localesByChannelQuery;
@@ -145,6 +147,11 @@ class EvaluateSpelling implements EvaluateCriterionInterface
     public function getCode(): CriterionCode
     {
         return new CriterionCode(self::CRITERION_CODE);
+    }
+
+    public function getCoefficient(): int
+    {
+        return self::CRITERION_COEFFICIENT;
     }
 
     private function isValidValue($value): bool

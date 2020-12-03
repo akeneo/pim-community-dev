@@ -6,7 +6,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystemInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
 use League\Flysystem\MountManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,17 +15,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class HealthCheckCommand extends Command
 {
-    /** @var Connection */
-    private $db;
+    private Connection $db;
 
-    /** @var FeatureFlag */
-    private $featureFlag;
+    private FeatureFlag $featureFlag;
 
-    /** @var AspellDictionaryLocalFilesystemInterface */
-    private $aspellDictionaryLocalFilesystem;
+    private AspellDictionaryLocalFilesystemInterface $aspellDictionaryLocalFilesystem;
 
-    /** @var MountManager */
-    private $mountManager;
+    private MountManager $mountManager;
 
     public function __construct(
         Connection $db,
@@ -65,11 +60,11 @@ final class HealthCheckCommand extends Command
         $this->outputEvaluationJobInfo($io);
 
         if (count($productIds = $input->getOption('products')) > 0) {
-            $this->outputTargetedProductsInfo($io, $productIds);
+            $this->outputLastEvaluationResultPerProducts($io, $productIds);
         }
 
         if (count($productModelsIds = $input->getOption('productModels')) > 0) {
-            $this->outputTargetedProductModelsInfo($io, $productModelsIds);
+            $this->outputLastEvaluationResultPerProductModels($io, $productModelsIds);
         }
 
         return 0;
@@ -354,12 +349,6 @@ SQL
         $this->outputAsTable($io, $ignored_words);
     }
 
-    private function outputTargetedProductsInfo(SymfonyStyle $io, array $productIds)
-    {
-        $this->outputProductAxisRatesPerProducts($io, $productIds);
-        $this->outputLastEvaluationResultPerProducts($io, $productIds);
-    }
-
     private function outputLastEvaluationResultPerProducts(SymfonyStyle $io, array $productIds)
     {
         $io->section('Last evaluation result per products');
@@ -396,45 +385,6 @@ SQL;
 
             $io->horizontalTable(array_keys(current($data)), $data);
         }
-    }
-
-    private function outputProductAxisRatesPerProducts(SymfonyStyle $io, array $productIds)
-    {
-        $io->section('Product Axis Rates per products');
-
-        $query = <<<SQL
-SELECT
-    product_id, axis_code, evaluated_at, rates
-FROM pim_data_quality_insights_product_axis_rates
-WHERE product_id IN (:product_ids)
-ORDER BY product_id, axis_code
-SQL;
-
-        $stmt = $this->prepareStatementWithProductIds($query, $productIds);
-
-        $this->outputAsTable($io, $stmt->fetchAll());
-    }
-
-    private function outputTargetedProductModelsInfo(SymfonyStyle $io, array $productModelsIds)
-    {
-        $this->outputProductAxisRatesPerProductModels($io, $productModelsIds);
-        $this->outputLastEvaluationResultPerProductModels($io, $productModelsIds);
-    }
-
-    private function outputProductAxisRatesPerProductModels(SymfonyStyle $io, array $productModelIds)
-    {
-        $io->section('Product Axis Rates per product models');
-
-        $query = <<<SQL
-SELECT
-    product_id, axis_code, evaluated_at, rates
-FROM pim_data_quality_insights_product_model_axis_rates
-WHERE product_id IN (:product_ids)
-ORDER BY product_id, axis_code
-SQL;
-
-        $stmt = $this->prepareStatementWithProductIds($query, $productModelIds);
-        $this->outputAsTable($io, $stmt->fetchAll());
     }
 
     private function outputLastEvaluationResultPerProductModels(SymfonyStyle $io, array $productIds)
@@ -602,25 +552,6 @@ SELECT COUNT(*) AS total, SUM(to_improve)  FROM pimee_dqi_attribute_option_spell
 SQL
         );
         $this->outputAsTable($io, $stmt->fetchAll());
-    }
-
-    private function prepareStatementWithProductIds(string $query, array $productIds): ResultStatement
-    {
-        $productIds = array_map(function ($productId) {
-            return intval($productId);
-        },
-            $productIds
-        );
-
-        return $this->db->executeQuery(
-            $query,
-            [
-                'product_ids' => $productIds
-            ],
-            [
-                'product_ids' => Connection::PARAM_INT_ARRAY
-            ]
-        );
     }
 
     private function outputAsTable(SymfonyStyle $io, array $data)

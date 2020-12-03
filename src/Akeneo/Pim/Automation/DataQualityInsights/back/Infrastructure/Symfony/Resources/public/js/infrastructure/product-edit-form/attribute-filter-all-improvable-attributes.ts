@@ -35,11 +35,24 @@ class AttributeFilterAllImprovableAttributes extends BaseForm {
     const data: ProductEvaluation = await fetcher(product.meta.id);
 
     let attributes: string[] = [];
-    const axisCriteriaPath = ['consistency', scope, locale, 'criteria'];
+    const axisCriteriaPath = [scope, locale];
+
+    const consistencyCriteria = [
+      'consistency_textarea_uppercase_words',
+      'consistency_textarea_lowercase_words',
+      'consistency_spelling',
+      'consistency_attribute_spelling',
+      'consistency_attribute_option_spelling',
+    ];
 
     if (_has(data, axisCriteriaPath)) {
+      const criteria = _get(data, axisCriteriaPath)
+        // @ts-ignore
+        .filter((criterionEvaluation: CriterionEvaluationResult) =>
+          consistencyCriteria.includes(criterionEvaluation.code)
+        );
       // @ts-ignore
-      _get(data, axisCriteriaPath).map((criterion: CriterionEvaluationResult) => {
+      criteria.map((criterion: CriterionEvaluationResult) => {
         attributes.push(...criterion.improvable_attributes);
       });
     }

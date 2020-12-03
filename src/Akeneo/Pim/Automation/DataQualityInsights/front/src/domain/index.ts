@@ -1,9 +1,3 @@
-import {
-  CriterionEvaluationResult,
-  Product,
-  ProductEvaluation,
-} from '@akeneo-pim-community/data-quality-insights/src/domain';
-
-export {ProductEvaluation, CriterionEvaluationResult, Product};
+export * from '@akeneo-pim-community/data-quality-insights/src/domain';
 
 export * from './Events';

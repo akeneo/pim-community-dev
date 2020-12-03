@@ -6,8 +6,6 @@ import {
   catalogContextReducer,
   CatalogContextState,
   pageContextReducer,
-  productAxesRatesReducer,
-  ProductAxesRatesState,
   productEvaluationReducer,
   ProductEvaluationState,
   productFamilyInformationReducer,
@@ -21,7 +19,6 @@ export interface ProductEditFormState {
   catalogContext: CatalogContextState;
   pageContext: ProductEditFormPageContextState;
   productEvaluation: ProductEvaluationState;
-  productAxesRates: ProductAxesRatesState;
   families: ProductFamilyInformationState;
   product: ProductState;
   editorHighlight: ProductEditorHighlightState;
@@ -37,7 +34,6 @@ export const createStoreWithInitialState = (initialState = {}) =>
       catalogContext: catalogContextReducer,
       pageContext: pageContextReducer,
       productEvaluation: productEvaluationReducer,
-      productAxesRates: productAxesRatesReducer,
       families: productFamilyInformationReducer,
       product: productReducer,
       editorHighlight: productEditorHighlightReducer,

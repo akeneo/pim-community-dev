@@ -9,11 +9,14 @@ import {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
+  DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_ATTRIBUTES_TAB_NAME,
+  PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
+  PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_MODEL_LEVEL_CHANGED,
   PRODUCT_TAB_CHANGED,
 } from '@akeneo-pim-community/data-quality-insights/src';
@@ -97,6 +100,15 @@ class DataQualityInsightsApp extends BaseView {
     window.addEventListener(DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS, (() => {
       this.redirectToProductAssetsEdition();
     }) as EventListener);
+
+    window.addEventListener(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB, () => {
+      const productData = this.getFormData();
+      const tab =
+        productData.meta.model_type === 'product_model'
+          ? PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME
+          : PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME;
+      this.changeTab(tab);
+    });
 
     this.listenTo(this.getRoot(), 'column-tab:select-tab', ({target}: TabEvent) => {
       window.dispatchEvent(

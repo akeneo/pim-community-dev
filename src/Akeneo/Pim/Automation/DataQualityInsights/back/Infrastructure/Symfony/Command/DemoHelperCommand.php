@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\DictionarySource;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
@@ -18,7 +19,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Symfony\Component\Console\Command\Command;
@@ -30,70 +30,54 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DemoHelperCommand extends Command
 {
-    /** @var DictionarySource */
-    private $productValueInDatabaseDictionarySource;
+    private DictionarySource $productValueInDatabaseDictionarySource;
 
-    /** @var AspellDictionaryGenerator */
-    private $aspellDictionaryGenerator;
+    private AspellDictionaryGenerator $aspellDictionaryGenerator;
 
-    /** @var ConsolidateDashboardRates */
-    private $consolidateDashboardRates;
+    private ConsolidateDashboardRates $consolidateDashboardRates;
 
-    /** @var DashboardRatesProjectionRepository */
-    private $dashboardRatesProjectionRepository;
+    private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
 
-    /** @var Connection */
-    private $db;
+    private Connection $db;
 
-    /** @var CreateCriteriaEvaluations */
-    private $createProductsCriteriaEvaluations;
+    private CreateCriteriaEvaluations $createProductsCriteriaEvaluations    ;
 
-    /** @var EvaluatePendingCriteria */
-    private $evaluatePendingCriteria;
+    private EvaluatePendingCriteria $evaluatePendingCriteria;
 
-    /** @var ConsolidateAxesRates */
-    private $consolidateProductAxisRates;
+    private ConsolidateProductScores $consolidateProductScores;
 
-    /** @var UpdateProductsIndex */
-    private $updateProductsIndex;
+    private UpdateProductsIndex $updateProductsIndex;
 
-    /** @var CreateCriteriaEvaluations */
-    private $createProductModelsCriteriaEvaluations;
+    private CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations;
 
-    /** @var EvaluatePendingCriteria */
-    private $evaluateProductModelsPendingCriteria;
-
-    /** @var ConsolidateAxesRates */
-    private $consolidateProductModelsAxisRates;
+    private EvaluatePendingCriteria $evaluateProductModelsPendingCriteria;
 
     public function __construct(
         DictionarySource $productValueInDatabaseDictionarySource,
         AspellDictionaryGenerator $aspellDictionaryGenerator,
         ConsolidateDashboardRates $consolidateDashboardRates,
-        DashboardRatesProjectionRepository $dashboardRatesProjectionRepository,
+        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository,
         Connection $db,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateAxesRates $consolidateProductAxisRates,
+        ConsolidateProductScores $consolidateProductScores,
         UpdateProductsIndex $updateProductsIndex,
         CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations,
-        EvaluatePendingCriteria $evaluateProductModelsPendingCriteria,
-        ConsolidateAxesRates $consolidateProductModelsAxisRates
+        EvaluatePendingCriteria $evaluateProductModelsPendingCriteria
     ) {
+        parent::__construct();
+
         $this->productValueInDatabaseDictionarySource = $productValueInDatabaseDictionarySource;
         $this->aspellDictionaryGenerator = $aspellDictionaryGenerator;
         $this->consolidateDashboardRates = $consolidateDashboardRates;
-        $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
+        $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
         $this->db = $db;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
-        $this->consolidateProductAxisRates = $consolidateProductAxisRates;
+        $this->consolidateProductScores = $consolidateProductScores;
         $this->updateProductsIndex = $updateProductsIndex;
         $this->createProductModelsCriteriaEvaluations = $createProductModelsCriteriaEvaluations;
         $this->evaluateProductModelsPendingCriteria = $evaluateProductModelsPendingCriteria;
-        $this->consolidateProductModelsAxisRates = $consolidateProductModelsAxisRates;
-
-        parent::__construct();
     }
 
     protected function configure()
@@ -173,84 +157,62 @@ final class DemoHelperCommand extends Command
         $io->section('Generate fake consolidation');
         $this->consolidateDashboardRates->consolidate($now);
 
-        $statement = $this->db->executeQuery('select type, code, rates from pim_data_quality_insights_dashboard_rates_projection');
+        $statement = $this->db->executeQuery('select type, code, scores from pim_data_quality_insights_dashboard_scores_projection');
 
         $results = $statement->fetchAll();
 
-        $idealCatalogRates = [
-            'enrichment' => [
-                0 => [ 'rank_1' => 65, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 5, 'rank_5' => 15 ],
-                1 => [ 'rank_1' => 50, 'rank_2' => 15, 'rank_3' => 10, 'rank_4' => 10, 'rank_5' => 15 ],
-                2 => [ 'rank_1' => 40, 'rank_2' => 20, 'rank_3' => 15, 'rank_4' => 10, 'rank_5' => 15 ],
-                3 => [ 'rank_1' => 30, 'rank_2' => 20, 'rank_3' => 15, 'rank_4' => 15, 'rank_5' => 20 ],
-                4 => [ 'rank_1' => 20, 'rank_2' => 20, 'rank_3' => 15, 'rank_4' => 25, 'rank_5' => 25 ],
-                5 => [ 'rank_1' => 10, 'rank_2' => 20, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 25 ],
-                6 => [ 'rank_1' => 10, 'rank_2' => 15, 'rank_3' => 25, 'rank_4' => 25, 'rank_5' => 25 ],
-            ],
-            'consistency' => [
-                0 => [ 'rank_1' => 80, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 5 ],
-                1 => [ 'rank_1' => 13, 'rank_2' => 32, 'rank_3' => 23, 'rank_4' => 22, 'rank_5' => 10 ],
-                2 => [ 'rank_1' => 13, 'rank_2' => 32, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 10 ],
-                3 => [ 'rank_1' => 12, 'rank_2' => 31, 'rank_3' => 26, 'rank_4' => 25, 'rank_5' => 6 ],
-                4 => [ 'rank_1' => 12, 'rank_2' => 33, 'rank_3' => 25, 'rank_4' => 23, 'rank_5' => 7 ],
-                5 => [ 'rank_1' => 12, 'rank_2' => 33, 'rank_3' => 25, 'rank_4' => 22, 'rank_5' => 8 ],
-                6 => [ 'rank_1' => 11, 'rank_2' => 32, 'rank_3' => 25, 'rank_4' => 22, 'rank_5' => 10 ],
-            ],
+        $idealCatalogScores = [
+            0 => [ 'rank_1' => 80, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 5 ],
+            1 => [ 'rank_1' => 13, 'rank_2' => 32, 'rank_3' => 23, 'rank_4' => 22, 'rank_5' => 10 ],
+            2 => [ 'rank_1' => 13, 'rank_2' => 32, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 10 ],
+            3 => [ 'rank_1' => 12, 'rank_2' => 31, 'rank_3' => 26, 'rank_4' => 25, 'rank_5' => 6 ],
+            4 => [ 'rank_1' => 12, 'rank_2' => 33, 'rank_3' => 25, 'rank_4' => 23, 'rank_5' => 7 ],
+            5 => [ 'rank_1' => 12, 'rank_2' => 33, 'rank_3' => 25, 'rank_4' => 22, 'rank_5' => 8 ],
+            6 => [ 'rank_1' => 11, 'rank_2' => 32, 'rank_3' => 25, 'rank_4' => 22, 'rank_5' => 10 ],
         ];
 
-        $idealFamilyRates = [
-            'enrichment' => [
-                0 => [ 'rank_1' => 90, 'rank_2' => 10, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
-                1 => [ 'rank_1' => 85, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
-                2 => [ 'rank_1' => 70, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 0, 'rank_5' => 0 ],
-                3 => [ 'rank_1' => 50, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 10, 'rank_5' => 10 ],
-                4 => [ 'rank_1' => 15, 'rank_2' => 20, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 20 ],
-                5 => [ 'rank_1' => 10, 'rank_2' => 10, 'rank_3' => 20, 'rank_4' => 30, 'rank_5' => 30 ],
-                6 => [ 'rank_1' => 0, 'rank_2' => 0, 'rank_3' => 20, 'rank_4' => 40, 'rank_5' => 40 ],
-            ],
-            'consistency' => [
-                0 => [ 'rank_1' => 90, 'rank_2' => 10, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
-                1 => [ 'rank_1' => 85, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
-                2 => [ 'rank_1' => 70, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 0, 'rank_5' => 0 ],
-                3 => [ 'rank_1' => 50, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 10, 'rank_5' => 10 ],
-                4 => [ 'rank_1' => 15, 'rank_2' => 20, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 20 ],
-                5 => [ 'rank_1' => 10, 'rank_2' => 10, 'rank_3' => 20, 'rank_4' => 30, 'rank_5' => 30 ],
-                6 => [ 'rank_1' => 0, 'rank_2' => 0, 'rank_3' => 20, 'rank_4' => 40, 'rank_5' => 40 ],
-            ],
+        $idealFamilyScores = [
+            0 => [ 'rank_1' => 90, 'rank_2' => 10, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
+            1 => [ 'rank_1' => 85, 'rank_2' => 15, 'rank_3' => 0, 'rank_4' => 0, 'rank_5' => 0 ],
+            2 => [ 'rank_1' => 70, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 0, 'rank_5' => 0 ],
+            3 => [ 'rank_1' => 50, 'rank_2' => 15, 'rank_3' => 15, 'rank_4' => 10, 'rank_5' => 10 ],
+            4 => [ 'rank_1' => 15, 'rank_2' => 20, 'rank_3' => 20, 'rank_4' => 25, 'rank_5' => 20 ],
+            5 => [ 'rank_1' => 10, 'rank_2' => 10, 'rank_3' => 20, 'rank_4' => 30, 'rank_5' => 30 ],
+            6 => [ 'rank_1' => 0, 'rank_2' => 0, 'rank_3' => 20, 'rank_4' => 40, 'rank_5' => 40 ],
         ];
 
         foreach ($results as $result) {
-            $rates = json_decode($result['rates'], true);
-            $ratesOfTheDay = $rates['daily'][$now->format('Y-m-d')];
+            $scores = json_decode($result['scores'], true);
+            $scoresOfTheDay = $scores['daily'][$now->format('Y-m-d')];
 
-            if (empty($ratesOfTheDay)) {
+            if (empty($scoresOfTheDay)) {
                 continue;
             }
 
-            $numberOfProducts = $this->numberOfProducts($ratesOfTheDay);
+            $numberOfProducts = $this->numberOfProducts($scoresOfTheDay);
 
             $projectionTypeAndCode = ['type' => null, 'code' => null];
-            $idealRates = [];
+            $idealScores = [];
 
             switch ($result['type']) {
                 case 'catalog':
                     $projectionTypeAndCode['type'] = DashboardProjectionType::catalog();
                     $projectionTypeAndCode['code'] = DashboardProjectionCode::catalog();
-                    $idealRates =  $idealCatalogRates;
+                    $idealScores =  $idealCatalogScores;
                     break;
                 case 'category':
                     $projectionTypeAndCode['type'] = DashboardProjectionType::category();
                     $projectionTypeAndCode['code'] = DashboardProjectionCode::category(new CategoryCode($result['code']));
-                    $idealRates =  $idealFamilyRates;
+                    $idealScores =  $idealFamilyScores;
                     break;
                 case 'family':
                     $projectionTypeAndCode['type'] = DashboardProjectionType::family();
                     $projectionTypeAndCode['code'] = DashboardProjectionCode::family(new FamilyCode($result['code']));
-                    $idealRates =  $idealFamilyRates;
+                    $idealScores =  $idealFamilyScores;
                     break;
             }
 
-            $ratesOfTheDay = $this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates, 0);
+            $scoresOfTheDay = $this->generateChaos($scoresOfTheDay, $numberOfProducts, $idealScores, 0);
             $ratesProjections = [];
 
             for ($i=1; $i < 7; $i++) {
@@ -258,7 +220,7 @@ final class DemoHelperCommand extends Command
                     $projectionTypeAndCode['type'],
                     $projectionTypeAndCode['code'],
                     $now->modify(sprintf('-%d DAY', $i+1)),
-                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates, $i))
+                    new RanksDistributionCollection($this->generateChaos($scoresOfTheDay, $numberOfProducts, $idealScores, $i))
                 );
             }
 
@@ -266,7 +228,7 @@ final class DemoHelperCommand extends Command
                 $projectionTypeAndCode['type'],
                 $projectionTypeAndCode['code'],
                 $now->modify('sunday last week'),
-                new RanksDistributionCollection($ratesOfTheDay)
+                new RanksDistributionCollection($scoresOfTheDay)
             );
 
             for ($i=1; $i < 4; $i++) {
@@ -274,7 +236,7 @@ final class DemoHelperCommand extends Command
                     $projectionTypeAndCode['type'],
                     $projectionTypeAndCode['code'],
                     $now->modify(sprintf('sunday %d weeks ago', $i)),
-                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates, $i))
+                    new RanksDistributionCollection($this->generateChaos($scoresOfTheDay, $numberOfProducts, $idealScores, $i))
                 );
             }
 
@@ -284,7 +246,7 @@ final class DemoHelperCommand extends Command
                     $projectionTypeAndCode['type'],
                     $projectionTypeAndCode['code'],
                     $firstDayThisMonth->modify(sprintf('last day of %d months ago', $i)),
-                    new RanksDistributionCollection($this->generateChaos($ratesOfTheDay, $numberOfProducts, $idealRates, $i))
+                    new RanksDistributionCollection($this->generateChaos($scoresOfTheDay, $numberOfProducts, $idealScores, $i))
                 );
             }
 
@@ -292,11 +254,11 @@ final class DemoHelperCommand extends Command
                 $projectionTypeAndCode['type'],
                 $projectionTypeAndCode['code'],
                 $now->modify('-1 DAY'),
-                new RanksDistributionCollection($ratesOfTheDay)
+                new RanksDistributionCollection($scoresOfTheDay)
             );
 
             foreach ($ratesProjections as $ratesProjection) {
-                $this->dashboardRatesProjectionRepository->save($ratesProjection);
+                $this->dashboardScoresProjectionRepository->save($ratesProjection);
             }
 
             $io->writeln(sprintf('    Fake consolidation for <info>%s</info> projection type and <info>%s</info> projection code', $result['type'], $result['code']));
@@ -307,34 +269,30 @@ final class DemoHelperCommand extends Command
         return 0;
     }
 
-    private function generateChaos(array $rates, int $numberOfProducts, array $idealRates, int $day): array
+    private function generateChaos(array $scores, int $numberOfProducts, array $idealRates, int $day): array
     {
-        foreach ($rates as $axe => $scope) {
-            foreach ($scope as $scopeCode => $locale) {
-                foreach ($locale as $localeCode => $ranks) {
-                    foreach ($idealRates[$axe][$day] as $rankCode => $percentage) {
-                        $rates[$axe][$scopeCode][$localeCode][$rankCode] = intval(round($numberOfProducts*$percentage/100)) + rand(1, intval(ceil($numberOfProducts*1/100)));
-                    }
+        foreach ($scores as $scopeCode => $locale) {
+            foreach ($locale as $localeCode => $ranks) {
+                foreach ($idealRates[$day] as $rankCode => $percentage) {
+                    $scores[$scopeCode][$localeCode][$rankCode] = intval(round($numberOfProducts*$percentage/100)) + rand(1, intval(ceil($numberOfProducts*1/100)));
                 }
             }
         }
 
-        return $rates;
+        return $scores;
     }
 
-    private function numberOfProducts(array $rates): int
+    private function numberOfProducts(array $scores): int
     {
         $numberOfProducts = 0;
 
-        foreach ($rates as $axe => $scope) {
-            foreach ($scope as $scopeCode => $locale) {
-                foreach ($locale as $localeCode => $ranks) {
-                    foreach ($ranks as $rankCode => $numberOfProductsEvaluated) {
-                        $numberOfProducts += intval($numberOfProductsEvaluated);
-                    }
-
-                    return $numberOfProducts;
+        foreach ($scores as $scopeCode => $locale) {
+            foreach ($locale as $localeCode => $ranks) {
+                foreach ($ranks as $rankCode => $numberOfProductsEvaluated) {
+                    $numberOfProducts += intval($numberOfProductsEvaluated);
                 }
+
+                return $numberOfProducts;
             }
         }
 
@@ -428,7 +386,7 @@ final class DemoHelperCommand extends Command
 
         $this->createProductsCriteriaEvaluations->createAll($productIds);
         $this->evaluatePendingCriteria->evaluateAllCriteria($ids);
-        $this->consolidateProductAxisRates->consolidate($ids);
+        $this->consolidateProductScores->consolidate($ids);
         $this->updateProductsIndex->execute($ids);
     }
 
@@ -440,6 +398,5 @@ final class DemoHelperCommand extends Command
 
         $this->createProductModelsCriteriaEvaluations->createAll($productIds);
         $this->evaluateProductModelsPendingCriteria->evaluateAllCriteria($ids);
-        $this->consolidateProductModelsAxisRates->consolidate($ids);
     }
 }

@@ -1,17 +1,22 @@
 import React, {FunctionComponent} from 'react';
 import {pimTheme} from 'akeneo-design-system';
-import {ThemeProvider} from 'styled-components';
+import styled, {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {Overview, Widgets} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
+import {
+  ScoreDistributionSection,
+  Widgets,
+} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
 import {keyIndicatorsTips} from '@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/KeyIndicatorsTips';
 import {KeyIndicatorsProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/KeyIndicatorsContext';
 import {EEKeyIndicatorsTips} from '../../helper/Dashboard/EEKeyIndicatorsTips';
 import {DashboardContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/DashboardContext';
-//import {PimEnterpriseKeyIndicators} from './PimEnterpriseKeyIndicators'; @todo DAPI-1436
+import {TimePeriod} from '@akeneo-pim-community/data-quality-insights/src/domain';
+import {PimEnterpriseKeyIndicators} from './PimEnterpriseKeyIndicators';
+import {QualityScoreEvolutionSection} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/QualityScoreEvolutionSection';
 
 interface DataQualityInsightsDashboardProps {
-  timePeriod: string;
+  timePeriod: TimePeriod;
   catalogLocale: string;
   catalogChannel: string;
   familyCode: string | null;
@@ -34,23 +39,31 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
           <DashboardContextProvider>
             <div id="data-quality-insights-activity-dashboard">
               <div className="AknSubsection">
-                <Overview
-                  catalogLocale={catalogLocale}
-                  catalogChannel={catalogChannel}
-                  timePeriod={timePeriod}
-                  familyCode={familyCode}
-                  categoryCode={categoryCode}
-                />
-
-                <KeyIndicatorsProvider tips={{...EEKeyIndicatorsTips, ...keyIndicatorsTips}}>
-                  {/* @todo DAPI-1436
-                  <PimEnterpriseKeyIndicators
-                    family={familyCode}
-                    category={categoryCode}
+                <Overview>
+                  <QualityScoreEvolutionSection
                     locale={catalogLocale}
                     channel={catalogChannel}
+                    familyCode={familyCode}
+                    categoryCode={categoryCode}
                   />
-                  */}
+                  <ScoreDistributionSection
+                    catalogLocale={catalogLocale}
+                    catalogChannel={catalogChannel}
+                    timePeriod={timePeriod}
+                    familyCode={familyCode}
+                    categoryCode={categoryCode}
+                  />
+                </Overview>
+
+                <KeyIndicatorsProvider tips={{...EEKeyIndicatorsTips, ...keyIndicatorsTips}}>
+                  {
+                    <PimEnterpriseKeyIndicators
+                      family={familyCode}
+                      category={categoryCode}
+                      locale={catalogLocale}
+                      channel={catalogChannel}
+                    />
+                  }
                 </KeyIndicatorsProvider>
 
                 <Widgets catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
@@ -62,5 +75,9 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
     </DependenciesProvider>
   );
 };
+
+const Overview = styled.div`
+  display: flex;
+`;
 
 export {Dashboard};
