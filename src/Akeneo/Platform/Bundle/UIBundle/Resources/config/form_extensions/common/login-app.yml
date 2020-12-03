@@ -1,0 +1,3 @@
+extensions:
+    pim-login-app:
+        module: pim/login-app

@@ -490,6 +490,7 @@ config:
     # Navigation
     jquery.form:                      pimui/lib/jquery-form/jquery.form
     pim/app:                            pimui/js/pim-app.ts
+    pim/login-app:                      pimui/js/pim-login-app.tsx
     pim/router:                         pimui/js/router
     pim/route-matcher:                  pimui/js/route-matcher
     pim/page-title:                     pimui/js/page-title
