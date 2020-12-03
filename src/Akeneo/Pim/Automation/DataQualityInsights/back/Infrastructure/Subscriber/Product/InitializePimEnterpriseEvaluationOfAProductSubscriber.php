@@ -17,7 +17,8 @@ final class InitializePimEnterpriseEvaluationOfAProductSubscriber implements Eve
 {
     private InitializeEvaluationOfAProductSubscriber $initializeEvaluationOfAProductSubscriberDecorated;
 
-    public function __construct(InitializeEvaluationOfAProductSubscriber $initializeEvaluationOfAProductSubscriberDecorated) {
+    public function __construct(InitializeEvaluationOfAProductSubscriber $initializeEvaluationOfAProductSubscriberDecorated)
+    {
         $this->initializeEvaluationOfAProductSubscriberDecorated = $initializeEvaluationOfAProductSubscriberDecorated;
     }
 
