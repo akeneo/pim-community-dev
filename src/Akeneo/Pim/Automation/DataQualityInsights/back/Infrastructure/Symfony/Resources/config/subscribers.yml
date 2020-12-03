@@ -25,6 +25,13 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\InitializePimEnterpriseEvaluationOfAProductSubscriber:
+        decorates: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\InitializeEvaluationOfAProductSubscriber'
+        decoration_inner_name: 'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\InitializeEvaluationOfAProductSubscriber.community'
+        arguments: ['@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\InitializeEvaluationOfAProductSubscriber.community']
+        tags:
+            - { name: kernel.event_subscriber }
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel\CreateEvaluationCriteriaOnProductModelIgnoredWordSubscriber:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.feature'
