@@ -176,7 +176,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         InputInterface $input,
         OutputInterface $output
     ): void {
-        $this->cleanValuesOfRemovedAttributes->validateRemovedAttributesCodes($attributesCodes);
+//        $this->cleanValuesOfRemovedAttributes->validateRemovedAttributesCodes($attributesCodes);
 
         $countProducts = $this->cleanValuesOfRemovedAttributes->countProductsWithRemovedAttribute($attributesCodes);
         $countProductModels = $this->cleanValuesOfRemovedAttributes->countProductModelsWithRemovedAttribute($attributesCodes);

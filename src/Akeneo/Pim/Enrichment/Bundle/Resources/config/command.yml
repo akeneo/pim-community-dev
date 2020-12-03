@@ -16,14 +16,15 @@ services:
         tags:
             - { name: console.command }
 
-    Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributeFromProductAndProductModelCommand:
+    Akeneo\Pim\Enrichment\Bundle\Command\FastCleanRemovedAttributesFromProductAndProductModelCommand:
         arguments:
-            - '@akeneo.shared_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.query.product_query_builder_search_after_size_factory'
-            - '@Akeneo\SharedCatalog\Query\GetProductIdFromProductIdentifierQueryInterface'
+            - '@akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.product'
             - '@database_connection'
-            - '@pim_catalog.elasticsearch.indexer.product'
             - '@event_dispatcher'
+            - '@pim_connector.doctrine.cache_clearer'
         tags:
             - { name: console.command }
 
