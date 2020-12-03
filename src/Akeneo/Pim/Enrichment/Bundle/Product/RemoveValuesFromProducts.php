@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
@@ -32,10 +34,10 @@ class RemoveValuesFromProducts
     {
         $this->connection->executeQuery(
             <<<SQL
-            UPDATE pim_catalog_product
-            SET raw_values = JSON_REMOVE(raw_values, :json_path)
-            WHERE identifier IN (:identifiers)
-    SQL,
+UPDATE pim_catalog_product
+SET raw_values = JSON_REMOVE(raw_values, :json_path)
+WHERE identifier IN (:identifiers)
+SQL,
             [
                 'json_path' => sprintf('$.%s', $attributeCode),
                 'identifiers' => $productIdentifiers,
@@ -49,7 +51,7 @@ class RemoveValuesFromProducts
         $products = $this->productRepository->findBy(['identifier' => $productIdentifiers]);
         $this->eventDispatcher->dispatch(
             StorageEvents::POST_SAVE_ALL,
-            new GenericEvent(iterator_to_array($products), [
+            new GenericEvent($products, [
                 'unitary' => false,
             ])
         );
