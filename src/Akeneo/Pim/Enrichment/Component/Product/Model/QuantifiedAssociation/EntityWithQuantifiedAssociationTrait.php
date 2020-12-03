@@ -11,7 +11,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation;
  */
 trait EntityWithQuantifiedAssociationTrait
 {
-    public array $rawQuantifiedAssociations = [];
+    public ?array $rawQuantifiedAssociations = null;
 
     /**
      * Not persisted.
