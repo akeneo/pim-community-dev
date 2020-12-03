@@ -85,8 +85,6 @@ final class GetLatestProductScoresByIdentifiersQueryIntegration extends DataQual
             $productD->getIdentifier(),
         ]);
 
-        var_dump($productScores);
-
         $this->assertEqualsCanonicalizing($expectedProductsScores, $productScores);
     }
 }

@@ -69,7 +69,8 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ],
             ],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $connector2 = new ConnectorProduct(
@@ -85,7 +86,8 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             [],
             [],
             ['a_metadata' => 'viande'],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $this->normalizeConnectorProductList(new ConnectorProductList(1, [$connector1, $connector2]))->shouldBeLike([
@@ -181,7 +183,8 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
                 ],
             ],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $this->normalizeConnectorProduct($connector)->shouldBeLike([

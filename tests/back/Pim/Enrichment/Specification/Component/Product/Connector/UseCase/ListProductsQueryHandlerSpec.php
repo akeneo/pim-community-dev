@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
@@ -32,7 +34,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProducts,
         GetConnectorProducts $getConnectorProductsWithOptions,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
     ) {
         $this->beConstructedWith(
             $channelRepository,
@@ -42,7 +45,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             $primaryKeyEncrypter,
             $getConnectorProducts,
             $getConnectorProductsWithOptions,
-            $eventDispatcher
+            $eventDispatcher,
+            $getProductsWithQualityScores
         );
     }
 
@@ -82,7 +86,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $connectorProduct2 = new ConnectorProduct(
@@ -98,7 +103,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $getConnectorProductsWithOptions
@@ -145,7 +151,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $connectorProduct2 = new ConnectorProduct(
@@ -161,7 +168,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $getConnectorProducts
@@ -209,7 +217,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $connectorProduct2 = new ConnectorProduct(
@@ -225,7 +234,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $getConnectorProducts
@@ -368,7 +378,8 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
 
         $getConnectorProducts
@@ -380,5 +391,62 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
         $this->handle($query)->shouldBeLike(new ConnectorProductList(1, [$connectorProduct]));
+    }
+
+    function it_add_quality_scores_to_products_if_option_is_activated(
+        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        PrimaryKeyEncrypter $primaryKeyEncrypter,
+        ProductQueryBuilderInterface $pqb,
+        GetConnectorProducts $getConnectorProducts,
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
+    ) {
+        $query = new ListProductsQuery();
+        $query->paginationType = PaginationTypes::SEARCH_AFTER;
+        $query->limit = 42;
+        $query->searchAfter = '69';
+        $query->userId = 1;
+        $query->withQualityScores = 'true';
+
+        $primaryKeyEncrypter->decrypt('69')->shouldBeCalled()->willReturn('encoded69');
+
+        $searchAfterPqbFactory->create([
+            'limit' => 42,
+            'search_after_unique_key' => 'product_encoded69',
+            'search_after' => ['product_encoded69']
+        ])->shouldBeCalled()->willReturn($pqb);
+
+        $pqb->addSorter('id', Directions::ASCENDING)->shouldBeCalled();
+
+        $connectorProduct = new ConnectorProduct(
+            5,
+            'identifier_5',
+            new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            true,
+            'family_code',
+            ['category_code_1', 'category_code_2'],
+            ['group_code_1', 'group_code_2'],
+            'parent_product_model_code',
+            [],
+            [],
+            [],
+            new ReadValueCollection(),
+            null
+        );
+        $connectorProductWithQualityScores = $connectorProduct->buildWithQualityScores(
+            ChannelLocaleRateCollection::fromArrayInt(['ecommerce' => ['en_US' => 15]])
+        );
+
+        $productList = new ConnectorProductList(1, [$connectorProduct]);
+        $getConnectorProducts
+            ->fromProductQueryBuilder($pqb, 1, null, null, null)
+            ->willReturn($productList);
+
+        $getProductsWithQualityScores->fromConnectorProductList($productList)->willReturn(new ConnectorProductList(1, [$connectorProductWithQualityScores]));
+
+        $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
+
+        $this->handle($query)->shouldBeLike(new ConnectorProductList(1, [$connectorProductWithQualityScores]));
     }
 }
