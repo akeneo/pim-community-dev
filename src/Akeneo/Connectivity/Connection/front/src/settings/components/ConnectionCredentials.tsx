@@ -1,6 +1,6 @@
 import React, {FC, useContext} from 'react';
 import {useHistory} from 'react-router';
-import {HelperLink, InlineHelper, Section, SmallHelper} from '../../common';
+import {HelperLink, Section, SmallHelper} from '../../common';
 import {ConnectionCredentials as ConnectionCredentialsModel} from '../../model/connection-credentials';
 import {TranslateContext, Translate} from '../../shared/translate';
 import {CopiableCredential} from './credentials/CopiableCredential';
@@ -8,6 +8,7 @@ import {Credential, CredentialList} from './credentials/Credential';
 import {RegenerateButton} from './RegenerateButton';
 import {WrongCredentialsCombination} from '../../model/wrong-credentials-combinations';
 import {WrongCombinationsWarning} from './wrong-credentials/WrongCombinationsWarning';
+import {Helper, Link} from 'akeneo-design-system';
 
 type Props = {
     code: string;
@@ -64,16 +65,15 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                     <CopiableCredential
                         label={translate('akeneo_connectivity.connection.connection.password')}
                         helper={
-                            <InlineHelper warning>
+                            <Helper inline level='warning'>
                                 <Translate id='akeneo_connectivity.connection.edit_connection.credentials.clear_password_helper.message' />{' '}
-                                <a
+                                <Link
                                     href='https://help.akeneo.com/pim/articles/manage-your-connections.html#grab-your-credentials'
                                     target='_blank'
-                                    rel='noopener noreferrer'
                                 >
                                     <Translate id='akeneo_connectivity.connection.edit_connection.credentials.clear_password_helper.link' />
-                                </a>
-                            </InlineHelper>
+                                </Link>
+                            </Helper>
                         }
                     >
                         {credentials.password}
@@ -82,16 +82,16 @@ export const ConnectionCredentials: FC<Props> = ({code, label, credentials: cred
                     <Credential
                         label={translate('akeneo_connectivity.connection.connection.password')}
                         helper={
-                            <InlineHelper info>
+                            <Helper inline level='info'>
                                 <Translate id='akeneo_connectivity.connection.edit_connection.credentials.password_helper.message' />{' '}
-                                <a
+                                <Link
                                     href='https://help.akeneo.com/pim/articles/manage-your-connections.html#grab-your-credentials'
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
                                     <Translate id='akeneo_connectivity.connection.edit_connection.credentials.password_helper.link' />
-                                </a>
-                            </InlineHelper>
+                                </Link>
+                            </Helper>
                         }
                         actions={
                             <RegenerateButton

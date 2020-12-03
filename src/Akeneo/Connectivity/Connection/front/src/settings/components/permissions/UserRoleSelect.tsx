@@ -1,5 +1,6 @@
+import {Helper, Link} from 'akeneo-design-system';
 import React, {useEffect, useMemo, useState} from 'react';
-import {FormGroup, InlineHelper, Select2, Select2Configuration} from '../../../common';
+import {FormGroup, Select2, Select2Configuration} from '../../../common';
 import {Translate} from '../../../shared/translate';
 import {useFetchUserRoles, UserRole} from '../../api-hooks/use-fetch-user-roles';
 
@@ -43,24 +44,23 @@ export const UserRoleSelect = ({userRoleId, onChange}: Props) => {
     return (
         <FormGroup
             label='akeneo_connectivity.connection.connection.user_role_id'
-            helper={
+            helpers={[
                 selectedUserRole.isDefault && (
-                    <InlineHelper warning>
+                    <Helper inline level='warning'>
                         <Translate
                             id='akeneo_connectivity.connection.edit_connection.permissions.user_role_helper.message'
                             placeholders={{role: selectedUserRole.label}}
                         />
                         &nbsp;
-                        <a
+                        <Link
                             href='https://help.akeneo.com/pim/articles/manage-your-connections.html#set-the-permissions'
                             target='_blank'
-                            rel='noopener noreferrer'
                         >
                             <Translate id='akeneo_connectivity.connection.edit_connection.permissions.user_role_helper.link' />
-                        </a>
-                    </InlineHelper>
-                )
-            }
+                        </Link>
+                    </Helper>
+                ),
+            ]}
         >
             <Select2 configuration={configuration} value={selectedUserRole.id} onChange={handleUserRoleChange} />
         </FormGroup>
