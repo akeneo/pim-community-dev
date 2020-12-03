@@ -76,6 +76,7 @@
 - PIM-9506: Make "image" the default media type for media link asset attributes
 - PIM-9452: Add a command to update ES max field limit on Serenity upgrade (Helm hook)
 - PIM-9562: default asset preview and thumbnail
+- PIM-9558: Remove the word "Damn" from the PIM
 
 ## New features
 
