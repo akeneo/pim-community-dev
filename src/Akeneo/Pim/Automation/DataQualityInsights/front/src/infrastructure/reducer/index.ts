@@ -8,10 +8,6 @@ import productEvaluationReducer, {
   getProductEvaluationAction,
   ProductEvaluationState,
 } from './ProductEditForm/productEvaluationReducer';
-import productAxesRatesReducer, {
-  getProductAxesRatesAction,
-  ProductAxesRatesState,
-} from './ProductEditForm/productAxesRatesReducer';
 import productFamilyInformationReducer, {
   getProductFamilyInformationAction,
   ProductFamilyInformationState,
@@ -49,7 +45,4 @@ export {
   startProductAttributesTabIsLoadingAction,
   endProductAttributesTabIsLoadedAction,
   showDataQualityInsightsAttributeToImproveAction,
-  productAxesRatesReducer,
-  ProductAxesRatesState,
-  getProductAxesRatesAction,
 };

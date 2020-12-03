@@ -1,14 +1,16 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import useFetchWidgetCategories from '../../../../infrastructure/hooks/Dashboard/useFetchWidgetCategories';
-import Rate from '@akeneo-pim-community/data-quality-insights/src/application/component/Rate';
 import {Ranks} from '../../../../domain/Rate.interface';
 import CategoryModal from '../CategoryModal/CategoryModal';
 import {uniqBy as _uniqBy, xorBy as _xorBy} from 'lodash';
 import Category from '../../../../domain/Category.interface';
 import {redirectToProductGridFilteredByCategory} from '../../../../infrastructure/ProductGridRouter';
-import {useAxesContext} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
-
-const __ = require('oro/translator');
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {SeeInGrid} from './SeeInGrid';
+import {RemoveItem} from './RemoveItem';
+import {AddItem} from './AddItem';
+import {QualityScore} from '../../QualityScore';
+import {Cell, HeaderCell, Row, Table} from './Table';
 
 const MAX_WATCHED_CATEGORIES = 20;
 const LOCAL_STORAGE_KEY = 'data-quality-insights:dashboard:widgets:categories';
@@ -23,9 +25,9 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
   const [categoriesToWatch, setCategoriesToWatch] = useState<Category[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [modalErrorMessage, setModalErrorMessage] = useState<string | null>(null);
-  const axesContext = useAxesContext();
+  const translate = useTranslate();
 
-  const ratesByCategory = useFetchWidgetCategories(catalogChannel, catalogLocale, watchedCategories);
+  const averageScoreByCategories = useFetchWidgetCategories(catalogChannel, catalogLocale, watchedCategories);
 
   const onSelectCategory = (
     categoryCode: string,
@@ -33,14 +35,19 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
     categoryId: string,
     rootCategoryId: string
   ) => {
-    const selectedCategory = {code: categoryCode, label: categoryLabel, id: categoryId, rootCategoryId: rootCategoryId};
+    const selectedCategory = {
+      code: categoryCode,
+      label: categoryLabel,
+      id: categoryId,
+      rootCategoryId: rootCategoryId,
+    };
     const categoriesToSelect = _xorBy([selectedCategory], categoriesToWatch, 'code');
 
     setModalErrorMessage(null);
     if (_uniqBy([...watchedCategories, ...categoriesToSelect], 'code').length > MAX_WATCHED_CATEGORIES) {
       setModalErrorMessage(
-        __('akeneo_data_quality_insights.dqi_dashboard.widgets.category_modal.max_categories_msg', {
-          count: MAX_WATCHED_CATEGORIES,
+        translate('akeneo_data_quality_insights.dqi_dashboard.widgets.category_modal.max_categories_msg', {
+          count: `${MAX_WATCHED_CATEGORIES}`,
         })
       );
     }
@@ -78,15 +85,14 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
 
   const header = (
     <div className="AknSubsection-title AknSubsection-title--glued">
-      <span>{__('pim_enrich.entity.category.plural_label')}</span>
-      <div
-        className="AknButton AknButton--micro"
-        onClick={() => {
+      <span>{translate('pim_enrich.entity.category.plural_label')}</span>
+      <AddItem
+        add={() => {
           setShowModal(true);
         }}
       >
-        {__('akeneo_data_quality_insights.dqi_dashboard.widgets.add_categories')}
-      </div>
+        {translate('akeneo_data_quality_insights.dqi_dashboard.widgets.add_categories')}
+      </AddItem>
     </div>
   );
 
@@ -98,19 +104,19 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
       onConfirm={onConfirmCategoriesToWatch}
       selectedCategories={categoriesToWatch.map((category: Category) => category.code)}
       withCheckBox={true}
-      subtitle={__('akeneo_data_quality_insights.dqi_dashboard.widgets.category_modal.subtitle')}
-      description={__('akeneo_data_quality_insights.dqi_dashboard.widgets.category_modal.message')}
+      subtitle={translate('akeneo_data_quality_insights.dqi_dashboard.widgets.category_modal.subtitle')}
+      description={translate('akeneo_data_quality_insights.dqi_dashboard.widgets.category_modal.message')}
       errorMessage={modalErrorMessage}
     />
   );
 
-  if (Object.keys(ratesByCategory).length === 0) {
+  if (Object.keys(averageScoreByCategories).length === 0) {
     return (
       <>
         {header}
         <div className="no-family">
           <img src="bundles/pimui/images/illustrations/Product-categories.svg" />
-          <p>{__('akeneo_data_quality_insights.dqi_dashboard.widgets.no_category_helper_msg')}</p>
+          <p>{translate('akeneo_data_quality_insights.dqi_dashboard.widgets.no_category_helper_msg')}</p>
         </div>
         {categoryModal}
       </>
@@ -120,43 +126,30 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
   return (
     <>
       {header}
-      <table className="AknGrid AknGrid--unclickable">
-        <tbody className="AknGrid-body">
-          <tr>
-            <th className="AknGrid-headerCell">{__('akeneo_data_quality_insights.dqi_dashboard.widgets.title')}</th>
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">
-              {__(`akeneo_data_quality_insights.product_evaluation.axis.enrichment.title`)}
-            </th>
-            {axesContext.axes.includes('consistency') && (
-              <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate">
-                {__(`akeneo_data_quality_insights.product_evaluation.axis.consistency.title`)}
-              </th>
-            )}
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
-            <th className="AknGrid-headerCell AknDataQualityInsightsGrid-axis-rate"> </th>
-          </tr>
-          {Object.entries(ratesByCategory).map(([categoryCode, ratesByAxis]: [string, any], index: number) => {
+      <Table>
+        <Row isHeader={true}>
+          <HeaderCell>{translate('akeneo_data_quality_insights.dqi_dashboard.widgets.title')}</HeaderCell>
+          <HeaderCell align={'center'} width={48}>
+            {translate(`akeneo_data_quality_insights.dqi_dashboard.widgets.score`)}
+          </HeaderCell>
+          <HeaderCell />
+          <HeaderCell />
+        </Row>
+        {Object.entries(averageScoreByCategories).map(
+          ([categoryCode, averageScoreRank]: [string, any], index: number) => {
             const category = watchedCategories.find(
               (watchedCategory: Category) => watchedCategory.code === categoryCode
             );
             return (
               category && (
-                <tr key={index} className="AknGrid-bodyRow">
-                  <td className="AknGrid-bodyCell AknGrid-bodyCell--highlight categoryName">
-                    {category.label ? category.label : '[' + category.code + ']'}
-                  </td>
-                  <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
-                    <Rate value={ratesByAxis.enrichment ? Ranks[ratesByAxis.enrichment] : null} />
-                  </td>
-                  {axesContext.axes.includes('consistency') && (
-                    <td className="AknGrid-bodyCell AknDataQualityInsightsGrid-axis-rate">
-                      <Rate value={ratesByAxis.consistency ? Ranks[ratesByAxis.consistency] : null} />
-                    </td>
-                  )}
-                  <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
-                    <div
-                      className="AknButton AknButton--micro"
-                      onClick={() =>
+                <Row key={index}>
+                  <Cell highlight={true}>{category.label ? category.label : '[' + category.code + ']'}</Cell>
+                  <Cell align={'center'}>
+                    <QualityScore score={averageScoreRank ? Ranks[averageScoreRank] : 'N/A'} />
+                  </Cell>
+                  <Cell action={true}>
+                    <SeeInGrid
+                      follow={() =>
                         redirectToProductGridFilteredByCategory(
                           catalogChannel,
                           catalogLocale,
@@ -164,24 +157,17 @@ const CategoryWidget: FunctionComponent<CategoryWidgetProps> = ({catalogChannel,
                           category.rootCategoryId
                         )
                       }
-                    >
-                      {__('akeneo_data_quality_insights.dqi_dashboard.widgets.see_in_grid')}
-                    </div>
-                  </td>
-                  <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
-                    <img
-                      style={{cursor: 'pointer'}}
-                      width="16"
-                      src="/bundles/pimui/images/icon-delete-slategrey.svg"
-                      onClick={() => onRemoveCategory(categoryCode)}
                     />
-                  </td>
-                </tr>
+                  </Cell>
+                  <Cell action={true}>
+                    <RemoveItem remove={() => onRemoveCategory(categoryCode)} />
+                  </Cell>
+                </Row>
               )
             );
-          })}
-        </tbody>
-      </table>
+          }
+        )}
+      </Table>
       {categoryModal}
     </>
   );

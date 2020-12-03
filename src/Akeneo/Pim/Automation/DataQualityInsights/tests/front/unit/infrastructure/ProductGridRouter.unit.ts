@@ -12,10 +12,8 @@ beforeAll(() => {
   jest.spyOn(DatagridState, 'set');
 });
 
-const columnsWithoutDQI =
-  'identifier,image,label,family,enabled,completeness,created,updated,complete_variant_products,success';
 const columnsWithDQI =
-  'identifier,image,label,family,enabled,completeness,created,updated,complete_variant_products,success,data_quality_insights_consistency,data_quality_insights_enrichment';
+  'identifier,image,label,family,enabled,completeness,created,updated,complete_variant_products,success,data_quality_insights_score';
 
 test('Redirect to product grid filtered on a family', () => {
   redirectToProductGridFilteredByFamily('ecommerce', 'en_US', 'accessories');
@@ -43,7 +41,7 @@ test('Redirect to product grid filtered on enrichment quality key indicator', ()
     null
   );
   assertDatagridState(
-    columnsWithoutDQI,
+    columnsWithDQI,
     's[updated]=1&f[scope][value]=ecommerce&f[entity_type][value]=product&t=product-grid&f[data_quality_insights_enrichment_quality][value]=0'
   );
 });
@@ -58,7 +56,7 @@ test('Redirect to product grid filtered on enrichment quality key indicator and 
     null
   );
   assertDatagridState(
-    columnsWithoutDQI,
+    columnsWithDQI,
     's[updated]=1&f[scope][value]=ecommerce&f[entity_type][value]=product&t=product-grid&f[family][value][]=accessories&f[family][type]=in&f[data_quality_insights_enrichment_quality][value]=0'
   );
 });
@@ -73,7 +71,7 @@ test('Redirect to product grid filtered on enrichment quality key indicator and 
     '4'
   );
   assertDatagridState(
-    columnsWithoutDQI,
+    columnsWithDQI,
     's[updated]=1&f[scope][value]=ecommerce&f[entity_type][value]=product&t=product-grid&f[category][value][treeId]=4&f[category][value][categoryId]=12&f[category][type]=1&f[data_quality_insights_enrichment_quality][value]=0'
   );
 });

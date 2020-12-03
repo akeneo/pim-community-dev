@@ -1,4 +1,4 @@
-import {calculateAverageGrade} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Overview/Charts/Tooltip';
+import {calculateAverageGrade} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/ScoreDistributionSection/Chart/Tooltip';
 
 describe('Tooltip calculates and displays the average grade', () => {
   test('A distribution as 50% of A and 50% of D should return an average grade B', () => {

@@ -1,5 +1,4 @@
 import React, {FC} from 'react';
-import Rate from '../../../../Rate';
 import AllAttributesLink from '../AllAttributesLink';
 import {CriterionEvaluationResult, Evaluation} from '../../../../../../domain';
 import {uniq as _uniq} from 'lodash';
@@ -23,11 +22,10 @@ const canDisplayAllAttributesLink = (attributes: string[]) => {
 type Props = {
   evaluation: Evaluation;
   axis: string;
-  showRate: boolean;
 };
 
-const AxisHeader: FC<Props> = ({evaluation, axis, showRate}) => {
-  const {criteria, rate} = evaluation;
+const AxisHeader: FC<Props> = ({evaluation, axis}) => {
+  const {criteria} = evaluation;
   const allAttributes = getAxisAttributesWithRecommendations(criteria);
 
   return (
@@ -36,7 +34,6 @@ const AxisHeader: FC<Props> = ({evaluation, axis, showRate}) => {
         <span className="AxisEvaluationTitle">
           {__(`akeneo_data_quality_insights.product_evaluation.axis.${axis}.title`)}
         </span>
-        {showRate && <Rate value={rate ? rate.rank : null} />}
       </span>
       <span>
         {canDisplayAllAttributesLink(allAttributes) && <AllAttributesLink axis={axis} attributes={allAttributes} />}

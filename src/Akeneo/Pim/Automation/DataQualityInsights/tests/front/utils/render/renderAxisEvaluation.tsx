@@ -1,13 +1,11 @@
 import React from 'react';
-import {render} from '@testing-library/react';
-import {Provider} from 'react-redux';
-import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
 import AxisEvaluation from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
 import Evaluation from '@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface';
-import Criterion from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import {Criterion} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import {renderWithProductEditFormContextHelper} from './renderWithProductEditFormContextHelper';
 
 const renderEnrichmentEvaluation = (evaluation: Evaluation) => {
-  return renderWithRedux(
+  return renderWithData(
     <AxisEvaluation axis={'enrichment'} evaluation={evaluation}>
       <Criterion code={'completeness_of_non_required_attributes'} />
       <Criterion code={'completeness_of_required_attributes'} />
@@ -16,7 +14,7 @@ const renderEnrichmentEvaluation = (evaluation: Evaluation) => {
 };
 
 const renderConsistencyEvaluation = (evaluation: Evaluation) => {
-  return renderWithRedux(
+  return renderWithData(
     <AxisEvaluation axis={'consistency'} evaluation={evaluation}>
       <Criterion code={'consistency_spelling'} />
       <Criterion code={'consistency_textarea_lowercase_words'} />
@@ -27,7 +25,7 @@ const renderConsistencyEvaluation = (evaluation: Evaluation) => {
   );
 };
 
-const renderWithRedux = (ui: React.ReactElement) => {
+const renderWithData = (ui: React.ReactElement) => {
   const initialState = {
     catalogContext: {channel: 'ecommerce', locale: 'en_US'},
     product: {
@@ -72,7 +70,7 @@ const renderWithRedux = (ui: React.ReactElement) => {
       },
     },
   };
-  return render(<Provider store={createStoreWithInitialState(initialState)}>{ui}</Provider>);
+  return renderWithProductEditFormContextHelper(ui, initialState);
 };
 
 export {renderEnrichmentEvaluation, renderConsistencyEvaluation};

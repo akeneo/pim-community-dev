@@ -19,6 +19,7 @@ const Container = styled.div`
   align-items: center;
   z-index: 2;
   border-bottom: 1px solid ${({theme}) => theme.color.grey140};
+  margin-top: 20px;
 `;
 
 const SectionTitle: FC<Props> = ({title}) => {

@@ -1,17 +1,16 @@
 import React from 'react';
-import {Provider} from 'react-redux';
 
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render} from '@testing-library/react';
+import {fireEvent} from '@testing-library/react';
 
 import {RecommendationWithAttributesList} from '@akeneo-pim-community/data-quality-insights//src/application/component/ProductEditForm/TabContent/DataQualityInsights/';
 import {Evaluation, Product} from '@akeneo-pim-community/data-quality-insights//src/domain';
-import {createStoreWithInitialState} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/store/productEditFormStore';
 import {DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE} from '@akeneo-pim-community/data-quality-insights//src/application/listener';
 import {
   ATTRIBUTE_TO_IMPROVE_SESSION_STORAGE_KEY,
   PRODUCT_MODEL_ATTRIBUTES_TAB_NAME,
 } from '@akeneo-pim-community/data-quality-insights/src/application/constant';
+import {renderWithProductEditFormContextHelper} from '../../utils/render';
 
 beforeEach(() => {
   jest.resetModules();
@@ -43,7 +42,7 @@ const evaluation: Evaluation = {
 describe('Click on improvable or missing attributes', () => {
   test('Simple product', async () => {
     const product = buildSimpleProduct();
-    const {getAllByTestId} = renderWithRedux(
+    const {getAllByTestId} = renderWithData(
       product,
       <RecommendationWithAttributesList
         product={product}
@@ -61,7 +60,7 @@ describe('Click on improvable or missing attributes', () => {
 
   test('Third level variant product', async () => {
     const product = buildThirdLevelProduct();
-    const {getAllByTestId} = renderWithRedux(
+    const {getAllByTestId} = renderWithData(
       product,
       <RecommendationWithAttributesList
         product={product}
@@ -89,7 +88,7 @@ describe('Click on improvable or missing attributes', () => {
 
   test('Second level variant product', async () => {
     const product = buildSecondLevelProduct();
-    const {getAllByTestId} = renderWithRedux(
+    const {getAllByTestId} = renderWithData(
       product,
       <RecommendationWithAttributesList
         product={product}
@@ -221,7 +220,7 @@ function buildSecondLevelProduct(): Product {
   };
 }
 
-function renderWithRedux(product: Product, ui: React.ReactElement) {
+function renderWithData(product: Product, ui: React.ReactElement) {
   const initialState = {
     catalogContext: {channel: 'ecommerce', locale: 'en_US'},
     product: product,
@@ -282,5 +281,5 @@ function renderWithRedux(product: Product, ui: React.ReactElement) {
       },
     },
   };
-  return render(<Provider store={createStoreWithInitialState(initialState)}>{ui}</Provider>);
+  return renderWithProductEditFormContextHelper(ui, initialState);
 }
