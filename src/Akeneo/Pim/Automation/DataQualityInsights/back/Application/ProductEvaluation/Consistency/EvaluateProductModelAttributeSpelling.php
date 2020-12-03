@@ -19,7 +19,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetProductFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 
-final class EvaluateProductModelAttributeSpelling  implements EvaluateCriterionInterface
+final class EvaluateProductModelAttributeSpelling implements EvaluateCriterionInterface
 {
     private GetProductFamilyAttributeCodesQueryInterface $getProductFamilyAttributeCodesQuery;
 

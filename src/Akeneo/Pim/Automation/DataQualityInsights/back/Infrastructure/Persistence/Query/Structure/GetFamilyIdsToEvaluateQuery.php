@@ -52,7 +52,7 @@ SQL;
         $count = 0;
         while ($familyId = $stmt->fetchColumn()) {
             $familyIds[] = new FamilyId(intval($familyId));
-            if(++$count % $bulkSize === 0) {
+            if (++$count % $bulkSize === 0) {
                 yield $familyIds;
                 $familyIds = [];
             }
