@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScores;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator;
@@ -162,7 +162,7 @@ class ProductController
     /** @var LoggerInterface */
     private $logger;
 
-    private GetProductsWithQualityScores $getProductsWithQualityScores;
+    private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
 
     public function __construct(
         NormalizerInterface $normalizer,
@@ -196,7 +196,7 @@ class ProductController
         EventDispatcherInterface $eventDispatcher,
         DuplicateValueChecker $duplicateValueChecker,
         LoggerInterface $logger,
-        GetProductsWithQualityScores $getProductsWithQualityScores
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
