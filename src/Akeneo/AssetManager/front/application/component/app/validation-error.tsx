@@ -1,7 +1,7 @@
 import React from 'react';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {Helper} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import translate from 'akeneoassetmanager/tools/translator';
 
 const equalsFilter = (field: string) => (error: ValidationError) => field === error.propertyPath;
 const startsWith = (field: string) => (error: ValidationError) => error.propertyPath.indexOf(field) === 0;
@@ -11,8 +11,6 @@ const getErrorsView = (
   field: string,
   searchMethod: (field: string) => (error: ValidationError) => boolean = equalsFilter
 ) => {
-  const translate = useTranslate();
-
   if (!Array.isArray(errors) || errors.find(searchMethod(field)) === undefined) {
     return null;
   }
