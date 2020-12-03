@@ -77,6 +77,7 @@ class DatagridViewRepositoryIntegration extends TestCase
 
         $this->createDatagridView('view 1', 'product-grid', DatagridView::TYPE_PRIVATE, $adminUser)->getId();
         $this->createDatagridView('view 3', 'other-grid', DatagridView::TYPE_PRIVATE, $adminUser)->getId();
+        $this->createDatagridView('view 5', 'product-grid', DatagridView::TYPE_PRIVATE, $adminUser)->getId();
         $aliases = $this->datagridViewRepository->getDatagridViewAliasesByUser($adminUser);
         Assert::same($aliases, ['product-grid', 'other-grid']);
 
