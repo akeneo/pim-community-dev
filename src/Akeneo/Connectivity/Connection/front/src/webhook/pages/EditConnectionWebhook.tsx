@@ -87,7 +87,7 @@ export const EditConnectionWebhook: FC = () => {
                         <SaveButton
                             key={0}
                             webhook={eventSubscription}
-                            reFetchEventSubscription={async () => await fetchEventSubscriptionFormData()}
+                            onSaveSuccess={fetchEventSubscriptionFormData}
                         />,
                     ]}
                     state={<FormState />}
@@ -109,10 +109,10 @@ export const EditConnectionWebhook: FC = () => {
 
 type SaveButtonProps = {
     webhook: Webhook;
-    reFetchEventSubscription: () => void;
+    onSaveSuccess: () => void;
 };
 
-const SaveButton: FC<SaveButtonProps> = ({webhook, reFetchEventSubscription}) => {
+const SaveButton: FC<SaveButtonProps> = ({webhook, onSaveSuccess}) => {
     const {formState, getValues, triggerValidation, handleSubmit, setError} = useFormContext<FormInput>();
     const updateWebhook = useUpdateWebhook(webhook.connectionCode);
     const handleSave = async () => {
@@ -133,7 +133,7 @@ const SaveButton: FC<SaveButtonProps> = ({webhook, reFetchEventSubscription}) =>
                 return;
             }
 
-            reFetchEventSubscription();
+            onSaveSuccess();
         }
     };
 

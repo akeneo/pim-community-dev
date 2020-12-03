@@ -134,8 +134,8 @@ export const ConnectionCreateForm = () => {
             <FormGroup
                 controlId='label'
                 label='akeneo_connectivity.connection.connection.label'
-                helpers={Object.keys(state.controls.label.errors).map(error => (
-                    <Helper inline level='error'>
+                helpers={Object.keys(state.controls.label.errors).map((error, i) => (
+                    <Helper inline level='error' key={i}>
                         <Translate id={error} />
                     </Helper>
                 ))}
@@ -155,8 +155,8 @@ export const ConnectionCreateForm = () => {
             <FormGroup
                 controlId='code'
                 label='akeneo_connectivity.connection.connection.code'
-                helpers={Object.keys(state.controls.code.errors).map(error => (
-                    <Helper inline level='error'>
+                helpers={Object.keys(state.controls.code.errors).map((error, i) => (
+                    <Helper inline level='error' key={i}>
                         <Translate id={error} />
                     </Helper>
                 ))}
@@ -178,11 +178,11 @@ export const ConnectionCreateForm = () => {
                 controlId='flow_type'
                 label='akeneo_connectivity.connection.connection.flow_type'
                 helpers={[
-                    <Helper inline level='info'>
+                    <Helper inline level='info' key={-1}>
                         <FlowTypeHelper />
                     </Helper>,
-                    ...Object.keys(state.controls.flow_type.errors).map(error => (
-                        <Helper inline level='error'>
+                    ...Object.keys(state.controls.flow_type.errors).map((error, i) => (
+                        <Helper inline level='error' key={i}>
                             <Translate id={error} />
                         </Helper>
                     )),
