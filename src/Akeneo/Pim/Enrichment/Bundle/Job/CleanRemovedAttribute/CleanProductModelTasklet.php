@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\CleanRemovedAttribute;
+namespace Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute;
 
 use Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductModelsWithRemovedAttributeInterface;

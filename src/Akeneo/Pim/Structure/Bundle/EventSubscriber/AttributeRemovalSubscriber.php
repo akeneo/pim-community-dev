@@ -54,7 +54,6 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
         }
 
         $attributeCode = $subject->getCode();
-
         $this->attributeCodeBlacklister->blacklist($attributeCode);
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);

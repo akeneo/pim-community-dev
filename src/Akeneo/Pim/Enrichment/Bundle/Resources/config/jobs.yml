@@ -694,8 +694,6 @@ services:
                 name: akeneo_batch.job
                 connector: 'Clean removed attribute'
                 type: 'clean_removed_attribute_job'
-            -
-                name: akeneo_batch.job
 
     pim_catalog.step.clean_attribute.register_clean_job:
         class: '%pim_connector.step.tasklet.class%'
@@ -707,7 +705,7 @@ services:
         public: false
 
     pim_connector.tasklet.clean_attribute.register_clean_job:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\CleanRemovedAttribute\RegisterCleanJobTasklet'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\RegisterCleanJobTasklet'
         arguments:
             - '@pim_catalog.manager.attribute_code_blacklister'
 
@@ -721,7 +719,7 @@ services:
         public: false
 
     pim_connector.tasklet.clean_attribute.whitelist_attribute_code:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\CleanRemovedAttribute\WhitelistAttributeCodeTasklet'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\WhitelistAttributeCodeTasklet'
         arguments:
             - '@pim_catalog.manager.attribute_code_blacklister'
 
@@ -735,7 +733,7 @@ services:
         public: false
 
     pim_connector.tasklet.clean_attribute.clean_product:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\CleanRemovedAttribute\CleanProductTasklet'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\CleanProductTasklet'
         arguments:
             - '@akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute'
             - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
@@ -751,7 +749,7 @@ services:
         public: false
 
     pim_connector.tasklet.clean_attribute.clean_product_model:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\CleanRemovedAttribute\CleanProductModelTasklet'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\CleanProductModelTasklet'
         arguments:
             - '@akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute'
             - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'

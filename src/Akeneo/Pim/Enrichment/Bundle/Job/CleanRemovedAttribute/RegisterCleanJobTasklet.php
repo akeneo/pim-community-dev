@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job\CleanRemovedAttribute;
+namespace Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute;
 
 use Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
-class WhitelistAttributeCodeTasklet implements TaskletInterface, TrackableTaskletInterface
+class RegisterCleanJobTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     private StepExecution $stepExecution;
     private AttributeCodeBlacklister $attributeCodeBlacklister;
@@ -40,10 +40,9 @@ class WhitelistAttributeCodeTasklet implements TaskletInterface, TrackableTaskle
             ->getJobParameters()
             ->get('attribute_code');
 
-        if (!$attributeCode) {
-            throw new \InvalidArgumentException('The clean removed attribute job requires an attribute code');
-        }
-
-        $this->attributeCodeBlacklister->whitelist($attributeCode);
+        $this->attributeCodeBlacklister->registerJob(
+            $attributeCode,
+            $this->stepExecution->getJobExecution()->getId()
+        );
     }
 }
