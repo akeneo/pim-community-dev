@@ -63,6 +63,7 @@
 - PIM-9569: Fix memory usage issue when adding a group to a product
 - PIM-9571: Fix missing items on the invalid data file when importing product models
 - PIM-9543: Print PDF content with Asian characters
+- PIM-9577: Remove empty 'Global settings' tab on following XLSX import: attribute, family, family variant, association type, attribute option, attribute group, group type
 
 ## New features
 
