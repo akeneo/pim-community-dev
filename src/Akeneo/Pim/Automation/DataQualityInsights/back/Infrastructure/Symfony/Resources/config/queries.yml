@@ -136,3 +136,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetActivatedFamilyAttributesCodesQuery:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetFamilyIdsToEvaluateQuery:
+        arguments:
+            - '@database_connection'
