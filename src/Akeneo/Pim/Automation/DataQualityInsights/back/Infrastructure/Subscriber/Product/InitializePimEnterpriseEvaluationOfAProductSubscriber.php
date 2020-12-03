@@ -33,9 +33,6 @@ final class InitializePimEnterpriseEvaluationOfAProductSubscriber implements Eve
 
     public static function getSubscribedEvents()
     {
-        return [
-            // Priority greater than zero to ensure that the evaluation is done prior to the re-indexation of the product in ES
-            StorageEvents::POST_SAVE => ['onPostSave', 10],
-        ];
+        return InitializeEvaluationOfAProductSubscriber::getSubscribedEvents();
     }
 }
