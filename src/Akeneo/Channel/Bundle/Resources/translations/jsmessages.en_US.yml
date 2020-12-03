@@ -69,6 +69,11 @@ pim_enrich.entity.locale:
     page_title:
         index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
 
+    grid:
+        columns:
+            code: Code
+        no_search_result: Sorry, there is no result for your search.
+
 pim_enrich.entity.currency:
     plural_label: Currencies
     page_title:

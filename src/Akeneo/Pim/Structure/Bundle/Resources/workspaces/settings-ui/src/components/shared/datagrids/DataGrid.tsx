@@ -10,7 +10,7 @@ type Props<T> = {
   isReorderAllowed?: boolean;
   isReorderActive?: boolean;
   dataSource: T[];
-  handleAfterMove: AfterMoveRowHandler<T>;
+  handleAfterMove?: AfterMoveRowHandler<T>;
   compareData: CompareRowDataHandler<T>;
   isFilterable?: boolean;
 };
@@ -20,7 +20,7 @@ const DataGrid = <T extends {}>({
   isReorderAllowed = false,
   isReorderActive = false,
   dataSource,
-  handleAfterMove,
+  handleAfterMove = () => {},
   compareData,
   isFilterable,
 }: PropsWithChildren<Props<T>>) => {
