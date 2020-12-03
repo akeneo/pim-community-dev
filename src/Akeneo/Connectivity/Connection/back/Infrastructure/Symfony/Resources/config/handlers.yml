@@ -90,6 +90,8 @@ services:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler
         arguments:
             - '@akeneo_connectivity.connection.persistence.query.get_connection_webhook'
+            - '%webhook_active_event_subscriptions_limit%'
+            - '@akeneo_connectivity.connection.persistence.query.count_active_event_subscriptions'
 
     akeneo_connectivity.connection.application.webhook.handler.send_business_event_to_webhooks:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler
