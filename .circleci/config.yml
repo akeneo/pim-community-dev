@@ -446,31 +446,39 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-                name: Latest SaaS prod deployment on kubernetes
+                name: Get latest release & export variables
                 command: |
                     git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
                     LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    INSTANCE_NAME_PREFIX=pimup INSTANCE_NAME=pimup-$CIRCLE_SHA1 IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
+                    echo export IMAGE_TAG=${LATEST_RELEASE} >> $BASH_ENV
+                    echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
+                    echo export INSTANCE_NAME=pimup-${CIRCLE_SHA1} >> $BASH_ENV
+                    echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
+          - run:
+                name: Deploy instance with latest release
+                command: |
+                    make create-ci-release-files
+                    make change-terraform-source-version
+                    make deploy
           - run:
                 name: Upgrade
-                command: |
-                    INSTANCE_NAME_PREFIX=pimup INSTANCE_NAME=pimup-$CIRCLE_SHA1 make deploy-serenity
+                command: IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
           - run:
                 name: Production tests on upgraded env
-                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 make test-prod
+                command: make test-prod
           - run:
                 name: Check that upgrader pod ran
                 command: kubectl get pods --namespace=srnt-pimup-$CIRCLE_SHA1 | grep pim-upgrader
           - run:
                 name: Prepare infrastructure artifacts
-                command: INSTANCE_NAME=pimup-$CIRCLE_SHA1 make prepare-infrastructure-artifacts
+                command: make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: INSTANCE_NAME_PREFIX=pimup INSTANCE_NAME=pimup-$CIRCLE_SHA1 make delete
+                command: IMAGE_TAG=$CIRCLE_SHA1 make delete
                 when: always
 
   release:
@@ -510,11 +518,29 @@ jobs:
                 at: ~/
             - set_gcloud_config_preprod
             - add_ssh_keys
+            - restore_persisted_env_vars
             - run:
-                name: Get latest release, generate config files and deploy
+                name: Get latest release
                 command: |
                     ssh-keyscan github.com >> ~/.ssh/known_hosts
-                    ENV_NAME=preprod make deploy_latest_release_for_helpdesk
+                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
+                    RELEASE_TO_DEPLOY=$(head -n 1 /tmp/pim-tags.txt)
+                    echo export IMAGE_TAG=${RELEASE_TO_DEPLOY} >> $BASH_ENV
+                    echo export ENV_NAME=preprod >> $BASH_ENV
+                    echo export INSTANCE_NAME=pimci-helpdesk >> $BASH_ENV
+            - run:
+                name: Generate config files and deploy
+                command: |
+                    make create-ci-release-files
+                    make change-terraform-source-version
+            - run:
+                name: Deploy
+                command: |
+                    make deploy
+            - run:
+                name: Communicate
+                command: |
+                    make slack_helpdesk
 
   deploy_pm_environment:
       environment:
@@ -576,7 +602,7 @@ jobs:
                     LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo )
                     RANDOM_SOURCE_PFID=$(( $RANDOM % 2 ))
                     SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
-                    SOURCE_PED_TAG=$(cd /root/project; git fetch origin &> /dev/null && git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1 )
+                    SOURCE_PED_TAG=$(cd /root/project; git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt; head -n 1 /tmp/pim-tags.txt )
                     INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40)
                     ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} make test_upgrade_from_serenity_customer_db
           - run:
