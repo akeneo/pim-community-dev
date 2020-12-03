@@ -736,8 +736,10 @@ services:
 
     pim_connector.tasklet.clean_attribute.clean_product:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\CleanRemovedAttribute\CleanProductTasklet'
-        # arguments:
-            # - '@pim_catalog.manager.attribute_code_blacklister'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
+            - '@pim_catalog.product_values.remove_values_from_products'
 
     pim_catalog.step.clean_attribute.clean_product_model:
         class: '%pim_connector.step.tasklet.class%'
