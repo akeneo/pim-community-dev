@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category;
 
+use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes as GetViewableCategoryCodesInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 
@@ -13,7 +14,7 @@ use Doctrine\DBAL\ParameterType;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetViewableCategoryCodes implements GetGrantedCategoryCodes
+final class GetViewableCategoryCodes implements GetViewableCategoryCodesInterface
 {
     /** @var Connection */
     private $connection;

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -16,18 +16,15 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
  */
 class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
 {
-    /** @var EventDataBuilderInterface */
-    private $eventDataBuilder;
-
-    /** @var CategoryAccessRepository */
-    private $categoryAccessRepository;
+    private EventDataBuilderInterface $eventDataBuilder;
+    private GetViewableCategoryCodes $getViewableCategoryCodes;
 
     public function __construct(
         EventDataBuilderInterface $eventDataBuilder,
-        CategoryAccessRepository $categoryAccessRepository
+        GetViewableCategoryCodes $getViewableCategoryCodes
     ) {
         $this->eventDataBuilder = $eventDataBuilder;
-        $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->getViewableCategoryCodes = $getViewableCategoryCodes;
     }
 
     public function supports(object $event): bool
@@ -36,7 +33,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
     }
 
     /**
-     * @param ProductRemoved $event
+     * @param BulkEvent $event
      */
     public function build(object $event, UserInterface $user): EventDataCollection
     {
@@ -44,15 +41,33 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
             throw new \InvalidArgumentException();
         }
 
-        $isProductGranted = $this->categoryAccessRepository->isCategoryCodesGranted(
-            $user,
-            Attributes::VIEW_ITEMS,
-            $event->getCategoryCodes()
-        );
-        if (false === $isProductGranted) {
-            throw new NotGrantedProductException($user->getUsername(), $event->getIdentifier());
+        $collection = new EventDataCollection();
+
+        /** @var ProductRemoved $productRemovedEvent */
+        foreach ($event->getEvents() as $productRemovedEvent) {
+            $grantedCategoryCodes = $this->getViewableCategoryCodes->forCategoryCodes(
+                $user->getId(),
+                $productRemovedEvent->getCategoryCodes()
+            );
+
+            if (0 === count($grantedCategoryCodes)) {
+                $collection->setEventDataError(
+                    $productRemovedEvent,
+                    new NotGrantedProductException($user->getUsername(), $productRemovedEvent->getIdentifier())
+                );
+
+                continue;
+            }
+
+            $data = [
+                'resource' => [
+                    'identifier' => $productRemovedEvent->getIdentifier(),
+                ],
+            ];
+
+            $collection->setEventData($productRemovedEvent, $data);
         }
 
-        return $this->eventDataBuilder->build($event, $user);
+        return $collection;
     }
 }

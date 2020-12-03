@@ -15,6 +15,9 @@ namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category;
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @todo create interfaces for GetEditableCategoryCodes and GetOwnableCategoryCodes
+ * @todo see Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes
+ * @todo delete this interface
  */
 interface GetGrantedCategoryCodes
 {

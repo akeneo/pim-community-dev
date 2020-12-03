@@ -158,6 +158,10 @@ $rules = [
 
         // PIM-9393: Avoid user to remove all permissions to edit a job instance
         'Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException',
+
+        //CXP-567
+        'Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes',
+
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',

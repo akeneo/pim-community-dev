@@ -7,21 +7,22 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\NotGrantedProductException;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\ProductRemovedEventDataBuilder;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
 use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\User;
+use PHPUnit\Framework\Assert;
 use PhpSpec\ObjectBehavior;
 
 class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 {
     public function let(
         EventDataBuilderInterface $eventDataBuilder,
-        CategoryAccessRepository $categoryAccessRepository
+        GetViewableCategoryCodes $getViewableCategoryCodes
     ): void {
-        $this->beConstructedWith($eventDataBuilder, $categoryAccessRepository);
+        $this->beConstructedWith($eventDataBuilder, $getViewableCategoryCodes);
     }
 
     public function it_is_an_event_data_builder(): void
@@ -32,73 +33,107 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_supports_the_same_business_events_as_decorated_service($eventDataBuilder): void
     {
-        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
-        $eventDataBuilder->supports($event)->willReturn(true, false);
+        $eventBlueJean = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->aBlueJeanProduct());
+        $eventBlueCam = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->aBlueCamProduct());
+        $bulkEvent = new BulkEvent([$eventBlueJean, $eventBlueCam]);
 
-        $this->supports($event)->shouldReturn(true);
-        $this->supports($event)->shouldReturn(false);
+        $eventDataBuilder->supports($bulkEvent)->willReturn(true, false);
+
+        $this->supports($bulkEvent)->shouldReturn(true);
+        $this->supports($bulkEvent)->shouldReturn(false);
     }
 
-    public function it_builds_event_data_if_the_product_is_granted(
+    public function it_handles_permissions_error_for_products_not_viewable(
         $eventDataBuilder,
-        $categoryAccessRepository
+        $getViewableCategoryCodes
     ): void {
         $user = new User();
-        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
-        $eventDataBuilder->supports($event)->willReturn(true);
+        $user->setUsername('erp_1234');
+        $user->setId(1234);
 
-        $categoryAccessRepository->isCategoryCodesGranted(
-            $user,
-            Attributes::VIEW_ITEMS,
-            ['clothes']
-        )->willReturn(true);
+        $eventWithGrantedProduct = new ProductRemoved(
+            Author::fromNameAndType('erp', 'ui'),
+            $this->aBlueJeanProduct()
+        );
 
-        $collection = new EventDataCollection();
-        $collection->setEventData($event, ['resource' => ['identifier' => 'blue_jean']]);
+        $eventWithNonGrantedProduct = new ProductRemoved(
+            Author::fromNameAndType('erp', 'ui'),
+            $this->aBlueCamProduct()
+        );
 
-        $eventDataBuilder->build($event, $user)->willReturn($collection);
+        $bulkEvent = new BulkEvent(
+            [
+                $eventWithGrantedProduct,
+                $eventWithNonGrantedProduct,
+            ]
+        );
 
-        $this->build($event, $user);
+        $eventDataBuilder->supports($bulkEvent)->willReturn(true);
+
+        $getViewableCategoryCodes->forCategoryCodes(
+            $user->getId(),
+            $eventWithGrantedProduct->getCategoryCodes()
+        )->willReturn($eventWithGrantedProduct->getCategoryCodes());
+
+        $getViewableCategoryCodes->forCategoryCodes(
+            $user->getId(),
+            $eventWithNonGrantedProduct->getCategoryCodes()
+        )->willReturn([]);
+
+        $expectedCollection = new EventDataCollection();
+        $expectedCollection->setEventData($eventWithGrantedProduct, ['resource' => ['identifier' => 'blue_jean']]);
+        $expectedCollection->setEventDataError(
+            $eventWithNonGrantedProduct,
+            new NotGrantedProductException($user->getUsername(), 'blue_cam')
+        );
+
+        $actualCollection = $this->build($bulkEvent, $user);
+
+        Assert::assertEquals($expectedCollection, $actualCollection->getWrappedObject());
     }
 
-    public function it_does_not_build_event_data_if_the_product_is_not_granted(
-        $eventDataBuilder,
-        $categoryAccessRepository
-    ): void {
-        $user = new User();
-        $user->setUsername('erp_06458');
-        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
-        $eventDataBuilder->supports($event)->willReturn(true);
-
-        $categoryAccessRepository->isCategoryCodesGranted(
-            $user,
-            Attributes::VIEW_ITEMS,
-            ['clothes']
-        )->willReturn(false);
-
-        $eventDataBuilder->build($event)->willReturn(['resource' => ['identifier' => 'blue_jean']]);
-
-        $this
-            ->shouldThrow(NotGrantedProductException::class)
-            ->during('build', [$event, $user]);
-    }
-
-    public function it_throws_an_error_if_the_business_event_is_not_supported($eventDataBuilder): void
+    public function it_throws_an_error_if_an_event_is_not_supported($eventDataBuilder): void
     {
         $user = new User();
-        $event = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->getProduct());
-        $eventDataBuilder->supports($event)->willReturn(false);
+        $user->setUsername('erp_1234');
+
+        $supportedEvent = new ProductRemoved(
+            Author::fromNameAndType('erp', 'ui'),
+            $this->aBlueJeanProduct()
+        );
+
+        $notSupportedEvent = new ProductRemoved(
+            Author::fromNameAndType('erp', 'ui'),
+            $this->aBlueCamProduct()
+        );
+
+        $bulkEvent = new BulkEvent(
+            [
+                $supportedEvent,
+                $notSupportedEvent,
+            ]
+        );
+
+        $eventDataBuilder->supports($bulkEvent)->willReturn(false);
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$event, $user]);
+            ->during('build', [$bulkEvent, $user]);
     }
 
-    private function getProduct(): array
+    private function aBlueJeanProduct(): array
     {
         return [
             'identifier' => 'blue_jean',
             'category_codes' => ['clothes'],
+        ];
+    }
+
+    private function aBlueCamProduct(): array
+    {
+        return [
+            'identifier' => 'blue_cam',
+            'category_codes' => ['cameras'],
         ];
     }
 }
