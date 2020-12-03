@@ -2,23 +2,14 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAllCategoryCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAllFamilyCodesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetRanksDistributionFromProductAxisRatesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetRanksDistributionFromProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
@@ -29,19 +20,19 @@ use PhpSpec\ObjectBehavior;
 class ConsolidateDashboardRatesSpec extends ObjectBehavior
 {
     public function let(
-        GetRanksDistributionFromProductAxisRatesQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
+        GetRanksDistributionFromProductScoresQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
         GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery,
         GetAllFamilyCodesQueryInterface $getAllFamilyCodesQuery,
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
+        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository
     ) {
         $this->beConstructedWith($getRanksDistributionFromProductAxisRatesQuery, $getAllCategoryCodesQuery, $getAllFamilyCodesQuery, $dashboardRatesProjectionRepository);
     }
 
     public function it_consolidates_the_dashboard_rates(
-        GetRanksDistributionFromProductAxisRatesQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
+        GetRanksDistributionFromProductScoresQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
         GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery,
         GetAllFamilyCodesQueryInterface $getAllFamilyCodesQuery,
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
+        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository
     ) {
         $dateTime = new \DateTimeImmutable('2020-01-19');
         $consolidationDate = new ConsolidationDate($dateTime);
@@ -114,26 +105,13 @@ class ConsolidateDashboardRatesSpec extends ObjectBehavior
     private function buildRandomRanksDistributionCollection(): RanksDistributionCollection
     {
         return new RanksDistributionCollection([
-            "consistency" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => rand(1, 100),
-                        "rank_2" => rand(1, 100),
-                        "rank_3" => rand(1, 100),
-                        "rank_4" => rand(1, 100),
-                        "rank_5" => rand(1, 100)
-                    ],
-                ],
-            ],
-            "enrichment" => [
-                "ecommerce" => [
-                    "en_US" => [
-                        "rank_1" => rand(1, 100),
-                        "rank_2" => rand(1, 100),
-                        "rank_3" => rand(1, 100),
-                        "rank_4" => rand(1, 100),
-                        "rank_5" => rand(1, 100)
-                    ],
+            "ecommerce" => [
+                "en_US" => [
+                    "rank_1" => rand(1, 100),
+                    "rank_2" => rand(1, 100),
+                    "rank_3" => rand(1, 100),
+                    "rank_4" => rand(1, 100),
+                    "rank_5" => rand(1, 100)
                 ],
             ],
         ]);

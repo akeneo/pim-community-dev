@@ -2,18 +2,8 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\ProductModel;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -24,35 +14,30 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberInterface
 {
-    /** @var FeatureFlag */
-    private $dataQualityInsightsFeature;
+    private FeatureFlag $dataQualityInsightsFeature;
 
-    /** @var CreateCriteriaEvaluations */
-    private $createProductModelCriteriaEvaluations;
+    private CreateCriteriaEvaluations $createProductModelCriteriaEvaluations;
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /** @var EvaluatePendingCriteria */
-    private $evaluatePendingCriteria;
-
-    /** @var ConsolidateAxesRates */
-    private $consolidateAxesRates;
+    private EvaluatePendingCriteria $evaluatePendingCriteria;
 
     public function __construct(
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductModelCriteriaEvaluations,
         LoggerInterface $logger,
-        EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateAxesRates $consolidateAxesRates
+        EvaluatePendingCriteria $evaluatePendingCriteria
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->createProductModelCriteriaEvaluations = $createProductModelCriteriaEvaluations;
         $this->logger = $logger;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
-        $this->consolidateAxesRates = $consolidateAxesRates;
     }
 
     public static function getSubscribedEvents()
@@ -80,7 +65,6 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
         $productModelId = intval($subject->getId());
         $this->initializeProductModelCriteria($productModelId);
         $this->evaluatePendingCriteria->evaluateSynchronousCriteria([$productModelId]);
-        $this->consolidateAxesRates->consolidate([$productModelId]);
     }
 
     private function initializeProductModelCriteria($productModelId)

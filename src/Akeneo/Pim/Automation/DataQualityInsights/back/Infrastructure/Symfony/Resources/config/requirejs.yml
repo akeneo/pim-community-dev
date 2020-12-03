@@ -10,7 +10,7 @@ config:
         akeneo-data-quality-insights-dqi-dashboard-index: akeneodataqualityinsights/js/controller/dqi-dashboard.ts
 
         ## Product Grid
-        oro/datagrid/rate-badge-cell: akeneodataqualityinsights/js/infrastructure/datagrid/cell/rate-badge-cell.tsx
+        oro/datagrid/quality-score-badge-cell: akeneodataqualityinsights/js/infrastructure/datagrid/cell/quality-score-badge-cell.tsx
 
         ## Dashboard
         akeneo/data-quality-insights/view/dqi-dashboard/section: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/section.tsx
@@ -19,16 +19,18 @@ config:
         ## Dashboard
         akeneo/data-quality-insights/view/dqi-dashboard/locale-switcher: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/locale-switcher.ts
         akeneo/data-quality-insights/view/dqi-dashboard/channel-switcher: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/channel-switcher.ts
+        akeneo/data-quality-insights/view/dqi-dashboard/filters: akeneodataqualityinsights/js/infrastructure/dqi-dashboard/dashboard-filters.tsx
 
         ## Back button
         akeneo/data-quality-insights/view/back-link: akeneodataqualityinsights/js/infrastructure/pim-view/back-link.tsx
 
         # View
         ## Product Edit Form
-        akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-overview: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-overview.tsx
         akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-app: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-app.tsx
         akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-tab-content: akeneodataqualityinsights/js/infrastructure/product-edit-form/data-quality-insights-tab-content.tsx
         akeneo/data-quality-insights/infrastructure/product-edit-form/attributes-tab-content: akeneodataqualityinsights/js/infrastructure/product-edit-form/attributes-tab-content.tsx
+        akeneo/data-quality-insights/infrastructure/product-edit-form/product-quality-score: akeneodataqualityinsights/js/infrastructure/product-edit-form/product-quality-score.tsx
+        akeneo/data-quality-insights/infrastructure/product-edit-form/product-model-quality-score: akeneodataqualityinsights/js/infrastructure/product-edit-form/product-model-quality-score.tsx
 
         # Components
         ## Product Edit Form

@@ -1,90 +1,93 @@
 services:
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\EnrichmentFilter:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\QualityScoreFilter:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: data_quality_insights_enrichment }
+            - { name: oro_filter.extension.orm_filter.filter, type: data_quality_insights_score }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\EnrichmentSorter:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\QualityScoreSorter:
         tags:
-            - { name: pim_datagrid.extension.sorter, type: data_quality_insights_enrichment }
+            - { name: pim_datagrid.extension.sorter, type: data_quality_insights_score }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\FetchEnrichmentForProductModelRows:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddProductModelScoreProperty:
         tags:
           - { name: akeneo.pim.enrichment.product.grid.add_additional_product_model_properties }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\FetchEnrichmentForProductRows:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddProductScoreProperty:
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.get_product_axes_rates'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductScoresQuery'
         tags:
             - { name: akeneo.pim.enrichment.product.grid.add_additional_product_properties }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterEnrichmentFilter:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterQualityScoreFilterAndColumn:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter\EnrichmentSorter:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter\QualityScoreSorter:
         arguments:
-            - ['rates_enrichment']
+            - ['quality_score']
         tags:
             - { name: pim_catalog.elasticsearch.query.sorter, priority: 30 }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\EnrichmentFilter:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreFilter:
         tags:
+            - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
             - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
 
-# @todo DAPI-1436
-#    akeneo.pim.automation.data_quality_insights.product_grid.filter.enrichment_quality:
-#        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\KeyIndicatorFilter
-#        arguments:
-#            - '@form.factory'
-#            - '@pim_filter.product_utility'
-#            - 'data_quality_insights_enrichment_quality'
-#        tags:
-#            - { name: oro_filter.extension.orm_filter.filter, type: data_quality_insights_enrichment_quality }
-#
-#    akeneo.pim.automation.data_quality_insights.product_grid.register_filter.enrichment_quality:
-#        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterKeyIndicatorFilter
-#        arguments:
-#            - '@akeneo.pim.automation.data_quality_insights.feature'
-#            - 'data_quality_insights_enrichment_quality'
-#            - 'akeneo_data_quality_insights.product_grid.filter_label.enrichment_quality'
-#        tags:
-#            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
-#
-#    akeneo.pim.automation.data_quality_insights.product_grid.elasticsearch.enrichment_quality_filter:
-#        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\KeyIndicatorFilter
-#        arguments:
-#            - 'data_quality_insights_enrichment_quality'
-#            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
-#        tags:
-#            - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
-#
-#    akeneo.pim.automation.data_quality_insights.product_grid.filter.image_quality:
-#        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\KeyIndicatorFilter
-#        arguments:
-#            - '@form.factory'
-#            - '@pim_filter.product_utility'
-#            - 'data_quality_insights_images_quality'
-#        tags:
-#            - { name: oro_filter.extension.orm_filter.filter, type: data_quality_insights_images_quality }
-#
-#    akeneo.pim.automation.data_quality_insights.product_grid.register_filter.image_quality:
-#        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterKeyIndicatorFilter
-#        arguments:
-#            - '@akeneo.pim.automation.data_quality_insights.feature'
-#            - 'data_quality_insights_images_quality'
-#            - 'akeneo_data_quality_insights.product_grid.filter_label.images_quality'
-#        tags:
-#            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
-#
-#    akeneo.pim.automation.data_quality_insights.product_grid.elasticsearch.image_quality_filter:
-#        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\KeyIndicatorFilter
-#        arguments:
-#            - 'data_quality_insights_images_quality'
-#            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
-#        tags:
-#            - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
+    akeneo.pim.automation.data_quality_insights.product_grid.filter.enrichment_quality:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\KeyIndicatorFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - 'data_quality_insights_enrichment_quality'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: data_quality_insights_enrichment_quality }
+
+    akeneo.pim.automation.data_quality_insights.product_grid.register_filter.enrichment_quality:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterKeyIndicatorFilter
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - 'data_quality_insights_enrichment_quality'
+            - 'akeneo_data_quality_insights.product_grid.filter_label.enrichment_quality'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
+
+    akeneo.pim.automation.data_quality_insights.product_grid.elasticsearch.enrichment_quality_filter:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\KeyIndicatorFilter
+        arguments:
+            - 'data_quality_insights_enrichment_quality'
+            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
+        tags:
+            - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
+            - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }
+
+    akeneo.pim.automation.data_quality_insights.product_grid.filter.image_quality:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\KeyIndicatorFilter
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - 'data_quality_insights_images_quality'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: data_quality_insights_images_quality }
+
+    akeneo.pim.automation.data_quality_insights.product_grid.register_filter.image_quality:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterKeyIndicatorFilter
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - 'data_quality_insights_images_quality'
+            - 'akeneo_data_quality_insights.product_grid.filter_label.images_quality'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
+
+    akeneo.pim.automation.data_quality_insights.product_grid.elasticsearch.image_quality_filter:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\KeyIndicatorFilter
+        arguments:
+            - 'data_quality_insights_images_quality'
+            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
+        tags:
+            - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
+            - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }

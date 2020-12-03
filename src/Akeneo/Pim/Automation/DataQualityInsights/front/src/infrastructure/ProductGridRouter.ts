@@ -1,8 +1,7 @@
 const Router = require('pim/router');
 const DatagridState = require('pim/datagrid/state');
 
-const PRODUCT_GRID_CONSISTENCY_COLUMN = 'data_quality_insights_consistency';
-const PRODUCT_GRID_ENRICHMENT_COLUMN = 'data_quality_insights_enrichment';
+const PRODUCT_GRID_QUALITY_SCORE_COLUMN = 'data_quality_insights_score';
 
 export const redirectToProductGridFilteredByFamily = (channelCode: string, localeCode: string, familyCode: string) => {
   const gridFilters = buildFilters(channelCode, familyCode, null, null, null);
@@ -28,7 +27,7 @@ export const redirectToProductGridFilteredByKeyIndicator = (
   rootCategoryId: string | null
 ) => {
   const gridFilters = buildFilters(channelCode, familyCode, categoryId, rootCategoryId, keyIndicator);
-  redirectToFilteredProductGrid(channelCode, localeCode, gridFilters, false);
+  redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
 };
 
 const buildFilters = (
@@ -62,7 +61,7 @@ const redirectToFilteredProductGrid = (
   gridFilters: string,
   redefineColumns = true
 ) => {
-  const productGridColumns = redefineColumns ? getProductGridColumnsWithAxes() : getDefaultProductGridColumns();
+  const productGridColumns = redefineColumns ? getProductGridColumnsWithQualityScore() : getDefaultProductGridColumns();
   DatagridState.set('product-grid', {
     columns: productGridColumns.join(','),
     filters: gridFilters,
@@ -74,13 +73,10 @@ const redirectToFilteredProductGrid = (
   window.location.href = '#' + Router.generate('pim_enrich_product_index', {dataLocale: localeCode});
 };
 
-const getProductGridColumnsWithAxes = () => {
+const getProductGridColumnsWithQualityScore = () => {
   let productGridColumns = getDefaultProductGridColumns();
-  if (!productGridColumns.includes(PRODUCT_GRID_CONSISTENCY_COLUMN)) {
-    productGridColumns.push(PRODUCT_GRID_CONSISTENCY_COLUMN);
-  }
-  if (!productGridColumns.includes(PRODUCT_GRID_ENRICHMENT_COLUMN)) {
-    productGridColumns.push(PRODUCT_GRID_ENRICHMENT_COLUMN);
+  if (!productGridColumns.includes(PRODUCT_GRID_QUALITY_SCORE_COLUMN)) {
+    productGridColumns.push(PRODUCT_GRID_QUALITY_SCORE_COLUMN);
   }
 
   return productGridColumns;

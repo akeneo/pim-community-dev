@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Axis\Enrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
@@ -25,7 +24,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
-use Webmozart\Assert\Assert;
 
 final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 {
@@ -82,57 +80,6 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
             ->add($spellingEvaluation);
 
         $this->count()->shouldReturn(2);
-    }
-
-    public function it_filters_criteria_evaluations_by_axis()
-    {
-        $completenessEvaluation = new Read\CriterionEvaluation(
-            new CriterionCode('completeness_of_required_attributes'),
-            new ProductId(42),
-            new \DateTimeImmutable(),
-            CriterionEvaluationStatus::pending(),
-            null
-        );
-
-        $completenessNonRequiredAttributesEvaluation = new Read\CriterionEvaluation(
-            new CriterionCode('completeness_of_non_required_attributes'),
-            new ProductId(42),
-            new \DateTimeImmutable(),
-            CriterionEvaluationStatus::pending(),
-            null
-        );
-
-        $spellingEvaluation = new Read\CriterionEvaluation(
-            new CriterionCode('consistency_spelling'),
-            new ProductId(42),
-            new \DateTimeImmutable(),
-            CriterionEvaluationStatus::pending(),
-            null
-        );
-
-        $upperCaseEvaluation = new Read\CriterionEvaluation(
-            new CriterionCode('consistency_textarea_uppercase_words'),
-            new ProductId(42),
-            new \DateTimeImmutable(),
-            CriterionEvaluationStatus::pending(),
-            null
-        );
-
-
-        $this->add($spellingEvaluation)
-            ->add($completenessEvaluation)
-            ->add($completenessNonRequiredAttributesEvaluation)
-            ->add($upperCaseEvaluation);
-
-        $filteredCriteriaEvaluations = $this->filterByAxis(new Enrichment())->getWrappedObject();
-
-        $expectedCriteriaEvaluations = [
-            'completeness_of_required_attributes' => $completenessEvaluation,
-            'completeness_of_non_required_attributes' => $completenessNonRequiredAttributesEvaluation,
-        ];
-
-        Assert::count($filteredCriteriaEvaluations, 2);
-        Assert::eq($expectedCriteriaEvaluations, iterator_to_array($filteredCriteriaEvaluations));
     }
 
     public function it_gives_the_rates_of_a_given_criterion()

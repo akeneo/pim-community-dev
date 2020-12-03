@@ -24,23 +24,21 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetAverageRanksQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardRatesProjectionRepository;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository;
 use Akeneo\Test\Integration\TestCase;
 
 final class GetAverageRanksQueryIntegration extends TestCase
 {
-    /** @var GetAverageRanksQuery */
-    private $query;
+    private GetAverageRanksQuery $query;
 
-    /** @var DashboardRatesProjectionRepository */
-    private $repository;
+    private DashboardScoresProjectionRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->query = $this->get(GetAverageRanksQuery::class);
-        $this->repository = $this->get(DashboardRatesProjectionRepository::class);
+        $this->repository = $this->get(DashboardScoresProjectionRepository::class);
     }
 
     protected function getConfiguration()
@@ -58,46 +56,25 @@ final class GetAverageRanksQueryIntegration extends TestCase
         $consolidationDate = new ConsolidationDate(new \DateTimeImmutable('2019-12-19'));
 
         $ranksDistributionFamilyA = new RanksDistributionCollection([
-            'consistency' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_4' => 50],
-                    'fr_FR' => ['rank_3' => 40],
-                ],
+            'ecommerce' => [
+                'en_US' => ['rank_4' => 50],
+                'fr_FR' => ['rank_3' => 40],
             ],
-            'enrichment' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_1' => 50],
-                ],
-                'mobile' => [
-                    'en_US' => ['rank_2' => 50],
-                ],
+            'mobile' => [
+                'en_US' => ['rank_2' => 50],
             ],
         ]);
 
         $ranksDistributionFamilyB = new RanksDistributionCollection([
-            'consistency' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_1' => 11],
-                    'fr_FR' => ['rank_2' => 14],
-                ],
-            ],
-            'enrichment' => [
-                'mobile' => [
-                    'en_US' => ['rank_2' => 6],
-                ],
+            'ecommerce' => [
+                'en_US' => ['rank_1' => 11],
+                'fr_FR' => ['rank_2' => 14],
             ],
         ]);
 
         $ranksDistributionFamilyC = new RanksDistributionCollection([
-            'consistency' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_3' => 21],
-                ],
-            ],
-            'enrichment' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_2' => 6],
-                ],
+            'ecommerce' => [
+                'en_US' => ['rank_3' => 21],
             ],
         ]);
 
@@ -121,18 +98,9 @@ final class GetAverageRanksQueryIntegration extends TestCase
         ));
 
         $expectedAverageRanks = [
-            strval($familyACode) => [
-                'consistency' => Rank::fromString('rank_4'),
-                'enrichment' => Rank::fromString('rank_1'),
-            ],
-            strval($familyBCode) => [
-                'consistency' => Rank::fromString('rank_1'),
-                'enrichment' => null,
-            ],
-            strval($familyWithoutRates) => [
-                'consistency' => null,
-                'enrichment' => null,
-            ]
+            strval($familyACode) => Rank::fromString('rank_4'),
+            strval($familyBCode) => Rank::fromString('rank_1'),
+            strval($familyWithoutRates) => null,
         ];
 
         $averageRanks = $this->query->byFamilies(new ChannelCode('ecommerce'), new LocaleCode('en_US'), [$familyACode, $familyBCode, $familyWithoutRates]);
@@ -150,46 +118,28 @@ final class GetAverageRanksQueryIntegration extends TestCase
         $consolidationDate = new ConsolidationDate(new \DateTimeImmutable('2019-12-19'));
 
         $ranksDistributionCategoryA = new RanksDistributionCollection([
-            'consistency' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_4' => 50],
-                    'fr_FR' => ['rank_3' => 40],
-                ],
+            'ecommerce' => [
+                'en_US' => ['rank_4' => 50],
+                'fr_FR' => ['rank_3' => 40],
             ],
-            'enrichment' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_1' => 50],
-                ],
-                'mobile' => [
-                    'en_US' => ['rank_2' => 50],
-                ],
+            'mobile' => [
+                'en_US' => ['rank_2' => 50],
             ],
         ]);
 
         $ranksDistributionCategoryB = new RanksDistributionCollection([
-            'consistency' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_1' => 11],
-                    'fr_FR' => ['rank_2' => 14],
-                ],
+            'ecommerce' => [
+                'en_US' => ['rank_1' => 11],
+                'fr_FR' => ['rank_2' => 14],
             ],
-            'enrichment' => [
-                'mobile' => [
-                    'en_US' => ['rank_2' => 6],
-                ],
+            'mobile' => [
+                'en_US' => ['rank_2' => 6],
             ],
         ]);
 
         $ranksDistributionCategoryC = new RanksDistributionCollection([
-            'consistency' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_3' => 21],
-                ],
-            ],
-            'enrichment' => [
-                'ecommerce' => [
-                    'en_US' => ['rank_2' => 6],
-                ],
+            'ecommerce' => [
+                'en_US' => ['rank_3' => 21],
             ],
         ]);
 
@@ -213,18 +163,9 @@ final class GetAverageRanksQueryIntegration extends TestCase
         ));
 
         $expectedAverageRanks = [
-            strval($categoryACode) => [
-                'consistency' => Rank::fromString('rank_4'),
-                'enrichment' => Rank::fromString('rank_1'),
-            ],
-            strval($categoryBCode) => [
-                'consistency' => Rank::fromString('rank_1'),
-                'enrichment' => null,
-            ],
-            strval($categoryWithoutRates) => [
-                'consistency' => null,
-                'enrichment' => null,
-            ]
+            strval($categoryACode) => Rank::fromString('rank_4'),
+            strval($categoryBCode) => Rank::fromString('rank_1'),
+            strval($categoryWithoutRates) => null,
         ];
 
         $averageRanks = $this->query->byCategories(new ChannelCode('ecommerce'), new LocaleCode('en_US'), [$categoryACode, $categoryBCode, $categoryWithoutRates]);

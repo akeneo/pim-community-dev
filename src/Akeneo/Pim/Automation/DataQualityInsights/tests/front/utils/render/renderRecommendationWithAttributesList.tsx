@@ -3,7 +3,7 @@ import {Product} from '@akeneo-pim-community/data-quality-insights/src/domain';
 import Evaluation from '@akeneo-pim-community/data-quality-insights/src/domain/Evaluation.interface';
 import {AxesContextProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/AxesContext';
 import {RecommendationWithAttributesList} from '@akeneo-pim-community/data-quality-insights/src/application/component/ProductEditForm/TabContent/DataQualityInsights';
-import {renderWithAppContextHelper} from './renderWithAppContextHelper';
+import {renderWithProductEditFormContextHelper} from './renderWithProductEditFormContextHelper';
 
 const renderRecommendationWithAttributesList = (
   product: Product,
@@ -25,7 +25,7 @@ const renderRecommendationWithAttributesList = (
     </AxesContextProvider>
   );
 
-  return renderWithAppContextHelper(<Component />, appState);
+  return renderWithProductEditFormContextHelper(<Component />, appState);
 };
 
 export {renderRecommendationWithAttributesList};

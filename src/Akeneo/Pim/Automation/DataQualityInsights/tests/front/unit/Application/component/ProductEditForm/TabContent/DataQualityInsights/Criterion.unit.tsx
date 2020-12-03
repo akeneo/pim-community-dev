@@ -60,7 +60,9 @@ describe('Criterion for simple product', () => {
     expect(
       getByText(/akeneo_data_quality_insights.product_evaluation.criteria.a_criterion.recommendation/)
     ).toBeInTheDocument();
-    expect(getByText('N/A')).toBeInTheDocument();
+    expect(
+      getByText(/akeneo_data_quality_insights.product_evaluation.messages.not_applicable.message/)
+    ).toBeInTheDocument();
   });
 
   test('it displays success message when there is no attribute to improve', () => {

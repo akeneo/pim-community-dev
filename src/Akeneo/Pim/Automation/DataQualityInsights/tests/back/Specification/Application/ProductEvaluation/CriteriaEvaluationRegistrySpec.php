@@ -39,4 +39,18 @@ class CriteriaEvaluationRegistrySpec extends ObjectBehavior
         $this->getCriterionCodes()->shouldBeLike([new CriterionCode('my_code')]);
         $this->get(new CriterionCode('my_code'))->shouldReturn($evaluateCriterion->getWrappedObject());
     }
+
+    public function it_gives_the_coefficient_of_a_given_criterion(
+        EvaluateCriterionInterface $evaluateCriterionA,
+        EvaluateCriterionInterface $evaluateCriterionB
+    ) {
+        $this->beConstructedWith([$evaluateCriterionA->getWrappedObject(), $evaluateCriterionB->getWrappedObject()]);
+
+        $evaluateCriterionA->getCode()->willReturn(new CriterionCode('criterion_A'));
+        $evaluateCriterionB->getCode()->willReturn(new CriterionCode('criterion_B'));
+
+        $evaluateCriterionA->getCoefficient()->willReturn(1);
+
+        $this->getCriterionCoefficient(new CriterionCode('criterion_A'))->shouldReturn(1);
+    }
 }
