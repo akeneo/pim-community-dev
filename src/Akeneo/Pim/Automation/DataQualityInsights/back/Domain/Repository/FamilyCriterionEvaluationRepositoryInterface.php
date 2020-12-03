@@ -14,12 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyId;
 
 interface FamilyCriterionEvaluationRepositoryInterface
 {
     public function save(Write\FamilyCriterionEvaluation $familyCriterionEvaluation): void;
-
-    public function setToPending(FamilyId $familyId, CriterionCode $criterionCode): void;
 }

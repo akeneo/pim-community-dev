@@ -18,7 +18,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\FamilyCriterion
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetFamilyAttributesCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\FamilyCriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyId;
 
 final class EvaluateFamilyAttributesSpelling
@@ -48,7 +47,6 @@ final class EvaluateFamilyAttributesSpelling
             $familyId,
             new CriterionCode(EvaluateAttributeSpelling::CRITERION_CODE),
             new \DateTimeImmutable(),
-            CriterionEvaluationStatus::done(),
             $evaluationResult
         );
 
