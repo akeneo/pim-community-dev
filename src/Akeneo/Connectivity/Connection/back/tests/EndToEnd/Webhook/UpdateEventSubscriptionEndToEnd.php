@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
@@ -55,13 +56,8 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
             ['CONTENT_TYPE' => 'application/json'],
             json_encode($data),
         );
-        $result = json_decode($this->client->getResponse()->getContent(), true);
 
-        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals($connection->code(), $result['connectionCode']);
-        Assert::assertEquals(true, $result['enabled']);
-        Assert::assertEquals('http://localhost', $result['url']);
-        Assert::assertIsString($result['secret']);
+        Assert::assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
     }
 
     public function test_it_fails_to_enable_an_event_subscription_without_url(): void

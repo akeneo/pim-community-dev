@@ -65,7 +65,7 @@ export const ConnectionEditForm = ({connection}: Props) => {
                     controlId='flow_type'
                     label='akeneo_connectivity.connection.connection.flow_type'
                     helpers={[
-                        <Helper inline level='info'>
+                        <Helper inline level='info' key={0}>
                             <FlowTypeHelper />
                         </Helper>,
                     ]}

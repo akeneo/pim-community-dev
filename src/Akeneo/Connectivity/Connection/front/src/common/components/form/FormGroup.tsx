@@ -25,8 +25,10 @@ export const FormGroup = ({children: control, controlId, label, helpers, require
 
         {helpers && (
             <HelperContainer>
-                {helpers.map(helper => (
-                    <div className='AknFieldContainer-footer'>{helper}</div>
+                {helpers.map((helper, i) => (
+                    <div className='AknFieldContainer-footer' key={i}>
+                        {helper}
+                    </div>
                 ))}
             </HelperContainer>
         )}
