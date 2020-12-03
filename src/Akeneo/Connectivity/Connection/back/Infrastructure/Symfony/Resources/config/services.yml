@@ -6,3 +6,4 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.webhook.community_cache_clearer'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
