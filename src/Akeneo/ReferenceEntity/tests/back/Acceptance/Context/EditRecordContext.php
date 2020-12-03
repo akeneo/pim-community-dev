@@ -1968,7 +1968,7 @@ final class EditRecordContext implements Context
     /**
      * @Then /^there is no value for the (\w+) (\w+) (\w+) of the \'([^\']*)\' record in \'([^\']*)\' reference entity$/
      */
-    public function thereIsNoValueForTheOfTheRecordInReferenceEntityIs(
+    public function thereIsNoValueForTheOfTheRecordInReferenceEntity(
         string $localeCode,
         string $scopeCode,
         string $attributeCode,

@@ -21,9 +21,6 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Webmozart\Assert\Assert;
 
-/**
- * @author Pierre Allard <pierre.allard@akeneo.com>
- */
 final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
     private CreateAssetHandler $createAssetHandler;

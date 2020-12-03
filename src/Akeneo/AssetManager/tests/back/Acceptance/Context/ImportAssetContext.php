@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Acceptance\Context;
+namespace Akeneo\AssetManager\Acceptance\Context;
 
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryChannelExists;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileExists;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFindFileDataByFileKey;
+use Akeneo\AssetManager\Common\Fake\InMemoryChannelExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
+use Akeneo\AssetManager\Common\Fake\InMemoryFileStorer;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
+use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryGetJobExecutionStatus;
-use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -33,16 +33,16 @@ use AkeneoEnterprise\Test\Acceptance\EventDispatcher\EventDispatcherMock;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
-final class ImportRecordContext implements Context
+final class ImportAssetContext implements Context
 {
-    private const VALID_CSV_FILEPATH = 'src/Akeneo/ReferenceEntity/tests/back/Common/Resources/import_valid_records.csv';
-    private const INVALID_CSV_FILEPATH = 'src/Akeneo/ReferenceEntity/tests/back/Common/Resources/import_invalid_records.csv';
-    private const VALID_XLSX_FILEPATH = 'src/Akeneo/ReferenceEntity/tests/back/Common/Resources/import_valid_records.xlsx';
-    private const VALID_ARCHIVE_WITH_CSV_AND_MEDIA_FILEPATH = 'src/Akeneo/ReferenceEntity/tests/back/Common/Resources/import_records_csv_with_media.zip';
-    private const VALID_ARCHIVE_WITH_XLSX_AND_MEDIA_FILEPATH = 'src/Akeneo/ReferenceEntity/tests/back/Common/Resources/import_records_xlsx_with_media.zip';
+    private const VALID_CSV_FILEPATH = 'src/Akeneo/AssetManager/tests/back/Common/Resources/import_valid_assets.csv';
+    private const INVALID_CSV_FILEPATH = 'src/Akeneo/AssetManager/tests/back/Common/Resources/import_invalid_assets.csv';
+    private const VALID_XLSX_FILEPATH = 'src/Akeneo/AssetManager/tests/back/Common/Resources/import_valid_assets.xlsx';
+    private const VALID_ARCHIVE_WITH_CSV_AND_MEDIA_FILEPATH = 'src/Akeneo/AssetManager/tests/back/Common/Resources/import_valid_assets_csv.zip';
+    private const VALID_ARCHIVE_WITH_XLSX_AND_MEDIA_FILEPATH = 'src/Akeneo/AssetManager/tests/back/Common/Resources/import_valid_assets_xlsx.zip';
 
-    private ItemStep $importCsvRecordStep;
-    private ItemStep $importXlsxRecordStep;
+    private ItemStep $importCsvAssetStep;
+    private ItemStep $importXlsxAssetStep;
     private DefaultValuesProviderInterface $csvDefaultValuesProvider;
     private DefaultValuesProviderInterface $xlsxDefaultValuesProvider;
     private InMemoryChannelExists $channelExists;
@@ -55,8 +55,8 @@ final class ImportRecordContext implements Context
     private InMemoryGetJobExecutionStatus $getJobExecutionStatus;
 
     public function __construct(
-        ItemStep $importCsvRecordStep,
-        ItemStep $importXlsxRecordStep,
+        ItemStep $importCsvAssetStep,
+        ItemStep $importXlsxAssetStep,
         DefaultValuesProviderInterface $csvDefaultValuesProvider,
         DefaultValuesProviderInterface $xlsxDefaultValuesProvider,
         InMemoryChannelExists $channelExists,
@@ -68,8 +68,8 @@ final class ImportRecordContext implements Context
         InMemoryFindFileDataByFileKey $findFileDataByFileKey,
         InMemoryGetJobExecutionStatus $getJobExecutionStatus
     ) {
-        $this->importCsvRecordStep = $importCsvRecordStep;
-        $this->importXlsxRecordStep = $importXlsxRecordStep;
+        $this->importCsvAssetStep = $importCsvAssetStep;
+        $this->importXlsxAssetStep = $importXlsxAssetStep;
         $this->csvDefaultValuesProvider = $csvDefaultValuesProvider;
         $this->xlsxDefaultValuesProvider = $xlsxDefaultValuesProvider;
         $this->channelExists = $channelExists;
@@ -103,7 +103,7 @@ final class ImportRecordContext implements Context
      */
     public function importValidCSVFile(): void
     {
-        $this->launchImportCsvRecordStep(self::VALID_CSV_FILEPATH);
+        $this->launchImportCsvAssetStep(self::VALID_CSV_FILEPATH);
     }
 
     /**
@@ -111,7 +111,7 @@ final class ImportRecordContext implements Context
      */
     public function importInvalidCSVFile(): void
     {
-        $this->launchImportCsvRecordStep(self::INVALID_CSV_FILEPATH);
+        $this->launchImportCsvAssetStep(self::INVALID_CSV_FILEPATH);
     }
 
     /**
@@ -119,7 +119,7 @@ final class ImportRecordContext implements Context
      */
     public function importValidXLSXFile(): void
     {
-        $this->launchImportXlsxRecordStep(self::VALID_XLSX_FILEPATH);
+        $this->launchImportXlsxAssetStep(self::VALID_XLSX_FILEPATH);
     }
 
     /**
@@ -127,15 +127,17 @@ final class ImportRecordContext implements Context
      */
     public function importValidArchiveWithCsvFile(): void
     {
-        $fileKey = InMemoryFileStorer::FILES_PATH . 'dog.jpg';
-        $this->fileExists->save($fileKey);
-        $this->findFileDataByFileKey->save([
-            'filePath' => $fileKey,
-            'originalFilename' => 'dog.jpg',
-            'extension' => 'jpg',
-        ]);
+        foreach (['jambon.jpg', 'saucisson.jpg', 'rillettes-de-lapin.jpg'] as $fileName) {
+            $fileKey = InMemoryFileStorer::FILES_PATH . $fileName;
+            $this->fileExists->save($fileKey);
+            $this->findFileDataByFileKey->save([
+                'filePath' => $fileKey,
+                'originalFilename' => $fileName,
+                'extension' => 'jpg',
+            ]);
+        }
 
-        $this->launchImportCsvRecordStep(self::VALID_ARCHIVE_WITH_CSV_AND_MEDIA_FILEPATH);
+        $this->launchImportCsvAssetStep(self::VALID_ARCHIVE_WITH_CSV_AND_MEDIA_FILEPATH);
     }
 
     /**
@@ -143,15 +145,17 @@ final class ImportRecordContext implements Context
      */
     public function importValidArchiveWithXlsxFile(): void
     {
-        $fileKey = InMemoryFileStorer::FILES_PATH . 'dog.jpg';
-        $this->fileExists->save($fileKey);
-        $this->findFileDataByFileKey->save([
-            'filePath' => $fileKey,
-            'originalFilename' => 'dog.jpg',
-            'extension' => 'jpg',
-        ]);
+        foreach (['jambon.jpg', 'saucisson.jpg', 'rillettes-de-lapin.jpg'] as $fileName) {
+            $fileKey = InMemoryFileStorer::FILES_PATH . $fileName;
+            $this->fileExists->save($fileKey);
+            $this->findFileDataByFileKey->save([
+                'filePath' => $fileKey,
+                'originalFilename' => $fileName,
+                'extension' => 'jpg',
+            ]);
+        }
 
-        $this->launchImportXlsxRecordStep(self::VALID_ARCHIVE_WITH_XLSX_AND_MEDIA_FILEPATH);
+        $this->launchImportXlsxAssetStep(self::VALID_ARCHIVE_WITH_XLSX_AND_MEDIA_FILEPATH);
     }
 
     /**
@@ -203,10 +207,15 @@ final class ImportRecordContext implements Context
     {
         $invalidItemEvents = $this->eventDispatcher->getEventsByName('akeneo_batch.invalid_item');
 
-        Assert::count($invalidItemEvents, $count);
+        Assert::count($invalidItemEvents, $count, sprintf(
+            "%d warnings should be thrown, got %d:\n%s",
+            $count,
+            count($invalidItemEvents),
+            join("\n", array_map(fn ($x) => $x->getReason(), $invalidItemEvents))
+        ));
     }
 
-    private function launchImportCsvRecordStep(string $filePath): void
+    private function launchImportCsvAssetStep(string $filePath): void
     {
         $jobExecution = new JobExecution();
         $reflectionClass = new \ReflectionClass(JobExecution::class);
@@ -219,16 +228,16 @@ final class ImportRecordContext implements Context
         $params['filePath'] = $filePath;
         $jobParameters = new JobParameters($params);
         $jobExecution->setJobParameters($jobParameters);
-        $stepExecution = new StepExecution('import_csv_record', $jobExecution);
+        $stepExecution = new StepExecution('import_csv_asset', $jobExecution);
 
         try {
-            $this->importCsvRecordStep->doExecute($stepExecution);
+            $this->importCsvAssetStep->doExecute($stepExecution);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }
     }
 
-    private function launchImportXlsxRecordStep(string $filePath): void
+    private function launchImportXlsxAssetStep(string $filePath): void
     {
         $jobExecution = new JobExecution();
         $reflectionClass = new \ReflectionClass(JobExecution::class);
@@ -241,10 +250,10 @@ final class ImportRecordContext implements Context
         $params['filePath'] = $filePath;
         $jobParameters = new JobParameters($params);
         $jobExecution->setJobParameters($jobParameters);
-        $stepExecution = new StepExecution('import_xlsx_record', $jobExecution);
+        $stepExecution = new StepExecution('import_xlsx_asset', $jobExecution);
 
         try {
-            $this->importXlsxRecordStep->doExecute($stepExecution);
+            $this->importXlsxAssetStep->doExecute($stepExecution);
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }

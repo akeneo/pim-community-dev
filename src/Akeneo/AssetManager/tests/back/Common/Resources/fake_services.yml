@@ -130,6 +130,7 @@ services:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAttributesDetails
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
     akeneo_assetmanager.infrastructure.persistence.query.asset_family_has_assets:
         class: Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyHasAssets
@@ -217,9 +218,6 @@ services:
 
     akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey
-
-    akeneo_assetmanager.infrastructure.persistence.query.file_exists:
-        class: Akeneo\AssetManager\Common\Fake\InMemoryFileExists
 
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyAttributeAsLabel
@@ -337,6 +335,9 @@ services:
 
     akeneo_file_storage.file_storage.file.file_storer:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFileStorer
+
+    akeneo_assetmanager.infrastructure.persistence.query.file_exists:
+        class: Akeneo\AssetManager\Common\Fake\InMemoryFileExists
 
     # Anti-corruption layer
     akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.rule_engine_validator_acl:

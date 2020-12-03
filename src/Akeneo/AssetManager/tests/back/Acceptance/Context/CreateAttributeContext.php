@@ -77,12 +77,12 @@ class CreateAttributeContext implements Context
         $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
-        $attributeData['is_required'] = json_decode($attributeData['is_required']);
-        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
+        $attributeData['is_required'] = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $attributeData['is_read_only'] = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
         $attributeData['value_per_channel'] = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
         $attributeData['value_per_locale'] = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
-        $attributeData['labels'] = json_decode($attributeData['labels'], true);
-        $attributeData['max_length'] = (int) $attributeData['max_length'];
+        $attributeData['labels'] = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $attributeData['max_length'] = key_exists('max_length', $attributeData) ? (int) $attributeData['max_length'] : null;
         $attributeData['is_textarea'] = key_exists('is_textarea', $attributeData) ? json_decode($attributeData['is_textarea']) : null;
         $attributeData['is_rich_text_editor'] = key_exists('is_rich_text_editor', $attributeData) ? json_decode($attributeData['is_rich_text_editor']) : null;
         $attributeData['regular_expression'] = key_exists('regular_expression', $attributeData) ? json_decode($attributeData['regular_expression']) : null;
@@ -291,12 +291,12 @@ class CreateAttributeContext implements Context
         $attributeData['code'] = $attributeCode;
         $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['order'] = (int) $attributeData['order'];
-        $attributeData['is_required'] = json_decode($attributeData['is_required']);
-        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
-        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
-        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
-        $attributeData['labels'] = json_decode($attributeData['labels'], true);
-        $attributeData['allowed_extensions'] = json_decode($attributeData['allowed_extensions']);
+        $attributeData['is_required'] = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $attributeData['is_read_only'] = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $attributeData['value_per_channel'] = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $attributeData['value_per_locale'] = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $attributeData['labels'] = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $attributeData['allowed_extensions'] = key_exists('allowed_extensions', $attributeData) ? json_decode($attributeData['allowed_extensions']) : null;
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));
@@ -444,11 +444,11 @@ class CreateAttributeContext implements Context
         $attributeData['asset_family_identifier'] = 'designer';
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
-        $attributeData['is_required'] = json_decode($attributeData['is_required']);
-        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
-        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
-        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
-        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+        $attributeData['is_required'] = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $attributeData['is_read_only'] = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $attributeData['value_per_channel'] = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $attributeData['value_per_locale'] = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $attributeData['labels'] = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));
@@ -501,11 +501,11 @@ class CreateAttributeContext implements Context
         $attributeData['asset_family_identifier'] = 'designer';
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
-        $attributeData['is_required'] = json_decode($attributeData['is_required']);
-        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
-        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
-        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
-        $attributeData['labels'] = json_decode($attributeData['labels'], true);
+        $attributeData['is_required'] = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $attributeData['is_read_only'] = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $attributeData['value_per_channel'] = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $attributeData['value_per_locale'] = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $attributeData['labels'] = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));
@@ -559,12 +559,12 @@ class CreateAttributeContext implements Context
         $attributeData['asset_family_identifier'] = $assetFamilyIdentifier;
         $attributeData['code'] = $attributeCode;
         $attributeData['order'] = (int) $attributeData['order'];
-        $attributeData['is_required'] = json_decode($attributeData['is_required']);
-        $attributeData['is_read_only'] = json_decode($attributeData['is_read_only']);
-        $attributeData['value_per_channel'] = json_decode($attributeData['value_per_channel']);
-        $attributeData['value_per_locale'] = json_decode($attributeData['value_per_locale']);
-        $attributeData['labels'] = json_decode($attributeData['labels'], true);
-        $attributeData['decimals_allowed'] = json_decode($attributeData['decimals_allowed']);
+        $attributeData['is_required'] = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $attributeData['is_read_only'] = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $attributeData['value_per_channel'] = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $attributeData['value_per_locale'] = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $attributeData['labels'] = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $attributeData['decimals_allowed'] = key_exists('decimals_allowed', $attributeData) ? json_decode($attributeData['decimals_allowed']) : null;
 
         $command = $this->commandFactoryRegistry->getFactory($attributeData)->create($attributeData);
         $this->constraintViolationsContext->addViolations($this->validator->validate($command));

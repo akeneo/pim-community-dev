@@ -18,18 +18,19 @@ class EditValueCommandFactoryRegistry implements EditValueCommandFactoryRegistry
         $this->commandFactories[] = $editDataCommandFactory;
     }
 
-    public function getFactory(AbstractAttribute $attribute, array $normalizedCommand): EditValueCommandFactoryInterface
+    public function getFactory(AbstractAttribute $attribute, array $normalizedValue): EditValueCommandFactoryInterface
     {
         foreach ($this->commandFactories as $commandFactory) {
-            if ($commandFactory->supports($attribute, $normalizedCommand)) {
+            if ($commandFactory->supports($attribute, $normalizedValue)) {
                 return $commandFactory;
             }
         }
 
         throw new \RuntimeException(
             sprintf(
-                'There was no factory found to create the edit asset value command of the attribute "%s"',
-                $attribute->getIdentifier()->normalize()
+                'There was no factory found to create the edit asset value command of the attribute "%s" with value "%s"',
+                $attribute->getIdentifier()->normalize(),
+                json_encode($normalizedValue)
             )
         );
     }

@@ -37,22 +37,6 @@ class InMemoryFindAttributesDetailsTest extends TestCase
     /**
      * @test
      */
-    public function it_saves_multiple_attribute_details_from_different_asset_family()
-    {
-        $this->query->save($this->createAssetFamilyDetails('designer', 'name'));
-        $this->query->save($this->createAssetFamilyDetails('designer', 'description'));
-        $this->query->save($this->createAssetFamilyDetails('manufacturer', 'name'));
-        $this->query->save($this->createAssetFamilyDetails('manufacturer', 'description'));
-
-        $manufacturerIdentifier = AssetFamilyIdentifier::fromString('manufacturer');
-        $designerIdentifier = AssetFamilyIdentifier::fromString('manufacturer');
-        $this->assertCount(2, $this->query->find($manufacturerIdentifier));
-        $this->assertCount(2, $this->query->find($designerIdentifier));
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_an_empty_array_if_there_are_no_attributes_for_the_given_asset_family_identifier()
     {
         $manufacturerIdentifier = AssetFamilyIdentifier::fromString('manufacturer');

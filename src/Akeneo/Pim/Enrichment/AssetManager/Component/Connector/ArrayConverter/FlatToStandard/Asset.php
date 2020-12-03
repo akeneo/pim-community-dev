@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\ArrayConverter\
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute;
+use Akeneo\AssetManager\Domain\Model\Attribute\NumberAttribute;
 use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
@@ -130,13 +131,15 @@ class Asset implements ArrayConverterInterface
         string $directoryPath,
         AttributeDetails $attributeDetails,
         string $field,
-        string $data
+        $data
     ): array {
         $tokens = explode('-', $field);
         if (OptionCollectionAttribute::ATTRIBUTE_TYPE === $attributeDetails->type) {
             $data = array_filter(explode(',', $data));
         } elseif (!empty($data) && MediaFileAttribute::ATTRIBUTE_TYPE === $attributeDetails->type) {
             $data = sprintf('%s%s%s', $directoryPath, DIRECTORY_SEPARATOR, $data);
+        } elseif (NumberAttribute::ATTRIBUTE_TYPE === $attributeDetails->type) {
+            $data = (string) $data;
         }
         // TODO I probably missed something with MediaLink Attributes
         // src/Akeneo/Pim/Enrichment/AssetManager/Component/Connector/ArrayConverter/StandardToFlat/Asset.php

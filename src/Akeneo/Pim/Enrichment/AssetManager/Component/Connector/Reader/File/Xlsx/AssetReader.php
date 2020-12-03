@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Reader\File\Xlsx;
 
 use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\ArrayConverter\FlatToStandard\Asset;
-use Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader;
+use Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader;
 
 final class AssetReader extends Reader
 {
