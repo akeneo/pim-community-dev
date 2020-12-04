@@ -39,11 +39,11 @@ SET raw_values = JSON_REMOVE(raw_values, :json_path)
 WHERE code IN (:identifiers)
 SQL,
             [
-                'json_path' => implode(', ', array_map(fn ($attributeCode) => sprintf('$.%s', $attributeCode), $attributeCodes)),
+                'json_path' => array_map(fn ($attributeCode) => sprintf('$.%s', $attributeCode), $attributeCodes),
                 'identifiers' => $productModelIdentifiers,
             ],
             [
-                'json_path' => \PDO::PARAM_STR,
+                'json_path' => Connection::PARAM_STR_ARRAY,
                 'identifiers' => Connection::PARAM_STR_ARRAY,
             ]
         );
