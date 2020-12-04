@@ -1,5 +1,7 @@
 # 4.0.x
 
+- PIM-9586: [Backport] PIM-9571 Fix missing items on the invalid data file when importing product models
+
 # 4.0.76 (2020-12-02)
 
 # 4.0.75 (2020-11-27)
