@@ -30,7 +30,7 @@ class RemoveValuesFromProductModels
         $this->clearer = $clearer;
     }
 
-    public function forAttributeCode(string $attributeCode, array $productModelIdentifiers): void
+    public function forAttributeCodes(array $attributeCodes, array $productModelIdentifiers): void
     {
         $this->connection->executeQuery(
             <<<SQL
@@ -39,7 +39,7 @@ SET raw_values = JSON_REMOVE(raw_values, :json_path)
 WHERE code IN (:identifiers)
 SQL,
             [
-                'json_path' => sprintf('$.%s', $attributeCode),
+                'json_path' => implode(', ', array_map(fn ($attributeCode) => sprintf('$.%s', $attributeCode), $attributeCodes)),
                 'identifiers' => $productModelIdentifiers,
             ],
             [

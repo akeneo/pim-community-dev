@@ -45,14 +45,14 @@ class CleanProductModelTasklet implements TaskletInterface, TrackableTaskletInte
      */
     public function execute()
     {
-        $attributeCode = $this->stepExecution->getJobParameters()->get('attribute_code');
+        $attributeCodes = $this->stepExecution->getJobParameters()->get('attribute_codes');
 
-        $this->stepExecution->setTotalItems($this->countProductModelsWithRemovedAttribute->count([$attributeCode]));
+        $this->stepExecution->setTotalItems($this->countProductModelsWithRemovedAttribute->count($attributeCodes));
         foreach ($this->getProductModelsIdentifiersWithRemovedAttribute->nextBatch(
-            [$attributeCode],
+            $attributeCodes,
             self::BATCH_SIZE
         ) as $identifiers) {
-            $this->removeValuesFromProductModels->forAttributeCode($attributeCode, $identifiers);
+            $this->removeValuesFromProductModels->forAttributeCodes($attributeCodes, $identifiers);
             $this->stepExecution->incrementProcessedItems(count($identifiers));
         }
     }

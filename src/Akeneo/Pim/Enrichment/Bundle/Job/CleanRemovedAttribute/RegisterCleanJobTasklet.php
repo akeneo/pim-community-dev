@@ -35,14 +35,16 @@ class RegisterCleanJobTasklet implements TaskletInterface, TrackableTaskletInter
      */
     public function execute()
     {
-        $attributeCode = $this->stepExecution
+        $attributeCodes = $this->stepExecution
             ->getJobExecution()
             ->getJobParameters()
-            ->get('attribute_code');
+            ->get('attribute_codes');
 
-        $this->attributeCodeBlacklister->registerJob(
-            $attributeCode,
-            $this->stepExecution->getJobExecution()->getId()
-        );
+        foreach ($attributeCodes as $attributeCode) {
+            $this->attributeCodeBlacklister->registerJob(
+                $attributeCode,
+                $this->stepExecution->getJobExecution()->getId()
+            );
+        }
     }
 }

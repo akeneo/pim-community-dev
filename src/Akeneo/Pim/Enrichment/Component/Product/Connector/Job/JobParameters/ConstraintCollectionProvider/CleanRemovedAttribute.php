@@ -26,9 +26,9 @@ final class CleanRemovedAttribute implements ConstraintCollectionProviderInterfa
     {
         return new Collection([
             'fields' => [
-                'attribute_code' => [
+                'attribute_codes' => [
                     new NotNull(),
-                    new Type('string'),
+                    new Type('array'),
                 ],
             ],
         ]);

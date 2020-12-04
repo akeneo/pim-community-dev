@@ -35,11 +35,13 @@ class WhitelistAttributeCodeTasklet implements TaskletInterface, TrackableTaskle
      */
     public function execute()
     {
-        $attributeCode = $this->stepExecution
+        $attributeCodes = $this->stepExecution
             ->getJobExecution()
             ->getJobParameters()
-            ->get('attribute_code');
+            ->get('attribute_codes');
 
-        $this->attributeCodeBlacklister->whitelist($attributeCode);
+        foreach ($attributeCodes as $attributeCode) {
+            $this->attributeCodeBlacklister->whitelist($attributeCode);
+        }
     }
 }
