@@ -31,22 +31,28 @@ Breadcrumbs are very effective for products and experience with a large amount o
 
 <ArgsTable story="Standard" />
 
-## Variation on level
+## Variation on color
 
 <Canvas>
-  <Story name="Level">
+  <Story name="Color">
     {args => {
       return (
         <>
-          <MietteDePain {...args} level="primary">
-            Primary
+          <MietteDePain {...args} color="grey">
+              <MietteDePain.Miette>Level 1</MietteDePain.Miette>
+              <MietteDePain.Miette>Level 2</MietteDePain.Miette>
+              <MietteDePain.Miette>Current</MietteDePain.Miette>
+            </MietteDePain>
+           <MietteDePain {...args} color="blue">
+            <MietteDePain.Miette>Level 1</MietteDePain.Miette>
+            <MietteDePain.Miette>Level 2</MietteDePain.Miette>
+            <MietteDePain.Miette>Current</MietteDePain.Miette>
           </MietteDePain>
-          <MietteDePain {...args} level="warning">
-            Warning
-          </MietteDePain>
-          <MietteDePain {...args} level="danger">
-            Danger
-          </MietteDePain>
+          <MietteDePain {...args} color="brand">
+            <MietteDePain.Miette>Level 1</MietteDePain.Miette>
+          <MietteDePain.Miette>Level 2</MietteDePain.Miette>
+          <MietteDePain.Miette>Current</MietteDePain.Miette>
+        </MietteDePain>
         </>
       );
     }}

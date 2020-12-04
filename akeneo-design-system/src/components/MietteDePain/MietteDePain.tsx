@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
 //TODO be sure to select the appropriate container element here
-const MietteDePainContainer = styled.div``;
+const MietteDePainContainer = styled.nav``;
 
 type MietteDePainProps = {
   /**
@@ -28,6 +28,7 @@ const Miette = styled.a<MietteProps>`
   }
 `;
 Miette.defaultProps = {color: 'grey', gradient: 120};
+Miette.displayName = 'Miette';
 
 const Separator = styled.span<MietteProps>`
   margin: 0 0.5rem;
@@ -37,6 +38,7 @@ const Separator = styled.span<MietteProps>`
   }
 `;
 Separator.defaultProps = {color: 'grey', gradient: 120};
+Separator.displayName = 'Separator';
 
 /**
  * Breadcrumbs are very effective for products and experience
@@ -44,7 +46,7 @@ Separator.defaultProps = {color: 'grey', gradient: 120};
  */
 const MietteDePain = ({color = 'grey', children, ...rest}: MietteDePainProps) => {
   return (
-    <MietteDePainContainer {...rest}>
+    <MietteDePainContainer {...rest} aria-label="Breadcrumb">
       {React.Children.map(children, (child, index) => {
         if (!React.isValidElement(child) || child.type !== Miette) {
           return null;
@@ -54,8 +56,12 @@ const MietteDePain = ({color = 'grey', children, ...rest}: MietteDePainProps) =>
 
         return (
           <>
-            {React.cloneElement(child, {color, gradient: isNotLast ? 120 : 100})}
-            {isNotLast && <Separator gradient={100} color={color} />}
+            {React.cloneElement(child, {
+              color,
+              gradient: isNotLast ? 120 : 100,
+              'aria-current': isNotLast ? undefined : 'page',
+            })}
+            {isNotLast && <Separator gradient={100} color={color} aria-hidden={true} />}
           </>
         );
       })}
