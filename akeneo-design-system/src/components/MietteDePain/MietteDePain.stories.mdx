@@ -1,0 +1,54 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {MietteDePain} from './MietteDePain.tsx';
+
+<Meta
+  title="Components/MietteDePain"
+  component={MietteDePain}
+/>
+
+# MietteDePain
+
+Breadcrumbs are very effective for products and experience with a large amount of content organized in a multi-level hierarchy. Breadcrumbs should be considered secondary navigation and should never completely replace the main navigation. The last level is always the current page, this one is not clickable.
+
+## Usage
+
+Breadcrumbs are very effective for products and experience with a large amount of content organized in a multi-level hierarchy. Breadcrumbs should be considered secondary navigation and should never completely replace the main navigation. The last level is always the current page, this one is not clickable.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <MietteDePain {...args}>
+        <MietteDePain.Miette color={args.color}>Level 1</MietteDePain.Miette><MietteDePain.Separator  color={args.color} />
+        <MietteDePain.Miette color={args.color}>Level 2</MietteDePain.Miette><MietteDePain.Separator  color={args.color} />
+        <MietteDePain.Miette color={args.color} gradient={100}>Current</MietteDePain.Miette>
+      </MietteDePain>
+      ;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <MietteDePain {...args} level="primary">
+            Primary
+          </MietteDePain>
+          <MietteDePain {...args} level="warning">
+            Warning
+          </MietteDePain>
+          <MietteDePain {...args} level="danger">
+            Danger
+          </MietteDePain>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
