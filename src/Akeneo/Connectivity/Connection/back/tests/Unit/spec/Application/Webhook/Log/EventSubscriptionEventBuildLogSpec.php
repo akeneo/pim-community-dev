@@ -33,8 +33,7 @@ class EventSubscriptionEventBuildLogSpec extends ObjectBehavior
         $this->beConstructedWith(
             10,
             $event,
-            1603935007.832,
-            1603935029.121
+            100
         );
     }
 
@@ -49,7 +48,7 @@ class EventSubscriptionEventBuildLogSpec extends ObjectBehavior
             'type' => EventSubscriptionEventBuildLog::TYPE,
             'subscription_count' => 10,
             'event_count' => 2,
-            'duration' => 21289,
+            'duration_ms' => 100,
             'events' => [
                 [
                     'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',
@@ -83,15 +82,14 @@ class EventSubscriptionEventBuildLogSpec extends ObjectBehavior
         $this->beConstructedWith(
             10,
             $event,
-            1603935007.832,
-            1603935029.121
+            100
         );
 
         $this->toLog()->shouldReturn([
             'type' => EventSubscriptionEventBuildLog::TYPE,
             'subscription_count' => 10,
             'event_count' => 1,
-            'duration' => 21289,
+            'duration_ms' => 100,
             'events' => [
                 [
                     'uuid' => 'fe904867-9428-4d97-bfa9-7aa13c0ee0bf',

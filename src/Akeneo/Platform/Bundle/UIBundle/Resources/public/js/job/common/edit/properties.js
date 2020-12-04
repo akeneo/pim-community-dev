@@ -12,7 +12,8 @@ define([
   'pim/template/export/common/edit/properties',
   'pim/common/tab',
   'pim/common/property',
-], function (_, __, template, BaseTab, propertyAccessor) {
+  'pim/edition',
+], function (_, __, template, BaseTab, propertyAccessor, pimEdition) {
   return BaseTab.extend({
     template: _.template(template),
     errors: {},
@@ -36,6 +37,7 @@ define([
       this.trigger('tab:register', {
         code: this.config.tabCode ? this.config.tabCode : this.code,
         label: __(this.config.tabTitle),
+        isVisible: () => !(this.config.hideForCloudEdition && pimEdition.isCloudEdition()),
       });
     },
 

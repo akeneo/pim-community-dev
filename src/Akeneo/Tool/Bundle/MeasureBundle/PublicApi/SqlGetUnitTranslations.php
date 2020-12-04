@@ -21,10 +21,10 @@ class SqlGetUnitTranslations implements GetUnitTranslations
         $sql = <<<SQL
 SELECT unit_labels.*
 FROM akeneo_measurement am, JSON_TABLE(am.units,
-	'$[*]' COLUMNS(
-		code VARCHAR(100) PATH '$.code',
-		label VARCHAR(100) PATH :labelPath
-	)
+    '$[*]' COLUMNS(
+        code VARCHAR(100) PATH '$.code',
+        label VARCHAR(100) PATH :labelPath
+    )
 ) AS unit_labels
 WHERE am.code = :measurementFamilyCode;
 SQL;

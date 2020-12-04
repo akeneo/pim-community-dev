@@ -1,0 +1,123 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {MessageBarContainer} from '../../storybook/PreviewGallery';
+import LinkTo from '@storybook/addon-links/react';
+import {MessageBar, AnimateMessageBar} from './MessageBar.tsx';
+import {Link} from '../Link/Link';
+import {Button} from '../Button/Button';
+import * as Icons from '../../icons';
+
+<Meta
+  title="Components/MessageBar"
+  component={MessageBar}
+  argTypes={{
+    level: {control: {type: 'select', options: ['info', 'success', 'warning', 'error']}},
+    icon: {
+      control: {type: 'select', options: Object.keys(Icons)},
+      table: {type: {summary: 'ReactElement<IconProps>'}},
+    },
+    children: {control: {type: 'text'}},
+    onClose: {action: 'Closing the MessageBar'},
+  }}
+  args={{
+    level: 'info',
+    title: "Don't be afraid to make these big decisions.",
+    icon: 'ActivityIcon',
+    children:
+      "Once you start, they sort of just make themselves. This is probably the greatest thing that's ever happened in my life.",
+  }}
+/>
+
+# MessageBar
+
+## Usage
+
+A message bar (or push message) is a message that communicates information to the user.
+
+### Title
+
+All messages have subject headings, which must be short and descriptive.
+
+### Message
+
+We recommend that the body of the message holds within two lines maximum. Be descriptive and include any troubleshooting actions or next steps. If possible, communicate the main message using only the title. You can add links in the message body that redirect the user to the following actions.
+
+### Close
+
+When no link is present, the MessageBar automatically disappears after 3 seconds for success, 5s for info & warning and 8s for error.
+Manual closing instead of the timer if there is a Link component in the message.
+
+> ##### ⚠️ &nbsp; Important messages are persistent until the user closes them.
+
+### Icons
+
+Icons can bring extra clarity. They should be placed at the left of the title. They can be found in the <LinkTo kind="Guidelines/Iconography" story="Standard">icon library</LinkTo>.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <MessageBar {...args} icon={React.createElement(Icons[args.icon])} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <MessageBar {...args} title="Info" level="info" icon={<Icons.InfoRoundIcon />} />
+          <MessageBar {...args} title="Success" level="success" icon={<Icons.GiftIcon />} />
+          <MessageBar {...args} title="Warning" level="warning" icon={<Icons.HelpIcon />} />
+          <MessageBar {...args} title="Error" level="error" icon={<Icons.DangerIcon />} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on content
+
+<Canvas>
+  <Story name="Content">
+    {args => {
+      delete args.children;
+      delete args.icon;
+      return (
+        <>
+          <MessageBar {...args} level="success" title="This one has a title only" />
+          <MessageBar {...args} title="This one has a Link" icon={<Icons.LinkIcon />}>
+            If a Link component is present, the MessageBar will not auto hide. <Link>Take a look here</Link>
+          </MessageBar>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Animation
+
+<Canvas>
+  <Story name="Animate">
+    {args => {
+      const [key, setKey] = useState(false);
+      const toggle = () => setKey(!key);
+      return (
+        <>
+          <MessageBarContainer>
+            <AnimateMessageBar key={key}>
+              <MessageBar {...args} title="Info" level="info" icon={<Icons.InfoRoundIcon />} />
+            </AnimateMessageBar>
+          </MessageBarContainer>
+          <Button onClick={toggle}>Replay</Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

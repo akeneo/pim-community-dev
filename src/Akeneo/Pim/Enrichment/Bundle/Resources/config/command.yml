@@ -12,6 +12,7 @@ services:
             - '%kernel.root_dir%'
             - '%pim_job_product_batch_size%'
             - '@pim_catalog.product_values.clean_values_of_removed_attributes'
+            - '@event_dispatcher'
         tags:
             - { name: console.command }
 

@@ -9,6 +9,11 @@ services:
         arguments:
             - '@database_connection'
 
+    pim_analytics.query.active_event_subscription_count:
+        class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\ActiveEventSubscriptionCount
+        arguments:
+            - '@database_connection'
+
     pim_analytics.query.media_count:
         class: Akeneo\Platform\Bundle\AnalyticsBundle\Query\ElasticsearchAndSql\MediaCount
         arguments:

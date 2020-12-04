@@ -1,5 +1,22 @@
 # 4.0.x
 
+# 4.0.76 (2020-12-02)
+
+# 4.0.75 (2020-11-27)
+
+## Bug fixes
+
+- PIM-9575: Prepend hash to navigate actions URLs
+- PIM-9559: Dispatch event when clean removed attributes command is over
+- PIM-9573: Create remove_non_existing_product_values job instance at runtime
+
+# 4.0.74 (2020-11-25)
+
+## Bug fixes
+
+- PIM-9568: Fix performance issue when saving a big product group
+- RAC-388: Fix fatal error when an attribute is removed then re-created with the same code but another type.
+
 # 4.0.73 (2020-11-23)
 
 ## Bug fixes

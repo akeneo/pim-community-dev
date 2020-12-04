@@ -104,6 +104,7 @@ pim_enrich:
       edit_attributes: Modifier les attributs du modèle de produit
       categories_view: Afficher les catégories d'un modèle de produit
       history: Afficher l'historique d'un modèle de produit
+      remove: Supprimer un modèle de produit (y compris les enfants)
     category:
       list: Liste des catégories
       create: Créer une catégorie

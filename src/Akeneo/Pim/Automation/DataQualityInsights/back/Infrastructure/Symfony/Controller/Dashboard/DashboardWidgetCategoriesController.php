@@ -23,8 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class DashboardWidgetCategoriesController
 {
-    /** @var GetAverageRanksQueryInterface */
-    private $getAverageRanks;
+    private GetAverageRanksQueryInterface $getAverageRanks;
 
     public function __construct(GetAverageRanksQueryInterface $getAverageRanks)
     {

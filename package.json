@@ -18,7 +18,7 @@
     "test": "yarn unit && yarn webpack-test --env=prod && yarn integration && yarn acceptance tests/features",
     "webpack-test": "yarn generate-models && webpack --config webpack-test.config.js",
     "lint": "eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet && yarn prettier:check",
-    "lint-fix": "eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet  --fix && yarn prettier:run",
+    "lint-fix": "yarn prettier:run && eslint src/**/*.js --config .eslintrc --ignore-path .eslintignore --quiet --fix",
     "unit": "jest --no-cache --config tests/front/unit/jest/unit.jest.js --runInBand",
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./frontend/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",

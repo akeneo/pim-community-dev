@@ -604,37 +604,41 @@ workflows:
                     - build_dev
           - test_back_missing_structure_migrations:
                 requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - build_dev
+          - test_back_phpunit:
+                requires:
+                    - build_dev
           - test_back_data_migrations:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
-          - test_back_phpunit:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
+                    - test_back_missing_structure_migrations
+                    - test_back_phpunit
           - test_onboarder_bundle:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
+                    - test_back_missing_structure_migrations
+                    - test_back_phpunit
           - test_back_behat_legacy:
                 requires:
-                    - test_back_data_migrations
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
-                    - test_onboarder_bundle
           - test_back_performance:
                 requires:
-                    - test_back_data_migrations
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
-                    - test_onboarder_bundle
           - pull_request_success:
                 requires:
                     - test_back_behat_legacy
                     - test_back_performance
+                    - test_back_data_migrations
                     - test_upgrade_from_last_release
+                    - test_onboarder_bundle
 
           - ready_to_build_only_ce?:
                 type: approval

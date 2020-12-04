@@ -375,8 +375,9 @@ pim_datagrid:
         all_attributes: Alle Attribute
         with_codes: Mit Codes
         with_labels: Mit Labels
-      success_message: "Du kannst {{ job_link }} folgen."
-      job_link_label: der Fortschritt der Ausführung hier
+      flash:
+        message: "Sie können die Job-Ausführung verfolgen: "
+        link: hier
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen

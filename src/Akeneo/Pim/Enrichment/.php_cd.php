@@ -21,6 +21,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
         'Dompdf\Dompdf',
+        'Dompdf\Options',
         'Webmozart\Assert\Assert',
         'Psr\Log\LoggerInterface',
         // TODO the feature use the datagrid
@@ -28,6 +29,7 @@ $rules = [
         'Oro\Bundle\PimDataGridBundle',
         // TODO: dependencies related to the front end, remove twig screens
         'Twig_SimpleFunction', // used by the category tree
+        'Twig_Extension', // used by Twig extensions
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
@@ -97,6 +99,7 @@ $rules = [
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Pim\Structure\Bundle\Event\AttributeEvents',
 
         // TODO: : EASY PICK! API PaginatorInterface should catch ServerErrorResponseException and throw its own exception,
         'Elasticsearch\Common\Exceptions\BadRequest400Exception',

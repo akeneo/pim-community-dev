@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
-import {ChevronDownIcon} from '../../icons';
 import styled from '../../styled-with-theme';
+import {ArrowDownIcon, getColor} from 'akeneo-design-system';
 
 type Props = {
     children: string;
@@ -11,7 +11,7 @@ export const Selector: FC<Props> = ({children, onClick}: Props) => (
     <Container tabIndex={0} onClick={onClick}>
         <Value>{children}</Value>
         <DropdownArrow>
-            <ChevronDownIcon />
+            <ArrowDownIcon />
         </DropdownArrow>
     </Container>
 );
@@ -39,6 +39,7 @@ const DropdownArrow = styled.div`
     height: 44px;
     padding-left: 10px;
     padding-right: 2px;
+    color: ${getColor('grey', 120)};
     svg {
         width: 16px;
     }

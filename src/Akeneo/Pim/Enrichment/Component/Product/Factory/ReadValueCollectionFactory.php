@@ -52,12 +52,12 @@ class ReadValueCollectionFactory
         $attributeCodes = [];
 
         foreach ($rawValueCollections as $productIdentifier => $rawValues) {
-            foreach (array_keys($rawValues) as $attributeCode) {
+            foreach (\array_keys($rawValues) as $attributeCode) {
                 $attributeCodes[] = (string) $attributeCode;
             }
         }
 
-        $attributes = $this->getAttributeByCodes->forCodes(array_unique($attributeCodes));
+        $attributes = $this->getAttributeByCodes->forCodes(\array_unique($attributeCodes));
 
         return $attributes;
     }

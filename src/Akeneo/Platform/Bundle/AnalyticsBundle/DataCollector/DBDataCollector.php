@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Akeneo\Tool\Component\Analytics\ActiveEventSubscriptionCountQuery;
 use Akeneo\Tool\Component\Analytics\ApiConnectionCountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
@@ -57,6 +58,8 @@ class DBDataCollector implements DataCollectorInterface
 
     private IsDemoCatalogQuery $isDemoCatalogQuery;
 
+    private ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery;
+
     public function __construct(
         CountQuery $channelCountQuery,
         CountQuery $productCountQuery,
@@ -76,7 +79,8 @@ class DBDataCollector implements DataCollectorInterface
         EmailDomainsQuery $emailDomains,
         ApiConnectionCountQuery $apiConnectionCountQuery,
         MediaCountQuery $mediaCountQuery,
-        IsDemoCatalogQuery $isDemoCatalogQuery
+        IsDemoCatalogQuery $isDemoCatalogQuery,
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
@@ -97,6 +101,7 @@ class DBDataCollector implements DataCollectorInterface
         $this->apiConnectionCountQuery = $apiConnectionCountQuery;
         $this->mediaCountQuery = $mediaCountQuery;
         $this->isDemoCatalogQuery = $isDemoCatalogQuery;
+        $this->activeEventSubscriptionCountQuery = $activeEventSubscriptionCountQuery;
     }
 
     /**
@@ -126,6 +131,7 @@ class DBDataCollector implements DataCollectorInterface
             'nb_media_files_in_products' => $this->mediaCountQuery->countFiles(),
             'nb_media_images_in_products' => $this->mediaCountQuery->countImages(),
             'is_demo_catalog' => $this->isDemoCatalogQuery->fetch(),
+            'nb_active_event_subscription' => $this->activeEventSubscriptionCountQuery->fetch(),
         ];
     }
 }

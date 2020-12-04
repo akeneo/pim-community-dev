@@ -39,7 +39,7 @@ final class DateValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_string($data)) {
+        if (!\is_string($data)) {
             throw InvalidAttributeValueTypeException::stringExpected(
                 $attribute->code(),
                 static::class,
@@ -50,7 +50,7 @@ final class DateValueFactory implements ValueFactory
         try {
             $date = new \DateTime($data);
 
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+            if (!\preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
                 throw InvalidPropertyException::dateExpected(
                     $attribute->code(),
                     'yyyy-mm-dd',

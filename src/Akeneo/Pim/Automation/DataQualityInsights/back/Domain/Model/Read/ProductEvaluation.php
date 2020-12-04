@@ -2,31 +2,28 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class ProductEvaluation
 {
-    /** @var ProductId */
-    private $productId;
+    private ProductId $productId;
 
-    /** @var AxisEvaluationCollection */
-    private $axesEvaluations;
+    private ChannelLocaleRateCollection $scores;
 
-    public function __construct(ProductId $productId, AxisEvaluationCollection $axesEvaluations)
+    private CriterionEvaluationCollection $criteriaEvaluations;
+
+    public function __construct(ProductId $productId, ChannelLocaleRateCollection $scores, CriterionEvaluationCollection $criteriaEvaluations)
     {
         $this->productId = $productId;
-        $this->axesEvaluations = $axesEvaluations;
+        $this->scores = $scores;
+        $this->criteriaEvaluations = $criteriaEvaluations;
     }
 
     public function getProductId(): ProductId
@@ -34,8 +31,13 @@ final class ProductEvaluation
         return $this->productId;
     }
 
-    public function getAxesEvaluations(): AxisEvaluationCollection
+    public function getScores(): ChannelLocaleRateCollection
     {
-        return $this->axesEvaluations;
+        return $this->scores;
+    }
+
+    public function getCriteriaEvaluations(): CriterionEvaluationCollection
+    {
+        return $this->criteriaEvaluations;
     }
 }

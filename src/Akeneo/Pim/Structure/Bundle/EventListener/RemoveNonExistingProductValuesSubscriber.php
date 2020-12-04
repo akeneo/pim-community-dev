@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Structure\Bundle\EventListener;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Query\CreateJobInstanceInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -31,16 +33,20 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
     /** @var string */
     private $jobName;
 
+    public CreateJobInstanceInterface $createJobInstance;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         JobInstanceRepository $jobInstanceRepository,
         JobLauncherInterface $jobLauncher,
-        string $jobName
+        string $jobName,
+        CreateJobInstanceInterface $createJobInstance
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->jobLauncher = $jobLauncher;
         $this->jobName = $jobName;
+        $this->createJobInstance = $createJobInstance;
     }
 
     public static function getSubscribedEvents(): array
@@ -63,7 +69,14 @@ final class RemoveNonExistingProductValuesSubscriber implements EventSubscriberI
         ];
 
         $user = $this->tokenStorage->getToken()->getUser();
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+        $jobInstance = $this->getOrCreateJobInstance();
         $this->jobLauncher->launch($jobInstance, $user, $configuration);
+    }
+
+    private function getOrCreateJobInstance(): JobInstance
+    {
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+
+        return $jobInstance;
     }
 }

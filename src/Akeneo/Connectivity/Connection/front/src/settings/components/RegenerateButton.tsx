@@ -1,7 +1,7 @@
 import React, {FC, useContext} from 'react';
 import {IconButton} from '../../common';
-import {UpdateIcon} from '../../common/icons';
 import {TranslateContext} from '../../shared/translate';
+import {RefreshIcon} from 'akeneo-design-system';
 
 interface Props {
     onClick: () => void;
@@ -15,7 +15,7 @@ export const RegenerateButton: FC<Props> = ({onClick}: Props) => {
             onClick={onClick}
             title={translate('akeneo_connectivity.connection.edit_connection.credentials.action.regenerate')}
         >
-            <UpdateIcon />
+            <RefreshIcon size={18} />
         </IconButton>
     );
 };

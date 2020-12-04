@@ -6,18 +6,11 @@ extensions:
         position: 101
         feature: data_quality_insights
 
-    akeneo-data-quality-insights-product-edit-form-axis-rates:
-        module: akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-overview
-        parent: pim-product-edit-form-meta
-        targetZone: meta
-        position: 71
-        feature: data_quality_insights
-
     pim-product-edit-form-data-quality-insights-app:
         module: akeneo/data-quality-insights/infrastructure/product-edit-form/data-quality-insights-app
         parent: pim-product-edit-form
         targetZone: content
-        position: 10
+        position: 110
         feature: data_quality_insights
 
     pim-product-edit-form-attribute-filter-all-missing-attributes:
@@ -31,3 +24,9 @@ extensions:
         parent: pim-product-edit-form-attributes
         position: 100
         feature: data_quality_insights
+
+    pim-product-edit-form-data-quality-insights-product-quality-score:
+        module: akeneo/data-quality-insights/infrastructure/product-edit-form/product-quality-score
+        parent: pim-product-edit-form
+        targetZone: meta
+        position: 90

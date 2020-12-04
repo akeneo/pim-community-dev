@@ -33,11 +33,22 @@ class AttributeFilterAllMissingAttributes extends BaseForm {
     const data: ProductEvaluation = await fetcher(product.meta.id);
 
     let attributes: string[] = [];
-    const axisCriteriaPath = ['enrichment', scope, locale, 'criteria'];
+    const axisCriteriaPath = [scope, locale];
+
+    const enrichmentCriteria = [
+      'completeness_of_required_attributes',
+      'completeness_of_non_required_attributes',
+      'enrichment_image',
+    ];
 
     if (_has(data, axisCriteriaPath)) {
+      const criteria = _get(data, axisCriteriaPath)
+        // @ts-ignore
+        .filter((criterionEvaluation: CriterionEvaluationResult) =>
+          enrichmentCriteria.includes(criterionEvaluation.code)
+        );
       // @ts-ignore
-      _get(data, axisCriteriaPath).map((criterion: CriterionEvaluationResult) => {
+      criteria.map((criterion: CriterionEvaluationResult) => {
         attributes.push(...criterion.improvable_attributes);
       });
     }

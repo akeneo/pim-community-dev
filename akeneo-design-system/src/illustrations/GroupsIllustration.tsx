@@ -2,8 +2,8 @@ import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
 import {useTheme} from '../hooks';
 
-const GroupsIllustration = ({title, size = 256}: IllustrationProps) => (
-  <svg width={size} height={size} viewBox="0 0 256 256">
+const GroupsIllustration = ({title, size = 256, ...props}: IllustrationProps) => (
+  <svg width={size} height={size} viewBox="0 0 256 256" {...props}>
     {title && <title>{title}</title>}
     <g fill="none" fillRule="evenodd">
       <path fill="#FFF" d="M148.77 115.95h43.701l23.946-28.658h-43.702z" />

@@ -16,8 +16,10 @@ import {
   PRODUCT_TAB_CHANGED,
   ProductEditFormApp,
   ProductModelEditFormApp,
+  DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
+  PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
+  PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
 } from '@akeneo-pim-community/data-quality-insights/src';
-
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
 
@@ -74,14 +76,14 @@ class DataQualityInsightsApp extends BaseView {
 
     window.addEventListener(DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE, (() => {
       this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all');
-      this.redirectToProductEditForm();
+      this.redirectToAttributesTab();
     }) as EventListener);
 
     window.addEventListener(
       DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
       (_: CustomEvent<FilterAttributesEvent>) => {
         this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all_missing_attributes');
-        this.redirectToProductEditForm();
+        this.redirectToAttributesTab();
       }
     );
 
@@ -89,9 +91,13 @@ class DataQualityInsightsApp extends BaseView {
       DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
       (_: CustomEvent<FilterAttributesEvent>) => {
         this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'all_improvable_attributes');
-        this.redirectToProductEditForm();
+        this.redirectToAttributesTab();
       }
     );
+
+    window.addEventListener(DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB, () => {
+      this.redirectToDQITab();
+    });
 
     this.listenTo(this.getRoot(), 'column-tab:select-tab', ({target}: TabEvent) => {
       window.dispatchEvent(
@@ -139,11 +145,25 @@ class DataQualityInsightsApp extends BaseView {
     return super.configure();
   }
 
-  public redirectToProductEditForm() {
+  public redirectToAttributesTab() {
     const productData = this.getFormData();
     const tab =
       productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_ATTRIBUTES_TAB_NAME : PRODUCT_ATTRIBUTES_TAB_NAME;
 
+    this.redirectToTab(tab);
+  }
+
+  public redirectToDQITab() {
+    const productData = this.getFormData();
+    const tab =
+      productData.meta.model_type === 'product_model'
+        ? PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME
+        : PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME;
+
+    this.redirectToTab(tab);
+  }
+
+  public redirectToTab(tab: string) {
     this.getRoot().trigger('column-tab:change-tab', {
       currentTarget: {
         dataset: {
