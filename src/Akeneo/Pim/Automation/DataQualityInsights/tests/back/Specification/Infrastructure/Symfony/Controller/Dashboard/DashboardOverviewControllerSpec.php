@@ -2,18 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetDashboardRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetDashboardScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
@@ -25,15 +16,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class DashboardOverviewControllerSpec extends ObjectBehavior
 {
-    public function let(GetDashboardRatesQueryInterface $getDashboardRatesQuery)
+    public function let(GetDashboardScoresQueryInterface $getDashboardScoresQuery)
     {
-        $this->beConstructedWith($getDashboardRatesQuery);
+        $this->beConstructedWith($getDashboardScoresQuery);
     }
 
     public function it_returns_a_http_bad_request_response_if_an_invalid_category_code_is_given(
-        GetDashboardRatesQueryInterface $getDashboardRatesQuery
+        GetDashboardScoresQueryInterface $getDashboardScoresQuery
     ) {
-        $getDashboardRatesQuery->byCategory(Argument::cetera())->shouldNotBeCalled();
+        $getDashboardScoresQuery->byCategory(Argument::cetera())->shouldNotBeCalled();
 
         $request = new Request(['category' => '']);
 
@@ -42,9 +33,9 @@ final class DashboardOverviewControllerSpec extends ObjectBehavior
     }
 
     public function it_returns_a_http_bad_request_response_if_an_invalid_family_code_is_given(
-        GetDashboardRatesQueryInterface $getDashboardRatesQuery
+        GetDashboardScoresQueryInterface $getDashboardScoresQuery
     ) {
-        $getDashboardRatesQuery->byFamily(Argument::cetera())->shouldNotBeCalled();
+        $getDashboardScoresQuery->byFamily(Argument::cetera())->shouldNotBeCalled();
 
         $request = new Request(['family' => '']);
 
@@ -53,7 +44,7 @@ final class DashboardOverviewControllerSpec extends ObjectBehavior
     }
 
     public function it_returns_an_empty_response_if_there_is_no_rates(
-        GetDashboardRatesQueryInterface $getDashboardRatesQuery
+        GetDashboardScoresQueryInterface $getDashboardRatesQuery
     ) {
         $getDashboardRatesQuery
             ->byCatalog(new ChannelCode('ecommerce'), new LocaleCode('en_US'), TimePeriod::daily())

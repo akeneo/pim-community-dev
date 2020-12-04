@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistribution;
@@ -27,17 +18,13 @@ final class DashboardRates
 
     private const NUMBER_OF_MONTHS_TO_RETURN = 6;
 
-    /** @var array */
-    private $rates;
+    private array $rates;
 
-    /** @var string */
-    private $channelCode;
+    private string $channelCode;
 
-    /** @var string */
-    private $localeCode;
+    private string $localeCode;
 
-    /** @var string */
-    private $timePeriod;
+    private string $timePeriod;
 
     public function __construct(array $rates, ChannelCode $channelCode, LocaleCode $localeCode, TimePeriod $timePeriod)
     {
@@ -54,7 +41,6 @@ final class DashboardRates
         }
 
         $result = $this->convertRatesByTimePeriod($this->timePeriod);
-        $result = array_merge(['enrichment' => [], 'consistency' => []], $result);
 
         $actions = [
             TimePeriod::DAILY => function (array $rates) {
@@ -75,15 +61,13 @@ final class DashboardRates
     {
         $result = [];
         foreach ($this->rates[$timePeriod] as $date => $projectionByDate) {
-            foreach ($projectionByDate as $axisName => $axisProjection) {
-                if (! isset($axisProjection[$this->channelCode][$this->localeCode])) {
-                    $result[$axisName][$date] = [];
-                    continue;
-                }
-
-                $ranksDistribution = new RanksDistribution($axisProjection[$this->channelCode][$this->localeCode]);
-                $result[$axisName][$date] = $ranksDistribution->getPercentages();
+            if (! isset($projectionByDate[$this->channelCode][$this->localeCode])) {
+                $result[$date] = [];
+                continue;
             }
+
+            $ranksDistribution = new RanksDistribution($projectionByDate[$this->channelCode][$this->localeCode]);
+            $result[$date] = $ranksDistribution->getPercentages();
         }
 
         return $result;
@@ -137,12 +121,10 @@ final class DashboardRates
 
     private function fillMissingDates(array $result, array $lastDates): array
     {
-        foreach ($result as $axisName => $ranksByPeriod) {
-            $ranksByPeriod = array_intersect_key($ranksByPeriod, $lastDates);
-            $ranksByPeriod = array_replace($lastDates, $ranksByPeriod);
-            $result[$axisName] = $ranksByPeriod;
+        foreach ($lastDates as $date => $value) {
+            $lastDates[$date] = $result[$date] ?? [];
         }
 
-        return $result;
+        return $lastDates;
     }
 }

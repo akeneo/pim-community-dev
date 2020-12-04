@@ -3,7 +3,6 @@ akeneo_data_quality_insights:
 
     dqi_dashboard:
         menu: Data Quality Insights
-        title: Data Quality Overview
         helper:
             title: Introducing Data Quality in Akeneo
             description: With the data quality dashboard, you are able to measure your catalog data quality. You can also focus on a category or family.
@@ -37,6 +36,7 @@ akeneo_data_quality_insights:
             add_families: Add families
             add_categories: Add categories
             title: Title
+            score: Score
             no_family_helper_msg: Select the families for which you wish to measure data quality
             no_category_helper_msg: Select the categories for which you wish to measure data quality
             see_in_grid: See in grid
@@ -68,7 +68,7 @@ akeneo_data_quality_insights:
                             message3: This is perfect.
                 good_enrichment:
                     title: Products with a good enrichment ratio
-                    no_data: Your products seen to be empty, you should add attributes for this key indicator to highlight the quality of your products.
+                    no_data: Your products seem to be empty, you should add attributes for this key indicator to highlight the quality of your products.
                     messages:
                         first_step:
                             message1: One way to improve this ratio is to make sure you carefully define the most relevant attributes. <a href="{{ link }}" target="_blank">Take a look at our help center</a>.
@@ -92,6 +92,14 @@ akeneo_data_quality_insights:
                             message4: Congratulations, this is spotless!
             no_data: Sorry, we don't have enough data yet to show the key indicators.
             no_data_subtitle: Please come back later.
+
+        score_distribution:
+            title: Quality score distribution
+        quality_score_evolution:
+            title: Quality score evolution
+            current_score: is your current catalog quality score for this scope.
+            current_month_label: This month
+            no_catalog_score: We couldn’t calculate you current quality score.
 
     product_evaluation:
         criteria:
@@ -121,6 +129,9 @@ akeneo_data_quality_insights:
                 help_center_link: Learn how data quality insights can help you improve your data quality in our help center.
             add_image_attribute_recommendation: An image is worth a thousand words. You should add an image attribute to improve the data quality of this product.
             fill_image_attribute_recommendation: In our experience, images really make a difference. You should add at least one image to improve the data quality of this product.
+            not_applicable:
+                message: This criteria is not applicable in your context.
+                help_center_link: Find out why in our Help Center.
 
     product_edit_form:
         attribute_filter:
@@ -139,6 +150,7 @@ akeneo_data_quality_insights:
 
     product_grid:
         filter_label:
+            quality_score: Quality score
             enrichment_quality: Enrichment quality
             images_quality: Images quality
         filter_value:
@@ -147,4 +159,3 @@ akeneo_data_quality_insights:
 
 pim_title:
     akeneo_data_quality_insights_dashboard: Data Quality Insights
-

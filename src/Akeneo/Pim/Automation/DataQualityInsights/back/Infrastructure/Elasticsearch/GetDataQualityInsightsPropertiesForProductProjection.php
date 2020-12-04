@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductAxesRanksQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 
 /**
@@ -15,19 +15,19 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProduct
  */
 final class GetDataQualityInsightsPropertiesForProductProjection implements GetAdditionalPropertiesForProductProjectionInterface
 {
-    private GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery;
+    private GetLatestProductScoresQueryInterface $getProductScoresQuery;
 
-    private GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery;
+    private GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery;
 
     private ComputeProductsKeyIndicators $getProductsKeyIndicators;
 
     public function __construct(
-        GetLatestProductAxesRanksQueryInterface $getLatestProductAxesRanksQuery,
+        GetLatestProductScoresQueryInterface $getProductScoresQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
         ComputeProductsKeyIndicators $getProductsKeyIndicators
     ) {
+        $this->getProductScoresQuery = $getProductScoresQuery;
         $this->getProductIdsFromProductIdentifiersQuery = $getProductIdsFromProductIdentifiersQuery;
-        $this->getLatestProductAxesRanksQuery = $getLatestProductAxesRanksQuery;
         $this->getProductsKeyIndicators = $getProductsKeyIndicators;
     }
 
@@ -37,15 +37,17 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
     public function fromProductIdentifiers(array $productIdentifiers): array
     {
         $productIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
-        $productAxesRanks = $this->getLatestProductAxesRanksQuery->byProductIds($productIds);
+        $productScores = $this->getProductScoresQuery->byProductIds($productIds);
         $productKeyIndicators = $this->getProductsKeyIndicators->compute($productIds);
 
         $additionalProperties = [];
         foreach ($productIds as $productIdentifier => $productId) {
             $productId = $productId->toInt();
             $additionalProperties[$productIdentifier] = [
-                'rates' => isset($productAxesRanks[$productId]) ? $productAxesRanks[$productId]->toArrayInt() : [],
-                'data_quality_insights' => ['key_indicators' => isset($productKeyIndicators[$productId]) ? $productKeyIndicators[$productId] : []],
+                'data_quality_insights' => [
+                    'scores' => isset($productScores[$productId]) ? $productScores[$productId]->toArrayIntRank() : [],
+                    'key_indicators' => isset($productKeyIndicators[$productId]) ? $productKeyIndicators[$productId] : []
+                ],
             ];
         }
 

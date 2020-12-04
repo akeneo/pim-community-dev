@@ -1,16 +1,13 @@
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render, waitFor} from '@testing-library/react';
+import {fireEvent, waitFor} from '@testing-library/react';
 
-import FamilyFilter from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Overview/Filters/FamilyFilter';
+import {FamilyFilter} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Filters/FamilyFilter';
 import fetchFamilies from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies';
 import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '@akeneo-pim-community/data-quality-insights/src';
 import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
 
-const UserContext = require('pim/user-context');
-
-jest.mock('pim/user-context');
 jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies');
 
 beforeEach(() => {
@@ -18,7 +15,6 @@ beforeEach(() => {
 });
 
 window.dispatchEvent = jest.fn();
-UserContext.get.mockReturnValue('en_US');
 
 describe('Dashboard > filter on family', () => {
   test('dashboard can be filtered on "Mugs" family', async () => {

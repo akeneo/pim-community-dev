@@ -2,50 +2,37 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardRatesProjection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetRanksDistributionFromProductAxisRatesQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetRanksDistributionFromProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAllCategoryCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAllFamilyCodesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
 
 final class ConsolidateDashboardRates
 {
-    /** @var GetRanksDistributionFromProductAxisRatesQueryInterface */
-    private $getRanksDistributionFromProductAxisRatesQuery;
+    private GetRanksDistributionFromProductScoresQueryInterface $getRanksDistributionFromProductScoresQuery;
 
-    /** @var GetAllCategoryCodesQueryInterface */
-    private $getAllCategoryCodesQuery;
+    private GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery;
 
-    /** @var GetAllFamilyCodesQueryInterface */
-    private $getAllFamilyCodesQuery;
+    private GetAllFamilyCodesQueryInterface $getAllFamilyCodesQuery;
 
-    /** @var DashboardRatesProjectionRepositoryInterface */
-    private $dashboardRatesProjectionRepository;
+    private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
 
     public function __construct(
-        GetRanksDistributionFromProductAxisRatesQueryInterface $getRanksDistributionFromProductAxisRatesQuery,
+        GetRanksDistributionFromProductScoresQueryInterface $getRanksDistributionFromProductScoresQuery,
         GetAllCategoryCodesQueryInterface $getAllCategoryCodesQuery,
         GetAllFamilyCodesQueryInterface $getAllFamilyCodesQuery,
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
+        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository
     ) {
-        $this->getRanksDistributionFromProductAxisRatesQuery = $getRanksDistributionFromProductAxisRatesQuery;
+        $this->getRanksDistributionFromProductScoresQuery = $getRanksDistributionFromProductScoresQuery;
         $this->getAllCategoryCodesQuery = $getAllCategoryCodesQuery;
         $this->getAllFamilyCodesQuery = $getAllFamilyCodesQuery;
-        $this->dashboardRatesProjectionRepository = $dashboardRatesProjectionRepository;
+        $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
     }
 
     public function consolidate(ConsolidationDate $day): void
@@ -57,7 +44,7 @@ final class ConsolidateDashboardRates
 
     private function consolidateWholeCatalog(ConsolidationDate $day): void
     {
-        $catalogRanks = $this->getRanksDistributionFromProductAxisRatesQuery->forWholeCatalog($day->getDateTime());
+        $catalogRanks = $this->getRanksDistributionFromProductScoresQuery->forWholeCatalog($day->getDateTime());
 
         $dashBoardRatesProjection = new DashboardRatesProjection(
             DashboardProjectionType::catalog(),
@@ -66,7 +53,7 @@ final class ConsolidateDashboardRates
             $catalogRanks
         );
 
-        $this->dashboardRatesProjectionRepository->save($dashBoardRatesProjection);
+        $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
     }
 
     private function consolidateFamilies(ConsolidationDate $day): void
@@ -75,7 +62,7 @@ final class ConsolidateDashboardRates
         $familyCodes = $this->getAllFamilyCodesQuery->execute();
 
         foreach ($familyCodes as $familyCode) {
-            $familyRanks = $this->getRanksDistributionFromProductAxisRatesQuery->byFamily($familyCode, $day->getDateTime());
+            $familyRanks = $this->getRanksDistributionFromProductScoresQuery->byFamily($familyCode, $day->getDateTime());
             $dashBoardRatesProjection = new DashboardRatesProjection(
                 $dashboardFamily,
                 DashboardProjectionCode::family($familyCode),
@@ -83,7 +70,7 @@ final class ConsolidateDashboardRates
                 $familyRanks
             );
 
-            $this->dashboardRatesProjectionRepository->save($dashBoardRatesProjection);
+            $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
         }
     }
 
@@ -93,7 +80,7 @@ final class ConsolidateDashboardRates
         $categoryCodes = $this->getAllCategoryCodesQuery->execute();
 
         foreach ($categoryCodes as $categoryCode) {
-            $categoryRanks = $this->getRanksDistributionFromProductAxisRatesQuery->byCategory($categoryCode, $day->getDateTime());
+            $categoryRanks = $this->getRanksDistributionFromProductScoresQuery->byCategory($categoryCode, $day->getDateTime());
             $dashBoardRatesProjection = new DashboardRatesProjection(
                 $dashboardCategory,
                 DashboardProjectionCode::category($categoryCode),
@@ -101,7 +88,7 @@ final class ConsolidateDashboardRates
                 $categoryRanks
             );
 
-            $this->dashboardRatesProjectionRepository->save($dashBoardRatesProjection);
+            $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
         }
     }
 }

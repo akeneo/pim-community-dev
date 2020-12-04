@@ -6,13 +6,16 @@ import {
   DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY,
 } from '@akeneo-pim-community/data-quality-insights/src';
 import ReactDOM from 'react-dom';
+import {TimePeriod} from '@akeneo-pim-community/data-quality-insights';
 
 interface SectionConfig {
   align: string;
 }
+
 interface LocaleEvent {
   localeCode: string;
 }
+
 interface ScopeEvent {
   scopeCode: string;
 }
@@ -34,8 +37,7 @@ class BaseDashboard extends BaseView {
     align: 'left',
   };
 
-  // @todo revert it to "weekly" DAPI-1436
-  protected timePeriod: string = 'daily';
+  protected timePeriod: TimePeriod = 'weekly';
 
   protected familyCode: string | null = null;
 
@@ -53,7 +55,7 @@ class BaseDashboard extends BaseView {
     window.addEventListener(DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD, ((
       event: CustomEvent<DashboardChangeTimePeriodEvent>
     ) => {
-      this.timePeriod = event.detail.timePeriod;
+      this.timePeriod = event.detail.timePeriod as TimePeriod;
       this.render();
     }) as EventListener);
 

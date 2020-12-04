@@ -1,17 +1,6 @@
 import {useEffect, useState} from 'react';
 import {fetchDqiDashboardData} from '../../fetcher';
-
-export type Ranks = {
-  [rank: string]: number;
-};
-
-export type AxisRates = {
-  [date: string]: Ranks;
-};
-
-export type Dataset = {
-  [axisName: string]: AxisRates;
-};
+import {ScoreDistributionByDate} from '../../../domain';
 
 const useFetchDqiDashboardData = (
   channel: string,
@@ -20,7 +9,7 @@ const useFetchDqiDashboardData = (
   familyCode: string | null,
   categoryCode: string | null
 ) => {
-  const [dqiDashboardData, setDqiDashboardData] = useState<Dataset | null>(null);
+  const [dqiDashboardData, setDqiDashboardData] = useState<ScoreDistributionByDate | null>(null);
 
   useEffect(() => {
     (async () => {

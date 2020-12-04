@@ -4,14 +4,13 @@ import {productEditFormStore} from '../infrastructure/store';
 import {CatalogContextListener, PageContextListener, ProductContextListener} from './listener';
 import {Product} from '../domain';
 import {fetchProduct, fetchProductDataQualityEvaluation} from '../infrastructure/fetcher';
-import {AxisRatesOverviewPortal} from './component/ProductEditForm';
 import {AxesContextProvider} from './context/AxesContext';
 import {DataQualityInsightsTabContent} from './component/ProductEditForm/TabContent';
 import AttributesTabContent from './component/ProductEditForm/TabContent/AttributesTabContent';
-import {pimTheme} from 'akeneo-design-system';
+import {AssetCollectionIcon, EditIcon, pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
-import Criterion from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import {Criterion, Icon} from './component/ProductEditForm/TabContent/DataQualityInsights';
 import {
   NotApplicableEnrichmentImageMessage,
   Recommendation,
@@ -19,6 +18,7 @@ import {
 } from './component/ProductEditForm/TabContent/DataQualityInsights/Recommendation';
 import {followNotApplicableEnrichmentImageRecommendation} from './user-actions';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import QualityScorePortal from './component/ProductEditForm/QualityScorePortal';
 
 interface ProductEditFormAppProps {
   catalogChannel: string;
@@ -43,9 +43,14 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
               productEvaluationFetcher={fetchProductDataQualityEvaluation}
             >
               <AxisEvaluation axis={'enrichment'}>
-                <Criterion code={'completeness_of_required_attributes'} />
-                <Criterion code={'completeness_of_non_required_attributes'} />
+                <Criterion code={'completeness_of_required_attributes'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
+                <Criterion code={'completeness_of_non_required_attributes'}>
+                  <Icon type={EditIcon} />
+                </Criterion>
                 <Criterion code={'enrichment_image'}>
+                  <Icon type={AssetCollectionIcon} />
                   <Recommendation
                     type={'not_applicable'}
                     follow={() => followNotApplicableEnrichmentImageRecommendation(product)}
@@ -58,7 +63,7 @@ const ProductEditFormApp: FunctionComponent<ProductEditFormAppProps> = ({product
                 </Criterion>
               </AxisEvaluation>
             </DataQualityInsightsTabContent>
-            <AxisRatesOverviewPortal />
+            <QualityScorePortal />
           </AxesContextProvider>
         </Provider>
       </ThemeProvider>

@@ -20,13 +20,13 @@ describe('Convert dashboard dates depending on the user locale and time period',
     expect(dailyCallback('whatever', 6)).toBe('d - 1');
   });
   test('convert last day of week to a date range for weekly time period', () => {
-    expect(weeklyCallback('2020-02-02')).toBe('1/27/2020 - 2/2/2020');
+    expect(weeklyCallback('2020-02-02')).toBe('Jan. 27 - Feb. 2');
   });
   test('convert last day of week to a date range for weekly time period, across 2 years', () => {
-    expect(weeklyCallback('2020-01-05')).toBe('12/30/2019 - 1/5/2020');
+    expect(weeklyCallback('2020-01-05')).toBe('Dec. 30 - Jan. 5');
   });
   test('convert a date for monthly time period', () => {
-    expect(monthlyCallback('2020-01-31')).toBe('January 2020');
-    expect(monthlyCallback('2020-01-15')).toBe('January 2020');
+    expect(monthlyCallback('2020-01-31')).toBe('Jan. 20');
+    expect(monthlyCallback('2020-01-15')).toBe('Jan. 20');
   });
 });
