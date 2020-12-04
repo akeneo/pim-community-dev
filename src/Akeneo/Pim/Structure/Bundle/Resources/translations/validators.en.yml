@@ -1,4 +1,0 @@
-pim_structure:
-  validation:
-    association_type:
-      cannot_be_quantified_and_two_way: Association type can be either quantified or two-way

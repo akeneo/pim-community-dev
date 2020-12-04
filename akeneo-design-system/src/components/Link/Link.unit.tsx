@@ -33,3 +33,15 @@ describe('A link', () => {
     expect((link as HTMLAnchorElement).rel).toContain('noopener noreferrer');
   });
 });
+
+describe('Link supports forwardRef', () => {
+  const ref = {current: null};
+
+  render(<Link ref={ref}>My link</Link>);
+  expect(ref.current).not.toBe(null);
+});
+
+describe('Link supports ...rest props', () => {
+  const {container} = render(<Link data-my-attribute="my_value">My link</Link>);
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+});

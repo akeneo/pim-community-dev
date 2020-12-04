@@ -29,7 +29,7 @@ const aDragEvent = (eventName: string, target: Element, coordinates?: Coordinate
     eventPhase: 0,
     isTrusted: false,
     timeStamp: 0,
-    type: "",
+    type: '',
     isDefaultPrevented(): boolean {
       return false;
     },
@@ -37,8 +37,8 @@ const aDragEvent = (eventName: string, target: Element, coordinates?: Coordinate
       return false;
     },
     dataTransfer: {
-      dropEffect: "move",
-      effectAllowed: "move",
+      dropEffect: 'move',
+      effectAllowed: 'move',
       files: {
         length: 0,
         item: jest.fn(),
@@ -48,7 +48,7 @@ const aDragEvent = (eventName: string, target: Element, coordinates?: Coordinate
         add: jest.fn(),
         clear: jest.fn,
         item: jest.fn(),
-        remove: jest.fn()
+        remove: jest.fn(),
       },
       types: [],
       clearData: jest.fn(),
@@ -86,8 +86,8 @@ const aDragEvent = (eventName: string, target: Element, coordinates?: Coordinate
       },
       document,
     },
-    bubbles: false
+    bubbles: false,
   };
-}
+};
 
 export {aListOfData, aDragEvent};

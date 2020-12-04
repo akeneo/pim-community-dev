@@ -8,53 +8,42 @@
  */
 'use strict';
 
-define(
-    [
-        'pim/form/common/fields/simple-select-async'
-    ],
-    function (
-        SimpleSelectAsync,
-    ) {
-        return SimpleSelectAsync.extend({
-            readOnly: false,
+define(['pim/form/common/fields/simple-select-async'], function (SimpleSelectAsync) {
+  return SimpleSelectAsync.extend({
+    readOnly: false,
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize() {
-                SimpleSelectAsync.prototype.initialize.apply(this, arguments);
+    /**
+     * {@inheritdoc}
+     */
+    initialize() {
+      SimpleSelectAsync.prototype.initialize.apply(this, arguments);
 
-                this.readOnly = false;
-            },
+      this.readOnly = false;
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            configure() {
-                this.listenTo(
-                    this,
-                    'mass-edit:update-read-only',
-                    this.setReadOnly.bind(this)
-                );
+    /**
+     * {@inheritdoc}
+     */
+    configure() {
+      this.listenTo(this, 'mass-edit:update-read-only', this.setReadOnly.bind(this));
 
-                return SimpleSelectAsync.prototype.configure.apply(this, arguments);
-            },
+      return SimpleSelectAsync.prototype.configure.apply(this, arguments);
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            isReadOnly() {
-                return this.readOnly || SimpleSelectAsync.prototype.isReadOnly.apply(this, arguments);
-            },
+    /**
+     * {@inheritdoc}
+     */
+    isReadOnly() {
+      return this.readOnly || SimpleSelectAsync.prototype.isReadOnly.apply(this, arguments);
+    },
 
-            /**
-             * Updates the readOnly parameter to avoid edition of the field
-             *
-             * @param {Boolean} readOnly
-             */
-            setReadOnly(readOnly) {
-                this.readOnly = readOnly;
-            }
-        });
-    }
-);
+    /**
+     * Updates the readOnly parameter to avoid edition of the field
+     *
+     * @param {Boolean} readOnly
+     */
+    setReadOnly(readOnly) {
+      this.readOnly = readOnly;
+    },
+  });
+});

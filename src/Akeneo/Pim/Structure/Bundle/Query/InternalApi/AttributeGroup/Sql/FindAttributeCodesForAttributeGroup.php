@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql;
 
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Connection;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

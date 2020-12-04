@@ -1,0 +1,123 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {ProgressBar} from './ProgressBar.tsx';
+
+<Meta
+  title="Components/ProgressBar"
+  component={ProgressBar}
+  argTypes={{
+    percent: {control: {type: 'range', min: 0, max: 100, step: 1}},
+  }}
+  args={{
+    level: 'primary',
+    title: 'Lorem Ipsum is simply dummy text',
+    progressLabel: '30 minutes left',
+    percent: 50
+  }}
+/>
+
+# ProgressBar
+
+## Usage
+One of the most important rules in UI / UX design is visibility of system state. The goal behind this rule is pretty obvious: To minimize user stress, you need to provide them with feedback on what is going on with the app within a reasonable amount of time. Don't let users guess, tell them what's going on. And one of the most common forms of this type of feedback is a progress indicator.
+
+### Types of Progress bars
+**Determinate:** when indicators are determinate they indicate how long an operation will take when the percentage complete is detectable.
+
+**Indeterminate**: when indicators are indeterminate they request that the user waits while something finishes when it’s not necessary to indicate how long it will take.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <ProgressBar {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on progress
+
+<Canvas>
+  <Story name="Progress">
+    {args => {
+      return (
+        <>
+          <ProgressBar {...args} progressLabel="0%" percent={0} />
+          <ProgressBar {...args} progressLabel="25%" percent={25} />
+          <ProgressBar {...args} progressLabel="50%" percent={50} />
+          <ProgressBar {...args} progressLabel="100%" percent={100} />
+          <ProgressBar {...args} progressLabel="indeterminate" percent='indeterminate' />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <ProgressBar {...args} title="Primary" level="primary" />
+          <ProgressBar {...args} title="Secondary" level="secondary" />
+          <ProgressBar {...args} title="Tertiary" level="tertiary" />
+          <ProgressBar {...args} title="Warning" level="warning" />
+          <ProgressBar {...args} title="Danger" level="danger" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on light
+
+<Canvas>
+  <Story name="Light">
+    {args => {
+      return (
+        <>
+          <ProgressBar {...args} title="Default" light={false} />
+          <ProgressBar {...args} title="Light" light={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on size
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      return (
+        <>
+          <ProgressBar {...args} title="Small" size="small" />
+          <ProgressBar {...args} title="Large" size="large" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on width
+
+<Canvas>
+  <Story name="Width">
+    {args => {
+      return (
+        <>
+          <div>
+            <ProgressBar {...args}/>
+          </div>
+          <div style={{width: '300px'}}>
+            <ProgressBar {...args}/>
+          </div>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

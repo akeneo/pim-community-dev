@@ -13,10 +13,19 @@ const useShortcut = <NodeType extends HTMLElement>(
   callback: (args?: any) => unknown,
   externalRef: Ref<NodeType> = null
 ): Ref<NodeType> => {
-  const memoizedCallback = useCallback((event: KeyboardEvent) => (key === event.code ? callback() : null), [
-    key,
-    callback,
-  ]);
+  const memoizedCallback = useCallback(
+    (event: KeyboardEvent) => {
+      if (key === event.code) {
+        event.stopImmediatePropagation();
+        callback(event);
+
+        return true;
+      }
+
+      return false;
+    },
+    [key, callback]
+  );
 
   const internalRef = useRef<NodeType>(null);
   const ref = null === externalRef ? internalRef : externalRef;
@@ -28,8 +37,8 @@ const useShortcut = <NodeType extends HTMLElement>(
       element.addEventListener('keydown', memoizedCallback);
       return () => element.removeEventListener('keydown', memoizedCallback);
     } else {
-      document.addEventListener('keydown', memoizedCallback);
-      return () => document.removeEventListener('keydown', memoizedCallback);
+      window.addEventListener('keydown', memoizedCallback);
+      return () => window.removeEventListener('keydown', memoizedCallback);
     }
   }, [memoizedCallback, ref]);
 

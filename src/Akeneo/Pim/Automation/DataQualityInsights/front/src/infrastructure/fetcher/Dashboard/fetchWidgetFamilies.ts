@@ -6,7 +6,7 @@ const fetchWidgetFamilies = async (channel: string, locale: string, familyCodes:
   let routeParams = {
     channel: channel,
     locale: locale,
-    families: familyCodes
+    families: familyCodes,
   };
   const response = await fetch(Routing.generate(ROUTE_NAME, routeParams));
 

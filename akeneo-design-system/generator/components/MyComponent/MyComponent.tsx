@@ -1,26 +1,26 @@
-import React, {Ref} from 'react';
+import React, {Ref, ReactNode} from 'react';
 import styled from 'styled-components';
 
 //TODO be sure to select the appropriate container element here
-const MyComponentContainer = styled.span<{level: string}>``;
+const MyComponentContainer = styled.div<{level: string}>``;
 
 type MyComponentProps = {
   /**
-   * TODO
+   * TODO.
    */
-  level?: string;
+  level?: 'primary' | 'warning' | 'danger';
 
   /**
-   * TODO
+   * TODO.
    */
-  children?: string;
+  children?: ReactNode;
 };
 
 /**
- * TODO
+ * TODO.
  */
-const MyComponent = React.forwardRef<HTMLSpanElement, MyComponentProps>(
-  ({level = 'primary', children, ...rest}: MyComponentProps, forwardedRef: Ref<HTMLSpanElement>) => {
+const MyComponent = React.forwardRef<HTMLDivElement, MyComponentProps>(
+  ({level = 'primary', children, ...rest}: MyComponentProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
       <MyComponentContainer level={level} ref={forwardedRef} {...rest}>
         {children}

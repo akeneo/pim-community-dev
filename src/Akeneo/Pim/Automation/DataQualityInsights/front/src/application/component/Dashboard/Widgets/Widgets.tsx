@@ -1,6 +1,6 @@
-import React, {FunctionComponent} from "react";
-import FamilyWidget from "./FamilyWidget";
-import CategoryWidget from "./CategoryWidget";
+import React, {FunctionComponent} from 'react';
+import FamilyWidget from './FamilyWidget';
+import CategoryWidget from './CategoryWidget';
 
 interface DataQualityWidgetsProps {
   catalogLocale: string;
@@ -11,13 +11,13 @@ const Widgets: FunctionComponent<DataQualityWidgetsProps> = ({catalogChannel, ca
   return (
     <div id="data-quality-insights-activity-dashboard-widgets">
       <div className="AknDataQualityInsights-widgetColumn">
-        <CategoryWidget catalogLocale={catalogLocale} catalogChannel={catalogChannel}/>
+        <CategoryWidget catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
       </div>
       <div className="AknDataQualityInsights-widgetColumn">
-        <FamilyWidget catalogLocale={catalogLocale} catalogChannel={catalogChannel}/>
+        <FamilyWidget catalogLocale={catalogLocale} catalogChannel={catalogChannel} />
       </div>
     </div>
-  )
+  );
 };
 
 export default Widgets;

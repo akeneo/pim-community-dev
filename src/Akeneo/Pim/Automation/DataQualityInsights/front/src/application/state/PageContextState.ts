@@ -1,5 +1,5 @@
 export interface PageContextState {
-  currentTab: string|null;
+  currentTab: string | null;
 }
 
 export interface ProductEditFormPageContextState extends PageContextState {

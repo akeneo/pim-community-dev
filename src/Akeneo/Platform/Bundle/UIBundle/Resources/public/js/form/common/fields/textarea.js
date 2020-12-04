@@ -5,41 +5,37 @@
  */
 'use strict';
 
-define([
-    'jquery',
-    'underscore',
-    'pim/form/common/fields/field',
-    'pim/template/form/common/fields/textarea'
-],
-function (
-    $,
-    _,
-    BaseField,
-    template
+define(['jquery', 'underscore', 'pim/form/common/fields/field', 'pim/template/form/common/fields/textarea'], function (
+  $,
+  _,
+  BaseField,
+  template
 ) {
-    return BaseField.extend({
-        template: _.template(template),
-        events: {
-            'keyup textarea': function (event) {
-                this.errors = [];
-                this.updateModel(this.getFieldValue(event.target));
-            }
-        },
+  return BaseField.extend({
+    template: _.template(template),
+    events: {
+      'keyup textarea': function (event) {
+        this.errors = [];
+        this.updateModel(this.getFieldValue(event.target));
+      },
+    },
 
-        /**
-         * {@inheritdoc}
-         */
-        renderInput: function (templateContext) {
-            return this.template(_.extend(templateContext, {
-                value: this.getModelValue()
-            }));
-        },
+    /**
+     * {@inheritdoc}
+     */
+    renderInput: function (templateContext) {
+      return this.template(
+        _.extend(templateContext, {
+          value: this.getModelValue(),
+        })
+      );
+    },
 
-        /**
-         * {@inheritdoc}
-         */
-        getFieldValue: function (field) {
-            return $(field).val();
-        }
-    });
+    /**
+     * {@inheritdoc}
+     */
+    getFieldValue: function (field) {
+      return $(field).val();
+    },
+  });
 });

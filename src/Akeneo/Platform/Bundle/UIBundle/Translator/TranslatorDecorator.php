@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\UIBundle\Translator;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Decorates the symfony translator to be able to returns translation key instead of error during transchoice.
@@ -13,12 +14,11 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TranslatorDecorator implements TranslatorInterface
+class TranslatorDecorator implements LegacyTranslatorInterface, TranslatorInterface
 {
-    /** @var TranslatorInterface */
-    private $symfonyTranslator;
+    private LegacyTranslatorInterface $symfonyTranslator;
 
-    public function __construct(TranslatorInterface $symfonyTranslator)
+    public function __construct(LegacyTranslatorInterface $symfonyTranslator)
     {
         $this->symfonyTranslator = $symfonyTranslator;
     }

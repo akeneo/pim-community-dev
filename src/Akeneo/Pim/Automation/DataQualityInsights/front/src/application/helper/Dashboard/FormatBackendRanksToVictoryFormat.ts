@@ -1,6 +1,6 @@
 export type Ranks = {
   [rank: string]: number;
-}
+};
 
 export type AxisRates = {
   [date: string]: Ranks;
@@ -16,12 +16,12 @@ export const formatBackendRanksToVictoryFormat = (dataset: Dataset, axisName: st
   }
 
   let ranks: {[rank: string]: any[]} = {
-    'rank_5': [],
-    'rank_4': [],
-    'rank_3': [],
-    'rank_2': [],
-    'rank_1': [],
-    'rank_6': [],
+    rank_5: [],
+    rank_4: [],
+    rank_3: [],
+    rank_2: [],
+    rank_1: [],
+    rank_6: [],
   };
 
   Object.entries(dataset[axisName]).map(([date, ranksByDay]) => {

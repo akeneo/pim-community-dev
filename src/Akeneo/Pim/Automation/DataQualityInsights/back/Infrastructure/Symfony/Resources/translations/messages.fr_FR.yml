@@ -1,4 +1,6 @@
 akeneo_data_quality_insights:
   axis:
     enrichment: Enrichissement
+  acl_group:
+    dqi: Qualité des données
 Enrichment: Enrichissement

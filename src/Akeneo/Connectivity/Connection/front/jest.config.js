@@ -5,6 +5,7 @@ module.exports = {
             tsConfig: './tests/tsconfig.json',
         },
     },
+    moduleDirectories: ['<rootDir>/../../../../../node_modules/'],
     moduleNameMapper: {
         '\\.(svg)$': '<rootDir>/tests/mocks/file-mock.ts',
         '^@src/(.*)$': '<rootDir>/src/$1',

@@ -1,28 +1,35 @@
 akeneo_data_quality_insights_dashboard:
     path: /data-quality-insights/dashboard
     defaults:
-        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardController
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardController
         _feature: data_quality_insights
     methods: [GET]
 
 akeneo_data_quality_insights_dashboard_overview:
     path: /data-quality-insights/dashboard/overview/{channel}/{locale}/{timePeriod}
     defaults:
-        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardOverviewController
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardOverviewController
         _feature: data_quality_insights
     methods: [GET]
 
 akeneo_data_quality_insights_dashboard_widget_families:
     path: /data-quality-insights/dashboard/widget/families/{channel}/{locale}
     defaults:
-        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardWidgetFamiliesController
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardWidgetFamiliesController
         _feature: data_quality_insights
     methods: [GET]
 
 akeneo_data_quality_insights_dashboard_widget_categories:
     path: /data-quality-insights/dashboard/widget/categories/{channel}/{locale}
     defaults:
-        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\DashboardWidgetCategoriesController
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardWidgetCategoriesController
+        _feature: data_quality_insights
+    methods: [GET]
+
+akeneo_data_quality_insights_dashboard_key_indicators:
+    path: /data-quality-insights/dashboard/key_indicators/{channel}/{locale}
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardKeyIndicatorsController
         _feature: data_quality_insights
     methods: [GET]
 

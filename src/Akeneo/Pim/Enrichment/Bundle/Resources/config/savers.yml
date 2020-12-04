@@ -21,11 +21,10 @@ services:
             - '@pim_catalog.synchronizer.product_unique_data'
 
     pim_catalog.saver.product_model:
-        class: '%pim_catalog.saver.base.class%'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelSaver'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '%pim_catalog.model.product_model.interface%'
 
     pim_catalog.synchronizer.product_unique_data:
         class: '%pim_catalog.synchronizer.product_unique_data.class%'
@@ -53,11 +52,11 @@ services:
             - '%pim_catalog.model.association_type.interface%'
 
     pim_catalog.saver.category:
-        class: '%pim_catalog.saver.base.class%'
+        class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '%pim_catalog.model.category.interface%'
+            - '@akeneo.enrichment.lock.factory'
 
     pim_catalog.saver.group_options_resolver:
         class: '%pim_catalog.saver.group_options_resolver.class%'

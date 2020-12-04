@@ -7,248 +7,252 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'pim/router',
-        'pim/form',
-        'pim/i18n',
-        'pim/user-context',
-        'pim/fetcher-registry',
-        'pim/security-context',
-        'pim/dialog',
-        'pim/template/form/attribute-group/tab/attribute',
-        'pim/datagrid/state',
-        'jquery-ui'
-    ],
-    function (
-        $,
-        _,
-        __,
-        Router,
-        BaseForm,
-        i18n,
-        UserContext,
-        FetcherRegistry,
-        SecurityContext,
-        Dialog,
-        template,
-        DatagridState
-    ) {
-        return BaseForm.extend({
-            className: 'tabbable tabs-left',
-            template: _.template(template),
-            otherAttributes: [],
-            attributeSortOrderKey: 'attributes_sort_order',
+define([
+  'jquery',
+  'underscore',
+  'oro/translator',
+  'pim/router',
+  'pim/form',
+  'pim/i18n',
+  'pim/user-context',
+  'pim/fetcher-registry',
+  'pim/security-context',
+  'pim/dialog',
+  'pim/template/form/attribute-group/tab/attribute',
+  'pim/datagrid/state',
+  'jquery-ui',
+], function (
+  $,
+  _,
+  __,
+  Router,
+  BaseForm,
+  i18n,
+  UserContext,
+  FetcherRegistry,
+  SecurityContext,
+  Dialog,
+  template,
+  DatagridState
+) {
+  return BaseForm.extend({
+    className: 'tabbable tabs-left',
+    template: _.template(template),
+    otherAttributes: [],
+    attributeSortOrderKey: 'attributes_sort_order',
 
-            events: {
-                'click .remove-attribute': 'removeAttributeRequest',
-                'click .redirect-attribute-list': 'redirectAttributeList'
-            },
+    events: {
+      'click .remove-attribute': 'removeAttributeRequest',
+      'click .redirect-attribute-list': 'redirectAttributeList',
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-                this.config.number_of_attributes_displayed = 500;
+    /**
+     * {@inheritdoc}
+     */
+    initialize: function (config) {
+      this.config = config.config;
+      this.config.number_of_attributes_displayed = 500;
 
+      BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+    /**
+     * {@inheritdoc}
+     */
+    configure: function () {
+      this.trigger('tab:register', {
+        code: this.config.tabCode ? this.config.tabCode : this.code,
+        label: __(this.config.title),
+      });
 
-            /**
-             * {@inheritdoc}
-             */
-            configure: function () {
-                this.trigger('tab:register', {
-                    code: this.config.tabCode ? this.config.tabCode : this.code,
-                    label: __(this.config.title)
+      this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
+
+      return FetcherRegistry.getFetcher('attribute')
+        .search({attribute_groups: 'other', rights: 0})
+        .then(
+          function (attributes) {
+            this.otherAttributes = _.pluck(attributes, 'code');
+          }.bind(this)
+        )
+        .then(
+          function () {
+            return BaseForm.prototype.configure.apply(this, arguments);
+          }.bind(this)
+        );
+    },
+
+    /**
+     * {@inheritdoc}
+     */
+    render: function () {
+      const attributeCodesToFetch = this.getFormData().attributes.slice(0, this.config.number_of_attributes_displayed);
+      FetcherRegistry.getFetcher('attribute')
+        .fetchByIdentifiers(attributeCodesToFetch, {rights: 0})
+        .then(
+          function (attributes) {
+            attributes = attributes.map(attribute => {
+              let sortOrder = this.getFormData().attributes_sort_order[attribute.code];
+
+              //This updates the sort order if the attribute is new on the collection
+              if (undefined === sortOrder) {
+                sortOrder = Object.keys(this.getFormData().attributes_sort_order).length + 1;
+              }
+
+              return Object.assign({}, attribute, {sort_order: sortOrder});
+            });
+
+            attributes.sort((first, second) => first.sort_order - second.sort_order);
+
+            this.$el.empty().append(
+              this.template({
+                attributes: attributes,
+                i18n: i18n,
+                UserContext: UserContext,
+                __: __,
+                hasRightToRemove: this.hasRightToRemove(),
+                canSortAttributes: SecurityContext.isGranted(this.config.sortAttributesACL),
+                attributeCount: attributes.length,
+                totalAttributeCount: this.getFormData().attributes.length,
+              })
+            );
+
+            this.$('.attribute-list').sortable({
+              handle: '.handle',
+              containment: 'parent',
+              tolerance: 'pointer',
+              update: this.updateAttributeOrders.bind(this),
+              helper: function (e, tr) {
+                var $originals = tr.children();
+                var $helper = tr.clone();
+                $helper.children().each(function (index) {
+                  $(this).width($originals.eq(index).width());
                 });
 
-                this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
+                return $helper;
+              },
+            });
 
-                return FetcherRegistry.getFetcher('attribute')
-                    .search({attribute_groups: 'other', rights: 0})
-                    .then(function (attributes) {
-                        this.otherAttributes = _.pluck(attributes, 'code');
-                    }.bind(this)).then(function () {
-                        return BaseForm.prototype.configure.apply(this, arguments);
-                    }.bind(this));
-            },
+            this.delegateEvents();
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                const attributeCodesToFetch = this.getFormData().attributes
-                    .slice(0, this.config.number_of_attributes_displayed);
-                FetcherRegistry.getFetcher('attribute')
-                    .fetchByIdentifiers(attributeCodesToFetch, {rights: 0})
-                    .then(function (attributes) {
-                        attributes = attributes.map((attribute) => {
-                            let sortOrder = this.getFormData().attributes_sort_order[attribute.code];
+            BaseForm.prototype.render.apply(this, arguments);
+          }.bind(this)
+        );
 
-                            //This updates the sort order if the attribute is new on the collection
-                            if (undefined === sortOrder) {
-                                sortOrder = Object.keys(this.getFormData().attributes_sort_order).length + 1;
-                            }
+      return this;
+    },
 
-                            return Object.assign({}, attribute, { sort_order: sortOrder });
-                        });
+    /**
+     * Update the sort order of attributes
+     */
+    updateAttributeOrders: function () {
+      var attributeGroup = _.extend({}, this.getFormData());
+      attributeGroup.attributes_sort_order = _.reduce(
+        this.$('.attribute'),
+        function (previous, current, order) {
+          var next = _.extend({}, previous);
+          next[current.dataset.attributeCode] = order;
 
-                        attributes.sort((first, second) => first.sort_order - second.sort_order);
+          return next;
+        },
+        {}
+      );
 
-                        this.$el.empty().append(this.template({
-                            attributes: attributes,
-                            i18n: i18n,
-                            UserContext: UserContext,
-                            __: __,
-                            hasRightToRemove: this.hasRightToRemove(),
-                            canSortAttributes: SecurityContext.isGranted(this.config.sortAttributesACL),
-                            attributeCount: attributes.length,
-                            totalAttributeCount: this.getFormData().attributes.length,
-                        }));
+      this.setData(attributeGroup);
 
-                        this.$('.attribute-list').sortable({
-                            handle: '.handle',
-                            containment: 'parent',
-                            tolerance: 'pointer',
-                            update: this.updateAttributeOrders.bind(this),
-                            helper: function(e, tr) {
-                                var $originals = tr.children();
-                                var $helper = tr.clone();
-                                $helper.children().each(function(index) {
-                                    $(this).width($originals.eq(index).width());
-                                });
+      this.render();
+    },
 
-                                return $helper;
-                            }
-                        });
+    /**
+     * Add attributes to the model
+     *
+     * @param {Event}
+     */
+    addAttributes: function (event) {
+      var attributeGroup = _.extend({}, this.getFormData());
+      attributeGroup.attributes = _.union(attributeGroup.attributes, event.codes);
+      this.otherAttributes = _.difference(this.otherAttributes, event.codes);
 
-                        this.delegateEvents();
+      this.setData(attributeGroup);
 
-                        BaseForm.prototype.render.apply(this, arguments);
-                    }.bind(this));
+      this.render();
+    },
 
-                return this;
-            },
+    /**
+     * Add attributes to the model
+     *
+     * @param {Event}
+     */
+    removeAttributeRequest: function (event) {
+      if (!SecurityContext.isGranted(this.config.removeAttributeACL)) {
+        return;
+      }
 
-            /**
-             * Update the sort order of attributes
-             */
-            updateAttributeOrders: function () {
-                var attributeGroup = _.extend({}, this.getFormData());
-                attributeGroup.attributes_sort_order = _.reduce(
-                    this.$('.attribute'),
-                    function (previous, current, order) {
-                        var next = _.extend({}, previous);
-                        next[current.dataset.attributeCode] = order;
+      var code = event.currentTarget.dataset.attributeCode;
 
-                        return next;
-                    },
-                    {});
+      Dialog.confirmDelete(
+        __(this.config.confirmation.message, {attribute: code}),
+        __(this.config.confirmation.title),
+        function () {
+          this.removeAttribute(code);
+        }.bind(this),
+        __(this.config.confirmation.subTitle),
+        __(this.config.confirmation.buttonText)
+      );
+    },
 
-                this.setData(attributeGroup);
+    /**
+     * Remove attribute from collection
+     *
+     * @param {string} code
+     */
+    removeAttribute: function (code) {
+      var attributeGroup = _.extend({}, this.getFormData());
+      attributeGroup.attributes = _.without(attributeGroup.attributes, code);
+      delete attributeGroup.attributes_sort_order[code];
+      this.otherAttributes = _.union(this.otherAttributes, [code]);
 
-                this.render();
-            },
+      this.setData(attributeGroup);
 
-            /**
-             * Add attributes to the model
-             *
-             * @param {Event}
-             */
-            addAttributes: function (event) {
-                var attributeGroup = _.extend({}, this.getFormData());
-                attributeGroup.attributes = _.union(attributeGroup.attributes, event.codes);
-                this.otherAttributes = _.difference(this.otherAttributes, event.codes);
+      this.render();
+    },
 
-                this.setData(attributeGroup);
+    /**
+     * Get the list of attributes that are in the 'other' group
+     *
+     * @return {array}
+     */
+    getOtherAttributes: function () {
+      return this.otherAttributes;
+    },
 
-                this.render();
-            },
+    /**
+     * Does the user has right to remove an attribute
+     *
+     * @return {Boolean}
+     */
+    hasRightToRemove: function () {
+      var currentAttributeGroupIsNotOther = this.config.otherGroup !== this.getFormData().code;
 
-            /**
-             * Add attributes to the model
-             *
-             * @param {Event}
-             */
-            removeAttributeRequest: function (event) {
-                if (!SecurityContext.isGranted(this.config.removeAttributeACL)) {
-                    return;
-                }
+      return currentAttributeGroupIsNotOther && SecurityContext.isGranted(this.config.removeAttributeACL);
+    },
 
-                var code = event.currentTarget.dataset.attributeCode;
+    /**
+     * Does the user has right to add an attribute
+     *
+     * @return {Boolean}
+     */
+    hasRightToAdd: function () {
+      var currentAttributeGroupIsNotOther = this.config.otherGroup !== this.getFormData().code;
 
-                Dialog.confirmDelete(
-                    __(this.config.confirmation.message, {attribute: code}),
-                    __(this.config.confirmation.title),
-                    function () {
-                        this.removeAttribute(code);
-                    }.bind(this),
-                    __(this.config.confirmation.subTitle),
-                    __(this.config.confirmation.buttonText)
-                );
-            },
+      return currentAttributeGroupIsNotOther && SecurityContext.isGranted(this.config.addAttributeACL);
+    },
 
-            /**
-             * Remove attribute from collection
-             *
-             * @param {string} code
-             */
-            removeAttribute: function (code) {
-                var attributeGroup = _.extend({}, this.getFormData());
-                attributeGroup.attributes = _.without(attributeGroup.attributes, code);
-                delete attributeGroup.attributes_sort_order[code];
-                this.otherAttributes = _.union(this.otherAttributes, [code]);
+    redirectAttributeList: function () {
+      const groupFilters = `f[group][value][]=${this.getFormData().code}`;
 
-                this.setData(attributeGroup);
+      DatagridState.set('attribute-grid', {filters: groupFilters});
 
-                this.render();
-            },
-
-            /**
-             * Get the list of attributes that are in the 'other' group
-             *
-             * @return {array}
-             */
-            getOtherAttributes: function () {
-                return this.otherAttributes;
-            },
-
-            /**
-             * Does the user has right to remove an attribute
-             *
-             * @return {Boolean}
-             */
-            hasRightToRemove: function () {
-                var currentAttributeGroupIsNotOther = this.config.otherGroup !== this.getFormData().code;
-
-                return currentAttributeGroupIsNotOther &&
-                    SecurityContext.isGranted(this.config.removeAttributeACL)
-            },
-
-            /**
-             * Does the user has right to add an attribute
-             *
-             * @return {Boolean}
-             */
-            hasRightToAdd: function () {
-                var currentAttributeGroupIsNotOther = this.config.otherGroup !== this.getFormData().code;
-
-                return currentAttributeGroupIsNotOther &&
-                    SecurityContext.isGranted(this.config.addAttributeACL)
-            },
-
-            redirectAttributeList: function () {
-                const groupFilters = `f[group][value][]=${this.getFormData().code}`;
-
-                DatagridState.set('attribute-grid', {filters: groupFilters});
-
-                Router.redirectToRoute('pim_enrich_attribute_index');
-            }
-        });
-    });
+      Router.redirectToRoute('pim_enrich_attribute_index');
+    },
+  });
+});

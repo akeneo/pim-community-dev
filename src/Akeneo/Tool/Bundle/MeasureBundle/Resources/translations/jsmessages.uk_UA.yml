@@ -1,0 +1,179 @@
+pim_measure:
+  families:
+    Area: Площа
+    Binary: Бінарний
+    Decibel: Децибел
+    Frequency: Частота
+    Length: Довжина
+    Power: Потужність
+    Resistance: Опір
+    Voltage: Напруга
+    Intensity: Інтенсивність
+    ElectricCharge: Електричний заряд
+    Duration: Тривалість
+    Speed: Швидкість
+    Temperature: Температура
+    Volume: Гучність
+    Weight: Вага
+    Pressure: Тиск
+    Energy: Енергія
+    CaseBox: Упаковка
+  units:
+    #Area
+    ACRE: Акр
+    ARE: Ар
+    ARPENT: Акр
+    CENTIARE: Сантіар
+    HECTARE: Гектар
+    SQUARE_CENTIMETER: Квадратний сантиметр
+    SQUARE_DECIMETER: Квадратний дециметр
+    SQUARE_DEKAMETER: Квадратний декаметр
+    SQUARE_FOOT: Квадратний фут
+    SQUARE_FURLONG: Квадратний фурлонг
+    SQUARE_HECTOMETER: Квадратний гектометр
+    SQUARE_INCH: Квадратний дюйм
+    SQUARE_KILOMETER: Квадратний кілометр
+    SQUARE_METER: Квадратний метр
+    SQUARE_MIL: Квадратний міл
+    SQUARE_MILE: Квадратна миля
+    SQUARE_MILLIMETER: Квадратний міліметр
+    SQUARE_YARD: Квадратний ярд
+    #Binary
+    BIT: Біт
+    BYTE: Байт
+    KILOBYTE: Кілобайт
+    MEGABYTE: Мегабайт
+    GIGABYTE: Гігабайт
+    TERABYTE: Терабайт
+    #Decibel
+    DECIBEL: Децибел
+    #Frequency
+    GIGAHERTZ: Гігагерц
+    KILOHERTZ: Кілогерц
+    MEGAHERTZ: Мегагерц
+    TERAHERTZ: Терагерц
+    HERTZ: Герц
+    #Length
+    CENTIMETER: Сантиметр
+    CHAIN: Ланцюг
+    DECIMETER: Дециметр
+    DEKAMETER: Декаметр
+    FEET: Ноги
+    FURLONG: Фурлонг
+    INCH: Дюйм
+    HECTOMETER: Гектометр
+    KILOMETER: Кілометр
+    METER: Метр
+    MIL: Міл
+    MILE: Миля
+    MILLIMETER: Міліметр
+    YARD: Ярд
+    #Power
+    GIGAWATT: Гігават
+    KILOWATT: Кіловат
+    MEGAWATT: Мегават
+    TERAWATT: Терават
+    WATT: Ват
+    #Resistance
+    MILLIOHM: Міліом
+    CENTIOHM: Сантиом
+    DECIOHM: Дециом
+    OHM: Ом
+    DEKAOHM: Декаом
+    HECTOHM: Гектоом
+    KILOHM: Кілоом
+    MEGOHM: Мегаом
+    #Voltage
+    MILLIVOLT: Мілівольт
+    CENTIVOLT: Сантівольт
+    DECIVOLT: Децивольт
+    VOLT: Вольт
+    DEKAVOLT: Декавольт
+    HECTOVOLT: Гектовольт
+    KILOVOLT: Кіловольт
+    #Intensity
+    MILLIAMPERE: Міліампер
+    CENTIAMPERE: Сантиампер
+    DECIAMPERE: Дециампер
+    AMPERE: Ампер
+    DEKAMPERE: Декаампер
+    HECTOAMPERE: Гектоампер
+    KILOAMPERE: Кілоампер
+    MEGAAMPERE: Мегаампер
+    #ElectricCharge
+    MILLIAMPEREHOUR: Міліампер-година
+    AMPEREHOUR: Ампер-година
+    MILLICOULOMB: Мілікулон
+    CENTICOULOMB: Сантикулон
+    DECICOULOMB: Децикулон
+    COULOMB: Кулон
+    DEKACOULOMB: Декакулон
+    HECTOCOULOMB: Гектокулон
+    KILOCOULOMB: Кілокулон
+    #Duration
+    MILLISECOND: Мілісекунда
+    SECOND: Секунда
+    MINUTE: Хвилина
+    HOUR: Година
+    DAY: День
+    WEEK: Тиждень
+    MONTH: Місяць
+    YEAR: Рік
+    #Speed
+    FOOT_PER_SECOND: Фут на секунду
+    FOOT_PER_HOUR: Фут на годину
+    KILOMETER_PER_HOUR: Кілометр на годину
+    METER_PER_HOUR: Метр на годину
+    METER_PER_MINUTE: Метр на хвилину
+    METER_PER_SECOND: Метр на секунду
+    MILE_PER_HOUR: Миля на годину
+    YARD_PER_HOUR: Ярд на годину
+    #Temperature
+    CELSIUS: Цельсій
+    FAHRENHEIT: Фаренгейт
+    KELVIN: Кельвін
+    RANKINE: Ренкін
+    REAUMUR: Реомюр
+    #Volume
+    BARREL: Барель
+    CENTILITER: Сантилітр
+    CUBIC_CENTIMETER: Кубічний сантиметр
+    CUBIC_DECIMETER: Кубічний дециметр
+    CUBIC_FOOT: Кубічний фут
+    CUBIC_INCH: Кубічний дюйм
+    CUBIC_METER: Кубічний метр
+    CUBIC_MILLIMETER: Кубічний міліметр
+    CUBIC_YARD: Кубічний ярд
+    DECILITER: Децилітр
+    GALLON: Галон
+    LITER: Літр
+    MILLILITER: Мілілітр
+    OUNCE: Унція
+    PINT: Пінта
+    #Weight
+    DENIER: Деньє
+    GRAIN: Зерно
+    GRAM: Грам
+    KILOGRAM: Кілограм
+    LIVRE: Лівр
+    MARC: Марк
+    MILLIGRAM: Міліграм
+    ONCE: Унція
+    POUND: Фунт
+    TON: Тонна
+    #Pressure
+    BAR: Бар
+    PASCAL: Паскаль
+    HECTOPASCAL: Гектопаскаль
+    MILLIBAR: Мілібар
+    ATM: Атмосфера
+    PSI: Фунт на квадратний дюйм
+    TORR: Торр
+    MMHG: Міліметр ртутного стовпа
+    #Energy
+    CALORIE: калорія
+    KILOCALORIE: кілокалорія
+    KILOJOULE: кілоджоуль
+    #CaseBox
+    PIECE: шт.
+    DOZEN: Дюжина

@@ -7,26 +7,26 @@ const loadingBreath = keyframes`
 `;
 
 const LoadingPlaceholderContainer = styled.div`
-    > * {
-        position: relative;
-        border: none !important;
-        border-radius: 5px;
-        overflow: hidden;
-        
-        &:after {
-            animation: ${loadingBreath} 2s infinite;
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            
-            background: linear-gradient(270deg, #fdfdfd, #eee);
-            background-size: 400% 400%;
-            border-radius: 5px;
-        }
+  > * {
+    position: relative;
+    border: none !important;
+    border-radius: 5px;
+    overflow: hidden;
+
+    &:after {
+      animation: ${loadingBreath} 2s infinite;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      background: linear-gradient(270deg, #fdfdfd, #eee);
+      background-size: 400% 400%;
+      border-radius: 5px;
     }
+  }
 `;
 
 export {LoadingPlaceholderContainer};

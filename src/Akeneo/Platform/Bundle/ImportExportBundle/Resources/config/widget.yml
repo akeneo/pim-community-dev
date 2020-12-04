@@ -13,3 +13,5 @@ services:
             - '@oro_security.security_facade'
             - '@security.token_storage'
             - '@pim_catalog.localization.presenter.datetime'
+            - '@pim_import_export.query.get_job_execution_tracking'
+            - '@serializer'

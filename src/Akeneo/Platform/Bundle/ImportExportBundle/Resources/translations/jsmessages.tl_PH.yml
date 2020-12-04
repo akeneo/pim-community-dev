@@ -1,15 +1,183 @@
+job_execution:
+  summary:
+    display_item: Magpakita ng item
+    hide_item: Itago ang item
 pim_connector:
   export:
     categories:
       selector:
         modal:
-          cancel: Kansel
-          confirm: Ikumpirma
-        edit: I-Edit
-page_title:
+          title: Pagpili ng mga kategorya
+        title: Pumili ng mga kategorya
+    locales:
+      validation:
+        not_blank: Isang lokal ay dapat na piliin, mangyaring pumili ng lokal para i-luwas.
+pim_import_export:
+  entity:
+    job_instance:
+      label: ang propayl ng trabaho
+      flash:
+        update:
+          success: Matagumpay na na-update ang profile ng trabaho.
+          fail: Ang profile ng trabaho ay hindi pwedeng ma-update.
+        delete:
+          success: Matagumpay na natanggal ang pagkakataon sa trabaho
+    import_profile:
+      uppercase_label: I-angkat ang propayl
+      flash:
+        create:
+          success: Propayl ng pag-angkat ay matagumpay na nagawa
+      module:
+        create:
+          button: Gumawa ng propayl ng pag-angkat
+    export_profile:
+      uppercase_label: Iluwas ang propayl
+      flash:
+        create:
+          success: Propayl ng pagluwas ay matagumpay na nagawa
+      module:
+        create:
+          button: Gumawa ng propayl ng pagluwas
+  form:
+    job_execution:
+      title.details: Mga detalye ng pagsasagawa
+      refreshBtn.title: I refresh
+      button:
+        show_profile.title: Ipakita ang profile
+        download_log.title: I-download ang log
+        download_file.title: I-download ang mga nagawang file
+        download_archive.title: I-download ang mga nagawang archive
+      summary:
+        fetching: Nangongolekta ng mga datos ukol sa pagsasagawa ng trabaho...
+        warning: Babala
+        header.step: Hakbang
+        header.warnings: Mga babala
+        header.summary: Buod
+        header.start: Simula
+        header.end: Wakas
+    job_instance:
+      fail:
+        launch: Pumalya ang paglunsad ng propayl ng trabaho. Siguraduhin na balido ito at may karapatan ka para ilunsad ito.
+        save: Pumalya ang pag-save ng propayl ng trabaho. Siguraduhin na may karapatan ka na baguhin ito.
+      button:
+        export.title: Iluwas ngayon
+        import.launch: Angkatin ngayon
+        import.upload: I-upload at angkatin ngayon
+        import.upload_file: I-upload ang file
+      meta:
+        job: Trabaho
+        connector: Taga-konekta
+      subsection:
+        last_executions: Huling pagsasagawa
+      tab:
+        content:
+          title: Laman
+        properties:
+          decimal_separator:
+            title: Tagabuwag ng decimal
+            help: Tukoyin ang tagabuwag ng decimal
+          date_format:
+            title: Ayos ng petsa
+            help: Tukoyin ang ayos ng field ng petsa
+          file_path:
+            title: Daanan ng file
+            help: Saan isusulat ang mga ginawang file sa file system
+          delimiter:
+            title: Taga-limita
+            help: Isang karakter na ginagamit sa pag takda ng field delimiter
+          enclosure:
+            title: Pagpapaloob
+            help: Isang karakter na ginagamit sa pag takda ng field enclosure
+          with_header:
+            title: May header
+            help: I-printa man ang column name o hindi
+          with_media:
+            title: Iluwas ang mga file at larawan
+            help: I-export man ang mga produktong files at mga larawan o hindi
+          lines_per_file:
+            title: Bilang ng mga linya sa bawat file
+            help: Tukoyin ang hangganan ng bilang ng linya sa bawat file
+          upload_allowed:
+            title: Payagan ang pag upload ng file
+            help: Kung papayagan ba ang direktang pag upload ng file o hindi
+          categories_column:
+            title: Column ng kategorya
+            help: Pangalan ng kolumn ng kategorya
+          escape:
+            title: Alis
+            help: Isang karakter na ginagamit sa field escape
+          family_column:
+            title: Pamilya ng column
+            help: Pangalan ng pamilya ng column
+          groups_column:
+            title: Column ng mga grupo
+            help: Pangalan ng column ng mga grupo
+          enabled:
+            title: Payagan ang produkto
+            help: Papayagan ba ang produkto o hindi
+          enabled_comparison:
+            title: Ikompara ang mga halaga
+            help: Payagan ang pag kumpara sa pagitan ng orihinal na mga halaga at mga aklas na halaga. Mapapabilis ang pag-aklas kapag ang aklas na halaga ay magkalapit sa orihinal na halaga
+          real_time_versioning:
+            title: Pag update ng kasaysayan base sa totoong oras
+            help: Ibig sabihin na ang produkto ay awtomatikong nag uupdate, pwedeng itigil upang maipabuti ang pagsasagawa
+          family_variant_column:
+            title: Baryante ng pamilya na kulumna
+      file_path: Daanan ng file
+  widget:
+    last_operations:
+      empty: Walang mga operasyong nakita
+      date: Petsa
+      profile_name: Ang pangalan ng profile
+      details: Mga detalye
+      warning_count: Mga babala
+      job_type:
+        import: Mag-angkat
+        export: Magluwas
+        mass_edit: Malawakang pag-edit
+        quick_export: Mabilisang pagluwas
+        compute_product_models_descendants: Kalkulahin ang mga supling ng mga modelo ng produkto
+        compute_family_variant_structure_changes: Kalkulahing ang mga pagbabago sa istraktura ng baryang ng pamilya
+        compute_completeness_of_products_family: Kalkulahin ang pagiging kumpleto ng mga pamilya ng produkto
+      header.view_all: Tingnan lahat
+  batch_status:
+    1: Nakumpleto
+    2: Simula
+    3: Nagsimula
+    4: Pagtigil
+    5: Tumigil
+    6: Nabigo
+    7: Inabandona
+    8: Hindi kilala
+confirmation:
+  remove:
+    import_profile: Ikaw ba ay sigurado na gusto mong tanggalin ang profile na ito sa pag-angkat?
+    export_profile: Ikaw ba ay sigurado na gusto mong tanggalin itong profile ng pagluwas?
+    job_instance: Ikaw ba ay siguradong gusto mong tanggalin itong pagkakataon sa trabaho?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Sigurado ka bang gusto mong burahin ang angkat na profile na ito?
+      flash:
+        delete:
+          success: Ang import na profile ay matagumpay na inalis
+    export_profile:
+      module:
+        delete:
+          confirm: Sigurado ka bang gusto mong burahin ang export na profile na ito?
+      flash:
+        delete:
+          success: Ang export na profile ay matagumpay na inalis
+pim_title:
   pim_importexport_export_profile_index: Pagluwas ng pamamahalang anyo
+  pim_importexport_export_profile_edit: I-eksport ang profile {{ job.label }} | I-edit
+  pim_importexport_export_profile_show: I-export ang profile {{ job.label }} | Ipakita
   pim_importexport_export_execution_index: Iluwas ang kasaysayan sa pagsasakatuparan
   pim_importexport_export_execution_show: Iluwas ang pagsasakatuparan | Mga Detalye
   pim_importexport_import_profile_index: Pamamahala sa pag-angkat ng mga profile
+  pim_importexport_import_profile_edit: I-angkat ang profile {{ job.label }} | I-edit
+  pim_importexport_import_profile_show: I-angkat ang profile {{ job.label }} | Ipakita
   pim_importexport_import_execution_index: I-angkat ang kasaysayan sa pagsasakatuparan
   pim_importexport_import_execution_show: I-angkat ang mga pagsasakatuparan

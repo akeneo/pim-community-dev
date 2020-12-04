@@ -1,0 +1,338 @@
+#ORO messages
+"Yes, I Agree": "Так, я згоден"
+"Yes, do it": "Так, зробити це"
+"Ok, got it.": "Гаразд, зрозуміло."
+"Edit": "Редагувати"
+"Yes, revoke": "Так, відкликати"
+"Revoke Confirmation": "Відкликати підтвердження"
+Prev: Назад
+Today: Сьогодні
+Wk: Wk
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Оберіть час"
+Time: Час
+Hour: Година
+Minute: Хвилина
+Second: Секунда
+Millisecond: Мілісекунда
+Microsecond: Мікросекунда
+"Time Zone": "Часовий пояс"
+#PIM messages
+Localized value: Локалізоване значення
+Columns: Стовпці
+Datagrid Configuration: Конфігурація сітки
+#Filters
+Action: Дія
+Unit: Одиниця
+Currency: Валюта
+jstree:
+  all: Всі продукти
+  unclassified: Некласифіковані продукти
+  product:
+    all: Всі продукти
+    unclassified: Некласифіковані продукти
+  no_tree: Немає доступного дерева
+  include_sub: Включати підкатегорії
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: Неділя
+    Monday: Понеділок
+    Tuesday: Вівторок
+    Wednesday: Середа
+    Thursday: Четвер
+    Friday: П'ятниця
+    Saturday: Субота
+  daysShort:
+    Sun: Неділя
+    Mon: Пн
+    Tue: Вт
+    Wed: Ср
+    Thu: Чт
+    Fri: Пт
+    Sat: Сб
+  daysMin:
+    Su: Су
+    Mo: Пн
+    Tu: Вт
+    We: Ср
+    Th: Чт
+    Fr: Пт
+    Sa: Сб
+  months:
+    January: Січень
+    February: Лютий
+    March: Березень
+    April: Квітень
+    May: Травень
+    June: Червень
+    July: Липень
+    August: Серпень
+    September: Вересень
+    October: Жовтень
+    November: Листопад
+    December: Грудень
+  monthsShort:
+    Jan: Січ
+    Feb: Лют
+    Mar: Бер
+    Apr: Квіт
+    May: Травень
+    Jun: Черв
+    Jul: Лип
+    Aug: Сер
+    Sep: Вер
+    Oct: Жов
+    Nov: Лис
+    Dec: Гру
+#ORO
+oro_config:
+  form:
+    config:
+      title: Конфігурація системи
+      tab:
+        system:
+          title: Система
+      group:
+        localization:
+          title: Локалізація
+          system_locale: Мова
+        notification:
+          title: Сповіщення
+          system_notification: Сповіщення про нові версії
+        loading_message:
+          title: Завантаження повідомлень
+          label: Включити завантаження повідомлень
+        loading_messages:
+          label: Доступне завантаження повідомлень
+pim_ui:
+  flash:
+    unsaved_changes: 'Є незбережені зміни. Ви впевнені, що хочете вийти?'
+"Sorry, page was not loaded correctly": "На жаль, сторінка була завантажена невірно"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Ваші локальні зміни будет втрачено. Ви впевнені, що ви хочете оновити сторінку?"
+"navigation.message.content.outdated": "Вміст сторінки {{ title }} застарів, будь ласка, <a href='#' data-action='page-refresh'>оновіть сторінку</a>"
+"Content of pinned page is outdated": "Вміст зафіксованої сторінки є застарілим"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Дії
+  add: Додати
+  add_attributes: Додати атрибути
+  after: Після
+  all: Всі
+  and: та
+  apply: Застосувати
+  before: До
+  by: за
+  cancel: Відмінити
+  code: Код
+  confirm: Підтвердити
+  confirm_deletion: Підтвердити видалення
+  confirm_revocation: Підтвердити відкликання
+  create: Створити
+  created: Створено
+  delete: Видалити
+  done: Зроблено
+  edit: Редагувати
+  entity_updated: Є незбережені зміни.
+  from: З
+  general_properties: Загальні властивості
+  history: Історія
+  label: Мітка
+  label_translations: Переклади міток
+  less_than: Менше ніж
+  loading: Завантаження...
+  media_upload: Перетягніть для вивантаження, або натисніть тут
+  more_than: Більше ніж
+  next: Наступний
+  "no": "Ні"
+  none: Жоден
+  not_available: Н/Д
+  now: Зараз
+  ok: Підтвердити
+  permissions: Права доступу
+  previous: Попередній
+  properties: Властивості
+  remove: Видалити
+  required_label: (обов'язково)
+  save: Зберегти
+  search: Пошук
+  select2:
+    search: Пошук...
+    no_match: Збіги не знайдено
+    load_more: Завантаження додаткових результатів...
+  status: Статус
+  to: до
+  type: Тип
+  update: Оновити
+  "yes": "Так"
+  operator: Оператор
+  operators:
+    "=": Дорівнює
+    "!=": Не дорівнює
+    ">=": Більше або дорівнює
+    ">": Більше ніж
+    "<=": Менше або дорівнює
+    "<": Менше ніж
+    EMPTY: Порожньо
+    NOT EMPTY: Не є порожнім
+    CONTAINS: Містить
+    DOES NOT CONTAIN: Не містить
+    STARTS WITH: Розпочинається з
+    ENDS WITH: Закінчується на
+error:
+  forbidden: Заборонено. У вас немає доступу до цієї сторінки
+alert:
+  attribute_option:
+    save_before_edit_other: Будь ласка, зафіксуйте ваші зміні на інших рядках перед редагуванням цього
+  session_storage:
+    not_available: Здається, ваш веб-браузер не сумісний з sessionStorage. Будь ласка, зверніться до адміністратора
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: Помилка оновлення
+      success: Успішно оновлено
+    delete:
+      fail: Не можна видалити цей елемент
+      success: Елемент успішно видалено
+  module:
+    delete:
+      title: Видалити {{ itemName }}
+      alternative_title: Підтвердіть видалення
+      item: Ви впевнені, що ви хочете видалити цей елемент?
+      item_placeholder: Ви дійсно бажаєте видалити {{ itemName }}? Ця дія незворотня.
+    edit:
+      leave: Ви впевнені, що ви хочете залишити цю сторінку?
+      discard_changes: Якщо ви залишите сторінку, для {{ entity }} зміни будуть втрачені.
+      discard_changes_title: Ви впевнені?
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: API підключення успішно створено
+    delete:
+      success: API підключення успішно скасовано
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Перетягніть файл {{type}} сюди або натисніть, щоб переглянути диск
+    download:
+      archive: Завантажити створений архів
+      output: Завантажити створені файли
+      input: Завантажити файли для читання
+      invalid_xlsx: Завантажити некоректні дані
+      invalid_csv: Завантажити некоректні дані
+pim_title:
+  oro_default: Панель керування
+  pim_enrich_attributegroup_index: Групи атрибутів
+  pim_enrich_attributegroup_create: Групи атрибутів | Створити
+  pim_enrich_attributegroup_edit: Групи атрибутів {{ group.label }}| Редагувати
+  pim_enrich_catalog_volume_index: Моніторинг обсягу каталогу
+  pim_enrich_categorytree_index: Дерева категорій
+  pim_enrich_categorytree_create: Категорія дерев | Створити
+  pim_enrich_categorytree_edit: Дерево категорій {{ category.label }} | Редагувати
+  pim_enrich_categorytree_create_tree: Категорія дерев | Створити
+  pim_enrich_attribute_index: Атрибути
+  pim_enrich_attribute_create: Атрибути | Створити
+  pim_enrich_attribute_edit: Атрибути {{ attribute.label }} | Редагувати
+  pim_enrich_product_index: Продукти
+  pim_enrich_product_edit: Продукт {{ product.label }} | Редагувати
+  pim_enrich_product_model_edit: Модель продукту {{ product.label }} | Редагувати
+  pim_enrich_family_index: Сімейства
+  pim_enrich_family_edit: Сімейство {{ family.label }} | Редагувати
+  pim_enrich_channel_index: Канали
+  pim_enrich_channel_create: Канали | Створити
+  pim_enrich_channel_edit: Канал {{ channel.label }} | Редагувати
+  pim_enrich_currency_index: Валюти
+  pim_enrich_locale_index: Локалі
+  pim_enrich_group_index: Групи
+  pim_enrich_group_edit: Група {{ group.label }} | Редагування
+  pim_enrich_associationtype_index: Типи асоціацій
+  pim_enrich_associationtype_edit: Тип зв'язку {{ association type.label }} | Редагувати
+  pim_enrich_grouptype_index: Типи груп
+  pim_enrich_grouptype_edit: Тип групи {{ group type.label }} | Змінити
+  pim_enrich_mass_edit_action_choose: Масове редагування | Вибрати
+  pim_enrich_mass_edit_action_configure: Масове редагування | Конфігурувати
+  pim_enrich_mass_edit_action_perform: Масові зміни | Виконати
+  pim_enrich_job_tracker_index: Трекер процесів
+  pim_enrich_job_tracker_show: Трекер процесів | Показати завдання
+  pim_enrich_api_connection_index: API підключення
+  pim_enrich_api_connection_create: Підключення до API | Створити
+  pim_enrich_mass_edit_action: Масове редагування
+  pim_analytics_system_info_index: Інформація про систему
+pim_menu:
+  tab:
+    activity: Активність
+    imports: Імпорти
+    exports: Експорт
+    settings: Налаштування
+    system: Система
+    help:
+      title: Допомога
+      helper: Довідковий центр Akeneo
+  item:
+    association_type: Типи асоціацій
+    attribute_group: Групи атрибутів
+    channel: Канали
+    currency: Валюти
+    dashboard: Панель керування
+    family: Сімейства
+    group: Групи
+    group_type: Типи груп
+    product_model: Моделі продукту
+    export_history: Історія експорту
+    export_profile: Профілі експорту
+    import_history: Історія імпорту
+    import_profile: Профілі імпорту
+    configuration: Конфігурація
+    user_management: Керування користувачами
+    user: Користувачі
+    user_group: Групи користувачів
+    user_role: Ролі
+    info: Інформація про систему
+    job_tracker: Трекер процесів
+    api_connection: API підключення
+    catalog_volume: Моніторинг обсягу каталогу
+  navigation:
+    activity: Меню розділу Активність
+    system: Меню розділу Система
+    user: Меню розділу Керування користувачами
+    settings: Меню розділу Налаштування
+    product: Навягація по продуктах
+    product_infos: Інформація про товар
+  user:
+    logout: Вийти
+    user_account: Мій акаунт
+pim_notification:
+  types:
+    import: Імпорт
+    export: Експорт
+    quick_export: Швидкий експорт
+    mass_edit: Масове редагування

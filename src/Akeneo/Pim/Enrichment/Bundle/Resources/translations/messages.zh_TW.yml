@@ -1,0 +1,80 @@
+No products to remove: 没有要移除的產品
+"dot (.)": 點 (.)
+"comma (,)": 逗號 (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: 屬性
+      history.title: 歷史紀錄
+    suggest_selection: 請在左側選擇一個類別
+    or: 或者
+    create_new: 創建一個新的類別
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: 請選擇少於%limit%個項目進行編輯
+    product:
+      page_title: 產品
+      page_subtitle: 批量編輯（1 個產品）|批量編輯（%count% 個產品）
+      title: 選擇操作
+      subtitle: 選擇您想對已選產品執行的操作|選擇您想對已選的%count%個產品執行的操作
+      confirm: 您將要更新包含以下信息的產品，請確認。|您將要更新%count%個包含以下信息的產品，請確認。
+      steps:
+        first: 選擇產品
+        second: 選擇操作
+        third: 配置
+        fourth: 確認
+    change-status:
+      label: 修改狀態
+      description: 已選產品將被啟用或禁用。
+      success_flash: 產品狀態已更改
+      launched_flash: 批量操作"修改狀態"已啟動。完成後您將收到通知。
+    edit-common-attributes:
+      label: 編輯屬性
+      description: 將使用以下數據修改選中產品在所選區域的屬性。
+      empty: 請選擇您想要編輯的屬性
+      success_flash: 正在進行產品狀態更新
+      launched_flash: 批量操作"編輯狀態"已啟動。完成後您將收到通知。
+      message:
+        warning: 選中的產品沒有通用屬性。請修改您的選擇。
+        invalid_attribute: 包含"attribute_code"代碼的屬性與選中的產品屬性不通用，屬性已跳過。
+        no_valid_attribute: 已選中的屬性不可用於此產品。
+    classify-add:
+      label: 添加到類別
+      description: 產品將被放置於下列類別，當前位置將保留。
+      success_flash: 產品已被分入選中的類別
+      launched_flash: 批量操作"添加到類別"已啟動。完成後您將收到通知。
+    classify-move:
+      label: 類別移動
+      description: 產品將被放置於下列類別，當前位置將丟失。
+      success_flash: 產品已被移入選中的類別
+      launched_flash: 批量操作"移動到類別"已啟動。完成後您將收到通知。
+    classify-remove:
+      label: 從類別中移除
+      description: 產品將從以下目錄中刪除。
+      success_flash: 產品已被移出選中的類別
+      launched_flash: 批量操作"從類別中移出"已啟動。完成後您將收到通知。
+    change-family:
+      label: 修改品類
+      description: 選定產品的品類將更改為選中的品類
+      success_flash: 選中產品的品類已成功更改
+      launched_flash: 批量操作"修改品類"已啟動。完成後您將收到通知。
+    add-to-groups:
+      label: 添加到分組
+      description: 選擇分組以添加選中的產品
+      success_flash: 產品已成功添加到選中的分組
+      launched_flash: 批量操作"添加到分組"已啟動。完成後您將收到通知。
+      no_group: 暫無分組。請創建一個分組後開始。
+    set-attribute-requirements:
+      label: 設置屬性要求
+      description: 以下屬性要求將被用於選中的品類
+      success_flash: 屬性要求將被用於選中的品類
+      launched_flash: 批量操作"設置屬性要求"已啟動。完成後您將收到通知。
+    mass_action:
+      quick_export:
+        launched_flash: 正在進行產品匯出
+category:
+  edit: 編輯類別
+  overview: 類別
+tree:
+  edit: 編輯目錄

@@ -185,7 +185,7 @@ class FamilyController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_api_family_edit")
      */
@@ -227,7 +227,7 @@ class FamilyController
      * @throws BadRequestHttpException
      * @throws UnprocessableEntityHttpException
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_api_family_edit")
      */

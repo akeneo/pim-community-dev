@@ -15,7 +15,7 @@ const InputErrors = ({errors = []}: InputErrorsProps) => {
   return (
     <>
       {formatParameters(errors).map((error, key) => (
-        <Helper inline={true} level='error' key={key}>
+        <Helper inline={true} level="error" key={key}>
           {translate(error.messageTemplate, error.parameters, error.plural)}
         </Helper>
       ))}

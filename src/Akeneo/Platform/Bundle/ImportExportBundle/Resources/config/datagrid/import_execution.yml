@@ -6,7 +6,7 @@ datagrid:
         source:
             acl_resource: pim_importexport_import_execution_index
         properties:
-            show_link:
+            showLink:
                 route: pim_importexport_import_execution_show
         filters:
             columns:

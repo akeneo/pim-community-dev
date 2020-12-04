@@ -151,10 +151,7 @@ class FiltersColumn extends BaseView {
     }
 
     if (27 === event.keyCode) {
-      $(this.filterList)
-        .find(this.searchSelector)
-        .val('')
-        .trigger('keyup');
+      $(this.filterList).find(this.searchSelector).val('').trigger('keyup');
       return this.togglePanel();
     }
 
@@ -168,9 +165,7 @@ class FiltersColumn extends BaseView {
   doSearch() {
     this.showLoading();
 
-    const searchValue: any = $(this.filterList)
-      .find(this.searchSelector)
-      .val();
+    const searchValue: any = $(this.filterList).find(this.searchSelector).val();
 
     if (searchValue.length === 0) {
       this.searchedFilters = undefined;
@@ -179,7 +174,7 @@ class FiltersColumn extends BaseView {
     }
 
     return this.fetchFilters(searchValue, 1).then((loadedFilters: GridFilter[]) => {
-      const defaultFilters: GridFilter[] = this.mergeAddedFilters(this.defaultFilters, loadedFilters)
+      const defaultFilters: GridFilter[] = this.mergeAddedFilters(this.defaultFilters, loadedFilters);
       this.loadedFilters = this.mergeAddedFilters(this.loadedFilters, defaultFilters);
       this.searchedFilters = this.filterBySearchTerm(defaultFilters, searchValue);
 
@@ -198,9 +193,7 @@ class FiltersColumn extends BaseView {
   }
 
   listenToListScroll(): void {
-    $(this.filterList)
-      .off('scroll')
-      .on('scroll', this.fetchNextFilters.bind(this));
+    $(this.filterList).off('scroll').on('scroll', this.fetchNextFilters.bind(this));
   }
 
   stopListeningToListScroll(): void {
@@ -282,10 +275,12 @@ class FiltersColumn extends BaseView {
   render(): BaseView {
     $('.filter-list').remove();
 
-    this.$el.html(this.filterColumnTemplate({
-      filtersLabel: __('pim_datagrid.filters.label'),
-      doneLabel: __('pim_common.done')
-    }));
+    this.$el.html(
+      this.filterColumnTemplate({
+        filtersLabel: __('pim_datagrid.filters.label'),
+        doneLabel: __('pim_common.done'),
+      })
+    );
     this.filterList = this.$el.find('.filter-list').appendTo($('body'));
 
     $(this.searchSelector, this.filterList).on('keyup search', this.searchFilters.bind(this));
@@ -298,9 +293,7 @@ class FiltersColumn extends BaseView {
   }
 
   shutdown(): void {
-    $(this.filterList)
-      .off()
-      .remove();
+    $(this.filterList).off().remove();
 
     BaseView.prototype.shutdown.apply(this, arguments);
   }

@@ -1,5 +1,59 @@
 # 4.0.x
 
+# 4.0.73 (2020-11-23)
+
+## Bug fixes
+
+- PIM-9565: Fix StandardToFlat boolean value converter
+- PIM-9550: Add attribute codes as an argument to the command "pim:product:clean-removed-attributes"
+
+# 4.0.72 (2020-11-16)
+
+# 4.0.71 (2020-11-12)
+
+# 4.0.70 (2020-11-09)
+
+## Bug fixes
+
+- PIM-9555: Fix PurgeJobExecutionCommand with 0 day option
+
+# 4.0.69 (2020-11-05)
+
+# 4.0.68 (2020-10-30)
+
+# 4.0.67 (2020-10-28)
+
+## Bug fixes
+
+- PIM-9518: Improve performance of SQL query about fetching images from product model codes
+- PIM-9524: improve purge job execution to limit the out of memory errors
+
+# 4.0.66 (2020-10-23)
+
+# 4.0.65 (2020-10-19)
+
+# 4.0.64 (2020-10-09)
+
+# 4.0.63 (2020-10-08)
+
+## Bug fixes
+
+- PIM-9497: Improve performances of SQL query about product model children completeness
+
+# 4.0.62 (2020-10-07)
+
+## Bug fixes
+
+- PIM-9490: [Backport] PIM-9461: Fix display of multiselect fields with a lot of selected options
+- PIM-9493: Attributes with no values are well rendered in PDF
+
+## Technical Improvements
+
+- PIM-9472: [Backport] API-1253: Add attr group labels inside attribute end-point + API-1260: Add search filters on attribute groups
+- PIM-9470: [Backport] API-1212: Add filters on family search + API-1247: Add filter on category codes + API-1251: Add ability to get categories filtered by parent
+
+# 4.0.61 (2020-10-02)
+
 # 4.0.60 (2020-09-30)
 
 ## Technical Improvements

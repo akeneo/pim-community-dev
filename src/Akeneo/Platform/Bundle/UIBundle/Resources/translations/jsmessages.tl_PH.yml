@@ -1,24 +1,13 @@
-Close: Sarado
-Update: Update
-Selected Rows: Piniling mga hanay
-"Yes": "Oo"
-"Yes, Delete": "Oo, burahin"
-"Yes, I Agree": "Oo, sumasang-ayon ako"
-"Yes, do it": "Oo, gawin mo"
-"No": "Hindi"
+#ORO messages
+"Yes, I Agree": "Oo, Sumasang-ayon ako"
+"Yes, do it": "Oo, gawin ito"
 "Ok, got it.": "Ok, nakuha ko."
-"Cancel": "Kansel"
-"Delete Confirmation": "Tanggalin ang kompirmasyon"
 "Edit": "I-Edit"
-"Unexpected error occurred. Please contact system administrator.": "Hindi inaasahang kamaliang nagaganap. Pakiusap makipag-ugnay sa system administrator."
 "Yes, revoke": "Oo, iurong"
 "Revoke Confirmation": "Iurong ang kompirmasyon"
-Now: Ngayon
 Prev: Nakaraan
-Next: Susunod
 Today: Ngayon
 Wk: Wk
-Done: Tapos na
 AM: AM
 A: A
 PM: PM
@@ -30,23 +19,24 @@ Minute: Minuto
 Second: Segundo
 Millisecond: Millisegundo
 Microsecond: Microsegundo
-"Time Zone": "Oras zone"
-Localized value: Naisalokal na halaga
-Columns: Mga hanay
-Datagrid Configuration: Kompigurasyon ng datagrid
-Apply: Ilapat
+"Time Zone": "Oras ng Zona"
+#PIM messages
+Localized value: Lokal na halaga
+Columns: Mga column
+Datagrid Configuration: Kumpigurasyon ng Datagrid
+#Filters
 Action: Aksyon
 Unit: Yunit
 Currency: Pera
 jstree:
   all: Lahat ng mga produkto
-  unclassified: Hindi nai-klasipikang mga produkto
+  unclassified: Hindi na-classify na mga produkto
   product:
     all: Lahat ng mga produkto
-    unclassified: Hindi nai-klasipikang mga produkto
+    unclassified: Hindi na-classify na mga produkto
   no_tree: Walang punong mayroon
   include_sub: Kasama sa mga sub-kategorya
-  loading: Naglo-load...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Linggo
@@ -98,22 +88,241 @@ datetimepicker:
     Oct: Oct
     Nov: Nov
     Dec: Dec
+#ORO
 oro_config:
   form:
     config:
       title: Kompigurasyon ng sistema
       tab:
         system:
-          title: Systema
+          title: Sistema
       group:
         localization:
           title: Lokalisasyon
-          system_locale: Wika
+          system_locale: Lenguahe
         notification:
-          title: Mga notipikasyon
-          system_notification: Bagong mga bersyon sa mga notipikasyon
+          title: Mga abiso
+          system_notification: Bagong mga bersyon ng mga abiso
         loading_message:
           title: Naglo-load na mga mensahe
           label: Hindi magawang mag-load ang mga mensahe
         loading_messages:
           label: Mayroong naglo-load na mga mensahe
+"Sorry, page was not loaded correctly": "Paumanhin, ang pahina ay hindi na-load ng tama"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Ang iyong mga lokal na pagbabago ay mawawala. Ikaw ba ay sigurado na gusto mong i-refresh ang pahina?"
+"navigation.message.content.outdated": "Nilalaman ng {{ title }} Hindi na napapanahon ang pahina, mangyaring <a href='#' data-action='page-refresh'>i-refresh ang pahina</a>"
+"Content of pinned page is outdated": "Ang nilalaman ng naka-pin na pahina ay wala na sa panahon"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Mga kilos
+  add: Magdagdag
+  add_attributes: Magdagdag ng mga katangian
+  all: Lahat
+  and: at
+  apply: Ilapat
+  by: ni
+  cancel: Kansel
+  code: Kodigo
+  confirm: Kumpirmahin
+  confirm_deletion: Kompirmadong pagtanggal
+  create: Lumikha
+  created: Nilikga
+  delete: Burahin
+  done: Tapos na
+  edit: I-Edit
+  entity_updated: May mga wala na save sa mga binabago.
+  from: Galing sa
+  general_properties: Ang pangkalahatang mga ari-arian
+  history: Kasaysayan
+  label: Label
+  label_translations: Mga pagsasalin sa libel
+  less_than: Mas mababa sa
+  loading: Naglo-loading...
+  media_upload: I drag at ilaglag para ma upload o i-klik dito
+  more_than: Higit pa
+  next: Susunod
+  "no": "Hindi"
+  none: Wala
+  not_available: N/A
+  now: Ngayon
+  ok: Okay
+  permissions: Mga pahintulot
+  previous: Nakaraan
+  properties: Ang mga ari-arian
+  remove: Tanggal
+  required_label: (kinakailangan)
+  save: Save
+  search: Maghanap
+  select2:
+    search: Hanapin...
+    no_match: Walang nahanap na nagkatugma
+    load_more: Naglo-load pa ng marami pang mga resulta...
+  status: Katayuan
+  to: hanggang
+  type: Uri
+  update: Update
+  "yes": "Oo"
+  operator: Tagapangasiwa
+  operators:
+    "=": Ay katumbas ng
+    "!=": Ay hindi katumbas sa
+    ">=": Mas malaki kaysa o pantay
+    ">": Higit kaysa
+    "<=": Mas mababa sa o pantay
+    "<": Mas mababa kaysa
+    EMPTY: Walang laman
+    NOT EMPTY: Ay hindi bakante
+    CONTAINS: Naglalaman
+    DOES NOT CONTAIN: Ay hindi naglalaman
+    STARTS WITH: Nagsisimula sa
+    ENDS WITH: Ay nagtatapos sa
+error:
+  forbidden: Ipinagbabawal. Ikaw ay hindi pinapayagan sa pag-access sa pahinang ito
+alert:
+  attribute_option:
+    save_before_edit_other: Mangyaring e-rehistro ang mga modipikasyon sa ibang hanay bago mag-edit ng isang ito
+  session_storage:
+    not_available: Ang iyong web browser ay hindi tila tumutugma sa sesyonStorage. Pakiusap kontakin ang iyong administrador
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: Ang pag-update ay nabigo
+      success: Ang pag-update ay matagumpay
+    delete:
+      fail: Hindi maaaring tanggalin ang aytem na ito
+      success: Ang item ang matagumoay na inalis
+  module:
+    delete:
+      title: Burahin itong {{ itemName }}
+      alternative_title: Kumpirmahin ang pagtanggal
+      item: Ikaw ba ay sigurado na gusto mong burahin ang aytem na ito?
+    edit:
+      leave: Sigurado kabang umalis sa pahina na ito?
+      discard_changes: Ikaw ay mawawalan ng mga pagbabago sa {{ entity }} kapag iniwan mo ang pahina.
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: Matagumpay na nalikha ang koneksyon na API
+    delete:
+      success: Matagumpay na naiurong ang koneksyon ng API
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Bitawan ang {{ type }} file dito, o magclick upang halungkatin ang disk
+    download:
+      archive: I-download ang mga nagawang archive
+      output: I-download ang mga nagawang file
+      input: I-download ang mga basahing file
+      invalid_xlsx: I-download ang imbalidong data
+      invalid_csv: I-download ang imbalidong data
+pim_title:
+  oro_default: Ang dasbord
+  pim_enrich_attributegroup_index: Mga grupo ng katangian
+  pim_enrich_attributegroup_create: Mga grupo ng katangian | Lumikha
+  pim_enrich_attributegroup_edit: Grupo nga attribute {{ group.label }} | I-edit
+  pim_enrich_categorytree_index: Mga puno ng kategorya
+  pim_enrich_categorytree_create: Kategorya ng mga puno | Lumikha
+  pim_enrich_categorytree_edit: Puno ng kategorya {{ category.label }} | I-edit
+  pim_enrich_categorytree_create_tree: Kategorya ng mga puno | Lumikha
+  pim_enrich_attribute_index: Mga katangian
+  pim_enrich_attribute_create: Mga katangian | Lumikha
+  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | I-edit
+  pim_enrich_product_index: Ang mga produkto
+  pim_enrich_product_edit: Produkto {{ product.label }} | I-edit
+  pim_enrich_product_model_edit: Modelo ng produkto {{ product.label }} | I-edit
+  pim_enrich_family_index: Ang mga pamilya
+  pim_enrich_family_edit: Pamilya {{ family.label }} | I-edit
+  pim_enrich_channel_index: Mga tsanel
+  pim_enrich_channel_create: Mga channel | Lumikha
+  pim_enrich_channel_edit: Tsanel {{ channel.label }} | I-edit
+  pim_enrich_currency_index: Mga salapi
+  pim_enrich_locale_index: Mga pinagmulan
+  pim_enrich_group_index: Mga pangkat
+  pim_enrich_group_edit: Grupo {{ group.label }} | I-edit
+  pim_enrich_associationtype_index: Mga uri ng asosasyon
+  pim_enrich_associationtype_edit: Tipo ng asosasyon {{ association type.label }} | I-edit
+  pim_enrich_grouptype_index: Mga uri ng grupo
+  pim_enrich_grouptype_edit: Tipo ng grupo {{ group type.label }} | I-edit
+  pim_enrich_mass_edit_action_choose: Malawakang pag edit | Pumili
+  pim_enrich_mass_edit_action_configure: Malawakang pag edit | Ikonfigyur
+  pim_enrich_mass_edit_action_perform: Maramihang pag-edit | Isagawa
+  pim_enrich_job_tracker_index: Tagasubaybay ng proseso
+  pim_enrich_job_tracker_show: Tagasubaybay ng proseso | Ipakita ang trabaho
+  pim_enrich_api_connection_index: Mga koneskyon sa API
+  pim_enrich_api_connection_create: Mga koneskyon sa API | Gumawa
+  pim_enrich_mass_edit_action: Malawakang edit
+  pim_analytics_system_info_index: Impormasyon ng sistema
+pim_menu:
+  tab:
+    activity: Aktibidad
+    imports: Mga angkat
+    exports: Mga iniluwas
+    settings: Ang mga setting
+    system: Sistema
+    help:
+      title: Tulong
+      helper: Sentro ng Tulong ng Akeneo
+  item:
+    association_type: Ang mga uri ng asosasyon
+    attribute_group: Mga grupo ng mga katangian
+    channel: Mga tsanel
+    currency: Mga salapi
+    dashboard: Ang dasbord
+    family: Ang mga pamilya
+    group: Mga grupo
+    group_type: Ang mga uri ng grupo
+    product_model: Ang mga modelo ng produkto
+    export_history: Ang kasaysayan ng mga iniluwas
+    export_profile: Iluwas ang mga profile
+    import_history: Ang kasaysayan ng mga inangkat
+    import_profile: Mga profile ng pag-angkat
+    configuration: Kompigurasyon
+    user_management: Pamamahala sa mga gumagamit
+    user: Mga gumagamit
+    user_group: Mga grupo
+    user_role: Ang mga tungkulin
+    info: Impormasyon ng sistema
+    job_tracker: Proseso ng tracker
+    api_connection: Mga koneksyon ng API
+  navigation:
+    activity: Ang aktibidad sa nabigasyon
+    system: Ang sistema ng nabigasyon
+    user: Ang nabigasyon sa pamamahala ng mga gumagamit
+    settings: Ang mga setting ng nabigasyon
+    product: Ang pag-navigate ng produkto
+    product_infos: Mga impormasyon sa produkto
+  user:
+    logout: Mag-logout
+    user_account: Ang aking account
+pim_notification:
+  types:
+    import: Mag-angkat
+    export: Magluwas
+    quick_export: Madaliang pagluwas
+    mass_edit: Malawakang edit

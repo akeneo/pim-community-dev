@@ -24,6 +24,33 @@ class ReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
+    function it_returns_the_count_of_item_without_header(
+        FileIteratorFactory $fileIteratorFactory,
+        FileIteratorInterface $fileIterator,
+        JobParameters $jobParameters,
+        StepExecution $stepExecution
+    ) {
+        $filePath = $this->getPath() . DIRECTORY_SEPARATOR  . 'with_media.csv';
+        $jobParameters->get('enclosure')->willReturn('"');
+        $jobParameters->get('delimiter')->willReturn(';');
+        $jobParameters->get('filePath')->willReturn($filePath);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $fileIterator->valid()->willReturn(true, true, true, false);
+        $fileIterator->current()->willReturn(null);
+        $fileIterator->rewind()->shouldBeCalled();
+        $fileIterator->next()->shouldBeCalled();
+        $readerOptions = [
+            'fieldDelimiter' => ';',
+            'fieldEnclosure' => '"',
+        ];
+
+        $fileIteratorFactory->create($filePath, ['reader_options' => $readerOptions])->willReturn($fileIterator);
+
+        /** Expect 2 items, even there is 3 lines because the first one (the header) is ignored */
+        $this->totalItems()->shouldReturn(2);
+    }
+
     function it_reads_csv_file(
         $fileIteratorFactory,
         $converter,

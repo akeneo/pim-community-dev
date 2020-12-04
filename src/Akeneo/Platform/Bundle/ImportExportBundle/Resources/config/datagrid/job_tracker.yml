@@ -23,23 +23,32 @@ datagrid:
                 frontendType: label
             status:
                 label:         Status
-                type:          twig
-                template:      PimImportExportBundle:Property:status.html.twig
-                frontend_type: html
+                frontend_type: react
+                type: field
+                component: pimimportexport/js/JobExecutionStatus
+                props:
+                    status: string
+                    currentStep: integer
+                    totalSteps: integer
+                    hasWarning: boolean
+                    hasError: boolean
             warning:
                 label:         Warnings
                 type:          twig
                 data_name:     warningCount
                 template:      PimImportExportBundle:Property:warning.html.twig
                 frontend_type: html
-        actions:
-            view:
-                launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--view
-                type:      navigate
-                label:     pim_datagrid.action.show.title
-                link:      show_link
-                rowAction: true
+            actions:
+                label: ~
+                frontend_type: react
+                type: field
+                component: pimimportexport/js/datagrid/Actions
+                props:
+                    id: string
+                    jobLabel: string
+                    isStoppable: boolean
+                    showLink: string
+                data_name: id
         sorters:
             columns:
                 job:
@@ -79,7 +88,13 @@ datagrid:
                             choices: '%akeneo_batch.job.batch_status.class%::getAllLabels()'
         properties:
             id: ~
-            show_link:
+            currentStep: ~
+            totalSteps: ~
+            hasWarning: ~
+            hasError: ~
+            jobLabel: ~
+            isStoppable: ~
+            showLink:
                 type: url
                 params:
                     - id

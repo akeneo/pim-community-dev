@@ -7,4 +7,9 @@ akeneo_data_quality_insights:
     acl_group:
         dqi: Data quality insights
 
+    product_grid:
+        filter_label:
+            enrichment_quality: Enrichment quality
+            images_quality: Images quality
+            
 Enrichment: Enrichment

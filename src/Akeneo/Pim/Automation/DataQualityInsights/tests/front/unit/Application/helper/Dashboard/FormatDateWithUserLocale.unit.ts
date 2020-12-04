@@ -1,8 +1,8 @@
 import {
   dailyCallback,
   monthlyCallback,
-  weeklyCallback
-} from "@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/FormatDateWithUserLocale";
+  weeklyCallback,
+} from '@akeneo-pim-community/data-quality-insights/src/application/helper/Dashboard/FormatDateWithUserLocale';
 
 const UserContext = require('pim/user-context');
 UserContext.get.mockImplementation(() => 'en_US');
@@ -10,7 +10,7 @@ UserContext.get.mockImplementation(() => 'en_US');
 const __ = require('oro/translator');
 __.mockImplementation(() => 'day');
 
-beforeEach(() =>  {
+beforeEach(() => {
   jest.resetModules();
 });
 

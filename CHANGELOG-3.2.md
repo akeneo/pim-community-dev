@@ -1,5 +1,33 @@
 # 3.2.x
 
+# 3.2.76 (2020-10-22)
+
+## Features:
+
+- GITHUB-APD-227: add the PIM communication channel
+
+Four frontend dependencies are required for the backport of this feature (@types/react-dom, react-markdown, styled-components, types/styled-components). Therefore, it will add these dependencies in the file`package.json` of your project automatically when executing `composer update` or `composer install`.  
+
+Please commit changes of the file `package.json` in your CVS.
+
+## Bug fixes:
+
+- PIM-9523: Fix pressure measure multiplicator error
+
+# 3.2.75 (2020-10-14)
+
+## Bug fixes:
+
+- GITHUB-12899: Fix error shown when importing product models with the same code
+
+# 3.2.74 (2020-10-09)
+
+# 3.2.73 (2020-10-09)
+
+## Bug fixes:
+
+- PIM-9501: [Backport] PIM-9494: Fix the performances of attribute-select-filter on long lists of AttributeOptions
+
 # 3.2.72 (2020-09-30)
 
 # 3.2.71 (2020-09-21)

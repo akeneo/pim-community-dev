@@ -8,3 +8,21 @@ parameters:
     pim_catalog.entity.value.price_collection.class: Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue
     pim_reference_data.value.reference_data.class: Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataValue
     pim_reference_data.value.reference_data_collection.class: Akeneo\Pim\Enrichment\Component\Product\Value\ReferenceDataCollectionValue
+
+services:
+    pim_catalog.product_values.clean_values_of_removed_attributes:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\CleanValuesOfRemovedAttributes
+        public: true
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_products_and_product_models_with_inherited_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.saver.product_model'
+            - '@validator'
+            - '@akeneo.pim.structure.query.sql_get_attributes'
+            - '@pim_connector.doctrine.cache_clearer'

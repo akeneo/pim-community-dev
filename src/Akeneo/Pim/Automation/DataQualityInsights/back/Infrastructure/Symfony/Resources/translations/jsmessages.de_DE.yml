@@ -47,6 +47,8 @@ akeneo_data_quality_insights:
         recommendation: Erforderliche Attribute mit fehlenden Werten
       completeness_of_non_required_attributes:
         recommendation: Nicht benötigte Attribute mit fehlenden Werten
+      enrichment_image:
+        recommendation: Fehlendes Bild
     axis:
       enrichment:
         title: Anreicherung
@@ -61,8 +63,24 @@ akeneo_data_quality_insights:
       grading_in_progress: Bewertung läuft.
       axis_grading_in_progress: Bewertung wird durchgeführt. Bitte kommen Sie später wieder.
       too_many_attributes: Sie haben {{ count }} Attribute zu verbessern.
+      no_attribute_groups:
+        title: Leider konnten wir Ihren Qualitätsscore nicht berechnen.
+        subtitle: "Die Qualitätsscore können nicht berechnet werden: Keine der Attributgruppen dieses Produkts ist aktiviert."
+        help_center_link: Erfahren Sie, wie Datenqualitätseinsichten Ihnen helfen können, Ihre Datenqualität in unserem Hilfe-Center zu verbessern.
+      add_image_attribute_recommendation: Ein Bild sagt mehr als tausend Wörter. Sie sollten ein Bildattribut hinzufügen, um die Datenqualität dieses Produkts zu verbessern.
+      fill_image_attribute_recommendation: Aus unserer Erfahrung machen Bilder wirklich einen Unterschied. Sie sollten mindestens ein Bild hinzufügen, um die Datenqualität dieses Produkts zu verbessern.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Alle fehlenden Attribute
+  attribute_group:
+    helper_dqi_info: Bei der Berechnung des Qualitätsscore werden nur Attribute berücksichtigt, die zu Attributgruppen gehören, die in der Datenqualität aktiviert sind.
+    helper_dqi_link: Mehr Informationen über unser Hilfe-Center.
+    activation: Aktivierung
+    dqi_status: Status der Datenqualitätseinsichten
+    activated: Aktiviert
+    disabled: Deaktiviert
+    used_groups_helper: "Die folgenden Attributgruppen werden bei der Berechnung der Datenqualitätseinsichten berücksichtigt:"
+    all_groups_evaluated: Alle Attributgruppen dieses Produktes werden bei der Berechnung des Qualitätsscore berücksichtigt. Um die relevanteste Qualität zu erhalten, lernt <a href="{{ link }}" target="_blank">in unserem Hilfe-Center Attributgruppen zu deaktivieren.</a>
 pim_title:
   akeneo_data_quality_insights_dashboard: Datenqualitätseinsichten
+

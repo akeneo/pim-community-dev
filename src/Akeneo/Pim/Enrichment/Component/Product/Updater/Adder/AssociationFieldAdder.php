@@ -9,6 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\Collection;
+use Webmozart\Assert\Assert;
 
 /**
  * Association field adder
@@ -86,8 +88,9 @@ class AssociationFieldAdder extends AbstractFieldAdder
      */
     protected function addProductsAndGroupsToAssociations($product, $data)
     {
+        $associations = $product->getAssociations();
         foreach ($data as $typeCode => $items) {
-            $association = $product->getAssociationForTypeCode($typeCode);
+            $association = $this->getAssociationForTypeCode($associations, $typeCode);
             if (null === $association) {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     'associations',
@@ -101,6 +104,7 @@ class AssociationFieldAdder extends AbstractFieldAdder
             $this->addAssociatedGroups($association, $items['groups'] ?? []);
             $this->addAssociatedProductModels($association, $items['product_models'] ?? []);
         }
+        $product->setAssociations($associations);
     }
 
     /**
@@ -258,5 +262,17 @@ class AssociationFieldAdder extends AbstractFieldAdder
                 );
             }
         }
+    }
+
+    private function getAssociationForTypeCode(Collection $associations, string $typeCode): ?AssociationInterface
+    {
+        foreach ($associations as $association) {
+            Assert::isInstanceOf($association, AssociationInterface::class);
+            if ($typeCode === $association->getAssociationType()->getCode()) {
+                return $association;
+            }
+        }
+
+        return null;
     }
 }

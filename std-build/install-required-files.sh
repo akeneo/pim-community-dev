@@ -65,6 +65,7 @@ cp $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services
 
 # Skeleton .env file
 cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
+cp $DEV_DISTRIB_DIR/.env.dev $STANDARD_DISTRIB_DIR/
 
 # Skeleton .env file
 cp $DEV_DISTRIB_DIR/.gitignore $STANDARD_DISTRIB_DIR/

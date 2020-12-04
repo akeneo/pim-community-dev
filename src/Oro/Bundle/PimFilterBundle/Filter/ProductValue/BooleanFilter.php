@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimFilterBundle\Filter\ProductValue;
 
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
@@ -25,12 +26,24 @@ class BooleanFilter extends OroBooleanFilter
             return false;
         }
 
-        $this->util->applyFilter(
-            $ds,
-            $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            '=',
-            $data['value']
-        );
+        if (in_array($data['value'], [
+            BooleanFilterType::TYPE_YES,
+            BooleanFilterType::TYPE_NO
+        ])) {
+            $this->util->applyFilter(
+                $ds,
+                $this->get(ProductFilterUtility::DATA_NAME_KEY),
+                '=',
+                (bool) $data['value']
+            );
+        } else {
+            $this->util->applyFilter(
+                $ds,
+                $this->get(ProductFilterUtility::DATA_NAME_KEY),
+                $data['value'] === BooleanFilterType::TYPE_EMPTY ? Operators::IS_EMPTY : Operators::IS_NOT_EMPTY,
+                ''
+            );
+        }
 
         return true;
     }
@@ -40,15 +53,18 @@ class BooleanFilter extends OroBooleanFilter
      */
     public function parseData($data)
     {
-        $allowedValues = [BooleanFilterType::TYPE_YES, BooleanFilterType::TYPE_NO];
+        $allowedValues = [
+            BooleanFilterType::TYPE_YES,
+            BooleanFilterType::TYPE_NO,
+            BooleanFilterType::TYPE_EMPTY,
+            BooleanFilterType::TYPE_NOT_EMPTY,
+        ];
         if (!is_array($data)
             || !array_key_exists('value', $data)
             || !in_array($data['value'], $allowedValues, true)
         ) {
             return false;
         }
-
-        $data['value'] = (bool) $data['value'];
 
         return $data;
     }

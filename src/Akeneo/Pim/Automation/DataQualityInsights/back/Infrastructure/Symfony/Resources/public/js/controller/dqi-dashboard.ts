@@ -20,13 +20,11 @@ class DqiDashboardController extends BaseController {
    * {@inheritdoc}
    */
   public renderForm() {
-    return $.when(
-      FormBuilder.build('akeneo-data-quality-insights-dqi-dashboard-index')
-    ).then((form: any, _ = []) => {
+    return $.when(FormBuilder.build('akeneo-data-quality-insights-dqi-dashboard-index')).then((form: any, _ = []) => {
       form.setElement(this.$el).render();
       return form;
     });
-  };
-};
+  }
+}
 
 export = DqiDashboardController;

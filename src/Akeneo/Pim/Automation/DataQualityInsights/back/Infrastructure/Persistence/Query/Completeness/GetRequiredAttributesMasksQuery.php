@@ -96,7 +96,7 @@ SQL;
 
         $masks = [];
         foreach ($masksPerFamily as $familyCode => $masksPerChannelAndLocale) {
-            $masks[$familyCode] = new RequiredAttributesMask($familyCode, $masksPerChannelAndLocale);
+            $masks[$familyCode] = new RequiredAttributesMask((string) $familyCode, $masksPerChannelAndLocale);
         }
 
         return $masks;

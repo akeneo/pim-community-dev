@@ -6,7 +6,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi;
 
 use Doctrine\DBAL\Connection;
 
-class SqlGetUnitTranslations
+class SqlGetUnitTranslations implements GetUnitTranslations
 {
     /** @var Connection */
     private $connection;

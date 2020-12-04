@@ -9,7 +9,6 @@ use Akeneo\Pim\Structure\Bundle\ReferenceData\RequirementChecker\ReferenceDataNa
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,20 +27,20 @@ class CheckRequirementsCommand extends Command
     /** @var ConfigurationRegistryInterface */
     private $configurationRegistry;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var ObjectManager */
+    private $objectManager;
 
     /** @var string */
     private $referenceDataInterface;
 
     public function __construct(
         ConfigurationRegistryInterface $configurationRegistry,
-        ObjectManager $entityManager,
+        ObjectManager $objectManager,
         string $referenceDataInterface
     ) {
         parent::__construct();
         $this->configurationRegistry = $configurationRegistry;
-        $this->entityManager = $entityManager;
+        $this->objectManager = $objectManager;
         $this->referenceDataInterface = $referenceDataInterface;
     }
 
@@ -57,7 +56,7 @@ class CheckRequirementsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->configurationRegistry->all() as $configuration) {
             $output->writeln('');
@@ -69,6 +68,8 @@ class CheckRequirementsCommand extends Command
                 $this->checkConfiguration($checker, $configuration, $output);
             }
         }
+
+        return 0;
     }
 
     /**
@@ -79,7 +80,7 @@ class CheckRequirementsCommand extends Command
         $checkers = [];
         $checkers[] = new ReferenceDataNameChecker();
         $checkers[] = new ReferenceDataInterfaceChecker($this->referenceDataInterface);
-        $checkers[] = new ReferenceDataUniqueCodeChecker($this->entityManager);
+        $checkers[] = new ReferenceDataUniqueCodeChecker($this->objectManager);
 
         return $checkers;
     }

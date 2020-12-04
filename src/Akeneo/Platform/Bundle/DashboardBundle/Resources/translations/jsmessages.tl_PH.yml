@@ -1,8 +1,6 @@
 pim_dashboard:
   widget:
-    last_operations:
-      status: Estado
-      date: Petsa
-      type: Uri
-page_title:
-  pim_dashboard_index: Dashboard
+    completeness:
+      load_more: 'Mag-load ng higit pa...'
+pim_title:
+  pim_dashboard_index: Ang dasbord

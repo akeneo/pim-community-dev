@@ -1,9 +1,9 @@
 import {RefObject, useLayoutEffect} from 'react';
 
-export const useScrollIntoView = (ref: RefObject<HTMLElement>):void => {
-    useLayoutEffect(() => {
-        if (ref.current) {
-            ref.current.scrollIntoView();
-        }
-    }, []);
-}
+export const useScrollIntoView = (ref: RefObject<HTMLElement>): void => {
+  useLayoutEffect(() => {
+    if (ref.current) {
+      ref.current.scrollIntoView();
+    }
+  }, []);
+};

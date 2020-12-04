@@ -1,0 +1,4 @@
+pim_notification:
+  report: Rapporter
+  mark_all_as_read: Merk alt som lest
+  no_notifications: Ingen varslinger

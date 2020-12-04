@@ -103,7 +103,7 @@ services:
         class: '%pim_datagrid.datasource.repository.class%'
         arguments:
             - '@pim_enrich.repository.job_execution'
-            - '@pim_datagrid.datasource.result_record.hydrator.default'
+            - '@akeneo.platform.import_export.result_record.hydrator.job_execution'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_job_execution }
 
@@ -111,7 +111,7 @@ services:
         class: '%pim_datagrid.datasource.repository.class%'
         arguments:
             - '@pim_enrich.repository.job_tracker'
-            - '@pim_datagrid.datasource.result_record.hydrator.default'
+            - '@akeneo.platform.import_export.result_record.hydrator.job_execution'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_job_tracker }
 

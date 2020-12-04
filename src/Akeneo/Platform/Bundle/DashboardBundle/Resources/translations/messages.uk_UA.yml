@@ -1,0 +1,10 @@
+pim_dashboard:
+  title: Панель керування
+  version: Версія
+  widget:
+    completeness:
+      title: Завершеність по каналах та локалях
+    last_operations:
+      title: Останні операції
+      status: Статус
+      type: Тип

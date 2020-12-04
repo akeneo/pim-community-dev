@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {isEmpty} from "lodash";
+import {isEmpty} from 'lodash';
 
 import {fetchProductAxisRates} from '../../fetcher';
-import {getProductAxesRatesAction} from "../../reducer";
-import useProductAxesRates from "./useProductAxesRates";
+import {getProductAxesRatesAction} from '../../reducer';
+import useProductAxesRates from './useProductAxesRates';
 
 const MAXIMUM_RETRIES = 10;
 const RETRY_MILLISECONDS_DELAY = 500;
@@ -47,15 +47,14 @@ const useFetchProductAxisRates = () => {
 
   useEffect(() => {
     if (axesRates !== undefined && !isEmpty(axesRates)) {
-      const notEvaluatedAxesList = Object.values(axesRates).filter((axisRates) => {
+      const notEvaluatedAxesList = Object.values(axesRates).filter(axisRates => {
         return isEmpty(axisRates.rates);
       });
 
       if (notEvaluatedAxesList.length === 0) {
         setRetries(0);
         setHasToBeEvaluated(false);
-      }
-      else {
+      } else {
         setRetries(retries + 1);
         setHasToBeEvaluated(retries < MAXIMUM_RETRIES);
       }

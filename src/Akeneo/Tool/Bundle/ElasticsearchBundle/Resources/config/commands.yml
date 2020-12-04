@@ -6,3 +6,13 @@ services:
             $hosts: '%index_hosts%'
         tags:
             - {name: console.command}
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateTotalFieldsLimitCommand:
+        arguments:
+            - '@akeneo_elasticsearch.registry.clients'
+            - '@Akeneo\Tool\Bundle\ElasticsearchBundle\GetTotalFieldsLimit'
+            - '%index_hosts%'
+            -
+                - '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
+        tags:
+            - { name: 'console.command' }

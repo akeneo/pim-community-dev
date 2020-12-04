@@ -1,4 +1,9 @@
 akeneo_data_quality_insights:
   axis:
     enrichment: Anreicherung
+  acl:
+    activation_attribute_group:
+      edit: Aktivierung von Datenqualitätseinsichten bearbeiten
+  acl_group:
+    dqi: Datenqualitätseinsichten
 Enrichment: Anreicherung

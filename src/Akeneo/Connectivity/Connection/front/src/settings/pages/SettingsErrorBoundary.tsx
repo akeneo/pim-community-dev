@@ -1,8 +1,24 @@
 import React, {Component} from 'react';
-import {Breadcrumb, BreadcrumbItem, PageContent, PageHeader, RuntimeError} from '../../common/components';
+import {PageContent, PageHeader, RuntimeError} from '../../common/components';
 import {PimView} from '../../infrastructure/pim-view/PimView';
-import {BreadcrumbRouterLink} from '../../shared/router';
+import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
+import {Breadcrumb} from 'akeneo-design-system';
+
+const SettingsBreadcrumb = () => {
+    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
+
+    return (
+        <Breadcrumb>
+            <Breadcrumb.Step href={systemHref}>
+                <Translate id='pim_menu.tab.system' />
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>
+                <Translate id='pim_menu.item.connection_settings' />
+            </Breadcrumb.Step>
+        </Breadcrumb>
+    );
+};
 
 export class SettingsErrorBoundary extends Component<unknown, {hasError: boolean}> {
     constructor(props: unknown) {
@@ -19,16 +35,7 @@ export class SettingsErrorBoundary extends Component<unknown, {hasError: boolean
             return (
                 <>
                     <PageHeader
-                        breadcrumb={
-                            <Breadcrumb>
-                                <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
-                                    <Translate id='pim_menu.tab.system' />
-                                </BreadcrumbRouterLink>
-                                <BreadcrumbItem onClick={() => undefined} isLast={false}>
-                                    <Translate id='pim_menu.item.connection_settings' />
-                                </BreadcrumbItem>
-                            </Breadcrumb>
-                        }
+                        breadcrumb={<SettingsBreadcrumb />}
                         userButtons={
                             <PimView
                                 className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'

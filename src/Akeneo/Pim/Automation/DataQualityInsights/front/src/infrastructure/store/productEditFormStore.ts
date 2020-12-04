@@ -13,8 +13,8 @@ import {
   ProductFamilyInformationState,
   productReducer,
   ProductState,
-} from "../reducer";
-import {ProductEditFormPageContextState} from "../../application/state/PageContextState";
+} from '../reducer';
+import {ProductEditFormPageContextState} from '../../application/state/PageContextState';
 
 export interface ProductEditFormState {
   catalogContext: CatalogContextState;
@@ -29,18 +29,19 @@ const composeEnhancers = composeWithDevTools({
   name: 'Akeneo PIM / Product Edit Form / Data Quality Insights / Store',
 });
 
-export const createStoreWithInitialState = (initialState = {}) => createStore(
-  combineReducers({
-    catalogContext: catalogContextReducer,
-    pageContext: pageContextReducer,
-    productEvaluation: productEvaluationReducer,
-    productAxesRates: productAxesRatesReducer,
-    families: productFamilyInformationReducer,
-    product: productReducer,
-  }),
-  initialState,
-  composeEnhancers(applyMiddleware()),
-);
+export const createStoreWithInitialState = (initialState = {}) =>
+  createStore(
+    combineReducers({
+      catalogContext: catalogContextReducer,
+      pageContext: pageContextReducer,
+      productEvaluation: productEvaluationReducer,
+      productAxesRates: productAxesRatesReducer,
+      families: productFamilyInformationReducer,
+      product: productReducer,
+    }),
+    initialState,
+    composeEnhancers(applyMiddleware())
+  );
 
 const productEditFormStore: Store<any, any> = createStoreWithInitialState();
 

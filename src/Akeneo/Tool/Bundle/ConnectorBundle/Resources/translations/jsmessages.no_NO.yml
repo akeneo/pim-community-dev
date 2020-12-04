@@ -1,0 +1,146 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: Filvalidering
+    import_associations: Assosiert import
+    import_root_product_model: Rot produktmodell import
+    import_sub_product_model: Rot-produktmodell import
+    compute_data_related_to_family_root_product_models: Beregn rot-produkt modelldata
+    compute_data_related_to_family_sub_product_models: Beregn rot-produkt modelldata
+    compute_data_related_to_family_products: Beregn produktmodell data
+    compute_product_models_descendants: Kalkuler produkt model etterfølgere
+    compute_family_variant_structure_changes: Kalkuler familie variant struktur endringer
+    compute_completeness_of_products_family: Kalkuler fullstendighet av produkt familier
+  csv_product_export:
+    label: Produkteksport i CSV
+    export.label: Produkteksport
+  csv_product_model_export:
+    label: Produktmodell eksport i CSV
+    export.label: Produktmodell eksport
+  csv_category_export:
+    label: Kategorieksport i CSV
+    export.label: Kategorieksport
+  csv_attribute_export:
+    label: Attributteksport i CSV
+    export.label: Attributteksport
+  csv_attribute_option_export:
+    label: Attributteksport i CSV
+    export.label: Attributt-alternativ Eksporter
+  csv_association_type_export:
+    label: Tildelt type eksportert i CSV
+    export.label: Tildelt type eksport
+  csv_group_export:
+    label: Gruppe eksport i CSV
+    export.label: Gruppen Eksport
+  csv_family_export:
+    label: Familie eksport i CSV
+    export.label: Familie eksport
+  csv_family_variant_export:
+    label: Familievariant eksport i CSV
+    export.label: Familievariant eksport
+  csv_product_import:
+    label: Produktet import CSV
+    import.label: Produktimport
+  csv_product_model_import:
+    label: Produktmodell import i CSV
+    import_product_model_descendants.label: Kalkuler produktmodell etterfølgere
+  csv_category_import:
+    label: Kategori import CSV
+    import.label: Kategori import
+  csv_attribute_import:
+    label: Attributtimport i CSV
+    import.label: Attributtimport
+  csv_attribute_option_import:
+    label: Attributtvalg import i CSV
+    import.label: Attributt-alternativ import
+  csv_association_type_import:
+    label: Tildelt type importer i CSV
+    import.label: Assosiert type import
+  csv_family_import:
+    label: Familie import i CSV
+    import.label: Familie import
+    compute_data_related_to_family_variants.label: Beregn produkt modelldata
+  csv_family_variant_import:
+    label: Familievariant import i CSV
+    import.label: Familievariant import
+  csv_group_import:
+    label: Gruppe import CSV
+    import.label: Gruppe Importer
+  csv_attribute_group_export:
+    label: Attributtgruppe eksport i CSV
+    export.label: Attributtgruppe eksport
+  csv_group_type_export:
+    label: Gruppetype eksport i CSV
+    export.label: Gruppetype eksport
+  csv_attribute_group_import:
+    label: Attributtgruppe import i CSV
+    import.label: Attributtgruppe import
+  csv_group_type_import:
+    label: Gruppetype import i CSV
+    import.label: Gruppetype import
+  xlsx_category_import:
+    label: Kategori import i XLSX
+    import.label: Kategori import
+  xlsx_association_type_import:
+    label: Assosiert type import i XLSX
+    import.label: Assosiert type import
+  xlsx_attribute_import:
+    label: Attributtimport i XSLX
+    import.label: Attributtimport
+  xlsx_attribute_option_import:
+    label: Attributtvalg import i XLSX
+    import.label: Attributt-alternativ import
+  xlsx_family_import:
+    label: Familie import i XLSX
+    import.label: Familie import
+  xlsx_family_variant_import:
+    label: Familievariant import i XLSX
+    import.label: Familievariant import
+  xlsx_product_export:
+    label: Produkt-eksport i XLSX
+    export.label: Produkteksport
+  xlsx_product_model_export:
+    label: Produktmodell eksport i XLSX
+    export.label: Produktmodell eksport
+  xlsx_product_import:
+    label: Produktet-import i XLSX
+    import.label: Produktimport
+  xlsx_product_model_import:
+    label: Produktmodell import i XLSX
+    import_product_model_descendants.label: Kalkuler produktmodell etterfølgere
+  xlsx_group_export:
+    label: Gruppe eksport i XLSX
+    export.label: Gruppen Eksport
+  xlsx_group_import:
+    label: Gruppe import i XLSX
+    import.label: Gruppe Importer
+  xlsx_family_export:
+    label: Familie eksport i XLSX
+    export.label: Familie eksport
+  xlsx_family_variant_export:
+    label: Familievariant eksport i XLSX
+    export.label: Familievariant eksport
+  xlsx_category_export:
+    label: Kategori eksport i XLSX
+    export.label: Kategorieksport
+  xlsx_attribute_export:
+    label: Attributteksport i XSLX
+    export.label: Attributteksport i XSLX
+  xlsx_attribute_option_export:
+    label: Attributtvalg eksport i XLSX
+    export.label: Attributtvalg eksport i XLSX
+  xlsx_association_type_export:
+    label: Assosiert type eksport i XLSX
+    export.label: Assosiert type eksport i XLSX
+  xlsx_attribute_group_export:
+    label: Attributtgruppe eksport i XLSX
+    export.label: Attributtgruppe eksport
+  xlsx_group_type_export:
+    label: Gruppetype eksport i XLSX
+    export.label: Gruppetype eksport
+  xlsx_attribute_group_import:
+    label: Attributtgruppe import i XLSX
+    import.label: Attributtgruppe import
+  xlsx_group_type_import:
+    label: Gruppetype import i XLSX
+    import.label: Gruppetype import

@@ -2389,6 +2389,13 @@
     "@babel/runtime" "^7.10.3"
     "@testing-library/dom" "^7.22.3"
 
+"@testing-library/user-event@^12.1.9":
+  version "12.1.9"
+  resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-12.1.9.tgz#351a6a4eeccd8ffeaaa85bff33b27e38f42eaaa1"
+  integrity sha512-1LlqPjj/tRvC+y5eqQDGRFzG2QaVqKVMCNN7pg9p73D8/HrwZozO8jlhXKWPmemFe6BhVwaDiKMTX5AoN9u9Yw==
+  dependencies:
+    "@babel/runtime" "^7.10.2"
+
 "@types/anymatch@*":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@types/anymatch/-/anymatch-1.3.1.tgz#336badc1beecb9dacc38bea2cf32adf627a8421a"
@@ -2682,6 +2689,13 @@
   dependencies:
     "@types/react" "*"
     "@types/reactcss" "*"
+
+"@types/react-dom@^16.9.9":
+  version "16.9.9"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.9.tgz#d2d0a6f720a0206369ccbefff752ba37b9583136"
+  integrity sha512-jE16FNWO3Logq/Lf+yvEAjKzhpST/Eac8EMd1i4dgZdMczfgqC8EjpxwNgEe3SExHYLliabXDh9DEhhqnlXJhg==
+  dependencies:
+    "@types/react" "*"
 
 "@types/react-native@*":
   version "0.63.17"

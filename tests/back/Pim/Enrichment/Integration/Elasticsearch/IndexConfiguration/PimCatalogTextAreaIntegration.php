@@ -31,7 +31,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_2', 'product_5']);
+        $this->assertDocument($productsFound, ['product_2', 'product_5', 'product_8']);
     }
 
     public function testContainsOperator()
@@ -51,7 +51,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_7']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_7', 'product_10']);
     }
 
     public function testContainsOperatorInAVeryLongString()
@@ -71,7 +71,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_7']);
+        $this->assertDocument($productsFound, ['product_7', 'product_10']);
     }
 
     public function testDoesNotContainOperator()
@@ -94,7 +94,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_1', 'product_3', 'product_4', 'product_5', 'product_7']);
+        $this->assertDocument($productsFound, ['product_1', 'product_3', 'product_4', 'product_5', 'product_7', 'product_8', 'product_9', 'product_10']);
     }
 
     public function testEqualsOperator()
@@ -113,7 +113,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_3']);
+        $this->assertDocument($productsFound, ['product_3', 'product_9']);
     }
 
     public function testNotEqualsOperator()
@@ -135,7 +135,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_4', 'product_5', 'product_7']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_4', 'product_5', 'product_7', 'product_8', 'product_10']);
     }
 
     public function testEmptyOperator()
@@ -171,7 +171,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_1', 'product_2', 'product_3', 'product_4', 'product_5', 'product_7']
+            ['product_1', 'product_2', 'product_3', 'product_4', 'product_5', 'product_7', 'product_8', 'product_9', 'product_10']
         );
     }
 
@@ -195,7 +195,8 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_4', 'product_5', 'product_2', 'product_7', 'product_1', 'product_3', 'product_6']
+            ['product_4', 'product_5', 'product_2', 'product_8', 'product_7', 'product_10', 'product_1', 'product_3', 'product_9', 'product_6'],
+            true
         );
     }
 
@@ -219,7 +220,8 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_3', 'product_1', 'product_7', 'product_2', 'product_5', 'product_4', 'product_6']
+            ['product_3', 'product_9', 'product_1', 'product_10', 'product_7', 'product_8', 'product_2', 'product_5', 'product_4', 'product_6'],
+            true
         );
     }
 
@@ -288,6 +290,36 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
                     'description-textarea' => [
                         '<all_channels>' => [
                             '<all_locales>' => VeryLongText::$withMoreThan66kCharacters,
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'identifier' => 'product_8',
+                'values'     => [
+                    'description-textarea' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => '<p>Another HTML <h1>description</h1></p>',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'identifier' => 'product_9',
+                'values'     => [
+                    'description-textarea' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => '<p>yeah, <strong>love</strong> description</p>',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'identifier' => 'product_10',
+                'values'     => [
+                    'description-textarea' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => VeryLongText::$withMoreThan66kCharactersInHtml,
                         ],
                     ],
                 ],

@@ -28,22 +28,41 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
 
     public function test_it_downloads_a_pdf_for_a_product_with_an_image(): void
     {
-        $product = $this->createProduct('simple', [
-            'values' => [
-                'an_image' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
-                    ]
-                ]
+        $product = $this->createProduct(
+            'simple',
+            'familyA',
+            [
+                'values' => [
+                    'an_image' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
+                        ],
+                    ],
+                ],
             ]
-        ]);
+        );
 
         $url = $this->getRouter()->generate('pim_pdf_generator_download_product_pdf', [
             'id' => $product->getId(),
             'dataLocale' => 'en_US',
-            'dataScope' => 'ecommerce'
+            'dataScope' => 'ecommerce',
+        ]);
+
+        $this->client->request('GET', $url);
+
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function test_it_downloads_a_pdf_for_a_product_without_family(): void
+    {
+        $product = $this->createProduct('simple', null, []);
+
+        $url = $this->getRouter()->generate('pim_pdf_generator_download_product_pdf', [
+            'id' => $product->getId(),
+            'dataLocale' => 'en_US',
+            'dataScope' => 'ecommerce',
         ]);
 
         $this->client->request('GET', $url);
@@ -66,9 +85,9 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
         return self::$container->get('pim_user.repository.user')->findOneByIdentifier('admin');
     }
 
-    private function createProduct($identifier, array $data = []): ProductInterface
+    private function createProduct(string $identifier, ?string $familyCode, array $data = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
         $this->get('pim_catalog.updater.product')->update($product, $data);
 
         $errors = $this->get('pim_catalog.validator.product')->validate($product);

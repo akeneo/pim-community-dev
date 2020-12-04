@@ -6,7 +6,7 @@
 'use strict';
 
 define(['pim/form/common/delete', 'pim/remover/attribute'], function (DeleteForm, AttributeRemover) {
-    return DeleteForm.extend({
-        remover: AttributeRemover
-    });
+  return DeleteForm.extend({
+    remover: AttributeRemover,
+  });
 });

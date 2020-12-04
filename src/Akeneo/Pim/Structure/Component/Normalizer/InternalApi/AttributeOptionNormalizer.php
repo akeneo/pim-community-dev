@@ -4,12 +4,13 @@ namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Tool\Component\Normalizer\GetNormalizer;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Attribute option normalizer for internal api
@@ -18,16 +19,15 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
+class AttributeOptionNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
+    use NormalizerAwareTrait;
+
     /** @var array */
     protected $supportedFormat = ['array'];
 
     /** @var array */
     protected $activeLocales;
-
-    /** @var SerializerInterface */
-    protected $serializer;
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
@@ -35,10 +35,6 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     /** @var SimpleFactoryInterface */
     protected $optionValueFactory;
 
-    /**
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param SimpleFactoryInterface    $optionValueFactory
-     */
     public function __construct(LocaleRepositoryInterface $localeRepository, SimpleFactoryInterface $optionValueFactory)
     {
         $this->localeRepository = $localeRepository;
@@ -54,7 +50,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
             $this->ensureEmptyOptionValues($object->getOptionValues()) :
             $object->getOptionValues();
 
-        $normalizedValues = $this->serializer->normalize($optionsValues, $format, $context);
+        $normalizedValues = $this->normalizer->normalize($optionsValues, $format, $context);
 
         return [
             'id'           => $object->getId(),
@@ -74,14 +70,6 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSerializer(SerializerInterface $serializer)
-    {
-        $this->serializer = $serializer;
     }
 
     /**

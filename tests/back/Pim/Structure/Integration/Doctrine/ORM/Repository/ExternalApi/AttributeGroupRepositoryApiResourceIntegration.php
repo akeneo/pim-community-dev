@@ -80,7 +80,7 @@ class AttributeGroupRepositoryApiResourceIntegration extends TestCase
         Assert::assertEquals('marketing', $attributeGroupsCodeDesc[2]->getCode());
         Assert::assertEquals('delivery', $attributeGroupsCodeDesc[3]->getCode());
 
-        $attributeGroupsCodeAsc = $this->getRepository()->searchAfterOffset([], ['updated' => 'DESC'], 4, 0);
+        $attributeGroupsCodeAsc = $this->getRepository()->searchAfterOffset([], ['updated' => 'DESC', 'code' => 'ASC'], 4, 0);
         Assert::assertCount(4, $attributeGroupsCodeAsc);
         Assert::assertEquals('delivery', $attributeGroupsCodeAsc[0]->getCode());
         Assert::assertEquals('technical', $attributeGroupsCodeAsc[1]->getCode());

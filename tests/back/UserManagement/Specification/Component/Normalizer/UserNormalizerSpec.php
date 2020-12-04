@@ -54,7 +54,7 @@ class UserNormalizerSpec extends ObjectBehavior
         $user->setDefaultTree(new Category());
         $user->addProperty('property_name', 'value');
 
-        $datagridViewRepo->getDatagridViewTypeByUser($user)->willReturn([]);
+        $datagridViewRepo->getDatagridViewAliasesByUser($user)->willReturn([]);
 
         $result = [
             'code'                      => null,
@@ -122,7 +122,7 @@ class UserNormalizerSpec extends ObjectBehavior
         $normalizerOne->normalize($user, Argument::cetera())->willReturn(['properties' => []]);
         $normalizerTwo->normalize($user, Argument::cetera())->willReturn([]);
 
-        $datagridViewRepo->getDatagridViewTypeByUser($user)->willReturn([]);
+        $datagridViewRepo->getDatagridViewAliasesByUser($user)->willReturn([]);
 
         $securityFacade->isGranted('pim_user_user_edit')->willReturn(true);
 
@@ -151,7 +151,7 @@ class UserNormalizerSpec extends ObjectBehavior
         $normalizerOne->normalize($user, Argument::cetera())->willReturn(['properties' => []]);
         $normalizerTwo->normalize($user, Argument::cetera())->willReturn([]);
 
-        $datagridViewRepo->getDatagridViewTypeByUser($user)->willReturn([]);
+        $datagridViewRepo->getDatagridViewAliasesByUser($user)->willReturn([]);
 
         $securityFacade->isGranted('pim_user_user_edit')->willReturn(false);
 

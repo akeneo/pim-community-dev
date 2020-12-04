@@ -21,7 +21,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(AttributeNormalizer::class);
     }
 
-    function it_supports_a_attribute(AttributeInterface $attribute)
+    function it_supports_an_attribute(AttributeInterface $attribute)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), 'external_api')->shouldReturn(false);
@@ -29,7 +29,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($attribute, 'external_api')->shouldReturn(true);
     }
 
-    function it_normalizes_a_attribute($stdNormalizer, AttributeInterface $attribute)
+    function it_normalizes_an_attribute($stdNormalizer, AttributeInterface $attribute)
     {
         $data = ['code' => 'my_attribute', 'labels' => []];
 

@@ -1,6 +1,6 @@
 import React, {Children, PropsWithChildren, ReactElement} from 'react';
 import {TableBody} from '../layouts/tables';
-import {Row} from "./Row";
+import {Row} from './Row';
 
 type RowClickHandler<T> = (data: T) => void;
 type RowMoveEndHandler<T> = (data: T) => void;

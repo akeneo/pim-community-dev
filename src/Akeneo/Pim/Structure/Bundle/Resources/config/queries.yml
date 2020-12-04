@@ -100,3 +100,8 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Group\Sql\SqlGetGroupTranslations
         arguments:
             - '@database_connection'
+
+    akeneo.pim.structure.query.get_all_families_label_by_locale:
+        class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetAllFamiliesLabelByLocaleQuery
+        arguments:
+            - '@database_connection'

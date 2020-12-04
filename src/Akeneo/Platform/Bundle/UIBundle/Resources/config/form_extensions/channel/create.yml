@@ -116,5 +116,5 @@ extensions:
         targetZone: accordion
         position: 150
         config:
-            label: 'pim_enrich.entity.channel.property.label_conversion_units'
+            label: 'pim_enrich.entity.channel.property.measurement'
             fieldBaseId: 'pim_enrich_channel_form_conversion_unit_'

@@ -171,6 +171,7 @@ pim_enrich.entity.product_model:
             required_label: '(variant axis)'
         completeness:
             variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"
+            label: Variant
         delete:
             confirm: Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
             confirm_for_products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.

@@ -27,3 +27,15 @@ describe('A helper', () => {
     expect(getByText(helperMessage)).toBeInTheDocument();
   });
 });
+
+describe('Helper supports forwardRef', () => {
+  const ref = {current: null};
+
+  render(<Helper ref={ref}>My helper</Helper>);
+  expect(ref.current).not.toBe(null);
+});
+
+describe('Helper supports ...rest props', () => {
+  const {container} = render(<Helper data-my-attribute="my_value">My helper</Helper>);
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+});

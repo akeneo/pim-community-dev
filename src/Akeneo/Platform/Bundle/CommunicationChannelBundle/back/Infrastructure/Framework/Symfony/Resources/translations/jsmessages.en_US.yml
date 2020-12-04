@@ -2,7 +2,7 @@ akeneo_communication_channel:
     link:
         title: Announcements
     panel:
-        title: What's new?
+        title: Announcements
         list:
             empty: There is no news for the moment. Stay tuned!
             error: We couldn't retrieve the news. Please retry later.

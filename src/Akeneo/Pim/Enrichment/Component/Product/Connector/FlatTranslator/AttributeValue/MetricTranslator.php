@@ -6,16 +6,15 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Attri
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\SqlGetUnitTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 
 class MetricTranslator implements FlatAttributeValueTranslatorInterface
 {
     private const UNIT_SUFFIX = '-unit';
 
-    /** @var SqlGetUnitTranslations */
-    private $getUnitTranslations;
+    private GetUnitTranslations $getUnitTranslations;
 
-    public function __construct(SqlGetUnitTranslations $getUnitTranslations)
+    public function __construct(GetUnitTranslations $getUnitTranslations)
     {
         $this->getUnitTranslations = $getUnitTranslations;
     }

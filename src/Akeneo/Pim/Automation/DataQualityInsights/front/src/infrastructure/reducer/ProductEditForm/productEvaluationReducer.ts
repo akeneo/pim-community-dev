@@ -1,5 +1,5 @@
-import {Action, ActionCreator, Reducer} from "redux";
-import {AxesCollection, ProductEvaluation} from "../../../domain";
+import {Action, ActionCreator, Reducer} from 'redux';
+import {AxesCollection, ProductEvaluation} from '../../../domain';
 
 export interface ProductEvaluationState {
   [productId: string]: ProductEvaluation;
@@ -14,18 +14,24 @@ interface ProductEvaluationAction extends Action {
 }
 
 const GET_PRODUCT_EVALUATION = 'GET_PRODUCT_EVALUATION';
-export const getProductEvaluationAction: ActionCreator<ProductEvaluationAction> = (productId:number, evaluation: ProductEvaluation) => {
+export const getProductEvaluationAction: ActionCreator<ProductEvaluationAction> = (
+  productId: number,
+  evaluation: ProductEvaluation
+) => {
   return {
     type: GET_PRODUCT_EVALUATION,
     payload: {
       productId: productId,
       evaluation: evaluation,
-    }
-  }
+    },
+  };
 };
 
 const initialState: ProductEvaluationState = {};
-const productEvaluationReducer: Reducer<ProductEvaluationState, ProductEvaluationAction> = (previousState = initialState, {type, payload}) => {
+const productEvaluationReducer: Reducer<ProductEvaluationState, ProductEvaluationAction> = (
+  previousState = initialState,
+  {type, payload}
+) => {
   switch (type) {
     case GET_PRODUCT_EVALUATION: {
       const {productId, evaluation} = payload;

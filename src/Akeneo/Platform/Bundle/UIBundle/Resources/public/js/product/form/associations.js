@@ -28,11 +28,9 @@ define([
   'pim/form-builder',
   'pim/security-context',
   'pim/i18n',
-  'react',
-  'react-dom',
-  'pimui/js/product/form/quantified-associations/QuantifiedAssociationsTab',
+  'pimui/js/product/form/quantified-associations/components/QuantifiedAssociations',
   '@akeneo-pim-community/shared',
-], function(
+], function (
   $,
   _,
   __,
@@ -52,9 +50,7 @@ define([
   FormBuilder,
   securityContext,
   {getLabel},
-  React,
-  ReactDOM,
-  {QuantifiedAssociationsTab},
+  {QuantifiedAssociations},
   {filterErrors}
 ) {
   let state = {};
@@ -76,7 +72,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    initialize: function(meta) {
+    initialize: function (meta) {
       this.config = meta.config;
       this.validationErrors = [];
 
@@ -87,7 +83,7 @@ define([
       this.datagrids = {
         products: {
           name: this.config.datagridName,
-          getInitialParams: function(associationType) {
+          getInitialParams: function (associationType) {
             let params = {
               product: this.getFormData().meta.id,
             };
@@ -98,16 +94,16 @@ define([
             return params;
           }.bind(this),
           paramName: 'associationType',
-          getParamValue: function(associationType) {
+          getParamValue: function (associationType) {
             return _.findWhere(state.associationTypes, {code: associationType}).meta.id;
           }.bind(this),
-          getModelIdentifier: function(model) {
+          getModelIdentifier: function (model) {
             return model.get('identifier');
           },
         },
         groups: {
           name: 'association-group-grid',
-          getInitialParams: function(associationType) {
+          getInitialParams: function (associationType) {
             let params = {};
             params[this.paramName] = this.getParamValue(associationType);
             params.dataLocale = UserContext.get('catalogLocale');
@@ -115,12 +111,12 @@ define([
             return params;
           },
           paramName: 'associatedIds',
-          getParamValue: function(associationType) {
+          getParamValue: function (associationType) {
             const associationsMeta = this.getFormData().meta.associations;
 
             return associationsMeta[associationType] ? associationsMeta[associationType].groupIds : [];
           }.bind(this),
-          getModelIdentifier: function(model) {
+          getModelIdentifier: function (model) {
             return model.get('code');
           },
         },
@@ -132,7 +128,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    configure: function() {
+    configure: function () {
       this.trigger('tab:register', {
         code: undefined === this.config.tabCode ? this.code : this.config.tabCode,
         isVisible: this.isVisible.bind(this),
@@ -141,11 +137,11 @@ define([
 
       _.each(
         this.datagrids,
-        function(datagrid) {
+        function (datagrid) {
           mediator.clear('datagrid:selectModel:' + datagrid.name);
           mediator.on(
             'datagrid:selectModel:' + datagrid.name,
-            function(model) {
+            function (model) {
               this.selectModel(model, datagrid);
             }.bind(this)
           );
@@ -153,7 +149,7 @@ define([
           mediator.clear('datagrid:unselectModel:' + datagrid.name);
           mediator.on(
             'datagrid:unselectModel:' + datagrid.name,
-            function(model) {
+            function (model) {
               this.unselectModel(model, datagrid);
             }.bind(this)
           );
@@ -169,7 +165,7 @@ define([
       this.listenTo(
         this.getRoot(),
         'pim_enrich:form:locale_switcher:change pim_enrich:form:scope_switcher:change',
-        function(localeEvent) {
+        function (localeEvent) {
           if ('base_product' === localeEvent.context) {
             this.render();
           }
@@ -182,7 +178,7 @@ define([
     /**
      * {@inheritdoc}
      */
-    render: function() {
+    render: function () {
       this.updateAssociationCountInSidebar();
 
       const code = undefined === this.config.tabCode ? this.code : this.config.tabCode;
@@ -192,7 +188,7 @@ define([
       }
 
       this.loadAssociationTypes().then(
-        function(associationTypes) {
+        function (associationTypes) {
           const currentAssociationType = associationTypes.length ? _.first(associationTypes).code : null;
 
           if (
@@ -240,7 +236,7 @@ define([
       return this;
     },
 
-    updateAssociationCountInSidebar: function() {
+    updateAssociationCountInSidebar: function () {
       const newAssociationCount = this.getAssociationCount();
       if (this.associationCount !== newAssociationCount) {
         this.associationCount = newAssociationCount;
@@ -253,23 +249,23 @@ define([
       }
     },
 
-    setValidationErrors: function({response}) {
+    setValidationErrors: function ({response}) {
       this.validationErrors = response;
       this.unmountQuantifiedAssociations();
       this.renderQuantifiedAssociations();
     },
 
-    unmountQuantifiedAssociations: function() {
+    unmountQuantifiedAssociations: function () {
       const quantifiedAssociationsNode = document.getElementById('product-quantified-associations');
-      if (quantifiedAssociationsNode) ReactDOM.unmountComponentAtNode(quantifiedAssociationsNode);
+      if (quantifiedAssociationsNode) this.unmountReact();
     },
 
     /**
      * Prepend for each association type each tab content
      */
-    renderPanes: function() {
+    renderPanes: function () {
       this.loadAssociationTypes().then(
-        function(associationTypes) {
+        function (associationTypes) {
           const isQuantifiedAssociation = this.isQuantifiedAssociation(
             associationTypes,
             this.getCurrentAssociationType()
@@ -299,7 +295,7 @@ define([
       );
     },
 
-    renderQuantifiedAssociations: function() {
+    renderQuantifiedAssociations: function () {
       const associationTypeCode = this.getCurrentAssociationType();
       if (!this.isQuantifiedAssociation(state.associationTypes, associationTypeCode)) return;
       if (this.$('#product-quantified-associations').children().length !== 0) return;
@@ -319,7 +315,7 @@ define([
         `quantifiedAssociations.${associationTypeCode}`
       );
 
-      const Component = React.createElement(QuantifiedAssociationsTab, {
+      const props = {
         quantifiedAssociations,
         parentQuantifiedAssociations,
         errors,
@@ -350,14 +346,14 @@ define([
               };
             })
           ),
-      });
-      ReactDOM.render(Component, this.$('#product-quantified-associations')[0]);
+      };
+      this.renderReact(QuantifiedAssociations, props, this.$('#product-quantified-associations')[0]);
     },
 
     /**
      * Refresh the associations panel after model change
      */
-    postUpdate: function() {
+    postUpdate: function () {
       if (this.isVisible()) {
         this.$('.selection-inputs input').val('');
         state.selectedAssociations = {};
@@ -368,28 +364,28 @@ define([
     /**
      * @param {string} associationType
      */
-    setCurrentAssociationType: function(associationType) {
+    setCurrentAssociationType: function (associationType) {
       sessionStorage.setItem('current_association_type', associationType);
     },
 
     /**
      * @returns {string}
      */
-    getCurrentAssociationType: function() {
+    getCurrentAssociationType: function () {
       return sessionStorage.getItem('current_association_type');
     },
 
     /**
      * @param {string} associationTarget
      */
-    setCurrentAssociationTarget: function(associationTarget) {
+    setCurrentAssociationTarget: function (associationTarget) {
       sessionStorage.setItem('current_association_target', associationTarget);
     },
 
     /**
      * @returns {string}
      */
-    getCurrentAssociationTarget: function() {
+    getCurrentAssociationTarget: function () {
       return sessionStorage.getItem('current_association_target') || 'products';
     },
 
@@ -398,7 +394,7 @@ define([
      *
      * @returns {Promise}
      */
-    loadAssociationTypes: function() {
+    loadAssociationTypes: function () {
       return FetcherRegistry.getFetcher('association-type')
         .fetchAll()
         .then(associationTypes => {
@@ -418,10 +414,10 @@ define([
      *
      * @param associationTypes
      */
-    setAssociationCount: function(associationTypes) {
+    setAssociationCount: function (associationTypes) {
       const {associations, quantified_associations} = this.getFormData();
 
-      _.each(associationTypes, function(assocType) {
+      _.each(associationTypes, function (assocType) {
         const association = quantified_associations[assocType.code] || associations[assocType.code];
 
         assocType.productCount = association && association.products ? association.products.length : 0;
@@ -437,7 +433,7 @@ define([
      *
      * @param {Event} event
      */
-    changeAssociationType: function(event) {
+    changeAssociationType: function (event) {
       event.preventDefault();
       const associationType = event.currentTarget.dataset.associationType;
       this.setCurrentAssociationType(associationType);
@@ -476,7 +472,7 @@ define([
      *
      * @param {Event} event
      */
-    changeAssociationTargets: function(event) {
+    changeAssociationTargets: function (event) {
       const associationTarget = event.currentTarget.dataset.associationTarget;
       this.setCurrentAssociationTarget(associationTarget);
 
@@ -487,7 +483,7 @@ define([
 
       _.each(
         this.datagrids,
-        function(datagrid, gridType) {
+        function (datagrid, gridType) {
           const method = gridType === associationTarget || isQuantifiedAssociation ? 'removeClass' : 'addClass';
           this.$('.' + datagrid.name)[method]('hide');
         }.bind(this)
@@ -516,7 +512,7 @@ define([
         : this.$('#product-quantified-associations').addClass('hide');
     },
 
-    isQuantifiedAssociation: function(associationTypes, associationTypeCode) {
+    isQuantifiedAssociation: function (associationTypes, associationTypeCode) {
       if (!associationTypes || 0 === associationTypes.length) return false;
 
       const associationType = associationTypes.find(associationType => associationType.code === associationTypeCode);
@@ -532,7 +528,7 @@ define([
      * @param {string} gridName
      * @param {Object} params
      */
-    renderGrid: function(gridName, params) {
+    renderGrid: function (gridName, params) {
       let urlParams = params;
       urlParams.alias = gridName;
       urlParams.params = _.clone(params);
@@ -547,7 +543,7 @@ define([
       }
 
       $.get(Routing.generate('pim_datagrid_load', urlParams)).then(
-        function(response) {
+        function (response) {
           let metadata = response.metadata;
           /* Next lines are related to PIM-6113 and need some comments.
            *
@@ -580,7 +576,7 @@ define([
           gridModules.push('oro/datagrid/pagination-input');
 
           let resolvedModules = [];
-          _.each(gridModules, function(module) {
+          _.each(gridModules, function (module) {
             resolvedModules.push(requireContext(module));
           });
 
@@ -592,7 +588,7 @@ define([
     /**
      * Sets the listeners to trigger the checkboxes of each grid
      */
-    setListenerSelectors: function() {
+    setListenerSelectors: function () {
       let gridNames = _.pluck(this.datagrids, 'name');
 
       mediator.on(
@@ -611,11 +607,11 @@ define([
     /**
      * Updates the listeners to trigger the checkboxes of the current grid
      */
-    updateListenerSelectors: function() {
+    updateListenerSelectors: function () {
       const associationType = this.getCurrentAssociationType();
       const selectedAssociations = state.selectedAssociations;
 
-      _.each(this.datagrids, function(datagrid, gridType) {
+      _.each(this.datagrids, function (datagrid, gridType) {
         const appendFieldId = ['#', associationType, '-', gridType, '-appendfield'].join('');
         const removeFieldId = ['#', associationType, '-', gridType, '-removefield'].join('');
 
@@ -641,7 +637,7 @@ define([
      * @param {Object} model    A grid model (i.e. a unique line)
      * @param {Object} datagrid
      */
-    selectModel: function(model, datagrid) {
+    selectModel: function (model, datagrid) {
       const assocType = this.getCurrentAssociationType();
       const assocTarget = this.getDatagridTarget(datagrid);
       let currentAssociations = this.getCurrentAssociations(datagrid);
@@ -659,7 +655,7 @@ define([
      * @param {Object} model    A grid model (i.e. a unique line)
      * @param {Object} datagrid
      */
-    unselectModel: function(model, datagrid) {
+    unselectModel: function (model, datagrid) {
       const assocType = this.getCurrentAssociationType();
       const assocTarget = this.getDatagridTarget(datagrid);
 
@@ -685,7 +681,7 @@ define([
      *
      * @param {Object} datagrid
      */
-    getCurrentAssociations: function(datagrid) {
+    getCurrentAssociations: function (datagrid) {
       const assocType = this.getCurrentAssociationType();
       const assocTarget = this.getDatagridTarget(datagrid);
       const associations = this.getFormData().associations;
@@ -700,7 +696,7 @@ define([
      * @param {Object} datagrid
      * @param {string|int} id
      */
-    updateSelectedAssociations: function(action, datagrid, id) {
+    updateSelectedAssociations: function (action, datagrid, id) {
       const assocType = this.getCurrentAssociationType();
       const assocTarget = this.getDatagridTarget(datagrid);
       let selectedAssoc = state.selectedAssociations || {};
@@ -731,7 +727,7 @@ define([
      * @param {string} assocType
      * @param {string} assocTarget
      */
-    updateFormDataAssociations: function(currentAssociations, assocType, assocTarget) {
+    updateFormDataAssociations: function (currentAssociations, assocType, assocTarget) {
       let modelAssociations = this.getFormData().associations;
       modelAssociations[assocType][assocTarget] = currentAssociations;
       modelAssociations[assocType][assocTarget].sort();
@@ -746,7 +742,7 @@ define([
      *
      * @returns {boolean}
      */
-    isGridRendered: function(grid) {
+    isGridRendered: function (grid) {
       return 0 < this.$('.grid-' + grid.name).find('[data-type="datagrid"][data-rendered="true"]').length;
     },
 
@@ -757,10 +753,10 @@ define([
      *
      * @returns {string}
      */
-    getDatagridTarget: function(datagrid) {
+    getDatagridTarget: function (datagrid) {
       let assocTarget = null;
 
-      _.each(this.datagrids, function(grid, gridType) {
+      _.each(this.datagrids, function (grid, gridType) {
         if (grid.name === datagrid.name) {
           assocTarget = gridType;
         }
@@ -774,18 +770,18 @@ define([
      *
      * @returns {boolean}
      */
-    isVisible: function() {
+    isVisible: function () {
       return true;
     },
 
-    isAddAssociationsVisible: function() {
+    isAddAssociationsVisible: function () {
       return securityContext.isGranted(this.config.aclAddAssociations);
     },
 
     /**
      * Opens the panel to select new products to associate
      */
-    addAssociations: function() {
+    addAssociations: function () {
       this.launchProductPicker().then(productAndProductModelIdentifiers => {
         let productIds = [];
         let productModelIds = [];
@@ -816,7 +812,7 @@ define([
      *
      * @return {Promise}
      */
-    launchProductPicker: function() {
+    launchProductPicker: function () {
       const deferred = $.Deferred();
 
       FormBuilder.build('pim-associations-product-picker-form').then(form => {
@@ -864,7 +860,7 @@ define([
       return deferred.promise();
     },
 
-    getAssociationCount: function() {
+    getAssociationCount: function () {
       const {associations, quantified_associations} = this.getFormData();
 
       return [...Object.values(associations), ...Object.values(quantified_associations)].reduce(

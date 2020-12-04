@@ -45,11 +45,11 @@ class ColumnSelector extends BaseView {
   public searchInputSelector: string;
   public hideButton: boolean;
 
-  private buttonTemplate: ((...data: any[]) => string) = _.template(buttonTemplate);
-  private innerModalTemplate: ((...data: any[]) => string) = _.template(innerModalTemplate);
-  private columnsTemplate: ((...data: any[]) => string) = _.template(columnsTemplate);
-  private selectedTemplate: ((...data: any[]) => string) = _.template(selectedTemplate);
-  private modalTemplate: ((...data: any[]) => string) = _.template(modalTemplate);
+  private buttonTemplate: (...data: any[]) => string = _.template(buttonTemplate);
+  private innerModalTemplate: (...data: any[]) => string = _.template(innerModalTemplate);
+  private columnsTemplate: (...data: any[]) => string = _.template(columnsTemplate);
+  private selectedTemplate: (...data: any[]) => string = _.template(selectedTemplate);
+  private modalTemplate: (...data: any[]) => string = _.template(modalTemplate);
 
   public events(): Backbone.EventsHash {
     return {
@@ -131,10 +131,7 @@ class ColumnSelector extends BaseView {
    *
    */
   fetchColumns(reset?: boolean): PromiseLike<{[name: string]: Column}> {
-    const search = this.modal.$el
-      .find(this.searchInputSelector)
-      .val()
-      .trim();
+    const search = this.modal.$el.find(this.searchInputSelector).val().trim();
     const group = this.modal.$el.find('.active[data-group]').data('value');
     const url = Routing.generate('pim_datagrid_productgrid_available_columns');
 
@@ -200,10 +197,7 @@ class ColumnSelector extends BaseView {
    * Clear the search input and trigger a fetch
    */
   clearSearch() {
-    this.modal.$el
-      .find(this.searchInputSelector)
-      .val('')
-      .trigger('keyup');
+    this.modal.$el.find(this.searchInputSelector).val('').trigger('keyup');
   }
 
   /**
@@ -235,7 +229,12 @@ class ColumnSelector extends BaseView {
     _.each(Object.assign(columns, metadataColumns), (column: Column) => {
       const columnNames = metadataColumns.map((column: Column) => String(column.name));
       const label = String(column.name || column.code);
-      const data = {code: label, selected: columnNames.includes(label), sortOrder: columnNames.indexOf(label), removable: true};
+      const data = {
+        code: label,
+        selected: columnNames.includes(label),
+        sortOrder: columnNames.indexOf(label),
+        removable: true,
+      };
       datagridColumns[label] = Object.assign(column, data);
     });
 
@@ -281,20 +280,14 @@ class ColumnSelector extends BaseView {
    * Listen to the scroll for the searchable columns
    */
   listenToListScroll() {
-    this.modal.$el
-      .find('[data-columns]')
-      .off('scroll')
-      .on('scroll', this.fetchNextColumns.bind(this));
+    this.modal.$el.find('[data-columns]').off('scroll').on('scroll', this.fetchNextColumns.bind(this));
   }
 
   /**
    * Stop listening to the scroll event
    */
   stopListeningToListScroll() {
-    this.modal.$el
-      .find('[data-columns]')
-      .removeClass('more')
-      .off();
+    this.modal.$el.find('[data-columns]').removeClass('more').off();
   }
 
   /**
@@ -341,9 +334,7 @@ class ColumnSelector extends BaseView {
    */
   unselectColumn(event: JQueryEventObject): void {
     const column = $(event.currentTarget).parent();
-    const code = $(event.currentTarget)
-      .parents('[data-value]')
-      .data('value');
+    const code = $(event.currentTarget).parents('[data-value]').data('value');
     column.appendTo(this.modal.$el.find('#column-list'));
     this.setColumnStatus(code, false);
     this.setValidation();
@@ -463,10 +454,7 @@ class ColumnSelector extends BaseView {
    * Get a list of the selected columns (from all the loaded ones)
    */
   getColumnsBySelected(selected = true): {[name: string]: Column} {
-    return _.pick(
-      this.loadedColumns,
-      (column: Column) => column.selected === selected
-    ) as {[name: string]: Column};
+    return _.pick(this.loadedColumns, (column: Column) => column.selected === selected) as {[name: string]: Column};
     // I don't really know what would be a better solution as I don't know this file
   }
 

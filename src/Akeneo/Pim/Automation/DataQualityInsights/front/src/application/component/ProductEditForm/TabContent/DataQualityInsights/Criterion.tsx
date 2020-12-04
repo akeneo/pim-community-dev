@@ -1,104 +1,178 @@
-import React, {FunctionComponent} from 'react';
-
-import RecommendationAttributesList from "./RecommendationAttributesList";
-import {MAX_RATE, Rate} from "../../../../../domain";
+import React, {Children, cloneElement, FC, ReactElement, ReactNode, useMemo} from 'react';
+import {Product} from '../../../../../domain';
 import Evaluation, {
-  CRITERION_DONE,
   CRITERION_ERROR,
-  CRITERION_IN_PROGRESS, CRITERION_NOT_APPLICABLE,
-  CriterionEvaluationResult
-} from "../../../../../domain/Evaluation.interface";
-import {useFetchProductFamilyInformation, useProduct} from "../../../../../infrastructure/hooks";
-import {isProductModel, isSimpleProduct} from "../../../../helper/ProductEditForm/Product";
-import {ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE, ATTRIBUTE_SPELLING_CRITERION_CODE, BACK_LINK_SESSION_STORAGE_KEY} from "../../../../constant";
+  CRITERION_IN_PROGRESS,
+  CRITERION_NOT_APPLICABLE,
+  CriterionEvaluationResult,
+} from '../../../../../domain/Evaluation.interface';
+import {Recommendation, RecommendationType, RecommendationWithAttributesList} from './Recommendation';
+import {useProduct, useProductFamily} from '../../../../../infrastructure/hooks';
+import {criterionPlaceholder, evaluationPlaceholder, isSimpleProduct, isSuccess} from '../../../../helper';
 import {
-  redirectToAttributeGridFilteredByFamilyAndQuality,
-  redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes
-} from "../../../../../infrastructure/AttributeGridRouter";
+  AllowFollowingCriterionRecommendation,
+  allowFollowingCriterionRecommendation as defaultAllowFollowingCriterionRecommendation,
+  FollowAttributeRecommendationHandler,
+  FollowAttributesListRecommendationHandler,
+  followCriterionRecommendation as defaultFollowCriterionRecommendation,
+  FollowCriterionRecommendationHandler,
+} from '../../../../user-actions';
 
-const __ = require('oro/translator');
+const translate = require('oro/translator');
 
 interface CriterionProps {
-  criterionEvaluation: CriterionEvaluationResult;
-  axis: string;
-  evaluation: Evaluation;
+  code: string;
+  criterionEvaluation?: CriterionEvaluationResult;
+  axis?: string;
+  evaluation?: Evaluation;
+  isFollowingCriterionRecommendationAllowed?: AllowFollowingCriterionRecommendation;
+  followCriterionRecommendation?: FollowCriterionRecommendationHandler;
+  followAttributeRecommendation?: FollowAttributeRecommendationHandler;
+  followAttributesListRecommendation?: FollowAttributesListRecommendationHandler;
 }
 
-const isSuccess = (rate: Rate) => {
-  return rate && rate.value === MAX_RATE;
+const getRecommendation = (children: ReactNode | null, type: RecommendationType): ReactElement | undefined => {
+  let recommendation = <Recommendation type={type} />;
+
+  Children.forEach(children, child => {
+    if (React.isValidElement(child) && child.type === Recommendation && child.props.type === type) {
+      recommendation = cloneElement(child);
+    }
+  });
+
+  return recommendation;
 };
 
-const Criterion: FunctionComponent<CriterionProps> = ({criterionEvaluation, axis, evaluation}) => {
-  const product = useProduct();
-  const family = useFetchProductFamilyInformation();
+const getToImproveRecommendation = (
+  children: ReactNode | null,
+  criterion: string,
+  attributes: string[],
+  product: Product,
+  axis: string,
+  evaluation: Evaluation,
+  followAttributeRecommendation: FollowAttributeRecommendationHandler | undefined,
+  followAttributesListRecommendation: FollowAttributesListRecommendationHandler | undefined
+): ReactElement | undefined => {
+  let recommendation: ReactElement | null = null;
 
-  const criterion = criterionEvaluation.code;
-  const attributes = criterionEvaluation.improvable_attributes || [] as string[];
+  Children.forEach(children, child => {
+    if (React.isValidElement(child) && child.type === Recommendation && child.props.type === 'to_improve') {
+      recommendation = cloneElement(child);
+    }
+  });
 
-  let criterionContent: any;
-  if(criterionEvaluation.status === CRITERION_ERROR) {
-    criterionContent =
-      <span className="CriterionErrorMessage">
-        {__(`akeneo_data_quality_insights.product_evaluation.messages.error.criterion_error`)}
-      </span>;
-  } else if(criterionEvaluation.status === CRITERION_IN_PROGRESS) {
-    criterionContent =
-      <span className="CriterionInProgressMessage">
-        {__(`akeneo_data_quality_insights.product_evaluation.messages.grading_in_progress`)}
-      </span>;
-  } else if(criterionEvaluation.status === CRITERION_NOT_APPLICABLE) {
-    criterionContent =
-      <span className="NotApplicableAttribute">N/A</span>;
-  } else if(isSuccess(criterionEvaluation.rate) && attributes.length == 0) {
-    criterionContent =
-      <div className="CriterionSuccessContainer">
-        <span className="CriterionSuccessMessage">
-          {__(`akeneo_data_quality_insights.product_evaluation.messages.success.criterion`)}
-        </span>
-        <span className="CriterionSuccessTick"/>
-      </div>;
-  } else {
-    criterionContent = <RecommendationAttributesList criterion={criterion} attributes={attributes} product={product} axis={axis} evaluation={evaluation}/>;
+  if (recommendation !== null) {
+    return recommendation;
   }
-
-  const isCriterionClickable = () => {
-    return (
-      [ATTRIBUTE_SPELLING_CRITERION_CODE, ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE].includes(criterion) &&
-      criterionEvaluation.status === CRITERION_DONE &&
-      !isSuccess(criterionEvaluation.rate)
-    );
-  }
-  const redirectToAttributeGrid = () => {
-      if (family) {
-          window.sessionStorage.setItem(BACK_LINK_SESSION_STORAGE_KEY, JSON.stringify({
-            label: __('akeneo_data_quality_insights.product_edit_form.back_to_products'),
-            route: isProductModel(product) ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit',
-            routeParams: {id: product.meta.id},
-            displayLinkRoutes: [
-              'pim_enrich_attribute_index',
-              'pim_enrich_attribute_edit',
-
-            ],
-          }));
-        if (criterion === ATTRIBUTE_OPTION_SPELLING_CRITERION_CODE) {
-          redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttributeTypes(family.meta.id);
-        } else {
-          redirectToAttributeGridFilteredByFamilyAndQuality(family.meta.id);
-        }
-      }
-  };
-
-  const className = `AknVerticalList-item ${isCriterionClickable() ? 'AknVerticalList-item--clickable' : ''}`;
 
   return (
-    <li className={className} onClick={() => isCriterionClickable() ? redirectToAttributeGrid() : null} data-testid={"dqiProductEvaluationCriterion"}>
+    <RecommendationWithAttributesList
+      criterion={criterion}
+      attributes={attributes}
+      product={product}
+      axis={axis}
+      evaluation={evaluation}
+      followAttributeRecommendation={followAttributeRecommendation}
+      followAttributesListRecommendation={followAttributesListRecommendation}
+    />
+  );
+};
+
+const buildRecommendation = (
+  children: ReactNode | null,
+  criterionEvaluation: CriterionEvaluationResult,
+  evaluation: Evaluation,
+  product: Product,
+  axis: string,
+  followAttributeRecommendation: FollowAttributeRecommendationHandler | undefined,
+  followAttributesListRecommendation: FollowAttributesListRecommendationHandler | undefined
+): ReactElement => {
+  const criterion = criterionEvaluation.code;
+  const attributes = criterionEvaluation.improvable_attributes || ([] as string[]);
+
+  if ([CRITERION_ERROR, CRITERION_IN_PROGRESS, CRITERION_NOT_APPLICABLE].includes(criterionEvaluation.status)) {
+    return <>{getRecommendation(children, criterionEvaluation.status as RecommendationType)}</>;
+  }
+
+  if (isSuccess(criterionEvaluation.rate)) {
+    return (
+      <div className="CriterionSuccessContainer">
+        {getRecommendation(children, 'success')}
+        <span className="CriterionSuccessTick" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {getToImproveRecommendation(
+        children,
+        criterion,
+        attributes,
+        product,
+        axis,
+        evaluation,
+        followAttributeRecommendation,
+        followAttributesListRecommendation
+      )}
+    </>
+  );
+};
+
+const Criterion: FC<CriterionProps> = ({
+  children,
+  code,
+  criterionEvaluation = criterionPlaceholder,
+  axis = '',
+  evaluation = evaluationPlaceholder,
+  followCriterionRecommendation = defaultFollowCriterionRecommendation,
+  isFollowingCriterionRecommendationAllowed = defaultAllowFollowingCriterionRecommendation,
+  followAttributeRecommendation,
+  followAttributesListRecommendation,
+}) => {
+  const criterion = code;
+  const product = useProduct();
+  const family = useProductFamily();
+  const isClickable = isFollowingCriterionRecommendationAllowed(criterionEvaluation, family, product);
+  const handleFollowingCriterionRecommendation =
+    !isClickable || followCriterionRecommendation === undefined
+      ? undefined
+      : () => {
+          followCriterionRecommendation(criterionEvaluation, family, product);
+        };
+
+  const recommendation = useMemo(() => {
+    return buildRecommendation(
+      children,
+      criterionEvaluation,
+      evaluation,
+      product,
+      axis,
+      followAttributeRecommendation,
+      followAttributesListRecommendation
+    );
+  }, [
+    children,
+    criterionEvaluation,
+    evaluation,
+    product,
+    axis,
+    followAttributeRecommendation,
+    followAttributesListRecommendation,
+  ]);
+
+  const rowProps = {
+    className: `AknVerticalList-item ${isClickable ? 'AknVerticalList-item--clickable' : ''}`,
+    onClick: handleFollowingCriterionRecommendation,
+  };
+
+  return (
+    <li data-testid={'dqiProductEvaluationCriterion'} {...rowProps}>
       <div className={`CriterionMessage ${!isSimpleProduct(product) ? 'CriterionMessage--Variant' : ''}`}>
         <span className="CriterionRecommendationMessage">
-          {__(`akeneo_data_quality_insights.product_evaluation.criteria.${criterion}.recommendation`)}:&nbsp;
+          {translate(`akeneo_data_quality_insights.product_evaluation.criteria.${criterion}.recommendation`)}:&nbsp;
         </span>
-
-        {criterionContent}
-
+        {recommendation}
       </div>
     </li>
   );

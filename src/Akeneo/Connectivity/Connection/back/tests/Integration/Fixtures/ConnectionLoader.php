@@ -6,6 +6,8 @@ namespace Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 
 /**
@@ -15,17 +17,41 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCred
  */
 class ConnectionLoader
 {
-    /** @var CreateConnectionHandler*/
+    /** @var CreateConnectionHandler */
     private $createConnectionHandler;
 
-    public function __construct(CreateConnectionHandler $createConnectionHandler)
-    {
+    /** @var UpdateConnectionHandler */
+    private $updateConnectionHandler;
+
+    public function __construct(
+        CreateConnectionHandler $createConnectionHandler,
+        UpdateConnectionHandler $updateConnectionHandler
+    ) {
         $this->createConnectionHandler = $createConnectionHandler;
+        $this->updateConnectionHandler = $updateConnectionHandler;
     }
 
-    public function createConnection(string $code, string $label, string $flowType, bool $auditable): ConnectionWithCredentials
-    {
+    public function createConnection(
+        string $code,
+        string $label,
+        string $flowType,
+        bool $auditable
+    ): ConnectionWithCredentials {
         $command = new CreateConnectionCommand($code, $label, $flowType, $auditable);
+
         return $this->createConnectionHandler->handle($command);
+    }
+
+    public function update(
+        string $code,
+        string $label,
+        string $flowType,
+        ?string $image,
+        string $userRoleId,
+        ?string $userGroupId,
+        bool $auditable
+    ): void {
+        $command = new UpdateConnectionCommand($code, $label, $flowType, $image, $userRoleId, $userGroupId, $auditable);
+        $this->updateConnectionHandler->handle($command);
     }
 }

@@ -1,52 +1,67 @@
-import {Color, FontSize} from './theme';
+import {css} from 'styled-components';
+import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
+
+const CommonStyle = css`
+  font-family: 'Lato';
+  color: ${getColor('grey', 120)};
+  font-size: ${getFontSize('default')};
+  line-height: 20px;
+`;
 
 const color: Color = {
   blue10: '#f5f9fc',
-  blue100: '#5992c7',
-  blue120: '#47749f',
-  blue140: '#355777',
   blue20: '#dee9f4',
   blue40: '#bdd3e9',
   blue60: '#9bbddd',
   blue80: '#7aa7d2',
-  green100: '#67b373',
-  green120: '#528f5c',
-  green140: '#3d6b45',
+  blue100: '#5992c7',
+  blue120: '#47749f',
+  blue140: '#355777',
   green20: '#e1f0e3',
   green40: '#c2e1c7',
   green60: '#a3d1ab',
   green80: '#85c28f',
-  grey140: '#11324d',
-  grey120: '#67768a',
-  grey100: '#a1a9b7',
-  grey80: '#c7cbd4',
-  grey60: '#e8ebee',
-  grey40: '#f0f1f3',
+  green100: '#67b373',
+  green120: '#528f5c',
+  green140: '#3d6b45',
   grey20: '#f6f7fb',
-  purple100: '#9452ba',
-  purple120: '#764194',
-  purple140: '#58316f',
+  grey40: '#f0f1f3',
+  grey60: '#e8ebee',
+  grey80: '#c7cbd4',
+  grey100: '#a1a9b7',
+  grey120: '#67768a',
+  grey140: '#11324d',
   purple20: '#eadcf1',
   purple40: '#d4bae3',
   purple60: '#be97d5',
   purple80: '#a974c7',
+  purple100: '#9452ba',
+  purple120: '#764194',
+  purple140: '#58316f',
   red10: '#faefed',
-  red100: '#d4604f',
-  red120: '#a94c3f',
-  red140: '#7f392f',
   red20: '#f6dfdc',
   red40: '#eebfb9',
   red60: '#e59f95',
   red80: '#dc7f72',
-  white: '#ffffff',
+  red100: '#d4604f',
+  red120: '#a94c3f',
+  red140: '#7f392f',
   yellow10: '#fef7ec',
-  yellow100: '#f9b53f',
-  yellow120: '#c79032',
-  yellow140: '#956c25',
   yellow20: '#fef0d9',
   yellow40: '#fde1b2',
   yellow60: '#fbd28b',
   yellow80: '#fac365',
+  yellow100: '#f9b53f',
+  yellow120: '#c79032',
+  yellow140: '#956c25',
+  brand20: '#eadcf1',
+  brand40: '#d4bae3',
+  brand60: '#be97d5',
+  brand80: '#a974c7',
+  brand100: '#9452ba',
+  brand120: '#764194',
+  brand140: '#58316f',
+  white: '#ffffff',
 };
 
 const fontSize: FontSize = {
@@ -57,4 +72,12 @@ const fontSize: FontSize = {
   title: '28px',
 };
 
-export {color, fontSize};
+const palette: Palette = {
+  primary: 'green',
+  secondary: 'blue',
+  tertiary: 'grey',
+  warning: 'yellow',
+  danger: 'red',
+};
+
+export {color, fontSize, palette, CommonStyle};

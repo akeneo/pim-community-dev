@@ -40,4 +40,11 @@ final class LocaleCollection implements \IteratorAggregate, \Countable
     {
         return count($this->localeCodes);
     }
+
+    public function toArrayString(): array
+    {
+        return array_values(
+            array_map(fn (LocaleCode $localeCode) => $localeCode->__toString(), $this->localeCodes)
+        );
+    }
 }

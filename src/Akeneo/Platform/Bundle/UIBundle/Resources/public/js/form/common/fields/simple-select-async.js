@@ -14,19 +14,8 @@ define([
   'pim/initselect2',
   'pim/user-context',
   'pim/template/form/common/fields/simple-select-async',
-  'routing'
-],
-function (
-  $,
-  _,
-  BaseField,
-  __,
-  i18n,
-  initSelect2,
-  UserContext,
-  template,
-  Routing
-) {
+  'routing',
+], function ($, _, BaseField, __, i18n, initSelect2, UserContext, template, Routing) {
   return BaseField.extend({
     template: _.template(template),
     choiceUrl: null,
@@ -62,7 +51,7 @@ function (
     /**
      * {@inheritdoc}
      */
-    renderInput: function(templateContext) {
+    renderInput: function (templateContext) {
       return this.template(
         _.extend(templateContext, {
           value: this.getModelValue(),
@@ -82,7 +71,7 @@ function (
         this.errors = [];
         this.updateModel(this.getFieldValue($select2));
         this.getRoot().render();
-      }
+      };
 
       $select2.on('change', onChange);
     },
@@ -102,12 +91,12 @@ function (
           type: this.choiceVerb,
         },
         initSelection: this.select2InitSelection.bind(this),
-        formatResult: function(result, container, query, escapeMarkup) {
+        formatResult: function (result, container, query, escapeMarkup) {
           container.attr('title', result.text);
 
           return $.fn.select2.defaults.formatResult(result, container, query, escapeMarkup);
         },
-        formatSelection: function(data, container, escapeMarkup) {
+        formatSelection: function (data, container, escapeMarkup) {
           container.attr('title', data.text);
 
           return $.fn.select2.defaults.formatSelection(data, container, escapeMarkup);

@@ -18,14 +18,14 @@ const Panel = (): JSX.Element => {
   };
 
   useEffect(() => {
-      /* istanbul ignore next: can't test the callback function */
-      mediator.on('communication-channel:panel:open', () => {
-        setIsOpened(true);
-      });
-      /* istanbul ignore next */
-      mediator.on('communication-channel:panel:close', () => {
-        setIsOpened(false);
-      });
+    /* istanbul ignore next: can't test the callback function */
+    mediator.on('communication-channel:panel:open', () => {
+      setIsOpened(true);
+    });
+    /* istanbul ignore next */
+    mediator.on('communication-channel:panel:close', () => {
+      setIsOpened(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Panel = (): JSX.Element => {
   return (
     <>
       <HeaderPanel title={__('akeneo_communication_channel.panel.title')} onClickCloseButton={onClosePanel} />
-        <AnnouncementList campaign={campaign} panelIsClosed={!isOpened} />
+      <AnnouncementList campaign={campaign} panelIsClosed={!isOpened} />
     </>
   );
 };

@@ -21,6 +21,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui"
   ]
 }

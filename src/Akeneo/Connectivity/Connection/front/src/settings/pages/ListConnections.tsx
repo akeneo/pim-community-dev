@@ -1,21 +1,12 @@
 import React, {useEffect} from 'react';
 import {useHistory} from 'react-router';
-import {
-    ApplyButton,
-    Breadcrumb,
-    BreadcrumbItem,
-    Helper,
-    HelperLink,
-    HelperTitle,
-    PageContent,
-    PageHeader,
-} from '../../common';
+import {ApplyButton, Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';
 import {fetchResult} from '../../shared/fetch-result';
 import {isOk} from '../../shared/fetch-result/result';
-import {BreadcrumbRouterLink, useRoute} from '../../shared/router';
+import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {connectionsFetched} from '../actions/connections-actions';
 import {ConnectionGrid} from '../components/ConnectionGrid';
@@ -27,6 +18,7 @@ import {
     useWrongCredentialsCombinationsDispatch,
     useWrongCredentialsCombinationsState,
 } from '../wrong-credentials-combinations-context';
+import {Breadcrumb} from 'akeneo-design-system';
 
 const MAXIMUM_NUMBER_OF_ALLOWED_CONNECTIONS = 50;
 
@@ -65,14 +57,16 @@ export const ListConnections = () => {
 
     const handleCreate = () => history.push('/connections/create');
 
+    const systemHref = `#${useRoute('oro_config_configuration_system')}`;
+
     const breadcrumb = (
         <Breadcrumb>
-            <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
+            <Breadcrumb.Step href={systemHref}>
                 <Translate id='pim_menu.tab.system' />
-            </BreadcrumbRouterLink>
-            <BreadcrumbItem onClick={() => undefined} isLast={false}>
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>
                 <Translate id='pim_menu.item.connection_settings' />
-            </BreadcrumbItem>
+            </Breadcrumb.Step>
         </Breadcrumb>
     );
 

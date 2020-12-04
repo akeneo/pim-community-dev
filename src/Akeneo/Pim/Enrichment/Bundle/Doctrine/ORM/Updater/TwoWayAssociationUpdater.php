@@ -28,33 +28,33 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createInversedAssociation(
         AssociationInterface $association,
-        EntityWithAssociationsInterface $associatedEntity
+        EntityWithAssociationsInterface $owner
     ): void {
         $associationType = $association->getAssociationType();
-        $owner = $association->getOwner();
+        $entityToAssociate = $association->getOwner();
 
-        /** @var AssociationInterface $inversedAssociation */
-        $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
-        if (null === $inversedAssociation) {
-            $this->missingAssociationAdder->addMissingAssociations($associatedEntity);
-            $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
+        /** @var AssociationInterface $associationToUpdate */
+        $associationToUpdate = $owner->getAssociationForType($associationType);
+        if (null === $associationToUpdate) {
+            $this->missingAssociationAdder->addMissingAssociations($owner);
+            $associationToUpdate = $owner->getAssociationForType($associationType);
         }
 
-        if ($owner instanceof ProductInterface) {
-            $this->addInversedAssociatedProduct($inversedAssociation, $owner);
-        } elseif ($owner instanceof ProductModelInterface) {
-            $this->addInversedAssociatedProductModel($inversedAssociation, $owner);
+        if ($entityToAssociate instanceof ProductInterface) {
+            $this->addInversedAssociatedProduct($associationToUpdate, $entityToAssociate, $owner);
+        } elseif ($entityToAssociate instanceof ProductModelInterface) {
+            $this->addInversedAssociatedProductModel($associationToUpdate, $entityToAssociate);
         } else {
             throw new \LogicException(
                 sprintf(
                     'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
                     ProductInterface::class,
                     ProductModelInterface::class,
-                    get_class($owner)
+                    get_class($entityToAssociate)
                 )
             );
         }
@@ -67,18 +67,20 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
      * To fix this, we look for cloned objects by comparing the identifier.
      */
     private function addInversedAssociatedProduct(
-        AssociationInterface $association,
-        ProductInterface $associatedProduct
+        AssociationInterface $associationToUpdate,
+        ProductInterface $associatedProduct,
+        EntityWithAssociationsInterface $owner
     ): void {
         /** @var ProductInterface $product */
-        foreach ($association->getProducts() as $product) {
-            if ($product->getIdentifier() === $associatedProduct->getIdentifier()
-                && $product !== $associatedProduct) {
-                $association->removeProduct($product);
+        foreach ($associationToUpdate->getProducts() as $product) {
+            if ($product->getIdentifier() === $associatedProduct->getIdentifier() && $product !== $associatedProduct) {
+                $associationToUpdate->removeProduct($product);
             }
         }
 
-        $association->addProduct($associatedProduct);
+        $owner->removeAssociation($associationToUpdate);
+        $associationToUpdate->addProduct($associatedProduct);
+        $owner->addAssociation($associationToUpdate);
     }
 
     /**
@@ -88,47 +90,51 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
      * To fix this, we look for cloned objects by comparing the identifier.
      */
     private function addInversedAssociatedProductModel(
-        AssociationInterface $association,
+        AssociationInterface $associationToUpdate,
         ProductModelInterface $associatedProductModel
     ): void {
         /** @var ProductModelInterface $productModel */
-        foreach ($association->getProductModels() as $productModel) {
-            if ($productModel->getCode() === $associatedProductModel->getCode()
-                && $productModel !== $associatedProductModel) {
-                $association->removeProductModel($productModel);
+        foreach ($associationToUpdate->getProductModels() as $productModel) {
+            if (
+                $productModel->getCode() === $associatedProductModel->getCode() &&
+                $productModel !== $associatedProductModel
+            ) {
+                $associationToUpdate->removeProductModel($productModel);
             }
         }
 
-        $association->addProductModel($associatedProductModel);
+        $associationToUpdate->addProductModel($associatedProductModel);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function removeInversedAssociation(
         AssociationInterface $association,
-        EntityWithAssociationsInterface $associatedEntity
+        EntityWithAssociationsInterface $owner
     ): void {
         $associationType = $association->getAssociationType();
-        $owner = $association->getOwner();
+        $associatedEntityToRemove = $association->getOwner();
 
         /** @var AssociationInterface $inversedAssociation */
-        $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
+        $inversedAssociation = $owner->getAssociationForType($associationType);
         if (null === $inversedAssociation) {
             return;
         }
 
-        if ($owner instanceof ProductInterface) {
-            $inversedAssociation->removeProduct($owner);
-        } elseif ($owner instanceof ProductModelInterface) {
-            $inversedAssociation->removeProductModel($owner);
+        if ($associatedEntityToRemove instanceof ProductInterface) {
+            $owner->removeAssociation($inversedAssociation);
+            $inversedAssociation->removeProduct($associatedEntityToRemove);
+            $owner->addAssociation($inversedAssociation);
+        } elseif ($associatedEntityToRemove instanceof ProductModelInterface) {
+            $inversedAssociation->removeProductModel($associatedEntityToRemove);
         } else {
             throw new \LogicException(
                 sprintf(
                     'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
                     ProductInterface::class,
                     ProductModelInterface::class,
-                    get_class($owner)
+                    get_class($associatedEntityToRemove)
                 )
             );
         }

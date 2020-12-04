@@ -3,6 +3,8 @@
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Normalizer;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\Job;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -15,9 +17,13 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, TranslatorInterface $translator, NormalizerInterface $jobInstanceNormalizer)
-    {
-        $this->beConstructedWith($translator, $jobInstanceNormalizer);
+    function let(
+        SerializerInterface $serializer,
+        TranslatorInterface $translator,
+        NormalizerInterface $jobInstanceNormalizer,
+        JobRegistry $jobRegistry
+    ) {
+        $this->beConstructedWith($translator, $jobInstanceNormalizer, $jobRegistry);
 
         $serializer->implement(NormalizerInterface::class);
         $this->setSerializer($serializer);
@@ -67,6 +73,50 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
             'failures'       => ['Such error'],
             'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
             'isRunning'      => true,
+            'isStoppable'    => false,
+            'status'         => 'COMPLETED',
+            'jobInstance'    => ['Normalized job instance']
+        ]);
+    }
+
+    function it_normalizes_a_stoppable_job_execution_instance(
+        $serializer,
+        $translator,
+        $jobInstanceNormalizer,
+        $jobRegistry,
+        JobInstance $jobInstance,
+        JobExecution $jobExecution,
+        StepExecution $exportExecution,
+        StepExecution $cleanExecution,
+        BatchStatus $status,
+        Job $job
+    ) {
+        $jobExecution->getFailureExceptions()->willReturn(
+            [
+                ['message' => 'error', 'messageParameters' => ['foo' => 'bar']]
+            ]
+        );
+        $jobInstance->getJobName()->willReturn('wow_job');
+        $translator->trans('error', ['foo' => 'bar'])->willReturn('Such error');
+
+        $jobRegistry->get('wow_job')->willReturn($job);
+        $job->isStoppable()->willReturn(true);
+        $jobExecution->isRunning()->willReturn(true);
+        $jobExecution->getStatus()->willReturn($status);
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $status->getValue()->willReturn(1);
+        $translator->trans('pim_import_export.batch_status.1')->willReturn('COMPLETED');
+
+        $jobExecution->getStepExecutions()->willReturn([$exportExecution, $cleanExecution]);
+        $serializer->normalize($exportExecution, 'any', [])->willReturn('**exportExecution**');
+        $serializer->normalize($cleanExecution, 'any', [])->willReturn('**cleanExecution**');
+        $jobInstanceNormalizer->normalize($jobInstance, 'standard', Argument::cetera())->willReturn(['Normalized job instance']);
+
+        $this->normalize($jobExecution, 'any')->shouldReturn([
+            'failures'       => ['Such error'],
+            'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
+            'isRunning'      => true,
+            'isStoppable'    => true,
             'status'         => 'COMPLETED',
             'jobInstance'    => ['Normalized job instance']
         ]);

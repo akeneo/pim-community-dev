@@ -1,0 +1,87 @@
+An identifier attribute already exists.: Det finnes allerede et ID-attributt.
+Attribute code may contain only letters, numbers and underscore: Attributtet kode kan inneholde bare bokstaver, tall og understrekingstegn
+Attribute code may contain only letters (at least one), numbers and underscores: Attributtet kode kan inneholde bare bokstaver (minst en), tall og understrekingstegn
+Attribute group code may contain only letters, numbers and underscores: Attributtetkode kan bare inneholde bokstaver, tall og understrekingstegn
+This attribute type can't be used as a grid filter: Denne attributtypen kan ikke brukes som et rutenett filter
+This code is not available: Denne koden er ikke tilgjengelig
+This attribute type must be required: Denne attributtypen må være påbudt
+This attribute type can't be required: Denne attributtypen kan ikke være nødvendig
+This attribute type can't have unique value: Denne attributtypen kan ikke ha unik verdi
+No default value may be specified for this attribute type: Ingen standardverdi kan være angitt for denne attributtypen
+This value should be Yes or No: Denne verdien må være Ja eller nei
+This value should not be blank: Denne verdien kan ikke være tom
+Option code may contain only letters, numbers and underscores: Alternativkode kan inneholde bare bokstaver, tall og understrekingstegn
+Option code may contain only letters (at least one), numbers and underscores: Alternativkode kan bare inneholde bokstaver (minst en), tall og understrekingstegn
+This value should not be a decimal.: Denne verdien bør ikke være et desimaltall.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Filtypen er ikke tillatt (tillatte filtyper: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": Verdien %value% er allerede angitt på et annet produkt for unike attributt %attribute%
+The same identifier is already set on another product: Den samme ID'en er allerede i bruk på ett annet produkt
+regex.comma_or_semicolon.message: Dette feltet bør ikke inneholde komma eller semikolon.
+file.extensions.message: 'Filtypen er ikke tillatt (tillatte filtyper: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Denne typen verdi forventer bruken av {{ decimal_separator }} skille desimaler.
+"This type of value expects the use of dot (.) to separate decimals.": Denne typen verdi forventer bruken av et punktum (.) til å skille desimaler.
+"This type of value expects the use of comma (,) to separate decimals.": Denne typen verdi forventer bruken av et komma (,) skille desimaler.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Denne typen verdi forventer bruk av en arabisk desimalskilletegnet (٫) til å skille desimaler.
+"This type of value expects the use of the format {{ date_format }} for dates.": Denne typen verdi forventer bruk av formatet {{ date_format }} for datoer.
+"The category \"%category%\" has to be a root category.": Kategorien "%category%" må være en rotkategori.
+"The attribute \"%attributeCode%\" does not exist.": Attributten "%attributeCode%" finnes ikke.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Attributten "%attributeCode%" er ikke en metrisk attributt.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Enheten "%unitCode%" finnes ikke eller hører ikke til den standard metriske familie på det gitte attributtet "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": Valuta "%currency%" må være aktivert.
+product_model.code.not_blank.message: Produktmodellens kode kan ikke være tom.
+product_model.code.unique.message: Den samme ID'en er allerede i bruk på en annen produktmodell
+product_model.family_variant.not_blank.message: Produktmodellens familievariant kan ikke være tom.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Attributten "%attribute%" kan ikke være tom, da den er definert som en akse for denne enheten'
+    product_model_with_same_axis_value_already_exists: 'Kan ikke sette verdien "%values%" for attributtens akse "%attributes%" på produkt modellen "%validated_entity%", siden produkt modelen "%sibling_with_same_value%" allerede har denne verdien'
+    variant_product_with_same_axis_value_already_exists: 'Kan ikke sette verdien "%values%" for attributtens akse "%attributes%" på produktvariant "%validated_entity%", siden produktvariant "%sibling_with_same_value%" allerede har denne verdien'
+    can_have_family_variant_unexpected_attribute: 'Kan ikke definere egenskapen "%attribute%" til denne enheten da det ikke er ett definert attributt'
+    cannot_have_product_model_as_parent: 'Produktmodellen "%product_model%" kan ikke ha produktmodell "%parent_product_model%" som forelder'
+    cannot_have_parent: 'Produktmodellen "%product_model%" kan ikke ha et overordnet produkt'
+    attribute_does_not_belong_to_family: 'Attributten "%attribute%" tilhører ikke familien "%family%"'
+    variant_product_invalid_family: 'Produktfamiliens variant må være den samme som dens overordnede'
+    php_int_max_reached: 'Maksimalt antall må være lavere enn %php_int_max%.'
+    not_null_family: Familien kan ikke være "null", fordi produktet med id "%sku%" er et variantprodukt.
+    variant_product_has_parent: 'Produktvarianten "%variant_product%" må ha en forelder'
+    invalid_variant_product_parent: 'Produktvarianten "%variant_product%" kan ikke ha produktmodell "%product_model%" som forelder, (denne produktmodellen kan kun ha andre produktmodeller som barn)'
+    modified_variant_axis_value: 'Variant aksen "%variant_axis%" kan ikke endres, gitt "%provided_value%"'
+    family_variant_attributes_unique: Attributter må være unike, "%attributes%" benyttes flere ganger i variantattributt
+    family_variant_axes_unique: Variantakser må være unike, "%attributes%" benyttes flere ganger i variantattributt
+    family_variant_axes_immutable: 'Variantakser kan ikke endres for nivå "%level%"'
+    family_variant_axes_attribute_type_unique: Variantakse "%axis%" kan ikke være unik eller en identifikator
+    family_variant_axes_attribute_type: Variantakse "%axis%" må være en booleansk verdi (sant/usant), ett enkelt valg, enkel referensedata eller en beregning
+    family_variant_axes_wrong_type: Variantakse "%axis%" kan ikke være oversettbare, scopable og språkspesifikke
+    family_variant_axes_number_of_axes: 'Et variantattributt kan ikke ha mer enn %max_axes_number% attributter'
+    family_variant_no_axis: Der bør være minst ett attributt definert som aksen for attributtet, satt for nivå "%level%"
+    family_variant_axis_level: Attributtet "%axis%" må settes som attributt i samme variantattributt som det ble satt som akse
+    family_variant_has_family_attribute: '"%attribute%" attributt kan ikke legges til "%family_variant%" familievariant, ettersom det ikke er et attributt for familien "%family%"'
+    family_variant_level_do_not_exist: Det er ingen attributtvarianter satt for nivå "%level%"
+    family_variant_no_level: Der bør være minst ett nivå som er definert i familievarianten
+    family_variant_maximum_number_of_level: Familievarianten kan ikke ha flere enn "%level%" nivå
+    family_variant_unique_attributes_in_last_level: Unike attributt "%attribute%" må defineres på produktnivå
+    product_identifier: Disse identifikatorene "%s" eksisterer ikke.
+    0: En uventet feil har oppstått.
+    100: Ikke en forventet verdi
+    101: Dette feltet krever en boolesk (sant/usant) verdi .
+    102: Dette feltet krever tall med desimaler.
+    103: Dette feltet krever en heltallsverdi.
+    104: Dette feltet forventer en numerisk verdi.
+    105: Dette feltet forventer en tekstverdi.
+    106: Dette feltet forventer en matriseverdi.
+    107: Dette feltet forventer en matrise av flere matrise som verdi.
+    200: Det oppsto en intern feil
+    201: Det oppsto en intern feil
+    202: Dette feltet forventer en numerisk verdi.
+    203: Dette feltet forventer en tekstverdi.
+    204: Dette feltet forventer en tekstverdi.
+    205: Det oppsto en intern feil
+    300: Dette feltet forventer en gyldig enhetskode.
+    301: Dette feltet forventer ett gyldig område og språk.
+    302: Dette feltet forventer ett gyldig område.
+    303: Dette feltet forventer ett gyldig assosiasjonformat.
+    pim_immutable_product_validator: Den samme ID'en er allerede i bruk på ett annet produkt
+    pim_immutable_product_model_validator: Den samme ID'en er allerede i bruk på en annen produktmodell.
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Det er feil i attributter-skjemaet

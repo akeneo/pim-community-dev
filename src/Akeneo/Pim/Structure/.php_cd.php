@@ -12,6 +12,7 @@ $rules = [
     $builder->only([
         'Doctrine',
         'Symfony',
+        'Webmozart\Assert\Assert',
         'Akeneo\Tool',
         'Akeneo\Pim\Structure\Component',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
@@ -21,6 +22,7 @@ $rules = [
         'Oro\Bundle\FilterBundle\Grid\Extension\Configuration',
         'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
         'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
+        'Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface',
 
         // TIP-906: Functional problem to query products before removing AttributeOption
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory',
@@ -30,6 +32,7 @@ $rules = [
 
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
+        'Akeneo\UserManagement\Component\Model\UserInterface',
 
         // TIP-910: PIM/Structure should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
@@ -45,11 +48,15 @@ $rules = [
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
-        'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface'
+        'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
+
+        // I don't think we should add install subscriber in platform instead of structure (discussed with Arnaud L.)
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents'
     ])->in('Akeneo\Pim\Structure\Bundle'),
     $builder->only([
         'Symfony\Component',
         'Doctrine\Common',
+        'Webmozart\Assert\Assert',
         'Akeneo\Tool\Component',
 
         // TIP-911: ImmutableVariantAxesValidator should not be tied to Doctrine

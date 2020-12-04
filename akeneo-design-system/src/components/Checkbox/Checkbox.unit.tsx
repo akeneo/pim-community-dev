@@ -68,3 +68,15 @@ it('it calls onChange handler when user clicks on checkbox with no label', () =>
   expect(onChange).toBeCalledWith(true, expect.anything());
   expect(onChange).toBeCalledTimes(1);
 });
+
+describe('Checkbox supports forwardRef', () => {
+  const ref = {current: null};
+
+  render(<Checkbox checked={false} ref={ref} />);
+  expect(ref.current).not.toBe(null);
+});
+
+describe('Checkbox supports ...rest props', () => {
+  const {container} = render(<Checkbox checked={false} data-my-attribute="my_value" />);
+  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+});

@@ -11,6 +11,8 @@ pim_title:
   akeneo_connectivity_connection_settings_edit: Verbindingen instellingen
   akeneo_connectivity_connection_settings_any: Verbindingen instellingen
   akeneo_connectivity_connection_error_management_connection_monitoring: Verbindingen monitoren
+  akeneo_connectivity_connection_webhook_edit: Abonnement voor gebeurtenissen (BETA)
+  akeneo_connectivity_connection_webhook_regenerate_secret: Abonnement voor gebeurtenissen (BETA)
 akeneo_connectivity.connection:
   connection:
     auditable: Volg deze verbinding in het dashboard
@@ -55,6 +57,28 @@ akeneo_connectivity.connection:
         data_destination: Wilt u enkele mooie grafieken zien over uw bestemmingsverbindingen?
       message_with_permission:
         message: Maak en begin met volgen van uw eerste
+  webhook:
+    title: Abonnement voor gebeurtenissen (BETA)
+    event_subscription: Abonnement voor gebeurtenissen (BETA)
+    helper:
+      message: Uw verbonden app kan zich abonneren om op de hoogte gehouden te worden van gebeurtenissen in de Akeneo PIM (bijvoorbeeld wanneer een product is bijgewerkt) op een URL die u kiest.
+      link: Meer informatie over event abonnementen configuratie...
+    form:
+      url: URL
+      enabled: Fout bij abonnement activatie
+      test: Test
+    error:
+      wrong_url: Dit is geen geldige URL.
+      required: Dit veld is verplicht.
+      not_found: U probeert een verbinding bij te werken die niet bestaat.
+    flash:
+      success: Inschrijving aanpassen geslaagd.
+      error: Sorry, er is een fout opgetreden tijdens het bewerken van het abonnement voor gebeurtenissen.
+    regenerate_secret:
+      description: Weet u zeker dat u het geheim van het evenementabonnement wilt herstellen?
+      flash:
+        success: Opnieuw genereren herstelcodes geslaagd.
+        error: Sorry, er is een fout opgetreden bij het opnieuw genereren van het webhook geheim.
   error_management:
     connection_monitoring:
       title: Verbindingsmonitor

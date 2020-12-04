@@ -66,7 +66,7 @@ const NoResultsIllustration = ({title, size = 256}: IllustrationProps) => (
         d="M126.637 66.765c-13.794 0-25.016 11.23-25.016 25.034 0 13.803 11.222 25.034 25.016 25.034 13.794 0 25.016-11.23 25.016-25.034 0-13.804-11.222-25.034-25.016-25.034m0 52.068c-14.896 0-27.016-12.128-27.016-27.034 0-14.907 12.12-27.034 27.016-27.034 14.896 0 27.016 12.127 27.016 27.034 0 14.906-12.12 27.034-27.016 27.034"
         fill="#5E63B6"
       />
-      <use fill={useTheme().palette.brand} xlinkHref="#NoResultsIllustration_prefix__a" />
+      <use fill={useTheme().color.brand100} xlinkHref="#NoResultsIllustration_prefix__a" />
     </g>
   </svg>
 );

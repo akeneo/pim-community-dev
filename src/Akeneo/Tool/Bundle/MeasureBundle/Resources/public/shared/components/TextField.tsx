@@ -5,6 +5,12 @@ import {LockIcon} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {ValidationError, InputErrors} from '@akeneo-pim-community/shared';
 
+const Container = styled.div`
+  :not(:last-child) {
+    margin-bottom: 20px;
+  }
+`;
+
 const Input = styled.input`
   background-color: transparent;
   border: none;
@@ -66,7 +72,7 @@ const TextField = React.forwardRef(
     const akeneoTheme = useContext(ThemeContext);
 
     return (
-      <div className="AknFieldContainer">
+      <Container>
         <div className="AknFieldContainer-header">
           <label className="AknFieldContainer-label" htmlFor={id}>
             {label} {required && __('pim_common.required_label')}
@@ -87,7 +93,7 @@ const TextField = React.forwardRef(
           {readOnly && <LockIcon color={akeneoTheme.color.grey100} size={18} />}
         </InputContainer>
         <InputErrors errors={errors} />
-      </div>
+      </Container>
     );
   }
 );

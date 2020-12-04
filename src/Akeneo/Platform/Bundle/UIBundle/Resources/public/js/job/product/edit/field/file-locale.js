@@ -8,61 +8,52 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-    'jquery',
-    'underscore',
-    'oro/translator',
-    'pim/fetcher-registry',
-    'pim/job/common/edit/field/field',
-    'pim/job/common/edit/field/select',
-    'pim/user-context'
-], function (
-    $,
-    _,
-    __,
-    FetcherRegistry,
-    BaseField,
-    SelectField,
-    UserContext
-) {
-    return SelectField.extend({
-        /**
-         * {@inherit}
-         */
-        configure: function () {
-            this.listenTo(this.getRoot(), 'job.with_label.change', () => {
-                this.render();
-            })
+  'jquery',
+  'underscore',
+  'oro/translator',
+  'pim/fetcher-registry',
+  'pim/job/common/edit/field/field',
+  'pim/job/common/edit/field/select',
+  'pim/user-context',
+], function ($, _, __, FetcherRegistry, BaseField, SelectField, UserContext) {
+  return SelectField.extend({
+    /**
+     * {@inherit}
+     */
+    configure: function () {
+      this.listenTo(this.getRoot(), 'job.with_label.change', () => {
+        this.render();
+      });
 
-            return $.when(
-                FetcherRegistry.getFetcher('locale').fetchActivated(),
-                SelectField.prototype.configure.apply(this, arguments)
-            ).then(function (locales) {
-                this.config.options = locales.reduce(
-                    (result, locale) => ({...result, [locale.code]: locale.label}), {}
-                );
-            }.bind(this));
-        },
+      return $.when(
+        FetcherRegistry.getFetcher('locale').fetchActivated(),
+        SelectField.prototype.configure.apply(this, arguments)
+      ).then(
+        function (locales) {
+          this.config.options = locales.reduce((result, locale) => ({...result, [locale.code]: locale.label}), {});
+        }.bind(this)
+      );
+    },
 
-        /**
-         * {@inheritdoc}
-         */
-        render: function () {
-            if (!this.getFormData().configuration.with_label) {
-                this.$el.html('');
+    /**
+     * {@inheritdoc}
+     */
+    render: function () {
+      if (!this.getFormData().configuration.with_label) {
+        this.$el.html('');
 
-                return this;
-            }
+        return this;
+      }
 
-            BaseField.prototype.render.apply(this, arguments);
+      BaseField.prototype.render.apply(this, arguments);
 
-            const select2 = this.$('.select2');
-            select2.select2();
+      const select2 = this.$('.select2');
+      select2.select2();
 
-            const fileLocale = this.getFormData().configuration.file_locale;
-            if (undefined === fileLocale || null === fileLocale) {
-                select2.val(UserContext.get('catalogLocale')).change();
-            }
-
-        },
-    });
+      const fileLocale = this.getFormData().configuration.file_locale;
+      if (undefined === fileLocale || null === fileLocale) {
+        select2.val(UserContext.get('catalogLocale')).change();
+      }
+    },
+  });
 });

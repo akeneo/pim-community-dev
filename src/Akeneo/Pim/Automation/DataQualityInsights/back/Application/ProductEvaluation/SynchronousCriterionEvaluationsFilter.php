@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluation;
 
 final class SynchronousCriterionEvaluationsFilter implements SynchronousCriterionEvaluationsFilterInterface
@@ -22,6 +23,7 @@ final class SynchronousCriterionEvaluationsFilter implements SynchronousCriterio
     private const SYNCHRONOUS_CRITERION_CODES = [
         EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
         EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
+        EvaluateImageEnrichment::CRITERION_CODE,
     ];
 
     public function filter(\Iterator $iterator): array

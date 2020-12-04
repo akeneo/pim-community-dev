@@ -1,0 +1,209 @@
+pim_enrich.entity.family:
+  label: сімейство
+  uppercase_label: Сімейство
+  plural_label: Сімейства
+  flash:
+    update:
+      success: Сімейство успішно оновлено.
+      cant_remove_attribute_as_label: Неможливо видалити атрибут, який використовується як мітка
+      cant_remove_attribute_as_image: Неможливо видалити атрибут, який використовується як основне зображення
+      cant_remove_attribute_used_as_axis: Ви не можете видалити цей атрибут, який використовується як різновид конфігураційного атрибутів у сімействі різновидів
+    create:
+      success: Сімейство успішно створено
+    delete:
+      success: Сімейство успішно видалено
+      fail: Не можна видалити це сімейство
+  property:
+    attribute_as_label: Атрибут, який використовується як мітка
+    attribute_as_image: Атрибут використовується як основне зображення
+    empty_attribute_as_image: Не вибрано
+  module:
+    attributes:
+      not_required_label: Не вимагається
+      required_label: Обов’язково
+    create:
+      button: Створити сімейство
+    delete:
+      confirm: Ви впевнені, що ви хочете видалити це сімейство?
+pim_enrich.entity.family_variant:
+  short_plural_label: Варіанти
+  short_label: Варіант
+  flash:
+    update:
+      success: Різновид сімейства успішно оновлено. Продукція з різновидів буде оновлена із внесеними змінами.
+    create:
+      success: Різновид сімейства успішно створений
+  module:
+    edit:
+      common_attributes: Загальні атрибути
+      no_common_attributes: Немає загальних атрибутів
+      variant_axis_label: Варіант конфігураційного атрибуту
+      variant_attributes: Різновид атрибутів
+      level_1: Різновиди атрибутів першого рівня
+      level_2: Різновиди атрибутів другого рівня
+      description: Перетягніть атрибути на потрібний рівень, щоб керувати даними атрибутами з цього рівня.
+      confirm_attribute_removal_title: Підтвердіть видалення атрибутів
+      confirm_attribute_removal_message: Видаляючи ці атрибути, ви повертаєте їх до загальних атрибутів різновидів сімейства та видаляєте значення з варіантів продукту
+    create:
+      label: Додати варіант
+      title: Створити нове сімейство різновидів
+      description: Ви можете визначити структуру продуктів ті їх варіантів в сімействі. Виберіть кількість рівнів, які потрібно змінити, атрибути, які використовуються в якості конфігураційних атрибутів я кожного рівня, а потім визначіть, як розподілюються атрибути.
+      variant_levels: Різновиди рівнів
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Параметри
+  flash:
+    create:
+      success: Опція атрибутів успішно створена
+    update:
+      fail: Не вдається зберегти елемент списку атрибуту
+    delete:
+      fail: Під час видалення елементу списку атрибуту сталася помилка
+  module:
+    edit:
+      cancel_title: Скасування змін
+pim_enrich.entity.association_type:
+  label: тип асоціації
+  flash:
+    update:
+      success: Тип асоціації успішно оновлено.
+      fail: Не вдалося оновити тип асоціацій.
+      fields_not_ready: "Тип асоціацій не можна зберегти прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
+    create:
+      success: Тип асоціації успішно створено
+    delete:
+      success: Тип асоціації успішно видалено
+      fail: Не можна видалити цей тип асоціації
+  module:
+    create:
+      button: Створити тип асоціації
+    delete:
+      confirm: Ви впевнені, що ви хочете видалити цей тип асоціації?
+pim_enrich.entity.group_type:
+  label: тип групи
+  flash:
+    update:
+      success: Тип групи успішно оновлено.
+      fail: Не вдалося оновити тип групи.
+      fields_not_ready: "Тип групи не може бути збережений прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
+    create:
+      success: Тип групи успішно створено
+    delete:
+      success: Тип групи успішно видалено
+      fail: Не можна видалити цей тип групи
+  module:
+    create:
+      button: Створити тип групи
+    delete:
+      confirm: Ви впевнені, що ви хочете видалити цю групу типів?
+pim_enrich.entity.attribute:
+  label: атрибут
+  plural_label: Атрибути
+  flash:
+    update:
+      success: Атрибут успішно оновлено.
+      fail: Не вдалося оновити атрибут.
+      fields_not_ready: "Атрибут не можна зберегти прямо зараз. Наступні обов'язкові поля не заповнені: {{ fields }}"
+    delete:
+      success: Атрибут успішно видалено
+      fail: Не можна видалити цей атрибут
+  property:
+    allowed_extensions: Дозволені розширення
+    auto_option_sorting: Автоматично сортувати опції в алфавітному порядку
+    available_locales: Доступні локалі
+    date_max: Максимальна дата
+    date_min: Мінімальна дата
+    decimals_allowed: Допустимі десяткові значення
+    default_metric_unit:
+      label: Одиниці виміру за промовчанням
+      choose: Виберіть одиниці виміру
+    group:
+      label: Група атрибутів
+      choose: Оберіть групу атрибутів
+    is_locale_specific: Специфічно для локалі
+    localizable: Значення в локалі
+    max_characters: Максимум символів
+    max_file_size: Максимальний розмір файлу (МБ)
+    metric_family:
+      label: Сімейство вимірів
+      choose: Виберіть сімейство
+    minimum_input_length: Мінімальна довжина для автозаповнення
+    name: Ім’я
+    negative_allowed: Допустимі негативні значення
+    number_max: Максимальне число
+    number_min: Мінімальне число
+    reference_data_name:
+      label: Посилальний тип даних
+      choose: Оберіть посилальний тип даних
+    scopable: Значення в каналі
+    type:
+      choose: Оберіть тип атрибута
+      pim_catalog_identifier: Ідентифікатор
+      pim_catalog_text: Текст до 255 символів
+      pim_catalog_textarea: Область тексту
+      pim_catalog_number: Число
+      pim_catalog_price_collection: Ціна
+      pim_catalog_multiselect: Множинний вибір
+      pim_catalog_simpleselect: Простий вибір
+      pim_catalog_file: Файл
+      pim_catalog_image: Зображення
+      pim_catalog_boolean: "Так/Ні"
+      pim_catalog_date: Дата
+      pim_catalog_metric: Метричний
+      pim_reference_data_simpleselect: Простий розкривний список довідкових даниx
+      pim_reference_data_multiselect: Множинний розкривний список довідкових даниx
+    unique: Унікальне значення
+    useable_as_grid_filter: Використовується в сітці
+    validation_regexp: Регулярний вираз
+    validation_rule:
+      label: Правило перевірки
+      email: E-mail
+      regexp: Регулярний вираз
+      url: URL
+    wysiwyg_enabled: Розширений текстовий редактор увімкнено
+  module:
+    add_attribute:
+      no_available_attributes: Немає більше атрибутів для додавання
+      attributes_selected: "вибрано атрибутів: {{ itemsCount }}"
+    create:
+      button: Створити атрибут
+    edit:
+      common: Загальні параметри
+      type_specific: Введіть конкретні параметри
+      validation: Параметри перевірки
+    delete:
+      confirm: Ви впевнені, що ви хочете видалити цей атрибут?
+      confirm_from_group: Ви дійсно бажаєте видалити атрибут {{ attribute }} з цієї групи атрибутів?
+      confirm_from_product: Ви дійсно бажаєте видалити цей атрибут з продукту?
+pim_enrich.entity.attribute_group:
+  label: група атрибутів
+  uppercase_label: Група атрибутів
+  plural_label: Групи атрибутів
+  flash:
+    update:
+      success: Групу атрибутів успішно оновлено
+      fail: Не вдалося оновити групу атрибутів
+    delete:
+      success: Групу атрибутів успішно видалено
+  module:
+    add_attribute_group:
+      label: Додати по групах
+      attributes_groups_selected: 'вибрано груп: {{ itemsCount }}'
+    delete:
+      confirm: Ви дійсно бажаєте видалити цю групу атрибутів?
+pim_enrich.mass_edit.family:
+  title: Масові дії з сімействами
+  step:
+    select:
+      label: Виберіть сімейства
+    choose:
+      title: Масові дії з сімействами
+    configure:
+      label: Налаштувати
+    confirm:
+      label: Підтвердити
+    launched:
+      label: Була розпочата масова дія "{{ operation }}". Ви будете повідомлені по її завершенню.
+  operation:
+    set_requirements:
+      label: Встановити обов'язковість/ необов'язковість атрибутів
+      description: Наступні вимоги до атрибутів будуть застосовані до виділених сімейств

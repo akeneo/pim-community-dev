@@ -11,7 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class TwoWayAssociationUpdaterSpec extends ObjectBehavior
 {
@@ -25,36 +24,34 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $this->beConstructedWith($registry, $missingAssociationAdder);
     }
 
-    function it_create_missing_association_on_reverse_association_when_missing(
+    function it_creates_missing_association_on_reverse_association_when_missing(
         MissingAssociationAdder $missingAssociationAdder,
-        ProductInterface $product,
+        ProductInterface $associatedProduct,
         AssociationInterface $association,
         AssociationInterface $inversedAssociation,
         AssociationTypeInterface $associationType,
-        ProductInterface $associationOwner,
-        EntityManager $entityManager
+        ProductInterface $associationOwner
     ) {
         $association->getAssociationType()->willReturn($associationType);
         $association->getOwner()->willReturn($associationOwner);
 
-        $product->getAssociationForType($associationType)->willReturn(null, $inversedAssociation);
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $associatedProduct->getAssociationForType($associationType)->willReturn(null, $inversedAssociation);
+        $missingAssociationAdder->addMissingAssociations($associatedProduct)->shouldBeCalled();
         $inversedAssociation->getProducts()->willReturn(new ArrayCollection([]));
 
+        $associatedProduct->removeAssociation($inversedAssociation)->shouldBeCalled();
         $inversedAssociation->addProduct($associationOwner)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation);
+        $associatedProduct->addAssociation($inversedAssociation)->shouldBeCalled();
 
-        $this->createInversedAssociation($association, $product);
+        $this->createInversedAssociation($association, $associatedProduct);
     }
 
-
-    function it_add_product_model_on_inversed_association_when_owner_is_product_model(
+    function it_adds_product_model_on_inversed_association_when_owner_is_product_model(
         ProductInterface $product,
         AssociationInterface $association,
         AssociationInterface $inversedAssociation,
         AssociationTypeInterface $associationType,
-        ProductModelInterface $associationOwner,
-        EntityManager $entityManager
+        ProductModelInterface $associationOwner
     ) {
         $association->getAssociationType()->willReturn($associationType);
         $association->getOwner()->willReturn($associationOwner);
@@ -63,44 +60,43 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $inversedAssociation->getProductModels()->willReturn(new ArrayCollection([]));
 
         $inversedAssociation->addProductModel($associationOwner)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation);
 
         $this->createInversedAssociation($association, $product);
     }
 
-    function it_replace_product_from_association_when_association_already_contain_another_instance_of_the_product(
-        ProductInterface $product,
+    function it_replaces_product_from_association_when_association_already_contain_another_instance_of_the_product(
+        ProductInterface $associatedProduct,
         AssociationInterface $association,
         AssociationInterface $inversedAssociation,
         AssociationTypeInterface $associationType,
         ProductInterface $associationOwner,
-        ProductInterface $associationOwnerClone,
-        EntityManager $entityManager
+        ProductInterface $associationOwnerClone
     ) {
         $associationOwner->getIdentifier()->willreturn('58');
         $associationOwnerClone->getIdentifier()->willreturn('58');
 
         $association->getAssociationType()->willReturn($associationType);
-        $association->getOwner()->willReturn($associationOwnerClone);
+        $association->getOwner()->willReturn($associationOwner);
 
-        $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
-        $inversedAssociation->getProducts()->willReturn(new ArrayCollection([$associationOwner->getWrappedObject()]));
+        $associatedProduct->getAssociationForType($associationType)->willReturn($inversedAssociation);
+        $inversedAssociation->getProducts()->willReturn([$associationOwnerClone]);
 
-        $inversedAssociation->removeProduct($associationOwner)->shouldBeCalled();
-        $inversedAssociation->addProduct($associationOwnerClone)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation);
+        $inversedAssociation->removeProduct($associationOwnerClone)->shouldBeCalled();
 
-        $this->createInversedAssociation($association, $product);
+        $associatedProduct->removeAssociation($inversedAssociation)->shouldBeCalled();
+        $inversedAssociation->addProduct($associationOwner)->shouldBeCalled();
+        $associatedProduct->addAssociation($inversedAssociation)->shouldBeCalled();
+
+        $this->createInversedAssociation($association, $associatedProduct);
     }
 
-    function it_replace_product_model_from_association_when_association_already_contain_another_instance_of_the_product_model(
+    function it_replaces_product_model_from_association_when_association_already_contain_another_instance_of_the_product_model(
         ProductInterface $product,
         AssociationInterface $association,
         AssociationInterface $inversedAssociation,
         AssociationTypeInterface $associationType,
         ProductModelInterface $associationOwner,
-        ProductModelInterface $associationOwnerClone,
-        EntityManager $entityManager
+        ProductModelInterface $associationOwnerClone
     ) {
         $associationOwner->getCode()->willreturn('58');
         $associationOwnerClone->getCode()->willreturn('58');
@@ -113,7 +109,6 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
 
         $inversedAssociation->removeProductModel($associationOwner)->shouldBeCalled();
         $inversedAssociation->addProductModel($associationOwnerClone)->shouldBeCalled();
-        $entityManager->persist($inversedAssociation);
 
         $this->createInversedAssociation($association, $product);
     }
@@ -134,25 +129,28 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $this->removeInversedAssociation($association, $product);
     }
 
-    function it_remove_inversed_association_when_association_with_product_exist(
+    function it_removes_inversed_association_when_association_with_product_exist(
         AssociationInterface $association,
         AssociationInterface $inversedAssociation,
         AssociationTypeInterface $associationType,
         ProductInterface $associationOwner,
-        ProductInterface $product,
+        ProductInterface $associatedProduct,
         EntityManager $entityManager
     ) {
         $association->getAssociationType()->willReturn($associationType);
         $association->getOwner()->willReturn($associationOwner);
-        $product->getAssociationForType($associationType)->willReturn($inversedAssociation);
+        $associatedProduct->getAssociationForType($associationType)->willReturn($inversedAssociation);
 
+        $associatedProduct->removeAssociation($inversedAssociation)->shouldBeCalled();
         $inversedAssociation->removeProduct($associationOwner)->shouldBeCalled();
+        $associatedProduct->addAssociation($inversedAssociation)->shouldBeCalled();
+
         $entityManager->persist($inversedAssociation)->shouldBeCalled();
 
-        $this->removeInversedAssociation($association, $product);
+        $this->removeInversedAssociation($association, $associatedProduct);
     }
 
-    function it_remove_inversed_association_when_association_with_product_model_exist(
+    function it_removes_inversed_association_when_association_with_product_model_exist(
         AssociationInterface $association,
         AssociationInterface $inversedAssociation,
         AssociationTypeInterface $associationType,

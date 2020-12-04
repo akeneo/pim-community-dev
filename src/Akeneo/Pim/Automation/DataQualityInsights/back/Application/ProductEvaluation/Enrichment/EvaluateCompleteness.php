@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface;
@@ -20,10 +11,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class EvaluateCompleteness
 {
-    /** @var GetLocalesByChannelQueryInterface */
-    private $localesByChannelQuery;
+    private GetLocalesByChannelQueryInterface $localesByChannelQuery;
 
     public function __construct(GetLocalesByChannelQueryInterface $localesByChannelQuery)
     {
@@ -68,10 +62,13 @@ final class EvaluateCompleteness
             }
         }
 
+        $totalNumberOfAttributes = $completenessResult->getTotalNumberOfAttributes()->getByChannelAndLocale($channelCode, $localeCode);
+
         $evaluationResult
             ->addRate($channelCode, $localeCode, $rate)
             ->addStatus($channelCode, $localeCode, CriterionEvaluationResultStatus::done())
             ->addRateByAttributes($channelCode, $localeCode, $attributesRates)
+            ->addData('total_number_of_attributes', $channelCode, $localeCode, $totalNumberOfAttributes)
         ;
     }
 }

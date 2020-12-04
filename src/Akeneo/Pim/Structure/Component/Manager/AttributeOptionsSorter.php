@@ -42,6 +42,12 @@ class AttributeOptionsSorter
                 $option->setSortOrder(0);
             }
         }
-        $this->optionSaver->saveAll($attribute->getOptions()->toArray());
+
+        $options = [];
+        foreach ($attribute->getOptions() as $key => $option) {
+            $options[$key] = $option;
+        }
+
+        $this->optionSaver->saveAll($$options);
     }
 }

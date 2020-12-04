@@ -1,0 +1,65 @@
+batch_jobs:
+  csv_currency_export:
+    label: Ang pagluwas ng salapit sa CSV
+    export.label: Ang pagluwas ng salapi
+  csv_currency_import:
+    label: Ang pag-angkat ng salapit sa CSV
+    import.label: Ang pag-angkat ng salapi
+  xlsx_currency_export:
+    label: Ang pagluwas ng salapi sa XLSX
+    export.label: Ang pagluwas ng salapi
+  xlsx_currency_import:
+    label: Pag-angkat ng salapi sa XLSX
+    import.label: Ang pag-angkat ng salapi
+  csv_locale_export:
+    label: Lokal ng pag-luwas sa CSV
+    export.label: I-luwas ang lokal
+  csv_locale_import:
+    label: Pag-angkat ng pinagmulan sa CSV
+    import.label: Pag-angkat ng pinagmulan
+  xlsx_locale_export:
+    label: Lokal na pagluwas sa XLSX
+    export.label: Lokal na pagluwas
+  xlsx_locale_import:
+    label: Angkatin ang lokal sa XLSX
+    import.label: Lokal na pag-angkat
+  csv_channel_export:
+    label: Pagluwas ng channel sa CSV
+    export.label: Pagluwas ng channel
+  csv_channel_import:
+    label: Pag-angkat ng channel sa CSV
+    import.label: Pang-angkat ng tsanel
+  xlsx_channel_export:
+    label: Pagluwas ng tsanel sa XLSX
+    export.label: Ang pagluwas ng tsanel
+  xlsx_channel_import:
+    label: Pagangkat ng tsanel sa XLSX
+    import.label: Ang pag-angkat ng tsanel
+pim_enrich.entity.channel:
+  label: tsannel
+  uppercase_label: Tsanel
+  flash:
+    update:
+      success: Matagumpay na na-update ang tsanel.
+      fail: Ang tsanel ay hindi pwedeng ma-update.
+    create:
+      success: Ang tsanel ay matagumpay na nagawa.
+      fail: Ang tsanel ay hindi pwedeng magawa.
+    delete:
+      success: Ang tsanel ay matagumpay na natanggal
+      fail: Hindi maaaring tanggalin ang tsanel na ito
+  property:
+    category_tree: Puno ng kategorya
+    do_not_convert: Huwag i-convert
+    label_conversion_units: Kumuha ng yunit ng pag convert para sa bawat metrong katangian na gagamitin sa pag luwas ng produkto
+  module:
+    create:
+      button: Gumawa ng tsanel
+    delete:
+      confirm: Sigurado ka ba gusto mong burahin ang tsanel na ito?
+pim_enrich.entity.locale:
+  label: lokal
+  uppercase_label: Lokal
+  plural_label: Mga pinagmulan
+pim_enrich.entity.currency:
+  plural_label: Mga salapi

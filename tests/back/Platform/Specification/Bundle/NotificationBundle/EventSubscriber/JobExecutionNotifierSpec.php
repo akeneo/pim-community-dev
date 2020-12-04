@@ -15,6 +15,7 @@ use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Prophecy\Argument;
 
 class JobExecutionNotifierSpec extends ObjectBehavior
@@ -90,7 +91,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $factoryRegistry,
         $jobExecution,
         NotificationInterface $notification,
-        NotificationFactoryInterface $notificationFactory
+        NotificationFactoryInterface $notificationFactory,
+        ExitStatus $exitStatus
     ) {
         $factoryRegistry->get('export')->willReturn($notificationFactory);
         $notificationFactory->create($jobExecution)->willReturn($notification);
@@ -100,6 +102,9 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->setRoute('pim_importexport_export_execution_show')->willReturn($notification);
         $notification->setRouteParams(['id' => 5])->willReturn($notification);
         $notification->setContext(['actionType' => 'export'])->willReturn($notification);
+
+        $jobExecution->getExitStatus()->willReturn($exitStatus);
+        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
 
         $notifier->notify($notification, ['julia'])->shouldBeCalled();
 
@@ -113,7 +118,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $jobExecution,
         $factoryRegistry,
         NotificationInterface $notification,
-        NotificationFactoryInterface $notificationFactory
+        NotificationFactoryInterface $notificationFactory,
+        ExitStatus $exitStatus
     ) {
         $factoryRegistry->get('mass_edit')->willReturn($notificationFactory);
         $notificationFactory->create($jobExecution)->willReturn($notification);
@@ -123,6 +129,9 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->setRoute('pim_enrich_job_tracker_show')->willReturn($notification);
         $notification->setRouteParams(['id' => 5])->willReturn($notification);
         $notification->setContext(['actionType' => 'mass_edit'])->willReturn($notification);
+
+        $jobExecution->getExitStatus()->willReturn($exitStatus);
+        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
 
         $notifier->notify($notification, ['julia'])->shouldBeCalled();
 
@@ -140,7 +149,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $jobExecution,
         $factoryRegistry,
         NotificationInterface $notification,
-        NotificationFactoryInterface $notificationFactory
+        NotificationFactoryInterface $notificationFactory,
+        ExitStatus $exitStatus
     ) {
         $factoryRegistry->get('export')->willReturn($notificationFactory);
         $notificationFactory->create($jobExecution)->willReturn($notification);
@@ -153,6 +163,9 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->setContext(['actionType' => 'export'])->willReturn($notification);
 
         $notifier->notify($notification, ['julia'])->shouldBeCalled();
+
+        $jobExecution->getExitStatus()->willReturn($exitStatus);
+        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
 
         $warnings->count()->willReturn(2);
 
@@ -166,7 +179,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $jobExecution,
         $factoryRegistry,
         NotificationInterface $notification,
-        NotificationFactoryInterface $notificationFactory
+        NotificationFactoryInterface $notificationFactory,
+        ExitStatus $exitStatus
     ) {
         $status->isUnsuccessful()->willReturn(true);
 
@@ -180,14 +194,50 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->setRouteParams(['id' => 5])->willReturn($notification);
         $notification->setContext(['actionType' => 'export'])->willReturn($notification);
 
+        $jobExecution->getExitStatus()->willReturn($exitStatus);
+        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
+
         $notifier->notify($notification, ['julia'])->shouldBeCalled();
 
         $this->afterJobExecution($event);
     }
 
-    function it_throws_an_exception_when_factory_is_not_found($event, $factoryRegistry)
+    function it_does_not_notify_a_user_of_the_completion_of_job_execution_which_has_been_stopped(
+        $event,
+        $status,
+        $notifier,
+        $jobExecution,
+        $factoryRegistry,
+        NotificationInterface $notification,
+        NotificationFactoryInterface $notificationFactory,
+        ExitStatus $exitStatus
+    ) {
+        $status->isUnsuccessful()->willReturn(false);
+
+        $factoryRegistry->get('export')->willReturn($notificationFactory);
+        $notificationFactory->create($jobExecution)->willReturn($notification);
+
+        $notification->setType('success')->willReturn($notification);
+        $notification->setMessage('pim_import_export.notification.export.success')->willReturn($notification);
+        $notification->setMessageParams(['%label%' => 'Product export'])->willReturn($notification);
+        $notification->setRoute('pim_importexport_export_execution_show')->willReturn($notification);
+        $notification->setRouteParams(['id' => 5])->willReturn($notification);
+        $notification->setContext(['actionType' => 'export'])->willReturn($notification);
+
+        $jobExecution->getExitStatus()->willReturn($exitStatus);
+        $exitStatus->getExitCode()->willReturn(ExitStatus::STOPPED);
+
+        $notifier->notify($notification, ['julia'])->shouldNotBeCalled();
+
+        $this->afterJobExecution($event);
+    }
+
+    function it_throws_an_exception_when_factory_is_not_found($event, $factoryRegistry, $jobExecution, ExitStatus $exitStatus)
     {
         $factoryRegistry->get('export')->willReturn(null);
+
+        $jobExecution->getExitStatus()->willReturn($exitStatus);
+        $exitStatus->getExitCode()->willReturn(ExitStatus::COMPLETED);
 
         $this->shouldThrow(new \LogicException('No notification factory found for the "export" job type'))
             ->during('afterJobExecution', [$event]);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Batch\Job;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -7,6 +9,7 @@ use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepInterface;
+use Akeneo\Tool\Component\Batch\Step\StoppableStepInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
@@ -21,7 +24,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class Job implements JobInterface
+class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
 {
     /** @var string */
     protected $name;
@@ -35,25 +38,24 @@ class Job implements JobInterface
     /** @var array */
     protected $steps;
 
+    /** @var bool */
+    protected $stoppable;
+
     /** @var Filesystem */
     protected $filesystem;
 
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     * @param StepInterface[]          $steps
-     */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
-        array $steps = []
+        array $steps = [],
+        bool $stoppable = false
     ) {
         $this->name = $name;
         $this->eventDispatcher = $eventDispatcher;
         $this->jobRepository = $jobRepository;
         $this->steps = $steps;
+        $this->stoppable = $stoppable;
         $this->filesystem = new Filesystem();
     }
 
@@ -67,12 +69,7 @@ class Job implements JobInterface
         return $this->name;
     }
 
-    /**
-     * Return all the steps
-     *
-     * @return array steps
-     */
-    public function getSteps()
+    public function getSteps(): array
     {
         return $this->steps;
     }
@@ -162,7 +159,7 @@ class Job implements JobInterface
                 // The job was already stopped before we even got this far. Deal
                 // with it in the same way as any other interruption.
                 $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
-                $jobExecution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
+                $jobExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
                 $this->jobRepository->updateJobExecution($jobExecution);
 
                 $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_STOPPED, $jobExecution);
@@ -208,6 +205,11 @@ class Job implements JobInterface
         }
     }
 
+    public function isStoppable(): bool
+    {
+        return $this->stoppable;
+    }
+
     /**
      * Handler of steps sequentially as provided, checking each one for success
      * before moving to the next. Returns the last {@link StepExecution}
@@ -230,6 +232,14 @@ class Job implements JobInterface
                 // Terminate the job if a step fails
                 break;
             }
+        }
+
+        if ($stepExecution !== null && BatchStatus::STOPPED === $stepExecution->getStatus()->getValue()) {
+            $jobExecution->setStatus($stepExecution->getStatus());
+            $jobExecution->setExitStatus($stepExecution->getExitStatus());
+            $this->jobRepository->updateJobExecution($jobExecution);
+
+            return;
         }
 
         // Update the job status to be the same as the last step
@@ -260,6 +270,10 @@ class Job implements JobInterface
         $stepExecution = $jobExecution->createStepExecution($step->getName());
 
         try {
+            if ($step instanceof StoppableStepInterface) {
+                $step->setStoppable($this->stoppable);
+            }
+
             $step->execute($stepExecution);
         } catch (JobInterruptedException $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
@@ -267,8 +281,20 @@ class Job implements JobInterface
             throw $e;
         }
 
-        if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPING
-            || $stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
+        if (BatchStatus::STOPPED === $stepExecution->getStatus()->getValue()) {
+            $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
+
+            $jobExecution->setStatus($stepExecution->getStatus());
+            $jobExecution->setExitStatus($stepExecution->getExitStatus());
+            $this->jobRepository->updateJobExecution($jobExecution);
+
+            return $stepExecution;
+        }
+
+        if (
+            $stepExecution->getStatus()->getValue() === BatchStatus::STOPPING &&
+            $stepExecution->getExitStatus()->getExitCode() !== ExitStatus::STOPPED
+        ) {
             $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             $this->jobRepository->updateJobExecution($jobExecution);
             throw new JobInterruptedException("Job interrupted by step execution");

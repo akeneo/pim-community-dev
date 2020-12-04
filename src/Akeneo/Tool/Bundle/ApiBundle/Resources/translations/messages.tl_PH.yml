@@ -3,30 +3,30 @@ pim_api:
     rights: Mga pahintulot ng Web API
     attribute:
       edit: Maglikha at mag-update ng mga katangian
-      list: Listahan ng mga attributes
+      list: Maglista ng mga katangian
     attribute_option:
-      edit: Maglikha at mag-update ng mga pagpipilian na katangian
-      list: Maglista ng mga pagpipilian na katangian
+      edit: Maglikha at mag-update ng mga pagpipilian sa katangian
+      list: Maglista ng mga pagpipilian sa katangian
     attribute_group:
       edit: Maglikha at mag-update ng mga pangkat ng katangian
-      list: Listahan ng attribute ng mga grupo
+      list: Maglista ng mga grupo ng katangian
     category:
       edit: Maglikha at mag-update ng mga kategorya
-      list: Listahan ng mga kategorya
+      list: Maglista ng mga kategorya
     family:
       edit: Maglikha at mag-update ng mga pamilya
-      list: Listahan ng mga pamilya
+      list: Maglista ng mga pamilya
     family_variant:
       edit: Maglikha at mag-update ng mga baryante ng pamilya
       list: Maglista ng mga baryante ng pamilya
     channel:
       edit: Maglikha at mag-update ng mga channel
-      list: Listahan ng mga tsanel
-    locale.list: Listahan ng mga lokal
-    currency.list: Listahan ng mga pera
+      list: Maglista ng mga channel
+    locale.list: Maglista ng mga pinagmulan
+    currency.list: Maglista ng mga salapi
     association_type:
       edit: Maglikha at mag-update ng mga uri ng asosasyon
-      list: Listahan ng mga uri ng asosasyon
+      list: Maglista ng mga uri ng asosasyon
   acl_group:
     overall_access: Pagpasok sa kabuuan ng Web API
     attribute: Mga katangian
@@ -39,4 +39,7 @@ pim_api:
     locale: Mga pinagmulan
     currency: Mga salapi
     association_type: Mga uri ng asosasyon
-rights.api: Mga pahintulot ng Web API
+pim_user:
+  roles:
+    tab:
+      api: Mga pahintulot ng Web API

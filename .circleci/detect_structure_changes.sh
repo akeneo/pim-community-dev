@@ -31,29 +31,34 @@ else
 fi
 
 mkdir /tmp/structure_changes
+mkdir -p ~/.composer
+sudo chown 1000:1000 ~/.composer
 
 ## STEP 1: install 4.0 database and index
 echo "##"
 echo "## STEP 1: install 4.0 database and index"
 echo "##"
 
+echo "Save composer.lock"
+cp composer.lock /tmp/composer.lock
+
 echo "Checkout EE 4.0 branch..."
 git branch -D real40 || true
 git checkout -b real40 --track origin/4.0
 
-echo "Checkout CE 4.0 branch..."
-pushd vendor/akeneo/pim-community-dev
-git branch -D real40 || true
-git checkout -b real40 --track origin/4.0
-popd
-
 echo "Creation of image with php 7.3..."
 make php-image-dev
+
+echo "Update composer dependencies"
+make vendor
 
 echo "Copy CE migrations into EE to install 4.0 branch..."
 cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
 echo "Enable Onboarder bundle on 4.0 branch..."
+sudo chown 1000:1000 composer.json
+docker-compose run -u www-data --rm php php /usr/local/bin/composer config repositories.onboarder '{ "type": "vcs", "url": "https://github.com/akeneo/pim-onboarder.git", "branch": "master" }'
+docker-compose run -u www-data --rm php php -d memory_limit=5G /usr/local/bin/composer require "akeneo/pim-onboarder:^4.2.1"
 if [ -d "vendor/akeneo/pim-onboarder" ]; then
     sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
     # on the branch 4.0, the env var and the emulator are not present
@@ -91,11 +96,9 @@ git checkout -- .
 
 echo "Checkout EE PR branch (or master if it does not exist)..."
 git checkout $PR_BRANCH || git checkout master
-
-echo "Checkout CE PR branch (or master if it does not exist)..."
-pushd vendor/akeneo/pim-community-dev
-git checkout $PR_BRANCH || git checkout master
-popd
+cp /tmp/composer.lock ./composer.lock
+touch composer.lock
+make vendor
 
 echo "Copy CE migrations into EE to launch branch migrations..."
 cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema

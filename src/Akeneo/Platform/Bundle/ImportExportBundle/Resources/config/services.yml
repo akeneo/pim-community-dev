@@ -19,3 +19,9 @@ services:
             - '@akeneo.platform.import_export.purge_job_execution'
         tags:
             - { name: console.command }
+
+    akeneo.platform.import_export.result_record.hydrator.job_execution:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Datagrid\JobExecutionResultRecordHydrator'
+        arguments:
+            - '@akeneo_batch.job.job_registry'
+            - '@pim_import_export.query.get_job_execution_tracking'

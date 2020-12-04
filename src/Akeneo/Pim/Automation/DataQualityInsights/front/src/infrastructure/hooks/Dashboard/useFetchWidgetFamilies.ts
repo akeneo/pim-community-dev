@@ -1,8 +1,7 @@
 import {useEffect, useState} from 'react';
-import fetchWidgetFamilies from "../../fetcher/Dashboard/fetchWidgetFamilies";
+import fetchWidgetFamilies from '../../fetcher/Dashboard/fetchWidgetFamilies';
 
 const useFetchWidgetFamilies = (channel: string, locale: string, familyCodes: string[]) => {
-
   const [widgetFamilies, setWidgetFamilies] = useState({});
 
   useEffect(() => {

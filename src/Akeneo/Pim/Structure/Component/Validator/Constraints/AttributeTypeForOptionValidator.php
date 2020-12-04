@@ -41,7 +41,6 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
 
         $authorizedTypes = $this->supportedAttributeTypes;
 
-        /** @var AttributeOptionInterface */
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute = $attributeOption->getAttribute();
             if (null !== $attribute && !in_array($attribute->getType(), $authorizedTypes)) {

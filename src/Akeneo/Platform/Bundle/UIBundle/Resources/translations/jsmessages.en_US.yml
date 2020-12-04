@@ -22,6 +22,12 @@ Millisecond: Millisecond
 Microsecond: Microsecond
 "Time Zone": "Time Zone"
 
+duration:
+    days: "{0}0 days|{1}1 day|]1, Inf[{{ count }} days"
+    hours: "{0}0 hours|{1}1 hour|]1, Inf[{{ count }} hours"
+    minutes: "{0}0 minutes|{1}1 minute|]1, Inf[{{ count }} minutes"
+    seconds: "{0}0 seconds|{1}1 second|]1, Inf[{{ count }} seconds"
+
 # PIM messages
 Localized value: Localized value
 Columns: Columns
@@ -164,6 +170,7 @@ pim_common:
     before: Before
     by: by
     cancel: Cancel
+    clear_value: Clear value
     close: Close
     code: Code
     completeness: Completeness
@@ -212,6 +219,7 @@ pim_common:
     to: to
     type: Type
     update: Update
+    updated: Updated
     "yes": "Yes"
     operator: Operator
     operators:

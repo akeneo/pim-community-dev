@@ -5,8 +5,6 @@ import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
 import {UnitTab} from 'akeneomeasure/pages/edit/unit-tab';
 import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
-import {Breadcrumb} from 'akeneomeasure/shared/components/Breadcrumb';
-import {BreadcrumbItem} from 'akeneomeasure/shared/components/BreadcrumbItem';
 import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit, UnitCode} from 'akeneomeasure/model/unit';
 import {PageContent} from 'akeneomeasure/shared/components/PageContent';
@@ -34,9 +32,10 @@ import {
   useUserContext,
   PimView,
   useSecurity,
+  useRoute,
 } from '@akeneo-pim-community/legacy-bridge';
 import {filterErrors, ValidationError, partitionErrors, useToggleState} from '@akeneo-pim-community/shared';
-import {Helper, Button} from 'akeneo-design-system';
+import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
 
 enum Tab {
   Units = 'units',
@@ -109,6 +108,7 @@ const Edit = () => {
     openConfirmDeleteMeasurementFamilyModal,
     closeConfirmDeleteMeasurementFamilyModal,
   ] = useToggleState(false);
+  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
 
   const {setHasUnsavedChanges} = useContext(UnsavedChangesContext);
   const [isModified, resetState] = useUnsavedChanges<MeasurementFamily | null>(
@@ -235,21 +235,23 @@ const Edit = () => {
     error => error.propertyPath.startsWith('code') || error.propertyPath.startsWith('labels'),
   ]);
 
+  const measurementFamilyLabel = getMeasurementFamilyLabel(measurementFamily, locale);
+
   return (
     <>
       <Prompt when={isModified} message={() => __('pim_ui.flash.unsaved_changes')} />
-      {isAddUnitModalOpen && (
-        <CreateUnit measurementFamily={measurementFamily} onClose={closeAddUnitModal} onNewUnit={handleNewUnit} />
-      )}
-
-      {isConfirmDeleteMeasurementFamilyModalOpen && (
-        <ConfirmDeleteModal
-          description={__('measurements.family.delete.confirm')}
-          onConfirm={handleRemoveMeasurementFamily}
-          onCancel={closeConfirmDeleteMeasurementFamilyModal}
-        />
-      )}
-
+      <CreateUnit
+        isOpen={isAddUnitModalOpen}
+        measurementFamily={measurementFamily}
+        onClose={closeAddUnitModal}
+        onNewUnit={handleNewUnit}
+      />
+      <ConfirmDeleteModal
+        isOpen={isConfirmDeleteMeasurementFamilyModalOpen}
+        description={__('measurements.family.delete.confirm')}
+        onConfirm={handleRemoveMeasurementFamily}
+        onCancel={closeConfirmDeleteMeasurementFamilyModal}
+      />
       <PageHeader
         userButtons={
           <PimView
@@ -260,8 +262,11 @@ const Edit = () => {
         buttons={buttons}
         breadcrumb={
           <Breadcrumb>
-            <BreadcrumbItem>{__('pim_menu.tab.settings')}</BreadcrumbItem>
-            <BreadcrumbItem onClick={() => history.push('/')}>{__('pim_menu.item.measurements')}</BreadcrumbItem>
+            <Breadcrumb.Step href={settingsHref}>{__('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
+              {__('pim_menu.item.measurements')}
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>{measurementFamilyLabel}</Breadcrumb.Step>
           </Breadcrumb>
         }
         state={isModified && <UnsavedChanges />}
@@ -271,7 +276,7 @@ const Edit = () => {
             <PageHeaderPlaceholder />
           </div>
         ) : (
-          <div>{getMeasurementFamilyLabel(measurementFamily, locale)}</div>
+          <div>{measurementFamilyLabel}</div>
         )}
       </PageHeader>
 

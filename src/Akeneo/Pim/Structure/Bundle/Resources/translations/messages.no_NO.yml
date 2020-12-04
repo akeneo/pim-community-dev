@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametere
+      value.title: Verdier
+      history.title: Historie
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Kan ikke fjerne attributt som brukes som variantakse i en familievariant
+  #Group type
+  group_type:
+    tab:
+      property.title: Egenskaper
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Familier
+      page_subtitle: Masseredigere (1 familie) | Masse redigere (%count% familier)
+      title: Velg operasjon
+      subtitle: Velg operasjonen du vil utføre på den valgte familien| Velg operasjonen du vil utføre på de valgte %count% familiene
+      confirm: Du er ferd med å oppdatere en familie med følgende informasjon, vennligst bekreft. | Du er ferd med å oppdatere %count% familier med følgende informasjon, vennligst bekreft.
+      steps:
+        first: Velg familier
+        second: Velg operasjon
+        third: Konfigurer
+        fourth: Bekreft
+pim_enrich_attribute_form:
+  code: Kode
+  type: Attributtype
+  reference_data_name: Navn referansedata
+  scopable: Verdi per kanal
+  localizable: Verdi per språk
+  unique: Unik verdi
+  availableLocales: Tilgjengelige språk
+  locale_specific: Språkspesifikk
+  group: Attributtgruppe
+  useableAsGridFilter: Kan brukes i rutenett

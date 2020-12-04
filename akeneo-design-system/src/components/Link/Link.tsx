@@ -5,14 +5,14 @@ import {AkeneoThemedProps, getColor} from '../../theme';
 const LinkContainer = styled.a<{disabled: boolean} & AkeneoThemedProps>`
   font-weight: 400;
   text-decoration: underline;
-  color: ${props => (props.disabled ? getColor('grey100') : getColor('purple100'))};
-  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
+  color: ${({disabled}) => (disabled ? getColor('grey', 100) : getColor('brand', 100))};
+  cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
 
-  ${props =>
-    !props.disabled &&
+  ${({disabled}) =>
+    !disabled &&
     css`
       &:hover {
-        color: ${getColor('purple120')};
+        color: ${getColor('brand', 120)};
       }
 
       &:focus:not(:active) {
@@ -23,7 +23,7 @@ const LinkContainer = styled.a<{disabled: boolean} & AkeneoThemedProps>`
 
       &:active {
         outline: none;
-        color: ${getColor('purple140')};
+        color: ${getColor('brand', 140)};
       }
     `};
 `;
@@ -72,3 +72,4 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
 );
 
 export {Link};
+export type {LinkProps};

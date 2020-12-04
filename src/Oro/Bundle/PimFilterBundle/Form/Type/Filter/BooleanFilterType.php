@@ -18,6 +18,8 @@ class BooleanFilterType extends AbstractChoiceType
     /** @staticvar integer */
     const TYPE_YES = 1;
     const TYPE_NO = 0;
+    const TYPE_EMPTY = 2;
+    const TYPE_NOT_EMPTY = 3;
 
     /** @staticvar string */
     const NAME = 'pim_type_boolean_filter';
@@ -46,6 +48,8 @@ class BooleanFilterType extends AbstractChoiceType
         $fieldChoices = [
             $this->translator->trans('oro.filter.form.label_type_yes') => self::TYPE_YES,
             $this->translator->trans('oro.filter.form.label_type_no') => self::TYPE_NO,
+            $this->translator->trans('oro.filter.form.label_type_empty') => self::TYPE_EMPTY,
+            $this->translator->trans('oro.filter.form.label_type_not_empty') => self::TYPE_NOT_EMPTY,
         ];
 
         $resolver->setDefaults(

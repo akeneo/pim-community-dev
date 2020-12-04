@@ -1,10 +1,21 @@
+#Entities
 Job: Trabaho
 Connector: Taga-konekta
 pim_import_export:
   job: Trabaho
   connector: Taga-konekta
+  ## Job status
   status:
-    - Handa
+    0: Handa
+  batch_status:
+    1: Nakumpleto
+    2: Simula
+    3: Nagsimula
+    4: Pagtigil
+    5: Tumigil
+    6: Nabigo
+    7: Inabandona
+    8: Hindi kilala
   download_archive:
     archive: i-download ang nabuong archive|i-download ang mga nabuong archive
     output: i-download ang nabuong file|i-download ang mga nabuong file
@@ -23,26 +34,133 @@ pim_import_export:
   list: Pumili ng trabaho
   job_profile:
     tab:
+      property.title: Pangkalahatang mga pag-aari
+      history.title: Kasaysayan
       job_content.title: Laman
+#Page titles:
 pim_title.export_profile.index: Pagluwas ng pamamahalang anyo
+pim_title.export_profile.edit: Iluwas ang profile %job.label% | Baguhin
+pim_title.export_profile.show: Iluwas ang profile %job.label% | Ipakita
 pim_title.export_execution.index: Iluwas ang kasaysayan sa pagsasakatuparan
 pim_title.export_execution.show: Iluwas ang pagsasakatuparan | Mga Detalye
 pim_title.import_profile.index: Pamamahala sa pag-angkat ng mga profile
+pim_title.import_profile.edit: Angkatin ang profile %job.label% | Baguhin
+pim_title.import_profile.show: Angkatin ang profile %job.label% | Ipakita
 pim_title.import_execution.index: I-angkat ang kasaysayan sa pagsasakatuparan
 pim_title.import_execution.show: I-angkat ang mga pagsasakatuparan
+#Entity and page header titles
 export profile:
   title: iluwas ang profile
   edit: baguhin ang profile na pangluwas
 import profile:
   title: i-angkat ang profile
   edit: baguhin ang pangkalahatang ideya ng profile
+#ACLs
 pim_importexport:
   acl:
     export_profile:
       index: Tingnan ang listahan ng mga profile ng pagluwas
       create: Gumawa ng profile ng pagluwas
+      show: Ipakita ang pag-export ng profile
+      edit: Mag-edit ng isang export na profile
+      remove: Tanggalin ang isang export profile
+      launch: Mag-launch ng isang export profile
+      property_edit: Mag-edit ng isang export na pangkalahatang profile na mga pag-aari
+      property_show: Magpakita ng isang export na pangkalahatang profile ng mga pag-aari
+      history: Tingnan ang kasaysayan ng export profile
+      content_edit: Mag-edit ng nilalaman ng isang export na profile
+      content_show: Magpakita ng nilalaman ng isang export na profile
+    import_profile:
+      index: Tingnan ang listahan ng mga profile
+      create: Lumikha ng isang pag-ankat na profile
+      show: Magpakita ng isang import na profile
+      edit: Mag-edit ng isang import na profile
+      remove: Magtanggal ng isang import na profile
+      launch: Maglunsad ng isang import na profile
+      history: Tingnan ang kasaysayan ng import na profile
+    export_execution:
+      index: Tingnan ang listahan ng mga ulat ng export
+      show: Tingnan ang mga detalye sa ulat ng export
+      dl_log: I-download ang export report log
+      dl_files: I-download ang mga nailuwas na file
+    import_execution:
+      index: Tingnan ang mga naangkat na listahan ng mga ulat
+      show: Tingnan ang mga detalye ng ulat ng pag-angkat
+      dl_log: I-download ang tala ng ulat sa pag-angkat
+      dl_files: Mag-download ng mga inangkat na file
+  acl_group:
+    export: Iluwas ang mga profile
+    import: Angkatin ang mga profile
+#Buttons
 btn:
   create:
     export profile: gumawa ng profile pangluwas
     import profile: gumawa ng pangkalahatang ideya ng profile
+Upload and import now: I-upload at angkatin ngayon
+import now: Angkatin ngayon
+export now: Iluwas ngayon
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Sigurado ka bang gusto mong burahin ang profile ng pagluwas na %name%?
+    import profile: Sigurado ka bang gusto mong burahin ang profile ng pag-angkat na %name%?
+#Flash messages
+flash:
+  export:
+    created: Ang pagluwas ay matagumpay na nailikha
+    removed: Ang pagluwas ay naialis na
+    updated: Ang pagluwas ay matagumpay na na-update
+    running: Ang pagluwas ay gumagana
+  import:
+    created: Ang pag-angkat ay matagumpay na nailikha
+    removed: Ang pag-angkat ay naialis na
+    updated: Ang pag-angkat ay matagumpay na na-update
+    running: Ang pag-angkat ay gumagana
+#Tabs
+General properties: Ang pangkalahatang mga ari-arian
+History: Kasaysayan
+pane.accordion:
+  properties: Mga ari-arian
+  global_settings: Mga global na setting
+  filters: Mga filter
+#Popin titles
+popin.create:
+  export_profile.title: Lumikha ng bagong profile ng pagluwas
+  import_profile.title: Lumikha ng bagong profile ng pag-angkat
+#Job execution
+'Display item': Ipakita ang aytem
+'Hide item': Itago ang aytem
+'Collecting data about job execution...': Nangongolekta ng mga datos ukol sa pagsasagawa ng trabaho...
+'You must select a file to upload': Kailangan mong pumili ng file para i-upload
+Download log: I-download ang log
+Show profile: Ipakita ang profile
+execution details: mga detalye ng pagsasagawa
+job_execution.summary:
+  read: basahin
+  write: nakasulat
+  skip: nilaktawan
+  create: nilikha
+  update: ini-update
+  update_products: na-update na mga produkto
+  skip_products: nilaktawang mga produkto
+  displayed: ipinakita ang mga paunang babala
+  charset_validator:
+    title: 'Ang pag-encode ng file:'
+    skipped: nilaktawan, ekstensyon sa puting listahan
+Step: Hakbang
 Status: Estado
+Warnings: Mga babala
+Summary: Buod
+Start: Simula
+End: Wakas
+#Process tracker
+set_attribute_requirements: Magtakda ng mga katangian na kinakailangan
+COMPLETED: Nakumpleto
+STARTING: Nagsisimula
+STARTED: Nagsimula
+STOPPING: Humihinto
+STOPPED: Huminto
+FAILED: Pumalya
+ABANDONED: Iniwan
+UNKNOWN: Hindi nakikilala
+warning.label: Babala

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Message;
 
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
-use Akeneo\Platform\Component\EventQueue\BusinessEvent;
+use Akeneo\Platform\Component\EventQueue\Event;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -17,10 +18,10 @@ class ProductCreatedSpec extends ObjectBehavior
     public function let(): void
     {
         $this->beConstructedWith(
-            'author',
-            ['data'],
+            Author::fromNameAndType('julia', Author::TYPE_UI),
+            ['identifier' => 'product_identifier'],
             1598968800,
-            '523e4557-e89b-12d3-a456-426614174000'
+            '523e4557-e89b-12d3-a456-426614174000',
         );
     }
 
@@ -29,33 +30,52 @@ class ProductCreatedSpec extends ObjectBehavior
         $this->shouldHaveType(ProductCreated::class);
     }
 
-    public function it_is_a_business_event(): void
+    public function it_is_an_event(): void
     {
-        $this->shouldBeAnInstanceOf(BusinessEvent::class);
+        $this->shouldBeAnInstanceOf(Event::class);
+    }
+
+    public function it_validates_the_product_identifier(): void
+    {
+        $this->beConstructedWith(
+            Author::fromNameAndType('julia', Author::TYPE_UI),
+            [],
+            1598968800,
+            '523e4557-e89b-12d3-a456-426614174000',
+        );
+
+        $this->shouldThrow(
+            new \InvalidArgumentException('Expected the key "identifier" to exist.'),
+        )->duringInstantiation();
     }
 
     public function it_returns_the_name(): void
     {
-        $this->name()->shouldReturn('product.created');
+        $this->getName()->shouldReturn('product.created');
     }
 
     public function it_returns_the_author(): void
     {
-        $this->author()->shouldReturn('author');
+        $this->getAuthor()->shouldBeLike(Author::fromNameAndType('julia', Author::TYPE_UI));
     }
 
     public function it_returns_the_data(): void
     {
-        $this->data()->shouldReturn(['data']);
+        $this->getData()->shouldReturn(['identifier' => 'product_identifier']);
     }
 
     public function it_returns_the_timestamp(): void
     {
-        $this->timestamp()->shouldReturn(1598968800);
+        $this->getTimestamp()->shouldReturn(1598968800);
     }
 
     public function it_returns_the_uuid(): void
     {
-        $this->uuid()->shouldReturn('523e4557-e89b-12d3-a456-426614174000');
+        $this->getUuid()->shouldReturn('523e4557-e89b-12d3-a456-426614174000');
+    }
+
+    public function it_returns_the_product_identifier(): void
+    {
+        $this->getIdentifier()->shouldReturn('product_identifier');
     }
 }

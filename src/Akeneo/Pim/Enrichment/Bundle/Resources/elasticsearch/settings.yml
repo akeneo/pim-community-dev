@@ -11,7 +11,7 @@ settings:
                 filter: ['lowercase']
         char_filter:
             newline_pattern:
-                pattern: '\\n'
+                pattern: '\n'
                 type: 'pattern_replace'
                 replacement: ''
         filter:

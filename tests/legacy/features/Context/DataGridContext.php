@@ -9,6 +9,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Grid;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
+use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAware;
@@ -760,6 +761,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      * @Then /^I should see users? (.*)$/
      * @Then /^I should see famil(?:y|ies) (.*)$/
      * @Then /^I should see client(?:|s) (.*)$/
+     * @Then /^I should see roles? (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
@@ -789,6 +791,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      * @Then /^I should not see users? (.*)$/
      * @Then /^I should not see famil(?:y|ies) (.*)$/
      * @Then /^I should not see client(?:|s) (.*)$/
+     * @Then /^I should not see roles? (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
     {
@@ -823,7 +826,6 @@ class DataGridContext extends PimContext implements PageObjectAware
 
             return true;
         }, sprintf('Can\'t filter by %s with operator %s and value %s', $filterName, $operator, $value));
-
 
         $gridContainer = $this->getElementFromDatagrid('Grid container');
 
@@ -1203,20 +1205,34 @@ class DataGridContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @param TableNode $table
-     *
      * @return Then[]
      *
-     * @When /^I create the view:$/
+     * @When /^I create the (private|public)?\s?view:$/
      */
-    public function iCreateTheView(TableNode $table)
+    public function iCreateTheView(string $viewType = '', TableNode $table): array
     {
         $this->getCurrentPage()->clickOnCreateViewButton();
+
+        if (in_array($viewType, [DatagridView::TYPE_PUBLIC, ''])) {
+            return [
+                new Step\Then('I fill in the following information in the popin:', $table),
+                new Step\Then('I uncheck the checkbox to create a public view'),
+                new Step\Then('I press the "Save" button'),
+            ];
+        }
 
         return [
             new Step\Then('I fill in the following information in the popin:', $table),
             new Step\Then('I press the "Save" button')
         ];
+    }
+
+    /**
+     * @When I uncheck the checkbox to create a public view
+     */
+    public function iUncheckTheCheckboxToCreateAPublicView(): void
+    {
+        $this->getCurrentPage()->find('css', '.AknCreateView-typeSelector')->click();
     }
 
     /**
@@ -1238,7 +1254,10 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iShouldSeeTheView($not, $viewLabel)
     {
-        $availableViews = $this->getCurrentPage()->getAvailableViews();
+        $availableViews = array_map(
+            fn (string $availableView) => trim(str_replace('(Public)', '', $availableView)),
+            $this->getCurrentPage()->getAvailableViews(),
+        );
 
         if (
                 ('' !== $not && in_array($viewLabel, $availableViews)) ||

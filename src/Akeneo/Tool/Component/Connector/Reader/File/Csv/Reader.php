@@ -4,6 +4,8 @@ namespace Akeneo\Tool\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
@@ -19,7 +21,7 @@ use Akeneo\Tool\Component\Connector\Reader\File\FileReaderInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Reader implements FileReaderInterface
+class Reader implements FileReaderInterface, TrackableItemReaderInterface
 {
     /** @var FileIteratorFactory */
     protected $fileIteratorFactory;
@@ -51,6 +53,15 @@ class Reader implements FileReaderInterface
         $this->options = $options;
     }
 
+    public function totalItems(): int
+    {
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $filePath = $jobParameters->get('filePath');
+        $iterator = $this->createFileIterator($jobParameters, $filePath);
+
+        return max(iterator_count($iterator) - 1, 0);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -59,18 +70,7 @@ class Reader implements FileReaderInterface
         $jobParameters = $this->stepExecution->getJobParameters();
         $filePath = $jobParameters->get('filePath');
         if (null === $this->fileIterator) {
-            $delimiter = $jobParameters->get('delimiter');
-            $enclosure = $jobParameters->get('enclosure');
-            $defaultOptions = [
-                'reader_options' => [
-                    'fieldDelimiter' => $delimiter,
-                    'fieldEnclosure' => $enclosure,
-                ],
-            ];
-            $this->fileIterator = $this->fileIteratorFactory->create(
-                $filePath,
-                array_merge($defaultOptions, $this->options)
-            );
+            $this->fileIterator = $this->createFileIterator($jobParameters, $filePath);
             $this->fileIterator->rewind();
         }
 
@@ -189,5 +189,24 @@ class Reader implements FileReaderInterface
                 ]
             );
         }
+    }
+
+    private function createFileIterator(
+        JobParameters $jobParameters,
+        string $filePath
+    ): FileIteratorInterface {
+        $delimiter = $jobParameters->get('delimiter');
+        $enclosure = $jobParameters->get('enclosure');
+        $defaultOptions = [
+            'reader_options' => [
+                'fieldDelimiter' => $delimiter,
+                'fieldEnclosure' => $enclosure,
+            ],
+        ];
+
+        return $this->fileIteratorFactory->create(
+            $filePath,
+            array_merge($defaultOptions, $this->options)
+        );
     }
 }

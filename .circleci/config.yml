@@ -107,13 +107,14 @@ jobs:
               docker/wait_docker_up.sh
               make check-requirements
       - run:
-          name: Install asset
+          name: Install assets
           command: make assets
       - run:
+          name: Build css
+          command: make css
+      - run:
           name: Build Javascript
-          command: |
-              make javascript-test
-              make javascript-dev
+          command: make javascript-dev
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
@@ -131,6 +132,9 @@ jobs:
           - run:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
                 command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: No legacy translation format
+                command: make find-legacy-translations
           - run:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
@@ -159,7 +163,7 @@ jobs:
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
-      parallelism: 10
+      parallelism: 15
       steps:
           - attach_workspace:
                 at: ~/
@@ -191,7 +195,7 @@ jobs:
   test_back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
-    parallelism: 20
+    parallelism: 40
     steps:
       - attach_workspace:
           at: ~/
@@ -265,12 +269,6 @@ jobs:
         - run:
             name: Front unit tests
             command: make unit-front
-        - run:
-            name: Front acceptance tests
-            command: make acceptance-front
-        - run:
-            name: Front integration tests
-            command: make integration-front
 
   test_back_performance:
     machine:
@@ -358,9 +356,10 @@ jobs:
           - run:
                 name: Latest SaaS prod deployment on kubernetes
                 command: |
-                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-                    LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
+                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
+                    LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
                     echo $LATEST_RELEASE
+                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
                     INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE make deploy-serenity
           - run:
                 name: Upgrade
@@ -636,6 +635,7 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_performance
                     - test_upgrade_from_last_release
+
           - ready_to_build_only_ce?:
                 type: approval
                 filters:
@@ -661,18 +661,15 @@ workflows:
           - test_back_phpunit:
                 name: test_back_phpunit_ce
                 requires:
-                    - test_back_static_and_acceptance_ce
-                    - test_front_static_acceptance_and_integration_ce
+                    - build_dev_ce
           - test_back_data_migrations:
                 name: test_back_data_migrations_ce
                 requires:
-                    - test_back_static_and_acceptance_ce
-                    - test_front_static_acceptance_and_integration_ce
+                    - test_back_phpunit_ce
           - test_back_behat_legacy:
                 name: test_back_behat_legacy_ce
                 requires:
                     - test_back_phpunit_ce
-                    - test_back_data_migrations_ce
 
   nightly:
       triggers:

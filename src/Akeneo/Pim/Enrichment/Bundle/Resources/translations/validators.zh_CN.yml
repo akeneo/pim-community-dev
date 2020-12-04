@@ -48,6 +48,7 @@ pim_catalog:
     can_have_family_variant_unexpected_attribute: '无法为此实体设置属性"%attribute%"，因为其不属于属性集'
     cannot_have_product_model_as_parent: '产品模型"%product_model%"不能将产品模型"%parent_product_model%"作为父模型'
     cannot_have_parent: '产品模型“%product_model%”不能有父模型'
+    attribute_does_not_belong_to_family: '属性"%attribute%"不属于品类"%family%'
     variant_product_invalid_family: '变型产品品类必须与其父类相同'
     php_int_max_reached: '最大数值必须小于 %php_int_max%。'
     not_null_family: 品类不能为“空 (null)”，因为具有标识符"%sku%"的产品是变型产品。

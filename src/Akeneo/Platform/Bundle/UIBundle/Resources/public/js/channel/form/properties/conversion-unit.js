@@ -8,108 +8,108 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define([
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/fetcher-registry',
-        'pim/template/channel/tab/properties/conversion-unit',
-        'pim/user-context',
-        'pim/i18n',
-        'jquery.select2'
-    ],
-    function (
-        $,
-        _,
-        __,
-        BaseForm,
-        FetcherRegistry,
-        template,
-        UserContext,
-        i18n
-    ) {
-        return BaseForm.extend({
-            className: 'tabsection',
-            template: _.template(template),
-            locale: UserContext.get('uiLocale'),
-            config: null,
+  'jquery',
+  'underscore',
+  'oro/translator',
+  'pim/form',
+  'pim/fetcher-registry',
+  'pim/template/channel/tab/properties/conversion-unit',
+  'pim/user-context',
+  'pim/i18n',
+  'akeneo-design-system',
+  'jquery.select2',
+], function ($, _, __, BaseForm, FetcherRegistry, template, UserContext, i18n, {Helper}) {
+  return BaseForm.extend({
+    className: 'tabsection',
+    template: _.template(template),
+    locale: UserContext.get('uiLocale'),
+    config: null,
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
+    /**
+     * {@inheritdoc}
+     */
+    initialize: function (config) {
+      this.config = config.config;
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+      BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            render: function () {
-                if (!this.configured) {
-                    return this;
-                }
+    /**
+     * {@inheritdoc}
+     */
+    render: function () {
+      if (!this.configured) {
+        return this;
+      }
 
-                $.when(
-                    FetcherRegistry.getFetcher('attribute').search({
-                        'types': 'pim_catalog_metric',
-                        'options': {'limit': 1000}
-                    }),
-                    FetcherRegistry.getFetcher('measure').fetchAll()
-                ).then(function (attributes, measures) {
-                    this.$el.html(this.template({
-                        conversionUnits: this.getFormData().conversion_units,
-                        metrics: attributes,
-                        measures,
-                        locale: this.locale,
-                        label: __(this.config.label),
-                        fieldBaseId: this.config.fieldBaseId,
-                        doNotConvertLabel: __('pim_enrich.entity.channel.property.do_not_convert'),
-                        i18n,
-                        __
-                    }));
+      $.when(
+        FetcherRegistry.getFetcher('attribute').search({
+          types: 'pim_catalog_metric',
+          options: {limit: 1000},
+        }),
+        FetcherRegistry.getFetcher('measure').fetchAll()
+      ).then(
+        function (attributes, measures) {
+          this.$el.html(
+            this.template({
+              conversionUnits: this.getFormData().conversion_units,
+              metrics: attributes,
+              measures,
+              locale: this.locale,
+              label: __(this.config.label),
+              fieldBaseId: this.config.fieldBaseId,
+              doNotConvertLabel: __('pim_enrich.entity.channel.property.do_not_convert'),
+              i18n,
+              __,
+            })
+          );
 
-                    this.$('.select2').select2().on('change', this.updateState.bind(this));
-                    this.renderExtensions();
-                }.bind(this));
+          this.renderReact(
+            Helper,
+            {children: __('pim_enrich.entity.channel.property.label_conversion_units')},
+            this.$('.tabsection-helper').get(0)
+          );
 
-                return this;
-            },
+          this.$('.select2').select2().on('change', this.updateState.bind(this));
+          this.renderExtensions();
+        }.bind(this)
+      );
 
-            /**
-             * Sets new attribute conversion unit on change.
-             *
-             * @param {Object} event
-             */
-            updateState: function (event) {
-                this.setAttributeConversionUnit(
-                    event.currentTarget.id.replace(this.config.fieldBaseId, ''),
-                    event.currentTarget.value
-                );
-            },
+      return this;
+    },
 
-            /**
-             * Sets specified conversion unit settings into form model.
-             *
-             * @param {String} attribute
-             * @param {String} value
-             */
-            setAttributeConversionUnit: function (attribute, value) {
-                var data = this.getFormData();
+    /**
+     * Sets new attribute conversion unit on change.
+     *
+     * @param {Object} event
+     */
+    updateState: function (event) {
+      this.setAttributeConversionUnit(
+        event.currentTarget.id.replace(this.config.fieldBaseId, ''),
+        event.currentTarget.value
+      );
+    },
 
-                if (_.isEmpty(data.conversion_units)) {
-                    data.conversion_units = {};
-                }
+    /**
+     * Sets specified conversion unit settings into form model.
+     *
+     * @param {String} attribute
+     * @param {String} value
+     */
+    setAttributeConversionUnit: function (attribute, value) {
+      var data = this.getFormData();
 
-                if (value !== 'no_conversion') {
-                    data.conversion_units[attribute] = value;
-                } else {
-                    delete data.conversion_units[attribute];
-                }
+      if (_.isEmpty(data.conversion_units)) {
+        data.conversion_units = {};
+      }
 
-                this.setData(data);
-            }
-        });
-    }
-);
+      if (value !== 'no_conversion') {
+        data.conversion_units[attribute] = value;
+      } else {
+        delete data.conversion_units[attribute];
+      }
+
+      this.setData(data);
+    },
+  });
+});

@@ -34,4 +34,12 @@ class ReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn($product);
         $this->read()->shouldReturn(null);
     }
+
+    function it_returns_the_total_of_items_to_read(
+        $repository,
+        ProductInterface $product
+    ) {
+        $repository->findAll()->willReturn([$product, $product]);
+        $this->totalItems()->shouldReturn(2);
+    }
 }

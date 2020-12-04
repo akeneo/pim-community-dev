@@ -2,58 +2,45 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\IndexProductRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletInterface
 {
     private const LIMIT_PER_LOOP = 1000;
     private const BULK_SIZE = 100;
     private const TIMEBOX_IN_SECONDS_ALLOWED = 1700; // ~28 minutes
 
-    /** @var EvaluatePendingCriteria */
-    private $evaluatePendingProductCriteria;
+    private ?StepExecution $stepExecution;
 
-    /** @var StepExecution */
-    private $stepExecution;
+    private EvaluatePendingCriteria $evaluatePendingProductCriteria;
 
-    /** @var ConsolidateAxesRates */
-    private $consolidateProductAxisRates;
+    private ConsolidateAxesRates $consolidateProductAxisRates;
 
-    /** @var IndexProductRates */
-    private $indexProductRates;
+    private UpdateProductsIndex $updateProductsIndex;
 
-    /** @var GetProductIdsToEvaluateQueryInterface */
-    private $getProductIdsToEvaluateQuery;
+    private GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery;
 
-    /** @var EvaluatePendingCriteria */
-    private $evaluatePendingProductModelCriteria;
+    private EvaluatePendingCriteria $evaluatePendingProductModelCriteria;
 
-    /** @var ConsolidateAxesRates */
-    private $consolidateProductModelAxisRates;
+    private ConsolidateAxesRates $consolidateProductModelAxisRates;
 
-    /** @var GetProductIdsToEvaluateQueryInterface */
-    private $getProductModelsIdsToEvaluateQuery;
+    private GetProductIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery;
 
     public function __construct(
         EvaluatePendingCriteria $evaluatePendingProductCriteria,
         ConsolidateAxesRates $consolidateProductAxisRates,
-        IndexProductRates $indexProductRates,
+        UpdateProductsIndex $updateProductsIndex,
         GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
         EvaluatePendingCriteria $evaluatePendingProductModelCriteria,
         ConsolidateAxesRates $consolidateProductModelAxisRates,
@@ -61,7 +48,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     ) {
         $this->evaluatePendingProductCriteria = $evaluatePendingProductCriteria;
         $this->consolidateProductAxisRates = $consolidateProductAxisRates;
-        $this->indexProductRates = $indexProductRates;
+        $this->updateProductsIndex = $updateProductsIndex;
         $this->getProductIdsToEvaluateQuery = $getProductIdsToEvaluateQuery;
         $this->evaluatePendingProductModelCriteria = $evaluatePendingProductModelCriteria;
         $this->consolidateProductModelAxisRates = $consolidateProductModelAxisRates;
@@ -106,7 +93,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
 
             $this->consolidateProductAxisRates->consolidate($productIds);
 
-            $this->indexProductRates->execute($productIds);
+            $this->updateProductsIndex->execute($productIds);
 
             $evaluationCount += count($productIds);
             $this->stepExecution->setWriteCount($this->stepExecution->getWriteCount() + count($productIds));

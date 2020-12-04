@@ -168,6 +168,15 @@ pim_import_export:
     6: Failed
     7: Abandoned
     8: Unknown
+  job_status:
+    COMPLETED: Completed
+    STARTING: Starting
+    STARTED: Started
+    STOPPING: Stopping
+    STOPPED: Stopped
+    FAILED: Failed
+    ABANDONED: Abandoned
+    UNKNOWN: Unknown
 confirmation:
   remove:
     import_profile: Are you sure you want to delete this import profile?

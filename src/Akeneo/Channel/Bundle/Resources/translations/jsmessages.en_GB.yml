@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Category tree
     do_not_convert: Do not convert
+    measurement: Measurement settings
     label_conversion_units: Pick a conversion unit for each measurement attribute that will be used during product export
   module:
     create:

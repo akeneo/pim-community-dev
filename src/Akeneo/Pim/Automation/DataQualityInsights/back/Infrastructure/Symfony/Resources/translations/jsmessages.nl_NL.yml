@@ -1,0 +1,38 @@
+akeneo_data_quality_insights:
+  title: Datakwaliteit inzichten
+  dqi_dashboard:
+    menu: Datakwaliteit inzichten
+    title: Datakwaliteit overzicht
+    helper:
+      title: Introductie van datakwaliteit in Akeneo
+      help_center: Kijk in ons %FAQ% voor meer informatie.
+    no_data_title: Sorry, we hebben niet voldoende gegevens om datakwaliteit inzichten te tonen.
+    no_data_subtitle: Kom later terug alstublieft
+    time_period:
+      label: Tijdsperiode
+      daily: Dagelijks
+      weekly: Wekelijks
+      monthly: Maandelijks
+    legend:
+      excellent: Uitstekend
+      good: Goed
+      average: Gemiddeld
+      below_average: Onder het gemiddelde
+      to_improve: Te verbeteren
+    average_grade: Gemiddelde waardering
+    category_modal_filter:
+      subtitle: Filteren op categorie
+      message: Selecteer de categorie om op je dashboard weer te geven.
+    widgets:
+      family_modal:
+        subtitle: Families toevoegen
+      category_modal:
+        subtitle: Categorieën toevoegen
+      add_families: Families toevoegen
+      add_categories: Categorieën toevoegen
+      title: Titel
+      no_family_helper_msg: Selecteer de families waarvoor u de gegevenskwaliteit wilt meten
+      no_category_helper_msg: Selecteer de categorieën waarvoor je de gegevenskwaliteit wilt meten
+    time_axis:
+      day: dag
+

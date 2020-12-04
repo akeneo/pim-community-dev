@@ -161,7 +161,7 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         sort($products);
         sort($expected);
 
-        $this->assertSame($products, $expected);
+        $this->assertSame($expected, $products);
     }
 
     /**
@@ -175,7 +175,7 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
             $products[] = $product->getIdentifier();
         }
 
-        $this->assertSame($products, $expected);
+        $this->assertSame($expected, $products);
     }
 
     protected function activateLocaleForChannel(string $localeCode, string $channelCode): void

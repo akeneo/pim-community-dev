@@ -1,0 +1,9 @@
+pim_enrich:
+  #Locale
+  locale:
+    tab:
+      property.title: 屬性
+  channel:
+    flash:
+      delete:
+        error: 您不能移除頻道"%channelCode%"，因為您的PIM必須包含至少一個頻道。

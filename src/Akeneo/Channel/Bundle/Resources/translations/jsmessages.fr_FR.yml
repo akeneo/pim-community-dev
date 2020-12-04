@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Arborescence
     do_not_convert: Ne pas convertir
+    measurement: Paramètres des mesures
     label_conversion_units: Choisissez une unité de conversion pour chaque unité de mesure. Elle sera utilisée lors de l'export du produit
   module:
     create:

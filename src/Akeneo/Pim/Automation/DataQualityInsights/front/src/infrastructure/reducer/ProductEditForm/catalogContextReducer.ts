@@ -10,7 +10,7 @@ interface UpdateCatalogContextAction {
   payload: {
     locale?: string;
     channel?: string;
-  }
+  };
 }
 export const CHANGE_CATALOG_CONTEXT_LOCALE = 'CHANGE_CATALOG_CONTEXT_LOCALE';
 export const CHANGE_CATALOG_CONTEXT_CHANNEL = 'CHANGE_CATALOG_CONTEXT_CHANNEL';
@@ -20,8 +20,8 @@ export const changeCatalogContextLocale = (locale: string): UpdateCatalogContext
   return {
     type: CHANGE_CATALOG_CONTEXT_LOCALE,
     payload: {
-      locale: locale
-    }
+      locale: locale,
+    },
   };
 };
 
@@ -29,8 +29,8 @@ export const changeCatalogContextChannel = (channel: string): UpdateCatalogConte
   return {
     type: CHANGE_CATALOG_CONTEXT_CHANNEL,
     payload: {
-      channel: channel
-    }
+      channel: channel,
+    },
   };
 };
 
@@ -39,33 +39,36 @@ export const initializeCatalogContext = (channel: string, locale: string): Updat
     type: INITIALIZE_CATALOG_CONTEXT,
     payload: {
       locale: locale,
-      channel: channel
-    }
+      channel: channel,
+    },
   };
 };
 
 const initialState: CatalogContextState = {
   locale: undefined,
-  channel: undefined
+  channel: undefined,
 };
 
-const catalogContextReducer: Reducer<CatalogContextState, UpdateCatalogContextAction> = (previousState = initialState, {type, payload}) => {
-  switch(type) {
+const catalogContextReducer: Reducer<CatalogContextState, UpdateCatalogContextAction> = (
+  previousState = initialState,
+  {type, payload}
+) => {
+  switch (type) {
     case CHANGE_CATALOG_CONTEXT_CHANNEL:
       return {
         ...previousState,
-        channel: payload.channel
+        channel: payload.channel,
       };
     case CHANGE_CATALOG_CONTEXT_LOCALE:
       return {
         ...previousState,
-        locale: payload.locale
+        locale: payload.locale,
       };
     case INITIALIZE_CATALOG_CONTEXT:
       return {
         ...previousState,
         locale: payload.locale,
-        channel: payload.channel
+        channel: payload.channel,
       };
     default:
       return previousState;

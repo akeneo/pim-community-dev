@@ -6,7 +6,7 @@ const fetchWidgetCategories = async (channel: string, locale: string, categoryCo
   let routeParams = {
     channel: channel,
     locale: locale,
-    categories: categoryCodes
+    categories: categoryCodes,
   };
   const response = await fetch(Routing.generate(ROUTE_NAME, routeParams));
 

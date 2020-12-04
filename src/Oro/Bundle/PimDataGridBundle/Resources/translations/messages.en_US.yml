@@ -4,6 +4,9 @@ pim_datagrid:
   label:
     unique_message: The label must be unique
     not_blank_message: The label must not be blank
+  type:
+    not_blank_type: The type is required
+    invalid_type: The type must be either "public" or "private"
   view_selector:
     flash:
       created: Datagrid view successfully created

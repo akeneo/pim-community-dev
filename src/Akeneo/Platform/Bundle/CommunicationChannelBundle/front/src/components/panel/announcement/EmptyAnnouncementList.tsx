@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {NewsIllustration} from 'akeneo-design-system'
+import {NewsIllustration} from 'akeneo-design-system';
 
 type EmptyAnnouncementListProps = {
   text: string;

@@ -168,6 +168,7 @@ pim_enrich:
     job_tracker:
       index: Prozess-Tracker ansehen
       view_all_jobs: Alle Jobs im Prozess-Tracker anzeigen
+      stop_job: Einen laufenden Job stoppen
   acl_group:
     association_type: Verbindungstypen
     attribute: Attribute

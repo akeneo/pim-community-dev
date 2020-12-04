@@ -1,0 +1,98 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import LinkTo from '@storybook/addon-links/react';
+import {useArgs, updateArgs} from '@storybook/client-api';
+import {Modal} from './Modal';
+import {Button} from '../Button/Button';
+import * as Illustrations from '../../illustrations';
+
+<Meta
+  title="Components/Modal"
+  component={Modal}
+  argTypes={{
+    illustration: {
+      control: {type: 'select', options: [undefined, ...Object.keys(Illustrations)]},
+      table: {type: {summary: 'ReactElement<IllustrationProps>'}},
+    },
+  }}
+  args={{
+    isOpen: false,
+    children: 'Modal text',
+    illustration: undefined,
+    closeTitle: 'Close',
+  }}
+/>
+
+# Modal
+
+## Usage
+
+The Modal Component is the main Component of the Overlay pattern and is used to display a secondary window over the content.
+It can be used with or without an Illustration and adapts its content accordingly.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [{isOpen}, updateArgs] = useArgs();
+      const open = () => updateArgs({isOpen: true});
+      const close = () => updateArgs({isOpen: false});
+      return (
+        <>
+          <Modal
+            {...args}
+            onClose={close}
+            illustration={
+              undefined === Illustrations[args.illustration]
+                ? undefined
+                : React.createElement(Illustrations[args.illustration])
+            }
+          />
+          <Button onClick={open}>Open Modal</Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation with Illustration
+
+<Canvas>
+  <Story name="With Illustration">
+    {args => {
+      const [isOpen, setOpen] = useState(false);
+      const open = () => setOpen(true);
+      const close = () => setOpen(false);
+      return (
+        <>
+          <Modal {...args} isOpen={isOpen} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
+            Such nice Illustration
+            <Modal.BottomButtons>
+              <Button onClick={close}>Close</Button>
+            </Modal.BottomButtons>
+          </Modal>
+          <Button onClick={open}>Open Modal with Illustration</Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Usage with Composition
+
+The Modal Component also exposes a `BottomButtons` Component that is helpful to display Buttons at the bottom of the Modal children. It can be used as simply as this:
+
+```jsx
+<Modal {...props}>
+  Lorem ipsum dolor sit amet
+  <Modal.BottomButtons>
+    <Button>Cancel</Button>
+    <Button>Confirm</Button>
+  </Modal.BottomButtons>
+</Modal>
+```
+
+A few examples of usage of the `Modal` Component can be found on the <LinkTo kind="Patterns/Overlays" story="Confirm Modal">Overlays story.</LinkTo>

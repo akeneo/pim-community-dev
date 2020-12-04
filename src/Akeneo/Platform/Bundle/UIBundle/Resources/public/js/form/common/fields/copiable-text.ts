@@ -9,7 +9,7 @@ class CopiableTextField extends BaseText {
 
   public events(): EventsHash {
     return {
-      'click .copy': (e) => {
+      'click .copy': e => {
         const target = <HTMLElement>e.currentTarget;
         const container = <HTMLElement>target.parentElement;
 

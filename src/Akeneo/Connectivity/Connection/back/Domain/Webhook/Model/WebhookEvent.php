@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model;
 
+use Akeneo\Platform\Component\EventQueue\Author;
+
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -23,7 +25,7 @@ class WebhookEvent
     /** @var array<mixed> */
     private $data;
 
-    /** @var string */
+    /** @var Author */
     private $author;
 
     /** @var string */
@@ -36,7 +38,7 @@ class WebhookEvent
         string $action,
         string $eventId,
         string $eventDate,
-        string $author,
+        Author $author,
         string $pimSource,
         array $data
     ) {
@@ -63,7 +65,7 @@ class WebhookEvent
         return $this->eventDate;
     }
 
-    public function author(): string
+    public function author(): Author
     {
         return $this->author;
     }

@@ -1,0 +1,238 @@
+pim_enrich.entity.family:
+  label: familie
+  uppercase_label: Familie
+  plural_label: Familier
+  flash:
+    update:
+      success: Familien ble oppdatert.
+      fail: En feil oppsto ved oppdatering av familie.
+      cant_remove_attribute_as_label: Kan ikke fjerne attributt som benyttes som etikett
+      cant_remove_attribute_as_image: Kan ikke fjerne attributt som brukes som primærbilde
+      cant_remove_attribute_used_as_axis: Kan ikke fjerne attributt som brukes som variantakse i en familievariant
+      fields_not_ready: "Familien kan ikke lagres nå. Følgende felt er ikke klare: {{ fields }}"
+    create:
+      success: Familien ble opprettet
+    delete:
+      success: Familie fjernet
+      fail: Kan ikke slette denne familien
+  property:
+    attribute_as_label: Attribut benyttet som etikett
+    attribute_as_image: Attributt brukes som primærbilde
+    empty_attribute_as_image: Ikke valgt
+  page_title:
+    index: "] -Inf, 1] {{ count }} familie|] 1, Inf [{{ count }} familier"
+  module:
+    attributes:
+      not_required_label: Ikke nødvendig
+      required_label: Påkrevd
+    create:
+      button: Opprett familie
+    delete:
+      confirm: Er du sikker på at du vil slette denne familien?
+pim_enrich.entity.family_variant:
+  label: familievariant
+  short_plural_label: Varianter
+  short_label: Variant
+  flash:
+    update:
+      success: Familievariant oppdatert. Produkter med varianter vil bli opdatert med endringer.
+      fail: Familievarianten kunne ikke bli oppdatert.
+    create:
+      success: Familievarianten ble opprettet
+    delete:
+      success: Familievarianten ble slettet
+  module:
+    edit:
+      common_attributes: Felles attributter
+      no_common_attributes: Det er ingen felles attributter
+      variant_axis_label: Variantakse
+      variant_attributes: Variantattributter
+      level_1: Variantattributter nivå 1
+      level_2: Variantattributter nivå 2
+      description: Trekk & slipp attributter til det valgte variantnivå for å få disse attributter håndtert på variantnivå.
+      attribute_remove: Fjern attributt
+      attribute_group_remove: Fjern attributtgruppe
+      confirm_attribute_removal_title: Bekreft fjerning av attributter
+      confirm_attribute_removal_message: Ved å fjerne disse attributtene vil de legges tilbake i fellesattributter i familievarianten og verdiene fjernes fra produktvariantene
+    create:
+      label: Legg til variant
+      title: Opprett en ny familievariant
+      description: I en familievariant kan man definere en struktur for produkter med varianter. Velg antall nivå på varianter, attributtene som skal benyttes som variantakse for hvert nivå og deretter definere hvordan attributtene skal fordeles.
+      variant_levels: Variantnivåer
+      axis_level: "Variantakse nivå {{ level }}"
+    update_translations:
+      title: Oppdater oversettelser
+    delete:
+      confirm: Er du sikker på at du vil slette denne familienvarianten?
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Innstillinger
+  flash:
+    create:
+      success: Attributtvalg opprettet
+    update:
+      fail: Kan ikke lagre attributtet alternativet
+    delete:
+      fail: Feil under sletting av alternativet attributt
+  module:
+    edit:
+      cancel_title: Avbryt endringer
+      cancel_description: Advarsel, du vil miste data som ikke er lagret. Er du sikker på å avslutte endringene for denne innstillingen?
+pim_enrich.entity.association_type:
+  label: tilknytningstype
+  flash:
+    update:
+      success: Tilknytningstype oppdatert.
+      fail: Tilknytningstypen kunne ikke oppdateres.
+      fields_not_ready: "Tilknytningstypen kan ikke lagres nå. Følgende felter er ikke klare: {{ fields }}"
+    create:
+      success: Tilknytningstype oppdatert
+    delete:
+      success: Foreningen type fjernet
+      fail: Kan ikke slette denne tilknytningstypen
+  page_title:
+    index: "] -Inf, 1] {{ count }} tilknytningstype |] 1, Inf [{{ count }} tilknytningstyper"
+  module:
+    create:
+      button: Opprett tilknytningstype
+    delete:
+      confirm: Er du sikker på du vil slette denne assosiasjonstypen?
+pim_enrich.entity.group_type:
+  label: gruppetype
+  flash:
+    update:
+      success: Gruppetype oppdatert.
+      fail: Gruppetypen kunne ikke bli oppdatert.
+      fields_not_ready: "Gruppetype kan ikke lagres. Følgende felter er ikke klare: {{ fields }}"
+    create:
+      success: Gruppetype opprettet
+    delete:
+      success: Gruppetype ble fjernet
+      fail: Kan ikke slette denne gruppetypen
+  page_title:
+    index: "]-Inf, 1]{{ count }} gruppetype|]1, Inf[{{ count }} gruppetyper"
+  module:
+    create:
+      button: Opprett gruppetype
+    delete:
+      confirm: Er du sikker på at du vil slette denne gruppen?
+pim_enrich.entity.attribute:
+  label: Attributt
+  plural_label: Attributter
+  flash:
+    update:
+      success: Attributt oppdatert.
+      fail: Attributt kunne ikke oppdateres.
+      fields_not_ready: "Attributtet kan ikke lagres nå. Følgende felter er ikke klare: {{ fields }}"
+    delete:
+      success: Attributtet fjernet
+      fail: Kan ikke slette attributtet
+  page_title:
+    index: "]-Inf, 1]{{ count }} attributt|]1, Inf[{{ count }} attributter"
+  property:
+    allowed_extensions: Tillatte filtyper
+    auto_option_sorting: Sorter innstillinger etter alfabetisk rekkefølge
+    available_locales: Tilgjengelige språk
+    date_max: Maks. dato
+    date_min: Min. dato
+    decimals_allowed: Desimalverdier tillatt
+    default_metric_unit:
+      label: Standard metrisk enhet
+      choose: Velg en enhet
+    group:
+      label: Attributtgruppe
+      choose: Velg attributtgruppe
+    is_locale_specific: Språkspesifikk
+    localizable: Verdi per språk
+    max_characters: Maks. tegn
+    max_file_size: Maks. filstørrelse (MB)
+    metric_family:
+      label: Metrisk familie
+      choose: Velg en familie
+    minimum_input_length: Minimumlengde for autoutfylling
+    name: Navn
+    negative_allowed: Negative verdier tillatt
+    number_max: Maks. antall
+    number_min: Min. antall
+    reference_data_name:
+      label: Referansedatatype
+      choose: Velg referanse datatype
+    scopable: Verdi per kanal
+    type:
+      choose: Velg attributtypte
+      pim_catalog_identifier: Identifikator
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Tekstområde
+      pim_catalog_number: Nummer
+      pim_catalog_price_collection: Pris
+      pim_catalog_multiselect: Multi-valg
+      pim_catalog_simpleselect: Enkelt valg
+      pim_catalog_file: Fil
+      pim_catalog_image: Bilde
+      pim_catalog_boolean: "Ja/Nei"
+      pim_catalog_date: Dato
+      pim_catalog_metric: Metrisk
+      pim_reference_data_simpleselect: Referansedata enkel valg
+      pim_reference_data_multiselect: Referansedata multivalg
+    unique: Unik verdi
+    useable_as_grid_filter: Kan brukes i rutenett
+    validation_regexp: Regulære uttrykk
+    validation_rule:
+      label: Valideringsregel
+      email: Epost
+      regexp: Regulære uttrykk
+      url: Nettadresse
+    wysiwyg_enabled: Rikt tekstfelt aktivert
+  module:
+    add_attribute:
+      no_available_attributes: Det er ikke flere attributter å legge til
+      attributes_selected: "{{ itemsCount }} attribut(ter) valgt"
+    create:
+      button: Opprett attributt
+    edit:
+      common: Generelle parametere
+      type_specific: Typespesifikke parametere
+      validation: Valideringsparametere
+    delete:
+      confirm: Er du sikker på at du vil slette denne attributten?
+      confirm_from_family: Er du sikker på at du vil slette denne attributten fra familien?
+      confirm_from_group: Er du sikker på at du vil fjerne attributten {{ attribute }} fra denne attributtgruppen?
+      confirm_from_product: Er du sikker på at du vil fjerne denne attributten fra produktet?
+pim_enrich.entity.attribute_group:
+  label: attributtgruppe
+  uppercase_label: Attributtgruppe
+  plural_label: Attributtgrupper
+  flash:
+    update:
+      success: Attributtgruppe oppdatert
+      fail: Attributtgruppen kunne ikke oppdateres
+      fields_not_ready: "Attributtgruppen kan ikke lagres. Følgende felter er ikke klare: {{ fields }}"
+    delete:
+      success: Attributtgruppe fjernet
+      fail: Kan ikke slette attributtgruppen
+  module:
+    add_attribute_group:
+      label: Legg til per gruppe
+      no_attribute_groups_available: Ingen attributtgruppe tilgjengelig
+      attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
+    delete:
+      confirm: Er du sikker på at du vil slette denne attributtgruppen?
+pim_enrich.mass_edit.family:
+  title: Massehandling familier
+  confirm: "{1} Du holder på å oppdatere en familie med følgende opplysninger, vennligst bekreft. |Du er i ferd med å oppdatere {{ itemsCount }} familier med følgende opplysninger, vennligst bekreft."
+  step:
+    select:
+      label: Velg familier
+    choose:
+      title: Massehandling familier
+      label_count: "] 0, Inf [Velg din handling"
+    configure:
+      label: Konfigurer
+    confirm:
+      label: Bekreft
+    launched:
+      label: Massehandlingen "{{ operation }}" er igangsatt. Du får beskjed, når den er ferdigstilt.
+  operation:
+    set_requirements:
+      label: Definer attributtkrav
+      description: Følgende attributtkrav vil bli brukt på de valgte familiene
+      label_count: "{1}Definer attributtkrav for <span class=\"AknFullPage-title--highlight\"> 1 familie</span> |] 1, Inf [Definer attributtkrav for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familier</span>"

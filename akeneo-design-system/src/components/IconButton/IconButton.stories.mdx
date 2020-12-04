@@ -1,0 +1,121 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import LinkTo from '@storybook/addon-links/react';
+import {IconButton} from './IconButton.tsx';
+import * as Icons from '../../icons';
+
+<Meta
+  title="Components/Buttons/IconButton"
+  component={IconButton}
+  argTypes={{
+    icon: {
+      control: {type: 'select', options: Object.keys(Icons)},
+      table: {type: {summary: 'ReactElement<IconProps>'}},
+    },
+    ghost: {control: {type: 'select', options: [false, true, 'borderless']}},
+    onClick: {action: 'Click on the icon button'},
+  }}
+  args={{
+    icon: 'ActivityIcon',
+    title: 'Icon Button',
+  }}
+/>
+
+# IconButton
+
+## Usage
+
+The IconButton component is useful when your only need is to have a clickable Icon.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <IconButton {...args} icon={React.createElement(Icons[args.icon])} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <IconButton {...args} icon={<Icons.CloseIcon />} level="primary" />
+          <IconButton {...args} icon={<Icons.DeleteIcon />} level="secondary" />
+          <IconButton {...args} icon={<Icons.ViewIcon />} level="tertiary" />
+          <IconButton {...args} icon={<Icons.EditIcon />} level="warning" />
+          <IconButton {...args} icon={<Icons.LinkIcon />} level="danger" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on ghost & border
+
+<Canvas>
+  <Story name="Ghost">
+    {args => {
+      return (
+        <>
+          <IconButton {...args} icon={<Icons.CloseIcon />} ghost={false} />
+          <IconButton {...args} icon={<Icons.DeleteIcon />} ghost={true} />
+          <IconButton {...args} icon={<Icons.ViewIcon />} ghost="borderless" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on disabled
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <>
+          <IconButton {...args} icon={<Icons.CloseIcon />} disabled={false} />
+          <IconButton {...args} icon={<Icons.DeleteIcon />} disabled={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on size
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      return (
+        <>
+          <IconButton {...args} icon={<Icons.CloseIcon />} size="default" />
+          <IconButton {...args} icon={<Icons.DeleteIcon />} size="small" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Usage with `href` prop
+
+If you want your button to act like a <LinkTo kind="Components/Link" story="Standard">Link</LinkTo> (with "open in a new tab" feature of cmd/ctrl + click), use the `href` prop to specify your link.
+
+<Canvas>
+  <Story name="Link">
+    {args => {
+      delete args.onClick;
+      return (
+        <>
+          <IconButton {...args} href="https://google.com" target="_blank" icon={<Icons.CloseIcon />} />
+          <IconButton {...args} disabled={true} href="https://google.com" target="_blank" icon={<Icons.DeleteIcon />} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

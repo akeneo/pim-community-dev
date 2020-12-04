@@ -1,0 +1,187 @@
+job_execution:
+  summary:
+    display_item: 顯示項目
+    hide_item: 隱藏項目 
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: 類別選擇
+        label: "{0}所有產品|{1}一個選中的類別|]1,Inf[{{ count }}選中的類別"
+        title: 選擇類別
+    locales:
+      validation:
+        not_blank: 必須選中一個區域，請選擇一個區域匯出。
+pim_import_export:
+  entity:
+    job_instance:
+      label: 工作資訊
+      flash:
+        update:
+          success: 工作資訊已成功更新。
+          fail: 工作資訊無法更新。
+        delete:
+          success: 工作實例已成功刪除
+    import_profile:
+      uppercase_label: 匯入資料
+      flash:
+        create:
+          success: 匯入資料已成功創建
+        upload:
+          error: 無法上傳此文件。文件體積可能超過了您在PHP或HTTP服務器中設置的最大上傳體積。
+      page_title:
+        index: "]-Inf, 1] {{ count }} 匯入資料|]1, Inf [{{ count }} 匯入資料"
+      module:
+        create:
+          button: 創建匯入資料
+    export_profile:
+      uppercase_label: 匯出資料
+      flash:
+        create:
+          success: 匯出資料已成功創建
+      page_title:
+        index: "]-Inf, 1] {{ count }} 匯出資料|]1, Inf [{{ count }} 匯出資料"
+      module:
+        create:
+          button: 創建匯出資料
+  form:
+    job_execution:
+      title.details: 執行詳情
+      refreshBtn.title: 刷新
+      button:
+        show_profile.title: 顯示資料
+        download_log.title: 下載日誌
+        download_file.title: 下載生成的檔案
+        download_archive.title: 下載生成的記錄
+      summary:
+        fetching: 正在收集有關工作執行的數據…
+        warning: 警告
+        header.step: 步驟
+        header.warnings: 警告
+        header.summary: 概要
+        header.start: 開始
+        header.end: 結束
+    job_instance:
+      fail:
+        launch: 無法發佈工作資料。請確保資料有效且您擁有發佈權限。
+        save: 無法保存工作資料。請確保資料有效且您擁有編輯權限。
+      button:
+        export.title: 立即匯出
+        import.launch: 立即匯入
+        import.upload: 立即上傳和匯入
+        import.upload_file: 上傳一個檔案
+      meta:
+        job: 工作
+        connector: 連接器
+      subsection:
+        last_executions: 上次執行
+      tab:
+        content:
+          title: 内容
+        properties:
+          decimal_separator:
+            title: 小數點
+            help: 確認小數分隔符
+          date_format:
+            title: 日期格式
+            help: 確認日期字段格式
+          file_path:
+            title: 文件路徑
+            help: 生成文件將生成在文件系統的哪個位置
+            help_import: 用於匯入的文件目錄
+          delimiter:
+            title: 分隔符號
+            help: 用於設置字段定界符的一個字符
+          enclosure:
+            title: 封裝
+            help: 用於設置字段範圍的一個字符
+          with_header:
+            title: 包含標題
+            help: 是否打印列名
+          with_media:
+            title: 匯出檔案和圖片
+            help: 是否要匯出產品檔案和圖片
+          lines_per_file:
+            title: 檔案線數量
+            help: 確認檔案線數量限制
+          upload_allowed:
+            title: 允許上傳檔案
+            help: 是否允許直接上傳文件
+          categories_column:
+            title: 類別列
+            help: 類別列名
+          escape:
+            title: 退出
+            help: 用於設置字段退出的一個字符
+          family_column:
+            title: 品類列
+            help: 品類列名
+          groups_column:
+            title: 分組列
+            help: 分組列名
+          enabled:
+            title: 啟用此產品
+            help: 是否應該啟用匯入的產品
+          enabled_comparison:
+            title: 比較值
+            help: 啟用原始值和匯入值比較。 如果匯入值與原始值非常相似，則可以加快匯入速度
+          real_time_versioning:
+            title: 實時歷史更新
+            help: 意味著產品歷史記錄會自動更新，可以關閉以提高性能
+          family_variant_column:
+            title: 品類變量列
+      file_path: 檔案路徑
+  widget:
+    last_operations:
+      empty: 未找到操作
+      date: 日期
+      profile_name: 資料名稱
+      details: 詳細資料
+      warning_count: 警告
+      job_type:
+        import: 匯入
+        export: 匯出
+        mass_edit: 批量編輯
+        mass_edit_rule: 規則設定
+        quick_export: 快速匯出
+        compute_product_models_descendants: 計算產品型號衍生物
+        compute_family_variant_structure_changes: 計算品類變體結構更改
+        compute_completeness_of_products_family: 計算產品品類完成度
+        mass_delete: 批量刪除產品
+      header.view_all: 檢視全部
+  batch_status:
+    1: 已完成
+    2: 開啟...
+    3: 已開始
+    4: 正在停止
+    5: 已停止
+    6: 已失敗
+    7: 已放棄
+    8: 未知
+confirmation:
+  remove:
+    import_profile: 您確定要刪除該匯入資料嗎？
+    export_profile: 您確定要刪除該匯出資料嗎？
+    job_instance: 您確定要刪除此工作實例？
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: 您確定要刪除該匯入資料嗎？
+    export_profile:
+      module:
+        delete:
+          confirm: 您確定要刪除該匯出資料嗎？
+pim_title:
+  pim_importexport_export_profile_index: 匯出資料管理
+  pim_importexport_export_profile_edit: 匯出資料 {{ job.label }} | 編輯
+  pim_importexport_export_profile_show: 匯出資料 {{ job.label }} | 顯示
+  pim_importexport_export_execution_index: 匯出執行歷史記錄
+  pim_importexport_export_execution_show: 匯出執行 | 詳情
+  pim_importexport_import_profile_index: 匯入資料管理
+  pim_importexport_import_profile_edit: 匯如資料 {{ job.label }} | 編輯
+  pim_importexport_import_profile_show: 匯入資料 {{ job.label }} | 顯示
+  pim_importexport_import_execution_index: 匯出執行歷史記錄
+  pim_importexport_import_execution_show: 匯入執行 | 詳情

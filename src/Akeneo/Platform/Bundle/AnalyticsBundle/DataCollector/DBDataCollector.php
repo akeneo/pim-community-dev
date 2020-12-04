@@ -7,23 +7,11 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Akeneo\Tool\Component\Analytics\ApiConnectionCountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
+use Akeneo\Tool\Component\Analytics\IsDemoCatalogQuery;
+use Akeneo\Tool\Component\Analytics\MediaCountQuery;
 
 /**
- * Collects the structure of the PIM catalog:
- * - number of channels
- * - number of products
- * - number of attributes
- * - number of locales
- * - number of families
- * - number of users
- * - number of categories
- * - number of categories tree
- * - max number of categories in one category
- * - max number of category levels
- * - number of product values
- * - average number of product values by product
- * - email domains
- * - number of api connection (tracked or not)
+ * It collect data about the volume of different axes in the PIM catalog.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -31,56 +19,43 @@ use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
  */
 class DBDataCollector implements DataCollectorInterface
 {
-    /** @var CountQuery */
-    protected $channelCountQuery;
+    private CountQuery $channelCountQuery;
 
-    /** @var CountQuery */
-    protected $productCountQuery;
+    private CountQuery $productCountQuery;
 
-    /** @var CountQuery */
-    protected $localeCountQuery;
+    private CountQuery $localeCountQuery;
 
-    /** @var CountQuery */
-    protected $familyCountQuery;
+    private CountQuery $familyCountQuery;
 
-    /** @var CountQuery */
-    protected $attributeCountQuery;
+    private CountQuery $attributeCountQuery;
 
-    /** @var CountQuery */
-    protected $userCountQuery;
+    private CountQuery $userCountQuery;
 
-    /** @var CountQuery */
-    protected $productModelCountQuery;
+    private CountQuery $productModelCountQuery;
 
-    /** @var CountQuery */
-    protected $variantProductCountQuery;
+    private CountQuery $variantProductCountQuery;
 
-    /** @var CountQuery */
-    protected $categoryCountQuery;
+    private CountQuery $categoryCountQuery;
 
-    /** @var CountQuery */
-    protected $categoryTreeCountQuery;
+    private CountQuery $categoryTreeCountQuery;
 
-    /** @var CountQuery */
-    protected $productValueCountQuery;
+    private CountQuery $productValueCountQuery;
 
-    /** @var AverageMaxQuery */
-    protected $productValueAverageMaxQuery;
+    private AverageMaxQuery $productValueAverageMaxQuery;
 
-    /** @var AverageMaxQuery */
-    protected $categoryLevelsAverageMax;
+    private AverageMaxQuery $categoryLevelsAverageMax;
 
-    /** @var AverageMaxQuery */
-    protected $categoriesInOneCategoryAverageMax;
+    private AverageMaxQuery $categoriesInOneCategoryAverageMax;
 
-    /** @var AverageMaxQuery */
-    protected $productValuePerFamilyAverageMaxQuery;
+    private AverageMaxQuery$productValuePerFamilyAverageMaxQuery;
 
-    /** @var EmailDomainsQuery */
-    protected $emailDomains;
+    private EmailDomainsQuery $emailDomains;
 
-    /** @var ApiConnectionCountQuery */
-    protected $apiConnectionCountQuery;
+    private ApiConnectionCountQuery $apiConnectionCountQuery;
+
+    private MediaCountQuery $mediaCountQuery;
+
+    private IsDemoCatalogQuery $isDemoCatalogQuery;
 
     public function __construct(
         CountQuery $channelCountQuery,
@@ -99,7 +74,9 @@ class DBDataCollector implements DataCollectorInterface
         AverageMaxQuery $productValueAverageMaxQuery,
         AverageMaxQuery $productValuePerFamilyAverageMaxQuery,
         EmailDomainsQuery $emailDomains,
-        ApiConnectionCountQuery $apiConnectionCountQuery
+        ApiConnectionCountQuery $apiConnectionCountQuery,
+        MediaCountQuery $mediaCountQuery,
+        IsDemoCatalogQuery $isDemoCatalogQuery
     ) {
         $this->channelCountQuery = $channelCountQuery;
         $this->productCountQuery = $productCountQuery;
@@ -118,6 +95,8 @@ class DBDataCollector implements DataCollectorInterface
         $this->productValuePerFamilyAverageMaxQuery = $productValuePerFamilyAverageMaxQuery;
         $this->emailDomains = $emailDomains;
         $this->apiConnectionCountQuery = $apiConnectionCountQuery;
+        $this->mediaCountQuery = $mediaCountQuery;
+        $this->isDemoCatalogQuery = $isDemoCatalogQuery;
     }
 
     /**
@@ -144,6 +123,9 @@ class DBDataCollector implements DataCollectorInterface
             'max_product_values_by_family' => $this->productValuePerFamilyAverageMaxQuery->fetch()->getMaxVolume(),
             'email_domains' => $this->emailDomains->fetch(),
             'api_connection' => $this->apiConnectionCountQuery->fetch(),
+            'nb_media_files_in_products' => $this->mediaCountQuery->countFiles(),
+            'nb_media_images_in_products' => $this->mediaCountQuery->countImages(),
+            'is_demo_catalog' => $this->isDemoCatalogQuery->fetch(),
         ];
     }
 }

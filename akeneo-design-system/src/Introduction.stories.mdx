@@ -5,7 +5,17 @@ import * as Components from './components';
 <!-- If for some reason (not relevant, too small) you do not want your component
 to be featured on the Introduction Story, add its name to this list -->
 
-export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle'];
+export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle', 'SectionTitle', 'Title'];
+
+export const getComponentLink = componentName => {
+  switch (componentName) {
+    case 'Button':
+    case 'IconButton':
+      return `Components/Buttons/${componentName}`;
+    default:
+      return `Components/${componentName}`;
+  }
+};
 
 <Meta title="Introduction" />
 
@@ -141,20 +151,32 @@ export const COMPONENTS_EXCLUDE = ['CardGrid', 'HighlightTitle'];
   {Object.keys(Components)
     .filter(componentName => !COMPONENTS_EXCLUDE.includes(componentName))
     .map(componentName => (
-      <a key={componentName} class="link-item" onClick={linkTo(`Components/${componentName}`, 'Standard')}>
+      <a key={componentName} class="link-item" onClick={linkTo(getComponentLink(componentName), 'Standard')}>
         <div
           class="link-icon"
           style={{
-            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-components-${componentName.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()}-standard-correctly-1-snap.png")`,
+            backgroundImage: `url("./all-visual-tsx-visual-tests-renders-${getComponentLink(componentName)
+              .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+              .replace(/\//g, '-')
+              .toLowerCase()}-standard-correctly-1-snap.png")`,
           }}
         ></div>
         <span>
           <strong>{componentName}</strong>
-          {Components[componentName].__docgenInfo.description}
+          {Components[componentName].__docgenInfo?.description}
         </span>
       </a>
     ))}
 </div>
 <div class="subheading">Patterns</div>
 
-`//TODO`
+<div class="link-list">
+  <a class="link-item" onClick={linkTo('Patterns/Overlays', 'Confirm Modal')}>
+    <span class="link-icon">🥗</span>
+    <span>
+      <strong>Overlays</strong>
+      Overlays communicate information through a secondary window and allow the user to keep the context of a particular
+      job.
+    </span>
+  </a>
+</div>

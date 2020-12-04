@@ -855,7 +855,7 @@ const UsingIllustration = ({title, size = 256}: IllustrationProps) => (
           <use xlinkHref="#UsingIllustration_prefix__bU" />
         </mask>
         <path
-          fill={useTheme().palette.brand}
+          fill={useTheme().color.brand100}
           mask="url(#UsingIllustration_prefix__bV)"
           d="M-4.66 23.65h27.696V-4.84H-4.66z"
         />

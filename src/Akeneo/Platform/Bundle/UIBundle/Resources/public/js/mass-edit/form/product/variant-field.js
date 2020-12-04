@@ -8,53 +8,42 @@
  */
 'use strict';
 
-define(
-    [
-        'pim/product-model/form/creation/variant'
-    ],
-    function (
-        Variant
-    ) {
-        return Variant.extend({
-            readOnly: false,
+define(['pim/product-model/form/creation/variant'], function (Variant) {
+  return Variant.extend({
+    readOnly: false,
 
-            /**
-             * {@inheritdoc}
-             */
-            initialize() {
-                Variant.prototype.initialize.apply(this, arguments);
+    /**
+     * {@inheritdoc}
+     */
+    initialize() {
+      Variant.prototype.initialize.apply(this, arguments);
 
-                this.readOnly = false;
-            },
+      this.readOnly = false;
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            configure() {
-                this.listenTo(
-                    this,
-                    'mass-edit:update-read-only',
-                    this.setReadOnly.bind(this)
-                );
+    /**
+     * {@inheritdoc}
+     */
+    configure() {
+      this.listenTo(this, 'mass-edit:update-read-only', this.setReadOnly.bind(this));
 
-                return Variant.prototype.configure.apply(this, arguments);
-            },
+      return Variant.prototype.configure.apply(this, arguments);
+    },
 
-            /**
-             * {@inheritdoc}
-             */
-            isReadOnly() {
-                return this.readOnly || !this.getFormData().family
-            },
+    /**
+     * {@inheritdoc}
+     */
+    isReadOnly() {
+      return this.readOnly || !this.getFormData().family;
+    },
 
-            /**
-             * Updates the readOnly parameter to avoid edition of the field
-             *
-             * @param {Boolean} readOnly
-             */
-            setReadOnly(readOnly) {
-                this.readOnly = readOnly;
-            }
-        });
-    }
-);
+    /**
+     * Updates the readOnly parameter to avoid edition of the field
+     *
+     * @param {Boolean} readOnly
+     */
+    setReadOnly(readOnly) {
+      this.readOnly = readOnly;
+    },
+  });
+});

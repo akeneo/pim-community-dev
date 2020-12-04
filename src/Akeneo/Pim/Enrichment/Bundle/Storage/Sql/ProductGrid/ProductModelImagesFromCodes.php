@@ -317,16 +317,18 @@ SQL;
                 FROM pim_catalog_product_model root
                     INNER JOIN pim_catalog_product_model sub ON sub.parent_id = root.id
                     INNER JOIN pim_catalog_product product ON product.product_model_id = sub.id
+                WHERE root.code = :code
                 UNION ALL
                 SELECT root.code as root_code, product.family_id, product.raw_values, product.created
                 FROM pim_catalog_product_model root
                     INNER JOIN pim_catalog_product product ON product.product_model_id = root.id
+                WHERE root.code = :code
             )
             SELECT product_child.root_code as code,
                    a_image.code as attribute_code,
                    a_image.is_localizable,
                    a_image.is_scopable,
-                   product_child.raw_values,
+                   JSON_EXTRACT(product_child.raw_values, CONCAT('$.', a_image.code)) as image_values,
                    JSON_EXTRACT(
                        product_child.raw_values,
                        CONCAT('$."', a_image.code, '".', IF(is_scopable = 1, '":channel_code"', '"<all_channels>"'), '.', IF(is_localizable = 1, '":locale_code"', '"<all_locales>"'))
@@ -334,8 +336,6 @@ SQL;
             FROM product_child
                 JOIN pim_catalog_family f ON f.id = product_child.family_id
                 JOIN pim_catalog_attribute a_image ON a_image.id = f.image_attribute_id
-            WHERE
-                product_child.root_code = :code
             HAVING
                 image_value IS NOT NULL AND JSON_TYPE(image_value) != 'NULL'
             ORDER BY 
@@ -356,9 +356,8 @@ SQL;
                 continue;
             }
 
-            $rawValues = json_decode($row['raw_values'], true);
-            $filteredRawValues = array_intersect_key($rawValues, [$row['attribute_code'] => true]);
-            $productModels[$row['code']] = $filteredRawValues;
+            $imageValues = \json_decode($row['image_values'], true);
+            $productModels[$row['code']] = $imageValues ? [$row['attribute_code'] => $imageValues] : [];
             $productModelsInfo[$row['code']]['is_scopable'] = $row['is_scopable'] ? $channelCode : null;
             $productModelsInfo[$row['code']]['is_localizable'] = $row['is_localizable'] ? $channelCode : null;
             $productModelsInfo[$row['code']]['attribute_code'] = $row['attribute_code'];

@@ -20,7 +20,7 @@ Feature: Skip invalid product models through CSV
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "Status: Completed"
+    Then I should see job execution status "COMPLETED"
     And I should see the text "skipped 2"
     And I should see the text "The product model code must not be empty"
     And I should see the text "Property \"family_variant\" expects a valid family variant code. The family variant does not exist, \"\" given"
@@ -50,7 +50,7 @@ Feature: Skip invalid product models through CSV
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "Status: Completed"
+    Then I should see job execution status "COMPLETED"
     And I should see the text "skipped 1"
     And I should see the text "Variant axis \"color\" cannot be modified, \"[red]\" given"
     And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:
@@ -76,7 +76,7 @@ Feature: Skip invalid product models through CSV
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "Status: Completed"
+    Then I should see job execution status "COMPLETED"
     And I should see the text "skipped 1"
     And I should see the text "Cannot set value \"[blue]\" for the attribute axis \"color\" on product model \"code-003\", as the product model \"code-002\" already has this value"
     And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:

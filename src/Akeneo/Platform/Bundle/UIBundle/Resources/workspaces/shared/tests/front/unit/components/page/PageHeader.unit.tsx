@@ -3,8 +3,8 @@ import {render} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {PageHeader} from '@akeneo-pim-community/shared';
-import {pimTheme} from "akeneo-design-system";
-import {ThemeProvider} from "styled-components";
+import {pimTheme} from 'akeneo-design-system';
+import {ThemeProvider} from 'styled-components';
 
 describe('PageHeader', () => {
   const renderWithContext = (children: ReactElement | ReactElement[] | string, showPlaceholder: boolean = false) => {

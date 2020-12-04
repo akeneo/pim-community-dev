@@ -1,4 +1,4 @@
- 'use strict';
+'use strict';
 /**
  * Filter returning only values missing required values.
  *
@@ -7,59 +7,49 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-define(
-    [
-        'jquery',
-        'underscore',
-        'oro/translator',
-        'pim/form',
-        'pim/provider/to-fill-field-provider',
-        'pim/user-context'
-    ],
-    function (
-        $,
-        _,
-        __,
-        BaseForm,
-        toFillFieldProvider,
-        UserContext
-    ) {
-        return BaseForm.extend({
-            /**
-             * @returns {String}
-             */
-            getCode() {
-                return 'missing_required';
-            },
+define([
+  'jquery',
+  'underscore',
+  'oro/translator',
+  'pim/form',
+  'pim/provider/to-fill-field-provider',
+  'pim/user-context',
+], function ($, _, __, BaseForm, toFillFieldProvider, UserContext) {
+  return BaseForm.extend({
+    /**
+     * @returns {String}
+     */
+    getCode() {
+      return 'missing_required';
+    },
 
-            /**
-             * @returns {String}
-             */
-            getLabel() {
-                return __('pim_enrich.entity.product.module.attribute_filter.missing_required');
-            },
+    /**
+     * @returns {String}
+     */
+    getLabel() {
+      return __('pim_enrich.entity.product.module.attribute_filter.missing_required');
+    },
 
-            /**
-             * @returns {Boolean}
-             */
-            isVisible() {
-                return true;
-            },
+    /**
+     * @returns {Boolean}
+     */
+    isVisible() {
+      return true;
+    },
 
-            /**
-             * @param {Object} values
-             *
-             * @returns {Promise}
-             */
-            filterValues(values) {
-                const scope = UserContext.get('catalogScope');
-                const locale = UserContext.get('catalogLocale');
+    /**
+     * @param {Object} values
+     *
+     * @returns {Promise}
+     */
+    filterValues(values) {
+      const scope = UserContext.get('catalogScope');
+      const locale = UserContext.get('catalogLocale');
 
-                const fieldsToFill = toFillFieldProvider.getMissingRequiredFields(this.getFormData(), scope, locale);
-                const valuesToFill = _.pick(values, fieldsToFill);
+      const fieldsToFill = toFillFieldProvider.getMissingRequiredFields(this.getFormData(), scope, locale);
+      const valuesToFill = _.pick(values, fieldsToFill);
 
-                return $.Deferred().resolve(valuesToFill).promise();
-            }
-        });
-    }
-);
+      return $.Deferred().resolve(valuesToFill).promise();
+    },
+  });
+});

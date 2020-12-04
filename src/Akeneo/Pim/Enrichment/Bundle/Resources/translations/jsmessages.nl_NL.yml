@@ -166,6 +166,7 @@ pim_enrich.entity.product_model:
       required_label: '(variant as)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }}   {{ total }} variant producten"
+      label: Variant
     delete:
       confirm: Weet u zeker dat u dit product model wil verwijderen? Alle kinderen, productmodellen en productvarianten zullen ook verwijderd worden.
       confirm_for_products_and_product_models: Weet u zeker dat u de geselecteerde producten en productmodellen wil verwijderen? Alle kinderen van deze productmodellen worden ook verwijderd.
@@ -401,6 +402,7 @@ pim_datagrid:
       label: Compleet
     identifier:
       label: Identifier
+  search: Zoeken op {{ label }}
 batch_jobs:
   add_association:
     label: Associëren

@@ -168,7 +168,7 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
                 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
             ],
         ]);
-        $this->assert($result, []);
+        $this->assert($result, ['best_cat']);
 
         $result = $this->executeFilter([
             [
@@ -186,7 +186,7 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
                 $this->rabbitNewLineData,
             ],
         ]);
-        $this->assert($result, []);
+        $this->assert($result, ['best_rabbit']);
 
         $result = $this->executeFilter([
             [
@@ -237,10 +237,10 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
                 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
             ],
         ]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'best_cat', 'best_dog', 'best_rabbit']);
+        $this->assert($result, ['cat', 'cattle', 'dog', 'best_dog', 'best_rabbit']);
 
         $result = $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, $this->rabbitNewLineData]]);
-        $this->assert($result, ['cat', 'cattle', 'dog', 'best_cat', 'best_dog', 'best_rabbit']);
+        $this->assert($result, ['cat', 'cattle', 'dog', 'best_cat', 'best_dog']);
 
         $result = $this->executeFilter([['a_text_area', Operators::NOT_EQUAL, 'why my rabbit is the best?']]);
         $this->assert($result, ['cat', 'cattle', 'dog', 'best_cat', 'best_dog']);

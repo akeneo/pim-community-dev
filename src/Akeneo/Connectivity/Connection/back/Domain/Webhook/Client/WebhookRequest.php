@@ -17,13 +17,16 @@ class WebhookRequest
     /** @var ActiveWebhook */
     private $webhook;
 
-    /** @var WebhookEvent */
-    private $event;
+    /** @var array<WebhookEvent> */
+    private $apiEvents;
 
-    public function __construct(ActiveWebhook $webhook, WebhookEvent $event)
+    /**
+     * @param array<WebhookEvent> $apiEvents
+     */
+    public function __construct(ActiveWebhook $webhook, array $apiEvents)
     {
         $this->webhook = $webhook;
-        $this->event = $event;
+        $this->apiEvents = $apiEvents;
     }
 
     /**
@@ -45,58 +48,41 @@ class WebhookRequest
     /**
      * Returns request content.
      *
-     * @return array{
+     * @return array<array{
      *  action: string,
      *  event_id: string,
      *  event_date: string,
      *  author: string,
+     *  author_type: string,
      *  pim_source: string,
      *  data: array
-     * }
+     * }>
      */
     public function content(): array
     {
-        return [
-            'action' => $this->event->action(),
-            'event_id' => $this->event->eventId(),
-            'event_date' => $this->event->eventDate(),
-            'author' => $this->event->author(),
-            'pim_source' => $this->event->pimSource(),
-            'data' => $this->event->data(),
-        ];
+        return \array_map(function (WebhookEvent $apiEvent) {
+            return [
+                'action' => $apiEvent->action(),
+                'event_id' => $apiEvent->eventId(),
+                'event_date' => $apiEvent->eventDate(),
+                'author' => $apiEvent->author()->name(),
+                'author_type' => $apiEvent->author()->type(),
+                'pim_source' => $apiEvent->pimSource(),
+                'data' => $apiEvent->data(),
+            ];
+        }, $this->apiEvents);
+    }
+
+    public function webhook(): ActiveWebhook
+    {
+        return $this->webhook;
     }
 
     /**
-     * Returns request metadata such as webhook & event details, but not the event data.
-     *
-     * @return array{
-     *  webhook: array{
-     *      connection_code: string,
-     *      url: string
-     *  },
-     *  event: array{
-     *      action: string,
-     *      event_id: string,
-     *      event_date: string,
-     *      author: string,
-     *      pim_source: string
-     *  }
-     * }
+     * @return array<WebhookEvent>
      */
-    public function metadata(): array
+    public function apiEvents(): array
     {
-        return [
-            'webhook' => [
-                'connection_code' => $this->webhook->connectionCode(),
-                'url' => $this->webhook->url(),
-            ],
-            'event' => [
-                'action' => $this->event->action(),
-                'event_id' => $this->event->eventId(),
-                'event_date' => $this->event->eventDate(),
-                'author' => $this->event->author(),
-                'pim_source' => $this->event->pimSource(),
-            ],
-        ];
+        return $this->apiEvents;
     }
 }

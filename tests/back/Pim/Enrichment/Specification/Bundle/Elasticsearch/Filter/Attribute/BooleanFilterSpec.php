@@ -20,7 +20,7 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->beConstructedWith(
             $filterValidator,
             ['pim_catalog_boolean'],
-            ['=', '!=']
+            ['=', '!=', 'NOT EMPTY', 'EMPTY']
         );
     }
 
@@ -39,13 +39,15 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->getOperators()->shouldReturn([
             '=',
             '!=',
+            'NOT EMPTY',
+            'EMPTY',
         ]);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
     function it_adds_a_filter_with_operator_equals(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
@@ -67,7 +69,7 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_adds_a_filter_with_operator_not_equal(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
@@ -93,6 +95,61 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($booleanAttribute, Operators::NOT_EQUAL, false, 'en_US', 'ecommerce', []);
     }
 
+    function it_adds_empty_operator(
+        ElasticsearchFilterValidator $filterValidator,
+        AttributeInterface $booleanAttribute,
+        SearchQueryBuilder $sqb
+    ) {
+        $booleanAttribute->getCode()->willReturn('boolean');
+        $booleanAttribute->getBackendType()->willReturn('boolean');
+
+        $filterValidator->validateLocaleForAttribute('boolean', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('boolean', 'ecommerce')->shouldBeCalled();
+
+        $sqb->addMustNot([
+                'exists' => [
+                    'field' => 'values.boolean-boolean.ecommerce.en_US'
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $sqb->addFilter([
+            'bool' => [
+                'should' => [
+                    ['terms' => ['attributes_for_this_level' => ['boolean']]],
+                    ['terms' => ['attributes_of_ancestors' => ['boolean']]]
+                ],
+                'minimum_should_match' => 1
+            ]
+        ])->shouldBeCalled();
+
+
+        $this->setQueryBuilder($sqb);
+        $this->addAttributeFilter($booleanAttribute, Operators::IS_EMPTY, false, 'en_US', 'ecommerce', []);
+    }
+
+    function it_adds_not_empty_operator(
+        ElasticsearchFilterValidator $filterValidator,
+        AttributeInterface $booleanAttribute,
+        SearchQueryBuilder $sqb
+    ) {
+        $booleanAttribute->getCode()->willReturn('boolean');
+        $booleanAttribute->getBackendType()->willReturn('boolean');
+
+        $filterValidator->validateLocaleForAttribute('boolean', 'en_US')->shouldBeCalled();
+        $filterValidator->validateChannelForAttribute('boolean', 'ecommerce')->shouldBeCalled();
+
+        $sqb->addFilter([
+                'exists' => [
+                    'field' => 'values.boolean-boolean.ecommerce.en_US'
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addAttributeFilter($booleanAttribute, Operators::IS_NOT_EMPTY, false, 'en_US', 'ecommerce', []);
+    }
+
     function it_throws_an_exception_when_the_search_query_builder_is_not_initialized(
         AttributeInterface $booleanAttribute
     ) {
@@ -102,7 +159,7 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_given_value_is_not_a_boolean(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
@@ -124,7 +181,7 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_it_filters_on_an_unsupported_operator(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
@@ -151,7 +208,7 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_locale_validation(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {
@@ -175,7 +232,7 @@ class BooleanFilterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_an_exception_is_thrown_by_the_attribute_validator_on_scope_validation(
-        $filterValidator,
+        ElasticsearchFilterValidator $filterValidator,
         AttributeInterface $booleanAttribute,
         SearchQueryBuilder $sqb
     ) {

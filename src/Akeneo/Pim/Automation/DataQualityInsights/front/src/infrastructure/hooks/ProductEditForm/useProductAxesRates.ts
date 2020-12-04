@@ -1,8 +1,7 @@
-import {useEffect} from "react";
-import {useSelector, useDispatch} from "react-redux";
-import {ProductEditFormState} from "../../store";
-import {getProductAxesRatesAction} from "../../reducer";
-
+import {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {ProductEditFormState} from '../../store';
+import {getProductAxesRatesAction} from '../../reducer';
 
 const useProductAxesRates = () => {
   const dispatchAction = useDispatch();
@@ -15,7 +14,7 @@ const useProductAxesRates = () => {
     return {
       productId: productId,
       productUpdated,
-      axesRates
+      axesRates,
     };
   });
 
@@ -28,7 +27,7 @@ const useProductAxesRates = () => {
   return {
     axesRates,
     productId,
-    productUpdated
+    productUpdated,
   };
 };
 

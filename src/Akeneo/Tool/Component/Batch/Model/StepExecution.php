@@ -23,6 +23,13 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class StepExecution
 {
+    private const TRACKING_DATA_PROCESSED_ITEMS = 'processedItems';
+    private const TRACKING_DATA_TOTAL_ITEMS = 'totalItems';
+    private const TRACKING_DATA_DEFAULT = [
+        self::TRACKING_DATA_PROCESSED_ITEMS => 0,
+        self::TRACKING_DATA_TOTAL_ITEMS => 0,
+    ];
+
     /** @var integer */
     private $id;
 
@@ -76,6 +83,9 @@ class StepExecution
 
     /** @var array */
     private $summary = [];
+
+    /** @var array */
+    private $trackingData = self::TRACKING_DATA_DEFAULT;
 
     /**
      * Constructor with mandatory properties.
@@ -544,6 +554,47 @@ class StepExecution
     public function getSummary()
     {
         return $this->summary;
+    }
+
+    public function setTotalItems(int $totalItems): void
+    {
+        if (null === $this->trackingData) {
+            $this->trackingData = self::TRACKING_DATA_DEFAULT;
+        }
+
+        $this->trackingData[self::TRACKING_DATA_TOTAL_ITEMS] = $totalItems;
+    }
+
+    public function getTotalItems(): int
+    {
+        return $this->trackingData[self::TRACKING_DATA_TOTAL_ITEMS] ?? 0;
+    }
+
+    public function incrementProcessedItems(int $increment = 1): void
+    {
+        if (null === $this->trackingData) {
+            $this->trackingData = self::TRACKING_DATA_DEFAULT;
+        }
+
+        $this->trackingData[self::TRACKING_DATA_PROCESSED_ITEMS] += $increment;
+        if ($this->trackingData[self::TRACKING_DATA_PROCESSED_ITEMS] > $this->getTotalItems()) {
+            $this->setTotalItems($this->trackingData[self::TRACKING_DATA_PROCESSED_ITEMS]);
+        }
+    }
+
+    public function getProcessedItems(): int
+    {
+        return $this->trackingData[self::TRACKING_DATA_PROCESSED_ITEMS] ?? 0;
+    }
+
+    public function getTrackingData(): array
+    {
+        return $this->trackingData ?? self::TRACKING_DATA_DEFAULT;
+    }
+
+    public function setTrackingData(array $trackingData): void
+    {
+        $this->trackingData = $trackingData;
     }
 
     /**

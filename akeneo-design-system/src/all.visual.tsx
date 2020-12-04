@@ -1,9 +1,10 @@
 import 'expect-puppeteer';
 import fs from 'fs';
-
 import {toMatchImageSnapshot} from 'jest-image-snapshot';
 
 expect.extend({toMatchImageSnapshot});
+
+const EXCLUDE = ['Components/Modal'];
 
 type StoriesDump = {
   stories: {
@@ -17,12 +18,11 @@ type StoriesDump = {
 
 const storyFileContent = fs.readFileSync('./stories.json').toString('utf8');
 const storiesDump = JSON.parse(storyFileContent) as StoriesDump;
-
 const stories = Object.values(storiesDump.stories);
 
 describe('Visual tests', () => {
   stories.map(story => {
-    if (story.id.indexOf('components') !== 0) {
+    if (story.id.indexOf('components') !== 0 || EXCLUDE.includes(story.kind)) {
       return;
     }
 

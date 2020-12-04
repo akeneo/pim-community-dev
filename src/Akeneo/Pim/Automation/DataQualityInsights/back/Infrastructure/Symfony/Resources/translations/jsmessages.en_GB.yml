@@ -47,6 +47,8 @@ akeneo_data_quality_insights:
         recommendation: Required attributes with missing values
       completeness_of_non_required_attributes:
         recommendation: Non required attributes with missing values
+      enrichment_image:
+        recommendation: Missing image
     axis:
       enrichment:
         title: Enrichment
@@ -61,8 +63,24 @@ akeneo_data_quality_insights:
       grading_in_progress: Grading in progress.
       axis_grading_in_progress: Grading in progress. Please come back later.
       too_many_attributes: You have {{ count }} attributes to improve.
+      no_attribute_groups:
+        title: Sorry, we were unable to calculate your Quality score.
+        subtitle: "The quality score cannot be calculated: none of the attribute groups of this product are activated."
+        help_center_link: Learn how data quality insights can help you improve your data quality in our help center.
+      add_image_attribute_recommendation: An image is worth a thousand words. You should add an image attribute to improve the data quality of this product.
+      fill_image_attribute_recommendation: In our experience, images really make a difference. You should add at least one image to improve the data quality of this product.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: All missing attributes
+  attribute_group:
+    helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups activated on data quality.
+    helper_dqi_link: More info on our helpcenter.
+    activation: Activation
+    dqi_status: Data Quality Insights status
+    activated: Activated
+    disabled: Disabled
+    used_groups_helper: "The following attributes groups are taken into account in the Data Quality Insights calculation:"
+    all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to deactivate attribute groups to in our help center.</a>
 pim_title:
   akeneo_data_quality_insights_dashboard: Data Quality Insights
+

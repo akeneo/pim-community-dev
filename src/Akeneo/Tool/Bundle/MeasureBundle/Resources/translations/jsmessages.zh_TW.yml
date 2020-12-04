@@ -1,0 +1,179 @@
+pim_measure:
+  families:
+    Area: 區域
+    Binary: 二進位
+    Decibel: 分貝
+    Frequency: 頻率
+    Length: 長度
+    Power: 功率
+    Resistance: 電阻
+    Voltage: 電壓
+    Intensity: 強度
+    ElectricCharge: 充電
+    Duration: 時長
+    Speed: 速度
+    Temperature: 溫度
+    Volume: 體積
+    Weight: 重量
+    Pressure: 壓力
+    Energy: 能源
+    CaseBox: 包裝
+  units:
+    #Area
+    ACRE: 英畝
+    ARE: 公畝
+    ARPENT: 阿邪
+    CENTIARE: 平方米
+    HECTARE: 公頃
+    SQUARE_CENTIMETER: 平方公分
+    SQUARE_DECIMETER: 平方分米
+    SQUARE_DEKAMETER: 十平方米
+    SQUARE_FOOT: 平方英呎
+    SQUARE_FURLONG: 平方弗隆
+    SQUARE_HECTOMETER: 百平方米
+    SQUARE_INCH: 平方英吋
+    SQUARE_KILOMETER: 平方千米
+    SQUARE_METER: 平方米
+    SQUARE_MIL: 平方毫吋
+    SQUARE_MILE: 平方英哩
+    SQUARE_MILLIMETER: 平方毫米
+    SQUARE_YARD: 平方碼
+    #Binary
+    BIT: 字節
+    BYTE: 位元
+    KILOBYTE: 千位元
+    MEGABYTE: 兆位元
+    GIGABYTE: 千兆位元
+    TERABYTE: 兆兆位元
+    #Decibel
+    DECIBEL: 分貝
+    #Frequency
+    GIGAHERTZ: 千兆赫茲
+    KILOHERTZ: 千赫茲
+    MEGAHERTZ: 兆赫茲
+    TERAHERTZ: 百億赫茲
+    HERTZ: 赫茲
+    #Length
+    CENTIMETER: 公分
+    CHAIN: 鏈
+    DECIMETER: 分米
+    DEKAMETER: 分米
+    FEET: 英呎
+    FURLONG: 弗隆
+    INCH: 英吋
+    HECTOMETER: 百米
+    KILOMETER: 公里
+    METER: 米
+    MIL: 毫吋
+    MILE: 英哩
+    MILLIMETER: 毫米
+    YARD: 碼
+    #Power
+    GIGAWATT: 十億瓦特
+    KILOWATT: 千瓦
+    MEGAWATT: 兆瓦
+    TERAWATT: 兆瓦
+    WATT: 瓦特
+    #Resistance
+    MILLIOHM: 毫歐姆
+    CENTIOHM: 釐歐姆
+    DECIOHM: 分歐姆
+    OHM: 歐姆
+    DEKAOHM: 分歐姆
+    HECTOHM: 百歐姆
+    KILOHM: 千歐姆
+    MEGOHM: 兆歐姆
+    #Voltage
+    MILLIVOLT: 毫伏特
+    CENTIVOLT: 釐伏特
+    DECIVOLT: 分伏特
+    VOLT: 伏特
+    DEKAVOLT: 分瓦特
+    HECTOVOLT: 百伏特
+    KILOVOLT: 千伏特
+    #Intensity
+    MILLIAMPERE: 毫安培
+    CENTIAMPERE: 釐安培
+    DECIAMPERE: 分安培
+    AMPERE: 安培
+    HECTOAMPERE: 百安培
+    KILOAMPERE: 千安培
+    MEGAAMPERE: 百萬安培
+    #ElectricCharge
+    MILLIAMPEREHOUR: 每時毫安培
+    AMPEREHOUR: 每時安培
+    MILLICOULOMB: 毫庫倫
+    CENTICOULOMB: 釐庫倫
+    DECICOULOMB: 分庫倫
+    COULOMB: 庫倫
+    DEKACOULOMB: 分庫倫
+    HECTOCOULOMB: 百庫倫
+    KILOCOULOMB: 千安培
+    #Duration
+    MILLISECOND: 毫秒
+    SECOND: 秒
+    MINUTE: 分鐘
+    HOUR: 小時
+    DAY: 天
+    WEEK: 週
+    MONTH: 月
+    YEAR: 年 
+    #Speed
+    FOOT_PER_SECOND: 英呎/
+    FOOT_PER_HOUR: 英呎/時
+    KILOMETER_PER_HOUR: 公里/時
+    METER_PER_HOUR: 米/時
+    METER_PER_MINUTE: 米/分
+    METER_PER_SECOND: 米/秒
+    MILE_PER_HOUR: 英哩/時
+    YARD_PER_HOUR: 碼/時
+    #Temperature
+    CELSIUS: 攝氏度
+    FAHRENHEIT: 華氏度
+    KELVIN: 開爾文
+    RANKINE: 蘭金
+    REAUMUR: 列氏度
+    #Volume
+    BARREL: 桶
+    CENTILITER: 公勺
+    CUBIC_CENTIMETER: 立方公分
+    CUBIC_DECIMETER: 立方分米
+    CUBIC_FOOT: 立方英呎
+    CUBIC_INCH: 立方英吋
+    CUBIC_METER: 立方公尺
+    CUBIC_MILLIMETER: 立方公釐
+    CUBIC_YARD: 立方碼
+    DECILITER: 分升
+    GALLON: 加侖
+    LITER: 升
+    MILLILITER: 毫升
+    OUNCE: 盎司
+    PINT: 品脫
+    #Weight
+    DENIER: 旦
+    GRAIN: 顆粒
+    GRAM: 克
+    KILOGRAM: 公斤
+    LIVRE: 斤
+    MARC: 馬克
+    MILLIGRAM: 毫克
+    ONCE: 盎司
+    POUND: 磅
+    TON: 噸
+    #Pressure
+    BAR: 巴
+    PASCAL: 帕斯卡
+    HECTOPASCAL: 百帕
+    MILLIBAR: 毫巴
+    ATM: 大氣
+    PSI: 磅/平方英吋
+    TORR: 托爾
+    MMHG: 毫米汞柱
+    #Energy
+    CALORIE: 卡路里
+    KILOCALORIE: 千卡
+    JOULE: 焦
+    KILOJOULE: 千焦
+    #CaseBox
+    PIECE: 片
+    DOZEN: 打

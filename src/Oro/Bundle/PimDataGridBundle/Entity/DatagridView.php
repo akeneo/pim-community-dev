@@ -15,6 +15,7 @@ class DatagridView
 {
     /** @staticvar string */
     const TYPE_PUBLIC = 'public';
+    const TYPE_PRIVATE = 'private';
 
     /** @var int */
     protected $id;
@@ -23,7 +24,7 @@ class DatagridView
     protected $label;
 
     /** @var string */
-    protected $type = self::TYPE_PUBLIC;
+    protected $type;
 
     /** @var UserInterface */
     protected $owner;

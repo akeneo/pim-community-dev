@@ -148,7 +148,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => 'IN',
-                        'message' => 'In order to search on category codes you must use "IN" operator, {{ compared_value }} given.',
+                        'message' => 'In order to search on category codes you must use "IN" operator, {{ value }} given.',
                     ]),
                     'value' => [
                         new Assert\Type([
@@ -165,7 +165,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => '=',
-                        'message' => 'In order to search on category parent you must use "=" operator, {{ compared_value }} given.',
+                        'message' => 'In order to search on category parent you must use "=" operator, {{ value }} given.',
                     ]),
                     'value' => [
                         new Assert\Type([

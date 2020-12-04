@@ -1,0 +1,45 @@
+pim_api:
+  acl:
+    rights: 網頁API權限
+    attribute:
+      edit: 創建和更新屬性
+      list: 列表屬性
+    attribute_option:
+      edit: 創建和更新屬性選項
+      list: 列表屬性選項
+    attribute_group:
+      edit: 創建和更新屬性分組
+      list: 列表屬性分組
+    category:
+      edit: 創建和更新類別
+      list: 列表類別
+    family:
+      edit: 創建和更新品類
+      list: 列表品項
+    family_variant:
+      edit: 創建和更新品類變量
+      list: 列表品項變量
+    channel:
+      edit: 創建和更新渠道
+      list: 列表渠道
+    locale.list: 列表區域
+    currency.list: 列表貨幣
+    association_type:
+      edit: 創建和更新關聯類型
+      list: 列表關聯類型
+  acl_group:
+    overall_access: 完全網頁API權限
+    attribute: 屬性
+    attribute_option: 屬性選項
+    attribute_group: 屬性分組
+    category: 類別
+    family: 品項
+    family_variant: 品項變量
+    channel: 渠道
+    locale: 區域
+    currency: 貨幣
+    association_type: 關聯類型
+pim_user:
+  roles:
+    tab:
+      api: 網頁API權限

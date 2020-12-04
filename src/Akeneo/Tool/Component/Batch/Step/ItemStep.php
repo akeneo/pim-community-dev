@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Component\Batch\Step;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -9,9 +11,15 @@ use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -21,40 +29,27 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class ItemStep extends AbstractStep
+class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwareInterface, StoppableStepInterface
 {
-    /** @var ItemReaderInterface */
-    protected $reader = null;
+    use LoggerAwareTrait;
 
-    /** @var ItemProcessorInterface */
-    protected $processor = null;
+    protected ?ItemReaderInterface $reader = null;
+    protected ?ItemProcessorInterface $processor = null;
+    protected ?ItemWriterInterface $writer = null;
+    protected int $batchSize;
+    protected ?StepExecution $stepExecution = null;
+    private bool $stoppable = false;
+    private ?JobStopper $jobStopper = null;
 
-    /** @var ItemWriterInterface */
-    protected $writer = null;
-
-    /** @var int */
-    protected $batchSize;
-
-    /** @var StepExecution */
-    protected $stepExecution = null;
-
-    /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param JobRepositoryInterface   $jobRepository
-     * @param ItemReaderInterface      $reader
-     * @param ItemProcessorInterface   $processor
-     * @param ItemWriterInterface      $writer
-     * @param integer                  $batchSize
-     */
     public function __construct(
-        $name,
+        string $name,
         EventDispatcherInterface $eventDispatcher,
         JobRepositoryInterface $jobRepository,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         ItemWriterInterface $writer,
-        $batchSize = 100
+        int $batchSize = 100,
+        JobStopper $jobStopper = null
     ) {
         parent::__construct($name, $eventDispatcher, $jobRepository);
 
@@ -62,6 +57,7 @@ class ItemStep extends AbstractStep
         $this->processor = $processor;
         $this->writer = $writer;
         $this->batchSize = $batchSize;
+        $this->jobStopper = $jobStopper;
     }
 
     /**
@@ -94,6 +90,16 @@ class ItemStep extends AbstractStep
         return $this->writer;
     }
 
+    public function isTrackable(): bool
+    {
+        return $this->reader instanceof TrackableItemReaderInterface;
+    }
+
+    public function setStoppable(bool $stoppable): void
+    {
+        $this->stoppable = $stoppable;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -104,6 +110,10 @@ class ItemStep extends AbstractStep
 
         $this->initializeStepElements($stepExecution);
 
+        if ($this->isTrackable()) {
+            $stepExecution->setTotalItems($this->getCountFromTrackableItemReader());
+        }
+
         while (true) {
             try {
                 $readItem = $this->reader->read();
@@ -112,12 +122,12 @@ class ItemStep extends AbstractStep
                 }
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);
+                $this->updateProcessedItems();
 
                 continue;
             }
 
             $batchCount++;
-
             $processedItem = $this->process($readItem);
             if (null !== $processedItem) {
                 $itemsToWrite[] = $processedItem;
@@ -129,9 +139,14 @@ class ItemStep extends AbstractStep
                     $itemsToWrite = [];
                 }
 
-                $this->getJobRepository()->updateStepExecution($stepExecution);
+                $this->updateProcessedItems($batchCount);
                 $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
                 $batchCount = 0;
+                if ($this->jobStopper->isStopping($stepExecution)) {
+                    $this->jobStopper->stop($stepExecution);
+
+                    break;
+                }
             }
         }
 
@@ -140,7 +155,12 @@ class ItemStep extends AbstractStep
         }
 
         if ($batchCount > 0) {
+            $this->updateProcessedItems($batchCount);
             $this->dispatchStepExecutionEvent(EventInterface::ITEM_STEP_AFTER_BATCH, $stepExecution);
+        }
+
+        if ($this->jobStopper->isStopping($stepExecution)) {
+            $this->jobStopper->stop($stepExecution);
         }
 
         $this->flushStepElements();
@@ -243,5 +263,44 @@ class ItemStep extends AbstractStep
             'processor' => $this->processor,
             'writer'    => $this->writer
         ];
+    }
+
+    private function getCountFromTrackableItemReader(): int
+    {
+        if (!$this->reader instanceof TrackableItemReaderInterface) {
+            throw new \RuntimeException('The reader should implement TrackableItemReaderInterface');
+        }
+
+        try {
+            return $this->reader->totalItems();
+        } catch (\Exception $e) {
+            if ($this->logger) {
+                $this->logger->critical('Impossible to get the total items to process from the reader.');
+            }
+        }
+
+        return 0;
+    }
+
+    private function updateProcessedItems(int $processedItemsCount = 1): void
+    {
+        $this->stepExecution->incrementProcessedItems($processedItemsCount);
+        $this->jobRepository->updateStepExecution($this->stepExecution);
+    }
+
+    private function isStopping(StepExecution $stepExecution): bool
+    {
+        return $this->stoppable &&
+            null !== $this->sqlGetJobExecutionStatus &&
+            BatchStatus::STOPPING === $this->sqlGetJobExecutionStatus->getByJobExecutionId(
+                $stepExecution->getJobExecution()->getId()
+            )->getValue();
+    }
+
+    private function stop(StepExecution $stepExecution): void
+    {
+        $stepExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
+        $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
+        $this->getJobRepository()->updateStepExecution($stepExecution);
     }
 }

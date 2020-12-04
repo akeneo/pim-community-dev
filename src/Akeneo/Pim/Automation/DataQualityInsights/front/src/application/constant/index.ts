@@ -1,4 +1,5 @@
 export * from './ProductEditForm';
+export * from './FamilyEditForm';
 export * from './Dashboard';
 
 export const SUB_PRODUCT_MODEL_LEVEL = 1;

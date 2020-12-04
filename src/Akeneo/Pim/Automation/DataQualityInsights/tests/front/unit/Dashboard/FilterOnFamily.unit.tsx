@@ -1,19 +1,19 @@
 import React from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
-import {fireEvent, render, waitForElement} from "@testing-library/react";
+import {fireEvent, render, waitFor} from '@testing-library/react';
 
-import FamilyFilter
-  from "@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Overview/Filters/FamilyFilter";
-import fetchFamilies from "@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies";
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from "@akeneo-pim-community/data-quality-insights/src";
+import FamilyFilter from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/Overview/Filters/FamilyFilter';
+import fetchFamilies from '@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies';
+import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '@akeneo-pim-community/data-quality-insights/src';
+import {renderDashboardWithProvider} from '../../utils/render/renderDashboardWithProvider';
 
 const UserContext = require('pim/user-context');
 
 jest.mock('pim/user-context');
-jest.mock("@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies");
+jest.mock('@akeneo-pim-community/data-quality-insights/src/infrastructure/fetcher/Dashboard/fetchFamilies');
 
-beforeEach(() =>  {
+beforeEach(() => {
   jest.resetModules();
 });
 
@@ -22,15 +22,13 @@ UserContext.get.mockReturnValue('en_US');
 
 describe('Dashboard > filter on family', () => {
   test('dashboard can be filtered on "Mugs" family', async () => {
-
     fetchFamilies.mockResolvedValue(families);
 
-    const { getByTestId } = render(<FamilyFilter familyCode={null}/>);
+    const {getByTestId} = renderDashboardWithProvider(<FamilyFilter familyCode={null} />);
 
     await openFamilyFilterDropdown(getByTestId);
     await selectMugsFamily(getByTestId);
     assertFamilyFilterEventHasBeenDispatched();
-
   });
 });
 
@@ -39,12 +37,12 @@ async function openFamilyFilterDropdown(getByTestId) {
 }
 
 async function selectMugsFamily(getByTestId) {
-  const mugsLabel = await waitForElement(() => getByTestId("dqiFamily_mugs"));
+  const mugsLabel = await waitFor(() => getByTestId('dqiFamily_mugs'));
   fireEvent.click(mugsLabel);
 }
 
 function assertFamilyFilterEventHasBeenDispatched() {
-  const customEvents = window.dispatchEvent.mock.calls.filter((event) => event[0].constructor.name === 'CustomEvent')[0];
+  const customEvents = window.dispatchEvent.mock.calls.filter(event => event[0].constructor.name === 'CustomEvent')[0];
   expect(customEvents.length).toBe(1);
   expect(customEvents[0].type).toBe(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY);
   expect(customEvents[0].detail.familyCode).toBe('mugs');
@@ -52,27 +50,27 @@ function assertFamilyFilterEventHasBeenDispatched() {
 
 const families = {
   camcorders: {
-    code: "camcorders",
+    code: 'camcorders',
     labels: {
-      fr_FR: "Caméscopes numériques",
-      en_US: "Camcorders",
-      de_DE: "Digitale Videokameras",
+      fr_FR: 'Caméscopes numériques',
+      en_US: 'Camcorders',
+      de_DE: 'Digitale Videokameras',
     },
   },
   mugs: {
-    code: "mugs",
+    code: 'mugs',
     labels: {
-      fr_FR: "Chopes/Mugs",
-      en_US: "Mugs",
-      de_DE: "Tassen",
+      fr_FR: 'Chopes/Mugs',
+      en_US: 'Mugs',
+      de_DE: 'Tassen',
     },
   },
   pc_monitors: {
-    code: "pc_monitors",
+    code: 'pc_monitors',
     labels: {
-      fr_FR: "Moniteurs",
-      en_US: "PC Monitors",
-      de_DE: "PC Monitoren",
+      fr_FR: 'Moniteurs',
+      en_US: 'PC Monitors',
+      de_DE: 'PC Monitoren',
     },
   },
 };

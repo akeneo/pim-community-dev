@@ -232,3 +232,10 @@ services:
             - '@pim_user.context.user'
         tags:
             - { name: twig.extension }
+
+    pim_catalog.event_subscriber.clear_locale_cache_on_save:
+        class: 'Akeneo\Channel\Bundle\EventListener\ClearCacheSubscriber'
+        arguments:
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+        tags:
+            - { name: kernel.event_subscriber }

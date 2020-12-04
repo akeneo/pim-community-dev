@@ -38,7 +38,7 @@ it('it can fetch the first items', async () => {
       title: 'title 2',
     },
   ];
-  const fetch = jest.fn((search) => Promise.resolve<any[]>([]));
+  const fetch = jest.fn(search => Promise.resolve<any[]>([]));
   fetch.mockResolvedValueOnce(items);
 
   await act(async () => ReactDOM.render(<MockComponent fetch={fetch} />, container as HTMLElement));
@@ -63,7 +63,7 @@ it('it can fetch the next items', async () => {
       title: 'title 4',
     },
   ];
-  const fetch = jest.fn((search) => Promise.resolve<any[]>([]));
+  const fetch = jest.fn(search => Promise.resolve<any[]>([]));
   fetch.mockResolvedValueOnce(items).mockResolvedValueOnce(nextItems);
 
   await act(async () => ReactDOM.render(<MockComponent fetch={fetch} />, container as HTMLElement));
@@ -91,8 +91,11 @@ it('it fetches items until there is no items in most recent response', async () 
   ];
   const thirPageItems: any[] = [];
 
-  const fetch = jest.fn((search) => Promise.resolve<any[]>([]));
-  fetch.mockResolvedValueOnce(firstPageItems).mockResolvedValueOnce(secondPageItems).mockResolvedValueOnce(thirPageItems);
+  const fetch = jest.fn(search => Promise.resolve<any[]>([]));
+  fetch
+    .mockResolvedValueOnce(firstPageItems)
+    .mockResolvedValueOnce(secondPageItems)
+    .mockResolvedValueOnce(thirPageItems);
 
   await act(async () => ReactDOM.render(<MockComponent fetch={fetch} />, container as HTMLElement));
 
@@ -112,7 +115,9 @@ it('it fetches items until there is no items in most recent response', async () 
 });
 
 it('it can handle error during the fetch', async () => {
-  const fetch = (search) => {throw new Error('Async error')};
+  const fetch = search => {
+    throw new Error('Async error');
+  };
   await act(async () => ReactDOM.render(<MockComponent fetch={fetch} />, container as HTMLElement));
 
   expect(container.innerHTML).toStrictEqual('error');

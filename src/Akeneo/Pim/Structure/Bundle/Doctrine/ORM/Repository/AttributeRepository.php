@@ -143,20 +143,13 @@ class AttributeRepository extends EntityRepository implements
      */
     public function findAvailableAxes($locale)
     {
-        $query = $this->getAxesQuery($locale);
-
-        $axis = [];
-        foreach ($query->getArrayResult() as $code) {
-            $axis[$code['label']] = $code['id'];
-        }
-
-        return $axis;
+        return $this->getAxesQuery($locale)->getArrayResult();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAxesQuery($locale)
+    protected function getAxesQuery($locale)
     {
         return $this->findAllAxesQB()
             ->select('a.id')

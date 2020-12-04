@@ -21,6 +21,11 @@ Second: Sekunde
 Millisecond: Millisekunde
 Microsecond: Mikrosekunde
 "Time Zone": "Zeitzone"
+duration:
+  days: "{0}0 Tage|{1}1 Tage|]1, Inf[{{ count }} Tage"
+  hours: "{0}0 Stunden|{1}1 Stunde|]1, Inf[{{ count }} Stunden"
+  minutes: "{0}0 Minuten|{1}1 Minute|]1, Inf[{{ count }} Minuten"
+  seconds: "{0}0 Sekunden|{1}1 Sekunde|]1, Inf[{{ count }} Sekunden"
 #PIM messages
 Localized value: Vom Gebietsschema abhängiger Wert
 Columns: Spalten
@@ -202,6 +207,7 @@ pim_common:
   to: An
   type: Typ
   update: Aktualisieren
+  updated: Aktualisiert
   "yes": "Ja"
   operator: Operator
   operators:

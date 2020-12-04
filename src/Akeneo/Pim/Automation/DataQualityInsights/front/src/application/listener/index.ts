@@ -1,22 +1,22 @@
 import CatalogContextListener, {
   CATALOG_CONTEXT_CHANNEL_CHANGED,
-  CATALOG_CONTEXT_LOCALE_CHANGED
-} from "./ProductEditForm/CatalogContextListener";
+  CATALOG_CONTEXT_LOCALE_CHANGED,
+} from './ProductEditForm/CatalogContextListener';
 import ProductContextListener, {
   DATA_QUALITY_INSIGHTS_FILTER_ALL_IMPROVABLE_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_FILTER_ALL_MISSING_ATTRIBUTES,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_SHOW_ATTRIBUTE,
-} from "./ProductEditForm/ProductContextListener";
+} from './ProductEditForm/ProductContextListener';
 import PageContextListener, {
   PRODUCT_ATTRIBUTES_TAB_LOADED,
   PRODUCT_ATTRIBUTES_TAB_LOADING,
   PRODUCT_TAB_CHANGED,
   PRODUCT_MODEL_LEVEL_CHANGED,
-} from "./ProductEditForm/PageContextListener";
+} from './ProductEditForm/PageContextListener';
 
-import AttributeToImproveContextListener from "./ProductEditForm/AttributeToImproveContextListener";
+import AttributeToImproveContextListener from './ProductEditForm/AttributeToImproveContextListener';
 
 export {
   CatalogContextListener,
@@ -33,5 +33,5 @@ export {
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVING,
   DATA_QUALITY_INSIGHTS_PRODUCT_SAVED,
   PRODUCT_MODEL_LEVEL_CHANGED,
-  AttributeToImproveContextListener
-}
+  AttributeToImproveContextListener,
+};

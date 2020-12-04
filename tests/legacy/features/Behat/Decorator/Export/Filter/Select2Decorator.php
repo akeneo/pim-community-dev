@@ -40,6 +40,15 @@ class Select2Decorator extends ElementDecorator
             $this->getSession()->executeScript(
                 sprintf('$(\'.filter-item[data-name="%s"][data-type="%s"] [name="filter-value"]\').trigger(\'change\')', $this->getAttribute('data-name'), $this->getAttribute('data-type'))
             );
+            $this->spin(function () use ($valueField, $value) {
+                foreach (explode(',', $value) as $subValue) {
+                    if (strpos($valueField->getText(), $subValue) === false) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }, sprintf('The Select2 value %s can not be updated', $value));
         }
     }
 }

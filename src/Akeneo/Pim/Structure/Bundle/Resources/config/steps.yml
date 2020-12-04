@@ -9,6 +9,8 @@ services:
             - '@pim_connector.reader.file.csv_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_attribute.export:
         class: '%pim_connector.step.item_step.class%'
@@ -19,6 +21,8 @@ services:
             - '@pim_connector.reader.database.attribute'
             - '@pim_connector.processor.normalization.attribute'
             - '@pim_connector.writer.file.csv_attribute'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_attribute.import:
         class: '%pim_connector.step.item_step.class%'
@@ -29,6 +33,8 @@ services:
             - '@pim_connector.reader.file.xlsx_attribute'
             - '@pim_connector.processor.denormalization.attribute'
             - '@pim_connector.writer.database.attribute'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_attribute.export:
         class: '%pim_connector.step.item_step.class%'
@@ -40,6 +46,7 @@ services:
             - '@pim_connector.processor.normalization.attribute'
             - '@pim_connector.writer.file.xlsx_attribute'
             - 10
+            - '@akeneo_batch.job.job_stopper'
 
     ### Attribute option
     pim_connector.step.xlsx_attribute_option.import:
@@ -51,6 +58,8 @@ services:
             - '@pim_connector.reader.file.xlsx_attribute_option'
             - '@pim_connector.processor.denormalization.attribute_option'
             - '@pim_connector.writer.database.attribute_option'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_attribute_option.import:
         class: '%pim_connector.step.item_step.class%'
@@ -61,6 +70,8 @@ services:
             - '@pim_connector.reader.file.csv_attribute_option'
             - '@pim_connector.processor.denormalization.attribute_option'
             - '@pim_connector.writer.database.attribute_option'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_attribute_option.export:
         class: '%pim_connector.step.item_step.class%'
@@ -71,6 +82,8 @@ services:
             - '@pim_connector.reader.database.attribute_option'
             - '@pim_connector.processor.normalization.attribute_option'
             - '@pim_connector.writer.file.csv_attribute_option'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_attribute_option.export:
         class: '%pim_connector.step.item_step.class%'
@@ -82,6 +95,7 @@ services:
             - '@pim_connector.processor.normalization.attribute_option'
             - '@pim_connector.writer.file.xlsx_attribute_option'
             - 10
+            - '@akeneo_batch.job.job_stopper'
 
     ### Family
     pim_connector.step.csv_family.import:
@@ -93,6 +107,8 @@ services:
             - '@pim_connector.reader.file.csv_family'
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_family.compute_data_related_to_family_root_product_models:
         class: '%pim_connector.step.tasklet.class%'
@@ -127,6 +143,8 @@ services:
             - '@pim_connector.reader.file.csv_family_variant'
             - '@pim_connector.processor.denormalization.family_variant'
             - '@pim_connector.writer.database.family_variant'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_family.export:
         class: '%pim_connector.step.item_step.class%'
@@ -137,6 +155,8 @@ services:
             - '@pim_connector.reader.database.family'
             - '@pim_connector.processor.normalization.family'
             - '@pim_connector.writer.file.csv_family'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_family_variant.export:
         class: '%pim_connector.step.item_step.class%'
@@ -147,6 +167,8 @@ services:
             - '@pim_connector.reader.database.family_variant'
             - '@pim_connector.processor.normalization.family_variant'
             - '@pim_connector.writer.file.csv_family_variant'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_family.import:
         class: '%pim_connector.step.item_step.class%'
@@ -157,6 +179,8 @@ services:
             - '@pim_connector.reader.file.xlsx_family'
             - '@pim_connector.processor.denormalization.family'
             - '@pim_connector.writer.database.family'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_family.compute_data_related_to_family_root_product_models:
         class: '%pim_connector.step.tasklet.class%'
@@ -191,6 +215,8 @@ services:
             - '@pim_connector.reader.file.xlsx_family_variant'
             - '@pim_connector.processor.denormalization.family_variant'
             - '@pim_connector.writer.database.family_variant'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_family.export:
         class: '%pim_connector.step.item_step.class%'
@@ -202,6 +228,7 @@ services:
             - '@pim_connector.processor.normalization.family'
             - '@pim_connector.writer.file.xlsx_family'
             - 10
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_family_variant.export:
         class: '%pim_connector.step.item_step.class%'
@@ -213,6 +240,7 @@ services:
             - '@pim_connector.processor.normalization.family_variant'
             - '@pim_connector.writer.file.xlsx_family_variant'
             - 10
+            - '@akeneo_batch.job.job_stopper'
 
     ### Association type
     pim_connector.step.csv_association_type.import:
@@ -224,6 +252,8 @@ services:
             - '@pim_connector.reader.file.csv_association_type'
             - '@pim_connector.processor.denormalization.association_type'
             - '@pim_connector.writer.database.association_type'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_association_type.export:
         class: '%pim_connector.step.item_step.class%'
@@ -234,6 +264,8 @@ services:
             - '@pim_connector.reader.database.association_type'
             - '@pim_connector.processor.normalization.association_type'
             - '@pim_connector.writer.file.csv_association_type'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_association_type.import:
         class: '%pim_connector.step.item_step.class%'
@@ -244,6 +276,8 @@ services:
             - '@pim_connector.reader.file.xlsx_association_type'
             - '@pim_connector.processor.denormalization.association_type'
             - '@pim_connector.writer.database.association_type'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_association_type.export:
         class: '%pim_connector.step.item_step.class%'
@@ -255,6 +289,7 @@ services:
             - '@pim_connector.processor.normalization.association_type'
             - '@pim_connector.writer.file.xlsx_association_type'
             - 10
+            - '@akeneo_batch.job.job_stopper'
 
     ### Attribute Group
     pim_connector.step.csv_attribute_group_export.export:
@@ -266,6 +301,8 @@ services:
             - '@pim_connector.reader.database.attribute_group'
             - '@pim_connector.processor.normalization.attribute_group'
             - '@pim_connector.writer.file.csv_attribute_group'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_attribute_group_export.export:
         class: '%pim_connector.step.item_step.class%'
@@ -277,6 +314,7 @@ services:
             - '@pim_connector.processor.normalization.attribute_group'
             - '@pim_connector.writer.file.xlsx_attribute_group'
             - 10
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_attribute_group_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -287,6 +325,8 @@ services:
             - '@pim_connector.reader.file.xlsx_attribute_group'
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_attribute_group_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -297,6 +337,8 @@ services:
             - '@pim_connector.reader.file.csv_attribute_group'
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_attribute_group_import.ensure_attribute_group_order:
         class: '%pim_connector.step.tasklet.class%'
@@ -324,6 +366,8 @@ services:
             - '@pim_connector.reader.database.group_type'
             - '@pim_connector.processor.normalization.group_type'
             - '@pim_connector.writer.file.csv_group_type'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_group_type_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -334,6 +378,8 @@ services:
             - '@pim_connector.reader.file.csv_group_type'
             - '@pim_connector.processor.denormalization.group_type'
             - '@pim_connector.writer.database.group_type'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_group_type_import.import:
         class: '%pim_connector.step.item_step.class%'
@@ -344,6 +390,8 @@ services:
             - '@pim_connector.reader.file.xlsx_group_type'
             - '@pim_connector.processor.denormalization.group_type'
             - '@pim_connector.writer.database.group_type'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.xlsx_group_type_export.export:
         class: '%pim_connector.step.item_step.class%'
@@ -355,6 +403,7 @@ services:
             - '@pim_connector.processor.normalization.group_type'
             - '@pim_connector.writer.file.xlsx_group_type'
             - 10
+            - '@akeneo_batch.job.job_stopper'
 
     pim_enrich.step.set_attribute_requirements.mass_edit:
         class: '%pim_connector.step.item_step.class%'
@@ -366,3 +415,12 @@ services:
             - '@pim_enrich.connector.processor.mass_edit.family.set_requirements'
             - '@pim_connector.writer.database.family'
             - '%pim_job_product_batch_size%'
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_connector.step.mass_edit_family.compute_data_related_to_family_products:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'compute_data_related_to_family_products'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.mass_edit_family.compute_completeness_of_family_products'

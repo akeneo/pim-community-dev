@@ -10,10 +10,10 @@ export * from './useSortedAttributeOptions';
 export * from './useAttributeOptionsListState';
 
 export {
-    useAttributeOptions,
-    useSaveAttributeOption,
-    useCreateAttributeOption,
-    useDeleteAttributeOption,
-    useManualSortAttributeOptions,
-    useLocales,
+  useAttributeOptions,
+  useSaveAttributeOption,
+  useCreateAttributeOption,
+  useDeleteAttributeOption,
+  useManualSortAttributeOptions,
+  useLocales,
 };

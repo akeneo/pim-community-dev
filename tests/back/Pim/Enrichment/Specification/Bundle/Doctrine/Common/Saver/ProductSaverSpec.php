@@ -33,27 +33,13 @@ class ProductSaverSpec extends ObjectBehavior
         $this->shouldHaveType(BulkSaverInterface::class);
     }
 
-    function it_saves_a_single_product(
+    function it_saves_a_new_product(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         ProductInterface $product
     ) {
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $objectManager->persist($product)->shouldBeCalled();
-        $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
-
-        $this->save($product);
-    }
-
-    function it_saves_a_just_created_single_product(
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
-        ProductInterface $product
-    ) {
+        $product->isDirty()->willReturn(true);
         $product->getId()->willReturn(null);
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
@@ -68,15 +54,18 @@ class ProductSaverSpec extends ObjectBehavior
             )
         )->shouldBeCalled();
 
+        $product->cleanup()->shouldBeCalled();
+
         $this->save($product);
     }
 
-    function it_saves_an_already_created_single_product(
+    function it_saves_an_existing_product(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         ProductInterface $product
     ) {
+        $product->isDirty()->willReturn(true);
         $product->getId()->willReturn(1);
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
@@ -90,6 +79,22 @@ class ProductSaverSpec extends ObjectBehavior
                 ['unitary' => true, 'is_new' => false]
             )
         )->shouldBeCalled();
+        $product->cleanup()->shouldBeCalled();
+
+        $this->save($product);
+    }
+
+    function it_does_not_save_an_unchanged_product(
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        ProductInterface $product
+    ) {
+        $product->isDirty()->willReturn(false);
+
+        $uniqueDataSynchronizer->synchronize($product)->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
+        $objectManager->persist(Argument::any())->shouldNotBeCalled();
 
         $this->save($product);
     }
@@ -101,6 +106,11 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
+        $product1->getId()->willReturn(42);
+        $product1->isDirty()->willReturn(true);
+        $product2->getId()->willReturn(44);
+        $product2->isDirty()->willReturn(true);
+
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
 
@@ -113,11 +123,13 @@ class ProductSaverSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $product1->cleanup()->shouldBeCalled();
+        $product2->cleanup()->shouldBeCalled();
 
         $this->saveAll([$product1, $product2]);
     }
 
-    function it_throws_an_exception_when_try_to_save_something_else_than_a_product(ObjectManager $objectManager)
+    function it_throws_an_exception_when_trying_to_save_anything_but_a_product(ObjectManager $objectManager)
     {
         $otherObject = new \stdClass();
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
@@ -138,6 +150,11 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
+        $product1->getId()->willReturn(null);
+        $product1->isDirty()->willReturn(true);
+        $product2->getId()->willReturn(42);
+        $product2->isDirty()->willReturn(true);
+
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
 
@@ -150,7 +167,66 @@ class ProductSaverSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $product1->cleanup()->shouldBeCalled();
+        $product2->cleanup()->shouldBeCalled();
 
         $this->saveAll([$product1, $product2, $product1]);
+    }
+
+    function it_only_saves_changed_products(
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3
+    ) {
+        $product1->getId()->willReturn(1);
+        $product1->isDirty()->willReturn(true);
+        $product2->getId()->willReturn(2);
+        $product2->isDirty()->willReturn(false);
+        $product3->getId()->willReturn(3);
+        $product3->isDirty()->willReturn(true);
+
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+
+        $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalled();
+        $uniqueDataSynchronizer->synchronize($product2)->shouldNotBeCalled();
+        $uniqueDataSynchronizer->synchronize($product3)->shouldBeCalled();
+
+        $objectManager->persist($product1)->shouldBeCalled();
+        $objectManager->persist($product2)->shouldNotBeCalled();
+        $objectManager->persist($product3)->shouldBeCalled();
+
+        $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+
+        $product1->cleanup()->shouldBeCalled();
+        $product3->cleanup()->shouldBeCalled();
+
+        $this->saveAll([$product1, $product2, $product3]);
+    }
+
+    function it_does_not_save_multiple_products_if_none_was_updated(
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher,
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3
+    ) {
+        $product1->isDirty()->willReturn(false);
+        $product2->isDirty()->willReturn(false);
+        $product3->isDirty()->willReturn(false);
+
+        $uniqueDataSynchronizer->synchronize(Argument::any())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
+        $objectManager->persist(Argument::any())->shouldNotBeCalled();
+        $objectManager->flush()->shouldNotBeCalled();
+
+        $this->saveAll([$product1, $product2, $product3]);
     }
 }

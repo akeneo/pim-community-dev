@@ -1,3 +1,77 @@
 No products to remove: Walang mga produktong aalisin
 "dot (.)": tuldok (.)
 "comma (,)": kuwit (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Mga ari-arian
+      history.title: Kasaysayan
+    suggest_selection: Pakiusap piliin ang kategorya sa kaliwa
+    or: o
+    create_new: Gumawa ng bagong kategorya
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Mangyaring pumili ng mas mababa sa %limit% na aytem para baguhin
+    product:
+      page_title: Mga Produkto
+      page_subtitle: Marmaihang pag-edit (1 produkto)|Maramihang pag-edit (%count% mga produkto)
+      title: Pumili ng operasyon
+      subtitle: Pumili ng operasyong nais mong gawin sa napiling produkto|Pumili ng operasyong nais mong gawin sa mga napiling %count% na mga produkto
+      confirm: Ikaw ay malapit ng mag-update ng produktong may sumusunod na impormasyon, mangyaring kumpirmahin.|Ikaw ay malapit ng mag-update ng %count% na produkto na may mga sumusunod na impormasyon, mangyaring kumpirmahin.
+      steps:
+        first: Pumili ng produkto
+        second: Pumili ng operasyon
+        third: Tukuyin
+        fourth: I-configure
+    change-status:
+      label: Mag-iba ng estado
+      description: Ang mga napiling produkto ay papaganahin o hindi papaganahin.
+      success_flash: Ang katayuan ng (mga) produkto ay nabago na
+      launched_flash: Ang bulk aksyon "pagbabago ng estado" ay nailunsad na. Maabisuhan ka kapag ito ay tapos na.
+    edit-common-attributes:
+      label: Baguhin ang mga attributes
+      description: Ang napiling mga attributes ng mga produkto ay mai-edit sa mga sumusunod na data para sa piniling locale.
+      empty: Mangyaring pumili ng (mga) katangiang gusto mong baguhin
+      success_flash: Ang trabahong pag-update ng produkto (mga produkto) estado ay kasalukuyang tumatakbo
+      launched_flash: Ang malawakang aksyon na "pagbago sa mga katangian" ay nailunsad na. Ikaw ay mababalitaan kung ito'y tapos na.
+      message:
+        warning: Walang attribute na pangkaraniwan sa mga ihinirang na mga produkto. Pakiusap baguhin ang iyong pagpili.
+        invalid_attribute: Ang attribute na may kowd "attribute kowd" ay karaniwang nasa pinipiling mga produkto, nailaktawan na attribute.
+        no_valid_attribute: Wala sa mga piniling attribute ang pwedeng e-apply sa produktong ito.
+    classify-add:
+      label: Isali sa mga kategorya
+      description: Ang mga produktong ito ay ilalagay sa mga sumusunod na kategorya, ang umiiral ng pagkakalagay ay pananatilihin.
+      success_flash: Ang (mga) produkto ay naiuri na sa mga napiling kategorya
+      launched_flash: Ang bulk aksyon "idagdag ito sa mga kategorya" ay nailunsad na. Ikaw ay maabisuhan kung ito ay tapos na.
+    classify-move:
+      label: Lumipat sa pagitan ng mga kategorya
+      description: Ang mga produkto ay naka-puwesto ayon sa mga kategorya nito, ang umiiral na pagpapalit ay nawawala.
+      success_flash: Ang produkto (mga produkto) ay nailipat na sa mga piniling mga kategorta nito.
+      launched_flash: Ang akyon bulk "ilipat sa mga kategorya" ay nailunsad na ikaw ay maabisuhan kung ito ay tapos na.
+    classify-remove:
+      label: Tanggalin mula sa mga kategorya
+      description: Ang mga nailipat na mga produkto ay mula sa mga sumusunod na mga kategorya.
+      success_flash: Ang produkto (mga produkto) ay nailipat na mula sa mga piniling mga kategorya
+      launched_flash: Ang aksyon bulk "tinanggal mula sa mga kategorya" ay inilunsad na. Ikaw ay maabisuhan kung ito ay tapos na.
+    change-family:
+      label: Palitan ang pamilya
+      description: Ang pamilya ng mga napiling produkto ay babaguhin para sa napiling pamilya
+      success_flash: Ang pamilya ng napiling (mga) produkto ay matagumpay na nabago
+      launched_flash: Ang aksyon ng bulk "baguhin ang pamilya" ay inilunsad na. Ikaw ay maabisuhan kung ito ay tapos na.
+    add-to-groups:
+      label: Idagdag sa grupo
+      description: Piliin ang mga grupo kung saan idadagdag ang mga napiling produkto
+      success_flash: Ang mga produkto ay matagumpay na naidagdag sa mga piniling mga grupo
+      launched_flash: Ang aksyon bulk "idagdag sa mga grupo" ay inilunsad na. Ikaw ay maabisuhan kung ito ay tapos na.
+      no_group: Walang grupo sa ngayon. Pakiusap magsimulang maglikha ng grupo.
+    set-attribute-requirements:
+      label: Itakda ang mga kinakailangan sa mga katangian
+      description: Ang sumusunod na mga kinakailangan sa katangian ay ilalapat sa mga napiling pamilya
+      success_flash: Ang mga kinakailangan sa katangian ay nailapat na sa mga napiling pamilya
+      launched_flash: Ang bultong gawain "I-set ang mga kinakailangan katangian" ay nailunsad na. Ikaw ay ma notifay kung ito ay natapos na.
+    mass_action:
+      quick_export:
+        launched_flash: Ang job exporting products ay kasulukuyang pinatakbo
+category:
+  overview: Mga kategorya

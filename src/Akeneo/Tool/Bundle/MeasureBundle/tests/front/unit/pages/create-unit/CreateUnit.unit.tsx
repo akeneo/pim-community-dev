@@ -2,9 +2,9 @@
 
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getAllByRole, getByLabelText, getByText} from '@testing-library/react';
+import {act, fireEvent, screen} from '@testing-library/react';
 import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
-import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 declare global {
   namespace NodeJS {
@@ -14,25 +14,17 @@ declare global {
   }
 }
 
-const changeTextInputValue = async (container: HTMLElement, label: string, value: string) => {
-  const input = getByLabelText(container, label, {exact: false, trim: true}) as HTMLInputElement;
-  await fireEvent.change(input, {target: {value: value}});
+const changeTextInputValue = (label: string, value: string) => {
+  const input = screen.getByLabelText(label, {exact: false, trim: true}) as HTMLInputElement;
+  fireEvent.change(input, {target: {value: value}});
 };
 
-const changeOperationValue = async (container: HTMLElement, index: number, value: string) => {
-  const inputs = getAllByRole(container, 'operation-value-input') as HTMLInputElement[];
-  await fireEvent.change(inputs[index], {target: {value: value}});
+const changeOperationValue = (index: number, value: string) => {
+  const inputs = screen.getAllByRole('operation-value-input') as HTMLInputElement[];
+  fireEvent.change(inputs[index], {target: {value: value}});
 };
 
-let container: HTMLElement;
-
-beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
-});
-
-afterEach(() => {
-  document.body.removeChild(container);
+afterAll(() => {
   global.fetch && global.fetch.mockClear();
   delete global.fetch;
 });
@@ -61,13 +53,10 @@ const measurementFamily = Object.freeze({
   is_locked: false,
 });
 
-test('It renders without errors', async () => {
-  await act(async () => {
-    renderDOMWithProviders(
-      <CreateUnit measurementFamily={measurementFamily} onClose={() => {}} onNewUnit={() => {}} />,
-      container
-    );
-  });
+test('It renders without errors', () => {
+  renderWithProviders(
+    <CreateUnit isOpen={true} measurementFamily={measurementFamily} onClose={() => {}} onNewUnit={() => {}} />
+  );
 });
 
 test('I can fill the fields, validate and the modal is closed.', async () => {
@@ -79,21 +68,17 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
 
   global.fetch = mockFetch;
 
-  await act(async () => {
-    renderDOMWithProviders(
-      <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />,
-      container
-    );
-  });
+  renderWithProviders(
+    <CreateUnit isOpen={true} measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />
+  );
 
   await act(async () => {
-    await changeTextInputValue(container, 'pim_common.code', 'KILOMETER');
-    await changeTextInputValue(container, 'pim_common.label', 'Kilometer');
-    await changeTextInputValue(container, 'measurements.form.input.symbol', 'km');
-    await changeOperationValue(container, 0, '10');
+    await changeTextInputValue('pim_common.code', 'KILOMETER');
+    await changeTextInputValue('pim_common.label', 'Kilometer');
+    await changeTextInputValue('measurements.form.input.symbol', 'km');
+    await changeOperationValue(0, '10');
 
-    const button = getByText(container, 'pim_common.add');
-    await fireEvent.click(button);
+    fireEvent.click(screen.getByText('pim_common.add'));
   });
 
   expect(mockFetch).toHaveBeenCalledWith('akeneo_measurements_validate_unit_rest', {
@@ -145,18 +130,14 @@ test('I can submit invalid values and have the errors displayed.', async () => {
 
   global.fetch = mockFetch;
 
-  await act(async () => {
-    renderDOMWithProviders(
-      <CreateUnit measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />,
-      container
-    );
-  });
+  renderWithProviders(
+    <CreateUnit isOpen={true} measurementFamily={measurementFamily} onClose={mockOnClose} onNewUnit={mockOnNewUnit} />
+  );
 
   await act(async () => {
-    await changeTextInputValue(container, 'pim_common.code', 'invalid unit code');
+    await changeTextInputValue('pim_common.code', 'invalid unit code');
 
-    const button = getByText(container, 'pim_common.add');
-    await fireEvent.click(button);
+    fireEvent.click(screen.getByText('pim_common.add'));
   });
 
   expect(mockFetch).toHaveBeenCalledWith('akeneo_measurements_validate_unit_rest', {
@@ -170,5 +151,5 @@ test('I can submit invalid values and have the errors displayed.', async () => {
   });
   expect(mockOnNewUnit).not.toHaveBeenCalled();
   expect(mockOnClose).not.toHaveBeenCalled();
-  expect(getByText(container, 'This field can only contain letters, numbers, and underscores.')).toBeInTheDocument();
+  expect(screen.getByText('This field can only contain letters, numbers, and underscores.')).toBeInTheDocument();
 });

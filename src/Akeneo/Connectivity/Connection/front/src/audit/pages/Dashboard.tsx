@@ -1,14 +1,15 @@
 import React, {memo, useEffect} from 'react';
-import {Breadcrumb, Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
+import {Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
 import {PimView} from '../../infrastructure/pim-view/PimView';
 import {AuditEventType} from '../../model/audit-event-type.enum';
-import {BreadcrumbRouterLink} from '../../shared/router';
+import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {connectionsFetched} from '../actions/dashboard-actions';
 import {DashboardContent} from '../components/DashboardContent';
 import {useDashboardDispatch} from '../dashboard-context';
 import {useConnections} from '../hooks/api/use-connections';
 import {useFetchConnectionsAuditData} from '../hooks/api/use-fetch-connections-audit-data';
+import {Breadcrumb} from 'akeneo-design-system';
 
 export const Dashboard = memo(() => {
     const {connections} = useConnections();
@@ -26,11 +27,16 @@ export const Dashboard = memo(() => {
     useFetchConnectionsAuditData(AuditEventType.PRODUCT_UPDATED);
     useFetchConnectionsAuditData(AuditEventType.PRODUCT_READ);
 
+    const dashboardHref = `#${useRoute('pim_dashboard_index')}`;
+
     const breadcrumb = (
         <Breadcrumb>
-            <BreadcrumbRouterLink route={'pim_dashboard_index'} isLast={false}>
+            <Breadcrumb.Step href={dashboardHref}>
                 <Translate id='pim_menu.tab.activity' />
-            </BreadcrumbRouterLink>
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>
+                <Translate id='pim_menu.item.connection_audit' />
+            </Breadcrumb.Step>
         </Breadcrumb>
     );
 

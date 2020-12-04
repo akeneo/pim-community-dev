@@ -5,20 +5,18 @@
  */
 'use strict';
 
-define([
-    'underscore',
-    'pim/form/common/fields/boolean'
-],
-function (_, BaseField) {
-    return BaseField.extend({
-        /**
-         * {@inheritdoc}
-         *
-         * This field should be editable only for certain attribute types.
-         */
-        isReadOnly: function () {
-            return BaseField.prototype.isReadOnly.apply(this, arguments) ||
-                !_.contains(this.config.activeForTypes, this.getRoot().getType());
-        }
-    });
+define(['underscore', 'pim/form/common/fields/boolean'], function (_, BaseField) {
+  return BaseField.extend({
+    /**
+     * {@inheritdoc}
+     *
+     * This field should be editable only for certain attribute types.
+     */
+    isReadOnly: function () {
+      return (
+        BaseField.prototype.isReadOnly.apply(this, arguments) ||
+        !_.contains(this.config.activeForTypes, this.getRoot().getType())
+      );
+    },
+  });
 });

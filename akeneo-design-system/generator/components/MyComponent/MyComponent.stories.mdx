@@ -5,7 +5,7 @@ import {MyComponent} from './MyComponent.tsx';
   title="Components/MyComponent"
   component={MyComponent}
   argTypes={{
-    level: {control: {type: 'select', options: ['primary', 'secondary', 'tertiary', 'danger']}},
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
   }}
   args={{level: 'primary', children: 'MyComponent text'}}
 />
@@ -41,12 +41,6 @@ TODO
         <>
           <MyComponent {...args} level="primary">
             Primary
-          </MyComponent>
-          <MyComponent {...args} level="secondary">
-            Secondary
-          </MyComponent>
-          <MyComponent {...args} level="tertiary">
-            Tertiary
           </MyComponent>
           <MyComponent {...args} level="warning">
             Warning
