@@ -140,3 +140,11 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetFamilyIdsToEvaluateQuery:
         arguments:
             - '@database_connection'
+
+    akeneo.pimee.automation.data_quality_insights.query.get_product_criteria_evaluations:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\PimEnterpriseGetCriteriaEvaluationsByProductIdQuery
+        decorates: akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations
+        decoration_inner_name: akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations.community
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations.community'
