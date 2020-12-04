@@ -71,7 +71,9 @@ pim_enrich.entity.locale:
 
     grid:
         columns:
-            code: Code
+            code: Activated locales
+        filters:
+            search_placeholder: Search an activated locale
         no_search_result: Sorry, there is no result for your search.
 
 pim_enrich.entity.currency:

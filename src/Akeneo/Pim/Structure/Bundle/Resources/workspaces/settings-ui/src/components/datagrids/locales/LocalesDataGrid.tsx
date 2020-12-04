@@ -5,20 +5,15 @@ import {Locale} from '../../../models';
 import {debounce} from 'lodash';
 import {SearchBar} from '@akeneo-pim-community/shared/src';
 import {Table} from 'akeneo-design-system';
-import styled from 'styled-components';
 import {NoResults} from '../../shared/datagrids';
+import styled from 'styled-components';
 
 type Props = {
   locales: Locale[];
 };
 
-const Label = styled.span`
-  width: 71px;
-  height: 16px;
-  color: ${({theme}) => theme.color.purple100};
-  font-size: ${({theme}) => theme.fontSize.default};
-  font-weight: bold;
-  font-style: italic;
+const LocalesSearchBar = styled(SearchBar)`
+  margin: 10px 0 20px;
 `;
 
 const LocalesDataGrid: FC<Props> = ({locales}) => {
@@ -35,9 +30,10 @@ const LocalesDataGrid: FC<Props> = ({locales}) => {
 
   return (
     <>
-      <SearchBar
+      <LocalesSearchBar
         count={filteredLocales.length}
         searchValue={searchString === undefined ? '' : searchString}
+        placeholder={translate('pim_enrich.entity.locale.grid.filters.search_placeholder')}
         onSearchChange={onSearch}
       />
       {searchString !== '' && filteredLocales.length === 0 ? (
@@ -53,9 +49,7 @@ const LocalesDataGrid: FC<Props> = ({locales}) => {
           <Table.Body>
             {filteredLocales.map(locale => (
               <Table.Row key={locale.code}>
-                <Table.Cell>
-                  <Label>{locale.code}</Label>
-                </Table.Cell>
+                <Table.Cell rowTitle>{locale.code}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
