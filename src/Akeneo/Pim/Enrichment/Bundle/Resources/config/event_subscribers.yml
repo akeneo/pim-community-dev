@@ -218,3 +218,11 @@ services:
             - '@logger'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\AddDefaultValuesSubscriber:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.enrichment.factory.value'
+            - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
+        tags:
+            - { name: kernel.event_subscriber }
