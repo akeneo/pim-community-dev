@@ -3,19 +3,26 @@ import {MietteDePain} from './MietteDePain';
 import {render, screen} from '../../storybook/test-util';
 
 test('it renders its children properly', () => {
-  render(<MietteDePain>MietteDePain content</MietteDePain>);
+  render(
+    <MietteDePain>
+      <MietteDePain.Miette>Ma miette 1</MietteDePain.Miette>
+      <MietteDePain.Miette>Ma miette 2</MietteDePain.Miette>
+    </MietteDePain>
+  );
 
-  expect(screen.getByText('MietteDePain content')).toBeInTheDocument();
+  expect(screen.getByText('Ma miette 1')).toBeInTheDocument();
+  expect(screen.getByText('Ma miette 2')).toBeInTheDocument();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
-test('MietteDePain supports forwardRef', () => {
-  const ref = {current: null};
+test('it renders only Miettes', () => {
+  render(
+    <MietteDePain>
+      <MietteDePain.Miette>Ma miette</MietteDePain.Miette>
+      <MietteDePain.Separator>Separateur</MietteDePain.Separator>
+    </MietteDePain>
+  );
 
-  render(<MietteDePain ref={ref} />);
-  expect(ref.current).not.toBe(null);
+  expect(screen.queryByText('Separateur')).not.toBeInTheDocument();
 });
 
 test('MietteDePain supports ...rest props', () => {

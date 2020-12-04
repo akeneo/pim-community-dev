@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
 //TODO be sure to select the appropriate container element here
-const MietteDePainContainer = styled.div<{level: string}>``;
+const MietteDePainContainer = styled.div``;
 
 type MietteDePainProps = {
   /**
@@ -39,12 +39,26 @@ const Separator = styled.span<MietteProps>`
 Separator.defaultProps = {color: 'grey', gradient: 120};
 
 /**
- * Breadcrumbs are very effective for products and experience with a large amount of content organized in a multi-level hierarchy.
+ * Breadcrumbs are very effective for products and experience
+ * with a large amount of content organized in a multi-level hierarchy.
  */
-const MietteDePain = ({level = 'primary', children, ...rest}: MietteDePainProps) => {
+const MietteDePain = ({color = 'grey', children, ...rest}: MietteDePainProps) => {
   return (
-    <MietteDePainContainer level={level} {...rest}>
-      {children}
+    <MietteDePainContainer {...rest}>
+      {React.Children.map(children, (child, index) => {
+        if (!React.isValidElement(child) || child.type !== Miette) {
+          return null;
+        }
+
+        const isNotLast = React.Children.count(children) !== index + 1;
+
+        return (
+          <>
+            {React.cloneElement(child, {color, gradient: isNotLast ? 120 : 100})}
+            {isNotLast && <Separator gradient={100} color={color} />}
+          </>
+        );
+      })}
     </MietteDePainContainer>
   );
 };
