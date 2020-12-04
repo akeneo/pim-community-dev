@@ -67,7 +67,7 @@ pim_enrich.entity.locale:
     uppercase_label: Locale
     plural_label: Locales
     page_title:
-        index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
+        index: "]-Inf, 1]{{ count }} activated locale|]1, Inf[{{ count }} activated locales"
 
     grid:
         columns:
