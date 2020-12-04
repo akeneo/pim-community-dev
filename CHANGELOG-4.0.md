@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9513: Fix the use of an unexisting filter on the API so that it does not return an error 500
+- PIM-9586: [Backport] PIM-9571 Fix missing items on the invalid data file when importing product models
 
 # 4.0.76 (2020-12-02)
 
