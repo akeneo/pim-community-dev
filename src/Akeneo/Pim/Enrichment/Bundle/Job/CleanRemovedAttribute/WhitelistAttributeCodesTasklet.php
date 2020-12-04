@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
-class WhitelistAttributeCodeTasklet implements TaskletInterface, TrackableTaskletInterface
+class WhitelistAttributeCodesTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     private StepExecution $stepExecution;
     private AttributeCodeBlacklister $attributeCodeBlacklister;

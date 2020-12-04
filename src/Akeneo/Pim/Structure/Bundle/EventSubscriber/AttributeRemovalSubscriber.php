@@ -58,7 +58,7 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
-            'attribute_code' => $attributeCode
+            'attribute_codes' => [$attributeCode]
         ]);
     }
 }

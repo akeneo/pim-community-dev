@@ -16,7 +16,7 @@ batch_jobs:
             register_clean_job: Register the cleaning job
             clean_product_model: Clean the removed attribute values in product models
             clean_product: Clean the removed attribute values in products
-            whitelist_attribute_code: Whitelist the attribute code
+            whitelist_attribute_codes: Whitelist the attribute codes
     csv_product_export:
         label: Product export in CSV
         export.label: Product export
