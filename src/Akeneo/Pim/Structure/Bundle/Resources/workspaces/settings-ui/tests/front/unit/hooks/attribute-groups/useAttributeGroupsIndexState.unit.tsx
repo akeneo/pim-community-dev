@@ -18,8 +18,8 @@ jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/fetchers/attribu
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/fetchers/attributeGroupDqiStatusFetcher');
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/attributeGroupsSaver');
 
-describe('useInitialAttributeGroupsDataGridState', () => {
-  const renderUseInitialAttributeGroupsDataGridState = () => {
+describe('useInitialAttributeGroupsIndexState', () => {
+  const renderUseInitialAttributeGroupsIndexState = () => {
     return renderHookWithProviders(useInitialAttributeGroupsIndexState);
   };
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
   });
 
   test('it initializes the state for AttributeGroups datagrid', () => {
-    const {result} = renderUseInitialAttributeGroupsDataGridState();
+    const {result} = renderUseInitialAttributeGroupsIndexState();
 
     expect(result.current.groups).toEqual([]);
     expect(result.current.load).toBeDefined();
@@ -44,7 +44,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
   });
 
   test('it compares two attribute groups', () => {
-    const {result} = renderUseInitialAttributeGroupsDataGridState();
+    const {result} = renderUseInitialAttributeGroupsIndexState();
 
     const groupA = anAttributeGroup('groupA', 1234);
     const groupB = anAttributeGroup('groupB', 4321);
@@ -69,7 +69,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
       groupC,
     });
 
-    const {result} = renderUseInitialAttributeGroupsDataGridState();
+    const {result} = renderUseInitialAttributeGroupsIndexState();
 
     await act(async () => {
       result.current.load();
@@ -102,7 +102,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
       groupC: true,
     });
 
-    const {result} = renderUseInitialAttributeGroupsDataGridState();
+    const {result} = renderUseInitialAttributeGroupsIndexState();
 
     await act(async () => {
       result.current.load();
@@ -123,7 +123,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
       groupC,
     });
 
-    const {result} = renderUseInitialAttributeGroupsDataGridState();
+    const {result} = renderUseInitialAttributeGroupsIndexState();
 
     await act(async () => {
       result.current.load();
@@ -152,7 +152,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
       groupC,
     });
 
-    const {result} = renderUseInitialAttributeGroupsDataGridState();
+    const {result} = renderUseInitialAttributeGroupsIndexState();
 
     await act(async () => {
       result.current.load();
@@ -195,7 +195,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
       groupBBis,
     });
 
-    const {result} = renderUseInitialAttributeGroupsDataGridState();
+    const {result} = renderUseInitialAttributeGroupsIndexState();
 
     await act(async () => {
       result.current.load();
@@ -221,7 +221,7 @@ describe('useInitialAttributeGroupsDataGridState', () => {
   test('it leads to the attribute groups edition', () => {
     const groupA = anAttributeGroup('groupA', 1234);
 
-    const {result} = renderUseInitialAttributeGroupsDataGridState();
+    const {result} = renderUseInitialAttributeGroupsIndexState();
 
     act(() => {
       result.current.redirect(groupA);
@@ -232,8 +232,8 @@ describe('useInitialAttributeGroupsDataGridState', () => {
   });
 });
 
-describe('useAttributeGroupsDataGridState', () => {
-  const renderUseAttributeGroupsDataGridState = () => {
+describe('useAttributeGroupsIndexState', () => {
+  const renderUseAttributeGroupsIndexState = () => {
     return renderHookWithProviders(useAttributeGroupsIndexState);
   };
   beforeEach(() => {
@@ -248,13 +248,13 @@ describe('useAttributeGroupsDataGridState', () => {
   test('it throws an error if it used outside AttributeGroups datagrid context', () => {
     jest.spyOn(React, 'useContext').mockImplementation(() => undefined);
 
-    const {result} = renderUseAttributeGroupsDataGridState();
+    const {result} = renderUseAttributeGroupsIndexState();
 
     expect(result.error).not.toBeNull();
   });
 
   test('it returns context', () => {
-    const {result} = renderUseAttributeGroupsDataGridState();
+    const {result} = renderUseAttributeGroupsIndexState();
 
     expect(result.current.groups).toEqual([]);
     expect(result.current.load).toBeDefined();

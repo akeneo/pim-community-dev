@@ -2,7 +2,6 @@ import {useCallback, useContext, useState} from 'react';
 import {Locale} from '../../models';
 import {LocalesIndexContext, LocalesIndexState} from '../../components/providers';
 import {fetchActivatedLocales} from '../../infrastructure/fetchers';
-import {useRedirectToLocale} from './useRedirectToLocale';
 
 const useLocalesIndexState = (): LocalesIndexState => {
   const context = useContext(LocalesIndexContext);
@@ -27,18 +26,10 @@ const useInitialLocalesIndexState = (): LocalesIndexState => {
     });
   }, [setLocales, setIsPending]);
 
-  const compare = (source: Locale, target: Locale) => {
-    return source.code.localeCompare(target.code);
-  };
-
-  const redirect = useRedirectToLocale();
-
   return {
     locales,
     isPending,
     load,
-    compare,
-    redirect,
   };
 };
 

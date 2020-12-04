@@ -1,51 +1,37 @@
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {useLocalesIndexState} from '../../../hooks';
+import {useFilteredLocales} from '../../../hooks';
 import {Locale} from '../../../models';
-import {DataGrid} from '../../shared';
 import {debounce} from 'lodash';
 import {SearchBar} from '@akeneo-pim-community/shared/src';
+import {Table} from 'akeneo-design-system';
+import styled from 'styled-components';
+import {NoResults} from '../../shared/datagrids';
 
 type Props = {
   locales: Locale[];
 };
 
+const Label = styled.span`
+  width: 71px;
+  height: 16px;
+  color: ${({theme}) => theme.color.purple100};
+  font-size: ${({theme}) => theme.fontSize.default};
+  font-weight: bold;
+  font-style: italic;
+`;
+
 const LocalesDataGrid: FC<Props> = ({locales}) => {
-  const {compare} = useLocalesIndexState();
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
-  const [filteredLocales, setFilteredLocales] = useState<Locale[]>([]);
+  const {filteredLocales, search} = useFilteredLocales(locales);
 
-  useEffect(() => {
-    setFilteredLocales(locales);
-  }, [locales]);
-
-  const debouncedSearch = useCallback(
-    debounce((searchValue: string) => {
-      setFilteredLocales(
-        locales.filter((locale: Locale) => locale.code.toLocaleLowerCase().includes(searchValue.toLowerCase().trim()))
-      );
-    }, 300),
-    [locales]
-  );
+  const debouncedSearch = useCallback(debounce(search, 300), [locales]);
 
   const onSearch = (searchValue: string) => {
     setSearchString(searchValue);
     debouncedSearch(searchValue);
   };
-
-  if (searchString !== '' && filteredLocales.length === 0) {
-    return (
-      <>
-        <SearchBar
-          count={filteredLocales.length}
-          searchValue={searchString === undefined ? '' : searchString}
-          onSearchChange={onSearch}
-        />
-        <>TODO No result</>
-      </>
-    );
-  }
 
   return (
     <>
@@ -54,18 +40,27 @@ const LocalesDataGrid: FC<Props> = ({locales}) => {
         searchValue={searchString === undefined ? '' : searchString}
         onSearchChange={onSearch}
       />
-      <DataGrid dataSource={filteredLocales} compareData={compare} isFilterable={true}>
-        <DataGrid.HeaderRow>
-          <DataGrid.Cell>{translate('pim_enrich.entity.locale.grid.columns.code')}</DataGrid.Cell>
-        </DataGrid.HeaderRow>
-        <DataGrid.Body>
-          {filteredLocales.map(locale => (
-            <DataGrid.Row key={locale.code} data={locale}>
-              <DataGrid.Cell rowHeader>{locale.code}</DataGrid.Cell>
-            </DataGrid.Row>
-          ))}
-        </DataGrid.Body>
-      </DataGrid>
+      {searchString !== '' && filteredLocales.length === 0 ? (
+        <NoResults
+          title={translate('pim_datagrid.no_results', {entityHint: 'locale'})}
+          subtitle={translate('pim_datagrid.no_results_subtitle')}
+        />
+      ) : (
+        <Table>
+          <Table.Header>
+            <Table.HeaderCell>{translate('pim_enrich.entity.locale.grid.columns.code')}</Table.HeaderCell>
+          </Table.Header>
+          <Table.Body>
+            {filteredLocales.map((locale) => (
+              <Table.Row key={locale.code}>
+                <Table.Cell>
+                  <Label>{locale.code}</Label>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table>
+      )}
     </>
   );
 };

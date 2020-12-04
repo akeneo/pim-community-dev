@@ -1,3 +1,2 @@
 export * from './useLocalesIndexState';
-export * from './useRedirectToLocale';
-export * from './useLocalePermissions';
+export * from './useFilteredLocales';
