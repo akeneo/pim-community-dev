@@ -51,7 +51,7 @@ const LocalesDataGrid: FC<Props> = ({locales}) => {
             <Table.HeaderCell>{translate('pim_enrich.entity.locale.grid.columns.code')}</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {filteredLocales.map((locale) => (
+            {filteredLocales.map(locale => (
               <Table.Row key={locale.code}>
                 <Table.Cell>
                   <Label>{locale.code}</Label>

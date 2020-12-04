@@ -4,7 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {LocalesBreadcrumb} from '../../components/breadcrumbs';
 import {LocalesUserButtons} from '../../components/buttons';
 import {useLocalesIndexState} from '../../hooks/locales';
-import {LocalesDataGrid} from "../../components/datagrids/locales";
+import {LocalesDataGrid} from '../../components/datagrids/locales';
 
 const LocalesIndex: FC = () => {
   const translate = useTranslate();
