@@ -72,7 +72,7 @@
 
 - TIP-1233: Upgrade to php7.4
 - CPM-38: Upgrade Symfony to 4.4.15
-- TIP-152: Upgrade ElasticSearch to 9.5.2
+- TIP-152: Upgrade ElasticSearch to 7.10.0
 
 ## Classes
 
