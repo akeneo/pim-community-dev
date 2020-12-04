@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AkeneoConnectivityConnectionExtension extends Extension
+class AkeneoEnterpriseConnectivityConnectionExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
