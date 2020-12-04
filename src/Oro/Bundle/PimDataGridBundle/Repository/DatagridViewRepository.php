@@ -22,7 +22,7 @@ class DatagridViewRepository extends EntityRepository implements DatagridViewRep
     public function getDatagridViewAliasesByUser(UserInterface $user): array
     {
         $sql = <<<SQL
-SELECT datagrid_alias
+SELECT DISTINCT datagrid_alias
 FROM pim_datagrid_view
 WHERE type = :public_type OR (type = :private_type AND owner_id = :owner_id)
 SQL;

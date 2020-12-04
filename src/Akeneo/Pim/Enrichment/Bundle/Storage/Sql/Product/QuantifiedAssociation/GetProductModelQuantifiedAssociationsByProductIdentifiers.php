@@ -20,9 +20,6 @@ final class GetProductModelQuantifiedAssociationsByProductIdentifiers
     /** @var FindQuantifiedAssociationTypeCodesInterface */
     private $findQuantifiedAssociationTypeCodes;
 
-    /** @var array|null */
-    private $quantifiedAssociationTypeCodesCache = null;
-
     public function __construct(
         Connection $connection,
         GetIdMappingFromProductModelIdsQuery $getIdMappingFromProductModelIdsQuery,
@@ -81,13 +78,18 @@ SQL;
 
     private function hydrateQuantifiedAssociations($rows): array
     {
+        $validQuantifiedAssociationTypeCodes = $this->findQuantifiedAssociationTypeCodes->execute();
+
         $results = [];
         foreach ($rows as $row) {
             if (null === $row['all_quantified_associations']) {
                 continue;
             }
             $allQuantifiedAssociationsWithProductId = json_decode($row['all_quantified_associations'], true);
-            $associationWithIdentifiers = $this->associationsWithIdentifiers($allQuantifiedAssociationsWithProductId);
+            $associationWithIdentifiers = $this->associationsWithIdentifiers(
+                $allQuantifiedAssociationsWithProductId,
+                $validQuantifiedAssociationTypeCodes
+            );
             if (!empty($associationWithIdentifiers)) {
                 $productIdentifier = $row['identifier'];
                 $results[$productIdentifier] = $associationWithIdentifiers;
@@ -97,8 +99,10 @@ SQL;
         return $results;
     }
 
-    private function associationsWithIdentifiers(array $allQuantifiedAssociationsWithProductId)
-    {
+    private function associationsWithIdentifiers(
+        array $allQuantifiedAssociationsWithProductId,
+        array $validQuantifiedAssociationTypeCodes
+    ) {
         $productIds = [];
         foreach ($allQuantifiedAssociationsWithProductId as $quantifiedAssociationWithId) {
             if (empty($quantifiedAssociationWithId)) {
@@ -115,9 +119,10 @@ SQL;
                 continue;
             }
 
-            if (!$this->quantifiedAssociationTypeExist($associationTypeCode)) {
+            if (!in_array($associationTypeCode, $validQuantifiedAssociationTypeCodes)) {
                 continue;
             }
+
             $uniqueQuantifiedAssociations = [];
             foreach ($associationWithIds['product_models'] as $associationWithProductId) {
                 try {
@@ -146,14 +151,5 @@ SQL;
             },
             $quantifiedAssociationWithProductId['product_models'] ?? []
         );
-    }
-
-    private function quantifiedAssociationTypeExist(string $associationTypeCode): bool
-    {
-        if ($this->quantifiedAssociationTypeCodesCache === null) {
-            $this->quantifiedAssociationTypeCodesCache = $this->findQuantifiedAssociationTypeCodes->execute();
-        }
-
-        return in_array($associationTypeCode, $this->quantifiedAssociationTypeCodesCache);
     }
 }

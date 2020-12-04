@@ -22,4 +22,6 @@ interface EvaluateCriterionInterface
     public function evaluate(Write\CriterionEvaluation $criterionEvaluation, ProductValuesCollection $productValues): Write\CriterionEvaluationResult;
 
     public function getCode(): CriterionCode;
+
+    public function getCoefficient(): int;
 }

@@ -53,7 +53,11 @@ describe('Product evaluation tab', () => {
       0,
       queryAllByText
     );
-    assertExpectedMessageNumber('N/A', 1, queryAllByText);
+    assertExpectedMessageNumber(
+      /akeneo_data_quality_insights.product_evaluation.messages.not_applicable.message/,
+      1,
+      queryAllByText
+    );
 
     expect(getAllByTestId('dqiAttributeWithRecommendation').length).toBe(3);
     expect(getAllByTestId('dqiAttributeWithRecommendation')[0].childNodes[0].textContent).toBe('picture');
@@ -96,7 +100,11 @@ describe('Product evaluation tab', () => {
       1,
       queryAllByText
     );
-    assertExpectedMessageNumber('N/A', 1, queryAllByText);
+    assertExpectedMessageNumber(
+      /akeneo_data_quality_insights.product_evaluation.messages.not_applicable.message/,
+      1,
+      queryAllByText
+    );
 
     expect(getAllByTestId('dqiAttributeWithRecommendation').length).toBe(1);
     expect(getAllByTestId('dqiAttributeWithRecommendation')[0].innerHTML).toBe('Product description');
@@ -135,7 +143,11 @@ describe('Product evaluation tab', () => {
       0,
       queryAllByText
     );
-    assertExpectedMessageNumber('N/A', 1, queryAllByText);
+    assertExpectedMessageNumber(
+      /akeneo_data_quality_insights.product_evaluation.messages.not_applicable.message/,
+      1,
+      queryAllByText
+    );
 
     expect(queryAllByTestId('dqiAttributeWithRecommendation').length).toBe(0);
 
@@ -175,7 +187,7 @@ function assertAllAxisCriteriaAreDisplayed(queryAllByTestId) {
   expect(queryAllByTestId('dqiProductEvaluationCriterion').length).toBe(5);
 }
 
-function assertExpectedMessageNumber(criteriaStatus: string, expectedNumber: number, queryAllByText) {
+function assertExpectedMessageNumber(criteriaStatus: string | RegExp, expectedNumber: number, queryAllByText) {
   expect(queryAllByText(criteriaStatus).length).toBe(expectedNumber);
 }
 

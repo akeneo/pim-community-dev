@@ -8,10 +8,10 @@ import {DataQualityInsightsTabContent} from './component/ProductEditForm/TabCont
 import fetchProductModelEvaluation from '../infrastructure/fetcher/ProductEditForm/fetchProductModelEvaluation';
 import {AxesContextProvider} from './context/AxesContext';
 import AttributesTabContent from './component/ProductEditForm/TabContent/AttributesTabContent';
-import {pimTheme} from 'akeneo-design-system';
+import {EditIcon, pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import AxisEvaluation from './component/ProductEditForm/TabContent/DataQualityInsights/AxisEvaluation';
-import Criterion from './component/ProductEditForm/TabContent/DataQualityInsights/Criterion';
+import {Criterion, Icon} from './component/ProductEditForm/TabContent/DataQualityInsights';
 
 interface ProductModelEditFormAppProps {
   catalogChannel: string;
@@ -35,9 +35,13 @@ const ProductModelEditFormApp: FunctionComponent<ProductModelEditFormAppProps> =
 
         <AxesContextProvider axes={['enrichment']}>
           <DataQualityInsightsTabContent product={product} productEvaluationFetcher={fetchProductModelEvaluation}>
-            <AxisEvaluation axis={'enrichment'} showRate={false}>
-              <Criterion code={'completeness_of_required_attributes'} />
-              <Criterion code={'completeness_of_non_required_attributes'} />
+            <AxisEvaluation axis={'enrichment'}>
+              <Criterion code={'completeness_of_required_attributes'}>
+                <Icon type={EditIcon} />
+              </Criterion>
+              <Criterion code={'completeness_of_non_required_attributes'}>
+                <Icon type={EditIcon} />
+              </Criterion>
             </AxisEvaluation>
           </DataQualityInsightsTabContent>
         </AxesContextProvider>

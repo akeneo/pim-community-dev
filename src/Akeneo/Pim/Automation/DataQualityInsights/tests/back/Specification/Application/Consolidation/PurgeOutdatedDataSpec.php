@@ -2,21 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardRatesProjectionRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductAxisRateRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use PhpSpec\ObjectBehavior;
@@ -24,20 +14,15 @@ use Prophecy\Argument;
 
 class PurgeOutdatedDataSpec extends ObjectBehavior
 {
-    public function let(
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository,
-        ProductAxisRateRepositoryInterface $productAxisRateRepository,
-        ProductAxisRateRepositoryInterface $productModelAxisRateRepository
-    ) {
+    public function let(DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository)
+    {
         $this->beConstructedWith(
-            $dashboardRatesProjectionRepository,
-            $productAxisRateRepository,
-            $productModelAxisRateRepository
+            $dashboardRatesProjectionRepository
         );
     }
 
     public function it_purges_dashboard_projection_rates(
-        DashboardRatesProjectionRepositoryInterface $dashboardRatesProjectionRepository
+        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository
     ) {
         $purgeDate = new \DateTimeImmutable('2020-03-27');
         $daily = TimePeriod::daily();
@@ -61,19 +46,6 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
         }))->shouldBeCalled();
 
         $this->purgeDashboardProjectionRatesFrom($purgeDate);
-    }
-
-    public function it_purges_outdated_axis_rates(
-        ProductAxisRateRepositoryInterface $productAxisRateRepository,
-        ProductAxisRateRepositoryInterface $productModelAxisRateRepository
-    ) {
-        $purgeDate = new \DateTimeImmutable('2019-12-31');
-        $limitDate = new \DateTimeImmutable('2019-12-24');
-
-        $productAxisRateRepository->purgeUntil($limitDate)->shouldBeCalled();
-        $productModelAxisRateRepository->purgeUntil($limitDate)->shouldBeCalled();
-
-        $this->purgeProductAxisRatesFrom($purgeDate);
     }
 
     private function formatPurgeDatesForComparison(DashboardPurgeDateCollection $purgeDates): array
