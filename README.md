@@ -9,6 +9,7 @@ Here is [the documentation](https://docs.akeneo.com/latest/install_pim/docker/in
 
 ## useful make targets
 
+ * help: documentation of available targets
  * pim-dev: install a PIM using the development environement
  * vendor: launch composer update
  * yarn.lock: launch yarn install
@@ -16,7 +17,7 @@ Here is [the documentation](https://docs.akeneo.com/latest/install_pim/docker/in
 
 ## context oriented targets
 
-When working on a particular project, it is useful to get context only targets such as launching tests for the project only. It is possible to add these targets in a file in the `make-files` directory. Setting the `PIM_CONTEXT` environment variable with the name of that file (omitting the extension) will make the main file to include it.
+When working on a particular project, it is useful to get context only targets such as launching tests for the current project. It is possible to add these targets in a file in the `make-files` directory. Setting the `PIM_CONTEXT` environment variable with the name of that file (omitting the extension) will make the main file to include it.
 
 The following line will include `make-files/my_project.mk`:
 
