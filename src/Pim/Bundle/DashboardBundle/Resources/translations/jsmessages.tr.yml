@@ -16,6 +16,7 @@ pim_dashboard:
         compute_product_models_descendants: Ürün modelleri nesillerini hesapla
         compute_family_variant_structure_changes: Ailenin varyant yapısı değişikliklerini hesapla
         compute_completeness_of_products_family: Ürün ailesinin bütünlüğünü hesapla
+        mass_delete: Ürünleri sil
     completeness:
       load_more: 'Daha fazla yükle...'
     header:
