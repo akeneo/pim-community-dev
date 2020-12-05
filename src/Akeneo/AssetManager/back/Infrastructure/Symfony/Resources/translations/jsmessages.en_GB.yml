@@ -265,7 +265,6 @@ pim_asset_manager:
         subtitle: 'To start linking products to this asset family you can create a new one: '
         link: Create a new product attribute
       not_enough_items:
-        title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
         subtitle:
           usable_in_grid: To discover all the linked products, click just below!
           not_usable_in_grid: To discover all the linked products, the product attribute must be set as "usable in grid".

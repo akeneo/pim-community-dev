@@ -265,7 +265,6 @@ pim_asset_manager:
         subtitle: 'Aby rozpocząć powiązanie produktów z tą rodziną zasobów, możesz utworzyć nowy: '
         link: Utwórz nowy atrybut produktu
       not_enough_items:
-        title: Do diaska! Możesz zobaczyć tylko {{ productCount }}/{{ totalCount }} produktów.
         subtitle:
           usable_in_grid: Aby odkryć wszystkie powiązane produkty, kliknij poniżej!
           not_usable_in_grid: Aby odkryć wszystkie powiązane produkty, atrybut produktu musi być ustawiony jako „używalny w tabeli”.
