@@ -221,7 +221,6 @@ pim_asset_manager:
         subtitle: 'Per iniziare a collegare prodotti a questa famiglia puoi crearne uno nuovo: '
         link: Crea un nuovo attributo prodotto
       not_enough_items:
-        title: Accidenti! Puoi vedere solo {{ productCount }} prodotti su {{ totalCount }}.
         button: Mostra tutti i prodotti
       no_product:
         title: Questo asset non è collegato a nessun prodotto tramite l'attributo prodotto "{{ entityLabel }}"

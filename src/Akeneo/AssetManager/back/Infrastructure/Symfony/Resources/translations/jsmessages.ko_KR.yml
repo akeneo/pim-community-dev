@@ -265,7 +265,6 @@ pim_asset_manager:
         subtitle: '이 자산 패밀리에 대한 제품 링크 연결을 시작하기 위해 새로 만들 수 있습니다: '
         link: 새 제품 특성 만들기
       not_enough_items:
-        title: 죄송합니다! {{ productCount }}/{{ totalCount }}개 제품만 볼 수 있습니다.
         subtitle:
           usable_in_grid: 링크된 모든 제품을 검색하려면, 아래를 클릭하면 됩니다!
           not_usable_in_grid: 링크된 모든 제품을 검색하려면, 제품 특성이 "그리드에서 사용 가능"으로 설정되어야 합니다.
