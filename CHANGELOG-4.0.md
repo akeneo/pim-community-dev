@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.77 (2020-12-07)
+
 ## Bug fixes
 
 - PIM-9513: Fix the use of an unexisting filter on the API so that it does not return an error 500
