@@ -54,6 +54,7 @@
 - PIM-9564: Use original filename instead of data for MediaFile attributes in naming convention
 - PIM-9543: Print PDF content with Han (Chinese, Japanese, Korean) characters
 - PIM-9589: Fix attribute edit form in Asset Manager
+- PIM-9512: Fix asset navigation panel is not kept close
 
 ## Improvements
 

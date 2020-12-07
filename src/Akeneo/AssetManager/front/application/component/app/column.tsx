@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled, {css} from 'styled-components';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
+import {useStoredState} from 'akeneoassetmanager/application/hooks/state';
 
 export const ColumnTitle = styled.div`
   display: block;
@@ -88,7 +89,7 @@ type ColumnProps = {
 };
 
 export const Column = ({title, children}: ColumnProps) => {
-  const [isCollapsed, setCollapsed] = React.useState(false);
+  const [isCollapsed, setCollapsed] = useStoredState<boolean>('collapsedColumn_pim-menu-asset_manager', false);
 
   return (
     <ColumnContainer isCollapsed={isCollapsed}>
