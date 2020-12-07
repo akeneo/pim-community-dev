@@ -1,12 +1,14 @@
 import React, {FC, useEffect} from 'react';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
-import {PimView, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {LocalesBreadcrumb, LocalesDataGrid} from '../components';
+import {PimView, useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {LocalesDataGrid} from '../components';
 import {useLocalesIndexState} from '../hooks';
+import {Breadcrumb} from 'akeneo-design-system';
 
 const LocalesIndex: FC = () => {
   const translate = useTranslate();
   const {locales, load, isPending} = useLocalesIndexState();
+  const settingsHomePageRoute = useRoute('pim_enrich_attribute_index');
 
   useEffect(() => {
     (async () => {
@@ -18,7 +20,10 @@ const LocalesIndex: FC = () => {
     <>
       <PageHeader showPlaceholder={isPending}>
         <PageHeader.Breadcrumb>
-          <LocalesBreadcrumb />
+          <Breadcrumb>
+            <Breadcrumb.Step href={`#${settingsHomePageRoute}`}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
+            <Breadcrumb.Step>{translate('pim_enrich.entity.locale.plural_label')}</Breadcrumb.Step>
+          </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
           <PimView

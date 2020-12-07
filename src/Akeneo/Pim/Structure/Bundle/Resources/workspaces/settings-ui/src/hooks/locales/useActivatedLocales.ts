@@ -15,10 +15,10 @@ const useActivatedLocales = (): ActivatedLocalesState => {
   const load = useCallback(async () => {
     setIsPending(true);
 
-    return fetchActivatedLocales().then(collection => {
-      setLocales(collection);
-      setIsPending(false);
-    });
+    const collection = await fetchActivatedLocales();
+    setLocales(collection);
+
+    setIsPending(false);
   }, [setLocales, setIsPending]);
 
   return {
