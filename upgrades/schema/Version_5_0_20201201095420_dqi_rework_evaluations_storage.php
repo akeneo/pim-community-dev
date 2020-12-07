@@ -11,7 +11,7 @@ final class Version_5_0_20201201095420_dqi_rework_evaluations_storage extends Ab
     {
         $this->addSql(<<<SQL
 ALTER TABLE pim_data_quality_insights_product_criteria_evaluation
-    RENAME TO pim_data_quality_insights_product_criteria_evaluation_dep, ALGORITHM=INSTANT;
+    RENAME TO pim_data_quality_insights_product_criteria_evaluation_depr, ALGORITHM=INSTANT;
 
 CREATE TABLE pim_data_quality_insights_product_criteria_evaluation (
   product_id int NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE pim_data_quality_insights_product_criteria_evaluation (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE pim_data_quality_insights_product_model_criteria_evaluation
-    RENAME TO pim_data_quality_insights_product_model_criteria_evaluation_dep, ALGORITHM=INSTANT;
+    RENAME TO pim_data_quality_insights_product_model_criteria_evaluation_depr, ALGORITHM=INSTANT;
 
 CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
   product_id int NOT NULL,
@@ -37,23 +37,6 @@ CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
   INDEX status_index (status),
   CONSTRAINT FK_dqi_product_model_criteria_evaluation FOREIGN KEY (product_id) REFERENCES pim_catalog_product_model (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-SQL
-        );
-
-        $this->addSql(<<<SQL
-INSERT IGNORE INTO pim_data_quality_insights_product_criteria_evaluation (product_id, criterion_code, evaluated_at, status)
-SELECT evaluation_dep.product_id, evaluation_dep.criterion_code, evaluation_dep.evaluated_at, 'pending'
-FROM pim_data_quality_insights_product_criteria_evaluation_dep AS evaluation_dep
-WHERE evaluation_dep.criterion_code != 'consistency_text_title_formatting';
-
-DROP TABLE pim_data_quality_insights_product_criteria_evaluation_dep;
-
-INSERT IGNORE INTO pim_data_quality_insights_product_model_criteria_evaluation (product_id, criterion_code, evaluated_at, status)
-SELECT evaluation_dep.product_id, evaluation_dep.criterion_code, evaluation_dep.evaluated_at, 'pending'
-FROM pim_data_quality_insights_product_model_criteria_evaluation_dep AS evaluation_dep
-WHERE evaluation_dep.criterion_code != 'consistency_text_title_formatting';
-
-DROP TABLE pim_data_quality_insights_product_model_criteria_evaluation_dep;
 SQL
         );
     }
