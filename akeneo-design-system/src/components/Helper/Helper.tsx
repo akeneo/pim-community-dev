@@ -82,6 +82,7 @@ const IconContainer = styled.span<{level: Level; inline: boolean} & AkeneoThemed
 
 const TextContainer = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps>`
   padding-left: ${({inline}) => (inline ? '4px' : '10px')};
+  white-space: break-spaces;
 
   ${({inline, level}) =>
     !inline &&
@@ -114,7 +115,7 @@ type HelperProps = {
   children: ReactNode;
 };
 
-/** Helper informs the user about the features of the section */
+/** Helper informs the user about the features of the section. */
 const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
   ({level = 'info', inline = false, icon, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
     return (
