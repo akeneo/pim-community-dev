@@ -318,7 +318,7 @@ measures_config:
                 convert: [{'mul': '604800'}]
                 symbol: week
             MONTH:
-                convert: [{'mul': '18748800'}]
+                convert: [{'mul': '2628000'}]
                 symbol: month
             YEAR:
                 convert: [{'mul': '31536000'}]
