@@ -1,7 +1,12 @@
 import React, {SyntheticEvent} from 'react';
+import styled from 'styled-components';
 import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Button, ButtonProps, ExportIllustration, Helper, Modal, SectionTitle, Title} from 'akeneo-design-system';
+import {Button, ButtonProps, ExportIllustration, Helper, Link, Modal, SectionTitle, Title} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
+
+const Paragraph = styled.p`
+  white-space: break-spaces;
+`;
 
 type StopJobActionProps = {
   id: string;
@@ -26,7 +31,7 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
     e.stopPropagation();
     e.preventDefault();
     openConfirm();
-  }
+  };
 
   if (!isStoppable || !isGranted('pim_importexport_stop_job')) return null;
 
@@ -40,7 +45,17 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
       >
         <SectionTitle color="brand">{translate('pim_title.pim_enrich_job_tracker_index')} /</SectionTitle>
         <Title>{translate('pim_datagrid.action.stop.confirmation.title', {jobLabel})}</Title>
-        <Helper level="info">{translate('pim_datagrid.action.stop.confirmation.content')}</Helper>
+        <Helper level="info">
+          <Paragraph>
+            {translate('pim_datagrid.action.stop.confirmation.content')}
+            <Link
+              href="https://help.akeneo.com/pim/serenity/articles/monitor-jobs.html#how-to-stop-your-jobs"
+              target="_blank"
+            >
+              {translate('pim_datagrid.action.stop.confirmation.link')}
+            </Link>
+          </Paragraph>
+        </Helper>
         <Modal.BottomButtons>
           <Button level="tertiary" onClick={closeConfirm}>
             {translate('pim_common.cancel')}
