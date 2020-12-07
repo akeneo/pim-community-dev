@@ -7,7 +7,7 @@ const fetchAllLocales = async (): Promise<Locale[]> => {
     return FetcherRegistry.getFetcher('locale').fetchAll();
   } catch (error) {
     console.error(error);
-    return Promise.resolve([]);
+    return [];
   }
 };
 const fetchActivatedLocales = async (): Promise<Locale[]> => {
@@ -15,7 +15,7 @@ const fetchActivatedLocales = async (): Promise<Locale[]> => {
     return FetcherRegistry.getFetcher('locale').fetchActivated();
   } catch (error) {
     console.error(error);
-    return Promise.resolve([]);
+    return [];
   }
 };
 
