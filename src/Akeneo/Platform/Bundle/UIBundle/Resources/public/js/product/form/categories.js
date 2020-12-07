@@ -157,6 +157,10 @@ define([
      * Locks a set of categories
      */
     lockCategories: function () {
+      if (this.isReadOnly()) {
+        return;
+      }
+
       const lockedCategoryIds = this.getFormData().meta.ascendant_category_ids;
       lockedCategoryIds.forEach(categoryId => {
         const node = $('#node_' + categoryId);
