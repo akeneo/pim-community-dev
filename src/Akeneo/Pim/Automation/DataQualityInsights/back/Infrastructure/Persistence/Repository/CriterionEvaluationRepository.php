@@ -179,13 +179,7 @@ SQL;
             return null;
         }
 
-        $formattedCriterionEvaluationResult = [
-            'rates' => $criterionEvaluationResult->getRates()->toArrayInt(),
-            'status' => $criterionEvaluationResult->getStatus()->toArrayString(),
-            'data' => $criterionEvaluationResult->getDataToArray(),
-        ];
-
-        $formattedCriterionEvaluationResult = $this->transformCriterionEvaluationResult->transformToIds($formattedCriterionEvaluationResult);
+        $formattedCriterionEvaluationResult = $this->transformCriterionEvaluationResult->transformToIds($criterionEvaluationResult->toArray());
 
         return json_encode($formattedCriterionEvaluationResult);
     }

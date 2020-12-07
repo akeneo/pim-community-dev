@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -86,9 +84,6 @@ SQL;
         $rawResult = json_decode($rawResult, true, JSON_THROW_ON_ERROR);
         $rawResult = $this->transformCriterionEvaluationResultIds->transformToCodes($rawResult);
 
-        $rates = ChannelLocaleRateCollection::fromArrayInt($rawResult['rates'] ?? []);
-        $status = CriterionEvaluationResultStatusCollection::fromArrayString($rawResult['status'] ?? []);
-
-        return new Read\CriterionEvaluationResult($rates, $status, $rawResult['data'] ?? []);
+        return Read\CriterionEvaluationResult::fromArray($rawResult);
     }
 }
