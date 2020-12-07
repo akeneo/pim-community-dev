@@ -131,6 +131,10 @@ class AttributeValidationContext extends PimContext
                     case 'is_read_only':
                         Assert::assertEquals(($data['is_read_only'] == 1), $attribute->getProperty('is_read_only'));
                         break;
+                    case 'default_value':
+                        $expectedValue = '' === $data['default_value'] ? null : (bool) $data['default_value'];
+                        Assert::assertSame($expectedValue, $attribute->getProperty('default_value'));
+                        break;
                     default:
                         throw new \Exception(sprintf(
                             "The attribute method '%s' is not testable, please add it in %s",
