@@ -4,7 +4,7 @@ import {Breadcrumb} from 'akeneo-design-system';
 
 const LocalesBreadcrumb: FC = () => {
   const translate = useTranslate();
-  const settingsHref = `#${useRoute('pim_enrich_locale_index')}`;
+  const settingsHref = `#${useRoute('pim_enrich_attribute_index')}`;
 
   return (
     <Breadcrumb>
