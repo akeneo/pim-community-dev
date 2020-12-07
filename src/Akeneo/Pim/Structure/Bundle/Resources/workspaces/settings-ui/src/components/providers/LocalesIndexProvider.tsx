@@ -1,12 +1,7 @@
 import React, {createContext, FC} from 'react';
-import {useInitialLocalesIndexState} from '../../hooks';
-import {Locale} from '../../models';
+import {ActivatedLocalesState, useActivatedLocales} from '../../hooks';
 
-type LocalesIndexState = {
-  locales: Locale[];
-  isPending: boolean;
-  load: () => Promise<void>;
-};
+type LocalesIndexState = ActivatedLocalesState;
 
 const LocalesIndexContext = createContext<LocalesIndexState>({
   locales: [],
@@ -15,7 +10,7 @@ const LocalesIndexContext = createContext<LocalesIndexState>({
 });
 
 const LocalesIndexProvider: FC = ({children}) => {
-  const state = useInitialLocalesIndexState();
+  const state = useActivatedLocales();
   return <LocalesIndexContext.Provider value={state}>{children}</LocalesIndexContext.Provider>;
 };
 
