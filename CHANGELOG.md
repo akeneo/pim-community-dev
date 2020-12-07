@@ -55,6 +55,7 @@
 - PIM-9543: Print PDF content with Han (Chinese, Japanese, Korean) characters
 - PIM-9589: Fix attribute edit form in Asset Manager
 - PIM-9512: Fix asset navigation panel is not kept close
+- PIM-9579: Fix the duplication of a product when missing rights on values
 
 ## Improvements
 

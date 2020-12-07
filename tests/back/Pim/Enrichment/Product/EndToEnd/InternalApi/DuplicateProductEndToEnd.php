@@ -4,6 +4,7 @@ namespace AkeneoTestEnterprise\Pim\Enrichment\Product\EndToEnd\InternalAPI;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\UserManagement\Component\Model\User;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
@@ -77,6 +78,60 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             'standard'
         );
         $this->assertSameData($normalizedDuplicatedProduct, $normalizedProductToDuplicate, $uniqueAttributeCodes);
+    }
+
+    /**
+     * The whole product should be duplicated without any permission applied on:
+     * - categories
+     * - associations
+     * - values
+     *
+     * This test only validate it on values.
+     */
+    public function test_it_duplicates_the_whole_product_without_any_permission_applied()
+    {
+        $this->modifyPermissionsForAttribute('a_metric', 'view');
+        $this->modifyPermissionsForAttribute('a_number_float', 'neither_view_or_edit');
+        $this->createUser('redactor_user');
+
+        $redactorUser = $this->get('pim_user.repository.user')->findOneByIdentifier('redactor_user');
+        $this->authenticate($redactorUser);
+
+        $productToDuplicate = $this->createProduct(
+            'product_to_duplicate',
+            [
+                'family' => 'familyA2',
+                'values' => [
+                    'a_metric' => [
+                        ['data' => ['amount' => 1, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]
+                    ],
+                    'a_number_float' => [
+                        ['data' => '12.05', 'locale' => null, 'scope' => null]
+                    ]
+                ]
+            ]
+        );
+
+        $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
+            'id' => $productToDuplicate->getId()
+        ]);
+
+        $this->client->request(
+            'POST',
+            $url,
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            json_encode(['duplicated_product_identifier' => 'duplicated_product'])
+        );
+
+        Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+
+        $duplicatedProduct = $this->get('pim_catalog.repository.product_without_permission')->findOneByIdentifier('duplicated_product');
+        Assert::assertCount(3, $duplicatedProduct->getValues());
     }
 
     public function test_it_duplicates_a_product_without_family()
@@ -312,5 +367,52 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
                 'group' => 'other',
             ]
         ];
+    }
+
+    private function modifyPermissionsForAttribute(
+        string $code,
+        string $right
+    ): void {
+        switch ($right) {
+            case 'view':
+                $attributeGroup = 'attributeGroupB';
+                break;
+            case 'edit':
+                $attributeGroup = 'attributeGroupA';
+                break;
+            default:
+                $attributeGroup = 'attributeGroupC';
+        }
+
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($code);
+        $this->get('pim_catalog.updater.attribute')->update($attribute, ['group' => $attributeGroup ]);
+        $constraints = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $constraints);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    private function createUser(string $username): User
+    {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setId(uniqid());
+        $user->setUsername($username);
+        $user->setEmail(sprintf('%s@example.com', uniqid()));
+        $user->setPassword('fake');
+        $groups = $this->get('pim_user.repository.group')->findAll();
+
+        foreach ($groups as $group) {
+            if ('Redactor' === $group->getName()) {
+                $user->addGroup($group);
+            }
+        }
+
+        $roles = $this->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            $user->addRole($role);
+        }
+
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $user;
     }
 }

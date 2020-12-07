@@ -42,7 +42,7 @@ services:
     pimee_catalog.security.updater.granted_product:
         class: 'Akeneo\Pim\Permission\Component\Updater\GrantedProductUpdater'
         decorates: pim_catalog.updater.product
-        decoration_inner_name: pim_catalog.updater.product_with_values_permission
+        decoration_inner_name: pim_catalog.updater.product_with_values_permission # it uses a granted property setter, so permissions are used here...
         arguments:
             - '@pim_catalog.updater.product_with_values_permission'
             - '@security.authorization_checker'
