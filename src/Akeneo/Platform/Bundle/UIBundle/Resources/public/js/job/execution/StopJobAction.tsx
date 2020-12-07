@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {SyntheticEvent} from 'react';
 import {useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {Button, ButtonProps, ExportIllustration, Helper, Modal, SectionTitle, Title} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
@@ -22,6 +22,12 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
     onStop();
   };
 
+  const handleOpenConfirm = (e: SyntheticEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    openConfirm();
+  }
+
   if (!isStoppable || !isGranted('pim_importexport_stop_job')) return null;
 
   return (
@@ -44,7 +50,7 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
           </Button>
         </Modal.BottomButtons>
       </Modal>
-      <Button onClick={openConfirm} level="danger" {...rest}>
+      <Button onClick={handleOpenConfirm} level="danger" {...rest}>
         {translate('pim_datagrid.action.stop.title')}
       </Button>
     </>

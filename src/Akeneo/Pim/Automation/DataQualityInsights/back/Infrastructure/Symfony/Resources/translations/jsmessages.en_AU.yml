@@ -2,7 +2,6 @@ akeneo_data_quality_insights:
   title: Data Quality Insights
   dqi_dashboard:
     menu: Data Quality Insights
-    title: Data Quality Overview
     helper:
       title: Introducing Data Quality in Akeneo
       description: With the data quality dashboard, you are able to measure your catalog data quality. You can also focus on a category or family.
@@ -79,4 +78,3 @@ akeneo_data_quality_insights:
     all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to deactivate attribute groups to in our help center.</a>
 pim_title:
   akeneo_data_quality_insights_dashboard: Data Quality Insights
-

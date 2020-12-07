@@ -2,7 +2,6 @@ framework:
     messenger:
         transports:
             # Producers
-
             business_event:
                 dsn: 'gps:'
                 options:
@@ -14,7 +13,6 @@ framework:
                 serializer: pim_enrich.messenger.serializer.business_event
 
             # Consumers
-
             webhook:
                 dsn: 'gps:'
                 options:
