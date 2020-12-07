@@ -6,33 +6,33 @@ import {DangerIcon, IconProps, InfoRoundIcon} from '../../icons';
 const getBackgroundColor = (level: Level) => {
   switch (level) {
     case 'info':
-      return getColor('blue10');
+      return getColor('blue', 10);
     case 'warning':
-      return getColor('yellow10');
+      return getColor('yellow', 10);
     case 'error':
-      return getColor('red10');
+      return getColor('red', 10);
   }
 };
 
 const getFontColor = (level: Level, inline: boolean) => {
   switch (level) {
     case 'info':
-      return getColor('grey120');
+      return getColor('grey', 120);
     case 'warning':
-      return inline ? getColor('yellow100') : getColor('yellow120');
+      return getColor(inline ? 'grey' : 'yellow', 120);
     case 'error':
-      return inline ? getColor('red100') : getColor('red120');
+      return getColor('red', inline ? 100 : 120);
   }
 };
 
 const getIconColor = (level: Level, inline: boolean) => {
   switch (level) {
     case 'info':
-      return getColor('blue100');
+      return getColor('blue', 100);
     case 'warning':
-      return inline ? getColor('yellow100') : getColor('yellow120');
+      return getColor('yellow', inline ? 100 : 120);
     case 'error':
-      return inline ? getColor('red100') : getColor('red120');
+      return getColor('red', inline ? 100 : 120);
   }
 };
 
@@ -50,11 +50,22 @@ const getIcon = (level: Level): JSX.Element => {
 const getSeparatorColor = (level: Level) => {
   switch (level) {
     case 'info':
-      return getColor('grey80');
+      return getColor('grey', 80);
     case 'warning':
-      return getColor('yellow120');
+      return getColor('yellow', 120);
     case 'error':
-      return getColor('red120');
+      return getColor('red', 120);
+  }
+};
+
+const getLinkColor = (level: Level, inline: boolean) => {
+  switch (level) {
+    case 'info':
+      return getColor('blue', 100);
+    case 'warning':
+      return getColor('yellow', 120);
+    case 'error':
+      return getColor('red', inline ? 100 : 120);
   }
 };
 
@@ -83,6 +94,11 @@ const IconContainer = styled.span<{level: Level; inline: boolean} & AkeneoThemed
 const TextContainer = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps>`
   padding-left: ${({inline}) => (inline ? '4px' : '10px')};
   white-space: break-spaces;
+
+  a {
+    color: ${({level, inline}) => getLinkColor(level, inline)};
+    margin: 0 3px;
+  }
 
   ${({inline, level}) =>
     !inline &&

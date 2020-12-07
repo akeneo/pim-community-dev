@@ -53,50 +53,6 @@ Use this playground to test the helper component
 
 <ArgsTable story="Standard" />
 
-## Variation on level
-
-<Canvas>
-  <Story name="Level">
-    {args => {
-      return (
-        <>
-          <Helper {...args} level="info">
-            Info
-          </Helper>
-          <Helper {...args} level="warning">
-            Warning
-          </Helper>
-          <Helper {...args} level="error">
-            Error
-          </Helper>
-        </>
-      );
-    }}
-  </Story>
-</Canvas>
-
-## Inline
-
-<Canvas>
-  <Story name="Inline">
-    {args => {
-      return (
-        <>
-          <Helper {...args} inline={true} level="info">
-            Info
-          </Helper>
-          <Helper {...args} inline={true} level="warning">
-            Warning
-          </Helper>
-          <Helper {...args} inline={true} level="error">
-            Error
-          </Helper>
-        </>
-      );
-    }}
-  </Story>
-</Canvas>
-
 ## Composition
 
 When more information can be found in another page, Helper is combined with Link component.
@@ -114,6 +70,50 @@ non fermentum diam nisl sit amet erat. `}
             Link to related lorem ipsum
           </Link>
         </Helper>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <Helper {...args} level="info">
+            You might need to read this. <Link href="#">Link</Link>
+          </Helper>
+          <Helper {...args} level="warning">
+            There is a warning. <Link href="#">Link</Link>
+          </Helper>
+          <Helper {...args} level="error">
+            There is an error. <Link href="#">Link</Link>
+          </Helper>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Inline
+
+<Canvas>
+  <Story name="Inline">
+    {args => {
+      return (
+        <>
+          <Helper {...args} inline={true} level="info">
+            You might need to read this. <Link href="#">Link</Link>
+          </Helper>
+          <Helper {...args} inline={true} level="warning">
+            There is a warning. <Link href="#">Link</Link>
+          </Helper>
+          <Helper {...args} inline={true} level="error">
+            There is an error. <Link href="#">Link</Link>
+          </Helper>
+        </>
       );
     }}
   </Story>
