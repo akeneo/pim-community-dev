@@ -1,2 +1,2 @@
 export * from './AttributeGroupsIndex';
-export * from './locales';
+export * from './LocalesIndex';

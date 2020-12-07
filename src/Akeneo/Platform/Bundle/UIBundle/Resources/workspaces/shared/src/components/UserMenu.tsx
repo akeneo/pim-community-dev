@@ -1,13 +1,13 @@
 import React, {FC} from 'react';
 import {PimView} from '@akeneo-pim-community/legacy-bridge';
 
-const AttributeGroupsUserButtons: FC = () => {
+const UserMenu: FC = () => {
   return (
     <PimView
       className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-      viewName="pim-attribute-group-index-user-navigation"
+      viewName="pim-menu-user-navigation"
     />
   );
 };
 
-export {AttributeGroupsUserButtons};
+export {UserMenu};
