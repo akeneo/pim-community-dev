@@ -307,4 +307,27 @@ class NumberIntegration extends AbstractAttributeTestCase
         $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
         $this->assertSame('maxFileSize', $violations->get(0)->getPropertyPath());
     }
+
+    public function testNumberShouldNotHaveDefaultValue()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code' => 'new_number',
+                'type' => 'pim_catalog_number',
+                'group' => 'attributeGroupA',
+                'decimals_allowed' => true,
+                'negative_allowed' => false,
+                'default_value' => true,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute cannot have a default value.', $violations->get(0)->getMessage());
+        $this->assertSame('default_value', $violations->get(0)->getPropertyPath());
+    }
 }

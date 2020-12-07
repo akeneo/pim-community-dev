@@ -425,4 +425,26 @@ class ReferenceDataSimpleSelectIntegration extends AbstractAttributeTestCase
         $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
         $this->assertSame('maxFileSize', $violations->get(0)->getPropertyPath());
     }
+
+    public function testReferenceDataSimpleSelectShouldNotHaveADefaultValue()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code' => 'new_ref_data',
+                'type' => 'pim_reference_data_simpleselect',
+                'group' => 'attributeGroupA',
+                'reference_data_name' => 'color',
+                'default_value' => true,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute cannot have a default value.', $violations->get(0)->getMessage());
+        $this->assertSame('default_value', $violations->get(0)->getPropertyPath());
+    }
 }
