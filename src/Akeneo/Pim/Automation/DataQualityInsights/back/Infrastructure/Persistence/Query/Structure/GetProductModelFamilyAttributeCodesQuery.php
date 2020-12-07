@@ -37,7 +37,10 @@ FROM pim_catalog_product_model AS product_model
     INNER JOIN pim_catalog_family AS family ON family.id = family_variant.family_id
     INNER JOIN pim_catalog_family_attribute AS pca ON pca.family_id = family.id
     INNER JOIN pim_catalog_attribute AS attribute ON attribute.id = pca.attribute_id
+    LEFT JOIN pim_catalog_attribute_group AS attribute_group ON attribute_group.id = attribute.group_id
+    LEFT JOIN pim_data_quality_insights_attribute_group_activation AS activation ON activation.attribute_group_code = attribute_group.code
 WHERE product_model.id = :product_model_id
+    AND (activation.activated IS NULL OR activation.activated = 1)
     AND NOT EXISTS(
         SELECT 1
         FROM pim_catalog_variant_attribute_set_has_attributes AS attribute_set_attributes
