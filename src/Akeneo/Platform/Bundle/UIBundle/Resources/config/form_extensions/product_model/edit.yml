@@ -78,9 +78,9 @@ extensions:
         config:
             aclAddAssociations: pim_enrich_associations_edit
 
-    pimee-product-model-view-form-categories:
+    pim-product-model-edit-form-categories:
         module: pimee/product-edit-form/categories
-        parent: pimee-product-model-edit-form-column-tabs
+        parent: pim-product-model-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
         position: 100

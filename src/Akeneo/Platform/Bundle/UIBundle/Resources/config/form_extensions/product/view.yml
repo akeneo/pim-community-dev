@@ -184,7 +184,7 @@ extensions:
         targetZone: container
         position: 120
 
-    pimee-product-edit-form-categories:
+    pimee-product-view-form-categories:
         module: pimee/product-edit-form/categories
         parent: pimee-product-view-column-tabs
         targetZone: container
