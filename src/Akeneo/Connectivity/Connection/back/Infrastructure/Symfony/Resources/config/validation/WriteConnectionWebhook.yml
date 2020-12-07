@@ -3,11 +3,12 @@ Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook:
         - ConnectionWebhook
         - Business
     constraints:
-      - Akeneo\Connectivity\Connection\Application\Webhook\Validation\EnabledWebhookRequiresAnUrl: ~
+        - Akeneo\Connectivity\Connection\Application\Webhook\Validation\EnabledWebhookRequiresAnUrl: ~
+        - Akeneo\Connectivity\Connection\Application\Webhook\Validation\EventSubscriptionsLimit: ~
     properties:
         code:
             - Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExist:
-                  groups: [Business]
+                groups: [Business]
         url:
             - Url:
                 message: 'akeneo_connectivity.connection.webhook.error.wrong_url'

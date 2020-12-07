@@ -19,3 +19,11 @@ services:
             - '@akeneo_connectivity.connection.persistence.repository.connection'
         tags:
             - { name: validator.constraint_validator, alias: connection_must_exist }
+
+    akeneo_connectivity.connection.validators.webhook.event_subscriptions_limit:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Validation\EventSubscriptionsLimitValidator
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.select_active_webhooks'
+            - '%webhook_active_event_subscriptions_limit%'
+        tags:
+            - { name: validator.constraint_validator }
