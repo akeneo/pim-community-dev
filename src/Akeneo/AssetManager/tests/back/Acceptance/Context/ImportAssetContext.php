@@ -18,9 +18,11 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFileExists;
 use Akeneo\AssetManager\Common\Fake\InMemoryFileStorer;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels;
+use Akeneo\AssetManager\Common\Fake\InMemoryFindAttributesDetails;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindFileDataByFileKey;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
+use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryGetJobExecutionStatus;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
@@ -53,6 +55,7 @@ final class ImportAssetContext implements Context
     private InMemoryFileExists $fileExists;
     private InMemoryFindFileDataByFileKey $findFileDataByFileKey;
     private InMemoryGetJobExecutionStatus $getJobExecutionStatus;
+    private InMemoryFindAttributesDetails $findAttributeDetails;
 
     public function __construct(
         ItemStep $importCsvAssetStep,
@@ -66,7 +69,8 @@ final class ImportAssetContext implements Context
         EventDispatcherMock $eventDispatcher,
         InMemoryFileExists $fileExists,
         InMemoryFindFileDataByFileKey $findFileDataByFileKey,
-        InMemoryGetJobExecutionStatus $getJobExecutionStatus
+        InMemoryGetJobExecutionStatus $getJobExecutionStatus,
+        InMemoryFindAttributesDetails $findAttributeDetails
     ) {
         $this->importCsvAssetStep = $importCsvAssetStep;
         $this->importXlsxAssetStep = $importXlsxAssetStep;
@@ -80,6 +84,7 @@ final class ImportAssetContext implements Context
         $this->fileExists = $fileExists;
         $this->findFileDataByFileKey = $findFileDataByFileKey;
         $this->getJobExecutionStatus = $getJobExecutionStatus;
+        $this->findAttributeDetails = $findAttributeDetails;
     }
 
     /**
@@ -103,6 +108,7 @@ final class ImportAssetContext implements Context
      */
     public function importValidCSVFile(): void
     {
+        $this->saveDefaultAttributeDetails();
         $this->launchImportCsvAssetStep(self::VALID_CSV_FILEPATH);
     }
 
@@ -111,6 +117,7 @@ final class ImportAssetContext implements Context
      */
     public function importInvalidCSVFile(): void
     {
+        $this->saveDefaultAttributeDetails();
         $this->launchImportCsvAssetStep(self::INVALID_CSV_FILEPATH);
     }
 
@@ -119,6 +126,7 @@ final class ImportAssetContext implements Context
      */
     public function importValidXLSXFile(): void
     {
+        $this->saveDefaultAttributeDetails();
         $this->launchImportXlsxAssetStep(self::VALID_XLSX_FILEPATH);
     }
 
@@ -127,6 +135,7 @@ final class ImportAssetContext implements Context
      */
     public function importValidArchiveWithCsvFile(): void
     {
+        $this->saveDefaultAttributeDetails();
         foreach (['jambon.jpg', 'saucisson.jpg', 'rillettes-de-lapin.jpg'] as $fileName) {
             $fileKey = InMemoryFileStorer::FILES_PATH . $fileName;
             $this->fileExists->save($fileKey);
@@ -145,6 +154,7 @@ final class ImportAssetContext implements Context
      */
     public function importValidArchiveWithXlsxFile(): void
     {
+        $this->saveDefaultAttributeDetails();
         foreach (['jambon.jpg', 'saucisson.jpg', 'rillettes-de-lapin.jpg'] as $fileName) {
             $fileKey = InMemoryFileStorer::FILES_PATH . $fileName;
             $this->fileExists->save($fileKey);
@@ -257,5 +267,34 @@ final class ImportAssetContext implements Context
         } catch (\Exception $e) {
             $this->exceptionContext->setException($e);
         }
+    }
+
+    private function saveDefaultAttributeDetails()
+    {
+        $name = new AttributeDetails();
+        $name->identifier = 'name';
+        $name->assetFamilyIdentifier = 'designer';
+        $name->code = 'name';
+        $name->isRequired = true;
+        $name->order = 0;
+        $name->valuePerChannel = false;
+        $name->valuePerLocale = false;
+        $name->type = 'text';
+        $name->labels = [];
+        $name->isReadOnly = false;
+        $this->findAttributeDetails->save($name);
+
+        $media = new AttributeDetails();
+        $media->identifier = 'media';
+        $media->assetFamilyIdentifier = 'designer';
+        $media->code = 'media';
+        $media->isRequired = true;
+        $media->order = 1;
+        $media->valuePerChannel = false;
+        $media->valuePerLocale = false;
+        $media->type = 'media_file';
+        $media->labels = [];
+        $media->isReadOnly = false;
+        $this->findAttributeDetails->save($media);
     }
 }

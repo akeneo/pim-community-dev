@@ -16,7 +16,6 @@ namespace Akeneo\AssetManager\Common\Fake;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
-use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

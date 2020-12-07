@@ -115,6 +115,7 @@ services:
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_assetmanager.application.attribute.create_attribute_handler'
             - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details'
 
     akeneo_assetmanager.tests.back.acceptance.context.edit_attribute_context:
         class: Akeneo\AssetManager\Acceptance\Context\EditAttributeContext
@@ -264,3 +265,4 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
             - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details'
