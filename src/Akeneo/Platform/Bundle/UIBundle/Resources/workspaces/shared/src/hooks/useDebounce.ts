@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
+import {debounce} from 'lodash';
 
 const useDebounce = (value: any, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -16,4 +17,8 @@ const useDebounce = (value: any, delay: number) => {
   return debouncedValue;
 };
 
-export default useDebounce;
+const useDebounceCallback = (callback: (args: any) => any, delay?: number) => {
+  return useCallback(debounce(callback, delay), [callback, delay]);
+};
+
+export {useDebounce, useDebounceCallback};
