@@ -437,26 +437,26 @@ jobs:
               name: Oldest SaaS prod (PIM v3) deployment on kubernetes
               command: |
                 ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deployment make helm-prepare
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deployment make deploy-pim3
+                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make helm-prepare
+                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make deploy-pim3
           - run:
               name: Upgrade intermediate version SaaS to master
               command: |
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deployment make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deployment make terraform-pre-upgrade
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deployment make deploy
+                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make create-ci-release-files
+                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make terraform-pre-upgrade
+                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make deploy
           - run:
               name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deployment make test-prod
+              command: INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+              command: INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deployment make delete
+              command: INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make delete
               when: always
 
   test_upgrade_from_last_release:
