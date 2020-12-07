@@ -51,11 +51,6 @@ class Kernel extends BaseKernel
         $ceEnv = $this->environment;
         $eeEnv = $this->environment;
 
-        if ('prod' === $this->environment) {
-            $ceEnv = 'prod_onprem_paas';
-            $eeEnv = 'prod_onprem_paas';
-        }
-
         $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
         $eeConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config';
         $projectConfDir = $this->getProjectDir() . '/config';
@@ -121,8 +116,6 @@ class Kernel extends BaseKernel
     {
         $files = array_merge(
             glob($confDir . '/packages/*.yml'),
-            glob($confDir . '/packages/' . $environment . '/*.yml'),
-            glob($confDir . '/packages/' . $environment . '/**/*.yml')
         );
 
         $files = array_filter(

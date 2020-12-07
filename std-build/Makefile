@@ -2,7 +2,7 @@
 # This file is a template Makefile. Some targets are presented here as examples.
 # Feel free to customize it to your needs!
 #
-CMD_ON_PROJECT = docker-compose run -u www-data -e COMPOSER_AUTH --rm php
+CMD_ON_PROJECT = docker-compose run -u www-data -e COMPOSER_AUTH -e APP_ENV=$(APP_ENV) --rm php
 PHP_RUN = $(CMD_ON_PROJECT) php
 YARN_RUN = docker-compose run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD node yarn
 
@@ -12,7 +12,9 @@ ifdef NO_DOCKER
   PHP_RUN = php
 endif
 
+APP_ENV := prod_onprem
 .DEFAULT_GOAL := dev
+
 
 yarn.lock: package.json
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) install
@@ -35,15 +37,14 @@ css:
 	$(CMD_ON_PROJECT) rm -rf public/css
 	$(YARN_RUN) run less
 
-.PHONY: javascript-prod
-javascript-prod: dsm
+.PHONY: javascript
+javascript: dsm
 	$(CMD_ON_PROJECT) rm -rf public/dist
-	$(YARN_RUN) run webpack
-
-.PHONY: javascript-dev
-javascript-dev: dsm
-	$(CMD_ON_PROJECT) rm -rf public/dist
+ifeq "$(APP_ENV)" "dev"
 	$(YARN_RUN) run webpack-dev
+else
+	$(YARN_RUN) run webpack
+endif
 
 .PHONY: front
 front: assets css javascript-dev
@@ -54,11 +55,12 @@ database:
 
 .PHONY: cache
 cache:
-	$(CMD_ON_PROJECT) rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
+	$(CMD_ON_PROJECT) rm -rf var/cache && $(PHP_RUN) -d memory_limit=256M bin/console cache:warmup
 
 composer.lock: composer.json
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer update
 
+.PHONY: vendor
 vendor: composer.lock
 	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install
 
@@ -67,41 +69,46 @@ dependencies: vendor node_modules
 
 .PHONY: dev
 dev:
-	$(MAKE) dependencies
+	$(MAKE) dependencies APP_ENV=dev
 	$(MAKE) pim-dev
 
 .PHONY: prod
 prod:
-	$(MAKE) dependencies
-	$(MAKE) pim-prod
+	$(MAKE) dependencies APP_ENV=$(APP_ENV)
+	$(MAKE) pim-prod_onprem
 
-.PHONY: pim-prod
-pim-prod:
-ifndef NO_DOCKER
-	APP_ENV=prod $(MAKE) up
-	docker/wait_docker_up.sh
-endif
-	$(MAKE) cache
-	$(MAKE) assets
-	$(MAKE) javascript-prod
-	APP_ENV=prod $(MAKE) database O="--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal"
+.PHONY: pim-prod_onprem
+pim-prod_onprem:
+pim-prod_onprem: APP_ENV=prod_onprem
+pim-prod_onprem: CATALOG=--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+pim-prod_onprem: pim-env
+
+.PHONY: pim-prod_flex
+pim-prod_flex:
+pim-prod_flex: APP_ENV=prod_flex
+pim-prod_flex: CATALOG=--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+pim-prod_flex: pim-env
 
 .PHONY: pim-dev
-pim-dev:
-ifndef NO_DOCKER
-	APP_ENV=dev $(MAKE) up
+pim-dev: APP_ENV= dev 
+pim-dev: CATALOG=--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+pim-dev: pim-env
+
+.PHONY: pim-env
+pim-env:
+ifndef $(NO_DOCKER)
+	$(MAKE) up 
 	docker/wait_docker_up.sh
 endif
-	$(MAKE) cache
-	$(MAKE) assets
-	$(MAKE) javascript-dev
-	APP_ENV=dev $(MAKE) database O="--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
+	$(MAKE) cache APP_ENV=$(APP_ENV)
+	$(MAKE) assets APP_ENV=$(APP_ENV)
+	$(MAKE) javascript APP_ENV=$(APP_ENV)
+	$(MAKE) database O="$(CATALOG)" APP_ENV=$(APP_ENV)
 
 .PHONY: up
 up:
-	docker-compose up -d --remove-orphan
+	APP_ENV=$(APP_ENV) docker-compose up -d --remove-orphan
 
 .PHONY: down
 down:
 	docker-compose down -v
-

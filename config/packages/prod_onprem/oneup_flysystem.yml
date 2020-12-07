@@ -2,16 +2,16 @@ oneup_flysystem:
     adapters:
         asset_storage_adapter:
             local:
-                directory: '%kernel.project_dir%/app/file_storage/asset'
+                directory: '%kernel.project_dir%/var/file_storage/asset'
         catalog_storage_adapter:
             local:
-                directory: '%kernel.project_dir%/app/file_storage/catalog'
+                directory: '%kernel.project_dir%/var/file_storage/catalog'
         jobs_storage_adapter:
             local:
                 directory: '%kernel.project_dir%/var/file_storage/jobs'
         archivist_adapter:
             local:
-                directory: '%kernel.project_dir%/app/archive'
+                directory: '%kernel.project_dir%/var/file_storage/archive'
         data_quality_insights_shared_adapter:
             local:
                 directory: '%kernel.project_dir%/var/file_storage/data_quality_insights_shared'

@@ -101,8 +101,6 @@ class Kernel extends BaseKernel
     {
         $files = array_merge(
             glob($confDir . '/{packages}/*.yml', GLOB_BRACE),
-            glob($confDir . '/{packages}/' . $this->environment . '/*.yml', GLOB_BRACE),
-            glob($confDir . '/{packages}/' . $this->environment . '/**/*.yml', GLOB_BRACE)
         );
 
         $files = array_filter(
