@@ -26,7 +26,7 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
     e.stopPropagation();
     e.preventDefault();
     openConfirm();
-  }
+  };
 
   if (!isStoppable || !isGranted('pim_importexport_stop_job')) return null;
 
