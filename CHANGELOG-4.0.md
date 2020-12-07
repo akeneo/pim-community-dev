@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.77 (2020-12-07)
+
 ## Improvements
 
 - PIM-9558: Remove the word "Damn" from the PIM
