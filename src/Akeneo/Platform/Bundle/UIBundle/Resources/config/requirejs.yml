@@ -838,6 +838,7 @@ config:
     pim/attribute-edit-form/save-form:                      pimui/js/attribute/form/save
     pim/attribute-edit-form/delete:                         pimui/js/attribute/form/delete
     pim/attribute-edit-form/properties/available-locales:   pimui/js/attribute/form/properties/available-locales
+    pim/attribute-edit-form/properties/default-bool-value:  pimui/js/attribute/form/properties/default-bool-value.ts
     pim/attribute-edit-form/properties/default-metric-unit: pimui/js/attribute/form/properties/default-metric-unit
     pim/attribute-edit-form/properties/group:               pimui/js/attribute/form/properties/group
     pim/attribute-edit-form/properties/is-locale-specific:  pimui/js/attribute/form/properties/is-locale-specific
