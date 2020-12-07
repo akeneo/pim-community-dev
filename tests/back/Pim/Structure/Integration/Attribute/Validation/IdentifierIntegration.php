@@ -2,8 +2,6 @@
 
 namespace AkeneoTest\Pim\Structure\Integration\Attribute\Validation;
 
-use PHPUnit\Framework\Assert;
-
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -91,17 +89,11 @@ class IdentifierIntegration extends AbstractAttributeTestCase
 
     public function testIdentifierShouldNotHaveAMetricFamily()
     {
-        $sku = $this->getAttribute('sku');
-        $this->get('pim_catalog.remover.attribute')->remove($sku);
+        $attribute = $this->getAttribute('sku');
 
-        $attribute = $this->createAttribute();
         $this->updateAttribute(
             $attribute,
             [
-                'code' => 'other_sku',
-                'type' => 'pim_catalog_identifier',
-                'group' => 'attributeGroupA',
-                'useable_as_grid_filter' => true,
                 'metric_family' => 'Length',
             ]
         );

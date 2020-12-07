@@ -14,6 +14,7 @@ services:
                 - 'negative_allowed'
                 - 'auto_option_sorting'
                 - 'is_read_only'
+                - 'default_value'
 
     pim_connector.array_converter.flat_to_standard.attribute_group:
         class: 'Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AttributeGroup'
