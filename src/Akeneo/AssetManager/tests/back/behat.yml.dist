@@ -28,6 +28,7 @@ default:
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_asset.edit_media_link
                 - akeneo_assetmanager.tests.back.acceptance.context.link_assets_context
                 - akeneo_assetmanager.tests.back.acceptance.context.edit_asset.execute_naming_convention
+                - Akeneo\AssetManager\Acceptance\Context\ImportAssetContext
             filters:
                 tags: '@acceptance-back'
         integration:

@@ -141,8 +141,6 @@ class Asset implements ArrayConverterInterface
         } elseif (NumberAttribute::ATTRIBUTE_TYPE === $attributeDetails->type) {
             $data = (string) $data;
         }
-        // TODO I probably missed something with MediaLink Attributes
-        // src/Akeneo/Pim/Enrichment/AssetManager/Component/Connector/ArrayConverter/StandardToFlat/Asset.php
 
         $convertedValue = ['locale' => null, 'channel' => null, 'data' => $data];
 

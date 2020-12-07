@@ -130,7 +130,6 @@ services:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAttributesDetails
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
-            - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
     akeneo_assetmanager.infrastructure.persistence.query.asset_family_has_assets:
         class: Akeneo\AssetManager\Common\Fake\InMemoryAssetFamilyHasAssets

@@ -24,15 +24,19 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
  */
 class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
 {
-    private InMemoryFindActivatedLocales $activatedLocalesQuery;
-    private AttributeRepositoryInterface $attributeRepository;
+    private $results = [];
 
-    public function __construct(
-        InMemoryFindActivatedLocales $activatedLocalesQuery,
-        AttributeRepositoryInterface $attributeRepository
-    ) {
+    /** @var InMemoryFindActivatedLocales */
+    private $activatedLocalesQuery;
+
+    public function __construct(InMemoryFindActivatedLocales $activatedLocalesQuery)
+    {
         $this->activatedLocalesQuery = $activatedLocalesQuery;
-        $this->attributeRepository = $attributeRepository;
+    }
+
+    public function save(AttributeDetails $assetFamilyDetails): void
+    {
+        $this->results[(string) $assetFamilyDetails->assetFamilyIdentifier][] = $assetFamilyDetails;
     }
 
     /**
@@ -40,39 +44,20 @@ class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
      */
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): array
     {
-        //$activatedLocales = $this->activatedLocalesQuery->findAll();
+        $activatedLocales = $this->activatedLocalesQuery->findAll();
+        $key = (string) $assetFamilyIdentifier;
 
-        $attributes = $this->attributeRepository->findByAssetFamily($assetFamilyIdentifier);
+        if (!isset($this->results[$key])) {
+            return [];
+        }
 
-        $attributeDetails = [];
-
-        foreach ($attributes as $attribute) {
-            $attributeDetail = new AttributeDetails();
-            $attributeDetail->assetFamilyIdentifier = (string) $assetFamilyIdentifier;
-            $attributeDetail->identifier = (string) $attribute->getIdentifier();
-            $attributeDetail->code = (string) $attribute->getCode();
-            $attributeDetail->isReadOnly = $attribute->normalize()['is_read_only'];
-            $attributeDetail->isRequired = $attribute->normalize()['is_required'];
-            $attributeDetail->labels = $attribute->normalize()['labels'];
-            $attributeDetail->type = $attribute->getType();
-            $attributeDetail->order = $attribute->getOrder()->intValue();
-            $attributeDetail->valuePerChannel = $attribute->hasValuePerChannel();
-            $attributeDetail->valuePerLocale = $attribute->hasValuePerLocale();
-            $attributeDetail->additionalProperties = [];
-
-            $attributeDetails[(string) $attribute->getCode()] = $attributeDetail;
-        };
-
-        return $attributeDetails;
-
-        /*
         foreach ($this->results[$key] as $attributeDetails) {
             if (null !== $attributeDetails->labels) {
                 $attributeDetails->labels = $this->getLabelsByActivatedLocale($attributeDetails->labels, $activatedLocales);
             }
         }
 
-        return $this->results[$key];*/
+        return $this->results[$key];
     }
 
     private function getLabelsByActivatedLocale(array $labels, array $activatedLocales): array

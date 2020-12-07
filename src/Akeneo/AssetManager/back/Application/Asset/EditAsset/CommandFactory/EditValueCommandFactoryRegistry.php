@@ -28,9 +28,8 @@ class EditValueCommandFactoryRegistry implements EditValueCommandFactoryRegistry
 
         throw new \RuntimeException(
             sprintf(
-                'There was no factory found to create the edit asset value command of the attribute "%s" with value "%s"',
-                $attribute->getIdentifier()->normalize(),
-                json_encode($normalizedValue)
+                'There was no factory found to create the edit asset value command of the attribute "%s"',
+                $attribute->getIdentifier()->normalize()
             )
         );
     }

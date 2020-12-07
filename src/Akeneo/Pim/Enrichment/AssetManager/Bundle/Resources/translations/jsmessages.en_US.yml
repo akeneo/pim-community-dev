@@ -4,7 +4,7 @@ batch_jobs:
         export.label: Asset export
     asset_manager_xlsx_asset_export:
         label: Asset export in XLSX
-        import.label: Asset export
+        export.label: Asset export
     asset_manager_csv_asset_import:
         label: Asset import in CSV
         import.label: Asset import

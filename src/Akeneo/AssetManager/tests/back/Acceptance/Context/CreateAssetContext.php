@@ -114,7 +114,7 @@ final class CreateAssetContext implements Context
     /**
      * @Then there is no ':assetCode' asset in the ':assetFamilyIdentifier' asset family
      */
-    public function thereIsNoRecordForTheReferenceEntity(string $assetCode, string $assetFamilyIdentifier): void
+    public function thereIsNoAssetForTheAssetFamily(string $assetCode, string $assetFamilyIdentifier): void
     {
         try {
             $this->assetRepository->getByAssetFamilyAndCode(
