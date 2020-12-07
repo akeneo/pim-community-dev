@@ -65,6 +65,7 @@
 - PIM-9543: Print PDF content with Asian characters
 - PIM-9577: Remove empty 'Global settings' tab on following XLSX import: attribute, family, family variant, association type, attribute option, attribute group, group type
 - PIM-9590: Fix "Default product grid view" multiple times on user settings page
+- CPM-86: Fix undefined tab on job profile edit
 
 ## New features
 
