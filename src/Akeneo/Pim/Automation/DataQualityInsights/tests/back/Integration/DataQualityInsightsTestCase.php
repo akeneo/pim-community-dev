@@ -110,7 +110,7 @@ class DataQualityInsightsTestCase extends TestCase
             ->build();
 
         if (!empty($data)) {
-            $this->get('pim_catalog.updater.product')->update($productModel, $data);
+            $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
             $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
             Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid sub-product model', $errors));
         }
