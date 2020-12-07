@@ -63,6 +63,29 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 - pim_catalog_metric
                 - pim_reference_data_multiselect
                 - pim_reference_data_simpleselect
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
+            message: This attribute cannot have a default value.
+            properties:
+                - default_value
+            groups:
+                - pim_catalog_identifier
+                - pim_catalog_text
+                - pim_catalog_textarea
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_file
+                - pim_catalog_image
+                - pim_catalog_multiselect
+                - pim_catalog_simpleselect
+                - pim_catalog_date
+                - pim_catalog_metric
+                - pim_reference_data_multiselect
+                - pim_reference_data_simpleselect
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\AttributePropertyType:
+            type: bool
+            properties:
+                - auto_option_sorting
+                - default_value
     properties:
         type:
             - Type: string
