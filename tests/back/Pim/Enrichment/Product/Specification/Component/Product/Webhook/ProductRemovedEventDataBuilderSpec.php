@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
+use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductRemovedEventDataBuilder as BaseProductRemovedEventDataBuilder;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\NotGrantedProductException;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\ProductRemovedEventDataBuilder;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
@@ -19,10 +20,10 @@ use PhpSpec\ObjectBehavior;
 class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 {
     public function let(
-        EventDataBuilderInterface $eventDataBuilder,
+        BaseProductRemovedEventDataBuilder $baseProductRemovedEventDataBuilder,
         GetViewableCategoryCodes $getViewableCategoryCodes
     ): void {
-        $this->beConstructedWith($eventDataBuilder, $getViewableCategoryCodes);
+        $this->beConstructedWith($baseProductRemovedEventDataBuilder, $getViewableCategoryCodes);
     }
 
     public function it_is_an_event_data_builder(): void
@@ -31,20 +32,20 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $this->shouldImplement(EventDataBuilderInterface::class);
     }
 
-    public function it_supports_the_same_business_events_as_decorated_service($eventDataBuilder): void
+    public function it_supports_the_same_business_events_as_decorated_service($baseProductRemovedEventDataBuilder): void
     {
         $eventBlueJean = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->aBlueJeanProduct());
         $eventBlueCam = new ProductRemoved(Author::fromNameAndType('erp', 'ui'), $this->aBlueCamProduct());
         $bulkEvent = new BulkEvent([$eventBlueJean, $eventBlueCam]);
 
-        $eventDataBuilder->supports($bulkEvent)->willReturn(true, false);
+        $baseProductRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true, false);
 
         $this->supports($bulkEvent)->shouldReturn(true);
         $this->supports($bulkEvent)->shouldReturn(false);
     }
 
     public function it_handles_permissions_error_for_products_not_viewable(
-        $eventDataBuilder,
+        $baseProductRemovedEventDataBuilder,
         $getViewableCategoryCodes
     ): void {
         $user = new User();
@@ -68,7 +69,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
             ]
         );
 
-        $eventDataBuilder->supports($bulkEvent)->willReturn(true);
+        $baseProductRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true);
 
         $getViewableCategoryCodes->forCategoryCodes(
             $user->getId(),
@@ -92,7 +93,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         Assert::assertEquals($expectedCollection, $actualCollection->getWrappedObject());
     }
 
-    public function it_throws_an_error_if_an_event_is_not_supported($eventDataBuilder): void
+    public function it_throws_an_error_if_an_event_is_not_supported($baseProductRemovedEventDataBuilder): void
     {
         $user = new User();
         $user->setUsername('erp_1234');
@@ -114,7 +115,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
             ]
         );
 
-        $eventDataBuilder->supports($bulkEvent)->willReturn(false);
+        $baseProductRemovedEventDataBuilder->supports($bulkEvent)->willReturn(false);
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)

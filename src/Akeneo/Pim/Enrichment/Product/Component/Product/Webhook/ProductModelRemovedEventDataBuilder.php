@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
-use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductRemovedEventDataBuilder as BaseProductRemovedEventDataBuilder;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
+use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder as BaseProductModelRemovedEventDataBuilder;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
@@ -13,24 +13,26 @@ use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
+class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
 {
-    private BaseProductRemovedEventDataBuilder $baseProductRemovedEventDateBuilder;
+    private BaseProductModelRemovedEventDataBuilder $baseProductModelRemovedEventDataBuilder;
     private GetViewableCategoryCodes $getViewableCategoryCodes;
 
     public function __construct(
-        BaseProductRemovedEventDataBuilder $baseProductRemovedEventDateBuilder,
+        BaseProductModelRemovedEventDataBuilder $baseProductModelRemovedEventDataBuilder,
         GetViewableCategoryCodes $getViewableCategoryCodes
     ) {
-        $this->baseProductRemovedEventDateBuilder = $baseProductRemovedEventDateBuilder;
+        $this->baseProductModelRemovedEventDataBuilder = $baseProductModelRemovedEventDataBuilder;
         $this->getViewableCategoryCodes = $getViewableCategoryCodes;
     }
 
     public function supports(object $event): bool
     {
-        return $this->baseProductRemovedEventDateBuilder->supports($event);
+        return $this->baseProductModelRemovedEventDataBuilder->supports($event);
     }
 
     /**
@@ -44,17 +46,19 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
 
         $collection = new EventDataCollection();
 
-        /** @var ProductRemoved $productRemovedEvent */
-        foreach ($event->getEvents() as $productRemovedEvent) {
+        /** @var ProductModelRemoved $productModelRemovedEvent */
+        foreach ($event->getEvents() as $productModelRemovedEvent) {
             $grantedCategoryCodes = $this->getViewableCategoryCodes->forCategoryCodes(
                 $user->getId(),
-                $productRemovedEvent->getCategoryCodes()
+                $productModelRemovedEvent->getCategoryCodes()
             );
 
             if (0 === count($grantedCategoryCodes)) {
                 $collection->setEventDataError(
-                    $productRemovedEvent,
-                    new NotGrantedProductException($user->getUsername(), $productRemovedEvent->getIdentifier())
+                    $productModelRemovedEvent,
+                    new NotGrantedProductModelException(
+                        $user->getUsername(), $productModelRemovedEvent->getCode()
+                    )
                 );
 
                 continue;
@@ -62,11 +66,11 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
 
             $data = [
                 'resource' => [
-                    'identifier' => $productRemovedEvent->getIdentifier(),
+                    'code' => $productModelRemovedEvent->getCode(),
                 ],
             ];
 
-            $collection->setEventData($productRemovedEvent, $data);
+            $collection->setEventData($productModelRemovedEvent, $data);
         }
 
         return $collection;
