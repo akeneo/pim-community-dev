@@ -1,7 +1,8 @@
+import {Helper} from 'akeneo-design-system';
 import {useFormikContext} from 'formik';
 import React from 'react';
 import styled from 'styled-components';
-import {Checkbox, FormGroup, FormInput, InlineHelper, Section} from '../../common';
+import {Checkbox, FormGroup, FormInput, Section} from '../../common';
 import {Connection} from '../../model/connection';
 import {FlowType} from '../../model/flow-type.enum';
 import {Translate} from '../../shared/translate';
@@ -42,7 +43,13 @@ export const ConnectionEditForm = ({connection}: Props) => {
                 <FormGroup
                     controlId='label'
                     label='akeneo_connectivity.connection.connection.label'
-                    errors={errors.label ? [errors.label] : undefined}
+                    helpers={[
+                        errors.label && (
+                            <Helper inline level='error'>
+                                <Translate id={errors.label} />
+                            </Helper>
+                        ),
+                    ]}
                 >
                     <FormInput
                         type='text'
@@ -57,23 +64,23 @@ export const ConnectionEditForm = ({connection}: Props) => {
                 <FormGroup
                     controlId='flow_type'
                     label='akeneo_connectivity.connection.connection.flow_type'
-                    helper={
-                        <InlineHelper info>
+                    helpers={[
+                        <Helper inline level='info' key={0}>
                             <FlowTypeHelper />
-                        </InlineHelper>
-                    }
+                        </Helper>,
+                    ]}
                 >
                     <FlowTypeSelect value={values.flowType} onChange={handleFlowTypeChange} />
                 </FormGroup>
 
                 <FormGroup
-                    helper={
+                    helpers={[
                         isAuditForbidden(values.flowType) && (
-                            <InlineHelper info>
+                            <Helper inline level='info'>
                                 <AuditableHelper />
-                            </InlineHelper>
-                        )
-                    }
+                            </Helper>
+                        ),
+                    ]}
                 >
                     <Checkbox
                         name='auditable'
@@ -88,7 +95,13 @@ export const ConnectionEditForm = ({connection}: Props) => {
                 <FormGroup
                     controlId='image'
                     label='akeneo_connectivity.connection.connection.image'
-                    errors={errors.image ? [errors.image] : undefined}
+                    helpers={[
+                        errors.image && (
+                            <Helper inline level='error'>
+                                <Translate id={errors.image} />
+                            </Helper>
+                        ),
+                    ]}
                 >
                     <ImageUploader
                         image={values.image}

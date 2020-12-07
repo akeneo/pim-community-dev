@@ -2,7 +2,6 @@ akeneo_data_quality_insights:
   title: Qualité des données
   dqi_dashboard:
     menu: Qualité des données
-    title: Aperçu de la qualité des données
     helper:
       title: Bienvenue dans le nouveau tableau de bord d'Akeneo !
       description: Avec le tableau de bord de la qualité des données, vous pouvez mesurer la qualité des données de votre catalogue. Vous pouvez également vous concentrer sur une catégorie ou une famille.
@@ -67,7 +66,6 @@ akeneo_data_quality_insights:
               message3: C'est parfait.
         good_enrichment:
           title: Produits avec un bon taux d'enrichissement
-          no_data: Vos produits ne peuvent pas être enrichis, ajoutez-leur des attributs et cet indicateur vous permettra de suivre la qualité de vos produits.
           messages:
             first_step:
               message1: Pour améliorer ce point, faites en sorte de sélectionner les attributs les plus pertinents avec soin. <a href="{{ link }}" target="_blank">Consultez notre help center pour retrouver des conseils</a>.
@@ -141,4 +139,3 @@ akeneo_data_quality_insights:
       to_improve: A améliorer
 pim_title:
   akeneo_data_quality_insights_dashboard: Qualité des données
-

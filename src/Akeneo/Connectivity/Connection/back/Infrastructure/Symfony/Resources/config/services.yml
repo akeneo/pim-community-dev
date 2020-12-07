@@ -72,3 +72,5 @@ services:
     akeneo_connectivity.connection.webhook.generate_secret:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret
 
+    akeneo_connectivity.connection.webhook.cache_clearer:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer
