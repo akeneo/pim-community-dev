@@ -1,6 +1,6 @@
 import React, {FC, useEffect} from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {PageContent, PageHeader, UserMenu} from '@akeneo-pim-community/shared';
+import {PimView, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {AttributeGroupsBreadcrumb, AttributeGroupsCreateButton, AttributeGroupsDataGrid} from '../components';
 import {useAttributeGroupsIndexState} from '../hooks';
 
@@ -21,7 +21,10 @@ const AttributeGroupsIndex: FC = () => {
           <AttributeGroupsBreadcrumb />
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
-          <UserMenu />
+          <PimView
+            viewName="pim-menu-user-navigation"
+            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
+          />
         </PageHeader.UserActions>
         <PageHeader.Actions>
           <AttributeGroupsCreateButton />
