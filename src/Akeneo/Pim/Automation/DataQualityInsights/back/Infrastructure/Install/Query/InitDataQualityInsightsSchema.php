@@ -43,5 +43,13 @@ CREATE TABLE pimee_dqi_attribute_option_spellcheck (
     PRIMARY KEY attribute_option_key (attribute_code, attribute_option_code),
     INDEX evaluated_at_index (evaluated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE pimee_dqi_family_criteria_evaluation (
+  family_id int NOT NULL,
+  criterion_code varchar(40) NOT NULL,
+  evaluated_at datetime NULL,
+  result json DEFAULT NULL,
+  PRIMARY KEY (family_id, criterion_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
 }

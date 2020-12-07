@@ -18,3 +18,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeLocaleQualityRepository:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\FamilyCriterionEvaluationRepository:
+        arguments:
+            - '@database_connection'

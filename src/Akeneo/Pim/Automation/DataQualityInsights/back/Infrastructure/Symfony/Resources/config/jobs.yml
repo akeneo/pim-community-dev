@@ -10,6 +10,7 @@ services:
             -
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_attributes'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_attribute_options'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_family_criteria'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_and_product_models_criteria'
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
@@ -55,6 +56,14 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateAttributeOptionsTasklet'
 
+    akeneo.pim.automation.data_quality_insights.connector.step.evaluate_family_criteria:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'evaluate_family_criteria'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateFamilyCriteriaTasklet'
+
     #Tasklets
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\GenerateDictionaryTasklet:
@@ -71,6 +80,12 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateAttributeOptionsTasklet:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
+            - '@logger'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateFamilyCriteriaTasklet:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetFamilyIdsToEvaluateQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateFamilyAttributesSpelling'
             - '@logger'
 
     #Job parameters
