@@ -6,14 +6,12 @@ aliases:
       GOOGLE_PROJECT_ID: "akecld-saas-dev"
       GOOGLE_COMPUTE_ZONE: "europe-west3-a"
       CLUSTER_NAME: "europe-west3-a"
-      MAKE_DEPLOY: "make -C deployments/"
 
   - &envVarsDeployPreprod
       ENV_NAME: "preprod"
       GOOGLE_PROJECT_ID: "akecld-saas-preprod"
       GOOGLE_COMPUTE_ZONE: "europe-west3-a"
       CLUSTER_NAME: "europe-west3-a"
-      MAKE_DEPLOY: "make -C deployments/"
 
   - &dockerCloudDeployer
       docker:
