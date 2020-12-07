@@ -3,8 +3,14 @@ oneup_flysystem:
         asset_storage_adapter:
             nulladapter: ~
         catalog_storage_adapter:
-            nulladapter: ~
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'catalog'
         jobs_storage_adapter:
-            nulladapter: ~
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'jobs'
         archivist_adapter:
-            nulladapter: ~
+            awss3v3:
+                client: 'Aws\S3\S3Client'
+                bucket: 'archive'
