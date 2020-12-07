@@ -14,7 +14,9 @@ namespace Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProdu
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Permission\Component\Authorization\FetchUserRightsOnProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -93,14 +95,14 @@ class DuplicateProductHandler
         /** @var ProductInterface */
         $productToDuplicate = $this->productRepository->findOneByIdentifier($duplicateProductCommand->productToDuplicateIdentifier());
 
-        $normalizedProductWithoutIdentifier = $this->normalizeProductWithoutIdentifier($productToDuplicate);
+        $normalizedProduct = $this->normalizeProductWithNewIdentifier($productToDuplicate, $duplicateProductCommand->duplicatedProductIdentifier());
 
         $duplicatedProduct = $this->productBuilder->createProduct(
             $duplicateProductCommand->duplicatedProductIdentifier(),
             $productToDuplicate->getFamily() !== null ? $productToDuplicate->getFamily()->getCode() : null
         );
 
-        $this->productUpdater->update($duplicatedProduct, $normalizedProductWithoutIdentifier);
+        $this->productUpdater->update($duplicatedProduct, $normalizedProduct);
 
         $duplicatedProduct = $this->removeUniqueAttributeValues->fromProduct($duplicatedProduct);
 
@@ -119,14 +121,15 @@ class DuplicateProductHandler
         return DuplicateProductResponse::error($violations);
     }
 
-    private function normalizeProductWithoutIdentifier(ProductInterface $productToDuplicate): array
+    private function normalizeProductWithNewIdentifier(ProductInterface $productToDuplicate, string $newIdentifier): array
     {
         $normalizedProduct = $this->normalizer->normalize(
             $productToDuplicate,
             'standard'
         );
-
-        unset($normalizedProduct['values'][$this->attributeRepository->getIdentifierCode()]);
+        $normalizedProduct['values'][$this->attributeRepository->getIdentifierCode()] = [
+            ['data' => $newIdentifier, 'locale' => null, 'scope' => null],
+        ];
 
         return $normalizedProduct;
     }
