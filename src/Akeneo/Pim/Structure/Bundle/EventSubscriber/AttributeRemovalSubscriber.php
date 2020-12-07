@@ -57,8 +57,10 @@ class AttributeRemovalSubscriber implements EventSubscriberInterface
         $this->attributeCodeBlacklister->blacklist($attributeCode);
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);
-        $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
+        $jobExecution = $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), [
             'attribute_codes' => [$attributeCode]
         ]);
+
+        $this->attributeCodeBlacklister->registerJob($attributeCode, $jobExecution->getId());
     }
 }

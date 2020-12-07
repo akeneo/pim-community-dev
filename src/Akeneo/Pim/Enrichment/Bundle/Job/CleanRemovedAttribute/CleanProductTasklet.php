@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductIdentifiersWithRemovedAttributeInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -19,15 +20,18 @@ class CleanProductTasklet implements TaskletInterface, TrackableTaskletInterface
     private GetProductIdentifiersWithRemovedAttributeInterface $getProductIdentifiersWithRemovedAttribute;
     private CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute;
     private RemoveValuesFromProducts $removeValuesFromProducts;
+    private JobRepositoryInterface $jobRepository;
 
     public function __construct(
         GetProductIdentifiersWithRemovedAttributeInterface $getProductIdentifiersWithRemovedAttribute,
         CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute,
-        RemoveValuesFromProducts $removeValuesFromProducts
+        RemoveValuesFromProducts $removeValuesFromProducts,
+        JobRepositoryInterface $jobRepository
     ) {
         $this->getProductIdentifiersWithRemovedAttribute = $getProductIdentifiersWithRemovedAttribute;
         $this->countProductsWithRemovedAttribute = $countProductsWithRemovedAttribute;
         $this->removeValuesFromProducts = $removeValuesFromProducts;
+        $this->jobRepository = $jobRepository;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -54,6 +58,7 @@ class CleanProductTasklet implements TaskletInterface, TrackableTaskletInterface
         ) as $identifiers) {
             $this->removeValuesFromProducts->forAttributeCodes($attributeCodes, $identifiers);
             $this->stepExecution->incrementProcessedItems(count($identifiers));
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 }

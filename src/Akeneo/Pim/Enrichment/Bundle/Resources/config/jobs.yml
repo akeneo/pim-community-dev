@@ -738,6 +738,7 @@ services:
             - '@akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute'
             - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
             - '@pim_catalog.product_values.remove_values_from_products'
+            - '@akeneo_batch.job_repository'
 
     pim_catalog.step.clean_attribute.clean_product_model:
         class: '%pim_connector.step.tasklet.class%'
@@ -754,3 +755,4 @@ services:
             - '@akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute'
             - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
             - '@pim_catalog.product_values.remove_values_from_product_models'
+            - '@akeneo_batch.job_repository'

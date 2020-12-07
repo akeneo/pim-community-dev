@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProductModels;
 use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductModelsWithRemovedAttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelIdentifiersWithRemovedAttributeInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -19,15 +20,18 @@ class CleanProductModelTasklet implements TaskletInterface, TrackableTaskletInte
     private GetProductModelIdentifiersWithRemovedAttributeInterface $getProductModelsIdentifiersWithRemovedAttribute;
     private CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute;
     private RemoveValuesFromProductModels $removeValuesFromProductModels;
+    private JobRepositoryInterface $jobRepository;
 
     public function __construct(
         GetProductModelIdentifiersWithRemovedAttributeInterface $getProductModelsIdentifiersWithRemovedAttribute,
         CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute,
-        RemoveValuesFromProductModels $removeValuesFromProductModels
+        RemoveValuesFromProductModels $removeValuesFromProductModels,
+        JobRepositoryInterface $jobRepository
     ) {
         $this->getProductModelsIdentifiersWithRemovedAttribute = $getProductModelsIdentifiersWithRemovedAttribute;
         $this->countProductModelsWithRemovedAttribute = $countProductModelsWithRemovedAttribute;
         $this->removeValuesFromProductModels = $removeValuesFromProductModels;
+        $this->jobRepository = $jobRepository;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -54,6 +58,7 @@ class CleanProductModelTasklet implements TaskletInterface, TrackableTaskletInte
         ) as $identifiers) {
             $this->removeValuesFromProductModels->forAttributeCodes($attributeCodes, $identifiers);
             $this->stepExecution->incrementProcessedItems(count($identifiers));
+            $this->jobRepository->updateStepExecution($this->stepExecution);
         }
     }
 }

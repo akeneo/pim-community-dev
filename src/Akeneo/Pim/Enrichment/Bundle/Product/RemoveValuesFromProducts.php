@@ -32,18 +32,21 @@ class RemoveValuesFromProducts
 
     public function forAttributeCodes(array $attributeCodes, array $productIdentifiers): void
     {
+        $paths = implode(
+            ',',
+            array_map(fn ($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)), $attributeCodes)
+        );
+
         $this->connection->executeQuery(
             <<<SQL
     UPDATE pim_catalog_product
-    SET raw_values = JSON_REMOVE(raw_values, :json_path)
+    SET raw_values = JSON_REMOVE(raw_values, $paths)
     WHERE identifier IN (:identifiers)
     SQL,
             [
-                'json_path' => array_map(fn ($attributeCode) => sprintf('$.%s', $attributeCode), $attributeCodes),
                 'identifiers' => $productIdentifiers,
             ],
             [
-                'json_path' => Connection::PARAM_STR_ARRAY,
                 'identifiers' => Connection::PARAM_STR_ARRAY,
             ]
         );
