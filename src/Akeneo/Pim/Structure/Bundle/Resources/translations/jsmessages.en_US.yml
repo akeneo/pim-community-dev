@@ -206,6 +206,7 @@ pim_enrich.entity.attribute:
             regexp: Regular expression
             url: URL
         wysiwyg_enabled: Rich text editor enabled
+        default_value: Default value
     module:
         add_attribute:
             no_available_attributes: There are no more attributes to add
