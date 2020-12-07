@@ -9,6 +9,13 @@ suites:
         spec_prefix: Specification
 
     ## PIM BC
+    Connection:
+        namespace: AkeneoEnterprise\Connectivity\Connection
+        psr4_prefix: AkeneoEnterprise\Connectivity\Connection
+        spec_path: src/Akeneo/Connectivity/Connection/back/tests/Unit
+        src_path: src/Akeneo/Connectivity/Connection/back
+        spec_prefix: spec
+
     DataQualityInsights:
         namespace: Akeneo\Pim\Automation\DataQualityInsights
         psr4_prefix: Akeneo\Pim\Automation\DataQualityInsights

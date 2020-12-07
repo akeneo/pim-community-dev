@@ -1,0 +1,13 @@
+monolog:
+    handlers:
+        main:
+            type:     stream
+            path:     "%kernel.logs_dir%/%kernel.environment%.log"
+            level:    debug
+            channels: ['!event', '!quality', '!event_api']
+        firephp:
+            type:     firephp
+            level:    info
+        console:
+            type:     console
+            channels: ['!event', '!doctrine', '!quality', '!event_api']

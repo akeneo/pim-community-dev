@@ -1,0 +1,8 @@
+services:
+    akeneo_enterprise_connectivity.connection.webhook.cache_clearer:
+        class: AkeneoEnterprise\Connectivity\Connection\Infrastructure\Webhook\CacheClearer
+        decorates: akeneo_connectivity.connection.webhook.cache_clearer
+        decoration_inner_name: akeneo_connectivity.connection.webhook.community_cache_clearer
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.community_cache_clearer'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'

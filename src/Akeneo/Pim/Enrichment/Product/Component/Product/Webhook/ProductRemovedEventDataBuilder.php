@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
+use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductRemovedEventDataBuilder as BaseProductRemovedEventDataBuilder;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
@@ -16,20 +17,20 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
  */
 class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
 {
-    private EventDataBuilderInterface $eventDataBuilder;
+    private BaseProductRemovedEventDataBuilder $baseProductRemovedEventDateBuilder;
     private GetViewableCategoryCodes $getViewableCategoryCodes;
 
     public function __construct(
-        EventDataBuilderInterface $eventDataBuilder,
+        BaseProductRemovedEventDataBuilder $baseProductRemovedEventDateBuilder,
         GetViewableCategoryCodes $getViewableCategoryCodes
     ) {
-        $this->eventDataBuilder = $eventDataBuilder;
+        $this->baseProductRemovedEventDateBuilder = $baseProductRemovedEventDateBuilder;
         $this->getViewableCategoryCodes = $getViewableCategoryCodes;
     }
 
     public function supports(object $event): bool
     {
-        return $this->eventDataBuilder->supports($event);
+        return $this->baseProductRemovedEventDateBuilder->supports($event);
     }
 
     /**
