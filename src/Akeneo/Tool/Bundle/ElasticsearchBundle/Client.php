@@ -19,7 +19,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Client
+class Client implements ClientIndexerInterface
 {
     /** @var int ElasticSearch max query size */
     private const PARAMS_MAX_SIZE = 100000000;
@@ -68,15 +68,9 @@ class Client
     }
 
     /**
-     * @param string       $id
-     * @param array        $body
-     * @param Refresh|null $refresh
-     *
-     * @throws IndexationException
-     *
-     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
+     * {@inheritDoc}
      */
-    public function index($id, array $body, Refresh $refresh = null)
+    public function index(string $id, array $body, Refresh $refresh = null): array
     {
         $params = [
             'index' => $this->indexName,
@@ -102,16 +96,9 @@ class Client
     }
 
     /**
-     * @param array        $documents
-     * @param ?string      $keyAsId
-     * @param Refresh|null $refresh
-     *
-     * @throws MissingIdentifierException
-     * @throws IndexationException
-     *
-     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
+     * {@inheritDoc}
      */
-    public function bulkIndexes($documents, $keyAsId = null, Refresh $refresh = null)
+    public function bulkIndexes(array $documents, string $keyAsId = null, Refresh $refresh = null): array
     {
         $params = [];
         $paramsComputedSize = 0;
@@ -322,7 +309,7 @@ class Client
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html}
      */
-    public function refreshIndex()
+    public function refreshIndex(): array
     {
         return $this->client->indices()->refresh(['index' => $this->indexName]);
     }
