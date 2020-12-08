@@ -2,7 +2,8 @@ services:
     pim_catalog.webhook.event_data_builder.product_created_and_updated:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder
         arguments:
-            - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
+            # - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
+            - '@pim_catalog.webhook.query.product_query_builder_from_size_factory_external_api'
             # - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
             - '@pim_catalog.webhook.connector.get_product_from_identifiers'
             - '@pim_api.normalizer.connector_products'
@@ -17,7 +18,8 @@ services:
     pim_catalog.webhook.event_data_builder.product_model_created_and_updated:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelCreatedAndUpdatedEventDataBuilder
         arguments:
-            - '@pim_catalog.query.product_model_query_builder_from_size_factory_external_api'
+            # - '@pim_catalog.query.product_model_query_builder_from_size_factory_external_api'
+            - '@pim_catalog.webhook.query.product_model_query_builder_from_size_factory_external_api'
             # - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
             - '@pim_catalog.webhook.connector.get_product_models_from_codes'
             - '@pim_api.normalizer.connector_product_models'
@@ -31,6 +33,16 @@ services:
 
     # TODO CXP-604 temporarly re-define GetConnector services to avoid EE decoration
 
+    pim_catalog.webhook.query.product_query_builder_from_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_identifier_cursor_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
     pim_catalog.webhook.connector.get_product_from_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProducts'
         arguments:
@@ -43,6 +55,16 @@ services:
             $getCategoryCodesByProductIdentifiers: '@akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers'
             $readValueCollectionFactory: '@akeneo.pim.enrichment.factory.read_value_collection'
             $attributeRepository: '@pim_catalog.repository.attribute'
+
+    pim_catalog.webhook.query.product_model_query_builder_from_size_factory_external_api:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - 'Akeneo\Pim\Enrichment\Component\Product\Query\ProductModelQueryBuilder'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@akeneo.pim.enrichment.factory.product_model_identifier_cursor_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
 
     pim_catalog.webhook.connector.get_product_models_from_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels'
