@@ -7,6 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -38,7 +39,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
         WebhookEventBuilder $builder,
-        GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription
+        GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
+        CacheClearerInterface $cacheClearer
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -47,7 +49,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $builder,
             new NullLogger(),
             $connectionUserForFakeSubscription,
-            'staging.akeneo.com',
+            $cacheClearer,
+            'staging.akeneo.com'
         );
     }
 
@@ -60,7 +63,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
-        $builder
+        $builder,
+        $cacheClearer
     ): void {
         $juliaUser = new User();
         $juliaUser->setId(0);
@@ -137,6 +141,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 ),
             )
             ->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
 
         $this->handle($command);
     }
@@ -146,7 +151,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $connectionUserForFakeSubscription
+        $connectionUserForFakeSubscription,
+        $cacheClearer
     ): void {
         $julia = new User();
         $julia->setId(1234);
@@ -262,6 +268,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 ),
             )
             ->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
 
         $this->handle($command);
     }
@@ -270,7 +277,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
-        $builder
+        $builder,
+        $cacheClearer
     ): void {
         $erpUser = new User();
         $erpUser->setId(42);
@@ -351,6 +359,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 ),
             )
             ->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
 
         $this->handle($command);
     }
@@ -359,7 +368,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
-        $builder
+        $builder,
+        $cacheClearer
     ): void {
         $user = new User();
         $user->setId(0);
@@ -399,6 +409,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 ),
             )
             ->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
 
         $this->handle($command);
     }
@@ -409,6 +420,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder,
         $connectionUserForFakeSubscription,
+        $cacheClearer,
         LoggerInterface $logger
     ): void {
         $getTimeIterable = (function () {
@@ -434,8 +446,9 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $builder,
             $logger,
             $connectionUserForFakeSubscription,
+            $cacheClearer,
             'staging.akeneo.com',
-            $getTimeCallable,
+            $getTimeCallable
         );
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
