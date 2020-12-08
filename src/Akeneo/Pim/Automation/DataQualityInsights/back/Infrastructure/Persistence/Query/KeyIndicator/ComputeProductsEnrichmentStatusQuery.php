@@ -62,7 +62,10 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 
         while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
             $evaluationResults = json_decode($row['results'], true);
-            $evaluationResults = array_map(fn (array $results) => $this->transformCriterionEvaluationResultIds->transformToCodes($results), $evaluationResults);
+            $evaluationResults = array_map(
+                fn ($results) => is_array($results) ? $this->transformCriterionEvaluationResultIds->transformToCodes($results) : null,
+                $evaluationResults
+            );
             $productsEnrichmentStatus[$row['product_id']] = $this->computeProductEnrichmentStatus($evaluationResults, $localesByChannel);
         }
 
