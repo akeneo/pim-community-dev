@@ -64,7 +64,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 - pim_reference_data_multiselect
                 - pim_reference_data_simpleselect
         - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
-            message: This attribute cannot have a default value.
+            message: This attribute type cannot have a default value.
             properties:
                 - default_value
             groups:
