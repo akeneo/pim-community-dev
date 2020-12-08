@@ -48,7 +48,7 @@ datagrid:
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
-                type:  delete
+                type:  delete-attribute
                 label: pim_common.delete
                 link:  delete_link
                 acl_resource: pim_enrich_attribute_remove

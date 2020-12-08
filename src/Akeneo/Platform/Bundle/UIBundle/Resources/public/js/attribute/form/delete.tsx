@@ -12,7 +12,7 @@ class Delete extends ReactView {
     return (
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <DeleteAction attributeCode={data.code}/>
+          <DeleteAction attributeCode={data.code} />
         </ThemeProvider>
       </DependenciesProvider>
     );
