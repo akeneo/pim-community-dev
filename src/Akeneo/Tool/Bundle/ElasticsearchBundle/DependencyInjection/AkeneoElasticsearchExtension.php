@@ -67,7 +67,8 @@ class AkeneoElasticsearchExtension extends Extension
                     $config['hosts'],
                     $index['index_name'],
                     $index['id_prefix'],
-                ]);
+                ])
+                ->setPublic(true);
 
             $esClientRegistryDefinition->addMethodCall('register', [new Reference($index['service_name'])]);
         }
