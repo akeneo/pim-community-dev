@@ -7,10 +7,17 @@ Practically, it means the Akeneo PIM bundles are present in the src/ directory.
 
 Here is [the documentation](https://docs.akeneo.com/latest/install_pim/docker/installation_docker.html) to install the PIM using Docker & make.
 
+## how to bootstrap a PIM
+
+ * make php-image-dev
+ * make dependencies
+ * make pim-dev
+
 ## useful make targets
 
  * help: documentation of available targets
  * pim-dev: install a PIM using the development environement
+ * dependencies: install front and back dependencies
  * vendor: launch composer update
  * yarn.lock: launch yarn install
  * database: flush the database and install a icecat sample catalog
