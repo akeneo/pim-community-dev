@@ -128,7 +128,7 @@ services:
         arguments:
             - '@database_connection'
             - '@logger'
-            - '@monolog.logger.quality'
+            - '@logger'
 
     #Job parameters
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PrepareEvaluationsParameters:
