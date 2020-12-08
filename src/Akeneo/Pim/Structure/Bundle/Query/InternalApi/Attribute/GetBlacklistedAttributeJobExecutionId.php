@@ -18,7 +18,7 @@ final class GetBlacklistedAttributeJobExecutionId
     public function forAttributeCode(string $attributeCode): ?int
     {
         $sql = <<<SQL
-SELECT qcleanup_job_execution_id
+SELECT cleanup_job_execution_id
 FROM `pim_catalog_attribute_blacklist`
 WHERE attribute_code = :attribute_code;
 SQL;
