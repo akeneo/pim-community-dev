@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
-use Webmozart\Assert\Assert;
+use Akeneo\Platform\VersionProviderInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -13,14 +13,14 @@ use Webmozart\Assert\Assert;
  */
 final class MultipleClientIndexer implements ClientIndexerInterface
 {
-    /** @var IndexerInterface[] */
-    private array $indexers = [];
+    private Client $client;
+    private VersionProviderInterface $versionProvider;
+    private ?Client $clientForNextIndex = null;
 
-    public function __construct(array $indexers)
+    public function __construct(Client $client, VersionProviderInterface $versionProvider)
     {
-        Assert::allIsInstanceOf($indexers, ClientIndexerInterface::class);
-        Assert::notEmpty($indexers);
-        $this->indexers = $indexers;
+        $this->client = $client;
+        $this->versionProvider = $versionProvider;
     }
 
     /**
@@ -28,12 +28,13 @@ final class MultipleClientIndexer implements ClientIndexerInterface
      */
     public function index(string $id, array $body, Refresh $refresh = null): array
     {
-        $result = [];
-        foreach ($this->indexers as $indexer) {
-            $results[] = $indexer->index($id, $body, $refresh);
+        $result = $this->client->index($id, $body, $refresh);
+        $client = $this->getClientForNextIndex();
+        if (null !== $client) {
+            $client->index($id, $body, $refresh);
         }
 
-        return $results[0];
+        return $result;
     }
 
     /**
@@ -41,12 +42,13 @@ final class MultipleClientIndexer implements ClientIndexerInterface
      */
     public function bulkIndexes(array $documents, string $keyAsId = null, Refresh $refresh = null): array
     {
-        $results = [];
-        foreach ($this->indexers as $indexer) {
-            $results[] = $indexer->bulkIndexes($documents, $keyAsId, $refresh);
+        $result = $this->client->bulkIndexes($documents, $keyAsId, $refresh);
+        $client = $this->getClientForNextIndex();
+        if (null !== $client) {
+            $client->bulkIndexes($documents, $keyAsId, $refresh);
         }
 
-        return $results[0];
+        return $result;
     }
 
     /**
@@ -54,8 +56,10 @@ final class MultipleClientIndexer implements ClientIndexerInterface
      */
     public function deleteByQuery(array $query): void
     {
-        foreach ($this->indexers as $indexer) {
-            $indexer->deleteByQuery($query);
+        $this->client->deleteByQuery($query);
+        $client = $this->getClientForNextIndex();
+        if (null !== $client) {
+            $client->deleteByQuery($query);
         }
     }
 
@@ -64,11 +68,36 @@ final class MultipleClientIndexer implements ClientIndexerInterface
      */
     public function refreshIndex(): array
     {
-        $results = [];
-        foreach ($this->indexers as $indexer) {
-            $results[] = $indexer->refreshIndex();
+        $result = $this->client->refreshIndex();
+        $client = $this->getClientForNextIndex();
+        if (null !== $client) {
+            $client->refreshIndex();
         }
 
-        return $results[0];
+        return $result;
+    }
+
+    private function getClientForNextIndex(): ?Client
+    {
+        if ('Serenity' !== $this->versionProvider->getEdition() || !$this->versionProvider->isSaaSVersion()) {
+            return null;
+        }
+
+        if (null === $this->clientForNextIndex) {
+            $this->clientForNextIndex = new Client(
+                $this->client->getBuilder(),
+                $this->client->getConfigurationLoader(),
+                $this->client->getHosts(),
+                $this->getNextIndexName(),
+                $this->client->getIdPrefix(),
+            );
+        }
+
+        return $this->clientForNextIndex;
+    }
+
+    private function getNextIndexName(): string
+    {
+        return sprintf("%s_%s", $this->client->getIndexName(), $this->versionProvider->getMinorVersion());
     }
 }

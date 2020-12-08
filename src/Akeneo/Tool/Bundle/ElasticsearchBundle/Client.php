@@ -67,6 +67,21 @@ class Client implements ClientIndexerInterface
         $this->client = $builder->build();
     }
 
+    public function getBuilder(): ClientBuilder
+    {
+        return $this->builder;
+    }
+
+    public function getHosts(): array
+    {
+        return $this->hosts;
+    }
+
+    public function getIdPrefix(): string
+    {
+        return $this->idPrefix;
+    }
+
     /**
      * {@inheritDoc}
      */

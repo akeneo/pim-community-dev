@@ -16,7 +16,7 @@ interface ClientIndexerInterface
 {
     /**
      * @throws IndexationException
-     *                            
+     *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
      */
     public function index(string $id, array $body, Refresh $refresh = null): array;
