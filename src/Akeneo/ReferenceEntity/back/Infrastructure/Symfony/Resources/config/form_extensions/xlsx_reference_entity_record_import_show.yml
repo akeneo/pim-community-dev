@@ -1,167 +1,124 @@
 extensions:
-    pim-job-instance-xlsx-reference-entity-record-import-edit:
+    pim-job-instance-xlsx-reference-entity-record-import-show:
         module: pim/form/common/edit-form
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-main-image:
+    pim-job-instance-xlsx-reference-entity-record-import-show-main-image:
         module: pim/form/common/main-image
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show
         targetZone: main-image
         config:
             path: bundles/pimui/images/illustrations/ImportXLSX.svg
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-user-navigation:
+    pim-job-instance-xlsx-reference-entity-record-import-show-user-navigation:
         module: pim/menu/user-navigation
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show
         targetZone: user-menu
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-breadcrumbs:
+    pim-job-instance-xlsx-reference-entity-record-import-show-breadcrumbs:
         module: pim/common/breadcrumbs
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show
         targetZone: breadcrumbs
         config:
             tab: pim-menu-imports
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-cache-invalidator:
-        module: pim/cache-invalidator
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
-        position: 1000
+    pim-job-instance-xlsx-reference-entity-record-import-show-switcher:
+        module: pim/job-instance/import/switcher
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show
+        position: 0
+        targetZone: meta
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-tabs:
-        module: pim/form/common/form-tabs
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
+    pim-job-instance-xlsx-reference-entity-record-import-show-launch-switcher-item:
+        module: pim/job-instance/import/switcher-item
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show
         targetZone: content
-        position: 100
-
-    pim-job-instance-xlsx-reference-entity-record-import-edit-properties:
-        module: pim/job/common/edit/properties
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit-tabs
-        aclResourceId: pim_importexport_export_profile_property_edit
-        targetZone: container
-        position: 100
+        aclResourceId: pim_importexport_import_profile_launch
+        position: 40
         config:
-            tabTitle: pim_common.properties
-            tabCode: pim-job-instance-properties
+            label: pim_import_export.form.job_instance.button.import.launch
+            hideForCloudEdition: true
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-global:
-        module: pim/job/common/edit/properties
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit-tabs
-        aclResourceId: pim_importexport_export_profile_property_edit
-        targetZone: container
-        position: 120
+    pim-job-instance-xlsx-reference-entity-record-import-show-file-path:
+        module: pim/job/common/file-path
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show-launch-switcher-item
         config:
-            tabTitle: pim_enrich.export.product.global_settings.title
-            tabCode: pim-job-instance-global
+            label: pim_import_export.form.job_instance.file_path
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-history:
-        module: pim/common/tab/history
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit-tabs
-        targetZone: container
-        aclResourceId: pim_importexport_import_profile_history
-        position: 130
+    pim-job-instance-xlsx-reference-entity-record-import-show-import-button:
+        module: pim/job/common/edit/launch
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show-file-path
+        targetZone: buttons
         config:
-            class: Akeneo\Tool\Component\Batch\Model\JobInstance
-            title: pim_common.history
-            tabCode: pim-job-instance-history
+            label: pim_import_export.form.job_instance.button.import.launch
+            route: pim_enrich_job_instance_rest_import_launch
+            identifier:
+                path: code
+                name: code
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-properties-code:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit-properties
-        position: 100
-        targetZone: properties
+    pim-job-instance-xlsx-reference-entity-record-import-show-upload-switcher-item:
+        module: pim/job-instance/import/switcher-item
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show
+        targetZone: content
+        aclResourceId: pim_importexport_import_profile_launch
+        position: 50
         config:
-            fieldCode: code
-            label: pim_common.code
-            readOnly: true
+            allowedKey: uploadAllowed
+            label: pim_import_export.form.job_instance.button.import.upload_file
+            hideForCloudEdition: false
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-properties-label:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit-properties
-        position: 110
-        targetZone: properties
+    pim-job-instance-xlsx-reference-entity-record-import-show-upload:
+        module: pim/job/common/edit/upload
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show-upload-switcher-item
+        position: 50
         config:
-            fieldCode: label
-            label: pim_common.label
-            readOnly: false
+            type: xlsx
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-properties-file-path:
-        module: pim/job/common/edit/field/file-path
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit-global
-        position: 120
-        targetZone: properties
+    pim-job-instance-xlsx-reference-entity-record-import-show-upload-button:
+        module: pim/job/common/edit/upload-launch
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show-upload-switcher-item
+        position: 60
         config:
-            fieldCode: configuration.filePath
-            readOnly: false
-            label: pim_import_export.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help_import
+            label: pim_import_export.form.job_instance.button.import.upload
+            route: pim_enrich_job_instance_rest_import_launch
+            identifier:
+                path: code
+                name: code
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-properties-file-upload:
-        module: pim/job/common/edit/field/allow-file-upload
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit-global
-        position: 130
-        targetZone: properties
+    pim-job-instance-xlsx-reference-entity-record-import-show-subsection:
+        module: pim/form/common/subsection
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show
+        targetZone: content
         config:
-            fieldCode: configuration.uploadAllowed
-            readOnly: false
-            label: pim_import_export.form.job_instance.tab.properties.upload_allowed.title
-            tooltip: pim_import_export.form.job_instance.tab.properties.upload_allowed.help
+            title: pim_import_export.form.job_instance.subsection.last_executions
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-label:
+    pim-job-instance-xlsx-reference-entity-record-import-show-grid:
+        module: pim/job/common/grid
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show-subsection
+        position: 1000
+        targetZone: content
+        config:
+            alias: last-import-executions-grid
+            metadata:
+                jobType: import
+
+    pim-job-instance-xlsx-reference-entity-record-import-show-label:
         module: pim/job/common/edit/label
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show
         targetZone: title
         position: 100
 
-    pim-job-instance-xlsx-reference-entity-record-import-edit-meta:
-        module: pim/job/common/edit/meta
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
-        targetZone: meta
+    pim-job-instance-xlsx-reference-entity-record-import-show-edit:
+        module: pim/common/redirect
+        parent: pim-job-instance-xlsx-reference-entity-record-import-show
+        targetZone: buttons
         position: 100
-
-    pim-job-instance-xlsx-reference-entity-record-import-edit-secondary-actions:
-        module: pim/form/common/secondary-actions
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
-        targetZone: buttons
-        position: 50
-
-    pim-job-instance-xlsx-reference-entity-record-import-edit-delete:
-        module: pim/job/import/edit/delete
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit-secondary-actions
-        targetZone: secondary-actions
-        aclResourceId: pim_importexport_import_profile_remove
-        position: 100
+        aclResourceId: pim_importexport_import_profile_edit
         config:
-            trans:
-                title: confirmation.remove.import_profile
-                content: pim_common.confirm_deletion
-                success: pim_import_export.entity.job_instance.flash.delete.success
-                failed: error.removing.job_instance
-            redirect: pim_importexport_import_profile_index
-
-    pim-job-instance-xlsx-reference-entity-record-import-edit-save-buttons:
-        module: pim/form/common/save-buttons
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
-        targetZone: buttons
-        position: 120
-
-    pim-job-instance-xlsx-reference-entity-record-import-edit-save:
-        module: pim/job-instance-import-edit-form/save
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
-        targetZone: buttons
-        position: 0
-        config:
-            redirectPath: pim_importexport_import_profile_show
-
-    pim-job-instance-xlsx-reference-entity-record-import-edit-state:
-        module: pim/form/common/state
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
-        targetZone: state
-        position: 900
-        config:
-            entity: pim_import_export.entity.job_instance.label
-
-    pim-job-instance-xlsx-reference-entity-record-import-edit-validation:
-        module: pim/job/common/edit/validation
-        parent: pim-job-instance-xlsx-reference-entity-record-import-edit
+            label: pim_common.edit
+            route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
+            identifier:
+                path: code
+                name: code
