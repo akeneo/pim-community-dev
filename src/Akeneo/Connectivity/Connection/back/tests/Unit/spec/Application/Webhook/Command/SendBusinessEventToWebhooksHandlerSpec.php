@@ -83,49 +83,58 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $webhookUserAuthenticator->authenticate(42)->willReturn($magentoUser);
         $builder
-            ->build($businessEvent, [
-                'user' => $magentoUser,
-                'pim_source' => 'staging.akeneo.com',
-                'connection_code' => $webhook->connectionCode(),
-            ])
-            ->willReturn([
-                new WebhookEvent(
-                    'product.created',
-                    '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                    '2020-01-01T00:00:00+00:00',
-                    $author,
-                    'staging.akeneo.com',
-                    ['data'],
-                ),
-            ]);
+            ->build(
+                $businessEvent,
+                [
+                    'user' => $magentoUser,
+                    'pim_source' => 'staging.akeneo.com',
+                    'connection_code' => $webhook->connectionCode(),
+                ]
+            )
+            ->willReturn(
+                [
+                    new WebhookEvent(
+                        'product.created',
+                        '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                        '2020-01-01T00:00:00+00:00',
+                        $author,
+                        'staging.akeneo.com',
+                        ['data'],
+                    ),
+                ]
+            );
 
         $client
             ->bulkSend(
-                Argument::that(function (iterable $iterable) {
-                    $requests = iterator_to_array($iterable);
+                Argument::that(
+                    function (iterable $iterable) {
+                        $requests = iterator_to_array($iterable);
 
-                    Assert::assertCount(1, $requests);
-                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                        Assert::assertCount(1, $requests);
+                        Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
 
-                    Assert::assertEquals('http://localhost/', $requests[0]->url());
-                    Assert::assertEquals('a_secret', $requests[0]->secret());
-                    Assert::assertEquals(
-                        [
+                        Assert::assertEquals('http://localhost/', $requests[0]->url());
+                        Assert::assertEquals('a_secret', $requests[0]->secret());
+                        Assert::assertEquals(
                             [
-                                'action' => 'product.created',
-                                'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                'event_date' => '2020-01-01T00:00:00+00:00',
-                                'author' => 'julia',
-                                'author_type' => 'ui',
-                                'pim_source' => 'staging.akeneo.com',
-                                'data' => ['data'],
+                                'events' => [
+                                    [
+                                        'action' => 'product.created',
+                                        'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                                        'event_date' => '2020-01-01T00:00:00+00:00',
+                                        'author' => 'julia',
+                                        'author_type' => 'ui',
+                                        'pim_source' => 'staging.akeneo.com',
+                                        'data' => ['data'],
+                                    ],
+                                ],
                             ],
-                        ],
-                        $requests[0]->content(),
-                    );
+                            $requests[0]->content(),
+                        );
 
-                    return true;
-                }),
+                        return true;
+                    }
+                ),
             )
             ->shouldBeCalled();
 
@@ -160,83 +169,97 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $webhookUserAuthenticator->authenticate(1234)->willReturn($magentoUser);
         $builder
-            ->build($businessEvent, [
-                'pim_source' => 'staging.akeneo.com',
-                'user' => $magentoUser,
-                'connection_code' => SendBusinessEventToWebhooksHandler::FAKE_CONNECTION_CODE,
-            ])
-            ->willReturn([
-                new WebhookEvent(
-                    'product.created',
-                    '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                    '2020-01-01T00:00:00+00:00',
-                    $author,
-                    'staging.akeneo.com',
-                    ['data'],
-                ),
-            ]);
+            ->build(
+                $businessEvent,
+                [
+                    'pim_source' => 'staging.akeneo.com',
+                    'user' => $magentoUser,
+                    'connection_code' => SendBusinessEventToWebhooksHandler::FAKE_CONNECTION_CODE,
+                ]
+            )
+            ->willReturn(
+                [
+                    new WebhookEvent(
+                        'product.created',
+                        '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                        '2020-01-01T00:00:00+00:00',
+                        $author,
+                        'staging.akeneo.com',
+                        ['data'],
+                    ),
+                ]
+            );
 
         $client
             ->bulkFakeSend(
-                Argument::that(function (iterable $iterable) {
-                    $requests = iterator_to_array($iterable);
+                Argument::that(
+                    function (iterable $iterable) {
+                        $requests = iterator_to_array($iterable);
 
-                    Assert::assertCount(3, $requests);
+                        Assert::assertCount(3, $requests);
 
-                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
-                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[0]->url());
-                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[0]->secret());
-                    Assert::assertEquals(
-                        [
+                        Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[0]->url());
+                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[0]->secret());
+                        Assert::assertEquals(
                             [
-                                'action' => 'product.created',
-                                'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                'event_date' => '2020-01-01T00:00:00+00:00',
-                                'author' => 'julia',
-                                'author_type' => 'ui',
-                                'pim_source' => 'staging.akeneo.com',
-                                'data' => ['data'],
-                            ],
-                        ],
-                        $requests[0]->content(),
-                    );
-                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
-                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[1]->url());
-                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[1]->secret());
-                    Assert::assertEquals(
-                        [
-                            [
-                                'action' => 'product.created',
-                                'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                'event_date' => '2020-01-01T00:00:00+00:00',
-                                'author' => 'julia',
-                                'author_type' => 'ui',
-                                'pim_source' => 'staging.akeneo.com',
-                                'data' => ['data'],
-                            ],
-                        ],
-                        $requests[1]->content(),
-                    );
-                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
-                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[2]->url());
-                    Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[2]->secret());
-                    Assert::assertEquals(
-                        [
-                            [
-                                'action' => 'product.created',
-                                'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                'event_date' => '2020-01-01T00:00:00+00:00',
-                                'author' => 'julia',
-                                'author_type' => 'ui',
-                                'pim_source' => 'staging.akeneo.com',
-                                'data' => ['data'],
-                            ],
-                        ],
-                        $requests[2]->content(),
-                    );
+                                'events' => [
+                                    [
+                                        'action' => 'product.created',
+                                        'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                                        'event_date' => '2020-01-01T00:00:00+00:00',
+                                        'author' => 'julia',
+                                        'author_type' => 'ui',
+                                        'pim_source' => 'staging.akeneo.com',
+                                        'data' => ['data'],
+                                    ],
+                                ],
 
-                    return true;
-                }),
+                            ],
+                            $requests[0]->content(),
+                        );
+                        Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[1]->url());
+                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[1]->secret());
+                        Assert::assertEquals(
+                            [
+                                'events' => [
+                                    [
+                                        'action' => 'product.created',
+                                        'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                                        'event_date' => '2020-01-01T00:00:00+00:00',
+                                        'author' => 'julia',
+                                        'author_type' => 'ui',
+                                        'pim_source' => 'staging.akeneo.com',
+                                        'data' => ['data'],
+                                    ],
+                                ],
+                            ],
+                            $requests[1]->content(),
+                        );
+                        Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[2]->url());
+                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[2]->secret());
+                        Assert::assertEquals(
+                            [
+                                'events' => [
+                                    [
+                                        'action' => 'product.created',
+                                        'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                                        'event_date' => '2020-01-01T00:00:00+00:00',
+                                        'author' => 'julia',
+                                        'author_type' => 'ui',
+                                        'pim_source' => 'staging.akeneo.com',
+                                        'data' => ['data'],
+                                    ],
+                                ],
+                            ],
+                            $requests[2]->content(),
+                        );
+
+                        return true;
+                    }
+                ),
             )
             ->shouldBeCalled();
 
@@ -273,50 +296,59 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator->authenticate(42)->willReturn($erpUser);
 
         $builder
-            ->build($businessEvent, [
-                'pim_source' => 'staging.akeneo.com',
-                'user' => $magentoUser,
-                'connection_code' => $magentoWebhook->connectionCode(),
-            ])
-            ->willReturn([
-                new WebhookEvent(
-                    'product.created',
-                    '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                    '2020-01-01T00:00:00+00:00',
-                    $erpAuthor,
-                    'staging.akeneo.com',
-                    ['data'],
-                ),
-            ]);
+            ->build(
+                $businessEvent,
+                [
+                    'pim_source' => 'staging.akeneo.com',
+                    'user' => $magentoUser,
+                    'connection_code' => $magentoWebhook->connectionCode(),
+                ]
+            )
+            ->willReturn(
+                [
+                    new WebhookEvent(
+                        'product.created',
+                        '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                        '2020-01-01T00:00:00+00:00',
+                        $erpAuthor,
+                        'staging.akeneo.com',
+                        ['data'],
+                    ),
+                ]
+            );
 
         $client
             ->bulkSend(
-                Argument::that(function (iterable $iterable) {
-                    $requests = iterator_to_array($iterable);
+                Argument::that(
+                    function (iterable $iterable) {
+                        $requests = iterator_to_array($iterable);
 
-                    Assert::assertCount(1, $requests);
-                    Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
+                        Assert::assertCount(1, $requests);
+                        Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
 
-                    Assert::assertEquals('http://localhost/', $requests[0]->url(), 'Url is not equal');
-                    Assert::assertEquals('a_secret', $requests[0]->secret(), 'Secret is not equal');
-                    Assert::assertEquals(
-                        [
+                        Assert::assertEquals('http://localhost/', $requests[0]->url(), 'Url is not equal');
+                        Assert::assertEquals('a_secret', $requests[0]->secret(), 'Secret is not equal');
+                        Assert::assertEquals(
                             [
-                                'action' => 'product.created',
-                                'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                'event_date' => '2020-01-01T00:00:00+00:00',
-                                'author' => 'erp_452',
-                                'author_type' => 'api',
-                                'pim_source' => 'staging.akeneo.com',
-                                'data' => ['data'],
+                                'events' => [
+                                    [
+                                        'action' => 'product.created',
+                                        'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                                        'event_date' => '2020-01-01T00:00:00+00:00',
+                                        'author' => 'erp_452',
+                                        'author_type' => 'api',
+                                        'pim_source' => 'staging.akeneo.com',
+                                        'data' => ['data'],
+                                    ],
+                                ],
                             ],
-                        ],
-                        $requests[0]->content(),
-                        'Content is not equal',
-                    );
+                            $requests[0]->content(),
+                            'Content is not equal',
+                        );
 
-                    return true;
-                }),
+                        return true;
+                    }
+                ),
             )
             ->shouldBeCalled();
 
@@ -344,22 +376,27 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $webhookUserAuthenticator->authenticate(0)->willReturn($user);
         $builder
-            ->build($businessEvent, [
-                'pim_source' => 'staging.akeneo.com',
-                'user' => $user,
-                'connection_code' => $webhook->connectionCode(),
-            ])
+            ->build(
+                $businessEvent,
+                [
+                    'pim_source' => 'staging.akeneo.com',
+                    'user' => $user,
+                    'connection_code' => $webhook->connectionCode(),
+                ]
+            )
             ->willThrow(\Exception::class);
 
         $client
             ->bulkSend(
-                Argument::that(function (iterable $iterable) {
-                    $requests = iterator_to_array($iterable);
+                Argument::that(
+                    function (iterable $iterable) {
+                        $requests = iterator_to_array($iterable);
 
-                    Assert::assertCount(0, $requests);
+                        Assert::assertCount(0, $requests);
 
-                    return true;
-                }),
+                        return true;
+                    }
+                ),
             )
             ->shouldBeCalled();
 
@@ -386,6 +423,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $getTimeCallable = function () use ($getTimeIterable) {
             $time = $getTimeIterable->current();
             $getTimeIterable->next();
+
             return $time;
         };
 
@@ -401,9 +439,11 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         );
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $bulkEvent = new BulkEvent([
-            $this->createEvent($author, ['data'])
-        ]);
+        $bulkEvent = new BulkEvent(
+            [
+                $this->createEvent($author, ['data']),
+            ]
+        );
 
         $subscription1 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
         $subscription2 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
@@ -415,21 +455,28 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
 
         $builder
             ->build(Argument::cetera())
-            ->willReturn([
-                new WebhookEvent(
-                    'product.created',
-                    '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                    '2020-01-01T00:00:00+00:00',
-                    $author,
-                    'staging.akeneo.com',
-                    ['data'],
-                )
-            ]);
+            ->willReturn(
+                [
+                    new WebhookEvent(
+                        'product.created',
+                        '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
+                        '2020-01-01T00:00:00+00:00',
+                        $author,
+                        'staging.akeneo.com',
+                        ['data'],
+                    ),
+                ]
+            );
 
-        $client->bulkSend(Argument::that(function (iterable $iterable) {
-            iterator_to_array($iterable); // Call the iterator to run the code.
-            return true;
-        }))->shouldBeCalled();
+        $client->bulkSend(
+            Argument::that(
+                function (iterable $iterable) {
+                    iterator_to_array($iterable); // Call the iterator to run the code.
+
+                    return true;
+                }
+            )
+        )->shouldBeCalled();
 
         $command = new SendBusinessEventToWebhooksCommand($bulkEvent);
         $this->handle($command);
@@ -443,8 +490,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
     {
         $timestamp = 1577836800;
         $uuid = '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c';
-        return new class ($author, $data, $timestamp, $uuid) extends Event
-        {
+
+        return new class ($author, $data, $timestamp, $uuid) extends Event {
             public function getName(): string
             {
                 return 'product.created';

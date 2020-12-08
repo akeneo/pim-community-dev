@@ -14,8 +14,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
  */
 class WebhookRequest
 {
-    /** @var ActiveWebhook */
-    private $webhook;
+    private ActiveWebhook $webhook;
 
     /** @var array<WebhookEvent> */
     private $apiEvents;
@@ -46,31 +45,36 @@ class WebhookRequest
     }
 
     /**
-     * Returns request content.
-     *
-     * @return array<array{
-     *  action: string,
-     *  event_id: string,
-     *  event_date: string,
-     *  author: string,
-     *  author_type: string,
-     *  pim_source: string,
-     *  data: array
-     * }>
+     * @return array{
+     *  events: array<array{
+     *      action: string,
+     *      event_id: string,
+     *      event_date: string,
+     *      author: string,
+     *      author_type: string,
+     *      pim_source: string,
+     *      data: array
+     *  }>
+     * }
      */
     public function content(): array
     {
-        return \array_map(function (WebhookEvent $apiEvent) {
-            return [
-                'action' => $apiEvent->action(),
-                'event_id' => $apiEvent->eventId(),
-                'event_date' => $apiEvent->eventDate(),
-                'author' => $apiEvent->author()->name(),
-                'author_type' => $apiEvent->author()->type(),
-                'pim_source' => $apiEvent->pimSource(),
-                'data' => $apiEvent->data(),
-            ];
-        }, $this->apiEvents);
+        return [
+            'events' => \array_map(
+                function (WebhookEvent $apiEvent) {
+                    return [
+                        'action' => $apiEvent->action(),
+                        'event_id' => $apiEvent->eventId(),
+                        'event_date' => $apiEvent->eventDate(),
+                        'author' => $apiEvent->author()->name(),
+                        'author_type' => $apiEvent->author()->type(),
+                        'pim_source' => $apiEvent->pimSource(),
+                        'data' => $apiEvent->data(),
+                    ];
+                },
+                $this->apiEvents
+            ),
+        ];
     }
 
     public function webhook(): ActiveWebhook
