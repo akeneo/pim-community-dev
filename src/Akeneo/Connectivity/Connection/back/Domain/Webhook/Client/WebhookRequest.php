@@ -17,7 +17,7 @@ class WebhookRequest
     private ActiveWebhook $webhook;
 
     /** @var array<WebhookEvent> */
-    private $apiEvents;
+    private array $apiEvents;
 
     /**
      * @param array<WebhookEvent> $apiEvents
