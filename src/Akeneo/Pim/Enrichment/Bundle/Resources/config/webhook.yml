@@ -3,7 +3,8 @@ services:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder
         arguments:
             - '@pim_catalog.query.product_query_builder_from_size_factory_external_api'
-            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
+            # - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
+            - '@pim_catalog.webhook.connector.get_product_from_identifiers'
             - '@pim_api.normalizer.connector_products'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
@@ -17,15 +18,40 @@ services:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelCreatedAndUpdatedEventDataBuilder
         arguments:
             - '@pim_catalog.query.product_model_query_builder_from_size_factory_external_api'
-            - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
+            # - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
+            - '@pim_catalog.webhook.connector.get_product_models_from_codes'
             - '@pim_api.normalizer.connector_product_models'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
 
     pim_catalog.webhook.event_data_builder.product_model_removed:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder
-        arguments:
-            - '@pim_api.repository.product_model'
-            - '@pim_api.normalizer.product_model'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
+
+    # TODO CXP-604 temporarly re-define GetConnector services to avoid EE decoration
+
+    pim_catalog.webhook.connector.get_product_from_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProducts'
+        arguments:
+            $getValuesAndPropertiesFromProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers'
+            $getProductModelAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_model_associations_by_product_identifiers'
+            $getGroupAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_group_associations_by_product_identifiers'
+            $getProductAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_associations_by_product_identifiers'
+            $getProductQuantifiedAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_quantified_associations_by_product_identifiers'
+            $getProductModelQuantifiedAssociationsByProductIdentifiers: '@akeneo.pim.enrichment.product.query.get_product_model_quantified_associations_by_product_identifiers'
+            $getCategoryCodesByProductIdentifiers: '@akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers'
+            $readValueCollectionFactory: '@akeneo.pim.enrichment.factory.read_value_collection'
+            $attributeRepository: '@pim_catalog.repository.attribute'
+
+    pim_catalog.webhook.connector.get_product_models_from_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProductModels'
+        arguments:
+            - '@akeneo.pim.enrichment.product_model.query.get_values_and_properties_from_product_model_codes'
+            - '@akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_product_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_models_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_group_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_product_quantified_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.product_model.query.get_product_model_quantified_associations_by_product_model_codes'
+            - '@akeneo.pim.enrichment.factory.read_value_collection'
