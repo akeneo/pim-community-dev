@@ -227,3 +227,10 @@ services:
         arguments:
             - '@pim_reference_data.registry'
             - '@pim_internal_api_serializer'
+
+    pim_enrich.controller.rest.count_impacted_items_by_attribute_deletion:
+        public: true
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\CountImpactedItemsByAttributeDeletionAction'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
