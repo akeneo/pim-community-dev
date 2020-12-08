@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Component\Query\PublicApi\Cache;
 
-use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 
 /**

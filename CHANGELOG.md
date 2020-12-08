@@ -262,6 +262,7 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter`: add argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory` to
     - add `Psr\Log\LoggerInterface $logger`
+- Move `Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface` to `Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface`
 
 ### CLI commands
 
