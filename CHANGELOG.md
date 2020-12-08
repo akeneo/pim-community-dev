@@ -232,7 +232,7 @@
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory`
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand` to
-    - add `\Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher`
+    - add `\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
     
 ### CLI commands
 
