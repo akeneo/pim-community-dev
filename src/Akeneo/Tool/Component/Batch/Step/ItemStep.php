@@ -287,20 +287,4 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
         $this->stepExecution->incrementProcessedItems($processedItemsCount);
         $this->jobRepository->updateStepExecution($this->stepExecution);
     }
-
-    private function isStopping(StepExecution $stepExecution): bool
-    {
-        return $this->stoppable &&
-            null !== $this->sqlGetJobExecutionStatus &&
-            BatchStatus::STOPPING === $this->sqlGetJobExecutionStatus->getByJobExecutionId(
-                $stepExecution->getJobExecution()->getId()
-            )->getValue();
-    }
-
-    private function stop(StepExecution $stepExecution): void
-    {
-        $stepExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
-        $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
-        $this->getJobRepository()->updateStepExecution($stepExecution);
-    }
 }
