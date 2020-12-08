@@ -174,7 +174,6 @@ const getLevelColor = (level: MessageBarLevel): ((props: AkeneoThemedProps) => s
 const getLevelDuration = (level: MessageBarLevel): number => {
   switch (level) {
     case 'success':
-      return 3;
     case 'info':
     case 'warning':
       return 5;
