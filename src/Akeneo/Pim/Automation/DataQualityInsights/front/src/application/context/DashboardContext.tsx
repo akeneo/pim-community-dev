@@ -23,8 +23,12 @@ export const useDashboardContext = () => {
   return dashboardContext;
 };
 
-export const DashboardContextProvider: FC = ({children}) => {
-  const state = useInitDashboardContextState();
+type Props = {
+  familyCode: string | null;
+  category: DashboardCategoryFilter | null;
+};
+export const DashboardContextProvider: FC<Props> = ({children, familyCode, category}) => {
+  const state = useInitDashboardContextState(familyCode, category);
 
   return <DashboardContext.Provider value={state}>{children}</DashboardContext.Provider>;
 };

@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
 class ConnectionMustExist extends Constraint
 {
     /** @var string */
-    public $message = 'akeneo_connectivity.connection.webhook.constraint.connection_must_exist';
+    public $message = 'akeneo_connectivity.connection.webhook.error.not_found';
 
     public function getTargets(): string
     {

@@ -28,7 +28,7 @@ class WebhookRequestSpec extends ObjectBehavior
                     Author::fromNameAndType('julia', Author::TYPE_UI),
                     'staging.akeneo.com',
                     ['identifier' => '1']
-                )
+                ),
             ]
         );
     }
@@ -55,15 +55,17 @@ class WebhookRequestSpec extends ObjectBehavior
         $this->content()
             ->shouldReturn(
                 [
-                    [
-                        'action' => 'product.created',
-                        'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                        'event_date' => '2020-01-01T00:00:00+00:00',
-                        'author' => 'julia',
-                        'author_type' => 'ui',
-                        'pim_source' => 'staging.akeneo.com',
-                        'data' => ['identifier' => '1'],
-                    ]
+                    'events' => [
+                        [
+                            'action' => 'product.created',
+                            'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                            'event_date' => '2020-01-01T00:00:00+00:00',
+                            'author' => 'julia',
+                            'author_type' => 'ui',
+                            'pim_source' => 'staging.akeneo.com',
+                            'data' => ['identifier' => '1'],
+                        ],
+                    ],
                 ]
             );
     }

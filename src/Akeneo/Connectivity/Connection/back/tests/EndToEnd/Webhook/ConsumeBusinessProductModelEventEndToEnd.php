@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\CategoryLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\FamilyVariantLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductModelLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\AttributeLoader;
@@ -27,23 +28,13 @@ use GuzzleHttp\Psr7\Response;
 
 class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
 {
-    /** @var ConnectionLoader */
-    private $connectionLoader;
-
-    /** @var WebhookLoader */
-    private $webhookLoader;
-
-    /** @var ProductModelLoader */
-    private $productModelLoader;
-
-    /** @var FamilyVariantLoader */
-    private $familyVariantLoader;
-
-    /** @var FamilyLoader */
-    private $familyLoader;
-
-    /** @var AttributeLoader */
-    private $attributeLoader;
+    private ConnectionLoader $connectionLoader;
+    private WebhookLoader $webhookLoader;
+    private ProductModelLoader $productModelLoader;
+    private FamilyVariantLoader $familyVariantLoader;
+    private FamilyLoader $familyLoader;
+    private AttributeLoader $attributeLoader;
+    private CategoryLoader $categoryLoader;
 
     protected function setUp(): void
     {
@@ -55,6 +46,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $this->productModelLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product_model');
         $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
         $this->familyVariantLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.family_variant');
+        $this->categoryLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.category');
     }
 
     public function test_it_sends_a_product_model_created_webhook_event()
@@ -138,11 +130,6 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
         $history = Middleware::history($container);
         $handlerStack->push($history);
 
-        $message = new ProductModelRemoved($author, [
-            'code' => $productModel->getCode(),
-            'category_codes' => $productModel->getCategoryCodes(),
-        ]);
-
         $message = new BulkEvent([
             new ProductModelRemoved($author, ['code' => $productModel->getCode(), 'category_codes' => $productModel->getCategoryCodes()])
         ]);
@@ -164,6 +151,10 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
      */
     private function loadProductModel(): ProductModelInterface
     {
+        $this->categoryLoader->create([
+            'code' => 'category'
+        ]);
+
         $this->attributeLoader->create([
             'code' => 'variant_attribute',
             'type' => 'pim_catalog_boolean',
@@ -193,6 +184,7 @@ class ConsumeBusinessProductModelEventEndToEnd extends ApiTestCase
 
         return $this->productModelLoader->create([
             'code' => 'product_model',
+            'categories' => ['category'],
             'family_variant' => $familyVariant->getCode(),
         ]);
     }

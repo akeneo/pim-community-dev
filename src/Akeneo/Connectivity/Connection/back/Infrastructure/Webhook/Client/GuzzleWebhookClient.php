@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
-use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use GuzzleHttp\ClientInterface;
@@ -25,14 +24,9 @@ class GuzzleWebhookClient implements WebhookClient
     const HEADER_REQUEST_SIGNATURE = 'X-Akeneo-Request-Signature';
     const HEADER_REQUEST_TIMESTAMP = 'X-Akeneo-Request-Timestamp';
 
-    /** @var ClientInterface */
-    private $client;
-
-    /** @var EncoderInterface */
-    private $encoder;
-
-    /** @var LoggerInterface */
-    private $logger;
+    private ClientInterface $client;
+    private EncoderInterface $encoder;
+    private LoggerInterface $logger;
 
     /** @var array{concurrency: ?int, timeout: ?float} */
     private $config;

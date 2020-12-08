@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import {FormContext, useForm, useFormContext} from 'react-hook-form';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
@@ -13,7 +13,7 @@ import {Translate} from '../../shared/translate';
 import {EditForm} from '../components/EditForm';
 import {EventSubscriptionHelper} from '../components/EventSubscriptionHelper';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
-import {useWebhook} from '../hooks/api/use-webhook';
+import {useFetchEventSubscriptionFormData} from '../hooks/api/use-fetch-event-subscription-form-data';
 import {Webhook} from '../model/Webhook';
 import {Breadcrumb} from 'akeneo-design-system';
 
@@ -31,23 +31,23 @@ export const EditConnectionWebhook: FC = () => {
     const systemHref = `#${useRoute('oro_config_configuration_system')}`;
 
     const {connectionCode} = useParams<{connectionCode: string}>();
-    const fetchedWebhook = useWebhook(connectionCode);
+    const {
+        eventSubscription,
+        eventSubscriptionsLimit,
+        fetchEventSubscriptionFormData,
+    } = useFetchEventSubscriptionFormData(connectionCode);
 
-    const [webhook, setWebhook] = useState(fetchedWebhook.webhook);
     useEffect(() => {
-        if (!webhook) {
-            setWebhook(fetchedWebhook.webhook);
-        }
-    }, [fetchedWebhook]);
+        fetchEventSubscriptionFormData();
+    }, [fetchEventSubscriptionFormData]);
 
-    // Reset form on webhook change.
     useEffect(() => {
-        if (webhook) {
-            formMethods.reset(webhook);
+        if (eventSubscription) {
+            formMethods.reset(eventSubscription);
         }
-    }, [webhook]);
+    }, [eventSubscription]);
 
-    if (fetchedWebhook.loading || !webhook) {
+    if (!eventSubscription || !eventSubscriptionsLimit) {
         return <Loading />;
     }
 
@@ -79,11 +79,17 @@ export const EditConnectionWebhook: FC = () => {
                     breadcrumb={breadcrumb}
                     userButtons={userButtons}
                     imageSrc={
-                        null === webhook.connectionImage
+                        null === eventSubscription.connectionImage
                             ? defaultImageUrl
-                            : generateMediaUrl(webhook.connectionImage, 'thumbnail')
+                            : generateMediaUrl(eventSubscription.connectionImage, 'thumbnail')
                     }
-                    buttons={[<SaveButton key={0} webhook={webhook} setWebhook={webhook => setWebhook(webhook)} />]}
+                    buttons={[
+                        <SaveButton
+                            key={0}
+                            webhook={eventSubscription}
+                            onSaveSuccess={fetchEventSubscriptionFormData}
+                        />,
+                    ]}
                     state={<FormState />}
                 >
                     {connectionCode}
@@ -93,7 +99,7 @@ export const EditConnectionWebhook: FC = () => {
                     <Layout>
                         <Section title={<Translate id='akeneo_connectivity.connection.webhook.event_subscription' />} />
                         <EventSubscriptionHelper />
-                        <EditForm webhook={webhook} />
+                        <EditForm webhook={eventSubscription} activeEventSubscriptionsLimit={eventSubscriptionsLimit} />
                     </Layout>
                 </PageContent>
             </form>
@@ -103,14 +109,15 @@ export const EditConnectionWebhook: FC = () => {
 
 type SaveButtonProps = {
     webhook: Webhook;
-    setWebhook: (webhook: Webhook) => void;
+    onSaveSuccess: () => void;
 };
 
-const SaveButton: FC<SaveButtonProps> = ({webhook, setWebhook}) => {
+const SaveButton: FC<SaveButtonProps> = ({webhook, onSaveSuccess}) => {
     const {formState, getValues, triggerValidation, handleSubmit, setError} = useFormContext<FormInput>();
     const updateWebhook = useUpdateWebhook(webhook.connectionCode);
     const handleSave = async () => {
         const {enabled, url} = getValues();
+
         const isValid = await triggerValidation();
         if (isValid) {
             const result = await updateWebhook({
@@ -126,7 +133,7 @@ const SaveButton: FC<SaveButtonProps> = ({webhook, setWebhook}) => {
                 return;
             }
 
-            setWebhook({...result.value, connectionImage: webhook.connectionImage});
+            onSaveSuccess();
         }
     };
 
