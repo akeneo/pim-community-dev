@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditErrorTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionAuditTableQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionEventsApiRequestCountTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateConnectionTableQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Install\Query\CreateWrongCredentialsCombinationQuery;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
@@ -21,8 +22,8 @@ class InstallSubscriber implements EventSubscriberInterface
 {
     const ICECAT_DEMO_DEV = 'icecat_demo_dev';
 
-    private $dbalConnection;
-    private $fixturesLoader;
+    private DbalConnection $dbalConnection;
+    private FixturesLoader $fixturesLoader;
 
     public function __construct(DbalConnection $dbalConnection, FixturesLoader $fixturesLoader)
     {
@@ -44,6 +45,7 @@ class InstallSubscriber implements EventSubscriberInterface
         $this->dbalConnection->exec(CreateConnectionAuditTableQuery::QUERY);
         $this->dbalConnection->exec(CreateWrongCredentialsCombinationQuery::QUERY);
         $this->dbalConnection->exec(CreateConnectionAuditErrorTableQuery::QUERY);
+        $this->dbalConnection->exec(CreateConnectionEventsApiRequestCountTableQuery::QUERY);
     }
 
     public function loadFixtures(InstallerEvent $installerEvent): void
