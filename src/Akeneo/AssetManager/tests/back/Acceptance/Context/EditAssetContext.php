@@ -2057,7 +2057,7 @@ final class EditAssetContext implements Context
         }
 
         $data = $value->getData();
-        Assert::null($data, sprintf('The is a value for the record: %s', \json_encode($data->normalize())));
+        Assert::null($data, sprintf('There is a value for the asset: %s', \json_encode($data->normalize())));
     }
 
     private function getValue(
@@ -2067,7 +2067,7 @@ final class EditAssetContext implements Context
         string $scopeCode,
         string $localeCode
     ): ?Value {
-        $record = $this->assetRepository->getByAssetFamilyAndCode(
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
             AssetCode::fromString($assetCode)
         );
@@ -2078,7 +2078,7 @@ final class EditAssetContext implements Context
         );
         Assert::notNull($attribute, 'The attribute is not found');
 
-        return $record->findValue(
+        return $asset->findValue(
             ValueKey::create(
                 $attribute->getIdentifier(),
                 ChannelReference::createfromNormalized($scopeCode === 'unscoped' ? null : $scopeCode),

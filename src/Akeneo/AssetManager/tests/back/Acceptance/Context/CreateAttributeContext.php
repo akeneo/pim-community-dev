@@ -76,15 +76,15 @@ class CreateAttributeContext implements Context
     public function theUserCreatesATextAttributeLinkedToTheAssetFamilyWith(string $attributeCode, string $assetFamilyIdentifier, TableNode $attributeData): void
     {
         $attributeData = current($attributeData->getHash());
-        $isRequired = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
-        $valuePerChannel = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
-        $valuePerLocale = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
-        $labels = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
-        $maxLength = key_exists('max_length', $attributeData) ? (int) $attributeData['max_length'] : null;
-        $isTextArea = key_exists('is_textarea', $attributeData) ? json_decode($attributeData['is_textarea']) : null;
-        $isRichTextEditor = key_exists('is_rich_text_editor', $attributeData) ? json_decode($attributeData['is_rich_text_editor']) : null;
-        $regularExpression = key_exists('regular_expression', $attributeData) ? json_decode($attributeData['regular_expression']) : null;
-        $isReadOnly = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $isRequired = array_key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $valuePerChannel = array_key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $valuePerLocale = array_key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $labels = array_key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $maxLength = array_key_exists('max_length', $attributeData) ? (int) $attributeData['max_length'] : null;
+        $isTextArea = array_key_exists('is_textarea', $attributeData) ? json_decode($attributeData['is_textarea']) : null;
+        $isRichTextEditor = array_key_exists('is_rich_text_editor', $attributeData) ? json_decode($attributeData['is_rich_text_editor']) : null;
+        $regularExpression = array_key_exists('regular_expression', $attributeData) ? json_decode($attributeData['regular_expression']) : null;
+        $isReadOnly = array_key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
 
         $attributeData['type'] = 'text';
         $attributeData['identifier']['identifier'] = $attributeCode;
@@ -323,12 +323,12 @@ class CreateAttributeContext implements Context
     ) {
         $attributeData = current($attributeData->getHash());
 
-        $isRequired = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
-        $valuePerChannel = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
-        $valuePerLocale = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
-        $labels = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
-        $isReadOnly = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
-        $allowedExtensions = key_exists('allowed_extensions', $attributeData) ? json_decode($attributeData['allowed_extensions']) : null;
+        $isRequired = array_key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $valuePerChannel = array_key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $valuePerLocale = array_key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $labels = array_key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $isReadOnly = array_key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $allowedExtensions = array_key_exists('allowed_extensions', $attributeData) ? json_decode($attributeData['allowed_extensions']) : null;
 
         $attributeData['type'] = 'media_file';
         $attributeData['code'] = $attributeCode;
@@ -439,11 +439,11 @@ class CreateAttributeContext implements Context
     {
         $attributeData = current($attributeData->getHash());
 
-        $isRequired = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
-        $valuePerChannel = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
-        $valuePerLocale = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
-        $labels = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
-        $isReadOnly = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $isRequired = array_key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $valuePerChannel = array_key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $valuePerLocale = array_key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $labels = array_key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $isReadOnly = array_key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
 
         $attributeData['type'] = 'option';
         $attributeData['identifier']['identifier'] = $attributeCode;
@@ -488,11 +488,11 @@ class CreateAttributeContext implements Context
     {
         $attributeData = current($attributeData->getHash());
 
-        $isRequired = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
-        $valuePerChannel = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
-        $valuePerLocale = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
-        $labels = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
-        $isReadOnly = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $isRequired = array_key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $valuePerChannel = array_key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $valuePerLocale = array_key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $labels = array_key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $isReadOnly = array_key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
 
         $attributeData['type'] = 'option_collection';
         $attributeData['identifier']['identifier'] = $attributeCode;
@@ -539,11 +539,11 @@ class CreateAttributeContext implements Context
     ): void {
         $attributeData = current($attributeData->getHash());
 
-        $isRequired = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
-        $valuePerChannel = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
-        $valuePerLocale = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
-        $labels = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
-        $isReadOnly = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $isRequired = array_key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $valuePerChannel = array_key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $valuePerLocale = array_key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $labels = array_key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $isReadOnly = array_key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
 
         $attributeData['type'] = 'option';
         $attributeData['identifier']['identifier'] = $attributeCode;
@@ -617,11 +617,11 @@ class CreateAttributeContext implements Context
     {
         $attributeData = current($attributeData->getHash());
 
-        $isRequired = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
-        $valuePerChannel = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
-        $valuePerLocale = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
-        $labels = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
-        $isReadOnly = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $isRequired = array_key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $valuePerChannel = array_key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $valuePerLocale = array_key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $labels = array_key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $isReadOnly = array_key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
 
         $attributeData['type'] = 'option_collection';
         $attributeData['identifier']['identifier'] = $attributeCode;
@@ -695,12 +695,12 @@ class CreateAttributeContext implements Context
     {
         $attributeData = current($attributeData->getHash());
 
-        $isRequired = key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
-        $valuePerChannel = key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
-        $valuePerLocale = key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
-        $labels = key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
-        $isReadOnly = key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
-        $decimalsAllowed = key_exists('decimals_allowed', $attributeData) ? json_decode($attributeData['decimals_allowed']) : null;
+        $isRequired = array_key_exists('is_required', $attributeData) ? json_decode($attributeData['is_required']) : false;
+        $valuePerChannel = array_key_exists('value_per_channel', $attributeData) ? json_decode($attributeData['value_per_channel']) : null;
+        $valuePerLocale = array_key_exists('value_per_locale', $attributeData) ? json_decode($attributeData['value_per_locale']) : null;
+        $labels = array_key_exists('labels', $attributeData) ? json_decode($attributeData['labels'], true) : [];
+        $isReadOnly = array_key_exists('is_read_only', $attributeData) ? json_decode($attributeData['is_read_only']) : false;
+        $decimalsAllowed = array_key_exists('decimals_allowed', $attributeData) ? json_decode($attributeData['decimals_allowed']) : null;
 
         $attributeData['type'] = 'number';
         $attributeData['identifier']['identifier'] = $attributeCode;

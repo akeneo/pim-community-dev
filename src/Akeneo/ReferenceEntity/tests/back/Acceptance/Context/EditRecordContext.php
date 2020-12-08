@@ -1998,7 +1998,7 @@ final class EditRecordContext implements Context
         }
 
         $data = $value->getData();
-        Assert::null($data, sprintf('The is a value for the record: %s', \json_encode($data->normalize())));
+        Assert::null($data, sprintf('There is a value for the record: %s', \json_encode($data->normalize())));
     }
 
     private function createReferenceEntity(): void
