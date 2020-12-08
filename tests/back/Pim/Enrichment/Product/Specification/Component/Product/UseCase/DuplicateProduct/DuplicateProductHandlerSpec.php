@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProduct;
 use Akeneo\Pim\Enrichment\Product\Component\Product\UseCase\DuplicateProduct\DuplicateProductHandler;
@@ -56,8 +57,26 @@ class DuplicateProductHandlerSpec extends ObjectBehavior
 
     function it_can_duplicate_a_product(
         $securityFacade,
-        $fetchUserRightsOnProduct
+        $fetchUserRightsOnProduct,
+        $productRepository,
+        $attributeRepository,
+        $productBuilder,
+        $productUpdater,
+        ProductInterface $productToDuplicate,
+        ProductInterface $duplicatedProduct
     ) {
+        $productRepository->findOneByIdentifier('product_to_duplicate')->willReturn($productToDuplicate);
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
+        $productBuilder->createProduct(Argument::cetera())->willReturn($duplicatedProduct);
+        $productUpdater->update($duplicatedProduct, [
+            'values' => [
+                'sku' => [
+                    0 => ['data' => 'duplicated_product', 'locale' => null, 'scope' => null],
+                ],
+            ],
+        ])->shouldBeCalled();
+
         $userRightsOnProduct = new UserRightsOnProduct(
             'product_to_duplicate',
             1,

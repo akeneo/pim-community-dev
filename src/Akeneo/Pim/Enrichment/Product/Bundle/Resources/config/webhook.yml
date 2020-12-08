@@ -6,3 +6,11 @@ services:
     arguments:
       - '@pim_catalog.webhook.event_data_builder.base_product_removed'
       - '@akeneo.pim.enrichment.category.get_viewable_category_codes'
+
+  pimee_catalog.webhook.event_data_builder.product_model_removed:
+    class: Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\ProductModelRemovedEventDataBuilder
+    decorates: pim_catalog.webhook.event_data_builder.product_model_removed
+    decoration_inner_name: pim_catalog.webhook.event_data_builder.base_product_model_removed
+    arguments:
+      - '@pim_catalog.webhook.event_data_builder.base_product_model_removed'
+      - '@akeneo.pim.enrichment.category.get_viewable_category_codes'

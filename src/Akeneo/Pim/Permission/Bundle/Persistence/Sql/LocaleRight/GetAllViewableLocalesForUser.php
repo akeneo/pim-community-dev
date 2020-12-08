@@ -24,11 +24,9 @@ use Doctrine\DBAL\Connection;
  */
 class GetAllViewableLocalesForUser implements Query\GetAllViewableLocalesForUser
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var array */
-    private $cache;
+    private array $cache = [];
 
     public function __construct(Connection $sqlConnection)
     {
@@ -61,5 +59,10 @@ SQL;
         $this->cache[$userId] = $result;
 
         return $result;
+    }
+
+    public function clearCache(): void
+    {
+        $this->cache = [];
     }
 }

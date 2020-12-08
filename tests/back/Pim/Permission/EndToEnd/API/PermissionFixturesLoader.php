@@ -150,6 +150,27 @@ class PermissionFixturesLoader
 
     /**
      * For redactor user:
+     * +----------+--------------------------------------------+
+     * |                     Products                          |
+     * +----------+--------------------------------------------+
+     * | No view  | product_not_viewable                       |
+     * +----------+--------------------------------------------+
+     * | View     | product_with_one_viewable_category_        |
+     *              and_another_not_viewable                   |
+     * +----------+--------------------------------------------+
+     * | Own      |                                            |
+     * +----------+--------------------------------------------+
+     * +----------+--------------------------------------------+
+     * |                     Variant products                  |
+     * +----------+--------------------------------------------+
+     * | No view  | product_model_not_viewable                 |
+     * +----------+--------------------------------------------+
+     * | View     | product_model_with_one_viewable_category_  |
+     *              and_another_not_viewable                   |
+     * +----------+--------------------------------------------+
+     * | Own      |                                            |
+     * +----------+--------------------------------------------+
+     *
      * +-------------------------------------------------------+
      * |                     Categories                        |
      * +-------------------------------------------------------+
@@ -170,10 +191,43 @@ class PermissionFixturesLoader
      * |          | variant_product_no_view_attribute          |
      * +----------+--------------------------------------------+
      */
-    public function loadCategoriesAndAttributesForEventAPI(): void
+    public function loadProductsAndProductModelsForRemovedEvents(): void
     {
         $this->createCategoryFixtures();
         $this->createAttributeFixtures();
+        $this->createFamilyVariant();
+
+        $this->createProduct(
+            'product_with_one_viewable_category_and_another_not_viewable',
+            [
+                'categories' => ['view_category', 'category_without_right'],
+                'family' => 'familyA',
+            ]
+        );
+
+        $this->createProduct(
+            'product_not_viewable',
+            [
+                'categories' => ['category_without_right'],
+                'family' => 'familyA',
+            ]
+        );
+
+        $this->createProductModel(
+            [
+                'code' => 'product_model_not_viewable',
+                'family_variant' => 'family_variant_permission',
+                'categories' => ['category_without_right'],
+            ]
+        );
+
+        $this->createProductModel(
+            [
+                'code' => 'product_model_with_one_viewable_category_and_another_not_viewable',
+                'family_variant' => 'family_variant_permission',
+                'categories' => ['view_category', 'category_without_right'],
+            ]
+        );
     }
 
     /**

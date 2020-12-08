@@ -7,7 +7,7 @@ use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoa
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Test\Integration\Configuration;
@@ -18,7 +18,12 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 
-class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
+/**
+ * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class SendProductModelRemovedEventToWebhookEndToEnd extends ApiTestCase
 {
     private ConnectionLoader $connectionLoader;
     private IdentifiableObjectRepositoryInterface $userGroupRepository;
@@ -37,7 +42,7 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
         );
     }
 
-    public function test_that_a_connection_with_access_to_only_one_category_of_the_product_is_still_notified_about_its_removal(
+    public function test_that_a_connection_with_access_to_only_one_category_of_the_product_model_is_still_notified_about_its_removal(
     ): void
     {
         /** @var HandlerStack $handlerStack */
@@ -50,9 +55,9 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
 
         $message = new BulkEvent(
             [
-                new ProductRemoved(
+                new ProductModelRemoved(
                     Author::fromNameAndType('ecommerce', 'ui'), [
-                        'identifier' => 'product_with_one_category_viewable_by_redactor_and_one_category_not_viewable_by_redactor',
+                        'code' => 'product_model_with_one_category_viewable_by_redactor_and_one_category_not_viewable_by_redactor',
                         'category_codes' => ['view_category', 'category_without_right'],
                     ]
                 ),
@@ -66,7 +71,7 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
         $this->assertCount(1, $container);
     }
 
-    public function test_that_a_connection_that_does_not_see_a_product_is_not_notified_about_its_removal(): void
+    public function test_that_a_connection_that_does_not_see_a_product_model_is_not_notified_about_its_removal(): void
     {
         /** @var HandlerStack $handlerStack */
         $handlerStack = $this->get('akeneo_connectivity.connection.webhook.guzzle_handler');
@@ -78,9 +83,9 @@ class SendProductRemovedEventToWebhookEndToEnd extends ApiTestCase
 
         $message = new BulkEvent(
             [
-                new ProductRemoved(
+                new ProductModelRemoved(
                     Author::fromNameAndType('ecommerce', 'ui'), [
-                        'identifier' => 'product_not_viewable_by_redactor',
+                        'code' => 'product_model_not_viewable',
                         'category_codes' => ['category_without_right'],
                     ]
                 ),
