@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
@@ -83,6 +84,7 @@ final class SendBusinessEventToWebhooksHandler
 
         $requests = function () use ($event, $webhooks) {
             $cumulatedTimeMs = 0;
+            $eventBuiltCount = 0;
             $startTime = $this->getTime();
 
             foreach ($webhooks as $webhook) {
@@ -108,6 +110,7 @@ final class SendBusinessEventToWebhooksHandler
                     }
 
                     $cumulatedTimeMs += $this->getTime() - $startTime;
+                    $eventBuiltCount++;
 
                     yield new WebhookRequest(
                         $webhook,
@@ -120,12 +123,19 @@ final class SendBusinessEventToWebhooksHandler
                 }
             }
 
-            $this->logger->info(
-                json_encode(
-                    (new EventSubscriptionEventBuildLog(count($webhooks), $event, $cumulatedTimeMs))->toLog(),
-                    JSON_THROW_ON_ERROR
-                )
-            );
+            if ($eventBuiltCount > 0) {
+                $this->logger->info(
+                    json_encode(
+                        (new EventSubscriptionEventBuildLog(
+                            count($webhooks),
+                            $event,
+                            $cumulatedTimeMs,
+                            $eventBuiltCount
+                        ))->toLog(),
+                        JSON_THROW_ON_ERROR
+                    )
+                );
+            }
         };
 
         if ($isFake) {
