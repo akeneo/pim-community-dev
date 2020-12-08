@@ -708,6 +708,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\RegisterCleanJobTasklet'
         arguments:
             - '@pim_catalog.manager.attribute_code_blacklister'
+        public: false
 
     pim_catalog.step.clean_attribute.whitelist_attribute_codes:
         class: '%pim_connector.step.tasklet.class%'
@@ -722,6 +723,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\WhitelistAttributeCodesTasklet'
         arguments:
             - '@pim_catalog.manager.attribute_code_blacklister'
+        public: false
 
     pim_catalog.step.clean_attribute.clean_product:
         class: '%pim_connector.step.tasklet.class%'
@@ -739,6 +741,7 @@ services:
             - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
             - '@pim_catalog.product_values.remove_values_from_products'
             - '@akeneo_batch.job_repository'
+        public: false
 
     pim_catalog.step.clean_attribute.clean_product_model:
         class: '%pim_connector.step.tasklet.class%'
@@ -756,3 +759,4 @@ services:
             - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
             - '@pim_catalog.product_values.remove_values_from_product_models'
             - '@akeneo_batch.job_repository'
+        public: false

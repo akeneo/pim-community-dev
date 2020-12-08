@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
-class WhitelistAttributeCodesTasklet implements TaskletInterface, TrackableTaskletInterface
+class WhitelistAttributeCodesTasklet implements TaskletInterface
 {
     private StepExecution $stepExecution;
     private AttributeCodeBlacklister $attributeCodeBlacklister;
@@ -23,11 +23,6 @@ class WhitelistAttributeCodesTasklet implements TaskletInterface, TrackableTaskl
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
-    }
-
-    public function isTrackable(): bool
-    {
-        return false;
     }
 
     /**
