@@ -21,6 +21,7 @@ Here is [the documentation](https://docs.akeneo.com/latest/install_pim/docker/in
  * vendor: launch composer update
  * yarn.lock: launch yarn install
  * database: flush the database and install a icecat sample catalog
+ * css: build the CSS
 
 ## context oriented targets
 
