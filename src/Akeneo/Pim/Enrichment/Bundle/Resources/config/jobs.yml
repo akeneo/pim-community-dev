@@ -687,7 +687,7 @@ services:
                 - '@pim_catalog.step.clean_attribute.clean_product_model'
                 - '@pim_catalog.step.clean_attribute.clean_product'
                 - '@pim_catalog.step.clean_attribute.whitelist_attribute_codes'
-            - true
+            - false
         public: false
         tags:
             -

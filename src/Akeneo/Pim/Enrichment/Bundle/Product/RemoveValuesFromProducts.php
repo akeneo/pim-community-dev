@@ -52,12 +52,23 @@ class RemoveValuesFromProducts
         );
 
         $products = $this->productRepository->findBy(['identifier' => $productIdentifiers]);
+
+        foreach ($products as $product) {
+            $this->eventDispatcher->dispatch(
+                StorageEvents::POST_SAVE,
+                new GenericEvent($product, [
+                    'unitary' => false,
+                ])
+            );
+        }
+
         $this->eventDispatcher->dispatch(
             StorageEvents::POST_SAVE_ALL,
             new GenericEvent($products, [
                 'unitary' => false,
             ])
         );
+
         $this->clearer->clear();
     }
 }

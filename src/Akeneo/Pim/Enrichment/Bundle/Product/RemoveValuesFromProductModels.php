@@ -52,12 +52,23 @@ SQL,
         );
 
         $productModels = $this->productModelRepository->findBy(['code' => $productModelIdentifiers]);
+
+        foreach ($productModels as $productModel) {
+            $this->eventDispatcher->dispatch(
+                StorageEvents::POST_SAVE,
+                new GenericEvent($productModel, [
+                    'unitary' => false,
+                ])
+            );
+        }
+
         $this->eventDispatcher->dispatch(
             StorageEvents::POST_SAVE_ALL,
             new GenericEvent($productModels, [
                 'unitary' => false,
             ])
         );
+
         $this->clearer->clear();
     }
 }
