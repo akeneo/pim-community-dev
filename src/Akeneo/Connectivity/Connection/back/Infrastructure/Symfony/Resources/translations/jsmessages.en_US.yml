@@ -19,8 +19,8 @@ pim_title:
     akeneo_connectivity_connection_audit_any: Connection dashboard
     akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
     akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
-    akeneo_connectivity_connection_webhook_edit: Event subscription
-    akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
+    akeneo_connectivity_connection_webhook_edit: Event subscriptions
+    akeneo_connectivity_connection_webhook_regenerate_secret: Event subscriptions
 
 akeneo_connectivity.connection:
     connections: Connections
@@ -197,8 +197,8 @@ akeneo_connectivity.connection:
                 message: Ask your administrator to create one.
                 link: Learn more about connections here...
     webhook:
-        title: Event subscription
-        event_subscription: Event subscription
+        title: Event subscriptions
+        event_subscription: Event subscriptions
         helper:
             message: You can be notified of events happening in the PIM for products synchronized with this connected app. You just need to define a URL and the event type(s) you want to keep track of.
             link: Learn more about event subscription configuration...
