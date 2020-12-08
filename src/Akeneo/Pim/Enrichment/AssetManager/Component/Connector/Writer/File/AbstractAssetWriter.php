@@ -120,7 +120,9 @@ abstract class AbstractAssetWriter extends AbstractFileWriter implements Initial
             if ($parameters->has('with_media') && $parameters->get('with_media')) {
                 $item = $this->resolveMediaPaths($item, $directory);
             }
-            $flatItems[] = $this->arrayConverter->convert($item);
+            $flatItems[] = $this->arrayConverter->convert($item, [
+                'with_prefix_suffix' => $this->stepExecution->getJobParameters()->get('with_prefix_suffix')
+            ]);
         }
 
         $parameters = $this->stepExecution->getJobParameters();

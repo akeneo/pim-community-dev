@@ -37,6 +37,7 @@ class XlsxAssetExport implements ConstraintCollectionProviderInterface, DefaultV
             'with_media' => true,
             'user_to_notify' => null,
             'is_user_authenticated' => false,
+            'with_prefix_suffix' => false,
         ];
     }
 
@@ -74,6 +75,7 @@ class XlsxAssetExport implements ConstraintCollectionProviderInterface, DefaultV
                         ]
                     ),
                     'with_media' => new Type('bool'),
+                    'with_prefix_suffix' => new Type('bool'),
                     'user_to_notify' => new Type('string'),
                     'is_user_authenticated' => new Type('bool'),
                     'asset_family_identifier' => [
