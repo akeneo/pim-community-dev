@@ -29,8 +29,8 @@ class Version_5_0_20201207171120_create_connection_events_api_request_count_tabl
 
         Assert::assertTrue($this->schemaManager->tablesExist('akeneo_connectivity_connection_events_api_request_count'));
         $expectedColumnsAndTypes = [
-            'minute' => 'integer',
-            'count' => 'integer',
+            'event_minute' => 'integer',
+            'event_count' => 'integer',
             'updated' => 'datetime',
         ];
 

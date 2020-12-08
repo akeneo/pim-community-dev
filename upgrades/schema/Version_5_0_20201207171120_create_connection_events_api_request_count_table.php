@@ -18,10 +18,10 @@ final class Version_5_0_20201207171120_create_connection_events_api_request_coun
     {
         $sql = <<<SQL
 CREATE TABLE IF NOT EXISTS akeneo_connectivity_connection_events_api_request_count(
-    minute INT NOT NULL,
-    count INT NOT NULL,
+    event_minute INT NOT NULL,
+    event_count INT NOT NULL,
     updated DATETIME NOT NULL,
-    PRIMARY KEY (minute)
+    PRIMARY KEY (event_minute)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB ROW_FORMAT = DYNAMIC
 SQL;
 
