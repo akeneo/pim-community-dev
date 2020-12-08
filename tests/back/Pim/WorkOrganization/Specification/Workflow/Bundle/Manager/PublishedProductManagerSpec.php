@@ -75,7 +75,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_PUBLISH, Argument::any(), null)->shouldBeCalled();
         $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::cetera())->shouldBeCalled();
 
-        $publishedProductSaver->save($published)->shouldBeCalled();
+        $publishedProductSaver->save($published, ['add_default_values' => false])->shouldBeCalled();
 
         $this->publish($product);
     }
@@ -109,7 +109,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $repositoryWithoutPermission->findOneByOriginalProduct($productBar)->willReturn($publishedBar);
         $repositoryWithoutPermission->findOneByOriginalProduct($productFoo)->willReturn($publishedFoo);
 
-        $publishedProductBulkSaver->saveAll([$publishedFoo, $publishedBar])->shouldBeCalled();
+        $publishedProductBulkSaver->saveAll([$publishedFoo, $publishedBar], ['add_default_values' => false])->shouldBeCalled();
 
         $productFoo->getAssociations()->willReturn([$association]);
         $productBar->getAssociations()->willReturn([$association]);
@@ -149,7 +149,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $unpublisher->unpublish($alreadyPublished)->shouldBeCalled();
         $remover->remove($alreadyPublished)->shouldBeCalled();
 
-        $publishedProductSaver->save($published)->shouldBeCalled();
+        $publishedProductSaver->save($published, ['add_default_values' => false])->shouldBeCalled();
 
         $this->publish($filteredProduct);
     }

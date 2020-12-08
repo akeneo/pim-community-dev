@@ -160,7 +160,7 @@ class PublishedProductManager
         $publishOptions = array_merge(['flush' => true], $publishOptions);
 
         if (true === $publishOptions['flush']) {
-            $this->publishedProductSaver->save($published);
+            $this->publishedProductSaver->save($published, ['add_default_values' => false]);
             $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $originalProduct, $published);
         }
 
@@ -196,7 +196,7 @@ class PublishedProductManager
             $publishedProducts[] = $published;
         }
 
-        $this->publishedProductBulkSaver->saveAll($publishedProducts);
+        $this->publishedProductBulkSaver->saveAll($publishedProducts, ['add_default_values' => false]);
 
         foreach ($publishedProducts as $publishedProduct) {
             $this->dispatchEvent(
@@ -256,7 +256,7 @@ class PublishedProductManager
             $publishedProducts[] = $published;
         }
 
-        $this->publishedProductBulkSaver->saveAll($publishedProducts);
+        $this->publishedProductBulkSaver->saveAll($publishedProducts, ['add_default_values' => false]);
     }
 
     /**
