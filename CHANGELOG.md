@@ -56,6 +56,7 @@
 - PIM-9589: Fix attribute edit form in Asset Manager
 - PIM-9512: Fix asset navigation panel is not kept close
 - PIM-9579: Fix the duplication of a product when missing rights on values
+- PIM-9574: Fix product duplication to throw an error when the identifier of the duplicated product is not valid
 
 ## Improvements
 

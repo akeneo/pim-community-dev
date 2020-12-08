@@ -110,7 +110,8 @@ class DuplicateProductController
         foreach ($duplicateProductResponse->constraintViolationList() as $violation) {
             $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
                 $violation,
-                'internal_api'
+                'internal_api',
+                ['product' => $product]
             );
         }
 
