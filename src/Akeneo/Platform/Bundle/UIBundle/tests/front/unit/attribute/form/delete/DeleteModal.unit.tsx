@@ -56,6 +56,27 @@ test('it calls the attribute remover when confirm is clicked', async () => {
 });
 
 test('it displays an error when the delete failed', async () => {
+  global.fetch.mockImplementationOnce(() =>
+    Promise.resolve({
+      ok: false,
+    })
+  );
+
+  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} deleteUrl="fake_delete_url" />);
+
+  const confirmDeleteButton = screen.getByText('pim_common.delete');
+  fireEvent.click(confirmDeleteButton);
+
+  await flushPromises();
+
+  expect(global.fetch).toHaveBeenCalledWith('fake_delete_url', {
+    method: 'DELETE',
+    headers: new Headers({'X-Requested-With': 'XMLHttpRequest'}),
+  });
+  expect(dependencies.notify).toHaveBeenCalledWith('error', 'pim_enrich.entity.attribute.flash.delete.fail');
+});
+
+test('it displays an error when the delete was rejected', async () => {
   global.fetch.mockImplementationOnce(() => Promise.reject({}));
 
   renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} deleteUrl="fake_delete_url" />);
