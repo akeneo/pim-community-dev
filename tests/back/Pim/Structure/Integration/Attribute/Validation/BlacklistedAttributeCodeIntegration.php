@@ -18,15 +18,17 @@ class BlackListedAttributeCodeIntegration extends AbstractAttributeTestCase
 
     public function test_i_cannot_create_a_blacklisted_attribute()
     {
-        $attribute = $this->createAttributeByCode('new_attribute');
+        $attribute = $this->createAttributeByCode('new_blacklisted_attribute');
         $this->deleteAttribute($attribute);
 
-        $secondAttribute = $this->createAttributeByCode('new_attribute');
-
+        $secondAttribute = $this->createAttributeByCode('new_blacklisted_attribute');
         $violations = $this->validateAttribute($secondAttribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('The attribute code "new_blacklisted_attribute" was previously existing and is currently being cleaned up', $violations->get(0)->getMessage());
+        $this->assertSame(
+            'The attribute code "new_blacklisted_attribute" was previously existing and is currently being cleaned up',
+            $violations->get(0)->getMessage()
+        );
     }
 
     private function createAttributeByCode(string $attributeCode): AttributeInterface
