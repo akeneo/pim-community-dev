@@ -21,17 +21,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             type: datetime
         updated:
             type: datetime
-        root:
-            type: integer
-        level:
-            type: integer
-            column: lvl
-        left:
-            type: integer
-            column: lft
-        right:
-            type: integer
-            column: rgt
     manyToMany:
         categories:
             targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface

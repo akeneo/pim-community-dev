@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9190: [Backport] PIM-9110 Remove nested set pattern in product models
+
 # 4.0.78 (2020-12-08)
 
 # 4.0.77 (2020-12-07)

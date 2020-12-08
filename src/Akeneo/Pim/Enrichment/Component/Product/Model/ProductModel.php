@@ -38,18 +38,6 @@ class ProductModel implements ProductModelInterface
     /** @var \DateTime $updated */
     protected $updated;
 
-    /** @var int */
-    protected $root = 0;
-
-    /** @var int */
-    protected $level = 0;
-
-    /** @var int */
-    protected $left = 0;
-
-    /** @var int */
-    protected $right = 0;
-
     /** @var Collection $categories */
     protected $categories;
 
@@ -342,81 +330,9 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setRoot(int $root): ProductModelInterface
-    {
-        $this->root = $root;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoot(): int
-    {
-        return $this->root;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isRoot(): bool
     {
         return (null === $this->getParent());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLevel(int $level): ProductModelInterface
-    {
-        $this->level = $level;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLevel(): int
-    {
-        return $this->level;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLeft(int $left): ProductModelInterface
-    {
-        $this->left = $left;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLeft(): int
-    {
-        return $this->left;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRight(int $right): ProductModelInterface
-    {
-        $this->right = $right;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRight(): int
-    {
-        return $this->right;
     }
 
     /**

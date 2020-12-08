@@ -71,18 +71,6 @@ interface ProductModelInterface extends
     public function removeProduct(ProductInterface $product): ProductModelInterface;
 
     /**
-     * @param int $root
-     *
-     * @return ProductModelInterface
-     */
-    public function setRoot(int $root): ProductModelInterface;
-
-    /**
-     * @return int
-     */
-    public function getRoot(): int;
-
-    /**
      * If a node is a tree root, it's the tree starting point and therefore
      * defines the tree itself.
      *
@@ -90,41 +78,6 @@ interface ProductModelInterface extends
      */
     public function isRoot(): bool;
 
-    /**
-     * @param int $level
-     *
-     * @return ProductModelInterface
-     */
-    public function setLevel(int $level): ProductModelInterface;
-
-    /**
-     * @return int
-     */
-    public function getLevel(): int;
-
-    /**
-     * @param int $left
-     *
-     * @return ProductModelInterface
-     */
-    public function setLeft(int $left): ProductModelInterface;
-
-    /**
-     * @return int
-     */
-    public function getLeft(): int;
-
-    /**
-     * @param int $right
-     *
-     * @return ProductModelInterface
-     */
-    public function setRight(int $right): ProductModelInterface;
-
-    /**
-     * @return int
-     */
-    public function getRight(): int;
 
     /**
      * Adds a child product model to this product model.
