@@ -1,17 +1,22 @@
 <?php
 
-namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\InternalApi;
+namespace AkeneoTest\Pim\Enrichment\EndToEnd\Attribute\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
-use AkeneoTest\Pim\Structure\EndToEnd\InternalApiTestCase;
+use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class ImpactedItemByAttributeDeletionEndToEnd extends InternalApiTestCase
+class CountItemsWithAttributeValueEndToEnd extends InternalApiTestCase
 {
     private Client $elasticsearchClient;
     private EntityBuilder $entityBuilder;
+    private UserRepositoryInterface $userRepository;
+
+    private const ENDPOINT_URL = 'rest/product-and-product-model/count_items_with_attribute_value';
 
     protected function setUp(): void
     {
@@ -19,6 +24,7 @@ class ImpactedItemByAttributeDeletionEndToEnd extends InternalApiTestCase
 
         $this->elasticsearchClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
         $this->entityBuilder = $this->get('akeneo_integration_tests.catalog.fixture.build_entity');
+        $this->userRepository = $this->get('pim_user.repository.user');
 
         $this->loadFixtures();
     }
@@ -32,8 +38,9 @@ class ImpactedItemByAttributeDeletionEndToEnd extends InternalApiTestCase
 }
 JSON;
 
-        $this->authenticateAsAdminUser();
-        $this->client->request('GET', 'rest/attribute/a_simple_select/impacted_items_by_deletion');
+        $this->authenticate($this->getAdminUser());
+        $this->client->request('GET', self::ENDPOINT_URL . '?attribute_code=a_simple_select');
+
         $response = $this->client->getResponse();
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
@@ -97,5 +104,10 @@ JSON;
         ]);
 
         $this->elasticsearchClient->refreshIndex();
+    }
+
+    private function getAdminUser(): UserInterface
+    {
+        return $this->userRepository->findOneByIdentifier('admin');
     }
 }

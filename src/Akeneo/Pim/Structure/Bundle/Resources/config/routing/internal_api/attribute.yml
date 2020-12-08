@@ -33,8 +33,3 @@ pim_enrich_attribute_axes_index:
     path: /axes
     defaults: { _controller: pim_enrich.controller.rest.attribute:listAxesAction }
     methods: [GET]
-
-pim_enrich_attribute_count_impacted_items_by_deletion:
-    path: /{code}/impacted_items_by_deletion
-    defaults: { _controller: pim_enrich.controller.rest.count_impacted_items_by_attribute_deletion }
-    methods: [GET]
