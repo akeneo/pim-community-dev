@@ -14,6 +14,18 @@ class EventsApiRequestCounter implements EventsApiRequestCounterInterface
 {
     public function incrementCount(\DateTime $dateTime, int $count): void
     {
-        // TODO: Implement incrementCount() method.
+      $currentCount = $this->getCurrentCount($dateTime);
+      $this->setCurrentCount($dateTime, $currentCount + $count);
+    }
+
+    private function getCurrentCount(\DateTime $dateTime): int
+    {
+        // TODO
+        return 0;
+    }
+
+    private function setCurrentCount(\DateTime $dateTime, int $count): void
+    {
+
     }
 }
