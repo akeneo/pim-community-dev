@@ -25,11 +25,12 @@ NAMESPACE_PATH=$(pwd)
 
 echo "1 - initializing terraform in $(pwd)"
 terraform init
-tmpfile=$(mktemp)
-cat main.tf.json | jq -r '.module.pim.force_destroy_storage =true' > $tmpfile ; cat $tmpfile > main.tf.json ; rm $tmpfile
-#(cat main.tf.json | jq -r '.module."storage-backup".google_storage_backup_force_destroy =true' ) | sponge main.tf.json
+# for mysql disk deletion, we must desactivate prevent_destroy in tf file
+find ${NAMESPACE_PATH}/../../  -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
+yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
 terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_file.kubeconfig
 terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.google_storage_bucket.srnt_bucket
+#yq w -j -P -i ${PWD}/main.tf.json module.storage-backup.google_storage_backup_force_destroy true
 #terraform apply -target=module.storage-backup.google_storage_bucket.storage_backup
 
 echo "2 - removing deployment and terraform resources"

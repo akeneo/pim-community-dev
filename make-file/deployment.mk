@@ -24,6 +24,7 @@ REGISTRY ?= eu.gcr.io
 HELM_REPO_PROD := akeneo-charts
 DEPLOYMENTS_INSTANCES_DIR ?= $(PWD)/deployments/instances
 INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+MYSQL_DISK_SIZE ?= 10
 MAX_DNS_TEST_TIMEOUT ?= 300
 ONBOARDER_PIM_GEN_FILE ?=
 WITH_SUPPLIERS ?= false
@@ -73,6 +74,12 @@ $(INSTANCE_DIR):
 
 .PHONY: terraform-init
 terraform-init: $(INSTANCE_DIR)
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG))
+		@echo "We are in the second step of update"
+		cd $(INSTANCE_DIR) && STEP='PRE_INIT' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
+    endif
+endif
 	cd $(INSTANCE_DIR) && cat main.tf.json
 	cd $(INSTANCE_DIR) && terraform init $(TF_INPUT_FALSE) -upgrade
 
@@ -82,7 +89,14 @@ terraform-plan: terraform-init
 
 .PHONY: terraform-apply
 terraform-apply:
-	cd $(INSTANCE_DIR) && TF_LOG=TRACE TF_LOG_PATH=terraform.log terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE)
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+    ifeq ($(INSTANCE_NAME),pimup-$(IMAGE_TAG))
+		@echo "We are in the second step of update"
+		cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
+    endif
+endif
+	cd $(INSTANCE_DIR) && terraform plan '-out=upgrades.tfplan' $(TF_INPUT_FALSE) -compact-warnings
+	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan
 
 .PHONY: prepare-infrastructure-artifacts
 prepare-infrastructure-artifacts: render-helm-templates
@@ -198,8 +212,14 @@ endif
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
 	PIM_SRC_DIR=$(PIM_SRC_DIR) \
+	MYSQL_DISK_SIZE=$(MYSQL_DISK_SIZE) \
+	MYSQL_DISK_NAME=$(PFID)-mysql \
 	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
+	echo "[INFO] The lines bellow must be removed after release the PR 9405"
+	yq d -j -P -i ${INSTANCE_DIR}/main.tf.json module.pim.mysql_disk_size
+	yq d -j -P -i ${INSTANCE_DIR}/main.tf.json module.pim.mysql_disk_name
+	yq d -j -P -i ${INSTANCE_DIR}/main.tf.json module.pim.mysql_disk_description
 
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version
@@ -242,6 +262,5 @@ clone_serenity:
 
 .PHONY: test_upgrade_from_serenity_customer_db
 test_upgrade_from_serenity_customer_db:
-	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
-	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh && \
+	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) make clone_serenity && \
 	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make deploy-serenity

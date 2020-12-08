@@ -39,10 +39,11 @@ yq w -i ${DESTINATION_PATH}/values.yaml mysql.mysql.rootPassword test
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.email "adminakeneo"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.login "adminakeneo"
 yq w -i ${DESTINATION_PATH}/values.yaml pim.defaultAdminUser.password "adminakeneo"
-yq w -i ${DESTINATION_PATH}/main.tf.json module.pim.papo_project_code "${TARGET_PAPO_PROJECT_CODE}"
-yq w -j -P -i ${DESTINATION_PATH}/main.tf.json module.pim.dns_external "${TARGET_DNS_FQDN}"
-yq w -j -P -i ${DESTINATION_PATH}/main.tf.json module.pim-monitoring.source "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform/monitoring?ref=${SOURCE_PED_TAG}"
-yq w -j -P -i ${DESTINATION_PATH}/main.tf.json module.pim.source "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=${SOURCE_PED_TAG}"
+yq w -i ${DESTINATION_PATH}/main.tf.json 'module.pim.papo_project_code' "${TARGET_PAPO_PROJECT_CODE}"
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.dns_external' "${TARGET_DNS_FQDN}"
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim-monitoring.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform/monitoring?ref=${SOURCE_PED_TAG}"
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.source' "git@github.com:akeneo/pim-enterprise-dev.git//deployments/terraform?ref=${SOURCE_PED_TAG}"
+
 cat ${DESTINATION_PATH}/main.tf.json
 
 if [[ $CI != "true" ]]; then
@@ -56,19 +57,13 @@ cd ${PED_DIR}
 SELFLINKMYSQL=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots list --filter="labels.backup-ns=${SOURCE_PFID} AND labels.pvc_name=data-mysql-server-0" --limit=1 --sort-by="~creationTimestamp" --uri)
 MYSQL_SIZE=$(gcloud compute snapshots describe $SELFLINKMYSQL --format=json | jq -r '.diskSizeGb')
 echo "$SELFLINKMYSQL / $MYSQL_SIZE"
-
-echo "- Create disk (delete before if existing)"
-if [[ $( gcloud compute disks describe ${PFID} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
-      gcloud compute disks delete ${PFID} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
-      sleep 10
-fi
-DISKMYSQL=$(gcloud compute disks create ${PFID} --source-snapshot=${SELFLINKMYSQL} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --type=pd-ssd --format=json)
-if [[ $DISKMYSQL == "" ]]; then
-      echo "Mysql duplicate disk does not exist, exiting"
-      exit 9
-fi
-echo "Mysql duplicate disk has been created : $DISKMYSQL"
-
+# remove the old mysql_disk & mysql_source_snapshot if exit
+yq d -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_name'
+yq d -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_source_snapshot'
+yq d -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_size'
+# Add mysql_source_snapshot on the main.tf.json
+yq w -j -P -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_source_snapshot' "${SELFLINKMYSQL}"
+yq d -i ${DESTINATION_PATH}/main.tf.json 'module.pim.mysql_disk_size' "$MYSQL_SIZE"
 
 echo "- Run terraform & helm."
 cd ${PED_DIR}; TF_INPUT_FALSE="-input=false" TF_AUTO_APPROVE="-auto-approve" INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=${SOURCE_PED_TAG} INSTANCE_NAME_PREFIX=pimci-duplic make deploy
