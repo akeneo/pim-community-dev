@@ -53,6 +53,28 @@ Use this playground to test the helper component
 
 <ArgsTable story="Standard" />
 
+## Composition
+
+When more information can be found in another page, Helper is combined with Link component.
+
+<Canvas>
+  <Story name="Composition">
+    {args => {
+      return (
+        <Helper level="info">
+          {`Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.Suspendisse lectus tortor,
+dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam.
+Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi,
+non fermentum diam nisl sit amet erat. `}
+          <Link target="_blank" href="https://www.akeneo.com/">
+            Link to related lorem ipsum
+          </Link>
+        </Helper>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Variation on level
 
 <Canvas>
@@ -61,13 +83,13 @@ Use this playground to test the helper component
       return (
         <>
           <Helper {...args} level="info">
-            Info
+            You might need to read this. <Link href="#">Link</Link>
           </Helper>
           <Helper {...args} level="warning">
-            Warning
+            There is a warning. <Link href="#">Link</Link>
           </Helper>
           <Helper {...args} level="error">
-            Error
+            There is an error. <Link href="#">Link</Link>
           </Helper>
         </>
       );
@@ -83,37 +105,15 @@ Use this playground to test the helper component
       return (
         <>
           <Helper {...args} inline={true} level="info">
-            Info
+            You might need to read this. <Link href="#">Link</Link>
           </Helper>
           <Helper {...args} inline={true} level="warning">
-            Warning
+            There is a warning. <Link href="#">Link</Link>
           </Helper>
           <Helper {...args} inline={true} level="error">
-            Error
+            There is an error. <Link href="#">Link</Link>
           </Helper>
         </>
-      );
-    }}
-  </Story>
-</Canvas>
-
-## Composition
-
-When more information can be found in another page, Helper is combined with Link component.
-
-<Canvas>
-  <Story name="Composition">
-    {args => {
-      return (
-        <Helper level="info">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim
-          sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a,
-          semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non
-          fermentum diam nisl sit amet erat.{' '}
-          <Link target="_blank" href="https://www.akeneo.com/">
-            Link to related lorem ipsum
-          </Link>
-        </Helper>
       );
     }}
   </Story>
