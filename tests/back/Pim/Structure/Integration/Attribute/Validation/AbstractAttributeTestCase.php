@@ -430,7 +430,7 @@ abstract class AbstractAttributeTestCase extends TestCase
         $violations = $this->validateAttribute($attribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('This attribute cannot have a default value.', $violations->get(0)->getMessage());
+        $this->assertSame('This attribute type cannot have a default value.', $violations->get(0)->getMessage());
         $this->assertSame('default_value', $violations->get(0)->getPropertyPath());
     }
 

@@ -47,7 +47,6 @@ extensions:
         module: pim/attribute-edit-form/properties/default-bool-value
         parent: pim-attribute-edit-form-boolean-type-specific-params
         targetZone: content
-        position: 150
         config:
             fieldName: default_value
             label: pim_enrich.entity.attribute.property.default_value

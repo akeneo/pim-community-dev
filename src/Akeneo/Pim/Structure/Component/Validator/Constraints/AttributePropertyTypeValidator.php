@@ -14,6 +14,9 @@ use Webmozart\Assert\Assert;
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * Validates the type of an attribte property. It simply proxies the validation of a Symfony Type constraint to
+ * the value of an attribute property (obtained with $attribute->getProperty($property))
  */
 class AttributePropertyTypeValidator extends ConstraintValidator
 {
