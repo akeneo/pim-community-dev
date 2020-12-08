@@ -705,7 +705,7 @@ services:
         public: false
 
     pim_connector.tasklet.clean_attribute.register_clean_job:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\RegisterCleanJobTasklet'
+        class: 'Akeneo\Pim\Structure\Bundle\Job\CleanRemovedAttribute\RegisterCleanJobTasklet'
         arguments:
             - '@pim_catalog.manager.attribute_code_blacklister'
         public: false
@@ -720,7 +720,7 @@ services:
         public: false
 
     pim_connector.tasklet.clean_attribute.whitelist_attribute_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\WhitelistAttributeCodesTasklet'
+        class: 'Akeneo\Pim\Structure\Bundle\Job\CleanRemovedAttribute\WhitelistAttributeCodesTasklet'
         arguments:
             - '@pim_catalog.manager.attribute_code_blacklister'
         public: false

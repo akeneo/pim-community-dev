@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute;
+namespace Akeneo\Pim\Structure\Bundle\Job\CleanRemovedAttribute;
 
 use Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister;
-use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
-class RegisterCleanJobTasklet implements TaskletInterface
+class WhitelistAttributeCodesTasklet implements TaskletInterface
 {
     private StepExecution $stepExecution;
     private AttributeCodeBlacklister $attributeCodeBlacklister;
@@ -36,10 +35,7 @@ class RegisterCleanJobTasklet implements TaskletInterface
             ->get('attribute_codes');
 
         foreach ($attributeCodes as $attributeCode) {
-            $this->attributeCodeBlacklister->registerJob(
-                $attributeCode,
-                $this->stepExecution->getJobExecution()->getId()
-            );
+            $this->attributeCodeBlacklister->whitelist($attributeCode);
         }
     }
 }
