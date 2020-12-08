@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues;
 
-use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -94,9 +94,7 @@ class AddDefaultValuesSubscriber implements EventSubscriberInterface
             fn (AttributeInterface $attribute): string => $attribute->getCode()
         )->toArray();
 
-        return empty($attributeCodesWithDefaultValues) ?
-            [] :
-            $this->getAttributes->forCodes($attributeCodesWithDefaultValues);
+        return $this->getAttributes->forCodes($attributeCodesWithDefaultValues);
     }
 
     private function addValues(EntityWithFamilyVariantInterface $entity, Attribute $attribute): void

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Channel\Component\Query;
+namespace Akeneo\Channel\Component\Query\PublicApi;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>

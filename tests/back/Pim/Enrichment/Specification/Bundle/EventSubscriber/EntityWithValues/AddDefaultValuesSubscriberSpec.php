@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues;
 
-use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\AddDefaultValuesSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
@@ -91,11 +91,14 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_nothing_if_the_entity_has_no_family(
+        GetAttributes $getAttributes,
         ValueFactory $valueFactory,
         EntityWithFamilyVariantInterface $entity
     ) {
         $entity->getFamilyVariant()->willReturn(null);
         $entity->getFamily()->willReturn(null);
+
+        $getAttributes->forCodes([])->shouldBeCalled()->willReturn([]);
 
         $valueFactory->createByCheckingData(Argument::cetera())->shouldNotBeCalled();
         $entity->addValue(Argument::any())->shouldNotBeCalled();
@@ -106,6 +109,7 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_nothing_if_the_entity_has_no_attributes_with_default_values(
+        GetAttributes $getAttributes,
         ValueFactory $valueFactory,
         EntityWithFamilyVariantInterface $entity,
         FamilyInterface $family,
@@ -119,6 +123,8 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         );
         $entity->getFamilyVariant()->willReturn(null);
         $entity->getFamily()->willReturn($family);
+
+        $getAttributes->forCodes([])->shouldBeCalled()->willReturn([]);
 
         $valueFactory->createByCheckingData(Argument::cetera())->shouldNotBeCalled();
         $entity->addValue(Argument::any())->shouldNotBeCalled();
@@ -141,7 +147,6 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         $family->getAttributes()->willReturn(
             new ArrayCollection([$autofocus->getWrappedObject()])
         );
-        $entity->getId()->willReturn(null);
         $entity->getFamilyVariant()->willReturn(null);
         $entity->getFamily()->willReturn($family);
 
@@ -155,10 +160,10 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_default_values_to_a_variant_product(
+    function it_adds_default_values_to_a_variant_product_or_sub_product_model(
         GetAttributes $getAttributes,
         ValueFactory $valueFactory,
-        ProductModelInterface $product,
+        EntityWithFamilyVariantInterface $entity,
         ValueInterface $value,
         VariantAttributeSetInterface $variantAttributeSet,
         FamilyVariantInterface $familyVariant,
@@ -167,18 +172,17 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         $autofocus->getCode()->willReturn('autofocus');
         $autofocus->getProperty('default_value')->willReturn(true);
         $variantAttributeSet->getAttributes()->willReturn(new ArrayCollection([$autofocus->getWrappedObject()]));
-        $familyVariant->getVariantAttributeSet(2)->willReturn($variantAttributeSet);
-        $product->getFamilyVariant()->willReturn($familyVariant);
-        $product->getVariationLevel()->willReturn(2);
-        $product->getId()->willReturn(null);
+        $familyVariant->getVariantAttributeSet(1)->willReturn($variantAttributeSet);
+        $entity->getFamilyVariant()->willReturn($familyVariant);
+        $entity->getVariationLevel()->willReturn(1);
 
         $attribute = $this->createAttributeWithDefaultValue('autofocus', true);
         $getAttributes->forCodes(['autofocus'])->shouldBeCalled()->willReturn(['autofocus' => $attribute]);
         $valueFactory->createByCheckingData($attribute, null, null, true)->shouldBeCalled()->willReturn($value);
-        $product->addValue($value)->shouldBeCalled();
+        $entity->addValue($value)->shouldBeCalled();
 
         $this->addDefaultValues(
-            new GenericEvent($product->getWrappedObject(), ['is_new' => true])
+            new GenericEvent($entity->getWrappedObject(), ['is_new' => true])
         );
     }
 
@@ -197,7 +201,6 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         );
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $productModel->getVariationLevel()->willReturn(0);
-        $productModel->getId()->willReturn(null);
 
         $attribute = $this->createAttributeWithDefaultValue('autofocus', true);
         $getAttributes->forCodes(['autofocus'])->shouldBeCalled()->willReturn(['autofocus' => $attribute]);
@@ -223,7 +226,6 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         $family->getAttributes()->willReturn(
             new ArrayCollection([$autofocus->getWrappedObject()])
         );
-        $entity->getId()->willReturn(null);
         $entity->getFamilyVariant()->willReturn(null);
         $entity->getFamily()->willReturn($family);
 
@@ -257,7 +259,6 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         $family->getAttributes()->willReturn(
             new ArrayCollection([$autofocus->getWrappedObject()])
         );
-        $entity->getId()->willReturn(null);
         $entity->getFamilyVariant()->willReturn(null);
         $entity->getFamily()->willReturn($family);
 
@@ -295,7 +296,6 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         $family->getAttributes()->willReturn(
             new ArrayCollection([$autofocus->getWrappedObject()])
         );
-        $entity->getId()->willReturn(null);
         $entity->getFamilyVariant()->willReturn(null);
         $entity->getFamily()->willReturn($family);
 
@@ -336,7 +336,6 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         $family->getAttributes()->willReturn(
             new ArrayCollection([$autofocus->getWrappedObject()])
         );
-        $entity->getId()->willReturn(null);
         $entity->getFamilyVariant()->willReturn(null);
         $entity->getFamily()->willReturn($family);
 
@@ -379,7 +378,6 @@ class AddDefaultValuesSubscriberSpec extends ObjectBehavior
         $family->getAttributes()->willReturn(
             new ArrayCollection([$autofocus->getWrappedObject(), $colorScanning->getWrappedObject()])
         );
-        $entity->getId()->willReturn(null);
         $entity->getFamilyVariant()->willReturn(null);
         $entity->getFamily()->willReturn($family);
 
