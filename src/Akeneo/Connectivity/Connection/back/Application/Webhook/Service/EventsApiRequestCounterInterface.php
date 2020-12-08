@@ -10,5 +10,5 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Service;
  */
 interface EventsApiRequestCounterInterface
 {
-    public function incrementCount(\DateTime $dateTime, int $count): void;
+    public function incrementCount(\DateTimeImmutable $dateTime, int $eventCount): void;
 }

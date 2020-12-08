@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestCounterInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -12,20 +13,16 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestC
  */
 class EventsApiRequestCounter implements EventsApiRequestCounterInterface
 {
-    public function incrementCount(\DateTime $dateTime, int $count): void
-    {
-      $currentCount = $this->getCurrentCount($dateTime);
-      $this->setCurrentCount($dateTime, $currentCount + $count);
+    private EventsApiRequestCountRepository $eventsApiRequestCountRepository;
+
+    public function __construct(
+        EventsApiRequestCountRepository $eventsApiRequestCountRepository,
+    ) {
+        $this->eventsApiRequestCountRepository = $eventsApiRequestCountRepository;
     }
 
-    private function getCurrentCount(\DateTime $dateTime): int
+    public function incrementCount(\DateTimeImmutable $dateTime, int $eventCount): void
     {
-        // TODO
-        return 0;
-    }
-
-    private function setCurrentCount(\DateTime $dateTime, int $count): void
-    {
-
+        $this->eventsApiRequestCountRepository->upsert($dateTime, $eventCount);
     }
 }
