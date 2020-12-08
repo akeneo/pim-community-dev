@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from 'react';
-import {debounce} from 'lodash';
+import {debounceCallback} from '../tools';
 
 const useDebounce = (value: any, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -17,8 +17,13 @@ const useDebounce = (value: any, delay: number) => {
   return debouncedValue;
 };
 
-const useDebounceCallback = (callback: (args: any) => any, delay?: number) => {
-  return useCallback(debounce(callback, delay), [callback, delay]);
+/**
+ * Grouping multiple calls to a function (like AJAX request) into a single one
+ * @param callback
+ * @param delay
+ */
+const useDebounceCallback = (callback: (args: any) => any, delay: number) => {
+  return useCallback(debounceCallback(callback, delay), [callback, delay]);
 };
 
 export {useDebounce, useDebounceCallback};
