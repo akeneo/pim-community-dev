@@ -2,7 +2,6 @@ akeneo_data_quality_insights:
   title: Datenqualitätseinsichten
   dqi_dashboard:
     menu: Datenqualitätseinsichten
-    title: Datenqualitätsübersicht
     helper:
       title: Einführung der Datenqualität in Akeneo
       description: Mit dem Dashboard für Datenqualität können Sie die Qualität Ihrer Katalogdaten messen.
@@ -67,7 +66,6 @@ akeneo_data_quality_insights:
               message3: Das ist perfekt.
         good_enrichment:
           title: Produkte mit einem guten Anreicherungsverhältnis
-          no_data: Bei Produkte, die als leer angesehen werden, sollten Sie Attribute für diesen Schlüsselindikator hinzufügen, um die Qualität Ihrer Produkte hervorzuheben.
           messages:
             first_step:
               message1: Eine Möglichkeit, dieses Verhältnis zu verbessern, ist sicherzustellen, dass Sie sorgfältig die relevantesten Attribute definieren. <a href="{{ link }}" target="_blank">Schaue unser Hilfe-Center</a> an.
@@ -141,4 +139,3 @@ akeneo_data_quality_insights:
       to_improve: Zu verbessern
 pim_title:
   akeneo_data_quality_insights_dashboard: Datenqualitätseinsichten
-

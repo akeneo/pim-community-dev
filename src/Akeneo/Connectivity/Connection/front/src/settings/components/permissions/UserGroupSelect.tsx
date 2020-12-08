@@ -1,5 +1,6 @@
+import {Helper, Link} from 'akeneo-design-system';
 import React, {useEffect, useMemo, useState} from 'react';
-import {FormGroup, InlineHelper, Select2, Select2Configuration} from '../../../common';
+import {FormGroup, Select2, Select2Configuration} from '../../../common';
 import {Translate} from '../../../shared/translate';
 import {useFetchUserGroups, UserGroup} from '../../api-hooks/use-fetch-user-groups';
 
@@ -53,21 +54,21 @@ export const UserGroupSelect = ({userGroupId, onChange}: Props) => {
     return (
         <FormGroup
             label='akeneo_connectivity.connection.connection.user_group_id'
-            helper={
+            helpers={[
                 selectedUserGroup.isDefault && (
-                    <InlineHelper warning>
+                    <Helper inline level='warning'>
                         <Translate id='akeneo_connectivity.connection.edit_connection.permissions.user_group_helper.message' />
                         &nbsp;
-                        <a
+                        <Link
                             href='https://help.akeneo.com/pim/articles/manage-your-connections.html#set-the-permissions'
                             target='_blank'
                             rel='noopener noreferrer'
                         >
                             <Translate id='akeneo_connectivity.connection.edit_connection.permissions.user_group_helper.link' />
-                        </a>
-                    </InlineHelper>
-                )
-            }
+                        </Link>
+                    </Helper>
+                ),
+            ]}
         >
             <Select2 configuration={configuration} value={selectedUserGroup.id} onChange={handleUserGroupChange} />
         </FormGroup>

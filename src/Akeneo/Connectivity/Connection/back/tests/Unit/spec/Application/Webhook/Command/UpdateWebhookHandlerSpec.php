@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
@@ -9,8 +10,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookComm
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\Url;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ConnectionWebhook as ReadConnectionWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook as WriteConnectionWebhook;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQuery;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\ConnectionWebhookRepository;
 use PhpSpec\ObjectBehavior;
@@ -46,7 +46,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $enabled = true;
         $secret = 'secret';
         $command = new UpdateWebhookCommand($code, $enabled, $url);
-        $isAValidWriteModel = function (WriteConnectionWebhook $webhook) use ($code, $enabled, $url) {
+        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url) {
             return $webhook->code() === $code &&
                 $webhook->enabled() === $enabled &&
                 $webhook->url() instanceof Url &&
@@ -67,12 +67,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($secret);
 
-        $webhook = $this->handle($command);
-        $webhook->shouldBeAnInstanceOf(ReadConnectionWebhook::class);
-        $webhook->connectionCode()->shouldBeEqualTo($code);
-        $webhook->enabled()->shouldBeEqualTo(true);
-        $webhook->url()->shouldBeEqualTo($url);
-        $webhook->secret()->shouldBeEqualTo($secret);
+        $this->handle($command);
     }
 
     public function it_updates_a_webhook_with_validated_data(
@@ -87,7 +82,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $enabled = true;
         $secret = 'secret';
         $command = new UpdateWebhookCommand($code, $enabled, $url);
-        $isAValidWriteModel = function (WriteConnectionWebhook $webhook) use ($code, $enabled, $url) {
+        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url) {
             return $webhook->code() === $code &&
                 $webhook->enabled() === $enabled &&
                 $webhook->url() instanceof Url &&
@@ -101,12 +96,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $selectWehbookSecretQuery->execute($code)->willReturn($secret);
         $generateWebhookSecretHandler->handle(Argument::cetera())->shouldNotBeCalled();
 
-        $webhook = $this->handle($command);
-        $webhook->shouldBeAnInstanceOf(ReadConnectionWebhook::class);
-        $webhook->connectionCode()->shouldBeEqualTo($code);
-        $webhook->enabled()->shouldBeEqualTo(true);
-        $webhook->url()->shouldBeEqualTo($url);
-        $webhook->secret()->shouldBeEqualTo($secret);
+        $this->handle($command);
     }
 
     /**
@@ -122,7 +112,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
         $enabled = true;
         $url = null;
         $command = new UpdateWebhookCommand($code, $enabled, $url);
-        $isAValidWriteModel = function (WriteConnectionWebhook $webhook) use ($code, $enabled, $url) {
+        $isAValidWriteModel = function (ConnectionWebhook $webhook) use ($code, $enabled, $url) {
             return $webhook->code() === $code &&
                 $webhook->enabled() === $enabled &&
                 $webhook->url() === null;
