@@ -38,7 +38,6 @@ const DeleteModal = ({onCancel, onSuccess, deleteUrl}: DeleteModalProps) => {
       onClose={onCancel}
       closeTitle={translate('pim_common.close')}
       illustration={<DeleteIllustration />}
-      role="dialog"
     >
       <SectionTitle color="brand">{translate('pim_enrich.entity.attribute.plural_label')}</SectionTitle>
       <Title>{translate('pim_common.confirm_deletion')}</Title>

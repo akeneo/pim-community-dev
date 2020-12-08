@@ -119,7 +119,7 @@ const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: M
   if (!isOpen) return null;
 
   return createPortal(
-    <ModalContainer {...rest}>
+    <ModalContainer role="dialog" {...rest}>
       <ModalCloseButton title={closeTitle} level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
       {undefined === illustration ? (
         children
