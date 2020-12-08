@@ -16,3 +16,10 @@ services:
                 - '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Command\UpdateMappingIndexForSaasCommand:
+        arguments:
+            - '%kernel.project_dir%'
+            - !tagged_iterator pim_catalog.multiple_client_indexer
+        tags:
+            - {name: console.command}
