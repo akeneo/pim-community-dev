@@ -119,15 +119,14 @@ final class SendBusinessEventToWebhooksHandler
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
-                // TODO CXP-604 temporarly deactivated
-                // $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
-                // if (null === $filteredEvent) {
-                //     continue;
-                // }
+                $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
+                if (null === $filteredEvent) {
+                    continue;
+                }
 
                 try {
                     $webhookEvents = $this->builder->build(
-                        $event,
+                        $filteredEvent,
                         [
                             'user' => $user,
                             'pim_source' => $this->pimSource,
