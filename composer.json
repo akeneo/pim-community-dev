@@ -83,7 +83,7 @@
         "box/spout": "2.7.2",
         "webmozart/assert": "1.5",
         "symfony/asset": "4.4.7",
-        "symfony/flex": "^1.10",
+        "symfony/flex": "1.10.*",
         "symfony/form": "4.4.7",
         "symfony/monolog-bundle": "^3.4",
         "symfony/orm-pack": "^1.0",
