@@ -19,23 +19,20 @@ class EventApiRequestsCountLoader
     public function createEventApiRequestsCount(\DateTimeImmutable $dateTime, int $count)
     {
         $query = <<<SQL
-INSERT INTO akeneo_connectivity_connection_events_api_request_count
-(`minute`,`count`, updated) 
-VALUES (:minute,:count,:updated)
+INSERT INTO akeneo_connectivity_connection_events_api_request_count(event_minute, event_count, updated) 
+VALUES (:event_minute,:event_count,:updated)
 SQL;
 
-        $res = $this->dbalConnection->executeUpdate(
+        $this->dbalConnection->executeUpdate(
             $query,
             [
-                'minute' => (int)$dateTime->format('i'),
-                'count' => $count,
+                'event_minute' => (int)$dateTime->format('i'),
+                'event_count' => $count,
                 'updated' => $dateTime,
             ],
             [
-                'updated' => Types::DATE_IMMUTABLE,
+                'updated' => Types::DATETIME_IMMUTABLE,
             ]
         );
-
-        dump($res);
     }
 }

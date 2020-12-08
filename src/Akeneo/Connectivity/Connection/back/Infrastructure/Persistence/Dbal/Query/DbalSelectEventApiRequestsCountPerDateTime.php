@@ -22,7 +22,7 @@ class DbalSelectEventApiRequestsCountPerDateTime implements SelectEventApiReques
         $dateTimeTo = $dateTime->format('Y-m-d H:i:59');
 
         $sqlQuery = <<<SQL
- SELECT `count` AS event_count
+ SELECT event_count
  FROM akeneo_connectivity_connection_events_api_request_count 
  WHERE updated BETWEEN :from_datetime  AND :to_datetime
 SQL;
