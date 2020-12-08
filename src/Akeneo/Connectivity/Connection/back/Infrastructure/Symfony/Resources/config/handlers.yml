@@ -103,6 +103,7 @@ services:
             - '@monolog.logger.event_api'
             - '@akeneo_connectivity.connection.persistence.query.get_connection_user_for_fake_subscription'
             - '@akeneo_connectivity.connection.webhook.cache_clearer'
+            - '@akeneo_connectivity.connection.webhook.service.events_api_request_counter'
             - '%env(AKENEO_PIM_URL)%'
 
     akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:

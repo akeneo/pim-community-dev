@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEvent
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestCounterInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -40,6 +41,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookClient $client,
         WebhookEventBuilder $builder,
         GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
+        EventsApiRequestCounterInterface $eventsApiRequestCounter,
         CacheClearerInterface $cacheClearer
     ): void {
         $this->beConstructedWith(
@@ -49,6 +51,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $builder,
             new NullLogger(),
             $connectionUserForFakeSubscription,
+            $eventsApiRequestCounter,
             $cacheClearer,
             'staging.akeneo.com'
         );
@@ -420,6 +423,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder,
         $connectionUserForFakeSubscription,
+        $eventsApiRequestCounter,
         $cacheClearer,
         LoggerInterface $logger
     ): void {
@@ -446,6 +450,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $builder,
             $logger,
             $connectionUserForFakeSubscription,
+            $eventsApiRequestCounter,
             $cacheClearer,
             'staging.akeneo.com',
             $getTimeCallable

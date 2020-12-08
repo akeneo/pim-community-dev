@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSkipOwnEventLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestCounterInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -37,6 +38,7 @@ final class SendBusinessEventToWebhooksHandler
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
     private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
+    private EventsApiRequestCounterInterface $eventsApiRequestCounter;
     private string $pimSource;
     private ?\Closure $getTimeCallable;
     private CacheClearerInterface $cacheClearer;
@@ -48,6 +50,7 @@ final class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
+        EventsApiRequestCounterInterface $eventsApiRequestCounter,
         CacheClearerInterface $cacheClearer,
         string $pimSource,
         ?callable $getTimeCallable = null
@@ -58,6 +61,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->builder = $builder;
         $this->logger = $logger;
         $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
+        $this->eventsApiRequestCounter = $eventsApiRequestCounter;
         $this->pimSource = $pimSource;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
         $this->cacheClearer = $cacheClearer;
@@ -82,6 +86,7 @@ final class SendBusinessEventToWebhooksHandler
         $event = $command->event();
 
         $requests = function () use ($event, $webhooks) {
+            $apiEventsRequestCount = 0;
             $cumulatedTimeMs = 0;
             $startTime = $this->getTime();
 
@@ -114,11 +119,16 @@ final class SendBusinessEventToWebhooksHandler
                         $webhookEvents
                     );
 
+                    $apiEventsRequestCount += 1;
+
                     $startTime = $this->getTime();
                 } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
                     $this->logger->warning($dataBuilderNotFoundException->getMessage());
                 }
             }
+
+            $this->eventsApiRequestCounter
+                ->incrementCount(new \DateTime('now', new \DateTimeZone('UTC')), $apiEventsRequestCount);
 
             $this->logger->info(
                 json_encode(
