@@ -44,7 +44,7 @@ interface ProductModelInterface extends
      *
      * @param string $code
      */
-    public function setCode(string $code): void;
+    public function setCode(string $code): ProductModelInterface;
 
     /**
      * Gets the products of the product model.
