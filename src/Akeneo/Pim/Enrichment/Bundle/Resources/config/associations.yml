@@ -14,3 +14,9 @@ services:
 
     pim_catalog.association.filter.parent_associations:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Association\ParentAssociationsFilter'
+
+    pim_catalog.association.two_way_association_updater:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater'
+        arguments:
+            - '@doctrine'
+            - '@pim_catalog.association.missing_association_adder'

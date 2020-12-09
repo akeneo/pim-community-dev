@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -24,20 +25,19 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 class AssociationFieldSetter extends AbstractFieldSetter
 {
     protected IdentifiableObjectRepositoryInterface $productRepository;
-
     protected IdentifiableObjectRepositoryInterface $productModelRepository;
-
     protected IdentifiableObjectRepositoryInterface $groupRepository;
 
     private MissingAssociationAdder $missingAssociationAdder;
-
     private AssociationTypeRepositoryInterface $associationTypeRepository;
+    private TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         AssociationTypeRepositoryInterface $associationTypeRepository,
         array $supportedFields
     ) {
@@ -47,6 +47,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
         $this->missingAssociationAdder = $missingAssociationAdder;
         $this->supportedFields = $supportedFields;
         $this->associationTypeRepository = $associationTypeRepository;
+        $this->twoWayAssociationUpdater = $twoWayAssociationUpdater;
     }
 
     /**
@@ -73,7 +74,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
         }
 
         $this->checkData($field, $data);
-        $this->addMissingAssociations($entity);
+        $this->missingAssociationAdder->addMissingAssociations($entity);
         $this->updateAssociations($entity, $data);
     }
 
@@ -143,67 +144,10 @@ class AssociationFieldSetter extends AbstractFieldSetter
         $owner->addAssociatedProduct($associatedProduct, $associationType->getCode());
 
         if ($associationType->isTwoWay()) {
-            $this->createInversedAssociation($owner, $associationType->getCode(), $associatedProduct);
-        }
-    }
-
-    /**
-     * @param EntityWithAssociationsInterface $owner
-     * @param string $associationTypeCode
-     * @param ProductInterface|ProductModelInterface $associatedEntity
-     * TODO PHP8 type hint with the two interfaces
-     *
-     * @throws \LogicException
-     */
-    private function createInversedAssociation(
-        EntityWithAssociationsInterface $owner,
-        string $associationTypeCode,
-        $associatedEntity
-    ): void {
-        if (!$associatedEntity->hasAssociationForTypeCode($associationTypeCode)) {
-            $this->addMissingAssociations($associatedEntity);
-        }
-        if ($owner instanceof ProductInterface) {
-            $associatedEntity->addAssociatedProduct($owner, $associationTypeCode);
-        } elseif ($owner instanceof ProductModelInterface) {
-            $associatedEntity->addAssociatedProductModel($owner, $associationTypeCode);
-        } else {
-            throw new \LogicException(
-                sprintf(
-                    'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
-                    ProductInterface::class,
-                    ProductModelInterface::class,
-                    get_class($associatedEntity)
-                )
-            );
-        }
-    }
-
-    /**
-     * @param EntityWithAssociationsInterface $owner
-     * @param string $associationTypeCode
-     * @param ProductInterface|ProductModelInterface $associatedEntity
-     * TODO PHP8 type hint with the two interfaces
-     *
-     * @throws \LogicException
-     */
-    private function removeInversedAssociation(
-        EntityWithAssociationsInterface $owner,
-        string $associationTypeCode,
-        $associatedEntity
-    ): void {
-        if ($owner instanceof ProductInterface) {
-            $associatedEntity->removeAssociatedProduct($owner, $associationTypeCode);
-        } elseif ($owner instanceof ProductModelInterface) {
-            $associatedEntity->removeAssociatedProductModel($owner, $associationTypeCode);
-        } else {
-            throw new \LogicException(
-                sprintf(
-                    'Inversed associations are only for the classes "%s" and "%s". "%s" given.',
-                    ProductInterface::class,
-                    ProductModelInterface::class,
-                    get_class($associatedEntity)
-                )
+            $this->twoWayAssociationUpdater->createInversedAssociation(
+                $owner,
+                $associationType->getCode(),
+                $associatedProduct
             );
         }
     }
@@ -216,7 +160,11 @@ class AssociationFieldSetter extends AbstractFieldSetter
         $owner->removeAssociatedProduct($associatedProduct, $associationType->getCode());
 
         if ($associationType->isTwoWay()) {
-            $this->removeInversedAssociation($owner, $associationType->getCode(), $associatedProduct);
+            $this->twoWayAssociationUpdater->removeInversedAssociation(
+                $owner,
+                $associationType->getCode(),
+                $associatedProduct
+            );
         }
     }
 
@@ -260,7 +208,11 @@ class AssociationFieldSetter extends AbstractFieldSetter
         $owner->addAssociatedProductModel($associatedProductModel, $associationType->getCode());
 
         if ($associationType->isTwoWay()) {
-            $this->createInversedAssociation($owner, $associationType->getCode(), $associatedProductModel);
+            $this->twoWayAssociationUpdater->createInversedAssociation(
+                $owner,
+                $associationType->getCode(),
+                $associatedProductModel
+            );
         }
     }
 
@@ -272,7 +224,11 @@ class AssociationFieldSetter extends AbstractFieldSetter
         $owner->removeAssociatedProductModel($associatedProductModel, $associationType->getCode());
 
         if ($associationType->isTwoWay()) {
-            $this->removeInversedAssociation($owner, $associationType->getCode(), $associatedProductModel);
+            $this->twoWayAssociationUpdater->removeInversedAssociation(
+                $owner,
+                $associationType->getCode(),
+                $associatedProductModel
+            );
         }
     }
 
@@ -306,16 +262,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
             }
             $owner->addAssociatedGroup($associatedGroup, $associationType->getCode());
         }
-    }
-
-    /**
-     * Add missing associations (if association type has been added after the last processing)
-     *
-     * @param EntityWithAssociationsInterface $entity
-     */
-    protected function addMissingAssociations(EntityWithAssociationsInterface $entity): void
-    {
-        $this->missingAssociationAdder->addMissingAssociations($entity);
     }
 
     protected function checkData(string $field, $data): void

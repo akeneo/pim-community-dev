@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
@@ -33,6 +34,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         AssociationTypeRepositoryInterface $associationTypeRepository
     ) {
         $this->beConstructedWith(
@@ -40,6 +42,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             $productModelRepository,
             $groupRepository,
             $missingAssociationAdder,
+            $twoWayAssociationUpdater,
             $associationTypeRepository,
             ['associations']
         );
@@ -132,11 +135,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_sets_association_field(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository,
-        MissingAssociationAdder $missingAssociationAdder,
-        AssociationTypeRepositoryInterface $associationTypeRepository,
+        $productRepository,
+        $productModelRepository,
+        $groupRepository,
+        $missingAssociationAdder,
+        $associationTypeRepository,
         ProductInterface $product,
         AssociationInterface $xsellAssociation,
         AssociationTypeInterface $xsellAssociationType
@@ -175,13 +178,13 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('assocGroupTwo')->willReturn($assocGroupTwo);
 
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociatedProducts('xsell')->shouldBeCalled()->willReturn(
+        $product->getAssociatedProducts('xsell')->willReturn(
             new ArrayCollection([$assocProductOne, $assocProductThree])
         );
-        $product->getAssociatedProductModels('xsell')->shouldBeCalled()->willReturn(
+        $product->getAssociatedProductModels('xsell')->willReturn(
             new ArrayCollection([$assocProductModelThree])
         );
-        $product->getAssociatedGroups('xsell')->shouldBeCalled()->willReturn(
+        $product->getAssociatedGroups('xsell')->willReturn(
             new ArrayCollection([$assocGroupOne, $assocGroupTwo])
         );
 
@@ -210,12 +213,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_creates_inversed_association_on_product(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        AssociationTypeRepositoryInterface $associationTypeRepository,
-        MissingAssociationAdder $missingAssociationAdder,
-        ProductInterface $productAssociated,
-        ProductModelInterface $productModelAssociated
+        $productRepository,
+        $productModelRepository,
+        $associationTypeRepository,
+        $missingAssociationAdder,
+        $twoWayAssociationUpdater
     ) {
         $compatibilityAssociationType = new AssociationType();
         $compatibilityAssociationType->setIsTwoWay(true);
@@ -228,18 +230,21 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $product = new Product();
         $product->addAssociation($compatibilityAssociation);
 
-        $productAssociated->getIdentifier()->willReturn('productAssociated');
-        $productAssociated->hasAssociationForTypeCode('COMPATIBILITY')->willReturn(false);
-        $productModelAssociated->getCode()->willReturn('productModelAssociated');
-        $productModelAssociated->hasAssociationForTypeCode('COMPATIBILITY')->willReturn(true);
+        $productAssociated = (new Product())->setIdentifier('productAssociated');
+
+        $productModelAssociated = new ProductModel();
+        $productModelAssociated->setCode('productModelAssociated');
+
         $productRepository->findOneByIdentifier('productAssociated')->willReturn($productAssociated);
         $productModelRepository->findOneByIdentifier('productModelAssociated')->willReturn($productModelAssociated);
 
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $missingAssociationAdder->addMissingAssociations($productAssociated)->shouldBeCalled();
-        $productAssociated->addAssociatedProduct($product, 'COMPATIBILITY')->shouldBeCalled();
-        $missingAssociationAdder->addMissingAssociations($productModelAssociated)->shouldNotBeCalled();
-        $productModelAssociated->addAssociatedProduct($product, 'COMPATIBILITY')->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->createInversedAssociation($product, 'COMPATIBILITY', $productAssociated)
+            ->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->createInversedAssociation($product, 'COMPATIBILITY', $productModelAssociated)
+            ->shouldBeCalled();
 
         $this->setFieldData(
             $product,
@@ -254,32 +259,38 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_removes_inversed_association_on_product(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        AssociationTypeRepositoryInterface $associationTypeRepository,
-        ProductInterface $productAssociated,
-        ProductModelInterface $productModelAssociated
+        $productRepository,
+        $productModelRepository,
+        $associationTypeRepository,
+        $twoWayAssociationUpdater
     ) {
         $compatibilityAssociationType = new AssociationType();
         $compatibilityAssociationType->setIsTwoWay(true);
         $compatibilityAssociationType->setCode('COMPATIBILITY');
         $associationTypeRepository->findOneByIdentifier('COMPATIBILITY')->willReturn($compatibilityAssociationType);
 
+        $productAssociated = (new Product())->setIdentifier('productAssociated');
+
+        $productModelAssociated = new ProductModel();
+        $productModelAssociated->setCode('productModelAssociated');
+
         $compatibilityAssociation = new ProductAssociation();
         $compatibilityAssociation->setAssociationType($compatibilityAssociationType);
-        $compatibilityAssociation->addProduct($productAssociated->getWrappedObject());
-        $compatibilityAssociation->addProductModel($productModelAssociated->getWrappedObject());
+        $compatibilityAssociation->addProduct($productAssociated);
+        $compatibilityAssociation->addProductModel($productModelAssociated);
 
         $product = new Product();
         $product->addAssociation($compatibilityAssociation);
 
-        $productAssociated->getIdentifier()->willReturn('productAssociated');
-        $productModelAssociated->getCode()->willReturn('productModelAssociated');
         $productRepository->findOneByIdentifier('productAssociated')->willReturn($productAssociated);
         $productModelRepository->findOneByIdentifier('productModelAssociated')->willReturn($productModelAssociated);
 
-        $productAssociated->removeAssociatedProduct($product, 'COMPATIBILITY')->shouldBeCalled();
-        $productModelAssociated->removeAssociatedProduct($product, 'COMPATIBILITY')->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->removeInversedAssociation($product, 'COMPATIBILITY', $productAssociated)
+            ->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->removeInversedAssociation($product, 'COMPATIBILITY', $productModelAssociated)
+            ->shouldBeCalled();
 
         $this->setFieldData(
             $product,
@@ -294,35 +305,39 @@ class AssociationFieldSetterSpec extends ObjectBehavior
     }
 
     function it_creates_and_removes_inversed_association_on_product_model(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        AssociationTypeRepositoryInterface $associationTypeRepository,
-        MissingAssociationAdder $missingAssociationAdder,
-        ProductInterface $productAssociated,
-        ProductModelInterface $productModelAssociated
+        $productRepository,
+        $productModelRepository,
+        $associationTypeRepository,
+        $missingAssociationAdder,
+        $twoWayAssociationUpdater
     ) {
         $compatibilityAssociationType = new AssociationType();
         $compatibilityAssociationType->setIsTwoWay(true);
         $compatibilityAssociationType->setCode('COMPATIBILITY');
         $associationTypeRepository->findOneByIdentifier('COMPATIBILITY')->willReturn($compatibilityAssociationType);
 
+        $productAssociated = (new Product())->setIdentifier('productAssociated');
+
+        $productModelAssociated = new ProductModel();
+        $productModelAssociated->setCode('productModelAssociated');
+
         $compatibilityAssociation = new ProductModelAssociation();
         $compatibilityAssociation->setAssociationType($compatibilityAssociationType);
-        $compatibilityAssociation->addProductModel($productModelAssociated->getWrappedObject());
+        $compatibilityAssociation->addProductModel($productModelAssociated);
 
         $productModel = new ProductModel();
         $productModel->addAssociation($compatibilityAssociation);
 
-        $productAssociated->getIdentifier()->willReturn('productAssociated');
-        $productAssociated->hasAssociationForTypeCode('COMPATIBILITY')->willReturn(false);
-        $productModelAssociated->getCode()->willReturn('productModelAssociated');
         $productRepository->findOneByIdentifier('productAssociated')->willReturn($productAssociated);
         $productModelRepository->findOneByIdentifier('productModelAssociated')->willReturn($productModelAssociated);
 
         $missingAssociationAdder->addMissingAssociations($productModel)->shouldBeCalled();
-        $missingAssociationAdder->addMissingAssociations($productAssociated)->shouldBeCalled();
-        $productAssociated->addAssociatedProductModel($productModel, 'COMPATIBILITY')->shouldBeCalled();
-        $productModelAssociated->removeAssociatedProductModel($productModel, 'COMPATIBILITY')->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->createInversedAssociation($productModel, 'COMPATIBILITY', $productAssociated)
+            ->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->removeInversedAssociation($productModel, 'COMPATIBILITY', $productModelAssociated)
+            ->shouldBeCalled();
 
         $this->setFieldData(
             $productModel,
