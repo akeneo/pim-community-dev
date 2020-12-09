@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Event\SavedProductIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
@@ -47,8 +48,8 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
     public function createAndDispatchProductEvents(GenericEvent $postSaveEvent): void
     {
         /** @var ProductInterface */
-        $product = $postSaveEvent->getSubject();
-        if (false === $product instanceof ProductInterface) {
+        $productIdentifier = $postSaveEvent->getSubject();
+        if (false === $productIdentifier instanceof SavedProductIdentifier) {
             return;
         }
 
@@ -58,7 +59,7 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
 
         $author = Author::fromUser($user);
         $data = [
-            'identifier' => $product->getIdentifier(),
+            'identifier' => $productIdentifier->getIdentifier(),
         ];
 
         $event = null;

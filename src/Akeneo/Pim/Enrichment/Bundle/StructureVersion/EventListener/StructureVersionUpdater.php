@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Event\SavedProductIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -50,7 +51,7 @@ class StructureVersionUpdater implements EventSubscriberInterface
             return;
         }
 
-        if ($subject instanceof ProductInterface || $subject instanceof ProductModelInterface) {
+        if ($subject instanceof SavedProductIdentifier || $subject instanceof ProductModelInterface) {
             return;
         }
 
@@ -67,7 +68,7 @@ class StructureVersionUpdater implements EventSubscriberInterface
             return;
         }
 
-        if ($subject instanceof ProductInterface || $subject instanceof ProductModelInterface) {
+        if ($subject instanceof SavedProductIdentifier || $subject instanceof ProductModelInterface) {
             return;
         }
 
