@@ -30,6 +30,8 @@ type DashboardFilterOnFamilyEvent = {
 
 type DashboardFilterOnCategoryEvent = {
   categoryCode: string;
+  categoryId: string;
+  rootCategoryId: string;
 };
 
 class BaseDashboard extends BaseView {
@@ -42,6 +44,8 @@ class BaseDashboard extends BaseView {
   protected familyCode: string | null = null;
 
   protected categoryCode: string | null = null;
+  protected categoryId: string | null = null;
+  protected rootCategoryId: string | null = null;
 
   protected readonly axes = [];
 
@@ -64,6 +68,8 @@ class BaseDashboard extends BaseView {
     ) => {
       this.familyCode = event.detail.familyCode;
       this.categoryCode = null;
+      this.categoryId = null;
+      this.rootCategoryId = null;
       this.render();
     }) as EventListener);
 
@@ -71,6 +77,8 @@ class BaseDashboard extends BaseView {
       event: CustomEvent<DashboardFilterOnCategoryEvent>
     ) => {
       this.categoryCode = event.detail.categoryCode;
+      this.categoryId = event.detail.categoryId;
+      this.rootCategoryId = event.detail.rootCategoryId;
       this.familyCode = null;
       this.render();
     }) as EventListener);

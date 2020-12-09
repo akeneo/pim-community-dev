@@ -10,14 +10,24 @@ const BaseDashboard = require('akeneo/data-quality-insights/view/dqi-dashboard/b
 
 type Props = {
   categoryCode: string | null;
+  categoryId: string | null;
+  rootCategoryId: string | null;
   familyCode: string | null;
 };
 
-const Wrapper: FC<Props> = ({categoryCode, familyCode}) => {
+const Wrapper: FC<Props> = ({categoryCode, categoryId, rootCategoryId, familyCode}) => {
   const {isGranted} = useSecurity();
+  const category =
+    categoryCode === null || categoryId === null || rootCategoryId === null
+      ? null
+      : {
+          id: categoryId,
+          code: categoryCode,
+          rootCategoryId,
+        };
 
   return (
-    <DashboardContextProvider>
+    <DashboardContextProvider familyCode={familyCode} category={category}>
       {isGranted('pim_enrich_product_category_list') && <CategoryFilter categoryCode={categoryCode} />}
       <FamilyFilter familyCode={familyCode} />
     </DashboardContextProvider>
@@ -30,7 +40,16 @@ class DashboardFilters extends BaseDashboard {
   }
 
   render() {
-    this.renderReact(Wrapper, {familyCode: this.familyCode, categoryCode: this.categoryCode}, this.el);
+    this.renderReact(
+      Wrapper,
+      {
+        familyCode: this.familyCode,
+        categoryCode: this.categoryCode,
+        categoryId: this.categoryId,
+        rootCategoryId: this.rootCategoryId,
+      },
+      this.el
+    );
 
     return this;
   }

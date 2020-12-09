@@ -2,7 +2,6 @@ akeneo_data_quality_insights:
   title: Datenqualitätseinsichten
   dqi_dashboard:
     menu: Datenqualitätseinsichten
-    title: Datenqualitätsübersicht
     helper:
       title: Einführung der Datenqualität in Akeneo
       description: Mit dem Dashboard für Datenqualität können Sie die Qualität Ihrer Katalogdaten messen.
@@ -36,6 +35,7 @@ akeneo_data_quality_insights:
       add_families: Familien hinzufügen
       add_categories: Kategorien hinzufügen
       title: Titel
+      score: Punkte
       no_family_helper_msg: Wählen Sie die Familien, für die Sie die Datenqualität messen möchten
       no_category_helper_msg: Wählen Sie die Kategorien, für die Sie die Datenqualität messen möchten
       see_in_grid: Im Raster sehen
@@ -67,7 +67,7 @@ akeneo_data_quality_insights:
               message3: Das ist perfekt.
         good_enrichment:
           title: Produkte mit einem guten Anreicherungsverhältnis
-          no_data: Bei Produkte, die als leer angesehen werden, sollten Sie Attribute für diesen Schlüsselindikator hinzufügen, um die Qualität Ihrer Produkte hervorzuheben.
+          no_data: Ihre Produkte scheinen leer zu sein. Sie sollten Attribute für diesen Schlüsselindikator hinzufügen, um die Qualität Ihrer Produkte hervorzuheben.
           messages:
             first_step:
               message1: Eine Möglichkeit, dieses Verhältnis zu verbessern, ist sicherzustellen, dass Sie sorgfältig die relevantesten Attribute definieren. <a href="{{ link }}" target="_blank">Schaue unser Hilfe-Center</a> an.
@@ -91,6 +91,13 @@ akeneo_data_quality_insights:
               message4: Herzlichen Glückwunsch, das ist makellos!
       no_data: Leider haben wir noch nicht genügend Daten um die Schlüsselindikatoren anzuzeigen.
       no_data_subtitle: Bitte kommen Sie später wieder.
+    score_distribution:
+      title: Verteilung von Qualitätspunkten
+    quality_score_evolution:
+      title: Entwicklung der Qualitätspunkte
+      current_score: ist Ihr aktueller Katalogqualitätswert für diesen Bereich.
+      current_month_label: Dieser Monat
+      no_catalog_score: Wir konnten Ihre aktuellen Qualitätepunkte nicht berechnen.
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
@@ -119,6 +126,9 @@ akeneo_data_quality_insights:
         help_center_link: Erfahren Sie, wie Datenqualitätseinsichten Ihnen helfen können, Ihre Datenqualität in unserem Hilfe-Center zu verbessern.
       add_image_attribute_recommendation: Ein Bild sagt mehr als tausend Wörter. Sie sollten ein Bildattribut hinzufügen, um die Datenqualität dieses Produkts zu verbessern.
       fill_image_attribute_recommendation: Aus unserer Erfahrung machen Bilder wirklich einen Unterschied. Sie sollten mindestens ein Bild hinzufügen, um die Datenqualität dieses Produkts zu verbessern.
+      not_applicable:
+        message: Diese Kriterien sind in Ihrem Zusammenhang nicht anwendbar.
+        help_center_link: Finden Sie heraus in unserem Hilfe-Center.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Alle fehlenden Attribute
@@ -134,6 +144,7 @@ akeneo_data_quality_insights:
     all_groups_evaluated: Alle Attributgruppen dieses Produktes werden bei der Berechnung des Qualitätsscore berücksichtigt. Um die relevanteste Qualität zu erhalten, lernt <a href="{{ link }}" target="_blank">in unserem Hilfe-Center Attributgruppen zu deaktivieren.</a>
   product_grid:
     filter_label:
+      quality_score: Qualität
       enrichment_quality: Qualität der Anreicherung
       images_quality: Bildqualität
     filter_value:
@@ -141,4 +152,3 @@ akeneo_data_quality_insights:
       to_improve: Zu verbessern
 pim_title:
   akeneo_data_quality_insights_dashboard: Datenqualitätseinsichten
-

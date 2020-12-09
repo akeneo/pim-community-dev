@@ -8,6 +8,8 @@ akeneo_data_quality_insights:
     dqi: Datenqualitätseinsichten
   product_grid:
     filter_label:
+      quality_score: Qualität
       enrichment_quality: Qualität der Anreicherung
       images_quality: Bildqualität
 Enrichment: Anreicherung
+Quality Score: Qualität

@@ -261,7 +261,10 @@ define([
      * @private
      */
     _listenToBodyEvents: function () {
-      this.listenTo(this.body, 'rowClicked', function (row) {
+      this.listenTo(this.body, 'rowClicked', function (row, e) {
+        if (true === e.originalEvent.defaultPrevented) {
+          return;
+        }
         this.trigger('rowClicked', this, row);
         this._runRowClickAction(row);
       });
