@@ -77,4 +77,6 @@ services:
 
     akeneo_connectivity.connection.webhook.service.events_api_request_counter:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\EventsApiRequestCounter
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.events_api_request_count'
 

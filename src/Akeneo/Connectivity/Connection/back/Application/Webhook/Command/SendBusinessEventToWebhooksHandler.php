@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
@@ -39,9 +40,9 @@ final class SendBusinessEventToWebhooksHandler
     private LoggerInterface $logger;
     private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
     private EventsApiRequestCounterInterface $eventsApiRequestCounter;
+    private CacheClearerInterface $cacheClearer;
     private string $pimSource;
     private ?\Closure $getTimeCallable;
-    private CacheClearerInterface $cacheClearer;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -62,9 +63,9 @@ final class SendBusinessEventToWebhooksHandler
         $this->logger = $logger;
         $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
         $this->eventsApiRequestCounter = $eventsApiRequestCounter;
+        $this->cacheClearer = $cacheClearer;
         $this->pimSource = $pimSource;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
-        $this->cacheClearer = $cacheClearer;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -88,19 +89,20 @@ final class SendBusinessEventToWebhooksHandler
         $requests = function () use ($event, $webhooks) {
             $apiEventsRequestCount = 0;
             $cumulatedTimeMs = 0;
+            $eventBuiltCount = 0;
             $startTime = $this->getTime();
 
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
-
-                $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
-                if (null === $filteredEvent) {
-                    continue;
-                }
+                // TODO CXP-604 temporarly deactivated
+                // $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
+                // if (null === $filteredEvent) {
+                //     continue;
+                // }
 
                 try {
                     $webhookEvents = $this->builder->build(
-                        $filteredEvent,
+                        $event,
                         [
                             'user' => $user,
                             'pim_source' => $this->pimSource,
@@ -113,6 +115,7 @@ final class SendBusinessEventToWebhooksHandler
                     }
 
                     $cumulatedTimeMs += $this->getTime() - $startTime;
+                    $eventBuiltCount++;
 
                     yield new WebhookRequest(
                         $webhook,
@@ -128,14 +131,21 @@ final class SendBusinessEventToWebhooksHandler
             }
 
             $this->eventsApiRequestCounter
-                ->incrementCount(new \DateTime('now', new \DateTimeZone('UTC')), $apiEventsRequestCount);
+                ->incrementCount(new \DateTimeImmutable('now', new \DateTimeZone('UTC')), $apiEventsRequestCount);
 
-            $this->logger->info(
-                json_encode(
-                    (new EventSubscriptionEventBuildLog(count($webhooks), $event, $cumulatedTimeMs))->toLog(),
-                    JSON_THROW_ON_ERROR
-                )
-            );
+            if ($eventBuiltCount > 0) {
+                $this->logger->info(
+                    json_encode(
+                        (new EventSubscriptionEventBuildLog(
+                            count($webhooks),
+                            $event,
+                            $cumulatedTimeMs,
+                            $eventBuiltCount
+                        ))->toLog(),
+                        JSON_THROW_ON_ERROR
+                    )
+                );
+            }
         };
 
         if ($isFake) {

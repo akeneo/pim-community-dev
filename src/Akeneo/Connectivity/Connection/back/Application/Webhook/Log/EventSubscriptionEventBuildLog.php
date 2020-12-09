@@ -19,6 +19,7 @@ class EventSubscriptionEventBuildLog
     /** @var EventInterface|BulkEventInterface */
     private object $event;
     private int $durationMs;
+    private int $eventBuiltCount;
 
     /**
      * @param EventInterface|BulkEventInterface $event
@@ -26,11 +27,13 @@ class EventSubscriptionEventBuildLog
     public function __construct(
         int $subscriptionCount,
         object $event,
-        int $durationMs
+        int $durationMs,
+        int $eventBuiltCount
     ) {
         $this->subscriptionCount = $subscriptionCount;
         $this->event = $event;
         $this->durationMs = $durationMs;
+        $this->eventBuiltCount = $eventBuiltCount;
     }
 
     /**
@@ -38,6 +41,7 @@ class EventSubscriptionEventBuildLog
      *  type: string,
      *  subscription_count: int,
      *  event_count: int,
+     *  event_built_count: int,
      *  duration_ms: int,
      *  events: array<array{
      *      uuid: string,
@@ -62,6 +66,7 @@ class EventSubscriptionEventBuildLog
             'type' => self::TYPE,
             'subscription_count' => $this->subscriptionCount,
             'event_count' => count($events),
+            'event_built_count' => $this->eventBuiltCount,
             'duration_ms' => $this->durationMs,
             'events' => array_map(
                 function (EventInterface $event) {

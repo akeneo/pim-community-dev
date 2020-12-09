@@ -362,6 +362,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 ),
             )
             ->shouldBeCalled();
+
         $cacheClearer->clear()->shouldBeCalled();
 
         $this->handle($command);
@@ -500,7 +501,9 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
 
         $expectedBuildTime = (3 - 2) + (8 - 5);
-        $log = new EventSubscriptionEventBuildLog(2, $bulkEvent, $expectedBuildTime);
+        $eventBuiltCount = 2;
+
+        $log = new EventSubscriptionEventBuildLog(2, $bulkEvent, $expectedBuildTime, $eventBuiltCount);
         $logger->info(json_encode($log->toLog()))->shouldBeCalled();
     }
 

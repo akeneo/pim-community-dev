@@ -194,9 +194,6 @@ akeneo_connectivity.connection:
   webhook:
     title: Ereignisabonnement (BETA)
     event_subscription: Ereignisabonnement (BETA)
-    helper:
-      message: Ihre verbundene App kann abonniert werden, um über Ereignisse im Akeneo PIM (z.B. wenn ein Produkt aktualisiert wird) auf einer von Ihnen gewählten URL benachrichtigt zu werden.
-      link: Erfahren Sie mehr über die Konfiguration von Event-Abonnements...
     form:
       url: URL
       secret: Passwort (Secret)

@@ -29,7 +29,7 @@ VALUES(:event_minute, :event_count, :updated)
 ON DUPLICATE KEY UPDATE event_count = event_count + :event_count, updated = :updated
 SQL;
 
-        $this->dbalConnection->executeUpdate(
+        return $this->dbalConnection->executeUpdate(
             $upsertQuery,
             [
                 'event_minute' => (int)$dateTime->format('i'),

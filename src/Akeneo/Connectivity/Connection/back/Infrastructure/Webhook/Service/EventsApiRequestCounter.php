@@ -15,9 +15,8 @@ class EventsApiRequestCounter implements EventsApiRequestCounterInterface
 {
     private EventsApiRequestCountRepository $eventsApiRequestCountRepository;
 
-    public function __construct(
-        EventsApiRequestCountRepository $eventsApiRequestCountRepository,
-    ) {
+    public function __construct(EventsApiRequestCountRepository $eventsApiRequestCountRepository)
+    {
         $this->eventsApiRequestCountRepository = $eventsApiRequestCountRepository;
     }
 
