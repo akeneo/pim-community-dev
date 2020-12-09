@@ -94,9 +94,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /** @var FamilyVariantInterface */
     protected $familyVariant;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->values = new WriteValueCollection();
@@ -572,7 +569,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
+    protected function getAssociationForTypeCode($typeCode): ?AssociationInterface
     {
         foreach ($this->associations as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
@@ -737,6 +734,95 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     public function cleanup(): void
     {
         // nothing here
+    }
+
+    public function hasAssociationForTypeCode(string $associationTypeCode): bool
+    {
+        return null !== $this->getAssociationForTypeCode($associationTypeCode);
+    }
+
+    public function addAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            // TODO error message
+            throw new \LogicException();
+        }
+
+        if (!$association->hasProduct($product)) {
+            $association->addProduct($product);
+        }
+    }
+
+    public function removeAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if ($association instanceof AssociationInterface && $association->hasProduct($product)) {
+            $association->removeProduct($product);
+        }
+    }
+
+    public function getAssociatedProducts(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? $association->getProducts() : null;
+    }
+
+    public function addAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            // TODO error message
+            throw new \LogicException();
+        }
+
+        if (!$association->getProductModels()->contains($productModel)) {
+            $association->addProductModel($productModel);
+        }
+    }
+
+    public function removeAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if ($association instanceof AssociationInterface && $association->getProductModels()->contains($productModel)) {
+            $association->removeProductModel($productModel);
+        }
+    }
+
+    public function getAssociatedProductModels(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? $association->getProductModels() : null;
+    }
+
+    public function addAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            // TODO error message
+            throw new \LogicException();
+        }
+        if (!$association->getGroups()->contains($group)) {
+            $association->addGroup($group);
+        }
+    }
+
+    public function removeAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        if ($association instanceof AssociationInterface && $association->getGroups()->contains($group)) {
+            $association->removeGroup($group);
+        }
+    }
+
+    public function getAssociatedGroups(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? $association->getGroups() : null;
     }
 
     private function getAllValues(

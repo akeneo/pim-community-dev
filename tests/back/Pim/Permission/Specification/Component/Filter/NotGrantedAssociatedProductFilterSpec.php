@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Filter\NotGrantedAssociatedProductFilter;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -41,7 +42,7 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         $this->shouldHaveType(NotGrantedAssociatedProductFilter::class);
     }
 
-    function it_removes_not_granted_associated_products_from_a_product(
+    function it_removes_not_granted_associated_products_from_a_product_old(
         $productCategoryAccessQuery,
         $productModelCategoryAccessQuery,
         $tokenStorage,
@@ -50,7 +51,9 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         ProductInterface $associatedProduct2,
         ProductInterface $associatedProduct3,
         ProductModelInterface $associatedProductModel1,
+        ProductModelInterface $associatedProductModel2,
         AssociationInterface $associationXSELL,
+        AssociationTypeInterface $associationTypeXSELL,
         ArrayCollection $associations,
         Collection $associatedProducts,
         Collection $associatedProductModels,
@@ -66,7 +69,8 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         $associatedProduct1->getId()->willReturn(1);
         $associatedProduct2->getId()->willReturn(2);
         $associatedProduct3->getId()->willReturn(3);
-        $associatedProductModel1->getId()->willReturn(1);
+        $associatedProductModel1->getId()->willReturn(10);
+        $associatedProductModel2->getId()->willReturn(11);
 
         $product->getAssociations()->willReturn($associations);
         $associations->getIterator()->willReturn($iterator);
@@ -76,6 +80,8 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         $iterator->next()->shouldBeCalled();
 
         $associationXSELL->getProducts()->willReturn($associatedProducts);
+        $associationXSELL->getAssociationType()->willReturn($associationTypeXSELL);
+        $associationTypeXSELL->getCode()->willReturn('xsell');
         $associatedProducts->getIterator()->willReturn($iteratorProducts);
         $associatedProducts->toArray()->willReturn([$associatedProduct1, $associatedProduct2, $associatedProduct3]);
         $iteratorProducts->rewind()->shouldBeCalled();
@@ -85,32 +91,33 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
 
         $associationXSELL->getProductModels()->willReturn($associatedProductModels);
         $associatedProductModels->getIterator()->willReturn($iteratorProductModels);
-        $associatedProductModels->toArray()->willReturn([$associatedProductModel1]);
+        $associatedProductModels->toArray()->willReturn([$associatedProductModel1, $associatedProductModel2]);
         $iteratorProductModels->rewind()->shouldBeCalled();
-        $iteratorProductModels->valid()->willReturn(true, false);
-        $iteratorProductModels->current()->willReturn($associatedProductModel1);
+        $iteratorProductModels->valid()->willReturn(true, true, false);
+        $iteratorProductModels->current()->willReturn($associatedProductModel1, $associatedProductModel2);
         $iteratorProductModels->next()->shouldBeCalled();
 
         $productCategoryAccessQuery->getGrantedItemIds([$associatedProduct1, $associatedProduct2, $associatedProduct3], $user)
             ->willReturn([2 => 2, 3 => 3]);
-        $associatedProducts->removeElement($associatedProduct1)->shouldBeCalled();
-        $associatedProducts->removeElement($associatedProduct2)->shouldNotBeCalled();
-        $associatedProducts->removeElement($associatedProduct3)->shouldNotBeCalled();
 
-        $productModelCategoryAccessQuery->getGrantedItemIds([$associatedProductModel1], $user)
-            ->willReturn([1 => 1]);
-        $associatedProductModels->removeElement($associatedProductModel1)->shouldNotBeCalled();
+        $product->removeAssociatedProduct($associatedProduct1, 'xsell')->shouldBeCalled();
+        $product->removeAssociatedProduct($associatedProduct2, Argument::any())->shouldNotBeCalled();
+        $product->removeAssociatedProduct($associatedProduct3, Argument::any())->shouldNotBeCalled();
 
-        $associationXSELL->setProducts($associatedProducts)->shouldBeCalled();
-        $associationXSELL->setProductModels($associatedProductModels)->shouldBeCalled();
-        $product->setAssociations(Argument::type(ArrayCollection::class))->shouldBeCalled();
+        $productModelCategoryAccessQuery->getGrantedItemIds([$associatedProductModel1, $associatedProductModel2], $user)
+            ->willReturn([10 => 10]);
+        $product->removeAssociatedProductModel($associatedProductModel1, Argument::any())->shouldNotBeCalled();
+        $product->removeAssociatedProductModel($associatedProductModel2, 'xsell')->shouldBeCalled();
 
         $this->filter($product)->shouldReturnAnInstanceOf(ProductInterface::class);
     }
 
     function it_throws_an_exception_if_subject_is_not_a_product()
     {
-        $this->shouldThrow(InvalidObjectException::objectExpected(ClassUtils::getClass(new \stdClass()), EntityWithAssociationsInterface::class))
+        $this->shouldThrow(
+            InvalidObjectException::objectExpected(
+                ClassUtils::getClass(new \stdClass()), EntityWithAssociationsInterface::class)
+        )
             ->during('filter', [new \stdClass()]);
     }
 }
