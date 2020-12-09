@@ -81,9 +81,10 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
         Assert::assertCount(1, $container);
 
+
         /** @var Request $request */
         $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)[0];
+        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
         NormalizedProductCleaner::clean($requestContent['data']['resource']);
 
         $this->assertEquals($this->expectedProductCreatedPayload(), $requestContent);
@@ -117,7 +118,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
         /** @var Request $request */
         $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)[0];
+        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
         NormalizedProductCleaner::clean($requestContent['data']['resource']);
 
         $this->assertEquals($this->expectedProductUpdatedPayload(), $requestContent);
@@ -154,7 +155,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
         /** @var Request $request */
         $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)[0];
+        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
 
         $this->assertEquals($this->expectedProductRemovedPayload(), $requestContent);
     }
