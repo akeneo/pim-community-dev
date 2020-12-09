@@ -16,6 +16,7 @@ final class AttributeCodeBlacklisterIntegration extends TestCase
     public function test_it_blacklists_an_attribute_code(): void
     {
         $blacklister = $this->getBlacklister();
+        $this->assertFalse($this->isBlacklisted('nice_attribute_code'));
 
         $blacklister->blacklist('nice_attribute_code');
 
@@ -42,7 +43,7 @@ final class AttributeCodeBlacklisterIntegration extends TestCase
         $blacklister = $this->getBlacklister();
 
         $blacklister->blacklist('nice_attribute_code');
-        $blacklister->whitelist('nice_attribute_code');
+        $blacklister->removeFromBlacklist('nice_attribute_code');
 
         $this->assertFalse($this->isBlacklisted('nice_attribute_code'));
     }

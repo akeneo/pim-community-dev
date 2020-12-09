@@ -32,6 +32,15 @@ class RemoveValuesFromProductModels
 
     public function forAttributeCodes(array $attributeCodes, array $productModelIdentifiers): void
     {
+        $this->removeValuesForAttributeCodes($attributeCodes, $productModelIdentifiers);
+
+        $this->dispatchProductModelSaveEvents($productModelIdentifiers);
+
+        $this->clearer->clear();
+    }
+
+    private function removeValuesForAttributeCodes(array $attributeCodes, array $productModelIdentifiers): void
+    {
         $paths = implode(
             ',',
             array_map(fn ($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)), $attributeCodes)
@@ -50,7 +59,10 @@ SQL,
                 'identifiers' => Connection::PARAM_STR_ARRAY,
             ]
         );
+    }
 
+    private function dispatchProductModelSaveEvents($productModelIdentifiers): void
+    {
         $productModels = $this->productModelRepository->findBy(['code' => $productModelIdentifiers]);
 
         foreach ($productModels as $productModel) {
@@ -68,7 +80,5 @@ SQL,
                 'unitary' => false,
             ])
         );
-
-        $this->clearer->clear();
     }
 }

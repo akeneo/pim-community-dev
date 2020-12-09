@@ -686,7 +686,7 @@ services:
                 - '@pim_catalog.step.clean_attribute.register_clean_job'
                 - '@pim_catalog.step.clean_attribute.clean_product_model'
                 - '@pim_catalog.step.clean_attribute.clean_product'
-                - '@pim_catalog.step.clean_attribute.whitelist_attribute_codes'
+                - '@pim_catalog.step.clean_attribute.remove_attribute_codes_from_blacklist'
             - false
         public: false
         tags:
@@ -710,17 +710,17 @@ services:
             - '@pim_catalog.manager.attribute_code_blacklister'
         public: false
 
-    pim_catalog.step.clean_attribute.whitelist_attribute_codes:
+    pim_catalog.step.clean_attribute.remove_attribute_codes_from_blacklist:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
-            - 'clean_attribute.whitelist_attribute_codes'
+            - 'clean_attribute.remove_attribute_codes_from_blacklist'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.tasklet.clean_attribute.whitelist_attribute_codes'
+            - '@pim_connector.tasklet.clean_attribute.remove_attribute_codes_from_blacklist'
         public: false
 
-    pim_connector.tasklet.clean_attribute.whitelist_attribute_codes:
-        class: 'Akeneo\Pim\Structure\Bundle\Job\CleanRemovedAttribute\WhitelistAttributeCodesTasklet'
+    pim_connector.tasklet.clean_attribute.remove_attribute_codes_from_blacklist:
+        class: 'Akeneo\Pim\Structure\Bundle\Job\CleanRemovedAttribute\RemoveAttributeCodesFromBlacklistTasklet'
         arguments:
             - '@pim_catalog.manager.attribute_code_blacklister'
         public: false

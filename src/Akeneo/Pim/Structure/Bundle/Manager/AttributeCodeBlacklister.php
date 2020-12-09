@@ -55,7 +55,7 @@ SQL;
         );
     }
 
-    public function whitelist(string $attributeCode): void
+    public function removeFromBlacklist(string $attributeCode): void
     {
         $whiteListSql = <<<SQL
 DELETE FROM `pim_catalog_attribute_blacklist`
