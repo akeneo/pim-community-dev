@@ -5,7 +5,7 @@ import {Locale} from '../../../models';
 import {debounce} from 'lodash';
 import {SearchBar} from '@akeneo-pim-community/shared/src';
 import {Table} from 'akeneo-design-system';
-import {NoResults} from '../../shared/datagrids';
+import {NoResults} from '../../shared';
 import styled from 'styled-components';
 
 type Props = {
@@ -42,7 +42,7 @@ const LocalesDataGrid: FC<Props> = ({locales}) => {
           subtitle={translate('pim_datagrid.no_results_subtitle')}
         />
       ) : (
-        <Table>
+        <Table className={'grid'}>
           <Table.Header>
             <Table.HeaderCell>{translate('pim_enrich.entity.locale.grid.columns.code')}</Table.HeaderCell>
           </Table.Header>
