@@ -131,6 +131,7 @@ services:
         public: false
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_teamwork_assistant.project_calculation.connector_name%', type: '%pimee_teamwork_assistant.project_calculation.job_type%' }
+            - name: akeneo_batch.job.not_visible
 
     ### Calculation step
     pimee_teamwork_assistant.calculation_step.add_user_group:
