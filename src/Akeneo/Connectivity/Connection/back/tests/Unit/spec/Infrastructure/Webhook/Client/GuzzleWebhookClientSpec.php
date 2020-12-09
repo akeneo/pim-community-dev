@@ -95,7 +95,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         Assert::assertNotNull($request);
 
-        $body = '[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_1"]}]';
+        $body = '{"events":[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_1"]}]}';
         Assert::assertEquals($body, (string)$request->getBody());
 
         $timestamp = (int)$request->getHeader(GuzzleWebhookClient::HEADER_REQUEST_TIMESTAMP)[0];
@@ -107,7 +107,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $request = $this->findRequest($container, 'http://localhost/webhook2');
         Assert::assertNotNull($request);
 
-        $body = '[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_2"]}]';
+        $body = '{"events":[{"action":"product.created","event_id":"7abae2fe-759a-4fce-aa43-f413980671b3","event_date":"2020-01-01T00:00:00+00:00","author":"julia","author_type":"ui","pim_source":"staging.akeneo.com","data":["data_2"]}]}';
         Assert::assertEquals($body, (string)$request->getBody());
 
         $timestamp = (int)$request->getHeader(GuzzleWebhookClient::HEADER_REQUEST_TIMESTAMP)[0];
