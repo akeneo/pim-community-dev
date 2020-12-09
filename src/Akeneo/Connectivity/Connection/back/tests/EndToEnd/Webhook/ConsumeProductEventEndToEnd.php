@@ -6,6 +6,8 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\CategoryLoader;
 use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductLoader;
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\AttributeLoader;
+use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
@@ -32,6 +34,8 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 {
     private ProductLoader $productLoader;
     private CategoryLoader $categoryLoader;
+    private FamilyLoader $familyLoader;
+    private AttributeLoader $attributeLoader;
     private ProductInterface $referenceProduct;
     private Author $referenceAuthor;
 
@@ -41,6 +45,8 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
         $this->productLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product');
         $this->categoryLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.category');
+        $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
+        $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
 
         $this->referenceProduct = $this->loadReferenceProduct();
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
@@ -163,8 +169,25 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
     private function loadReferenceProduct(): ProductInterface
     {
         $this->categoryLoader->create(['code' => 'category']);
+        $this->attributeLoader->create(['code' => 'boolean_attribute', 'type' => 'pim_catalog_boolean']);
+        $this->attributeLoader->create(['code' => 'text_attribute', 'type' => 'pim_catalog_text']);
+        $this->attributeLoader->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
+        $this->familyLoader->create(['code' => 'family', 'attributes' => ['boolean_attribute', 'text_attribute']]);
 
-        return $this->productLoader->create('product', ['categories' => ['category']]);
+        return $this->productLoader->create(
+            'product',
+            [
+                'family' => 'family',
+                'enabled' => true,
+                'categories' => ['category'],
+                'groups' => [],
+                'values' => [
+                    'another_text_attribute' => [
+                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
+                    ],
+                ],
+            ]
+        );
     }
 
     private function expectedProductCreatedPayload(): array
@@ -216,11 +239,19 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
             'resource' => [
                 'identifier' => 'product',
                 'enabled' => true,
-                'family' => null,
+                'family' => 'family',
                 'groups' => [],
                 'parent' => null,
                 'categories' => ['category'],
-                'values' => [],
+                'values' => [
+                    'another_text_attribute' => [
+                        [
+                            'data' => 'text attribute',
+                            'locale' => null,
+                            'scope' => null,
+                        ],
+                    ],
+                ],
                 'created' => 'this is a date formatted to ISO-8601',
                 'updated' => 'this is a date formatted to ISO-8601',
                 'associations' => [

@@ -174,7 +174,10 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         $this->categoryLoader->create(['code' => 'category']);
         $this->attributeLoader->create(['code' => 'variant_attribute', 'type' => 'pim_catalog_boolean']);
         $this->attributeLoader->create(['code' => 'text_attribute', 'type' => 'pim_catalog_text']);
-        $this->familyLoader->create(['code' => 'family', 'attributes' => ['variant_attribute', 'text_attribute']]);
+        $this->attributeLoader->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
+        $this->familyLoader->create(
+            ['code' => 'family', 'attributes' => ['variant_attribute', 'text_attribute', 'another_text_attribute']]
+        );
 
         $familyVariant = $this->familyVariantLoader->create(
             [
@@ -195,6 +198,11 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
                 'code' => 'product_model',
                 'categories' => ['category'],
                 'family_variant' => $familyVariant->getCode(),
+                'values' => [
+                    'another_text_attribute' => [
+                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
+                    ],
+                ],
             ]
         );
     }
@@ -251,7 +259,15 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
                 'family_variant' => 'family_variant',
                 'parent' => null,
                 'categories' => ['category'],
-                'values' => [],
+                'values' => [
+                    'another_text_attribute' => [
+                        [
+                            'data' => 'text attribute',
+                            'locale' => null,
+                            'scope' => null,
+                        ],
+                    ],
+                ],
                 'created' => 'this is a date formatted to ISO-8601',
                 'updated' => 'this is a date formatted to ISO-8601',
                 'associations' => [
