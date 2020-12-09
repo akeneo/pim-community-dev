@@ -41,9 +41,7 @@ type TableProps = Override<
 const Table = ({isSelectable = false, displayCheckbox = false, children, ...rest}: TableProps) => {
   return (
     <SelectableContext.Provider value={{isSelectable, displayCheckbox}}>
-      <TableContainer {...rest}>
-        {children}
-      </TableContainer>
+      <TableContainer {...rest}>{children}</TableContainer>
     </SelectableContext.Provider>
   );
 };
