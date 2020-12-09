@@ -17,7 +17,6 @@ const TableCellContainer = styled.td<{rowTitle: boolean} & AkeneoThemedProps>`
     props.rowTitle &&
     css`
       color: ${getColor('brand', 100)};
-      font-weight: bold;
       font-style: italic;
     `}
 `;

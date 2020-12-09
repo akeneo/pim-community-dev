@@ -72,7 +72,9 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
           >
             {filteredGroups.map(group => (
               <DataGrid.Row key={group.code} data={group}>
-                <DataGrid.Cell rowHeader>{getLabel(group)}</DataGrid.Cell>
+                <DataGrid.Cell rowTitle style={{width: 71}}>
+                  {getLabel(group)}
+                </DataGrid.Cell>
                 {FeatureFlags.isEnabled('data_quality_insights') && (
                   <DataGrid.Cell>
                     <StatusBadge isActivated={group.isDqiActivated ? true : false} />
