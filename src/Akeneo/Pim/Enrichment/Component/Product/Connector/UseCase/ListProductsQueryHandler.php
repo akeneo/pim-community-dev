@@ -110,12 +110,14 @@ final class ListProductsQueryHandler
             $this->getConnectorProductsQuerywithOptions :
             $this->getConnectorProductsQuery;
 
+        $queryLocales = $this->getLocales($query->channelCode, $query->localeCodes);
+
         $connectorProductList = $connectorProductsQuery->fromProductQueryBuilder(
             $pqb,
             $query->userId,
             $query->attributeCodes,
             $query->channelCode,
-            $this->getLocales($query->channelCode, $query->localeCodes)
+            $queryLocales,
         );
 
         $productIds = array_map(function (ConnectorProduct $connectorProduct) {
@@ -124,7 +126,11 @@ final class ListProductsQueryHandler
         $this->eventDispatcher->dispatch(new ReadProductsEvent($productIds));
 
         if ($query->withQualityScores()) {
-            $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList($connectorProductList);
+            $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList(
+                $connectorProductList,
+                $query->channelCode,
+                $queryLocales
+            );
         }
 
         return $connectorProductList;
