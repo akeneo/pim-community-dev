@@ -19,14 +19,13 @@ define([
       $.get(this.action.getLinkWithParameters())
         .done(function (data) {
           const title = __('pim_datagrid.mass_action.quick_export.success');
-          const message = __('pim_datagrid.mass_action.quick_export.flash.message');
           const link = React.createElement(
             Link,
             {key: data.job_id, href: `#${Routing.generate('pim_enrich_job_tracker_show', {id: data.job_id})}`},
-            __('pim_datagrid.mass_action.quick_export.flash.link')
+            __('pim_datagrid.mass_action.quick_export.flash.message')
           );
 
-          messenger.notify('success', title, [message, link]);
+          messenger.notify('success', title, link);
         })
         .fail(function (jqXHR) {
           if (jqXHR.status === 401) {
