@@ -227,3 +227,8 @@ jobs:
         alias:     asset_manager_compute_transformations
         label:     Computation of asset transformations
         type:      asset_manager_compute_transformations
+    clean_removed_attribute_job:
+        connector: internal
+        alias:     clean_removed_attribute_job
+        label:     Clean removed attribute job
+        type:      clean_removed_attribute_job
