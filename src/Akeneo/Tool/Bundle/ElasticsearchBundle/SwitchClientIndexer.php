@@ -9,9 +9,17 @@ use Webmozart\Assert\Assert;
 
 /**
  * The purpose of this class is to provide index methods that impact current index + the next index.
- * Typically during an ES re-indexation there is an "old" index and a "new" one. When users alter documents we
- * must index on the both indexes.
+ * Typically during a live ES re-indexation there is an "old/current" index and a "new" one. When users alter
+ * documents we must index on the both indexes.
  * It uses the actual PIM version to determine the new index name.
+ * Different modes can be set:
+ *  - "only_current_index": the indexation is done only on current index
+ *  - "both_indexes": the indexation is done twice, on the current index and the next one
+ *  - "only_next_index": the indexation is done only on next index
+ *
+ * Important note: this class assumes the next index already exists with good mapping (for performance reasons it cannot
+ * check before each indexation if the index exists). The creation of the index with good mapping must be done
+ * separately (in a migration?).
  *
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
