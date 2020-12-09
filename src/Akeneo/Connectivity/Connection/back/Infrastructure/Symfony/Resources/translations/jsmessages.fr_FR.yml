@@ -194,9 +194,6 @@ akeneo_connectivity.connection:
   webhook:
     title: Souscription aux événements (BETA)
     event_subscription: Souscription aux événements (BETA)
-    helper:
-      message: Vous pouvez activer la souscription aux événements afin d'être notifié par Akeneo PIM (par exemple lorsqu'un produit est mis à jour) à une URL que vous choisissez.
-      link: En savoir plus sur l'activation de la souscription aux événements...
     form:
       url: URL
       secret: Secret
