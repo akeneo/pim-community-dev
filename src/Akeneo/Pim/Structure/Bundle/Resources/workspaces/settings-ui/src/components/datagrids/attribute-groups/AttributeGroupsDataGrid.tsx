@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {
   useAttributeGroupPermissions,
@@ -8,8 +8,7 @@ import {
 } from '../../../hooks';
 import {AttributeGroup} from '../../../models';
 import {DataGrid, NoResults} from '../../shared';
-import {debounce} from 'lodash';
-import {SearchBar} from '@akeneo-pim-community/shared/src';
+import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
 import {StatusBadge} from './StatusBadge';
 
 const FeatureFlags = require('pim/feature-flags');
@@ -26,7 +25,7 @@ const AttributeGroupsDataGrid: FC<Props> = ({groups}) => {
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
 
-  const debouncedSearch = useCallback(debounce(search, 300), [groups]);
+  const debouncedSearch = useDebounceCallback(search, 300);
 
   const onSearch = (searchValue: string) => {
     setSearchString(searchValue);

@@ -1,9 +1,8 @@
-import React, {FC, useCallback, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {useFilteredLocales} from '../../../hooks';
 import {Locale} from '../../../models';
-import {debounce} from 'lodash';
-import {SearchBar} from '@akeneo-pim-community/shared/src';
+import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
 import {NoResults} from '../../shared';
 import styled from 'styled-components';
@@ -21,7 +20,7 @@ const LocalesDataGrid: FC<Props> = ({locales}) => {
   const [searchString, setSearchString] = useState('');
   const {filteredLocales, search} = useFilteredLocales(locales);
 
-  const debouncedSearch = useCallback(debounce(search, 300), [locales]);
+  const debouncedSearch = useDebounceCallback(search, 300);
 
   const onSearch = (searchValue: string) => {
     setSearchString(searchValue);
