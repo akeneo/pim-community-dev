@@ -19,7 +19,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Client implements ClientIndexerInterface
+class Client
 {
     /** @var int ElasticSearch max query size */
     private const PARAMS_MAX_SIZE = 100000000;
@@ -37,7 +37,7 @@ class Client implements ClientIndexerInterface
     private $indexName;
 
     /** @var NativeClient */
-    private $client;
+    protected $client;
 
     private $idPrefix;
 
@@ -54,7 +54,8 @@ class Client implements ClientIndexerInterface
         ClientBuilder $builder,
         Loader $configurationLoader,
         array $hosts,
-        $indexName,
+        string $indexName,
+        string $temporaryAliasName = '',
         string $idPrefix = ''
     ) {
         $this->builder = $builder;
@@ -346,7 +347,7 @@ class Client implements ClientIndexerInterface
      *
      * @throws IndexationException
      */
-    private function throwIndexationExceptionFromResponse(array $response)
+    protected function throwIndexationExceptionFromResponse(array $response)
     {
         foreach ($response['items'] as $item) {
             if (isset($item['index']['error'])) {
