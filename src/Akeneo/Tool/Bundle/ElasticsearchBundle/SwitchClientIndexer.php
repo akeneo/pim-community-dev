@@ -120,7 +120,7 @@ final class SwitchClientIndexer implements ClientIndexerInterface
 
     private function getClientForNextIndex(): ?Client
     {
-        if ('Serenity' !== $this->versionProvider->getEdition() || !$this->versionProvider->isSaaSVersion()) {
+        if ('Serenity' !== $this->versionProvider->getEdition() && !$this->versionProvider->isSaaSVersion()) {
             return null;
         }
 
