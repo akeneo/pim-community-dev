@@ -3,12 +3,28 @@ import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {PimView, useRoute, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {LocalesDataGrid} from '../components';
 import {useLocalesIndexState} from '../hooks';
-import {Breadcrumb} from 'akeneo-design-system';
+import styled from 'styled-components';
+import {Breadcrumb, getColor, Helper as BaseHelper} from 'akeneo-design-system';
+
+const Helper = styled(BaseHelper)`
+  margin-bottom: 20px;
+`;
+
+const HelperContent = styled.span`
+  a {
+    color: ${getColor('brand', 100)};
+
+    &:hover {
+      color: ${getColor('brand', 120)};
+    }
+  }
+`;
 
 const LocalesIndex: FC = () => {
   const translate = useTranslate();
   const {locales, load, isPending} = useLocalesIndexState();
   const settingsHomePageRoute = useRoute('pim_enrich_attribute_index');
+  const settingsChannelPageRoute = useRoute('pim_enrich_channel_index');
 
   useEffect(() => {
     (async () => {
@@ -36,6 +52,13 @@ const LocalesIndex: FC = () => {
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
+        <Helper level="info">
+          <HelperContent
+            dangerouslySetInnerHTML={{
+              __html: translate('pim_enrich.entity.locale.helper', {href: `#${settingsChannelPageRoute}`}),
+            }}
+          />
+        </Helper>
         <LocalesDataGrid locales={locales} />
       </PageContent>
     </>
