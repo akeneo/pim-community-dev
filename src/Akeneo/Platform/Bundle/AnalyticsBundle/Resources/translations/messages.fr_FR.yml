@@ -51,6 +51,7 @@ pim_analytics:
     server_version: Version du serveur
     php_extensions: Extensions PHP
     email_domains: Domaine associé
+    api_connection: Connexions API
   acl:
     system_info:
       index: Informations système

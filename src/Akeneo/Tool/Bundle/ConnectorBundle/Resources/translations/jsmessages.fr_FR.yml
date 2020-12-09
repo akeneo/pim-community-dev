@@ -1,6 +1,7 @@
 #Job labels
 batch_jobs:
   default_steps:
+    export: Export
     validation: Validation du fichier
     import_associations: Import des associations de produits
     import_root_product_model: Import modèle de produit racine
