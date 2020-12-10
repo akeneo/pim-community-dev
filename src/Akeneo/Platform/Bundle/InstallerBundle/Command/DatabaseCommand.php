@@ -31,6 +31,7 @@ use Symfony\Component\Process\Process;
  */
 class DatabaseCommand extends Command
 {
+    const NO_MIGRATION_OUTPUT = "0\n";
     protected static $defaultName = 'pim:installer:db';
 
     const LOAD_ALL = 'all';
@@ -316,6 +317,11 @@ class DatabaseCommand extends Command
     {
         $latestMigration = $this->getLatestMigration($input);
 
+        if ($this->hasNoMigrationToExecute($latestMigration)) {
+            $this->commandExecutor->runCommand('doctrine:migrations:status');//Hack to force creation of migration_versions table
+            return;
+        }
+
         $this->commandExecutor->runCommand(
             'doctrine:migrations:version',
             ['version' => $latestMigration, '--add' => true, '--all' => true, '-q' => true]
@@ -355,5 +361,14 @@ class DatabaseCommand extends Command
         $this->commandExecutor->runCommand('pim:versioning:refresh');
 
         return $this;
+    }
+
+    /**
+     * @param string $latestMigration
+     * @return bool
+     */
+    private function hasNoMigrationToExecute(string $latestMigration): bool
+    {
+        return $latestMigration == self::NO_MIGRATION_OUTPUT;
     }
 }
