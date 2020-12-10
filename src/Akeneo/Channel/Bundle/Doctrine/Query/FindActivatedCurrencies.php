@@ -15,15 +15,9 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class FindActivatedCurrencies implements FindActivatedCurrenciesInterface
 {
-    /** @var array */
-    private $activatedCurrenciesForChannels = [];
+    private array $activatedCurrenciesForChannels = [];
+    private EntityManagerInterface $entityManager;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -59,6 +53,11 @@ class FindActivatedCurrencies implements FindActivatedCurrenciesInterface
         }
 
         return array_unique(array_merge(...array_values($this->activatedCurrenciesForChannels)));
+    }
+
+    public function clearCache(): void
+    {
+        $this->activatedCurrenciesForChannels = [];
     }
 
     /**
