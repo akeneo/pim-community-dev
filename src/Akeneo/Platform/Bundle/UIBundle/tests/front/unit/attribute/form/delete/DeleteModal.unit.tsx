@@ -61,6 +61,9 @@ test('it displays an error when the delete failed', async () => {
   global.fetch.mockImplementationOnce(() =>
     Promise.resolve({
       ok: false,
+      json: () => Promise.resolve({
+        message: 'an_error',
+      }),
     })
   );
 
@@ -75,7 +78,7 @@ test('it displays an error when the delete failed', async () => {
     method: 'DELETE',
     headers: new Headers({'X-Requested-With': 'XMLHttpRequest'}),
   });
-  expect(dependencies.notify).toHaveBeenCalledWith('error', 'pim_enrich.entity.attribute.flash.delete.fail');
+  expect(dependencies.notify).toHaveBeenCalledWith('error', 'an_error');
 });
 
 test('it displays an error when the delete was rejected', async () => {
