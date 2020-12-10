@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEvent
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestCounterInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -17,6 +16,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalEventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\UserManagement\Component\Model\User;
@@ -41,7 +41,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookClient $client,
         WebhookEventBuilder $builder,
         GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
-        EventsApiRequestCounterInterface $eventsApiRequestCounter,
+        DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer
     ): void {
         $this->beConstructedWith(
@@ -51,7 +51,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $builder,
             new NullLogger(),
             $connectionUserForFakeSubscription,
-            $eventsApiRequestCounter,
+            $eventsApiRequestRepository,
             $cacheClearer,
             'staging.akeneo.com'
         );
@@ -67,7 +67,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $cacheClearer
+        $cacheClearer,
+        $eventsApiRequestRepository
     ): void {
         $juliaUser = new User();
         $juliaUser->setId(0);
@@ -110,6 +111,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                     ),
                 ]
             );
+
+        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
 
         $client
             ->bulkSend(
@@ -155,7 +158,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder,
         $connectionUserForFakeSubscription,
-        $cacheClearer
+        $cacheClearer,
+        $eventsApiRequestRepository
     ): void {
         $julia = new User();
         $julia->setId(1234);
@@ -198,6 +202,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                     ),
                 ]
             );
+
+        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
 
         $client
             ->bulkFakeSend(
@@ -281,7 +287,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $cacheClearer
+        $cacheClearer,
+        $eventsApiRequestRepository
     ): void {
         $erpUser = new User();
         $erpUser->setId(42);
@@ -328,6 +335,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                 ]
             );
 
+        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
+
         $client
             ->bulkSend(
                 Argument::that(
@@ -373,7 +382,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $cacheClearer
+        $cacheClearer,
+        $eventsApiRequestRepository
     ): void {
         $user = new User();
         $user->setId(0);
@@ -400,6 +410,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             )
             ->willThrow(\Exception::class);
 
+        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
+
         $client
             ->bulkSend(
                 Argument::that(
@@ -424,7 +436,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder,
         $connectionUserForFakeSubscription,
-        $eventsApiRequestCounter,
+        $eventsApiRequestRepository,
         $cacheClearer,
         LoggerInterface $logger
     ): void {
@@ -451,7 +463,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $builder,
             $logger,
             $connectionUserForFakeSubscription,
-            $eventsApiRequestCounter,
+            $eventsApiRequestRepository,
             $cacheClearer,
             'staging.akeneo.com',
             $getTimeCallable
@@ -486,6 +498,8 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                     ),
                 ]
             );
+
+        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
 
         $client->bulkSend(
             Argument::that(
