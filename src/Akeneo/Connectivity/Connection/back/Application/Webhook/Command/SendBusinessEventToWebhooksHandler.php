@@ -7,7 +7,6 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSkipOwnEventLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
-use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestCounterInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -16,6 +15,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuil
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -39,7 +39,7 @@ final class SendBusinessEventToWebhooksHandler
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
     private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
-    private EventsApiRequestCounterInterface $eventsApiRequestCounter;
+    private EventsApiRequestCountRepository $eventsApiRequestRepository;
     private CacheClearerInterface $cacheClearer;
     private string $pimSource;
     private ?\Closure $getTimeCallable;
@@ -51,7 +51,7 @@ final class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
-        EventsApiRequestCounterInterface $eventsApiRequestCounter,
+        EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         string $pimSource,
         ?callable $getTimeCallable = null
@@ -62,7 +62,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->builder = $builder;
         $this->logger = $logger;
         $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
-        $this->eventsApiRequestCounter = $eventsApiRequestCounter;
+        $this->eventsApiRequestRepository = $eventsApiRequestRepository;
         $this->cacheClearer = $cacheClearer;
         $this->pimSource = $pimSource;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
@@ -130,8 +130,8 @@ final class SendBusinessEventToWebhooksHandler
                 }
             }
 
-            $this->eventsApiRequestCounter
-                ->incrementCount(new \DateTimeImmutable('now', new \DateTimeZone('UTC')), $apiEventsRequestCount);
+            $this->eventsApiRequestRepository
+                ->upsert(new \DateTimeImmutable('now', new \DateTimeZone('UTC')), $apiEventsRequestCount);
 
             if ($eventBuiltCount > 0) {
                 $this->logger->info(

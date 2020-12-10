@@ -102,7 +102,7 @@ services:
             - '@akeneo_connectivity.connection.webhook.webhook_event_builder'
             - '@monolog.logger.event_api'
             - '@akeneo_connectivity.connection.persistence.query.get_connection_user_for_fake_subscription'
-            - '@akeneo_connectivity.connection.webhook.service.events_api_request_counter'
+            - '@akeneo_connectivity.connection.persistence.repository.events_api_request_count'
             - '@akeneo_connectivity.connection.webhook.cache_clearer'
             - '%env(AKENEO_PIM_URL)%'
 
