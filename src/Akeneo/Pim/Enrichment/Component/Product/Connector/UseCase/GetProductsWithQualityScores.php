@@ -35,7 +35,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
         );
     }
 
-    public function fromConnectorProductList(ConnectorProductList $connectorProductList): ConnectorProductList
+    public function fromConnectorProductList(ConnectorProductList $connectorProductList, ?string $channel = null, array $locales = []): ConnectorProductList
     {
         if (!$this->dataQualityInsightsFeature->isEnabled()) {
             return $this->returnProductsWithEmptyQualityScores($connectorProductList);
@@ -43,9 +43,10 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
 
         $productsQualityScores = $this->getProductsQualityScores($connectorProductList);
 
-        $productsWithQualityScores = array_map(function (ConnectorProduct $product) use ($productsQualityScores) {
-            if (array_key_exists($product->identifier(), $productsQualityScores)) {
-                return $product->buildWithQualityScores($productsQualityScores[$product->identifier()]);
+        $productsWithQualityScores = array_map(function (ConnectorProduct $product) use ($productsQualityScores, $channel, $locales) {
+            if (isset($productsQualityScores[$product->identifier()])) {
+                $productQualityScores = $this->filterProductQualityScores($productsQualityScores[$product->identifier()], $channel, $locales);
+                return $product->buildWithQualityScores($productQualityScores);
             }
 
             return $product->buildWithQualityScores(new ChannelLocaleRateCollection());
@@ -73,5 +74,26 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
         );
 
         return $this->getLatestProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
+    }
+
+    private function filterProductQualityScores(ChannelLocaleRateCollection $productQualityScores, ?string $channel, array $locales): ChannelLocaleRateCollection
+    {
+        if (null === $channel && empty($locales)) {
+            return $productQualityScores;
+        }
+
+        $filteredQualityScores = [];
+        foreach ($productQualityScores->toArrayInt() as $scoreChannel => $scoresLocales) {
+            if ($channel !== null && $channel !== $scoreChannel) {
+                continue;
+            }
+            foreach ($scoresLocales as $scoreLocale => $scoreRate) {
+                if (empty($locales) || in_array($scoreLocale, $locales)) {
+                   $filteredQualityScores[$scoreChannel][$scoreLocale] = $scoreRate;
+                }
+            }
+        }
+
+        return ChannelLocaleRateCollection::fromArrayInt($filteredQualityScores);
     }
 }

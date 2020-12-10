@@ -72,11 +72,115 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
         ]);
 
         $this->fromConnectorProductList(
-            new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2])
+            new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]),
+            null,
+            []
         )->shouldBeLike(
             new ConnectorProductList(2, [
                 $this->buildConnectorProduct('pdt_5', $qualityScores1),
                 $this->buildConnectorProduct('pdt_6', $qualityScores2),
+            ])
+        );
+    }
+
+    function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_channel(
+        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag $dataQualityInsightsFeature
+    ) {
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+
+        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
+        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+
+        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt([
+            'ecommerce' => ['en_US' => 15, 'fr_FR' => 42],
+            'print' => ['en_US' => 37]
+        ]);
+        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
+
+        $getLatestProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
+            'pdt_5' => $qualityScores1,
+            'pdt_6' => $qualityScores2,
+        ]);
+
+        $this->fromConnectorProductList(
+            new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]),
+            'ecommerce',
+            []
+        )->shouldBeLike(
+            new ConnectorProductList(2, [
+                $this->buildConnectorProduct('pdt_5', ChannelLocaleRateCollection::fromArrayInt([
+                    'ecommerce' => ['en_US' => 15, 'fr_FR' => 42],
+                ])),
+                $this->buildConnectorProduct('pdt_6', new ChannelLocaleRateCollection()),
+            ])
+        );
+    }
+
+    function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_locales(
+        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag $dataQualityInsightsFeature
+    ) {
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+
+        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
+        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+
+        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt([
+            'ecommerce' => ['en_US' => 15, 'fr_FR' => 42, 'de_DE' => 76],
+            'print' => ['de_DE' => 37],
+        ]);
+        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
+
+        $getLatestProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
+            'pdt_5' => $qualityScores1,
+            'pdt_6' => $qualityScores2,
+        ]);
+
+        $this->fromConnectorProductList(
+            new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]),
+            null,
+            ['en_US', 'fr_FR']
+        )->shouldBeLike(
+            new ConnectorProductList(2, [
+                $this->buildConnectorProduct('pdt_5', ChannelLocaleRateCollection::fromArrayInt([
+                    'ecommerce' => ['en_US' => 15, 'fr_FR' => 42],
+                ])),
+                $this->buildConnectorProduct('pdt_6', $qualityScores2),
+            ])
+        );
+    }
+
+    function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_channel_and_locales(
+        GetLatestProductScoresByIdentifiersQueryInterface $getLatestProductScoresByIdentifiersQuery,
+        FeatureFlag $dataQualityInsightsFeature
+    ) {
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+
+        $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
+        $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
+
+        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt([
+            'ecommerce' => ['en_US' => 15, 'fr_FR' => 42, 'de_DE' => 76],
+            'print' => ['en_US' => 98, 'fr_FR' => 13],
+        ]);
+        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
+
+        $getLatestProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
+            'pdt_5' => $qualityScores1,
+            'pdt_6' => $qualityScores2,
+        ]);
+
+        $this->fromConnectorProductList(
+            new ConnectorProductList(2, [$connectorProduct1, $connectorProduct2]),
+            'ecommerce',
+            ['en_US']
+        )->shouldBeLike(
+            new ConnectorProductList(2, [
+                $this->buildConnectorProduct('pdt_5', ChannelLocaleRateCollection::fromArrayInt([
+                    'ecommerce' => ['en_US' => 15],
+                ])),
+                $this->buildConnectorProduct('pdt_6', new ChannelLocaleRateCollection()),
             ])
         );
     }

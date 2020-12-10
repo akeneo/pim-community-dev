@@ -140,6 +140,11 @@ $rules = [
         // Required for NonExistentValuesFilter on channels and locales
         'Akeneo\Channel\Component\Query\PublicApi',
 
+        // Required to add quality scores into external API normalized products.
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQueryInterface',
+        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection',
+
         // TIP-915: PIM/Enrichment should not be linked to AttributeOption
         // TIP-916: Do not check if entities exist in PQB filters or sorters
         'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',

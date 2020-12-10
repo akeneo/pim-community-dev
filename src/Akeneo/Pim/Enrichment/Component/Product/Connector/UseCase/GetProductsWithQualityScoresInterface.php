@@ -11,5 +11,5 @@ interface GetProductsWithQualityScoresInterface
 {
     public function fromConnectorProduct(ConnectorProduct $product): ConnectorProduct;
 
-    public function fromConnectorProductList(ConnectorProductList $connectorProductList): ConnectorProductList;
+    public function fromConnectorProductList(ConnectorProductList $connectorProductList, ?string $channel = null, array $locales = []): ConnectorProductList;
 }
