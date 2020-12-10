@@ -37,7 +37,7 @@ class Client
     private $indexName;
 
     /** @var NativeClient */
-    protected $client;
+    private $client;
 
     private $idPrefix;
 
@@ -54,8 +54,7 @@ class Client
         ClientBuilder $builder,
         Loader $configurationLoader,
         array $hosts,
-        string $indexName,
-        string $temporaryAliasName = '',
+        $indexName,
         string $idPrefix = ''
     ) {
         $this->builder = $builder;
@@ -68,25 +67,16 @@ class Client
         $this->client = $builder->build();
     }
 
-    public function getBuilder(): ClientBuilder
-    {
-        return $this->builder;
-    }
-
-    public function getHosts(): array
-    {
-        return $this->hosts;
-    }
-
-    public function getIdPrefix(): string
-    {
-        return $this->idPrefix;
-    }
-
     /**
-     * {@inheritDoc}
+     * @param string       $id
+     * @param array        $body
+     * @param Refresh|null $refresh
+     *
+     * @throws IndexationException
+     *
+     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
      */
-    public function index(string $id, array $body, Refresh $refresh = null): array
+    public function index($id, array $body, Refresh $refresh = null)
     {
         $params = [
             'index' => $this->indexName,
@@ -112,9 +102,16 @@ class Client
     }
 
     /**
-     * {@inheritDoc}
+     * @param array        $documents
+     * @param ?string      $keyAsId
+     * @param Refresh|null $refresh
+     *
+     * @throws MissingIdentifierException
+     * @throws IndexationException
+     *
+     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
      */
-    public function bulkIndexes(array $documents, string $keyAsId = null, Refresh $refresh = null): array
+    public function bulkIndexes($documents, $keyAsId = null, Refresh $refresh = null)
     {
         $params = [];
         $paramsComputedSize = 0;
@@ -325,7 +322,7 @@ class Client
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-refresh.html}
      */
-    public function refreshIndex(): array
+    public function refreshIndex()
     {
         return $this->client->indices()->refresh(['index' => $this->indexName]);
     }
@@ -347,7 +344,7 @@ class Client
      *
      * @throws IndexationException
      */
-    protected function throwIndexationExceptionFromResponse(array $response)
+    private function throwIndexationExceptionFromResponse(array $response)
     {
         foreach ($response['items'] as $item) {
             if (isset($item['index']['error'])) {
