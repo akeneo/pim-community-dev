@@ -114,9 +114,7 @@ type BooleanInputProps = (
 };
 
 /**
- * Toggle is used to quickly switch between two possible states. They are commonly used for "yes/no" switches.
- * The boolean can in some cases have a 3rd state, EMPTY. In this case, a clear button allows the user to empty the
- * value of the field.
+ * The BooleanInput is used to quickly switch between two possible states.
  */
 const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
   (

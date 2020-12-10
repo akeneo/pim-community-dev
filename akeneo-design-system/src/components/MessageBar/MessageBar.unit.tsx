@@ -2,7 +2,6 @@ import React from 'react';
 import {MessageBar, AnimateMessageBar} from './MessageBar';
 import {screen, act, render, fireEvent} from '../../storybook/test-util';
 import {InfoIcon} from '../../icons';
-import {Link} from 'components/Link/Link';
 
 jest.useFakeTimers();
 
@@ -104,28 +103,6 @@ test('it calls the onClose handler automatically after the appropriate duration'
   expect(onClose).toHaveBeenCalledTimes(1);
 });
 
-test('it does not call the onClose handler automatically if there is a Link component in the children', () => {
-  const onClose = jest.fn();
-
-  render(
-    <MessageBar
-      level="info"
-      icon={<InfoIcon />}
-      title="Title"
-      onClose={onClose}
-      dismissTitle="Dismiss the notification"
-    >
-      MessageBar Info <Link>Take me there</Link>
-    </MessageBar>
-  );
-
-  act(() => {
-    jest.runAllTimers();
-  });
-
-  expect(onClose).not.toHaveBeenCalled();
-});
-
 test('It can animate a MessageBar', () => {
   const onClose = jest.fn();
 
@@ -138,7 +115,7 @@ test('It can animate a MessageBar', () => {
         onClose={onClose}
         dismissTitle="Dismiss the notification"
       >
-        MessageBar Info <Link>Take me there</Link>
+        MessageBar Info
       </MessageBar>
     </AnimateMessageBar>
   );
