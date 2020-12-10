@@ -72,7 +72,7 @@ class AssociationContext implements Context
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
         foreach ($table->getHash() as $row) {
-            $associatedProducts = $product->getAssociatedProducts('association_type');
+            $associatedProducts = $product->getAssociatedProducts($row['association_type']);
             $associatedProductIdentifiers = $associatedProducts ?
                 $associatedProducts->map(
                     function (ProductInterface $product): string {
@@ -92,7 +92,7 @@ class AssociationContext implements Context
                 )
             );
 
-            $associatedProductModels = $product->getAssociatedProductModels('association_type');
+            $associatedProductModels = $product->getAssociatedProductModels($row['association_type']);
             $associatedProductModelCodes = $associatedProductModels ?
                 $associatedProductModels->map(
                     function (ProductModelInterface $productModel): string {
@@ -112,7 +112,7 @@ class AssociationContext implements Context
                 )
             );
 
-            $associatedGroups = $product->getAssociatedGroups('association_type');
+            $associatedGroups = $product->getAssociatedGroups($row['association_type']);
             $associatedGroupCodes = $associatedGroups ?
                 $associatedGroups->map(
                     function (GroupInterface $group): string {
