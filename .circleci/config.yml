@@ -663,7 +663,7 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_performance
                     - test_back_data_migrations
-                    - test_upgrade_from_last_release
+                    - test_deploy
                     - test_onboarder_bundle
 
           - ready_to_build_only_ce?:
