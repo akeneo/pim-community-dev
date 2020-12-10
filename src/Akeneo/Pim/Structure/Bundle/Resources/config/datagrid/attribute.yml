@@ -26,6 +26,7 @@ datagrid:
                 frontend_type: boolean-status
         properties:
             id: ~
+            code: ~
             edit_link:
                 type: url
                 route: pim_enrich_attribute_edit

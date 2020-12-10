@@ -12,8 +12,6 @@ const DeleteAction = ({attributeCode}: DeleteActionProps) => {
   const router = useRouter();
   const [isModalOpen, openModal, closeModal] = useToggleState(false);
 
-  const deleteUrl = router.generate('pim_enrich_attribute_rest_remove', {code: attributeCode});
-
   const handleDeleted = () => {
     router.redirect(router.generate('pim_enrich_attribute_index'));
     closeModal();
@@ -24,7 +22,7 @@ const DeleteAction = ({attributeCode}: DeleteActionProps) => {
       <button className="AknDropdown-menuLink delete" onClick={openModal}>
         {translate('pim_common.delete')}
       </button>
-      {isModalOpen && <DeleteModal onCancel={closeModal} onSuccess={handleDeleted} deleteUrl={deleteUrl} />}
+      {isModalOpen && <DeleteModal onCancel={closeModal} onSuccess={handleDeleted} attributeCode={attributeCode} />}
     </>
   );
 };

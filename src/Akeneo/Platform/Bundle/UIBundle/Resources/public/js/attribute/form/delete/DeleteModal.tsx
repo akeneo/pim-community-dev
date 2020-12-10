@@ -1,19 +1,20 @@
 import React from 'react';
 import {Button, DeleteIllustration, Modal, SectionTitle, Title} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify, useTranslate, useRouter} from '@akeneo-pim-community/legacy-bridge';
 
 type DeleteModalProps = {
   onCancel: () => void;
   onSuccess: () => void;
-  deleteUrl: string;
+  attributeCode: string;
 };
 
-const DeleteModal = ({onCancel, onSuccess, deleteUrl}: DeleteModalProps) => {
+const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => {
   const translate = useTranslate();
   const notify = useNotify();
+  const router = useRouter();
 
   const handleConfirm = () => {
-    fetch(deleteUrl, {
+    fetch(router.generate('pim_enrich_attribute_rest_remove', {'code': attributeCode}), {
       method: 'DELETE',
       headers: new Headers({
         'X-Requested-With': 'XMLHttpRequest',

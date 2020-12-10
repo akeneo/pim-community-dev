@@ -27,7 +27,7 @@ class DeleteAttributeAction extends DeleteAction {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <DeleteModal onCancel={handleClose} onSuccess={handleSuccess} deleteUrl={this.model.attributes.delete_link} />
+          <DeleteModal onCancel={handleClose} onSuccess={handleSuccess} attributeCode={this.model.attributes.code} />
         </ThemeProvider>
       </DependenciesProvider>,
       container
