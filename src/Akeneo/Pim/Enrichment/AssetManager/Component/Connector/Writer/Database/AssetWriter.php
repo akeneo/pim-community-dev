@@ -16,21 +16,28 @@ namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\Writer\Database
 use Akeneo\AssetManager\Application\Asset\CreateAndEditAsset\CreateAndEditAssetCommand;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetHandler;
 use Akeneo\AssetManager\Application\Asset\EditAsset\EditAssetHandler;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
+use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Webmozart\Assert\Assert;
 
-final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterface
+final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterface, FlushableInterface
 {
     private CreateAssetHandler $createAssetHandler;
     private EditAssetHandler $editAssetHandler;
+    private EventAggregatorInterface $eventAggregator;
     private ?StepExecution $stepExecution = null;
 
-    public function __construct(CreateAssetHandler $createAssetHandler, EditAssetHandler $editAssetHandler)
-    {
+    public function __construct(
+        CreateAssetHandler $createAssetHandler,
+        EditAssetHandler $editAssetHandler,
+        EventAggregatorInterface $eventAggregator
+    ) {
         $this->createAssetHandler = $createAssetHandler;
         $this->editAssetHandler = $editAssetHandler;
+        $this->eventAggregator = $eventAggregator;
     }
 
     /**
@@ -65,5 +72,13 @@ final class AssetWriter implements ItemWriterInterface, StepExecutionAwareInterf
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush(): void
+    {
+        $this->eventAggregator->flushEvents();
     }
 }
