@@ -339,7 +339,8 @@ class Base extends Page
         }, 'Loading mask is still visible');
 
         $button = $this->spin(function () {
-            return $this->getConfirmDialog()->find('css', '.ok');
+            return $this->getConfirmDialog()->find('css', '.ok') ??
+                $this->getConfirmDialog()->findButton('Delete');
         }, 'Could not find the confirmation button');
 
         $button->click();
@@ -353,7 +354,8 @@ class Base extends Page
     protected function getConfirmDialog()
     {
         return $this->spin(function () {
-            return $this->getElement('Dialog');
+            return $this->find('css', 'div[role="dialog"]') ??
+                $this->getElement('Dialog');
         }, 'Could not find dialog popin');
     }
 

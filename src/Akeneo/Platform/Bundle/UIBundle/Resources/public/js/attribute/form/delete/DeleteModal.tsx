@@ -20,12 +20,12 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         'X-Requested-With': 'XMLHttpRequest',
       }),
     })
-      .then((response: Response) => {
+      .then(async (response: Response) => {
         if (response.ok) {
           notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.attribute.flash.delete.success'));
           onSuccess();
         } else {
-          notify(NotificationLevel.ERROR, translate('pim_enrich.entity.attribute.flash.delete.fail'));
+          notify(NotificationLevel.ERROR, (await response.json()).message ?? translate('pim_enrich.entity.attribute.flash.delete.fail'));
         }
       })
       .catch(() => {
