@@ -14,7 +14,6 @@ suites:
         psr4_prefix: AkeneoEnterprise\Connectivity\Connection
         spec_path: src/Akeneo/Connectivity/Connection/back/tests/Unit
         src_path: src/Akeneo/Connectivity/Connection/back
-        spec_prefix: spec
 
     DataQualityInsights:
         namespace: Akeneo\Pim\Automation\DataQualityInsights
