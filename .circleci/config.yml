@@ -958,10 +958,10 @@ workflows:
                 requires:
                     - test_back_performance
                     - test_back_behat_legacy
-                    - test_upgrade_from_last_release
                     - test_onboarder_bundle
                     - test_back_missing_structure_migrations
                     - test_back_data_migrations
+                    - test_deploy
 
   growth_edition_release:
       triggers:
