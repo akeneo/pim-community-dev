@@ -273,10 +273,13 @@ class ValuesIntegration extends AbstractSecurityTestCase
             ],
             'quantified_associations' => []
         ]);
-        $this->assertSame('product_a', $product->getAssociationForTypeCode('X_SELL')->getProducts()->first()->getIdentifier());
+        $associatedProducts = $product->getAssociatedProducts('X_SELL');
+        $this->assertSame('product_a', $associatedProducts ? $associatedProducts->first()->getIdentifier() : null);
 
         $this->updateProduct($product, ['associations' => ['X_SELL' => ['products' => ['product_a'], 'groups' => ['groupB', 'groupA']]]]);
-        $this->assertSame('product_a', $product->getAssociationForTypeCode('X_SELL')->getProducts()->first()->getIdentifier());
+
+        $associatedProductsAfterUpdate = $product->getAssociatedProducts('X_SELL');
+        $this->assertSame('product_a', $associatedProductsAfterUpdate ? $associatedProductsAfterUpdate->first()->getIdentifier() : null);
     }
 
     public function testUpdateMultipleFieldOnProductDraft()

@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
@@ -13,7 +14,6 @@ use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\UserManagement\Component\Model\Group;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -298,35 +298,6 @@ class PublishedProductSpec extends ObjectBehavior
         $this->addAssociatedProduct($product, 'x_sell');
     }
 
-    function it_is_updated_if_a_product_is_added_to_an_association(): void {
-        $product = new Product();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->addAssociatedProduct($product, 'x_sell');
-        $this->isDirty()->shouldBe(true);
-    }
-
-    function it_is_not_updated_if_a_product_to_add_to_an_association_already_exists(): void {
-        $product = new Product();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-        $xsellAssociation->addProduct($product);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->addAssociatedProduct($product, 'x_sell');
-        $this->isDirty()->shouldBe(false);
-    }
-
     function it_removes_a_product_from_an_association(
         AssociationInterface $association
     ): void {
@@ -340,35 +311,6 @@ class PublishedProductSpec extends ObjectBehavior
         $association->removeProduct($product)->shouldBeCalled();
 
         $this->removeAssociatedProduct($product, 'x_sell');
-    }
-
-    function it_is_updated_if_a_product_is_removed_from_an_association(): void {
-        $product = new Product();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-        $xsellAssociation->addProduct($product);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->removeAssociatedProduct($product, 'x_sell');
-        $this->isDirty()->shouldBe(true);
-    }
-
-    function it_is_not_updated_if_a_product_to_remove_from_an_association_does_not_exist(): void {
-        $product = new Product();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->removeAssociatedProduct($product, 'x_sell');
-        $this->isDirty()->shouldBe(false);
     }
 
     function it_returns_associated_products_in_terms_of_an_association_type(): void
@@ -404,35 +346,6 @@ class PublishedProductSpec extends ObjectBehavior
         $this->addAssociatedProductModel($productModel, 'x_sell');
     }
 
-    function it_is_updated_if_a_product_model_is_added_to_an_association(): void {
-        $productModel = new ProductModel();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->addAssociatedProductModel($productModel, 'x_sell');
-        $this->isDirty()->shouldBe(true);
-    }
-
-    function it_is_not_updated_if_a_product_model_to_add_to_an_association_already_exists(): void {
-        $productModel = new ProductModel();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-        $xsellAssociation->addProductModel($productModel);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->addAssociatedProductModel($productModel, 'x_sell');
-        $this->isDirty()->shouldBe(false);
-    }
-
     function it_removes_a_product_model_from_an_association(
         AssociationInterface $association
     ): void {
@@ -447,35 +360,6 @@ class PublishedProductSpec extends ObjectBehavior
         $association->removeProductModel($productModel)->shouldBeCalled();
 
         $this->removeAssociatedProductModel($productModel, 'x_sell');
-    }
-
-    function it_is_updated_if_a_product_model_is_removed_from_an_association(): void {
-        $productModel = new ProductModel();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-        $xsellAssociation->addProductModel($productModel);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->removeAssociatedProductModel($productModel, 'x_sell');
-        $this->isDirty()->shouldBe(true);
-    }
-
-    function it_is_not_updated_if_a_product_model_to_remove_from_an_association_does_not_exist(): void {
-        $productModel = new ProductModel();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->removeAssociatedProductModel($productModel, 'x_sell');
-        $this->isDirty()->shouldBe(false);
     }
 
     function it_returns_associated_product_models_in_terms_of_an_association_type(): void
@@ -510,35 +394,6 @@ class PublishedProductSpec extends ObjectBehavior
         $this->addAssociatedGroup($group, 'x_sell');
     }
 
-    function it_is_updated_if_a_group_is_added_to_an_association(): void {
-        $group = new Group();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->addAssociatedGroup($group, 'x_sell');
-        $this->isDirty()->shouldBe(true);
-    }
-
-    function it_is_not_updated_if_a_group_to_add_to_an_association_already_exists(): void {
-        $group = new Group();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-        $xsellAssociation->addGroup($group);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->addAssociatedGroup($group, 'x_sell');
-        $this->isDirty()->shouldBe(false);
-    }
-
     function it_removes_a_group_from_an_association(
         AssociationInterface $association
     ): void {
@@ -552,35 +407,6 @@ class PublishedProductSpec extends ObjectBehavior
         $association->removeGroup($group)->shouldBeCalled();
 
         $this->removeAssociatedGroup($group, 'x_sell');
-    }
-
-    function it_is_updated_if_a_group_is_removed_from_an_association(): void {
-        $group = new Group();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-        $xsellAssociation->addGroup($group);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->removeAssociatedGroup($group, 'x_sell');
-        $this->isDirty()->shouldBe(true);
-    }
-
-    function it_is_not_updated_if_a_group_to_remove_from_an_association_does_not_exist(): void {
-        $group = new Group();
-        $xsellAssociation = new ProductAssociation();
-        $xsellType = new AssociationType();
-        $xsellType->setCode('x_sell');
-        $xsellAssociation->setAssociationType($xsellType);
-
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
-        $this->cleanup();
-
-        $this->removeAssociatedGroup($group, 'x_sell');
-        $this->isDirty()->shouldBe(false);
     }
 
     function it_returns_associated_groups_in_terms_of_an_association_type(): void

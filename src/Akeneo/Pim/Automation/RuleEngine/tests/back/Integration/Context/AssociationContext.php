@@ -72,13 +72,13 @@ class AssociationContext implements Context
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
         foreach ($table->getHash() as $row) {
-            $association = $product->getAssociationForTypeCode($row['association_type']);
-
-            $associatedProductIdentifiers = $association->getProducts()->map(
-                function (ProductInterface $product): string {
-                    return $product->getIdentifier();
-                }
-            )->toArray();
+            $associatedProducts = $product->getAssociatedProducts('association_type');
+            $associatedProductIdentifiers = $associatedProducts ?
+                $associatedProducts->map(
+                    function (ProductInterface $product): string {
+                        return $product->getIdentifier();
+                    }
+                )->toArray() : [];
             sort($associatedProductIdentifiers);
             $expectedAssociatedProducts = $this->listToArray($row['products']);
             sort($expectedAssociatedProducts);
@@ -92,11 +92,13 @@ class AssociationContext implements Context
                 )
             );
 
-            $associatedProductModelCodes = $association->getProductModels()->map(
-                function (ProductModelInterface $productModel): string {
-                    return $productModel->getCode();
-                }
-            )->toArray();
+            $associatedProductModels = $product->getAssociatedProductModels('association_type');
+            $associatedProductModelCodes = $associatedProductModels ?
+                $associatedProductModels->map(
+                    function (ProductModelInterface $productModel): string {
+                        return $productModel->getCode();
+                    }
+                )->toArray() : [];
             sort($associatedProductModelCodes);
             $expectedAssociatedProductModels = $this->listToArray($row['product_models']);
             sort($expectedAssociatedProductModels);
@@ -110,11 +112,13 @@ class AssociationContext implements Context
                 )
             );
 
-            $associatedGroupCodes = $association->getGroups()->map(
-                function (GroupInterface $group): string {
-                    return $group->getCode();
-                }
-            )->toArray();
+            $associatedGroups = $product->getAssociatedGroups('association_type');
+            $associatedGroupCodes = $associatedGroups ?
+                $associatedGroups->map(
+                    function (GroupInterface $group): string {
+                        return $group->getCode();
+                    }
+                )->toArray() : [];
             sort($associatedGroupCodes);
             $expectedAssociatedGroups = $this->listToArray($row['groups']);
             sort($expectedAssociatedGroups);
