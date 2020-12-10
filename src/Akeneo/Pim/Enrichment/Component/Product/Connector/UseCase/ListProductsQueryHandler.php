@@ -129,7 +129,7 @@ final class ListProductsQueryHandler
             $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList(
                 $connectorProductList,
                 $query->channelCode,
-                $queryLocales
+                $queryLocales ?? []
             );
         }
 
