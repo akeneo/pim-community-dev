@@ -110,12 +110,14 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setCode(string $code): void
+    public function setCode(string $code): ProductModelInterface
     {
         if ($code !== $this->code) {
             $this->code = $code;
             $this->dirty = true;
         }
+        
+        return $this;
     }
 
     /**
