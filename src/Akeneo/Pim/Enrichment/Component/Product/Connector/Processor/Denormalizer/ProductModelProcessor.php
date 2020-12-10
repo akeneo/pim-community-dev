@@ -92,6 +92,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      */
     public function process($standardProductModel): ?ProductModelInterface
     {
+        $code = $standardProductModel['code'];
         $parent = $standardProductModel['parent'] ?? '';
         if ($this->importType === self::ROOT_PRODUCT_MODEL && !empty($parent) ||
             $this->importType === self::SUB_PRODUCT_MODEL && empty($parent)
@@ -147,6 +148,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
 
         if ($violations->count() > 0) {
             $this->objectDetacher->detach($productModel);
+            $standardProductModel['code'] = $code;
             $this->skipItemWithConstraintViolations($standardProductModel, $violations);
         }
 
