@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectEventApiRequestsCountPerDateTime;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectEventsApiRequestCountPerDateTime;
 use Doctrine\DBAL\Connection;
 
-class DbalSelectEventApiRequestsCountPerDateTime implements SelectEventApiRequestsCountPerDateTime
+/**
+ * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class DbalSelectEventsApiRequestCountPerDateTime implements SelectEventsApiRequestCountPerDateTime
 {
     private Connection $dbalConnection;
 

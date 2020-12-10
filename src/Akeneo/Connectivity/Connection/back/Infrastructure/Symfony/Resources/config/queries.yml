@@ -90,7 +90,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity.connection.persistence.query.select_event_api_requests_count_per_datetime:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectEventApiRequestsCountPerDateTime
+    akeneo_connectivity.connection.persistence.query.select_events_api_request_count_per_datetime:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectEventsApiRequestCountPerDateTime
         arguments:
             - '@database_connection'
