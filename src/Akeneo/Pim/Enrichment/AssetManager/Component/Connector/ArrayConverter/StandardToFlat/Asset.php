@@ -112,7 +112,7 @@ class Asset extends AbstractSimpleArrayConverter
         return $key;
     }
 
-    private function convertMediaLink(AbstractAttribute $attribute, string $value, array $options): string
+    private function convertMediaLink(MediaLinkAttribute $attribute, string $value, array $options): string
     {
         if (isset($options['with_prefix_suffix']) && $options['with_prefix_suffix']) {
             return sprintf(

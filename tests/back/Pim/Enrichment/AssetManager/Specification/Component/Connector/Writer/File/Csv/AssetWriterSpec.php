@@ -75,6 +75,7 @@ class AssetWriterSpec extends ObjectBehavior
         $jobParameters->get('delimiter')->willReturn(';');
         $jobParameters->get('enclosure')->willReturn('"');
         $jobParameters->has('linesPerFile')->willReturn(false);
+        $jobParameters->get('with_prefix_suffix')->willReturn(false);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $this->setStepExecution($stepExecution);
 
@@ -128,8 +129,8 @@ class AssetWriterSpec extends ObjectBehavior
                 'values' => ['normalized_values_2'],
             ]
         ];
-        $arrayConverter->convert($normalizedAssets[0])->willReturn(['converted_asset_1']);
-        $arrayConverter->convert($normalizedAssets[1])->willReturn(['converted_asset_2']);
+        $arrayConverter->convert($normalizedAssets[0], ['with_prefix_suffix' => false])->willReturn(['converted_asset_1']);
+        $arrayConverter->convert($normalizedAssets[1], ['with_prefix_suffix' => false])->willReturn(['converted_asset_2']);
 
         $flatRowBuffer->write([['converted_asset_1'], ['converted_asset_2']], ['withHeader' => true])->shouldBeCalled();
 
@@ -279,7 +280,8 @@ class AssetWriterSpec extends ObjectBehavior
                         ],
                     ],
                 ],
-            ]
+            ],
+            ['with_prefix_suffix' => false]
         )->shouldBeCalled()->willReturn(['converted_item']);
         $flatRowBuffer->write([['converted_item']], ['withHeader' => false])->shouldBeCalled();
 
