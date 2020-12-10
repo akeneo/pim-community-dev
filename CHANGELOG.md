@@ -54,8 +54,12 @@
 - PIM-9564: Use original filename instead of data for MediaFile attributes in naming convention
 - PIM-9543: Print PDF content with Han (Chinese, Japanese, Korean) characters
 - PIM-9589: Fix attribute edit form in Asset Manager
+- Fix the display page of reference entity's record import jobs in XLSX
 - PIM-9512: Fix asset navigation panel is not kept close
 - PIM-9579: Fix the duplication of a product when missing rights on values
+- PIM-9574: Fix product duplication to throw an error when the identifier of the duplicated product is not valid
+- PIM-9593: Prevent job "compute project calculation" from appearing in the process tracker and in the dashboard
+- PIM-9594: Fix project completeness when at least 1 attribute group have the "All" group in its permissions but the project's locale permissions does not
 
 ## Improvements
 

@@ -13,6 +13,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
@@ -95,5 +96,27 @@ class EnterpriseReferenceEntityContext extends PimContext
 
         $this->getService('pim_catalog.saver.product')
             ->save($product);
+    }
+
+    /**
+     * @Given a record job import in CSV
+     */
+    public function aRecordJobImportInCSV(): void
+    {
+        $jobInstance = new JobInstance('Akeneo CSV Connector', 'import', 'csv_reference_entity_record_import');
+        $jobInstance->setCode('test_csv');
+        $jobInstance->setLabel('Record CSV import');
+        $this->getService('akeneo_batch.saver.job_instance')->save($jobInstance);
+    }
+
+    /**
+     * @Given a record job import in XLSX
+     */
+    public function aRecordJobImportInXLSX(): void
+    {
+        $jobInstance = new JobInstance('Akeneo CSV Connector', 'import', 'xlsx_reference_entity_record_import');
+        $jobInstance->setCode('test_xlsx');
+        $jobInstance->setLabel('Record XLSX import');
+        $this->getService('akeneo_batch.saver.job_instance')->save($jobInstance);
     }
 }

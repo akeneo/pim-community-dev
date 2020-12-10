@@ -8,6 +8,9 @@
           "google_project_zone": "${GOOGLE_CLUSTER_ZONE}",
           "google_storage_location": "EU",
           "instance_name": "${INSTANCE_NAME}",
+          "mysql_disk_size": "${MYSQL_DISK_SIZE}",
+          "mysql_disk_description": "${MYSQL_DISK_DESCRIPTION}",
+          "mysql_disk_name": "${MYSQL_DISK_NAME}",
           "papo_project_code": "NOT_ON_PAPO_${PFID}",
           "pim_version": "${IMAGE_TAG}",
           "source": "${PIM_SRC_DIR}/deployments/terraform"

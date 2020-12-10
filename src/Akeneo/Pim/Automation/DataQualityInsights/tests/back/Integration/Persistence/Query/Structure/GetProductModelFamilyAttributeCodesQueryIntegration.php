@@ -16,26 +16,15 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetProductModelFamilyAttributeCodesQuery;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
-class GetProductModelFamilyAttributeCodesQueryIntegration extends TestCase
+class GetProductModelFamilyAttributeCodesQueryIntegration extends DataQualityInsightsTestCase
 {
     public function test_that_it_selects_the_family_attribute_codes_of_a_given_product()
     {
-        $rootPm = $this->createProductModel(
+        $rootPm = $this->createProductModel('root_pm', 'familyVariantA1');
+        $subPm = $this->createSubProductModel('sub_pm_A', 'familyVariantA1', 'root_pm',
             [
-                'code' => 'root_pm',
-                'family_variant' => 'familyVariantA1',
-                'values' => [],
-            ]
-        );
-        $subPm = $this->createProductModel(
-            [
-                'code' => 'sub_pm_A',
-                'family_variant' => 'familyVariantA1',
-                'parent' => 'root_pm',
                 'values' => [
                     'a_simple_select' => [
                         'data' => [
@@ -55,12 +44,13 @@ class GetProductModelFamilyAttributeCodesQueryIntegration extends TestCase
             ]
         );
 
+        // That will exclude the attribute "a_multi_select"
+        $this->createAttributeGroupActivation('attributeGroupC', false);
+        $this->createAttributeGroupActivation('attributeGroupB', true);
+
         $attributeCodes = $this
             ->get(GetProductModelFamilyAttributeCodesQuery::class)
             ->execute(new ProductId($rootPm->getId()));
-        usort($attributeCodes, function (AttributeCode $attributeCode1, AttributeCode $attributeCode2) {
-            return strcmp(strval($attributeCode1), strval($attributeCode2));
-        });
 
         $expectedRootLevelAttributes = [
             new AttributeCode('a_date'),
@@ -68,7 +58,6 @@ class GetProductModelFamilyAttributeCodesQueryIntegration extends TestCase
             new AttributeCode('a_localizable_image'),
             new AttributeCode('a_localized_and_scopable_text_area'),
             new AttributeCode('a_metric'),
-            new AttributeCode('a_multi_select'),
             new AttributeCode('a_number_float'),
             new AttributeCode('a_number_float_negative'),
             new AttributeCode('a_number_integer'),
@@ -78,14 +67,11 @@ class GetProductModelFamilyAttributeCodesQueryIntegration extends TestCase
             new AttributeCode('a_scopable_price'),
             new AttributeCode('an_image'),
         ];
-        $this->assertEquals($expectedRootLevelAttributes, $attributeCodes);
+        $this->assertEqualsCanonicalizing($expectedRootLevelAttributes, $attributeCodes);
 
         $attributeCodes = $this
             ->get(GetProductModelFamilyAttributeCodesQuery::class)
             ->execute(new ProductId($subPm->getId()));
-        usort($attributeCodes, function (AttributeCode $attributeCode1, AttributeCode $attributeCode2) {
-            return strcmp(strval($attributeCode1), strval($attributeCode2));
-        });
 
         $expectedSubLevelAttributes = [
             new AttributeCode('a_date'),
@@ -93,7 +79,6 @@ class GetProductModelFamilyAttributeCodesQueryIntegration extends TestCase
             new AttributeCode('a_localizable_image'),
             new AttributeCode('a_localized_and_scopable_text_area'),
             new AttributeCode('a_metric'),
-            new AttributeCode('a_multi_select'),
             new AttributeCode('a_number_float'),
             new AttributeCode('a_number_float_negative'),
             new AttributeCode('a_number_integer'),
@@ -106,27 +91,7 @@ class GetProductModelFamilyAttributeCodesQueryIntegration extends TestCase
             new AttributeCode('an_image'),
         ];
 
-        $this->assertEquals($expectedSubLevelAttributes, $attributeCodes);
-    }
-
-    private function createProductModel(array $data): ProductModelInterface
-    {
-        $productModel = $this->get('pim_catalog.factory.product_model')->create();
-        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
-
-        $errors = $this->get('pim_catalog.validator.product')->validate($productModel);
-        if (0 !== $errors->count()) {
-            throw new \Exception(
-                sprintf(
-                    'Impossible to setup test in %s: %s',
-                    static::class,
-                    $errors->get(0)->getMessage()
-                )
-            );
-        }
-        $this->get('pim_catalog.saver.product_model')->save($productModel);
-
-        return $productModel;
+        $this->assertEqualsCanonicalizing($expectedSubLevelAttributes, $attributeCodes);
     }
 
     protected function getConfiguration()
