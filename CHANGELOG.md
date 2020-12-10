@@ -90,6 +90,7 @@
 - RAC-178: When launching a job, the notification contains a link to the job status
 - PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
 - BH-138: clear Locale cache on save
+- RAC-393: Improve attribute removal management
 - CXP-493: Do not save products when they were not actually updated. In order to do so, the product now returns copies of
   its collections (values, categories, groups and associations). Practically, this means that such a collection cannot be directly
   updated "from outside" anymore (e.g: `$product->getCategories()->add($category)` **won't update the product anymore**,
@@ -232,7 +233,7 @@
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory`
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand` to
-    - add `\Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher`
+    - add `\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
     
 ### CLI commands
 

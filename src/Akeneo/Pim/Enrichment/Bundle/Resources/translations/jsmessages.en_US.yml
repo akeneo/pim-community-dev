@@ -388,8 +388,7 @@ pim_datagrid:
                 with_codes: With codes
                 with_labels: With labels
             flash:
-                message: "You can follow the job execution: "
-                link: here
+                message: "You can follow the progression of your export here."
 
         mass_edit: Bulk actions
         sequential_edit: Sequential edit
