@@ -59,6 +59,9 @@ jobs:
         is_ee_built:
             type: boolean
             default: true
+        path_to_dsm:
+            type: string
+            default: akeneo-design-system
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -112,6 +115,28 @@ jobs:
       - run:
           name: Build css
           command: make css
+      - run:
+          name: Create hash for DSM version
+          command: |
+            find << parameters.path_to_dsm >> -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+            date +%F >> ~/akeneo-design-system.hash
+      - run:
+          name: Set DSM directory owner to circleci
+          command: sudo chown -R 1001:1001 << parameters.path_to_dsm >>
+      - restore_cache:
+          name: Restore DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+      - run:
+          name: Set DSM directory owner to docker
+          command: sudo chown -R 1000:1000 << parameters.path_to_dsm >>
+      - run:
+          name: Build DSM
+          command: test -d << parameters.path_to_dsm >>/lib || make dsm
+      - save_cache:
+          name: Save DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          paths:
+            - << parameters.path_to_dsm >>/lib
       - run:
           name: Build Javascript
           command: make javascript-dev
@@ -563,6 +588,7 @@ workflows:
                 requires:
                     - ready_to_build?
           - build_dev:
+                path_to_dsm: vendor/akeneo/pim-community-dev/akeneo-design-system
                 requires:
                     - checkout_ee
           - build_prod:
