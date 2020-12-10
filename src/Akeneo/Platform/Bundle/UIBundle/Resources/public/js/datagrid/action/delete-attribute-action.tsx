@@ -19,7 +19,6 @@ class DeleteAttributeAction extends DeleteAction {
     };
 
     const handleSuccess = () => {
-      mediator.trigger('grid_action_execute:product-grid:delete');
       mediator.trigger('datagrid:doRefresh:' + this.datagrid.name);
 
       handleClose();
