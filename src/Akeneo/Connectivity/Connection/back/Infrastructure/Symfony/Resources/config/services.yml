@@ -74,9 +74,13 @@ services:
 
     akeneo_connectivity.connection.webhook.cache_clearer:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer
+        arguments:
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+            - '@pim_catalog.query.find_activated_currencies'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo.pim.structure.query.get_attributes'
 
     akeneo_connectivity.connection.webhook.service.events_api_request_counter:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\EventsApiRequestCounter
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.events_api_request_count'
-
