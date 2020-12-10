@@ -35,7 +35,13 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             groups:
                 - akeneo_reference_entity_collection
                 - akeneo_reference_entity
-
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
+            message: This attribute type cannot have a default value.
+            properties:
+                - default_value
+            groups:
+                - akeneo_reference_entity
+                - akeneo_reference_entity_collection
 # Records
 Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand:
     group_sequence:
