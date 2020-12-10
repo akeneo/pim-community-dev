@@ -70,8 +70,3 @@ services:
         class: Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader
         arguments:
             - '@database_connection'
-
-    akeneo_connectivity.connection.fixtures.event_api_request_count_loader:
-        class: Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\EventsApiRequestCountLoader
-        arguments:
-            - '@database_connection'

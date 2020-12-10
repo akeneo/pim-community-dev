@@ -86,7 +86,11 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         $businessEventHandler->__invoke($message);
 
         Assert::assertCount(1, $container);
-        Assert::assertEquals(1, $this->countEventsApiRequestCount());
+
+        $eventsApiRequestCount = $this->getEventsApiRequestCount();
+
+        Assert::assertCount(1, $eventsApiRequestCount);
+        Assert::assertEquals(1, $eventsApiRequestCount[0]['event_count']);
     }
 
     private function loadReferenceProduct(): ProductInterface
@@ -113,14 +117,14 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
         );
     }
 
-    private function countEventsApiRequestCount(): int
+    private function getEventsApiRequestCount(): array
     {
         $sql = <<<SQL
-SELECT *
+SELECT event_minute, event_count, updated
 FROM akeneo_connectivity_connection_events_api_request_count
 SQL;
 
-        return $this->dbalConnection->executeQuery($sql)->rowCount();
+        return $this->dbalConnection->executeQuery($sql)->fetchAll();
     }
 
     protected function getConfiguration(): Configuration

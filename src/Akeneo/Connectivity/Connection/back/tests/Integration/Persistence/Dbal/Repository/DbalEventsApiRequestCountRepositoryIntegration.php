@@ -16,35 +16,6 @@ use PHPUnit\Framework\Assert;
  */
 class DbalEventsApiRequestCountRepositoryIntegration extends TestCase
 {
-    public function test_it_creates_event_api_request_count()
-    {
-        $this->getEventsApiRequestCountRepository()->upsert(
-            new \DateTimeImmutable('2020-12-09 17:01:00', new \DateTimeZone('UTC')),
-            6
-        );
-        $this->getEventsApiRequestCountRepository()->upsert(
-            new \DateTimeImmutable('2020-12-09 17:02:00', new \DateTimeZone('UTC')),
-            12
-        );
-        $this->getEventsApiRequestCountRepository()->upsert(
-            new \DateTimeImmutable('2020-12-09 18:03:00', new \DateTimeZone('UTC')),
-            24
-        );
-
-        $expectedEventApiRequestCounts = [
-            ['event_minute' => '1', 'event_count' => '6', 'updated' => '2020-12-09 17:01:00'],
-            ['event_minute' => '2', 'event_count' => '12', 'updated' => '2020-12-09 17:02:00'],
-            ['event_minute' => '3', 'event_count' => '24', 'updated' => '2020-12-09 18:03:00'],
-        ];
-
-        $eventApiRequestCounts = $this->getEventApiRequestCounts();
-
-        Assert::assertCount(3, $eventApiRequestCounts);
-        $this->assertEqualsEventApiRequestCount($expectedEventApiRequestCounts[0], $eventApiRequestCounts[0]);
-        $this->assertEqualsEventApiRequestCount($expectedEventApiRequestCounts[1], $eventApiRequestCounts[1]);
-        $this->assertEqualsEventApiRequestCount($expectedEventApiRequestCounts[2], $eventApiRequestCounts[2]);
-    }
-
     public function test_it_updates_event_api_request_count_on_duplicate(): void
     {
         $this->getEventsApiRequestCountRepository()->upsert(
