@@ -21,6 +21,8 @@ class SectionView extends BaseDashboard {
           catalogChannel={catalogChannel}
           familyCode={this.familyCode}
           categoryCode={this.categoryCode}
+          categoryId={this.categoryId}
+          rootCategoryId={this.rootCategoryId}
           axes={this.axes}
         />
       </div>,

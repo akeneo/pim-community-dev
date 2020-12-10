@@ -21,6 +21,8 @@ interface DataQualityInsightsDashboardProps {
   catalogChannel: string;
   familyCode: string | null;
   categoryCode: string | null;
+  categoryId: string | null;
+  rootCategoryId: string | null;
   axes: string[];
 }
 
@@ -30,13 +32,23 @@ const Dashboard: FunctionComponent<DataQualityInsightsDashboardProps> = ({
   catalogChannel,
   familyCode,
   categoryCode,
+  categoryId,
+  rootCategoryId,
   axes,
 }) => {
+  const category =
+    categoryCode === null || categoryId === null || rootCategoryId === null
+      ? null
+      : {
+          id: categoryId,
+          code: categoryCode,
+          rootCategoryId,
+        };
   return (
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
         <AxesContextProvider axes={axes}>
-          <DashboardContextProvider>
+          <DashboardContextProvider familyCode={familyCode} category={category}>
             <div id="data-quality-insights-activity-dashboard">
               <div className="AknSubsection">
                 <Overview>

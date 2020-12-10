@@ -73,3 +73,12 @@ pim:
     bucketName: ${bucketName}
   monitoring:
     authenticationToken: ${monitoring_authentication_token}
+
+mysql:
+  mysql:
+    dataDiskSize: ${mysql_disk_size}Gi
+  common:
+    persistentDisks:
+    - ${mysql_disk_name}
+    class: ${mysql_disk_storage_class}
+

@@ -70,3 +70,29 @@ variable "monitoring_authentication_token" {
 variable "pim_version" {
   default = ""
 }
+
+variable "mysql_disk_name" {
+  type    = string
+  default = ""
+}
+
+variable "mysql_disk_description" {
+  type    = string
+  default = ""
+}
+
+variable "mysql_disk_size" {
+  type        = number
+  description = "size in GB"
+  default     = 100
+}
+
+variable "mysql_source_snapshot" {
+  default = ""
+  type    = string
+}
+
+variable "mysql_disk_type" {
+  default = "pd-ssd"
+  type    = string
+}

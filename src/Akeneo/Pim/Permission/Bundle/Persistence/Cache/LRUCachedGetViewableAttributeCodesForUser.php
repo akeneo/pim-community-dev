@@ -18,14 +18,11 @@ use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 
 final class LRUCachedGetViewableAttributeCodesForUser implements GetViewableAttributeCodesForUserInterface
 {
-    /** @var GetViewableAttributeCodesForUserInterface */
-    private $getViewableAttributeCodesForUser;
+    private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser;
 
-    /** @var LRUCache */
-    private $cache;
+    private LRUCache $cache;
 
-    /** @var int */
-    private $userId;
+    private ?int $userId = null;
 
     public function __construct(
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser
@@ -64,7 +61,7 @@ final class LRUCachedGetViewableAttributeCodesForUser implements GetViewableAttr
         return array_map('strval', $grantedAttributeCodes);
     }
 
-    private function resetCache(): void
+    public function resetCache(): void
     {
         $this->cache = new LRUCache(1000);
     }

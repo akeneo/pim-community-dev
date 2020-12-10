@@ -24,26 +24,15 @@ pim:
     requests:
       cpu: "100m"
       memory: "256Mi"
-  daemon-all-but-linking-assets-to-products:
-    enabled: true
-    pimCommand: "akeneo:batch:job-queue-consumer-daemon  --blacklisted-job asset_manager_link_assets_to_products"
-    replicas: 1
-  daemon-default:
-    enabled: true
-    pimCommand: "akeneo:batch:job-queue-consumer-daemon"
-    replicas: 1
 backup:
   enabled: false
 
 mysql:
-  common:
-    class: standard
   mysql:
     innodbBufferPoolSize: 512M
     innodb_buffer_pool_instances: 4
     maxConnections: 151
     maxAllowedPacket: 4M
-    dataDiskSize: 5Gi
     userPassword: 9vbtChLWrLsRhnKkjozHEqqL
     rootPassword: exKJXyqPcVRxsMv7J9W7MdCC
     resources:
@@ -65,11 +54,9 @@ elasticsearch:
   master:
     persistence:
       size: 1Gi
-      storageClass: standard
   data:
     persistence:
       size: 15Gi
-      storageClass: standard
     resources:
       requests:
         cpu: "25m"

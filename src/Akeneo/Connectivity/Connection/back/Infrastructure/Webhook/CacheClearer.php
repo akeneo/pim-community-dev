@@ -13,6 +13,7 @@ namespace AkeneoEnterprise\Connectivity\Connection\Infrastructure\Webhook;
  */
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
+use Akeneo\Pim\Permission\Bundle\Persistence\Cache\LRUCachedGetViewableAttributeCodesForUser;
 use Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser;
 
 /**
@@ -24,17 +25,22 @@ class CacheClearer implements CacheClearerInterface
 
     private GetAllViewableLocalesForUser $getAllViewableLocalesForUser;
 
+    private LRUCachedGetViewableAttributeCodesForUser $LRUCachedGetViewableAttributeCodesForUser;
+
     public function __construct(
         CacheClearerInterface $communityCacheClearer,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser
+        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        LRUCachedGetViewableAttributeCodesForUser $LRUCachedGetViewableAttributeCodesForUser
     ) {
         $this->communityCacheClearer = $communityCacheClearer;
         $this->getAllViewableLocalesForUser = $getAllViewableLocalesForUser;
+        $this->LRUCachedGetViewableAttributeCodesForUser = $LRUCachedGetViewableAttributeCodesForUser;
     }
 
     public function clear(): void
     {
         $this->communityCacheClearer->clear();
         $this->getAllViewableLocalesForUser->clearCache();
+        $this->LRUCachedGetViewableAttributeCodesForUser->resetCache();
     }
 }

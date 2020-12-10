@@ -30,7 +30,7 @@ resource "google_pubsub_subscription" "webhook" {
   expiration_policy {
     ttl = ""
   }
-  message_retention_duration = "3600s"
+  message_retention_duration = "7200s"
 
   labels = {
     pfid = local.pfid
