@@ -122,7 +122,7 @@ final class SendBusinessEventToWebhooksHandler
                         $webhookEvents
                     );
 
-                    $apiEventsRequestCount += 1;
+                    $apiEventsRequestCount++;
 
                     $startTime = $this->getTime();
                 } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
