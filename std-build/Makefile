@@ -47,7 +47,7 @@ else
 endif
 
 .PHONY: front
-front: assets css javascript-dev
+front: assets css javascript
 
 .PHONY: database
 database:
@@ -90,14 +90,14 @@ pim-prod_flex: CATALOG=--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pla
 pim-prod_flex: pim-env
 
 .PHONY: pim-dev
-pim-dev: APP_ENV= dev 
+pim-dev: APP_ENV=dev
 pim-dev: CATALOG=--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
 pim-dev: pim-env
 
 .PHONY: pim-env
 pim-env:
 ifndef $(NO_DOCKER)
-	$(MAKE) up 
+	$(MAKE) up
 	docker/wait_docker_up.sh
 endif
 	$(MAKE) cache APP_ENV=$(APP_ENV)

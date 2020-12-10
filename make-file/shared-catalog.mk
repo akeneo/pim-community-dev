@@ -4,6 +4,7 @@ pim-shared-catalog: #Doc: run docker-compose up, clean symfony cache, reinstall 
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) dsm
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog shared_catalog_fixtures" $(MAKE) database

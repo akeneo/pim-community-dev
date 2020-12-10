@@ -84,6 +84,28 @@ jobs:
           name: Build css
           command: make css
       - run:
+          name: Create hash for DSM version
+          command: |
+            find vendor/akeneo/pim-community-dev/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+            date +%F >> ~/akeneo-design-system.hash
+      - run:
+          name: Set DSM directory owner to circleci
+          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/akeneo-design-system
+      - restore_cache:
+          name: Restore DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+      - run:
+          name: Set DSM directory owner to docker
+          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/akeneo-design-system
+      - run:
+          name: Build DSM
+          command: test -d vendor/akeneo/pim-community-dev/akeneo-design-system/lib || make dsm
+      - save_cache:
+          name: Save DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          paths:
+            - vendor/akeneo/pim-community-dev/akeneo-design-system/lib
+      - run:
           name: Build Javascript
           command: make javascript-dev
       - run:

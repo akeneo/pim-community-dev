@@ -45,17 +45,17 @@ css: #Doc: build PIM CSS
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod: dsm javascript-extensions #Doc: clean & yarn run webpack in production environement
+javascript-prod: javascript-extensions #Doc: clean & yarn run webpack in production environement
 	$(NODE_RUN) rm -rf public/dist
 	$(DOCKER_COMPOSE) run -e EDITION=cloud --rm node yarn run webpack
 
 .PHONY: javascript-prod-onprem-paas
-javascript-prod-onprem-paas: dsm javascript-extensions #Doc: clean & yarn run webpack
+javascript-prod-onprem-paas: javascript-extensions #Doc: clean & yarn run webpack
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: dsm javascript-extensions #Doc: clean & run webpack dev
+javascript-dev: javascript-extensions #Doc: clean & run webpack dev
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
@@ -65,12 +65,12 @@ javascript-dev-strict: javascript-extensions #Doc: clean & run webpack dev --str
 	$(YARN_RUN) run webpack-dev --strict
 
 .PHONY: javascript-test
-javascript-test: dsm javascript-extensions #Doc: clean & run webpack test
+javascript-test: javascript-extensions #Doc: clean & run webpack test
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css javascript-dev #Doc: build the front-end
+front: assets css dsm javascript-dev #Doc: build the front-end
 
 ##
 ## Back
@@ -125,6 +125,7 @@ pim-behat: #Doc: run docker-compose up, clean symfony cache, reinstall assets, b
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) dsm
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database
@@ -143,6 +144,7 @@ pim-dev: #Doc: run docker-compose up, clean symfony cache, run webpack dev & ins
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) dsm
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
@@ -153,6 +155,7 @@ pim-prod: #Doc: run docker-compose up, clean symfony cache, reinstall assets, bu
 	APP_ENV=prod $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) dsm
 	$(MAKE) javascript-cloud
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
