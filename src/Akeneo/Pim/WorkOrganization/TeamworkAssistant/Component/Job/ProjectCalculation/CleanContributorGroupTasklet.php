@@ -81,7 +81,7 @@ class CleanContributorGroupTasklet implements TaskletInterface
         }
 
         foreach ($project->getUserGroups() as $projectContributorGroup) {
-            if (!in_array($projectContributorGroup, $grantedContributorGroups)) {
+            if (!in_array($projectContributorGroup, $grantedContributorGroups) && $projectContributorGroup->getName() !== 'All') {
                 $project->removeUserGroup($projectContributorGroup);
             }
         }
