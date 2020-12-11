@@ -589,12 +589,12 @@
 
         lock: function () {
           this.data.core.locked = true;
-          this.get_container().children('ul').addClass('jstree-locked').css('opacity', '0.7');
+          this.get_container().children('ul').addClass('jstree-locked');
           this.__callback({});
         },
         unlock: function () {
           this.data.core.locked = false;
-          this.get_container().children('ul').removeClass('jstree-locked').css('opacity', '1');
+          this.get_container().children('ul').removeClass('jstree-locked');
           this.__callback({});
         },
         is_locked: function () {
