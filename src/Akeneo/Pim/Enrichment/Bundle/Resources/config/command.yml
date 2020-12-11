@@ -14,6 +14,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
+            - '@router'
+            - '%env(AKENEO_PIM_URL)%'
         tags:
             - { name: console.command }
 
