@@ -28,10 +28,10 @@ Feature: Display the product history
       | 2       | Name en            | Nice boots | now  |
     When I am on the "weather_conditions" attribute page
     And I press the secondary action "Delete"
-    And I confirm the deletion
+    And I press the "Delete" button
     And I am on the "name" attribute page
     And I press the secondary action "Delete"
-    And I confirm the deletion
+    And I press the "Delete" button
     And I edit the "boots" product
     And the history of the product "boots" has been built
     When I visit the "History" column tab
