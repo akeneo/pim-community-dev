@@ -21,9 +21,10 @@ afterEach(() => {
   global.fetch && global.fetch.mockClear();
 });
 
-const flushPromises = () => act(async () => {
+const flushPromises = () =>
+  act(async () => {
     await new Promise(setImmediate);
-});
+  });
 
 jest.mock('@akeneo-pim-community/legacy-bridge/src/provider/dependencies');
 
@@ -61,9 +62,10 @@ test('it displays an error when the delete failed', async () => {
   global.fetch.mockImplementationOnce(() =>
     Promise.resolve({
       ok: false,
-      json: () => Promise.resolve({
-        message: 'an_error',
-      }),
+      json: () =>
+        Promise.resolve({
+          message: 'an_error',
+        }),
     })
   );
 

@@ -5,9 +5,10 @@ import {DeleteAction} from 'pimui/js/attribute/form/delete/DeleteAction';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge/src/provider/dependencies';
 
-const flushPromises = () => act(async () => {
+const flushPromises = () =>
+  act(async () => {
     await new Promise(setImmediate);
-});
+  });
 
 test('it renders a delete action button', () => {
   renderWithProviders(<DeleteAction attributeCode={'foo'} />);

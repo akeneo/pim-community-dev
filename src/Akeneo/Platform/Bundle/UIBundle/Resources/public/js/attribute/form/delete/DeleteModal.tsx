@@ -14,7 +14,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   const router = useRouter();
 
   const handleConfirm = () => {
-    fetch(router.generate('pim_enrich_attribute_rest_remove', {'code': attributeCode}), {
+    fetch(router.generate('pim_enrich_attribute_rest_remove', {code: attributeCode}), {
       method: 'DELETE',
       headers: new Headers({
         'X-Requested-With': 'XMLHttpRequest',
@@ -25,7 +25,10 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
           notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.attribute.flash.delete.success'));
           onSuccess();
         } else {
-          notify(NotificationLevel.ERROR, (await response.json()).message ?? translate('pim_enrich.entity.attribute.flash.delete.fail'));
+          notify(
+            NotificationLevel.ERROR,
+            (await response.json()).message ?? translate('pim_enrich.entity.attribute.flash.delete.fail')
+          );
         }
       })
       .catch(() => {
