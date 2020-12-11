@@ -443,7 +443,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             ->fromProductQueryBuilder($pqb, 1, null, null, null)
             ->willReturn($productList);
 
-        $getProductsWithQualityScores->fromConnectorProductList($productList)->willReturn(new ConnectorProductList(1, [$connectorProductWithQualityScores]));
+        $getProductsWithQualityScores->fromConnectorProductList($productList, null, [])->willReturn(new ConnectorProductList(1, [$connectorProductWithQualityScores]));
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 
