@@ -2,9 +2,9 @@ akeneo_data_quality_insights:
   title: Datakwaliteit inzichten
   dqi_dashboard:
     menu: Datakwaliteit inzichten
-    title: Datakwaliteit overzicht
     helper:
       title: Introductie van datakwaliteit in Akeneo
+      description: Met het dashboard voor datakwaliteit kunt u de datakwaliteit van uw productdata meten. U kunt ook inzoomen op categorieën of families.
       help_center: Kijk in ons %FAQ% voor meer informatie.
     no_data_title: Sorry, we hebben niet voldoende gegevens om datakwaliteit inzichten te tonen.
     no_data_subtitle: Kom later terug alstublieft
@@ -26,13 +26,129 @@ akeneo_data_quality_insights:
     widgets:
       family_modal:
         subtitle: Families toevoegen
+        message: Selecteer de families om op het dashboard te tonen.
+        max_families_msg: Sorry, u kunt niet meer dan {{ count }} families toevoegen om te volgen op uw dashboard
       category_modal:
         subtitle: Categorieën toevoegen
+        message: Selecteer de categorieën om op je dashboard weer te geven.
+        max_categories_msg: Sorry, u kunt niet meer dan {{ count }} categorieën toevoegen om te volgen op uw dashboard
       add_families: Families toevoegen
       add_categories: Categorieën toevoegen
       title: Titel
+      score: Score
       no_family_helper_msg: Selecteer de families waarvoor u de gegevenskwaliteit wilt meten
       no_category_helper_msg: Selecteer de categorieën waarvoor je de gegevenskwaliteit wilt meten
+      see_in_grid: In kolomoverzicht weergeven
     time_axis:
       day: dag
-
+    key_indicators:
+      title: Belangrijkste indicatoren
+      products_to_work_on: '{1}Je hebt <button>1 product</button> om aan te werken.| ]1, 200[Je hebt <button>{{ count }} producten</button> om aan te werken. |[200, Inf[U heeft <button>meer dan {{ count }} producten</button> om aan te werken.'
+      list:
+        has_image:
+          title: Producten met een afbeelding
+          no_data: Er lijkt geen enkel afbeeldingsattribuut gevuld te zijn. Je moet afbeeldingen uploaden voor deze belangrijke indicator om deze meting mogelijk te maken.
+          messages:
+            first_step:
+              message1: Zonder afbeeldingen zien je producten er niet zo goed uit als ze verdienen.
+              message2: Een eerste indruk gaat ver weg, zorg voor mooie assets en je klanten zullen dit opmerken.
+              message3: In onze ervaring maken afbeeldingen echt een verschil. Je moet misschien meer tijd besteden aan assets.
+            second_step:
+              message1: Nog wat meer werk aan uw productafbeeldingen en u bent klaar.
+              message2: Een beeld zegt meer dan duizend woorden. Werk er nu aan en bespaar tijd!
+              message3: Misschien moet u wat meer tijd besteden aan afbeeldingen, uw producten zullen er veel beter uitzien.
+            third_step:
+              message1: Je bent er bijna, nog een paar ontbrekende afbeeldingen.
+              message2: Dit is leuk, je bent er bijna.
+              message3: Voer de laatste wijzigingen uit en alles is klaar. 
+            perfect_score_step:
+              message1: Goed gedaan! Klaar om te gaan!
+              message2: Geweldig! Je producten zijn allemaal verrijkt!
+              message3: Dit is perfect.
+        good_enrichment:
+          title: Producten met een goede compleetheidscore
+          no_data: Uw producten lijken leeg te zijn, u moet attributen toevoegen voor deze belangrijke indicator om de kwaliteit van uw producten te markeren.
+          messages:
+            first_step:
+              message1: Een manier om deze verhouding te verbeteren is ervoor te zorgen dat u de meest relevante eigenschappen zorgvuldig definieert. <a href="{{ link }}" target="_blank">Neem een kijkje in ons help center</a>.
+              message2: Is je eigen PIM-omgeving nog steeds een black-box? <a href="{{ link }}" target="_blank">Leer hoe je er het meeste van kunt maken</a>.
+              message3: Onze teams hebben PIM ontwikkeld, jullie maken er een systeem van!
+              message4: Gedetailleerde productinformatie maakt een echt verschil voor uw klanten. U kunt zich onderscheiden in de markt!
+            second_step:
+              message1: Laten we proberen om de lat net iets hoger te leggen! Uw klanten zullen u dankbaar zijn.
+              message2: Je bent halverwege! Houd vol en je assortiment zal netjes verrijkt zijn.
+              message3: Het venijn zit in de details, ook in uw assortiment!
+              message4: Heb je hulp nodig bij de verrijking? Leer hoe je zorgvuldig de meest relevante attributen <a href="{{ link }}" target="_blank">hier</a> selecteert.
+            third_step:
+              message1: Goed bezig, ga vooral verder!
+              message2: Dit is echt een goede score, maar zou het er niet mooier uitzien met 100%?
+              message3: Sommige van uw producten hebben nog wat verrijking nodig! Je bent er bijna!
+              message4: Nog een paar puntjes op de I.
+            perfect_score_step:
+              message1: Uw producten gaan zichzelf verkopen! Goed werk.
+              message2: Wat een avontuur, je kunt trots zijn op je werk.
+              message3: Je bent een echte meester in het up-to-date houden van de catalogus.
+              message4: Gefeliciteerd, dit is fantastisch!
+      no_data: Sorry, we hebben niet voldoende gegevens om datakwaliteit inzichten te tonen.
+      no_data_subtitle: Kom later terug alstublieft
+    score_distribution:
+      title: Kwaliteitsscore distributie
+    quality_score_evolution:
+      title: Kwaliteitsscore evolutie
+      current_score: is uw huidige kwaliteitsscore voor deze selectie.
+      current_month_label: Deze maand
+      no_catalog_score: We konden je huidige kwaliteitsscore niet berekenen.
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Vereiste attributen met ontbrekende waarden
+      completeness_of_non_required_attributes:
+        recommendation: Niet-vereiste attributen met ontbrekende waarden
+      enrichment_image:
+        recommendation: Ontbrekende afbeelding
+    axis:
+      enrichment:
+        title: Verrijking
+        attributes_link: Alle ontbrekende attributen weergeven
+        success: Uw productgegevens zijn volledig verrijkt. Gefeliciteerd!
+    messages:
+      error:
+        axis_error: Door een fout kon de kwaliteitsscore niet volledig worden berekend. Probeer het later opnieuw.
+        criterion_error: Score kon niet worden berekend.
+      success:
+        criterion: Alles is goed.
+      grading_in_progress: Kwaliteitsscore wordt berekend.
+      axis_grading_in_progress: Kwaliteitsscore wordt berekend. Kom later terug aub.
+      too_many_attributes: U heeft {{ count }} attributen om te verbeteren.
+      no_attribute_groups:
+        title: Sorry, we zijn niet in staat om de kwaliteitsscore te berekenen.
+        subtitle: "De kwaliteitsscore kon niet worden berekend: geen van de attribuutgroepen van dit product zijn geactiveerd."
+        help_center_link: Leer hoe inzicht in de gegevenskwaliteit je kan helpen om je gegevenskwaliteit te verbeteren in ons helpcentrum.
+      add_image_attribute_recommendation: Een afbeelding is duizend woorden waard. Wij adviseren dat u een afbeeldingskenmerk toevoegt om de kwaliteit van de gegevens van dit product te verbeteren.
+      fill_image_attribute_recommendation: In onze ervaring maken afbeeldingen echt een verschil. Voeg ten minste één afbeelding toe om de gegevenskwaliteit van dit product te verbeteren.
+      not_applicable:
+        message: Deze criteria zijn niet van toepassing in uw context.
+        help_center_link: Ontdek waarom in ons Helpcentrum.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Alle ontbrekende attributen
+    back_to_products: Terug naar producten
+  attribute_group:
+    helper_dqi_info: De berekening van de kwaliteitsscore houdt alleen rekening met attributen die behoren tot attribuutgroepen die geactiveerd zijn voor kwaliteitsberekening.
+    helper_dqi_link: Meer informatie over ons helpcenter.
+    activation: Activeren
+    dqi_status: Datakwaliteit inzichten
+    activated: Geactiveerd
+    disabled: Uitgeschakeld
+    used_groups_helper: "De volgende attribuutgroepen worden meegenomen in de berekening van de datakwaliteitsscore:"
+    all_groups_evaluated: Alle attribuutgroepen van dit product worden meegenomen bij de berekening van de kwaliteitsscore. Om de meest relevante kwaliteitsscore te krijgen, <a href="{{ link }}" target="_blank">leer hoe attribuutgroepen te deactiveren in ons help center.</a>
+  product_grid:
+    filter_label:
+      quality_score: Kwaliteitsscore
+      enrichment_quality: Verrijkingskwaliteit
+      images_quality: Afbeeldingskwaliteit
+    filter_value:
+      good: Goed
+      to_improve: Te verbeteren
+pim_title:
+  akeneo_data_quality_insights_dashboard: Datakwaliteit inzichten

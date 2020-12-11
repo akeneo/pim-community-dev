@@ -1,6 +1,7 @@
 #Job labels
 batch_jobs:
   default_steps:
+    export: Exporteer
     validation: Bestandsvalidatie
     import_associations: Productassociatie import
     import_root_product_model: Root productmodel import
@@ -10,6 +11,7 @@ batch_jobs:
     compute_data_related_to_family_products: Productgegevens berekenen
     compute_family_variant_structure_changes: Wijzigingen van de familie variant structuur berekenen
     compute_completeness_of_products_family: Berekenen van de volledigheid van de producten-familie
+    delete_products_and_product_models: Groepsgewijs producten verwijderen
   csv_product_export:
     label: Productexport in CSV
     export.label: Productexport
