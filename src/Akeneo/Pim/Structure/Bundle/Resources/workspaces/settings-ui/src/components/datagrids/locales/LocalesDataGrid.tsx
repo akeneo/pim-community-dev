@@ -6,16 +6,18 @@ import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
 import {Table} from 'akeneo-design-system';
 import {NoResults} from '../../shared';
 import styled from 'styled-components';
+import {FollowLocaleHandler} from '../../../user-actions';
 
 type Props = {
   locales: Locale[];
+  followLocale?: FollowLocaleHandler;
 };
 
 const LocalesSearchBar = styled(SearchBar)`
   margin: 10px 0 20px;
 `;
 
-const LocalesDataGrid: FC<Props> = ({locales}) => {
+const LocalesDataGrid: FC<Props> = ({locales, followLocale}) => {
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
   const {filteredLocales, search} = useFilteredLocales(locales);
@@ -47,7 +49,10 @@ const LocalesDataGrid: FC<Props> = ({locales}) => {
           </Table.Header>
           <Table.Body>
             {filteredLocales.map(locale => (
-              <Table.Row key={locale.code}>
+              <Table.Row
+                key={locale.code}
+                onClick={followLocale !== undefined ? () => followLocale(locale) : undefined}
+              >
                 <Table.Cell rowTitle>{locale.code}</Table.Cell>
               </Table.Row>
             ))}
