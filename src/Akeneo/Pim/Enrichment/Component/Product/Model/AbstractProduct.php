@@ -727,17 +727,6 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(Collection $associations): EntityWithAssociationsInterface
-    {
-        $this->associations = $associations;
-        $this->dirty = true;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getReference()
     {
         return $this->getIdentifier();

@@ -97,7 +97,7 @@ class ProductModel implements ProductModelInterface
             $this->code = $code;
             $this->dirty = true;
         }
-        
+
         return $this;
     }
 
@@ -611,17 +611,6 @@ class ProductModel implements ProductModelInterface
     public function getAssociations()
     {
         return new ArrayCollection($this->associations->toArray());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAssociations(Collection $associations): EntityWithAssociationsInterface
-    {
-        $this->associations = $associations;
-        $this->dirty = true;
-
-        return $this;
     }
 
     /**

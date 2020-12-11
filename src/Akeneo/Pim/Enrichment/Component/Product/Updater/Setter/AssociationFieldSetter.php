@@ -36,18 +36,18 @@ class AssociationFieldSetter extends AbstractFieldSetter
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        MissingAssociationAdder $missingAssociationAdder,
         TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
+        MissingAssociationAdder $missingAssociationAdder,
         AssociationTypeRepositoryInterface $associationTypeRepository,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
+        $this->twoWayAssociationUpdater = $twoWayAssociationUpdater;
         $this->missingAssociationAdder = $missingAssociationAdder;
         $this->supportedFields = $supportedFields;
         $this->associationTypeRepository = $associationTypeRepository;
-        $this->twoWayAssociationUpdater = $twoWayAssociationUpdater;
     }
 
     /**

@@ -41,8 +41,8 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             $productRepository,
             $productModelRepository,
             $groupRepository,
-            $missingAssociationAdder,
             $twoWayAssociationUpdater,
+            $missingAssociationAdder,
             $associationTypeRepository,
             ['associations']
         );
