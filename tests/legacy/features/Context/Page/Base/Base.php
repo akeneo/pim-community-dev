@@ -339,10 +339,7 @@ class Base extends Page
         }, 'Loading mask is still visible');
 
         $button = $this->spin(function () {
-            $dialog = $this->getConfirmDialog();
-
-            return $dialog->find('css', 'div.ok') ??
-                $dialog->find('css', 'button:contains("Delete")');
+            return $this->getConfirmDialog()->find('css', '.ok');
         }, 'Could not find the confirmation button');
 
         $button->click();
