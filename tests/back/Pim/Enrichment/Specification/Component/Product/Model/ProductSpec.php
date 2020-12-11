@@ -23,6 +23,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class ProductSpec extends ObjectBehavior
 {
@@ -55,7 +56,8 @@ class ProductSpec extends ObjectBehavior
         $xSellType->setCode('X_SELL');
         $xSellAssociation->setAssociationType($xSellType);
 
-        $this->setAssociations(new ArrayCollection([$upsellAssociation, $xSellAssociation]));
+        $this->addAssociation($upsellAssociation);
+        $this->addAssociation($xSellAssociation);
         $this->getAssociationForType($upsellType)->shouldBeLike($upsellAssociation);
     }
 
@@ -64,7 +66,6 @@ class ProductSpec extends ObjectBehavior
         $xSellType = new AssociationType();
         $xSellType->setCode('X_SELL');
 
-        $this->setAssociations(new ArrayCollection());
         $this->getAssociationForType($xSellType)->shouldReturn(null);
     }
 
@@ -750,7 +751,7 @@ class ProductSpec extends ObjectBehavior
         $upsellType->setCode('UPSELL');
         $upsellAssociation->setAssociationType($upsellType);
 
-        $this->setAssociations(new ArrayCollection([$upsellAssociation]));
+        $this->addAssociation($upsellAssociation);
         $this->cleanup();
 
         $this
@@ -772,7 +773,7 @@ class ProductSpec extends ObjectBehavior
         $anotherUpsellType->setCode('UPSELL');
         $anotherUpsellAssociation->setAssociationType($anotherUpsellType);
 
-        $this->setAssociations(new ArrayCollection([$upsellAssociation]));
+        $this->addAssociation($upsellAssociation);
 
         $this
             ->shouldThrow(\LogicException::class)
@@ -787,7 +788,7 @@ class ProductSpec extends ObjectBehavior
         $upsellAssociation->setAssociationType($upsellType);
         $upsellAssociation->addProduct(new Product());
 
-        $this->setAssociations(new ArrayCollection([$upsellAssociation]));
+        $this->addAssociation($upsellAssociation);
         $this->cleanup();
 
         $this->removeAssociation($upsellAssociation);
@@ -801,7 +802,7 @@ class ProductSpec extends ObjectBehavior
         $upsellType->setCode('UPSELL');
         $upsellAssociation->setAssociationType($upsellType);
 
-        $this->setAssociations(new ArrayCollection([$upsellAssociation]));
+        $this->addAssociation($upsellAssociation);
         $this->cleanup();
 
         $this->removeAssociation($upsellAssociation);
@@ -821,14 +822,6 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(false);
     }
 
-    // TODO: the product should only be updated when associated products, models and/or groups are added or removed
-    function it_is_updated_when_setting_associations(
-        AssociationInterface $association
-    ) {
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
-        $this->isDirty()->shouldbe(true);
-    }
-
     public function it_knows_if_it_has_an_association_for_a_given_type(): void
     {
         $xsellAssociation = new ProductAssociation();
@@ -838,7 +831,7 @@ class ProductSpec extends ObjectBehavior
 
         $this->hasAssociationForTypeCode('x_sell')->shouldReturn(false);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
 
         $this->hasAssociationForTypeCode('x_sell')->shouldReturn(true);
     }
@@ -851,7 +844,11 @@ class ProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
         $association->hasProduct($product)->willReturn(false);
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->getProducts()->willReturn(new ArrayCollection([]));
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
+        $association->getGroups()->willReturn(new ArrayCollection([]));
+        $association->setOwner($this)->willReturn($association);
+        $this->addAssociation($association);
 
         $association->addProduct($product)->shouldBeCalled();
 
@@ -865,7 +862,7 @@ class ProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $xsellAssociation->setAssociationType($xsellType);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->addAssociatedProduct($product, 'x_sell');
@@ -880,7 +877,7 @@ class ProductSpec extends ObjectBehavior
         $xsellAssociation->setAssociationType($xsellType);
         $xsellAssociation->addProduct($product);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->addAssociatedProduct($product, 'x_sell');
@@ -895,7 +892,11 @@ class ProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
         $association->hasProduct($product)->willReturn(true);
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->getProducts()->willReturn(new ArrayCollection([$product]));
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
+        $association->getGroups()->willReturn(new ArrayCollection([]));
+        $association->setOwner($this)->willReturn($association);
+        $this->addAssociation($association);
 
         $association->removeProduct($product)->shouldBeCalled();
 
@@ -910,7 +911,7 @@ class ProductSpec extends ObjectBehavior
         $xsellAssociation->setAssociationType($xsellType);
         $xsellAssociation->addProduct($product);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->removeAssociatedProduct($product, 'x_sell');
@@ -924,7 +925,7 @@ class ProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $xsellAssociation->setAssociationType($xsellType);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->removeAssociatedProduct($product, 'x_sell');
@@ -943,7 +944,7 @@ class ProductSpec extends ObjectBehavior
         $xsellAssociation->addProduct($plate);
         $xsellAssociation->addProduct($spoon);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
 
         $this->getAssociatedProducts('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
     }
@@ -956,9 +957,12 @@ class ProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
         $association->hasProduct($productModel)->willReturn(false);
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
-
+        $association->getProducts()->willReturn(new ArrayCollection([]));
         $association->getProductModels()->willReturn(new ArrayCollection([]));
+        $association->getGroups()->willReturn(new ArrayCollection([]));
+        $association->setOwner($this)->willReturn($association);
+        $this->addAssociation($association);
+
         $association->addProductModel($productModel)->shouldBeCalled();
 
         $this->addAssociatedProductModel($productModel, 'x_sell');
@@ -971,7 +975,7 @@ class ProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $xsellAssociation->setAssociationType($xsellType);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->addAssociatedProductModel($productModel, 'x_sell');
@@ -986,7 +990,7 @@ class ProductSpec extends ObjectBehavior
         $xsellAssociation->setAssociationType($xsellType);
         $xsellAssociation->addProductModel($productModel);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->addAssociatedProductModel($productModel, 'x_sell');
@@ -1000,9 +1004,12 @@ class ProductSpec extends ObjectBehavior
         $xsellType = new AssociationType();
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
-
+        $association->getProducts()->willReturn(new ArrayCollection([]));
         $association->getProductModels()->willReturn(new ArrayCollection([$productModel]));
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->getGroups()->willReturn(new ArrayCollection([]));
+        $association->setOwner($this)->willReturn($association);
+
+        $this->addAssociation($association);
 
         $association->removeProductModel($productModel)->shouldBeCalled();
 
@@ -1017,7 +1024,7 @@ class ProductSpec extends ObjectBehavior
         $xsellAssociation->setAssociationType($xsellType);
         $xsellAssociation->addProductModel($productModel);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->removeAssociatedProductModel($productModel, 'x_sell');
@@ -1031,7 +1038,7 @@ class ProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $xsellAssociation->setAssociationType($xsellType);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->removeAssociatedProductModel($productModel, 'x_sell');
@@ -1050,7 +1057,7 @@ class ProductSpec extends ObjectBehavior
         $xsellAssociation->addProductModel($plate);
         $xsellAssociation->addProductModel($spoon);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
 
         $this->getAssociatedProductModels('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
     }
@@ -1062,8 +1069,12 @@ class ProductSpec extends ObjectBehavior
         $xsellType = new AssociationType();
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
+        $association->getProducts()->willReturn(new ArrayCollection([]));
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
         $association->getGroups()->willReturn(new ArrayCollection([]));
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->setOwner($this)->willReturn($association);
+
+        $this->addAssociation($association);
 
         $association->addGroup($group)->shouldBeCalled();
 
@@ -1077,7 +1088,7 @@ class ProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $xsellAssociation->setAssociationType($xsellType);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->addAssociatedGroup($group, 'x_sell');
@@ -1092,7 +1103,7 @@ class ProductSpec extends ObjectBehavior
         $xsellAssociation->setAssociationType($xsellType);
         $xsellAssociation->addGroup($group);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->addAssociatedGroup($group, 'x_sell');
@@ -1106,8 +1117,11 @@ class ProductSpec extends ObjectBehavior
         $xsellType = new AssociationType();
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
+        $association->getProducts()->willReturn(new ArrayCollection([]));
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
         $association->getGroups()->willReturn(new ArrayCollection([$group]));
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->setOwner($this)->willReturn($association);
+        $this->addAssociation($association);
 
         $association->removeGroup($group)->shouldBeCalled();
 
@@ -1122,7 +1136,7 @@ class ProductSpec extends ObjectBehavior
         $xsellAssociation->setAssociationType($xsellType);
         $xsellAssociation->addGroup($group);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->removeAssociatedGroup($group, 'x_sell');
@@ -1136,7 +1150,7 @@ class ProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $xsellAssociation->setAssociationType($xsellType);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
         $this->cleanup();
 
         $this->removeAssociatedGroup($group, 'x_sell');
@@ -1155,7 +1169,7 @@ class ProductSpec extends ObjectBehavior
         $xsellAssociation->addGroup($plate);
         $xsellAssociation->addGroup($spoon);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
 
         $this->getAssociatedGroups('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
     }
