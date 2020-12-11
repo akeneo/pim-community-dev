@@ -4,7 +4,7 @@ import {LocalesApp} from '@akeneo-pim-community/settings-ui';
 
 const mediator = require('oro/mediator');
 
-class AttributeGroupsSettings extends ReactController {
+class LocalesSettings extends ReactController {
   reactElementToMount() {
     return <LocalesApp />;
   }
@@ -21,4 +21,4 @@ class AttributeGroupsSettings extends ReactController {
   }
 }
 
-export = AttributeGroupsSettings;
+export = LocalesSettings;
