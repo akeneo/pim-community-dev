@@ -46,7 +46,7 @@ class Asset extends AbstractSimpleArrayConverter
                 $convertedItem[$property] = $data;
                 break;
             case 'values':
-                $convertedItem = $this->convertValues($convertedItem, $data);
+                $convertedItem = $this->convertValues($convertedItem, $data, $options);
                 break;
             case 'identifier': // we don't expose the identifier
             default:
@@ -56,7 +56,7 @@ class Asset extends AbstractSimpleArrayConverter
         return $convertedItem;
     }
 
-    private function convertValues(array $convertedItem, array $values): array
+    private function convertValues(array $convertedItem, array $values, array $options): array
     {
         foreach ($values as $value) {
             $attribute = $this->getAttribute($value['attribute']);
@@ -74,12 +74,7 @@ class Asset extends AbstractSimpleArrayConverter
                     break;
                 case MediaLinkAttribute::ATTRIBUTE_TYPE:
                     Assert::isInstanceOf($attribute, MediaLinkAttribute::class);
-                    $data = sprintf(
-                        '%s%s%s',
-                        $attribute->getPrefix()->stringValue(),
-                        $value['data'],
-                        $attribute->getSuffix()->stringValue()
-                    );
+                    $data = $this->convertMediaLink($attribute, $value['data'], $options);
                     break;
                 case MediaFileAttribute::ATTRIBUTE_TYPE:
                     $data = $value['data']['filePath'];
@@ -115,5 +110,19 @@ class Asset extends AbstractSimpleArrayConverter
         }
 
         return $key;
+    }
+
+    private function convertMediaLink(MediaLinkAttribute $attribute, string $value, array $options): string
+    {
+        if (isset($options['with_prefix_suffix']) && $options['with_prefix_suffix']) {
+            return sprintf(
+                '%s%s%s',
+                $attribute->getPrefix()->stringValue(),
+                $value,
+                $attribute->getSuffix()->stringValue()
+            );
+        }
+
+        return $value;
     }
 }
