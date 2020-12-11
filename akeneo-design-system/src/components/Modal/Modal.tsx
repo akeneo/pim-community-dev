@@ -6,7 +6,7 @@ import {IconButton} from '../../components';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
 import {useShortcut} from '../../hooks';
-import {Key} from '../../shared';
+import {Key, Override} from '../../shared';
 
 const ModalContainer = styled.div`
   ${CommonStyle}
@@ -68,32 +68,35 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
-type ModalProps = {
-  /**
-   * Prop to display or hide the Modal.
-   */
-  isOpen: boolean;
+type ModalProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Prop to display or hide the Modal.
+     */
+    isOpen: boolean;
 
-  /**
-   * Illustration to display.
-   */
-  illustration?: ReactElement<IllustrationProps>;
+    /**
+     * Illustration to display.
+     */
+    illustration?: ReactElement<IllustrationProps>;
 
-  /**
-   * Title of the close button.
-   */
-  closeTitle: string;
+    /**
+     * Title of the close button.
+     */
+    closeTitle: string;
 
-  /**
-   * The content of the modal.
-   */
-  children?: ReactNode;
+    /**
+     * The content of the modal.
+     */
+    children?: ReactNode;
 
-  /**
-   * The handler to call when the Modal is closed.
-   */
-  onClose: () => void;
-};
+    /**
+     * The handler to call when the Modal is closed.
+     */
+    onClose: () => void;
+  }
+>;
 
 /**
  * The Modal Component is used to display a secondary window over the content.
@@ -116,7 +119,7 @@ const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: M
   if (!isOpen) return null;
 
   return createPortal(
-    <ModalContainer {...rest}>
+    <ModalContainer role="dialog" {...rest}>
       <ModalCloseButton title={closeTitle} level="tertiary" ghost="borderless" icon={<CloseIcon />} onClick={onClose} />
       {undefined === illustration ? (
         children
