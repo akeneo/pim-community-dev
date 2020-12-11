@@ -513,7 +513,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
-            if (null !== $associationType && null !== $this->getAssociationForType($associationType)) {
+            if (null !== $associationType && null !== $this->getAssociationForTypeCode($associationType->getCode())) {
                 throw new \LogicException(
                     sprintf(
                         'Can not add an association of type %s because the product already has one',
@@ -561,14 +561,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
-    {
-        return $this->getAssociationForTypeCode($type->getCode());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getAssociationForTypeCode($typeCode): ?AssociationInterface
     {
         foreach ($this->associations as $association) {
@@ -578,16 +570,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         }
 
         return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAssociations(Collection $associations): EntityWithAssociationsInterface
-    {
-        $this->associations = $associations;
-
-        return $this;
     }
 
     /**

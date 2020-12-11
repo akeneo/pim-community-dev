@@ -278,7 +278,7 @@ class PublishedProductSpec extends ObjectBehavior
 
         $this->hasAssociationForTypeCode('x_sell')->shouldReturn(false);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
 
         $this->hasAssociationForTypeCode('x_sell')->shouldReturn(true);
     }
@@ -291,7 +291,11 @@ class PublishedProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
         $association->hasProduct($product)->willReturn(false);
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->getProducts()->willReturn(new ArrayCollection([]));
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
+        $association->getGroups()->willReturn(new ArrayCollection([]));
+        $association->setOwner($this)->willReturn($association);
+        $this->addAssociation($association);
 
         $association->addProduct($product)->shouldBeCalled();
 
@@ -306,7 +310,11 @@ class PublishedProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
         $association->hasProduct($product)->willReturn(true);
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->getProducts()->willReturn(new ArrayCollection([$product]));
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
+        $association->getGroups()->willReturn(new ArrayCollection([]));
+        $association->setOwner($this)->willReturn($association);
+        $this->addAssociation($association);
 
         $association->removeProduct($product)->shouldBeCalled();
 
@@ -325,7 +333,7 @@ class PublishedProductSpec extends ObjectBehavior
         $xsellAssociation->addProduct($plate);
         $xsellAssociation->addProduct($spoon);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
 
         $this->getAssociatedProducts('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
     }
@@ -338,7 +346,11 @@ class PublishedProductSpec extends ObjectBehavior
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
         $association->hasProduct($productModel)->willReturn(false);
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->getProducts()->willReturn(new ArrayCollection([]));
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
+        $association->getGroups()->willReturn(new ArrayCollection([]));
+        $association->setOwner($this)->willReturn($association);
+        $this->addAssociation($association);
 
         $association->getProductModels()->willReturn(new ArrayCollection([]));
         $association->addProductModel($productModel)->shouldBeCalled();
@@ -353,9 +365,12 @@ class PublishedProductSpec extends ObjectBehavior
         $xsellType = new AssociationType();
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
-
+        $association->getProducts()->willReturn(new ArrayCollection([]));
         $association->getProductModels()->willReturn(new ArrayCollection([$productModel]));
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->getGroups()->willReturn(new ArrayCollection([]));
+        $association->setOwner($this)->willReturn($association);
+
+        $this->addAssociation($association);
 
         $association->removeProductModel($productModel)->shouldBeCalled();
 
@@ -374,7 +389,7 @@ class PublishedProductSpec extends ObjectBehavior
         $xsellAssociation->addProductModel($plate);
         $xsellAssociation->addProductModel($spoon);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
 
         $this->getAssociatedProductModels('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
     }
@@ -386,8 +401,11 @@ class PublishedProductSpec extends ObjectBehavior
         $xsellType = new AssociationType();
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
+        $association->getProducts()->willReturn(new ArrayCollection([]));
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
         $association->getGroups()->willReturn(new ArrayCollection([]));
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->setOwner($this)->willReturn($association);
+        $this->addAssociation($association);
 
         $association->addGroup($group)->shouldBeCalled();
 
@@ -401,8 +419,11 @@ class PublishedProductSpec extends ObjectBehavior
         $xsellType = new AssociationType();
         $xsellType->setCode('x_sell');
         $association->getAssociationType()->willReturn($xsellType);
+        $association->getProducts()->willReturn(new ArrayCollection([]));
+        $association->getProductModels()->willReturn(new ArrayCollection([]));
         $association->getGroups()->willReturn(new ArrayCollection([$group]));
-        $this->setAssociations(new ArrayCollection([$association->getWrappedObject()]));
+        $association->setOwner($this)->willReturn($association);
+        $this->addAssociation($association);
 
         $association->removeGroup($group)->shouldBeCalled();
 
@@ -421,7 +442,7 @@ class PublishedProductSpec extends ObjectBehavior
         $xsellAssociation->addGroup($plate);
         $xsellAssociation->addGroup($spoon);
 
-        $this->setAssociations(new ArrayCollection([$xsellAssociation]));
+        $this->addAssociation($xsellAssociation);
 
         $this->getAssociatedGroups('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
     }
