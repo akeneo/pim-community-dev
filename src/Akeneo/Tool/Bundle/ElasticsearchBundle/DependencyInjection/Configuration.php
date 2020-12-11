@@ -57,7 +57,7 @@ class Configuration implements ConfigurationInterface
                                 ->info('Prefix all document ids')
                             ->end()
                             ->scalarNode('activate_dual_indexation_with_service')
-                                ->info('Activate dual indexation using the service specified as value')
+                                ->info('Activate dual indexation using the specified service as value')
                             ->end()
                         ->end()
                     ->end()
