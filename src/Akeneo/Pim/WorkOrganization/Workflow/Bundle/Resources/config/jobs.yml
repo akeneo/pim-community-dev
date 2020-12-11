@@ -217,3 +217,40 @@ services:
             - true
         tags:
             - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+
+    # Clean removed attributes
+    pim_catalog.job.clean_removed_attribute:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'clean_removed_attribute_job'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.clean_attribute.register_clean_job'
+                - '@pim_catalog.step.clean_attribute.clean_product_model'
+                - '@pim_catalog.step.clean_attribute.clean_product'
+                - '@pim_catalog.step.clean_attribute.clean_draft'
+                - '@pim_catalog.step.clean_attribute.remove_attribute_codes_from_blacklist'
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'Clean removed attribute'
+                type: 'clean_removed_attribute_job'
+
+    pim_catalog.step.clean_attribute.clean_draft:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_attribute.clean_draft'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.clean_draft'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.clean_draft:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Job\CleanRemovedAttribute\CleanDraftTasklet'
+        arguments:
+            - '@pimee_workflow.cleaner.removed_attribute'
+            - '@akeneo_batch.job_repository'
+        public: false

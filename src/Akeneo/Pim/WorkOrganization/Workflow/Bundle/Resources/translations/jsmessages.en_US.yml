@@ -90,6 +90,9 @@ batch_jobs:
         perform.label: Xlsx published products grid context quick export
     publish_product:
         perform.label: Publish products
+    default_steps:
+        clean_attribute:
+            clean_draft: Clean proposals
 
 pim_notification:
     types:
