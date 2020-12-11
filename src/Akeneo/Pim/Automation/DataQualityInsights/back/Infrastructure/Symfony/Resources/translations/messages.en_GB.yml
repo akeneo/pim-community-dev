@@ -6,4 +6,10 @@ akeneo_data_quality_insights:
       edit: Edit data quality insights activation
   acl_group:
     dqi: Data quality insights
+  product_grid:
+    filter_label:
+      quality_score: Quality score
+      enrichment_quality: Enrichment quality
+      images_quality: Images quality
 Enrichment: Enrichment
+Quality Score: Quality Score
