@@ -270,6 +270,7 @@ pimee_catalog_rule:
           line_break: Line break
           date_format: Select a date format
           label_locale: Label locale
+          unit_label_locale: Unit locale
           remove_new_line_confirm:
             label: Remove line break from operation list
             description: The new target attribute does not accept line breaks. This change will remove all line breaks.

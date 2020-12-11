@@ -38,3 +38,50 @@ akeneo_data_quality_insights:
     popover:
       default_aria_label: Spelling suggestions
       aria_label: "Spelling suggestions for: {{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes_to_work_on: '{1}You have <button>1 attribute</button> to work on.|]1, 200[You have <button>{{ count }} attributes</button> to work on.|[200, Inf[You have more than <button>{{ count }} attributes</button> to work on.'
+      list:
+        has_image:
+          no_data: Your asset collections and image attributes seem to be empty, you should upload images for this key indicator to highlight the quality of your products.
+        attributes_perfect_spelling:
+          title: Attributes properly labelled
+          no_data: Your attribute and option labels seem to be empty, you should enrich them for this key indicator to highlight the quality of your attributes.
+          messages:
+            first_step:
+              message1: You are having a hard time with attribute and option labels? How about going back to basics <a href="{{ link }}" target="_blank">here</a>?
+              message2: Do you need help with your attributes and attribute options? Take a look <a href="{{ link }}" target="_blank">here<a href="{{ link }}" target="_blank">!
+            second_step:
+              message1: Take a closer look at your attributes and options labels. Your products will look even better afterwards.
+              message2: It looks like you got lost somewhere along the way! Some of your labels still need work.
+            third_step:
+              message1: You are so close! Just a few final touches and you'll be all set.
+              message2: Some of your attributes and labels still need a little work but you are on the right track.
+            perfect_score_step:
+              message1: Your catalog is readier than ever! You did a great job!
+              message2: Great work on attribute and option labels!
+        values_perfect_spelling:
+          title: Products with perfect spelling in text product values
+          no_data: Your text areas seem to be empty, you should enrich them for this key indicator to highlight the quality of your products.
+          messages:
+            first_step:
+              message1: Your products deserve to be described properly. Check out the spelling!
+              message2: You are your products best advocate, take a closer look at the spelling.
+              message3: Your product descriptions are the image of your company, let's get rid of those typos! First impressions matter.
+              message4: The more mistakes you have, the worst impression you give. Pay extra attention to your spelling.
+            second_step:
+              message1: You already have great products, now you just need great spelling!
+              message2: A spelling mistake might keep a customer away, be thorough!
+              message3: Some of your products need a little help to be perfect. Watch out for typos!
+            third_step:
+              message1: Great spelling actually makes a difference, you're not that far!
+              message2: Almost there, you are so close to perfect spelling!
+              message3: You are a couple of spelling mistakes away from perfect product values.
+              message4: Just a little more efforts to reach a spotless product description!
+            perfect_score_step:
+              message1: Perfect spelling all over your catalog. Well done!
+              message2: "That's impressive: your products are spotless!"
+              message3: You did an amazing work getting rid of 100% of the spelling mistakes. Congratulations!
+  product_grid:
+    filter_label:
+      spelling_quality: Spelling quality
