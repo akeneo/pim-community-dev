@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import {GhostButton} from '../../common';
-import {LoaderIcon} from '../../common/icons';
 import styled from '../../common/styled-with-theme';
 import {Translate} from '../../shared/translate';
+import {LoaderIcon} from 'akeneo-design-system';
 
 type Props = {
     onClick: () => void;

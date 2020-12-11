@@ -62,6 +62,11 @@
 - PIM-9580: Fix conversion operation for ATM, PSI, TORR & MMHG
 - PIM-9569: Fix memory usage issue when adding a group to a product
 - PIM-9571: Fix missing items on the invalid data file when importing product models
+- PIM-9543: Print PDF content with Asian characters
+- PIM-9577: Remove empty 'Global settings' tab on following XLSX import: attribute, family, family variant, association type, attribute option, attribute group, group type
+- PIM-9590: Fix "Default product grid view" multiple times on user settings page
+- CPM-86: Fix undefined tab on job profile edit
+- PIM-9596: Fix attribute options manual sorting
 
 ## New features
 
@@ -228,7 +233,7 @@
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory`
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand` to
-    - add `\Symfony\Component\EventDispatcher\EventDispatcher $eventDispatcher`
+    - add `\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
     
 ### CLI commands
 

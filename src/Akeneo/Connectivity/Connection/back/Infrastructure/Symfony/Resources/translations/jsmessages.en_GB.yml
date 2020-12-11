@@ -195,8 +195,8 @@ akeneo_connectivity.connection:
     title: Event subscription (BETA)
     event_subscription: Event subscription (bêta)
     helper:
-      message: Your connected app can subscribe to be notified of events in the Akeneo PIM (for example when a product is updated) at a URL you choose.
-      link: Learn more about event subscriptions configuration...
+      message: You can be notified of events happening in the PIM for products synchronized with this connected app. You just need to define a URL and the event type(s) you want to keep track of.
+      link: Learn more about event subscription configuration...
     form:
       url: URL
       secret: Secret
@@ -206,6 +206,7 @@ akeneo_connectivity.connection:
       wrong_url: This value is not a valid URL.
       required: This field is required.
       not_found: You are trying to update a connection that does not exist.
+      limit_reached: You have reached the limit of active event subscriptions.
     flash:
       success: Event subscription successfully updated.
       error: Sorry, an error occurred while editing the event subscription.
@@ -218,6 +219,9 @@ akeneo_connectivity.connection:
       flash:
         success: Webhook secret successfully regenerated.
         error: Sorry, an error occurred while regenerating the webhook secret.
+    active_event_subscriptions_limit_reached:
+      message: You can connect up to {{ limit }} connections to the Event subscription feature. You have reached this limit.
+      link: Learn more about event subscriptions configuration.
   error_management:
     connection_monitoring:
       title: Monitoring

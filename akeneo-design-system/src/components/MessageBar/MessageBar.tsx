@@ -1,8 +1,7 @@
-import React, {ReactNode, ReactElement, isValidElement, useEffect, useState, useCallback, useRef} from 'react';
+import React, {ReactNode, ReactElement, useEffect, useState, useCallback, useRef} from 'react';
 import styled, {keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CheckIcon, CloseIcon, DangerIcon, IconProps, InfoIcon} from '../../icons';
-import {Link} from '../../components';
 import {useAutoFocus} from '../../hooks';
 
 type MessageBarLevel = 'info' | 'success' | 'warning' | 'error';
@@ -47,7 +46,7 @@ const Content = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: ${getFontSize('bigger')};
+  font-size: ${getFontSize('big')};
   margin-bottom: 4px;
 `;
 
@@ -57,7 +56,7 @@ const Timer = styled.div`
 
 const Icon = styled(CloseIcon)``;
 
-const CloseButton = styled.button<{autoHide: boolean} & AkeneoThemedProps>`
+const CloseButton = styled.button<{showIcon: boolean} & AkeneoThemedProps>`
   position: relative;
   width: 24px;
   height: 24px;
@@ -78,10 +77,7 @@ const CloseButton = styled.button<{autoHide: boolean} & AkeneoThemedProps>`
   }
 
   ${Icon} {
-    opacity: ${({autoHide}) => (autoHide ? 0 : 1)};
-  }
-  ${Timer} {
-    opacity: ${({autoHide}) => (autoHide ? 1 : 0)};
+    opacity: ${({showIcon}) => (showIcon ? 1 : 0)};
   }
 
   :hover {
@@ -178,7 +174,6 @@ const getLevelColor = (level: MessageBarLevel): ((props: AkeneoThemedProps) => s
 const getLevelDuration = (level: MessageBarLevel): number => {
   switch (level) {
     case 'success':
-      return 3;
     case 'info':
     case 'warning':
       return 5;
@@ -251,14 +246,11 @@ type MessageBarProps = FlashMessage & {
  */
 const MessageBar = ({level = 'info', title, icon, dismissTitle, onClose, children}: MessageBarProps) => {
   const duration = getLevelDuration(level);
-  const autoHide = !React.Children.toArray(children).some(child => isValidElement(child) && child.type === Link);
 
-  const [remaining, setRemaining] = useState<number>(autoHide ? duration : 0);
+  const [remaining, setRemaining] = useState<number>(duration);
   const [over, onMouseOver, onMouseOut] = useOver();
 
   useEffect(() => {
-    if (!autoHide) return;
-
     const intervalId = setInterval(
       () =>
         setRemaining(remaining => {
@@ -306,14 +298,12 @@ const MessageBar = ({level = 'info', title, icon, dismissTitle, onClose, childre
         <Title>{title}</Title>
         {children}
       </Content>
-      <CloseButton onClick={onClose} autoHide={autoHide && !countDownFinished} title={dismissTitle}>
+      <CloseButton onClick={onClose} showIcon={countDownFinished} title={dismissTitle}>
         <Timer aria-hidden="true">
           {remainingDisplay}
-          {autoHide && (
-            <Progress ratio={Math.max(0, remaining / duration)} level={level}>
-              <circle r="50%" cx="50%" cy="50%" />
-            </Progress>
-          )}
+          <Progress ratio={Math.max(0, remaining / duration)} level={level}>
+            <circle r="50%" cx="50%" cy="50%" />
+          </Progress>
         </Timer>
         <Icon size={24} />
       </CloseButton>

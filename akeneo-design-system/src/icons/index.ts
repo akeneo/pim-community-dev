@@ -75,6 +75,7 @@ export * from './KeyIcon';
 export * from './LightIcon';
 export * from './LinkIcon';
 export * from './ListIcon';
+export * from './LoaderIcon';
 export * from './LocaleIcon';
 export * from './LockIcon';
 export * from './MailIcon';

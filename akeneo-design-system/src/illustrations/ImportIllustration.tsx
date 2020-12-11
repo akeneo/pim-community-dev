@@ -1,8 +1,8 @@
 import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
 
-const ImportIllustration = ({title, size = 256}: IllustrationProps) => (
-  <svg width={size} height={size} viewBox="0 0 243 177">
+const ImportIllustration = ({title, size = 256, ...props}: IllustrationProps) => (
+  <svg width={size} height={size} viewBox="0 0 243 177" {...props}>
     {title && <title>{title}</title>}
     <defs>
       <path

@@ -36,17 +36,17 @@ css:
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod: dsm
+javascript-prod:
 	$(CMD_ON_PROJECT) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: dsm
+javascript-dev:
 	$(CMD_ON_PROJECT) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: front
-front: assets css javascript-dev
+front: assets css dsm javascript-dev
 
 .PHONY: database
 database:
@@ -83,6 +83,7 @@ ifndef NO_DOCKER
 endif
 	$(MAKE) cache
 	$(MAKE) assets
+	$(MAKE) dsm
 	$(MAKE) javascript-prod
 	APP_ENV=prod $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal"
 
@@ -94,6 +95,7 @@ ifndef NO_DOCKER
 endif
 	$(MAKE) cache
 	$(MAKE) assets
+	$(MAKE) dsm
 	$(MAKE) javascript-dev
 	APP_ENV=dev $(MAKE) database O="--catalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
 

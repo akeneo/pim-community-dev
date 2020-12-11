@@ -1,7 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 import CategoryModal from '../CategoryModal/CategoryModal';
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY} from '../../../constant';
 import {useDashboardContext} from '../../../context/DashboardContext';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
@@ -70,13 +69,6 @@ const CategoryFilter: FC<Props> = ({categoryCode}) => {
 
   const onValidate = () => {
     if (selectedCategoryCode !== null && selectedCategoryId && selectedRootCategoryId) {
-      window.dispatchEvent(
-        new CustomEvent(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY, {
-          detail: {
-            categoryCode: selectedCategoryCode,
-          },
-        })
-      );
       updateDashboardFilters(null, {
         code: selectedCategoryCode,
         id: selectedCategoryId,

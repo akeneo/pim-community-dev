@@ -1,8 +1,8 @@
 import React from 'react';
 import {IllustrationProps} from './IllustrationProps';
 
-const ExportCsvIllustration = ({title, size = 256}: IllustrationProps) => (
-  <svg width={size} height={size} viewBox="0 0 256 256">
+const ExportCsvIllustration = ({title, size = 256, ...props}: IllustrationProps) => (
+  <svg width={size} height={size} viewBox="0 0 256 256" {...props}>
     {title && <title>{title}</title>}
     <defs>
       <path id="ExportCsvIllustration_prefix__a" d="M.605.602H100.5v130.823H.605z" />

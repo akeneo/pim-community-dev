@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Categoriestructuur
     do_not_convert: Niet converteren
+    measurement: Eenheden instellingen
     label_conversion_units: Kies een conversie-eenheid voor elke matenattribuut dat zal worden gebruikt tijdens de productexport
   module:
     create:

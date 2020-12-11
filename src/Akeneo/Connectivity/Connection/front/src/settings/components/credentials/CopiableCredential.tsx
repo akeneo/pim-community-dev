@@ -1,10 +1,10 @@
 import React, {FC, ReactNode, useContext, useRef} from 'react';
 import {IconButton} from '../../../common';
-import {DuplicateIcon} from '../../../common/icons';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
 import {TranslateContext} from '../../../shared/translate';
 import {copyTextToClipboard} from '../../copy-text-to-clipboard';
 import {Credential} from './Credential';
+import {CopyIcon} from 'akeneo-design-system';
 
 interface Props {
     label: string;
@@ -42,7 +42,7 @@ export const CopiableCredential: FC<Props> = ({label, children: value, actions, 
                         onClick={handleCopy}
                         title={translate('akeneo_connectivity.connection.edit_connection.credentials.action.copy')}
                     >
-                        <DuplicateIcon />
+                        <CopyIcon size={18} />
                     </IconButton>
                 </>
             }

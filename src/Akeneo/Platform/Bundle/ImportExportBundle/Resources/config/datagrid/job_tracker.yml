@@ -49,6 +49,11 @@ datagrid:
                     isStoppable: boolean
                     showLink: string
                 data_name: id
+        actions:
+            view:
+                type: navigate
+                link: showLink
+                rowAction: true
         sorters:
             columns:
                 job:

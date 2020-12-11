@@ -2,6 +2,7 @@ akeneo_communication_channel:
   link:
     title: Mededelingen
   panel:
+    title: Mededelingen
     list:
       empty: Er is momenteel geen nieuws. Blijf kijken!
       error: We konden het nieuws niet ophalen. Probeer het later opnieuw.

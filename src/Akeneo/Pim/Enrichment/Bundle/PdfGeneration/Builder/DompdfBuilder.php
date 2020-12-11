@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder;
 
 use Dompdf\Dompdf;
+use Dompdf\Options;
 
 /**
  * PDF builder using DOMPDF library
@@ -50,9 +51,11 @@ class DompdfBuilder implements PdfBuilderInterface
      */
     protected function render($html)
     {
-        $this->dompdf = new Dompdf([
+        $options = new Options([
+            'fontDir' => $this->rootDir . '/Akeneo/Pim/Enrichment/Bundle/Resources/fonts',
             'isRemoteEnabled' => true,
         ]);
+        $this->dompdf = new Dompdf($options);
         $this->dompdf->loadHtml($html);
         $this->dompdf->render();
     }

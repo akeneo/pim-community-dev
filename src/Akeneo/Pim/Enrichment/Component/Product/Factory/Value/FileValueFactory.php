@@ -10,6 +10,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -51,6 +52,14 @@ final class FileValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data) : ValueInterface
     {
+        if (!\is_string($data) && !$data instanceof FileInfoInterface) {
+            throw InvalidPropertyTypeException::stringExpected(
+                $attribute->code(),
+                static::class,
+                $data
+            );
+        }
+
         $file = $data instanceof FileInfoInterface ? $data : $this->getFile($data);
 
         if ($file === null) {

@@ -33,7 +33,8 @@ class EventSubscriptionEventBuildLogSpec extends ObjectBehavior
         $this->beConstructedWith(
             10,
             $event,
-            100
+            100,
+            2
         );
     }
 
@@ -48,6 +49,7 @@ class EventSubscriptionEventBuildLogSpec extends ObjectBehavior
             'type' => EventSubscriptionEventBuildLog::TYPE,
             'subscription_count' => 10,
             'event_count' => 2,
+            'event_built_count' => 2,
             'duration_ms' => 100,
             'events' => [
                 [
@@ -82,13 +84,15 @@ class EventSubscriptionEventBuildLogSpec extends ObjectBehavior
         $this->beConstructedWith(
             10,
             $event,
-            100
+            100,
+            1
         );
 
         $this->toLog()->shouldReturn([
             'type' => EventSubscriptionEventBuildLog::TYPE,
             'subscription_count' => 10,
             'event_count' => 1,
+            'event_built_count' => 1,
             'duration_ms' => 100,
             'events' => [
                 [

@@ -1,7 +1,6 @@
 import React, {ChangeEvent, FC, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import useFetchFamilies from '../../../../infrastructure/hooks/Dashboard/useFetchFamilies';
-import {DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY} from '../../../constant';
 import {debounce} from 'lodash';
 import {useDashboardContext} from '../../../context/DashboardContext';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
@@ -93,13 +92,6 @@ const FamilyFilter: FC<Props> = ({familyCode}) => {
   }, [families, searchString]);
 
   const handleClickFamily = (familyCode: string | null) => {
-    window.dispatchEvent(
-      new CustomEvent(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, {
-        detail: {
-          familyCode: familyCode,
-        },
-      })
-    );
     setIsFilterDisplayed(false);
     setSearchString(null);
     updateDashboardFilters(familyCode, null);

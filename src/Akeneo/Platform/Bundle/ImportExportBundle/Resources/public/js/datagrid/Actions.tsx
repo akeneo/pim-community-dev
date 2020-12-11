@@ -21,7 +21,7 @@ type ActionsProps = {
 const Actions = ({id, jobLabel, isStoppable, showLink, refreshCollection}: ActionsProps) => {
   const translate = useTranslate();
   return (
-    <ActionsContainer>
+    <ActionsContainer className="AknGrid-onHoverElement">
       <Button size="small" ghost={true} level="tertiary" href={`#${showLink}`}>
         {translate('pim_datagrid.action.show.title')}
       </Button>

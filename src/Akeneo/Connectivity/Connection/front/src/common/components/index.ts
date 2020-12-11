@@ -12,7 +12,6 @@ import {Form} from './form/Form';
 import {FormGroup} from './form/FormGroup';
 import {FormInput} from './form/FormInput';
 import {Helper, HelperLink, HelperTitle} from './Helper';
-import {InlineHelper} from './InlineHelper';
 import {Modal} from './Modal';
 import {PageContent} from './PageContent';
 import {PageError} from './PageError';
@@ -44,7 +43,6 @@ export {
     HelperTitle,
     IconButton,
     ImportantButton,
-    InlineHelper,
     Modal,
     PageContent,
     PageError,

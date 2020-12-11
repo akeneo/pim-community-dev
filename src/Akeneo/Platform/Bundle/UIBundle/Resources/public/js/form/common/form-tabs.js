@@ -158,16 +158,18 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
 
     addError: function (tabCode) {
       const tab = this.tabs.find(currentTab => currentTab.code === tabCode);
-      tab.fieldErrorCount++;
-
-      this.render();
+      if (tab) {
+        tab.fieldErrorCount++;
+        this.render();
+      }
     },
 
     removeError: function (tabCode) {
       const tab = this.tabs.find(currentTab => currentTab.code === tabCode);
-      tab.fieldErrorCount = Math.max(0, tab.fieldErrorCount - 1);
-
-      this.render();
+      if (tab) {
+        tab.fieldErrorCount = Math.max(0, tab.fieldErrorCount - 1);
+        this.render();
+      }
     },
 
     /**
