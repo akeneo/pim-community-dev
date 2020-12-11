@@ -220,6 +220,7 @@ pim_enrich.entity.attribute_group:
   label: attribuutgroep
   uppercase_label: Attribuutgroep
   plural_label: Attribuutgroepen
+  result_count: '{0}0 attribuutgroepen|{1}1 attribuutgroep|]1, Inf[{{ count }} attribuutgroepen'
   show_more_attribute:
     title: Het is hier een beetje vol, we laten je {{ attributeCount }}/{{ totalAttributeCount }} attributen zien.
     subtitle: Om alle attributen van deze groep te ontdekken, klik hieronder!
@@ -240,6 +241,8 @@ pim_enrich.entity.attribute_group:
     delete:
       confirm: Weet u zeker dat u deze attribuut groep wilt verwijderen?
   grid:
+    columns:
+      name: Attribuutgroep naam
     no_search_result: Sorry, er is geen resultaat voor uw zoekopdracht.
 pim_enrich.mass_edit.family:
   title: Gezamenlijke actie voor families
