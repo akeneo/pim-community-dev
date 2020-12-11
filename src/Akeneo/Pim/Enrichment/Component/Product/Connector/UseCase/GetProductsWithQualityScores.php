@@ -69,7 +69,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
     private function getProductsQualityScores(ConnectorProductList $connectorProductList): array
     {
         $productIdentifiers = array_map(
-            fn(ConnectorProduct $connectorProduct) => $connectorProduct->identifier(),
+            fn (ConnectorProduct $connectorProduct) => $connectorProduct->identifier(),
             $connectorProductList->connectorProducts()
         );
 
@@ -89,7 +89,7 @@ final class GetProductsWithQualityScores implements GetProductsWithQualityScores
             }
             foreach ($scoresLocales as $scoreLocale => $scoreRate) {
                 if (empty($locales) || in_array($scoreLocale, $locales)) {
-                   $filteredQualityScores[$scoreChannel][$scoreLocale] = $scoreRate;
+                    $filteredQualityScores[$scoreChannel][$scoreLocale] = $scoreRate;
                 }
             }
         }
