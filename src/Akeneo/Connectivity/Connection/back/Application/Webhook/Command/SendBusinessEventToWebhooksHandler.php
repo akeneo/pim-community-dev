@@ -15,6 +15,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuil
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -38,9 +39,10 @@ final class SendBusinessEventToWebhooksHandler
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
     private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
+    private EventsApiRequestCountRepository $eventsApiRequestRepository;
+    private CacheClearerInterface $cacheClearer;
     private string $pimSource;
     private ?\Closure $getTimeCallable;
-    private CacheClearerInterface $cacheClearer;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -49,6 +51,7 @@ final class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
+        EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         string $pimSource,
         ?callable $getTimeCallable = null
@@ -59,9 +62,10 @@ final class SendBusinessEventToWebhooksHandler
         $this->builder = $builder;
         $this->logger = $logger;
         $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
+        $this->eventsApiRequestRepository = $eventsApiRequestRepository;
+        $this->cacheClearer = $cacheClearer;
         $this->pimSource = $pimSource;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
-        $this->cacheClearer = $cacheClearer;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -83,6 +87,7 @@ final class SendBusinessEventToWebhooksHandler
         $event = $command->event();
 
         $requests = function () use ($event, $webhooks) {
+            $apiEventsRequestCount = 0;
             $cumulatedTimeMs = 0;
             $eventBuiltCount = 0;
             $startTime = $this->getTime();
@@ -118,11 +123,16 @@ final class SendBusinessEventToWebhooksHandler
                         $webhookEvents
                     );
 
+                    $apiEventsRequestCount++;
+
                     $startTime = $this->getTime();
                 } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
                     $this->logger->warning($dataBuilderNotFoundException->getMessage());
                 }
             }
+
+            $this->eventsApiRequestRepository
+                ->upsert(new \DateTimeImmutable('now', new \DateTimeZone('UTC')), $apiEventsRequestCount);
 
             if ($eventBuiltCount > 0) {
                 $this->logger->info(
@@ -162,7 +172,10 @@ final class SendBusinessEventToWebhooksHandler
                     if ($username === $event->getAuthor()->name()) {
                         $this->logger->info(
                             json_encode(
-                                (EventSubscriptionSkipOwnEventLog::fromEvent($event, $webhook->connectionCode()))->toLog(),
+                                (EventSubscriptionSkipOwnEventLog::fromEvent(
+                                    $event,
+                                    $webhook->connectionCode()
+                                ))->toLog(),
                                 JSON_THROW_ON_ERROR
                             )
                         );
@@ -203,7 +216,7 @@ final class SendBusinessEventToWebhooksHandler
             return call_user_func($this->getTimeCallable);
         }
 
-        return (int) round(microtime(true) * 1000);
+        return (int)round(microtime(true) * 1000);
     }
 
     /**
