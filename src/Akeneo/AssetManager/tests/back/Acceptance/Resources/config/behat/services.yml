@@ -115,6 +115,7 @@ services:
             - '@akeneo_assetmanager.tests.back.acceptance.context.constraint_violations_context'
             - '@akeneo_assetmanager.application.attribute.create_attribute_handler'
             - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details'
 
     akeneo_assetmanager.tests.back.acceptance.context.edit_attribute_context:
         class: Akeneo\AssetManager\Acceptance\Context\EditAttributeContext
@@ -249,3 +250,19 @@ services:
             - '@Akeneo\AssetManager\Application\Asset\LinkAssets\LinkAllAssetFamilyAssetsHandler'
         tags:
             - { name: fob.context_service }
+
+    Akeneo\AssetManager\Acceptance\Context\ImportAssetContext:
+        arguments:
+            - '@akeneo_assetmanager.step.csv_asset.import'
+            - '@akeneo_assetmanager.step.xlsx_asset.import'
+            - '@akeneo_assetmanager.job.job_parameters.default_values_provider.simple_csv_import'
+            - '@akeneo_assetmanager.job.job_parameters.default_values_provider.simple_xlsx_import'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.tests.back.acceptance.context.exception_context'
+            - '@akeneo_referenceentity.test.event_dispatcher'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.file_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_file_data_by_file_key'
+            - '@akeneo_batch.query.get_job_execution_status'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.find_attributes_details'

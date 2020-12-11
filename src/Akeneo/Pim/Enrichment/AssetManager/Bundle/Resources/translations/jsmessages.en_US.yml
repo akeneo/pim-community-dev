@@ -5,6 +5,12 @@ batch_jobs:
     asset_manager_xlsx_asset_export:
         label: Asset export in XLSX
         export.label: Asset export
+    asset_manager_csv_asset_import:
+        label: Asset import in CSV
+        import.label: Asset import
+    asset_manager_xlsx_asset_import:
+        label: Asset import in XLSX
+        import.label: Asset import
 
 akeneo_assetmanager.export.assets.filter.asset_family: Asset family
 
