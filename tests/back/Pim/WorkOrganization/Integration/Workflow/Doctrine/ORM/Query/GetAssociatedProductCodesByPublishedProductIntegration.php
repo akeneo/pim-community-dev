@@ -34,17 +34,17 @@ class GetAssociatedProductCodesByPublishedProductIntegration extends TestCase
             ]
         ]);
 
-        $associationTypeRepository = $this->get('pim_catalog.repository.association_type');
-        $xsell = $associationTypeRepository->findOneByIdentifier('X_SELL');
-        $pack = $associationTypeRepository->findOneByIdentifier('PACK');
-        $upsell = $associationTypeRepository->findOneByIdentifier('UPSELL');
+        $associations = [];
+        foreach ($mainProduct->getAssociations() as $association) {
+            $associations[$association->getAssociationType()->getCode()] = $association;
+        }
 
         $this->generateToken('mary');
 
         $query = $this->get('pimee_workflow.query.get_associated_product_codes_by_published_product');
-        $this->assertSame(['productView'], $query->getCodes($mainProduct->getId(), $mainProduct->getAssociationForType($xsell)));
-        $this->assertSame(['productWithoutCategory'], $query->getCodes($mainProduct->getId(), $mainProduct->getAssociationForType($pack)));
-        $this->assertSame([], $query->getCodes($mainProduct->getId(), $mainProduct->getAssociationForType($upsell)));
+        $this->assertSame(['productView'], $query->getCodes($mainProduct->getId(), $associations['X_SELL']));
+        $this->assertSame(['productWithoutCategory'], $query->getCodes($mainProduct->getId(), $associations['PACK']));
+        $this->assertSame([], $query->getCodes($mainProduct->getId(), $associations['UPSELL']));
     }
 
     /**
