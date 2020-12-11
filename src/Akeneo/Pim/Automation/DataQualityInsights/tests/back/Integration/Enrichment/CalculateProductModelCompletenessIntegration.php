@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -18,6 +9,9 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * The goal of this test is not to cover all the cases of the completeness calculation,
  *  but to test that the integration with the bounded context Enrichment is working.
  */
