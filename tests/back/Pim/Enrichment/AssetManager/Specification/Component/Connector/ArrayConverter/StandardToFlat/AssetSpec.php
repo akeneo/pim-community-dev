@@ -195,11 +195,9 @@ class AssetSpec extends ObjectBehavior
         $mediaLinkAttribute->hasValuePerChannel()->willReturn(false);
         $mediaLinkAttribute->hasValuePerLocale()->willReturn(false);
         $mediaLinkAttribute->getCode()->willReturn(AttributeCode::fromString('youtube_link'));
-        $mediaLinkAttribute->getPrefix()->willReturn(Prefix::fromString('https://youtube.com/'));
-        $mediaLinkAttribute->getSuffix()->willReturn(Suffix::fromString('/test'));
 
         $attributeRepository->getByIdentifier(AttributeIdentifier::fromString('youtube_link123456'))
-                            ->willReturn($mediaLinkAttribute);
+            ->willReturn($mediaLinkAttribute);
 
         $normalizedAsset = [
             'identifier' => 'some_asset_identifier_123',
@@ -219,6 +217,43 @@ class AssetSpec extends ObjectBehavior
             [
                 'code' => 'my_asset_code',
                 'assetFamilyIdentifier' => 'packshot',
+                'youtube_link' => 'aZeTFa789',
+            ]
+        );
+    }
+
+    function it_converts_a_media_link_value_with_prefix_suffix(
+        AttributeRepositoryInterface $attributeRepository,
+        MediaLinkAttribute $mediaLinkAttribute
+    ) {
+        $mediaLinkAttribute->getType()->willReturn(MediaLinkAttribute::ATTRIBUTE_TYPE);
+        $mediaLinkAttribute->hasValuePerChannel()->willReturn(false);
+        $mediaLinkAttribute->hasValuePerLocale()->willReturn(false);
+        $mediaLinkAttribute->getCode()->willReturn(AttributeCode::fromString('youtube_link'));
+        $mediaLinkAttribute->getPrefix()->willReturn(Prefix::fromString('https://youtube.com/'));
+        $mediaLinkAttribute->getSuffix()->willReturn(Suffix::fromString('/test'));
+
+        $attributeRepository->getByIdentifier(AttributeIdentifier::fromString('youtube_link123456'))
+            ->willReturn($mediaLinkAttribute);
+
+        $normalizedAsset = [
+            'identifier' => 'some_asset_identifier_123',
+            'code' => 'my_asset_code',
+            'assetFamilyIdentifier' => 'packshot',
+            'values' => [
+                'youtube_link123456' => [
+                    'attribute' => 'youtube_link123456',
+                    'locale' => null,
+                    'channel' => null,
+                    'data' => 'aZeTFa789',
+                ],
+            ],
+        ];
+
+        $this->convert($normalizedAsset, ['with_prefix_suffix' => true])->shouldReturn(
+            [
+                'code' => 'my_asset_code',
+                'assetFamilyIdentifier' => 'packshot',
                 'youtube_link' => 'https://youtube.com/aZeTFa789/test',
             ]
         );
@@ -226,15 +261,15 @@ class AssetSpec extends ObjectBehavior
 
     function it_converts_a_media_file_value(
         AttributeRepositoryInterface $attributeRepository,
-        MediaFileAttribute $mediaLinkAttribute
+        MediaFileAttribute $mediaFileAttribute
     ) {
-        $mediaLinkAttribute->getType()->willReturn(MediaFileAttribute::ATTRIBUTE_TYPE);
-        $mediaLinkAttribute->hasValuePerChannel()->willReturn(false);
-        $mediaLinkAttribute->hasValuePerLocale()->willReturn(false);
-        $mediaLinkAttribute->getCode()->willReturn(AttributeCode::fromString('image'));
+        $mediaFileAttribute->getType()->willReturn(MediaFileAttribute::ATTRIBUTE_TYPE);
+        $mediaFileAttribute->hasValuePerChannel()->willReturn(false);
+        $mediaFileAttribute->hasValuePerLocale()->willReturn(false);
+        $mediaFileAttribute->getCode()->willReturn(AttributeCode::fromString('image'));
 
         $attributeRepository->getByIdentifier(AttributeIdentifier::fromString('image_123456'))
-                            ->willReturn($mediaLinkAttribute);
+            ->willReturn($mediaFileAttribute);
 
         $normalizedAsset = [
             'identifier' => 'some_asset_identifier_123',

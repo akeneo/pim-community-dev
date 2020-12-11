@@ -129,10 +129,10 @@ extensions:
             deletionFailed: pim_enrich.entity.attribute.flash.delete.fail
 
     pimee-product-model-view-form-categories:
-        module: pim/product-edit-form/categories
+        module: pimee/product-edit-form/categories
         parent: pimee-product-model-view-form-column-tabs
         targetZone: container
-        aclResourceId: pim_enrich_product_categories_view #TODO
+        aclResourceId: pim_enrich_product_categories_view
         position: 100
         config:
             tabCode: pim-product-edit-form-categories

@@ -542,12 +542,19 @@ pim_catalog_volume:
     average_max_attributes_per_asset_family: Attributes per asset family
 
 pim_import_export:
-    widget:
-        last_operations:
-            job_type:
-                asset_manager_compute_transformations: "Compute asset transformations"
-                asset_manager_link_assets_to_products: "Link assets to products"
-                asset_manager_execute_naming_convention: Execute Asset Family naming convention
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Compute asset transformations"
+        asset_manager_link_assets_to_products: "Link assets to products"
+        asset_manager_execute_naming_convention: Execute Asset Family naming convention
+  form:
+    job_instance:
+      tab:
+        properties:
+          with_prefix_suffix:
+            title: Export prefix and suffix
+            help: Export prefix and suffix of the media link asset attributes
 
 pim_datagrid:
     cells:
