@@ -98,6 +98,7 @@
   you should now use `$product->addCategory($category)` to achieve it)  
 - CXP-544: Do not save product models when they were not actually updated. As for products, the product model
   will now return copies of its collections (values, categories and associations)
+- PIM-9585: Display the product models codes on the warnings
 
 # Technical Improvements
 

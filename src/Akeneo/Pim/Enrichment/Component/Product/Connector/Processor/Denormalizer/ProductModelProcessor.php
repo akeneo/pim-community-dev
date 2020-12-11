@@ -141,6 +141,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         } catch (PropertyException $exception) {
             $this->objectDetacher->detach($productModel);
             $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
+            $standardProductModel['code'] = $code;
             $this->skipItemWithMessage($standardProductModel, $message, $exception);
         }
 
