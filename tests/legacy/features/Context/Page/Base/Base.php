@@ -28,7 +28,7 @@ class Base extends Page
 
     protected $elements = [
         'Body'                   => ['css' => 'body'],
-        'Dialog'                 => ['css' => 'div.modal'],
+        'Dialog'                 => ['css' => 'div.modal, div[role="dialog"]'],
         'Title'                  => ['css' => '.AknTitleContainer-title'],
         'Product title'          => ['css' => '.entity-title'],
         'HeadTitle'              => ['css' => 'title'],
@@ -341,8 +341,8 @@ class Base extends Page
         $button = $this->spin(function () {
             $dialog = $this->getConfirmDialog();
 
-            return $dialog->find('css', '.ok') ??
-                $dialog->findButton('Delete');
+            return $dialog->find('css', 'div.ok') ??
+                $dialog->find('css', 'button:contains("Delete")');
         }, 'Could not find the confirmation button');
 
         $button->click();
@@ -356,8 +356,7 @@ class Base extends Page
     protected function getConfirmDialog()
     {
         return $this->spin(function () {
-            return $this->find('css', 'div.modal') ??
-                $this->find('css', 'div[role="dialog"]');
+            return $this->getElement('Dialog');
         }, 'Could not find dialog popin');
     }
 
