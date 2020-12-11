@@ -6,10 +6,12 @@ namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesRemover\CleanValuesOfRemovedAttributesInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeEvents;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -19,6 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Security\Core\User\User;
 
 /**
  * Removes all values of deleted attributes on all products and product models
@@ -30,13 +33,14 @@ use Symfony\Component\Process\Process;
 class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 {
     protected static $defaultName = 'pim:product:clean-removed-attributes';
+    private const JOB_NAME = 'clean_removed_attribute_job';
 
     private EntityManagerClearerInterface $entityManagerClearer;
     private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
     private string $kernelRootDir;
     private int $productBatchSize;
-    private ?CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes;
-
+    private JobLauncherInterface $jobLauncher;
+    private IdentifiableObjectRepositoryInterface $jobInstanceRepository;
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
@@ -44,8 +48,9 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         string $kernelRootDir,
         int $productBatchSize,
-        CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        JobLauncherInterface $jobLauncher,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository
     ) {
         parent::__construct();
 
@@ -53,8 +58,9 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->kernelRootDir = $kernelRootDir;
         $this->productBatchSize = $productBatchSize;
-        $this->cleanValuesOfRemovedAttributes = $cleanValuesOfRemovedAttributes;
         $this->eventDispatcher = $eventDispatcher;
+        $this->jobLauncher = $jobLauncher;
+        $this->jobInstanceRepository = $jobInstanceRepository;
     }
 
     /**
@@ -72,12 +78,15 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $attributesCodes = $input->getArgument('attributes');
+        $attributeCodes = $input->getArgument('attributes');
 
-        if (!empty($attributesCodes)) {
-            $this->cleanValues($attributesCodes, $input, $output);
+        if (!empty($attributeCodes)) {
+            $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::JOB_NAME);
+            $this->jobLauncher->launch($jobInstance, new User(UserInterface::SYSTEM_USER_NAME, null), [
+                'attribute_codes' => $attributeCodes
+            ]);
 
-            $this->eventDispatcher->dispatch(AttributeEvents::POST_CLEAN);
+            //TODO display link? pim_enrich_job_tracker_show
 
             return 0;
         }
@@ -169,60 +178,5 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:product:refresh', sprintf('--env=%s', $env), implode(',', $productIds)]);
         $process->setTimeout(null);
         $process->run();
-    }
-
-    private function cleanValues(
-        array $attributesCodes,
-        InputInterface $input,
-        OutputInterface $output
-    ): void {
-        $this->cleanValuesOfRemovedAttributes->validateRemovedAttributesCodes($attributesCodes);
-
-        $countProducts = $this->cleanValuesOfRemovedAttributes->countProductsWithRemovedAttribute($attributesCodes);
-        $countProductModels = $this->cleanValuesOfRemovedAttributes->countProductModelsWithRemovedAttribute($attributesCodes);
-        $countProductVariants = $this->cleanValuesOfRemovedAttributes->countProductsAndProductModelsWithInheritedRemovedAttribute($attributesCodes);
-
-        if (0 === $countProducts + $countProductModels) {
-            $output->writeln('There is no product with those attributes.');
-            return;
-        }
-
-        $io = new SymfonyStyle($input, $output);
-        $io->title('Clean removed attributes values');
-
-        $confirmMessage = sprintf(
-            "This command will remove the values of the attributes: \n " .
-                "%s" .
-                "This will update: \n" .
-                " - %d product model(s) (and %d product variant(s)) \n" .
-                " - %d product(s) \n" .
-                "Do you want to proceed?",
-            implode(array_map(function (string $attributeCode) {
-                return sprintf(" - %s \n ", $attributeCode);
-            }, $attributesCodes)),
-            $countProductModels,
-            $countProductVariants,
-            $countProducts
-        );
-
-        $answer = $io->confirm($confirmMessage, true);
-
-        if (!$answer) {
-            return;
-        }
-
-        $progressBar = new ProgressBar($output, $countProducts + $countProductModels);
-        $progressBar->start();
-
-        $updateProgressBar = function (int $count) use ($progressBar) {
-            $progressBar->advance($count);
-        };
-
-        $this->cleanValuesOfRemovedAttributes->cleanProductModelsWithRemovedAttribute($attributesCodes, $updateProgressBar);
-        sleep(1);
-        $this->cleanValuesOfRemovedAttributes->cleanProductsWithRemovedAttribute($attributesCodes, $updateProgressBar);
-
-        $progressBar->finish();
-        $io->newLine();
     }
 }

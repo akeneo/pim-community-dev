@@ -11,8 +11,9 @@ services:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
             - '%kernel.root_dir%'
             - '%pim_job_product_batch_size%'
-            - '@pim_catalog.product_values.clean_values_of_removed_attributes'
             - '@event_dispatcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
         tags:
             - { name: console.command }
 
