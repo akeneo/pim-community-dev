@@ -1,0 +1,154 @@
+pim_menu.item:
+  connection_settings: Verbindingen
+  connection_audit: Connectie dashboard
+pim_title:
+  akeneo_connectivity_connection_settings_index: Verbindingen
+  akeneo_connectivity_connection_settings_any: Verbindingen
+  akeneo_connectivity_connection_audit_index: Connectie dashboard
+  akeneo_connectivity_connection_audit_any: Connectie dashboard
+akeneo_connectivity.connection:
+  connections: Verbindingen
+  secondary_actions:
+    title: Overige acties
+  connection:
+    code: Code
+    label: Label
+    flow_type: Type stroom
+    image: Afbeelding
+    client_id: Klant ID
+    secret: Geheim
+    username: Gebruikersnaam
+    password: Wachtwoord
+    user_role_id: Rol
+    user_group_id: Groep
+    constraint:
+      code:
+        required: Conectiecode is vereist.
+        invalid: Connectiecode mag alleen letters, cijfers en liggende streepjes bevatten.
+        too_short: Connectiecode is te kort. Het moet minstens drie karakters lang zijn.
+        too_long: Connectiecode is te lang. Het mag maximaal 100 karakters lang zijn.
+        must_be_unique: Connectiecode moet uniek zijn.
+      label:
+        required: Connectielabel is verplicht.
+        too_short: Connectielabel is te kort. Het moet mimimaal drie karakters lang zijn.
+        too_long: Connectielabel is te lang. Het mag maximaal 100 karakters lang zijn.
+      flow_type:
+        invalid: Verbindingsstroomtype kan alleen 'databron', 'datadoel' of 'andere' zijn.
+      image:
+        must_exist: De afbeelding is niet gevonden. Probeer het opnieuw.
+  flow_type:
+    data_source: Gegevensbron | Gegevensbronnen
+    data_destination: Gegevensdoel | Gegevensdoelen
+    other: Overig | Overige
+  connection_count: '{{ count }} connectie | {{ count }} connecties'
+  no_connection:
+    title: Geen verbinding bekend.
+    message: Voeg je eerste toe door te klikken op de "Aanmaken" knop hierboven of
+    message_link: klik hier.
+  create_connection:
+    title: Maak een nieuwe verbinding
+    description: U kunt maximaal 50 verbindingen maken.
+    flash:
+      success: Verbinding succesvol aangemaakt.
+      error: Er is een fout opgetreden tijdens het maken van de verbinding.
+  edit_connection:
+    subtitle: Instellingen
+    flash:
+      success: Verbinding succesvol aangemaakt.
+      error: Er is een fout opgetreden tijdens het aanpassen van de verbinding.
+    image_uploader:
+      extension_not_allowed: Sorry, het bestand dat u probeert te uploaden heeft een extensie die niet is toegestaan.
+    credentials:
+      title: Toegangsgegevens
+      helper:
+        message: 'Hier zijn de toegangsgegevens om te gebruiken in uw {{ label }} connector.'
+        link: Lees hier meer...
+      password_helper:
+        message: Als u uw wachtwoord bent vergeten, kunt u hier een nieuwe genereren.
+        link: Meer informatie...
+      clear_password_helper:
+        message: Zorg ervoor dat je dit wachtwoord ergens opslaat, want we laten het maar één keer zien.
+        link: Meer informatie...
+      action:
+        copy: Naar klembord kopiëren
+        regenerate: Regenereren
+      flash:
+        copied: '{{ name }} gekopieerd naar het klembord'
+    permissions:
+      title: Machtigingen
+      helper:
+        message: 'In deze sectie kunt u machtigingen definiëren voor uw {{ label }} -verbinding.'
+        link: Meer informatie over verbindingsmachtigingen...
+      user_role_helper:
+        message: De standaard `{{ role }}` rol is niet de beste keuze voor uw verbinding. Wij raden u sterk aan om een rol te kiezen die is afgestemd op uw verbindingsbehoeften.
+        link: Meer informatie...
+      user_group_helper:
+        message: Wij raden u ten zeerste aan om een groep te kiezen die is afgestemd op uw verbindingsbehoeften.
+        link: Meer informatie...
+  regenerate_secret:
+    title: Bevestig regeneratie
+    description: Weet u zeker dat u de verbinding geheim wilt hergenereren? Niet zeker over de gevolgen?
+    link: Dat is wat er gaat gebeuren.
+    action:
+      regenerate: Opnieuw genereren
+    flash:
+      success: Opnieuw genereren herstelcodes geslaagd.
+      error: Sorry, er is een fout opgetreden bij het opnieuw genereren van het verbindingsgeheim.
+  regenerate_password:
+    title: Bevestig regeneratie
+    description: Weet u zeker dat u het verbindingwachtwoord opnieuw wilt genereren? Niet zeker over de impact?
+    link: Dit is wat er gaat gebeuren.
+    action:
+      regenerate: Regenereren
+    flash:
+      success: Regenereren verbindingswachtwoord geslaagd.
+      error: Sorry, er is een fout opgetreden bij het opnieuw genereren van het verbindingswachtwoord.
+  delete_connection:
+    title: Bevestig verwijderen
+    description: Weet u zeker dat u de verbinding wilt verwijderen? Niet zeker over de impact?
+    link: Dat is wat er gaat gebeuren.
+    flash:
+      success: Verbinding succesvol verwijderd.
+  helper:
+    title: '👋 Welkom bij de functie waarmee we je PIM-omgeving opnemen in je applicatielandschap!'
+    description: Een PIM zonder integraties van derden is een soort van nutteloos, nietwaar? Dankzij de verbindingen, kunt u alle gegevensstromen inrichten die data met PIM moeten uitwisselen.
+    link: Wil je meer weten? Ontdek wat een verbinding is en hoe je hier het meeste uit kan halen!
+  flow_type_helper:
+    message: Vraag je je af wat een flowtype is?
+    link: We kunnen je hier helpen!
+  edit_image:
+    upload_helper: Verander je afbeelding, slepen en neerzetten of
+    remove_helper: Afbeelding verwijderen
+    click_here: klik hier
+    flash:
+      extension_not_allowed: Sorry, het bestand dat u probeert te uploaden heeft een extensie die niet is toegestaan.
+  dashboard:
+    helper:
+      title: '👋 Welkom op uw verbindingsdashboard!'
+      description: Hier kunt u alle connecties volgen die via uw verbindingen in uw PIM worden verzameld, evenals alle data-stromen die worden gedistribueerd vanuit PIM, via de kanalen, naar uw verbindingen.
+      link: Wil je meer weten? Kijk dan hier!
+    user_survey:
+      title: Wilt u meer gegevens op dit dashboard?
+      content: Jouw feedback is erg waardevol voor ons. Help ons met het kiezen van de volgende widget door het beantwoorden van deze één-vraag enquête!
+      button: Laten we beginnen!
+    connection_selector:
+      title: Bronverbindingen
+      all: Alles
+    charts:
+      number_of_products_created: Aantal producten aangemaakt
+      number_of_products_updated: Aantal producten bijgewerkt
+      legend:
+        during_the_last_seven_days: De afgelopen zeven dagen
+        today: Vandaag
+    no_connection:
+      title: Wil je enkele mooie grafieken zien over je verbindingen?
+      message_with_permission:
+        message: Maak en begin met volgen van uw eerste verbinding 
+        link: hier. 
+      message_without_permission:
+        message: Vraag uw beheerder om er één aan te maken.
+        link: Leer hier meer over verbindingen...
+  runtime_error:
+    error_message: Oh nee! Er is een fout opgetreden...
+    reload_helper: Herlaad de pagina en probeer opnieuw
+    reload_button: Herladen

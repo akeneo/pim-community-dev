@@ -1,2 +1,4 @@
 pim_notification:
   report: Rapporteer
+  mark_all_as_read: Markeer alles als gelezen
+  no_notifications: Geen meldingen

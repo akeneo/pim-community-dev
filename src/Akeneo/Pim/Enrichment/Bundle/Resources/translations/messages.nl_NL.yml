@@ -1,3 +1,83 @@
 No products to remove: Geen producten om te verwijderen
 "dot (.)": punt (.)
 "comma (,)": komma (,)
+pim_enrich:
+  #Category
+  category:
+    tab:
+      property.title: Eigenschappen
+      history.title: Geschiedenis
+    suggest_selection: Select een categorie aan de linkerkant
+    or: of
+    create_new: Maak een nieuwe categorie
+  #Mass edit operations
+  mass_edit_action:
+    limit_exceeded: Kies minder dan %limit% items om te wijzigen
+    product:
+      page_title: Producten
+      page_subtitle: Bulk bewerken (1 product)|Bulk bewerken (%count% producten)
+      title: Kies operatie
+      subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de %count% geselecteerde producten
+      confirm: U staat op het punt een product bij te werken met de volgende informatie. Gelieve dit te bevestigen. |U staat op het punt %count% producten bij te werken met de volgende informatie. Gelieve dit te bevestigen.
+      steps:
+        first: Kies producten
+        second: Kies operatie
+        third: Configureren
+        fourth: Bevestigen
+    change-status:
+      label: Status wijzigen
+      description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
+      success_flash: De status van één of meerdere producten is gewijzigd
+      launched_flash: De massa actie "verander status" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    edit-common-attributes:
+      label: Bewerk attributen
+      description: De attributen van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
+      empty: Selecteer de attributen die u wilt bewerken
+      success_flash: De taak "update status van producten" is momenteel aan het lopen
+      launched_flash: De massa actie "wijzig attributen" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+      message:
+        warning: Er is geen overeenkomend attribuut voor de geselecteerde producten. Gelieve uw selectie te wijzigen.
+        invalid_attribute: Attribuut met code "attribute_code" is niet gezamenlijk voor de geselecteerde producten, attribuut overgeslagen.
+        no_valid_attribute: Geen van de geselecteerde attributen kan worden toegepast op dit product.
+    classify-add:
+      label: Voeg toe aan categorieën
+      description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
+      success_flash: Producten zijn in geselecteerde categorieën ingedeeld
+      launched_flash: De massa actie "voeg toe aan categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    classify-move:
+      label: Verplaats tussen categorieën
+      description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing gaat verloren.
+      success_flash: Producten zijn verplaatst naar de geselecteerde categorieën
+      launched_flash: De massa actie "verplaats naar categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    classify-remove:
+      label: Verwijder uit categorieën
+      description: De producten zullen worden verwijderd uit de volgende categorieën.
+      success_flash: Product(en) zijn verwijderd van de geselecteerde categorieën
+      launched_flash: De massa actie "verwijder van categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    change-family:
+      label: Familie wijzigen
+      description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
+      success_flash: De familie van de geselecteerde producten is succesvol gewijzigd
+      launched_flash: De massa actie "verander familie" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    add-to-groups:
+      label: Toevoegen aan groepen
+      description: Selecteer de groepen waarin u de geselecteerde producten wilt toevoegen
+      success_flash: Producten zijn succesvol toegevoegd aan de geselecteerde groepen
+      launched_flash: De massa actie "voeg toe aan groepen" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
+      no_group: Geen groep beschikbaar. Gelieve eerst een groep aan te maken.
+    set-attribute-requirements:
+      label: Stel attribuut vereisten in
+      description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
+      success_flash: De attribuutvereisten zijn toegepast op de geselecteerde families
+      launched_flash: De bulk actie "stel attribuutvereisten in" wordt gelanceerd. U wordt meegedeeld wanneer het zal worden gedaan.
+    mass_action:
+      quick_export:
+        launched_flash: De taak "export van producten" is momenteel aan het lopen
+category:
+  edit: Categorie bewerken
+  overview: Categorieën
+tree:
+  edit: Categorieboom bewerken
+  remove:
+    error_linked: Deze categorieboom kan niet worden verwijderd, deze is gekoppeld aan een kanaal
+  create: Maak een nieuwe categorieboom

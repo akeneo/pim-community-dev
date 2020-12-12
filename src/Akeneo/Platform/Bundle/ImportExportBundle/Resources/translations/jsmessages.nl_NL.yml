@@ -8,17 +8,185 @@ pim_connector:
       selector:
         modal:
           title: Categorie selectie
-          cancel: Annuleren
-        label: "{0} alle producten |{1} één categorie geselecteerd |] 1, Inf [{{ count }} categorieën geselecteerd"
-        edit: Bewerken
+        label: "{0}Alle producten|{1}één geselecteerde categorie|]1,Inf[{{ count }} geselecteerde categorieën"
         title: Selecteer categorieën
     locales:
       validation:
         not_blank: Één landinstelling moet worden geselecteerd, kies een landinstelling om te exporteren.
-page_title:
+pim_import_export:
+  entity:
+    job_instance:
+      label: functieprofiel
+      flash:
+        update:
+          success: Het functieprofiel is succesvol bijgewerkt.
+          fail: Het jobprofiel kon niet worden bijgewerkt.
+        delete:
+          success: Instantie van taak succesvol verwijderd
+    import_profile:
+      uppercase_label: Profiel importeren
+      flash:
+        create:
+          success: Importprofiel succesvol aangemaakt
+        upload:
+          error: Kan het bestand niet uploaden. De grootte van het bestand kan de geconfigureerde maximale uploadgrootte op uw PHP of HTTP server configuratie overschrijden
+      page_title:
+        index: "]-Inf, 1] {{ count }} importprofiel|]1, Inf [{{ count }} importprofielen"
+      module:
+        create:
+          button: Importprofiel aanmaken
+    export_profile:
+      uppercase_label: Profiel exporteren
+      flash:
+        create:
+          success: Exportprofiel succesvol aangemaakt
+      page_title:
+        index: "]-Inf, 1] {{ count }} exportprofiel|]1, Inf [{{ count }} exportprofielen"
+      module:
+        create:
+          button: Exportprofiel aanmaken
+  form:
+    job_execution:
+      title.details: Verwerkingsdetails
+      refreshBtn.title: Vernieuwen
+      button:
+        show_profile.title: Profiel weergeven
+        download_log.title: Logbestand downloaden
+        download_file.title: Download gegenereerd bestand
+        download_archive.title: Download gegenereerd archief
+      summary:
+        fetching: Gegevens verzamelen over taakverwerking...
+        warning: Waarschuwing
+        header.step: Stap
+        header.warnings: Waarschuwingen
+        header.summary: Samenvatting
+        header.start: Start
+        header.end: Einde
+    job_instance:
+      fail:
+        launch: Het functieprofiel kon niet gestart worden. Zorg ervoor dat het geldig is en je de nodige rechten heb om het te starten.
+        save: Het functieprofiel kon niet worden opgeslagen. Zorg ervoor dat je bewerkingsrechten hebt.
+      button:
+        export.title: Nu exporteren
+        import.launch: Nu importeren
+        import.upload: Uploaden en nu importeren
+        import.upload_file: Bestand uploaden
+      meta:
+        job: Taak
+        connector: Connector
+      subsection:
+        last_executions: Laatst uitgevoerde taken
+      tab:
+        content:
+          title: Inhoud
+        properties:
+          decimal_separator:
+            title: Decimaal scheidingsteken
+            help: Bepaal het decimaal scheidingsteken
+          date_format:
+            title: Datumnotatie
+            help: Bepaal het formaat van de datumvelden
+          file_path:
+            title: Bestandspad
+            help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
+            help_import: De map van het bestand dat gebruikt moet worden voor de import
+          delimiter:
+            title: Scheidingsteken
+            help: Eén teken voor het scheiden van de velden
+          enclosure:
+            title: Omsluiting
+            help: Eén teken voor gebruik als omsluitingsteken voor het veld
+          with_header:
+            title: Met koptekst
+            help: Of de kolomnaam geprint moet worden
+          with_media:
+            title: Bestanden en afbeeldingen exporteren
+            help: Productbestanden en afbeeldingen al dan niet exporteren
+          lines_per_file:
+            title: Aantal regels per bestand
+            help: Het maximum aantal regels per bestand definiëren
+          upload_allowed:
+            title: Bestanden uploaden toestaan
+            help: Of direct uploaden van het bestand is toegestaan
+          categories_column:
+            title: Categoriekolom
+            help: Naam van de categoriekolom
+          escape:
+            title: Escape-teken
+            help: Eén teken voor gebruik als escape-teken voor het veld
+          family_column:
+            title: Familiekolom
+            help: Naam van de familiekolom
+          groups_column:
+            title: Groepskolom
+            help: Naam van de groepskolom
+          enabled:
+            title: Het product inschakelen
+            help: Of geïmporteerd product moet worden ingeschakeld
+          enabled_comparison:
+            title: Vergelijk de waarden
+            help: Activeer de vergelijking tussen originele en geïmporteerde waarden. Kan import versnellen als geïmporteerde waarden erg gelijkaardig zijn aan originele waarden
+          real_time_versioning:
+            title: Real-time geschiedenis bijwerken
+            help: Betekent dat de productgeschiedenis automatisch wordt bijgewerkt. Dit kan worden uitgeschakeld om de prestaties te verbeteren
+          family_variant_column:
+            title: Familie variant kolom
+      file_path: Bestandspad
+  widget:
+    last_operations:
+      empty: Geen bewerkingen beschikbaar
+      date: Datum
+      profile_name: Profielnaam
+      details: Details
+      warning_count: Waarschuwingen
+      job_type:
+        import: Importeer
+        export: Exporteer
+        mass_edit: Massabewerking
+        mass_edit_rule: Regelinstellingen
+        quick_export: Snelle export
+        compute_family_variant_structure_changes: Wijzigingen van de familie variant structuur berekenen
+        compute_completeness_of_products_family: Berekenen van de volledigheid van de producten-familie
+        mass_delete: Groepsgewijs producten verwijderen
+      header.view_all: Alles weergeven
+  batch_status:
+    1: Voltooid
+    2: Opstarten
+    3: Gestart
+    4: Aan het stoppen
+    5: Gestopt
+    6: Mislukt
+    7: Afgebroken
+    8: Onbekend
+confirmation:
+  remove:
+    import_profile: Weet u zeker dat u dit importprofiel wilt verwijderen?
+    export_profile: Weet u zeker dat u dit exportprofiel wilt verwijderen?
+    job_instance: Weet u zeker dat u deze job wil verwijderen?
+pim_enrich:
+  entity:
+    import_profile:
+      module:
+        delete:
+          confirm: Weet u zeker dat u dit importprofiel wilt verwijderen?
+      flash:
+        delete:
+          success: Importprofiel succesvol verwijderd
+    export_profile:
+      module:
+        delete:
+          confirm: Weet u zeker dat u dit exportprofiel wilt verwijderen?
+      flash:
+        delete:
+          success: Exportprofiel succesvol verwijderd
+pim_title:
   pim_importexport_export_profile_index: Beheer van exportprofielen
+  pim_importexport_export_profile_edit: Exportprofiel {{ job.label }}| Bewerken
+  pim_importexport_export_profile_show: Exportprofiel {{ job.label }}| Tonen
   pim_importexport_export_execution_index: Exportverwerkingen geschiedenis
   pim_importexport_export_execution_show: Exportverwerkingen | Details
   pim_importexport_import_profile_index: Beheer van importprofielen
+  pim_importexport_import_profile_edit: Importprofiel {{ job.label }}| Bewerken
+  pim_importexport_import_profile_show: Importprofiel {{ job.label }}| Tonen
   pim_importexport_import_execution_index: Importverwerkingen geschiedenis
   pim_importexport_import_execution_show: Importverwerkingen | Details

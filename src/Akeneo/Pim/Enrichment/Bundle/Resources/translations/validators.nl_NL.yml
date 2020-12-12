@@ -16,15 +16,51 @@ Option code may contain only letters (at least one), numbers and underscores: De
 This value should not be a decimal.: Deze waarde kan geen decimaal zijn.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'De bestandsextensie is niet toegestaan (toegestane extensies: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": De waarde %value% is al ingesteld op een ander product voor the unieke attribuut %attribute%
-regex.comma_or_semicolon.message: Dit veld mag geen komma of puntkomma bevatten.
+The same identifier is already set on another product: Dit id-attribuut is al in gebruik bij een ander product
+regex.comma_or_semicolon_or_surrounding_space.message: Dit veld mag geen komma, puntkomma of spatie bevatten
 file.extensions.message: 'De bestandsextensie is niet toegestaan (toegestane extensies: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Dit type waarde verwacht een {{ decimal_separator }} om decimalen te scheiden.
 "This type of value expects the use of dot (.) to separate decimals.": Dit type waarde verwacht een punt (.) om decimalen te scheiden.
 "This type of value expects the use of comma (,) to separate decimals.": Dit type waarde verwacht een komma (,) om decimalen te scheiden.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dit type waarde verwacht een arabisch decimaal scheidingsteken (٫) om decimalen te scheiden.
 "This type of value expects the use of the format {{ date_format }} for dates.": Dit type waarde verwacht gebruik van het {{ date_format }} formaat voor datums.
+"The category \"%category%\" has to be a root category.": De categorie "%category%" moet een root-categorie zijn.
+"The attribute \"%attributeCode%\" does not exist.": Het kenmerk "%attributeCode%" bestaat niet.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Het kenmerk "%attributeCode%" is geen metrisch kenmerk.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": De eenheid '%unitCode%' bestaat niet of behoort niet tot de standaard metrische familie van het opgegeven kenmerk "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": De munt "%currency%" moet worden geactiveerd.
+product_model.code.not_blank.message: De code voor het productmodel mag niet leeg zijn.
+product_model.code.unique.message: Dezelfde code is al ingesteld op een ander productmodel.
+product_model.family_variant.not_blank.message: De product model familie variant mag niet leeg zijn.
 pim_catalog:
   constraint:
+    can_have_family_variant_empty_axis_value: 'Kenmerk ''%attribute%'' mag niet leeg zijn, omdat dit is gedefinieerd als een as voor deze entiteit'
+    product_model_with_same_axis_value_already_exists: 'De waarde "%values%" voor kenmerk ''%attributes%'' dat als as gebruikt wordt voor productmodel "%validated_entity%", kan niet gezet worden omdat productmodel "%sibling_with_same_value%" deze waarde al gebruikt'
+    variant_product_with_same_axis_value_already_exists: 'De waarde "%values%" voor kenmerk ''%attributes%'' dat als as gebruikt wordt voor variantproduct "%validated_entity%", kan niet gezet worden omdat variantproduct "%sibling_with_same_value%" deze waarde al gebruikt'
+    can_have_family_variant_unexpected_attribute: 'Kan de eigenschap ''%attribute%'' niet instellen voor deze entiteit omdat deze niet bestaat in de attribuutset'
+    cannot_have_product_model_as_parent: 'Het productmodel "%product_model%" kan niet productmodel "%parent_product_model%" als ouder hebben'
+    cannot_have_parent: 'Het productmodel "%product_model%" kan geen ouder hebben'
+    attribute_does_not_belong_to_family: 'Attribuut "%attribute%" behoort niet tot de familie "%family%"'
+    variant_product_invalid_family: 'De familie van het variantproduct moet hetzelfde zijn als zijn ouder'
+    php_int_max_reached: 'Het maximale aantal moet lager zijn dan %php_int_max%.'
+    not_null_family: De familie mag niet "null" zijn, omdat uw product met id "%sku%" een variantproduct is.
+    variant_product_has_parent: 'Het variantproduct "%variant_product%" moet een ouder hebben'
+    invalid_variant_product_parent: 'Het variantproduct "%variant_product%" kan productmodel "%product_model%" niet als ouder hebben, (dit productmodel kan alleen andere productmodellen als kinderen hebben)'
+    modified_variant_axis_value: 'Variant-as "%variant_axis%" kan niet worden gewijzigd, ''%provided_value%'' gegeven'
+    family_variant_attributes_unique: Attributen moet uniek zijn, "%attributes%" worden meerdere malen gebruikt in attributensets van variantproducten
+    family_variant_axes_unique: De variant-as moet uniek zijn, "%attributes%" worden meerdere malen gebruikt in attributensets van variantproducten
+    family_variant_axes_immutable: 'De variant-assen kunnen niet voor het niveau ''%level% '' worden gewijzigd'
+    family_variant_axes_attribute_type_unique: De variant-assen "%axis%" kunnen niet uniek of een id zijn
+    family_variant_axes_attribute_type: De variant-assen "%axis%" moet een Boolean, een eenvoudige selectie, een eenvoudige selectie van verwijzingsgegevens of metrisch zijn
+    family_variant_axes_wrong_type: Variant-assen "%axis%" kunnen niet locatie-afhankelijk, kanaal-afhankelijk of land-specifiek zijn
+    family_variant_axes_number_of_axes: 'Een attribuutset van een variant kan niet meer dan %max_axes_number% assen hebben'
+    family_variant_no_axis: Er moet ten minste één kenmerk gedefinieerd zijn als as voor het kenmerk ingesteld op niveau "%level%"
+    family_variant_axis_level: Attribuut "%axis%" moet ingesteld zijn in dezelfde variant attribuut-set waarin het ingesteld was als as
+    family_variant_has_family_attribute: 'Het attribuut "%attribute%" kan niet worden toegevoegd aan de familie variant "%family_variant%", want het is geen attribuut van de familie "%family%"'
+    family_variant_level_do_not_exist: Er is geen variant attribuut ingesteld voor niveau "%level%"
+    family_variant_no_level: Er moet ten minste één niveau gedefinieerd zijn in de familie variant
+    family_variant_maximum_number_of_level: Familie variant kan niet meer dan "%level%" niveau hebben
+    family_variant_unique_attributes_in_last_level: Het unieke attribuut "%attribute%" moet worden ingesteld op productniveau
     product_identifier: Deze id's "%s" bestaan niet.
     0: Er is een onverwachte fout opgetreden.
     100: Onverwachte waarde
@@ -45,4 +81,8 @@ pim_catalog:
     301: Dit veld verwacht een geldige scope en regio-instelling.
     302: Dit veld verwacht een geldige scope.
     303: Dit veld verwacht een geldig formaat voor associaties.
-
+    pim_immutable_product_validator: Dit id-attribuut is al in gebruik bij een ander product
+    pim_immutable_product_model_validator: Dezelfde code is al ingesteld op een ander productmodel.
+mass_edit:
+  edit_common_attributes:
+    invalid_values: Er zijn fouten in het attributenformulier

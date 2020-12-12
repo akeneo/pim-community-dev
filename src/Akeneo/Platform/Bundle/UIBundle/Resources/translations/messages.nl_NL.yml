@@ -1,4 +1,6 @@
 User: Gebruiker
+Run demo: Demo uitvoeren
+Product: Product
 Attribute list: Kenmerkenlijst
 Attribute Group list: Kenmerkgroepenlijst
 Users: Gebruikers
@@ -18,7 +20,6 @@ Change file: Bestand wijzigen
 Remove file: Bestand verwijderen
 Delete: Verwijderen
 Save: Opslaan
-Cancel: Annuleren
 Get help: Help-informatie opvragen
 My User: Mijn Account
 oro.form.choose_value: Kies een waarde...
@@ -36,3 +37,470 @@ Most Viewed: Meest bekeken
 "Yes": "Ja"
 "No": "Nee"
 required: (vereist)
+The element could not be deleted: Dit element kan niet verwijderd worden
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Schakel laadberichten in
+    loading_message_enabled.tooltip: Laat ludieke berichten zien tijdens het wachten op het laden van een pagina
+    loading_messages.label: Beschikbare laadberichten
+    loading_messages.tooltip: Alle beschikbare laadberichten gescheiden door regeleindes
+  group:
+    loading_message.title: Laadberichten
+other_actions: Andere acties
+pim_common:
+  cancel: Annuleer
+  save: Opslaan
+  delete: Verwijderen
+  update: Bijwerken
+  view: Bekijk
+  edit: Wijzig
+  created: Aangemaakt
+  updated: Bijgewerkt
+  create: Aanmaken
+  permissions: Machtigingen
+  properties: Eigenschappen
+  name: Naam
+  remove: Verwijder
+  code: Code
+pim_enrich:
+  #ACLs
+  acl:
+    locale:
+      index: Lokalisaties weergeven
+    currency:
+      index: Valuta weergeven
+      toggle: Valuta omschakelen
+    product:
+      index: Producten weergeven
+      create: Product aanmaken
+      edit_attributes: Wijzig attributen van een product
+      remove: Product verwijderen
+      add_attribute: Voeg een attribuut toe aan een product
+      remove_attribute: Verwijder een attribuut van een product
+      categories_view: Raadpleeg de categorieën van een product
+      associations_view: Bekijk de associaties van een product
+      associations_edit: Voeg associaties toe aan een product
+      change_family: Productfamilie wijzigen
+      change_state: Status van product wijzigen
+      add_to_groups: Product toevoegen aan groepen
+      mass_edit: Product massabewerken acties
+      comment: Geef commentaar op producten
+      download: Download het product als PDF
+      history: Bekijk productgeschiedenis
+    product_model:
+      create: Een product model aanmaken
+      edit_attributes: Wijzig attributen van een productmodel
+      categories_view: Raadpleeg de categorieën van een productmodel
+      history: Bekijk productmodel-geschiedenis
+      remove: Productmodel verwijderen
+    category:
+      list: Categorieën oplijsten
+      create: Categorie aanmaken
+      edit: Categorie wijzigen
+      remove: Categorie verwijderen
+      move: Categorie verplaatsen
+      children: Kinderen van categorie weergeven
+      products: Producten van categorie weergeven
+      history: Bekijk categoriegeschiedenis
+    channel:
+      index: Kanalen weergeven
+      create: Kanaal aanmaken
+      edit: Kanaal wijzigen
+      remove: Kanaal verwijderen
+      history: Bekijk kanaalgeschiedenis
+    family:
+      index: Families oplijsten
+      create: Familie aanmaken
+      edit_properties: Bewerk eigenschappen van een familie
+      edit_attributes: Wijzig attributen van een familie
+      edit_variants: Wijzigen van een familie variant
+      remove: Familie verwijderen
+      history: Bekijk familiegeschiedenis
+    family_variant:
+      remove: Verwijderen van een familie variant
+    attribute_group:
+      index: Attritbuutgroepen oplijsten
+      create: Attribuutgroep aanmaken
+      edit: Attribuutgroep wijzigen
+      remove: Attribuutgroep verwijderen
+      sort: Attribuutgroepen sorteren
+      add_attribute: Attribuut toevoegen aan een groep
+      remove_attribute: Attribuut verwijderen van een groep
+      history: Bekijk geschiedenis attribuutgroep
+    attribute:
+      index: Attributen oplijsten
+      create: Attribuut aanmaken
+      edit: Attribuut bewerken
+      remove: Attribuut verwijderen
+      sort: Sorteer attributen binnen attribuutgroepen
+      history: Bekijk attribuutgeschiedenis
+    group:
+      index: Groepen weergeven
+      create: Groep aanmaken
+      edit: Groep wijzigen
+      remove: Groep verwijderen
+      history: Bekijk groep geschiedenis
+    group_type:
+      index: Groepstypes weergeven
+      create: Groepstype aanmaken
+      edit: Groepstype wijzigen
+      remove: Groepstype verwijderen
+    association_type:
+      index: Associatietypes weergeven
+      create: Associatietype aanmaken
+      edit: Associatietype wijzigen
+      remove: Associatietype verwijderen
+      history: Bekijk geschiedenis van associatietype
+    association:
+      remove: Verwijderen associaties van een product
+    job_tracker:
+      index: Bekijk procesopvolger
+  acl_group:
+    association_type: Associatietypes
+    attribute: Attributen
+    attribute_group: Attribuutgroepen
+    category: Categorieën
+    channel: Kanalen
+    currency: Valuta
+    family: Families
+    group: Groepen
+    group_type: Groepstypen
+    locale: Lokalisaties
+    product: Producten
+    product_model: Productmodels
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: De lokalisatie is verwijderd van het kanaal. We zijn momenteel bezig de betreffende compleetheid op te schonen.
+        done: Het verwijderen van een lokalisatie van een kanaal is klaar.
+  create:
+    attribute: attribuut aanmaken
+    attribute group: attribuutgroep aanmaken
+    category: categorie aanmaken
+    tree: structuur aanmaken
+    channel: kanaal aanmaken
+    currency: valuta aanmaken
+    family: familie aanmaken
+    locale: lokalisatie aanmaken
+    product: product aanmaken
+    group: groep aanmaken
+    association type: associatietype aanmaken
+    group type: groepstype aanmaken
+    drag_or_upload: Klik en sleep een bestand om te uploaden of klik hier
+#Confirmation messages
+confirmation:
+  delete: Verwijderen bevestigen
+  leave: Weet u zeker dat u deze pagina wilt verlaten?
+  discard changes: Als u deze pagina verlaat worden veranderingen aan %entity% niet opgeslagen.
+  remove:
+    category: Weet u zeker dat u de categorie %name% wilt verwijderen?
+    user: Weet u zeker dat u de gebruiker %name% wilt verwijderen?
+#Flash messages
+flash:
+  entity:
+    removed: Object is verwijderd
+  attribute:
+    identifier_not_removable: Id-attribuut kan niet worden verwijderd
+    used_as_conversion_unit: Dit attribuut kan niet worden verwijderd omdat het wordt gebruikt als conversie eenheid in het kanaal(en) %channelCodes%.
+  category:
+    removed: Categorie succesvol verwijderd
+  tree:
+    removed: Structuur succesvol verwijderd
+    not removable: Structuren die zijn gekoppeld aan kanalen kunnen niet worden verwijderd.
+  currency:
+    updated: Valuta succesvol bijgewerkt
+    error.linked_to_channel: U kan de valuta gekoppeld aan een kanaal niet uitschakelen.
+  product:
+    enabled: Product is ingeschakeld
+    disabled: Product is uitgeschakeld
+  group type:
+    created: Groepstype succesvol aangemaakt
+  user:
+    removed: Gebruiker succesvol verwijderd
+  error occurred: Actie mislukt. Probeer alstublieft opnieuw.
+#Info messages
+info:
+  updated: Er zijn niet-opgeslagen wijzigingen.
+  category:
+    remove children: Alle subcategorieën zullen worden verwijderd.
+    keep products: Producten in deze categorieën zullen niet worden verwijderd.
+    products limit exceeded: Deze categorie bevat meer producten dan toegestaan voor deze bewerking ( maximaal %limit% producten)
+  product:
+    no available attributes: Er zijn geen attributen meer om toe te voegen
+    no family defined: Geen familie gedefinieerd
+    change family: Wijzig de productfamilie
+    change family to: Wijzig de familie naar
+    merge attributes: Huidige attributen zullen worden samengevoegd met degenen in de nieuwe familie.
+    keep attributes: Er zullen geen attributen worden verwijderd.
+    number of associations: '%productCount% producten en %groupCount% groepen'
+    enable: Inschakelen
+    enabled: Ingeschakeld
+    disable: Uitschakelen
+    disabled: Uitgeschakeld
+  group:
+    axis: 'Variatie-as: %attributes%'
+    select products: Selecteer alstublieft de producten die behoren tot deze groep.
+    selectable products: De volgende selecteerbare producten hebben een gedefinieerde waarde voor elke as.
+    no group types: Er bestaan geen groepstypen, klik hier om er een aan te maken
+    more products: 'Nog %count% producten...'
+  association type:
+    show products: Toon producten
+    show groups: Toon groepen
+    remove from products: Verwijderen van het associatietype zal het verwijderen van %count% producten.
+    none exist: Er bestaan geen associatietypes.
+    create one: Klik hier om er één te creëren
+  attribute:
+    auto option sorting: Als dit is ingeschakeld worden de opties automatisch gesorteerd a.h.v de gelokaliseerde labels
+  completeness:
+    not calculated: Nog niet berekend
+#Form elements
+Created: Aangemaakt
+Updated: Bijgewerkt
+Last update: Laatst bijgewerkt
+by: Door
+N/A: Niet beschikbaar
+Manage products: Producten beheren
+Manage groups: Groepen beheren
+Code: Code
+Name: Naam
+Type: Soort
+Scope: Kanaal
+Required: Verplicht
+Unique: Uniek
+Not required: Niet verplicht
+Translatable: Vertaalbaar
+Scopable: Bereik instelbaar
+Localizable: Lokaliseerbaar
+Unique value: Unieke waarde
+Attribute group: Attribuutgroep
+Other: Andere
+Variants behavior when edited: Gedrag van varianten bij wijzigingen
+Remove: Verwijder
+Parameters: Parameters
+System: Systeem
+Values: Waarden
+General parameters: Algemene parameters
+Backend parameters: Backend parameters
+Label: Label
+Default label: Standaard label
+Default value: Standaardwaarde
+Attributetype: Attribuuttype
+Attribute type: Attribuuttype
+Defaultvalue: Standaardwaarde
+Variant: Variant
+Smart: Slim
+Useable as grid column: Te gebruiken als een grid-kolom
+Useable as grid filter: Bruikbaar in raster
+Family: Familie
+Image: Afbeelding
+Variant products: Variant products
+Available locales: Beschikbare lokalisaties
+Locale specific: Lokalisatiespecifiek
+default: Standaard
+Axis: As
+Add attributes: Attributen toevoegen
+switch_on: "Ja"
+switch_off: "Nee"
+Close: Sluiten
+Search: Zoeken
+Choose the attribute type: Kies het attribuuttype
+Choose the attribute group: Kies een attribuutgroep
+Drag and drop a file or click here: Klik en sleep een bestand of klik hier
+Drop an image or click here: Plaats een bestand of klik hier
+Automatic option sorting: Automatische optie-sortering
+save_attribute_before_manage_option: Om opties te beheren sla het attribuut eerst op
+Please select: Gelieve een selectie te maken
+Active: Actief
+Inactive: Inactief
+Do not convert: Niet converteren
+Create: Aanmaken
+Choose a family: Kies een familie
+Choose a unit: Kies een eenheid
+No matches found: Geen overeenkomsten gevonden
+Category tree: Categoriestructuur
+Completeness: Volledigheid
+Attribute used as label: Attribuut gebruikt als label
+Credentials: Inloggegevens
+#Scopes
+Global: Globaal
+Channel: Kanaal
+Expand all channels: Alle kanalen uitklappen
+Collapse all channels: Alle kanelen inklappen
+#Variants
+Always override: Altijd overschrijven
+Ask: Vragen
+#Attribute group
+General Properties: Algemene eigenschappen
+Group values: Groepswaarden
+New group: Nieuwe groep
+Groups overview: Groepenoverzicht
+'Y-m-d h:i:s': 'J-m-d u:m:s'
+#Attribute properties
+Max characters: Max tekens
+Validation rule: Validatieregel
+Validation regexp: Validatie regexp
+Wysiwyg enabled: WYSIWYG ingeschakeld
+Number min: Min aantal
+Number max: Max aantal
+Decimals allowed: Decimalen toestaan
+Negative allowed: Negatieve waarden toestaan
+Date min: Vanaf datum
+Date max: Tot datum
+Metric family: Meeteenhedenfamilie
+Default metric unit: Standaard meeteenheid
+Max file size: Max bestandsgrootte (MB)
+Allowed extensions: Toegestane extensies
+None: Geen
+E-mail: E-mail
+URL: URL
+Regular expression: Reguliere expressie
+Minimum input length: Minimale invoerlengte
+Default: Standaard
+#Family
+Attributes: Attributen
+#Category
+Title: Titel
+#Page titles
+pim_catalog_identifier: Id
+pim_catalog_text: Tekst
+pim_catalog_textarea: Tekstblok
+pim_catalog_number: Nummer
+pim_catalog_price_collection: Prijs
+pim_catalog_multiselect: Meervoudige selectie
+pim_catalog_simpleselect: Enkelvoudige selectie
+pim_catalog_file: Bestand
+pim_catalog_image: Afbeelding
+pim_catalog_boolean: "Ja/Nee"
+pim_catalog_date: Datum
+pim_catalog_metric: Meeteenheid
+pim_reference_data_simpleselect: Referentiegegevens enkelvoudig selectieveld
+pim_reference_data_multiselect: Referentiegegevens meervoudig selectieveld
+#Locales
+Activated: Geactiveerd
+Edit: Wijzig
+Disable: Uitschakelen
+To enable: Om in te schakelen
+Select attributes: Selecteer attributen
+Select: Selecteer
+Remove this attribute: Dit attribuut verwijderen
+Copy: kopiëren
+Translate from: Vertaal van
+Current tab: Huidige tabblad
+#Product view
+Group: Groep
+View group: Bekijk groep
+Products: Producten
+#Tabs
+Properties: Eigenschappen
+History: Geschiedenis
+pane.accordion:
+  node_values: Node waardes
+  general_properties: Algemene eigenschappen
+  locale_values: Lokalisatiewaardes
+  backend_parameters: Backend parameters
+  general_parameters: Algemene parameters
+  validation_parameters: Validatieparameters
+  label_translations: Labelvertalingen
+  options: Opties
+  group_values: Groepswaarden
+#Popin titles
+popin.create:
+  association_type.title: Een nieuw associatietype aanmaken
+  group.title: Nieuwe groep aanmaken
+  product.title: Een nieuw product aanmaken
+  option.title: Nieuwe optie aanmaken
+#Datagrid contents
+In group: In groep
+Attribute as label: Attribuut als label
+Is associated: Is geassocieerd
+Complete: Voltooien
+Created At: Aangemaakt op
+Updated At: Bijgewerkt op
+Enabled: Ingeschakeld
+Disabled: Uitgeschakeld
+Status: Status
+#Versioning / history
+Change History: Geschiedenis van wijzigingen
+Data Audit: Gegevens audit
+Data Audit - System: 'Gegevens audit - systeem'
+Action: Actie
+Version: Versie
+Entity type: Entiteittype
+Entity name: Naam van entiteit
+Entity id: Entiteit-id
+Data: Gegevens
+Author: Auteur
+Logged at: Gelogged op
+Deleted: Verwijderd
+Old values: Oude waarden
+New values: Nieuwe waarden
+#Configuration
+System configuration: Systeemconfiguratie
+General setup: Algemene instellingen
+Localization: Lokalisatie
+Localization options: Lokalisatie opties
+Locale: Lokalisatie
+Location: Locatie
+Format address by address country: Adres opmaken op basis van land
+Language: Taal
+Timezone: Tijdzone
+Currency: Valuta
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "parish"
+      state: "staat"
+      island: "eiland"
+      county: "county"
+      area: "oppervlakte"
+      prefecture: "prefectuur"
+      department: "departement"
+      district: "district"
+      province: "provincie"
+  form:
+    tooltip:
+      locale: "Selecteer de locale optie voor het opmaken van getallen, adressen, namen en datums"
+      location: "Locatie zal gebruikt worden voor het opmaken van adressen wanneer 'Adres opmaken op basis van land' is uitgeschakeld"
+      format_address_by_address_country: "Met deze optie ingeschakeld zullen adressen opgemaakt worden op basis van het land waar ze in liggen. Wanneer deze optie uitgeschakeld is zullen de adressen opgemaakt worden aan de hand van de opmaak van adressen in uw locatie"
+      language: "Selecteer de taal van het systeem die u wenst te gebruiken"
+      timezone: "Selecteer de tijdzone voor datum- en tijdweergave"
+      currency: "Selecteer de standaardvaluta"
+#Datagrid
+Selected products successfully deleted: Geselecteerde producten succesvol verwijderd
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Massabewerking <strong>%label%</strong> mislukt
+      warning: Massabewerking <strong>%label%</strong> beëindigd met enkele waarschuwingen
+      success: Massabewerking <strong>%label%</strong> beëindigd
+    quick_export:
+      error: Snelle export <strong>%label%</strong> mislukt
+      warning: Snelle export <strong>%label%</strong> beëindigd met enkele waarschuwingen
+      success: Snelle export <strong>%label%</strong> beëindigd
+    mass_delete:
+      error: Groepsgewijs verwijderen <strong>%label%</strong> mislukt
+      warning: Groepsgewijs verwijderen <strong>%label%</strong> beëindigd met enkele waarschuwingen
+      success: Groepsgewijs verwijderen <strong>%label%</strong> beëindigd
+job_execution.summary:
+  mass_edited: Groepsgewijs bewerken
+  skip: Overgeslagen
+  skipped_products: Overgeslagen producten
+  skipped_attributes: Overgeslagen attributen
+  skipped_families: Overgeslagen families
+  deleted_products: Verwijderde producten
+  deleted_product_models: Verwijderde productmodellen
+pim_mass_edit_execution_show: Groepsgewijs wijzigingsacties | Details
+edit_common_attributes.steps.edit_common_attributes_processor.title: Bewerk attributen
+update_product_value.steps.update_product_value_processor.title: Update productwaarde
+remove_product_value.steps.update_product_value_processor.title: Verwijder productwaarde
+edit_common_attributes: Bewerk attributen
+edit_common_attributes_clean: Opschonen bestanden voor attributen
+perform.steps.duplicated.title: Gedupliceerde as
+perform.steps.excluded.title: Uitgesloten product
+mass_edit report:
+  overview: Rapporten in bulk bewerken
+job_tracker:
+  tab:
+    title: Procesopvolger
+  filter:
+    started_at: Begonnen om
