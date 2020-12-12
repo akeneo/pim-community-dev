@@ -1,56 +1,126 @@
+pim_title:
+  akeneo_reference_entities_reference_entity_index: Een entiteit aanmaken
+  akeneo_reference_entities_reference_entity_edit: Bewerk een referentie-entiteit
+  akeneo_reference_entities_record_edit: Bewerk een record
 pim_reference_entity:
   app:
     image:
       wide:
+        remove: Verwijder de afbeelding
+        download: Afbeelding downloaden
         upload: Klik en sleep een bestand om te uploaden of klik hier
       small:
         remove: Verwijder
         download: Download
+        upload: Slepen en neerzetten om te uploaden
+  editor:
+    embedded:
+      invalid_link:
+        title: Verdachte ingesloten link
+        message: Sorry, we tonen dit embed item niet, maar het wordt correct opgeslagen
+  grid:
+    counter: '{{ count }} resultaat|{{ count }} resultaten'
   reference_entity:
+    validation:
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
+        should_be_unique: 'Deze code bestaat al voor deze entiteit.'
+        limit_reached: 'Je kunt de referentie-entiteit "{{ %reference_entity_label% }}" niet aanmaken omdat je de limiet van {{ %limit% }} referentie-entiteiten hebt bereikt'
     button:
       save: Opslaan
       save_permission: Opslaan
       create: Aanmaken
+    permission:
+      title: Entiteit rechten
+    title: Entiteiten
+    breadcrumb: Referentie-entiteiten
+    img: De hoofdafbeelding van de referentie-entiteit genaamd "{{ label }}"
     tab:
+      records: Records
       attribute: Attributen
       properties: Eigenschappen
       permission: Machtigingen
     properties:
+      title: Entiteit eigenschappen
       identifier: Code
       label: Label
       image: Afbeelding
     attribute:
+      title: Record attributen
       attribute:
         error:
           render_list: 'Er is een fout opgetreden tijdens het renderen van het "{{ %attribute_code% }" attribuut'
           render_edit: 'Er is een fout opgetreden tijdens het renderen van de extra eigenschappen velden van het "{{ %attribute_code% }" attribuut'
+    module:
+      delete:
+        button: Verwijder entiteit
+        confirm: Weet u zeker dat u deze entiteit wilt verwijderen?
+    index:
+      grid:
+        count: '{0} Geen Referentie-entiteit|{1} {{ count }} Referentie -entiteit|]1,Inf] {{ count }} Referentie-entiteiten'
+        help:
+          title: 'Welkom bij de referentie-entiteiten!'
+          description_part_one: Verrijk relevante informatie die te maken heeft met producten (bijv. merken, fabrikanten, kleuren, materialen, ingrediënten...).
+          description_part_two: Het stelt u in staat om een betere productervaring te bieden aan uw klanten.
+          description_part_three: Klik op de knop "Aanmaken" om je eerste referentie-entiteit te maken en stel de attributen en records in.
+          description_part_four: Maak daarna, om producten te koppelen, een product attribuut type die gerelateerd is aan deze referentie-entiteit.
+          description_part_five: Voor meer details nodigen we je uit om dit artikel te bekijken.
     create:
       header:
         title: Aanmaken
+      subtitle: Referentie-entiteiten
+      title: Een entiteit aanmaken
       input:
         label: Label
+        code: Code (verplicht)
       confirm: Opslaan
     delete:
+      message: Weet u zeker dat u entiteit "{{ referenceEntityLabel }}" wilt verwijderen?
       title: Attribuut
     notification:
       save:
+        success: Referentie-entiteit succesvol bijgewerkt.
         fail: Er deed zich een fout voor tijdens het opslaan van de referentie-entiteit
       create:
+        success: Referentie-entiteit succesvol aangemaakt.
         fail: Er deed zich een fout voor tijdens het aanmaken van de referentie-entiteit
       delete:
+        success: Referentie-entiteit succesvol verwijderd.
         fail: Er deed zich een fout voor tijdens het verwijderen van de referentie-entiteit
+  permission:
+    notification:
+      save:
+        success: Referentie-entiteit rechten succesvol bijgewerkt.
+        fail: Ten minste één gebruikersgroep moet de toestemming hebben om deze entiteit te bewerken
+    no_data:
+      title: U heeft geen gebruikersgroep
+      subtitle: Om de rechten te beheren van een referentie-entiteit, moet u ten minste één gebruikersgroep hebben.
+      link: Klik hier om je eerste gebruikersgroep toe te voegen
   record:
     validation:
+      limit_reached: 'Je kunt het record "{{ %record_label% }}" niet aanmaken omdat je de limiet van {{ %limit% }} records voor deze referentie-entiteit hebt bereikt'
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
+        should_be_unique: 'Deze code bestaat al voor deze entiteit.'
       text:
         incompatible_with_regular_expression: 'Voer een tekst in die voldoet aan de reguliere expressie: "{{ %regular_expression%}}"'
         invalid_email: 'Voer een e-mailadres in: xxxxx@xx.xx'
         invalid_url: 'Vul een URL in: http(s)://xxxx.XXX'
+    no_data:
+      title: Er is geen record voor {{ entityLabel }}
+      subtitle: Klik op de knop "Nieuwe toevoegen" om een eerste record te maken
     no_result:
+      title: Er zijn geen resultaten voor uw zoekopdracht
       subtitle: Probeer het opnieuw met een andere zoekterm.
+    selector:
+      no_value: Klik hier om een record te selecteren.
+    error:
+      value: Oeps, het lijkt erop dat het rendering van het "{{ fieldName }}" veld is mislukt. Zie de ontwikkelaarsconsole voor meer informatie.
     button:
       save: Opslaan
       create: Nieuwe toevoegen
       delete: Verwijderen
+      delete_all: Alle records verwijderen
       back: Terug naar het overzicht
     product:
       attribute: Productattribuut

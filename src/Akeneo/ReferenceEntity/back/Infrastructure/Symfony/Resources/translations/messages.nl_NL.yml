@@ -4,3 +4,5 @@ akeneo_referenceentity:
       create: Een entiteit aanmaken
     record:
       create: Een record aanmaken
+akeneo_reference_entity: Referentie entiteit enkele link
+akeneo_reference_entity_collection: Referentie entiteit meerdere links

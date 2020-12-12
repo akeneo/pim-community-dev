@@ -265,6 +265,7 @@ pim_asset_manager:
         subtitle: 'Um Produkte mit dieser Asset-Familie zu verbinden, können Sie ein neues erstellen: '
         link: Ein Produkt-Attribut anlegen
       not_enough_items:
+        title: Sie können nur {{ productCount }}/{{ totalCount }} Produkte sehen.
         subtitle:
           usable_in_grid: Um alle verlinkten Produkte zu entdecken, klicken Sie einfach unten!
           not_usable_in_grid: Um alle verlinkten Produkte zu entdecken, muss das Produkt-Attribut als "im Raster verwendbar" gesetzt werden.

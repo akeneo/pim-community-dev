@@ -1,0 +1,43 @@
+akeneo_assetmanager:
+  acl_group:
+    asset_manager: Asset beheerder
+  acl:
+    asset_family:
+      create: Maak een nieuwe asset familie aan
+      edit: Bewerk de asset familie eigenschappen
+      delete: Verwijder een asset familie
+      manage_permission: Beheer rechten asset familie
+      manage_transformation: Beheer asset familie transformaties
+      manage_product_link_rule: Beheer de asset familie product link regels
+      execute_product_link_rule: Toepassen productlink regels op alle assets van een asset familie
+    asset:
+      create: Creëer een asset
+      edit: Bewerk de assets
+      delete: Verwijder een asset
+      delete_all: Verwijder alle assets
+      list_product: Lijst van gekoppelde producten aan asset
+    attribute:
+      create: Voeg een attribuut toe aan een asset familie
+      edit: Een attribuut van een asset familie bewerken
+      delete: Verwijder een attribuut van een asset familie
+    option:
+      edit: Opties bewerken
+      delete: Een optie verwijderen
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Bereken asset transformaties"
+        asset_manager_link_assets_to_products: "Koppel assets aan producten"
+#pim_analytics:
+#info_type:
+#nb_asset_families: Number of asset families
+#max_number_of_assets_per_asset_family: Max number of assets per asset family
+#average_number_of_values_per_assets: Average number of values per asset on all asset families
+#average_number_of_assets_per_asset_family: Average number of assets per asset family
+#max_number_of_attributes_per_asset_family: Max number of attributes per asset family
+#average_number_of_attributes_per_asset_family: Average number of attributes per asset family
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: Asset verzameling

@@ -6,3 +6,5 @@ akeneo_franklin_insights:
     product_subscription:
       constraint:
         product_subscription_with_same_identifier_already_exist: 'Een ander product met ten minste één identieke id is al geabonneerd.'
+job_execution.summary:
+  identifiers_mapping_validation: Identifiers mapping validatie

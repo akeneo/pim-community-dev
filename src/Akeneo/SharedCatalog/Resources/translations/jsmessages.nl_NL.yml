@@ -1,0 +1,23 @@
+batch_jobs.akeneo_shared_catalog.label: Stuur naar gedeelde catalogi
+pim_common:
+  recipients: Ontvangers
+  branding: Huisstijl
+  result_count: "{0}0 resultaten|{1}1 resultaat|]1, Inf[{{ itemsCount }} resultaten"
+  items_selected: "{0}0 items geselecteerd|{1}1 item geselecteerd|]1, Inf[{{ itemsCount }} items geselecteerd"
+shared_catalog:
+  recipients:
+    add: Voeg hier gebruikers e-mailadressen toe
+    placeholder: bert@akeneo.com
+    email: E-mailadres
+    invalid_email: Dit is geen geldig e-mailadres.
+    duplicates: Je hebt dit al gedeeld met deze ontvanger
+    helper: "Voeg ontvangers toe om hen toegang te geven tot uw nieuwe gedeelde catalogus. U kunt een adreslijst invullen met scheidingstekens: spatie, komma, puntkomma & regeleinde."
+    no_result: Sorry, er komt geen email overeen met je zoekopdracht
+    no_data: Nog geen e-mailadres opgegeven
+    max_limit_reached: Je hebt de limiet van 500 ontvangers bereikt.
+  branding:
+    upload: "Upload uw logo (Max grootte: 2MB; bestandsformaat: PNG of JPG)"
+    invalid_extension: "Ongeldige bestandsextensie, toegestane extensies zijn: {{ allowed_extensions }}"
+    filesize_too_large: Het opgegeven bestand is te groot, het maximale formaat is 2 MB
+  button:
+    save: Opslaan en delen
