@@ -350,3 +350,11 @@ pim_notification:
     export: Exporteer
     quick_export: Snelle export
     mass_edit: Massa bewerken
+akeneo_communication_channel:
+  link:
+    title: Mededelingen
+  panel:
+    title: Mededelingen
+    list:
+      empty: Er is momenteel geen nieuws. Blijf op de hoogte!
+      error: We konden het nieuws niet ophalen. Probeer het later opnieuw.
