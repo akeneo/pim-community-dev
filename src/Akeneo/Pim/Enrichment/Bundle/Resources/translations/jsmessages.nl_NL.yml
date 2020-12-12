@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Instellingen
+    mass_delete: Verwijderen
 flash:
   comment:
     create:
@@ -371,6 +372,7 @@ pim_datagrid:
   filters:
     label: Filters
     system: Systeem
+  search: Zoeken op {{ label }}
 batch_jobs:
   add_association:
     label: Associëren
@@ -429,3 +431,5 @@ batch_jobs:
     quick_export.label: XLSX product snelle export
     quick_export_product_model.label: XLSX product model snelle export
     perform.label: XLSX product snelle export
+  default_steps:
+    delete_products_and_product_models: Producten en productmodellen verwijderen

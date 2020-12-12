@@ -1,22 +1,14 @@
-Close: Sluiten
-Update: Bijwerken
-Selected Rows: Geselecteerde rijen
-"Yes": "Ja"
-"Yes, Delete": "Ja, verwijderen"
+#ORO messages
 "Yes, I Agree": "Ja, ik ga akkoord"
 "Yes, do it": "Ja, doen"
-"No": "Nee"
 "Ok, got it.": "Okee, begrepen."
-"Cancel": "Annuleren"
-"Delete Confirmation": "Verwijderen bevestigen"
-"Edit": "Bewerken"
+"Edit": "Wijzig"
 "Unexpected error occurred. Please contact system administrator.": "Onverwachte fout opgetreden. Neem contact op met de systeembeheerder."
-Now: Nu
+"Yes, revoke": "Ja, intrekken"
+"Revoke Confirmation": "Bevestiging intrekken"
 Prev: Vorige
-Next: Volgende
 Today: Vandaag
 Wk: Wk
-Done: Gedaan
 AM: AM
 A: A
 PM: PM
@@ -29,10 +21,11 @@ Second: Seconde
 Millisecond: Milliseconde
 Microsecond: Microseconde
 "Time Zone": "Tijdzone"
+#PIM messages
 Localized value: Gelokaliseerde waarde
 Columns: Kolommen
 Datagrid Configuration: Datagrid configuratie
-Apply: Toepassen
+#Filters
 Action: Actie
 Unit: Eenheid
 Currency: Valuta
@@ -44,7 +37,7 @@ jstree:
     unclassified: Niet-geclassificeerde producten
   no_tree: Geen structuur beschikbaar
   include_sub: Inclusief subcategorieën
-  loading: Bezig met laden...
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: zondag
@@ -96,6 +89,7 @@ datetimepicker:
     Oct: okt
     Nov: nov
     Dec: dec
+#ORO
 oro_config:
   form:
     config:
@@ -110,3 +104,242 @@ oro_config:
         notification:
           title: Meldingen
           system_notification: Meldingen nieuwe versies
+        loading_message:
+          title: Laadberichten
+          label: Schakel laadberichten in
+        loading_messages:
+          label: Beschikbare laadberichten
+pim_ui:
+  flash:
+    unsaved_changes: 'Er zijn niet opgeslagen wijzigingen. Wilt u de pagina toch verlaten?'
+"Sorry, page was not loaded correctly": "Sorry, de pagina is niet correct geladen"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Uw lokale wijzigingen zullen verloren gaan. Weet u zeker dat u de pagina wilt vernieuwen?"
+"navigation.message.content.outdated": "De pagina-inhoud van {{ title }} is verouderd, graag <a href='#' data-action='page-refresh'>de pagina vernieuwen</a>"
+"Content of pinned page is outdated": "Inhoud van vaste pagina is verouderd"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: Acties
+  add: Toevoegen
+  add_attributes: Attributen toevoegen
+  after: Na
+  all: Alle
+  and: en
+  apply: Pas toe
+  before: Voor
+  by: door
+  cancel: Annuleer
+  code: Code
+  confirm: Bevestig
+  confirm_deletion: Verwijderen bevestigen
+  confirm_revocation: Bevestig de intrekking
+  create: Aanmaken
+  created: Aangemaakt
+  delete: Verwijderen
+  done: Gedaan
+  edit: Wijzig
+  entity_updated: Er zijn niet-opgeslagen wijzigingen.
+  from: Van
+  general_properties: Algemene eigenschappen
+  history: Geschiedenis
+  label: Label
+  label_translations: Labelvertalingen
+  Label or identifier: label of identifier
+  less_than: Minder dan
+  loading: Laden...
+  media_upload: Klik en sleep een bestand om te uploaden of klik hier
+  more_than: Meer dan
+  next: Volgende
+  "no": "Nee"
+  none: Geen
+  not_available: Niet beschikbaar
+  now: Nu
+  ok: OK
+  permissions: Machtigingen
+  previous: Vorige
+  properties: Eigenschappen
+  remove: Verwijder
+  required_label: (vereist)
+  save: Opslaan
+  search: Zoeken
+  select2:
+    search: Zoeken...
+    no_match: Geen overeenkomsten gevonden
+    load_more: Meer resultaten laden...
+  status: Status
+  to: tot
+  type: Soort
+  update: Bijwerken
+  "yes": "Ja"
+  operator: Operator
+  operators:
+    "=": Is gelijk aan
+    "!=": Is niet gelijk aan
+    ">=": Groter dan of gelijk aan
+    ">": Groter dan
+    "<=": Kleiner dan of gelijk aan
+    "<": Kleiner dan
+    EMPTY: Is leeg
+    NOT EMPTY: Is niet leeg
+    CONTAINS: Bevat
+    DOES NOT CONTAIN: Bevat geen
+    STARTS WITH: Begint met
+    ENDS WITH: Eindigt met
+  read_more: Lees meer
+error:
+  exception: Oh, nee! Een {{ status_code }} fout deed zich voor...
+  forbidden: U heeft geen toegang tot deze pagina
+alert:
+  attribute_option:
+    error_occurred_during_submission: Er is een fout op de server opgetreden bij het versturen van het formulier
+    save_before_edit_other: Registreer uw wijzigingen op de andere tijden voordat u deze rij wizigd
+  session_storage:
+    not_available: Jouw webbrowser lijkt niet compatibel te zijn met sessionStorage. Gelieve uw beheerder te contacteren
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Er is een fout opgetreden
+    update:
+      fail: Update niet geslaagd
+      success: Update met succes voltooid
+    delete:
+      fail: Kan dit item niet verwijderen
+      success: Item succesvol verwijderd
+  module:
+    delete:
+      title: Verwijder deze {{ itemName }}
+      alternative_title: Verwijdering bevestigen
+      item: Weet u zeker dat u dit item wilt verwijderen?
+      item_placeholder: Weet u zeker dat u {{ itemName }} wilt verwijderen? Het is niet mogelijk om deze actie ongedaan te maken.
+    edit:
+      leave: Weet u zeker dat u deze pagina wilt verlaten?
+      discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
+      discard_changes_title: Weet u het zeker?
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} bewerking|]1, Inf[{{ count }} bewerkingen"
+  module:
+    create:
+      upload: Versleep jouw {{ type }} bestand naar hier, of klik om bestand te zoeken
+    download:
+      archive: Download gegenereerd archief
+      output: Download gegenereerde bestanden
+      input: Download leesbestanden
+      invalid_xlsx: Download ongeldige data
+      invalid_csv: Download ongeldige data
+pim_title:
+  oro_default: Dashboard
+  pim_enrich_attributegroup_index: Attribuutgroepen
+  pim_enrich_attributegroup_create: Attribuutgroepen | Aanmaken
+  pim_enrich_attributegroup_edit: Attribuutgroep {{ group.label }} | Bewerken
+  pim_enrich_catalog_volume_index: Catalogus volume monitoring
+  pim_enrich_categorytree_index: Categorie boomstructuren
+  pim_enrich_categorytree_create: Categoriestructuren|Aanmaken
+  pim_enrich_categorytree_edit: Categorie boom {{ category.label }} | Bewerken
+  pim_enrich_categorytree_create_tree: Categoriestructuren|Aanmaken
+  pim_enrich_attribute_index: Attributen
+  pim_enrich_attribute_create: Attributen | Aanmaken
+  pim_enrich_attribute_edit: Attribuut {{ attribute.label }} | Bewerken
+  pim_enrich_product_index: Producten
+  pim_enrich_product_edit: Product {{ product.label }} | Bewerken
+  pim_enrich_product_model_edit: Product model {{ product.label }} | Bewerken
+  pim_enrich_family_index: Families
+  pim_enrich_family_edit: Familie {{ family.label }} | Bewerken
+  pim_enrich_channel_index: Kanalen
+  pim_enrich_channel_create: Kanalen | Aanmaken
+  pim_enrich_channel_edit: Kanaal {{ channel.label }} | Bewerken
+  pim_enrich_currency_index: Valuta
+  pim_enrich_locale_index: Lokalisaties
+  pim_enrich_group_index: Groepen
+  pim_enrich_group_edit: Groep {{ group.label }} | Bewerken
+  pim_enrich_associationtype_index: Associatietypes
+  pim_enrich_associationtype_edit: Associatietype {{ association type.label }} | Bewerken
+  pim_enrich_grouptype_index: Groepstypen
+  pim_enrich_grouptype_edit: Groepstype {{ group type.label }} | Bewerken
+  pim_enrich_mass_edit_action_choose: Massa bewerken | Kies
+  pim_enrich_mass_edit_action_configure: Massa bewerken | Configureren
+  pim_enrich_mass_edit_action_perform: Massa bewerken | Uitvoeren
+  pim_enrich_job_tracker_index: Procesopvolger
+  pim_enrich_job_tracker_show: Procesopvolger | Toon taak
+  pim_enrich_mass_edit_action: Massa bewerken
+  pim_analytics_system_info_index: Systeeminformatie
+pim_menu:
+  tab:
+    activity: Activiteit
+    imports: Importeren
+    exports: Exporteren
+    settings: Instellingen
+    system: Systeem
+    help:
+      title: Help
+      helper: Akeneo Help centrum
+  item:
+    association_type: Associatietypes
+    attribute_group: Attribuutgroepen
+    channel: Kanalen
+    currency: Valuta
+    dashboard: Dashboard
+    family: Families
+    group: Groepen
+    group_type: Groepstypen
+    product_model: Productmodellen
+    export_history: Exportgeschiedenis
+    export_profile: Exportprofielen
+    import_history: Importgeschiedenis
+    import_profile: Importprofielen
+    configuration: Configuratie
+    user_management: Gebruikersbeheer
+    user: Gebruikers
+    user_group: Gebruikersgroepen
+    user_role: Rollen
+    info: Systeeminformatie
+    job_tracker: Procesopvolger
+    catalog_volume: Catalogus volume monitoring
+  navigation:
+    activity: Activiteit navigatie
+    system: Systeem navigatie
+    user: Gebruikersbeheer navigatie
+    settings: Instellingen navigatie
+    product: Product navigatie
+    product_infos: Product informatie
+  user:
+    logout: Afmelden
+    user_account: Mijn Account
+pim_notification:
+  types:
+    import: Importeer
+    export: Exporteer
+    quick_export: Snelle export
+    mass_edit: Massa bewerken
+akeneo_communication_channel:
+  link:
+    title: Mededelingen
+  panel:
+    title: Mededelingen
+    list:
+      empty: Er is momenteel geen nieuws. Blijf op de hoogte!
+      error: We konden het nieuws niet ophalen. Probeer het later opnieuw.
