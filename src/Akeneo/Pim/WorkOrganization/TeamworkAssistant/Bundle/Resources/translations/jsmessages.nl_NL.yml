@@ -53,3 +53,4 @@ pim_notification:
     project_created: Een nieuw project voor jou
     project_finished: Project afgewerkt
     project_calculation: Projectberekening
+    project_due_date: Project einddatum

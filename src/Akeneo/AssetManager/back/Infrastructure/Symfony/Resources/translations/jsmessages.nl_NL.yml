@@ -1,0 +1,412 @@
+pim_title:
+  akeneo_asset_manager_asset_family_index: Asset beheerder
+  akeneo_asset_manager_asset_family_edit: Bewerk een asset familie
+  akeneo_asset_manager_asset_edit: Bewerk een asset
+pim_asset_manager:
+  result_counter: "{0} Geen resultaten|{1} {{ count }} resultaat|]1,Inf] {{ count }} resultaten\n\n"
+  asset_counter: "{0} Geen resultaten|{1} {{ count }} resultaat|]1,Inf] {{ count }} resultaten\n\n"
+  asset_collection:
+    upload_asset: 'Upload asset'
+    helper:
+      text: 'Er is geen asset collectie voor deze familie. Om deze functionaliteit te gebruiken hoef je alleen maar een asset collectie attribuut toe te voegen. '
+    no_asset:
+      title: 'Sorry, er is geen asset voor dit product.'
+    remove_asset: Verwijder asset
+  asset_picker:
+    no_result:
+      sub_title: Probeer opnieuw met nieuwe zoekcriteria
+  asset_preview:
+    empty_main_media: Deze asset heeft geen bestand.
+    other_main_media: We kunnen geen voorbeeldweergave van deze asset genereren.
+    error: Er is een fout opgetreden bij het genereren van het voorbeeld.
+  app:
+    image:
+      wide:
+        remove: Verwijder bestand
+        download: Bestand downloaden
+        upload: Klik en sleep een bestand om te uploaden of klik hier
+      small:
+        remove: Verwijderen
+        upload: Slepen en neerzetten om te uploaden
+  asset_family:
+    column:
+      title: Asset navigatie
+      selector:
+        title: Asset families
+        no_data: Geen asset familie beschikbaar
+    validation:
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
+        should_be_unique: 'Er bestaat al een asset familie met code "{{ %asset_family_identifier% }}"'
+        limit_reached: 'Je kan de asset familie "{{ %asset_family_label% }}" niet aanmaken omdat je de limiet van {{ %limit% }} asset families hebt bereikt'
+      transformation:
+        limit_reached: 'Je hebt de limiet van {{ %limit% }} transformaties bereikt'
+        same_operation_twice: 'De bewerking "{{ %operation_type% }}" kan niet twee keer worden gedefinieerd in één transformatie'
+        source_can_not_be_a_target: 'De attribuutbron "{{ %attribute_code% }}" kan geen attribuut doel zijn van een transformatie.'
+        attribute_reference_should_exist: 'Het attribuut "{{ %attribute_code% }}" bestaat niet voor deze asset familie'
+        filename_is_not_unique: 'Een transformatie met de prefix "{{ %filename_prefix% }}" en achtervoegsel "{{ %filename_suffix% }}" bestaat al voor de attribuutbron "{{ %attribute_code% }}"'
+        code_is_not_unique: 'Je kunt geen twee transformaties definiëren met dezelfde code "{{ %transformation_code% }}"'
+        unknown_extra_field: 'De eigenschap {{ {{ field }} }} werd niet verwacht.'
+      naming_convention:
+        property_should_exist: 'De eigenschap "{{ %property% }}" bestaat niet voor deze asset familie'
+      rule_template:
+        extrapolated_attribute_should_exist: 'Het attribuut "{{ %attribute_code% }}" bestaat niet voor deze asset familie'
+        assignmement_attribute_does_not_exist: 'productattribuut "{{ %product_attribute_code% }}" bestaat niet'
+        assignmement_attribute_is_not_an_asset_collection: 'productattribuut "{{ %product_attribute_code% }}" is geen attribuut van het type asset collectie'
+    button:
+      save: Opslaan
+      save_permission: Opslaan
+      create: Maak een nieuwe asset familie aan
+      edit: Familie bewerken
+      view: Familie bekijken
+      execute_product_link_rules: Regels toepassen
+    permission:
+      title: Beheer rechten asset familie
+    breadcrumb: Asset families
+    img: De hoofdafbeelding van de asset familie genaamd "{{ label }}"
+    tab:
+      attribute: Attributen
+      properties: Eigenschappen
+      permission: Machtigingen
+      transformations: Transformaties
+      product_link_rules: Product link regels
+    transformations:
+      help:
+        title: 'Welkom bij uw nieuwe asset management module!'
+        description: 'Je kunt hier tot 10 transformaties per asset familie definiëren.'
+        link: 'Als je meer wilt weten over de nieuwe Asset Manager transformaties, klik hier'
+      subsection: 'Transformatie eigenschappen'
+    product_link_rules:
+      naming_convention_subsection: 'Eigenschappen naamgevingsregels'
+      product_link_rules_subsection: 'Eigenschappen product link regels'
+      help:
+        title: 'Welkom bij uw nieuwe asset management module!'
+        description: 'Je kunt hier maximaal 2 product link regels per asset familie vastleggen.'
+        link: 'Als u meer wilt weten over de Product Link Regels functie, klik hier'
+      execute_rules:
+        confirm_title: Uitvoering bevestigen
+        cancel: Annuleren
+    properties:
+      title: Eigenschappen assetfamilie
+      identifier: Code
+      label: Label
+      media_file: Mediabestand
+      attribute_as_main_media: Attribuut met hoofdafbeelding
+    attribute:
+      title: Asset attributen
+      attribute:
+        error:
+          render_list: 'Er is een fout opgetreden tijdens het renderen van het "{{ %attribute_code% }}" attribuut'
+          render_edit: 'Er is een fout opgetreden tijdens het renderen van de extra eigenschappen velden van het "{{ %attribute_code% }}" attribuut'
+    module:
+      delete:
+        button: Verwijder asset familie
+        confirm: Weet je zeker dat je deze asset familie wilt verwijderen?
+    index:
+      grid:
+        count: '{0} Geen Asset familie|{1} {{ count }} Asset familie|]1,Inf] {{ count }} Asset families'
+        help:
+          title: 'Welkom bij de Asset familie!'
+          description_part_one: Verrijk relevante gerelateerde productinformatie (bijv. merken, fabrikanten, kleuren, materialen, ingrediënten...).
+          description_part_two: Het stelt u in staat om uw klanten een betere productervaring te bieden.
+          description_part_three: Klik op de knop "Aanmaken" om je eerste referentie-entiteit te maken en stel vervolgens de attributen en records in.
+          description_part_four: Maak daarna, om producten te koppelen, een product attribuut type die gerelateerd is aan deze asset familie.
+          description_part_five: Voor meer details nodigen we je uit om dit artikel te bekijken.
+    create:
+      header:
+        title: Aanmaken
+      subtitle: Asset families
+      title: Maak een nieuwe asset familie aan
+      input:
+        label: Label
+        code: Code (verplicht)
+      confirm: Opslaan
+    delete:
+      message: Weet u zeker dat u de asset familie "{{ assetFamilyLabel }}" wilt verwijderen?
+      title: Attribuut
+    notification:
+      save:
+        success: Asset familie is succesvol bijgewerkt.
+        fail: Er is een fout opgetreden tijdens het opslaan van de asset familie.
+      create:
+        success: Asset familie is succesvol aangemaakt.
+        fail: Er is een fout opgetreden tijdens het aanmaken van de asset familie.
+      delete:
+        success: Asset familie succesvol verwijderd.
+        fail: Er is een fout opgetreden tijdens het verwijderen van de asset familie.
+      compute_transformations:
+        success: Transformaties zijn gestart. Zodra deze taak is voltooid, ziet u de nieuwe variaties in uw assets.
+        fail: Er is een fout opgetreden bij het uitvoeren van de transformaties
+    helper:
+      no_asset_family:
+        link: Voor meer details nodigen we je uit om dit artikel te bekijken.
+    no_data:
+      no_asset:
+        link: Klik hier om een asset toe te voegen
+      no_asset_family:
+        title: Sorry, er is geen asset familie!
+        link: Klik hier om een asset familie toe te voegen
+  permission:
+    notification:
+      save:
+        success: De rechten van de asset familie zijn succesvol bijgewerkt.
+        fail: Ten minste één gebruikersgroep moet de toestemming hebben om deze asset familie te bewerken
+    no_data:
+      title: U heeft geen gebruikersgroep
+      subtitle: Om de rechten van de asset familie te beheren moet je ten minste één gebruikersgroep hebben.
+      link: Klik hier om je eerste gebruikersgroep toe te voegen
+  asset:
+    img: De hoofdafbeelding van de asset familie genaamd "{{ label }}"
+    validation:
+      limit_reached: 'Je kunt de asset "{{ %asset_label% }}" niet aanmaken omdat je de limiet van {{ %limit% }} assets voor deze asset familie hebt bereikt'
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
+        should_be_unique: 'Deze code bestaat al voor een andere asset.'
+    no_data:
+      subtitle: Klik op de knop "Nieuwe toevoegen" om de eerste asset te maken
+    no_result:
+      title: Er is geen resultaat voor uw zoekopdracht
+      subtitle: Probeer opnieuw met nieuwe zoekcriteria.
+    selector:
+      error:
+        value: Oeps, het lijkt erop dat het rendering van het "{{ fieldName }}" veld is mislukt. Zie de ontwikkelaarsconsole voor meer informatie.
+    button:
+      save: Opslaan
+      create: Asset aanmaken
+      mass_upload: Groepsgewijs uploaden
+      delete: Verwijderen
+      delete_all: Verwijder alle assets
+      back: Terug naar het overzicht
+      launch_transformations: Transformaties uitvoeren
+      fullscreen: Volledig scherm
+    product:
+      attribute: Productattribuut
+      counter: '{{ totalCount }} resultaat|{{ totalCount }} resultaten'
+      dropdown:
+        attribute: Productattribuut
+      no_attribute:
+        title: Er is geen product attribuut gekoppeld aan de asset familie "{{ entityLabel }}"
+        subtitle: 'Om te beginnen met het koppelen van producten aan deze asset familie kunt u een nieuwe maken: '
+        link: Productattribuut aanmaken
+      not_enough_items:
+        button: Bekijk alle producten
+      no_product:
+        title: Deze asset is niet gekoppeld aan een product via het "{{ entityLabel }}" product attribuut.
+        subtitle: 'Begin met het koppelen van producten aan dit attribuut om ze hier te zien'
+    enrich:
+      title: Asset attributen
+      code: Code
+      label: Label
+      product_subsection: Gekoppelde producten
+      main_media_preview: Voorbeeldweergave hoofdafbeelding
+    create:
+      header:
+        title: Aanmaken
+      subtitle: Asset families
+      title: Nieuwe asset toevoegen in {{ entityLabel }}
+      input:
+        label: Label
+        code: Code (verplicht)
+        create_another: Nog een asset aanmaken
+      confirm: Opslaan
+    upload:
+      line_count: '[0,1]{{ count }} bestand|]1,Inf] {{ count }} bestanden'
+      title: Upload assets
+      lines: Bestanden
+      retry: Opnieuw proberen
+      remove: Verwijderen
+      confirm: Aanmaken
+      add_to_product: Aan product toevoegen
+      drop_or_click_here: Sleep uw bestanden of klik hier
+      will_appear_here: Upload assets om ze hier weer te geven!
+      discard_changes: Uw assets worden niet opgeslagen als u dit scherm sluit zonder ze aan te maken.
+      list:
+        asset: Asset
+        filename: Bestandsnaam
+        code: Code (verplicht)
+        locale: Lokalisatie (verplicht)
+        channel: Kanaal (verplicht)
+        status: Status
+      status:
+        waiting_for_upload: Niet geüpload
+        upload_in_progress: in behandeling
+        uploaded: geüpload
+        valid: Klaar om aan te maken
+        invalid: fout
+        created: aangemaakt
+    delete:
+      title: Asset
+    delete_all:
+      confirm: Weet u zeker dat u alle "{{ entityIdentifier }}" assets wilt verwijderen? Als deze gekoppeld zijn aan producten, worden de koppelingen naar deze producten verwijderd.
+    grid:
+      search: Zoek op label, code en tekstattributen
+      column:
+        code: Code
+        image: Afbeelding
+        label: Label
+        action: Acties
+      completeness:
+        title_no_required: Geen attribuut vereist
+        title_non_complete: 0 van de {{ required }} attributen voltooid
+        title_ongoing: '{{ complete }} van de {{ required }} attributen voltooid'
+        title_complete: Alle {{ required }} attributen zijn voltooid
+    tab:
+      enrich: Verrijken
+    notification:
+      save:
+        success: Asset is succesvol bijgewerkt.
+        fail: Er is een fout opgetreden tijdens het opslaan van de asset.
+        validation_error: De asset kon niet worden bijgewerkt
+      create:
+        success: Asset is succesvol aangemaakt.
+        fail: Er is een fout opgetreden tijdens het aanmaken van de asset
+      delete:
+        success: Asset "{{ code }}" is succesvol verwijderd.
+        fail: Er is een fout opgetreden tijdens het verwijderen van de asset
+      delete_all:
+        success: Alle "{{ entityIdentifier }}" assets zijn succesvol verwijderd.
+        fail: Er is een fout opgetreden tijdens het verwijderen van alle assets van deze asset familie
+  attribute:
+    validation:
+      limit_reached: 'U kunt het attribuut "{{ %attribute_label% }}" niet aanmaken omdat u de limiet van {{ %limit% }} attributen voor deze asset familie hebt bereikt'
+    default:
+      code: Code
+      label: Label
+      media_file: Mediabestand
+    type:
+      text: Tekst
+      media_file: Mediabestand
+      asset: Asset met een enkele link
+      asset_collection: Asset verzameling
+      option: Enkele optie
+      option_collection: Meerdere opties
+      number: Nummer
+      media_link: Medialink
+    is_read_only: Alleen lezen in de User Interface.
+    media_type_preview: Voorvertoning van het mediatype
+    no_data:
+      title: Er zijn geen aangepaste attributen voor {{ entityLabel }}
+      subtitle: Klik op de knop "Voeg een attribuut toe" om uw eerste aangepaste attribuut te configureren
+    button:
+      add: Voeg een attribuut toe
+    create:
+      header:
+        title: Aanmaken
+      subtitle: Asset families
+      title: Voeg een nieuw asset attribuut toe
+      description: De volgende parameters, behalve het label, kunnen niet worden bijgewerkt na het aanmaken van het attribuut
+      input:
+        code: Code (verplicht)
+        label: Label
+        type: Attribuuttype
+        asset_type: Gekoppelde asset familie (verplicht)
+        value_per_locale: Waarde per taal
+        value_per_channel: Waarde per kanaal
+      placeholder:
+        asset_type: Selecteer uw gekoppelde asset familie
+      confirm: Opslaan
+    edit:
+      delete: Verwijder het attribuut
+      title: Attribuut {{ code }} bewerken
+      save: Opslaan
+      cancel: Annuleren
+      input:
+        code: Code (verplicht)
+        label: Label
+        type: Attribuuttype
+        value_per_locale: Waarde per taal
+        value_per_channel: Waarde per kanaal
+        is_required: Vereist voor compleetheid
+        is_read_only: Alleen lezen in de User Interface.
+        max_length: Maximaal aantal tekens
+        textarea: Tekstblok
+        is_rich_text_editor: Opgemaakte tekst-editor
+        max_file_size: Maximale bestandsgrootte (MB)
+        allowed_extensions: Toegestane bestandsextenties
+        validation_rule: Validatieregel
+        regular_expression: Reguliere expressie
+        min_value: Minimumwaarde
+        max_value: Maximumwaarde
+        manage_options:
+          confirmation:
+            discard_changes: Als u de pagina verlaat worden de wijzigingen niet opgeslagen
+          quick_edit:
+            label: Opties beheren
+          option:
+            label:
+              placeholder: Schrijf je nieuwe optielabel hier
+        options:
+          validation_rule:
+            none: Geen
+            email: E-mail
+            regular_expression: Reguliere expressie
+            url: URL
+        decimals_allowed: Decimale waarden toegestaan
+        prefix: Voorvoegsel
+        suffix: Achtervoegsel
+        media_type: Mediatype
+    delete:
+      message: Weet u zeker dat u het attribuut "{{ attributeLabel }}" wilt verwijderen?
+      title: Attribuut
+    notification:
+      list:
+        fail: Er deed zich een fout voor tijdens het updaten van de attribuutlijst
+      save:
+        success: Attribuut succesvol bijgewerkt.
+        fail: Er deed zich een fout voor tijdens het opslaan van het attribuut
+        validation_error: Het attribuut kon niet worden bijgewerkt
+      create:
+        success: Attribuut succesvol aangemaakt.
+        fail: Er deed zich een fout voor tijdens het aanmaken van het attribuut
+        validation_error: Het attribuut kon niet aangemaakt worden
+      delete:
+        success: Attribuut succesvol verwijderd.
+        fail: Er is een fout opgetreden tijdens het verwijderen van het attribuut
+    options:
+      no_value: Klik hier om een optie te selecteren.
+      sub_title: Asset families
+      helper:
+        title: Labelvertalingen
+    media_link:
+      placeholder: Plaats hier je mediakoppeling
+      read_only: Deze mediakoppeling is alleen-lezen
+      reload: Miniatuurweergave opnieuw laden
+    media_file:
+      placeholder: Klik en sleep om te uploaden of klik hier
+      read_only: Deze mediakoppeling is alleen-lezen
+      uploading: Uploaden...
+    used_as_transformation_target: Dit veld is alleen-lezen omdat het wordt gebruikt als doelveld in een asset transformatie.
+  modal:
+    delete:
+      subtitle: Bevestig verwijderen
+      button:
+        cancel: Annuleren
+        confirm: Verwijderen
+pim_enrich:
+  confirmation:
+    discard_changes: 'Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.'
+  entity:
+    attribute:
+      property:
+        type:
+          pim_catalog_asset_collection: Asset verzameling
+        section:
+          type_specific: Type specifieke parameters
+permission:
+  mass_action: '{{ rightLevel }} toepassen op alle groepen'
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Assen op asset families
+      hint: Als je de asset families gebruikt, zijn hier de assen om je te helpen je volume te monitoren.
+  axis:
+    count_asset_family: Asset families
+    average_max_assets_per_asset_family: Assets per asset familie
+    average_max_attributes_per_asset_family: Attributen per asset familie
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Bereken asset transformaties"
+        asset_manager_link_assets_to_products: "Koppel assets aan producten"

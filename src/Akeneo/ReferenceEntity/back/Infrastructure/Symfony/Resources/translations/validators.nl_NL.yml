@@ -34,6 +34,7 @@ pim_reference_entity:
         codes_dont_exist: "De volgende optie codes bestaan niet voor dit attribuut : \"%option_codes%\""
       record:
         should_exist: 'Het record "%record_code%" is niet gevonden.'
+        should_not_be_used_as_product_variant_axis: 'U kunt deze entiteit niet verwijderen omdat deze gebruikt wordt als variant-as in één van uw productvarianten'
       record_collection:
         should_exist: 'De records "%record_codes%" zijn niet gevonden.'
       limit_reached: 'Je kunt het record "%record_label%" niet aanmaken omdat u de limiet van %limit% records voor deze referentieentiteit hebt bereikt'

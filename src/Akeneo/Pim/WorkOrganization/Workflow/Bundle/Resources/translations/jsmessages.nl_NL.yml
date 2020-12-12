@@ -9,6 +9,7 @@ pim_datagrid:
     proposal: Er is geen voorstel om na te kijken.
   no_results:
     proposal: Er is geen voorstel om na te kijken. Probeer je zoekcriteria aan te passen.
+    product_draft: Er is geen product concept om te beoordelen. Probeer te zoeken met andere criteria.
 pimee_datagrid:
   cells:
     expand:

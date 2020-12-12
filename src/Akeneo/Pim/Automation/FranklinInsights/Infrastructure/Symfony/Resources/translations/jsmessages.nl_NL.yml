@@ -6,13 +6,23 @@ akeneo_franklin_insights:
           active: Actief
           inactive: Inactief
     attributes_mapping:
+      flash:
+        fail_to_retrieve_franklin_mapping: 'Attribuuttoewijzing is momenteel niet beschikbaar. Kom later nog terug.'
       fields:
         franklin_insights:
           active: Actief
           inactive: Inactief
+      module:
+        index:
+          family_progress:
+            mapped_attribute: '{{ mapped_count }} attributen toegewezen en {{ suggested_count }} voorgesteld'
+          suggested: Voorgesteld
     product_subscription:
       constraint:
         product_subscription_with_same_identifier_already_exist: 'Een ander product met ten minste één identieke id is al geabonneerd.'
+    attribute_options_mapping:
+      flash:
+        load_failed: 'Update mislukt'
   product:
     edit:
       btn.push: Gegevens suggereren
@@ -23,3 +33,15 @@ akeneo_franklin_insights:
     module:
       activation:
         activated: 'Geactiveerd'
+  key_figures:
+    axis:
+      franklin_attribute_created: Attributen aangemaakt
+      franklin_attribute_added_to_family: Attributen toegevoegd aan een familie
+      credits_consumed: Credits verbruikt
+      franklin_values_validated: Attribuutwaarden gevalideerd
+      franklin_values_in_error: Attribuutwaarden in fout
+      franklin_values_suggested: Voorstel attribuutwaarden
+      franklin_names_and_values_suggested: Voorgestelde attribuutnamen en -waarden
+batch_jobs:
+  default_steps:
+    notify_if_pending_attributes: Gebruikers informeren over te mappen attributen

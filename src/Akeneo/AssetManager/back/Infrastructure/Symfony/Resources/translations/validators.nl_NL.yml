@@ -1,5 +1,47 @@
 pim_asset_manager:
   asset_family:
     validation:
+      assets:
+        should_have_no_asset: 'U kunt deze familie niet verwijderen omdat er assets bestaan voor deze asset familie'
+      asset_family_attributes:
+        should_not_be_linked: 'U kunt deze familie niet verwijderen omdat er asset familie attributen gekoppeld zijn aan deze asset familie'
+      asset_family_permissions:
+        at_least_one_user_group_should_have_edit_permission: 'Ten minste één gebruikersgroep moet de toestemming hebben om deze familie te bewerken'
+      product_attributes:
+        should_not_be_linked: 'U kunt deze familie niet verwijderen omdat er asset familie attributen gekoppeld zijn aan deze asset familie'
       rule_template:
+        limit_reached: 'Je hebt de limiet bereikt van %limit% product link regels voor de "%asset_family_identifier%" asset familie.'
         extrapolated_attribute_type_should_be_supported: 'Het attribuut "%attribute_code%" van het type "%attribute_type%" wordt niet ondersteund, alleen de volgende attribuuttypes worden ondersteund voor dit veld: %supported_attribute_type%'
+        assignmement_attribute_does_not_exist: 'productattribuut "%product_attribute_code%" bestaat niet'
+        assignmement_attribute_is_not_an_asset_collection: 'productattribuut "%product_attribute_code%" is geen attribuut van het type asset collectie'
+      attribute_as_main_media:
+        not_found: 'Het attribuut "%attribute_as_main_media%" ingesteld als belangrijkste media voor de asset familie bestaat niet'
+        invalid_type: 'Het attribuut dat is ingesteld als belangrijkste media voor de asset familie moet van type zijn: %valid_attribute_as_main_media_types%'
+      transformation:
+        limit_reached: 'Je hebt de limiet van %limit% transformaties bereikt'
+        same_operation_twice: 'De bewerking "%operation_type%" kan niet twee keer worden gedefinieerd in één transformatie'
+        source_can_not_be_a_target: 'De attribuutbron "%attribute_code%" kan geen attribuut doel zijn van een transformatie.'
+        source_should_be_media_file: 'Het bronattribuut moet van het type mediabestand zijn.'
+        target_should_be_media_file: 'Het doelattribuut moet van het type mediabestand zijn.'
+        filename_is_not_unique: 'Een transformatie met de prefix "%filename_prefix%" en achtervoegsel "%filename_suffix%" bestaat al voor de attribuutbron "%attribute_code%"'
+        target_is_not_unique: 'Twee transformaties kunnen niet hetzelfde doel hebben.'
+        code_is_not_unique: 'Je kunt geen twee transformaties definiëren met dezelfde code "%transformation_code%"'
+        filename_prefix_suffix_empty: 'U moet ten minste de eigenschappen bestandsnaam_prefix of bestandsnaam_suffix vullen en één van deze mag geen lege tekenreeks zijn.'
+        empty_operation_list: 'Ten minste één transformatieoperatie is vereist.'
+        unknown_extra_field: 'De eigenschap {{ field }} werd niet verwacht.'
+      naming_convention:
+        property_should_exist: 'De eigenschap "%property%" bestaat niet voor deze asset familie'
+        not_main_media_attribute_code: 'De eigenschap moet overeenkomen met de code van het attribuut dat is gedefinieerd als de belangrijkste media'
+  asset:
+    validation:
+      file:
+        target_readonly: 'U kunt de waarde van "%attribute_code%" niet bijwerken omdat deze als doelveld voor een transformatie is ingesteld.'
+      main_media:
+        not_main_media_attribute: 'Het verwachte attribuut als belangrijkste media is "%main_media_attribute%", "%attribute%" gegeven.'
+  attribute:
+    validation:
+      media_file:
+        cannot_contain_extension_separator: 'Extensies kunnen het extensie scheidingsteken ".", "%wrong_extension%" niet bevatten.'
+        should_only_contain_lowercase_letters_and_numbers: 'Extensies mogen alleen kleine letters en cijfers bevatten, "%wrong_extension%" gegeven.'
+        cannot_be_longer_than_max: 'Extensies mogen niet langer zijn dan %expected_length% tekens, lengte van %actual_length% gegeven.'
+        there_cannot_be_duplicated_extensions: 'Er kunnen geen gedupliceerde extensies worden gebruikt: %duplicates%'
