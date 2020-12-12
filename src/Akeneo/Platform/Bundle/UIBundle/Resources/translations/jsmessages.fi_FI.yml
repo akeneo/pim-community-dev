@@ -317,3 +317,11 @@ pim_notification:
     export: Vienti
     quick_export: Nopea vienti
     mass_edit: Massamuokkaus
+akeneo_communication_channel:
+  link:
+    title: Ilmoitukset
+  panel:
+    title: Ilmoitukset
+    list:
+      empty: Ei uutisia tällä hetkellä. Pysy kuulolla!
+      error: Emme voineet noutaa uutisia. Yritä myöhemmin uudelleen.
