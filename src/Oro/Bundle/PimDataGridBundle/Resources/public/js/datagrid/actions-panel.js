@@ -126,6 +126,7 @@ define([
           const isProductGrid = 'product-grid' === groupLaunchers[0]?.action.datagrid.name || false;
           const props = {
             showWithLabelsSelect: isProductGrid,
+            showWithMediaSelect: isProductGrid,
             onActionLaunch: formValue => {
               const actionName = `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}_${
                 formValue['type']
