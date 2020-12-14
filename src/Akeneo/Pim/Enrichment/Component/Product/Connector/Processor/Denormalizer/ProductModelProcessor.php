@@ -102,7 +102,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             return null;
         }
 
-        if (!isset($standardProductModel['code'])) {
+        if (empty($code)) {
             $this->skipItemWithMessage($standardProductModel, 'The code must be filled');
         }
 
@@ -127,14 +127,15 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             }
         }
 
+        if (null !== $code) {
+            $standardProductModel['code'] = $code;
+        }
+
         if (isset($standardProductModel['values'])) {
             try {
                 $standardProductModel['values'] = $this->mediaStorer->store($standardProductModel['values']);
             } catch (InvalidPropertyException $e) {
                 $this->objectDetacher->detach($productModel);
-                if (null !== $code) {
-                    $standardProductModel['code'] = $code;
-                }
                 $this->skipItemWithMessage($standardProductModel, $e->getMessage(), $e);
             }
         }
@@ -144,9 +145,6 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         } catch (PropertyException $exception) {
             $this->objectDetacher->detach($productModel);
             $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
-            if (null !== $code) {
-                $standardProductModel['code'] = $code;
-            }
             $this->skipItemWithMessage($standardProductModel, $message, $exception);
         }
 
@@ -154,9 +152,6 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
 
         if ($violations->count() > 0) {
             $this->objectDetacher->detach($productModel);
-            if (null !== $code) {
-                $standardProductModel['code'] = $code;
-            }
             $this->skipItemWithConstraintViolations($standardProductModel, $violations);
         }
 
