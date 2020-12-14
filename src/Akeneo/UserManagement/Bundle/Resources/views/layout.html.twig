@@ -17,19 +17,41 @@
     <div id="page">
         <div id="top-page">
             {% block main %}
-                {% block messages %}
-                    {% if app.session.flashbag.peekAll|length > 0 %}
-                        {% for type, messages in app.session.flashbag.all %}
-                            {% for message in messages %}
-                            <div class="alert{{ type ? ' alert-'~type : '' }}">
-                            {{ message|trans|raw }}
-                            </div>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endif %}
-                {% endblock %}
-                {% block content %}
-                {% endblock content %}
+            <div class="AuthenticationWrapper">
+                <div class="RightWrapper">
+                    <div class="FormWrapper">
+                        <div class="Logo">
+                            <img src="{{ '/bundles/pimui/images/illustrations/login/Logo.svg' }}" alt={{ 'pim_login.logo_title'|trans|e }} />
+                        </div>
+                        <div class="ContainerForm">
+                            {% block messages %}
+                                {% if app.session.flashbag.peekAll|length > 0 %}
+                                    {% for type, messages in app.session.flashbag.all %}
+                                        {% for message in messages %}
+                                            <div class="alert{{ type ? ' alert-'~type : '' }}">
+                                                {{ message|trans|raw }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endblock %}
+                            {% block content %}
+                            {% endblock content %}
+                        </div>
+                    </div>
+                    <a class="Footer" href="https://www.akeneo.com/">
+                        <div class="Powered">
+                            {{ 'pim_login.footer.powered'|trans }}
+                            <img class="PoweredImage" src="{{'/bundles/pimui/images/logo_login.svg'}}" alt="{{ 'pim_login.footer.powered_image_title'|trans|e }}" />
+                        </div>
+                        <div class="BaseLine">{{'pim_login.footer.baseline'|trans}}</div>
+                    </a>
+                </div>
+                <div class="LeftWrapper">
+                    <div class="IllustrationLogin"></div>
+                </div>
+            </div>
+
             {% endblock main %}
         </div>
     </div>
