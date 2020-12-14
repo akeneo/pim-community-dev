@@ -20,6 +20,4 @@ interface CriterionEvaluationRepositoryInterface
     public function create(Write\CriterionEvaluationCollection $criteriaEvaluations): void;
 
     public function update(Write\CriterionEvaluationCollection $criteriaEvaluations): void;
-
-    public function deleteUnknownProductsEvaluations(): void;
 }

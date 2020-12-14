@@ -54,6 +54,8 @@ final class ListProductsQueryHandler
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
 
+    private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $channelRepository,
         ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
@@ -62,7 +64,8 @@ final class ListProductsQueryHandler
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         GetConnectorProducts $getConnectorProductsQuery,
         GetConnectorProducts $getConnectorProductsQuerywithOptions,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
     ) {
         $this->channelRepository = $channelRepository;
         $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
@@ -72,6 +75,7 @@ final class ListProductsQueryHandler
         $this->getConnectorProductsQuery = $getConnectorProductsQuery;
         $this->getConnectorProductsQuerywithOptions = $getConnectorProductsQuerywithOptions;
         $this->eventDispatcher = $eventDispatcher;
+        $this->getProductsWithQualityScores = $getProductsWithQualityScores;
     }
 
     /**
@@ -106,18 +110,28 @@ final class ListProductsQueryHandler
             $this->getConnectorProductsQuerywithOptions :
             $this->getConnectorProductsQuery;
 
+        $queryLocales = $this->getLocales($query->channelCode, $query->localeCodes);
+
         $connectorProductList = $connectorProductsQuery->fromProductQueryBuilder(
             $pqb,
             $query->userId,
             $query->attributeCodes,
             $query->channelCode,
-            $this->getLocales($query->channelCode, $query->localeCodes)
+            $queryLocales,
         );
 
         $productIds = array_map(function (ConnectorProduct $connectorProduct) {
             return $connectorProduct->id();
         }, $connectorProductList->connectorProducts());
         $this->eventDispatcher->dispatch(new ReadProductsEvent($productIds));
+
+        if ($query->withQualityScores()) {
+            $connectorProductList = $this->getProductsWithQualityScores->fromConnectorProductList(
+                $connectorProductList,
+                $query->channelCode,
+                $queryLocales ?? []
+            );
+        }
 
         return $connectorProductList;
     }
