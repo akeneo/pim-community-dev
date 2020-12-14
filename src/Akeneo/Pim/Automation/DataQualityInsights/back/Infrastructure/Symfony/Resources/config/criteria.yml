@@ -28,21 +28,21 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
 
-    akeneo.pim.automation.data_quality_insights.criteria_evaluation.evaluate_products_attribute_spelling:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling
+    Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetProductFamilyAttributeCodesQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeSpellcheckQuery'
+
+    akeneo.pim.automation.data_quality_insights.criteria_evaluation.evaluate_products_attribute_spelling:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateProductAttributeSpelling
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
 
     akeneo.pim.automation.data_quality_insights.criteria_evaluation.evaluate_product_models_attribute_spelling:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateProductModelAttributeSpelling
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetProductModelFamilyAttributeCodesQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeSpellcheckQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling'
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
 

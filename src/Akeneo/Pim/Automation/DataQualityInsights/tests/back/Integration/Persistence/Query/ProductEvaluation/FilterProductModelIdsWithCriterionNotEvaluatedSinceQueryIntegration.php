@@ -20,9 +20,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
-final class FilterProductModelIdsWithCriterionNotEvaluatedSinceQueryIntegration extends TestCase
+final class FilterProductModelIdsWithCriterionNotEvaluatedSinceQueryIntegration extends DataQualityInsightsTestCase
 {
     /** @var CriterionEvaluationRepositoryInterface */
     private $productCriterionEvaluationRepository;
@@ -34,28 +34,26 @@ final class FilterProductModelIdsWithCriterionNotEvaluatedSinceQueryIntegration 
         $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
     }
 
-    protected function getConfiguration()
-    {
-        return $this->catalog->useMinimalCatalog();
-    }
-
     public function test_it_filters_product_model_ids_with_a_given_criterion_not_evaluated_since_a_given_date()
     {
+        $this->createMinimalFamilyAndFamilyVariant('a_family', 'a_family_variant');
+
         $evaluatedSince = new \DateTimeImmutable('2020-06-22 10:21:34');
         $criterionCode = new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE);
         $anotherCriterionCode = new CriterionCode('completeness');
         $productModelIdsToFilter = [
-            new ProductId(12),
-            new ProductId(698),
-            new ProductId(76),
-            new ProductId(42),
-            new ProductId(123456),
+            new ProductId($this->createProductModelWithoutEvaluations('pm_1', 'a_family_variant')->getId()),
+            new ProductId($this->createProductModelWithoutEvaluations('pm_2', 'a_family_variant')->getId()),
+            new ProductId($this->createProductModelWithoutEvaluations('pm_3', 'a_family_variant')->getId()),
+            new ProductId($this->createProductModelWithoutEvaluations('pm_4', 'a_family_variant')->getId()),
+            new ProductId($this->createProductModelWithoutEvaluations('pm_5', 'a_family_variant')->getId()),
         ];
+        $notInvolvedProductModel = $this->createProductModelWithoutEvaluations('not_involved_product_model', 'a_family_variant')->getId();
 
         $this->givenAPendingProductModelCriterion($productModelIdsToFilter[0], $criterionCode, $evaluatedSince->modify('-2 MINUTE'));
         $this->givenAProductModelCriterionEvaluatedAt($productModelIdsToFilter[1], $criterionCode, $evaluatedSince);
         $this->givenAProductModelCriterionEvaluatedAt($productModelIdsToFilter[1], $anotherCriterionCode, $evaluatedSince->modify('-1 SECOND'));
-        $this->givenAProductModelCriterionEvaluatedAt(new ProductId(978), $criterionCode, $evaluatedSince->modify('-1 HOUR'));
+        $this->givenAProductModelCriterionEvaluatedAt(new ProductId($notInvolvedProductModel), $criterionCode, $evaluatedSince->modify('-1 HOUR'));
 
         $this->givenAProductModelCriterionEvaluatedAt($productModelIdsToFilter[2], $criterionCode, $evaluatedSince->modify('-1 SECOND'));
         $this->givenAProductModelCriterionEvaluatedAt($productModelIdsToFilter[3], $criterionCode, $evaluatedSince->modify('-3 DAY'));
