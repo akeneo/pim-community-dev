@@ -719,14 +719,6 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
-    {
-        return $this->getAssociationForTypeCode($type->getCode());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getReference()
     {
         return $this->getIdentifier();

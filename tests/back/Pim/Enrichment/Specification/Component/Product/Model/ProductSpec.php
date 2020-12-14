@@ -44,31 +44,6 @@ class ProductSpec extends ObjectBehavior
         $this->getCategories()->shouldHaveCount(2);
     }
 
-    function it_returns_association_from_an_association_type()
-    {
-        $upsellAssociation = new ProductAssociation();
-        $upsellType = new AssociationType();
-        $upsellType->setCode('UPSELL');
-        $upsellAssociation->setAssociationType($upsellType);
-
-        $xSellAssociation = new ProductAssociation();
-        $xSellType = new AssociationType();
-        $xSellType->setCode('X_SELL');
-        $xSellAssociation->setAssociationType($xSellType);
-
-        $this->addAssociation($upsellAssociation);
-        $this->addAssociation($xSellAssociation);
-        $this->getAssociationForType($upsellType)->shouldBeLike($upsellAssociation);
-    }
-
-    function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection()
-    {
-        $xSellType = new AssociationType();
-        $xSellType->setCode('X_SELL');
-
-        $this->getAssociationForType($xSellType)->shouldReturn(null);
-    }
-
     function it_has_not_attribute_in_family_without_family(AttributeInterface $attribute)
     {
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
