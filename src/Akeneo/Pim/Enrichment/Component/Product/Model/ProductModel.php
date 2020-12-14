@@ -723,8 +723,9 @@ class ProductModel implements ProductModelInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
-            // TODO error message
-            throw new \LogicException();
+            throw new \LogicException(
+                \sprintf('This product model has no association for the "%s" association type', $associationTypeCode)
+            );
         }
 
         if (!$association->hasProduct($product)) {
@@ -754,8 +755,9 @@ class ProductModel implements ProductModelInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
-            // TODO error message
-            throw new \LogicException();
+            throw new \LogicException(
+                \sprintf('This product model has no association for the "%s" association type', $associationTypeCode)
+            );
         }
 
         if (!$association->getProductModels()->contains($productModel)) {
@@ -785,8 +787,9 @@ class ProductModel implements ProductModelInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
-            // TODO error message
-            throw new \LogicException();
+            throw new \LogicException(
+                \sprintf('This product model has no association for the "%s" association type', $associationTypeCode)
+            );
         }
 
         if (!$association->getGroups()->contains($group)) {
