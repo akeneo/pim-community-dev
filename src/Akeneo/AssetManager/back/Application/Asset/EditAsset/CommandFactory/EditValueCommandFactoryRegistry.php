@@ -18,10 +18,10 @@ class EditValueCommandFactoryRegistry implements EditValueCommandFactoryRegistry
         $this->commandFactories[] = $editDataCommandFactory;
     }
 
-    public function getFactory(AbstractAttribute $attribute, array $normalizedCommand): EditValueCommandFactoryInterface
+    public function getFactory(AbstractAttribute $attribute, array $normalizedValue): EditValueCommandFactoryInterface
     {
         foreach ($this->commandFactories as $commandFactory) {
-            if ($commandFactory->supports($attribute, $normalizedCommand)) {
+            if ($commandFactory->supports($attribute, $normalizedValue)) {
                 return $commandFactory;
             }
         }

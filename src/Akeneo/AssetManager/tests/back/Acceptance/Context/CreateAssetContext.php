@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AttributeAsLabelReference;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -108,6 +109,23 @@ final class CreateAssetContext implements Context
             $actualAsset,
             $attributeAsLabel
         );
+    }
+
+    /**
+     * @Then there is no ':assetCode' asset in the ':assetFamilyIdentifier' asset family
+     */
+    public function thereIsNoAssetForTheAssetFamily(string $assetCode, string $assetFamilyIdentifier): void
+    {
+        try {
+            $this->assetRepository->getByAssetFamilyAndCode(
+                AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+                AssetCode::fromString($assetCode)
+            );
+        } catch (AssetNotFoundException $e) {
+            return;
+        }
+
+        throw new \Exception('The asset exists.');
     }
 
     private function assertSameLabels(array $expectedLabels, Asset $asset, AttributeAsLabelReference $attributeAsLabel)

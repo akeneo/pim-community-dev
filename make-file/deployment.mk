@@ -216,10 +216,6 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
-	echo "[INFO] The lines bellow must be removed after release the PR 9405"
-	yq d -j -P -i ${INSTANCE_DIR}/main.tf.json module.pim.mysql_disk_size
-	yq d -j -P -i ${INSTANCE_DIR}/main.tf.json module.pim.mysql_disk_name
-	yq d -j -P -i ${INSTANCE_DIR}/main.tf.json module.pim.mysql_disk_description
 
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version

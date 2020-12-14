@@ -1998,6 +1998,95 @@ final class EditAssetContext implements Context
         Assert::same($expectedCount, $assetsCount);
     }
 
+    /**
+     * @Then /^the value of the (\w+) (\w+) (\w+) of the \'([^\']*)\' asset in \'([^\']*)\' asset family is \'([^\']*)\'$/
+     */
+    public function theValueOfTheOfTheAssetInAssetFamilyIs(
+        string $localeCode,
+        string $scopeCode,
+        string $attributeCode,
+        string $assetCode,
+        string $assetFamilyIdentifier,
+        string $expectedValue
+    ): void {
+        $value = $this->getValue(
+            $assetFamilyIdentifier,
+            $assetCode,
+            $attributeCode,
+            $scopeCode,
+            $localeCode
+        );
+        if (null === $value && '' === $expectedValue) {
+            return;
+        }
+
+        Assert::notNull($value, 'No value is found');
+        Assert::notNull($value->getData(), 'No data is found');
+
+        $normalizedValue = $value->getData()->normalize();
+        if (isset($normalizedValue['updatedAt'])) {
+            unset($normalizedValue['updatedAt']);
+        }
+
+        Assert::eq($normalizedValue, \json_decode($expectedValue, true), sprintf(
+            'Expected: %s, got %s',
+            $expectedValue,
+            \json_encode($normalizedValue)
+        ));
+    }
+
+    /**
+     * @Then /^there is no value for the (\w+) (\w+) (\w+) of the \'([^\']*)\' asset in \'([^\']*)\' asset family$/
+     */
+    public function thereIsNoValueForTheOfTheAssetInAssetFamily(
+        string $localeCode,
+        string $scopeCode,
+        string $attributeCode,
+        string $assetCode,
+        string $assetFamilyIdentifier
+    ): void {
+        $value = $this->getValue(
+            $assetFamilyIdentifier,
+            $assetCode,
+            $attributeCode,
+            $scopeCode,
+            $localeCode
+        );
+        if (null === $value) {
+            return;
+        }
+
+        $data = $value->getData();
+        Assert::null($data, sprintf('There is a value for the asset: %s', \json_encode($data->normalize())));
+    }
+
+    private function getValue(
+        string $assetFamilyIdentifier,
+        string $assetCode,
+        string $attributeCode,
+        string $scopeCode,
+        string $localeCode
+    ): ?Value {
+        $asset = $this->assetRepository->getByAssetFamilyAndCode(
+            AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
+            AssetCode::fromString($assetCode)
+        );
+
+        $attribute = $this->attributeRepository->getByAssetFamilyAndCode(
+            $assetFamilyIdentifier,
+            $attributeCode
+        );
+        Assert::notNull($attribute, 'The attribute is not found');
+
+        return $asset->findValue(
+            ValueKey::create(
+                $attribute->getIdentifier(),
+                ChannelReference::createfromNormalized($scopeCode === 'unscoped' ? null : $scopeCode),
+                LocaleReference::createfromNormalized($localeCode === 'unlocalized' ? null : $localeCode)
+            )
+        );
+    }
+
     private function createAssetFamily($assetFamilyIdentifier): void
     {
         $createCommand = new CreateAssetFamilyCommand(

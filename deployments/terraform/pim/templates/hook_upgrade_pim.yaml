@@ -37,8 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ["/bin/sh", "-c"]
           args:
-            - su www-data -s /bin/bash -c "cd /srv/pim && bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction";
-              su www-data -s /bin/bash -c "cd /srv/pim && bin/console akeneo:elasticsearch:update-total-fields-limit -vvv --no-interaction";
+            - su www-data -s /bin/bash -c "cd /srv/pim && bin/console doctrine:migration:migrate -vvv --allow-no-migration --no-interaction && bin/console akeneo:elasticsearch:update-total-fields-limit -vvv --no-interaction";
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }

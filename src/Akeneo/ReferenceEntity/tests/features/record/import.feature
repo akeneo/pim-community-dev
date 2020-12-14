@@ -78,7 +78,7 @@ Feature: Import records via files
   Scenario: Add warnings when import some records using a CSV file with wrong data
     When the user imports an invalid CSV file
     Then there is no exception thrown
-    And 1 warnings should be thrown
+    And 1 warning should be thrown
     And a warning should be thrown with 'This value is too long. It should have 20 characters or less' message
     And there is no 'bad_record' record in the 'designer' reference entity
     And there is a record with:
@@ -109,7 +109,7 @@ Feature: Import records via files
   Scenario: Import some records using a valid archive file with csv and media
     When the user imports a valid archive file with csv and media
     Then there is no exception thrown
-    And 1 warnings should be thrown
+    And 1 warning should be thrown
     And a warning should be thrown with 'values.picture: The file "in/memory/files/unknown.jpg" was not found.' message
     And there is no value for the unlocalized unscoped name of the 'stark' record in 'designer' reference entity
     And there is no value for the unlocalized unscoped picture of the 'stark' record in 'designer' reference entity
@@ -120,7 +120,7 @@ Feature: Import records via files
   Scenario: Import some records using a valid archive file with xlsx and media
     When the user imports a valid archive file with xlsx and media
     Then there is no exception thrown
-    And 1 warnings should be thrown
+    And 1 warning should be thrown
     And a warning should be thrown with 'values.picture: The file "in/memory/files/unknown.jpg" was not found.' message
     And there is no value for the unlocalized unscoped name of the 'stark' record in 'designer' reference entity
     And there is no value for the unlocalized unscoped picture of the 'stark' record in 'designer' reference entity
