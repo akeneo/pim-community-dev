@@ -486,16 +486,12 @@ final class DataFixturesContext implements Context
             $associationType->setCode($associationTypeCode);
             $this->associationTypeRepository->save($associationType);
         }
-
-        $association = $product->getAssociationForType($associationType);
-        if (null === $association) {
+        if (!$product->hasAssociationForTypeCode($associationTypeCode)) {
             $productAssociation = new ProductAssociation();
             $productAssociation->setAssociationType($associationType);
-            $productAssociation->addProduct($associatedProduct);
             $product->addAssociation($productAssociation);
-        } else {
-            $association->addProduct($associatedProduct);
         }
+        $product->addAssociatedProduct($associatedProduct, $associationTypeCode);
 
         $this->productRepository->save($product);
     }
