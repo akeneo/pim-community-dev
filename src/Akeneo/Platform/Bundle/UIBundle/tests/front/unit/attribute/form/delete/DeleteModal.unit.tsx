@@ -25,6 +25,10 @@ beforeAll(() =>
   })
 );
 
+afterAll(() => {
+  global.fetch && global.fetch.mockClear();
+});
+
 test('it renders a confirm modal delete', async () => {
   await act(async () => {
     renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
