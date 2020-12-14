@@ -48,6 +48,24 @@ class DataQualityInsightsTestCase extends TestCase
         );
     }
 
+    protected function deleteAllProductCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_criteria_evaluation');
+    }
+
+    protected function deleteAllProductModelCriterionEvaluations(): void
+    {
+        $this->get('database_connection')->executeQuery('DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation');
+    }
+
+    protected function deleteProductModelCriterionEvaluations(int $productModelId): void
+    {
+        $this->get('database_connection')->executeQuery(
+            'DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :productId',
+            ['productId' => $productModelId]
+        );
+    }
+
     protected function createProduct(string $identifier, array $data = []): ProductInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
@@ -101,6 +119,14 @@ class DataQualityInsightsTestCase extends TestCase
         return $productModel;
     }
 
+    protected function createProductModelWithoutEvaluations(string $code, string $familyVariant, array $data = []): ProductModelInterface
+    {
+        $productModel = $this->createProductModel($code, $familyVariant, $data);
+        $this->deleteProductModelCriterionEvaluations($productModel->getId());
+
+        return $productModel;
+    }
+
     protected function createSubProductModel(string $code, string $familyVariant, string $parent, array $data = []): ProductModelInterface
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
@@ -110,7 +136,7 @@ class DataQualityInsightsTestCase extends TestCase
             ->build();
 
         if (!empty($data)) {
-            $this->get('pim_catalog.updater.product')->update($productModel, $data);
+            $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
             $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
             Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid sub-product model', $errors));
         }

@@ -43,6 +43,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
         $expectedProductsEnrichmentStatus += $this->givenProductSampleA();
         $expectedProductsEnrichmentStatus += $this->givenProductSampleB();
         $expectedProductsEnrichmentStatus += $this->givenProductWithoutEvaluations();
+        $expectedProductsEnrichmentStatus += $this->givenProductWithoutEvaluationResults();
         $this->givenNotInvolvedProduct();
 
         $productIds = array_keys($expectedProductsEnrichmentStatus);
@@ -58,7 +59,6 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
         $productId = $this->createProduct('sample_A', [
             'family' => 'family_with_3_attributes',
             'values' => [
-                'sku' => [['scope' => null, 'locale' => null, 'data' => '123456789']],
                 'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
                 'description' => [['scope' => 'mobile', 'locale' => null, 'data' => 'Sample A']],
             ]
@@ -82,7 +82,6 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
         $productId = $this->createProduct('sample_B', [
             'family' => 'family_with_5_attributes',
             'values' => [
-                'sku' => [['scope' => null, 'locale' => null, 'data' => '987654321']],
                 'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
                 'title' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
                 'description' => [['scope' => 'ecommerce', 'locale' => null, 'data' => 'Sample A']],
@@ -115,6 +114,36 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
         )->getId();
 
         return [$productWithoutEvaluationsId => [
+            'ecommerce' => [
+                'en_US' => null,
+                'fr_FR' => null,
+            ],
+            'mobile' => [
+                'en_US' => null,
+            ]
+        ]];
+    }
+
+    private function givenProductWithoutEvaluationResults(): array
+    {
+        $productId = $this->createProduct('product_without_results', [
+            'family' => 'family_with_3_attributes',
+            'values' => [
+                'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
+                'description' => [['scope' => 'mobile', 'locale' => null, 'data' => 'Sample A']],
+            ]
+        ])->getId();
+
+        $this->get('database_connection')->executeQuery(<<<SQL
+UPDATE pim_data_quality_insights_product_criteria_evaluation
+SET result = null, evaluated_at = null, status = 'pending' 
+WHERE product_id = :productId;
+SQL,
+            ['productId' => $productId],
+            ['productId' => \PDO::PARAM_INT]
+        );
+
+        return [$productId => [
             'ecommerce' => [
                 'en_US' => null,
                 'fr_FR' => null,

@@ -195,8 +195,8 @@ akeneo_connectivity.connection:
     title: Ereignisabonnement (BETA)
     event_subscription: Ereignisabonnement (BETA)
     helper:
-      message: Ihre verbundene App kann abonniert werden, um über Ereignisse im Akeneo PIM (z.B. wenn ein Produkt aktualisiert wird) auf einer von Ihnen gewählten URL benachrichtigt zu werden.
-      link: Erfahren Sie mehr über die Konfiguration von Event-Abonnements...
+      message: Sie können über Ereignisse im PIM für Produkte, die mit dieser verbundenen App synchronisiert werden, benachrichtigt werden. Sie müssen nur eine URL und den Ereignistyp(en) definieren, über den Sie den Überblick behalten möchten.
+      link: Erfahren Sie mehr über Eventabonnement-Konfiguration...
     form:
       url: URL
       secret: Passwort (Secret)
@@ -206,6 +206,7 @@ akeneo_connectivity.connection:
       wrong_url: Dieser Wert ist keine gültige URL.
       required: Dieses Feld ist erforderlich.
       not_found: Sie versuchen eine Verbindung zu aktualisieren, die nicht existiert.
+      limit_reached: Sie haben das Limit der aktiven Event-Abonnements erreicht.
     flash:
       success: Ereignisabonnement erfolgreich aktualisiert.
       error: Leider ist ein Fehler beim Bearbeiten des Ereignis-Abonnements aufgetreten.
@@ -218,6 +219,9 @@ akeneo_connectivity.connection:
       flash:
         success: Webhook Secret erfolgreich regeneriert.
         error: Beim erneuten Erzeugen des Webhook-Geheimnisses ist ein Fehler aufgetreten.
+    active_event_subscriptions_limit_reached:
+      message: Sie können bis zu {{ limit }} Verbindungen mit der Event-Abonnement-Funktion verbinden. Sie haben dieses Limit erreicht.
+      link: Erfahren Sie mehr über die Konfiguration von Event-Abonnements.
   error_management:
     connection_monitoring:
       title: Überwachung

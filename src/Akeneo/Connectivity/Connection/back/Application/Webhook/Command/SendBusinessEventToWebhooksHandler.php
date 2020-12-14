@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSkipOwnEventLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
@@ -39,6 +40,7 @@ final class SendBusinessEventToWebhooksHandler
     private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
     private string $pimSource;
     private ?\Closure $getTimeCallable;
+    private CacheClearerInterface $cacheClearer;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -47,6 +49,7 @@ final class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
+        CacheClearerInterface $cacheClearer,
         string $pimSource,
         ?callable $getTimeCallable = null
     ) {
@@ -58,6 +61,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
         $this->pimSource = $pimSource;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
+        $this->cacheClearer = $cacheClearer;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -80,19 +84,21 @@ final class SendBusinessEventToWebhooksHandler
 
         $requests = function () use ($event, $webhooks) {
             $cumulatedTimeMs = 0;
+            $eventBuiltCount = 0;
             $startTime = $this->getTime();
 
             foreach ($webhooks as $webhook) {
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
-                $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
-                if (null === $filteredEvent) {
-                    continue;
-                }
+                // TODO CXP-604 temporarly deactivated
+                // $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
+                // if (null === $filteredEvent) {
+                //     continue;
+                // }
 
                 try {
                     $webhookEvents = $this->builder->build(
-                        $filteredEvent,
+                        $event,
                         [
                             'user' => $user,
                             'pim_source' => $this->pimSource,
@@ -105,6 +111,7 @@ final class SendBusinessEventToWebhooksHandler
                     }
 
                     $cumulatedTimeMs += $this->getTime() - $startTime;
+                    $eventBuiltCount++;
 
                     yield new WebhookRequest(
                         $webhook,
@@ -117,12 +124,19 @@ final class SendBusinessEventToWebhooksHandler
                 }
             }
 
-            $this->logger->info(
-                json_encode(
-                    (new EventSubscriptionEventBuildLog(count($webhooks), $event, $cumulatedTimeMs))->toLog(),
-                    JSON_THROW_ON_ERROR
-                )
-            );
+            if ($eventBuiltCount > 0) {
+                $this->logger->info(
+                    json_encode(
+                        (new EventSubscriptionEventBuildLog(
+                            count($webhooks),
+                            $event,
+                            $cumulatedTimeMs,
+                            $eventBuiltCount
+                        ))->toLog(),
+                        JSON_THROW_ON_ERROR
+                    )
+                );
+            }
         };
 
         if ($isFake) {
@@ -130,6 +144,8 @@ final class SendBusinessEventToWebhooksHandler
         } else {
             $this->client->bulkSend($requests());
         }
+
+        $this->cacheClearer->clear();
     }
 
     /**

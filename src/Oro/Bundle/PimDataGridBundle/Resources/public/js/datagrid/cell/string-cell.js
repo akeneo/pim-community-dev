@@ -20,6 +20,7 @@ define(['backgrid', 'oro/datagrid/cell-formatter'], function (Backgrid, CellForm
      */
     enterEditMode: function (e) {
       if (this.column.get('editable')) {
+        e.preventDefault();
         e.stopPropagation();
       }
       return Backgrid.StringCell.prototype.enterEditMode.apply(this, arguments);

@@ -62,7 +62,8 @@ class ConnectorProductSpec extends ObjectBehavior
                 ScalarValue::value('attribute_code_1', 'data'),
                 ScalarValue::localizableValue('attribute_code_2', 'data', 'en_US'),
                 ScalarValue::localizableValue('attribute_code_2', 'data', 'fr_FR')
-            ])
+            ]),
+            null
         );
     }
 
@@ -268,7 +269,8 @@ class ConnectorProductSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null,
         );
 
         $this->associatedProductIdentifiers()->shouldReturn([]);

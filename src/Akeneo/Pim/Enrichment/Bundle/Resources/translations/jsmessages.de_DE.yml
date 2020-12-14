@@ -376,8 +376,7 @@ pim_datagrid:
         with_codes: Mit Codes
         with_labels: Mit Labels
       flash:
-        message: "Sie können die Job-Ausführung verfolgen: "
-        link: hier
+        message: "Sie können den Fortschritt Ihres Exports hier verfolgen."
     mass_edit: Massenbearbeitung
     sequential_edit: Sequentielle Bearbeitung
     mass_delete: Mehrauswahl löschen

@@ -21,6 +21,11 @@ Second: Seconde
 Millisecond: Milliseconde
 Microsecond: Microseconde
 "Time Zone": "Tijdzone"
+duration:
+  days: "{0}0 dagen|{1}1 dagen|]1, Inf[{{ count }} dagen"
+  hours: "{0}0 uur|{1}1 uur|]1, Inf[{{ count }} uren"
+  minutes: "{0}0 minuten|{1}1 minuut|]1, Inf[{{ count }} minuten"
+  seconds: "{0}0 seconden|{1}1 seconde|]1, Inf[{{ count }} seconden"
 #PIM messages
 Localized value: Gelokaliseerde waarde
 Columns: Kolommen
@@ -154,6 +159,7 @@ pim_common:
   before: Voor
   by: door
   cancel: Annuleer
+  clear_value: Verwijder waarde
   close: Sluiten
   code: Code
   completeness: Volledigheid
@@ -202,6 +208,7 @@ pim_common:
   to: tot
   type: Soort
   update: Bijwerken
+  updated: Bijgewerkt
   "yes": "Ja"
   operator: Operator
   operators:

@@ -79,7 +79,8 @@ pim_datagrid:
       title: Stop
       confirmation:
         title: Stop {{ jobLabel }}
-        content: Do you really want to stop this job?
+        content: "Do you really want to stop this job?\nIt won't revert the actions already performed.\nTo find out more, please check our article on "
+        link: How to stop a job.
         ok: Stop the job
 
   filters:

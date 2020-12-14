@@ -2,14 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
@@ -17,22 +9,31 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleDataColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class CriterionEvaluationResult
 {
-    /** @var ChannelLocaleRateCollection */
-    private $rates;
+    private ChannelLocaleRateCollection $rates;
 
-    /** @var array */
-    private $data;
+    private CriterionEvaluationResultStatusCollection $statusCollection;
 
-    /** @var CriterionEvaluationResultStatusCollection */
-    private $statusCollection;
+    private array $data;
 
     public function __construct(ChannelLocaleRateCollection $rates, CriterionEvaluationResultStatusCollection $statusCollection, array $data)
     {
         $this->rates = $rates;
-        $this->data = $data;
         $this->statusCollection = $statusCollection;
+        $this->data = $data;
+    }
+
+    public static function fromArray(array $rawResult): self
+    {
+        $rates = ChannelLocaleRateCollection::fromArrayInt($rawResult['rates'] ?? []);
+        $status = CriterionEvaluationResultStatusCollection::fromArrayString($rawResult['status'] ?? []);
+
+        return new self($rates, $status, $rawResult['data'] ?? []);
     }
 
     public function getRates(): ChannelLocaleRateCollection

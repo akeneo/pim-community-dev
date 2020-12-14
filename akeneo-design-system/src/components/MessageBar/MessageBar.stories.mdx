@@ -44,10 +44,7 @@ We recommend that the body of the message holds within two lines maximum. Be des
 
 ### Close
 
-When no link is present, the MessageBar automatically disappears after 3 seconds for success, 5s for info & warning and 8s for error.
-Manual closing instead of the timer if there is a Link component in the message.
-
-> ##### ⚠️ &nbsp; Important messages are persistent until the user closes them.
+The MessageBar automatically disappears after 5 seconds for success, info & warning and 8s for error.
 
 ### Icons
 
@@ -93,7 +90,7 @@ Icons can bring extra clarity. They should be placed at the left of the title. T
         <>
           <MessageBar {...args} level="success" title="This one has a title only" />
           <MessageBar {...args} title="This one has a Link" icon={<Icons.LinkIcon />}>
-            If a Link component is present, the MessageBar will not auto hide. <Link>Take a look here</Link>
+            This one also has a Link. <Link>Take a look here</Link>
           </MessageBar>
         </>
       );

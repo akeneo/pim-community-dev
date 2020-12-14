@@ -2,7 +2,6 @@ akeneo_data_quality_insights:
   title: Data Quality Insights
   dqi_dashboard:
     menu: Data Quality Insights
-    title: Data Quality Overview
     helper:
       title: Introducing Data Quality in Akeneo
       description: With the data quality dashboard, you are able to measure your catalogue data quality. You can also focus on a category or family.
@@ -36,11 +35,69 @@ akeneo_data_quality_insights:
       add_families: Add families
       add_categories: Add categories
       title: Title
+      score: Score
       no_family_helper_msg: Select the families for which you wish to measure data quality
       no_category_helper_msg: Select the categories for which you wish to measure data quality
       see_in_grid: See in grid
     time_axis:
       day: day
+    key_indicators:
+      title: Key Indicators
+      products_to_work_on: '{1}You have <button>1 product</button> to work on.|]1, 200[You have <button>{{ count }} products</button> to work on.|[200, Inf[You have <button>more than {{ count }} products</button> to work on.'
+      list:
+        has_image:
+          title: Products with an image
+          no_data: Your image attributes seem to be empty, you should upload images for this key indicator to highlight the quality of your products.
+          messages:
+            first_step:
+              message1: Without images, your products won't look as good as they deserve.
+              message2: A first impression goes a long way, pamper your assets, your customers will notice.
+              message3: In our experience, images really make a difference. You may need to dedicate more time to assets.
+            second_step:
+              message1: Just a bit more work on your product images and you'll be ready to go.
+              message2: An image is worth a thousand words, work on it now, save time later!
+              message3: You may need to spend a little time on images, your products will look much better.
+            third_step:
+              message1: Pretty good, just a couple of images missing.
+              message2: This is nice, you are so close.
+              message3: Add the final touches and it will be all set.
+            perfect_score_step:
+              message1: Well done! You are ready to go!
+              message2: Amazing! Your products are all nice and shiny!
+              message3: This is perfect.
+        good_enrichment:
+          title: Products with a good enrichment ratio
+          no_data: Your products seem to be empty, you should add attributes for this key indicator to highlight the quality of your products.
+          messages:
+            first_step:
+              message1: One way to improve this ratio is to make sure you carefully define the most relevant attributes. <a href="{{ link }}" target="_blank">Take a look at our help center</a>.
+              message2: Your PIM is still too mysterious to you? <a href="{{ link }}" target="_blank">Learn how to make the most of it</a>.
+              message3: Our teams developed the PIM, you make it alive!
+              message4: Detailed product information makes a real difference for your customers. You can be a game changer!
+            second_step:
+              message1: Let's try and aim just a little higher! Your customers will be grateful.
+              message2: You're halfway there! Hang on and your products will be nicely enriched.
+              message3: The devil is in the details, even in your industry!
+              message4: Do you need a hand polishing your product enrichment? Learn how to carefully select the most relevant attributes <a href="{{ link }}" target="_blank">here</a>.
+            third_step:
+              message1: So far so good, now you can go a little further!
+              message2: This is a really good ratio, but wouldn't 100% look nice?
+              message3: Some of your products still need a little help to be complete! You're almost there!
+              message4: Just a few Is to dot and Ts to cross and it will be perfect.
+            perfect_score_step:
+              message1: Your products are going to sell themselves! Great work.
+              message2: What an adventure, you can be proud of your work.
+              message3: You are a true master in keeping your catalog up to date.
+              message4: Congratulations, this is spotless!
+      no_data: Sorry, we don't have enough data yet to show the key indicators.
+      no_data_subtitle: Please come back later.
+    score_distribution:
+      title: Quality score distribution
+    quality_score_evolution:
+      title: Quality score evolution
+      current_score: is your current catalog quality score for this scope.
+      current_month_label: This month
+      no_catalog_score: We couldn’t calculate you current quality score.
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
@@ -69,9 +126,13 @@ akeneo_data_quality_insights:
         help_center_link: Learn how data quality insights can help you improve your data quality in our help center.
       add_image_attribute_recommendation: An image is worth a thousand words. You should add an image attribute to improve the data quality of this product.
       fill_image_attribute_recommendation: In our experience, images really make a difference. You should add at least one image to improve the data quality of this product.
+      not_applicable:
+        message: This criteria is not applicable in your context.
+        help_center_link: Find out why in our Help Center.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: All missing attributes
+    back_to_products: Back to products
   attribute_group:
     helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups activated on data quality.
     helper_dqi_link: More info on our helpcenter.
@@ -81,6 +142,13 @@ akeneo_data_quality_insights:
     disabled: Disabled
     used_groups_helper: "The following attributes groups are taken into account in the Data Quality Insights calculation:"
     all_groups_evaluated: All the attribute groups of this product are taken into account for the calculation of the quality score. To get the most relevant quality score, <a href="{{ link }}" target="_blank">learn how to deactivate attribute groups to in our help center.</a>
+  product_grid:
+    filter_label:
+      quality_score: Quality score
+      enrichment_quality: Enrichment quality
+      images_quality: Images quality
+    filter_value:
+      good: Good
+      to_improve: To improve
 pim_title:
   akeneo_data_quality_insights_dashboard: Data Quality Insights
-

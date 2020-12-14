@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ConnectionWebhook as ReadConnectionWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook as WriteConnectionWebhook;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQuery;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\ConnectionWebhookRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -41,20 +40,23 @@ class UpdateWebhookHandler
         $this->generateWebhookSecretHandler = $generateWebhookSecretHandler;
     }
 
-    public function handle(UpdateWebhookCommand $command): ReadConnectionWebhook
+    public function handle(UpdateWebhookCommand $command): void
     {
         $connectionCode = $command->code();
-        $webhook = new WriteConnectionWebhook($connectionCode, $command->enabled(), $command->url());
+
+        $webhook = new ConnectionWebhook($connectionCode, $command->enabled(), $command->url());
+
         $violations = $this->validator->validate($webhook);
         if (0 !== $violations->count()) {
             throw new ConstraintViolationListException($violations);
         }
+
         $this->repository->update($webhook);
 
-        if (!$secret = $this->selectWehbookSecretQuery->execute($connectionCode)) {
-            $secret = $this->generateWebhookSecretHandler->handle(new GenerateWebhookSecretCommand($connectionCode));
+        if (null === $this->selectWehbookSecretQuery->execute($connectionCode)) {
+            $this->generateWebhookSecretHandler->handle(
+                new GenerateWebhookSecretCommand($connectionCode),
+            );
         }
-
-        return new ReadConnectionWebhook($connectionCode, $command->enabled(), $secret, $command->url());
     }
 }

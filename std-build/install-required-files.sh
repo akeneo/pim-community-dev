@@ -33,9 +33,6 @@ cp $DEV_DISTRIB_DIR/config/bootstrap.php $STANDARD_DISTRIB_DIR/config/
 # Security configuration cannot be read on CE-dev and overriden in standard. We need to fully copy it
 cp $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/packages/security.yml
 
-# Partners are most likely to develop and deploy using local filesystem, not MinIO
-cp $DEV_DISTRIB_DIR/config/packages/prod_onprem_paas/oneup_flysystem.yml $STANDARD_DISTRIB_DIR/config/packages/dev/
-
 # We need a console and FPM entrypoint
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 chmod +x $STANDARD_DISTRIB_DIR/bin/console
@@ -65,7 +62,6 @@ cp $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services
 
 # Skeleton .env file
 cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
-cp $DEV_DISTRIB_DIR/.env.dev $STANDARD_DISTRIB_DIR/
 
 # Skeleton .env file
 cp $DEV_DISTRIB_DIR/.gitignore $STANDARD_DISTRIB_DIR/
