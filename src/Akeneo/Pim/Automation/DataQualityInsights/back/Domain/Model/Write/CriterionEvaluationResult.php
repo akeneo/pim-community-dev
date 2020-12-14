@@ -91,4 +91,13 @@ final class CriterionEvaluationResult
 
         return $this;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'rates' => $this->rates->toArrayInt(),
+            'status' => $this->statusCollection->toArrayString(),
+            'data' => $this->getDataToArray(),
+        ];
+    }
 }
