@@ -65,7 +65,12 @@ final class ComputeAttributesWithPerfectSpellingQueryIntegration extends DataQua
         $this->givenAnAttributeLocaleQuality('att_other_family', 'en_US', Quality::toImprove());
         $this->givenAnAttributeLocaleQuality('att_without_family', 'en_US', Quality::toImprove());
 
-        $expectedKeyIndicator = new KeyIndicator(new KeyIndicatorCode(AttributesWithPerfectSpelling::CODE), 1, 2);
+        $expectedKeyIndicator = new KeyIndicator(
+            new KeyIndicatorCode(AttributesWithPerfectSpelling::CODE),
+            1,
+            2,
+            ['impactedFamilies' => ['family_A']],
+        );
         $keyIndicator = $this->get(ComputeAttributesWithPerfectSpellingQuery::class)
             ->computeByLocaleAndFamily(new LocaleCode('en_US'), new FamilyCode('family_A'));
 
@@ -111,7 +116,12 @@ final class ComputeAttributesWithPerfectSpellingQueryIntegration extends DataQua
         $this->givenAnAttributeLocaleQuality('att_from_grand_children', 'en_US', Quality::toImprove());
         $this->givenAnAttributeLocaleQuality('att_other_category', 'en_US', Quality::toImprove());
 
-        $expectedKeyIndicator = new KeyIndicator(new KeyIndicatorCode(AttributesWithPerfectSpelling::CODE), 1, 3);
+        $expectedKeyIndicator = new KeyIndicator(
+            new KeyIndicatorCode(AttributesWithPerfectSpelling::CODE),
+            1,
+            3,
+            ['impactedFamilies' => ['family_A', 'family_B', 'family_C']],
+        );
         $keyIndicator = $this->get(ComputeAttributesWithPerfectSpellingQuery::class)
             ->computeByLocaleAndCategory(new LocaleCode('en_US'), new CategoryCode('cat1'));
 
