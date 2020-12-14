@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
-use Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetBlacklistedAttributeJobExecutionId;
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetBlacklistedAttributeJobExecutionIdInterface;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\IsAttributeCodeBlacklistedInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\Translator;
@@ -17,13 +17,13 @@ class BlacklistedAttributeCodeValidator extends ConstraintValidator
     private const JOB_TRACKER_ROUTE = 'pim_enrich_job_tracker_show';
 
     protected IsAttributeCodeBlacklistedInterface $isAttributeCodeBlacklisted;
-    private GetBlacklistedAttributeJobExecutionId $getBlacklistedAttributeJobExecutionId;
+    private GetBlacklistedAttributeJobExecutionIdInterface $getBlacklistedAttributeJobExecutionId;
     private Translator $translator;
     private RouterInterface $router;
 
     public function __construct(
         IsAttributeCodeBlacklistedInterface $isAttributeCodeBlacklisted,
-        GetBlacklistedAttributeJobExecutionId $getBlacklistedAttributeJobExecutionId,
+        GetBlacklistedAttributeJobExecutionIdInterface $getBlacklistedAttributeJobExecutionId,
         Translator $translator,
         RouterInterface $router
     ) {

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute;
 
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetBlacklistedAttributeJobExecutionIdInterface;
 use Doctrine\DBAL\Connection;
 
-final class GetBlacklistedAttributeJobExecutionId
+final class GetBlacklistedAttributeJobExecutionId implements GetBlacklistedAttributeJobExecutionIdInterface
 {
     private Connection $connection;
 
