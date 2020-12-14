@@ -47,4 +47,20 @@ class PublishedProductNormalizerSpec extends ObjectBehavior
             'categories' => ['bar']
         ]);
     }
+
+    function it_normalizes_a_published_product_with_quality_scores(
+        PublishedProductInterface $publishedProduct,
+        $publishedProductNormalizer
+    ) {
+        $publishedProductNormalizer->normalize($publishedProduct, 'external_api', ['with_quality_scores' => true])->willReturn([
+            'identifier' => 'foo',
+            'categories' => ['bar'],
+        ]);
+
+        $this->normalize($publishedProduct, 'external_api', ['with_quality_scores' => true])->shouldReturn([
+            'identifier' => 'foo',
+            'categories' => ['bar'],
+            'quality_scores' => [],
+        ]);
+    }
 }
