@@ -260,3 +260,18 @@ clone_serenity:
 test_upgrade_from_serenity_customer_db:
 	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) make clone_serenity && \
 	INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$${CIRCLE_SHA1} make deploy-serenity
+
+.PHONY: php-image-prod
+php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
+	git config user.name "Michel Tag"
+	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
+	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE}';/g" src/Akeneo/Platform/EnterpriseVersion.php
+	git add src/Akeneo/Platform/EnterpriseVersion.php
+	git commit -m "Prepare SaaS ${IMAGE_TAG}"
+
+	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' .
+
+.PHONY: push-php-image-prod
+push-php-image-prod: #Doc: push docker image to docker hub
+	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
+

@@ -186,26 +186,6 @@ down-pim-saas-like: #Doc: shutdown all docker containers
 php-image-dev: #Doc: pull docker image for pim-enterprise-dev with the dev tag
 	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:7.4 --target dev .
 
-.PHONY: php-image-prod
-php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
-ifeq ($(CI),true)
-	git config user.name "Michel Tag"
-	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
-endif
-	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE}';/g" src/Akeneo/Platform/EnterpriseVersion.php
-	git add src/Akeneo/Platform/EnterpriseVersion.php
-	git commit -m "Prepare SaaS ${IMAGE_TAG}"
-
-ifeq ($(CI),true)
-	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' .
-else
-	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod .
-endif
-
-.PHONY: push-php-image-prod
-push-php-image-prod: #Doc: push docker image to docker hub
-	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
-
 .PHONY: up
 up: #Doc: run docker-compose up
 	$(DOCKER_COMPOSE) up -d --remove-orphan ${C}
