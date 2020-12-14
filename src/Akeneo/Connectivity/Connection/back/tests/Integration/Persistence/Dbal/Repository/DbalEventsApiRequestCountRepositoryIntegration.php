@@ -42,7 +42,7 @@ class DbalEventsApiRequestCountRepositoryIntegration extends TestCase
         $expectedEventApiRequestCounts = [
             ['event_minute' => '1', 'event_count' => '6', 'updated' => '2020-12-09 17:01:00'],
             ['event_minute' => '2', 'event_count' => '30', 'updated' => '2020-12-09 17:02:59'],
-            ['event_minute' => '3', 'event_count' => '48', 'updated' => '2020-12-11 18:03:12'],
+            ['event_minute' => '3', 'event_count' => '24', 'updated' => '2020-12-11 18:03:12'],
         ];
 
         $eventApiRequestCounts = $this->getEventApiRequestCounts();

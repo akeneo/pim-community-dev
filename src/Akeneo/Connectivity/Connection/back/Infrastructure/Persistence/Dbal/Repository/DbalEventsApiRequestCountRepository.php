@@ -26,7 +26,9 @@ class DbalEventsApiRequestCountRepository implements EventsApiRequestCountReposi
         $upsertQuery = <<<SQL
 INSERT INTO akeneo_connectivity_connection_events_api_request_count (event_minute, event_count, updated)
 VALUES(:event_minute, :event_count, :updated)
-ON DUPLICATE KEY UPDATE event_count = event_count + :event_count, updated = :updated
+ON DUPLICATE KEY UPDATE
+    event_count = IF(DATE_FORMAT(updated, "%Y%m%d%H") = DATE_FORMAT(:updated, "%Y%m%d%H"), event_count + :event_count, :event_count),
+    updated = :updated
 SQL;
 
         return $this->dbalConnection->executeUpdate(
