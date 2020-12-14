@@ -1,6 +1,16 @@
 import React from 'react';
-import {Button, DeleteIllustration, Modal, SectionTitle, Title} from 'akeneo-design-system';
+import styled from 'styled-components';
+import {Button, DeleteIllustration, getColor, Helper, Link, Modal, SectionTitle, Title} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate, useRouter} from '@akeneo-pim-community/legacy-bridge';
+
+const Content = styled.div`
+  margin-bottom: 10px;
+`;
+
+const Highlight = styled.span`
+  color: ${getColor('brand', 100)};
+  font-weight: bold;
+`;
 
 type DeleteModalProps = {
   onCancel: () => void;
@@ -45,7 +55,24 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
     >
       <SectionTitle color="brand">{translate('pim_enrich.entity.attribute.plural_label')}</SectionTitle>
       <Title>{translate('pim_common.confirm_deletion')}</Title>
-      <div>{translate('pim_enrich.entity.attribute.module.delete.confirm')}</div>
+      <Content>
+        {translate('pim_enrich.entity.attribute.module.delete.confirm')}
+        <p>
+          <Highlight>
+            {translate('pim_enrich.entity.attribute.module.delete.item_count', {
+              productCount: 'TODO',
+              productModelCount: 'TODO',
+            })}
+          </Highlight>{' '}
+          {translate('pim_enrich.entity.attribute.module.delete.used')}
+        </p>
+      </Content>
+      <Helper>
+        {translate('pim_enrich.entity.attribute.module.delete.helper.content')}
+        <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html#Delete-an-attribute-and-keeping-the-related-data">
+          {translate('pim_enrich.entity.attribute.module.delete.helper.link')}
+        </Link>
+      </Helper>
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel}>
           {translate('pim_common.cancel')}
