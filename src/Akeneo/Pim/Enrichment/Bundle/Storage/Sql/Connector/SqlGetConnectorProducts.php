@@ -164,7 +164,8 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
                 $row['associations'] ?? [],
                 $row['quantified_associations'] ?? [],
                 [],
-                $filteredRawValuesIndexedByProductIdentifier[$identifier]
+                $filteredRawValuesIndexedByProductIdentifier[$identifier],
+                null
             );
         }
 
