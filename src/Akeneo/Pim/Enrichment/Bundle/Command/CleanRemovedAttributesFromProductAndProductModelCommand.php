@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductModelsWithRemovedAttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsAndProductModelsWithInheritedRemovedAttributeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeEvents;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -44,6 +47,9 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     private EventDispatcherInterface $eventDispatcher;
     private JobLauncherInterface $jobLauncher;
     private IdentifiableObjectRepositoryInterface $jobInstanceRepository;
+    private CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute;
+    private CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute;
+    private CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute;
     private RouterInterface $router;
     private string $pimUrl;
 
@@ -55,6 +61,9 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         EventDispatcherInterface $eventDispatcher,
         JobLauncherInterface $jobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute,
+        CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute,
+        CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute,
         RouterInterface $router,
         string $pimUrl
     ) {
@@ -67,6 +76,9 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $this->eventDispatcher = $eventDispatcher;
         $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->countProductsWithRemovedAttribute = $countProductsWithRemovedAttribute;
+        $this->countProductModelsWithRemovedAttribute = $countProductModelsWithRemovedAttribute;
+        $this->countProductsAndProductModelsWithInheritedRemovedAttribute = $countProductsAndProductModelsWithInheritedRemovedAttribute;
         $this->router = $router;
         $this->pimUrl = $pimUrl;
     }
@@ -188,13 +200,23 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
      */
     private function launchCleanRemovedAttributeJob(SymfonyStyle $io, array $attributeCodes): void
     {
+        $countProducts = $this->countProductsWithRemovedAttribute->count($attributeCodes);
+        $countProductModels = $this->countProductModelsWithRemovedAttribute->count($attributeCodes);
+        $countProductVariants = $this->countProductsAndProductModelsWithInheritedRemovedAttribute->count($attributeCodes);
+
         $confirmMessage = sprintf(
             "This command will launch a job to remove the values of the attributes:\n" .
-                '%s' .
-                ' Do you want to proceed?',
+                "%s\n" .
+                " This will update:\n" .
+                " - %d product model(s) (and %d product variant(s))\n" .
+                " - %d product(s)\n" .
+                " Do you want to proceed?",
             implode(array_map(function (string $attributeCode) {
                 return sprintf(" - %s\n", $attributeCode);
             }, $attributeCodes)),
+            $countProductModels,
+            $countProductVariants,
+            $countProducts
         );
 
         $answer = $io->confirm($confirmMessage, true);
