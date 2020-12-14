@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Button, DeleteIllustration, getColor, Helper, Link, Modal, SectionTitle, Title} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate, useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify, useTranslate, useRouter, useRoute} from '@akeneo-pim-community/legacy-bridge';
 
 const Content = styled.div`
   margin-bottom: 10px;
@@ -11,6 +11,29 @@ const Highlight = styled.span`
   color: ${getColor('brand', 100)};
   font-weight: bold;
 `;
+
+const useImpactedItemCount = (attributeCode: string) => {
+  const [productCount, setProductCount] = useState<number>();
+  const [productModelCount, setProductModelCount] = useState<number>();
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const route = useRoute('pim_enrich_count_items_with_attribute_value', {attribute_code: attributeCode});
+
+  const fetchImpactedItemCount = async () => {
+    setLoading(true);
+    const response = await fetch(route);
+    const json = await response.json();
+
+    setLoading(false);
+    setProductCount(json.products);
+    setProductModelCount(json.product_models);
+  };
+
+  useEffect(() => {
+    fetchImpactedItemCount();
+  }, [route, attributeCode]);
+
+  return [productCount, productModelCount, isLoading] as const;
+};
 
 type DeleteModalProps = {
   onCancel: () => void;
@@ -22,6 +45,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   const translate = useTranslate();
   const notify = useNotify();
   const router = useRouter();
+  const [productCount, productModelCount, isLoading] = useImpactedItemCount(attributeCode);
 
   const handleConfirm = () => {
     fetch(router.generate('pim_enrich_attribute_rest_remove', {code: attributeCode}), {
@@ -58,12 +82,13 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
       <Content>
         {translate('pim_enrich.entity.attribute.module.delete.confirm')}
         <p>
-          <Highlight>
+          <Highlight className={isLoading ? 'AknLoadingPlaceHolder' : undefined}>
             {translate('pim_enrich.entity.attribute.module.delete.item_count', {
-              productCount: 'TODO',
-              productModelCount: 'TODO',
+              productCount: productCount?.toString() ?? '',
+              productModelCount: productModelCount?.toString() ?? '',
             })}
-          </Highlight>{' '}
+          </Highlight>
+          &nbsp;
           {translate('pim_enrich.entity.attribute.module.delete.used')}
         </p>
       </Content>
