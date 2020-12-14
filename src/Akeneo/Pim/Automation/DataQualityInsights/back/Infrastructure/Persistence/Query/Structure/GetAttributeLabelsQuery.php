@@ -32,7 +32,8 @@ class GetAttributeLabelsQuery implements GetAttributeLabelsQueryInterface
         $query = <<<SQL
 SELECT JSON_OBJECTAGG(attribute_labels.locale, attribute_labels.label) AS labels
 FROM pim_catalog_attribute_translation AS attribute_labels
-INNER JOIN pim_catalog_attribute AS attribute ON attribute.id = attribute_labels.foreign_key
+    INNER JOIN pim_catalog_attribute AS attribute ON attribute.id = attribute_labels.foreign_key
+    INNER JOIN pim_catalog_locale AS locale ON locale.code = attribute_labels.locale AND locale.is_activated = 1
 WHERE attribute.code = :attributeCode
 SQL;
 
