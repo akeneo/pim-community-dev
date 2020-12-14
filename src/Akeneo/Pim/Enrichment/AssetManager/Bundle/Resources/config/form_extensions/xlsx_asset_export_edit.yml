@@ -141,6 +141,17 @@ extensions:
             label: pim_import_export.form.job_instance.tab.properties.with_header.title
             tooltip: pim_import_export.form.job_instance.tab.properties.with_header.help
 
+    pim-job-instance-xlsx-asset-export-edit-properties-with-prefix-suffix:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-xlsx-asset-export-edit-global
+        position: 160
+        targetZone: properties
+        config:
+            fieldCode: configuration.with_prefix_suffix
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.with_prefix_suffix.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_prefix_suffix.help
+
     pim-job-instance-xlsx-asset-export-edit-label:
         module: pim/job/common/edit/label
         parent: pim-job-instance-xlsx-asset-export-edit

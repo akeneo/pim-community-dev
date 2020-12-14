@@ -241,7 +241,7 @@ final class ImportRecordContext implements Context
         $params['filePath'] = $filePath;
         $jobParameters = new JobParameters($params);
         $jobExecution->setJobParameters($jobParameters);
-        $stepExecution = new StepExecution('import_csv_record', $jobExecution);
+        $stepExecution = new StepExecution('import_xlsx_record', $jobExecution);
 
         try {
             $this->importXlsxRecordStep->doExecute($stepExecution);

@@ -41,5 +41,7 @@ services:
             -
                 asset_manager_csv_asset_export: pim-job-instance-csv-asset-export
                 asset_manager_xlsx_asset_export: pim-job-instance-xlsx-asset-export
+                asset_manager_csv_asset_import: pim-job-instance-csv-asset-import
+                asset_manager_xlsx_asset_import: pim-job-instance-xlsx-asset-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
