@@ -106,7 +106,7 @@ services:
             - '@akeneo_connectivity.connection.webhook.cache_clearer'
             - '@akeneo_connectivity.connection.persistence.query.count_hourly_events_api_request'
             - '%env(AKENEO_PIM_URL)%'
-            - '%webhook_active_event_subscriptions_limit%'
+            - '%webhook_requests_limit%'
 
     akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler

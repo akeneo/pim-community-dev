@@ -11,12 +11,12 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook\Log;
  */
 class EventSubscriptionRequestsLimitReachedLog
 {
-    const TYPE = 'event_api.requests_limit';
+    const TYPE = 'event_api.reach_requests_limit';
     const MESSAGE = 'event subscription requests limit has been reached';
 
     private int $limit;
 
-    public function __construct(int $limit)
+    private function __construct(int $limit)
     {
         $this->limit = $limit;
     }

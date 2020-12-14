@@ -45,7 +45,7 @@ final class SendBusinessEventToWebhooksHandler
     private CacheClearerInterface $cacheClearer;
     private CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery;
     private string $pimSource;
-    private int $webhookActiveEventSubscriptionsLimit;
+    private int $webhookRequestsLimit;
     private ?\Closure $getTimeCallable;
 
     public function __construct(
@@ -59,7 +59,7 @@ final class SendBusinessEventToWebhooksHandler
         CacheClearerInterface $cacheClearer,
         CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery,
         string $pimSource,
-        int $webhookActiveEventSubscriptionsLimit,
+        int $webhookRequestsLimit,
         ?callable $getTimeCallable = null
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
@@ -72,7 +72,7 @@ final class SendBusinessEventToWebhooksHandler
         $this->cacheClearer = $cacheClearer;
         $this->countHourlyEventsApiRequestQuery = $countHourlyEventsApiRequestQuery;
         $this->pimSource = $pimSource;
-        $this->webhookActiveEventSubscriptionsLimit = $webhookActiveEventSubscriptionsLimit;
+        $this->webhookRequestsLimit = $webhookRequestsLimit;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
     }
 
@@ -82,11 +82,11 @@ final class SendBusinessEventToWebhooksHandler
             new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
         );
 
-        if ($this->webhookActiveEventSubscriptionsLimit < $hourlyEventsApiRequestCount) {
+        if ($this->webhookRequestsLimit < $hourlyEventsApiRequestCount) {
             $this->logger->info(
                 json_encode(
                     (EventSubscriptionRequestsLimitReachedLog::fromLimit(
-                        $this->webhookActiveEventSubscriptionsLimit
+                        $this->webhookRequestsLimit
                     ))->toLog(),
                     JSON_THROW_ON_ERROR
                 )
