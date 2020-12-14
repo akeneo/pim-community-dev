@@ -92,7 +92,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      */
     public function process($standardProductModel): ?ProductModelInterface
     {
-        $code = $standardProductModel['code'];
+        $code = $standardProductModel['code'] ?? null;
         $parent = $standardProductModel['parent'] ?? '';
         if ($this->importType === self::ROOT_PRODUCT_MODEL && !empty($parent) ||
             $this->importType === self::SUB_PRODUCT_MODEL && empty($parent)
@@ -132,7 +132,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
                 $standardProductModel['values'] = $this->mediaStorer->store($standardProductModel['values']);
             } catch (InvalidPropertyException $e) {
                 $this->objectDetacher->detach($productModel);
-                $standardProductModel['code'] = $code;
+                if (null !== $code) {
+                    $standardProductModel['code'] = $code;
+                }
                 $this->skipItemWithMessage($standardProductModel, $e->getMessage(), $e);
             }
         }
@@ -142,7 +144,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         } catch (PropertyException $exception) {
             $this->objectDetacher->detach($productModel);
             $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
-            $standardProductModel['code'] = $code;
+            if (null !== $code) {
+                $standardProductModel['code'] = $code;
+            }
             $this->skipItemWithMessage($standardProductModel, $message, $exception);
         }
 
@@ -150,7 +154,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
 
         if ($violations->count() > 0) {
             $this->objectDetacher->detach($productModel);
-            $standardProductModel['code'] = $code;
+            if (null !== $code) {
+                $standardProductModel['code'] = $code;
+            }
             $this->skipItemWithConstraintViolations($standardProductModel, $violations);
         }
 
@@ -162,7 +168,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      *
      * @return ProductModelInterface
      */
-    private function findOrCreateProductModel(string $code): ProductModelInterface
+    public function findOrCreateProductModel(string $code): ProductModelInterface
     {
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
         if (null === $productModel) {
