@@ -156,7 +156,7 @@
   }
 
   .Form {
-    min-width: 296px;
+    width: 296px;
 
     .InputGroup {
       margin-bottom: 30px;
@@ -208,16 +208,6 @@
       }
     }
 
-    .PasswordReset {
-      margin-bottom: 20px;
-      font-size: 13px;
-
-      a {
-        color: @AknPurple100;
-        cursor: pointer;
-      }
-    }
-
     .RememberMe {
       margin-bottom: 20px;
       font-size: 13px;
@@ -234,6 +224,20 @@
     }
   }
 
+  .PasswordReset, .CancelPasswordReset {
+    margin-bottom: 20px;
+    font-size: 13px;
+
+    a {
+      color: @AknPurple100;
+      cursor: pointer;
+    }
+  }
+
+  .Separator {
+    margin-bottom: 20px;
+  }
+
   .Helper {
     display: flex;
     font-weight: 400;
@@ -244,6 +248,7 @@
     margin-bottom: 20px;
 
     .Icon {
+      flex-shrink: 0;
       width: 20px;
       height: 20px;
       margin: 12px 10px;
@@ -263,6 +268,21 @@
       a {
         color: @AknRed120;
         margin: 0 3px;
+      }
+    }
+
+    &--info {
+      color: @AknGrey120;
+      background-color: @AknBlue10;
+      .Icon {
+        color: @AknBlue100;
+        background-image: url("/bundles/pimui/images/icon-info.svg");
+      }
+      .Text {
+        border-left: 1px solid @AknGrey80;
+        a {
+          color: @AknBlue100;
+        }
       }
     }
   }

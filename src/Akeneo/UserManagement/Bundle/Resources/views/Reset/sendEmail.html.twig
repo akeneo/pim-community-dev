@@ -3,18 +3,13 @@
 {% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
-<div class="AknLogin-mainContainer container">
-    <div class="AknLogin-title">
-        {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
-    </div>
-
-    <form action="" class="form-reset">
-        <div class="AknMessageBox AknMessageBox--apply">
-            {{ 'pim_user.user.login.password_reset_email_sent'|trans }}
+    <form action="" class="Form">
+        <div class="Helper Helper--info">
+            <span class="Icon"></span>
+            <span class="Text">{{ 'pim_user.user.login.password_reset_email_sent'|trans }}</span>
         </div>
-        <div class="AknForm">
-            <a href="{{ path('oro_default') }}" class="AknLogin-link cancel">{{ 'pim_user.user.login.homepage'|trans }}</a>
+        <div class="CancelPasswordReset">
+            <a href="{{ path('oro_default') }}">{{ 'pim_user.user.login.homepage'|trans }}</a>
         </div>
     </form>
-</div>
 {% endblock %}

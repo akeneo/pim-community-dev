@@ -13,12 +13,14 @@
             <span class="Icon"></span>
             <span class="Text">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
         </div>
+    {% else %}
+        <div class="Separator"></div>
     {% endif %}
 
     <form action="{{ path(action_route) }}" method="post" class="Form">
         <div class="InputGroup">
             <div class="InputBlock">
-                <label class="InputLabel">{{ 'pim_user.user.login.username_or_email'|trans }}</label>
+                <label class="InputLabel" for="prependedInput">{{ 'pim_user.user.login.username_or_email'|trans }}</label>
                 <div class="InputContainer">
                     <input class="InputText" type="text" id="prependedInput" autofocus="autofocus" name="_username"
                            value="{{ last_username }}" required="required"
@@ -26,7 +28,7 @@
                 </div>
             </div>
             <div class="InputBlock">
-                <label class="InputLabel">{{ 'pim_user.user.fields.password'|trans }}</label>
+                <label class="InputLabel" for="prependedInput2">{{ 'pim_user.user.fields.password'|trans }}</label>
                 <div class="InputContainer">
                     <input class="InputText" type="password" id="prependedInput2" name="_password" required="required"
                            placeholder="{{ 'pim_user.user.fields.password'|trans }}" autocomplete="off" size="1"/>
