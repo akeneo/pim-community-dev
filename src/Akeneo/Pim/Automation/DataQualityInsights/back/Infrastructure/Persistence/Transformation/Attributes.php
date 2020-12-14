@@ -58,6 +58,8 @@ class Attributes
 
     public function getIdsByCodes(array $attributesCodes): array
     {
+        $attributesCodes = array_map(fn ($attributeCode) => strval($attributeCode), $attributesCodes);
+
         return $this->attributeIdsByCodes->getForKeys($attributesCodes, function ($attributesCodes) {
             $attributesIds = $this->dbConnection->executeQuery(
                 'SELECT JSON_OBJECTAGG(code, id) FROM pim_catalog_attribute WHERE code IN (:codes);',
