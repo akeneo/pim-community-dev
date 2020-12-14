@@ -172,20 +172,26 @@ class PublishedProductController
     }
 
     /**
+     * @param Request $request
      * @param string $code
      *
      * @throws NotFoundHttpException
      *
      * @return JsonResponse
      */
-    public function getAction(string $code): JsonResponse
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $publishedProduct = $this->publishedProductRepository->findOneByIdentifier($code);
         if (null === $publishedProduct) {
             throw new NotFoundHttpException(sprintf('Published product "%s" does not exist or you do not have permission to access it.', $code));
         }
 
-        $productApi = $this->normalizer->normalize($publishedProduct, 'external_api');
+        $normalizerOptions = [];
+        if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
+            $normalizerOptions['with_quality_scores'] = true;
+        }
+
+        $productApi = $this->normalizer->normalize($publishedProduct, 'external_api', $normalizerOptions);
 
         return new JsonResponse($productApi);
     }
@@ -217,6 +223,10 @@ class PublishedProductController
             $this->queryParametersChecker->checkAttributesParameters($attributes);
 
             $normalizerOptions['attributes'] = explode(',', $request->query->get('attributes'));
+        }
+
+        if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
+            $normalizerOptions['with_quality_scores'] = true;
         }
 
         return $normalizerOptions;

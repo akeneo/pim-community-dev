@@ -46,6 +46,9 @@ class PublishedProductNormalizer implements NormalizerInterface, CacheableSuppor
         if (array_key_exists('parent', $normalizedPublishedProduct)) {
             unset($normalizedPublishedProduct['parent']);
         }
+        if (array_key_exists('with_quality_scores', $context)) {
+            $normalizedPublishedProduct['quality_scores'] = [];
+        }
 
         return $normalizedPublishedProduct;
     }

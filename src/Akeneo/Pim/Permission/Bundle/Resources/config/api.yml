@@ -88,6 +88,7 @@ services:
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'
             - '@logger'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
 
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
@@ -172,3 +173,12 @@ services:
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product_model'
             - '@pimee_workflow.query.get_workflow_status_from_product_model_codes'
+
+    akeneo.pim.enrichment.use_cases.get_products_with_quality_scores_with_permissions:
+        class: Akeneo\Pim\Permission\Component\Connector\GetProductsWithQualityScoresWithPermissions
+        decorates: akeneo.pim.enrichment.use_cases.get_products_with_quality_scores
+        decoration_inner_name: akeneo.pim.enrichment.use_cases.get_products_with_quality_scores_without_permissions
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores_without_permissions'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@security.token_storage'

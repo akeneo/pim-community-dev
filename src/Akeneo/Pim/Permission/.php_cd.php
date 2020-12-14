@@ -169,6 +169,12 @@ $rules = [
         'Doctrine\Common',
         'Akeneo\Tool',
 
+        // Required to add quality scores into external API normalized products.
+        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface',
+
         // TIP-998: Move Access entities to component
         'Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess',
 

@@ -40,7 +40,6 @@ final class EvaluateAttributeSpellingSpec extends ObjectBehavior
 {
     public function let(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        GetProductFamilyAttributeCodesQueryInterface $getProductFamilyAttributeCodesQuery,
         GetAttributeSpellcheckQueryInterface $getAttributeSpellcheckQuery
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
@@ -50,23 +49,18 @@ final class EvaluateAttributeSpellingSpec extends ObjectBehavior
             ]
         ));
 
-        $this->beConstructedWith($localesByChannelQuery, $getProductFamilyAttributeCodesQuery, $getAttributeSpellcheckQuery);
+        $this->beConstructedWith($localesByChannelQuery, $getAttributeSpellcheckQuery);
     }
 
-    public function it_evaluates_product_family_attribute_spelling(
-        $getProductFamilyAttributeCodesQuery,
-        $getAttributeSpellcheckQuery
-    ) {
-        $getProductFamilyAttributeCodesQuery->execute(new ProductId(1))->willReturn([
+    public function it_evaluates_product_family_attribute_spelling($getAttributeSpellcheckQuery)
+    {
+        $attributes = [
             new AttributeCode('sku'),
             new AttributeCode('height'),
             new AttributeCode('size'),
-        ]);
-        $getAttributeSpellcheckQuery->getByAttributeCodes([
-            new AttributeCode('sku'),
-            new AttributeCode('height'),
-            new AttributeCode('size'),
-        ])->willReturn([
+        ];
+
+        $getAttributeSpellcheckQuery->getByAttributeCodes($attributes)->willReturn([
             'sku' => $this->createSkuAttributeEvaluation(),
             'height' => $this->createHeightAttributeEvaluation(),
             'size' => $this->createSizeAttributeEvaluation(),
@@ -86,37 +80,7 @@ final class EvaluateAttributeSpellingSpec extends ObjectBehavior
             ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(67))
         ;
 
-        $this->evaluate(
-            new Write\CriterionEvaluation(
-                new CriterionCode('criterion1'),
-                new ProductId(1),
-                CriterionEvaluationStatus::pending()
-            ),
-            new ProductValuesCollection()
-        )->shouldBeLike($expectedResult);
-    }
-
-    public function it_does_not_evaluate_anything_if_there_is_no_attribute_spellcheck_evaluations(
-        GetProductFamilyAttributeCodesQueryInterface $getProductFamilyAttributeCodesQuery,
-        GetAttributeSpellcheckQueryInterface $getAttributeSpellcheckQuery
-    ) {
-        $getProductFamilyAttributeCodesQuery->execute(new ProductId(1))->willReturn([new AttributeCode('sku')]);
-        $getAttributeSpellcheckQuery->getByAttributeCodes([new AttributeCode('sku')])->willReturn([]);
-
-        $expectedResult = (new Write\CriterionEvaluationResult())
-            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
-            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
-            ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
-        ;
-
-        $this->evaluate(
-            new Write\CriterionEvaluation(
-                new CriterionCode('criterion1'),
-                new ProductId(1),
-                CriterionEvaluationStatus::pending()
-            ),
-            new ProductValuesCollection()
-        )->shouldBeLike($expectedResult);
+        $this->byAttributeCodes($attributes)->shouldBeLike($expectedResult);
     }
 
     private function createHeightAttributeEvaluation()

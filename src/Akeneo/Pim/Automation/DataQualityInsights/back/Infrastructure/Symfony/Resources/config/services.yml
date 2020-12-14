@@ -201,3 +201,9 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.get_key_indicators.community'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeAttributesWithPerfectSpellingQuery'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateFamilyAttributesSpelling:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetActivatedFamilyAttributesCodesQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\FamilyCriterionEvaluationRepository'
