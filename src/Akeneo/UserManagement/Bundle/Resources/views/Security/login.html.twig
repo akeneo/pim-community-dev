@@ -3,49 +3,59 @@
 {% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
-<script type="text/javascript" nonce="{{ js_nonce() }}">
-    sessionStorage.clear();
-    document.title = '{{ 'Login'|trans }}';
-</script>
-
-<div class="AknLogin-mainContainer container">
-    <div class="AknLogin-title">
-        {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
-    </div>
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      sessionStorage.clear();
+      document.title = '{{ 'Login'|trans }}';
+    </script>
 
     {% if error %}
-        <div class="AknMessageBox AknMessageBox--error">
-            {{ error.messageKey|trans(error.messageData, 'security') }}
+        <div class="Helper">
+            <span class="Icon"></span>
+            <span class="Text">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
         </div>
     {% endif %}
 
-    <form action="{{ path(action_route) }}" method="post" class="form-signin form-inline">
-        <div class="AknLogin-form">
-            <div class="AknLogin-formCell">
-                <input class="AknTextField" type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'pim_user.user.login.username_or_email'|trans }}" size="1"/>
+    <form action="{{ path(action_route) }}" method="post" class="Form">
+        <div class="InputGroup">
+            <div class="InputBlock">
+                <label class="InputLabel">{{ 'pim_user.user.login.username_or_email'|trans }}</label>
+                <div class="InputContainer">
+                    <input class="InputText" type="text" id="prependedInput" autofocus="autofocus" name="_username"
+                           value="{{ last_username }}" required="required"
+                           placeholder="{{ 'pim_user.user.login.username_or_email'|trans }}" size="1"/>
+                </div>
             </div>
-            <div class="AknLogin-formCell">
-                <input class="AknTextField" type="password" id="prependedInput2" name="_password" required="required" placeholder="{{ 'pim_user.user.fields.password'|trans }}" autocomplete="off" size="1"/>
+            <div class="InputBlock">
+                <label class="InputLabel">{{ 'pim_user.user.fields.password'|trans }}</label>
+                <div class="InputContainer">
+                    <input class="InputText" type="password" id="prependedInput2" name="_password" required="required"
+                           placeholder="{{ 'pim_user.user.fields.password'|trans }}" autocomplete="off" size="1"/>
+                </div>
             </div>
-        </div>
-        <div class="AknLogin-form">
-            <div class="AknLogin-formCell">
-                <label class="checkbox remember-me">
-                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'pim_user.user.login.remember_me'|trans }}
+
+            <div class="PasswordReset">
+                <a href="{{ path('pim_user_reset_request') }}">
+                    {{ 'pim_user.user.login.password_forgotten'|trans }}
+                </a>
+            </div>
+
+            <div class="RememberMe">
+                <label>
+                    <input type="checkbox" id="remember_me" name="_remember_me"
+                           value="on"/> {{ 'pim_user.user.login.remember_me'|trans }}
                 </label>
             </div>
-            <div class="AknLogin-formCell AknLogin-formCell--small">
-                <div class="signin-help">
-                    <a class="AknLogin-link" href="{{ path('pim_user_reset_request') }}">{{ 'pim_user.user.login.password_forgotten'|trans }}</a>
-                </div>
-                <button class="AknButton AknButton--apply AknButton--big" type="submit" id="_submit" name="_submit">{{ 'pim_user.user.login.log_in'|trans }}</button>
-            </div>
         </div>
-        <input type="hidden" name="_target_path" value="" />
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        <button class="AknButton AknButton--apply AknButton--big" type="submit" id="_submit" name="_submit">
+            {{- 'pim_user.user.login.log_in'|trans -}}
+        </button>
+
+
+        <input type="hidden" name="_target_path" value=""/>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
         {% for field in additional_hidden_fields %}
-            <input type="hidden" name="{{ field.field_name }}" value="{{ app.request.query.get(field.initialized_by) }}" />
+            <input type="hidden" name="{{ field.field_name }}"
+                   value="{{ app.request.query.get(field.initialized_by) }}"/>
         {% endfor %}
     </form>
-</div>
 {% endblock content %}
