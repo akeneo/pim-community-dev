@@ -21,7 +21,7 @@ class EventSubscriptionRequestsLimitReachedLog
         $this->limit = $limit;
     }
 
-    public static function fromLimit($limit): self
+    public static function fromLimit(int $limit): self
     {
         return new self($limit);
     }
