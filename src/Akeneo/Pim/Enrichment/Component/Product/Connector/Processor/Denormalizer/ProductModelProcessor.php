@@ -125,9 +125,8 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
 
                 return null;
             }
-        }
 
-        if (null !== $code) {
+            // The code was removed by productModelFilter, we need to be sure it's still there for the next checks
             $standardProductModel['code'] = $code;
         }
 
