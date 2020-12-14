@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Button, DeleteIllustration, getColor, Helper, Link, Modal, SectionTitle, Title} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate, useRouter, useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useIsMounted} from '@akeneo-pim-community/shared';
 
 const Content = styled.div`
   margin-bottom: 10px;
@@ -17,15 +18,18 @@ const useImpactedItemCount = (attributeCode: string) => {
   const [productModelCount, setProductModelCount] = useState<number>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const route = useRoute('pim_enrich_count_items_with_attribute_value', {attribute_code: attributeCode});
+  const isMounted = useIsMounted();
 
   const fetchImpactedItemCount = async () => {
     setLoading(true);
     const response = await fetch(route);
     const json = await response.json();
 
-    setLoading(false);
-    setProductCount(json.products);
-    setProductModelCount(json.product_models);
+    if (isMounted()) {
+      setLoading(false);
+      setProductCount(json.products);
+      setProductModelCount(json.product_models);
+    }
   };
 
   useEffect(() => {

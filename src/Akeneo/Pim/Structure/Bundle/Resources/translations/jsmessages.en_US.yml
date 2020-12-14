@@ -221,8 +221,8 @@ pim_enrich.entity.attribute:
             item_count: "{{ productCount }} product(s) and {{ productModelCount }} product model(s)"
             used: are using this attribute and have values that will be deleted.
             helper:
-                content: If you need to change your attribute type, to make it localizable or scopable, while keeping access to your existing attribute values, we are walking you through 
-                link: the different steps in this tutorial.
+                content: If you need to change your attribute type, to make it localizable or scopable, while keeping access to your existing attribute values,
+                link: we walk you through the different steps here.
             confirm_from_family: Are you sure you want to delete this attribute from the family?
             confirm_from_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
             confirm_from_product: Are you sure you want to delete this attribute from the product?
