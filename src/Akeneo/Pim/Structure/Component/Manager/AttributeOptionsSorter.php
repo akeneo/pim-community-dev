@@ -48,6 +48,6 @@ class AttributeOptionsSorter
             $options[$key] = $option;
         }
 
-        $this->optionSaver->saveAll($$options);
+        $this->optionSaver->saveAll($options);
     }
 }

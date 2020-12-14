@@ -62,12 +62,16 @@ pim_common:
   name: Naam
   remove: Verwijder
   code: Code
+  quantity: Aantal
   products: Producten
   product_models: Productmodels
   categories: Categorieën
+  family_variant: Familie variant
   enabled: Ingeschakeld
   family: Familie
+  parent: Bovenliggende
   groups: Groepen
+  unit: Eenheid
   yes: "Ja"
   no: "Nee"
 pim_enrich:
@@ -100,6 +104,7 @@ pim_enrich:
       edit_attributes: Wijzig attributen van een productmodel
       categories_view: Raadpleeg de categorieën van een productmodel
       history: Bekijk productmodel-geschiedenis
+      remove: Verwijder een productmodel (inclusief varianten)
     category:
       list: Categorieën oplijsten
       create: Categorie aanmaken
@@ -163,6 +168,7 @@ pim_enrich:
     job_tracker:
       index: Bekijk procesopvolger
       view_all_jobs: Bekijk alle taken in procestracker
+      stop_job: Een lopende taak stoppen
   acl_group:
     association_type: Associatietypes
     attribute: Attributen
@@ -429,6 +435,8 @@ Disabled: Uitgeschakeld
 Status: Status
 pim_datagrid:
   filters:
+    product_typology:
+      label: Product typologie
     entity_type:
       label: Variant
     family:
@@ -437,8 +445,18 @@ pim_datagrid:
       label: Groepen
     enabled:
       label: Status
+    scope:
+      label: Bereik
     completeness:
       label: Voltooien
+    created:
+      label: Aangemaakt op
+    updated:
+      label: Bijgewerkt op
+    label_or_identifier:
+      label: Label of identifier
+    parent:
+      label: Bovenliggende
     identifier:
       label: Id
 #Versioning / history
