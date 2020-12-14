@@ -21,6 +21,11 @@ class DbalEventsApiRequestCountRepository implements EventsApiRequestCountReposi
         $this->dbalConnection = $dbalConnection;
     }
 
+    /**
+     * Update the number of Events API requests for the current hour & minute.
+     * `$dateTime` minute is used to determine the minute to update and to set the last `updated` date.
+     * If the previous `updated` date is not from the current hour, then the count is reinitialized with the new count.
+     */
     public function upsert(\DateTimeImmutable $dateTime, int $eventCount): int
     {
         $upsertQuery = <<<SQL
