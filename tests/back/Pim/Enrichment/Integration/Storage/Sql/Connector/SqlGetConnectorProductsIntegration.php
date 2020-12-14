@@ -187,7 +187,8 @@ class SqlGetConnectorProductsIntegration extends TestCase
                     ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-                ])
+                ]),
+                null
             ),
             new ConnectorProduct(
                 (int) $productDataAppolonB['id'],
@@ -238,7 +239,8 @@ class SqlGetConnectorProductsIntegration extends TestCase
                     ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-                ])
+                ]),
+                null
             ),
         ]);
 
@@ -315,7 +317,8 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 [],
                 new ReadValueCollection([
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                ])
+                ]),
+                null
             ),
             new ConnectorProduct(
                 (int) $productDataAppolonB['id'],
@@ -362,7 +365,8 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 [],
                 new ReadValueCollection([
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                ])
+                ]),
+                null
             ),
         ]);
 
@@ -434,7 +438,8 @@ class SqlGetConnectorProductsIntegration extends TestCase
                 ScalarValue::value('a_yes_no', false),
                 ScalarValue::value('a_number_float', '12.5000'),
                 ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-            ])
+            ]),
+            null
         );
 
         $this->assertEquals($expectedProduct, $product);
