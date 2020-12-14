@@ -4,18 +4,33 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Bundle\Query\InternalApi\Attribute\GetBlacklistedAttributeJobExecutionId;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\IsAttributeCodeBlacklistedInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class BlacklistedAttributeCodeValidator extends ConstraintValidator
 {
-    protected IsAttributeCodeBlacklistedInterface $isAttributeCodeBlacklisted;
+    private const JOB_TRACKER_ROUTE = 'pim_enrich_job_tracker_show';
 
-    public function __construct(IsAttributeCodeBlacklistedInterface $isAttributeCodeBlacklisted)
-    {
+    protected IsAttributeCodeBlacklistedInterface $isAttributeCodeBlacklisted;
+    private GetBlacklistedAttributeJobExecutionId $getBlacklistedAttributeJobExecutionId;
+    private Translator $translator;
+    private RouterInterface $router;
+
+    public function __construct(
+        IsAttributeCodeBlacklistedInterface $isAttributeCodeBlacklisted,
+        GetBlacklistedAttributeJobExecutionId $getBlacklistedAttributeJobExecutionId,
+        Translator $translator,
+        RouterInterface $router
+    ) {
         $this->isAttributeCodeBlacklisted = $isAttributeCodeBlacklisted;
+        $this->getBlacklistedAttributeJobExecutionId = $getBlacklistedAttributeJobExecutionId;
+        $this->translator = $translator;
+        $this->router = $router;
     }
 
     /**
@@ -31,8 +46,23 @@ class BlacklistedAttributeCodeValidator extends ConstraintValidator
         }
 
         if (is_string($attributeCode) && $this->isAttributeCodeBlacklisted->execute($attributeCode)) {
-            $this->context->buildViolation($constraint->message, ['%attribute_code%' => $attributeCode])
+            $this->addInternalViolation($attributeCode, $constraint);
+            $this->context
+                ->buildViolation($constraint->message)
                 ->addViolation();
         }
+    }
+
+    private function addInternalViolation(string $attributeCode, BlacklistedAttributeCode $constraint): void
+    {
+        $jobExecutionId = $this->getBlacklistedAttributeJobExecutionId->forAttributeCode($attributeCode);
+        $jobExecutionLink = sprintf('#%s', $this->router->generate(self::JOB_TRACKER_ROUTE, ['id' => $jobExecutionId]));
+        $internalApiMessage = $this->translator->trans(
+            $constraint->internalAPIMessage,
+            ['{{ link }}' => $jobExecutionLink],
+            'validators'
+        );
+
+        $constraint->payload['internal_api_message'] = $internalApiMessage;
     }
 }
