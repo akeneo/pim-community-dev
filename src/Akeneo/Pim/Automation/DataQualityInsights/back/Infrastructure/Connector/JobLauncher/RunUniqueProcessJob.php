@@ -25,7 +25,7 @@ final class RunUniqueProcessJob
     private const RUNNING_PROCESS_CHECK_INTERVAL = 5;
 
     /** Time for which a job execution is considered as outdated. */
-    private const OUTDATED_JOB_EXECUTION_TIME = '-1 DAY';
+    private const OUTDATED_JOB_EXECUTION_TIME = '-3 HOUR';
 
     /** @var EntityManager */
     private $entityManager;

@@ -10,17 +10,16 @@ services:
       Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository:
           arguments:
               - '@database_connection'
+              - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes'
 
       akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation:
           class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductCriterionEvaluationRepository
           arguments:
-              - '@database_connection'
               - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
 
       akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation:
           class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductModelCriterionEvaluationRepository
           arguments:
-              - '@database_connection'
               - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\CriterionEvaluationRepository'
 
       Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository:

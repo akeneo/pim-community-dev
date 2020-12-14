@@ -35,7 +35,8 @@ CREATE TABLE pim_data_quality_insights_product_criteria_evaluation (
   status varchar(15) NOT NULL,
   result json DEFAULT NULL,
   PRIMARY KEY (product_id, criterion_code),
-  INDEX status_index (status)
+  INDEX status_index (status),
+  CONSTRAINT FK_dqi_product_criteria_evaluation FOREIGN KEY (product_id) REFERENCES pim_catalog_product (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
@@ -45,7 +46,8 @@ CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
   status varchar(15) NOT NULL,
   result json DEFAULT NULL,
   PRIMARY KEY (product_id, criterion_code),
-  INDEX status_index (status)
+  INDEX status_index (status),
+  CONSTRAINT FK_dqi_product_model_criteria_evaluation FOREIGN KEY (product_id) REFERENCES pim_catalog_product_model (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_product_score (

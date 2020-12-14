@@ -105,6 +105,7 @@ $rules = [
             'Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration',
             'Oro\Bundle\DataGridBundle\Datagrid\RequestParameters',
             'Oro\Bundle\DataGridBundle\Extension\AbstractExtension',
+            'Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration',
             'Oro\Bundle\PimDataGridBundle\Extension\Sorter\SorterInterface',
             'Oro\Bundle\FilterBundle\Grid\Extension\Configuration',
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
@@ -153,7 +154,9 @@ $rules = [
             'League\Flysystem',
             'Webmozart\Assert\Assert',
 
+            // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];
