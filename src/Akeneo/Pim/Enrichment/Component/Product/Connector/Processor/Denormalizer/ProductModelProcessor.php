@@ -168,7 +168,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      *
      * @return ProductModelInterface
      */
-    public function findOrCreateProductModel(string $code): ProductModelInterface
+    private function findOrCreateProductModel(string $code): ProductModelInterface
     {
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
         if (null === $productModel) {
