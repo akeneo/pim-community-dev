@@ -2,43 +2,41 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluationsByProductIdQueryInterface
 {
-    /** @var Connection */
-    private $db;
+    private Connection $db;
 
-    /** @var Clock */
-    private $clock;
+    private Clock $clock;
 
-    /** @var string */
-    private $tableName;
+    private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds;
 
-    public function __construct(Connection $db, Clock $clock, string $tableName)
-    {
+    private string $tableName;
+
+    public function __construct(
+        Connection $db,
+        Clock $clock,
+        TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds,
+        string $tableName
+    ) {
         $this->db = $db;
         $this->clock = $clock;
+        $this->transformCriterionEvaluationResultIds = $transformCriterionEvaluationResultIds;
         $this->tableName = $tableName;
     }
 
@@ -84,9 +82,8 @@ SQL;
         }
 
         $rawResult = json_decode($rawResult, true, JSON_THROW_ON_ERROR);
-        $rates = ChannelLocaleRateCollection::fromArrayInt($rawResult['rates'] ?? []);
-        $status = CriterionEvaluationResultStatusCollection::fromArrayString($rawResult['status'] ?? []);
+        $rawResult = $this->transformCriterionEvaluationResultIds->transformToCodes($rawResult);
 
-        return new Read\CriterionEvaluationResult($rates, $status, $rawResult['data'] ?? []);
+        return Read\CriterionEvaluationResult::fromArray($rawResult);
     }
 }

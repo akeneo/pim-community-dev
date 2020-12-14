@@ -33,3 +33,8 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\MigrateProductCriterionEvaluationCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }

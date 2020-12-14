@@ -54,6 +54,8 @@ final class ListProductsQuery
     /** @var string */
     public $withAttributeOptions = 'false';
 
+    public string $withQualityScores = 'false';
+
     /**
      * Returns the parameter 'with_count' typed as a boolean
      *
@@ -72,5 +74,10 @@ final class ListProductsQuery
     public function withAttributeOptionsAsBoolean(): bool
     {
         return $this->withAttributeOptions === 'true';
+    }
+
+    public function withQualityScores(): bool
+    {
+        return $this->withQualityScores === 'true';
     }
 }
