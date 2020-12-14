@@ -41,4 +41,4 @@ Feature: Display the product history
     And I should see history:
       | version | property           | value      | date |
       | 2       | weather_conditions | snowy,cold | now  |
-      | 2       | Name en            | Nice boots | now  |
+      | 2       | name-en_US         | Nice boots | now  |
