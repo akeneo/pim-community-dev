@@ -71,7 +71,7 @@ class InMemoryProductRepository implements
 
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return array_values($this->products->toArray());
     }
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
