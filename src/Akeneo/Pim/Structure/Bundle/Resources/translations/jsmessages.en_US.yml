@@ -219,7 +219,7 @@ pim_enrich.entity.attribute:
         delete:
             confirm: Are you sure you want to delete this attribute?
             item_count: "{{ productCount }} product(s) and {{ productModelCount }} product model(s)"
-            used: are using this attribute and have values that will be deleted.
+            used: currently have values set for this attribute, they will be removed.
             helper:
                 content: If you need to change your attribute type, to make it localizable or scopable, while keeping access to your existing attribute values,
                 link: we walk you through the different steps here.

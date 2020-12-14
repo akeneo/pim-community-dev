@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {Button, DeleteIllustration, getColor, Helper, Link, Modal, SectionTitle, Title} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate, useRouter, useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
 import {useIsMounted} from '@akeneo-pim-community/shared';
 
 const Content = styled.div`
@@ -48,11 +48,11 @@ type DeleteModalProps = {
 const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => {
   const translate = useTranslate();
   const notify = useNotify();
-  const router = useRouter();
+  const removeRoute = useRoute('pim_enrich_attribute_rest_remove', {code: attributeCode});
   const [productCount, productModelCount, isLoading] = useImpactedItemCount(attributeCode);
 
   const handleConfirm = () => {
-    fetch(router.generate('pim_enrich_attribute_rest_remove', {code: attributeCode}), {
+    fetch(removeRoute, {
       method: 'DELETE',
       headers: new Headers({
         'X-Requested-With': 'XMLHttpRequest',
