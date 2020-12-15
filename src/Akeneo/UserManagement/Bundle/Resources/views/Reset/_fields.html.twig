@@ -23,6 +23,36 @@
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value == '\\' or value is not empty %}value="{{ value }}" {% endif %}/>
 {%- endblock form_widget_simple -%}
 
+{% block form_label %}
+    {% spaceless %}
+        {% if label is not same as(false) %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' AknFieldContainer-label')|trim}) %}
+            {% if not compound %}
+                {% set label_attr = label_attr|merge({'for': id}) %}
+            {% endif %}
+            {% if required %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class ~ ' required')|trim}) %}
+            {% endif %}
+            {% if label is empty %}
+                {% set label = name|humanize %}
+            {% endif %}
+            {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
+            {% set label = label|trans({}, translation_domain) %}
+            {% if label_attr.truncate is defined and label_attr.truncate %}
+                {% set label_attr = { 'title': label }|merge(label_attr) %}
+                {% set label_attr = label_attr|merge({ 'class': (label_attr.class is defined ? label_attr.class ~ ' ' : '') ~ 'truncate' }) %}
+            {% endif %}
+            <label{% for attrname, attrvalue in label_attr if attrname != 'truncate' %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {% if form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode %}
+                <input type="checkbox" class="comparisonSelection exclude" />
+            {% else %}
+                {{ label }}{% if required and not isRadioLabel %} {{ 'required'|trans }}{% endif %}
+            {% endif %}
+            </label>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_label %}
+
 {%- block form_errors -%}
     {%- if errors|length > 0 -%}
         {%- for error in errors -%}

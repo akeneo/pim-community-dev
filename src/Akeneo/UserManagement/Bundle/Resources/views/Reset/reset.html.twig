@@ -17,9 +17,9 @@
     <div class="InputGroup">
         {{ form_widget(form.plainPassword, {'required': true}) }}
         {{ form_widget(form._token) }}
-    </div>
-    <div class="CancelPasswordReset">
-        <a href="{{ path('pim_user_security_login') }}">{{ 'pim_common.cancel'|trans }}</a>
+        <div class="CancelPasswordReset">
+            <a href="{{ path('pim_user_security_login') }}">{{ 'pim_common.cancel'|trans }}</a>
+        </div>
     </div>
     <button type="submit" id="_submit"
             class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'pim_user.user.login.reset'|trans }}</button>
