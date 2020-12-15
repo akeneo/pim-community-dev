@@ -436,6 +436,7 @@ services:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.association.two_way_association_updater'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.adder' }

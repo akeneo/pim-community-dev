@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -23,7 +24,8 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
-        AssociationTypeRepositoryInterface $associationTypeRepository
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater
     ) {
         $this->beConstructedWith(
             $productRepository,
@@ -31,6 +33,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
             $groupRepository,
             $missingAssociationAdder,
             $associationTypeRepository,
+            $twoWayAssociationUpdater,
             ['associations']
         );
     }
@@ -433,6 +436,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productModelRepository,
         MissingAssociationAdder $missingAssociationAdder,
         AssociationTypeRepositoryInterface $associationTypeRepository,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         ProductInterface $product,
         AssociationTypeInterface $twoWayType,
         ProductInterface $assocProduct,
@@ -450,13 +454,8 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $product->addAssociatedProduct($assocProduct, 'TWOWAY')->shouldBeCalled();
         $product->addAssociatedProductModel($assocProductModel, 'TWOWAY')->shouldBeCalled();
 
-        $assocProduct->hasAssociationForTypeCode('TWOWAY')->willReturn(false);
-        $missingAssociationAdder->addMissingAssociations($assocProduct)->shouldBeCalled();
-        $assocProduct->addAssociatedProduct($product, 'TWOWAY')->shouldBeCalled();
-
-        $assocProductModel->hasAssociationForTypeCode('TWOWAY')->willReturn(true);
-        $missingAssociationAdder->addMissingAssociations($assocProductModel)->shouldNotBeCalled();
-        $assocProductModel->addAssociatedProduct($product, 'TWOWAY')->shouldBeCalled();
+        $twoWayAssociationUpdater->createInversedAssociation($product, 'TWOWAY', $assocProduct)->shouldBeCalled();
+        $twoWayAssociationUpdater->createInversedAssociation($product, 'TWOWAY', $assocProductModel)->shouldBeCalled();
 
         $this->addFieldData(
             $product,
@@ -475,6 +474,7 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productModelRepository,
         MissingAssociationAdder $missingAssociationAdder,
         AssociationTypeRepositoryInterface $associationTypeRepository,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         ProductModelInterface $productModel,
         AssociationTypeInterface $twoWayType,
         ProductInterface $assocProduct,
@@ -492,13 +492,8 @@ class AssociationFieldAdderSpec extends ObjectBehavior
         $productModel->addAssociatedProduct($assocProduct, 'TWOWAY')->shouldBeCalled();
         $productModel->addAssociatedProductModel($assocProductModel, 'TWOWAY')->shouldBeCalled();
 
-        $assocProduct->hasAssociationForTypeCode('TWOWAY')->willReturn(false);
-        $missingAssociationAdder->addMissingAssociations($assocProduct)->shouldBeCalled();
-        $assocProduct->addAssociatedProductModel($productModel, 'TWOWAY')->shouldBeCalled();
-
-        $assocProductModel->hasAssociationForTypeCode('TWOWAY')->willReturn(true);
-        $missingAssociationAdder->addMissingAssociations($assocProductModel)->shouldNotBeCalled();
-        $assocProductModel->addAssociatedProductModel($productModel, 'TWOWAY')->shouldBeCalled();
+        $twoWayAssociationUpdater->createInversedAssociation($productModel, 'TWOWAY', $assocProduct)->shouldBeCalled();
+        $twoWayAssociationUpdater->createInversedAssociation($productModel, 'TWOWAY', $assocProductModel)->shouldBeCalled();
 
         $this->addFieldData(
             $productModel,

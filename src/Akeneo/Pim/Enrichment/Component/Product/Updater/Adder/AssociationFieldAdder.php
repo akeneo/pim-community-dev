@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -22,14 +23,11 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 class AssociationFieldAdder extends AbstractFieldAdder
 {
     protected IdentifiableObjectRepositoryInterface $productRepository;
-
     protected IdentifiableObjectRepositoryInterface $productModelRepository;
-
     protected IdentifiableObjectRepositoryInterface $groupRepository;
-
     private MissingAssociationAdder $missingAssociationAdder;
-
     private AssociationTypeRepositoryInterface $associationTypeRepository;
+    private TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
@@ -37,14 +35,16 @@ class AssociationFieldAdder extends AbstractFieldAdder
         IdentifiableObjectRepositoryInterface $groupRepository,
         MissingAssociationAdder $missingAssociationAdder,
         AssociationTypeRepositoryInterface $associationTypeRepository,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
         $this->productModelRepository = $productModelRepository;
         $this->groupRepository = $groupRepository;
         $this->missingAssociationAdder = $missingAssociationAdder;
-        $this->supportedFields = $supportedFields;
         $this->associationTypeRepository = $associationTypeRepository;
+        $this->twoWayAssociationUpdater = $twoWayAssociationUpdater;
+        $this->supportedFields = $supportedFields;
     }
 
     /**
@@ -128,7 +128,11 @@ class AssociationFieldAdder extends AbstractFieldAdder
             }
             $entity->addAssociatedProduct($associatedProduct, $associationType->getCode());
             if ($associationType->isTwoWay()) {
-                $this->addInversedAssociation($associatedProduct, $associationType->getCode(), $entity);
+                $this->twoWayAssociationUpdater->createInversedAssociation(
+                    $entity,
+                    $associationType->getCode(),
+                    $associatedProduct
+                );
             }
         }
     }
@@ -158,7 +162,11 @@ class AssociationFieldAdder extends AbstractFieldAdder
             }
             $entity->addAssociatedProductModel($associatedProductModel, $associationType->getCode());
             if ($associationType->isTwoWay()) {
-                $this->addInversedAssociation($associatedProductModel, $associationType->getCode(), $entity);
+                $this->twoWayAssociationUpdater->createInversedAssociation(
+                    $entity,
+                    $associationType->getCode(),
+                    $associatedProductModel
+                );
             }
         }
     }
@@ -248,21 +256,6 @@ class AssociationFieldAdder extends AbstractFieldAdder
                     $data
                 );
             }
-        }
-    }
-
-    private function addInversedAssociation(
-        EntityWithAssociationsInterface $owner,
-        string $associationTypeCode,
-        $entityToAssociate
-    ) {
-        if (!$owner->hasAssociationForTypeCode($associationTypeCode)) {
-            $this->missingAssociationAdder->addMissingAssociations($owner);
-        }
-        if ($entityToAssociate instanceof ProductInterface) {
-            $owner->addAssociatedProduct($entityToAssociate, $associationTypeCode);
-        } elseif ($entityToAssociate instanceof ProductModelInterface) {
-            $owner->addAssociatedProductModel($entityToAssociate, $associationTypeCode);
         }
     }
 }
