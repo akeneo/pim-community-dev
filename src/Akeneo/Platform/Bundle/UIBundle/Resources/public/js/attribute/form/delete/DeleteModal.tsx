@@ -14,19 +14,16 @@ const Highlight = styled.span`
 `;
 
 const useImpactedItemCount = (attributeCode: string) => {
-  const [productCount, setProductCount] = useState<number>();
-  const [productModelCount, setProductModelCount] = useState<number>();
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [productCount, setProductCount] = useState<number>(0);
+  const [productModelCount, setProductModelCount] = useState<number>(0);
   const route = useRoute('pim_enrich_count_items_with_attribute_value', {attribute_code: attributeCode});
   const isMounted = useIsMounted();
 
   const fetchImpactedItemCount = async () => {
-    setLoading(true);
     const response = await fetch(route);
     const json = await response.json();
 
     if (isMounted()) {
-      setLoading(false);
       setProductCount(json.products);
       setProductModelCount(json.product_models);
     }
@@ -36,7 +33,7 @@ const useImpactedItemCount = (attributeCode: string) => {
     fetchImpactedItemCount();
   }, [route, attributeCode]);
 
-  return [productCount, productModelCount, isLoading] as const;
+  return [productCount, productModelCount] as const;
 };
 
 type DeleteModalProps = {
@@ -49,7 +46,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   const translate = useTranslate();
   const notify = useNotify();
   const removeRoute = useRoute('pim_enrich_attribute_rest_remove', {code: attributeCode});
-  const [productCount, productModelCount, isLoading] = useImpactedItemCount(attributeCode);
+  const [productCount, productModelCount] = useImpactedItemCount(attributeCode);
 
   const handleConfirm = () => {
     fetch(removeRoute, {
@@ -74,6 +71,26 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
       });
   };
 
+  const productText =
+    0 < productCount
+      ? translate(
+          'pim_enrich.entity.attribute.module.delete.product_count',
+          {count: productCount.toString()},
+          productCount
+        )
+      : '';
+  const productModelText =
+    0 < productModelCount
+      ? translate(
+          'pim_enrich.entity.attribute.module.delete.product_model_count',
+          {count: productModelCount.toString()},
+          productModelCount
+        )
+      : '';
+  const impactedItemsText = `${productText}${
+    0 < productCount && 0 < productModelCount ? ` ${translate('pim_common.and')} ` : ''
+  }${productModelText}`;
+
   return (
     <Modal
       isOpen={true}
@@ -85,20 +102,17 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
       <Title>{translate('pim_common.confirm_deletion')}</Title>
       <Content>
         {translate('pim_enrich.entity.attribute.module.delete.confirm')}
-        <p>
-          <Highlight className={isLoading ? 'AknLoadingPlaceHolder' : undefined}>
-            {translate('pim_enrich.entity.attribute.module.delete.item_count', {
-              productCount: productCount?.toString() ?? '',
-              productModelCount: productModelCount?.toString() ?? '',
-            })}
-          </Highlight>
-          &nbsp;
-          {translate('pim_enrich.entity.attribute.module.delete.used')}
-        </p>
+        {(0 < productCount || 0 < productModelCount) && (
+          <p>
+            <Highlight>{impactedItemsText}</Highlight>
+            &nbsp;
+            {translate('pim_enrich.entity.attribute.module.delete.used')}
+          </p>
+        )}
       </Content>
       <Helper>
         {translate('pim_enrich.entity.attribute.module.delete.helper.content')}
-        <Link href="https://help.akeneo.com/pim/v4/articles/manage-your-attributes.html#Delete-an-attribute-and-keeping-the-related-data">
+        <Link href="https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html#delete-an-attribute-and-keep-the-related-data">
           {translate('pim_enrich.entity.attribute.module.delete.helper.link')}
         </Link>
       </Helper>

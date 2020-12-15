@@ -40,9 +40,7 @@ test('it renders a confirm modal delete', async () => {
 test('it calls the attribute remover when confirm is clicked', async () => {
   const onSuccess = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={onSuccess} attributeCode="foo" />);
-  });
+  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={onSuccess} attributeCode="foo" />);
 
   await act(async () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
@@ -67,9 +65,7 @@ test('it displays an error when the delete failed', async () => {
     }
   });
 
-  await act(async () => {
-    renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
-  });
+  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
 
   await act(async () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
@@ -93,9 +89,7 @@ test('it displays an error when the delete was rejected', async () => {
     }
   });
 
-  await act(async () => {
-    renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
-  });
+  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
 
   await act(async () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
