@@ -2,20 +2,21 @@
 
 {% block bodyClass %}AknLogin{% endblock %}
 
-{% block content %}
-    <script type="text/javascript" nonce="{{ js_nonce() }}">
-      sessionStorage.clear();
-      document.title = '{{ 'Login'|trans }}';
-    </script>
-
+{% block messages %}
+    {{ parent() }}
     {% if error %}
         <div class="Helper">
             <span class="Icon"></span>
             <span class="Text">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
         </div>
-    {% else %}
-        <div class="Separator"></div>
     {% endif %}
+{% endblock %}
+
+{% block content %}
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      sessionStorage.clear();
+      document.title = '{{ 'Login'|trans }}';
+    </script>
 
     <form action="{{ path(action_route) }}" method="post" class="Form">
         <div class="InputGroup">

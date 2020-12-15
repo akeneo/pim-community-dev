@@ -24,22 +24,25 @@
                             <img src="{{ '/bundles/pimui/images/illustrations/login/Logo.svg' }}" alt={{ 'pim_login.logo_title'|trans|e }} />
                         </div>
                         <div class="ContainerForm">
-                            {% block messages %}
-                                {% if app.session.flashbag.peekAll|length > 0 %}
-                                    {% for type, messages in app.session.flashbag.all %}
-                                        {% for message in messages %}
-                                            <div class="alert{{ type ? ' alert-'~type : '' }}">
-                                                {{ message|trans|raw }}
-                                            </div>
+                            <div class="Messages">
+                                {% block messages %}
+                                    {% if app.session.flashbag.peekAll|length > 0 %}
+                                        {% for type, messages in app.session.flashbag.all %}
+                                            {% for message in messages %}
+                                                <div class="Helper {{ type ? ' Helper--'~type : '' }}">
+                                                    <span class="Icon"></span>
+                                                    <span class="Text">{{ message|trans|raw }}</span>
+                                                </div>
+                                            {% endfor %}
                                         {% endfor %}
-                                    {% endfor %}
-                                {% endif %}
-                            {% endblock %}
+                                    {% endif %}
+                                {% endblock %}
+                            </div>
                             {% block content %}
                             {% endblock content %}
                         </div>
                     </div>
-                    <a class="Footer" href="https://www.akeneo.com/">
+                    <a class="Footer" href="https://www.akeneo.com/" target="_blank">
                         <div class="Powered">
                             {{ 'pim_login.footer.powered'|trans }}
                             <img class="PoweredImage" src="{{'/bundles/pimui/images/logo_login.svg'}}" alt="{{ 'pim_login.footer.powered_image_title'|trans|e }}" />

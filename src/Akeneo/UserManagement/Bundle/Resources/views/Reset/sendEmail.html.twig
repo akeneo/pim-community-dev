@@ -2,14 +2,19 @@
 
 {% block bodyClass %}AknLogin{% endblock %}
 
+{% block messages %}
+    <div class="Helper Helper--info">
+        <span class="Icon"></span>
+        <span class="Text">{{ 'pim_user.user.login.password_reset_email_sent'|trans }}</span>
+    </div>
+{% endblock %}
+
 {% block content %}
-    <form action="" class="Form">
-        <div class="Helper Helper--info">
-            <span class="Icon"></span>
-            <span class="Text">{{ 'pim_user.user.login.password_reset_email_sent'|trans }}</span>
+    <div class="Form">
+        <div class="InputGroup">
+            <div class="CancelPasswordReset">
+                <a href="{{ path('oro_default') }}">{{ 'pim_user.user.login.homepage'|trans }}</a>
+            </div>
         </div>
-        <div class="CancelPasswordReset">
-            <a href="{{ path('oro_default') }}">{{ 'pim_user.user.login.homepage'|trans }}</a>
-        </div>
-    </form>
+    </div>
 {% endblock %}

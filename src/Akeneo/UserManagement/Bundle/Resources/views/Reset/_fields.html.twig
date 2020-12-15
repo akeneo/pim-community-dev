@@ -1,0 +1,35 @@
+{% extends 'PimUIBundle:Form:pim-fields.html.twig' %}
+
+{% block form_row_field %}
+    <div class="InputBlock{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+        {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'InputLabel' })}) }}
+        <div class="InputContainer">
+            {{- form_widget(form) -}}
+        </div>
+        {{- form_errors(form) -}}
+    </div>
+{% endblock %}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    {% set class = attr.class ?? '' %}
+    {% if type == 'text' or type == 'password'  %}
+        {% set class = 'InputText' %}
+    {% endif %}
+    {% if errors|length > 0  %}
+        {% set class = class ~ ' ' ~ 'error' %}
+    {% endif %}
+    {% set attr = attr|merge({'class': class }) %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value == '\\' or value is not empty %}value="{{ value }}" {% endif %}/>
+{%- endblock form_widget_simple -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- for error in errors -%}
+            <div class="Helper {% if form.parent %}Helper--inline{% endif %}">
+                <span class="Icon"></span>
+                <span class="Text">{{ error.message }}</span>
+            </div>
+        {%- endfor -%}
+    {%- endif -%}
+{%- endblock form_errors -%}

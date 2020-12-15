@@ -1,31 +1,28 @@
 {% extends 'PimUserBundle::layout.html.twig' %}
 
+{% form_theme form 'PimUserBundle:Reset:_fields.html.twig' %}
+
 {% block bodyClass %}AknLogin{% endblock %}
 
-{% block content %}
-<div class="AknLogin-mainContainer container">
-    <div class="AknLogin-title">
-        {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
-    </div>
+{% block messages %}
+    {{ form_errors(form) }}
+{% endblock %}
 
+{% block content %}
     {{ form_start(form, {
         'action': path('pim_user_reset_reset', {token: token}),
         'method': 'post',
-        'class': 'form-signin'
+        'class': 'Form'
     }) }}
-    <h2 class="title">{{ 'pim_user.user.login.password_reset'|trans }}</h2>
-    <fieldset>
-        {{ form_errors(form) }}
-        {{ form_widget(form.plainPassword) }}
+    <div class="InputGroup">
+        {{ form_widget(form.plainPassword, {'required': true}) }}
         {{ form_widget(form._token) }}
-        <div class="AknLogin-form">
-            <div class="AknLogin-formCell"></div>
-            <div class="AknLogin-formCell AknLogin-formCell--small">
-                <a href="{{ path('pim_user_security_login') }}" class="AknLogin-link">{{ 'pim_common.cancel'|trans }}</a>
-                <button type="submit" class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'pim_user.user.login.reset'|trans }}</button>
-            </div>
-        </div>
-    </fieldset>
+    </div>
+    <div class="CancelPasswordReset">
+        <a href="{{ path('pim_user_security_login') }}">{{ 'pim_common.cancel'|trans }}</a>
+    </div>
+    <button type="submit"
+            class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'pim_user.user.login.reset'|trans }}</button>
+
     {{ form_end(form) }}
-</div>
 {% endblock %}

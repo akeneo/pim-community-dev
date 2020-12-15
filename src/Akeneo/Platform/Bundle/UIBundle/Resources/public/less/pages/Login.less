@@ -205,6 +205,7 @@
 
       &.error {
         border: 1px solid @AknRed100;
+        margin-bottom: 5px;
       }
     }
 
@@ -224,7 +225,8 @@
     }
   }
 
-  .PasswordReset, .CancelPasswordReset {
+  .PasswordReset,
+  .CancelPasswordReset {
     margin-bottom: 20px;
     font-size: 13px;
 
@@ -234,10 +236,15 @@
     }
   }
 
-  .Separator {
+  .Messages {
+    width: 296px;
     margin-bottom: 20px;
   }
 
+  /**
+   * Based on the Helper component from Akeneo Design System
+   * @see https://github.com/akeneo/pim-community-dev/blob/master/akeneo-design-system/src/components/Helper/Helper.tsx
+   */
   .Helper {
     display: flex;
     font-weight: 400;
@@ -245,7 +252,6 @@
     color: @AknRed120;
     min-height: 44px;
     background-color: @AknRed10;
-    margin-bottom: 20px;
 
     .Icon {
       flex-shrink: 0;
@@ -271,7 +277,8 @@
       }
     }
 
-    &--info {
+    &--info,
+    &--success {
       color: @AknGrey120;
       background-color: @AknBlue10;
       .Icon {
@@ -283,6 +290,36 @@
         a {
           color: @AknBlue100;
         }
+      }
+    }
+
+    &--warn {
+      color: @AknYellow120;
+      background-color: @AknYellow10;
+      .Icon {
+        color: @AknYellow120;
+        background-image: url("/bundles/pimui/images/icon-danger-orange.svg");
+      }
+      .Text {
+        border-left: 1px solid @AknYellow120;
+        a {
+          color: @AknYellow120;
+        }
+      }
+    }
+
+    &--inline {
+      min-height: auto;
+      background-color: transparent;
+
+      .Icon {
+        height: 16px;
+        margin: 2px 0;
+      }
+      .Text {
+        padding-left: 4px;
+        margin: 0;
+        border-left: none;
       }
     }
   }
