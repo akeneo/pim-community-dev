@@ -228,18 +228,12 @@ class GetProductEndToEnd extends AbstractProductTestCase
             ],
             'quantified_associations' => [],
             'quality_scores' => [
-                'tablet' => [
-                    'de_DE' => 'E',
-                    'en_US' => 'E',
-                    'fr_FR' => 'E',
-                ],
-                'ecommerce' => [
-                    'en_US' => 'E',
-                ],
-                'ecommerce_china' => [
-                    'en_US' => 'E',
-                    'zh_CN' => 'E',
-                ],
+                ['scope' => 'tablet', 'locale' => 'de_DE', 'data' => 'E',],
+                ['scope' => 'tablet', 'locale' => 'en_US', 'data' => 'E',],
+                ['scope' => 'tablet', 'locale' => 'fr_FR', 'data' => 'E',],
+                ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'E',],
+                ['scope' => 'ecommerce_china', 'locale' => 'en_US', 'data' => 'E',],
+                ['scope' => 'ecommerce_china', 'locale' => 'zh_CN', 'data' => 'E',],
             ],
         ];
 
