@@ -12,7 +12,7 @@ const fetchAllLocales = async (): Promise<Locale[]> => {
 };
 const fetchActivatedLocales = async (): Promise<Locale[]> => {
   try {
-    return FetcherRegistry.getFetcher('locale').fetchActivated();
+    return FetcherRegistry.getFetcher('locale').fetchActivated({filter_locales: false});
   } catch (error) {
     console.error(error);
     return [];
