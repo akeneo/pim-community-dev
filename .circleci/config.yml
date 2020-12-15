@@ -470,7 +470,8 @@ jobs:
           - run:
                 name: Get latest release & export variables
                 command: |
-                    LATEST_RELEASE=$(git tag --list | grep -E "^v?[0-9]+$" | sort -r | head -n 1)
+                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
+                    LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
                     echo $LATEST_RELEASE
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     echo export IMAGE_TAG=${LATEST_RELEASE} >> $BASH_ENV
