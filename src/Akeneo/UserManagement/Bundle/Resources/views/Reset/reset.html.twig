@@ -21,8 +21,52 @@
     <div class="CancelPasswordReset">
         <a href="{{ path('pim_user_security_login') }}">{{ 'pim_common.cancel'|trans }}</a>
     </div>
-    <button type="submit"
+    <button type="submit" id="_submit"
             class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'pim_user.user.login.reset'|trans }}</button>
 
     {{ form_end(form) }}
+{% endblock %}
+
+{% block deferred_javascript %}
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      (function () {
+        const init = function(fields, submit, form) {
+          if (!Array.isArray(fields) || !submit || !form) {
+            return;
+          }
+
+          const validate = function (fields) {
+            return fields.reduce(function (isValid, field) {
+              return (isValid && field.value.length > 0);
+            }, true);
+          };
+
+          const changeHandler = function () {
+            if (validate(fields) ) {
+              submit.removeAttribute('disabled');
+              submit.classList.remove('AknButton--disabled');
+            } else {
+              submit.setAttribute('disabled', 'true');
+              submit.classList.add('AknButton--disabled');
+            }
+          };
+
+          fields.forEach(function (field) {
+            field.addEventListener('input', changeHandler);
+            field.dispatchEvent(new Event('input'));
+          });
+
+          form.addEventListener('submit', function() {
+            return validate(fields);
+          });
+        }
+
+        const passwordFirst = document.getElementById('pim_user_reset_form_plainPassword_first');
+        const passwordSecond = document.getElementById('pim_user_reset_form_plainPassword_second');
+        const submit = document.getElementById('_submit');
+        const form = document.querySelector('form.Form');
+
+        init([passwordFirst, passwordSecond], submit, form);
+      })();
+    </script>
 {% endblock %}
