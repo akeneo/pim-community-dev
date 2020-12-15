@@ -18,11 +18,14 @@ final class KeyIndicator
 
     private int $totalToImprove;
 
-    public function __construct(KeyIndicatorCode $code, int $totalGood, int $totalToImprove)
+    private array $extraData;
+
+    public function __construct(KeyIndicatorCode $code, int $totalGood, int $totalToImprove, array $extraData = [])
     {
         $this->code = $code;
         $this->totalGood = $totalGood;
         $this->totalToImprove = $totalToImprove;
+        $this->extraData = $extraData;
     }
 
     public function getCode(): KeyIndicatorCode
@@ -52,12 +55,18 @@ final class KeyIndicator
         return $this->totalToImprove === 0 && $this->totalGood === 0;
     }
 
+    public function getExtraData(): array
+    {
+        return $this->extraData;
+    }
+
     public function toArray(): array
     {
         return [
             'ratioGood' => $this->getRatioGood(),
             'totalGood' => $this->totalGood,
             'totalToImprove' => $this->totalToImprove,
+            'extraData' => $this->extraData,
         ];
     }
 }
