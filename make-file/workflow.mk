@@ -52,6 +52,8 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
+include test.mk
+
 .PHONY: workflow-coupling-back
 workflow-coupling-back: #Doc: launch coupling detector for workflow
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/WorkOrganization/Workflow/.php_cd.php src/Akeneo/Pim/WorkOrganization/Workflow

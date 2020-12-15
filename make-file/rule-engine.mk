@@ -52,6 +52,8 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
+include test.mk
+
 .PHONY: rule-engine-coupling-back
 rule-engine-coupling-back: #Doc: launch PHP coupling detector for rule-engine
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/Automation/RuleEngine/.php_cd.php src/Akeneo/Pim/Automation/RuleEngine
