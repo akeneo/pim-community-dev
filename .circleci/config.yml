@@ -421,42 +421,6 @@ jobs:
               command: PIM_CONTEXT=deployment make delete
               when: always
 
-  test_upgrade_from_32:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Oldest SaaS prod (PIM v3) deployment on kubernetes
-              command: |
-                ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make helm-prepare
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make deploy-pim3
-          - run:
-              name: Upgrade intermediate version SaaS to master
-              command: |
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make terraform-pre-upgrade
-                INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make deploy
-          - run:
-              name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make test-prod
-          - run:
-              name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - run:
-              name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup32 PIM_CONTEXT=deploy_3.2 make delete
-              when: always
-
   test_upgrade_from_last_release:
       environment:
           <<: *envVarsDeployDev
