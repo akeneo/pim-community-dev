@@ -586,7 +586,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
 
-        return $association ? $association->getProducts() : null;
+        return $association ? clone $association->getProducts() : null;
     }
 
     public function addAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
@@ -617,7 +617,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
 
-        return $association ? $association->getProductModels() : null;
+        return $association ? clone $association->getProductModels() : null;
     }
 
     public function addAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
@@ -648,7 +648,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
 
-        return $association ? $association->getGroups() : null;
+        return $association ? clone $association->getGroups() : null;
     }
 
     /**
