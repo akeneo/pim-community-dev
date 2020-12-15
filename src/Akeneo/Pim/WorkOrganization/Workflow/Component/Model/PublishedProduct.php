@@ -561,7 +561,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    protected function getAssociationForTypeCode($typeCode): ?AssociationInterface
+    protected function getAssociationForTypeCode(string $typeCode): ?AssociationInterface
     {
         foreach ($this->associations as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
@@ -727,8 +727,12 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
-            // TODO error message
-            throw new \LogicException();
+            throw new \LogicException(
+                \sprintf(
+                    'This published product has no association for the "%s" association type',
+                    $associationTypeCode
+                )
+            );
         }
 
         if (!$association->hasProduct($product)) {
@@ -748,15 +752,19 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
 
-        return $association ? $association->getProducts() : null;
+        return $association ? clone $association->getProducts() : null;
     }
 
     public function addAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
-            // TODO error message
-            throw new \LogicException();
+            throw new \LogicException(
+                \sprintf(
+                    'This published product has no association for the "%s" association type',
+                    $associationTypeCode
+                )
+            );
         }
 
         if (!$association->getProductModels()->contains($productModel)) {
@@ -776,15 +784,19 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
 
-        return $association ? $association->getProductModels() : null;
+        return $association ? clone $association->getProductModels() : null;
     }
 
     public function addAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
         if (null === $association) {
-            // TODO error message
-            throw new \LogicException();
+            throw new \LogicException(
+                \sprintf(
+                    'This published product has no association for the "%s" association type',
+                    $associationTypeCode
+                )
+            );
         }
         if (!$association->getGroups()->contains($group)) {
             $association->addGroup($group);
@@ -804,7 +816,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         $association = $this->getAssociationForTypeCode($associationTypeCode);
 
-        return $association ? $association->getGroups() : null;
+        return $association ? clone $association->getGroups() : null;
     }
 
     private function getAllValues(
