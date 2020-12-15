@@ -17,12 +17,14 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use PhpSpec\ObjectBehavior;
+use Psr\Log\LoggerInterface;
 
 class ReadValueCollectionFactorySpec extends ObjectBehavior
 {
     function let(
         GetAttributes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter
+        ChainedNonExistentValuesFilterInterface $chainedObsoleteValueFilter,
+        LoggerInterface $logger
     ) {
         $valueFactory = new ValueFactory(
             [
@@ -38,7 +40,8 @@ class ReadValueCollectionFactorySpec extends ObjectBehavior
         $this->beConstructedWith(
             $valueFactory,
             $getAttributeByCodes,
-            $chainedObsoleteValueFilter
+            $chainedObsoleteValueFilter,
+            $logger
         );
     }
 
