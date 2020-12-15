@@ -127,7 +127,8 @@ SQL;
         return new KeyIndicator(
             new KeyIndicatorCode(AttributesWithPerfectSpelling::CODE),
             $result[Quality::GOOD] ?? 0,
-            $result[Quality::TO_IMPROVE] ?? 0
+            $result[Quality::TO_IMPROVE] ?? 0,
+            ['impactedFamilies' => array_map(fn ($family) => strval($family), $families)]
         );
     }
 }

@@ -60,6 +60,7 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
             'ratioGood' => 26,
             'totalGood' => 12,
             'totalToImprove' => 34,
+            'extraData' => [],
         ];
 
         $this->all($channel, $locale)->shouldBeLike($expectedKeyIndicators);
@@ -95,6 +96,7 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
             'ratioGood' => 0,
             'totalGood' => 0,
             'totalToImprove' => 42,
+            'extraData' => [],
         ];
 
         $this->byFamily($channel, $locale, $family)->shouldBeLike($expectedKeyIndicators);
@@ -130,6 +132,7 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
             'ratioGood' => 100,
             'totalGood' => 23,
             'totalToImprove' => 0,
+            'extraData' => [],
         ];
 
         $this->byCategory($channel, $locale, $category)->shouldBeLike($expectedKeyIndicators);
