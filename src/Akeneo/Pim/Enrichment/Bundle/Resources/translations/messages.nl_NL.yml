@@ -80,3 +80,4 @@ tree:
   edit: Categorieboom bewerken
   remove:
     error_linked: Deze categorieboom kan niet worden verwijderd, deze is gekoppeld aan een kanaal
+  create: Maak een nieuwe categorieboom

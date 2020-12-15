@@ -2,18 +2,8 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
@@ -24,38 +14,33 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
-final class GetCriteriaEvaluationsByProductIdQueryIntegration extends TestCase
+final class GetCriteriaEvaluationsByProductIdQueryIntegration extends DataQualityInsightsTestCase
 {
-    /** @var CriterionEvaluationRepositoryInterface */
-    private $productCriterionEvaluationRepository;
-
-    /** @var CriterionEvaluationRepositoryInterface */
-    private $productModelCriterionEvaluationRepository;
-
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->productCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
-        $this->productModelCriterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
-    }
-
-    protected function getConfiguration()
-    {
-        return $this->catalog->useMinimalCatalog();
+        $this->createChannel('ecommerce', ['locales' => ['en_US', 'fr_FR']]);
+        $this->createAttribute('description');
+        $this->createAttribute('name');
+        $this->createAttribute('weight');
     }
 
     public function test_it_gives_the_criteria_evaluations_of_a_product()
     {
-        $expectedCompletenessEvaluation = $this->givenACompletenessEvaluationsDone($this->productCriterionEvaluationRepository);
-        $expectedSpellingEvaluation = $this->givenAPendingSpellingEvaluation($this->productCriterionEvaluationRepository);
-        $this->givenACompletenessEvaluationDoneForAnotherProduct($this->productCriterionEvaluationRepository);
+        $productId = new ProductId($this->createProductWithoutEvaluations('ziggy')->getId());
+        $anotherProductId = new ProductId($this->createProductWithoutEvaluations('yggiz')->getId());
+
+        $criterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
+
+        $expectedCompletenessEvaluation = $this->givenACompletenessEvaluationsDone($productId, $criterionEvaluationRepository);
+        $expectedSpellingEvaluation = $this->givenAPendingSpellingEvaluation($productId, $criterionEvaluationRepository);
+        $this->givenACompletenessEvaluationDoneForAnotherProduct($anotherProductId, $criterionEvaluationRepository);
 
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations')
-            ->execute(new ProductId(42));
+            ->execute($productId);
 
         $this->assertCount(2, $evaluations, 'There should be 2 evaluations');
 
@@ -70,12 +55,19 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends TestCase
 
     public function test_it_gives_the_criteria_evaluations_of_a_product_model()
     {
-        $expectedCompletenessEvaluation = $this->givenACompletenessEvaluationsDone($this->productModelCriterionEvaluationRepository);
-        $expectedSpellingEvaluation = $this->givenAPendingSpellingEvaluation($this->productModelCriterionEvaluationRepository);
-        $this->givenACompletenessEvaluationDoneForAnotherProduct($this->productModelCriterionEvaluationRepository);
+        $this->createMinimalFamilyAndFamilyVariant('a_family', 'a_family_variant');
+
+        $productModelId = new ProductId($this->createProductModelWithoutEvaluations('ziggy', 'a_family_variant')->getId());
+        $anotherProductModelId = new ProductId($this->createProductModelWithoutEvaluations('yggiz', 'a_family_variant')->getId());
+
+        $criterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
+
+        $expectedCompletenessEvaluation = $this->givenACompletenessEvaluationsDone($productModelId, $criterionEvaluationRepository);
+        $expectedSpellingEvaluation = $this->givenAPendingSpellingEvaluation($productModelId, $criterionEvaluationRepository);
+        $this->givenACompletenessEvaluationDoneForAnotherProduct($anotherProductModelId, $criterionEvaluationRepository);
 
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_model_criteria_evaluations')
-            ->execute(new ProductId(42));
+            ->execute($productModelId);
 
         $this->assertCount(2, $evaluations, 'There should be 2 evaluations');
 
@@ -88,7 +80,7 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends TestCase
         $this->assertNotNull($spellingEvaluation, 'There should be a spelling evaluation');
     }
 
-    private function givenACompletenessEvaluationsDone(CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
+    private function givenACompletenessEvaluationsDone(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
     {
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');
@@ -96,7 +88,7 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends TestCase
 
         $completenessEvaluationDone = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
-            new ProductId(42),
+            $productId,
             CriterionEvaluationStatus::pending()
         );
 
@@ -118,11 +110,11 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends TestCase
         return $completenessEvaluationDone;
     }
 
-    private function givenAPendingSpellingEvaluation(CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
+    private function givenAPendingSpellingEvaluation(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
     {
         $spellingEvaluationPending = new Write\CriterionEvaluation(
             new CriterionCode('spelling'),
-            new ProductId(42),
+            $productId,
             CriterionEvaluationStatus::pending()
         );
 
@@ -131,7 +123,7 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends TestCase
         return $spellingEvaluationPending;
     }
 
-    private function givenACompletenessEvaluationDoneForAnotherProduct(CriterionEvaluationRepositoryInterface $repository): void
+    private function givenACompletenessEvaluationDoneForAnotherProduct(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): void
     {
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');
@@ -139,7 +131,7 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends TestCase
 
         $completenessEvaluationDone = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
-            new ProductId(123),
+            $productId,
             CriterionEvaluationStatus::done()
         );
 
@@ -156,11 +148,6 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends TestCase
         $repository->create($latestEvaluations);
         $completenessEvaluationDone->end($completenessEvaluationResult);
         $repository->update($latestEvaluations);
-    }
-
-    private function getClock(): Clock
-    {
-        return $this->get(SystemClock::class);
     }
 
     private function assertSameEvaluationResults(?Write\CriterionEvaluationResult $expectedResult, ?Read\CriterionEvaluationResult $result): void

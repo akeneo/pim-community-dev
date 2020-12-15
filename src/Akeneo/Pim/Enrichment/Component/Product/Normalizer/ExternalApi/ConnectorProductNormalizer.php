@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
@@ -43,6 +44,7 @@ final class ConnectorProductNormalizer
     public function normalizeConnectorProduct(ConnectorProduct $connectorProduct): array
     {
         $values = $this->valuesNormalizer->normalize($connectorProduct->values());
+        $qualityScores = $connectorProduct->qualityScores();
 
         $normalizedProduct =  [
             'identifier' => $connectorProduct->identifier(),
@@ -58,10 +60,31 @@ final class ConnectorProductNormalizer
             'quantified_associations' => empty($connectorProduct->quantifiedAssociations()) ? (object) [] : $connectorProduct->quantifiedAssociations(),
         ];
 
+        if ($qualityScores !== null) {
+            $normalizedProduct['quality_scores'] = $this->normalizeQualityScores($qualityScores);
+        }
+
         if (!empty($connectorProduct->metadata())) {
             $normalizedProduct['metadata'] = $connectorProduct->metadata();
         }
 
         return $normalizedProduct;
+    }
+
+    private function normalizeQualityScores(ChannelLocaleRateCollection $channelLocaleRates): array
+    {
+        $qualityScores = [];
+
+        foreach ($channelLocaleRates as $channel => $localeRates) {
+            foreach ($localeRates as $locale => $rate) {
+                $qualityScores[] = [
+                    'scope' => $channel,
+                    'locale' => $locale,
+                    'data' => $rate->toLetter(),
+                ];
+            }
+        }
+
+        return $qualityScores;
     }
 }

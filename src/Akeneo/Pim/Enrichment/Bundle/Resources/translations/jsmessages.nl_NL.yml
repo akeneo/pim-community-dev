@@ -31,6 +31,9 @@ pim_enrich.entity.product:
       fail: Er is geen attribuut geconfigureerd als product-id of je hebt niet de benodigde bewerkingsrechten.
   page_title:
     index: "]-Inf, 1]{{ count }} resultaat|]1, Inf[{{ count }} resultaten"
+    product: "]-Inf, 1]{{ count }} product|]1, Inf[{{ count }} producten"
+    product_model: "]-Inf, 1]{{ count }} productmodel|]1, Inf[{{ count }} productmodellen"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Product aanmaken
@@ -364,8 +367,16 @@ pim_datagrid:
       xlsx_all: Excel (alle attributen)
       xlsx_grid_context: Excel (rastercontext)
       configurator:
+        subtitle: Snelle export
         title: Selecteer een actie
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Overzicht context
         all_attributes: Alle attributen
+        with_codes: Met codes
+        with_labels: Met labels
+      flash:
+        message: "Je kunt hier de voortgang van je export volgen."
     mass_edit: Bulk acties
     sequential_edit: Sequentiële bewerking
     mass_delete: Groepsgewijs verwijderen
@@ -389,17 +400,31 @@ pim_datagrid:
     label: Filters
     system: Systeem
     product_typology:
+      label: 'Product typologie'
+      simple: 'Eenvoudig'
       variant: 'Variant'
     entity_type:
       label: 'Variant'
+      grouped: 'Gegroepeerd'
+      ungrouped: 'Niet-gegroepeerd'
     family:
       label: Familie
     groups:
       label: Groepen
     enabled:
       label: Status
+    scope:
+      label: Bereik
     completeness:
       label: Compleet
+    created:
+      label: Aangemaakt op
+    updated:
+      label: Bijgewerkt op
+    label_or_identifier:
+      label: Label of identifier
+    parent:
+      label: Bovenliggende
     identifier:
       label: Identifier
   search: Zoeken op {{ label }}
