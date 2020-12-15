@@ -44,6 +44,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery
+        CacheClearerInterface $cacheClearer
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
