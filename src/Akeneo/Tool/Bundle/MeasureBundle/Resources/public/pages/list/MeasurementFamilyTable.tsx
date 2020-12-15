@@ -1,17 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
 import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRow';
 import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Caret} from 'akeneomeasure/shared/components/Caret';
-import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-
-const SortableHeaderCell = styled(HeaderCell)`
-  &:hover {
-    cursor: pointer;
-  }
-`;
+import {Table} from 'akeneo-design-system';
+import {HeaderCell} from 'akeneomeasure/pages/common/Table';
 
 type MeasurementFamilyTableProps = {
   measurementFamilies: MeasurementFamily[];
@@ -24,41 +17,45 @@ const MeasurementFamilyTable = ({
   toggleSortDirection,
   getSortDirection,
 }: MeasurementFamilyTableProps) => {
-  const __ = useTranslate();
+  const translate = useTranslate();
 
   return (
     <Table>
-      <thead>
-        <tr>
-          <SortableHeaderCell title={__('pim_common.label')} onClick={() => toggleSortDirection('label')}>
-            {__('pim_common.label')}
-            <Caret direction={getSortDirection('label')} />
-          </SortableHeaderCell>
-          <SortableHeaderCell title={__('pim_common.code')} onClick={() => toggleSortDirection('code')}>
-            {__('pim_common.code')}
-            <Caret direction={getSortDirection('code')} />
-          </SortableHeaderCell>
-          <SortableHeaderCell
-            title={__('measurements.list.header.standard_unit')}
-            onClick={() => toggleSortDirection('standard_unit')}
-          >
-            {__('measurements.list.header.standard_unit')}
-            <Caret direction={getSortDirection('standard_unit')} />
-          </SortableHeaderCell>
-          <SortableHeaderCell
-            title={__('measurements.list.header.unit_count')}
-            onClick={() => toggleSortDirection('unit_count')}
-          >
-            {__('measurements.list.header.unit_count')}
-            <Caret direction={getSortDirection('unit_count')} />
-          </SortableHeaderCell>
-        </tr>
-      </thead>
-      <tbody>
+      <Table.Header>
+        <HeaderCell
+          isSortable={true}
+          sortDirection={getSortDirection('label')}
+          onDirectionChange={() => toggleSortDirection('label')}
+        >
+          {translate('pim_common.label')}
+        </HeaderCell>
+        <HeaderCell
+          isSortable={true}
+          sortDirection={getSortDirection('code')}
+          onDirectionChange={() => toggleSortDirection('code')}
+        >
+          {translate('pim_common.code')}
+        </HeaderCell>
+        <HeaderCell
+          isSortable={true}
+          sortDirection={getSortDirection('standard_unit')}
+          onDirectionChange={() => toggleSortDirection('standard_unit')}
+        >
+          {translate('measurements.list.header.standard_unit')}
+        </HeaderCell>
+        <HeaderCell
+          isSortable={true}
+          sortDirection={getSortDirection('unit_count')}
+          onDirectionChange={() => toggleSortDirection('unit_count')}
+        >
+          {translate('measurements.list.header.unit_count')}
+        </HeaderCell>
+      </Table.Header>
+      <Table.Body>
         {measurementFamilies.map(measurementFamily => (
           <MeasurementFamilyRow key={measurementFamily.code} measurementFamily={measurementFamily} />
         ))}
-      </tbody>
+      </Table.Body>
     </Table>
   );
 };
