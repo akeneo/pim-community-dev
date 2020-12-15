@@ -36,9 +36,9 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
      * {@inheritdoc}
      */
     public function createInversedAssociation(
-        EntityWithAssociationsInterface $owner,
+        $owner,
         string $associationTypeCode,
-        $associatedEntity
+        EntityWithAssociationsInterface $associatedEntity
     ): void {
         if (!$associatedEntity->hasAssociationForTypeCode($associationTypeCode)) {
             $this->missingAssociationAdder->addMissingAssociations($associatedEntity);
@@ -75,13 +75,10 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
      * {@inheritdoc}
      */
     public function removeInversedAssociation(
-        EntityWithAssociationsInterface $owner,
+        $owner,
         string $associationTypeCode,
-        $associatedEntity
+        EntityWithAssociationsInterface $associatedEntity
     ): void {
-        if (!$associatedEntity->hasAssociationForTypeCode($associationTypeCode)) {
-            $this->missingAssociationAdder->addMissingAssociations($associatedEntity);
-        }
         if ($owner instanceof ProductInterface) {
             $associatedEntity->removeAssociatedProduct($owner, $associationTypeCode);
         } elseif ($owner instanceof ProductModelInterface) {

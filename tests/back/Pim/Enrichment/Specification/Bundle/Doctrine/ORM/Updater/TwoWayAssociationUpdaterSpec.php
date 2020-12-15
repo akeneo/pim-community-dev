@@ -116,15 +116,12 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
             ->during('createInversedAssociation', [$owner, 'xsell', $associatedProduct]);
     }
 
-    public function it_adds_missing_association_and_removes_the_product(
-        $missingAssociationAdder,
+    public function it_removes_the_product_from_the_inversed_association(
         $entityManager,
         ProductInterface $associatedProduct
     ): void {
         $owner = new Product();
 
-        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(false);
-        $missingAssociationAdder->addMissingAssociations($associatedProduct)->shouldBeCalled();
         $associatedProduct->removeAssociatedProduct($owner, 'xsell')->shouldBeCalled();
         $entityManager->persist($associatedProduct)->shouldBeCalled();
 
@@ -145,15 +142,12 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $this->removeInversedAssociation($owner, 'xsell', $associatedProduct);
     }
 
-    public function it_adds_missing_association_and_removes_the_product_model(
-        $missingAssociationAdder,
+    public function it_removes_the_product_model_from_the_inversed_association(
         $entityManager,
         ProductInterface $associatedProduct
     ): void {
         $owner = new ProductModel();
 
-        $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(false);
-        $missingAssociationAdder->addMissingAssociations($associatedProduct)->shouldBeCalled();
         $associatedProduct->removeAssociatedProductModel($owner, 'xsell')->shouldBeCalled();
         $entityManager->persist($associatedProduct)->shouldBeCalled();
 

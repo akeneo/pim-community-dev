@@ -12,32 +12,34 @@ interface TwoWayAssociationUpdaterInterface
     /**
      * An association has been created, this method should create the inversed association.
      *
-     * @param EntityWithAssociationsInterface $owner
+     * TODO PHP8 type hint first argument with ProductInterface|ProductModelInterface union type
+     *
+     * @param ProductInterface|ProductModelInterface $owner
      * @param string $associationTypeCode
-     * @param ProductInterface|ProductModelInterface $associatedEntity
-     * TODO PHP8 type hint with the two interfaces
+     * @param EntityWithAssociationsInterface $associatedEntity
      *
      * @throws \LogicException
      */
     public function createInversedAssociation(
-        EntityWithAssociationsInterface $owner,
+        $owner,
         string $associationTypeCode,
-        $associatedEntity
+        EntityWithAssociationsInterface $associatedEntity
     ): void;
 
     /**
      * An association has been removed, this method should remove the inversed association if there is one.
      *
-     * @param EntityWithAssociationsInterface $owner
+     * TODO PHP8 type hint first argument with ProductInterface|ProductModelInterface union type
+     *
+     * @param ProductInterface|ProductModelInterface $owner
      * @param string $associationTypeCode
-     * @param ProductInterface|ProductModelInterface $associatedEntity
-     * TODO PHP8 type hint with the two interfaces
+     * @param EntityWithAssociationsInterface $associatedEntity
      *
      * @throws \LogicException
      */
     public function removeInversedAssociation(
-        EntityWithAssociationsInterface $owner,
+        $owner,
         string $associationTypeCode,
-        $associatedEntity
+        EntityWithAssociationsInterface $associatedEntity
     ): void;
 }

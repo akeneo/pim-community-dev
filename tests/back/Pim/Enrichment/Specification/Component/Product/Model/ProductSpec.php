@@ -922,6 +922,7 @@ class ProductSpec extends ObjectBehavior
         $this->addAssociation($xsellAssociation);
 
         $this->getAssociatedProducts('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
+        $this->getAssociatedProducts('another_association_type')->shouldReturn(null);
     }
 
     public function it_adds_a_product_model_to_an_association(
@@ -1035,6 +1036,7 @@ class ProductSpec extends ObjectBehavior
         $this->addAssociation($xsellAssociation);
 
         $this->getAssociatedProductModels('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
+        $this->getAssociatedProductModels('another_association_type')->shouldReturn(null);
     }
 
     public function it_adds_a_group_to_an_association(
@@ -1147,5 +1149,6 @@ class ProductSpec extends ObjectBehavior
         $this->addAssociation($xsellAssociation);
 
         $this->getAssociatedGroups('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
+        $this->getAssociatedGroups('another_association_type')->shouldReturn(null);
     }
 }
