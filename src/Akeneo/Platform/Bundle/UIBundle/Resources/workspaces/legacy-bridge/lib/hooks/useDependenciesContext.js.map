@@ -1,0 +1,1 @@
+{"version":3,"file":"useDependenciesContext.js","sourceRoot":"","sources":["../../src/hooks/useDependenciesContext.ts"],"names":[],"mappings":";;;AAAA,+BAAiC;AACjC,wCAA0E;AAE1E,IAAM,sBAAsB,GAAG;IAC7B,IAAM,OAAO,GAAG,kBAAU,CAA2B,8BAAmB,CAAC,CAAC;IAE1E,IAAI,CAAC,OAAO,EAAE;QACZ,MAAM,IAAI,KAAK,CAAC,gEAAgE,CAAC,CAAC;KACnF;IAED,OAAO,OAAO,CAAC;AACjB,CAAC,CAAC;AAEM,wDAAsB"}

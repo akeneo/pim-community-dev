@@ -1,0 +1,403 @@
+{
+  "program": {
+    "fileInfos": {
+      "./node_modules/typescript/lib/lib.es5.d.ts": {
+        "version": "9622e8bd7cc72a7dab819a8011ecbf81d443638082e5cb99ecf2e75ff56ffc9d",
+        "signature": "9622e8bd7cc72a7dab819a8011ecbf81d443638082e5cb99ecf2e75ff56ffc9d",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.d.ts": {
+        "version": "dc47c4fa66b9b9890cf076304de2a9c5201e94b740cffdf09f87296d877d71f6",
+        "signature": "dc47c4fa66b9b9890cf076304de2a9c5201e94b740cffdf09f87296d877d71f6",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/typescript/lib/lib.dom.d.ts": {
+        "version": "abadddbf660adeec27e9a56584907d52fa1d6e1e1dc49f639a921baa951b7a84",
+        "signature": "abadddbf660adeec27e9a56584907d52fa1d6e1e1dc49f639a921baa951b7a84",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.core.d.ts": {
+        "version": "46ee15e9fefa913333b61eaf6b18885900b139867d89832a515059b62cf16a17",
+        "signature": "46ee15e9fefa913333b61eaf6b18885900b139867d89832a515059b62cf16a17",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.collection.d.ts": {
+        "version": "43fb1d932e4966a39a41b464a12a81899d9ae5f2c829063f5571b6b87e6d2f9c",
+        "signature": "43fb1d932e4966a39a41b464a12a81899d9ae5f2c829063f5571b6b87e6d2f9c",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.generator.d.ts": {
+        "version": "cdccba9a388c2ee3fd6ad4018c640a471a6c060e96f1232062223063b0a5ac6a",
+        "signature": "cdccba9a388c2ee3fd6ad4018c640a471a6c060e96f1232062223063b0a5ac6a",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.iterable.d.ts": {
+        "version": "8b2a5df1ce95f78f6b74f1a555ccdb6baab0486b42d8345e0871dd82811f9b9a",
+        "signature": "8b2a5df1ce95f78f6b74f1a555ccdb6baab0486b42d8345e0871dd82811f9b9a",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.promise.d.ts": {
+        "version": "2bb4b3927299434052b37851a47bf5c39764f2ba88a888a107b32262e9292b7c",
+        "signature": "2bb4b3927299434052b37851a47bf5c39764f2ba88a888a107b32262e9292b7c",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.proxy.d.ts": {
+        "version": "7207e317a2cb07a177e7d963ab7b8c0e85dde7f9ddb50351f830239bf597569e",
+        "signature": "7207e317a2cb07a177e7d963ab7b8c0e85dde7f9ddb50351f830239bf597569e",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.reflect.d.ts": {
+        "version": "cb609802a8698aa28b9c56331d4b53f590ca3c1c3a255350304ae3d06017779d",
+        "signature": "cb609802a8698aa28b9c56331d4b53f590ca3c1c3a255350304ae3d06017779d",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.symbol.d.ts": {
+        "version": "3013574108c36fd3aaca79764002b3717da09725a36a6fc02eac386593110f93",
+        "signature": "3013574108c36fd3aaca79764002b3717da09725a36a6fc02eac386593110f93",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts": {
+        "version": "9d122b7e8c1a5c72506eea50c0973cba55b92b5532d5cafa8a6ce2c547d57551",
+        "signature": "9d122b7e8c1a5c72506eea50c0973cba55b92b5532d5cafa8a6ce2c547d57551",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/@types/react/global.d.ts": {
+        "version": "ecf78e637f710f340ec08d5d92b3f31b134a46a4fcf2e758690d8c46ce62cba6",
+        "signature": "ecf78e637f710f340ec08d5d92b3f31b134a46a4fcf2e758690d8c46ce62cba6",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/csstype/index.d.ts": {
+        "version": "ea58e4cbcf3d760a15f9300978a360c46360f544b355c737b60c733a385b8858",
+        "signature": "ea58e4cbcf3d760a15f9300978a360c46360f544b355c737b60c733a385b8858",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/prop-types/index.d.ts": {
+        "version": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad",
+        "signature": "a7e32dcb90bf0c1b7a1e4ac89b0f7747cbcba25e7beddc1ebf17be1e161842ad",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/react/index.d.ts": {
+        "version": "5eec5df7493ec6ad30cd641228d5ec7a5cc46d86e04a7f5d4f3cc239c6fa05bc",
+        "signature": "5eec5df7493ec6ad30cd641228d5ec7a5cc46d86e04a7f5d4f3cc239c6fa05bc",
+        "affectsGlobalScope": true
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.type.d.ts": {
+        "version": "664805c1f0775660ed02a1d15ec90a62493ab5f75059c7f87c0cb71c95fc7680",
+        "signature": "664805c1f0775660ed02a1d15ec90a62493ab5f75059c7f87c0cb71c95fc7680",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.d.ts": {
+        "version": "1fa05d57f8998fa5e26d6c0feda11da4ed0e42807be18e51968d86f5787d4f25",
+        "signature": "1fa05d57f8998fa5e26d6c0feda11da4ed0e42807be18e51968d86f5787d4f25",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts": {
+        "version": "5f4e6bc0ab450849b1121873f1819aa9f4d9dc99002d6691c4d1333f7ad410f3",
+        "signature": "5f4e6bc0ab450849b1121873f1819aa9f4d9dc99002d6691c4d1333f7ad410f3",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usedependenciescontext.d.ts": {
+        "version": "c9cfa6ce6c49abbe1db44ccb1e91d78190243680b87d52501a00883b14def5cb",
+        "signature": "c9cfa6ce6c49abbe1db44ccb1e91d78190243680b87d52501a00883b14def5cb",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usenotify.d.ts": {
+        "version": "036e6fa7038978b81aa97b0b0f179eab577514595803aa4819b22a7a3f93fa56",
+        "signature": "036e6fa7038978b81aa97b0b0f179eab577514595803aa4819b22a7a3f93fa56",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useroute.d.ts": {
+        "version": "e9f643127fa113a1ddcdf691e29f2402b90062df9ba4d44edd1de219388c4034",
+        "signature": "e9f643127fa113a1ddcdf691e29f2402b90062df9ba4d44edd1de219388c4034",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/userouter.d.ts": {
+        "version": "a01a0588f5fd1a27a321a5bb361d90a84ca2ce3ee28965ac1735ff4b32652a93",
+        "signature": "a01a0588f5fd1a27a321a5bb361d90a84ca2ce3ee28965ac1735ff4b32652a93",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usesecurity.d.ts": {
+        "version": "042c5987b1878381f7367cb19469929aa78331afbd0b25bed1f6703fe236644e",
+        "signature": "042c5987b1878381f7367cb19469929aa78331afbd0b25bed1f6703fe236644e",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usetranslate.d.ts": {
+        "version": "544b83100f74b7c1bde8fa77c69393a001b9538b37b7e9a74d32e8f180fa78e5",
+        "signature": "544b83100f74b7c1bde8fa77c69393a001b9538b37b7e9a74d32e8f180fa78e5",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useusercontext.d.ts": {
+        "version": "01d946d166edc2f9ce33e3da8d51eb109129af6ab8cf7356affb29f26f8fa578",
+        "signature": "01d946d166edc2f9ce33e3da8d51eb109129af6ab8cf7356affb29f26f8fa578",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useviewbuilder.d.ts": {
+        "version": "a63d9399acf54dad142094190a14683d3ce1a47e46ad73f3bc45d814b242e944",
+        "signature": "a63d9399acf54dad142094190a14683d3ce1a47e46ad73f3bc45d814b242e944",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usemediator.d.ts": {
+        "version": "8f9d12844f10d8e3459bde8ff2ac83d2276f1120ff1785c4edb57e3e6671410a",
+        "signature": "8f9d12844f10d8e3459bde8ff2ac83d2276f1120ff1785c4edb57e3e6671410a",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/index.d.ts": {
+        "version": "d19282a670be8eafb1b947064e04d1a0f6e8b405fabc0e4d3f132da2f286a6f2",
+        "signature": "d19282a670be8eafb1b947064e04d1a0f6e8b405fabc0e4d3f132da2f286a6f2",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/index.d.ts": {
+        "version": "c712885d18211e625f2d30bf6968698418fc207312ef3d719ce5921d8079d54f",
+        "signature": "c712885d18211e625f2d30bf6968698418fc207312ef3d719ce5921d8079d54f",
+        "affectsGlobalScope": false
+      },
+      "./src/components/test.tsx": {
+        "version": "6ec1448afece3bdbf642e5ad41bc032420ea67ffdd06a495347516f72ac30f96",
+        "signature": "87e8b9be2c965967a1bcd60c48683c1700052dbc0f6de326d89f276e5ba3d24d",
+        "affectsGlobalScope": false
+      },
+      "./src/index.ts": {
+        "version": "70fe31dbf5c7b2e3253bd00ec0275bfcddc1e39d92715763dd083199837d5e0f",
+        "signature": "70fe31dbf5c7b2e3253bd00ec0275bfcddc1e39d92715763dd083199837d5e0f",
+        "affectsGlobalScope": false
+      }
+    },
+    "options": {
+      "allowJs": false,
+      "allowSyntheticDefaultImports": true,
+      "declaration": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "isolatedModules": true,
+      "jsx": 2,
+      "lib": [
+        "lib.es2015.d.ts",
+        "lib.dom.d.ts"
+      ],
+      "module": 1,
+      "moduleResolution": 2,
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "outDir": "./lib",
+      "rootDir": "./src",
+      "skipLibCheck": true,
+      "sourceMap": true,
+      "strictBindCallApply": true,
+      "strictFunctionTypes": true,
+      "strictNullChecks": true,
+      "strictPropertyInitialization": true,
+      "suppressImplicitAnyIndexErrors": true,
+      "removeComments": true,
+      "target": 1,
+      "baseUrl": "./src",
+      "types": [],
+      "incremental": true,
+      "project": "./tsconfig.json",
+      "configFilePath": "./tsconfig.json"
+    },
+    "referencedMap": {
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/index.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usedependenciescontext.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usemediator.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usenotify.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useroute.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/userouter.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usesecurity.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usetranslate.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useusercontext.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useviewbuilder.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usedependenciescontext.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usemediator.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usenotify.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/userouter.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usesecurity.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usetranslate.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useusercontext.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useviewbuilder.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/index.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/index.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.type.d.ts",
+        "./node_modules/@types/react/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.type.d.ts"
+      ],
+      "./node_modules/@types/react/index.d.ts": [
+        "./node_modules/@types/prop-types/index.d.ts",
+        "./node_modules/@types/react/global.d.ts",
+        "./node_modules/csstype/index.d.ts"
+      ],
+      "./src/components/test.tsx": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/index.d.ts",
+        "./node_modules/@types/react/index.d.ts"
+      ],
+      "./src/index.ts": [
+        "./src/components/test.tsx"
+      ]
+    },
+    "exportedModulesMap": {
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/index.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usedependenciescontext.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usemediator.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usenotify.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useroute.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/userouter.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usesecurity.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usetranslate.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useusercontext.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useviewbuilder.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usedependenciescontext.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usemediator.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usenotify.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/userouter.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usesecurity.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usetranslate.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useusercontext.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useviewbuilder.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/index.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/index.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.type.d.ts",
+        "./node_modules/@types/react/index.d.ts"
+      ],
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts": [
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.d.ts",
+        "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.type.d.ts"
+      ],
+      "./node_modules/@types/react/index.d.ts": [
+        "./node_modules/@types/prop-types/index.d.ts",
+        "./node_modules/@types/react/global.d.ts",
+        "./node_modules/csstype/index.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.dom.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.collection.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.core.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.generator.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.iterable.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.promise.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.proxy.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.reflect.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.symbol.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./node_modules/typescript/lib/lib.es5.d.ts": [
+        "../node_modules/@types/node/ts3.1/util.d.ts",
+        "../node_modules/@types/node/util.d.ts"
+      ],
+      "./src/index.ts": [
+        "./src/components/test.tsx"
+      ]
+    },
+    "semanticDiagnosticsPerFile": [
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/index.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usedependenciescontext.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usemediator.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usenotify.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useroute.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/userouter.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usesecurity.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/usetranslate.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useusercontext.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/hooks/useviewbuilder.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/index.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/dependenciesprovider.type.d.ts",
+      "./node_modules/@akeneo-pim-community/legacy-bridge/lib/provider/index.d.ts",
+      "./node_modules/@types/prop-types/index.d.ts",
+      "./node_modules/@types/react/global.d.ts",
+      "./node_modules/@types/react/index.d.ts",
+      "./node_modules/csstype/index.d.ts",
+      "./node_modules/typescript/lib/lib.dom.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.collection.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.core.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.generator.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.iterable.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.promise.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.proxy.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.reflect.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.symbol.d.ts",
+      "./node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts",
+      "./node_modules/typescript/lib/lib.es5.d.ts",
+      "./src/components/test.tsx",
+      "./src/index.ts"
+    ]
+  },
+  "version": "4.1.3"
+}

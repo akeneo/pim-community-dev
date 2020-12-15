@@ -134,7 +134,8 @@
     "styled-components": "^5.1.1",
     "summernote": "0.6.16",
     "underscore": "1.8.3",
-    "victory": "^33.1.6"
+    "victory": "^33.1.6",
+    "@akeneo-pim-community/raccoon": "link:raccoon"
   },
   "resolutions": {
     "jest/**/ip-regex": "2.1.0"

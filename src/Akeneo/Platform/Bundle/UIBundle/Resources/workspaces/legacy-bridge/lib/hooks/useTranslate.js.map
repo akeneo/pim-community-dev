@@ -1,0 +1,1 @@
+{"version":3,"file":"useTranslate.js","sourceRoot":"","sources":["../../src/hooks/useTranslate.ts"],"names":[],"mappings":";;;AAAA,mEAAgE;AAGhE,IAAM,YAAY,GAAG;IACZ,IAAA,SAAS,GAAI,+CAAsB,EAAE,UAA5B,CAA6B;IAE7C,IAAI,CAAC,SAAS,EAAE;QACd,MAAM,IAAI,KAAK,CAAC,kEAAkE,CAAC,CAAC;KACrF;IAED,OAAO,SAAS,CAAC;AACnB,CAAC,CAAC;AAEM,oCAAY"}

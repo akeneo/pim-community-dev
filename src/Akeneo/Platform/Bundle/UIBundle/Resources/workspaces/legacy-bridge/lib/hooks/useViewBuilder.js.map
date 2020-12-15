@@ -1,0 +1,1 @@
+{"version":3,"file":"useViewBuilder.js","sourceRoot":"","sources":["../../src/hooks/useViewBuilder.ts"],"names":[],"mappings":";;;AAAA,mEAAgE;AAGhE,IAAM,cAAc,GAAG;IACd,IAAA,WAAW,GAAI,+CAAsB,EAAE,YAA5B,CAA6B;IAE/C,IAAI,CAAC,WAAW,EAAE;QAChB,MAAM,IAAI,KAAK,CAAC,oEAAoE,CAAC,CAAC;KACvF;IAED,OAAO,WAAW,CAAC;AACrB,CAAC,CAAC;AAEM,wCAAc"}

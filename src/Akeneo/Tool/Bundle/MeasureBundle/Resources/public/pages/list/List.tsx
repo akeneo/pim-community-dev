@@ -15,6 +15,7 @@ import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
 import {SearchBar, NoDataSection, NoDataTitle, NoDataText, useToggleState} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext, useSecurity, PimView, useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {Test} from '@akeneo-pim-community/raccoon';
 
 const useSorting = (
   defaultColumn: string
@@ -100,6 +101,8 @@ const List = () => {
           )
         )}
       </PageHeader>
+
+      <Test />
 
       <PageContent>
         <Information illustration={<MeasurementIllustration />} title={`👋  ${__('measurements.helper.title')}`}>

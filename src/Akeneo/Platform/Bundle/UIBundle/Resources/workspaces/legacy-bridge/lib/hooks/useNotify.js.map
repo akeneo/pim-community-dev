@@ -1,0 +1,1 @@
+{"version":3,"file":"useNotify.js","sourceRoot":"","sources":["../../src/hooks/useNotify.ts"],"names":[],"mappings":";;;AAAA,mEAAgE;AAGhE,IAAM,SAAS,GAAG;IACT,IAAA,MAAM,GAAI,+CAAsB,EAAE,OAA5B,CAA6B;IAE1C,IAAI,CAAC,MAAM,EAAE;QACX,MAAM,IAAI,KAAK,CAAC,+DAA+D,CAAC,CAAC;KAClF;IAED,OAAO,MAAM,CAAC;AAChB,CAAC,CAAC;AAEM,8BAAS"}

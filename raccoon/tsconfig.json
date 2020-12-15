@@ -28,9 +28,6 @@
     "target": "es5",
     "baseUrl": "./src",
     "types": [
-      "node",
-      "jest",
-      "@testing-library/jest-dom"
     ],
     "incremental": true
   },
