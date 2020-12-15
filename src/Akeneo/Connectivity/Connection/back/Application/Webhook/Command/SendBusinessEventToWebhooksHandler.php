@@ -13,7 +13,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -27,17 +26,11 @@ use Psr\Log\LoggerInterface;
  */
 final class SendBusinessEventToWebhooksHandler
 {
-    const FAKE_CONNECTION_CODE = 'FAKE_CONNECTION_CODE';
-    const FAKE_SECRET = 'FAKE_SECRET';
-    const FAKE_URL = 'FAKE_URL';
-    const NUMBER_FAKE_WEBHOOKS = 3;
-
     private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
     private WebhookClient $client;
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
-    private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
     private string $pimSource;
     private ?\Closure $getTimeCallable;
     private CacheClearerInterface $cacheClearer;
@@ -48,7 +41,6 @@ final class SendBusinessEventToWebhooksHandler
         WebhookClient $client,
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
-        GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
         CacheClearerInterface $cacheClearer,
         string $pimSource,
         ?callable $getTimeCallable = null
@@ -58,7 +50,6 @@ final class SendBusinessEventToWebhooksHandler
         $this->client = $client;
         $this->builder = $builder;
         $this->logger = $logger;
-        $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
         $this->pimSource = $pimSource;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
         $this->cacheClearer = $cacheClearer;
@@ -67,17 +58,9 @@ final class SendBusinessEventToWebhooksHandler
     public function handle(SendBusinessEventToWebhooksCommand $command): void
     {
         $webhooks = $this->selectActiveWebhooksQuery->execute();
-        $isFake = false;
 
         if (0 === count($webhooks)) {
-            $userId = $this->connectionUserForFakeSubscription->execute();
-
-            if (null === $userId) {
-                return;
-            }
-
-            $webhooks = $this->buildFakeActiveWebhooks($userId);
-            $isFake = true;
+            return;
         }
 
         $event = $command->event();
@@ -91,10 +74,10 @@ final class SendBusinessEventToWebhooksHandler
                 $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
                 // TODO CXP-604 temporarly deactivated
-                // $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
-                // if (null === $filteredEvent) {
-                //     continue;
-                // }
+//                 $filteredEvent = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $event);
+//                 if (null === $filteredEvent) {
+//                     continue;
+//                 }
 
                 try {
                     $webhookEvents = $this->builder->build(
@@ -139,11 +122,7 @@ final class SendBusinessEventToWebhooksHandler
             }
         };
 
-        if ($isFake) {
-            $this->client->bulkFakeSend($requests());
-        } else {
-            $this->client->bulkSend($requests());
-        }
+        $this->client->bulkSend($requests());
 
         $this->cacheClearer->clear();
     }
@@ -204,22 +183,5 @@ final class SendBusinessEventToWebhooksHandler
         }
 
         return (int) round(microtime(true) * 1000);
-    }
-
-    /**
-     * @return array<ActiveWebhook>
-     */
-    private function buildFakeActiveWebhooks(int $userId): array
-    {
-        return array_fill(
-            0,
-            self::NUMBER_FAKE_WEBHOOKS,
-            new ActiveWebhook(
-                self::FAKE_CONNECTION_CODE,
-                $userId,
-                self::FAKE_SECRET,
-                self::FAKE_URL
-            )
-        );
     }
 }
