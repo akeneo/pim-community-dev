@@ -58,4 +58,4 @@ twa-coupling-back: #Doc: launch coupling detector for twa
 
 .PHONY: twa-behat-legacy
 twa-behat-legacy: #Doc: launch behat legacy tests for twa
-	F=tests/legacy/features/pim/work-organization/teamwork-assistant $(MAKE) behat-legacy
+	PIM_CONTEXT=dev F=tests/legacy/features/pim/work-organization/teamwork-assistant $(MAKE) behat-legacy

@@ -30,7 +30,11 @@ lint-back: #Doc: launch all PHP linter tests
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Automation --level 3
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Permission --level 3
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Structure --level 8
-	$(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan reference-entity-lint-back asset-manager-lint-back connectivity-connection-lint-back communication-channel-lint-back
+	PIM_CONTEXT=data-quality-insights $(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan
+	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-lint-back
+	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-lint-back
+	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-lint-back
+	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-lint-back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs_ce.php
@@ -38,9 +42,7 @@ lint-back: #Doc: launch all PHP linter tests
 .PHONY: lint-front
 lint-front: connectivity-connection-lint-front #Doc: launch all YARN linter tests
 	$(YARN_RUN) lint
-	$(MAKE) rule-engine-lint-front
-	$(MAKE) rule-engine-types-check-front
-	$(MAKE) rule-engine-prettier-check-front
+	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-lint-front rule-engine-types-check-front rule-engine-prettier-check-front
 
 ### Unit tests
 .PHONY: unit-back
@@ -63,7 +65,7 @@ endif
 .PHONY: unit-front
 unit-front: #Doc: launch all JS unit tests
 	$(YARN_RUN) unit
-	$(MAKE) rule-engine-unit-front
+	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-unit-front
 
 ### Acceptance tests
 .PHONY: acceptance-back
