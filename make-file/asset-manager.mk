@@ -51,7 +51,9 @@
 # /!\ CAUTION /!\ By default some "main targets" run commands because of our legacy code (hard to reconfigure all tools).
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
-include test.mk
+
+include make-file/test.mk
+
 .PHONY: asset-manager-coupling-back
 asset-manager-coupling-back: #Doc: launch coupling detector for asset manager files
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/AssetManager/tests/back/.php_cd.php src/Akeneo/AssetManager/back

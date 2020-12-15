@@ -1,4 +1,4 @@
-var/tests/%:
+var/tests/%: #Doc: run the selected test
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
 .PHONY: find-legacy-translations

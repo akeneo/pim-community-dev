@@ -2,7 +2,7 @@
 ## Target used run command related on Data Quality Insights bounded context
 ##
 
-include test.mk
+include make-file/test.mk
 
 .PHONY: data-quality-insights-coupling-back
 data-quality-insights-coupling-back: #Doc: launch coupling detector for quality-insights

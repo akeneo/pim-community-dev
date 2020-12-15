@@ -1,4 +1,4 @@
-include test.mk
+include make-file/test.mk
 
 communication-channel-lint-back: #Doc: launch PHPStan for communication-channel
 	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Application vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/Domain

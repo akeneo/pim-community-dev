@@ -52,7 +52,7 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
-include test.mk
+include make-file/test.mk
 
 .PHONY: rule-engine-coupling-back
 rule-engine-coupling-back: #Doc: launch PHP coupling detector for rule-engine

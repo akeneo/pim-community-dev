@@ -52,7 +52,7 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
-include test.mk
+include make-file/test.mk
 
 .PHONY: workflow-coupling-back
 workflow-coupling-back: #Doc: launch coupling detector for workflow
