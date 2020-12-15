@@ -5,6 +5,12 @@ batch_jobs:
   asset_manager_xlsx_asset_export:
     label: Export des ressources en XLSX
     export.label: Export des ressources
+  asset_manager_csv_asset_import:
+    label: Import de ressources en CSV
+    import.label: Import des ressources
+  asset_manager_xlsx_asset_import:
+    label: Import des ressources en XLSX
+    import.label: Import des ressources
 akeneo_assetmanager.export.assets.filter.asset_family: Famille de ressources
 pim_analytics:
   info_type:
