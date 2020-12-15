@@ -22,14 +22,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Reposit
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
-class GetAttributeOptionCodesToEvaluateQueryIntegration extends TestCase
+class GetAttributeOptionCodesToEvaluateQueryIntegration extends DataQualityInsightsTestCase
 {
-    protected function getConfiguration()
-    {
-        return $this->catalog->useMinimalCatalog();
-    }
-
     public function test_it_returns_the_codes_of_the_attribute_options_that_need_to_be_evaluated()
     {
         $now = new \DateTimeImmutable();
@@ -70,13 +66,7 @@ class GetAttributeOptionCodesToEvaluateQueryIntegration extends TestCase
 
     private function givenASimpleSelectAttribute(string $attributeCode): void
     {
-        $attribute = $this->get('akeneo_integration_tests.base.attribute.builder')->build([
-            'code' => $attributeCode,
-            'type' => AttributeTypes::OPTION_SIMPLE_SELECT,
-            'group' => 'other',
-        ], true);
-
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
+        $this->createAttribute($attributeCode, ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
     }
 
     private function createAttributeOption(string $attributeCode, string $optionCode): AttributeOptionInterface
