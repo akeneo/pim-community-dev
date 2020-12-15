@@ -96,6 +96,9 @@
             "src/Repository/.gitignore"
         ]
     },
+    "doctrine/doctrine-cache-bundle": {
+        "version": "1.4.0"
+    },
     "doctrine/doctrine-fixtures-bundle": {
         "version": "3.0",
         "recipe": {
@@ -252,6 +255,9 @@
     },
     "instaclick/php-webdriver": {
         "version": "1.4.6"
+    },
+    "jdorn/sql-formatter": {
+        "version": "v1.2.17"
     },
     "justinrainbow/json-schema": {
         "version": "5.2.9"
