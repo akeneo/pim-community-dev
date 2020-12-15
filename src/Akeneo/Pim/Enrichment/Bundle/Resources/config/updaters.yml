@@ -605,6 +605,8 @@ services:
 
     pim_catalog.updater.clearer.association_field:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\AssociationFieldClearer'
+        arguments:
+            - '@pim_catalog.association.two_way_association_updater'
         tags:
             - { name: 'pim_catalog.updater.clearer' }
 

@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -24,6 +25,11 @@ use PhpSpec\ObjectBehavior;
  */
 class AssociationFieldClearerSpec extends ObjectBehavior
 {
+    function let(TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater)
+    {
+        $this->beConstructedWith($twoWayAssociationUpdater);
+    }
+
     function it_is_a_clearer()
     {
         $this->shouldImplement(ClearerInterface::class);
@@ -80,6 +86,7 @@ class AssociationFieldClearerSpec extends ObjectBehavior
     }
 
     function it_removes_inversed_associations_of_a_product(
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         AssociationTypeInterface $xsellType,
         ProductInterface $associatedProduct,
         ProductModelInterface $associatedProductModel
@@ -94,13 +101,22 @@ class AssociationFieldClearerSpec extends ObjectBehavior
         $product = new Product();
         $product->addAssociation($association);
 
-        $associatedProduct->removeAssociatedProduct($product, 'XSELL')->shouldBeCalled();
-        $associatedProductModel->removeAssociatedProduct($product, 'XSELL')->shouldBeCalled();
+        $twoWayAssociationUpdater->removeInversedAssociation(
+            $product,
+            'XSELL',
+            $associatedProduct
+        )->shouldBeCalled();
+        $twoWayAssociationUpdater->removeInversedAssociation(
+            $product,
+            'XSELL',
+            $associatedProductModel
+        )->shouldBeCalled();
 
         $this->clear($product, 'associations');
     }
 
     function it_removes_inversed_associations_of_a_product_model(
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         AssociationTypeInterface $xsellType,
         ProductInterface $associatedProduct,
         ProductModelInterface $associatedProductModel
@@ -115,8 +131,16 @@ class AssociationFieldClearerSpec extends ObjectBehavior
         $productModel = new ProductModel();
         $productModel->addAssociation($association);
 
-        $associatedProduct->removeAssociatedProductModel($productModel, 'XSELL')->shouldBeCalled();
-        $associatedProductModel->removeAssociatedProductModel($productModel, 'XSELL')->shouldBeCalled();
+        $twoWayAssociationUpdater->removeInversedAssociation(
+            $productModel,
+            'XSELL',
+            $associatedProduct
+        )->shouldBeCalled();
+        $twoWayAssociationUpdater->removeInversedAssociation(
+            $productModel,
+            'XSELL',
+            $associatedProductModel
+        )->shouldBeCalled();
 
         $this->clear($productModel, 'associations');
     }

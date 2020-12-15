@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Webmozart\Assert\Assert;
 
@@ -19,6 +20,13 @@ use Webmozart\Assert\Assert;
 final class AssociationFieldClearer implements ClearerInterface
 {
     private const SUPPORTED_FIELD = 'associations';
+
+    private TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater;
+
+    public function __construct(TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater)
+    {
+        $this->twoWayAssociationUpdater = $twoWayAssociationUpdater;
+    }
 
     /**
      * {@inheritDoc}
@@ -49,30 +57,26 @@ final class AssociationFieldClearer implements ClearerInterface
             foreach ($entity->getAssociatedProducts($typeCode) as $associatedProduct) {
                 $entity->removeAssociatedProduct($associatedProduct, $typeCode);
                 if ($associationType->isTwoWay()) {
-                    $this->removeInversedAssociation($associatedProduct, $typeCode, $entity);
+                    $this->twoWayAssociationUpdater->removeInversedAssociation(
+                        $entity,
+                        $typeCode,
+                        $associatedProduct
+                    );
                 }
             }
             foreach ($entity->getAssociatedProductModels($typeCode) as $associatedProductModel) {
                 $entity->removeAssociatedProductModel($associatedProductModel, $typeCode);
                 if ($associationType->isTwoWay()) {
-                    $this->removeInversedAssociation($associatedProductModel, $typeCode, $entity);
+                    $this->twoWayAssociationUpdater->removeInversedAssociation(
+                        $entity,
+                        $typeCode,
+                        $associatedProductModel
+                    );
                 }
             }
             foreach ($entity->getAssociatedGroups($typeCode) as $associatedGroup) {
                 $entity->removeAssociatedGroup($associatedGroup, $typeCode);
             }
-        }
-    }
-
-    private function removeInversedAssociation(
-        EntityWithAssociationsInterface $owner,
-        string $associationTypeCode,
-        $associatedEntity
-    ): void {
-        if ($associatedEntity instanceof ProductInterface) {
-            $owner->removeAssociatedProduct($associatedEntity, $associationTypeCode);
-        } elseif ($associatedEntity instanceof ProductModelInterface) {
-            $owner->removeAssociatedProductModel($associatedEntity, $associationTypeCode);
         }
     }
 }
