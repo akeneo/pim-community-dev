@@ -16,7 +16,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalEventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\Event;
@@ -42,10 +41,10 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookUserAuthenticator $webhookUserAuthenticator,
         WebhookClient $client,
         WebhookEventBuilder $builder,
-        GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
         CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery
+        CacheClearerInterface $cacheClearer
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -53,7 +52,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $client,
             $builder,
             new NullLogger(),
-            $connectionUserForFakeSubscription,
             $eventsApiRequestRepository,
             $cacheClearer,
             $countHourlyEventsApiRequestQuery,
@@ -148,138 +146,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                                 ],
                             ],
                             $requests[0]->content(),
-                        );
-
-                        return true;
-                    }
-                ),
-            )
-            ->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalled();
-
-        $this->handle($command);
-    }
-
-    public function it_sends_fake_message_if_there_is_no_webhook(
-        $selectActiveWebhooksQuery,
-        $webhookUserAuthenticator,
-        $client,
-        $builder,
-        $connectionUserForFakeSubscription,
-        $countHourlyEventsApiRequestQuery,
-        $cacheClearer,
-        $eventsApiRequestRepository
-    ): void {
-        $julia = new User();
-        $julia->setId(1234);
-        $julia->setUsername('julia');
-        $julia->setFirstName('Julia');
-        $julia->setLastName('Doe');
-        $magentoUser = new User();
-        $magentoUser->setId(42);
-        $magentoUser->setUsername('magento_452');
-        $magentoUser->setFirstName('magento_452');
-        $magentoUser->setLastName('magento_452');
-        $magentoUser->defineAsApiUser();
-
-        $author = Author::fromUser($julia);
-        $businessEvent = $this->createEvent($author, ['data']);
-        $command = new SendBusinessEventToWebhooksCommand($businessEvent);
-
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(1);
-        $selectActiveWebhooksQuery->execute()->willReturn([]);
-        $connectionUserForFakeSubscription->execute()->willReturn(1234);
-
-        $webhookUserAuthenticator->authenticate(1234)->willReturn($magentoUser);
-        $builder
-            ->build(
-                $businessEvent,
-                [
-                    'pim_source' => 'staging.akeneo.com',
-                    'user' => $magentoUser,
-                    'connection_code' => SendBusinessEventToWebhooksHandler::FAKE_CONNECTION_CODE,
-                ]
-            )
-            ->willReturn(
-                [
-                    new WebhookEvent(
-                        'product.created',
-                        '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                        '2020-01-01T00:00:00+00:00',
-                        $author,
-                        'staging.akeneo.com',
-                        ['data'],
-                    ),
-                ]
-            );
-
-        $eventsApiRequestRepository->upsert(Argument::any(), Argument::any())->shouldBeCalled();
-
-        $client
-            ->bulkFakeSend(
-                Argument::that(
-                    function (iterable $iterable) {
-                        $requests = iterator_to_array($iterable);
-
-                        Assert::assertCount(3, $requests);
-
-                        Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
-                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[0]->url());
-                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[0]->secret());
-                        Assert::assertEquals(
-                            [
-                                'events' => [
-                                    [
-                                        'action' => 'product.created',
-                                        'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                        'event_date' => '2020-01-01T00:00:00+00:00',
-                                        'author' => 'julia',
-                                        'author_type' => 'ui',
-                                        'pim_source' => 'staging.akeneo.com',
-                                        'data' => ['data'],
-                                    ],
-                                ],
-
-                            ],
-                            $requests[0]->content(),
-                        );
-                        Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
-                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[1]->url());
-                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[1]->secret());
-                        Assert::assertEquals(
-                            [
-                                'events' => [
-                                    [
-                                        'action' => 'product.created',
-                                        'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                        'event_date' => '2020-01-01T00:00:00+00:00',
-                                        'author' => 'julia',
-                                        'author_type' => 'ui',
-                                        'pim_source' => 'staging.akeneo.com',
-                                        'data' => ['data'],
-                                    ],
-                                ],
-                            ],
-                            $requests[1]->content(),
-                        );
-                        Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
-                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_URL, $requests[2]->url());
-                        Assert::assertEquals(SendBusinessEventToWebhooksHandler::FAKE_SECRET, $requests[2]->secret());
-                        Assert::assertEquals(
-                            [
-                                'events' => [
-                                    [
-                                        'action' => 'product.created',
-                                        'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                        'event_date' => '2020-01-01T00:00:00+00:00',
-                                        'author' => 'julia',
-                                        'author_type' => 'ui',
-                                        'pim_source' => 'staging.akeneo.com',
-                                        'data' => ['data'],
-                                    ],
-                                ],
-                            ],
-                            $requests[2]->content(),
                         );
 
                         return true;
@@ -491,7 +357,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $connectionUserForFakeSubscription,
         $eventsApiRequestRepository,
         $countHourlyEventsApiRequestQuery,
         $cacheClearer,
@@ -519,7 +384,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $client,
             $builder,
             $logger,
-            $connectionUserForFakeSubscription,
             $eventsApiRequestRepository,
             $cacheClearer,
             $countHourlyEventsApiRequestQuery,
@@ -576,9 +440,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
 
         $expectedBuildTime = (3 - 2) + (8 - 5);
-        $eventBuiltCount = 2;
-
-        $log = new EventSubscriptionEventBuildLog(2, $bulkEvent, $expectedBuildTime, $eventBuiltCount);
+        $log = new EventSubscriptionEventBuildLog(2, $bulkEvent, $expectedBuildTime, 2);
         $logger->info(json_encode($log->toLog()))->shouldBeCalled();
     }
 
