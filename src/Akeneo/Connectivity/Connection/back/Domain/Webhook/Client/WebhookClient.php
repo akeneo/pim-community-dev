@@ -15,9 +15,4 @@ interface WebhookClient
      * @param iterable<WebhookRequest> $webhookRequests
      */
     public function bulkSend(iterable $webhookRequests): void;
-
-    /**
-     * @param iterable<WebhookRequest> $webhookRequests
-     */
-    public function bulkFakeSend(iterable $webhookRequests): void;
 }
