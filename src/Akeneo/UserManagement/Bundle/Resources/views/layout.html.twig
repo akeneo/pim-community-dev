@@ -58,26 +58,5 @@
             {% endblock main %}
         </div>
     </div>
-    {# we had to do this to prevent loading js stack when not logged in#}
-    <script type="text/javascript" nonce="{{ js_nonce() }}">
-        const tooltip = document.querySelector('[data-toggle="tooltip"]');
-        if (null !== tooltip) {
-            tooltip.addEventListener('mouseover', function(event){
-                var html =`
-                    <div class="tooltip-arrow" style="top: 19.2982%;"></div>
-                    <div class="tooltip-inner">${event.currentTarget.dataset.originalTitle}</div>`
-                var tooltip = document.createElement('div');
-                tooltip.className = 'tooltip fade right in';
-                tooltip.style = `top: 0px; left: ${event.currentTarget.offsetLeft + event.currentTarget.offsetWidth}px; display: block;`;
-
-                tooltip.innerHTML = html;
-                event.currentTarget.parentNode.appendChild(tooltip);
-            });
-
-            tooltip.addEventListener('mouseout', function(event){
-                event.currentTarget.parentNode.querySelectorAll('.tooltip').forEach((tooltip) => tooltip.remove());
-            });
-        }
-    </script>
 </body>
 </html>
