@@ -1,6 +1,6 @@
 enum Direction {
-  Ascending = 'Ascending',
-  Descending = 'Descending',
+  Ascending = 'ascending',
+  Descending = 'descending',
 }
 
 export {Direction};

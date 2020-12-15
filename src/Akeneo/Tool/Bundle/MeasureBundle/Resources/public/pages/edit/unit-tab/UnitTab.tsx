@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from 'akeneomeasure/model/measurement-family';
-import {MeasurementIllustration} from 'akeneo-design-system';
-import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
+import {MeasurementIllustration, Table} from 'akeneo-design-system';
 import {UnitCode} from 'akeneomeasure/model/unit';
 import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
 import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
 import {SearchBar, NoDataSection, NoDataTitle, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {HeaderCell} from 'akeneomeasure/pages/common/Table';
 
 const TabContainer = styled.div`
   display: flex;
@@ -41,7 +41,7 @@ const UnitTab = ({
   selectedUnitCode,
   selectUnitCode,
 }: UnitTabProps) => {
-  const __ = useTranslate();
+  const translate = useTranslate();
   const locale = useUserContext().get('uiLocale');
   const [searchValue, setSearchValue] = useState('');
 
@@ -52,7 +52,7 @@ const UnitTab = ({
       <TabColumns>
         <UnitList>
           <SearchBar
-            placeholder={__('measurements.search.placeholder')}
+            placeholder={translate('measurements.search.placeholder')}
             count={measurementFamily.units.length}
             searchValue={searchValue}
             onSearchChange={setSearchValue}
@@ -60,18 +60,16 @@ const UnitTab = ({
           {0 === filteredUnits.length && (
             <NoDataSection>
               <MeasurementIllustration size={256} />
-              <NoDataTitle>{__('measurements.family.no_result.title')}</NoDataTitle>
+              <NoDataTitle>{translate('measurements.family.no_result.title')}</NoDataTitle>
             </NoDataSection>
           )}
           {0 < filteredUnits.length && (
             <Table>
-              <thead>
-                <tr>
-                  <HeaderCell title={__('pim_common.label')}>{__('pim_common.label')}</HeaderCell>
-                  <HeaderCell title={__('pim_common.code')}>{__('pim_common.code')}</HeaderCell>
-                </tr>
-              </thead>
-              <tbody>
+              <Table.Header>
+                <HeaderCell>{translate('pim_common.label')}</HeaderCell>
+                <HeaderCell>{translate('pim_common.code')}</HeaderCell>
+              </Table.Header>
+              <Table.Body>
                 {filteredUnits.map((unit, index) => (
                   <UnitRow
                     key={unit.code}
@@ -82,7 +80,7 @@ const UnitTab = ({
                     onRowSelected={selectUnitCode}
                   />
                 ))}
-              </tbody>
+              </Table.Body>
             </Table>
           )}
         </UnitList>
