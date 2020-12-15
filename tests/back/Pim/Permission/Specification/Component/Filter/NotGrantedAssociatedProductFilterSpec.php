@@ -42,7 +42,7 @@ class NotGrantedAssociatedProductFilterSpec extends ObjectBehavior
         $this->shouldHaveType(NotGrantedAssociatedProductFilter::class);
     }
 
-    function it_removes_not_granted_associated_products_from_a_product_old(
+    function it_removes_not_granted_associated_products_from_a_product(
         $productCategoryAccessQuery,
         $productModelCategoryAccessQuery,
         $tokenStorage,
