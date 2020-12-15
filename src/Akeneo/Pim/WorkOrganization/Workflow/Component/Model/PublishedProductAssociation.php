@@ -29,11 +29,8 @@ class PublishedProductAssociation extends AbstractAssociation implements Publish
     public function getProductModels(): Collection
     {
         Assert::implementsInterface($this->owner, PublishedProductInterface::class);
-        $originalProductAssociation = $this->owner->getOriginalProduct()->getAssociationForType($this->associationType);
-        if (null !== $originalProductAssociation) {
-            return $originalProductAssociation->getProductModels();
-        }
+        $productModels = $this->owner->getOriginalProduct()->getAssociatedProductModels($this->associationType->getCode());
 
-        return new ArrayCollection();
+        return $productModels ? $productModels : new ArrayCollection();
     }
 }
