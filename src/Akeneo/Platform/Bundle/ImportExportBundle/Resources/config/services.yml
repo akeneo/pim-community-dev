@@ -13,6 +13,7 @@ services:
             - '@akeneo_batch.delete_job_execution'
             - '@akeneo_batch_queue.query.delete_job_execution_message_orphans'
             - '@akeneo.platform.import_export.filesystem.delete_orphans_job_execution_directories'
+            - '@Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs'
 
     Akeneo\Platform\Bundle\ImportExportBundle\Command\PurgeJobExecutionCommand:
         arguments:

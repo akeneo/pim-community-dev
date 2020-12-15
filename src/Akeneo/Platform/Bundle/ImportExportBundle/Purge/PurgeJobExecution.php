@@ -6,6 +6,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Purge;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem\DeleteOrphanJobExecutionDirectories;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution;
+use Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs;
 use Akeneo\Tool\Component\BatchQueue\Query\DeleteJobExecutionMessageOrphansQueryInterface;
 
 /**
@@ -23,18 +24,26 @@ final class PurgeJobExecution
     /** @var DeleteOrphanJobExecutionDirectories */
     private $deleteOrphansJobExecutionDirectories;
 
+    /** @var DeleteJobExecutionLogs|null */
+    private $deleteJobExecutionLogs;
+
     public function __construct(
         DeleteJobExecution $deleteJobExecution,
         DeleteJobExecutionMessageOrphansQueryInterface $deleteOrphanJobExecutionMessages,
-        DeleteOrphanJobExecutionDirectories $deleteOrphansJobExecutionDirectories
+        DeleteOrphanJobExecutionDirectories $deleteOrphansJobExecutionDirectories,
+        DeleteJobExecutionLogs $deleteJobExecutionLogs = null
     ) {
         $this->deleteJobExecution = $deleteJobExecution;
         $this->deleteOrphanJobExecutionMessages = $deleteOrphanJobExecutionMessages;
         $this->deleteOrphansJobExecutionDirectories = $deleteOrphansJobExecutionDirectories;
+        $this->deleteJobExecutionLogs = $deleteJobExecutionLogs;
     }
 
     public function olderThanDays(int $days): int
     {
+        if (null !== $this->deleteJobExecutionLogs) {
+            $this->deleteJobExecutionLogs->olderThanDays($days);
+        }
         $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanDays($days);
         $this->deleteOrphanJobExecutionMessages->execute();
         $this->deleteOrphansJobExecutionDirectories->execute();
@@ -44,6 +53,9 @@ final class PurgeJobExecution
 
     public function all(): void
     {
+        if (null !== $this->deleteJobExecutionLogs) {
+            $this->deleteJobExecutionLogs->all();
+        }
         $this->deleteJobExecution->all();
         $this->deleteOrphanJobExecutionMessages->execute();
         $this->deleteOrphansJobExecutionDirectories->execute();
