@@ -28,6 +28,11 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
     }
 
     /**
+     * In EE, products & associations are cloned for the Permission feature.
+     * Because of that, sometimes, we will have in the association 2 differents instances of the same product or model
+     * and Doctrine will throw an error saying it found a detached entity.
+     * To fix this, we look for cloned objects by comparing the identifier.
+     *
      * {@inheritdoc}
      */
     public function createInversedAssociation(
@@ -39,8 +44,20 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
             $this->missingAssociationAdder->addMissingAssociations($associatedEntity);
         }
         if ($owner instanceof ProductInterface) {
+            foreach ($associatedEntity->getAssociatedProducts($associationTypeCode) as $associatedProduct) {
+                if ($associatedProduct->getIdentifier() === $owner->getIdentifier() && $associatedProduct !== $owner) {
+                    $associatedEntity->removeAssociatedProduct($associatedProduct, $associationTypeCode);
+                    break;
+                }
+            }
             $associatedEntity->addAssociatedProduct($owner, $associationTypeCode);
         } elseif ($owner instanceof ProductModelInterface) {
+            foreach ($associatedEntity->getAssociatedProductModels($associationTypeCode) as $associatedProductModel) {
+                if ($associatedProductModel->getCode() === $owner->getCode() && $associatedProductModel !== $owner) {
+                    $associatedEntity->removeAssociatedProductModel($associatedProductModel, $associationTypeCode);
+                    break;
+                }
+            }
             $associatedEntity->addAssociatedProductModel($owner, $associationTypeCode);
         } else {
             throw new \LogicException(

@@ -5,12 +5,14 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
@@ -41,6 +43,8 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $owner = new Product();
 
         $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(false);
+        $associatedProduct->getAssociatedProducts('xsell')->willReturn(new ArrayCollection());
+
         $missingAssociationAdder->addMissingAssociations($associatedProduct)->shouldBeCalled();
         $associatedProduct->addAssociatedProduct($owner, 'xsell')->shouldBeCalled();
 
@@ -52,8 +56,14 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         ProductInterface $associatedProduct
     ): void {
         $owner = new Product();
+        $owner->setIdentifier('owner');
+        $clonedOwner = new Product();
+        $clonedOwner->setIdentifier('owner');
 
         $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
+        $associatedProduct->getAssociatedProducts('xsell')->willReturn(new ArrayCollection([$clonedOwner]));
+
+        $associatedProduct->removeAssociatedProduct($clonedOwner, 'xsell')->shouldBeCalled();
         $associatedProduct->addAssociatedProduct($owner, 'xsell')->shouldBeCalled();
 
         $this->createInversedAssociation($owner, 'xsell', $associatedProduct);
@@ -66,6 +76,8 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $owner = new ProductModel();
 
         $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(false);
+        $associatedProduct->getAssociatedProductModels('xsell')->willReturn(new ArrayCollection());
+
         $missingAssociationAdder->addMissingAssociations($associatedProduct)->shouldBeCalled();
         $associatedProduct->addAssociatedProductModel($owner, 'xsell')->shouldBeCalled();
 
@@ -77,8 +89,14 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         ProductInterface $associatedProduct
     ): void {
         $owner = new ProductModel();
+        $owner->setCode('owner');
+        $clonedOwner = new ProductModel();
+        $clonedOwner->setCode('owner');
 
         $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
+        $associatedProduct->getAssociatedProductModels('xsell')->willReturn(new ArrayCollection([$clonedOwner]));
+
+        $associatedProduct->removeAssociatedProductModel($clonedOwner, 'xsell')->shouldBeCalled();
         $associatedProduct->addAssociatedProductModel($owner, 'xsell')->shouldBeCalled();
 
         $this->createInversedAssociation($owner, 'xsell', $associatedProduct);
