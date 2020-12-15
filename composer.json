@@ -149,7 +149,7 @@
         "phpstan/phpstan": "^0.12.25",
         "phpstan/phpstan-symfony": "^0.12.6",
         "league/flysystem-aws-s3-v3": "^1.0",
-        "mcustiel/phiremock": "1.12.1",
+        "mcustiel/phiremock": "2.1.0",
         "phpstan/phpstan-webmozart-assert": "^0.12.7"
     },
     "conflict": {
