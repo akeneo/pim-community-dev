@@ -97,8 +97,9 @@ Feature: List proposals
   @jira https://akeneo.atlassian.net/browse/PIM-5825
   Scenario: Successfully display a proposal even when an attribute has been deleted
     Given I am logged in as "Julia"
-    And I am on the "name" attribute page
-    And I press the secondary action "Delete"
+    And I am on the attributes page
+    And I search "name"
+    And I click on the "delete" action of the row which contains "Name"
     And I press the "Delete" button
     When I am on the proposals page
     Then I should see the following proposals:
@@ -116,11 +117,13 @@ Feature: List proposals
   @jira https://akeneo.atlassian.net/browse/PIM-5825
   Scenario: Does not display a proposal when all of its attributes have been deleted
     Given I am logged in as "Julia"
-    And I am on the "name" attribute page
-    And I press the secondary action "Delete"
+    And I am on the attributes page
+    And I search "name"
+    And I click on the "delete" action of the row which contains "Name"
     And I press the "Delete" button
-    And I am on the "description" attribute page
-    And I press the secondary action "Delete"
+    And I am on the attributes page
+    And I search "description"
+    And I click on the "delete" action of the row which contains "Description"
     And I press the "Delete" button
     When I am on the proposals page
     Then I should see the text "There is no proposal to review"
