@@ -145,6 +145,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
+    },
     "dompdf/dompdf": {
         "version": "v0.6.2"
     },

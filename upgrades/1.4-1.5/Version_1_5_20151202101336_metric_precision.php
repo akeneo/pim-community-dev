@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Pim\Upgrade\UpgradeHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -33,7 +33,7 @@ class Version_1_5_20151202101336_metric_precision extends AbstractMigration impl
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $upgradeHelper = new UpgradeHelper($this->container);
         if ($upgradeHelper->areProductsStoredInMongo()) {
@@ -46,7 +46,7 @@ class Version_1_5_20151202101336_metric_precision extends AbstractMigration impl
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

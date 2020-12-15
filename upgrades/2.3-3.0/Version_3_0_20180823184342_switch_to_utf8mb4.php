@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Switch to full UTF8 support by using MySQL utf8mb4 instead of the incomplete MySQL utf8
@@ -94,7 +94,7 @@ class Version_3_0_20180823184342_switch_to_utf8mb4 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $dbName = $this->connection->getDatabase();
 
@@ -114,7 +114,7 @@ class Version_3_0_20180823184342_switch_to_utf8mb4 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

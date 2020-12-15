@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Pim\Upgrade\SchemaHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -27,7 +27,7 @@ class Version_1_7_20170215111650_attribute extends AbstractMigration implements 
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $tableHelper = new SchemaHelper($this->container);
         $attributeTable = $tableHelper->getTableOrCollection('attribute');
@@ -63,7 +63,7 @@ class Version_1_7_20170215111650_attribute extends AbstractMigration implements 
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

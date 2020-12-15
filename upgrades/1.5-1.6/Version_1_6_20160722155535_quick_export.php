@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Add "with_media" to "csv_product_quick_export" export job
@@ -19,7 +19,7 @@ class Version_1_6_20160722155535_quick_export extends AbstractMigration
      *
      * @throws \Exception
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $query = 'SELECT code, raw_parameters FROM akeneo_batch_job_instance WHERE code = "csv_product_quick_export"';
         $stmt = $this->connection->prepare($query);
@@ -46,7 +46,7 @@ class Version_1_6_20160722155535_quick_export extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

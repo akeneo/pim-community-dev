@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Add the missing background job 'csv_product_quick_export' used by 'CSV export all attributes' in
@@ -14,7 +14,7 @@ class Version_1_6_20161028161514_add_missing_csv_product_quick_export extends Ab
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->write('(re-)create csv_product_quick_export job');
         // remove the job in case it exists somehow (e.g. manual changes of the jobs db or add by console command)
@@ -40,7 +40,7 @@ SQL
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Upgrade\SchemaHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -22,7 +22,7 @@ class Version_1_7_20170504175205_clean_attribute_properties extends AbstractMigr
         $this->container = $container;
     }
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $tableHelper = new SchemaHelper($this->container);
         $attributeTable = $tableHelper->getTableOrCollection('attribute');
@@ -58,7 +58,7 @@ class Version_1_7_20170504175205_clean_attribute_properties extends AbstractMigr
         );
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

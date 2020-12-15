@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Column;
 
 /**
@@ -14,7 +14,7 @@ class Version_3_0_20181128084612_migrate_users extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $columns = $this->connection->getSchemaManager()->listTableColumns('oro_user');
 
@@ -34,7 +34,7 @@ class Version_3_0_20181128084612_migrate_users extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

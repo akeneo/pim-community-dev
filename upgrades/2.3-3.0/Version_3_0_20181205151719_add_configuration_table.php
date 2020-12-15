@@ -2,15 +2,15 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Creates the new pim_configuration table.
  */
 class Version_3_0_20181205151719_add_configuration_table extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->abortIf(
             'mysql' !== $this->connection->getDatabasePlatform()->getName(),
@@ -22,7 +22,7 @@ class Version_3_0_20181205151719_add_configuration_table extends AbstractMigrati
         }
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->abortIf(
             'mysql' !== $this->connection->getDatabasePlatform()->getName(),

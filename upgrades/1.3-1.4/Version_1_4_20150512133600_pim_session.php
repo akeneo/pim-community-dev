@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Migration 1.3 => 1.4
@@ -19,7 +19,7 @@ class Version_1_4_20150512133600_pim_session extends AbstractMigration
      *
      * @throws \Doctrine\DBAL\Migrations\AbortMigrationException
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
@@ -36,7 +36,7 @@ class Version_1_4_20150512133600_pim_session extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }
