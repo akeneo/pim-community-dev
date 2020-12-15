@@ -236,11 +236,11 @@
     - add `\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
 - Change signature of `createInversedAssociation()` from `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface`
     - remove `AssociationInterface $association`
-    - add `string $associationTypeCode` and `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface|Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface $associatedEntity`
-- Change signature of `removeInversedAssociation()`  from `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface`
+    - add `string $associationTypeCode` and `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface $associatedEntity`
+- Change signature of `removeInversedAssociation()` from `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface`
     - remove `AssociationInterface $association`
-    - add `string $associationTypeCode` and `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface|Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface $associatedEntity`
-- Several changes has been made on `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface`:
+    - add `string $associationTypeCode` and `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface $associatedEntity`
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface` interface:
     - Remove method `setAssociations()`
     - Remove method `getAssociationForType()`
     - Remove method `getAssociationForTypeCode()`
@@ -254,8 +254,11 @@
     - Add method `addAssociatedGroup()`
     - Add method `removeAssociatedGroup()`
     - Add method `getAssociatedGroups()`
-- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder` argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository` has been added
-- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter` argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository` has been added
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder`:
+  - add argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository`
+  - add argument `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\AssociationFieldClearer`: add argument `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater`   
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter`: add argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository`
 ### CLI commands
 
 The following CLI commands have been deleted:
