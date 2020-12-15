@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {
@@ -6,10 +6,11 @@ import {
   computeTipMessage,
   getProgressBarLevel,
 } from '../../../helper/Dashboard/KeyIndicator';
-import {Tip, KeyIndicatorTips} from '../../../../domain';
+import {Tip, KeyIndicatorTips, KeyIndicatorExtraData} from '../../../../domain';
 import {useGetKeyIndicatorTips} from '../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips';
 import {useDashboardContext} from '../../../context/DashboardContext';
 import {ProgressBar} from 'akeneo-design-system';
+import {FollowKeyIndicatorResultHandler} from '../../../user-actions';
 
 type Props = {
   type: string;
@@ -17,16 +18,11 @@ type Props = {
   totalToImprove?: number;
   title?: string;
   resultsMessage?: string;
-  followResults?: (
-    channelCode: string,
-    localeCode: string,
-    familyCode: string | null,
-    categoryId: string | null,
-    rootCategoryId: string | null
-  ) => void;
+  followResults?: FollowKeyIndicatorResultHandler;
+  extraData?: KeyIndicatorExtraData,
 };
 
-const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, title, resultsMessage, followResults}) => {
+const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, title, resultsMessage, followResults, extraData}) => {
   const translate = useTranslate();
   const tips: KeyIndicatorTips = useGetKeyIndicatorTips(type);
   const userContext = useUserContext();
@@ -59,7 +55,7 @@ const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, tit
 
   const productsNumberToWorkOn: number = computeProductsNumberToWorkOn(totalToImprove);
 
-  const handleOnClickOnProductsNumber = (event: any) => {
+  const handleOnClickOnProductsNumber = useCallback((event: any) => {
     event.stopPropagation();
     if (event.target.tagName === 'BUTTON' && followResults) {
       followResults(
@@ -67,10 +63,11 @@ const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, tit
         userContext.get('catalogLocale'),
         familyCode,
         category?.id || null,
-        category?.rootCategoryId || null
+        category?.rootCategoryId || null,
+        extraData || undefined
       );
     }
-  };
+  }, [userContext, familyCode, category, extraData]);
 
   return (
     <Container>
