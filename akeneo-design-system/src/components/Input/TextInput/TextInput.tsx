@@ -66,7 +66,7 @@ type TextInputProps = Override<
     readOnly?: boolean;
 
     /**
-     * Defines if the input is valid on not. See https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-invalid_attribute
+     * Defines if the input is valid on not.
      */
     invalid?: boolean;
 
@@ -83,7 +83,7 @@ type TextInputProps = Override<
 >;
 
 /**
- * The Text input component allows the user to enter content and data when the expected user input is a single line of text.
+ * The TextInput component allows the user to enter content and data when the expected input is a single line of text.
  */
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
   ({invalid, onChange, readOnly, characterLeftLabel, ...rest}: TextInputProps, forwardedRef: Ref<HTMLInputElement>) => {
