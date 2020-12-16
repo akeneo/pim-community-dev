@@ -76,5 +76,4 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer
         arguments:
             - '@pim_connector.doctrine.cache_clearer'
-            - '@akeneo.pim.structure.query.get_attributes'
             - '@akeneo.pim.storage_utils.cache.cached_queries_clearer'

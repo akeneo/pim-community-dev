@@ -15,15 +15,9 @@ class CacheClearerSpec extends ObjectBehavior
 {
     public function let(
         UnitOfWorkAndRepositoriesClearer $unitOfWorkAndRepositoriesClearer,
-        GetAttributes $getAttributes,
         CachedQueriesClearerInterface $cachedQueriesClearer
     ): void {
-        $LRUCachedGetAttributes = new LRUCachedGetAttributes($getAttributes->getWrappedObject());
-        $this->beConstructedWith(
-            $unitOfWorkAndRepositoriesClearer,
-            $LRUCachedGetAttributes,
-            $cachedQueriesClearer
-        );
+        $this->beConstructedWith($unitOfWorkAndRepositoriesClearer, $cachedQueriesClearer);
     }
 
     public function it_is_a_cache_clearer(): void
