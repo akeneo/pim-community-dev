@@ -189,7 +189,7 @@ class Image extends React.Component<
         ) : null}
         {this.props.image.isEmpty() && undefined !== this.props.onImageChange ? (
           <div className="AknImage-uploader">
-            <ImportIllustration className="AknImage-uploaderIllustration" />
+            <ImportIllustration width="190" height="auto" className="AknImage-uploaderIllustration" />
             <span className="AknImage-uploaderHelper">
               {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.upload`)}
             </span>
