@@ -200,6 +200,8 @@ class DataQualityInsightsTestCase extends TestCase
         ];
         $data = array_merge($defaultData, $data);
 
+        $this->ensureAttributeGroupExists($defaultData['group']);
+
         $attribute = $this->get('akeneo_integration_tests.base.attribute.builder')->build($data, true);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
@@ -230,6 +232,14 @@ class DataQualityInsightsTestCase extends TestCase
         $this->get('pim_catalog.saver.attribute_group')->save($attributeGroup);
 
         return $attributeGroup;
+    }
+
+    protected function ensureAttributeGroupExists(string $code): void
+    {
+        $attributeGroup = $this->get('pim_catalog.repository.attribute_group')->findOneByIdentifier($code);
+        if (null === $attributeGroup) {
+            $this->createAttributeGroup($code);
+        }
     }
 
     protected function createAttributeOptions(string $attributeCode, array $optionsCodes): void

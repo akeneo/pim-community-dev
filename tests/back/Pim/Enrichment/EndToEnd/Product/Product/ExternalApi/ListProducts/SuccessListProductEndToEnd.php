@@ -526,20 +526,14 @@ JSON;
                 "data": "Text"
             }]
         }';
-        $qualityScores = '{
-            "tablet":{
-                "de_DE":"E",
-                "en_US":"E",
-                "fr_FR":"E"
-            },
-            "ecommerce":{
-                "en_US":"E"
-            },
-            "ecommerce_china":{
-                "en_US":"E",
-                "zh_CN":"E"
-            }
-        }';
+        $qualityScores = '[
+            {"scope": "tablet", "locale": "de_DE", "data": "E"},
+            {"scope": "tablet", "locale": "en_US", "data": "E"},
+            {"scope": "tablet", "locale": "fr_FR", "data": "E"},
+            {"scope": "ecommerce", "locale": "en_US", "data": "E"},
+            {"scope": "ecommerce_china", "locale": "en_US", "data": "E"},
+            {"scope": "ecommerce_china", "locale": "zh_CN", "data": "E"}
+        ]';
         $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForQualityScore('simple_with_family_and_values', '"familyA"', $values, $qualityScores);
         $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForQualityScore('simple_with_no_family', 'null', $values, '[]');
         $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForQualityScore('simple_with_no_values', '"familyA"', '{}', $qualityScores);
