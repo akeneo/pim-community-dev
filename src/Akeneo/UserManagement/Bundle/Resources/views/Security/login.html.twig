@@ -18,7 +18,8 @@
       document.title = '{{ 'Login'|trans }}';
     </script>
 
-    <form action="{{ path(action_route) }}" method="post" class="Form">
+    {# We keep the "form-signin" class for the compatibility with the following behat step: \Pim\Behat\Context\NavigationContext::iAmLoggedInThroughTheUi #}
+    <form action="{{ path(action_route) }}" method="post" class="Form form-signin">
         <div class="InputGroup">
             <div class="InputBlock">
                 <label class="InputLabel" for="prependedInput">{{ 'pim_user.user.login.username_or_email'|trans }}</label>

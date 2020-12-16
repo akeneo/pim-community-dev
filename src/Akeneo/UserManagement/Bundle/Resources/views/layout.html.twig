@@ -20,8 +20,12 @@
             <div class="AuthenticationWrapper">
                 <div class="LeftWrapper">
                     <div class="FormWrapper">
-                        <div class="Logo">
-                            <img src="{{ '/bundles/pimui/images/illustrations/login/Logo.svg' }}" alt={{ 'pim_login.logo_title'|trans|e }} />
+                        {# We keep the "AknLogin-title" class for the compatibility with the following behat step: \Pim\Behat\Context\NavigationContext::iAmLoggedInThroughTheUi #}
+                        <div class="Logo AknLogin-title">
+                            {%- block brandLogo -%}
+                                <img src="{{ '/bundles/pimui/images/illustrations/login/Logo.svg' }}"
+                                     alt={{ 'pim_login.logo_title'|trans|e }} />
+                            {%- endblock -%}
                         </div>
                         <div class="ContainerForm">
                             <div class="Messages">
