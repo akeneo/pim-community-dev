@@ -27,7 +27,7 @@ class FindQuantifiedAssociationTypeCodes implements FindQuantifiedAssociationTyp
         return $this->cachedResult;
     }
 
-    public function clear(): void
+    public function clearCache(): void
     {
         $this->cachedResult = null;
     }

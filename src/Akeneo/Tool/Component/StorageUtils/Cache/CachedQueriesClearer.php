@@ -21,7 +21,7 @@ final class CachedQueriesClearer implements CachedQueriesClearerInterface
     public function clear(): void
     {
         foreach ($this->cachedQueries as $cachedQuery) {
-            $cachedQuery->clear();
+            $cachedQuery->clearCache();
         }
     }
 }

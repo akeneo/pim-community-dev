@@ -39,6 +39,7 @@ services:
         class: Akeneo\Channel\Bundle\Doctrine\Query\FindActivatedCurrencies
         arguments:
             - '@doctrine.orm.entity_manager'
+        tags: ['akeneo.pim.cached_query']
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows'

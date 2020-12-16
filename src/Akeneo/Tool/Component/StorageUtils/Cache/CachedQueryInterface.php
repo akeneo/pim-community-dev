@@ -5,5 +5,5 @@ namespace Akeneo\Tool\Component\StorageUtils\Cache;
 
 interface CachedQueryInterface
 {
-    public function clear(): void;
+    public function clearCache(): void;
 }

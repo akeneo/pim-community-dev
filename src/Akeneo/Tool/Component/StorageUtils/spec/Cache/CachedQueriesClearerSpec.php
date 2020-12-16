@@ -3,7 +3,6 @@
 namespace spec\Akeneo\Tool\Component\StorageUtils\Cache;
 
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
-use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 use PhpSpec\ObjectBehavior;
 
 class CachedQueriesClearerSpec extends ObjectBehavior
@@ -17,8 +16,8 @@ class CachedQueriesClearerSpec extends ObjectBehavior
             $cachedQuery2
         ]);
 
-        $cachedQuery1->clear()->shouldBeCalledOnce();
-        $cachedQuery2->clear()->shouldBeCalledOnce();
+        $cachedQuery1->clearCache()->shouldBeCalledOnce();
+        $cachedQuery2->clearCache()->shouldBeCalledOnce();
 
         $this->clear();
     }

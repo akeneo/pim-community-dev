@@ -8,3 +8,4 @@ services:
         class: 'Akeneo\Channel\Component\Query\PublicApi\Cache\CachedChannelExistsWithLocale'
         arguments:
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
+        tags: ['akeneo.pim.cached_query']
