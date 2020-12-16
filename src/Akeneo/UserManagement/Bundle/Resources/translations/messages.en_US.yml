@@ -73,7 +73,7 @@ pim_user:
             password_reset: Password Reset
             reset: Reset
             password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
-            homepage: Go to homepage
+            homepage: Back to homepage
     group:
         tab:
             general.title: General

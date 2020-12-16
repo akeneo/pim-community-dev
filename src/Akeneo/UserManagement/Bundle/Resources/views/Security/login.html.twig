@@ -2,34 +2,37 @@
 
 {% block bodyClass %}AknLogin{% endblock %}
 
-{% block content %}
-    <script type="text/javascript" nonce="{{ js_nonce() }}">
-      sessionStorage.clear();
-      document.title = '{{ 'Login'|trans }}';
-    </script>
-
+{% block messages %}
+    {{ parent() }}
     {% if error %}
         <div class="Helper">
             <span class="Icon"></span>
             <span class="Text">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
         </div>
     {% endif %}
+{% endblock %}
 
-    <form action="{{ path(action_route) }}" method="post" class="Form">
+{% block content %}
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      sessionStorage.clear();
+      document.title = '{{ 'Login'|trans }}';
+    </script>
+
+    {# We keep the "form-signin" class for the compatibility with the following behat step: \Pim\Behat\Context\NavigationContext::iAmLoggedInThroughTheUi #}
+    <form action="{{ path(action_route) }}" method="post" class="Form form-signin">
         <div class="InputGroup">
             <div class="InputBlock">
-                <label class="InputLabel">{{ 'pim_user.user.login.username_or_email'|trans }}</label>
+                <label class="InputLabel" for="prependedInput">{{ 'pim_user.user.login.username_or_email'|trans }}</label>
                 <div class="InputContainer">
                     <input class="InputText" type="text" id="prependedInput" autofocus="autofocus" name="_username"
-                           value="{{ last_username }}" required="required"
-                           placeholder="{{ 'pim_user.user.login.username_or_email'|trans }}" size="1"/>
+                           value="{{ last_username }}" required="required" size="1"/>
                 </div>
             </div>
             <div class="InputBlock">
-                <label class="InputLabel">{{ 'pim_user.user.fields.password'|trans }}</label>
+                <label class="InputLabel" for="prependedInput2">{{ 'pim_user.user.fields.password'|trans }}</label>
                 <div class="InputContainer">
                     <input class="InputText" type="password" id="prependedInput2" name="_password" required="required"
-                           placeholder="{{ 'pim_user.user.fields.password'|trans }}" autocomplete="off" size="1"/>
+                           autocomplete="off" size="1"/>
                 </div>
             </div>
 
@@ -46,10 +49,9 @@
                 </label>
             </div>
         </div>
-        <button class="AknButton AknButton--apply AknButton--big" type="submit" id="_submit" name="_submit">
+        <button class="AknButton AknButton--apply" type="submit" id="_submit" name="_submit">
             {{- 'pim_user.user.login.log_in'|trans -}}
         </button>
-
 
         <input type="hidden" name="_target_path" value=""/>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
@@ -59,3 +61,17 @@
         {% endfor %}
     </form>
 {% endblock content %}
+
+{% block deferred_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      (function () {
+        const username = document.getElementById('prependedInput');
+        const password = document.getElementById('prependedInput2');
+        const submit = document.getElementById('_submit');
+        const form = document.querySelector('form.Form');
+
+        initPimLoginForm([username, password], submit, form);
+      })();
+    </script>
+{% endblock %}
