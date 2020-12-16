@@ -34,6 +34,16 @@ test('it renders a confirm modal delete', async () => {
     renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
   });
 
+  expect(dependencies.translate).toHaveBeenCalledWith(
+    'pim_enrich.entity.attribute.module.delete.product_count',
+    {count: '3'},
+    3
+  );
+  expect(dependencies.translate).toHaveBeenCalledWith(
+    'pim_enrich.entity.attribute.module.delete.product_model_count',
+    {count: '5'},
+    5
+  );
   expect(screen.getByText('pim_common.confirm_deletion')).toBeInTheDocument();
 });
 
