@@ -89,3 +89,8 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalCountActiveEventSubscriptionsQuery
         arguments:
             - '@database_connection'
+
+    akeneo_connectivity.connection.persistence.query.count_hourly_events_api_request:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalCountHourlyEventsApiRequestQuery
+        arguments:
+            - '@database_connection'
