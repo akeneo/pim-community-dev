@@ -341,6 +341,7 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindQuantifiedAssociationTypeCodes
         arguments:
             - '@database_connection'
+        tags: ['akeneo.pim.cached_query']
 
     akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_identifiers_query:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdentifiersQuery'
