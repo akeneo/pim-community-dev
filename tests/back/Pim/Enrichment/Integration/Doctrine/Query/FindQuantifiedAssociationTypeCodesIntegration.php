@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindQuantifiedAssociationTyp
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 
-class FindQuantifiedAssociationTypeCodesQueryIntegration extends TestCase
+class FindQuantifiedAssociationTypeCodesIntegration extends TestCase
 {
     use QuantifiedAssociationsTestCaseTrait;
 
@@ -57,5 +57,21 @@ class FindQuantifiedAssociationTypeCodesQueryIntegration extends TestCase
             $actualQuantifiedAssociationTypeCodes,
             $quantifiedAssociationTypes
         );
+    }
+
+    /** @test */
+    public function it_caches_the_results()
+    {
+        $this->createQuantifiedAssociationType('association_type_1');
+        $actualQuantifiedAssociationTypeCodes = $this->findQuantifiedAssociationCodes->execute(); // Cache is initialized
+        self::assertEquals($actualQuantifiedAssociationTypeCodes, ['association_type_1']);
+
+        $this->createQuantifiedAssociationType('association_type_2');
+        $actualQuantifiedAssociationTypeCodes = $this->findQuantifiedAssociationCodes->execute(); // result is still the cache
+        self::assertEquals($actualQuantifiedAssociationTypeCodes, ['association_type_1']);
+
+        $this->findQuantifiedAssociationCodes->clear();
+        $actualQuantifiedAssociationTypeCodes = $this->findQuantifiedAssociationCodes->execute(); // Cache is reinitialized
+        self::assertEquals($actualQuantifiedAssociationTypeCodes, ['association_type_1', 'association_type_2']);
     }
 }
