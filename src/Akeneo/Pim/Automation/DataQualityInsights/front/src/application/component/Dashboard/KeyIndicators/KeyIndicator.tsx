@@ -19,10 +19,19 @@ type Props = {
   title?: string;
   resultsMessage?: string;
   followResults?: FollowKeyIndicatorResultHandler;
-  extraData?: KeyIndicatorExtraData,
+  extraData?: KeyIndicatorExtraData;
 };
 
-const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, title, resultsMessage, followResults, extraData}) => {
+const KeyIndicator: FC<Props> = ({
+  children,
+  type,
+  ratioGood,
+  totalToImprove,
+  title,
+  resultsMessage,
+  followResults,
+  extraData,
+}) => {
   const translate = useTranslate();
   const tips: KeyIndicatorTips = useGetKeyIndicatorTips(type);
   const userContext = useUserContext();
@@ -55,19 +64,22 @@ const KeyIndicator: FC<Props> = ({children, type, ratioGood, totalToImprove, tit
 
   const productsNumberToWorkOn: number = computeProductsNumberToWorkOn(totalToImprove);
 
-  const handleOnClickOnProductsNumber = useCallback((event: any) => {
-    event.stopPropagation();
-    if (event.target.tagName === 'BUTTON' && followResults) {
-      followResults(
-        userContext.get('catalogScope'),
-        userContext.get('catalogLocale'),
-        familyCode,
-        category?.id || null,
-        category?.rootCategoryId || null,
-        extraData || undefined
-      );
-    }
-  }, [userContext, familyCode, category, extraData]);
+  const handleOnClickOnProductsNumber = useCallback(
+    (event: any) => {
+      event.stopPropagation();
+      if (event.target.tagName === 'BUTTON' && followResults) {
+        followResults(
+          userContext.get('catalogScope'),
+          userContext.get('catalogLocale'),
+          familyCode,
+          category?.id || null,
+          category?.rootCategoryId || null,
+          extraData || undefined
+        );
+      }
+    },
+    [userContext, familyCode, category, extraData]
+  );
 
   return (
     <Container>

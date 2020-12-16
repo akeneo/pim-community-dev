@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
@@ -18,6 +9,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\CriterionNotFound
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class CriteriaEvaluationRegistrySpec extends ObjectBehavior
 {
     public function it_returns_no_criterion_codes_if_no_services_are_injected()
