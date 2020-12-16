@@ -29,10 +29,9 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     akeneo_assetmanager.array_converter.standard_to_flat.product.value_converter.asset_multiple_link:
-        class: Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\MultiSelectConverter
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Connector\ArrayConverter\StandardToFlat\AssetCollectionConverter
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.attribute_columns_resolver'
-            - ['pim_catalog_asset_collection']
         tags:
             - { name: 'pim_connector.array_converter.standard_to_flat.product.value_converter' }
 
