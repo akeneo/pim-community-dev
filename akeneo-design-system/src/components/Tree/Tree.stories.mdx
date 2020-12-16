@@ -1,0 +1,55 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Tree} from './Tree.tsx';
+import {RecursiveTree} from './AsynchronousTreeSimulator';
+
+<Meta
+  title="Components/Tree"
+  component={Tree}
+  argTypes={{
+  }}
+  args={{}}
+/>
+
+# Tree
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <ul role='tree'>
+          <Tree value={'master'} label={'Master'} {...args}>
+            <Tree value={'tvs'} label={'TVs and projectors'} isLeaf={true}/>
+            <Tree value={'cameras'} label={'Cameras'}>
+              <Tree value={'digital'} label={'Digital cameras'} isLeaf={true}/>
+              <Tree value={'camcorders'} label={'Camcorders'} isLeaf={true} selected={true}/>
+            </Tree>
+            <Tree value={'audio'} label={'Audio and Video'} selected={true} isLeaf={true}/>
+          </Tree>
+        </ul>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Asynchronous simulation
+
+<Canvas>
+  <Story name="AsynchronousSimulation">
+    {args => {
+      const [tree, setTree] = React.useState({ value: 'master', label: 'Master' });
+      return <RecursiveTree tree={tree} treeState={tree} setTreeState={setTree}/>;
+    }}
+  </Story>
+</Canvas>

@@ -19,6 +19,7 @@ const uncheckTick = keyframes`
 
 const Container = styled.div`
   display: flex;
+  line-height: 20px;
 `;
 
 const TickIcon = styled(CheckIcon)`
@@ -87,7 +88,7 @@ const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
     `}
 `;
 
-type CheckboxChecked = boolean | 'mixed';
+export type CheckboxChecked = boolean | 'mixed';
 
 type CheckboxProps = Override<
   React.HTMLAttributes<HTMLDivElement>,

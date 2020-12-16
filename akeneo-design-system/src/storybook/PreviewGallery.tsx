@@ -31,7 +31,7 @@ const PreviewCard = styled.div`
 
 const PreviewContainer = styled.div`
   padding: 20px;
-  color: #a1a9b7;
+  color: ${getColor('grey100')};
   overflow: hidden;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
