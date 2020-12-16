@@ -1,6 +1,7 @@
 type KeyIndicator = {
   ratioGood: number;
   totalToImprove: number;
+  extraData?: KeyIndicatorExtraData;
 };
 
 type keyIndicatorMap = {
@@ -20,4 +21,8 @@ type KeyIndicatorsTips = {
   [keyIndicatorName: string]: KeyIndicatorTips;
 };
 
-export {KeyIndicator, keyIndicatorMap, Tip, KeyIndicatorTips, KeyIndicatorsTips};
+type KeyIndicatorExtraData = {
+  impactedFamilies: string[];
+};
+
+export {KeyIndicator, keyIndicatorMap, Tip, KeyIndicatorTips, KeyIndicatorsTips, KeyIndicatorExtraData};

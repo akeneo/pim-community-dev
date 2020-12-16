@@ -38,6 +38,8 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
             return;
         }
 
+        $em = $this->registry->getManager();
+
         /** @var AssociationInterface $association */
         foreach ($entity->getAssociations() as $association) {
             $associationType = $association->getAssociationType();
@@ -47,25 +49,12 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
             }
 
             foreach ($association->getProducts() as $product) {
-                $this->persistInversedAssociation($associationType, $product);
+                $em->persist($product);
             }
 
             foreach ($association->getProductModels() as $productModel) {
-                $this->persistInversedAssociation($associationType, $productModel);
+                $em->persist($productModel);
             }
-        }
-    }
-
-    private function persistInversedAssociation(
-        AssociationTypeInterface $associationType,
-        EntityWithAssociationsInterface $associatedEntity
-    ): void {
-        $em = $this->registry->getManager();
-
-        $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
-
-        if (null !== $inversedAssociation) {
-            $em->persist($inversedAssociation);
         }
     }
 }
