@@ -102,7 +102,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             return null;
         }
 
-        if (empty($code)) {
+        if (!isset($standardProductModel['code'])) {
             $this->skipItemWithMessage($standardProductModel, 'The code must be filled');
         }
 
