@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Improvement
+
+- PIM-9599: Fix @babel/types dependency to ^7.11.5
+
 # 3.2.78 (2020-12-02)
 
 # 3.2.77 (2020-11-30)
