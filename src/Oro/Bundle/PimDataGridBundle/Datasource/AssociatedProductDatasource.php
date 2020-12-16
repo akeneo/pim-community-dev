@@ -7,12 +7,18 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Oro\Bundle\PimDataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
 use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product datasource dedicated to the product association datagrid.
@@ -25,6 +31,21 @@ class AssociatedProductDatasource extends ProductDatasource
 {
     /** @var string */
     protected $sortOrder;
+
+    // @todo merge remove null
+    /** AuthorizationCheckerInterface|null */
+    private $authorizationChecker;
+
+    public function __construct(
+        ObjectManager $om,
+        ProductQueryBuilderFactoryInterface $factory,
+        NormalizerInterface $serializer,
+        FilterEntityWithValuesSubscriber $filterEntityWithValuesSubscriber,
+        AuthorizationCheckerInterface $authorizationChecker = null // @todo merge remove null
+    ) {
+        parent::__construct($om, $factory, $serializer, $filterEntityWithValuesSubscriber);
+        $this->authorizationChecker = $authorizationChecker;
+    }
 
     /**
      * Sets the sort order passed to the "is associated" datagrid sorter.
@@ -265,6 +286,8 @@ class AssociatedProductDatasource extends ProductDatasource
             }
 
             $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);
+            // @todo merge remove null check
+            $normalized['is_owner'] = null !== $this->authorizationChecker ? $this->authorizationChecker->isGranted(Attributes::OWN, $product) : true;
 
             $data[] = new ResultRecord($normalized);
         }

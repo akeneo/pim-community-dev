@@ -36,10 +36,11 @@ define(
              * @return {Boolean}
              */
             canRemoveAssociation() {
+                const isProductOwner = this.model.get('is_owner') || false;
                 const permissionGranted = SecurityContext.isGranted('pim_enrich_associations_remove');
                 const fromInheritance = this.model.get('from_inheritance');
 
-                return permissionGranted && !fromInheritance;
+                return isProductOwner && permissionGranted && !fromInheritance;
             },
 
             /**

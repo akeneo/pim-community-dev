@@ -59,6 +59,8 @@ datagrid:
         properties:
             id: ~
             document_type: ~
+            is_owner:
+                frontend_type: boolean
         filters:
             columns:
                 label_or_identifier:
