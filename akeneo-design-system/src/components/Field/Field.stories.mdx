@@ -1,0 +1,106 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Field} from './Field.tsx';
+import {Helper, Link} from '../../components';
+import {TextInput} from '../Input/TextInput/TextInput.tsx';
+
+<Meta
+  title="Components/Field"
+  component={Field}
+  argTypes={{
+    children: {table: {type: {summary: 'Input | Helper[]'}}},
+  }}
+  args={{
+    label: 'My field label',
+  }}
+/>
+
+# Field
+
+## Usage
+
+The Field component is used to display information around an Input component.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <Field {...args}>
+          <TextInput placeholder="Type your text here" />
+        </Field>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on completeness
+
+<Canvas>
+  <Story name="Completeness">
+    {args => {
+      const [value, setValue] = useState('');
+      const handleChange = newValue => setValue(newValue);
+      return (
+        <Field {...args} incomplete={true}>
+          <TextInput
+            placeholder="This field is required for completeness"
+            value={value}
+            onChange={handleChange}
+            characterLeftLabel={`${250 - value.length} characters left`}
+          />
+        </Field>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on Channel and Locale
+
+<Canvas>
+  <Story name="Channel and Locale">
+    {args => {
+      return (
+        <>
+          <Field {...args} channel="ecommerce">
+            <TextInput placeholder="Type your text here" />
+          </Field>
+          <Field {...args} locale="en_US">
+            <TextInput placeholder="Type your text here" />
+          </Field>
+          <Field {...args} channel="mobile" locale="fr_FR">
+            <TextInput placeholder="Type your text here" />
+          </Field>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Helpers
+
+<Canvas>
+  <Story name="Helpers">
+    {args => {
+      return (
+        <>
+          <Field {...args}>
+            <TextInput placeholder="Type your text here" />
+            <Helper level="info">
+              This is just an info. <Link href="#with-helpers">Don't click here</Link>
+            </Helper>
+          </Field>
+          <Field {...args} label="Another one">
+            <TextInput invalid={true} placeholder="Type your text here" />
+            <Helper level="error">
+              But this is an error. <Link href="#with-helpers">Link</Link>
+            </Helper>
+          </Field>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

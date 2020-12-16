@@ -1,0 +1,85 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TextInput} from './TextInput.tsx';
+
+<Meta
+  title="Components/Inputs/TextInput"
+  component={TextInput}
+  args={{
+    value: '',
+    placeholder: 'Please enter a value in the TextField',
+  }}
+/>
+
+# TextInput
+
+## Usage
+
+Text input allows the user to enter content and data when the expected user input is a single line of text.
+
+### Placeholder text
+
+The placeholder text provides tips or examples of items to enter. Placeholder text disappears when the user begins entering data.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      // There currently is a bug on Storybook with `useArgs` that loses the focus on the input when typing
+      // See: https://github.com/storybookjs/storybook/issues/11657
+      return <TextInput {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="ReadOnly">
+    {args => {
+      return (
+        <>
+          <TextInput {...args} readOnly={false} />
+          <TextInput {...args} readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      return (
+        <>
+          <TextInput {...args} invalid={false} />
+          <TextInput {...args} invalid={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on character left label
+
+<Canvas>
+  <Story name="Character left label">
+    {args => {
+      const [value, setValue] = useState('');
+      const handleChange = newValue => setValue(newValue);
+      return (
+        <TextInput
+          placeholder="Type here to update the character left label"
+          value={value}
+          onChange={handleChange}
+          characterLeftLabel={`${250 - value.length} characters left`}
+        />
+      );
+    }}
+  </Story>
+</Canvas>
