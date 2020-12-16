@@ -1,0 +1,43 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Locale} from './Locale.tsx';
+
+<Meta title="Components/Locale" component={Locale} args={{code: 'en_US', languageLabel: 'English'}} />
+
+# Locale
+
+## Usage
+
+Component to display a locale (country and language) in Akeneo products
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <div>
+          <Locale {...args} />
+        </div>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+# Variation by label
+
+<Canvas>
+  <Story name="Label">
+    {args => {
+      return (
+        <>
+          <Locale code="en_US" languageLabel="English" />
+          <Locale code="fr_FR" languageLabel="Français" />
+          <Locale code="de_DE" />
+          <Locale code="pt_BR" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

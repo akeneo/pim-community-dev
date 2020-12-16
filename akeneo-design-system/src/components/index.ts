@@ -14,3 +14,4 @@ export * from './MessageBar/MessageBar';
 export * from './Modal/Modal';
 export * from './ProgressBar/ProgressBar';
 export * from './Table/Table';
+export * from './Locale/Locale';
