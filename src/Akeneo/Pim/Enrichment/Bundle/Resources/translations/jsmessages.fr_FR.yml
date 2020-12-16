@@ -375,6 +375,8 @@ pim_datagrid:
         all_attributes: Tous les attributs
         with_codes: Avec codes
         with_labels: Avec libellés
+      flash:
+        message: "Vous pouvez suivre l'avancement de votre export ici."
     mass_edit: Actions de masse
     sequential_edit: Modification séquentielle
     mass_delete: Suppression massive

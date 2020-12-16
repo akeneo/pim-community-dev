@@ -25,7 +25,7 @@ const useInitDashboardContextState = (
       setSelectedFamilyCode(familyCode);
       setSelectedCategory(category);
 
-      if (familyCode !== null) {
+      if (category === null) {
         window.dispatchEvent(
           new CustomEvent(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_FAMILY, {
             detail: {
@@ -36,18 +36,15 @@ const useInitDashboardContextState = (
         return;
       }
 
-      if (category !== null) {
-        window.dispatchEvent(
-          new CustomEvent(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY, {
-            detail: {
-              categoryCode: category.code,
-              categoryId: category.id,
-              rootCategoryId: category.rootCategoryId,
-            },
-          })
-        );
-        return;
-      }
+      window.dispatchEvent(
+        new CustomEvent(DATA_QUALITY_INSIGHTS_DASHBOARD_FILTER_CATEGORY, {
+          detail: {
+            categoryCode: category.code,
+            categoryId: category.id,
+            rootCategoryId: category.rootCategoryId,
+          },
+        })
+      );
     },
     [setSelectedFamilyCode, setSelectedCategory]
   );
