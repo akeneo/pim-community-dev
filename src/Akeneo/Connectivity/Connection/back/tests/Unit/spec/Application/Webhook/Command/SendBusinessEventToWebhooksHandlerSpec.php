@@ -328,7 +328,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $client,
             $builder,
             $logger,
-            $connectionUserForFakeSubscription,
             $eventsApiRequestRepository,
             $cacheClearer,
             $countHourlyEventsApiRequestQuery,
