@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -30,15 +29,6 @@ interface EntityWithAssociationsInterface
     public function getAllAssociations();
 
     /**
-     * Set types of associations
-     *
-     * @param Collection $associations
-     *
-     * @return EntityWithAssociationsInterface
-     */
-    public function setAssociations(Collection $associations): EntityWithAssociationsInterface;
-
-    /**
      * Add a type of an association
      *
      * @param AssociationInterface $association
@@ -58,21 +48,23 @@ interface EntityWithAssociationsInterface
      */
     public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface;
 
-    /**
-     * Get the product association for an Association type
-     *
-     * @param AssociationTypeInterface $type
-     *
-     * @return AssociationInterface|null
-     */
-    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface;
+    public function hasAssociationForTypeCode(string $associationTypeCode): bool;
 
-    /**
-     * Get the product association for an association type code
-     *
-     * @param string $typeCode
-     *
-     * @return AssociationInterface|null
-     */
-    public function getAssociationForTypeCode($typeCode): ?AssociationInterface;
+    public function addAssociatedProduct(ProductInterface $product, string $associationTypeCode): void;
+
+    public function removeAssociatedProduct(ProductInterface $product, string $associationTypeCode): void;
+
+    public function getAssociatedProducts(string $associationTypeCode): ?Collection;
+
+    public function addAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void;
+
+    public function removeAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void;
+
+    public function getAssociatedProductModels(string $associationTypeCode): ?Collection;
+
+    public function addAssociatedGroup(GroupInterface $group, string $associationTypeCode): void;
+
+    public function removeAssociatedGroup(GroupInterface $group, string $associationTypeCode): void;
+
+    public function getAssociatedGroups(string $associationTypeCode): ?Collection;
 }
