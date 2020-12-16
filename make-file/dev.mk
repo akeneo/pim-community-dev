@@ -40,11 +40,3 @@ phpunit:
 .PHONY: behat-legacy
 behat-legacy:
 	APP_ENV=behat $(PHP_RUN) vendor/bin/behat -p legacy -s all ${F}
-
-.PHONY: xdebug-on
-xdebug-on:
-	XDEBUG_ENABLED=1 $(MAKE) up
-
-.PHONY: xdebug-off
-xdebug-off:
-	XDEBUG_ENABLED=0 $(MAKE) up
