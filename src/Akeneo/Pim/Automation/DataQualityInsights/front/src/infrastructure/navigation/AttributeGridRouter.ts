@@ -24,8 +24,8 @@ export const redirectToAttributeGridFilteredByFamilyAndQualityAndSelectAttribute
 export const redirectToAttributeGridFilteredByKeyIndicator = (keyIndicator: string) => {
   redirectToFilteredAttributeGrid(`s[label]=-1&f[quality][value]=${keyIndicator}&t=attribute-grid`);
 };
-export const redirectToAttributeGridFilteredByFamilyAndKeyIndicator = (familyId: string, keyIndicator: string) => {
-  redirectToFilteredAttributeGrid(
-    `s[label]=-1&f[family][value][]=${familyId}&f[quality][value]=${keyIndicator}&t=attribute-grid`
-  );
+
+export const redirectToAttributeGridFilteredByFamilyAndKeyIndicator = (familyIds: string[], keyIndicator: string) => {
+  const familyFilter = familyIds.map((familyId: string) => `f[family][value][]=${familyId}`).join('&');
+  redirectToFilteredAttributeGrid(`s[label]=-1&f[quality][value]=${keyIndicator}&t=attribute-grid&${familyFilter}`);
 };

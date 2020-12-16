@@ -27,24 +27,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
+    private ItemCategoryAccessQuery $productCategoryAccessQuery;
+    private ItemCategoryAccessQuery $productModelCategoryAccessQuery;
+    private TokenStorageInterface $tokenStorage;
 
-    /** @var ItemCategoryAccessQuery */
-    private $productCategoryAccessQuery;
-
-    /** @var ItemCategoryAccessQuery */
-    private $productModelCategoryAccessQuery;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param ItemCategoryAccessQuery       $productCategoryAccessQuery
-     * @param ItemCategoryAccessQuery       $productModelCategoryAccessQuery
-     * @param TokenStorageInterface         $tokenStorage
-     */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         ItemCategoryAccessQuery $productCategoryAccessQuery,
@@ -71,36 +58,41 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
 
         $entityWithAssociations->getAssociations();
         $filteredEntityWithAssociations = clone $entityWithAssociations;
-        $clonedAssociations = new ArrayCollection();
 
         $user = $this->tokenStorage->getToken()->getUser();
 
-        foreach ($filteredEntityWithAssociations->getAssociations() as $association) {
-            $clonedAssociation = clone $association;
+        foreach ($filteredEntityWithAssociations->getAssociations() as $clonedAssociation) {
+            $associationTypeCode = $clonedAssociation->getAssociationType()->getCode();
             $associatedProducts = clone $clonedAssociation->getProducts();
             $associatedProductModels = clone $clonedAssociation->getProductModels();
 
-            $grantedProductIds = $this->productCategoryAccessQuery->getGrantedItemIds($associatedProducts->toArray(), $user);
+            $grantedProductIds = $this->productCategoryAccessQuery->getGrantedItemIds(
+                $associatedProducts->toArray(),
+                $user
+            );
 
             foreach ($associatedProducts as $associatedProduct) {
                 if (!isset($grantedProductIds[$associatedProduct->getId()])) {
-                    $associatedProducts->removeElement($associatedProduct);
+                    $filteredEntityWithAssociations->removeAssociatedProduct(
+                        $associatedProduct,
+                        $associationTypeCode
+                    );
                 }
             }
 
-            $grantedProductModelIds = $this->productModelCategoryAccessQuery->getGrantedItemIds($associatedProductModels->toArray(), $user);
+            $grantedProductModelIds = $this->productModelCategoryAccessQuery->getGrantedItemIds(
+                $associatedProductModels->toArray(),
+                $user
+            );
             foreach ($associatedProductModels as $associatedProductModel) {
                 if (!isset($grantedProductModelIds[$associatedProductModel->getId()])) {
-                    $associatedProductModels->removeElement($associatedProductModel);
+                    $filteredEntityWithAssociations->removeAssociatedProductModel(
+                        $associatedProductModel,
+                        $associationTypeCode
+                    );
                 }
             }
-
-            $clonedAssociation->setProducts($associatedProducts);
-            $clonedAssociation->setProductModels($associatedProductModels);
-            $clonedAssociations->add($clonedAssociation);
         }
-
-        $filteredEntityWithAssociations->setAssociations($clonedAssociations);
 
         return $filteredEntityWithAssociations;
     }

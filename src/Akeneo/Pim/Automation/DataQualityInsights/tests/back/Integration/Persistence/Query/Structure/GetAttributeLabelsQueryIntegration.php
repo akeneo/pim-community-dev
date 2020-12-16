@@ -17,35 +17,32 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeLabelsQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
-class GetAttributeLabelsQueryIntegration extends TestCase
+class GetAttributeLabelsQueryIntegration extends DataQualityInsightsTestCase
 {
-    protected function getConfiguration()
-    {
-        return $this->catalog->useMinimalCatalog();
-    }
-
     public function test_it_returns_the_labels_of_a_given_attribute()
     {
-        $attribute = $this->get('akeneo_integration_tests.base.attribute.builder')->build([
-            'code' => 'name',
-            'type' => AttributeTypes::TEXT,
-            'group' => 'other',
-        ], true);
+        $this->givenActivatedLocales(['en_US', 'fr_FR', 'de_DE']);
 
         $expectedLabels = [
             'en_US' => 'Name',
-            'fr_FR' => 'Nom'
+            'fr_FR' => 'Nom',
+            'de_DE' => 'Name'
         ];
-
-        $this->get('pim_catalog.updater.attribute')->update($attribute, [
-            'labels' => $expectedLabels
-        ]);
-        $this->get('pim_catalog.saver.attribute')->save($attribute);
+        $this->createAttribute('name', ['labels' => $expectedLabels]);
 
         $labels = $this->get(GetAttributeLabelsQuery::class)->byCode(new AttributeCode('name'));
 
         $this->assertEqualsCanonicalizing($expectedLabels, $labels);
+
+        $this->givenActivatedLocales(['en_US', 'fr_FR']);
+
+        $labels = $this->get(GetAttributeLabelsQuery::class)->byCode(new AttributeCode('name'));
+        $this->assertEqualsCanonicalizing([
+            'en_US' => 'Name',
+            'fr_FR' => 'Nom',
+        ], $labels);
     }
 
     public function test_it_returns_an_empty_array_if_the_attribute_has_no_label()
@@ -60,5 +57,10 @@ class GetAttributeLabelsQueryIntegration extends TestCase
 
         $labels = $this->get(GetAttributeLabelsQuery::class)->byCode(new AttributeCode('name'));
         $this->assertEmpty($labels);
+    }
+
+    private function givenActivatedLocales(array $locales): void
+    {
+        $this->createChannel('ecommerce', ['locales' => $locales]);
     }
 }

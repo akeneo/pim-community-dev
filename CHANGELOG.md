@@ -159,4 +159,5 @@
 - Update `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct` to:
     - remove the `setFamilyId()`, `setProductModel()` and `getProductModel()` methods
     - remove the `$categoryIds` public property and the `$familyId`, `$groupIds` and `$productModel` protected properties
+    - remove the `getAssociationForType()`, `getAssociationForTypeCode()` and `setAssociations()` public methods
 - Rename `Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository::isCategoriesGranted` to `isCategoryIdsGranted`

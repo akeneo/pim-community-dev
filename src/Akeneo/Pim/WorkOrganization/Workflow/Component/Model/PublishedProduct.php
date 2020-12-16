@@ -94,9 +94,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /** @var FamilyVariantInterface */
     protected $familyVariant;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->values = new WriteValueCollection();
@@ -516,7 +513,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
-            if (null !== $associationType && null !== $this->getAssociationForType($associationType)) {
+            if (null !== $associationType && null !== $this->getAssociationForTypeCode($associationType->getCode())) {
                 throw new \LogicException(
                     sprintf(
                         'Can not add an association of type %s because the product already has one',
@@ -564,15 +561,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
-    {
-        return $this->getAssociationForTypeCode($type->getCode());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
+    protected function getAssociationForTypeCode(string $typeCode): ?AssociationInterface
     {
         foreach ($this->associations as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
@@ -581,16 +570,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         }
 
         return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAssociations(Collection $associations): EntityWithAssociationsInterface
-    {
-        $this->associations = $associations;
-
-        return $this;
     }
 
     /**
@@ -737,6 +716,107 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     public function cleanup(): void
     {
         // nothing here
+    }
+
+    public function hasAssociationForTypeCode(string $associationTypeCode): bool
+    {
+        return null !== $this->getAssociationForTypeCode($associationTypeCode);
+    }
+
+    public function addAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException(
+                \sprintf(
+                    'This published product has no association for the "%s" association type',
+                    $associationTypeCode
+                )
+            );
+        }
+
+        if (!$association->hasProduct($product)) {
+            $association->addProduct($product);
+        }
+    }
+
+    public function removeAssociatedProduct(ProductInterface $product, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if ($association instanceof AssociationInterface && $association->hasProduct($product)) {
+            $association->removeProduct($product);
+        }
+    }
+
+    public function getAssociatedProducts(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? clone $association->getProducts() : null;
+    }
+
+    public function addAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException(
+                \sprintf(
+                    'This published product has no association for the "%s" association type',
+                    $associationTypeCode
+                )
+            );
+        }
+
+        if (!$association->getProductModels()->contains($productModel)) {
+            $association->addProductModel($productModel);
+        }
+    }
+
+    public function removeAssociatedProductModel(ProductModelInterface $productModel, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if ($association instanceof AssociationInterface && $association->getProductModels()->contains($productModel)) {
+            $association->removeProductModel($productModel);
+        }
+    }
+
+    public function getAssociatedProductModels(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? clone $association->getProductModels() : null;
+    }
+
+    public function addAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+        if (null === $association) {
+            throw new \LogicException(
+                \sprintf(
+                    'This published product has no association for the "%s" association type',
+                    $associationTypeCode
+                )
+            );
+        }
+        if (!$association->getGroups()->contains($group)) {
+            $association->addGroup($group);
+        }
+    }
+
+    public function removeAssociatedGroup(GroupInterface $group, string $associationTypeCode): void
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        if ($association instanceof AssociationInterface && $association->getGroups()->contains($group)) {
+            $association->removeGroup($group);
+        }
+    }
+
+    public function getAssociatedGroups(string $associationTypeCode): ?Collection
+    {
+        $association = $this->getAssociationForTypeCode($associationTypeCode);
+
+        return $association ? clone $association->getGroups() : null;
     }
 
     private function getAllValues(

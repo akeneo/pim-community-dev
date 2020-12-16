@@ -9,7 +9,8 @@ import {
   redirectToAttributeGridFilteredByKeyIndicator,
 } from '../../../infrastructure/navigation/AttributeGridRouter';
 import {AssetCollectionIcon, EditIcon, SettingsIcon} from 'akeneo-design-system';
-import {useGetSpellcheckSupportedLocales} from '../../../infrastructure/hooks';
+import {useGetSpellcheckSupportedLocales} from '../../../infrastructure';
+import {KeyIndicatorExtraData} from '@akeneo-pim-community/data-quality-insights/src/domain';
 
 type Props = {
   channel: string;
@@ -114,10 +115,13 @@ const PimEnterpriseKeyIndicators: FC<Props> = ({channel, locale, family, categor
             // @ts-ignore
             categoryId: string | null,
             // @ts-ignore
-            rootCategoryId: string | null
+            rootCategoryId: string | null,
+            extraData: KeyIndicatorExtraData | undefined
           ) => {
             if (familyCode) {
-              redirectToAttributeGridFilteredByFamilyAndKeyIndicator(familyCode, localeCode);
+              redirectToAttributeGridFilteredByFamilyAndKeyIndicator([familyCode], localeCode);
+            } else if (category && extraData) {
+              redirectToAttributeGridFilteredByFamilyAndKeyIndicator(extraData.impactedFamilies, localeCode);
             } else {
               redirectToAttributeGridFilteredByKeyIndicator(localeCode);
             }
