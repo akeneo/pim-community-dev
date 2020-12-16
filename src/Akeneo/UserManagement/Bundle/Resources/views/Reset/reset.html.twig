@@ -21,9 +21,9 @@
             <a href="{{ path('pim_user_security_login') }}">{{ 'pim_common.cancel'|trans }}</a>
         </div>
     </div>
-    <button type="submit" id="_submit"
-            class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'pim_user.user.login.reset'|trans }}</button>
-
+    <button type="submit" id="_submit" class="AknButton AknButton--apply">
+        {{- 'pim_user.user.login.reset'|trans -}}
+    </button>
     {{ form_end(form) }}
 {% endblock %}
 
