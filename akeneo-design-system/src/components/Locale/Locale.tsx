@@ -1,14 +1,15 @@
 import React, {Ref} from 'react';
-import {getEmoji} from '../../shared';
 import styled from 'styled-components';
+import {getEmoji} from '../../shared';
 import {getFontSize} from '../../theme';
 
 const LocaleContainer = styled.span`
   display: inline-flex;
 `;
+
 const Emoji = styled.span`
   font-size: ${getFontSize('bigger')};
-  margin-right: 8px;
+  margin-right: 5px;
 `;
 
 type LocaleProps = {
@@ -18,13 +19,13 @@ type LocaleProps = {
   code: string;
 
   /**
-   * Override the language label (English instead of en). Fallback to language code if empty
+   * Override the language label (English instead of en). Fallback to language code if empty.
    */
   languageLabel?: string;
 };
 
 /**
- * Component to display a locale (country and language)
+ * Component to display a locale (country and language).
  */
 const Locale = React.forwardRef<HTMLSpanElement, LocaleProps>(
   ({code, languageLabel, ...rest}: LocaleProps, forwardedRef: Ref<HTMLSpanElement>) => {
@@ -33,7 +34,7 @@ const Locale = React.forwardRef<HTMLSpanElement, LocaleProps>(
     return (
       <LocaleContainer ref={forwardedRef} {...rest}>
         <Emoji>{getEmoji(countryCode)}</Emoji>
-        {!languageLabel ? languageCode : languageLabel}
+        {languageLabel || languageCode}
       </LocaleContainer>
     );
   }
