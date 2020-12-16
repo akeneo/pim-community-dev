@@ -1,8 +1,9 @@
 import React, {Ref, ReactElement} from 'react';
 import styled from 'styled-components';
 import {Helper, HelperProps, InputProps} from '../../components';
-import {getColor} from '../../theme';
+import {getColor, getFontSize} from '../../theme';
 import {useId} from '../../hooks';
+import {getLocale} from '../../shared';
 
 const FieldContainer = styled.div`
   display: flex;
@@ -29,6 +30,7 @@ const Channel = styled.span`
 
 const Locale = styled.span`
   margin-left: 5px;
+  font-size: ${getFontSize('bigger')};
 `;
 
 const HelperContainer = styled.div`
@@ -98,7 +100,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
           {incomplete && <IncompleteBadge />}
           <Label htmlFor={id}>{label}</Label>
           {channel && <Channel>{channel}</Channel>}
-          {locale && <Locale>{locale}</Locale>}
+          {locale && <Locale>{getLocale(locale)}</Locale>}
         </LabelContainer>
         {decoratedChildren}
       </FieldContainer>
