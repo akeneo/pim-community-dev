@@ -17,9 +17,6 @@ RUN apt-get update && \
         php7.4-xdebug \
         procps \
         unzip &&\
-    phpdismod xdebug && \
-    mkdir /etc/php/7.4/enable-xdebug && \
-    ln -s /etc/php/7.4/mods-available/xdebug.ini /etc/php/7.4/enable-xdebug/xdebug.ini && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -28,10 +25,6 @@ COPY docker/build/xdebug.ini /etc/php/7.4/fpm/conf.d/99-akeneo-xdebug.ini
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
-
-# Make XDEBUG activable at container start
-COPY docker/build/docker-php-entrypoint /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-php-entrypoint
 
 RUN mkdir -p /var/www/.composer && chown www-data:www-data /var/www/.composer
 
