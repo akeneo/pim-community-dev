@@ -9,7 +9,6 @@ const ImageContainer = styled.img<
   background: ${getColor('white')};
   border: 1px solid ${getColor('grey80')};
   object-fit: ${({fit}) => fit};
-  transform: translate(4px, -4px);
 
   ${({isStacked}) =>
     isStacked &&

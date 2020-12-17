@@ -99,9 +99,6 @@ pim_import_export:
           with_header:
             title: Avec en-tête
             help: Définit si la première ligne du fichier contient les libellés des colonnes
-          with_media:
-            title: Exporter les fichiers et les images
-            help: Exporter ou non les fichiers produits et les images
           lines_per_file:
             title: Nombre de lignes par fichier
             help: Définit la limite de nombre de lignes par fichier

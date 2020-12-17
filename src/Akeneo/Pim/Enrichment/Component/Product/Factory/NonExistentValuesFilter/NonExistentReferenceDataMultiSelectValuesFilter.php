@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetExistingReferenceDataCodes;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * As assets are reference data also, we handle it in this filter.
@@ -100,7 +101,24 @@ class NonExistentReferenceDataMultiSelectValuesFilter implements NonExistentValu
                 $referenceDataName = $values['properties']['reference_data_name'];
                 foreach ($values['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $values) {
+                        if (!\is_array($values)) {
+                            throw InvalidPropertyTypeException::arrayExpected(
+                                $attributeCode,
+                                static::class,
+                                $values
+                            );
+                        }
+
                         foreach ($values as $value) {
+                            if (!\is_scalar($value)) {
+                                throw InvalidPropertyTypeException::validArrayStructureExpected(
+                                    $attributeCode,
+                                    sprintf('one of the "%s" values is not a scalar', $attributeCode),
+                                    static::class,
+                                    $values
+                                );
+                            }
+
                             $referenceData[$attributeCode][$referenceDataName][] = $value;
                         }
                     }
