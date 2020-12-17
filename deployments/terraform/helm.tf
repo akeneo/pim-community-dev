@@ -30,7 +30,7 @@ data "template_file" "helm_pim_config" {
     monitoring_authentication_token = random_string.monitoring_authentication_token.result
     mysql_disk_name                 = google_compute_disk.mysql-disk.name
     mysql_disk_size                 = google_compute_disk.mysql-disk.size
-    mysql_disk_storage_class        = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain" 
+    mysql_disk_storage_class        = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
     subscription_webhook            = google_pubsub_subscription.webhook.name
     subscription_job_queue          = google_pubsub_subscription.job-queue.name
     topic_business_event            = google_pubsub_topic.business-event.name
@@ -45,7 +45,7 @@ resource "local_file" "helm_pim_config" {
 
 data "helm_repository" "stable" {
   name = "stable"
-  url  = "https://kubernetes-charts.storage.googleapis.com"
+  url  = "https://charts.helm.sh/stable"
 }
 
 data "helm_repository" "akeneo-charts" {
