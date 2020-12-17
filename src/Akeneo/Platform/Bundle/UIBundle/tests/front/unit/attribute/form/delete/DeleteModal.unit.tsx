@@ -47,10 +47,20 @@ test('it renders a confirm modal delete', async () => {
   expect(screen.getByText('pim_common.confirm_deletion')).toBeInTheDocument();
 });
 
-test('it calls the attribute remover when confirm is clicked', async () => {
+test('it does not allow confirmation until the attributeCodeConfirm field is valid', async () => {
   const onSuccess = jest.fn();
 
-  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={onSuccess} attributeCode="foo" />);
+  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={onSuccess} attributeCode="nice_attribute" />);
+
+  await act(async () => {
+    fireEvent.click(screen.getByText('pim_common.delete'));
+  });
+
+  expect(screen.getByText('pim_common.delete')).toHaveAttribute('disabled');
+  expect(onSuccess).not.toHaveBeenCalled();
+
+  const input = screen.getByLabelText('pim_enrich.entity.attribute.module.delete.type') as HTMLInputElement;
+  fireEvent.change(input, {target: {value: 'nice_attribute'}});
 
   await act(async () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
@@ -75,7 +85,10 @@ test('it displays an error when the delete failed', async () => {
     }
   });
 
-  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
+  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="nice_attribute" />);
+
+  const input = screen.getByLabelText('pim_enrich.entity.attribute.module.delete.type') as HTMLInputElement;
+  fireEvent.change(input, {target: {value: 'nice_attribute'}});
 
   await act(async () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
@@ -99,7 +112,10 @@ test('it displays an error when the delete was rejected', async () => {
     }
   });
 
-  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
+  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="nice_attribute" />);
+
+  const input = screen.getByLabelText('pim_enrich.entity.attribute.module.delete.type') as HTMLInputElement;
+  fireEvent.change(input, {target: {value: 'nice_attribute'}});
 
   await act(async () => {
     fireEvent.click(screen.getByText('pim_common.delete'));

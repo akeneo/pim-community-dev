@@ -11,6 +11,7 @@ Feature: Delete an attribute
     And I am logged in as "Julia"
     When I am on the attributes page
     And I click on the "delete" action of the row which contains "SKU"
+    And I fill the "attribute_confirm" input with "sku"
     And I press the "Delete" button
     Then I should see the text "Identifier attribute can not be removed"
     And there should be a "SKU" attribute

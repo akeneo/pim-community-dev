@@ -1767,6 +1767,22 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $inputName
+     * @param string $value
+     *
+     * @When /^I fill the "([^"]*)" input with "([^"]*)"$/
+     */
+    public function iFillTheInput($inputName, $value)
+    {
+        $page = $this->getCurrentPage();
+        $element = $this->spin(function () use ($page, $inputName) {
+            return $page->find('css', sprintf('input[name="%s"]', $inputName));
+        }, sprintf("Can not find any '%s' element", $inputName));
+
+        $element->setValue($value);
+    }
+
+    /**
      * @param string $button
      *
      * @Given /^I should see the "([^"]*)" button$/
