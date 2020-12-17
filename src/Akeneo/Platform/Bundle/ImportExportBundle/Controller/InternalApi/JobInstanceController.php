@@ -127,7 +127,7 @@ class JobInstanceController
      * @param CollectionFilterInterface             $inputFilter
      * @param string                                $uploadTmpDir
      * @param FilesystemInterface                   $filesystem
- * @param AuthorizationCheckerInterface             $authorizationChecker
+     * @param AuthorizationCheckerInterface             $authorizationChecker
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -477,9 +477,9 @@ class JobInstanceController
 
         return new JsonResponse([
             'redirectUrl' => '#' . $this->router->generate(
-                    sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()),
-                    ['id' => $jobExecution->getId()]
-                )
+                sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()),
+                ['id' => $jobExecution->getId()]
+            )
         ], 200);
     }
 
