@@ -1354,7 +1354,7 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(false);
     }
 
-    public function it_is_updated_when_filtering_associated_products_or_product_models_from_quantified_associations()
+    public function it_is_updated_when_filtering_associated_products_or_product_models_from_quantified_associations(): void
     {
         $this->patchQuantifiedAssociations(
             [
@@ -1385,7 +1385,7 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(true);
     }
 
-    public function it_is_not_updated_when_keeping_all_associated_products_or_models()
+    public function it_is_not_updated_when_keeping_all_associated_products_or_models(): void
     {
         $this->patchQuantifiedAssociations(
             [
