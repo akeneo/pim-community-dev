@@ -14,7 +14,7 @@ define([
   'pim/form',
   'pim/provider/to-fill-field-provider',
   'pim/user-context',
-], function ($, _, __, BaseForm, toFillFieldProvider, UserContext) {
+], function ($, _, __, {BaseForm}, toFillFieldProvider, UserContext) {
   return BaseForm.extend({
     /**
      * @returns {String}

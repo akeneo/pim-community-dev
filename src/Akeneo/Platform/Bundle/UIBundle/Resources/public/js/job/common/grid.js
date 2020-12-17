@@ -7,7 +7,7 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['pim/form', 'pim/common/grid', 'pim/user-context'], function (BaseForm, Grid, UserContext) {
+define(['pim/form', 'pim/common/grid', 'pim/user-context'], function ({BaseForm}, Grid, UserContext) {
   return BaseForm.extend({
     grid: null,
 

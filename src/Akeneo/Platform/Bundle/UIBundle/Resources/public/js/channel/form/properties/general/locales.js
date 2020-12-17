@@ -15,7 +15,7 @@ define([
   'pim/fetcher-registry',
   'pim/template/channel/tab/properties/general/locales',
   'jquery.select2',
-], function ($, _, __, BaseForm, FetcherRegistry, template) {
+], function ($, _, __, {BaseForm}, FetcherRegistry, template) {
   return BaseForm.extend({
     className: 'AknFieldContainer',
     template: _.template(template),

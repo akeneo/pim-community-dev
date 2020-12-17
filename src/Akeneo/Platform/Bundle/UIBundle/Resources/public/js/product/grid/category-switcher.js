@@ -12,7 +12,7 @@ define([
   'pim/form',
   'pim/template/product/grid/category-switcher',
   'pim/menu/resizable',
-], function ($, _, __, BaseForm, template, Resizable) {
+], function ($, _, __, {BaseForm}, template, Resizable) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown AknColumn-block category-switcher',

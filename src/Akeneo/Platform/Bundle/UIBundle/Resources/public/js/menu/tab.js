@@ -16,7 +16,7 @@ define([
   'routing',
   'pim/template/menu/tab',
   'oro/mediator',
-], function (_, __, BaseForm, router, Routing, template, mediator) {
+], function (_, __, {BaseForm}, router, Routing, template, mediator) {
   return BaseForm.extend({
     template: _.template(template),
     events: {},

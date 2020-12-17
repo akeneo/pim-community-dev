@@ -1,6 +1,6 @@
 'use strict';
 
-define(['pim/form/common/index/grid', 'pim/common/grid', 'pim/user-context'], function (BaseForm, Grid, UserContext) {
+define(['pim/form/common/index/grid', 'pim/common/grid', 'pim/user-context'], function ({BaseForm}, Grid, UserContext) {
   return BaseForm.extend({
     configure: function () {
       BaseForm.prototype.configure.apply(this, arguments);

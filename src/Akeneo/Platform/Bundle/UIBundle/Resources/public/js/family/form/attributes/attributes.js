@@ -25,7 +25,7 @@ define([
   _,
   __,
   $,
-  BaseForm,
+  {BaseForm},
   template,
   UserContext,
   SecurityContext,

@@ -59,4 +59,4 @@ class JobExecutionStatus extends ReactView {
   }
 }
 
-export = JobExecutionStatus;
+export default JobExecutionStatus;

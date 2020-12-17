@@ -7,7 +7,7 @@ define([
   'pim/form',
   'pim/fetcher-registry',
   'pim/template/common/default-template',
-], function (__, Backbone, mediator, BaseForm, FetcherRegistry, template) {
+], function (__, Backbone, mediator, {BaseForm}, FetcherRegistry, template) {
   return BaseForm.extend({
     template: _.template(template),
 

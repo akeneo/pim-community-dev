@@ -1,6 +1,6 @@
 import * as Backbone from 'backbone';
 import * as _ from 'underscore';
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
 const template = require('pim/template/common/section');
@@ -70,7 +70,7 @@ class SectionView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  render(): BaseView {
+  render(): typeof BaseView {
     this.$el.empty().html(
       this.template({
         title: __(this.config.title),
@@ -108,4 +108,4 @@ class SectionView extends BaseView {
   }
 }
 
-export = SectionView;
+export default SectionView;

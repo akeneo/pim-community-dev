@@ -18,7 +18,7 @@ define([
   'oro/mediator',
   'pimdatagrid/datagrid/quickexport/component/QuickExportConfigurator',
   'pim/user-context',
-], function (_, __, Backbone, groupTemplate, BaseForm, mediator, {QuickExportConfigurator}, UserContext) {
+], function (_, __, Backbone, groupTemplate, {BaseForm}, mediator, {QuickExportConfigurator}, UserContext) {
   const ActionsPanel = BaseForm.extend({
     appendToGrid: false,
 

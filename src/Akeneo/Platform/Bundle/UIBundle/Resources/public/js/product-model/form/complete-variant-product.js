@@ -11,7 +11,7 @@ define([
   'pim/form',
   'pim/template/product-model/complete-variant-product',
   'pim/user-context',
-], function (_, __, BaseForm, template, UserContext) {
+], function (_, __, {BaseForm}, template, UserContext) {
   return BaseForm.extend({
     className: 'AknButtonList-item',
     template: _.template(template),

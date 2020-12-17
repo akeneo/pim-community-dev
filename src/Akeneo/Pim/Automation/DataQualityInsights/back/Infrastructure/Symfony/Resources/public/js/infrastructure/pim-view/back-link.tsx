@@ -1,4 +1,4 @@
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {BACK_LINK_SESSION_STORAGE_KEY, BackLinkButton} from '@akeneo-pim-community/data-quality-insights';
@@ -22,7 +22,7 @@ class BackLink extends BaseView {
     return BaseView.prototype.configure.apply(this, arguments);
   }
 
-  render(): BaseView {
+  render(): typeof BaseView {
     const backLink: any = sessionStorage.getItem(BACK_LINK_SESSION_STORAGE_KEY);
     if (!backLink) {
       return this;
@@ -49,4 +49,4 @@ class BackLink extends BaseView {
   }
 }
 
-export = BackLink;
+export default BackLink;

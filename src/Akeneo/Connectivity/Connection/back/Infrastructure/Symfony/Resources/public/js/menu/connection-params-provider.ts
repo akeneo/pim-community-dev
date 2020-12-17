@@ -1,4 +1,4 @@
-const View = require('pim/form');
+const {BaseForm: View} = require('pim/form');
 const mediator = require('oro/mediator');
 
 class ConnectionParamsProvider extends View {
@@ -22,4 +22,4 @@ class ConnectionParamsProvider extends View {
   }
 }
 
-export = ConnectionParamsProvider;
+export default ConnectionParamsProvider;

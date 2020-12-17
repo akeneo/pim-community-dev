@@ -20,7 +20,7 @@ define([
   'akeneo/communication-channel',
   'pim/media-url-generator',
   'pim/template/menu/user-navigation',
-], function (_, __, BaseForm, router, UserContext, Notifications, CommunicationChannel, MediaUrlGenerator, template) {
+], function (_, __, {BaseForm}, router, UserContext, Notifications, {CommunicationChannel}, MediaUrlGenerator, template) {
   return BaseForm.extend({
     className: 'AknTitleContainer-userMenu',
     template: _.template(template),

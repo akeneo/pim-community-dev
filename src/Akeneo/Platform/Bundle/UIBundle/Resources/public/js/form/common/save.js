@@ -9,7 +9,7 @@
  */
 define(['oro/translator', 'pim/form', 'oro/mediator', 'oro/loading-mask', 'oro/messenger'], function (
   __,
-  BaseForm,
+  {BaseForm},
   mediator,
   LoadingMask,
   messenger

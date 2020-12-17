@@ -13,7 +13,7 @@ define([
   'pim/form',
   'pim/fetcher-registry',
   'pim/template/form/properties/translation',
-], function ($, _, BaseForm, FetcherRegistry, template) {
+], function ($, _, {BaseForm}, FetcherRegistry, template) {
   return BaseForm.extend({
     className: 'translation-container',
     template: _.template(template),

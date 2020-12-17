@@ -19,7 +19,7 @@ define([
   PageableCollection,
   DatagridState,
   requireContext,
-  BaseForm,
+  {BaseForm},
   UserContext,
   FetcherRegistry,
   StateListener,

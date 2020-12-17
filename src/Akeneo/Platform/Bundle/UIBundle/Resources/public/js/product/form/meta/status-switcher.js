@@ -13,7 +13,7 @@ define([
   'oro/mediator',
   'pim/form',
   'pim/template/product/meta/status-switcher',
-], function (_, __, mediator, BaseForm, template) {
+], function (_, __, mediator, {BaseForm}, template) {
   return BaseForm.extend({
     className: 'AknColumn-block AknDropdown',
     template: _.template(template),

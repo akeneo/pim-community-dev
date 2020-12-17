@@ -14,7 +14,7 @@ define([
   'pim/fetcher-registry',
   'pim/template/job-execution/auto-refresh',
   'backbone',
-], function ($, _, __, BaseForm, FetcherRegistry, template, Backbone) {
+], function ($, _, __, {BaseForm}, FetcherRegistry, template, Backbone) {
   return BaseForm.extend({
     template: _.template(template),
     events: {

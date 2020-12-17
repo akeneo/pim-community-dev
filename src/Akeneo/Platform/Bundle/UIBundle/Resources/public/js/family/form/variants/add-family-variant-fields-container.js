@@ -16,7 +16,7 @@ define([
   'pim/initselect2',
   'pim/form',
   'pim/template/family-variant/add-variant-form-fields-container',
-], function ($, _, __, UserContext, FetcherRegistry, initSelect2, BaseForm, template) {
+], function ($, _, __, UserContext, FetcherRegistry, initSelect2, {BaseForm}, template) {
   return BaseForm.extend({
     template: _.template(template),
     queryTimer: null,

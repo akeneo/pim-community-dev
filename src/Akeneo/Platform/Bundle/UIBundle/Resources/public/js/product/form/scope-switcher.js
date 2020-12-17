@@ -15,7 +15,7 @@ define([
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/i18n',
-], function (_, __, BaseForm, template, FetcherRegistry, UserContext, i18n) {
+], function (_, __, {BaseForm}, template, FetcherRegistry, UserContext, i18n) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'AknDropdown AknButtonList-item scope-switcher',

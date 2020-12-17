@@ -12,7 +12,7 @@ define([
   'pim/form',
   'pim/template/form/column',
   'pim/template/form/column-navigation',
-], function (_, __, BaseForm, template, navigationTemplate) {
+], function (_, __, {BaseForm}, template, navigationTemplate) {
   return BaseForm.extend({
     className: 'AknColumn',
     template: _.template(template),

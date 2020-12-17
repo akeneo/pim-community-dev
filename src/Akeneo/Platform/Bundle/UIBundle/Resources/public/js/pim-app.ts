@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 
 const mediator = require('oro/mediator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -46,7 +46,7 @@ class PimApp extends BaseView {
       });
   }
 
-  public render(): BaseView {
+  public render(): typeof BaseView {
     this.$el.html(this.template({}));
 
     if (!Backbone.History.started) {
@@ -69,4 +69,4 @@ class PimApp extends BaseView {
   }
 }
 
-export = PimApp;
+export default PimApp;

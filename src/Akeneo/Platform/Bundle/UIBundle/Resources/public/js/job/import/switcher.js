@@ -9,7 +9,7 @@
  */
 define(['underscore', 'pim/form', 'pim/edition', 'pim/template/import/switcher'], function (
   _,
-  BaseForm,
+  {BaseForm},
   pimEdition,
   template
 ) {

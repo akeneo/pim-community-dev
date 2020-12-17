@@ -9,7 +9,7 @@
  */
 define(['underscore', 'pim/form', 'pim/template/product/download-pdf', 'routing', 'pim/user-context'], function (
   _,
-  BaseForm,
+  {BaseForm},
   template,
   Routing,
   UserContext

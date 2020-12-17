@@ -14,7 +14,7 @@ define([
   'routing',
   'pim/common/property',
   'pim/security-context',
-], function (_, __, BaseForm, template, Routing, propertyAccessor, securityContext) {
+], function (_, __, {BaseForm}, template, Routing, propertyAccessor, securityContext) {
   return BaseForm.extend({
     template: _.template(template),
 

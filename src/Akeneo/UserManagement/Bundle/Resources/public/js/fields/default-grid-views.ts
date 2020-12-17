@@ -1,6 +1,6 @@
 import * as $ from 'jquery';
-import BaseView = require('pimui/js/view/base');
-import DefaultProductGridView = require('pimuser/js/fields/default-product-grid-view');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
+const DefaultProductGridView = require('pimuser/js/fields/default-product-grid-view');
 const Routing = require('routing');
 
 /**
@@ -56,4 +56,4 @@ class DefaultGridView extends BaseView {
   }
 }
 
-export = DefaultGridView;
+export default DefaultGridView;

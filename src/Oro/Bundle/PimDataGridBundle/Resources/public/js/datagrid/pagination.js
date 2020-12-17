@@ -1,7 +1,7 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'pim/form'], function ($, _, Backbone, BaseForm) {
-  'use strict';
+'use strict';
 
+define(['jquery', 'underscore', 'backbone', 'pim/form'], function ($, _, Backbone, {BaseForm}) {
   /**
    * Datagrid pagination widget
    *

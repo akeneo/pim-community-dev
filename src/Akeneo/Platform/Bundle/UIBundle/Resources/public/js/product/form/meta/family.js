@@ -16,7 +16,7 @@ define([
   'pim/fetcher-registry',
   'pim/user-context',
   'pim/i18n',
-], function ($, _, mediator, BaseForm, template, FetcherRegistry, UserContext, i18n) {
+], function ($, _, mediator, {BaseForm}, template, FetcherRegistry, UserContext, i18n) {
   return BaseForm.extend({
     className: 'AknColumn-block',
 

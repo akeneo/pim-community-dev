@@ -1,4 +1,4 @@
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
 const __ = require('oro/translator');
@@ -272,7 +272,7 @@ class FiltersColumn extends BaseView {
   /**
    * {@inheritdoc}
    */
-  render(): BaseView {
+  render(): typeof BaseView {
     $('.filter-list').remove();
 
     this.$el.html(
@@ -307,4 +307,4 @@ class FiltersColumn extends BaseView {
   }
 }
 
-export = FiltersColumn;
+export {FiltersColumn};

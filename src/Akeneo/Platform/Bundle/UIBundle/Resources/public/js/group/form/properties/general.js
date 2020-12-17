@@ -14,7 +14,7 @@ define([
   'pim/fetcher-registry',
   'pim/template/group/tab/properties/general',
   'jquery.select2',
-], function (_, __, BaseForm, FetcherRegistry, template) {
+], function (_, __, {BaseForm}, FetcherRegistry, template) {
   return BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),

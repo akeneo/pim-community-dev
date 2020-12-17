@@ -6,7 +6,7 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['underscore', 'oro/translator', 'pim/form'], function (_, __, BaseForm) {
+define(['underscore', 'oro/translator', 'pim/form'], function (_, __, {BaseForm}) {
   return BaseForm.extend({
     /**
      * {@inheritdoc}

@@ -121,4 +121,4 @@ const convertLegacyFlashMessage = (
   };
 };
 
-module.exports = {notify};
+export {notify};

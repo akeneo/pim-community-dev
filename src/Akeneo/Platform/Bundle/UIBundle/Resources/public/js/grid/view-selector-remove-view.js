@@ -18,7 +18,7 @@ define([
   'pim/user-context',
   'pim/remover/datagrid-view',
   'oro/messenger',
-], function ($, _, __, BaseForm, template, Dialog, UserContext, DatagridViewRemover, messenger) {
+], function ($, _, __, {BaseForm}, template, Dialog, UserContext, DatagridViewRemover, messenger) {
   return BaseForm.extend({
     template: _.template(template),
     tagName: 'span',

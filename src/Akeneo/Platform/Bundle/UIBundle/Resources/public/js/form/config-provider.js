@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'pim/security-context', 'pim/feature-flags'], function ($, SecurityContext, FeatureFlags) {
+define(['jquery', 'pim/security-context', 'pim/feature-flags'], function ($, SecurityContext, {FeatureFlags}) {
   var promise = null;
 
   /**
@@ -26,7 +26,6 @@ define(['jquery', 'pim/security-context', 'pim/feature-flags'], function ($, Sec
     if (null === promise) {
       promise = $.when(
         $.get('/js/extensions.json', {version: Math.random().toString(36).substring(7)}),
-        SecurityContext.initialize(),
         FeatureFlags.initialize()
       )
         .then(([config]) => {

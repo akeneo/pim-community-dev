@@ -8,7 +8,7 @@
  */
 define(['underscore', 'pim/form', 'pim/template/form/main-image', 'pim/media-url-generator'], function (
   _,
-  BaseForm,
+  {BaseForm},
   template,
   MediaUrlGenerator
 ) {

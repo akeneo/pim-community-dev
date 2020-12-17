@@ -1,4 +1,4 @@
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ATTRIBUTE_OPTIONS_AUTO_SORT, AttributeOptionsApp} from 'akeneopimstructure/js/attribute-option';
@@ -57,4 +57,4 @@ class Choices extends BaseView {
   }
 }
 
-export = Choices;
+export default Choices;

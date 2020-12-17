@@ -1,6 +1,6 @@
 'use strict';
 
-define(['underscore', 'pim/form', 'pim/common/grid', 'oro/translator'], function (_, BaseForm, Grid, __) {
+define(['underscore', 'pim/form', 'pim/common/grid', 'oro/translator'], function (_, {BaseForm}, Grid, __) {
   return BaseForm.extend({
     className: 'tabbable history',
     historyGrid: null,

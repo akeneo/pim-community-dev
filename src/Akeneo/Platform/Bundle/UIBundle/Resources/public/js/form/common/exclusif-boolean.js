@@ -1,6 +1,6 @@
 'use strict';
 
-define(['underscore', 'pim/form', 'pim/template/form/exclusif-boolean'], function (_, BaseForm, template) {
+define(['underscore', 'pim/form', 'pim/template/form/exclusif-boolean'], function (_, {BaseForm}, template) {
   return BaseForm.extend({
     template: _.template(template),
 

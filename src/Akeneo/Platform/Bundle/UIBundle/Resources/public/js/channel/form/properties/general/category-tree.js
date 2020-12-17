@@ -17,7 +17,7 @@ define([
   'pim/user-context',
   'pim/i18n',
   'jquery.select2',
-], function ($, _, __, BaseForm, FetcherRegistry, template, UserContext, i18n) {
+], function ($, _, __, {BaseForm}, FetcherRegistry, template, UserContext, i18n) {
   return BaseForm.extend({
     className: 'AknFieldContainer',
     template: _.template(template),

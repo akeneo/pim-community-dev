@@ -144,4 +144,4 @@ class JobExecutionProgress extends ReactView {
   }
 }
 
-export = JobExecutionProgress;
+export default JobExecutionProgress;

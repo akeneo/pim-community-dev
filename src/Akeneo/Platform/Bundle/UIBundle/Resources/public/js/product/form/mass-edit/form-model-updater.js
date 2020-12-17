@@ -10,7 +10,7 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['underscore', 'jquery', 'pim/form', 'pim/user-context'], function (_, $, BaseForm, UserContext) {
+define(['underscore', 'jquery', 'pim/form', 'pim/user-context'], function (_, $, {BaseForm}, UserContext) {
   return BaseForm.extend({
     /**
      * {@inheritdoc}

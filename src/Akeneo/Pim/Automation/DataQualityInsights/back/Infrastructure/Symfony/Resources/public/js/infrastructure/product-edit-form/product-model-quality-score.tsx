@@ -23,4 +23,4 @@ class ProductModelQualityScore extends BaseView {
   }
 }
 
-export = ProductModelQualityScore;
+export default ProductModelQualityScore;

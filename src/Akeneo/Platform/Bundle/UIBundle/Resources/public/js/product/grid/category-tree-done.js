@@ -11,7 +11,7 @@ define([
   'jquery',
   'pim/form',
   'pim/template/product/grid/category-tree-done',
-], function (_, __, $, BaseForm, template) {
+], function (_, __, $, {BaseForm}, template) {
   return BaseForm.extend({
     className: 'AknDefault-thirdColumnButton',
     template: _.template(template),

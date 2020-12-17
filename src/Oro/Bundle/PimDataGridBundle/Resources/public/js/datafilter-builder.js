@@ -5,7 +5,7 @@ define([
   'oro/mediator',
   'oro/datafilter/collection-filters-manager',
   'pim/form',
-], function ($, _, tools, mediator, FiltersManager, BaseForm) {
+], function ($, _, tools, mediator, FiltersManager, {BaseForm}) {
   const DataFilterBuilder = BaseForm.extend({
     initialized: false,
     config: {

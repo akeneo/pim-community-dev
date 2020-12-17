@@ -14,7 +14,7 @@ define([
   'pim/form',
   'pim/common/property',
   'pim/template/export/common/edit/field/field',
-], function (_, __, BaseForm, propertyAccessor, template) {
+], function (_, __, {BaseForm}, propertyAccessor, template) {
   return BaseForm.extend({
     template: _.template(template),
 

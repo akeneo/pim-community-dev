@@ -10,7 +10,7 @@
 define(['underscore', 'oro/translator', 'pim/form', 'pim/fetcher-registry'], function (
   _,
   __,
-  BaseForm,
+  {BaseForm},
   fetcherRegistry
 ) {
   return BaseForm.extend({

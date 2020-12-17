@@ -15,7 +15,7 @@ define([
   'pim/common/property',
   'pim/template/form/tab/section',
   'oro/loading-mask',
-], function (_, __, BaseForm, FetcherRegistry, propertyAccessor, template, LoadingMask) {
+], function (_, __, {BaseForm}, FetcherRegistry, propertyAccessor, template, LoadingMask) {
   return BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),

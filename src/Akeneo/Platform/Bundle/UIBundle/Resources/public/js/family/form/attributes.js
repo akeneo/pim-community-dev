@@ -13,7 +13,7 @@ define([
   'pim/form',
   'pim/fetcher-registry',
   'pim/template/family/tab/attributes',
-], function (_, __, BaseForm, FetcherRegistry, template) {
+], function (_, __, {BaseForm}, FetcherRegistry, template) {
   return BaseForm.extend({
     className: 'attributes',
     template: _.template(template),

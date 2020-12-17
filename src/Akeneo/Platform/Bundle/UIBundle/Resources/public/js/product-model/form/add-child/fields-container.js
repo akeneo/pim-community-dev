@@ -19,7 +19,7 @@ define([
   'pim/fetcher-registry',
   'pim/form-builder',
   'pim/template/product-model-edit-form/add-child-form-fields-container',
-], (BaseForm, $, _, __, i18n, Routing, UserContext, FetcherRegistry, FormBuilder, template) => {
+], ({BaseForm}, $, _, __, i18n, Routing, UserContext, FetcherRegistry, FormBuilder, template) => {
   return BaseForm.extend({
     template: _.template(template),
     globalErrors: [],

@@ -15,7 +15,7 @@ define([
   'pim/i18n',
   'pim/user-context',
   'pim/template/product/form/product-completeness',
-], function (_, __, router, BaseForm, i18n, UserContext, template) {
+], function (_, __, router, {BaseForm}, i18n, UserContext, template) {
   return BaseForm.extend({
     className: 'AknDropdown AknButtonList-item',
     template: _.template(template),

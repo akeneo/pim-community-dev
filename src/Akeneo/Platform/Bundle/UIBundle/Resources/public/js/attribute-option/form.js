@@ -8,7 +8,7 @@ define([
   'pim/template/attribute-option/form',
   'pim/user-context',
   'pim/i18n',
-], function (_, __, Backbone, BaseForm, template, UserContext, i18n) {
+], function (_, __, Backbone, {BaseForm}, template, UserContext, i18n) {
   return BaseForm.extend({
     template: _.template(template),
     events: {

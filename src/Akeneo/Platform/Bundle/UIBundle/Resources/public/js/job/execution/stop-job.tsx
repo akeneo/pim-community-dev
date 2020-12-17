@@ -34,4 +34,4 @@ class StopJob extends ReactView {
   }
 }
 
-export = StopJob;
+export default StopJob;

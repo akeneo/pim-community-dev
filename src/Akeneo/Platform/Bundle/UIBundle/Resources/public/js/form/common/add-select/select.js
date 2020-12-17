@@ -25,7 +25,7 @@ define([
   _,
   __,
   template,
-  BaseForm,
+  {BaseForm},
   LineView,
   FooterView,
   UserContext,

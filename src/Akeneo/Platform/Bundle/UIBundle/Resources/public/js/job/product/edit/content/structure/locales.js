@@ -14,7 +14,7 @@ define([
   'pim/form',
   'pim/fetcher-registry',
   'jquery.select2',
-], function ($, _, __, template, BaseForm, fetcherRegistry) {
+], function ($, _, __, template, {BaseForm}, fetcherRegistry) {
   return BaseForm.extend({
     className: 'AknFieldContainer',
     template: _.template(template),

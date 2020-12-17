@@ -30,7 +30,7 @@ define([
   __,
   mediator,
   Backbone,
-  BaseForm,
+  {BaseForm},
   Routing,
   formTemplate,
   modalTemplate,

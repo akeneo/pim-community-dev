@@ -32,7 +32,7 @@ define([
   router,
   i18n,
   UserContext,
-  BaseForm,
+  {BaseForm},
   SecurityContext,
   initSelect2,
   FetcherRegistry,

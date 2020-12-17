@@ -17,7 +17,7 @@ define([
   'pim/user-context',
   'pim/fetcher-registry',
   'pim/template/product-model-edit-form/add-child-form-header',
-], (BaseForm, $, _, __, i18n, UserContext, FetcherRegistry, template) => {
+], ({BaseForm}, $, _, __, i18n, UserContext, FetcherRegistry, template) => {
   return BaseForm.extend({
     template: _.template(template),
 

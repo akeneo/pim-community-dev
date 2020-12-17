@@ -40,4 +40,4 @@ class AttributeHeaderCell extends HeaderCell {
   }
 }
 
-export = AttributeHeaderCell;
+export default AttributeHeaderCell;

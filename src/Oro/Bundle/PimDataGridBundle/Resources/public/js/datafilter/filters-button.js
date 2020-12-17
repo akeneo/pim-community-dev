@@ -1,6 +1,6 @@
 define(['underscore', 'pim/form', 'oro/mediator', 'oro/datafilter/collection-filters-manager'], function (
   _,
-  BaseForm,
+  {BaseForm},
   mediator,
   FiltersManager
 ) {

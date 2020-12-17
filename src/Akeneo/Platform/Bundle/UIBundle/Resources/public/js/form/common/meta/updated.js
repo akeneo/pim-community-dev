@@ -10,7 +10,7 @@
 define(['underscore', 'oro/translator', 'pim/form', 'oro/mediator', 'pim/template/form/meta/updated'], function (
   _,
   __,
-  BaseForm,
+  {BaseForm},
   mediator,
   formTemplate
 ) {

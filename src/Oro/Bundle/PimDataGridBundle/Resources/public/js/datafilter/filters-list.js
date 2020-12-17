@@ -1,4 +1,4 @@
-define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'], function (_, BaseForm, mediator, tools) {
+define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'], function (_, {BaseForm}, mediator, tools) {
   return BaseForm.extend({
     options: {},
     filters: [],

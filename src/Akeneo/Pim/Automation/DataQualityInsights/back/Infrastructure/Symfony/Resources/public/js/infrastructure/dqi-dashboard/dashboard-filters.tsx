@@ -55,4 +55,4 @@ class DashboardFilters extends BaseDashboard {
   }
 }
 
-export = DashboardFilters;
+export default DashboardFilters;

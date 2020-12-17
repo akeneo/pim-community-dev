@@ -111,4 +111,4 @@ class ProductGridFilters extends BaseMultiSelectAsync {
   }
 }
 
-export = ProductGridFilters;
+export default ProductGridFilters;

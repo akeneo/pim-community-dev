@@ -23,7 +23,7 @@ define([
   Routing,
   LoadingMask,
   DatagridState,
-  BaseForm,
+  {BaseForm},
   mediator,
   ColumnListView,
   template,

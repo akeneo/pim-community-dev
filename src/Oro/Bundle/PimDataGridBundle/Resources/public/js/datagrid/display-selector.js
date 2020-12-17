@@ -14,7 +14,7 @@ define([
   'pim/form',
   'pim/template/datagrid/display-selector',
   'pim/router',
-], function ($, _, Backbone, __, BaseForm, template, Routing) {
+], function ($, _, Backbone, __, {BaseForm}, template, Routing) {
   return BaseForm.extend({
     className: 'AknDropdown AknDropdown--left AknTitleContainer-displaySelector',
     gridName: null,

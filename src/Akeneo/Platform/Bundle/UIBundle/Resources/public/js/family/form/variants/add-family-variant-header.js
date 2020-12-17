@@ -14,7 +14,7 @@ define([
   'pim/fetcher-registry',
   'pim/form',
   'pim/template/family-variant/add-variant-form-header',
-], function (_, __, i18n, UserContext, FetcherRegistry, BaseForm, template) {
+], function (_, __, i18n, UserContext, FetcherRegistry, {BaseForm}, template) {
   return BaseForm.extend({
     template: _.template(template),
 

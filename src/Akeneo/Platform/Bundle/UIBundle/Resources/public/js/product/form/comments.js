@@ -18,7 +18,7 @@ define([
   'routing',
   'oro/messenger',
   'pim/dialog',
-], function ($, _, __, Backbone, BaseForm, UserContext, template, Routing, messenger, Dialog) {
+], function ($, _, __, Backbone, {BaseForm}, UserContext, template, Routing, messenger, Dialog) {
   return BaseForm.extend({
     template: _.template(template),
 

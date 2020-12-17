@@ -17,7 +17,7 @@ define([
   'oro/mediator',
   'pim/common/property',
   'jquery.select2',
-], function (_, __, BaseForm, FetcherRegistry, template, UserContext, mediator, propertyAccessor) {
+], function (_, __, {BaseForm}, FetcherRegistry, template, UserContext, mediator, propertyAccessor) {
   return BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),

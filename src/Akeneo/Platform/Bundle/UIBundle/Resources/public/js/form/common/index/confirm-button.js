@@ -10,7 +10,7 @@
 define(['underscore', 'oro/translator', 'pim/form', 'routing', 'pim/template/form/index/confirm-button'], function (
   _,
   __,
-  BaseForm,
+  {BaseForm},
   Routing,
   template
 ) {

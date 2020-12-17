@@ -20,7 +20,7 @@ define([
   'pim/user-context',
   'pim/i18n',
   'bootstrap-modal',
-], function ($, _, __, Backbone, BaseForm, template, Routing, mediator, FetcherRegistry, UserContext, i18n) {
+], function ($, _, __, Backbone, {BaseForm}, template, Routing, mediator, FetcherRegistry, UserContext, i18n) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'panel-pane history-panel',

@@ -8,7 +8,7 @@ define([
   'oro/loading-mask',
   'oro/template/system/tab/localization',
   'pim/initselect2',
-], function (_, __, BaseForm, FetcherRegistry, LoadingMask, template, initSelect2) {
+], function (_, __, {BaseForm}, FetcherRegistry, LoadingMask, template, initSelect2) {
   return BaseForm.extend({
     events: {
       'change select': 'updateModel',

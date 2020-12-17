@@ -15,7 +15,7 @@ define([
   'pim/form',
   'routing',
   'pim/template/product-model-edit-form/add-child-form',
-], ($, _, __, BaseForm, Routing, template) => {
+], ($, _, __, {BaseForm}, Routing, template) => {
   return BaseForm.extend({
     template: _.template(template),
 
