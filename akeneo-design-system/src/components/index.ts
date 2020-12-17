@@ -10,6 +10,7 @@ export * from './Image/Image';
 export * from './Input';
 export * from './Information/Information';
 export * from './Link/Link';
+export * from './Locale/Locale';
 export * from './MessageBar/MessageBar';
 export * from './Modal/Modal';
 export * from './ProgressBar/ProgressBar';

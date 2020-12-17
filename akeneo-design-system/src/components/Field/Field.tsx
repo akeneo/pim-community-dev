@@ -1,6 +1,6 @@
 import React, {Ref, ReactElement} from 'react';
 import styled from 'styled-components';
-import {Helper, HelperProps, InputProps} from '../../components';
+import {Helper, HelperProps, InputProps, Locale, LocaleProps} from '../../components';
 import {getColor} from '../../theme';
 import {useId} from '../../hooks';
 
@@ -24,11 +24,10 @@ const Label = styled.label`
 
 const Channel = styled.span`
   text-transform: capitalize;
-  margin-left: 5px;
-`;
 
-const Locale = styled.span`
-  margin-left: 5px;
+  :not(:last-child) {
+    margin-right: 5px;
+  }
 `;
 
 const HelperContainer = styled.div`
@@ -60,7 +59,7 @@ type FieldProps = {
   /**
    * The locale of the field.
    */
-  locale?: string;
+  locale?: ReactElement<LocaleProps> | string;
 
   /**
    * The channel of the field.
@@ -101,7 +100,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
             {label}
           </Label>
           {channel && <Channel>{channel}</Channel>}
-          {locale && <Locale>{locale}</Locale>}
+          {locale && ('string' === typeof locale ? <Locale code={locale} /> : locale)}
         </LabelContainer>
         {decoratedChildren}
       </FieldContainer>
