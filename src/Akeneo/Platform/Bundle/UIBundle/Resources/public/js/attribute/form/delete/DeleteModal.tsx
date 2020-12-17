@@ -128,7 +128,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         </Link>
       </SpacedHelper>
       <Field label={translate('pim_enrich.entity.attribute.module.delete.type', {attributeCode})}>
-        <TextInput name="attribute_confirm" value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
+        <TextInput value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
       </Field>
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel}>
