@@ -33,7 +33,7 @@ const Locale = React.forwardRef<HTMLSpanElement, LocaleProps>(
 
     return (
       <LocaleContainer ref={forwardedRef} {...rest}>
-        <Emoji>{getEmoji(countryCode)}</Emoji>
+        <Emoji role="img" aria-label={countryCode}>{getEmoji(countryCode)}</Emoji>
         {languageLabel || languageCode}
       </LocaleContainer>
     );
