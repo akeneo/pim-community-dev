@@ -5,6 +5,9 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\ChainedNonExistentValuesFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -13,23 +16,21 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
  */
 class ReadValueCollectionFactory
 {
-    /** @var ValueFactory */
-    private $valueFactory;
-
-    /** @var GetAttributes */
-    private $getAttributeByCodes;
-
-    /** @var ChainedNonExistentValuesFilterInterface */
-    private $chainedNonExistentValuesFilter;
+    private ValueFactory $valueFactory;
+    private GetAttributes $getAttributeByCodes;
+    private ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter;
+    private LoggerInterface $logger;
 
     public function __construct(
         ValueFactory $valueFactory,
         GetAttributes $getAttributeByCodes,
-        ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter
+        ChainedNonExistentValuesFilterInterface $chainedNonExistentValuesFilter,
+        LoggerInterface $logger
     ) {
         $this->valueFactory = $valueFactory;
         $this->getAttributeByCodes = $getAttributeByCodes;
         $this->chainedNonExistentValuesFilter = $chainedNonExistentValuesFilter;
+        $this->logger = $logger;
     }
 
     public function createFromStorageFormat(array $rawValues): ReadValueCollection
@@ -83,12 +84,22 @@ class ReadValueCollectionFactory
                             $localeCode = null;
                         }
 
-                        $values[] = $this->valueFactory->createWithoutCheckingData(
-                            $attribute,
-                            $channelCode,
-                            $localeCode,
-                            $data
-                        );
+                        try {
+                            $values[] = $this->valueFactory->createByCheckingData(
+                                $attribute,
+                                $channelCode,
+                                $localeCode,
+                                $data
+                            );
+                        } catch (\TypeError | InvalidPropertyTypeException | InvalidPropertyException $exception) {
+                            $this->logger->notice(
+                                sprintf(
+                                    'Tried to load a product value for attribute "%s" that does not have the '.
+                                    'expected type in database.',
+                                    $attribute->code()
+                                )
+                            );
+                        }
                     }
                 }
             }

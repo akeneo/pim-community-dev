@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Channel\Bundle\Doctrine\Query;
 
 use Akeneo\Channel\Component\Query\FindActivatedCurrenciesInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -13,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindActivatedCurrencies implements FindActivatedCurrenciesInterface
+class FindActivatedCurrencies implements FindActivatedCurrenciesInterface, CachedQueryInterface
 {
     private array $activatedCurrenciesForChannels = [];
     private EntityManagerInterface $entityManager;

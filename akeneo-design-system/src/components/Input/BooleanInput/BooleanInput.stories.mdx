@@ -1,15 +1,16 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {BooleanInput} from './BooleanInput.tsx';
+import {useArgs, updateArgs} from '@storybook/client-api';
 
 <Meta
-  title="Components/BooleanInput"
+  title="Components/Inputs/BooleanInput"
   component={BooleanInput}
   argTypes={{
     value: {
       control: {type: 'select', options: [true, false, null]},
       description: 'Value of the input. Can be null if the input is clearable.',
       table: {
-        defaultValue: { summary: 'null' },
+        defaultValue: {summary: 'null'},
       },
     },
     readOnly: {
@@ -24,14 +25,14 @@ import {BooleanInput} from './BooleanInput.tsx';
       description: 'The handler called when clicking on Checkbox.',
     },
     yesLabel: {
-      description: 'The label for the Yes button'
+      description: 'The label for the Yes button',
     },
     noLabel: {
-      description: 'The label for the No button'
+      description: 'The label for the No button',
     },
     clearLabel: {
-      description: 'The label for the Clear value button'
-    }
+      description: 'The label for the Clear value button',
+    },
   }}
   args={{
     value: null,
@@ -52,13 +53,12 @@ The input can in some cases have a 3rd state, EMPTY. In this case, a clear butto
 
 <Canvas>
   <Story name="Standard">
-    {({value, ...args}) => {
-      const [liveValue, setValue] = React.useState(value);
-      return <BooleanInput
-        value={liveValue}
-        onChange={setValue}
-        {...args}
-      />;
+    {args => {
+      const [{value}, updateArgs] = useArgs();
+      const setValue = newValue => {
+        updateArgs({value: newValue});
+      };
+      return <BooleanInput {...args} value={value} onChange={setValue} />;
     }}
   </Story>
 </Canvas>
@@ -67,15 +67,14 @@ The input can in some cases have a 3rd state, EMPTY. In this case, a clear butto
 
 ## Variation on value
 
-
 <Canvas>
   <Story name="Value">
     {args => {
       return (
         <>
-          <BooleanInput {...args}/>
-          <BooleanInput {...args} value={true} clearable={true}/>
-          <BooleanInput {...args} value={false} clearable={true}/>
+          <BooleanInput {...args} />
+          <BooleanInput {...args} value={true} clearable={true} />
+          <BooleanInput {...args} value={false} clearable={true} />
         </>
       );
     }}
@@ -89,9 +88,9 @@ The input can in some cases have a 3rd state, EMPTY. In this case, a clear butto
     {args => {
       return (
         <>
-          <BooleanInput {...args} value={null} readOnly={true}/>
-          <BooleanInput {...args} value={true} readOnly={true}/>
-          <BooleanInput {...args} value={false} readOnly={true}/>
+          <BooleanInput {...args} value={null} readOnly={true} />
+          <BooleanInput {...args} value={true} readOnly={true} />
+          <BooleanInput {...args} value={false} readOnly={true} />
         </>
       );
     }}

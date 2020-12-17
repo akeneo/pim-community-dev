@@ -99,9 +99,6 @@ pim_import_export:
           with_header:
             title: With header
             help: Whether or not to print the column name
-          with_media:
-            title: Export files and images
-            help: Whether or not to export product files and images
           lines_per_file:
             title: Number of lines per file
             help: Define the limit number of lines per file

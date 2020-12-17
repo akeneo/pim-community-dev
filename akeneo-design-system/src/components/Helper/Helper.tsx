@@ -148,3 +148,4 @@ const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
 );
 
 export {Helper};
+export type {HelperProps};

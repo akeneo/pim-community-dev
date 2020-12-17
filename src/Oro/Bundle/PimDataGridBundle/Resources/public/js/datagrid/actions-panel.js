@@ -126,6 +126,7 @@ define([
           const isProductGrid = 'product-grid' === groupLaunchers[0]?.action.datagrid.name || false;
           const props = {
             showWithLabelsSelect: isProductGrid,
+            showWithMediaSelect: isProductGrid,
             onActionLaunch: formValue => {
               const actionName = `quick_export${'grid-context' === formValue['context'] ? `_grid_context` : ''}_${
                 formValue['type']
@@ -142,6 +143,7 @@ define([
               launcher.action.route_parameters = {
                 ...launcher.action.route_parameters,
                 _withLabels: isProductGrid && 'with-labels' === formValue['with-labels'] ? 1 : 0,
+                _withMedia: isProductGrid && 'true' === formValue['with_media'] ? 1 : 0,
                 _fileLocale: UserContext.get('catalogLocale'),
               };
 

@@ -3,27 +3,31 @@
 {% block bodyClass %}AknLogin{% endblock %}
 
 {% block content %}
-<div class="AknLogin-mainContainer container">
-    <div class="AknLogin-title">
-        {% embed 'PimUIBundle::logo.html.twig' %}{% endembed %}
-    </div>
-
-    <form action="{{ path('pim_user_reset_send_email') }}" method="post" class="form-reset">
-        <h2 class="AknLogin-subTitle">{{ 'pim_user.user.login.forgot_password'|trans }}</h2>
-        <fieldset>
-            <div class="AknLogin-form">
-                <input class="AknTextField" type="text" name="username" required="required" placeholder="{{ 'pim_user.user.login.username_or_email'|trans }}" autofocus="autofocus"/>
+    <form action="{{ path('pim_user_reset_send_email') }}" method="post" class="Form">
+        <div class="InputGroup">
+            <div class="InputBlock">
+                <label class="InputLabel" for="username">{{ 'pim_user.user.login.username_or_email'|trans }}</label>
+                <input class="InputText" type="text" id="username" name="username" required="required" autofocus="autofocus"/>
             </div>
-            <div class="AknLogin-form">
-                <div class="AknLogin-formCell">
-                    <a href="{{ path('pim_user_security_login') }}" class="AknLogin-link cancel">{{ 'pim_common.cancel'|trans }}</a>
-                </div>
-                <div class="AknLogin-formCell AknLogin-formCell--small">
-                    <button type="submit" class="AknButton AknButton--apply AknButton--big">{{ 'pim_user.user.login.request'|trans }}</button>
-                </div>
+            <div class="CancelPasswordReset">
+                <a href="{{ path('pim_user_security_login') }}" class="AknLogin-link cancel">{{ 'pim_common.cancel'|trans }}</a>
             </div>
-        </fieldset>
+        </div>
+        <button type="submit" class="AknButton AknButton--apply" id="_submit">
+            {{- 'pim_user.user.login.request'|trans -}}
+        </button>
     </form>
-</div>
+{% endblock %}
 
+{% block deferred_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" nonce="{{ js_nonce() }}">
+      (function () {
+        const username = document.getElementById('username');
+        const submit = document.getElementById('_submit');
+        const form = document.querySelector('form.Form');
+
+        initPimLoginForm([username], submit, form);
+      })();
+    </script>
 {% endblock %}
