@@ -49,21 +49,17 @@ const CharacterLeftLabel = styled.div`
 
 type TextInputProps = Override<
   React.InputHTMLAttributes<HTMLInputElement> & InputProps,
-  {
-    /**
-     * Value of the input.
-     */
+  (
+    | {
+        readOnly?: true;
+      }
+    | {
+        readOnly?: false;
+        onChange: (newValue: string) => void;
+      }
+  ) & {
     value: string;
-
-    /**
-     * Placeholder displayed when the input is empty.
-     */
     placeholder?: string;
-
-    /**
-     * Defines if the input should be read only. If defined so, the user cannot change the value of the input.
-     */
-    readOnly?: boolean;
 
     /**
      * Defines if the input is valid on not.
@@ -74,11 +70,6 @@ type TextInputProps = Override<
      * Label displayed under the field to display the remaining character counter.
      */
     characterLeftLabel?: string;
-
-    /**
-     * Handler called when the value of the input changes.
-     */
-    onChange?: (newValue: string) => void;
   }
 >;
 

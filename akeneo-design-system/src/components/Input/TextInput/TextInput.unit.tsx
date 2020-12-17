@@ -56,11 +56,11 @@ test('it renders and displays the character left label', () => {
 test('TextInput supports forwardRef', () => {
   const ref = {current: null};
 
-  render(<TextInput value={'nice'} ref={ref} />);
+  render(<TextInput value={'nice'} onChange={jest.fn()} ref={ref} />);
   expect(ref.current).not.toBe(null);
 });
 
 test('TextInput supports ...rest props', () => {
-  render(<TextInput value={'nice'} data-testid="my_value" />);
+  render(<TextInput value={'nice'} onChange={jest.fn()} data-testid="my_value" />);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });

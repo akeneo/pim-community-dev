@@ -78,7 +78,8 @@ type FieldProps = {
  */
 const Field = React.forwardRef<HTMLDivElement, FieldProps>(
   ({label, locale, channel, incomplete = false, children, ...rest}: FieldProps, forwardedRef: Ref<HTMLDivElement>) => {
-    const id = useId('field_');
+    const inputId = useId('input_');
+    const labelId = useId('label_');
 
     const decoratedChildren = React.Children.map(children, child => {
       if (React.isValidElement<HelperProps>(child) && child.type === Helper) {
@@ -86,7 +87,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
       }
 
       if (React.isValidElement<InputProps>(child)) {
-        return React.cloneElement(child, {id});
+        return React.cloneElement(child, {id: inputId, 'aria-labelledby': labelId});
       }
 
       return null;
@@ -96,7 +97,9 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
       <FieldContainer ref={forwardedRef} {...rest}>
         <LabelContainer>
           {incomplete && <IncompleteBadge />}
-          <Label htmlFor={id}>{label}</Label>
+          <Label htmlFor={inputId} id={labelId}>
+            {label}
+          </Label>
           {channel && <Channel>{channel}</Channel>}
           {locale && <Locale>{locale}</Locale>}
         </LabelContainer>
