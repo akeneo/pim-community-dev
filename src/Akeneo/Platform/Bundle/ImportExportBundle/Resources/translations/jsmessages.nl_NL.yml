@@ -99,9 +99,6 @@ pim_import_export:
           with_header:
             title: Met koptekst
             help: Of de kolomnaam geprint moet worden
-          with_media:
-            title: Bestanden en afbeeldingen exporteren
-            help: Productbestanden en afbeeldingen al dan niet exporteren
           lines_per_file:
             title: Aantal regels per bestand
             help: Het maximum aantal regels per bestand definiëren
