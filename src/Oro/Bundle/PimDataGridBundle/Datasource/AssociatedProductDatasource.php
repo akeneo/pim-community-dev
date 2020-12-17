@@ -265,8 +265,6 @@ class AssociatedProductDatasource extends ProductDatasource
             }
 
             $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);
-            // @todo merge remove null check
-            $normalized['is_owner'] = null !== $this->authorizationChecker ? $this->authorizationChecker->isGranted(Attributes::OWN, $product) : true;
 
             $data[] = new ResultRecord($normalized);
         }
