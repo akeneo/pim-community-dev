@@ -18,7 +18,7 @@ test('it renders its children properly', () => {
 test('it does not render something else than an Input or Helpers', () => {
   render(
     // @ts-expect-error Something else should not be displayed
-    <Field label="Nice field">
+    <Field label="Nice field" locale="en_US" channel="ecommerce">
       Something else
       <TextInput data-testid="text-input" value="Coucou" />
       <Helper>Some info</Helper>
@@ -29,6 +29,8 @@ test('it does not render something else than an Input or Helpers', () => {
   expect(screen.getByTestId('text-input')).toBeInTheDocument();
   expect(screen.getByText('Some info')).toBeInTheDocument();
   expect(screen.getByText('Another one')).toBeInTheDocument();
+  expect(screen.queryByText('ecommerce')).toBeInTheDocument();
+  expect(screen.queryByText('en_US')).toBeInTheDocument();
   expect(screen.queryByText('Something else')).not.toBeInTheDocument();
 });
 
