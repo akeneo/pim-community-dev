@@ -46,11 +46,14 @@ test('it opens the confirm modal on click', async () => {
 });
 
 test('it redirects to the list after attribute is deleted', async () => {
-  renderWithProviders(<DeleteAction attributeCode="foo" />);
+  renderWithProviders(<DeleteAction attributeCode="nice_attribute" />);
 
   await act(async () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
   });
+
+  const input = screen.getByLabelText('pim_enrich.entity.attribute.module.delete.type') as HTMLInputElement;
+  fireEvent.change(input, {target: {value: 'nice_attribute'}});
 
   const modal = screen.getByRole('dialog');
 

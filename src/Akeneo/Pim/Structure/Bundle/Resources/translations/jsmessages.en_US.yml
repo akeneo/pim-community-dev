@@ -224,6 +224,7 @@ pim_enrich.entity.attribute:
             helper:
                 content: If you need to change your attribute type, to make it localizable or scopable, while keeping access to your existing attribute values,
                 link: we walk you through the different steps here.
+            type: Please type "{{ attributeCode }}"
             confirm_from_family: Are you sure you want to delete this attribute from the family?
             confirm_from_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
             confirm_from_product: Are you sure you want to delete this attribute from the product?

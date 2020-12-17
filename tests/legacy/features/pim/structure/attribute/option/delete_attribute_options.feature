@@ -33,7 +33,7 @@ Feature: Delete attribute options
     And I am on the "color" attribute page
     And I visit the "Options" tab
     When I remove the "red" option
-    And I press the "Delete" button
+    And I confirm the deletion
     Then I should not see the text "Error during deletion of the attribute option"
     Then I should not see the text "red"
 
@@ -42,6 +42,6 @@ Feature: Delete attribute options
     And I am on the "color" attribute page
     And I visit the "Options" tab
     When I remove the "white" option
-    And I press the "Delete" button
+    And I confirm the deletion
     And I should see the text "Attribute option \"white\" could not be removed as it is used as variant axis value."
     Then I should see the text "white"

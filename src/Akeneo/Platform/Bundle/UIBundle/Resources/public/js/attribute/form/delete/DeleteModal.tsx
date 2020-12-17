@@ -1,11 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
-import {Button, DeleteIllustration, getColor, Helper, Link, Modal, SectionTitle, Title} from 'akeneo-design-system';
+import {
+  Button,
+  DeleteIllustration,
+  Field,
+  getColor,
+  Helper,
+  Link,
+  Modal,
+  SectionTitle,
+  TextInput,
+  Title,
+} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
 import {useIsMounted} from '@akeneo-pim-community/shared';
 
-const Content = styled.div`
-  margin-bottom: 10px;
+const SpacedHelper = styled(Helper)`
+  margin: 10px 0 20px;
 `;
 
 const Highlight = styled.span`
@@ -47,6 +58,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   const notify = useNotify();
   const removeRoute = useRoute('pim_enrich_attribute_rest_remove', {code: attributeCode});
   const [productCount, productModelCount] = useImpactedItemCount(attributeCode);
+  const [attributeCodeConfirm, setAttributeCodeConfirm] = useState<string>('');
 
   const handleConfirm = () => {
     fetch(removeRoute, {
@@ -100,27 +112,28 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
     >
       <SectionTitle color="brand">{translate('pim_enrich.entity.attribute.plural_label')}</SectionTitle>
       <Title>{translate('pim_common.confirm_deletion')}</Title>
-      <Content>
-        {translate('pim_enrich.entity.attribute.module.delete.confirm')}
-        {(0 < productCount || 0 < productModelCount) && (
-          <p>
-            <Highlight>{impactedItemsText}</Highlight>
-            &nbsp;
-            {translate('pim_enrich.entity.attribute.module.delete.used')}
-          </p>
-        )}
-      </Content>
-      <Helper>
+      {translate('pim_enrich.entity.attribute.module.delete.confirm')}
+      {(0 < productCount || 0 < productModelCount) && (
+        <p>
+          <Highlight>{impactedItemsText}</Highlight>
+          &nbsp;
+          {translate('pim_enrich.entity.attribute.module.delete.used')}
+        </p>
+      )}
+      <SpacedHelper>
         {translate('pim_enrich.entity.attribute.module.delete.helper.content')}
         <Link href="https://help.akeneo.com/pim/serenity/articles/manage-your-attributes.html#delete-an-attribute-and-keep-the-related-data">
           {translate('pim_enrich.entity.attribute.module.delete.helper.link')}
         </Link>
-      </Helper>
+      </SpacedHelper>
+      <Field label={translate('pim_enrich.entity.attribute.module.delete.type', {attributeCode})}>
+        <TextInput name="attribute_confirm" value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
+      </Field>
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel}>
           {translate('pim_common.cancel')}
         </Button>
-        <Button level="danger" onClick={handleConfirm}>
+        <Button disabled={attributeCodeConfirm !== attributeCode} level="danger" onClick={handleConfirm}>
           {translate('pim_common.delete')}
         </Button>
       </Modal.BottomButtons>

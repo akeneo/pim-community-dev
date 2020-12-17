@@ -29,10 +29,12 @@ Feature: Display the product history
     When I am on the attributes page
     And I search "Weather conditions"
     And I click on the "delete" action of the row which contains "Weather conditions"
+    And I fill the "attribute_confirm" input with "weather_conditions"
     And I press the "Delete" button
     And I am on the attributes page
     And I search "Name"
     And I click on the "delete" action of the row which contains "Name"
+    And I fill the "attribute_confirm" input with "name"
     And I press the "Delete" button
     And I edit the "boots" product
     And the history of the product "boots" has been built
