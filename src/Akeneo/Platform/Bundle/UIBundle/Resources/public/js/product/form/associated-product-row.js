@@ -36,7 +36,7 @@ define(
              * @return {Boolean}
              */
             canRemoveAssociation() {
-                const isProductOwner = undefined !== this.model.get('is_owner') ? this.model.get('is_owner') : true;
+                const isProductOwner = null !== this.model.get('is_owner') ? this.model.get('is_owner') : true;
                 const permissionGranted = SecurityContext.isGranted('pim_enrich_associations_remove');
                 const fromInheritance = this.model.get('from_inheritance');
 
