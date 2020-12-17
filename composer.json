@@ -51,7 +51,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "3.2.79",
+        "akeneo/pim-community-dev": "3.2.x-dev@dev",
         "phpspec/php-diff": "1.0.2",
         "guzzlehttp/guzzle": "6.3.3",
         "webmozart/assert": "1.3",
