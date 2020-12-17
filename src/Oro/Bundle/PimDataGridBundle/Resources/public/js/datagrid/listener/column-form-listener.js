@@ -52,7 +52,7 @@ define(
             },
 
             isEnabled: function () {
-                if (!this.attributes?.acl_resource){
+                if (undefined === this.attributes?.acl_resource){
                     return true;
                 }
 

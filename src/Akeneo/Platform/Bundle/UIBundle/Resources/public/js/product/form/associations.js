@@ -637,7 +637,9 @@ define([
     },
 
     isAddAssociationsVisible: function() {
-      const isProductOwner = this.getFormData().meta?.is_owner || false;
+      const isProductOwner = undefined !== this.getFormData().meta?.is_owner
+        ? this.getFormData().meta.is_owner
+        : true;
 
       return isProductOwner && securityContext.isGranted(this.config.aclAddAssociations);
     },

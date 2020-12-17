@@ -32,7 +32,7 @@ function($, _, Backgrid, SecurityContext) {
             const isEditable = this.column.get('editable');
             const isEditableAcl = this.column.get('extraOptions')?.editable_acl;
 
-            if (isEditableAcl) {
+            if (undefined !== isEditableAcl) {
                 return isEditable && SecurityContext.isGranted(isEditableAcl);
             }
 
