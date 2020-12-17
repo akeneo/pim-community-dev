@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Improvements:
+
+- PIM-9483: Users with the ACL "View the associations of a product" can view associations of products, even if they are not owner
+
 # 3.2.78 (2020-12-02)
 
 ## Bug fixes
