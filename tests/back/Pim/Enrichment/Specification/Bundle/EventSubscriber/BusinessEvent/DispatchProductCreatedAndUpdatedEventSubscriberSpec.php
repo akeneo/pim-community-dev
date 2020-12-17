@@ -204,11 +204,6 @@ class DispatchProductCreatedAndUpdatedEventSubscriberSpec extends ObjectBehavior
 
         $security->getUser()->willReturn(null);
 
-        // TODO: https://akeneo.atlassian.net/browse/CXP-443
-        // $this->shouldThrow(
-        //     new \LogicException('User should not be null.')
-        // )->during('produceBusinessSaveEvent', [new GenericEvent($product)]);
-
         $this->createAndDispatchProductEvents(new GenericEvent($product));
 
         Assert::assertCount(0, $messageBus->messages);
