@@ -1,8 +1,8 @@
-import React, {useContext, ReactNode} from 'react';
+import React, {ReactNode, useContext} from 'react';
 
 type Translator = (id: string, placeholders?: {[name: string]: string}, count?: number) => string;
 
-const defaultTranslator = (id: string) => id;
+const defaultTranslator = (id: string) => `translation_from_legacy.${id}`;
 
 const TranslateContext = React.createContext(defaultTranslator);
 
