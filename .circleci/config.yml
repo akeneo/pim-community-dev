@@ -185,7 +185,7 @@ jobs:
   back_behat_legacy:
     machine:
       enabled: true
-    parallelism: 20
+    parallelism: 30
     steps:
       - attach_workspace:
           at: ~/
@@ -288,14 +288,13 @@ workflows:
                     - setup
           - back_phpunit_integration:
                 requires:
-                    - front_static_acceptance_and_integration
-                    - back_static_and_acceptance
+                    - setup
           - back_phpunit_end_to_end:
                 requires:
-                    - front_static_acceptance_and_integration
-                    - back_static_and_acceptance
+                    - setup
           - back_behat_legacy:
                 requires:
+                    - back_phpunit_integration
                     - back_phpunit_end_to_end
 
   nightly:
@@ -322,7 +321,7 @@ workflows:
                     - setup
           - back_behat_legacy:
                 requires:
-                    - back_phpunit_end_to_end
+                    - setup
 
   pull_up:
       jobs:
