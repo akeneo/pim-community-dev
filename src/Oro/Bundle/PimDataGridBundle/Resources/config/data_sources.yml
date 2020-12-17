@@ -143,7 +143,6 @@ services:
             - '@pim_enrich.query.product_and_product_model_query_builder_from_size_factory'
             - '@pim_datagrid_serializer'
             - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
-            - '@security.authorization_checker'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_associated_product }
 
