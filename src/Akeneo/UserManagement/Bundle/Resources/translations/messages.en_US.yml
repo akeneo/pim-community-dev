@@ -67,13 +67,13 @@ pim_user:
             username_or_email: Username or Email
             remember_me: Remember me on this computer
             password_forgotten: Forgot your password?
-            log_in: Log in
+            log_in: Login
             forgot_password: Forgot Password
             request: Request
             password_reset: Password Reset
             reset: Reset
             password_reset_email_sent: An email has been sent to the user. It contains a link to reset the password.
-            homepage: Go to homepage
+            homepage: Back to homepage
     group:
         tab:
             general.title: General
