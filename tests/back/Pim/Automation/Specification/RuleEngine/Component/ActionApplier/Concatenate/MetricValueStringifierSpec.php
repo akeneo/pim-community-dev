@@ -93,4 +93,18 @@ class MetricValueStringifierSpec extends ObjectBehavior
 
         $this->stringify($value, ['unit_label_locale' => 'unknown'])->shouldBe('1 m');
     }
+
+    function it_stringifies_a_metric_value_without_decimal_trailing_zeros(MetricValue $value)
+    {
+        $value->getAmount()->willReturn('1500.0000');
+        $value->getUnit()->willReturn('m');
+        $this->stringify($value)->shouldBe('1500 m');
+    }
+
+    function it_stringifies_a_metric_value_without_trailing_decimal_separator(MetricValue $value)
+    {
+        $value->getAmount()->willReturn('300.');
+        $value->getUnit()->willReturn('m');
+        $this->stringify($value)->shouldBe('300 m');
+    }
 }

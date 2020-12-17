@@ -60,6 +60,7 @@
 - PIM-9574: Fix product duplication to throw an error when the identifier of the duplicated product is not valid
 - PIM-9593: Prevent job "compute project calculation" from appearing in the process tracker and in the dashboard
 - PIM-9594: Fix project completeness when at least 1 attribute group have the "All" group in its permissions but the project's locale permissions does not
+- PIM-9600: Fix rules that use string concatenation with measurement ending by zero
 
 ## Improvements
 

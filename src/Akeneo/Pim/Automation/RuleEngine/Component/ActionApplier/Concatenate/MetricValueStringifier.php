@@ -77,7 +77,7 @@ final class MetricValueStringifier extends AbstractValueStringifier implements V
             return $number;
         }
 
-        return rtrim($number, '.0');
+        return preg_replace('/\.?0*$/', '', $number);
     }
 
     private function getUnitTranslationsForMeasurementFamilyAndLocale(
