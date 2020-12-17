@@ -58,7 +58,14 @@ type TextInputProps = Override<
         onChange: (newValue: string) => void;
       }
   ) & {
+    /**
+     * Value of the input.
+     */
     value: string;
+
+    /**
+     * Placeholder displayed when the input is empty.
+     */
     placeholder?: string;
 
     /**
