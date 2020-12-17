@@ -2,6 +2,8 @@ import React, {Ref, useCallback} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
 import {EraseIcon, LockIcon} from '../../../icons';
+import {InputProps} from '../InputProps';
+import {Override} from '../../../shared';
 
 const BooleanInputContainer = styled.div``;
 
@@ -88,30 +90,33 @@ const BooleanInputEraseIcon = styled(EraseIcon)`
 `;
 
 const IconContainer = styled.span`
-  color: 1px solid ${getColor('grey', 100)}}
+  color: 1px solid ${getColor('grey', 100)};
   vertical-align: middle;
   margin-left: 10px;
 `;
 const BooleanInputLockIcon = styled(LockIcon)``;
 
-type BooleanInputProps = (
-  | {
-      clearable?: true;
-      value: boolean | null;
-      onChange?: (value: boolean | null) => void;
-      clearLabel: string;
-    }
-  | {
-      clearable?: false;
-      value: boolean;
-      onChange?: (value: boolean) => void;
-      clearLabel?: string;
-    }
-) & {
-  readOnly: boolean;
-  yesLabel: string;
-  noLabel: string;
-};
+type BooleanInputProps = Override<
+  InputProps,
+  (
+    | {
+        clearable?: true;
+        value: boolean | null;
+        onChange?: (value: boolean | null) => void;
+        clearLabel: string;
+      }
+    | {
+        clearable?: false;
+        value: boolean;
+        onChange?: (value: boolean) => void;
+        clearLabel?: string;
+      }
+  ) & {
+    readOnly: boolean;
+    yesLabel: string;
+    noLabel: string;
+  }
+>;
 
 /**
  * The BooleanInput is used to quickly switch between two possible states.
