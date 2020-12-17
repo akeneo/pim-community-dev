@@ -6,13 +6,14 @@ namespace Akeneo\Channel\Component\Query\PublicApi\Cache;
 
 use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInterface
+final class CachedChannelExistsWithLocale implements ChannelExistsWithLocaleInterface, CachedQueryInterface
 {
     private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes;
 

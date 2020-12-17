@@ -6,6 +6,7 @@ namespace Akeneo\Channel\Bundle\EventListener;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -19,9 +20,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ClearCacheSubscriber implements EventSubscriberInterface
 {
-    private ChannelExistsWithLocaleInterface $cachedChannelExistsWithLocale;
+    private CachedQueryInterface $cachedChannelExistsWithLocale;
 
-    public function __construct(ChannelExistsWithLocaleInterface $cachedChannelExistsWithLocale)
+    public function __construct(CachedQueryInterface $cachedChannelExistsWithLocale)
     {
         $this->cachedChannelExistsWithLocale = $cachedChannelExistsWithLocale;
     }
