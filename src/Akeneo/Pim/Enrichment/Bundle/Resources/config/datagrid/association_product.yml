@@ -60,6 +60,7 @@ datagrid:
             id: ~
             document_type: ~
             is_owner:
+                data_name: "[meta][is_owner]"
                 frontend_type: boolean
         filters:
             columns:
