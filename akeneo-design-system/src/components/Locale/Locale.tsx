@@ -1,7 +1,7 @@
 import React, {Ref} from 'react';
 import styled from 'styled-components';
-import {getFontSize} from '../../theme';
 import Flag from 'react-country-flag';
+import {getFontSize} from '../../theme';
 
 const LocaleContainer = styled.span`
   display: inline-flex;
@@ -32,11 +32,12 @@ type LocaleProps = {
 const Locale = React.forwardRef<HTMLSpanElement, LocaleProps>(
   ({code, languageLabel, ...rest}: LocaleProps, forwardedRef: Ref<HTMLSpanElement>) => {
     const {0: languageCode, length, [length - 1]: countryCode} = code.split('_');
+    const isWindows = -1 !== navigator.userAgent.indexOf('Windows');
 
     return (
       <LocaleContainer ref={forwardedRef} {...rest}>
         <Emoji role="img" aria-label={countryCode}>
-          <Flag countryCode={countryCode} svg={navigator.userAgent.indexOf('Windows') !== -1} />
+          <Flag countryCode={countryCode} svg={isWindows} />
         </Emoji>
         {languageLabel || languageCode}
       </LocaleContainer>
