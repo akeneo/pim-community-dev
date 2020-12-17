@@ -12,10 +12,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PHP_CONF_MAX_INPUT_VARS=1000 \
     PHP_CONF_UPLOAD_LIMIT=40M \
     PHP_CONF_MAX_POST_SIZE=40M \
-    XDEBUG_ENABLED=0 \
     PHP_CONF_DISPLAY_ERRORS=0 \
     PHP_CONF_DISPLAY_STARTUP_ERRORS=0
-
 
 RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/apt.conf.d/01-no-recommended && \
     echo 'path-exclude=/usr/share/man/*' > /etc/dpkg/dpkg.cfg.d/path_exclusions && \
@@ -96,14 +94,9 @@ RUN apt-get update && \
         perceptualdiff \
         php7.4-xdebug \
         procps \
-        unzip &&\
-    phpdismod xdebug && \
-    mkdir /etc/php/7.4/enable-xdebug && \
-    ln -s /etc/php/7.4/mods-available/xdebug.ini /etc/php/7.4/enable-xdebug/xdebug.ini && \
-    sed -i "s#listen = /run/php/php7.4-fpm.sock#listen = 9000#g" /etc/php/7.4/fpm/pool.d/www.conf && \
+        unzip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
 
 COPY docker/build/xdebug.ini /etc/php/7.4/cli/conf.d/99-akeneo-xdebug.ini
 COPY docker/build/xdebug.ini /etc/php/7.4/fpm/conf.d/99-akeneo-xdebug.ini
@@ -111,13 +104,7 @@ COPY docker/build/xdebug.ini /etc/php/7.4/fpm/conf.d/99-akeneo-xdebug.ini
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
 
-# Make XDEBUG activable at container start
-COPY docker/build/docker-php-entrypoint /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-php-entrypoint
-
 RUN mkdir -p /var/www/.composer && chown www-data:www-data /var/www/.composer
-
-ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint"]
 
 VOLUME /srv/pim
 
