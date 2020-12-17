@@ -3,10 +3,10 @@ dependencies:
   repository: gs://akeneo-charts/
   version: 2.0.7
 - name: elasticsearch
-  repository: https://kubernetes-charts.storage.googleapis.com
+  repository: https://charts.helm.sh/stable
   version: 1.32.4
 - name: memcached
-  repository: https://kubernetes-charts.storage.googleapis.com
+  repository: https://charts.helm.sh/stable
   version: 3.2.3
-digest: sha256:0c458bc2f2f2f271468f18a427f960e0570e856472cb45b8776e94b4fd80dee9
-generated: "2020-11-19T14:31:46.768487843+01:00"
+digest: sha256:5a0d2562084984c0485eb2d9d1c5f0a7bf2d4ff080367fd0a1f7a5ec023be5cb
+generated: "2020-12-17T09:53:11.954528592+01:00"

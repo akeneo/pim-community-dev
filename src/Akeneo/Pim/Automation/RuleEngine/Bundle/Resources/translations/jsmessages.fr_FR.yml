@@ -270,6 +270,7 @@ pimee_catalog_rule:
           line_break: Saut de ligne
           date_format: Sélectionnez un format de date
           label_locale: Locale du libellé
+          unit_label_locale: Locale de l'unité
           remove_new_line_confirm:
             label: Retirer le saut de ligne de la liste des opérations
             description: Le nouvel attribut cible n'accepte pas les sauts de ligne. Ce changement supprimera tous les sauts de ligne.

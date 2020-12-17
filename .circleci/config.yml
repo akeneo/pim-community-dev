@@ -901,9 +901,9 @@ workflows:
           - test_deploy:
                 requires:
                     - build_prod
-          - test_upgrade_from_last_release:
-                requires:
-                    - test_deploy
+#          - test_upgrade_from_last_release:
+#                requires:
+#                    - test_deploy
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -1060,9 +1060,9 @@ workflows:
           - test_deploy:
                 requires:
                     - build_prod
-          - test_upgrade_from_last_release:
-                requires:
-                    - build_prod
+#          - test_upgrade_from_last_release:
+#                requires:
+#                    - build_prod
           - test_front_code_style:
                 requires:
                     - build_dev
@@ -1108,7 +1108,7 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_data_migrations
                     - test_deploy
-                    - test_upgrade_from_last_release
+#                    - test_upgrade_from_last_release
 
   on_demand:
       jobs:

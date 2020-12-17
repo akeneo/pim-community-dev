@@ -128,7 +128,7 @@ services:
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
             - '@pim_enrich.connector.flat_translators.published_product_translator'
-            - ['pim_catalog_file', 'pim_catalog_image']
+            - ['pim_catalog_file', 'pim_catalog_image', 'pim_catalog_asset_collection']
             - 'filePath'
 
     pimee_workflow.job.csv_published_product_quick_export:
@@ -167,7 +167,7 @@ services:
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_family_codes'
             - '@akeneo.pim.enrichment.connector.write.file.flat.generate_headers_from_attribute_codes'
             - '@pim_enrich.connector.flat_translators.published_product_translator'
-            - ['pim_catalog_file', 'pim_catalog_image']
+            - ['pim_catalog_file', 'pim_catalog_image', 'pim_catalog_asset_collection']
             - 'filePath'
 
     pimee_workflow.job.xlsx_published_product_quick_export:

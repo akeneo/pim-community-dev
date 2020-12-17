@@ -43,8 +43,4 @@ behat-legacy:
 
 .PHONY: xdebug-on
 xdebug-on:
-	XDEBUG_ENABLED=1 $(MAKE) up
-
-.PHONY: xdebug-off
-xdebug-off:
-	XDEBUG_ENABLED=0 $(MAKE) up
+	XDEBUG_MODE=debug APP_ENV=dev $(MAKE) up

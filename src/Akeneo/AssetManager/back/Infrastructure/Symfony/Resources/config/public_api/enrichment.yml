@@ -14,6 +14,11 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_codes'
 
+    akeneo_assetmanager.infrastructure.persistence.query.enrich.get_asset_main_media_values_public_api:
+        class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlGetAssetMainMediaValues'
+        arguments:
+            - '@database_connection'
+
     # Enrichment > Reference entities
     pimee.asset_manager.enrichment.product.get_products_linked_to_a_asset_action:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Controller\Product\GetProductsLinkedToAAssetAction

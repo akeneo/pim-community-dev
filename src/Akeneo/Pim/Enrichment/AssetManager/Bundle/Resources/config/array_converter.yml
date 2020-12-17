@@ -1,0 +1,16 @@
+services:
+    akeneo_assetmanager.job.array_converter.flat_to_standard.product:
+        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\ArrayConverter\FlatToStandard\EntityWithAssetValues'
+        decorates: pim_connector.array_converter.flat_to_standard.product
+        decoration_inner_name: pim_connector.array_converter.flat_to_standard.base.product
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.base.product'
+            - '@pim_catalog.repository.attribute'
+
+    akeneo_assetmanager.job.array_converter.flat_to_standard.product_model:
+        class: 'Akeneo\Pim\Enrichment\AssetManager\Component\Connector\ArrayConverter\FlatToStandard\EntityWithAssetValues'
+        decorates: pim_connector.array_converter.flat_to_standard.product_model
+        decoration_inner_name: pim_connector.array_converter.flat_to_standard.base.product_model
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.base.product_model'
+            - '@pim_catalog.repository.attribute'

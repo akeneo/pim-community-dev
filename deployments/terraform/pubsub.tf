@@ -23,8 +23,8 @@ resource "google_pubsub_topic" "job-queue" {
 //
 
 resource "google_pubsub_subscription" "webhook" {
-  name                 = "${local.pfid}-webhook"
-  topic                = google_pubsub_topic.business-event.name
+  name  = "${local.pfid}-webhook"
+  topic = google_pubsub_topic.business-event.name
 
   ack_deadline_seconds = 600
   expiration_policy {
@@ -38,8 +38,8 @@ resource "google_pubsub_subscription" "webhook" {
 }
 
 resource "google_pubsub_subscription" "job-queue" {
-  name                 = "${local.pfid}-job-queue"
-  topic                = google_pubsub_topic.job-queue.name
+  name  = "${local.pfid}-job-queue"
+  topic = google_pubsub_topic.job-queue.name
 
   ack_deadline_seconds = 600
   expiration_policy {
@@ -115,9 +115,9 @@ resource "google_pubsub_subscription_iam_member" "pubsub_subscriber_webhook" {
 }
 
 resource "google_pubsub_subscription_iam_member" "pubsub_subscriber_job_queue" {
-  subscription  = google_pubsub_subscription.job-queue.name
-  role          = "roles/pubsub.subscriber"
-  member        = "serviceAccount:${google_service_account.pim_service_account.email}"
+  subscription = google_pubsub_subscription.job-queue.name
+  role         = "roles/pubsub.subscriber"
+  member       = "serviceAccount:${google_service_account.pim_service_account.email}"
 
   depends_on = [
     google_service_account.pim_service_account,
@@ -137,9 +137,9 @@ resource "google_pubsub_subscription_iam_member" "pubsub_viewer_webhook" {
 }
 
 resource "google_pubsub_subscription_iam_member" "pubsub_viewer_job_queue" {
-  subscription  = google_pubsub_subscription.job-queue.name
-  role          = "roles/pubsub.viewer"
-  member        = "serviceAccount:${google_service_account.pim_service_account.email}"
+  subscription = google_pubsub_subscription.job-queue.name
+  role         = "roles/pubsub.viewer"
+  member       = "serviceAccount:${google_service_account.pim_service_account.email}"
 
   depends_on = [
     google_service_account.pim_service_account,

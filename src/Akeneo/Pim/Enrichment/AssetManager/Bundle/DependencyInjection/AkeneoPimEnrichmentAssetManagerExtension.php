@@ -31,6 +31,7 @@ class AkeneoPimEnrichmentAssetManagerExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('analytics.yml');
+        $loader->load('array_converter.yml');
         $loader->load('datagrid/attribute_types.yml');
         $loader->load('datagrid/formatters.yml');
         $loader->load('datagrid/filters.yml');
@@ -38,7 +39,9 @@ class AkeneoPimEnrichmentAssetManagerExtension extends Extension
         $loader->load('datagrid/normalizer.yml');
         $loader->load('jobs.yml');
         $loader->load('parameters.yml');
+        $loader->load('processors.yml');
         $loader->load('product_value.yml');
         $loader->load('services.yml');
+        $loader->load('writers.yml');
     }
 }
