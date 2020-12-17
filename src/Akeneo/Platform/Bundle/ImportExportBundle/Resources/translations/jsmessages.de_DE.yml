@@ -99,9 +99,6 @@ pim_import_export:
           with_header:
             title: Mit Kopfzeile
             help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
-          with_media:
-            title: Exportieren von Dateien und Bildern
-            help: Ob Produktdateien und Bilder exportiert werden oder nicht
           lines_per_file:
             title: Anzahl Zeilen pro Datei
             help: Definieren Sie die max. Anzahl Zeilen je Datei
