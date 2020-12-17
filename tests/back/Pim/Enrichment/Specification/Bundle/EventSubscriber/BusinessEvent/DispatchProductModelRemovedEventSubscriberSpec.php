@@ -151,12 +151,8 @@ class DispatchProductModelRemovedEventSubscriberSpec extends ObjectBehavior
 
         $security->getUser()->willReturn(null);
 
-        // $this->shouldThrow(
-        //     new \LogicException('User should not be null.')
-        // )->during('createAndDispatchProductModelEvents', [new GenericEvent($productModel)]);
-
-        // TODO: https://akeneo.atlassian.net/browse/CXP-443
         $this->createAndDispatchProductModelEvents(new GenericEvent($productModel));
+
         Assert::assertCount(0, $messageBus->messages);
     }
 

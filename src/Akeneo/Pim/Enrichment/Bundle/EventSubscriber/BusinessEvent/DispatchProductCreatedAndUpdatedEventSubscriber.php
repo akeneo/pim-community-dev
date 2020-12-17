@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\UserManagement\Component\Model\UserInterface;
+use LogicException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -52,7 +52,7 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
             return;
         }
 
-        if (null === ($user = $this->getUser())) {
+        if (null === $user = $this->security->getUser()) {
             return;
         }
 
@@ -87,16 +87,5 @@ final class DispatchProductCreatedAndUpdatedEventSubscriber implements EventSubs
             $this->messageBus->dispatch(new BulkEvent($this->events));
             $this->events = [];
         }
-    }
-
-    private function getUser(): ?UserInterface
-    {
-        $user = $this->security->getUser();
-        // TODO: https://akeneo.atlassian.net/browse/CXP-443
-        // if (null === $user) {
-        //     throw new \LogicException('User should not be null.');
-        // }
-
-        return $user;
     }
 }
