@@ -4,7 +4,7 @@ dependencies:
   repository: gs://akeneo-charts/
 - name: elasticsearch
   version: "1.32.4"
-  repository: "@stable"
+  repository: https://charts.helm.sh/stable
 - name: memcached
   version: "3.2.3"
-  repository: "@stable"
+  repository: https://charts.helm.sh/stable
