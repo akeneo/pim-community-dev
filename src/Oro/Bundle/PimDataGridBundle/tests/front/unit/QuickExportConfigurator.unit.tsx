@@ -66,7 +66,7 @@ test('it does call the action launch if every option is set', () => {
     context: 'grid-context',
     type: 'csv',
     'with-labels': 'with-labels',
-    'with_media': 'true',
+    with_media: 'true',
   });
 
   fireEvent.click(getByTitle('pim_datagrid.mass_action_group.quick_export.label'));
@@ -80,7 +80,7 @@ test('it does call the action launch if every option is set', () => {
     context: 'all-attributes',
     type: 'xlsx',
     'with-labels': 'with-codes',
-    'with_media': 'false',
+    with_media: 'false',
   });
 });
 
