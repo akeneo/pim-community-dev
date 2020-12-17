@@ -1767,19 +1767,21 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param string $inputName
+     * @param string $label
      * @param string $value
      *
-     * @When /^I fill the "([^"]*)" input with "([^"]*)"$/
+     * @When /^I fill the input labelled '(.*)' with '(.*)'$/
      */
-    public function iFillTheInput($inputName, $value)
+    public function iFillTheInputLabelledWith($label, $value)
     {
         $page = $this->getCurrentPage();
-        $element = $this->spin(function () use ($page, $inputName) {
-            return $page->find('css', sprintf('input[name="%s"]', $inputName));
-        }, sprintf("Can not find any '%s' element", $inputName));
 
-        $element->setValue($value);
+        $label = $this->spin(function () use ($page, $label) {
+            return $page->find('css', sprintf('label:contains(%s)', $label));
+        }, sprintf("Can not find any label with content '%s'", $label));
+
+        $input = $page->findByID($label->getAttribute('for'));
+        $input->setValue($value);
     }
 
     /**
