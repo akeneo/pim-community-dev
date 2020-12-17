@@ -12,6 +12,8 @@
 
 ## BC Breaks
 
+- CPM-101: Remove twig/extensions dependency (abandoned)
+
 ### Codebase
 
 ### CLI commands
