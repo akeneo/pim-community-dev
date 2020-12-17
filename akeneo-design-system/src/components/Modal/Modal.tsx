@@ -1,6 +1,6 @@
 import React, {ReactElement, ReactNode, useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
-import styled, {StyledComponent} from 'styled-components';
+import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
 import {IconButton} from '../../components';
 import {CloseIcon} from '../../icons';
@@ -68,6 +68,19 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
+const BottomButtons = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+`;
+
+const TopRightButtons = styled(BottomButtons)`
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  margin: 0;
+`;
+
 type ModalProps = {
   /**
    * Prop to display or hide the Modal.
@@ -99,8 +112,8 @@ type ModalProps = {
  * The Modal Component is used to display a secondary window over the content.
  */
 const Modal: React.FC<ModalProps> & {
-  BottomButtons: StyledComponent<'div', any, any, never>;
-  TopRightButtons: StyledComponent<'div', any, any, never>;
+  BottomButtons: typeof BottomButtons;
+  TopRightButtons: typeof TopRightButtons;
 } = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   useShortcut(Key.Escape, onClose);
 
@@ -135,17 +148,7 @@ const Modal: React.FC<ModalProps> & {
   );
 };
 
-Modal.BottomButtons = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-`;
-
-Modal.TopRightButtons = styled(Modal.BottomButtons)`
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  margin: 0;
-`;
+Modal.BottomButtons = BottomButtons;
+Modal.TopRightButtons = TopRightButtons;
 
 export {Modal, SectionTitle, Title};
