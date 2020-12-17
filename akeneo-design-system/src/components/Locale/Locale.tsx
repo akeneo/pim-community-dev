@@ -1,7 +1,7 @@
 import React, {Ref} from 'react';
 import styled from 'styled-components';
-import {getEmoji} from '../../shared';
 import {getFontSize} from '../../theme';
+import Flag from 'react-country-flag';
 
 const LocaleContainer = styled.span`
   display: inline-flex;
@@ -10,6 +10,8 @@ const LocaleContainer = styled.span`
 const Emoji = styled.span`
   font-size: ${getFontSize('bigger')};
   margin-right: 5px;
+  align-items: center;
+  display: inline-flex;
 `;
 
 type LocaleProps = {
@@ -34,7 +36,7 @@ const Locale = React.forwardRef<HTMLSpanElement, LocaleProps>(
     return (
       <LocaleContainer ref={forwardedRef} {...rest}>
         <Emoji role="img" aria-label={countryCode}>
-          {getEmoji(countryCode)}
+          <Flag countryCode={countryCode} svg={navigator.userAgent.indexOf('Windows') !== -1} />
         </Emoji>
         {languageLabel || languageCode}
       </LocaleContainer>
