@@ -29,7 +29,7 @@ type LocaleProps = {
  */
 const Locale = React.forwardRef<HTMLSpanElement, LocaleProps>(
   ({code, languageLabel, ...rest}: LocaleProps, forwardedRef: Ref<HTMLSpanElement>) => {
-    const [languageCode, countryCode] = code.split('_');
+    const {0: languageCode, length, [length - 1]: countryCode} = code.split('_');
 
     return (
       <LocaleContainer ref={forwardedRef} {...rest}>

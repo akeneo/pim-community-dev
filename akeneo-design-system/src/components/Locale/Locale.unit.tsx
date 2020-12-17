@@ -8,6 +8,12 @@ test('it renders the emoji flag properly with language code if no label provided
   expect(screen.getByText('🇺🇸')).toBeInTheDocument();
   expect(screen.getByText('en')).toBeInTheDocument();
 });
+test('it renders emoji properly for weird locale codes', () => {
+  render(<Locale code="en_nice_US" />);
+
+  expect(screen.getByText('🇺🇸')).toBeInTheDocument();
+  expect(screen.getByText('en')).toBeInTheDocument();
+});
 
 test('it renders the emoji flag properly with language label if provided', () => {
   render(<Locale code="en_US" languageLabel="English" />);

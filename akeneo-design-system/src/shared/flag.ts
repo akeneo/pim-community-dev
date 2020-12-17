@@ -1012,6 +1012,6 @@ const flags: FlagCollection = {
   },
 };
 
-const getEmoji = (countryCode: string): string | undefined => flags[countryCode]?.emoji;
+const getEmoji = (countryCode: string): string | undefined => flags[countryCode.toUpperCase()]?.emoji;
 
 export {getEmoji};
