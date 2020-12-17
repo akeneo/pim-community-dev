@@ -59,6 +59,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   const removeRoute = useRoute('pim_enrich_attribute_rest_remove', {code: attributeCode});
   const [productCount, productModelCount] = useImpactedItemCount(attributeCode);
   const [attributeCodeConfirm, setAttributeCodeConfirm] = useState<string>('');
+  const isValid = attributeCodeConfirm === attributeCode;
 
   const handleConfirm = () => {
     fetch(removeRoute, {
@@ -133,7 +134,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         <Button level="tertiary" onClick={onCancel}>
           {translate('pim_common.cancel')}
         </Button>
-        <Button disabled={attributeCodeConfirm !== attributeCode} level="danger" onClick={handleConfirm}>
+        <Button disabled={!isValid} level="danger" onClick={handleConfirm}>
           {translate('pim_common.delete')}
         </Button>
       </Modal.BottomButtons>
