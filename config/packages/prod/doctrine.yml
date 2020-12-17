@@ -3,8 +3,11 @@ doctrine:
         entity_managers:
             default:
                 metadata_cache_driver:
-                    cache_provider: pim
+                    type: service
+                    id: doctrine.result_cache_provider
                 result_cache_driver:
-                    cache_provider: pim
+                    type: service
+                    id: doctrine.result_cache_provider
                 query_cache_driver:
-                    cache_provider: pim
+                    type: service
+                    id: doctrine.result_cache_provider
