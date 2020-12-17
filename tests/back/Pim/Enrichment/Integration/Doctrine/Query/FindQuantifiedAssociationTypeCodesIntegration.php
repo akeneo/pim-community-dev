@@ -70,7 +70,7 @@ class FindQuantifiedAssociationTypeCodesIntegration extends TestCase
         $actualQuantifiedAssociationTypeCodes = $this->findQuantifiedAssociationCodes->execute(); // result is still the cache
         self::assertEquals($actualQuantifiedAssociationTypeCodes, ['association_type_1']);
 
-        $this->findQuantifiedAssociationCodes->clear();
+        $this->findQuantifiedAssociationCodes->clearCache();
         $actualQuantifiedAssociationTypeCodes = $this->findQuantifiedAssociationCodes->execute(); // Cache is reinitialized
         self::assertEquals($actualQuantifiedAssociationTypeCodes, ['association_type_1', 'association_type_2']);
     }
