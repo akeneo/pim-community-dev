@@ -86,3 +86,9 @@ services:
         class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs:
+        arguments:
+            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\GetJobExecutionIds'
+            - '@filesystem'
+            - '%kernel.logs_dir%/batch'
