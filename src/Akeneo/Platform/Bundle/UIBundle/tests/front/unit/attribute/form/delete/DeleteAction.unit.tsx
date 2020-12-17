@@ -5,38 +5,58 @@ import {DeleteAction} from 'pimui/js/attribute/form/delete/DeleteAction';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 import {dependencies} from '@akeneo-pim-community/legacy-bridge/src/provider/dependencies';
 
-const flushPromises = () =>
-  act(async () => {
-    await new Promise(setImmediate);
-  });
+declare global {
+  namespace NodeJS {
+    interface Global {
+      fetch: any;
+    }
+  }
+}
+
+beforeAll(() =>
+  global.fetch.mockImplementation(async (url: string) => {
+    switch (url) {
+      case 'pim_enrich_count_items_with_attribute_value':
+        return {ok: true, json: () => ({products: 3, product_models: 5})};
+      case 'pim_enrich_attribute_rest_remove':
+      default:
+        return {ok: true};
+    }
+  })
+);
+
+afterAll(() => {
+  global.fetch && global.fetch.mockClear();
+});
 
 test('it renders a delete action button', () => {
-  renderWithProviders(<DeleteAction attributeCode={'foo'} />);
+  renderWithProviders(<DeleteAction attributeCode="foo" />);
 
   expect(screen.getByText('pim_common.delete')).toBeInTheDocument();
 });
 
-test('it opens the confirm modal on click', () => {
-  renderWithProviders(<DeleteAction attributeCode={'foo'} />);
+test('it opens the confirm modal on click', async () => {
+  renderWithProviders(<DeleteAction attributeCode="foo" />);
 
-  const openModalButton = screen.getByText('pim_common.delete');
-  fireEvent.click(openModalButton);
+  await act(async () => {
+    fireEvent.click(screen.getByText('pim_common.delete'));
+  });
 
   expect(screen.getByText('pim_common.confirm_deletion')).toBeInTheDocument();
 });
 
-test('it redirect to the list after attribute is deleted', async () => {
-  renderWithProviders(<DeleteAction attributeCode={'foo'} />);
+test('it redirects to the list after attribute is deleted', async () => {
+  renderWithProviders(<DeleteAction attributeCode="foo" />);
 
-  const openModalButton = screen.getByText('pim_common.delete');
-  fireEvent.click(openModalButton);
+  await act(async () => {
+    fireEvent.click(screen.getByText('pim_common.delete'));
+  });
 
   const modal = screen.getByRole('dialog');
 
-  const confirmDeleteButton = getByText(modal, 'pim_common.delete');
-  fireEvent.click(confirmDeleteButton);
-
-  await flushPromises();
+  await act(async () => {
+    fireEvent.click(getByText(modal, 'pim_common.delete'));
+  });
 
   expect(dependencies.router.redirect).toHaveBeenCalledWith('pim_enrich_attribute_index');
 });

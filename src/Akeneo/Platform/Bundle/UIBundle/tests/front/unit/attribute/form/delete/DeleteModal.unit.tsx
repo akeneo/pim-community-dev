@@ -13,42 +13,48 @@ declare global {
   }
 }
 
-beforeAll(() => {
-  global.fetch = jest.fn();
-});
+beforeAll(() =>
+  global.fetch.mockImplementation(async (url: string) => {
+    switch (url) {
+      case 'pim_enrich_count_items_with_attribute_value':
+        return {ok: true, json: () => ({products: 3, product_models: 5})};
+      case 'pim_enrich_attribute_rest_remove':
+      default:
+        return {ok: true};
+    }
+  })
+);
 
-afterEach(() => {
+afterAll(() => {
   global.fetch && global.fetch.mockClear();
 });
 
-const flushPromises = () =>
-  act(async () => {
-    await new Promise(setImmediate);
+test('it renders a confirm modal delete', async () => {
+  await act(async () => {
+    renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
   });
 
-jest.mock('@akeneo-pim-community/legacy-bridge/src/provider/dependencies');
-
-test('it renders a confirm modal delete', () => {
-  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
-
+  expect(dependencies.translate).toHaveBeenCalledWith(
+    'pim_enrich.entity.attribute.module.delete.product_count',
+    {count: '3'},
+    3
+  );
+  expect(dependencies.translate).toHaveBeenCalledWith(
+    'pim_enrich.entity.attribute.module.delete.product_model_count',
+    {count: '5'},
+    5
+  );
   expect(screen.getByText('pim_common.confirm_deletion')).toBeInTheDocument();
 });
 
 test('it calls the attribute remover when confirm is clicked', async () => {
-  global.fetch.mockImplementationOnce(() =>
-    Promise.resolve({
-      ok: true,
-    })
-  );
-
   const onSuccess = jest.fn();
 
   renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={onSuccess} attributeCode="foo" />);
 
-  const confirmDeleteButton = screen.getByText('pim_common.delete');
-  fireEvent.click(confirmDeleteButton);
-
-  await flushPromises();
+  await act(async () => {
+    fireEvent.click(screen.getByText('pim_common.delete'));
+  });
 
   expect(global.fetch).toHaveBeenCalledWith('pim_enrich_attribute_rest_remove', {
     method: 'DELETE',
@@ -59,22 +65,21 @@ test('it calls the attribute remover when confirm is clicked', async () => {
 });
 
 test('it displays an error when the delete failed', async () => {
-  global.fetch.mockImplementationOnce(() =>
-    Promise.resolve({
-      ok: false,
-      json: () =>
-        Promise.resolve({
-          message: 'an_error',
-        }),
-    })
-  );
+  global.fetch.mockImplementation(async (url: string) => {
+    switch (url) {
+      case 'pim_enrich_count_items_with_attribute_value':
+        return {ok: true, json: () => ({products: 3, product_models: 5})};
+      case 'pim_enrich_attribute_rest_remove':
+      default:
+        return {ok: false, json: () => ({message: 'an_error'})};
+    }
+  });
 
   renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
 
-  const confirmDeleteButton = screen.getByText('pim_common.delete');
-  fireEvent.click(confirmDeleteButton);
-
-  await flushPromises();
+  await act(async () => {
+    fireEvent.click(screen.getByText('pim_common.delete'));
+  });
 
   expect(global.fetch).toHaveBeenCalledWith('pim_enrich_attribute_rest_remove', {
     method: 'DELETE',
@@ -84,14 +89,21 @@ test('it displays an error when the delete failed', async () => {
 });
 
 test('it displays an error when the delete was rejected', async () => {
-  global.fetch.mockImplementationOnce(() => Promise.reject({}));
+  global.fetch.mockImplementation(async (url: string) => {
+    switch (url) {
+      case 'pim_enrich_count_items_with_attribute_value':
+        return {ok: true, json: () => ({products: 3, product_models: 5})};
+      case 'pim_enrich_attribute_rest_remove':
+      default:
+        return Promise.reject();
+    }
+  });
 
   renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={jest.fn()} attributeCode="foo" />);
 
-  const confirmDeleteButton = screen.getByText('pim_common.delete');
-  fireEvent.click(confirmDeleteButton);
-
-  await flushPromises();
+  await act(async () => {
+    fireEvent.click(screen.getByText('pim_common.delete'));
+  });
 
   expect(global.fetch).toHaveBeenCalledWith('pim_enrich_attribute_rest_remove', {
     method: 'DELETE',

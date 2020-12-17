@@ -23,6 +23,8 @@ const ModalContainer = styled.div`
   z-index: 2000;
   overflow: hidden;
   cursor: default;
+  padding: 20px 80px;
+  box-sizing: border-box;
 `;
 
 const ModalCloseButton = styled(IconButton)`
@@ -32,22 +34,22 @@ const ModalCloseButton = styled(IconButton)`
 `;
 
 const ModalContent = styled.div`
-  display: flex;
-  position: relative;
-`;
-
-const Separator = styled.div`
-  width: 1px;
-  height: 100%;
-  background-color: ${getColor('brand', 100)};
-  margin: 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
 `;
 
 const ModalChildren = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px 0;
+  padding: 20px 40px;
   min-width: 480px;
+  border-left: 1px solid ${getColor('brand', 100)};
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 40px;
 `;
 
 //TODO extract to Typography RAC-331
@@ -125,8 +127,7 @@ const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: M
         children
       ) : (
         <ModalContent>
-          {React.cloneElement(illustration, {size: 220})}
-          <Separator />
+          <IconContainer>{React.cloneElement(illustration, {size: 220})}</IconContainer>
           <ModalChildren>{children}</ModalChildren>
         </ModalContent>
       )}
