@@ -43,10 +43,13 @@ function($, _, Backgrid, SecurityContext) {
          * @inheritDoc
          */
         enterEditMode: function(e) {
-            if (this.isEditable()) {
-                var $editor = this.currentEditor.$el;
-                $editor.prop('checked', !$editor.prop('checked')).change();
+            if (!this.isEditable()) {
+                return;
             }
+
+            Backgrid.BooleanCell.prototype.enterEditMode.apply(this, arguments);
+            var $editor = this.currentEditor.$el;
+            $editor.prop('checked', !$editor.prop('checked')).change();
         },
 
         /**
