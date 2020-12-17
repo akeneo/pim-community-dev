@@ -26,7 +26,7 @@ class BlackListedAttributeCodeIntegration extends AbstractAttributeTestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame(
-            'The attribute code "new_blacklisted_attribute" was previously existing and is currently being cleaned up',
+            'Code temporarily blocked until the ongoing cleanup job is complete.',
             $violations->get(0)->getMessage()
         );
     }
