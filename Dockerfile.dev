@@ -28,6 +28,4 @@ RUN chmod +x /usr/local/bin/composer
 
 RUN mkdir -p /var/www/.composer && chown www-data:www-data /var/www/.composer
 
-ENTRYPOINT ["/usr/local/bin/docker-php-entrypoint"]
-
 VOLUME /srv/pim
