@@ -25,4 +25,4 @@ type KeyIndicatorExtraData = {
   impactedFamilies: string[];
 };
 
-export {KeyIndicator, keyIndicatorMap, Tip, KeyIndicatorTips, KeyIndicatorsTips, KeyIndicatorExtraData};
+export type {KeyIndicator, keyIndicatorMap, Tip, KeyIndicatorTips, KeyIndicatorsTips, KeyIndicatorExtraData};

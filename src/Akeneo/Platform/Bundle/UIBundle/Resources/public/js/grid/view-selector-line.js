@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/grid/view-
   $,
   _,
   Backbone,
-  BaseForm,
+  {BaseForm},
   template
 ) {
   return BaseForm.extend({

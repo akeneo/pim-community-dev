@@ -15,7 +15,7 @@ define([
   'oro/loading-mask',
   'oro/messenger',
   'pim/dialog',
-], function (_, __, BaseForm, template, router, LoadingMask, messenger, Dialog) {
+], function (_, __, {BaseForm}, template, router, LoadingMask, messenger, Dialog) {
   return BaseForm.extend({
     tagName: 'button',
 

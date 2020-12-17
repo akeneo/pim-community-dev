@@ -6,7 +6,7 @@
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['jquery', 'underscore', 'pim/form', 'pim/fetcher-registry'], function ($, _, BaseForm, FetcherRegistry) {
+define(['jquery', 'underscore', 'pim/form', 'pim/fetcher-registry'], function ($, _, {BaseForm}, FetcherRegistry) {
   return BaseForm.extend({
     configure: function () {
       this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);

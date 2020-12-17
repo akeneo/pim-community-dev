@@ -5,7 +5,7 @@
  */
 'use strict';
 
-define(['oro/translator', 'pim/form'], function (__, BaseForm) {
+define(['oro/translator', 'pim/form'], function (__, {BaseForm}) {
   return BaseForm.extend({
     /**
      * {@inheritdoc}

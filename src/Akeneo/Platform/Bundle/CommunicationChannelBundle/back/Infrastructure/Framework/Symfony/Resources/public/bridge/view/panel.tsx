@@ -6,6 +6,7 @@ const mediator = require('oro/mediator');
 
 class PanelView extends ReactView {
   constructor() {
+    //@ts-ignore
     super({className: 'AknPanel'});
   }
 
@@ -53,4 +54,4 @@ class PanelView extends ReactView {
   }
 }
 
-export = PanelView;
+export default PanelView;

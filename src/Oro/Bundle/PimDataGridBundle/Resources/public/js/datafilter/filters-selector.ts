@@ -1,4 +1,4 @@
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
 const mediator = require('oro/mediator');
@@ -197,4 +197,4 @@ class FiltersSelector extends BaseView {
   }
 }
 
-export = FiltersSelector;
+export default FiltersSelector;

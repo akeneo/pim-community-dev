@@ -1,5 +1,5 @@
 import * as _ from 'underscore';
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
 const DataCollector = require('pim/data-collector');
@@ -18,7 +18,7 @@ class Help extends BaseView {
     super({className: 'AknHeader-menuItemContainer'});
   }
 
-  public render(): BaseView {
+  public render(): typeof BaseView {
     this.getUrl().then((url: string) => {
       this.$el.empty().append(
         this.template({
@@ -55,4 +55,4 @@ class Help extends BaseView {
   }
 }
 
-export = Help;
+export default Help;

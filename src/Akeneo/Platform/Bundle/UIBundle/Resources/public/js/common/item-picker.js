@@ -29,7 +29,7 @@ define([
   __,
   Backbone,
   Routing,
-  BaseForm,
+  {BaseForm},
   template,
   basketTemplate,
   datagridBuilder,

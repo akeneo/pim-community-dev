@@ -12,7 +12,7 @@ define([
   'pim/template/export/product/edit/content/structure',
   'pim/form',
   'pim/common/property',
-], function (_, __, template, BaseForm, propertyAccessor) {
+], function (_, __, template, {BaseForm}, propertyAccessor) {
   return BaseForm.extend({
     className: 'structure-filters',
     errors: {},

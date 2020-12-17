@@ -16,7 +16,7 @@ define([
   'pim/form/common/edit-form',
   'oro/loading-mask',
   'pim/template/mass-edit/form',
-], function ($, _, __, router, Routing, messenger, BaseForm, LoadingMask, template) {
+], function ($, _, __, router, Routing, messenger, {BaseForm}, LoadingMask, template) {
   return BaseForm.extend({
     template: _.template(template),
     currentStep: 'choose',

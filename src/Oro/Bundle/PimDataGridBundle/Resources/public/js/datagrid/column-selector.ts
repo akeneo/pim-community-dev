@@ -1,4 +1,4 @@
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 import * as _ from 'underscore';
 import * as Backbone from 'backbone';
 
@@ -96,7 +96,7 @@ class ColumnSelector extends BaseView {
   /**
    * Render the 'columns' button
    */
-  renderColumnSelector(): BaseView {
+  renderColumnSelector(): typeof BaseView {
     if (true === this.hideButton) return this;
 
     this.$el.html(this.buttonTemplate({label: __('pim_datagrid.column_configurator.label')}));
@@ -485,4 +485,4 @@ class ColumnSelector extends BaseView {
   }
 }
 
-export = ColumnSelector;
+export default ColumnSelector;

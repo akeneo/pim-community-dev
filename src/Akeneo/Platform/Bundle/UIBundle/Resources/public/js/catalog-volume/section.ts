@@ -1,5 +1,5 @@
 import * as _ from 'underscore';
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 
 const __ = require('oro/translator');
 const requireContext = require('require-context');
@@ -70,7 +70,7 @@ class SectionView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  render(): BaseView {
+  render(): typeof BaseView {
     const sectionData: SectionData = this.getRoot().getFormData();
     const sectionAxes: string[] = this.config.axes;
     const sectionHasData = this.sectionHasData(sectionData, sectionAxes);
@@ -156,4 +156,4 @@ class SectionView extends BaseView {
   }
 }
 
-export = SectionView;
+export default SectionView;

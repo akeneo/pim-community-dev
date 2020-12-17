@@ -15,7 +15,7 @@ define([
   'pim/dialog',
   'pim/form',
   'pim/template/form/state',
-], function ($, _, __, Backbone, Dialog, BaseForm, template) {
+], function ($, _, __, Backbone, Dialog, {BaseForm}, template) {
   return BaseForm.extend({
     className: 'updated-status',
     template: _.template(template),

@@ -28,4 +28,4 @@ class AuditController extends ReactController {
   }
 }
 
-export = AuditController;
+export default AuditController;

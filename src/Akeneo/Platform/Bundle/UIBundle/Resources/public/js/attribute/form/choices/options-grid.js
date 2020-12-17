@@ -12,7 +12,7 @@ define([
   'pim/fetcher-registry',
   'pim/attributeoptionview',
   'pim/template/attribute/tab/choices/options-grid',
-], function ($, _, BaseForm, fetcherRegistry, AttributeOptionGrid, template) {
+], function ($, _, {BaseForm}, fetcherRegistry, AttributeOptionGrid, template) {
   return BaseForm.extend({
     template: _.template(template),
     locales: [],

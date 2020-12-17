@@ -17,7 +17,7 @@ define([
   'oro/translator',
   'pim/template/form/creation/job',
   'pim/base-fetcher',
-], function ($, _, Backbone, Routing, BaseForm, UserContext, i18n, __, template, BaseFetcher) {
+], function ($, _, Backbone, Routing, {BaseForm}, UserContext, i18n, __, template, BaseFetcher) {
   return BaseForm.extend({
     options: {},
     template: _.template(template),

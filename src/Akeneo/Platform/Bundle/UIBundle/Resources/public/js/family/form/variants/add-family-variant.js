@@ -11,7 +11,7 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/messenger', 'pim/form', '
   _,
   __,
   messenger,
-  BaseForm,
+  {BaseForm},
   FormModal
 ) {
   return BaseForm.extend({

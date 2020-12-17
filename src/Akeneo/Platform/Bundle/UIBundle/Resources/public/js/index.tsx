@@ -22,6 +22,7 @@ require('require-polyfill');
 //TODO: remove later as we should be able to not use them anymore
 require('jquery-ui');
 require('bootstrap');
+require('regenerator-runtime/runtime');
 
 // Style fix
 const Container = styled.div`

@@ -21,7 +21,7 @@ define([
   'pim/datagrid/state',
   'pim/fetcher-registry',
   'pim/form-builder',
-], function ($, _, __, Backbone, BaseForm, template, initSelect2, DatagridState, FetcherRegistry, FormBuilder) {
+], function ($, _, __, Backbone, {BaseForm}, template, initSelect2, DatagridState, FetcherRegistry, FormBuilder) {
   return BaseForm.extend({
     template: _.template(template),
     resultsPerPage: 20,

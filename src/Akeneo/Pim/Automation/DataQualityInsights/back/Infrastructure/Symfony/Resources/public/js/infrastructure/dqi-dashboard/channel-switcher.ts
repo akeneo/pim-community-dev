@@ -84,4 +84,4 @@ class ChannelSwitcher extends BaseForm {
   }
 }
 
-export = ChannelSwitcher;
+export default ChannelSwitcher;

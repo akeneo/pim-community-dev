@@ -10,7 +10,7 @@ define(['jquery', 'underscore', 'oro/translator', 'pim/form', 'pim/template/mass
   $,
   _,
   __,
-  BaseForm,
+  {BaseForm},
   template
 ) {
   return BaseForm.extend({

@@ -18,7 +18,7 @@ define([
   'pim/dialog',
   'pim/template/family-variant/attribute-set',
   'pim/template/family-variant/attribute-group',
-], function ($, _, __, BaseForm, i18n, UserContext, fetcherRegistry, Dialog, template, attributeGroupTemplate) {
+], function ($, _, __, {BaseForm}, i18n, UserContext, fetcherRegistry, Dialog, template, attributeGroupTemplate) {
   const sortOrdered = (first, second) => first.sort_order - second.sort_order;
 
   /**

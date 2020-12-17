@@ -23,7 +23,7 @@ define([
 ], function (
   $,
   _,
-  BaseForm,
+  {BaseForm},
   mediator,
   template,
   CopyField,

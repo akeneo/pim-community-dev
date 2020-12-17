@@ -17,7 +17,7 @@ define([
   'pim/initselect2',
   'bootstrap-modal',
   'jquery.select2',
-], function (_, __, Backbone, BaseForm, innerModalTemplate, Select2Configurator, initSelect2) {
+], function (_, __, Backbone, {BaseForm}, innerModalTemplate, Select2Configurator, initSelect2) {
   return BaseForm.extend({
     className: 'AknColumn-blockDown change-family',
     innerModalTemplate: _.template(innerModalTemplate),

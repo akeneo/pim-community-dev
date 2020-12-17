@@ -9,7 +9,7 @@ define(['underscore', 'jquery', 'pim/form-builder', 'pim/form', 'oro/datafilter/
   _,
   $,
   FormBuilder,
-  BaseForm,
+  {BaseForm},
   CategoryFilter
 ) {
   return BaseForm.extend({

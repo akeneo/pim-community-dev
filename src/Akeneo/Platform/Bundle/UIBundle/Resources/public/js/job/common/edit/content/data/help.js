@@ -13,7 +13,7 @@ define([
   'oro/translator',
   'pim/form',
   'pim/template/export/product/edit/content/data/help',
-], function ($, _, __, BaseForm, template) {
+], function ($, _, __, {BaseForm}, template) {
   return BaseForm.extend({
     template: _.template(template),
 

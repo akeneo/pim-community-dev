@@ -7,7 +7,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
-define(['jquery', 'underscore', 'oro/translator', 'pim/form'], function ($, _, __, BaseForm) {
+define(['jquery', 'underscore', 'oro/translator', 'pim/form'], function ($, _, __, {BaseForm}) {
   return BaseForm.extend({
     /**
      * @returns {String}

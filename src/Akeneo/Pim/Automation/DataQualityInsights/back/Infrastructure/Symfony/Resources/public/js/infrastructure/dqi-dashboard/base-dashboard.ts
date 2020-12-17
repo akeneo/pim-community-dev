@@ -1,4 +1,4 @@
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 
 import {
   DATA_QUALITY_INSIGHTS_DASHBOARD_CHANGE_TIME_PERIOD,
@@ -100,4 +100,4 @@ class BaseDashboard extends BaseView {
   }
 }
 
-export = BaseDashboard;
+export default BaseDashboard;

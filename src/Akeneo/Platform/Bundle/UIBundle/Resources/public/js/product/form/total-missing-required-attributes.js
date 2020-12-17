@@ -14,7 +14,7 @@ define([
   'pim/user-context',
   'pim/provider/to-fill-field-provider',
   'pim/template/product/form/total-missing-required-attributes',
-], function (_, __, router, BaseForm, UserContext, toFillFieldProvider, template) {
+], function (_, __, router, {BaseForm}, UserContext, toFillFieldProvider, template) {
   return BaseForm.extend({
     className: 'AknButtonList-item',
     template: _.template(template),

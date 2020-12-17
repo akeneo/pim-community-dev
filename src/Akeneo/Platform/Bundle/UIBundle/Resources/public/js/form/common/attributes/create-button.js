@@ -25,7 +25,7 @@ define([
   _,
   __,
   Backbone,
-  BaseForm,
+  {BaseForm},
   template,
   templateModal,
   innerTemplateModal,

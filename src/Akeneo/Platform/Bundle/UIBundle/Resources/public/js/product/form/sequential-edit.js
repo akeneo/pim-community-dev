@@ -27,7 +27,7 @@ define([
   __,
   Backbone,
   mediator,
-  BaseForm,
+  {BaseForm},
   template,
   Routing,
   router,

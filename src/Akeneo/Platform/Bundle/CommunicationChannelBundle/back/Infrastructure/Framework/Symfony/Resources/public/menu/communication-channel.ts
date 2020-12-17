@@ -60,4 +60,4 @@ class CommunicationChannel extends Backbone.View<any> {
   }
 }
 
-export = CommunicationChannel;
+export {CommunicationChannel};

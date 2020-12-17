@@ -7,7 +7,7 @@
 define(['underscore', 'oro/translator', 'pim/form', 'pim/template/family-variant/labels-container'], function (
   _,
   __,
-  BaseForm,
+  {BaseForm},
   template
 ) {
   return BaseForm.extend({

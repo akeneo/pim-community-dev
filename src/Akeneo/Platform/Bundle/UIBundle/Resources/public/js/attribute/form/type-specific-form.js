@@ -18,7 +18,7 @@ define([
   'pim/form',
   'pim/form-builder',
   'pim/attribute-edit-form/type-specific-form-registry',
-], function ($, _, Backbone, __, BaseForm, FormBuilder, FormRegistry) {
+], function ($, _, Backbone, __, {BaseForm}, FormBuilder, FormRegistry) {
   return BaseForm.extend({
     config: {},
 

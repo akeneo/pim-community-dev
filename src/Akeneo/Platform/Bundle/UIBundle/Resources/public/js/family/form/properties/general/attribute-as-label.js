@@ -18,7 +18,7 @@ define([
   'pim/security-context',
   'pim/template/family/tab/general/attribute-as-label',
   'jquery.select2',
-], function ($, _, __, BaseForm, FetcherRegistry, i18n, UserContext, SecurityContext, template) {
+], function ($, _, __, {BaseForm}, FetcherRegistry, i18n, UserContext, SecurityContext, template) {
   return BaseForm.extend({
     className: 'AknFieldContainer',
     template: _.template(template),

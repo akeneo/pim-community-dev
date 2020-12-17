@@ -24,7 +24,7 @@ define([
   $,
   _,
   __,
-  BaseForm,
+  {BaseForm},
   FetcherRegistry,
   propertyAccessor,
   Routing,

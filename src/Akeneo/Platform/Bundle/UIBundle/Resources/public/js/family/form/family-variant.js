@@ -9,7 +9,7 @@ define([
   'pim/user-context',
   'pim/common/form-modal-creator',
   'pim/template/family/tab/family-variant',
-], function (_, BaseForm, mediator, Grid, __, UserContext, formModalCreator, template) {
+], function (_, {BaseForm}, mediator, Grid, __, UserContext, formModalCreator, template) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'tabbable variant',

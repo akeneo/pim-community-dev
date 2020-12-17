@@ -26,7 +26,7 @@ define([
   _,
   __,
   Router,
-  BaseForm,
+  {BaseForm},
   i18n,
   UserContext,
   FetcherRegistry,

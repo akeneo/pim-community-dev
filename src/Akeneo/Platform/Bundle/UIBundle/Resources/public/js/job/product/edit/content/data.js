@@ -16,7 +16,7 @@ define([
   'pim/fetcher-registry',
   'pim/form-builder',
   'pim/common/property',
-], function ($, _, __, template, BaseForm, fetcherRegistry, formBuilder, PropertyAccessor) {
+], function ($, _, __, template, {BaseForm}, fetcherRegistry, formBuilder, PropertyAccessor) {
   return BaseForm.extend({
     filterViews: [],
     template: _.template(template),

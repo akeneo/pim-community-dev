@@ -16,7 +16,7 @@ define([
   'routing',
   'pim/dialogform',
   'pim/form-builder',
-], function ($, _, __, BaseForm, template, Routing, DialogForm, FormBuilder) {
+], function ($, _, __, {BaseForm}, template, Routing, DialogForm, FormBuilder) {
   return BaseForm.extend({
     template: _.template(template),
     dialog: null,

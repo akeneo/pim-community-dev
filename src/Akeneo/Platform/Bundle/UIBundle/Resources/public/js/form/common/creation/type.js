@@ -18,7 +18,7 @@ define([
   'pim/fetcher-registry',
   'pim/initselect2',
   'pim/template/form/creation/type',
-], function ($, _, Backbone, Routing, BaseForm, UserContext, i18n, __, FetcherRegistry, initSelect2, template) {
+], function ($, _, Backbone, Routing, {BaseForm}, UserContext, i18n, __, FetcherRegistry, initSelect2, template) {
   return BaseForm.extend({
     options: {},
     template: _.template(template),

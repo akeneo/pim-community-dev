@@ -16,7 +16,7 @@ define([
   'pim/fetcher-registry',
   'pim/i18n',
   'pim/user-context',
-], function ($, _, __, BaseForm, template, FetcherRegistry, i18n, UserContext) {
+], function ($, _, __, {BaseForm}, template, FetcherRegistry, i18n, UserContext) {
   return BaseForm.extend({
     template: _.template(template),
     className: 'panel-pane completeness-panel AknCompletenessPanel',

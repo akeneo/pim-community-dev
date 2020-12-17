@@ -11,7 +11,7 @@ define(['jquery', 'underscore', 'backbone', 'pim/form', 'pim/template/form/form-
   $,
   _,
   Backbone,
-  BaseForm,
+  {BaseForm},
   template
 ) {
   return BaseForm.extend({

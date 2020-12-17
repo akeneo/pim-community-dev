@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'pim/form', 'p
   _,
   __,
   mediator,
-  BaseForm,
+  {BaseForm},
   filterTemplate
 ) {
   return BaseForm.extend({

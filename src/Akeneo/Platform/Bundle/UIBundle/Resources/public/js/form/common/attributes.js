@@ -35,7 +35,7 @@ define([
   Backbone,
   mediator,
   Routing,
-  BaseForm,
+  {BaseForm},
   FieldManager,
   FetcherRegistry,
   AttributeManager,

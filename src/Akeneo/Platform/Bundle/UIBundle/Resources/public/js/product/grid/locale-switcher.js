@@ -17,7 +17,7 @@ define([
   'pim/i18n',
   'pim/router',
   'pim/user-context',
-], function ($, _, __, BaseForm, template, FetcherRegistry, i18n, router, UserContext) {
+], function ($, _, __, {BaseForm}, template, FetcherRegistry, i18n, router, UserContext) {
   return BaseForm.extend({
     template: _.template(template),
     config: {},

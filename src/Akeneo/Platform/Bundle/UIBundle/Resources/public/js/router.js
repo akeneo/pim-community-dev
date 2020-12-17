@@ -27,7 +27,7 @@ define([
   Error,
   securityContext,
   template,
-  FeatureFlags
+  {FeatureFlags}
 ) {
   var Router = Backbone.Router.extend({
     DEFAULT_ROUTE: 'oro_default',

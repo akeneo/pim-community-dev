@@ -1,4 +1,4 @@
-import BaseView = require('pimui/js/view/base');
+const {BaseForm: BaseView} = require('pimui/js/view/base');
 import * as _ from 'underscore';
 
 const __ = require('oro/translator');
@@ -36,7 +36,7 @@ class HeaderView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  render(): BaseView {
+  render(): typeof BaseView {
     const data = this.getRoot().getFormData();
     const productValues: {value: number} = data.count_product_and_product_model_values;
     const productValuesAverage: {value: {max: number; average: number}} =
@@ -62,4 +62,4 @@ class HeaderView extends BaseView {
   }
 }
 
-export = HeaderView;
+export default HeaderView;

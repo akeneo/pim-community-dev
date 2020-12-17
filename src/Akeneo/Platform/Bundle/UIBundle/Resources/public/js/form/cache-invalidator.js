@@ -2,7 +2,7 @@
 
 define(['underscore', 'pim/form', 'oro/mediator', 'pim/fetcher-registry'], function (
   _,
-  BaseForm,
+  {BaseForm},
   mediator,
   FetcherRegistry
 ) {

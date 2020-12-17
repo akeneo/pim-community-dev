@@ -1,4 +1,4 @@
-const View = require('pim/form');
+const {BaseForm: View} = require('pim/form');
 const Router = require('pim/router');
 const translate = require('oro/translator');
 
@@ -35,4 +35,4 @@ class NavigationBack extends View {
   }
 }
 
-export = NavigationBack;
+export default NavigationBack;

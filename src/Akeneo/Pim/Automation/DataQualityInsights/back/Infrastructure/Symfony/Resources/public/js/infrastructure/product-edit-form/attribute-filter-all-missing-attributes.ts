@@ -69,4 +69,4 @@ class AttributeFilterAllMissingAttributes extends BaseForm {
   }
 }
 
-export = AttributeFilterAllMissingAttributes;
+export default AttributeFilterAllMissingAttributes;

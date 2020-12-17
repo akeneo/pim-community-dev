@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/form', 'requi
   _,
   Backbone,
   __,
-  BaseForm,
+  {BaseForm},
   requireContext
 ) {
   return BaseForm.extend({

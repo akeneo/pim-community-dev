@@ -25,7 +25,7 @@ define([
   Backbone,
   template,
   modalTemplate,
-  BaseForm,
+  {BaseForm},
   LoadingMask,
   fetcherRegistry,
   UserContext,

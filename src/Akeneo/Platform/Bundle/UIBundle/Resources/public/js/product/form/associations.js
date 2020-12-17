@@ -35,7 +35,7 @@ define([
   _,
   __,
   Backbone,
-  BaseForm,
+  {BaseForm},
   formTemplate,
   panesTemplate,
   modalTemplate,

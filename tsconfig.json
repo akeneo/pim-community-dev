@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es5",
     "lib": ["dom", "es2015", "es2016", "es2017","es2018", "es2019"],
     "sourceMap": true,
@@ -19,6 +19,7 @@
     "noUnusedParameters": true,
     "removeComments": true,
     "esModuleInterop": true,
+    "importHelpers": true,
     "resolveJsonModule": true
   },
   "exclude": ["**/tests/**/*"],

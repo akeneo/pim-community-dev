@@ -14,7 +14,7 @@ define([
   'pim/template/product/meta/family-variant',
   'pim/user-context',
   'pim/i18n',
-], function ($, _, __, BaseForm, template, UserContext, i18n) {
+], function ($, _, __, {BaseForm}, template, UserContext, i18n) {
   return BaseForm.extend({
     className: 'AknColumn-block',
 

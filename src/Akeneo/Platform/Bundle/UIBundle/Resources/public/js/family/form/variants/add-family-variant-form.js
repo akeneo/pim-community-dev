@@ -13,7 +13,7 @@ define([
   'routing',
   'pim/form',
   'pim/template/family-variant/add-variant-form',
-], function ($, _, __, Routing, BaseForm, template) {
+], function ($, _, __, Routing, {BaseForm}, template) {
   return BaseForm.extend({
     template: _.template(template),
 

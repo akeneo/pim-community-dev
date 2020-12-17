@@ -8,7 +8,7 @@
 define(['underscore', 'oro/translator', 'pim/form', 'pim/template/form/tab/attribute/attribute-filter'], function (
   _,
   __,
-  BaseForm,
+  {BaseForm},
   template
 ) {
   return BaseForm.extend({

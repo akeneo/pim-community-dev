@@ -24,7 +24,7 @@ define([
   __,
   Backbone,
   template,
-  BaseForm,
+  {BaseForm},
   mediator,
   FetcherRegistry,
   FieldManager,

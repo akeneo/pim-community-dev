@@ -23,7 +23,7 @@ define([
   _,
   __,
   Backbone,
-  BaseForm,
+  {BaseForm},
   template,
   modalContentTemplate,
   FetcherRegistry,

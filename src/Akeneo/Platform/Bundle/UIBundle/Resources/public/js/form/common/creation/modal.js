@@ -20,7 +20,7 @@ define([
   __,
   Backbone,
   Routing,
-  BaseForm,
+  {BaseForm},
   FormBuilder,
   UserContext,
   LoadingMask,

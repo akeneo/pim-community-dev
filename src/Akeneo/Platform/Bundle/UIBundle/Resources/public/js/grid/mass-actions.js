@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'oro/translator', 'backbone', 'pim/form', 'pim/t
   _,
   __,
   Backbone,
-  BaseForm,
+  {BaseForm},
   template
 ) {
   return BaseForm.extend({

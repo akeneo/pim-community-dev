@@ -9,7 +9,7 @@
 define(['jquery', 'underscore', 'pim/form', 'pim/template/form/tab/attributes'], function (
   $,
   _,
-  BaseForm,
+  {BaseForm},
   attributeTemplate
 ) {
   return BaseForm.extend({

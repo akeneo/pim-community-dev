@@ -16,7 +16,7 @@ define([
   'pim/common/property',
   'react',
   'akeneo-design-system',
-], function ($, __, BaseForm, mediator, FormRegistry, propertyAccessor, React, {Breadcrumb}) {
+], function ($, __, {BaseForm}, mediator, FormRegistry, propertyAccessor, React, {Breadcrumb}) {
   return BaseForm.extend({
     events: {
       'click .breadcrumb-tab': 'redirectTab',

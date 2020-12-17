@@ -18,7 +18,7 @@ define([
   'pim/field-manager',
   'pim/product-edit-form/attributes/validation-error',
   'pim/user-context',
-], function ($, _, Backbone, BaseForm, mediator, messenger, FieldManager, ValidationError, UserContext) {
+], function ($, _, Backbone, {BaseForm}, mediator, messenger, FieldManager, ValidationError, UserContext) {
   return BaseForm.extend({
     validationErrors: {},
 

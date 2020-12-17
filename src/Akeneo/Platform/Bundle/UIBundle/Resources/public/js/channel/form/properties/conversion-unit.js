@@ -18,7 +18,7 @@ define([
   'pim/i18n',
   'akeneo-design-system',
   'jquery.select2',
-], function ($, _, __, BaseForm, FetcherRegistry, template, UserContext, i18n, {Helper}) {
+], function ($, _, __, {BaseForm}, FetcherRegistry, template, UserContext, i18n, {Helper}) {
   return BaseForm.extend({
     className: 'tabsection',
     template: _.template(template),

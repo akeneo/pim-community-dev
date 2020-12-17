@@ -7,7 +7,7 @@ define([
   'pim/form',
   'pim/template/system/tab/loading-message',
   'bootstrap.bootstrapswitch',
-], function (_, __, $, BaseForm, template) {
+], function (_, __, $, {BaseForm}, template) {
   return BaseForm.extend({
     events: {
       'change input[type="checkbox"]': 'updateBoolean',

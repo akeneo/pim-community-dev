@@ -16,14 +16,18 @@ Check your form_extension files and be sure to clear your prod cache before proc
 
   const buildForm = function (formMeta) {
     return FormRegistry.getFormExtensions(formMeta).then(extensionsMeta => {
-      const FormClass = requireContext(formMeta.module);
+      let FormClass = requireContext(formMeta.module);
 
       if (undefined === FormClass) {
         throw new Error(`
-The module "${formMeta.module}" is undefined.
-Most of the time it's because it's not well registered in your requirejs.yml file.
-Here is the documentation to fix this problem
-https://docs.akeneo.com/latest/design_pim/overview.html#register-it`);
+        The module "${formMeta.module}" is undefined.
+        Most of the time it's because it's not well registered in your requirejs.yml file.
+        Here is the documentation to fix this problem
+        https://docs.akeneo.com/latest/design_pim/overview.html#register-it`);
+      }
+
+      if (undefined !== FormClass.default) {
+        FormClass = FormClass.default;
       }
 
       if (typeof FormClass !== 'function') {
