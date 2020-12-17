@@ -1,5 +1,5 @@
 # Akeneo PIM Development Repository
-Welcome to Akeneo PIM Product.
+Welcome to Akeneo PIM Product. test perf plan
 
 This repository is used to develop the Akeneo PIM product.
 
