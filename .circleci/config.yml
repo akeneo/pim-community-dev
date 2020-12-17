@@ -574,6 +574,24 @@ jobs:
           - store_artifacts:
                 path: ~/project/pim/var/logs
 
+  build_and_test_ce_php_image:
+      machine:
+          image: ubuntu-1604:201903-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - run:
+              name: Change owner on project dir in order to archive the project into the workspace
+              command: sudo chown -R 1000:1000 ../project
+          - run:
+                name: build docker image
+                command: |
+                    DOCKER_BUILDKIT=1 docker build --tag akeneo/pim-php-base:master --file Dockerfile.base .
+                    DOCKER_BUILDKIT=1 docker build --tag akeneo/pim-php-dev:master --file Dockerfile.dev .
+          - run:
+                name: test dev image
+                command: docker run --rm --user www-data --volume $(pwd):/srv/pim --workdir /srv/pim akeneo/pim-php-dev:master bin/console list
+
 workflows:
   version: 2
   pull_request:
@@ -680,6 +698,19 @@ workflows:
                 is_ee_built: false
                 requires:
                     - checkout_ce
+
+          - build_and_test_ce_php_image?:
+                type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - master
+                requires:
+                  - build_dev_ce
+          - build_and_test_ce_php_image:
+                requires:
+                  - build_and_test_ce_php_image?
+
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
