@@ -1,7 +1,7 @@
-import React, {Ref, useState} from 'react';
+import React, {Ref} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
-import {uuid} from '../../shared';
+import {useId} from '../../hooks';
 
 const ProgressBarContainer = styled.div`
   overflow: hidden;
@@ -154,8 +154,8 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
     {level, percent, title, progressLabel, light = false, size = 'small', ...rest}: ProgressBarProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
-    const [labelId] = useState<string>(`label_${uuid()}`);
-    const [progressBarId] = useState<string>(`progress_${uuid()}`);
+    const labelId = useId('label_');
+    const progressBarId = useId('progress_');
 
     const progressBarProps = {};
 

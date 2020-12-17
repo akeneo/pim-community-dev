@@ -12,6 +12,9 @@ export const getComponentLink = componentName => {
     case 'Button':
     case 'IconButton':
       return `Components/Buttons/${componentName}`;
+    case 'BooleanInput':
+    case 'TextInput':
+      return `Components/Inputs/${componentName}`;
     default:
       return `Components/${componentName}`;
   }
