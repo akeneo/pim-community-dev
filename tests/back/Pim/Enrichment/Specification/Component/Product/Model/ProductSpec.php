@@ -23,7 +23,6 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ProductSpec extends ObjectBehavior
 {
@@ -650,42 +649,6 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(true);
     }
 
-    function it_is_updated_when_filtering_quantified_associations()
-    {
-        $this->filterQuantifiedAssociations(['foo', 'bar'], ['baz']);
-        $this->isDirty()->shouldBe(true);
-    }
-
-    function it_is_updated_when_patching_quantified_associations(
-        QuantifiedAssociationCollection $quantifiedAssociations
-    ) {
-        $quantifiedAssociations->normalize()->willReturn([
-            'type' => [
-                'products' => [
-                    [
-                        'identifier' => 'foo',
-                        'quantity' => 2,
-                    ]
-                ],
-                'product_models' => [
-                    [
-                        'identifier' => 'bar',
-                        'quantity' => 1
-                    ],
-                ],
-            ],
-        ]);
-        $this->mergeQuantifiedAssociations($quantifiedAssociations);
-        $this->isDirty()->shouldBe(true);
-    }
-
-    function it_is_updated_when_clearing_quantified_associations()
-    {
-        $this->isDirty()->shouldBe(false);
-        $this->clearQuantifiedAssociations();
-        $this->isDirty()->shouldBe(true);
-    }
-
     function it_is_updated_when_adding_a_non_empty_association(
         AssociationInterface $association,
         AssociationTypeInterface $associationType
@@ -711,7 +674,6 @@ class ProductSpec extends ObjectBehavior
         $association->getProductModels()->willReturn(new ArrayCollection());
         $association->getGroups()->willReturn(new ArrayCollection());
         $this->cleanup();
-
 
         $association->setOwner($this)->shouldBeCalled();
 
@@ -830,7 +792,8 @@ class ProductSpec extends ObjectBehavior
         $this->addAssociatedProduct($product, 'x_sell');
     }
 
-    public function it_is_updated_if_a_product_is_added_to_an_association(): void {
+    public function it_is_updated_if_a_product_is_added_to_an_association(): void
+    {
         $product = new Product();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -844,7 +807,8 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(true);
     }
 
-    public function it_is_not_updated_if_a_product_to_add_to_an_association_already_exists(): void {
+    public function it_is_not_updated_if_a_product_to_add_to_an_association_already_exists(): void
+    {
         $product = new Product();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -878,7 +842,8 @@ class ProductSpec extends ObjectBehavior
         $this->removeAssociatedProduct($product, 'x_sell');
     }
 
-    public function it_is_updated_if_a_product_is_removed_from_an_association(): void {
+    public function it_is_updated_if_a_product_is_removed_from_an_association(): void
+    {
         $product = new Product();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -893,7 +858,8 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(true);
     }
 
-    public function it_is_not_updated_if_a_product_to_remove_from_an_association_does_not_exist(): void {
+    public function it_is_not_updated_if_a_product_to_remove_from_an_association_does_not_exist(): void
+    {
         $product = new Product();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -944,7 +910,8 @@ class ProductSpec extends ObjectBehavior
         $this->addAssociatedProductModel($productModel, 'x_sell');
     }
 
-    public function it_is_updated_if_a_product_model_is_added_to_an_association(): void {
+    public function it_is_updated_if_a_product_model_is_added_to_an_association(): void
+    {
         $productModel = new ProductModel();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -958,7 +925,8 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(true);
     }
 
-    public function it_is_not_updated_if_a_product_model_to_add_to_an_association_already_exists(): void {
+    public function it_is_not_updated_if_a_product_model_to_add_to_an_association_already_exists(): void
+    {
         $productModel = new ProductModel();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -992,7 +960,8 @@ class ProductSpec extends ObjectBehavior
         $this->removeAssociatedProductModel($productModel, 'x_sell');
     }
 
-    public function it_is_updated_if_a_product_model_is_removed_from_an_association(): void {
+    public function it_is_updated_if_a_product_model_is_removed_from_an_association(): void
+    {
         $productModel = new ProductModel();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -1007,7 +976,8 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(true);
     }
 
-    public function it_is_not_updated_if_a_product_model_to_remove_from_an_association_does_not_exist(): void {
+    public function it_is_not_updated_if_a_product_model_to_remove_from_an_association_does_not_exist(): void
+    {
         $productModel = new ProductModel();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -1058,7 +1028,8 @@ class ProductSpec extends ObjectBehavior
         $this->addAssociatedGroup($group, 'x_sell');
     }
 
-    public function it_is_updated_if_a_group_is_added_to_an_association(): void {
+    public function it_is_updated_if_a_group_is_added_to_an_association(): void
+    {
         $group = new Group();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -1072,7 +1043,8 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(true);
     }
 
-    public function it_is_not_updated_if_a_group_to_add_to_an_association_already_exists(): void {
+    public function it_is_not_updated_if_a_group_to_add_to_an_association_already_exists(): void
+    {
         $group = new Group();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -1105,7 +1077,8 @@ class ProductSpec extends ObjectBehavior
         $this->removeAssociatedGroup($group, 'x_sell');
     }
 
-    public function it_is_updated_if_a_group_is_removed_from_an_association(): void {
+    public function it_is_updated_if_a_group_is_removed_from_an_association(): void
+    {
         $group = new Group();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -1120,7 +1093,8 @@ class ProductSpec extends ObjectBehavior
         $this->isDirty()->shouldBe(true);
     }
 
-    public function it_is_not_updated_if_a_group_to_remove_from_an_association_does_not_exist(): void {
+    public function it_is_not_updated_if_a_group_to_remove_from_an_association_does_not_exist(): void
+    {
         $group = new Group();
         $xsellAssociation = new ProductAssociation();
         $xsellType = new AssociationType();
@@ -1150,5 +1124,298 @@ class ProductSpec extends ObjectBehavior
 
         $this->getAssociatedGroups('x_sell')->shouldBeLike(new ArrayCollection([$plate, $spoon]));
         $this->getAssociatedGroups('another_association_type')->shouldReturn(null);
+    }
+
+    public function it_is_updated_when_quantified_associations_are_updated(): void
+    {
+        $this->patchQuantifiedAssociations(
+            [
+                'product_set' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 1],
+                        ['identifier' => 'my_other_product', 'quantity' => 10],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt', 'quantity' => 1],
+                        ['identifier' => 'model_jeans', 'quantity' => 1],
+                    ],
+                ],
+            ]
+        );
+        $this->cleanup();
+
+        $this->patchQuantifiedAssociations(
+            [
+                'product_set' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 5],
+                        ['identifier' => 'yet_another_product', 'quantity' => 2],
+                    ],
+                ],
+            ]
+        );
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_when_quantified_associations_are_not_updated(): void
+    {
+        $this->patchQuantifiedAssociations(
+            [
+                'product_set' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 1],
+                        ['identifier' => 'my_other_product', 'quantity' => 10],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt', 'quantity' => 1],
+                        ['identifier' => 'model_jeans', 'quantity' => 1],
+                    ],
+                ],
+            ]
+        );
+        $this->cleanup();
+
+        $this->patchQuantifiedAssociations(
+            [
+                'product_set' => [
+                    'product_models' => [
+                        ['identifier' => 'model_jeans', 'quantity' => 1],
+                        ['identifier' => 'model_tshirt', 'quantity' => 1],
+                    ],
+                ],
+            ]
+        );
+        $this->isDirty()->shouldBe(false);
+    }
+
+    public function it_is_updated_when_clearing_non_empty_quantified_associations(): void
+    {
+        $this->patchQuantifiedAssociations(
+            [
+                'product_set' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 1],
+                        ['identifier' => 'my_other_product', 'quantity' => 10],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt', 'quantity' => 1],
+                        ['identifier' => 'model_jeans', 'quantity' => 1],
+                    ],
+                ],
+            ]
+        );
+        $this->cleanup();
+
+        $this->clearQuantifiedAssociations();
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_when_clearing_empty_quantified_associations(): void
+    {
+        $this->patchQuantifiedAssociations(
+            [
+                'product_set' => [
+                    'products' => [],
+                    'product_models' => [],
+                ],
+            ]
+        );
+        $this->cleanup();
+
+        $this->clearQuantifiedAssociations();
+        $this->isDirty()->shouldBe(false);
+    }
+
+    public function it_is_updated_when_merging_new_quantified_associations(): void
+    {
+        $this->patchQuantifiedAssociations(
+            [
+                'associationB' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 1],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 4],
+                    ],
+                ],
+                'associationA' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 4],
+                        ['identifier' => 'my_other_product', 'quantity' => 2],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 1],
+                    ],
+                ],
+            ]
+        );
+        $this->cleanup();
+
+        $this->mergeQuantifiedAssociations(
+            QuantifiedAssociationCollection::createFromNormalized(
+                [
+                    'associationB' => [
+                        'products' => [
+                            ['identifier' => 'another_product', 'quantity' => 4],
+                        ],
+                    ],
+                ]
+            )
+        );
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_updated_when_merging_quantified_associations_with_an_updated_quantity(): void
+    {
+        $this->patchQuantifiedAssociations(
+            [
+                'associationB' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 1],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 4],
+                    ],
+                ],
+                'associationA' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 4],
+                        ['identifier' => 'my_other_product', 'quantity' => 2],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 1],
+                    ],
+                ],
+            ]
+        );
+        $this->cleanup();
+
+        $this->mergeQuantifiedAssociations(
+            QuantifiedAssociationCollection::createFromNormalized(
+                [
+                    'associationB' => [
+                        'products' => [
+                            ['identifier' => 'my_product', 'quantity' => 20],
+                        ],
+                    ],
+                ]
+            )
+        );
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_when_merging_identical_quantified_associations(): void
+    {
+        $this->patchQuantifiedAssociations(
+            [
+                'associationB' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 1],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 4],
+                    ],
+                ],
+                'associationA' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 4],
+                        ['identifier' => 'my_other_product', 'quantity' => 2],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 1],
+                    ],
+                ],
+            ]
+        );
+        $this->cleanup();
+
+        $this->mergeQuantifiedAssociations(
+            QuantifiedAssociationCollection::createFromNormalized(
+                [
+                    'associationA' => [
+                        'products' => [
+                            ['identifier' => 'my_product', 'quantity' => 4],
+                        ],
+                    ],
+                    'associationB' => [
+                        'product_models' => [
+                            ['identifier' => 'model_tshirt_2', 'quantity' => 3],
+                        ],
+                    ],
+                ]
+            )
+        );
+        $this->isDirty()->shouldBe(false);
+    }
+
+    public function it_is_updated_when_filtering_associated_products_or_product_models_from_quantified_associations()
+    {
+        $this->patchQuantifiedAssociations(
+            [
+                'associationB' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 1],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 4],
+                    ],
+                ],
+                'associationsA' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 4],
+                        ['identifier' => 'my_other_product', 'quantity' => 2],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 1],
+                    ],
+                ],
+            ]
+        );
+        $this->cleanup();
+
+        $this->filterQuantifiedAssociations(['my_product'], ['model_tshirt_2']);
+        $this->isDirty()->shouldBe(true);
+    }
+
+    public function it_is_not_updated_when_keeping_all_associated_products_or_models()
+    {
+        $this->patchQuantifiedAssociations(
+            [
+                'associationB' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 1],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 4],
+                    ],
+                ],
+                'associationsA' => [
+                    'products' => [
+                        ['identifier' => 'my_product', 'quantity' => 4],
+                        ['identifier' => 'my_other_product', 'quantity' => 2],
+                    ],
+                    'product_models' => [
+                        ['identifier' => 'model_tshirt_1', 'quantity' => 3],
+                        ['identifier' => 'model_tshirt_2', 'quantity' => 1],
+                    ],
+                ],
+            ]
+        );
+        $this->cleanup();
+
+        $this->filterQuantifiedAssociations(
+            ['my_product', 'my_other_product'],
+            ['model_tshirt_1', 'model_tshirt_2']
+        );
+        $this->isDirty()->shouldBe(false);
     }
 }
