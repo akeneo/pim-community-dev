@@ -44,6 +44,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
+            - '@security.authorization_checker'
 
     pim_enrich.controller.rest.job_execution:
         public: true

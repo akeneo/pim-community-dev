@@ -45,7 +45,9 @@ define([
           processData: false,
         })
           .then(response => {
-            router.redirect(response.redirectUrl);
+            if (response.redirectUrl){
+              router.redirect(response.redirectUrl);
+            }
           })
           .fail(response => {
             if (undefined !== response.responseJSON.message) {
