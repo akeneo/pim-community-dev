@@ -93,11 +93,11 @@
 - PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
 - BH-138: clear Locale cache on save
 - CXP-493: Do not save products when they were not actually updated. In order to do so, the product now returns copies of
-  its collections (values, categories, groups and associations). Practically, this means that such a collection cannot be directly
+  its collections (values, categories, groups, associations and quantified associations). Practically, this means that such a collection cannot be directly
   updated "from outside" anymore (e.g: `$product->getCategories()->add($category)` **won't update the product anymore**,
   you should now use `$product->addCategory($category)` to achieve it)  
 - CXP-544: Do not save product models when they were not actually updated. As for products, the product model
-  will now return copies of its collections (values, categories and associations)
+  will now return copies of its collections (values, categories, associations and quantified associations)
 
 # Technical Improvements
 
