@@ -23,7 +23,6 @@ use League\Flysystem\FilesystemInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,6 +32,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -103,6 +103,9 @@ class JobInstanceController
     /** @var FilesystemInterface */
     protected $filesystem;
 
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
@@ -123,6 +126,8 @@ class JobInstanceController
      * @param EventDispatcherInterface              $eventDispatcher
      * @param CollectionFilterInterface             $inputFilter
      * @param string                                $uploadTmpDir
+     * @param FilesystemInterface                   $filesystem
+ * @param AuthorizationCheckerInterface             $authorizationChecker
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -143,7 +148,8 @@ class JobInstanceController
         JobInstanceFactory $jobInstanceFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        FilesystemInterface $filesystem
+        FilesystemInterface $filesystem,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -164,6 +170,7 @@ class JobInstanceController
         $this->eventDispatcher       = $eventDispatcher;
         $this->inputFilter           = $inputFilter;
         $this->filesystem            = $filesystem;
+        $this->authorizationChecker  = $authorizationChecker;
     }
 
     /**
@@ -464,11 +471,15 @@ class JobInstanceController
 
         $jobExecution = $this->launchJob($jobInstance);
 
+        if (!$this->authorizationChecker->isGranted('pim_importexport_import_execution_show')) {
+            return new JsonResponse('', 200);
+        }
+
         return new JsonResponse([
             'redirectUrl' => '#' . $this->router->generate(
-                sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()),
-                ['id' => $jobExecution->getId()]
-            )
+                    sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()),
+                    ['id' => $jobExecution->getId()]
+                )
         ], 200);
     }
 
