@@ -56,11 +56,13 @@ final class InitializeProductsEvaluationsCommand extends Command
             'This operation can take a lot of time depending on the number of products.'
         ]);
 
-        $confirm = $io->confirm('Are you sure you want to proceed ?', false);
+        if ($input->isInteractive()) {
+            $confirm = $io->confirm('Are you sure you want to proceed ?', false);
 
-        if ($confirm !== true) {
-            $io->writeln('Operation aborted. Nothing has been done.');
-            return 0;
+            if ($confirm !== true) {
+                $io->text('Operation aborted. Nothing has been done.');
+                return 0;
+            }
         }
 
         $this->initializeProducts($io);
@@ -71,10 +73,19 @@ final class InitializeProductsEvaluationsCommand extends Command
 
     private function initializeProducts(SymfonyStyle $io): void
     {
+        $io->text('Computing number of products to initialize...');
+
         $productCount = intval($this->dbConnection->executeQuery(<<<SQL
 SELECT COUNT(*) FROM pim_catalog_product;
 SQL
         )->fetchColumn());
+
+        if ($productCount === 0) {
+            $io->text('There are no products to initialize.');
+            return;
+        }
+
+        $io->text(sprintf('Initialzing evaluation of %d products...', $productCount));
 
         $progressBar = new ProgressBar($io, $productCount);
         $progressBar->start();
@@ -98,17 +109,26 @@ SQL;
         }
 
         $progressBar->clear();
-        $io->writeln(sprintf('%d products evaluations have been initialized.', $productCount));
+        $io->success('All the products evaluations have been initialized.');
     }
 
     private function initializeProductModels(SymfonyStyle $io): void
     {
-        $productCount = intval($this->dbConnection->executeQuery(<<<SQL
+        $io->text('Computing number of product models to initialize...');
+
+        $productModelCount = intval($this->dbConnection->executeQuery(<<<SQL
 SELECT COUNT(*) FROM pim_catalog_product_model;
 SQL
         )->fetchColumn());
 
-        $progressBar = new ProgressBar($io, $productCount);
+        if ($productModelCount === 0) {
+            $io->text('There are no product models to initialize.');
+            return;
+        }
+
+        $io->text(sprintf('Initialzing evaluation of %d product models...', $productModelCount));
+
+        $progressBar = new ProgressBar($io, $productModelCount);
         $progressBar->start();
 
         $criteria = array_map(fn ($criterionCode) => strval($criterionCode), $this->productModelCriteriaRegistry->getCriterionCodes());
@@ -130,7 +150,7 @@ SQL;
         }
 
         $progressBar->clear();
-        $io->writeln(sprintf('%d product models evaluations have been initialized.', $productCount));
+        $io->success('All the product models evaluations have been initialized.');
     }
 
     private function buildCriteriaEvaluationsValues(array $productIds, array $criteria): array
