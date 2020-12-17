@@ -1,7 +1,7 @@
 <?php return [
     'port'             => 8088,
     'ip'               => '0.0.0.0',
-    'expectations-dir' => __DIR__ . '/expectations',
+    'expectations-dir' => __DIR__ . '/Expectations',
     'debug'            => false,
     'factory-class'    => 'Mcustiel\Phiremock\Server\Factory\Factory',
 ];
