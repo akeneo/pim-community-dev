@@ -2,7 +2,7 @@
 
 namespace Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -11,13 +11,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ConnectionCloser
 {
-    /** @var RegistryInterface */
-    protected $doctrineRegistry;
+    protected ManagerRegistry $doctrineRegistry;
 
-    /**
-     * @param RegistryInterface $registry
-     */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->doctrineRegistry = $registry;
     }
