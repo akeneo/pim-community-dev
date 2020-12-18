@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use League\Flysystem\FilesystemInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,7 +33,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -103,8 +103,8 @@ class JobInstanceController
     /** @var FilesystemInterface */
     protected $filesystem;
 
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
+    /** @var SecurityFacade */
+    protected $securityFacade;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
@@ -127,7 +127,7 @@ class JobInstanceController
      * @param CollectionFilterInterface             $inputFilter
      * @param string                                $uploadTmpDir
      * @param FilesystemInterface                   $filesystem
-     * @param AuthorizationCheckerInterface             $authorizationChecker
+     * @param SecurityFacade                        $securityFacade
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -149,7 +149,7 @@ class JobInstanceController
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
         FilesystemInterface $filesystem,
-        AuthorizationCheckerInterface $authorizationChecker
+        SecurityFacade $securityFacade
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -170,7 +170,7 @@ class JobInstanceController
         $this->eventDispatcher       = $eventDispatcher;
         $this->inputFilter           = $inputFilter;
         $this->filesystem            = $filesystem;
-        $this->authorizationChecker  = $authorizationChecker;
+        $this->securityFacade        = $securityFacade;
     }
 
     /**
@@ -471,7 +471,7 @@ class JobInstanceController
 
         $jobExecution = $this->launchJob($jobInstance);
 
-        if (!$this->authorizationChecker->isGranted('pim_importexport_import_execution_show')) {
+        if (!$this->securityFacade->isGranted('pim_importexport_import_execution_show')) {
             return new JsonResponse('', 200);
         }
 
