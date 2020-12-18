@@ -1,7 +1,6 @@
 import React from 'react';
 import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
 import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
-import {LabelCell} from 'akeneomeasure/pages/common/Table';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {Badge, Table} from 'akeneo-design-system';
 
@@ -20,7 +19,7 @@ const UnitRow = ({unit, isStandardUnit, isSelected = false, isInvalid = false, o
 
   return (
     <Table.Row isSelected={isSelected} onClick={() => onRowSelected(unit.code)}>
-      <LabelCell>{getUnitLabel(unit, locale)}</LabelCell>
+      <Table.Cell rowTitle={true}>{getUnitLabel(unit, locale)}</Table.Cell>
       <Table.Cell>
         <span>{unit.code}</span>
         {isStandardUnit && <Badge level="tertiary">{translate('measurements.family.standard_unit')}</Badge>}

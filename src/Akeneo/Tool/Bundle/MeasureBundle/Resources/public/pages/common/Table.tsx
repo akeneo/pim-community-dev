@@ -16,11 +16,4 @@ const HeaderCell = styled(Table.HeaderCell)`
   top: 44px;
 `;
 
-//And this?
-const LabelCell = styled(Table.Cell)`
-  color: ${getColor('brand', 100)};
-  font-style: italic;
-  font-weight: bold;
-`;
-
-export {TablePlaceholder, HeaderCell, LabelCell};
+export {TablePlaceholder, HeaderCell};
