@@ -3,4 +3,8 @@ akeneo_data_quality_insights:
     consistency: Cohérence
   attribute_grid:
     quality_column_label: Qualité
+    to_improve_locale: A améliorer en {{ locale }}
+  product_grid:
+    filter_label:
+      spelling_quality: Qualité orthographique
 Consistency: Cohérence
