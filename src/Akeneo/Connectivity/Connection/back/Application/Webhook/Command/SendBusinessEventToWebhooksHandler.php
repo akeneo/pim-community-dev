@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
+use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSkipOwnEventLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
+use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\CountHourlyEventsApiRequestQuery;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetConnectionUserForFakeSubscription;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiRequestCountRepository;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -38,9 +41,12 @@ final class SendBusinessEventToWebhooksHandler
     private WebhookEventBuilder $builder;
     private LoggerInterface $logger;
     private GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription;
-    private string $pimSource;
-    private ?\Closure $getTimeCallable;
+    private EventsApiRequestCountRepository $eventsApiRequestRepository;
     private CacheClearerInterface $cacheClearer;
+    private CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery;
+    private string $pimSource;
+    private int $webhookRequestsLimit;
+    private ?\Closure $getTimeCallable;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -49,8 +55,11 @@ final class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         GetConnectionUserForFakeSubscription $connectionUserForFakeSubscription,
+        EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
+        CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery,
         string $pimSource,
+        int $webhookRequestsLimit,
         ?callable $getTimeCallable = null
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
@@ -59,13 +68,33 @@ final class SendBusinessEventToWebhooksHandler
         $this->builder = $builder;
         $this->logger = $logger;
         $this->connectionUserForFakeSubscription = $connectionUserForFakeSubscription;
-        $this->pimSource = $pimSource;
-        $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
+        $this->eventsApiRequestRepository = $eventsApiRequestRepository;
         $this->cacheClearer = $cacheClearer;
+        $this->countHourlyEventsApiRequestQuery = $countHourlyEventsApiRequestQuery;
+        $this->pimSource = $pimSource;
+        $this->webhookRequestsLimit = $webhookRequestsLimit;
+        $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
     {
+        $hourlyEventsApiRequestCount = $this->countHourlyEventsApiRequestQuery->execute(
+            new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
+        );
+
+        if ($this->webhookRequestsLimit < $hourlyEventsApiRequestCount) {
+            $this->logger->info(
+                json_encode(
+                    (EventSubscriptionRequestsLimitReachedLog::fromLimit(
+                        $this->webhookRequestsLimit
+                    ))->toLog(),
+                    JSON_THROW_ON_ERROR
+                )
+            );
+
+            return;
+        }
+
         $webhooks = $this->selectActiveWebhooksQuery->execute();
         $isFake = false;
 
@@ -83,8 +112,8 @@ final class SendBusinessEventToWebhooksHandler
         $event = $command->event();
 
         $requests = function () use ($event, $webhooks) {
+            $apiEventsRequestCount = 0;
             $cumulatedTimeMs = 0;
-            $eventBuiltCount = 0;
             $startTime = $this->getTime();
 
             foreach ($webhooks as $webhook) {
@@ -111,12 +140,13 @@ final class SendBusinessEventToWebhooksHandler
                     }
 
                     $cumulatedTimeMs += $this->getTime() - $startTime;
-                    $eventBuiltCount++;
 
                     yield new WebhookRequest(
                         $webhook,
                         $webhookEvents
                     );
+
+                    $apiEventsRequestCount++;
 
                     $startTime = $this->getTime();
                 } catch (WebhookEventDataBuilderNotFoundException $dataBuilderNotFoundException) {
@@ -124,14 +154,17 @@ final class SendBusinessEventToWebhooksHandler
                 }
             }
 
-            if ($eventBuiltCount > 0) {
+            $this->eventsApiRequestRepository
+                ->upsert(new \DateTimeImmutable('now', new \DateTimeZone('UTC')), $apiEventsRequestCount);
+
+            if ($apiEventsRequestCount > 0) {
                 $this->logger->info(
                     json_encode(
                         (new EventSubscriptionEventBuildLog(
                             count($webhooks),
                             $event,
                             $cumulatedTimeMs,
-                            $eventBuiltCount
+                            $apiEventsRequestCount
                         ))->toLog(),
                         JSON_THROW_ON_ERROR
                     )
@@ -162,7 +195,10 @@ final class SendBusinessEventToWebhooksHandler
                     if ($username === $event->getAuthor()->name()) {
                         $this->logger->info(
                             json_encode(
-                                (EventSubscriptionSkipOwnEventLog::fromEvent($event, $webhook->connectionCode()))->toLog(),
+                                (EventSubscriptionSkipOwnEventLog::fromEvent(
+                                    $event,
+                                    $webhook->connectionCode()
+                                ))->toLog(),
                                 JSON_THROW_ON_ERROR
                             )
                         );
@@ -203,7 +239,7 @@ final class SendBusinessEventToWebhooksHandler
             return call_user_func($this->getTimeCallable);
         }
 
-        return (int) round(microtime(true) * 1000);
+        return (int)round(microtime(true) * 1000);
     }
 
     /**

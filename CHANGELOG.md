@@ -67,6 +67,8 @@
 - PIM-9590: Fix "Default product grid view" multiple times on user settings page
 - CPM-86: Fix undefined tab on job profile edit
 - PIM-9596: Fix attribute options manual sorting
+- PIM-9598: Fix quick export when the bs_Cyrl_BA locale is used.
+- RAC-435: Fix fatal error for user that migrate from 4.0 with product values format that doesn't correspond to expected format
 
 ## New features
 
@@ -77,6 +79,7 @@
 - RAC-123: Add possibility to export product/product model with labels instead of code
 - RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI
 - RAC-277: Add job progress and remaining time in the UI
+- CPM-93: Add a default value for Yes/No attributes; this default value is applied when creating a new product or product model
 
 ## Improvements
 
@@ -92,11 +95,11 @@
 - PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
 - BH-138: clear Locale cache on save
 - CXP-493: Do not save products when they were not actually updated. In order to do so, the product now returns copies of
-  its collections (values, categories, groups and associations). Practically, this means that such a collection cannot be directly
+  its collections (values, categories, groups, associations and quantified associations). Practically, this means that such a collection cannot be directly
   updated "from outside" anymore (e.g: `$product->getCategories()->add($category)` **won't update the product anymore**,
   you should now use `$product->addCategory($category)` to achieve it)  
 - CXP-544: Do not save product models when they were not actually updated. As for products, the product model
-  will now return copies of its collections (values, categories and associations)
+  will now return copies of its collections (values, categories, associations and quantified associations)
 
 # Technical Improvements
 
@@ -215,7 +218,6 @@
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController` to replace `Doctrine\ORM\EntityRepository $attributeGroupRepo` by `Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface $attributeGroupRepo`
 - Change `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface` interface to add `getWithVariants()`
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup` to replace `Doctrine\DBAL\Driver\Connection $connection` by `Doctrine\DBAL\Connection $connection`
-- Add `clearCache` method in `Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface`
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface` to
     - remove the `setFamilyId()` method
     - extend the new `Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware` interface (with `isDirty()` and `cleanup()` methods)
@@ -235,6 +237,7 @@
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand` to
     - add `\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
+- Change the `Oro\Bundle\PimDataGridBundle\Controller\ProductExportController` class to remove the `getRequest()` method
 - Change signature of `createInversedAssociation()` from `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface`
     - remove `AssociationInterface $association`
     - add `string $associationTypeCode` and `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface $associatedEntity`
@@ -260,6 +263,10 @@
   - add argument `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\AssociationFieldClearer`: add argument `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater`   
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter`: add argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory` to
+    - add `Psr\Log\LoggerInterface $logger`
+- Move `Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface` to `Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface`
+
 ### CLI commands
 
 The following CLI commands have been deleted:

@@ -1,0 +1,5 @@
+services:
+  akeneo.pim.storage_utils.cache.cached_queries_clearer:
+    class: Akeneo\Tool\Component\StorageUtils\Cache\CachedQueriesClearer
+    arguments:
+      - !tagged_iterator akeneo.pim.cached_query

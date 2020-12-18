@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Meta, Story, ArgsTable, Canvas, StoryTable} from '@storybook/addon-docs/blocks';
+import {ArgsTable, Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
 import {Table} from './Table.tsx';
 import {Badge, Button, Image} from '..';
 import {rows, sortRows} from './shared-stories-data';
@@ -16,6 +16,17 @@ import {rows, sortRows} from './shared-stories-data';
     'Table.Cell': Table.Cell,
     'Table.ActionCell': Table.ActionCell
   }}
+  argTypes={{
+    displayImage: {control: {type: 'boolean'}, description: 'Show or hide the "Image" column'},
+    displayRowTitle: {control: {type: 'boolean'}, description: 'Define the "Name" column as row title'},
+    isSelectable: {table: {disable: true}},
+    displayCheckbox: {table: {disable: true}},
+    children: {table: {disable: true}},
+  }}
+  args={{
+    displayRowTitle: false,
+    displayImage: true,
+  }}
 />
 
 # Table (Beta)
@@ -31,32 +42,36 @@ To compare information, for example how many products are completed versus how m
 ## Basic table
 <Canvas>
   <Story name="Standard">
-    <Table>
-      <Table.Header>
-        <Table.HeaderCell>Image</Table.HeaderCell>
-        <Table.HeaderCell>Name</Table.HeaderCell>
-        <Table.HeaderCell>Family</Table.HeaderCell>
-        <Table.HeaderCell>Order</Table.HeaderCell>
-        <Table.HeaderCell>Genus</Table.HeaderCell>
-        <Table.HeaderCell>Conservation status</Table.HeaderCell>
-        <Table.HeaderCell>Actions</Table.HeaderCell>
-      </Table.Header>
-      <Table.Body>
-        <Table.Row>
-          <Table.Cell><Image src='https://picsum.photos/seed/akeneo/200/140' alt='The alt' /></Table.Cell>
-          <Table.Cell>Giant panda</Table.Cell>
-          <Table.Cell>Ursidae</Table.Cell>
-          <Table.Cell>Carnivora</Table.Cell>
-          <Table.Cell>Ursus</Table.Cell>
-          <Table.Cell><Badge level='warning'>vu</Badge></Table.Cell>
-          <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+    {args => (
+      <Table>
+        <Table.Header>
+          {args.displayImage &&
+          <Table.HeaderCell>Image</Table.HeaderCell>}
+          <Table.HeaderCell>Name</Table.HeaderCell>
+          <Table.HeaderCell>Family</Table.HeaderCell>
+          <Table.HeaderCell>Order</Table.HeaderCell>
+          <Table.HeaderCell>Genus</Table.HeaderCell>
+          <Table.HeaderCell>Conservation status</Table.HeaderCell>
+          <Table.HeaderCell>Actions</Table.HeaderCell>
+        </Table.Header>
+        <Table.Body>
+          <Table.Row>
+            {args.displayImage &&
+            <Table.Cell><Image src='https://picsum.photos/seed/akeneo/200/140' alt='The alt'/></Table.Cell>}
+            <Table.Cell rowTitle={args.displayRowTitle}>Giant panda</Table.Cell>
+            <Table.Cell>Ursidae</Table.Cell>
+            <Table.Cell>Carnivora</Table.Cell>
+            <Table.Cell>Ursus</Table.Cell>
+            <Table.Cell><Badge level='warning'>vu</Badge></Table.Cell>
+            <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+    )}
   </Story>
 </Canvas>
 
-<ArgsTable story="Standard" />
+<ArgsTable story="Standard"/>
 
 ## Sortable header
 <Canvas>
@@ -79,41 +94,45 @@ To compare information, for example how many products are completed versus how m
         })
       }
       const sortedRows = sortRows(rows, sortedColumn.columnName, sortedColumn.sortDirection);
-        return (
-          <Table>
-            <Table.Header>
-                <Table.HeaderCell>Image</Table.HeaderCell>
-                <Table.HeaderCell isSortable={true} onDirectionChange={handleDirectionChange('name')} sortDirection={computeDirection('name')}>Name</Table.HeaderCell>
-                <Table.HeaderCell isSortable={true} onDirectionChange={handleDirectionChange('family')} sortDirection={computeDirection('family')}>Family</Table.HeaderCell>
-                <Table.HeaderCell>Order</Table.HeaderCell>
-                <Table.HeaderCell>Genus</Table.HeaderCell>
-                <Table.HeaderCell>Conservation status</Table.HeaderCell>
-                <Table.HeaderCell>Actions</Table.HeaderCell>
-            </Table.Header>
-            <Table.Body>
-              {
-                sortedRows.map((row) => {
-                  return (
-                    <Table.Row key={row.name}>
-                      <Table.Cell><Image src={row.image} alt='The alt' /></Table.Cell>
-                      <Table.Cell>{row.name}</Table.Cell>
-                      <Table.Cell>{row.family}</Table.Cell>
-                      <Table.Cell>{row.order}</Table.Cell>
-                      <Table.Cell>{row.genus}</Table.Cell>
-                      <Table.Cell>
-                        <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
-                      </Table.Cell>
-                      <Table.ActionCell>
-                        <Button level='primary' onClick={() => {}} ghost>Button</Button>
-                      </Table.ActionCell>
-                    </Table.Row>
-                  )
-                })
-              }
-            </Table.Body>
-          </Table>
-        );
-      }
+      return (
+        <Table>
+          <Table.Header>
+            <Table.HeaderCell>Image</Table.HeaderCell>
+            <Table.HeaderCell isSortable={true} onDirectionChange={handleDirectionChange('name')}
+                              sortDirection={computeDirection('name')}>Name</Table.HeaderCell>
+            <Table.HeaderCell isSortable={true} onDirectionChange={handleDirectionChange('family')}
+                              sortDirection={computeDirection('family')}>Family</Table.HeaderCell>
+            <Table.HeaderCell>Order</Table.HeaderCell>
+            <Table.HeaderCell>Genus</Table.HeaderCell>
+            <Table.HeaderCell>Conservation status</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Header>
+          <Table.Body>
+            {
+              sortedRows.map((row) => {
+                return (
+                  <Table.Row key={row.name}>
+                    <Table.Cell><Image src={row.image} alt='The alt'/></Table.Cell>
+                    <Table.Cell>{row.name}</Table.Cell>
+                    <Table.Cell>{row.family}</Table.Cell>
+                    <Table.Cell>{row.order}</Table.Cell>
+                    <Table.Cell>{row.genus}</Table.Cell>
+                    <Table.Cell>
+                      <Badge
+                        level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                    </Table.Cell>
+                    <Table.ActionCell>
+                      <Button level='primary' onClick={() => {
+                      }} ghost>Button</Button>
+                    </Table.ActionCell>
+                  </Table.Row>
+                )
+              })
+            }
+          </Table.Body>
+        </Table>
+      );
+    }
     }
   </Story>
 </Canvas>
@@ -145,14 +164,17 @@ To compare information, for example how many products are completed versus how m
             {
               rows.map((row) => {
                 return (
-                  <Table.Row key={row.id} onSelectToggle={() => {handleToggleSelected(row.id)}} isSelected={selectedLines.indexOf(row.id) !== -1}>
-                    <Table.Cell><Image src={row.image} alt='The alt' /></Table.Cell>
+                  <Table.Row key={row.id} onSelectToggle={() => {
+                    handleToggleSelected(row.id)
+                  }} isSelected={selectedLines.indexOf(row.id) !== -1}>
+                    <Table.Cell><Image src={row.image} alt='The alt'/></Table.Cell>
                     <Table.Cell>{row.name}</Table.Cell>
                     <Table.Cell>{row.family}</Table.Cell>
                     <Table.Cell>{row.order}</Table.Cell>
                     <Table.Cell>{row.genus}</Table.Cell>
                     <Table.Cell>
-                      <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                      <Badge
+                        level={row.conservation_status_level}>{row.conservation_status}</Badge>
                     </Table.Cell>
                     <Table.ActionCell>
                       <Button level='primary' ghost>Button</Button>
@@ -172,7 +194,9 @@ To compare information, for example how many products are completed versus how m
 <Canvas>
   <Story name="Clickable lines">
     {args => {
-      const [data, setData] = useState(rows.map(row => {return {...row, count: 0}}));
+      const [data, setData] = useState(rows.map(row => {
+        return {...row, count: 0}
+      }));
       const handleClick = (rowId) => {
         setData(data => {
           return data.map((row) => {
@@ -197,13 +221,14 @@ To compare information, for example how many products are completed versus how m
               data.map((row) => {
                 return (
                   <Table.Row key={row.id} onClick={() => handleClick(row.id)}>
-                    <Table.Cell><Image src={row.image} alt='The alt' /></Table.Cell>
+                    <Table.Cell><Image src={row.image} alt='The alt'/></Table.Cell>
                     <Table.Cell>{row.name}</Table.Cell>
                     <Table.Cell>{row.family}</Table.Cell>
                     <Table.Cell>{row.order}</Table.Cell>
                     <Table.Cell>{row.genus}</Table.Cell>
                     <Table.Cell>
-                      <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                      <Badge
+                        level={row.conservation_status_level}>{row.conservation_status}</Badge>
                     </Table.Cell>
                     <Table.Cell>{row.count}</Table.Cell>
                     <Table.ActionCell>
@@ -213,7 +238,7 @@ To compare information, for example how many products are completed versus how m
                 )
               })
             }
-            </Table.Body>
+          </Table.Body>
         </Table>
       );
     }}
@@ -232,7 +257,9 @@ To compare information, for example how many products are completed versus how m
           setSelectedLines(selectedLines.filter(currentValue => currentValue !== lineId));
         }
       }
-      const [data, setData] = useState(rows.map(row => {return {...row, count: 0}}));
+      const [data, setData] = useState(rows.map(row => {
+        return {...row, count: 0}
+      }));
       const handleClick = (rowId) => {
         setData(data => {
           return data.map((row) => {
@@ -256,14 +283,17 @@ To compare information, for example how many products are completed versus how m
             {
               data.map((row) => {
                 return (
-                  <Table.Row key={row.id} onClick={() => handleClick(row.id)} onSelectToggle={() => {handleToggleSelected(row.id)}} isSelected={selectedLines.indexOf(row.id) !== -1}>
-                    <Table.Cell><Image src={row.image} alt='The alt' /></Table.Cell>
+                  <Table.Row key={row.id} onClick={() => handleClick(row.id)} onSelectToggle={() => {
+                    handleToggleSelected(row.id)
+                  }} isSelected={selectedLines.indexOf(row.id) !== -1}>
+                    <Table.Cell><Image src={row.image} alt='The alt'/></Table.Cell>
                     <Table.Cell>{row.name}</Table.Cell>
                     <Table.Cell>{row.family}</Table.Cell>
                     <Table.Cell>{row.order}</Table.Cell>
                     <Table.Cell>{row.genus}</Table.Cell>
                     <Table.Cell>
-                      <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                      <Badge
+                        level={row.conservation_status_level}>{row.conservation_status}</Badge>
                     </Table.Cell>
                     <Table.Cell>{row.count}</Table.Cell>
                     <Table.ActionCell>

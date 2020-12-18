@@ -68,6 +68,19 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
+const BottomButtons = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+`;
+
+const TopRightButtons = styled(BottomButtons)`
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  margin: 0;
+`;
+
 type ModalProps = {
   /**
    * Prop to display or hide the Modal.
@@ -98,7 +111,10 @@ type ModalProps = {
 /**
  * The Modal Component is used to display a secondary window over the content.
  */
-const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
+const Modal: React.FC<ModalProps> & {
+  BottomButtons: typeof BottomButtons;
+  TopRightButtons: typeof TopRightButtons;
+} = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   useShortcut(Key.Escape, onClose);
 
   const portalNode = document.createElement('div');
@@ -132,17 +148,7 @@ const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: M
   );
 };
 
-Modal.BottomButtons = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-`;
-
-Modal.TopRightButtons = styled(Modal.BottomButtons)`
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  margin: 0;
-`;
+Modal.BottomButtons = BottomButtons;
+Modal.TopRightButtons = TopRightButtons;
 
 export {Modal, SectionTitle, Title};

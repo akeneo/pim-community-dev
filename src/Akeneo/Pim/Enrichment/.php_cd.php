@@ -14,6 +14,7 @@ $rules = [
         'Symfony\Component',
         'Symfony\Bundle',
         'Akeneo\Tool',
+        'Akeneo\Channel\Component\Query\PublicApi',
         'Akeneo\Pim\Enrichment\Component',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',

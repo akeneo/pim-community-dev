@@ -616,16 +616,27 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
+    public function getQuantifiedAssociations(): QuantifiedAssociationCollection
+    {
+        return clone $this->quantifiedAssociationCollection;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
     {
         if (null === $this->quantifiedAssociationCollection) {
             return;
         }
 
+        $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
             ->filterProductIdentifiers($productIdentifiersToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
-        $this->dirty = true;
+        if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
+            $this->dirty = true;
+        }
     }
 
     /**
@@ -636,8 +647,12 @@ class ProductModel implements ProductModelInterface
         if ($this->quantifiedAssociationCollection === null) {
             return;
         }
+
+        $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->merge($quantifiedAssociations);
-        $this->dirty = true;
+        if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
+            $this->dirty = true;
+        }
     }
 
     /**
@@ -649,10 +664,13 @@ class ProductModel implements ProductModelInterface
             return;
         }
 
+        $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->patchQuantifiedAssociations(
             $submittedQuantifiedAssociations
         );
-        $this->dirty = true;
+        if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
+            $this->dirty = true;
+        }
     }
 
     /**
@@ -664,8 +682,11 @@ class ProductModel implements ProductModelInterface
             return;
         }
 
+        $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->clearQuantifiedAssociations();
-        $this->dirty = true;
+        if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
+            $this->dirty = true;
+        }
     }
 
     /**

@@ -52,6 +52,12 @@ pim_analytics:
     php_extensions: Extensions PHP
     email_domains: Domaine associé
     api_connection: Connexions API
+    data_source.tracked: Nombre de connexions de type "source" monitorées
+    data_source.untracked: Nombre de connexions de type "source" non monitorées
+    data_destination.tracked: Nombre de connexions de type "destination" monitorées
+    data_destination.untracked: Nombre de connexions de type "destination" non monitorées
+    other.tracked: Nombre de connexions de type "autre" monitorées
+    other.untracked: Nombre de connexions de type "autre" non monitorées
   acl:
     system_info:
       index: Informations système

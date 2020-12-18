@@ -12,8 +12,6 @@ use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
-use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -286,21 +284,5 @@ class ItemStep extends AbstractStep implements TrackableStepInterface, LoggerAwa
     {
         $this->stepExecution->incrementProcessedItems($processedItemsCount);
         $this->jobRepository->updateStepExecution($this->stepExecution);
-    }
-
-    private function isStopping(StepExecution $stepExecution): bool
-    {
-        return $this->stoppable &&
-            null !== $this->sqlGetJobExecutionStatus &&
-            BatchStatus::STOPPING === $this->sqlGetJobExecutionStatus->getByJobExecutionId(
-                $stepExecution->getJobExecution()->getId()
-            )->getValue();
-    }
-
-    private function stop(StepExecution $stepExecution): void
-    {
-        $stepExecution->setExitStatus(new ExitStatus(ExitStatus::STOPPED));
-        $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
-        $this->getJobRepository()->updateStepExecution($stepExecution);
     }
 }

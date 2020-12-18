@@ -14,8 +14,11 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -25,7 +28,7 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         Security $security,
         MessageBusInterface $messageBus
     ) {
-        $this->beConstructedWith($security, $messageBus, 10);
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
     }
 
     function it_is_initializable(): void
@@ -51,7 +54,7 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10);
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
 
         $product = new Product();
         $product->setIdentifier('blue_jean');
@@ -85,7 +88,7 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
         $security->getUser()->willReturn($user);
 
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10);
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
 
         $product1 = new Product();
         $product1->setIdentifier('product_identifier_1');
@@ -129,9 +132,12 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
     function it_only_supports_product_removed_event($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10);
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
 
-        $this->createAndDispatchProductEvents(new GenericEvent(new \stdClass()));
+        $this->createAndDispatchProductEvents(new GenericEvent(
+            new \stdClass(),
+            ['unitary' => true]
+        ));
 
         Assert::assertCount(0, $messageBus->messages);
     }
@@ -139,21 +145,45 @@ class DispatchProductRemovedEventSubscriberSpec extends ObjectBehavior
     function it_does_nothing_if_the_user_is_not_defined($security)
     {
         $messageBus = $this->getMessageBus();
-        $this->beConstructedWith($security, $messageBus, 10);
+        $this->beConstructedWith($security, $messageBus, 10, new NullLogger());
 
         $product = new Product();
         $product->setIdentifier('product_identifier');
 
         $security->getUser()->willReturn(null);
 
-        // TODO: https://akeneo.atlassian.net/browse/CXP-443
-        // $this->shouldThrow(
-        //     new \LogicException('User should not be null.')
-        // )->during('produceBusinessSaveEvent', [new GenericEvent($product)]);
-
-        $this->createAndDispatchProductEvents(new GenericEvent($product));
+        $this->createAndDispatchProductEvents(new GenericEvent(
+            $product,
+            ['unitary' => true]
+        ));
 
         Assert::assertCount(0, $messageBus->messages);
+    }
+
+    function it_logs_an_error_if_the_event_bus_transport_raise_an_exception($security, LoggerInterface $logger)
+    {
+        $messageBus = new class () implements MessageBusInterface
+        {
+            public function dispatch($message, array $stamps = []): Envelope
+            {
+                throw new TransportException('An error occured');
+            }
+        };
+        $this->beConstructedWith($security, $messageBus, 10, $logger);
+
+        $user = new User();
+        $user->setUsername('julia');
+        $security->getUser()->willReturn($user);
+
+        $product = new Product();
+        $product->setIdentifier('product_identifier');
+
+        $this->createAndDispatchProductEvents(new GenericEvent(
+            $product,
+            ['unitary' => true]
+        ));
+
+        $logger->critical('An error occured')->shouldBeCalled();
     }
 
     private function getMessageBus()

@@ -7,35 +7,37 @@ Feature: Import attributes
     Given the "footwear" catalog configuration
     And the following CSV file to import:
       """
-      type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit;sort_order;decimals_allowed;negative_allowed
-      pim_catalog_text;shortname;Shortname;info;0;1;1;0;;;;1;;
-      pim_catalog_simpleselect;provider;Provider;info;0;1;0;0;;;;4;;
-      pim_catalog_multiselect;season;"Season";info;0;1;0;0;;;;2;;
-      pim_catalog_textarea;commentary;Commentary;info;0;1;1;1;;;;7;;
-      pim_catalog_price_collection;public_price;"Public price";marketing;0;1;0;0;;;;0;0;
-      pim_catalog_simpleselect;grade;Grade;marketing;0;1;0;0;;;;0;;
-      pim_catalog_simpleselect;width;Width;sizes;0;1;0;0;;;;3;;
-      pim_catalog_simpleselect;hue;Hue;colors;0;1;0;0;;;;13;;
-      pim_catalog_simpleselect;buckle_color;"Buckle color";colors;0;1;0;0;;;;0;;
-      pim_catalog_image;image_upload;"Image upload";media;0;0;0;0;gif,png;;;0;;
-      pim_catalog_date;release;"Release date";info;0;1;0;0;;;;0;;
-      pim_catalog_metric;lace_length;"Lace length";info;0;0;0;0;;Length;CENTIMETER;0;0;0
+      type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit;sort_order;decimals_allowed;negative_allowed;default_value
+      pim_catalog_text;shortname;Shortname;info;0;1;1;0;;;;1;;;
+      pim_catalog_simpleselect;provider;Provider;info;0;1;0;0;;;;4;;;
+      pim_catalog_multiselect;season;"Season";info;0;1;0;0;;;;2;;;
+      pim_catalog_textarea;commentary;Commentary;info;0;1;1;1;;;;7;;;
+      pim_catalog_price_collection;public_price;"Public price";marketing;0;1;0;0;;;;0;0;;
+      pim_catalog_simpleselect;grade;Grade;marketing;0;1;0;0;;;;0;;;
+      pim_catalog_simpleselect;width;Width;sizes;0;1;0;0;;;;3;;;
+      pim_catalog_simpleselect;hue;Hue;colors;0;1;0;0;;;;13;;;
+      pim_catalog_simpleselect;buckle_color;"Buckle color";colors;0;1;0;0;;;;0;;;
+      pim_catalog_image;image_upload;"Image upload";media;0;0;0;0;gif,png;;;0;;;
+      pim_catalog_date;release;"Release date";info;0;1;0;0;;;;0;;;
+      pim_catalog_metric;lace_length;"Lace length";info;0;0;0;0;;Length;CENTIMETER;0;0;0;
+      pim_catalog_boolean;is_enabled;"Is enabled";info;0;1;1;0;;;;0;;;1
       """
     When the attributes are imported via the job csv_footwear_attribute_import
     Then there should be the following attributes:
-      | type                         | code         | label-en_US  | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | sort_order |
-      | pim_catalog_text             | shortname    | Shortname    | info      | 0      | 1                      | 1           | 0        |                    |               |                     | 1          |
-      | pim_catalog_simpleselect     | provider     | Provider     | info      | 0      | 1                      | 0           | 0        |                    |               |                     | 4          |
-      | pim_catalog_multiselect      | season       | Season       | info      | 0      | 1                      | 0           | 0        |                    |               |                     | 2          |
-      | pim_catalog_textarea         | commentary   | Commentary   | info      | 0      | 1                      | 1           | 1        |                    |               |                     | 7          |
-      | pim_catalog_price_collection | public_price | Public price | marketing | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |
-      | pim_catalog_simpleselect     | grade        | Grade        | marketing | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |
-      | pim_catalog_simpleselect     | width        | Width        | sizes     | 0      | 1                      | 0           | 0        |                    |               |                     | 3          |
-      | pim_catalog_simpleselect     | hue          | Hue          | colors    | 0      | 1                      | 0           | 0        |                    |               |                     | 13         |
-      | pim_catalog_simpleselect     | buckle_color | Buckle color | colors    | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |
-      | pim_catalog_image            | image_upload | Image upload | media     | 0      | 0                      | 0           | 0        | gif,png            |               |                     | 0          |
-      | pim_catalog_date             | release      | Release date | info      | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |
-      | pim_catalog_metric           | lace_length  | Lace length  | info      | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          | 0          |
+      | type                         | code         | label-en_US  | group     | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit | sort_order | default_value |
+      | pim_catalog_text             | shortname    | Shortname    | info      | 0      | 1                      | 1           | 0        |                    |               |                     | 1          |               |
+      | pim_catalog_simpleselect     | provider     | Provider     | info      | 0      | 1                      | 0           | 0        |                    |               |                     | 4          |               |
+      | pim_catalog_multiselect      | season       | Season       | info      | 0      | 1                      | 0           | 0        |                    |               |                     | 2          |               |
+      | pim_catalog_textarea         | commentary   | Commentary   | info      | 0      | 1                      | 1           | 1        |                    |               |                     | 7          |               |
+      | pim_catalog_price_collection | public_price | Public price | marketing | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |               |
+      | pim_catalog_simpleselect     | grade        | Grade        | marketing | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |               |
+      | pim_catalog_simpleselect     | width        | Width        | sizes     | 0      | 1                      | 0           | 0        |                    |               |                     | 3          |               |
+      | pim_catalog_simpleselect     | hue          | Hue          | colors    | 0      | 1                      | 0           | 0        |                    |               |                     | 13         |               |
+      | pim_catalog_simpleselect     | buckle_color | Buckle color | colors    | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |               |
+      | pim_catalog_image            | image_upload | Image upload | media     | 0      | 0                      | 0           | 0        | gif,png            |               |                     | 0          |               |
+      | pim_catalog_date             | release      | Release date | info      | 0      | 1                      | 0           | 0        |                    |               |                     | 0          |               |
+      | pim_catalog_metric           | lace_length  | Lace length  | info      | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          | 0          |               |
+      | pim_catalog_boolean          | is_enabled   | Is enabled   | info      | 0      | 1                      | 1           | 0        |                    |               |                     | 0          | 1             |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   @javascript

@@ -1,6 +1,7 @@
-import * as Exports from './index';
 import fs from 'fs';
-import '@testing-library/jest-dom/extend-expect';
+import * as Exports from './index';
+
+const EXCLUDE = ['Input'];
 
 const getSubfolders = (paths: string[]) =>
   paths.reduce(
@@ -10,10 +11,11 @@ const getSubfolders = (paths: string[]) =>
         .readdirSync(path, {withFileTypes: true})
         .filter(
           directory =>
+            !EXCLUDE.includes(directory.name) &&
             directory.isDirectory() &&
             fs.readdirSync(path + '/' + directory.name, {withFileTypes: true}).some(file => file.isFile())
         )
-        .map(folder => folder.name),
+        .map(directory => directory.name),
     ],
     []
   );

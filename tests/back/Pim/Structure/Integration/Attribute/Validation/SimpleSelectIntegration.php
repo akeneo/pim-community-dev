@@ -93,4 +93,9 @@ class SimpleSelectIntegration extends AbstractAttributeTestCase
     {
         $this->assertDoesNotHaveAMaxFileSize('pim_catalog_simpleselect');
     }
+
+    public function testSimpleSelectShouldNotHaveADefaultValue()
+    {
+        $this->assertDoesNotHaveDefaultValue('pim_catalog_simpleselect');
+    }
 }

@@ -53,7 +53,6 @@ const HeaderCell = styled.th`
 const LabelCell = styled.td`
   color: ${props => props.theme.color.purple100};
   font-style: italic;
-  font-weight: bold;
   padding-left: 20px;
 `;
 

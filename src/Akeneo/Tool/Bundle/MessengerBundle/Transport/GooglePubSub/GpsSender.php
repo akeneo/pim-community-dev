@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
+use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\PubSub\Topic;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Transport\Sender\SenderInterface;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
@@ -31,10 +33,14 @@ final class GpsSender implements SenderInterface
     {
         $encodedMessage = $this->serializer->encode($envelope);
 
-        $this->topic->publish([
-            'data' => $encodedMessage['body'],
-            'attributes' => $encodedMessage['headers'],
-        ]);
+        try {
+            $this->topic->publish([
+                'data' => $encodedMessage['body'],
+                'attributes' => $encodedMessage['headers'],
+            ]);
+        } catch (GoogleException $e) {
+            throw new TransportException($e->getMessage(), 0, $e);
+        }
 
         return $envelope;
     }

@@ -9,9 +9,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\UserManagement\Component\Model\UserInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -24,15 +25,21 @@ final class DispatchProductRemovedEventSubscriber implements EventSubscriberInte
     private Security $security;
     private MessageBusInterface $messageBus;
     private int $maxBulkSize;
+    private LoggerInterface $logger;
 
     /** @var array<ProductRemoved> */
     private array $events = [];
 
-    public function __construct(Security $security, MessageBusInterface $messageBus, int $maxBulkSize)
-    {
+    public function __construct(
+        Security $security,
+        MessageBusInterface $messageBus,
+        int $maxBulkSize,
+        LoggerInterface $logger
+    ) {
         $this->security = $security;
         $this->messageBus = $messageBus;
         $this->maxBulkSize = $maxBulkSize;
+        $this->logger = $logger;
     }
 
     public static function getSubscribedEvents(): array
@@ -51,7 +58,7 @@ final class DispatchProductRemovedEventSubscriber implements EventSubscriberInte
             return;
         }
 
-        if (null === ($user = $this->getUser())) {
+        if (null === $user = $this->security->getUser()) {
             return;
         }
 
@@ -61,37 +68,27 @@ final class DispatchProductRemovedEventSubscriber implements EventSubscriberInte
             'category_codes' => $product->getCategoryCodes(),
         ];
 
-        $event = new ProductRemoved($author, $data);
+        $this->events[] = new ProductRemoved($author, $data);
 
         if ($postSaveEvent->hasArgument('unitary') && true === $postSaveEvent->getArgument('unitary')) {
-            $this->messageBus->dispatch(new BulkEvent([$event]));
-
-            return;
-        }
-
-        $this->events[] = $event;
-
-        if (count($this->events) >= $this->maxBulkSize) {
+            $this->dispatchBufferedProductEvents();
+        } elseif (count($this->events) >= $this->maxBulkSize) {
             $this->dispatchBufferedProductEvents();
         }
     }
 
     public function dispatchBufferedProductEvents(): void
     {
-        if (count($this->events) > 0) {
-            $this->messageBus->dispatch(new BulkEvent($this->events));
-            $this->events = [];
+        if (count($this->events) === 0) {
+            return;
         }
-    }
 
-    private function getUser(): ?UserInterface
-    {
-        $user = $this->security->getUser();
-        // TODO: https://akeneo.atlassian.net/browse/CXP-443
-        // if (null === $user) {
-        //     throw new \LogicException('User should not be null.');
-        // }
+        try {
+            $this->messageBus->dispatch(new BulkEvent($this->events));
+        } catch (TransportException $e) {
+            $this->logger->critical($e->getMessage());
+        }
 
-        return $user;
+        $this->events = [];
     }
 }

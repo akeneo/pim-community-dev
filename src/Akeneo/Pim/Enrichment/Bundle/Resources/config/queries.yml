@@ -39,6 +39,7 @@ services:
         class: Akeneo\Channel\Bundle\Doctrine\Query\FindActivatedCurrencies
         arguments:
             - '@doctrine.orm.entity_manager'
+        tags: ['akeneo.pim.cached_query']
 
     akeneo.pim.enrichment.product.grid.query.fetch_product_and_product_model_rows:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows'
@@ -341,6 +342,7 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\FindQuantifiedAssociationTypeCodes
         arguments:
             - '@database_connection'
+        tags: ['akeneo.pim.cached_query']
 
     akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_identifiers_query:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductIdentifiersQuery'

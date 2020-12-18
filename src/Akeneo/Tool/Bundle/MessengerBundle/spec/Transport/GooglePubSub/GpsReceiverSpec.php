@@ -6,11 +6,12 @@ namespace spec\Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Stamp\NativeMessageStamp;
 use Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\GpsReceiver;
+use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\PubSub\Message;
 use Google\Cloud\PubSub\Subscription;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\Stamp\TransportMessageIdStamp;
 use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 
@@ -91,5 +92,52 @@ class GpsReceiverSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->reject($envelope);
+    }
+
+    public function it_throws_a_transport_exception_if_an_error_is_raised_while_fetching_a_message($subscription): void
+    {
+        $subscription->pull([
+            'maxMessages' => 1,
+            'returnImmediately' => true,
+        ])
+            ->willThrow(GoogleException::class);
+
+        $this->shouldThrow(TransportException::class)
+            ->during('get');
+    }
+
+    public function it_throws_a_transport_exception_if_an_error_is_raised_while_acknowledging_a_message(
+        $subscription
+    ): void {
+        $gpsMessage = new Message(
+            [
+                'data' => 'My message!',
+            ]
+        );
+
+        $envelope = new Envelope((object)['message' => 'My message!'], [new NativeMessageStamp($gpsMessage)]);
+
+        $subscription->acknowledge($gpsMessage)
+            ->willThrow(GoogleException::class);
+
+        $this->shouldThrow(TransportException::class)
+            ->during('ack', [$envelope]);
+    }
+
+    public function it_throws_a_transport_exception_if_an_error_is_raised_while_rejecting_a_message($subscription): void
+    {
+        $gpsMessage = new Message(
+            [
+                'data' => 'My message!',
+            ]
+        );
+
+        $envelope = new Envelope((object)['message' => 'My message!'], [new NativeMessageStamp($gpsMessage)]);
+
+        $subscription->acknowledge($gpsMessage)
+            ->willThrow(GoogleException::class);
+
+        $this->shouldThrow(TransportException::class)
+            ->during('reject', [$envelope]);
     }
 }
