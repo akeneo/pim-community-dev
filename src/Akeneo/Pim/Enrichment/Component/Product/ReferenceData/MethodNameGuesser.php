@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ReferenceData;
 
-use Symfony\Component\Inflector\Inflector;
+use Symfony\Component\String\Inflector\EnglishInflector;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -35,7 +35,7 @@ class MethodNameGuesser
         $name = $dataName;
 
         if ($singularify) {
-            $name = Inflector::singularize($dataName);
+            $name = (new EnglishInflector())->singularize($dataName);
 
             if (is_array($name)) {
                 throw new \LogicException(
