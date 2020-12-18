@@ -245,13 +245,6 @@ SQL;
         $this->assertUnauthorized('sub_product_model', $data, sprintf($message, 'sub_product_model_view_attribute'));
     }
 
-    public function testUpdateAxesAttributeFail()
-    {
-        $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
-        $data = '{"values": {"sub_product_model_axis_attribute": [{"locale": null, "scope":null, "data":false}]}}';
-        $this->assertUnprocessableEntity('sub_product_model', $data);
-    }
-
     public function testUpdateByModifyingNotViewableLocale()
     {
         $this->loader->loadProductModelsFixturesForAttributeAndLocalePermissions();
