@@ -42,11 +42,3 @@ Feature: Edit a variant product
     Then the field Meta title should be read only
     And the field Meta description should be read only
     And I should see the text "This attribute can be updated in the common attributes."
-
-  @critical
-  Scenario: Axis attributes are read only
-    Given I am logged in as "Mary"
-    And I edit the "1111111119" product
-    And I visit the "Product" group
-    Then the field Size (variant axis) should be read only
-    And I should see the text "Size (variant axis)"

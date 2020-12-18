@@ -40,29 +40,6 @@ class UpdateVariantProductIntegration extends TestCase
         );
     }
 
-    public function testTheVariantAxisValuesCannotBeUpdated(): void
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'values' => [
-                'size' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'xs',
-                    ],
-                ],
-            ],
-        ]);
-
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        $this->assertEquals(1, $errors->count());
-        $this->assertEquals(
-            'Variant axis "size" cannot be modified, "[xs]" given',
-            $errors->get(0)->getMessage()
-        );
-    }
-
     /**
      * {@inheritdoc}
      */

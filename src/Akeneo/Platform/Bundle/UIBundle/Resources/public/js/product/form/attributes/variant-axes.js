@@ -30,7 +30,6 @@ define(['underscore', 'oro/translator', 'pim/form'], function (_, __, BaseForm) 
       const field = event.field;
 
       if (axesAttributeCodes.includes(field.attribute.code)) {
-        field.setEditable(false);
         this.updateFieldElements(field);
       }
 

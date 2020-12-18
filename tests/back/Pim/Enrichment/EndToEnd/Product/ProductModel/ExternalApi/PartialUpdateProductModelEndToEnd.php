@@ -223,24 +223,9 @@ JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
 
-        $expectedContent =
-            <<<JSON
-{
-    "code": 422,
-    "message": "Validation failed.",
-    "errors": [
-        {
-          "property": "attribute",
-          "message": "Variant axis \"a_simple_select\" cannot be modified, \"[optionA]\" given"
-        }
-    ]
-}
-JSON;
-
         $response = $client->getResponse();
 
-        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 
     public function testUpdateSubProductModelWithNoParentGiven()
