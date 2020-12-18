@@ -126,4 +126,9 @@ class TextIntegration extends AbstractAttributeTestCase
     {
         $this->assertDoesNotHaveAMaxFileSize('pim_catalog_text');
     }
+
+    public function testTextShouldNotHaveADefaultValue()
+    {
+        $this->assertDoesNotHaveDefaultValue('pim_catalog_text');
+    }
 }

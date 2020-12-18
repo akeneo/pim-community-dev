@@ -338,4 +338,26 @@ class PriceCollectionIntegration extends AbstractAttributeTestCase
         $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
         $this->assertSame('maxFileSize', $violations->get(0)->getPropertyPath());
     }
+
+    public function testPriceCollectionShouldNotHaveADefaultValue()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code' => 'new_price',
+                'type' => 'pim_catalog_price_collection',
+                'group' => 'attributeGroupA',
+                'decimals_allowed' => true,
+                'default_value' => false,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute type cannot have a default value.', $violations->get(0)->getMessage());
+        $this->assertSame('default_value', $violations->get(0)->getPropertyPath());
+    }
 }

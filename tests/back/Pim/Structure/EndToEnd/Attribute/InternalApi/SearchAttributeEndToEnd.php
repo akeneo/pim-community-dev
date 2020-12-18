@@ -168,6 +168,7 @@ JSON;
             "scopable": false,
             "labels": [],
             "auto_option_sorting": null,
+            "default_value": null,
             "empty_value": null,
             "field_type": "akeneo-text-field",
             "filter_types": {
@@ -211,6 +212,7 @@ JSON;
             "scopable": false,
             "labels": [],
             "auto_option_sorting": null,
+            "default_value": null,
             "empty_value": {
                 "amount": null,
                 "unit": "KILOWATT"

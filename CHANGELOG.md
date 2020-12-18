@@ -79,6 +79,7 @@
 - RAC-123: Add possibility to export product/product model with labels instead of code
 - RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI
 - RAC-277: Add job progress and remaining time in the UI
+- CPM-93: Add a default value for Yes/No attributes; this default value is applied when creating a new product or product model
 
 ## Improvements
 
@@ -263,6 +264,7 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter`: add argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory` to
     - add `Psr\Log\LoggerInterface $logger`
+- Move `Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface` to `Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface`
 
 ### CLI commands
 

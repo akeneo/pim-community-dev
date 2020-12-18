@@ -97,6 +97,7 @@ JSON;
             'scopable'               => false,
             'labels'                 => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -176,6 +177,7 @@ JSON;
             'scopable'               => false,
             'labels'                 => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -226,6 +228,7 @@ JSON;
             'scopable'               => false,
             'labels'                 => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -271,6 +274,7 @@ JSON;
             'scopable'               => false,
             'labels'                 => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -324,6 +328,7 @@ JSON;
             'scopable'               => false,
             'labels'                 => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -376,6 +381,7 @@ JSON;
             'scopable'               => false,
             'labels'                 => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -438,6 +444,7 @@ JSON;
                 'de_DE' => 'Family A2 DE',
             ],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $client = $this->createAuthenticatedClient();
