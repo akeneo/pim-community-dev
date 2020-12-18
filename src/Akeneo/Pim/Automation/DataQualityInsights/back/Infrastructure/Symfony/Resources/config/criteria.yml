@@ -19,7 +19,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForSpelling'
-            - '@monolog.logger.quality'
+            - '@logger'
         tags:
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
             - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }

@@ -27,12 +27,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CheckTextController
 {
-    private $textChecker;
+    private TextChecker $textChecker;
 
-    private $supportedLocaleValidator;
+    private SupportedLocaleValidator $supportedLocaleValidator;
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         TextChecker $textChecker,
@@ -55,12 +54,6 @@ class CheckTextController
         }
 
         try {
-            $this->logger->info('spelling evaluation', [
-                'source' => 'pef',
-                'value' => $text,
-                'localeCode' => strval($localeCode),
-            ]);
-
             $analysis = $this->textChecker->check($text, $localeCode);
         } catch (TextCheckFailedException $e) {
             $this->logger->error('spelling evaluation failed', ['message' => $e->getMessage()]);

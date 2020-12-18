@@ -26,7 +26,6 @@ services:
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.generate_dictionary'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
-                - '@akeneo.pim.automation.data_quality_insights.connector.step.log_metrics'
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
             - name: akeneo_batch.job.not_visible

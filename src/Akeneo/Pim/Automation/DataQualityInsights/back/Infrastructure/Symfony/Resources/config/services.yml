@@ -61,12 +61,12 @@ services:
         arguments:
             $checker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker'
             $globalOffsetCalculator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellGlobalOffsetCalculator'
-            $logger: '@monolog.logger.quality'
+            $logger: '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellSpellerProvider:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary'
-            - '@monolog.logger.quality'
+            - '@logger'
             - '%env(ASPELL_BINARY_PATH)%'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\SupportedLocale\ChainedSupportedLocaleValidator'

@@ -132,13 +132,6 @@ class EvaluateSpelling implements EvaluateCriterionInterface
             return [];
         }
 
-        $this->logger->info('spelling evaluation', [
-            'source' => 'evaluation',
-            'attributes' => array_keys($values),
-            'localeCode' => strval($localeCode),
-            'channelCode' => strval($channelCode)
-        ]);
-
         $results = $this->checker->check($values, $localeCode);
 
         return $this->computeSpellcheckResult($results, $weights);

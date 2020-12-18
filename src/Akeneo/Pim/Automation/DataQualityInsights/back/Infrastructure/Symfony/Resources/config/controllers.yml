@@ -4,7 +4,7 @@ services:
         arguments:
             $textChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker'
             $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
-            $logger: '@monolog.logger.quality'
+            $logger: '@logger'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductWordInDictionaryController:
         public: true
