@@ -44,8 +44,8 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
             preg_match('`\\\\(\w+)Controller`', $exception->getControllerClass(), $matches);
             $englishInflector = new EnglishInflector();
             $entityName = str_replace('_', ' ', $this->getInflector()->tableize(
-                $englishInflector->pluralize($matches[1])[0])
-            );
+                current($englishInflector->pluralize($matches[1]))
+            ));
 
             return sprintf('Access forbidden. You are not allowed to %s %s.', $actionName, $entityName);
         }
