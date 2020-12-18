@@ -44,5 +44,5 @@ Feature: Publish a product
     And I am on the "climate" attribute page
     And I visit the "Options" tab
     When I remove the "Hot" option
-    And I press the "Delete" button
+    And I confirm the deletion
     Then I should see the text "Impossible to remove attribute option linked to a published product"

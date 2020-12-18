@@ -100,6 +100,7 @@ Feature: List proposals
     And I am on the attributes page
     And I search "name"
     And I click on the "delete" action of the row which contains "Name"
+    And I fill the input labelled 'Please type "name"' with 'name'
     And I press the "Delete" button
     When I am on the proposals page
     Then I should see the following proposals:
@@ -120,10 +121,12 @@ Feature: List proposals
     And I am on the attributes page
     And I search "name"
     And I click on the "delete" action of the row which contains "Name"
+    And I fill the input labelled 'Please type "name"' with 'name'
     And I press the "Delete" button
     And I am on the attributes page
     And I search "description"
     And I click on the "delete" action of the row which contains "Description"
+    And I fill the input labelled 'Please type "description"' with 'description'
     And I press the "Delete" button
     When I am on the proposals page
     Then I should see the text "There is no proposal to review"

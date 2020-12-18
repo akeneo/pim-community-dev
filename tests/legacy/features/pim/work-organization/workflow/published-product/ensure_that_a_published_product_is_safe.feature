@@ -15,7 +15,7 @@ Feature: Ensure that a published product is safe
   Scenario: Fail to remove a product that has been published
     Given I am on the "my-jacket" product page
     And I press the secondary action "Delete"
-    And I press the "Delete" button
+    And I confirm the removal
     Then I am on the products grid
     And I should see product my-jacket
 
@@ -29,13 +29,14 @@ Feature: Ensure that a published product is safe
   Scenario: Successfully remove a family that is not linked to a published product
     Given I am on the "pants" family page
     And I press the secondary action "Delete"
-    And I press the "Delete" button
+    And I confirm the removal
     When I am on the families page
     Then I should not see family Pants
 
   Scenario: Fail to remove an attribute that is linked to a published product
     Given I am on the "handmade" attribute page
     And I press the secondary action "Delete"
+    And I fill the input labelled 'Please type "handmade"' with 'handmade'
     And I press the "Delete" button
     Then I am on the attributes page
     And I should see attribute Handmade
@@ -43,6 +44,7 @@ Feature: Ensure that a published product is safe
   Scenario: Successfully remove an attribute that is not linked to a published product
     Given I am on the "comment" attribute page
     And I press the secondary action "Delete"
+    And I fill the input labelled 'Please type "comment"' with 'comment'
     And I press the "Delete" button
     Then I am on the attributes page
     And I should not see attribute Comment
@@ -62,7 +64,7 @@ Feature: Ensure that a published product is safe
     Given I am on the "manufacturer" attribute page
     And I visit the "Options" tab
     When I remove the "Volcom" option
-    And I press the "Delete" button
+    And I confirm the deletion
     Then I should see the text "Impossible to remove attribute option linked to a published product"
     And the Options section should contain 4 options
 
@@ -70,7 +72,7 @@ Feature: Ensure that a published product is safe
     Given I am on the "manufacturer" attribute page
     And I visit the "Options" tab
     And I remove the "Desigual" option
-    And I press the "Delete" button
+    And I confirm the deletion
     When I save the attribute
     And I should see the flash message "Attribute successfully updated"
     Then the Options section should contain 3 options
@@ -79,7 +81,7 @@ Feature: Ensure that a published product is safe
     Given I am on the "weather_conditions" attribute page
     And I visit the "Options" tab
     When I remove the "dry" option
-    And I press the "Delete" button
+    And I confirm the deletion
     Then I should see the text "Impossible to remove attribute option linked to a published product"
     And the Options section should contain 5 options
 
@@ -88,7 +90,7 @@ Feature: Ensure that a published product is safe
     Given I am on the "weather_conditions" attribute page
     And I visit the "Options" tab
     And I remove the "hot" option
-    And I press the "Delete" button
+    And I confirm the deletion
     When I save the attribute
     And I should see the flash message "Attribute successfully updated"
     Then the Options section should contain 4 options
