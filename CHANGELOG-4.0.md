@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.79 (2020-12-18)
+
 ## Bug fixes
 
 - PIM-9551: Purge logs when calling the command akeneo:batch:purge-job-execution
