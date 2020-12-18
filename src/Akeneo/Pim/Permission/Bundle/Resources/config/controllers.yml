@@ -133,3 +133,4 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
             - '@oneup_flysystem.jobs_storage_filesystem'
+            - '@oro_security.security_facade'
