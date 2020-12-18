@@ -1,5 +1,6 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Badge} from './Badge.tsx';
+import {Skeleton} from '../../components';
 
 <Meta
   title="Components/Badge"
@@ -59,6 +60,21 @@ The status badge highlights the state of an item. *i.e.: enabled or disabled*.
             Danger
           </Badge>
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <Badge {...args}>Small</Badge>
+          <Badge {...args}>A very long badge</Badge>
+        </Skeleton>
       );
     }}
   </Story>

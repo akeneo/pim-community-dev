@@ -2,6 +2,8 @@ import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Override} from '../../shared';
+import {useSkeleton} from '../../hooks';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 
 type ButtonSize = 'small' | 'default';
 
@@ -105,7 +107,8 @@ const ContainerStyle = css<
     ghost: boolean;
     disabled: boolean;
     size: ButtonSize;
-  } & AkeneoThemedProps
+  } & SkeletonProps &
+    AkeneoThemedProps
 >`
   display: inline-block;
   border-width: 1px;
@@ -123,6 +126,7 @@ const ContainerStyle = css<
   transition: background-color 0.1s ease;
 
   ${getColorStyle}
+  ${applySkeletonStyle()}
 `;
 
 const ButtonContainer = styled.button`
@@ -167,7 +171,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const Component = undefined !== href ? LinkContainer : ButtonContainer;
-
+    const skeleton = useSkeleton();
     return (
       <Component
         level={level}
@@ -183,6 +187,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         onClick={handleAction}
         href={disabled ? undefined : href}
+        skeleton={skeleton}
         {...rest}
       >
         {children}

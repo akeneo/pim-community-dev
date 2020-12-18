@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Button} from './Button.tsx';
-import {Link} from '../Link/Link.tsx';
+import {Link, Skeleton} from '../../components';
 import LinkTo from '@storybook/addon-links/react';
 
 <Meta
@@ -159,6 +159,21 @@ If you want your button to act like a <LinkTo kind="Components/Link" story="Stan
             I am a disabled Link
           </Button>
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <Button {...args}>I am a Link</Button>
+          <Button {...args}>I am a disabled Link</Button>
+        </Skeleton>
       );
     }}
   </Story>

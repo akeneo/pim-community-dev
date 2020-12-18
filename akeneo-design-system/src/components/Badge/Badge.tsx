@@ -1,8 +1,10 @@
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
+import {useSkeleton} from '../../hooks';
 import React, {Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
 
-const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
+const BadgeContainer = styled.span<SkeletonProps & BadgeProps & AkeneoThemedProps>`
   display: inline-block;
   height: 18px;
   line-height: 16px;
@@ -22,6 +24,8 @@ const BadgeContainer = styled.span<BadgeProps & AkeneoThemedProps>`
     color: ${getColorForLevel(level, 140)};
     border-color: ${getColorForLevel(level, 100)};
   `}
+
+  ${applySkeletonStyle()}
 `;
 
 type BadgeProps = {
@@ -41,8 +45,10 @@ type BadgeProps = {
  */
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({level = 'primary', children, ...rest}: BadgeProps, forwardedRef: Ref<HTMLSpanElement>) => {
+    const skeleton = useSkeleton();
+
     return (
-      <BadgeContainer level={level} ref={forwardedRef} {...rest}>
+      <BadgeContainer level={level} ref={forwardedRef} {...rest} skeleton={skeleton}>
         {children}
       </BadgeContainer>
     );

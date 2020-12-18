@@ -1,8 +1,10 @@
 import React, {Ref, ReactNode, isValidElement, ReactElement} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {Badge, BadgeProps, Checkbox} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
+import {useSkeleton} from '../../hooks';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 
 type CardGridProps = {
   size?: 'normal' | 'big';
@@ -52,7 +54,7 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   }
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<SkeletonProps>`
   position: relative;
 
   ::before {
@@ -64,15 +66,28 @@ const ImageContainer = styled.div`
   :hover ${Overlay} {
     opacity: 50%;
   }
+
+  ${applySkeletonStyle(
+    css`
+      border-radius: 3px;
+      & img {
+        opacity: 0;
+      }
+    `
+  )}
 `;
 
-const CardLabel = styled.div`
+const CardLabel = styled.div<SkeletonProps>`
   display: flex;
   align-items: center;
   margin-top: 7px;
 
   > :first-child {
     margin-right: 6px;
+  }
+
+  & > label {
+    ${applySkeletonStyle()}
   }
 `;
 
@@ -81,6 +96,14 @@ const BadgeContainer = styled.div`
   z-index: 5;
   top: 10px;
   right: 10px;
+`;
+
+const Text = styled.span<SkeletonProps>`
+  ${applySkeletonStyle(
+    css`
+      border-radius: 3px;
+    `
+  )}
 `;
 
 type CardProps = Override<
@@ -135,17 +158,23 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     });
 
     const toggleSelect = undefined !== onSelect ? () => onSelect(!isSelected) : undefined;
+    const skeleton = useSkeleton();
 
     return (
       <CardContainer ref={forwardedRef} fit={fit} isSelected={isSelected} onClick={toggleSelect} {...rest}>
         {0 < badges.length && <BadgeContainer>{badges[0]}</BadgeContainer>}
-        <ImageContainer>
+        <ImageContainer skeleton={skeleton}>
           <Overlay />
           <img src={src} alt={texts[0]} />
         </ImageContainer>
-        <CardLabel>
-          {undefined !== onSelect && <Checkbox checked={isSelected} onChange={toggleSelect} />}
-          {texts}
+        <CardLabel skeleton={skeleton}>
+          {undefined !== onSelect ? (
+            <Checkbox checked={isSelected} onChange={toggleSelect}>
+              {texts}
+            </Checkbox>
+          ) : (
+            <Text skeleton={skeleton}>{texts}</Text>
+          )}
         </CardLabel>
       </CardContainer>
     );

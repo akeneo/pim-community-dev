@@ -2,8 +2,9 @@ import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {CheckIcon, CheckPartialIcon} from '../../icons';
-import {useId, useShortcut} from '../../hooks';
+import {useId, useShortcut, useSkeleton} from '../../hooks';
 import {Key, Override} from '../../shared';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 
 const checkTick = keyframes`
   to {
@@ -30,7 +31,7 @@ const TickIcon = styled(CheckIcon)`
   transition: opacity 0.1s ease-out;
 `;
 
-const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & AkeneoThemedProps>`
+const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean; skeleton: true} & AkeneoThemedProps>`
   background-color: transparent;
   height: 20px;
   width: 20px;
@@ -72,19 +73,28 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
       background-color: ${getColor('grey60')};
       border-color: ${getColor('grey100')};
     `}
+
+  ${applySkeletonStyle()}
 `;
 
-const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
+const LabelContainer = styled.label<{readOnly: boolean} & SkeletonProps & AkeneoThemedProps>`
   color: ${getColor('grey140')};
   font-weight: 400;
   font-size: 15px;
-  padding-left: 10px;
+  margin-left: 10px;
 
   ${props =>
     props.readOnly &&
     css`
       color: ${getColor('grey100')};
     `}
+
+  ${applySkeletonStyle(
+    css`
+      border-radius: 3px;
+      min-width: 50px;
+    `
+  )}
 `;
 
 type CheckboxChecked = boolean | 'mixed';
@@ -150,6 +160,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           id: checkboxId,
         }
       : {};
+    const skeleton = useSkeleton();
 
     return (
       <Container ref={forwardedRef} {...rest}>
@@ -162,12 +173,19 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
           aria-checked={isChecked}
           tabIndex={readOnly ? -1 : 0}
           onClick={handleChange}
+          skeleton={skeleton}
           {...forProps}
         >
-          {isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={20} />}
+          {!skeleton && (isMixed ? <CheckPartialIcon size={18} /> : <TickIcon size={20} />)}
         </CheckboxContainer>
         {children ? (
-          <LabelContainer onClick={handleChange} id={labelId} readOnly={readOnly} htmlFor={checkboxId}>
+          <LabelContainer
+            onClick={handleChange}
+            id={labelId}
+            readOnly={readOnly}
+            htmlFor={checkboxId}
+            skeleton={skeleton}
+          >
             {children}
           </LabelContainer>
         ) : null}

@@ -1,8 +1,10 @@
 import styled, {css} from 'styled-components';
 import React, {ReactNode, Ref} from 'react';
 import {AkeneoThemedProps, getColor} from '../../theme';
+import {useSkeleton} from '../../hooks';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 
-const LinkContainer = styled.a<{disabled: boolean} & AkeneoThemedProps>`
+const LinkContainer = styled.a<{disabled: boolean} & SkeletonProps & AkeneoThemedProps>`
   font-weight: 400;
   text-decoration: underline;
   color: ${({disabled}) => (disabled ? getColor('grey', 100) : getColor('brand', 100))};
@@ -26,6 +28,8 @@ const LinkContainer = styled.a<{disabled: boolean} & AkeneoThemedProps>`
         color: ${getColor('brand', 140)};
       }
     `};
+
+  ${applySkeletonStyle()}
 `;
 
 type LinkProps = {
@@ -56,11 +60,14 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     {disabled = false, target = '_self', href, children, ...rest}: LinkProps,
     forwardedRef: Ref<HTMLAnchorElement>
   ): React.ReactElement => {
+    const skeleton = useSkeleton();
+
     return (
       <LinkContainer
         disabled={disabled}
         ref={forwardedRef}
         target={target}
+        skeleton={skeleton}
         rel={target === '_blank' ? 'noopener noreferrer' : ''}
         {...(!disabled ? {href: href} : {})}
         {...rest}
