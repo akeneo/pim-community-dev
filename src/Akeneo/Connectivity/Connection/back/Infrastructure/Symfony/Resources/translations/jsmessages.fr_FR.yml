@@ -194,6 +194,9 @@ akeneo_connectivity.connection:
   webhook:
     title: Souscription aux événements (BETA)
     event_subscription: Souscription aux événements (BETA)
+    helper:
+      message: L'application connectée grâce à la connexion courante peut recevoir des événements grâce à l'Events API du PIM. Pour cela, merci de remplir l'URL ci-dessous. 
+      link: En savoir plus sur la configuration de la souscription aux événements...
     form:
       url: URL
       secret: Secret
@@ -203,6 +206,7 @@ akeneo_connectivity.connection:
       wrong_url: Cette valeur n'est pas une URL valide.
       required: Ce champ est obligatoire.
       not_found: Vous essayez de mettre à jour une connexion qui n'existe pas.
+      limit_reached: Vous avez atteint le nombre maximal de souscriptions aux événements activées. 
     flash:
       success: La souscription aux événements a bien été mise à jour.
       error: Désolé, une erreur s'est produit lors de la mise à jour de la souscription aux événements.
@@ -215,6 +219,9 @@ akeneo_connectivity.connection:
       flash:
         success: Le secret lié à la souscription aux événements a été régénéré avec succès.
         error: Désolé, une erreur s'est produite lors du renouvellement du secret lié à la souscription aux événements.
+    active_event_subscriptions_limit_reached:
+      message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite. 
+      link: En savoir plus sur la configuration de la souscription aux événements.
   error_management:
     connection_monitoring:
       title: Supervision
