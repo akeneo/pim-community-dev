@@ -7,7 +7,12 @@ import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
 import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
 import {SearchBar, NoDataSection, NoDataTitle, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {HeaderCell} from 'akeneomeasure/pages/common/Table';
+
+const SpacedTable = styled(Table)`
+  th {
+    padding-top: 15px;
+  }
+`;
 
 const TabContainer = styled.div`
   display: flex;
@@ -64,10 +69,10 @@ const UnitTab = ({
             </NoDataSection>
           )}
           {0 < filteredUnits.length && (
-            <Table>
-              <Table.Header>
-                <HeaderCell>{translate('pim_common.label')}</HeaderCell>
-                <HeaderCell>{translate('pim_common.code')}</HeaderCell>
+            <SpacedTable>
+              <Table.Header sticky={44}>
+                <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+                <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
               </Table.Header>
               <Table.Body>
                 {filteredUnits.map((unit, index) => (
@@ -81,7 +86,7 @@ const UnitTab = ({
                   />
                 ))}
               </Table.Body>
-            </Table>
+            </SpacedTable>
           )}
         </UnitList>
         <UnitDetails

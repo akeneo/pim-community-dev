@@ -7,22 +7,22 @@ type TableSortDirection = 'descending' | 'ascending' | 'none';
 
 type TableHeaderCellProps = {
   /**
-   * Define if the header can be sorted
+   * Define if the header can be sorted.
    */
   isSortable?: boolean;
 
   /**
-   * Function called when the user click on sort icon, required when isSortable
+   * Function called when the user click on sort icon, required when isSortable.
    */
   onDirectionChange?: (direction: TableSortDirection) => void;
 
   /**
-   * Define the sort direction
+   * Define the sort direction.
    */
   sortDirection?: TableSortDirection;
 
   /**
-   * Content of the header cell
+   * Content of the header cell.
    */
   children?: ReactNode;
 };
@@ -33,6 +33,7 @@ const HeaderCellContainer = styled.th<{isSortable: boolean; isSorted: boolean} &
   text-align: left;
   color: ${({isSorted}) => getColor(isSorted ? 'brand' : 'grey', 100)};
   font-weight: normal;
+  box-sizing: content-box;
 
   ${({isSortable}) =>
     isSortable &&

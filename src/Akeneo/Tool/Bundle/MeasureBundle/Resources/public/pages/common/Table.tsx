@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import {Table} from 'akeneo-design-system';
 
+//TODO replace with Skeleton RAC-445
 const TablePlaceholder = styled.div`
   display: grid;
   grid-row-gap: 10px;
@@ -10,10 +10,4 @@ const TablePlaceholder = styled.div`
   }
 `;
 
-//TODO should this be in the DSM?
-const HeaderCell = styled(Table.HeaderCell)`
-  position: sticky;
-  top: 44px;
-`;
-
-export {TablePlaceholder, HeaderCell};
+export {TablePlaceholder};
