@@ -218,7 +218,7 @@ jobs:
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
-      parallelism: 15
+      parallelism: 20
       steps:
           - attach_workspace:
                 at: ~/
@@ -250,7 +250,7 @@ jobs:
   test_back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
-    parallelism: 20
+    parallelism: 40
     steps:
       - attach_workspace:
           at: ~/
@@ -901,9 +901,9 @@ workflows:
           - test_deploy:
                 requires:
                     - build_prod
-#          - test_upgrade_from_last_release:
-#                requires:
-#                    - test_deploy
+          - test_upgrade_from_last_release:
+                requires:
+                    - test_deploy
           - deploy_pr_environment?:
                 type: approval
                 filters:
@@ -937,13 +937,7 @@ workflows:
                 requires:
                     - build_dev
 
-          - test_back_missing_structure_migrations:
-                requires:
-                    - build_dev
           - test_back_phpunit:
-                requires:
-                    - build_dev
-          - test_back_data_migrations:
                 requires:
                     - build_dev
           - test_back_integration_bounded_contexts:
@@ -955,19 +949,26 @@ workflows:
 
           - test_back_performance:
                 requires:
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - test_back_integration_bounded_contexts
-                    - test_back_integration_reference_entities
+                    - build_dev
 
           - test_onboarder_bundle:
+                requires:
+                    - build_dev
+
+          - test_back_missing_structure_migrations:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
                     - test_back_integration_reference_entities
-
+          - test_back_data_migrations:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+                    - test_back_phpunit
+                    - test_back_integration_bounded_contexts
+                    - test_back_integration_reference_entities
           - test_back_behat_legacy:
                 requires:
                     - test_back_static_and_acceptance
@@ -983,7 +984,6 @@ workflows:
                     - test_onboarder_bundle
                     - test_back_missing_structure_migrations
                     - test_back_data_migrations
-                    - test_deploy
 
   growth_edition_release:
       triggers:
@@ -1060,9 +1060,9 @@ workflows:
           - test_deploy:
                 requires:
                     - build_prod
-#          - test_upgrade_from_last_release:
-#                requires:
-#                    - build_prod
+          - test_upgrade_from_last_release:
+                requires:
+                    - build_prod
           - test_front_code_style:
                 requires:
                     - build_dev
