@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {getColor, Table} from 'akeneo-design-system';
+import {Table} from 'akeneo-design-system';
 
 const TablePlaceholder = styled.div`
   display: grid;
