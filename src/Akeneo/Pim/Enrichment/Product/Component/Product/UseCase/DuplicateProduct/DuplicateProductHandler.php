@@ -32,6 +32,7 @@ class DuplicateProductHandler
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
+
     /** @var RemoveUniqueAttributeValues */
     private $removeUniqueAttributeValues;
 
@@ -109,7 +110,7 @@ class DuplicateProductHandler
         $violations = $this->validator->validate($duplicatedProduct);
 
         if (0 === $violations->count()) {
-            $this->productSaver->save($duplicatedProduct);
+            $this->productSaver->save($duplicatedProduct, ['add_default_values' => false]);
             $removedUniqueAttributeCodesWithoutIdentifier = $this->getRemovedUniqueAttributeCodesWithoutIdentifier(
                 $productToDuplicate,
                 $duplicatedProduct

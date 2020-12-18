@@ -49,7 +49,12 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             groups:
                 - pim_catalog_asset_collection
                 - akeneo_asset
-
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
+            message: This attribute type cannot have a default value.
+            properties:
+                - default_value
+            groups:
+                - pim_catalog_asset_collection
 # Assets
 Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand:
     group_sequence:
