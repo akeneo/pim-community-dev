@@ -220,3 +220,5 @@ suites:
         psr4_prefix: Oro\Bundle\PimFilterBundle
         spec_path: src/Oro/Bundle/PimFilterBundle
         src_path: src/Oro/Bundle/PimFilterBundle
+extensions:
+    FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension: ~
