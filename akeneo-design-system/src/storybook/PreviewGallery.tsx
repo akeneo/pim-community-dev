@@ -67,4 +67,19 @@ const MessageBarContainer = styled.div`
   overflow: clip;
 `;
 
-export {StoryStyle, PreviewGrid, PreviewCard, PreviewContainer, LabelContainer, Subtitle, Content, MessageBarContainer};
+const Scrollable = styled.div<{height: number}>`
+  overflow: auto;
+  height: ${({height}) => height}px;
+`;
+
+export {
+  StoryStyle,
+  PreviewGrid,
+  PreviewCard,
+  PreviewContainer,
+  LabelContainer,
+  Subtitle,
+  Content,
+  MessageBarContainer,
+  Scrollable,
+};

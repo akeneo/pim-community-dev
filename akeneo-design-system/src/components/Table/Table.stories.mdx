@@ -1,20 +1,21 @@
 import {useState} from 'react';
 import {ArgsTable, Canvas, Meta, Story} from '@storybook/addon-docs/blocks';
 import {Table} from './Table.tsx';
-import {Badge, Button, Image} from '..';
+import {Badge, Button, Image} from '../../components';
 import {rows, sortRows} from './shared-stories-data';
+import {Scrollable} from '../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Table"
   component={Table}
   subcomponents={{
-    'Table': Table,
+    Table: Table,
     'Table.Header': Table.Header,
     'Table.HeaderCell': Table.HeaderCell,
     'Table.Body': Table.Body,
     'Table.Row': Table.Row,
     'Table.Cell': Table.Cell,
-    'Table.ActionCell': Table.ActionCell
+    'Table.ActionCell': Table.ActionCell,
   }}
   argTypes={{
     displayImage: {control: {type: 'boolean'}, description: 'Show or hide the "Image" column'},
@@ -40,13 +41,13 @@ Quickly select and execute bulk actions, such as deleting multiple products, exp
 To compare information, for example how many products are completed versus how many are in progress.
 
 ## Basic table
+
 <Canvas>
   <Story name="Standard">
     {args => (
       <Table>
         <Table.Header>
-          {args.displayImage &&
-          <Table.HeaderCell>Image</Table.HeaderCell>}
+          {args.displayImage && <Table.HeaderCell>Image</Table.HeaderCell>}
           <Table.HeaderCell>Name</Table.HeaderCell>
           <Table.HeaderCell>Family</Table.HeaderCell>
           <Table.HeaderCell>Order</Table.HeaderCell>
@@ -56,14 +57,23 @@ To compare information, for example how many products are completed versus how m
         </Table.Header>
         <Table.Body>
           <Table.Row>
-            {args.displayImage &&
-            <Table.Cell><Image src='https://picsum.photos/seed/akeneo/200/140' alt='The alt'/></Table.Cell>}
+            {args.displayImage && (
+              <Table.Cell>
+                <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
+              </Table.Cell>
+            )}
             <Table.Cell rowTitle={args.displayRowTitle}>Giant panda</Table.Cell>
             <Table.Cell>Ursidae</Table.Cell>
             <Table.Cell>Carnivora</Table.Cell>
             <Table.Cell>Ursus</Table.Cell>
-            <Table.Cell><Badge level='warning'>vu</Badge></Table.Cell>
-            <Table.ActionCell><Button level='primary' ghost>Button</Button></Table.ActionCell>
+            <Table.Cell>
+              <Badge level="warning">vu</Badge>
+            </Table.Cell>
+            <Table.ActionCell>
+              <Button level="primary" ghost>
+                Button
+              </Button>
+            </Table.ActionCell>
           </Table.Row>
         </Table.Body>
       </Table>
@@ -71,9 +81,10 @@ To compare information, for example how many products are completed versus how m
   </Story>
 </Canvas>
 
-<ArgsTable story="Standard"/>
+<ArgsTable story="Standard" />
 
 ## Sortable header
+
 <Canvas>
   <Story name="Sortable header">
     {args => {
@@ -81,74 +92,82 @@ To compare information, for example how many products are completed versus how m
         columnName: null,
         sortDirection: null,
       });
-      const computeDirection = (columnName) => {
+      const computeDirection = columnName => {
         if (columnName !== sortedColumn.columnName) {
           return 'none';
         }
         return sortedColumn.sortDirection;
-      }
-      const handleDirectionChange = (columnName) => (sortDirection) => {
+      };
+      const handleDirectionChange = columnName => sortDirection => {
         setSortedColumn({
           columnName: columnName,
-          sortDirection: sortDirection
-        })
-      }
+          sortDirection: sortDirection,
+        });
+      };
       const sortedRows = sortRows(rows, sortedColumn.columnName, sortedColumn.sortDirection);
       return (
         <Table>
           <Table.Header>
             <Table.HeaderCell>Image</Table.HeaderCell>
-            <Table.HeaderCell isSortable={true} onDirectionChange={handleDirectionChange('name')}
-                              sortDirection={computeDirection('name')}>Name</Table.HeaderCell>
-            <Table.HeaderCell isSortable={true} onDirectionChange={handleDirectionChange('family')}
-                              sortDirection={computeDirection('family')}>Family</Table.HeaderCell>
+            <Table.HeaderCell
+              isSortable={true}
+              onDirectionChange={handleDirectionChange('name')}
+              sortDirection={computeDirection('name')}
+            >
+              Name
+            </Table.HeaderCell>
+            <Table.HeaderCell
+              isSortable={true}
+              onDirectionChange={handleDirectionChange('family')}
+              sortDirection={computeDirection('family')}
+            >
+              Family
+            </Table.HeaderCell>
             <Table.HeaderCell>Order</Table.HeaderCell>
             <Table.HeaderCell>Genus</Table.HeaderCell>
             <Table.HeaderCell>Conservation status</Table.HeaderCell>
             <Table.HeaderCell>Actions</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {
-              sortedRows.map((row) => {
-                return (
-                  <Table.Row key={row.name}>
-                    <Table.Cell><Image src={row.image} alt='The alt'/></Table.Cell>
-                    <Table.Cell>{row.name}</Table.Cell>
-                    <Table.Cell>{row.family}</Table.Cell>
-                    <Table.Cell>{row.order}</Table.Cell>
-                    <Table.Cell>{row.genus}</Table.Cell>
-                    <Table.Cell>
-                      <Badge
-                        level={row.conservation_status_level}>{row.conservation_status}</Badge>
-                    </Table.Cell>
-                    <Table.ActionCell>
-                      <Button level='primary' onClick={() => {
-                      }} ghost>Button</Button>
-                    </Table.ActionCell>
-                  </Table.Row>
-                )
-              })
-            }
+            {sortedRows.map(row => (
+              <Table.Row key={row.name}>
+                <Table.Cell>
+                  <Image src={row.image} alt="The alt" />
+                </Table.Cell>
+                <Table.Cell>{row.name}</Table.Cell>
+                <Table.Cell>{row.family}</Table.Cell>
+                <Table.Cell>{row.order}</Table.Cell>
+                <Table.Cell>{row.genus}</Table.Cell>
+                <Table.Cell>
+                  <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                </Table.Cell>
+                <Table.ActionCell>
+                  <Button level="primary" onClick={() => {}} ghost>
+                    Button
+                  </Button>
+                </Table.ActionCell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       );
-    }
-    }
+    }}
   </Story>
 </Canvas>
 
 ## Selectable lines
+
 <Canvas>
   <Story name="Selectable lines">
     {args => {
       const [selectedLines, setSelectedLines] = useState([]);
-      const handleToggleSelected = (lineId) => {
+      const handleToggleSelected = lineId => {
         if (selectedLines.indexOf(lineId) === -1) {
           setSelectedLines([...selectedLines, lineId]);
         } else {
           setSelectedLines(selectedLines.filter(currentValue => currentValue !== lineId));
         }
-      }
+      };
       return (
         <Table isSelectable={true} displayCheckbox={selectedLines.length > 0}>
           <Table.Header>
@@ -161,28 +180,29 @@ To compare information, for example how many products are completed versus how m
             <Table.HeaderCell>Actions</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {
-              rows.map((row) => {
-                return (
-                  <Table.Row key={row.id} onSelectToggle={() => {
-                    handleToggleSelected(row.id)
-                  }} isSelected={selectedLines.indexOf(row.id) !== -1}>
-                    <Table.Cell><Image src={row.image} alt='The alt'/></Table.Cell>
-                    <Table.Cell>{row.name}</Table.Cell>
-                    <Table.Cell>{row.family}</Table.Cell>
-                    <Table.Cell>{row.order}</Table.Cell>
-                    <Table.Cell>{row.genus}</Table.Cell>
-                    <Table.Cell>
-                      <Badge
-                        level={row.conservation_status_level}>{row.conservation_status}</Badge>
-                    </Table.Cell>
-                    <Table.ActionCell>
-                      <Button level='primary' ghost>Button</Button>
-                    </Table.ActionCell>
-                  </Table.Row>
-                )
-              })
-            }
+            {rows.map(row => (
+              <Table.Row
+                key={row.id}
+                onSelectToggle={() => handleToggleSelected(row.id)}
+                isSelected={selectedLines.indexOf(row.id) !== -1}
+              >
+                <Table.Cell>
+                  <Image src={row.image} alt="The alt" />
+                </Table.Cell>
+                <Table.Cell>{row.name}</Table.Cell>
+                <Table.Cell>{row.family}</Table.Cell>
+                <Table.Cell>{row.order}</Table.Cell>
+                <Table.Cell>{row.genus}</Table.Cell>
+                <Table.Cell>
+                  <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                </Table.Cell>
+                <Table.ActionCell>
+                  <Button level="primary" ghost>
+                    Button
+                  </Button>
+                </Table.ActionCell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       );
@@ -191,19 +211,22 @@ To compare information, for example how many products are completed versus how m
 </Canvas>
 
 ## Clickable lines
+
 <Canvas>
   <Story name="Clickable lines">
     {args => {
-      const [data, setData] = useState(rows.map(row => {
-        return {...row, count: 0}
-      }));
-      const handleClick = (rowId) => {
-        setData(data => {
-          return data.map((row) => {
-            return row.id === rowId ? {...row, count: row.count + 1} : row;
-          })
+      const [data, setData] = useState(
+        rows.map(row => {
+          return {...row, count: 0};
         })
-      }
+      );
+      const handleClick = rowId => {
+        setData(data => {
+          return data.map(row => {
+            return row.id === rowId ? {...row, count: row.count + 1} : row;
+          });
+        });
+      };
       return (
         <Table>
           <Table.Header>
@@ -217,27 +240,26 @@ To compare information, for example how many products are completed versus how m
             <Table.HeaderCell>Actions</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {
-              data.map((row) => {
-                return (
-                  <Table.Row key={row.id} onClick={() => handleClick(row.id)}>
-                    <Table.Cell><Image src={row.image} alt='The alt'/></Table.Cell>
-                    <Table.Cell>{row.name}</Table.Cell>
-                    <Table.Cell>{row.family}</Table.Cell>
-                    <Table.Cell>{row.order}</Table.Cell>
-                    <Table.Cell>{row.genus}</Table.Cell>
-                    <Table.Cell>
-                      <Badge
-                        level={row.conservation_status_level}>{row.conservation_status}</Badge>
-                    </Table.Cell>
-                    <Table.Cell>{row.count}</Table.Cell>
-                    <Table.ActionCell>
-                      <Button level='primary' ghost>Button</Button>
-                    </Table.ActionCell>
-                  </Table.Row>
-                )
-              })
-            }
+            {data.map(row => (
+              <Table.Row key={row.id} onClick={() => handleClick(row.id)}>
+                <Table.Cell>
+                  <Image src={row.image} alt="The alt" />
+                </Table.Cell>
+                <Table.Cell>{row.name}</Table.Cell>
+                <Table.Cell>{row.family}</Table.Cell>
+                <Table.Cell>{row.order}</Table.Cell>
+                <Table.Cell>{row.genus}</Table.Cell>
+                <Table.Cell>
+                  <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                </Table.Cell>
+                <Table.Cell>{row.count}</Table.Cell>
+                <Table.ActionCell>
+                  <Button level="primary" ghost>
+                    Button
+                  </Button>
+                </Table.ActionCell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
       );
@@ -246,27 +268,26 @@ To compare information, for example how many products are completed versus how m
 </Canvas>
 
 ## Complex table
+
 <Canvas>
   <Story name="Complex table">
     {args => {
       const [selectedLines, setSelectedLines] = useState([2]);
-      const handleToggleSelected = (lineId) => {
+      const handleToggleSelected = lineId => {
         if (selectedLines.indexOf(lineId) === -1) {
           setSelectedLines([...selectedLines, lineId]);
         } else {
           setSelectedLines(selectedLines.filter(currentValue => currentValue !== lineId));
         }
-      }
-      const [data, setData] = useState(rows.map(row => {
-        return {...row, count: 0}
-      }));
-      const handleClick = (rowId) => {
-        setData(data => {
-          return data.map((row) => {
-            return row.id === rowId ? {...row, count: row.count + 1} : row;
-          })
+      };
+      const [data, setData] = useState(
+        rows.map(row => {
+          return {...row, count: 0};
         })
-      }
+      );
+      const handleClick = rowId => {
+        setData(data => data.map(row => (row.id === rowId ? {...row, count: row.count + 1} : row)));
+      };
       return (
         <Table isSelectable={true} displayCheckbox={selectedLines.length > 0}>
           <Table.Header>
@@ -280,31 +301,83 @@ To compare information, for example how many products are completed versus how m
             <Table.HeaderCell>Actions</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {
-              data.map((row) => {
-                return (
-                  <Table.Row key={row.id} onClick={() => handleClick(row.id)} onSelectToggle={() => {
-                    handleToggleSelected(row.id)
-                  }} isSelected={selectedLines.indexOf(row.id) !== -1}>
-                    <Table.Cell><Image src={row.image} alt='The alt'/></Table.Cell>
-                    <Table.Cell>{row.name}</Table.Cell>
-                    <Table.Cell>{row.family}</Table.Cell>
-                    <Table.Cell>{row.order}</Table.Cell>
-                    <Table.Cell>{row.genus}</Table.Cell>
-                    <Table.Cell>
-                      <Badge
-                        level={row.conservation_status_level}>{row.conservation_status}</Badge>
-                    </Table.Cell>
-                    <Table.Cell>{row.count}</Table.Cell>
-                    <Table.ActionCell>
-                      <Button level='primary' onClick={() => {}} ghost>Button</Button>
-                    </Table.ActionCell>
-                  </Table.Row>
-                )
-              })
-            }
+            {data.map(row => (
+              <Table.Row
+                key={row.id}
+                onClick={() => handleClick(row.id)}
+                onSelectToggle={() => handleToggleSelected(row.id)}
+                isSelected={selectedLines.indexOf(row.id) !== -1}
+              >
+                <Table.Cell>
+                  <Image src={row.image} alt="The alt" />
+                </Table.Cell>
+                <Table.Cell>{row.name}</Table.Cell>
+                <Table.Cell>{row.family}</Table.Cell>
+                <Table.Cell>{row.order}</Table.Cell>
+                <Table.Cell>{row.genus}</Table.Cell>
+                <Table.Cell>
+                  <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                </Table.Cell>
+                <Table.Cell>{row.count}</Table.Cell>
+                <Table.ActionCell>
+                  <Button level="primary" onClick={() => {}} ghost>
+                    Button
+                  </Button>
+                </Table.ActionCell>
+              </Table.Row>
+            ))}
           </Table.Body>
         </Table>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Table with sticky header
+
+If you want your `Table.Header` to stay on top when scrolling in the Table, just set the desired `top` position value in the `sticky` prop.
+
+<Canvas>
+  <Story name="Sticky header">
+    {args => {
+      const manyRows = [...rows, ...rows, ...rows, ...rows, ...rows, ...rows];
+      return (
+        <Scrollable height={250}>
+          <Table>
+            <Table.Header sticky={0}>
+              {args.displayImage && <Table.HeaderCell>Image</Table.HeaderCell>}
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Family</Table.HeaderCell>
+              <Table.HeaderCell>Order</Table.HeaderCell>
+              <Table.HeaderCell>Genus</Table.HeaderCell>
+              <Table.HeaderCell>Conservation status</Table.HeaderCell>
+              <Table.HeaderCell>Actions</Table.HeaderCell>
+            </Table.Header>
+            <Table.Body>
+              {manyRows.map((row, index) => (
+                <Table.Row key={`${row.id}${index}`}>
+                  <Table.Cell>
+                    <Image src={row.image} alt="The alt" />
+                  </Table.Cell>
+                  <Table.Cell>
+                    {row.name} {index}
+                  </Table.Cell>
+                  <Table.Cell>{row.family}</Table.Cell>
+                  <Table.Cell>{row.order}</Table.Cell>
+                  <Table.Cell>{row.genus}</Table.Cell>
+                  <Table.Cell>
+                    <Badge level={row.conservation_status_level}>{row.conservation_status}</Badge>
+                  </Table.Cell>
+                  <Table.ActionCell>
+                    <Button level="primary" ghost>
+                      Button
+                    </Button>
+                  </Table.ActionCell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        </Scrollable>
       );
     }}
   </Story>
