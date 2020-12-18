@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent} from '@testing-library/react';
+import {fireEvent, screen} from '@testing-library/react';
 import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
@@ -18,7 +18,7 @@ const unit = {
 };
 
 test('It displays a unit row', () => {
-  const {getByRole, getByText} = renderWithProviders(
+  renderWithProviders(
     <table>
       <tbody>
         <UnitRow unit={unit} isStandardUnit={true} isSelected={true} onRowSelected={() => {}} />
@@ -26,8 +26,8 @@ test('It displays a unit row', () => {
     </table>
   );
 
-  expect(getByRole('unit-row')).toBeInTheDocument();
-  expect(getByText('SQUARE_METER')).toBeInTheDocument();
+  expect(screen.getByText('SQUARE_METER')).toBeInTheDocument();
+  expect(screen.getByText('measurements.family.standard_unit')).toBeInTheDocument();
 });
 
 test('It selects the row when clicking on it', () => {
@@ -36,7 +36,7 @@ test('It selects the row when clicking on it', () => {
     isSelected = !isSelected;
   });
 
-  const {getByRole} = renderWithProviders(
+  renderWithProviders(
     <table>
       <tbody>
         <UnitRow unit={unit} isStandardUnit={true} isSelected={isSelected} onRowSelected={onRowSelected} />
@@ -44,14 +44,14 @@ test('It selects the row when clicking on it', () => {
     </table>
   );
 
-  fireEvent.click(getByRole('unit-row'));
+  fireEvent.click(screen.getByText('SQUARE_METER'));
 
   expect(onRowSelected).toBeCalled();
   expect(isSelected).toBe(true);
 });
 
 test('It displays an error badge if it is invalid', () => {
-  const {getByRole} = renderWithProviders(
+  renderWithProviders(
     <table>
       <tbody>
         <UnitRow unit={unit} isStandardUnit={true} isInvalid={true} onRowSelected={() => {}} />
@@ -59,5 +59,5 @@ test('It displays an error badge if it is invalid', () => {
     </table>
   );
 
-  expect(getByRole('error-badge')).toBeInTheDocument();
+  expect(screen.getByRole('alert')).toBeInTheDocument();
 });

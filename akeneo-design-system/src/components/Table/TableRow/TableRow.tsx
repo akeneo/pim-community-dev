@@ -83,7 +83,7 @@ const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
         onClick={onClick}
         {...rest}
       >
-        {(isSelectable || isSelected) && (
+        {isSelectable && (
           <CheckboxContainer
             aria-hidden={!displayCheckbox && !isSelected}
             isVisible={displayCheckbox || !!isSelected}
