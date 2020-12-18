@@ -65,12 +65,12 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $massActionRepo->deleteFromIds($objectIds)->willReturn($countRemoved);
 
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_DELETE_PRE_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_DELETE_PRE_HANDLER
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_DELETE_POST_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_DELETE_POST_HANDLER
         )->shouldBeCalled();
 
         $this->handle($datagrid, $massAction);
@@ -109,12 +109,12 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $massActionRepo->deleteFromIds($objectIds)->willThrow($e);
 
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_DELETE_PRE_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_DELETE_PRE_HANDLER
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_DELETE_POST_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_DELETE_POST_HANDLER
         )->shouldNotBeCalled();
 
         $this

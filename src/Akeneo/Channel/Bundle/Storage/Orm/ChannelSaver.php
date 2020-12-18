@@ -87,15 +87,15 @@ final class ChannelSaver implements ChannelSaverInterface
     {
         if (false === $commonOptions['unitary']) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::PRE_SAVE_ALL,
-                new GenericEvent($channels, $commonOptions)
+                new GenericEvent($channels, $commonOptions),
+                StorageEvents::PRE_SAVE_ALL
             );
         }
 
         foreach ($data as [$channel, $options]) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::PRE_SAVE,
-                new GenericEvent($channel, $options)
+                new GenericEvent($channel, $options),
+                StorageEvents::PRE_SAVE
             );
 
             $this->objectManager->persist($channel);
@@ -106,15 +106,15 @@ final class ChannelSaver implements ChannelSaverInterface
     {
         foreach ($data as [$channel, $options]) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::POST_SAVE,
-                new GenericEvent($channel, $options)
+                new GenericEvent($channel, $options),
+                StorageEvents::POST_SAVE
             );
         }
 
         if (false === $commonOptions['unitary']) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::POST_SAVE_ALL,
-                new GenericEvent($channels, $commonOptions)
+                new GenericEvent($channels, $commonOptions),
+                StorageEvents::POST_SAVE_ALL
             );
         }
     }
@@ -130,7 +130,7 @@ final class ChannelSaver implements ChannelSaverInterface
         $channelsEvents = array_merge(...$channelsEvents);
 
         foreach ($channelsEvents as $channelEvent) {
-            $this->eventDispatcher->dispatch(get_class($channelEvent), $channelEvent);
+            $this->eventDispatcher->dispatch($channelEvent, get_class($channelEvent));
         }
     }
 }

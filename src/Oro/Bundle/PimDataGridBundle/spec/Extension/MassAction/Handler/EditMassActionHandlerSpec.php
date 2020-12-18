@@ -29,12 +29,12 @@ class EditMassActionHandlerSpec extends ObjectBehavior
         $objectIds = ['foo', 'bar', 'baz'];
 
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_EDIT_PRE_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_EDIT_PRE_HANDLER
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_EDIT_POST_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_EDIT_POST_HANDLER
         )->shouldBeCalled();
 
         $datagrid->getDatasource()->willReturn($datasource);

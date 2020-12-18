@@ -38,16 +38,16 @@ class ProductModelSaverSpec extends ObjectBehavior
     ) {
         $productModel->isDirty()->willReturn(true);
         $productModel->getId()->willReturn(null);
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalled();
         $objectManager->persist($productModel)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            StorageEvents::POST_SAVE,
             new GenericEvent(
                 $productModel->getWrappedObject(),
                 ['unitary' => true, 'is_new' => true]
-            )
+            ),
+            StorageEvents::POST_SAVE
         )->shouldBeCalled();
 
         $productModel->cleanup()->shouldBeCalled();
@@ -62,16 +62,16 @@ class ProductModelSaverSpec extends ObjectBehavior
     ) {
         $productModel->isDirty()->willReturn(true);
         $productModel->getId()->willReturn(1);
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalled();
         $objectManager->persist($productModel)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            StorageEvents::POST_SAVE,
             new GenericEvent(
                 $productModel->getWrappedObject(),
                 ['unitary' => true, 'is_new' => false]
-            )
+            ),
+            StorageEvents::POST_SAVE
         )->shouldBeCalled();
         $productModel->cleanup()->shouldBeCalled();
 
@@ -85,7 +85,7 @@ class ProductModelSaverSpec extends ObjectBehavior
     ) {
         $productModel->isDirty()->willReturn(false);
 
-        $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class))->shouldNotBeCalled();
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
 
         $this->save($productModel);
@@ -102,16 +102,16 @@ class ProductModelSaverSpec extends ObjectBehavior
         $productModel2->getId()->willReturn(44);
         $productModel2->isDirty()->willReturn(true);
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalledTimes(2);
 
         $objectManager->persist($productModel1)->shouldBeCalled();
         $objectManager->persist($productModel2)->shouldBeCalled();
 
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE)->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE_ALL)->shouldBeCalled();
         $productModel1->cleanup()->shouldBeCalled();
         $productModel2->cleanup()->shouldBeCalled();
 
@@ -143,15 +143,15 @@ class ProductModelSaverSpec extends ObjectBehavior
         $productModel2->getId()->willReturn(42);
         $productModel2->isDirty()->willReturn(true);
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE_ALL)->shouldBeCalled();
 
         $objectManager->persist($productModel1)->shouldBeCalledTimes(1);
         $objectManager->persist($productModel2)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE)->shouldBeCalledTimes(2);
         $productModel1->cleanup()->shouldBeCalled();
         $productModel2->cleanup()->shouldBeCalled();
 
@@ -172,8 +172,8 @@ class ProductModelSaverSpec extends ObjectBehavior
         $productModel3->getId()->willReturn(3);
         $productModel3->isDirty()->willReturn(true);
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalledTimes(2);
 
         $objectManager->persist($productModel1)->shouldBeCalled();
         $objectManager->persist($productModel2)->shouldNotBeCalled();
@@ -181,8 +181,8 @@ class ProductModelSaverSpec extends ObjectBehavior
 
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE)->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE_ALL)->shouldBeCalled();
 
         $productModel1->cleanup()->shouldBeCalled();
         $productModel3->cleanup()->shouldBeCalled();

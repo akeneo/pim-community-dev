@@ -64,7 +64,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     {
         // dispatch pre handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_DELETE_PRE_HANDLER, $massActionEvent);
+        $this->eventDispatcher->dispatch($massActionEvent, MassActionEvents::MASS_DELETE_PRE_HANDLER);
 
         $datasource = $datagrid->getDatasource();
         $datasource->setHydrator($this->hydrator);
@@ -82,7 +82,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
 
         // dispatch post handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, $objectIds);
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_DELETE_POST_HANDLER, $massActionEvent);
+        $this->eventDispatcher->dispatch($massActionEvent, MassActionEvents::MASS_DELETE_POST_HANDLER);
 
         return $this->getResponse($massAction, $countRemoved);
     }

@@ -69,8 +69,8 @@ class GroupSaverSpec extends ObjectBehavior
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::POST_SAVE)->shouldBeCalled();
         $this->save($group);
     }
 
@@ -102,8 +102,8 @@ class GroupSaverSpec extends ObjectBehavior
 
         $productSaver->saveAll([$addedProduct])->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::POST_SAVE)->shouldBeCalled();
 
         $this->save($group, ['add_products' => [$addedProduct]]);
     }
@@ -144,8 +144,8 @@ class GroupSaverSpec extends ObjectBehavior
 
         $productSaver->saveAll([$addedProduct, $removedProduct])->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::POST_SAVE)->shouldBeCalled();
 
         $this->save($group, ['remove_products' => [$removedProduct]]);
     }

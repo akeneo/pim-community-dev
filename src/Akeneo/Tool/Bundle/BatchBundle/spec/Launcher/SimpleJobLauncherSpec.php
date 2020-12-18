@@ -64,7 +64,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         $jobExecution->setUser('julia')->shouldBeCalled();
         $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(EventInterface::JOB_EXECUTION_CREATED, Argument::type(JobExecutionEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(JobExecutionEvent::class), EventInterface::JOB_EXECUTION_CREATED)->shouldBeCalled();
 
         $this->launch($jobInstance, $user, ['baz' => 'foz'])->shouldReturn($jobExecution);
     }
@@ -100,7 +100,7 @@ class SimpleJobLauncherSpec extends ObjectBehavior
         $jobParametersFactory->create($job, ['foo' => 'bar'])->willReturn($jobParameters);
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])->willReturn($constraintViolationList);
 
-        $eventDispatcher->dispatch(EventInterface::JOB_EXECUTION_CREATED, Argument::type(JobExecutionEvent::class))->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::type(JobExecutionEvent::class), EventInterface::JOB_EXECUTION_CREATED)->shouldNotBeCalled();
 
         $this
             ->shouldThrow(new \RuntimeException('Job instance "job_instance_code" running the job "" with parameters "" is invalid because of "' . PHP_EOL .'  - error"'))

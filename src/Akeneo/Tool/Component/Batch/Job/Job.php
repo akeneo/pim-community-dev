@@ -312,18 +312,7 @@ class Job implements JobInterface, StoppableJobInterface, JobWithStepsInterface
     private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
     {
         $event = new JobExecutionEvent($jobExecution);
-        $this->dispatch($eventName, $event);
-    }
-
-    /**
-     * Generic batch event dispatcher
-     *
-     * @param string $eventName Name of the event
-     * @param Event  $event     Event object
-     */
-    private function dispatch($eventName, Event $event)
-    {
-        $this->eventDispatcher->dispatch($eventName, $event);
+        $this->eventDispatcher->dispatch($event, $eventName);
     }
 
     /**
