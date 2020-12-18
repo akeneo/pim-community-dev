@@ -48,7 +48,7 @@ const CharacterLeftLabel = styled.div`
 `;
 
 type TextInputProps = Override<
-  React.InputHTMLAttributes<HTMLInputElement> & InputProps,
+  Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps>,
   (
     | {
         readOnly?: true;
