@@ -67,6 +67,7 @@
 - PIM-9590: Fix "Default product grid view" multiple times on user settings page
 - CPM-86: Fix undefined tab on job profile edit
 - PIM-9596: Fix attribute options manual sorting
+- PIM-9598: Fix quick export when the bs_Cyrl_BA locale is used.
 - RAC-435: Fix fatal error for user that migrate from 4.0 with product values format that doesn't correspond to expected format
 
 ## New features
