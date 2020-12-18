@@ -24,6 +24,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -126,7 +127,6 @@ class JobInstanceController
      * @param EventDispatcherInterface              $eventDispatcher
      * @param CollectionFilterInterface             $inputFilter
      * @param string                                $uploadTmpDir
-     * @param FilesystemInterface                   $filesystem
      * @param SecurityFacade                        $securityFacade
      */
     public function __construct(
