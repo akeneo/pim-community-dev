@@ -334,10 +334,8 @@ config:
           module: pim/controller/redirect
           aclResourceId: pim_importexport_export_profile_remove
         pim_enrich_locale_index:
-          module: pim/controller/common/index
+          module: pim/controller/locales/index
           aclResourceId: pim_enrich_locale_index
-          config:
-            entity: locale
         pim_enrich_attribute_index:
           module: pim/controller/common/index
           aclResourceId: pim_enrich_attribute_index
@@ -530,6 +528,7 @@ config:
     pim/controller/attribute/create:       pimui/js/controller/attribute/create
     pim/controller/mass-edit:              pimui/js/controller/mass-edit
     pim/controller/logout:                 pimui/js/controller/logout
+    pim/controller/locales/index:          akeneopimstructure/js/controller/LocalesSettings
 
     jstree/jquery.jstree.tree_selector: pimui/js/jstree/jquery.jstree.tree_selector
     jstree/nested_switch:               pimui/js/jstree/jquery.jstree.nested_switch

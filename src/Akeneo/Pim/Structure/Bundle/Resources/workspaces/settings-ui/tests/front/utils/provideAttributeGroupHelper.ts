@@ -1,8 +1,4 @@
-import {
-  AttributeGroup,
-  AttributeGroupCollection,
-  AttributeGroupLabels,
-} from '@akeneo-pim-community/settings-ui/src/models';
+import {AttributeGroup, AttributeGroupCollection, AttributeGroupLabels} from '@akeneo-pim-community/settings-ui';
 
 const anAttributeGroup = (
   code: string,
