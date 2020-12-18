@@ -10,7 +10,7 @@ services:
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
       PHP_IDE_CONFIG: 'serverName=pim-ee-cli'
       PHP_XDEBUG_ENABLED: "${PHP_XDEBUG_ENABLED:-0}"
-      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
+      XDEBUG_CONFIG: 'client_host=172.17.0.1'
     volumes:
       - '~/.composer:/home/docker/.composer'
       - '/tmp/behat/screenshots:/tmp/behat/screenshots'
