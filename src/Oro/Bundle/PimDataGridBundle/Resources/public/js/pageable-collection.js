@@ -107,7 +107,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
             if (options.inputName) {
                 this.inputName = options.inputName;
             }
-            if (models.meta) {
+            if (models?.meta) {
                 this.meta = models.meta;
             }
 
