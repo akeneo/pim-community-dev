@@ -16,6 +16,8 @@ akeneo_data_quality_insights:
         title: Cohérence
         attributes_link: Tous les attributs améliorables
         success: Le contenu est cohérent. Félicitations !
+    messages:
+      add_image_attribute_recommendation: Une image vaut mille mots. Vous devriez ajouter un attribut image pour améliorer la qualité des données de ce produit.
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: Tous les attributs améliorables
@@ -36,3 +38,50 @@ akeneo_data_quality_insights:
     popover:
       default_aria_label: Correction orthographique
       aria_label: "Suggestions orthographiques pour: {{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes_to_work_on: '{1}Vous avez <button>1 produit</button> à enrichir. ]1, 200[Vous avez <button>{{ count }} produits</button> à enrichir. [200, Inf[Vous avez <button>plus de {{ count }} produits</button> à enrichir.'
+      list:
+        has_image:
+          no_data: Tous vos attributs image semblent vides. En téléchargeant des images, cet indicateur vous permettra de suivre la qualité de vos produits.
+        attributes_perfect_spelling:
+          title: Attributs correctement nommés
+          no_data: Les labels d'attributs et d'options sont vides. En les enrichissant, cet indicateur vous permettra de suivre la quaité de vos produits.
+          messages:
+            first_step:
+              message1: Vous avez du mal à utiliser les labels des attributs et des options ? On vous explique tout <a href="{{ link }}" target="_blank"> ici</a>. 
+              message2: Vous avez besoin d'aide pour utiliser les attributs et les options d'attributs ? Consultez notre <a href="{{ link }}" target="_blank">Help Center<a href="{{ link }}" target="_blank">. 
+            second_step:
+              message1: Faites bien attention aux labels de vos attributs et options. Vos produits seront mieux mis en valeur. 
+              message2: Peut être que vous vous êtes un peu perdu en route ? Certains de vos labels doivent être revus !
+            third_step:
+              message1: Vous y êtes presque, quelques finitions et ça sera parfait ! 
+              message2: Certains de vos attributs et labels doivent être revus, mais vous êtes sur la bonne voie. 
+            perfect_score_step:
+              message1: Votre catalogue est prêt, beau travail !
+              message2: Excellent travail sur les attributs et les labels.
+        values_perfect_spelling:
+          title: Produits dont les textes ont une orthographe parfaite
+          no_data: Les attributs textes ne sont pas remplis. En les enrichissant, cet indicateur vous permettra de suivre la qualité de vos produits.
+          messages:
+            first_step:
+              message1: Vos produits méritent d'être décrits correctement, vérifiez l'orthographe !
+              message2: Vous connaissez vos produits sur le bout des doigts, mais faites attention à l'orthographe !
+              message3: Vos descriptions produits sont l'image de votre entreprise, débarrassez vous de ces fautes d'orthographe. Une première impression reste !
+              message4: Plus vous avez de fautes, plus vous passerez à côté de vos clients. Faites vraiment attention à l'orthographe.
+            second_step:
+              message1: Vos produits sont super, et votre orthographe ?
+              message2: Une faute d'orthographe pourrait avoir un impact négatif sur vos clients, soyez minutieux !
+              message3: Certains de vos produits un besoin d'un peu plus de travail pour être parfaits. Attention aux fautes !
+            third_step:
+              message1: Une bonne orthographe fait vraiment la différence, vous y êtes presque !
+              message2: C'est presque bon, encore quelques petites fautes d'orthographe à corriger !
+              message3: Quelques ultimes corrections vous séparent de la perfection !
+              message4: Encore un petit effort pour une description de produit parfaite.
+            perfect_score_step:
+              message1: Aucune faute d'orthographe dans tout le catalogue, bravo !
+              message2: "C'est impressionant, vos produits sont parfaits."
+              message3: Quel travail ! Vous vous êtes débarrassé de l'ensemble des fautes d'orthographe ! Bravo !
+  product_grid:
+    filter_label:
+      spelling_quality: Qualité orthographique

@@ -277,6 +277,7 @@ pim_asset_manager:
         subtitle: 'Pour commencer à lier les produits à cette famille de ressources, vous pouvez en créer un nouveau : '
         link: Créer un nouvel attribut de produit
       not_enough_items:
+        title: Vous ne pouvez voir que {{ productCount }}/{{ totalCount }} produits.
         subtitle:
           usable_in_grid: Pour découvrir tous les produits liés, cliquez ci-dessous!
           not_usable_in_grid: Pour découvrir tous les produits liés, l'attribut produit doit être défini comme "utilisable dans la grille".
