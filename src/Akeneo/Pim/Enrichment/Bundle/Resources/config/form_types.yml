@@ -10,7 +10,7 @@ services:
 
     pim_comment.form.attribute_group:
         class: 'Symfony\Component\Form\Form'
-        factory: 'form.factory:createNamed'
+        factory: ['@form.factory', 'createNamed']
         arguments:
             - 'pim_comment_comment_form'
             - 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CommentType'

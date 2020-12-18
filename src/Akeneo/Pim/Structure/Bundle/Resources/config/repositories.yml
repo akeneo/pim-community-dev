@@ -1,49 +1,49 @@
 services:
     pim_catalog.repository.association_type:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AssociationTypeRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.association_type.class%']
         tags:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.attribute_group:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeGroupRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.attribute_group.class%']
         tags:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.attribute:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.attribute.class%']
         tags:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.family:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.family.class%']
         tags:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.family_variant:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyVariantRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.family_variant.class%']
         tags:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.attribute_requirement:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRequirementRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.attribute_requirement.class%']
         tags:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.attribute_option:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.attribute_option.class%']
         tags:
             - { name: 'pim_repository' }
@@ -133,7 +133,7 @@ services:
 
     pim_catalog.repository.group_type:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\GroupTypeRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.group_type.class%']
         tags:
             - { name: 'pim_repository' }
@@ -154,7 +154,7 @@ services:
 
     pim_catalog.repository.category:
         class: 'Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.category.class%']
         tags:
             - { name: 'pim_repository' }

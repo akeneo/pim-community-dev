@@ -20,7 +20,7 @@ services:
 
     akeneo_batch.job.job_instance_repository:
         class: '%akeneo_batch.job.job_instance_repository.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%akeneo_batch.entity.job_instance.class%']
         tags:
             - { name: 'pim_repository' }
