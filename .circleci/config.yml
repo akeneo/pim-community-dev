@@ -188,7 +188,7 @@ jobs:
   test_back_phpunit:
       machine:
           image: ubuntu-1604:201903-01
-      parallelism: 15
+      parallelism: 20
       steps:
           - attach_workspace:
                 at: ~/
@@ -220,7 +220,7 @@ jobs:
   test_back_behat_legacy:
     machine:
         image: ubuntu-1604:201903-01
-    parallelism: 20
+    parallelism: 40
     steps:
       - attach_workspace:
           at: ~/
@@ -634,25 +634,19 @@ workflows:
           - test_back_phpunit:
                 requires:
                     - build_dev
+          - test_back_performance:
+                requires:
+                    - build_dev
+          - test_onboarder_bundle:
+                requires:
+                    - build_dev
           - test_back_data_migrations:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
                     - test_back_missing_structure_migrations
                     - test_back_phpunit
-          - test_onboarder_bundle:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_missing_structure_migrations
-                    - test_back_phpunit
           - test_back_behat_legacy:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_missing_structure_migrations
-                    - test_back_phpunit
-          - test_back_performance:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -699,6 +693,8 @@ workflows:
           - test_back_behat_legacy:
                 name: test_back_behat_legacy_ce
                 requires:
+                    - test_back_static_and_acceptance_ce
+                    - test_front_static_acceptance_and_integration_ce
                     - test_back_phpunit_ce
 
   nightly:
