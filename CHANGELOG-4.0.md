@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9551: Purge logs when calling the command akeneo:batch:purge-job-execution
+- PIM-9602: Fix family dropdown on product model creation modal
 
 # 4.0.78 (2020-12-08)
 
