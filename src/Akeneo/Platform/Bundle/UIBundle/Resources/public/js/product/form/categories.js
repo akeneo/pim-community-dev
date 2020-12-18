@@ -63,7 +63,7 @@ define([
     initialize: function (config) {
       this.state = new Backbone.Model();
 
-      this.state.set('selectedCategories', []);
+      this.state.set('selectedCategories', {});
 
       if (undefined !== config) {
         this.config = config.config;
@@ -123,8 +123,7 @@ define([
             {
               list_categories: this.config.itemCategoryListRoute,
               children: 'pim_enrich_categorytree_children',
-            },
-            'POST'
+            }
           );
 
           if (this.isReadOnly()) {
@@ -189,21 +188,24 @@ define([
 
     /**
      * Load category trees
-     *
-     * @returns {promise}
      */
     loadTrees: function () {
       return $.getJSON(Routing.generate(this.config.itemCategoryTreeRoute, {id: this.getFormData().meta.id})).then(
         function (data) {
+          const selectedCategories = {};
           _.each(
             data.categories,
             function (category) {
-              this.cache[category.id] = category;
+              this.cache[category.code] = category;
+              if (!selectedCategories[category.rootId]) {
+                selectedCategories[category.rootId] = [];
+              }
+              selectedCategories[category.rootId].push(category.code)
             }.bind(this)
           );
 
           if (_.isEmpty(this.state.get('selectedCategories'))) {
-            this.state.set('selectedCategories', _.pluck(data.categories, 'id'));
+            this.state.set('selectedCategories', selectedCategories);
           }
 
           return data.trees;
@@ -213,8 +215,6 @@ define([
 
     /**
      * Displays the current tree when the user choose another one
-     *
-     * @param {Event} event
      */
     changeTree: function (event) {
       this.state.set('currentTree', event.currentTarget.dataset.tree);
@@ -226,19 +226,20 @@ define([
 
     /**
      * Change the current model when categories are checked/unchecked
-     *
-     * @param {Event} event
      */
     updateModel: function (event) {
-      var selectedIds = _.filter(event.currentTarget.value.split(','), _.identity);
-      this.state.set('selectedCategories', selectedIds);
+      var selectedCategoryCodesByTreeId = JSON.parse(event.currentTarget.value);
+      this.state.set('selectedCategories', selectedCategoryCodesByTreeId);
 
-      var rootTreeCode = this.state.get('currentTree');
-      this.categoriesCount[rootTreeCode] = this.$('li[data-code=' + rootTreeCode + '] .jstree-checked').length;
+      var rootTreeId = this.state.get('currentTreeId');
+      this.categoriesCount[rootTreeId] = selectedCategoryCodesByTreeId[rootTreeId].length;
       this.renderCategorySwitcher();
 
-      var categoryCodes = _.map(selectedIds, this.getCategoryCode.bind(this));
-      this.getFormModel().set('categories', categoryCodes);
+      var allTreesCategoryCodes = [];
+      Object.values(selectedCategoryCodesByTreeId).forEach((categoryCodes) => {
+        allTreesCategoryCodes = allTreesCategoryCodes.concat(categoryCodes);
+      });
+      this.getFormModel().set('categories', allTreesCategoryCodes);
       mediator.trigger('pim_enrich:form:entity:update_state');
     },
 
@@ -246,42 +247,10 @@ define([
      * Initialize category count with hidden values
      */
     initCategoryCount: function () {
-      _.each(
-        this.trees,
-        function (tree) {
-          var selectedCategories = [];
-          var hiddenSelection = this.$('#hidden-tree-input').val();
-          hiddenSelection = hiddenSelection.length > 0 ? hiddenSelection.split(',') : [];
-          _.each(
-            hiddenSelection,
-            function (categoryId) {
-              selectedCategories.push(this.cache[categoryId]);
-            }.bind(this)
-          );
-
-          this.categoriesCount[tree.code] = _.where(selectedCategories, {rootId: tree.id}).length;
-        }.bind(this)
-      );
-    },
-
-    /**
-     * Fetch category code from cache
-     *
-     * @param {integer} id
-     *
-     * @returns {string}
-     */
-    getCategoryCode: function (id) {
-      if (!this.cache[id]) {
-        var $categoryElement = this.$('#node_' + id);
-        var $rootElement = $categoryElement.closest('.root-unselectable');
-        this.cache[id] = {
-          code: String($categoryElement.data('code')),
-          rootId: $rootElement.data('tree-id'),
-        };
-      }
-
-      return this.cache[id].code;
+      this.categoriesCount = {};
+      Object.keys(this.state.get('selectedCategories')).forEach((treeId) => {
+        this.categoriesCount[treeId] = this.state.get('selectedCategories')[treeId].length;
+      });
     },
 
     /**
