@@ -181,7 +181,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $this->repository->create($record);
 
         $recordFound = $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
-        $this->assertSame($record->normalize(), $recordFound->normalize());
+        $this->assertEquals($record->normalize(), $recordFound->normalize());
     }
 
     /**

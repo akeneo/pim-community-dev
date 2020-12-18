@@ -221,7 +221,7 @@ mysql:
   image:
     mysql:
       repository: mysql
-      tag: "8.0.18"
+      tag: "8.0.22"
   common:
     class: ssd-retain
   mysql:
@@ -262,10 +262,10 @@ memcached:
   pdbMinAvailable: 0
 
 elasticsearch:
-  appVersion: 7.5.1
+  appVersion: 7.10.0
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch-oss
-    tag: 7.5.1
+    tag: 7.10.0
   fullnameOverride: elasticsearch
   sysctlInitContainer:
     enabled: false

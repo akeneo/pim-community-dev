@@ -80,7 +80,7 @@ services:
       - 'pim'
 
   mysql:
-    image: 'mysql:8.0.18'
+    image: 'mysql:8.0.22'
     command: '--default-authentication-plugin=mysql_native_password'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
@@ -95,7 +95,7 @@ services:
       - 'pim'
 
   elasticsearch:
-    image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:7.5.1'
+    image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.0'
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'

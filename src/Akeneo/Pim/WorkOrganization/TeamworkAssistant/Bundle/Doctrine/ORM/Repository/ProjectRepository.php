@@ -88,7 +88,7 @@ class ProjectRepository extends EntityRepository implements ProjectRepositoryInt
 
         $qb->setMaxResults($options['limit']);
         $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
-        $qb->orderBy('project.dueDate');
+        $qb->orderBy('project.dueDate, project.id');
 
         return $qb->getQuery()->execute();
     }

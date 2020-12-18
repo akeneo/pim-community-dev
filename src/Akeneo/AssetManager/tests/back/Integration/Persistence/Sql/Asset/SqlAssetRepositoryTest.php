@@ -183,7 +183,7 @@ class SqlAssetRepositoryTest extends SqlIntegrationTestCase
         $this->repository->create($asset);
 
         $assetFound = $this->repository->getByAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
-        $this->assertSame($asset->normalize(), $assetFound->normalize());
+        $this->assertEquals($asset->normalize(), $assetFound->normalize());
     }
 
     /**
