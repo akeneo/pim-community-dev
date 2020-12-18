@@ -93,6 +93,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     public function process($standardProductModel): ?ProductModelInterface
     {
         $code = $standardProductModel['code'] ?? null;
+        $values = $standardProductModel['values'] ?? null;
         $parent = $standardProductModel['parent'] ?? '';
         if ($this->importType === self::ROOT_PRODUCT_MODEL && !empty($parent) ||
             $this->importType === self::SUB_PRODUCT_MODEL && empty($parent)
@@ -126,8 +127,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
                 return null;
             }
 
-            // The code was removed by productModelFilter, we need to be sure it's still there for the next checks
+            // The code and the values were removed by productModelFilter, we need to be sure it's still there for the next checks
             $standardProductModel['code'] = $code;
+            $standardProductModel['values'] = $values;
         }
 
         if (isset($standardProductModel['values'])) {
