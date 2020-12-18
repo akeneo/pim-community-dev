@@ -10,8 +10,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Messenger\Exception\TransportException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -24,15 +26,21 @@ final class DispatchProductModelCreatedAndUpdatedEventSubscriber implements Even
     private Security $security;
     private MessageBusInterface $messageBus;
     private int $maxBulkSize;
+    private LoggerInterface $logger;
 
     /** @var array<ProductModelCreated|ProductModelUpdated> */
     private array $events = [];
 
-    public function __construct(Security $security, MessageBusInterface $messageBus, int $maxBulkSize)
-    {
+    public function __construct(
+        Security $security,
+        MessageBusInterface $messageBus,
+        int $maxBulkSize,
+        LoggerInterface $logger
+    ) {
         $this->security = $security;
         $this->messageBus = $messageBus;
         $this->maxBulkSize = $maxBulkSize;
+        $this->logger = $logger;
     }
 
     public static function getSubscribedEvents(): array
@@ -60,31 +68,31 @@ final class DispatchProductModelCreatedAndUpdatedEventSubscriber implements Even
             'code' => $productModel->getCode()
         ];
 
-        $event = null;
         if ($postSaveEvent->hasArgument('is_new') && true === $postSaveEvent->getArgument('is_new')) {
-            $event = new ProductModelCreated($author, $data);
+            $this->events[] = new ProductModelCreated($author, $data);
         } else {
-            $event = new ProductModelUpdated($author, $data);
+            $this->events[] = new ProductModelUpdated($author, $data);
         }
 
         if ($postSaveEvent->hasArgument('unitary') && true === $postSaveEvent->getArgument('unitary')) {
-            $this->messageBus->dispatch(new BulkEvent([$event]));
-
-            return;
-        }
-
-        $this->events[] = $event;
-
-        if (count($this->events) >= $this->maxBulkSize) {
+            $this->dispatchBufferedProductModelEvents();
+        } elseif (count($this->events) >= $this->maxBulkSize) {
             $this->dispatchBufferedProductModelEvents();
         }
     }
 
     public function dispatchBufferedProductModelEvents(): void
     {
-        if (count($this->events) > 0) {
-            $this->messageBus->dispatch(new BulkEvent($this->events));
-            $this->events = [];
+        if (count($this->events) === 0) {
+            return;
         }
+
+        try {
+            $this->messageBus->dispatch(new BulkEvent($this->events));
+        } catch (TransportException $e) {
+            $this->logger->critical($e->getMessage());
+        }
+
+        $this->events = [];
     }
 }
