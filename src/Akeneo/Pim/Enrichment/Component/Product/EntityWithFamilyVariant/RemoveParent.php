@@ -36,60 +36,35 @@ class RemoveParent implements RemoveParentInterface
             return;
         }
 
-        $this->mergeValues($product);
-        $this->mergeCategories($product);
-        $this->mergeAssociations($product);
+        $allValues = $product->getValues();
+        $allCategories = $product->getCategories();
+        $allAssociations = $product->getAllAssociations();
         $this->mergeQuantifiedAssociations($product);
 
         $parent = $product->getParent();
         $parent->removeProduct($product);
         $product->setParent(null);
 
-        $this->eventDispatcher->dispatch(new ParentHasBeenRemovedFromVariantProduct($product, $parent->getCode()));
-    }
+        $product->setValues($allValues);
 
-    private function mergeValues(ProductInterface $product): void
-    {
-        /* getValues() returns all product values (including values inherited from ancestors),
-           whereas setValues only sets values at the product level */
-        $product->setValues($product->getValues());
-    }
-
-    private function mergeCategories(ProductInterface $product): void
-    {
-        $productCategories = $product->getCategoriesForVariation();
-        foreach ($product->getCategories() as $category) {
-            if (!$productCategories->contains($category)) {
-                $productCategories->add($category);
-            }
+        foreach ($allCategories as $category) {
+            $product->addCategory($category);
         }
-    }
 
-    private function mergeAssociations(ProductInterface $product): void
-    {
-        foreach ($product->getAllAssociations() as $association) {
-            $productAssociation = $product->getAssociationForTypeCode($association->getAssociationType()->getCode());
-            if (null === $productAssociation) {
-                $productAssociation = new ProductAssociation();
-                $productAssociation->setAssociationType($association->getAssociationType());
-                $product->addAssociation($productAssociation);
-            }
+        foreach ($allAssociations as $association) {
+            $associationTypeCode = $association->getAssociationType()->getCode();
             foreach ($association->getProducts() as $associatedProduct) {
-                if (!$productAssociation->getProducts()->contains($associatedProduct)) {
-                    $productAssociation->addProduct($associatedProduct);
-                }
+                $product->addAssociatedProduct($associatedProduct, $associationTypeCode);
             }
             foreach ($association->getProductModels() as $associatedProductModel) {
-                if (!$productAssociation->getProductModels()->contains($associatedProductModel)) {
-                    $productAssociation->addProductModel($associatedProductModel);
-                }
+                $product->addAssociatedProductModel($associatedProductModel, $associationTypeCode);
             }
             foreach ($association->getGroups() as $associatedGroup) {
-                if (!$productAssociation->getGroups()->contains($associatedGroup)) {
-                    $productAssociation->addGroup($associatedGroup);
-                }
+                $product->addAssociatedGroup($associatedGroup, $associationTypeCode);
             }
         }
+
+        $this->eventDispatcher->dispatch(new ParentHasBeenRemovedFromVariantProduct($product, $parent->getCode()));
     }
 
     private function mergeQuantifiedAssociations(ProductInterface $product): void

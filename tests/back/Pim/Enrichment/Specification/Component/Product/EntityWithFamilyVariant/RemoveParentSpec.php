@@ -55,12 +55,8 @@ class RemoveParentSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         ProductInterface $product,
         ProductModelInterface $parentProductModel,
-        Collection $productCategories,
         AssociationType $xsell,
         ProductAssociationInterface $association,
-        Collection $associatedProducts,
-        Collection $associatedProductModels,
-        Collection $associatedGroups,
         ProductModelAssociationInterface $parentAssociation,
         ProductInterface $someProduct,
         ProductInterface $otherProduct,
@@ -83,22 +79,18 @@ class RemoveParentSpec extends ObjectBehavior
         $parentCategory = new Category();
         $childCategory = new Category();
         $product->getCategories()->willReturn(new ArrayCollection([$parentCategory, $childCategory]));
-        $product->getCategoriesForVariation()->willReturn($productCategories);
 
         $xsell->getCode()->willReturn('XSELL');
+
         $parentAssociation->getAssociationType()->willReturn($xsell);
         $parentAssociation->getProducts()->willReturn(new ArrayCollection([$someProduct->getWrappedObject()]));
         $parentAssociation->getProductModels()->willReturn(new ArrayCollection([$someProductModel->getWrappedObject()]));
         $parentAssociation->getGroups()->willReturn(new ArrayCollection([$someGroup->getWrappedObject()]));
 
         $association->getAssociationType()->willReturn($xsell);
-        $associatedProducts->getIterator()->willReturn(new \ArrayIterator([$otherProduct]));
-        $association->getProducts()->willReturn($associatedProducts);
-        $associatedProductModels->getIterator()->willReturn(new \ArrayIterator([$otherProductModel]));
-        $association->getProductModels()->willReturn($associatedProductModels);
-        $associatedGroups->getIterator()->willReturn(new \ArrayIterator([$otherGroup]));
-        $association->getGroups()->willReturn($associatedGroups);
-        $product->getAssociationForTypeCode('XSELL')->willReturn($association);
+        $association->getProducts()->willReturn(new ArrayCollection([$otherProduct->getWrappedObject()]));
+        $association->getProductModels()->willReturn(new ArrayCollection([$otherProductModel->getWrappedObject()]));
+        $association->getGroups()->willReturn(new ArrayCollection([$otherGroup->getWrappedObject()]));
 
         $product->getAllAssociations()->willReturn(
             new ArrayCollection([$parentAssociation->getWrappedObject(), $association->getWrappedObject()])
@@ -113,25 +105,16 @@ class RemoveParentSpec extends ObjectBehavior
         $product->setValues($allValues)->shouldBeCalled();
 
         // categories
-        $productCategories->contains($parentCategory)->shouldBeCalled()->willReturn(false);
-        $productCategories->add($parentCategory)->shouldBeCalled();
-        $productCategories->contains($childCategory)->shouldBeCalled()->willReturn(true);
-        $productCategories->add($childCategory)->shouldNotBeCalled();
+        $product->addCategory($parentCategory)->shouldBeCalled();
+        $product->addCategory($childCategory)->shouldBeCalled();
 
         // associations
-        $associatedProducts->contains($someProduct)->shouldBeCalled()->willReturn(false);
-        $association->addProduct($someProduct)->shouldBeCalled();
-        $associatedProductModels->contains($someProductModel)->shouldBeCalled()->willReturn(false);
-        $association->addProductModel($someProductModel)->shouldBeCalled();
-        $associatedGroups->contains($someGroup)->shouldBeCalled()->willReturn(false);
-        $association->addGroup($someGroup)->shouldBeCalled();
-
-        $associatedProducts->contains($otherProduct)->shouldBeCalled()->willReturn(true);
-        $association->addProduct($otherProduct)->shouldNotBeCalled();
-        $associatedProductModels->contains($otherProductModel)->shouldBeCalled()->willReturn(true);
-        $association->addProductModel($otherProductModel)->shouldNotBeCalled();
-        $associatedGroups->contains($otherGroup)->shouldBeCalled()->willReturn(true);
-        $association->addGroup($otherGroup)->shouldNotBeCalled();
+        $product->addAssociatedProduct($someProduct, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedProduct($otherProduct, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedProductModel($someProductModel, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedProductModel($otherProductModel, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedGroup($someGroup, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedGroup($otherGroup, 'XSELL')->shouldBeCalled();
 
         $product->mergeQuantifiedAssociations($ancestorQuantifiedAssociations)->shouldBeCalled();
 

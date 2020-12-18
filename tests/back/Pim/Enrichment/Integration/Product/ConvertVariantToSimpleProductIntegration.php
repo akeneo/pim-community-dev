@@ -227,30 +227,22 @@ class ConvertVariantToSimpleProductIntegration extends TestCase
     {
         Assert::assertSame($product->getAssociations()->count(), count($expectedAssociations));
         foreach ($expectedAssociations as $associationTypeCode => $association) {
-            $actualAssociation = $product->getAssociationForTypeCode($associationTypeCode);
-            Assert::assertInstanceOf(ProductAssociation::class, $actualAssociation);
-
-            $actualAssociatedProductIdentifiers = $actualAssociation->getProducts()->map(
-                function (ProductInterface $product): string {
-                    return $product->getIdentifier();
-                }
+            Assert::assertTrue($product->hasAssociationForTypeCode($associationTypeCode));
+            $actualAssociatedProductIdentifiers = $product->getAssociatedProducts($associationTypeCode)->map(
+                fn (ProductInterface $product): string => $product->getIdentifier()
             )->toArray();
             Assert::assertEqualsCanonicalizing($association['products'] ?? [], $actualAssociatedProductIdentifiers);
 
-            $actualAssociatedProductModelCodes = $actualAssociation->getProductModels()->map(
-                function (ProductModelInterface $productModel): string {
-                    return $productModel->getCode();
-                }
+            $actualAssociatedProductModelCodes = $product->getAssociatedProductModels($associationTypeCode)->map(
+                fn (ProductModelInterface $productModel): string => $productModel->getCode()
             )->toArray();
             Assert::assertEqualsCanonicalizing(
                 $association['product_models'] ?? [],
                 $actualAssociatedProductModelCodes
             );
 
-            $actualAssociatedGroupCodes = $actualAssociation->getGroups()->map(
-                function (GroupInterface $group): string {
-                    return $group->getCode();
-                }
+            $actualAssociatedGroupCodes = $product->getAssociatedGroups($associationTypeCode)->map(
+                fn (GroupInterface $group): string => $group->getCode()
             )->toArray();
             Assert::assertEqualsCanonicalizing(
                 $association['groups'] ?? [],
