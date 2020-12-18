@@ -102,3 +102,5 @@ config:
         pimee/template/product/form/duplicate/modal:                pimenterpriseui/templates/product/form/duplicate/modal.html
 
         pimee/template/mass-edit/product/publish:             pimenterpriseui/templates/mass-edit/product/publish.html
+
+        pim/controller/locales/index:                         akeneopimenterprisestructure/js/controller/LocalesEESettings

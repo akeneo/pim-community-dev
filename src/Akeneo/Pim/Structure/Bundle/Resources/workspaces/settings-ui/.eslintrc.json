@@ -1,0 +1,52 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": [
+      "./tsconfig.json"
+    ]
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "@typescript-eslint/camelcase": [
+      "error",
+      {
+        "properties": "never"
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "arrow-parens": [
+      "warn",
+      "as-needed"
+    ],
+    "indent": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "ignoreStrings": true
+      }
+    ],
+    "newline-before-return": "off",
+    "no-console": "warn",
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react/display-name": "off",
+    "react/prop-types": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

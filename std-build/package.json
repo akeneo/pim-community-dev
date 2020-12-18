@@ -26,6 +26,7 @@
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/RuleEngine/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
+    "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui"
   ]
 }

@@ -72,6 +72,7 @@
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "src/Akeneo/Pim/Automation/RuleEngine/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
+    "src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui"
   ]
 }
