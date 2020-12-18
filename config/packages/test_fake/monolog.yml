@@ -11,5 +11,3 @@ monolog:
         console:
             type:     console
             channels: ['!event', '!doctrine']
-        quality:
-            type: "null"
