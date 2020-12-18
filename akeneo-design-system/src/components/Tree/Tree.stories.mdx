@@ -26,16 +26,14 @@ TODO
   <Story name="Standard">
     {args => {
       return (
-        <ul role='tree'>
-          <Tree value={'master'} label={'Master'} {...args}>
-            <Tree value={'tvs'} label={'TVs and projectors'} isLeaf={true}/>
-            <Tree value={'cameras'} label={'Cameras'}>
-              <Tree value={'digital'} label={'Digital cameras'} isLeaf={true}/>
-              <Tree value={'camcorders'} label={'Camcorders'} isLeaf={true} selected={true}/>
-            </Tree>
-            <Tree value={'audio'} label={'Audio and Video'} selected={true} isLeaf={true}/>
+        <Tree value={'master'} label={'Master'} {...args}>
+          <Tree value={'tvs'} label={'TVs and projectors'} isLeaf={true}/>
+          <Tree value={'cameras'} label={'Cameras'}>
+            <Tree value={'digital'} label={'Digital cameras'} isLeaf={true}/>
+            <Tree value={'camcorders'} label={'Camcorders'} isLeaf={true} selected={true}/>
           </Tree>
-        </ul>
+          <Tree value={'audio'} label={'Audio and Video'} selected={true} isLeaf={true}/>
+        </Tree>
       );
     }}
   </Story>

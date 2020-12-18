@@ -13,11 +13,10 @@ const folderIconCss = css`
 const TreeContainer = styled.li`
   display: block;
   color: ${getColor('grey140')};
-  margin-left: 20px;
 `;
 
 const SubTreesContainer = styled.ul`
-  margin: 0;
+  margin: 0 0 0 20px;
   padding: 0;
 `;
 
@@ -117,6 +116,7 @@ type TreeProps = {
   onClose?: (value: string) => void;
   onSelect?: (value: boolean, event: SyntheticEvent) => void;
   onClick?: (value: string) => void;
+  _isRoot?: boolean;
 };
 
 /**
@@ -136,13 +136,14 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       onOpen,
       onClose,
       onClick,
+      _isRoot = true,
       ...rest
     }: TreeProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const subTrees: ReactElement<TreeProps>[] = [];
     React.Children.forEach(children, child => {
-      if (!isValidElement<TreeProps>(child) || child.type !== Tree) {
+      if (!isValidElement<TreeProps>(child)) {
         throw new Error(
           `${Tree.displayName || 'Tree'} component only accepts ${Tree.displayName || 'Tree'} as children`
         );
@@ -180,8 +181,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       }
     };
 
-    // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
-    return (
+    const result = (
       <TreeContainer role={'treeitem'} aria-expanded={isOpen} ref={forwardedRef} {...rest}>
         <TreeLine $selected={selected}>
           <ArrowButton
@@ -220,11 +220,20 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
         </TreeLine>
         {isOpen && !isLeaf && subTrees.length > 0 && (
           <SubTreesContainer role={'group'}>
-            {subTrees.map(subTree => React.cloneElement(subTree, {selectable, key: subTree.props.value}))}
+            {subTrees.map(subTree => React.cloneElement(subTree, {
+              selectable,
+              key: subTree.props.value,
+              _isRoot: false
+            }))}
           </SubTreesContainer>
         )}
       </TreeContainer>
     );
+
+    // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
+    return _isRoot ?
+      <ul role={'tree'}>{result}</ul> :
+      result;
   }
 );
 

@@ -181,7 +181,12 @@ class CategoryTreeController extends Controller
         }
 
         try {
-            $parent = $this->findCategory($request->get('id'));
+            if ($request->request->has('code')) {
+                $parent = $this->categoryRepository->getCategoriesByCodes([$request->get('code')])[0];
+            } else {
+                // Deprecated ; please use code!
+                $parent = $this->findCategory($request->get('id'));
+            }
         } catch (\Exception $e) {
             $parent = $this->userContext->getUserProductCategoryTree();
         }
