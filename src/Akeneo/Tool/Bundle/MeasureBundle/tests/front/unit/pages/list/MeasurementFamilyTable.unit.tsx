@@ -1,9 +1,9 @@
 import React from 'react';
 import {Router} from 'react-router';
-import {act, fireEvent, getByTitle} from '@testing-library/react';
+import {screen, fireEvent} from '@testing-library/react';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {createMemoryHistory} from 'history';
-import {renderDOMWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 const measurementFamilies = [
   {
@@ -40,109 +40,82 @@ const measurementFamilies = [
   },
 ];
 
-let container;
-beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
-});
-afterEach(() => {
-  document.body.removeChild(container);
-  container = null;
-});
-
-test('It displays an empty table', async () => {
+test('It displays an empty table', () => {
   const history = createMemoryHistory();
 
-  await act(async () => {
-    renderDOMWithProviders(
-      <Router history={history}>
-        <MeasurementFamilyTable measurementFamilies={[]} toggleSortDirection={() => {}} getSortDirection={() => {}} />
-      </Router>,
-      container
-    );
-  });
+  renderWithProviders(
+    <Router history={history}>
+      <MeasurementFamilyTable
+        measurementFamilies={[]}
+        toggleSortDirection={() => 'descending'}
+        getSortDirection={() => 'descending'}
+      />
+    </Router>
+  );
 
-  expect(container.querySelector('table')).toBeInTheDocument();
-  expect(container.querySelector('tbody tr')).not.toBeInTheDocument();
+  expect(screen.getByText('pim_common.label')).toBeInTheDocument();
+  expect(screen.queryByRole('cell')).not.toBeInTheDocument();
 });
 
-test('It displays some measurement families', async () => {
+test('It displays some measurement families', () => {
   const history = createMemoryHistory();
 
-  await act(async () => {
-    renderDOMWithProviders(
-      <Router history={history}>
-        <MeasurementFamilyTable
-          measurementFamilies={measurementFamilies}
-          toggleSortDirection={() => {}}
-          getSortDirection={() => {}}
-        />
-      </Router>,
-      container
-    );
-  });
+  renderWithProviders(
+    <Router history={history}>
+      <MeasurementFamilyTable
+        measurementFamilies={measurementFamilies}
+        toggleSortDirection={() => 'descending'}
+        getSortDirection={() => 'descending'}
+      />
+    </Router>
+  );
 
-  expect(container.querySelectorAll('tbody tr').length).toEqual(2);
+  expect(screen.getAllByRole('row')).toHaveLength(3); // 1 header row + 2 rows
+  expect(screen.getByText('AREA')).toBeInTheDocument();
+  expect(screen.getByText('LENGTH')).toBeInTheDocument();
 });
 
-test('It toggles the sort direction on the columns', async () => {
+test('It toggles the sort direction on the columns', () => {
   const history = createMemoryHistory();
   let sortDirections = {
-    label: 'Ascending',
-    code: 'Ascending',
-    standard_unit: 'Ascending',
-    unit_count: 'Ascending',
+    label: 'ascending',
+    code: 'ascending',
+    standard_unit: 'ascending',
+    unit_count: 'ascending',
   };
 
-  await act(async () => {
-    renderDOMWithProviders(
-      <Router history={history}>
-        <MeasurementFamilyTable
-          measurementFamilies={measurementFamilies}
-          toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'Descending')}
-          getSortDirection={(columnCode: string) => sortDirections[columnCode]}
-        />
-      </Router>,
-      container
-    );
-  });
+  renderWithProviders(
+    <Router history={history}>
+      <MeasurementFamilyTable
+        measurementFamilies={measurementFamilies}
+        toggleSortDirection={(columnCode: string) => (sortDirections[columnCode] = 'descending')}
+        getSortDirection={(columnCode: string) => sortDirections[columnCode]}
+      />
+    </Router>
+  );
 
-  const labelCell = container.querySelector('th[title="pim_common.label"]');
-  const codeCell = container.querySelector('th[title="pim_common.code"]');
-  const standardUnitCell = container.querySelector('th[title="measurements.list.header.standard_unit"]');
-  const unitCountCell = container.querySelector('th[title="measurements.list.header.unit_count"]');
+  fireEvent.click(screen.getByText('pim_common.label'));
+  fireEvent.click(screen.getByText('pim_common.code'));
+  fireEvent.click(screen.getByText('measurements.list.header.standard_unit'));
+  fireEvent.click(screen.getByText('measurements.list.header.unit_count'));
 
-  await act(async () => {
-    fireEvent.click(labelCell);
-    fireEvent.click(codeCell);
-    fireEvent.click(standardUnitCell);
-    fireEvent.click(unitCountCell);
-  });
-
-  expect(Object.values(sortDirections).every(direction => direction === 'Descending')).toBe(true);
+  expect(Object.values(sortDirections).every(direction => direction === 'descending')).toBe(true);
 });
 
-test('It changes the history when clicking on a row', async () => {
+test('It changes the history when clicking on a row', () => {
   const history = createMemoryHistory();
 
-  await act(async () => {
-    renderDOMWithProviders(
-      <Router history={history}>
-        <MeasurementFamilyTable
-          measurementFamilies={measurementFamilies}
-          toggleSortDirection={() => {}}
-          getSortDirection={() => {}}
-        />
-      </Router>,
-      container
-    );
-  });
+  renderWithProviders(
+    <Router history={history}>
+      <MeasurementFamilyTable
+        measurementFamilies={measurementFamilies}
+        toggleSortDirection={() => 'descending'}
+        getSortDirection={() => 'descending'}
+      />
+    </Router>
+  );
 
-  const areaRow = getByTitle(container, 'Area');
-
-  await act(async () => {
-    fireEvent.click(areaRow);
-  });
+  fireEvent.click(screen.getByText('Area'));
 
   expect(history.location.pathname).toEqual('/AREA');
 });
