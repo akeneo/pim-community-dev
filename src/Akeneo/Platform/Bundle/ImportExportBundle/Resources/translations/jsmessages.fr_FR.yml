@@ -177,6 +177,7 @@ pim_import_export:
   tracking:
     completed: "Temps écoulé : {{ duration }}"
     in_progress: "Temps restant estimé : {{ duration }}"
+    not_started: "En cours"
     untrackable: Temps restant inconnu
     estimating: "Estimation du temps restant..."
 confirmation:
