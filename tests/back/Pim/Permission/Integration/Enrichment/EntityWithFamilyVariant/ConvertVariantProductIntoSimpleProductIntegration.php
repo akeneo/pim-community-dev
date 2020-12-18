@@ -117,29 +117,23 @@ class ConvertVariantProductIntoSimpleProductIntegration extends TestCase
         /** @var ProductInterface $fullProduct */
         $fullProduct = $this->get('pim_catalog.repository.product_without_permission')
                             ->findOneByIdentifier('owned_product');
-        $xsellAssociation = $fullProduct->getAssociationForTypeCode('X_SELL');
+        Assert::assertTrue($fullProduct->hasAssociationForTypeCode('X_SELL'));
         Assert::assertEqualsCanonicalizing(
             ['empty_product', 'non_viewable_product', 'other_non_viewable_product'],
-            $xsellAssociation->getProducts()->map(
-                function (ProductInterface $associatedProduct): string {
-                    return $associatedProduct->getIdentifier();
-                }
-            )->toArray(),
+            $fullProduct->getAssociatedProducts('X_SELL')->map(
+                fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier()
+            )->toArray()
         );
         Assert::assertEqualsCanonicalizing(
             ['non_viewable_pm'],
-            $xsellAssociation->getProductModels()->map(
-                function (ProductModelInterface $associatedProductModel): string {
-                    return $associatedProductModel->getCode();
-                }
-            )->toArray(),
+            $fullProduct->getAssociatedProductModels('X_SELL')->map(
+                fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode()
+            )->toArray()
         );
         Assert::assertEqualsCanonicalizing(
             ['groupA', 'groupB'],
-            $xsellAssociation->getGroups()->map(
-                function (GroupInterface $associatedGroup): string {
-                    return $associatedGroup->getCode();
-                }
+            $fullProduct->getAssociatedGroups('X_SELL')->map(
+                fn (GroupInterface $associatedGroup): string => $associatedGroup->getCode()
             )->toArray(),
         );
 
