@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenRemovedFromVariantProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
@@ -19,11 +21,14 @@ use Webmozart\Assert\Assert;
  */
 class RemoveParent implements RemoveParentInterface
 {
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private MissingAssociationAdder $missingAssociationAdder;
+    private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        MissingAssociationAdder $missingAssociationAdder,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->missingAssociationAdder = $missingAssociationAdder;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -37,13 +42,19 @@ class RemoveParent implements RemoveParentInterface
         }
 
         $this->mergeValues($product);
-        $this->mergeCategories($product);
-        $this->mergeAssociations($product);
         $this->mergeQuantifiedAssociations($product);
+
+        $allCategories = $product->getCategories();
+        $allAssociations = $product->getAllAssociations();
 
         $parent = $product->getParent();
         $parent->removeProduct($product);
         $product->setParent(null);
+
+        foreach ($allCategories as $category) {
+            $product->addCategory($category);
+        }
+        $this->mergeAssociations($product, $allAssociations);
 
         $this->eventDispatcher->dispatch(new ParentHasBeenRemovedFromVariantProduct($product, $parent->getCode()));
     }
@@ -55,39 +66,19 @@ class RemoveParent implements RemoveParentInterface
         $product->setValues($product->getValues());
     }
 
-    private function mergeCategories(ProductInterface $product): void
+    private function mergeAssociations(ProductInterface $product, Collection $associations): void
     {
-        $productCategories = $product->getCategoriesForVariation();
-        foreach ($product->getCategories() as $category) {
-            if (!$productCategories->contains($category)) {
-                $productCategories->add($category);
-            }
-        }
-    }
-
-    private function mergeAssociations(ProductInterface $product): void
-    {
-        foreach ($product->getAllAssociations() as $association) {
-            $productAssociation = $product->getAssociationForTypeCode($association->getAssociationType()->getCode());
-            if (null === $productAssociation) {
-                $productAssociation = new ProductAssociation();
-                $productAssociation->setAssociationType($association->getAssociationType());
-                $product->addAssociation($productAssociation);
-            }
+        $this->missingAssociationAdder->addMissingAssociations($product);
+        foreach ($associations as $association) {
+            $associationTypeCode = $association->getAssociationType()->getCode();
             foreach ($association->getProducts() as $associatedProduct) {
-                if (!$productAssociation->getProducts()->contains($associatedProduct)) {
-                    $productAssociation->addProduct($associatedProduct);
-                }
+                $product->addAssociatedProduct($associatedProduct, $associationTypeCode);
             }
             foreach ($association->getProductModels() as $associatedProductModel) {
-                if (!$productAssociation->getProductModels()->contains($associatedProductModel)) {
-                    $productAssociation->addProductModel($associatedProductModel);
-                }
+                $product->addAssociatedProductModel($associatedProductModel, $associationTypeCode);
             }
             foreach ($association->getGroups() as $associatedGroup) {
-                if (!$productAssociation->getGroups()->contains($associatedGroup)) {
-                    $productAssociation->addGroup($associatedGroup);
-                }
+                $product->addAssociatedGroup($associatedGroup, $associationTypeCode);
             }
         }
     }

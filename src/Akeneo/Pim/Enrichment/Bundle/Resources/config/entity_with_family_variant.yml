@@ -19,4 +19,5 @@ services:
     pim_catalog.entity_with_family_variant.remove_parent_from_product:
         class: 'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParent'
         arguments:
+            - '@pim_catalog.association.missing_association_adder'
             - '@event_dispatcher'

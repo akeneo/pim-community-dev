@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant;
 
+use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event\ParentHasBeenRemovedFromVariantProduct;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParent;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -23,9 +24,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RemoveParentSpec extends ObjectBehavior
 {
-    function let(EventDispatcherInterface $eventDispatcher)
+    function let(MissingAssociationAdder $missingAssociationAdder, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($eventDispatcher);
+        $this->beConstructedWith($missingAssociationAdder, $eventDispatcher);
     }
 
     function it_is_initializable()
@@ -52,15 +53,13 @@ class RemoveParentSpec extends ObjectBehavior
     }
 
     function it_keeps_the_ancestor_values_categories_and_associations(
+        MissingAssociationAdder $missingAssociationAdder,
         EventDispatcherInterface $eventDispatcher,
         ProductInterface $product,
         ProductModelInterface $parentProductModel,
         Collection $productCategories,
         AssociationType $xsell,
         ProductAssociationInterface $association,
-        Collection $associatedProducts,
-        Collection $associatedProductModels,
-        Collection $associatedGroups,
         ProductModelAssociationInterface $parentAssociation,
         ProductInterface $someProduct,
         ProductInterface $otherProduct,
@@ -92,13 +91,9 @@ class RemoveParentSpec extends ObjectBehavior
         $parentAssociation->getGroups()->willReturn(new ArrayCollection([$someGroup->getWrappedObject()]));
 
         $association->getAssociationType()->willReturn($xsell);
-        $associatedProducts->getIterator()->willReturn(new \ArrayIterator([$otherProduct]));
-        $association->getProducts()->willReturn($associatedProducts);
-        $associatedProductModels->getIterator()->willReturn(new \ArrayIterator([$otherProductModel]));
-        $association->getProductModels()->willReturn($associatedProductModels);
-        $associatedGroups->getIterator()->willReturn(new \ArrayIterator([$otherGroup]));
-        $association->getGroups()->willReturn($associatedGroups);
-        $product->getAssociationForTypeCode('XSELL')->willReturn($association);
+        $association->getProducts()->willReturn(new ArrayCollection([$otherProduct->getWrappedObject()]));
+        $association->getProductModels()->willReturn(new ArrayCollection([$otherProductModel->getWrappedObject()]));
+        $association->getGroups()->willReturn(new ArrayCollection([$otherGroup->getWrappedObject()]));
 
         $product->getAllAssociations()->willReturn(
             new ArrayCollection([$parentAssociation->getWrappedObject(), $association->getWrappedObject()])
@@ -113,25 +108,17 @@ class RemoveParentSpec extends ObjectBehavior
         $product->setValues($allValues)->shouldBeCalled();
 
         // categories
-        $productCategories->contains($parentCategory)->shouldBeCalled()->willReturn(false);
-        $productCategories->add($parentCategory)->shouldBeCalled();
-        $productCategories->contains($childCategory)->shouldBeCalled()->willReturn(true);
-        $productCategories->add($childCategory)->shouldNotBeCalled();
+        $product->addCategory($childCategory)->shouldBeCalled();
+        $product->addCategory($parentCategory)->shouldBeCalled();
 
         // associations
-        $associatedProducts->contains($someProduct)->shouldBeCalled()->willReturn(false);
-        $association->addProduct($someProduct)->shouldBeCalled();
-        $associatedProductModels->contains($someProductModel)->shouldBeCalled()->willReturn(false);
-        $association->addProductModel($someProductModel)->shouldBeCalled();
-        $associatedGroups->contains($someGroup)->shouldBeCalled()->willReturn(false);
-        $association->addGroup($someGroup)->shouldBeCalled();
-
-        $associatedProducts->contains($otherProduct)->shouldBeCalled()->willReturn(true);
-        $association->addProduct($otherProduct)->shouldNotBeCalled();
-        $associatedProductModels->contains($otherProductModel)->shouldBeCalled()->willReturn(true);
-        $association->addProductModel($otherProductModel)->shouldNotBeCalled();
-        $associatedGroups->contains($otherGroup)->shouldBeCalled()->willReturn(true);
-        $association->addGroup($otherGroup)->shouldNotBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $product->addAssociatedProduct($someProduct, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedProduct($otherProduct, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedProductModel($someProductModel, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedProductModel($otherProductModel, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedGroup($someGroup, 'XSELL')->shouldBeCalled();
+        $product->addAssociatedGroup($otherGroup, 'XSELL')->shouldBeCalled();
 
         $product->mergeQuantifiedAssociations($ancestorQuantifiedAssociations)->shouldBeCalled();
 
