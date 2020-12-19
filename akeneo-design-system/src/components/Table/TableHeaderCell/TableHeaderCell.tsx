@@ -2,6 +2,8 @@ import React, {ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, ArrowUpIcon} from '../../../icons';
+import {useSkeleton} from 'hooks';
+import {applySkeletonStyle, SkeletonProps} from '../../Skeleton/Skeleton';
 
 type TableSortDirection = 'descending' | 'ascending' | 'none';
 
@@ -41,7 +43,7 @@ const HeaderCellContainer = styled.th<{isSortable: boolean; isSorted: boolean} &
     `};
 `;
 
-const HeaderCellContentContainer = styled.span`
+const HeaderCellContentContainer = styled.span<SkeletonProps & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   padding: 0 10px;
   white-space: nowrap;
@@ -50,6 +52,8 @@ const HeaderCellContentContainer = styled.span`
   + svg {
     vertical-align: middle;
   }
+
+  ${applySkeletonStyle()}
 `;
 
 const TableHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableHeaderCellProps>(
@@ -77,6 +81,8 @@ const TableHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableHeader
       }
     };
 
+    const skeleton = useSkeleton();
+
     return (
       <HeaderCellContainer
         isSorted={sortDirection !== 'none'}
@@ -85,8 +91,11 @@ const TableHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, TableHeader
         onClick={handleClick}
         {...rest}
       >
-        <HeaderCellContentContainer ref={forwardedRef}>{children}</HeaderCellContentContainer>
+        <HeaderCellContentContainer ref={forwardedRef} skeleton={skeleton}>
+          {children}
+        </HeaderCellContentContainer>
         {isSortable &&
+          !skeleton &&
           (sortDirection === 'descending' || sortDirection === 'none' ? (
             <ArrowDownIcon size={14} />
           ) : (

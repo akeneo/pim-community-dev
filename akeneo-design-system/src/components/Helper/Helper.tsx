@@ -2,6 +2,8 @@ import React, {ReactElement, ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {DangerIcon, IconProps, InfoRoundIcon} from '../../icons';
+import {useSkeleton} from 'hooks';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 
 const getBackgroundColor = (level: Level) => {
   switch (level) {
@@ -69,7 +71,7 @@ const getLinkColor = (level: Level, inline: boolean) => {
   }
 };
 
-const Container = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps>`
+const Container = styled.div<{level: Level; inline: boolean} & SkeletonProps & AkeneoThemedProps>`
   display: flex;
   font-weight: 400;
   padding-right: 20px;
@@ -81,6 +83,8 @@ const Container = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps
       min-height: 44px;
       background-color: ${getBackgroundColor(props.level)};
     `}
+
+  ${applySkeletonStyle()}
 `;
 
 type Level = 'info' | 'warning' | 'error';
@@ -91,17 +95,22 @@ const IconContainer = styled.span<{level: Level; inline: boolean} & AkeneoThemed
   color: ${props => getIconColor(props.level, props.inline)};
 `;
 
-const TextContainer = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps>`
+const TextContainer = styled.div<{level: Level; inline: boolean} & SkeletonProps & AkeneoThemedProps>`
   padding-left: ${({inline}) => (inline ? '4px' : '10px')};
   white-space: break-spaces;
 
   a {
-    color: ${({level, inline}) => getLinkColor(level, inline)};
+    ${({inline, level, skeleton}) =>
+      !skeleton &&
+      css`
+        color: ${getLinkColor(level, inline)};
+      `};
     margin: 0 3px;
   }
 
-  ${({inline, level}) =>
+  ${({inline, level, skeleton}) =>
     !inline &&
+    !skeleton &&
     css`
       margin: 12px 0;
       border-left: 1px solid ${getSeparatorColor(level)};
@@ -134,12 +143,14 @@ type HelperProps = {
 /** Helper informs the user about the features of the section. */
 const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
   ({level = 'info', inline = false, icon, children, ...rest}: HelperProps, forwardedRef: Ref<HTMLDivElement>) => {
+    const skeleton = useSkeleton();
+
     return (
-      <Container ref={forwardedRef} level={level} inline={inline} {...rest}>
+      <Container ref={forwardedRef} level={level} inline={inline} skeleton={skeleton} {...rest}>
         <IconContainer inline={inline} level={level}>
-          {React.cloneElement(undefined === icon ? getIcon(level) : icon, {size: inline ? 16 : 20})}
+          {!skeleton && React.cloneElement(undefined === icon ? getIcon(level) : icon, {size: inline ? 16 : 20})}
         </IconContainer>
-        <TextContainer level={level} inline={inline}>
+        <TextContainer level={level} inline={inline} skeleton={skeleton}>
           {children}
         </TextContainer>
       </Container>

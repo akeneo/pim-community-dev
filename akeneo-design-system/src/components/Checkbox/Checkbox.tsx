@@ -91,7 +91,6 @@ const LabelContainer = styled.label<{readOnly: boolean} & SkeletonProps & Akeneo
 
   ${applySkeletonStyle(
     css`
-      border-radius: 3px;
       min-width: 50px;
     `
   )}

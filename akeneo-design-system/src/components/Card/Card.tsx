@@ -69,7 +69,6 @@ const ImageContainer = styled.div<SkeletonProps>`
 
   ${applySkeletonStyle(
     css`
-      border-radius: 3px;
       & img {
         opacity: 0;
       }
@@ -99,11 +98,7 @@ const BadgeContainer = styled.div`
 `;
 
 const Text = styled.span<SkeletonProps>`
-  ${applySkeletonStyle(
-    css`
-      border-radius: 3px;
-    `
-  )}
+  ${applySkeletonStyle()}
 `;
 
 type CardProps = Override<

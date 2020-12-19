@@ -21,6 +21,17 @@ const placeholderStyle = css`
   background-size: 400% 400%;
   border: none;
   color: transparent;
+  border-radius: 3px;
+  cursor: default;
+  outline: none;
+
+  &:hover {
+    color: transparent;
+  }
+
+  ::placeholder {
+    color: transparent;
+  }
 `;
 
 const applySkeletonStyle = (

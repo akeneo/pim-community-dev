@@ -1,10 +1,14 @@
 import React, {Ref} from 'react';
+import {useSkeleton} from 'hooks';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 import styled from 'styled-components';
 import {getEmoji} from '../../shared';
 import {getFontSize} from '../../theme';
 
-const LocaleContainer = styled.span`
+const LocaleContainer = styled.span<SkeletonProps>`
   display: inline-flex;
+
+  ${applySkeletonStyle()};
 `;
 
 const Emoji = styled.span`
@@ -30,9 +34,10 @@ type LocaleProps = {
 const Locale = React.forwardRef<HTMLSpanElement, LocaleProps>(
   ({code, languageLabel, ...rest}: LocaleProps, forwardedRef: Ref<HTMLSpanElement>) => {
     const {0: languageCode, length, [length - 1]: countryCode} = code.split('_');
+    const skeleton = useSkeleton();
 
     return (
-      <LocaleContainer ref={forwardedRef} {...rest}>
+      <LocaleContainer ref={forwardedRef} skeleton={skeleton} {...rest}>
         <Emoji role="img" aria-label={countryCode}>
           {getEmoji(countryCode)}
         </Emoji>
