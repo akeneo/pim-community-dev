@@ -3,16 +3,43 @@ akeneo_data_quality_insights:
   dqi_dashboard:
     menu: Прогнозы качества данных
     title: Обзор качества данных
+    helper:
+      title: Внедрение качества данных в Акенео
+      description: С помощью панели управления качеством данных вы можете измерить качество ваших каталогов. Вы также можете сосредоточиться на категории или семействе.
+      help_center: За дополнительной информацией обращайтесь в наш справочный центр.
     no_data_title: К сожалению, мы не располагаем достаточными данными, чтобы показать обзор качества данных.
     no_data_subtitle: Пожалуйста, зайдите позже.
+    time_period:
+      label: Период времени
+      daily: По дням
+      weekly: За неделю
+      monthly: За месяц
     legend:
       excellent: Отлично
       good: Хорошо
       average: Среднее
       below_average: Ниже среднего
       to_improve: Улучшить
+    category_modal_filter:
+      subtitle: Фильтр по категории
+      message: Выберите категорию для изучения на вашей панели управления
     widgets:
+      family_modal:
+        subtitle: Добавить семейства
+        message: Выберите семейства для добавления на вашу панель управления
+        max_families_msg: К сожалению, вы не можете добавить более {{ count }} семейств для отслеживания на вашей панели управления
+      category_modal:
+        subtitle: Добавить категории
+        message: Выберите категории для добавления на вашу панель управления
+        max_categories_msg: К сожалению, вы не можете добавить более {{ count }} категорий для отслеживания на вашей панели управления
+      add_families: Добавить семейства
+      add_categories: Добавить категории
       title: Заголовок
+      no_family_helper_msg: Выберите семейства, для которых вы хотите измерить качество данных
+      no_category_helper_msg: Выберите категории, для которых вы хотите измерять качество данных
+      see_in_grid: Смотреть в сетке
+    time_axis:
+      day: день
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
@@ -31,8 +58,13 @@ akeneo_data_quality_insights:
         attributes_link: Показать все улучшенные атрибуты
         success: Данные вашего продукта полностью согласованы. Поздравляем!
     messages:
+      error:
+        axis_error: Из-за ошибки оценка не может быть полностью рассчитана. Повторите попытку позже.
+        criterion_error: Оценка не может быть рассчитана.
       success:
         criterion: Все хорошо.
+      grading_in_progress: Выполняется оценка.
+      axis_grading_in_progress: Оценка в процессе. Вернитесь позже.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Все недостающие атрибуты
@@ -43,6 +75,7 @@ akeneo_data_quality_insights:
       suggestions_title: Предложения
       ignore_all_suggestions_button_label: Пропустить
     title_suggestion_popover:
+      title: Предложения
       ignore_all_suggestions_button_label: Пропустить
 pim_title:
   akeneo_data_quality_insights_dashboard: Прогнозы качества данных

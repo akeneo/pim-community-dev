@@ -1,0 +1,4 @@
+pim_asset_manager:
+  product_value:
+    validation:
+      assets_should_belong_to_asset_family: 'Пожалуйста, убедитесь, что актив "%asset_code%" существует и принадлежит семейству активов "%asset_family_identifier%" для атрибута "%attribute%".'
