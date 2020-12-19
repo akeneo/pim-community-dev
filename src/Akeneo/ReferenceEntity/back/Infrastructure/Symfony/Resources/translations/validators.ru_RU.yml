@@ -1,0 +1,5 @@
+pim_reference_entity:
+  record:
+    validation:
+      record:
+        should_not_be_used_as_product_variant_axis: 'Вы не можете удалить этот объект, так как он используется в качестве конфигурационного атрибута в одном из вариантов продукта'

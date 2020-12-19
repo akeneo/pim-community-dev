@@ -64,3 +64,4 @@ pim_notification:
     project_created: Новый проект для вас
     project_finished: Проект завершён
     project_calculation: Подсчет статистики проекта
+    project_due_date: Дата завершения проекта
