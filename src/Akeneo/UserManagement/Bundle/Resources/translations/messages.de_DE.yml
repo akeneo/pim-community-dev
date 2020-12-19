@@ -67,13 +67,11 @@ pim_user:
       username_or_email: Benutzername oder E-Mail
       remember_me: Automatisch anmelden
       password_forgotten: Passwort vergessen?
-      log_in: Anmelden
       forgot_password: Passwort vergessen
       request: Anfrage
       password_reset: Passwort zurücksetzen
       reset: Zurücksetzen
       password_reset_email_sent: Eine eMail wurde an den Benutzer geschickt. Diese enthält einen Link zum Zurücksetzen des Passworts.
-      homepage: Zur Startseite
   group:
     tab:
       general.title: Allgemein
