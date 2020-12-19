@@ -25,7 +25,11 @@ const BadgeContainer = styled.span<SkeletonProps & BadgeProps & AkeneoThemedProp
     border-color: ${getColorForLevel(level, 100)};
   `}
 
-  ${applySkeletonStyle()}
+  ${applySkeletonStyle(
+    css`
+      min-width: 30px;
+    `
+  )}
 `;
 
 type BadgeProps = {
