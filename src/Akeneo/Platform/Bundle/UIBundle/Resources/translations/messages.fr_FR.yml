@@ -544,3 +544,5 @@ job_tracker:
     title: Traqueur de processus
   filter:
     started_at: Démarré à
+pim_login:
+  logo_title: Akeneo PIM

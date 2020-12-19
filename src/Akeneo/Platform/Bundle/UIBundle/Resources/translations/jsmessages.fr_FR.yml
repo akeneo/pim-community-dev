@@ -159,6 +159,7 @@ pim_common:
   before: Avant
   by: par
   cancel: Annuler
+  clear_value: Effacer la valeur
   close: Fermer
   code: Code
   completeness: Complétude
