@@ -159,6 +159,7 @@ create_asset:
   title: 자산 만들기
 pim_datagrid:
   display_selector:
+    label: 표시
     gallery: 갤러리
   mass_action:
     mass_edit:

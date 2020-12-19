@@ -158,6 +158,7 @@ create_asset:
   title: Crear un recurs
 pim_datagrid:
   display_selector:
+    label: Mostra
     gallery: Galeria
     list: Llista
   mass_action:
