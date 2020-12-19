@@ -334,6 +334,7 @@ pim_enrich.mass_edit.product:
       description: El pare de les variants o models de subproducte seleccionats a la quadrícula es canviarà al model de producte escollits.
 pim_datagrid:
   search: "Cercar a {{ label }}"
+  no_entities: "No {{ entityHint }} trobat"
   mass_action_group:
     bulk_actions:
       label: Accions massives

@@ -290,6 +290,7 @@ pim_enrich.mass_edit.product:
       label: Изменить родительскую модель продукта
       description: Родительская модель продукта или варианта продукта, выделенная в представлении, будет изменена на выбранную модель продукта.
 pim_datagrid:
+  search: "Поиск по {{ label }}"
   mass_action_group:
     bulk_actions:
       label: Массовые действия
