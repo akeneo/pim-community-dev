@@ -170,7 +170,10 @@ pim_measure:
     PSI: Фунт на квадратный дюйм
     TORR: Торр
     MMHG: Миллиметр ртутного столба
+    #Energy
+    CALORIE: Калории
     KILOCALORIE: килокалория
+    JOULE: Джоули
     KILOJOULE: килоджоуль
     #CaseBox
     PIECE: шт.
