@@ -2,6 +2,7 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import LinkTo from '@storybook/addon-links/react';
 import {Helper} from './Helper';
 import {Link} from '../Link/Link';
+import {Skeleton} from '../Skeleton/Skeleton';
 import * as Icons from '../../icons';
 
 <Meta
@@ -136,6 +137,23 @@ non fermentum diam nisl sit amet erat. `}
             Error level and inline
           </Helper>
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <Helper {...args}>Info</Helper>
+          <Helper {...args} inline={true}>
+            Error level and inline
+          </Helper>
+        </Skeleton>
       );
     }}
   </Story>

@@ -126,7 +126,12 @@ const ContainerStyle = css<
   transition: background-color 0.1s ease;
 
   ${getColorStyle}
-  ${applySkeletonStyle()}
+  ${applySkeletonStyle(
+    css`
+      border-radius: 16px;
+      min-width: 50px;
+    `
+  )}
 `;
 
 const ButtonContainer = styled.button`

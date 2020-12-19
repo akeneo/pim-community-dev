@@ -4,6 +4,8 @@ import {InputProps} from '../InputProps';
 import {LockIcon} from '../../../icons';
 import {Override} from '../../../shared';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
+import {useSkeleton} from '../../../hooks';
+import {applySkeletonStyle, SkeletonProps} from '../../Skeleton/Skeleton';
 
 const TextInputContainer = styled.div`
   position: relative;
@@ -11,7 +13,7 @@ const TextInputContainer = styled.div`
   flex-direction: column;
 `;
 
-const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedProps>`
+const Input = styled.input<{readOnly: boolean; invalid: boolean} & SkeletonProps & AkeneoThemedProps>`
   width: 100%;
   height: 40px;
   border: 1px solid ${({invalid}) => (invalid ? getColor('red', 100) : getColor('grey', 80))};
@@ -31,6 +33,8 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   &::placeholder {
     color: ${getColor('grey', 100)};
   }
+
+  ${applySkeletonStyle()}
 `;
 
 const ReadOnlyIcon = styled(LockIcon)`
@@ -41,10 +45,14 @@ const ReadOnlyIcon = styled(LockIcon)`
   color: ${getColor('grey', 100)};
 `;
 
-const CharacterLeftLabel = styled.div`
+const CharacterLeftLabel = styled.div<SkeletonProps & AkeneoThemedProps>`
   font-size: ${getFontSize('small')};
+  line-height: ${getFontSize('small')};
+  margin-top: 5px;
   align-self: flex-end;
   color: ${getColor('grey', 100)};
+
+  ${applySkeletonStyle()}
 `;
 
 type TextInputProps = Override<
@@ -92,6 +100,8 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
       [readOnly, onChange]
     );
 
+    const skeleton = useSkeleton();
+
     return (
       <TextInputContainer>
         <Input
@@ -102,10 +112,11 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
           disabled={readOnly}
           aria-invalid={invalid}
           invalid={invalid}
+          skeleton={skeleton}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}
-        {characterLeftLabel && <CharacterLeftLabel>{characterLeftLabel}</CharacterLeftLabel>}
+        {characterLeftLabel && <CharacterLeftLabel skeleton={skeleton}>{characterLeftLabel}</CharacterLeftLabel>}
       </TextInputContainer>
     );
   }

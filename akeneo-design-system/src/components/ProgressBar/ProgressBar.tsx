@@ -1,7 +1,8 @@
 import React, {Ref} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
-import {useId} from '../../hooks';
+import {useId, useSkeleton} from '../../hooks';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 
 const ProgressBarContainer = styled.div`
   overflow: hidden;
@@ -21,7 +22,7 @@ const Header = styled.div`
   margin-bottom: -4px;
 `;
 
-const Title = styled.div`
+const Title = styled.div<SkeletonProps & AkeneoThemedProps>`
   color: ${getColor('grey140')};
   padding-right: 20px;
   white-space: nowrap;
@@ -31,27 +32,37 @@ const Title = styled.div`
   flex-grow: 1;
   margin-bottom: 4px;
 
+  & > span {
+    ${applySkeletonStyle()}
+  }
+
   /* When header div is greater than 300px the flex-basic is negative, progress label is on same line */
   /* When header div is lower than 300px the flex-basic is positive, progress label is move to new line */
   flex-basis: calc((301px - 100%) * 999);
 `;
 
-const ProgressLabel = styled.div`
+const ProgressLabel = styled.div<SkeletonProps & AkeneoThemedProps>`
   color: ${getColor('grey120')};
   flex-grow: 0;
   flex-basis: auto;
   flex-shrink: 1;
-  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 4px;
+  margin-bottom: 7px;
+  margin-top: 4px;
+  font-size: ${getFontSize('default')};
+  line-height: ${getFontSize('default')};
+  ${applySkeletonStyle()}
 `;
 
-const ProgressBarBackground = styled.div<{size: ProgressBarSize} & AkeneoThemedProps>`
+const ProgressBarBackground = styled.div<{size: ProgressBarSize} & SkeletonProps & AkeneoThemedProps>`
   background: ${getColor('grey60')};
   height: ${props => getHeightFromSize(props.size)};
   overflow: hidden;
   position: relative;
+  ${applySkeletonStyle()}
 `;
 
 const ProgressBarFill = styled.div.attrs<{width: number; level: Level; indeterminate: boolean; light: boolean}>(
@@ -173,23 +184,35 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
       progressBarProps['aria-labelledby'] = labelId;
     }
 
+    const skeleton = useSkeleton();
+
     return (
       <ProgressBarContainer ref={forwardedRef} {...rest}>
         {(title || progressLabel) && (
           <Header>
-            <Title title={title} id={labelId} htmlFor={progressBarId}>
-              {title}
+            <Title title={title} id={labelId} htmlFor={progressBarId} skeleton={skeleton}>
+              <span>{title}</span>
             </Title>
-            <ProgressLabel title={progressLabel}>{progressLabel}</ProgressLabel>
+            <ProgressLabel title={progressLabel} skeleton={skeleton}>
+              {progressLabel}
+            </ProgressLabel>
           </Header>
         )}
-        <ProgressBarBackground id={progressBarId} role="progressbar" {...progressBarProps} size={size}>
-          <ProgressBarFill
-            level={level}
-            light={light}
-            indeterminate={percent === 'indeterminate'}
-            width={computeWidthFromPercent(percent)}
-          />
+        <ProgressBarBackground
+          id={progressBarId}
+          role="progressbar"
+          {...progressBarProps}
+          size={size}
+          skeleton={skeleton}
+        >
+          {!skeleton && (
+            <ProgressBarFill
+              level={level}
+              light={light}
+              indeterminate={percent === 'indeterminate'}
+              width={computeWidthFromPercent(percent)}
+            />
+          )}
         </ProgressBarBackground>
       </ProgressBarContainer>
     );

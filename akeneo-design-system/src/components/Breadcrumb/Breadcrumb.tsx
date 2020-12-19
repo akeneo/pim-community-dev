@@ -1,19 +1,29 @@
 import React, {isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
-import {getColor} from '../../theme';
+import {AkeneoThemedProps, getColor} from '../../theme';
 import {Link, LinkProps} from '../../components/Link/Link';
+import {useSkeleton} from '../../hooks';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 
-const Step = styled(Link)`
+const Step = styled(Link)<SkeletonProps & AkeneoThemedProps & LinkProps>`
   text-transform: uppercase;
   text-decoration: none;
   color: ${getColor('grey', 120)};
+
+  ${applySkeletonStyle()};
 `;
 Step.displayName = 'Breadcrumb.Step';
 
-const BreadcrumbContainer = styled.nav`
+const BreadcrumbContainer = styled.nav<SkeletonProps & AkeneoThemedProps>`
+  ${Step} {
+    ${applySkeletonStyle()};
+  }
+
   ${Step}:last-child {
     color: ${getColor('grey', 100)};
     cursor: initial;
+
+    ${applySkeletonStyle()};
   }
 `;
 
@@ -33,10 +43,11 @@ type BreadcrumbProps = {
  */
 const Breadcrumb = ({children, ...rest}: BreadcrumbProps) => {
   const childrenCount = React.Children.count(children);
+  const skeleton = useSkeleton();
 
   // https://www.w3.org/TR/wai-aria-practices-1.1/examples/breadcrumb/index.html
   return (
-    <BreadcrumbContainer aria-label="Breadcrumb" {...rest}>
+    <BreadcrumbContainer aria-label="Breadcrumb" skeleton={skeleton} {...rest}>
       {React.Children.map(children, (child, index) => {
         if (!(isValidElement(child) && child.type === Step)) {
           throw new Error('Breadcrumb only accepts `Breacrumb.Step` elements as children');

@@ -3,6 +3,7 @@ import LinkTo from '@storybook/addon-links/react';
 import {Information, HighlightTitle} from './Information';
 import {Link} from '../Link/Link';
 import {UsersIllustration} from '../../illustrations';
+import {Skeleton} from '../../components';
 import * as Illustrations from '../../illustrations';
 
 <Meta
@@ -11,12 +12,13 @@ import * as Illustrations from '../../illustrations';
   argTypes={{
     illustration: {control: {type: 'select', options: Object.keys(Illustrations)}},
     title: {control: {type: 'text'}},
-    children: {control: {type: 'text'}}
+    children: {control: {type: 'text'}},
   }}
   args={{
     illustration: 'UsersIllustration',
     title: 'Lorem ipsum.',
-    children: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    children:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   }}
 />
 
@@ -28,7 +30,7 @@ Allows to help the user by pushing contextual information.
 
 ## General guidance
 
-Located at the top of a page, it helps the user on the page's features. A link guides the user to additional information. *i.e., the help center*
+Located at the top of a page, it helps the user on the page's features. A link guides the user to additional information. _i.e., the help center_
 
 ## Playground
 
@@ -36,9 +38,9 @@ Use this playground to test the helper component
 
 <Canvas>
   <Story name="Standard">
-    {(args) => {
+    {args => {
       const illustrationComponent = React.createElement(Illustrations[args.illustration]);
-      return <Information {...args} illustration={illustrationComponent}/>;
+      return <Information {...args} illustration={illustrationComponent} />;
     }}
   </Story>
 </Canvas>
@@ -52,14 +54,42 @@ Title can also be composed of highlight.
 
 <Canvas>
   <Story name="Composition">
-    {(args) => {
-      const title = (<>Lorem ipsum <HighlightTitle>dolor</HighlightTitle> sit amet</>)
+    {args => {
+      const title = (
+        <>
+          Lorem ipsum <HighlightTitle>dolor</HighlightTitle> sit amet
+        </>
+      );
       return (
-        <Information title={title} illustration={<UsersIllustration/>}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          <br/>
-          <Link target="_blank" href="https://www.akeneo.com/">Link to related lorem ipsum</Link>
+        <Information title={title} illustration={<UsersIllustration />}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua.
+          <br />
+          <Link target="_blank" href="https://www.akeneo.com/">
+            Link to related lorem ipsum
+          </Link>
         </Information>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <Information title="Nice skeleton" illustration={<UsersIllustration />}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua.
+            <br />
+            <Link target="_blank" href="https://www.akeneo.com/">
+              Link to related lorem ipsum
+            </Link>
+          </Information>
+        </Skeleton>
       );
     }}
   </Story>
@@ -68,6 +98,14 @@ Title can also be composed of highlight.
 ## Related components
 
 <ul>
-  <li><LinkTo kind="Components/Helper" story="Standard">Helper</LinkTo></li>
-  <li><LinkTo kind="Components/Link" story="Standard">Link</LinkTo></li>
+  <li>
+    <LinkTo kind="Components/Helper" story="Standard">
+      Helper
+    </LinkTo>
+  </li>
+  <li>
+    <LinkTo kind="Components/Link" story="Standard">
+      Link
+    </LinkTo>
+  </li>
 </ul>

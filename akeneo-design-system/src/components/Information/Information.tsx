@@ -1,9 +1,11 @@
 import React, {isValidElement, ReactNode, Ref} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
+import {useSkeleton} from '../../hooks';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 
-const Container = styled.div`
+const Container = styled.div<SkeletonProps & AkeneoThemedProps>`
   align-items: center;
   display: flex;
   font-weight: 400;
@@ -11,19 +13,31 @@ const Container = styled.div`
   color: ${getColor('grey120')};
   min-height: 100px;
   background-color: ${getColor('blue10')};
+
+  ${applySkeletonStyle()}
 `;
 
-const IconContainer = styled.span`
+const IconContainer = styled.span<SkeletonProps & AkeneoThemedProps>`
   height: 80px;
   padding: 0px 20px 0px 20px;
   margin: 20px 15px 20px 0px;
-  border-right: 1px solid ${getColor('grey80')};
+  ${({skeleton}) =>
+    !skeleton &&
+    css`
+      border-right: 1px solid ${getColor('grey80')};
+    `};
+
+  & > svg {
+    opacity: 0;
+  }
 `;
 
-const HelperTitle = styled.div`
+const HelperTitle = styled.div<SkeletonProps & AkeneoThemedProps>`
   color: ${getColor('grey140')};
   font-size: ${getFontSize('bigger')};
   font-weight: 700;
+
+  ${applySkeletonStyle()}
 `;
 
 const ContentContainer = styled.div`
@@ -53,11 +67,13 @@ const Information = React.forwardRef<HTMLDivElement, InformationProps>(
     const resizedIllustration =
       isValidElement<IllustrationProps>(illustration) && React.cloneElement(illustration, {size: 80});
 
+    const skeleton = useSkeleton();
+
     return (
-      <Container ref={forwardedRef} {...rest}>
-        <IconContainer>{resizedIllustration}</IconContainer>
+      <Container ref={forwardedRef} skeleton={skeleton} {...rest}>
+        <IconContainer skeleton={skeleton}>{resizedIllustration}</IconContainer>
         <ContentContainer>
-          <HelperTitle>{title}</HelperTitle>
+          <HelperTitle skeleton={skeleton}>{title}</HelperTitle>
           {children}
         </ContentContainer>
       </Container>
