@@ -81,6 +81,8 @@ pimee_product_asset:
         error: No s'ha esborrat l'arxiu de variació. S'ha produït un error.
   popin.create:
     title: Crear un nou recurs
+    confirm: Confirmar
+    cancel: Cancelar
     is_localized: Configurable regionalment
   menu: Recursos
   page_tab:
