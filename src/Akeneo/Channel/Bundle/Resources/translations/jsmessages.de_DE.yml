@@ -64,8 +64,6 @@ pim_enrich.entity.locale:
   label: Gebietsschema
   uppercase_label: Gebietsschema
   plural_label: Gebietsschemata
-  page_title:
-    index: "]-Inf, 1]{{ count }} Gebietsschema|]1, Inf[{{ count }} Gebietsschemata"
 pim_enrich.entity.currency:
   plural_label: Währungen
   page_title:

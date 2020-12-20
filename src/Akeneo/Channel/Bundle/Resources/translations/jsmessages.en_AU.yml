@@ -63,8 +63,6 @@ pim_enrich.entity.locale:
   label: locale
   uppercase_label: Locale
   plural_label: Locales
-  page_title:
-    index: "]-Inf, 1]{{ count }} locale|]1, Inf[{{ count }} locales"
 pim_enrich.entity.currency:
   plural_label: Currencies
   page_title:
