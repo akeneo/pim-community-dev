@@ -46,11 +46,6 @@ data:
   {{- else }}
   FLAG_ONBOARDER_ENABLED: "0"
   {{- end }}
-  {{- if .Values.sharedCatalogs.enabled }}
-  FLAG_SHARED_CATALOG_ENABLED: "1"
-  {{- else }}
-  FLAG_SHARED_CATALOG_ENABLED: "0"
-  {{- end }}
   {{- if .Values.pim.comm_panel_api_url }}
   COMM_PANEL_API_URL: {{ .Values.pim.comm_panel_api_url | quote }}
   {{- end }}
