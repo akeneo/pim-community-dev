@@ -14,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
  */
 class ComputeAndPersistProductCompletenesses
 {
-    private const CHUNK_SIZE = 20000;
+    private const CHUNK_SIZE = 10000;
 
     /** @var CompletenessCalculator */
     private $completenessCalculator;
@@ -44,7 +44,7 @@ class ComputeAndPersistProductCompletenesses
     public function fromProductIdentifiers(array $productIdentifiers): void
     {
         foreach (array_chunk($productIdentifiers, self::CHUNK_SIZE) as $identifiersChunk) {
-            $completenessCollections = $this->completenessCalculator->fromProductIdentifiers($productIdentifiers);
+            $completenessCollections = $this->completenessCalculator->fromProductIdentifiers($identifiersChunk);
             $this->saveProductCompletenesses->saveAll($completenessCollections);
         }
     }
