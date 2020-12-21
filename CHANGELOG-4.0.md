@@ -2,6 +2,10 @@
 
 # 4.0.80 (2020-12-21)
 
+## Bug fixes
+
+- PIM-9601: Fix compute completeness memory usage
+
 # 4.0.79 (2020-12-18)
 
 ## Bug fixes
