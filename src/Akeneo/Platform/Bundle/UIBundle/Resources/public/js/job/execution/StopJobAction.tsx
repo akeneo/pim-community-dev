@@ -32,32 +32,29 @@ const StopJobAction = ({id, jobLabel, isStoppable, onStop, children, ...rest}: S
 
   return (
     <>
-      <Modal
-        closeTitle={translate('pim_common.close')}
-        isOpen={isConfirmOpen}
-        onClose={closeConfirm}
-        illustration={<ExportIllustration />}
-      >
-        <SectionTitle color="brand">{translate('pim_title.pim_enrich_job_tracker_index')} /</SectionTitle>
-        <Title>{translate('pim_datagrid.action.stop.confirmation.title', {jobLabel})}</Title>
-        <Helper level="info">
-          {translate('pim_datagrid.action.stop.confirmation.content')}
-          <Link
-            href="https://help.akeneo.com/pim/serenity/articles/monitor-jobs.html#how-to-stop-your-jobs"
-            target="_blank"
-          >
-            {translate('pim_datagrid.action.stop.confirmation.link')}
-          </Link>
-        </Helper>
-        <Modal.BottomButtons>
-          <Button level="tertiary" onClick={closeConfirm}>
-            {translate('pim_common.cancel')}
-          </Button>
-          <Button level="danger" onClick={handleStop}>
-            {translate('pim_datagrid.action.stop.confirmation.ok')}
-          </Button>
-        </Modal.BottomButtons>
-      </Modal>
+      {isConfirmOpen && (
+        <Modal closeTitle={translate('pim_common.close')} onClose={closeConfirm} illustration={<ExportIllustration />}>
+          <SectionTitle color="brand">{translate('pim_title.pim_enrich_job_tracker_index')} /</SectionTitle>
+          <Title>{translate('pim_datagrid.action.stop.confirmation.title', {jobLabel})}</Title>
+          <Helper level="info">
+            {translate('pim_datagrid.action.stop.confirmation.content')}
+            <Link
+              href="https://help.akeneo.com/pim/serenity/articles/monitor-jobs.html#how-to-stop-your-jobs"
+              target="_blank"
+            >
+              {translate('pim_datagrid.action.stop.confirmation.link')}
+            </Link>
+          </Helper>
+          <Modal.BottomButtons>
+            <Button level="tertiary" onClick={closeConfirm}>
+              {translate('pim_common.cancel')}
+            </Button>
+            <Button level="danger" onClick={handleStop}>
+              {translate('pim_datagrid.action.stop.confirmation.ok')}
+            </Button>
+          </Modal.BottomButtons>
+        </Modal>
+      )}
       <Button onClick={handleOpenConfirm} level="danger" {...rest}>
         {translate('pim_datagrid.action.stop.title')}
       </Button>

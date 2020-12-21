@@ -12,10 +12,11 @@ type ConfirmModalProps = {
 const ConfirmDeleteModal = ({isOpen, description, onConfirm, onCancel}: ConfirmModalProps) => {
   const translate = useTranslate();
 
+  if (!isOpen) return null;
+
   return (
     <Modal
       closeTitle={translate('pim_common.close')}
-      isOpen={isOpen}
       onClose={onCancel}
       illustration={<DeleteIllustration />}
     >
