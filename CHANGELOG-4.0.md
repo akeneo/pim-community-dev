@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9604: Reference entities are blocked after using the filter.
+
 # 4.0.79 (2020-12-18)
 
 # 4.0.78 (2020-12-08)
