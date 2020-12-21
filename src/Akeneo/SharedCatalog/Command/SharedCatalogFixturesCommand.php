@@ -62,12 +62,6 @@ class SharedCatalogFixturesCommand extends Command
             throw new \InvalidArgumentException('Missing argument "--force"');
         }
 
-        $isEnabled = (bool)($_ENV['FLAG_SHARED_CATALOG_ENABLED'] ?? false);
-
-        if (!$isEnabled) {
-            throw new \LogicException('The env variable FLAG_SHARED_CATALOG_ENABLED must be set to "1"');
-        }
-
         $this->createUser([
             'username' => 'julia',
             'password' => 'julia',
