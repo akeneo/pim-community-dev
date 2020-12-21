@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 class LocaleSubscriberSpec extends ObjectBehavior
@@ -31,7 +31,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
     }
 
     function it_sets_locale_on_kernel_request(
-        GetResponseEvent $event,
+        RequestEvent $event,
         Request $request,
         SessionInterface $session
     ) {
@@ -45,7 +45,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
 
     function it_not_sets_locale_on_kernel_request_if_user_session_is_null_and_config_does_not_exists(
         $em,
-        GetResponseEvent $event,
+        RequestEvent $event,
         Request $request,
         SessionInterface $session,
         Connection $connection,
@@ -67,7 +67,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
 
     function it_sets_locale_from_config_on_kernel_request_if_user_session_is_null(
         $em,
-        GetResponseEvent $event,
+        RequestEvent $event,
         Request $request,
         SessionInterface $session,
         Connection $connection,
