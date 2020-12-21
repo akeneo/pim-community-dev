@@ -91,13 +91,10 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
   useShortcut(Key.Enter, handleAdd);
   useShortcut(Key.NumpadEnter, handleAdd);
 
+  if (!isOpen) return null;
+
   return (
-    <Modal
-      closeTitle={translate('pim_common.close')}
-      isOpen={isOpen}
-      onClose={handleClose}
-      illustration={<MeasurementIllustration />}
-    >
+    <Modal closeTitle={translate('pim_common.close')} onClose={handleClose} illustration={<MeasurementIllustration />}>
       <SectionTitle color="brand">
         {translate('measurements.title.measurement')} / {measurementFamilyLabel}
       </SectionTitle>

@@ -16,7 +16,6 @@ import * as Illustrations from '../../illustrations';
     },
   }}
   args={{
-    isOpen: false,
     children: 'Modal text',
     illustration: undefined,
     closeTitle: 'Close',
@@ -40,19 +39,22 @@ It can be used with or without an Illustration and adapts its content accordingl
       const close = () => updateArgs({isOpen: false});
       return (
         <>
-          <Modal
-            {...args}
-            onClose={close}
-            illustration={
-              undefined === Illustrations[args.illustration]
-                ? undefined
-                : React.createElement(Illustrations[args.illustration])
-            }
-          />
+          {isOpen ? (
+            <Modal
+              {...args}
+              onClose={close}
+              illustration={
+                undefined === Illustrations[args.illustration]
+                  ? undefined
+                  : React.createElement(Illustrations[args.illustration])
+              }
+            />
+          )}
           <Button onClick={open}>Open Modal</Button>
         </>
       );
     }}
+
   </Story>
 </Canvas>
 
@@ -68,12 +70,14 @@ It can be used with or without an Illustration and adapts its content accordingl
       const close = () => setOpen(false);
       return (
         <>
-          <Modal {...args} isOpen={isOpen} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
-            Such nice Illustration
-            <Modal.BottomButtons>
-              <Button onClick={close}>Close</Button>
-            </Modal.BottomButtons>
-          </Modal>
+          {isOpen && (
+            <Modal {...args} isOpen={isOpen} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
+              Such nice Illustration
+              <Modal.BottomButtons>
+                <Button onClick={close}>Close</Button>
+              </Modal.BottomButtons>
+            </Modal>
+          )}
           <Button onClick={open}>Open Modal with Illustration</Button>
         </>
       );

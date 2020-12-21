@@ -5,8 +5,7 @@ import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme
 import {IconButton} from '../../components';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
-import {useShortcut} from '../../hooks';
-import {Key, Override} from '../../shared';
+import {Override} from '../../shared';
 
 const ModalContainer = styled.div`
   ${CommonStyle}
@@ -87,11 +86,6 @@ type ModalProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
     /**
-     * Prop to display or hide the Modal.
-     */
-    isOpen: boolean;
-
-    /**
      * Illustration to display.
      */
     illustration?: ReactElement<IllustrationProps>;
@@ -119,9 +113,7 @@ type ModalProps = Override<
 const Modal: React.FC<ModalProps> & {
   BottomButtons: typeof BottomButtons;
   TopRightButtons: typeof TopRightButtons;
-} = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
-  useShortcut(Key.Escape, onClose);
-
+} = ({onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'modal-root');
   const containerRef = useRef(portalNode);
@@ -133,8 +125,6 @@ const Modal: React.FC<ModalProps> & {
       document.body.removeChild(containerRef.current);
     };
   }, []);
-
-  if (!isOpen) return null;
 
   return createPortal(
     <ModalContainer role="dialog" {...rest}>
