@@ -235,6 +235,15 @@
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand` to
     - add `\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
+    - remove `\Akeneo\Pim\Enrichment\Component\Product\ValuesRemover\CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes`
+    - add `\Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface $jobLauncher`
+    - add `\Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $jobInstanceRepository`
+    - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute`
+    - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute`
+    - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute`
+    - add `\Symfony\Component\Routing\RouterInterface $router`
+    - add `string $pimUrl`
+
 - Change the `Oro\Bundle\PimDataGridBundle\Controller\ProductExportController` class to remove the `getRequest()` method
 - Change signature of `createInversedAssociation()` from `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface`
     - remove `AssociationInterface $association`
