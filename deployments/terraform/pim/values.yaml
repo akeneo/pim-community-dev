@@ -212,11 +212,6 @@ onboarder:
     maxReplicas: 10
   serviceAccount: null
 
-# shared-catalogs
-sharedCatalogs:
-  enabled: false
-
-
 mysql:
   image:
     mysql:
