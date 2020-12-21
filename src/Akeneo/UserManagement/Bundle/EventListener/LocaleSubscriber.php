@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * Locale Subscriber
@@ -23,24 +23,14 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class LocaleSubscriber implements EventSubscriberInterface
 {
-    /** @var RequestStack */
-    protected $requestStack;
+    protected RequestStack $requestStack;
+    protected LocaleAwareInterface $localeAware;
+    protected EntityManager $em;
 
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var EntityManager */
-    protected $em;
-
-    /**
-     * @param RequestStack        $requestStack
-     * @param TranslatorInterface $translator
-     * @param EntityManager       $em
-     */
-    public function __construct(RequestStack $requestStack, TranslatorInterface $translator, EntityManager $em)
+    public function __construct(RequestStack $requestStack, LocaleAwareInterface $localeAware, EntityManager $em)
     {
         $this->requestStack = $requestStack;
-        $this->translator = $translator;
+        $this->localeAware = $localeAware;
         $this->em = $em;
     }
 
@@ -54,7 +44,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         if ($user === $event->getArgument('current_user')) {
             $request = $this->requestStack->getMasterRequest();
             $request->getSession()->set('_locale', $user->getUiLocale()->getCode());
-            $this->translator->setLocale($user->getUiLocale()->getCode());
+            $this->localeAware->setLocale($user->getUiLocale()->getCode());
         }
     }
 

@@ -4,13 +4,12 @@ namespace spec\Akeneo\Tool\Component\Localization\Presenter;
 
 use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class DatePresenterSpec extends ObjectBehavior
 {
-    function let(DateFactory $dateFactory, TranslatorInterface $translator)
+    function let(DateFactory $dateFactory)
     {
-        $this->beConstructedWith($dateFactory, ['pim_catalog_date'], $translator);
+        $this->beConstructedWith($dateFactory, ['pim_catalog_date']);
     }
 
     function it_supports_metric()

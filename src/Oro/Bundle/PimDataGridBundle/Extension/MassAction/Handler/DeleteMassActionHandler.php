@@ -9,7 +9,7 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Mass delete action handler
@@ -20,33 +20,11 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DeleteMassActionHandler implements MassActionHandlerInterface
 {
-    /**
-     * @var HydratorInterface
-     */
-    protected $hydrator;
+    protected HydratorInterface $hydrator;
+    protected TranslatorInterface $translator;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected string $responseMessage = 'pim_datagrid.mass_action.delete.success_message';
 
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var string
-     */
-    protected $responseMessage = 'pim_datagrid.mass_action.delete.success_message';
-
-    /**
-     * Constructor
-     *
-     * @param HydratorInterface        $hydrator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         HydratorInterface $hydrator,
         TranslatorInterface $translator,

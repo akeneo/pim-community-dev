@@ -12,10 +12,9 @@ use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
 use Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event\MassActionEvents;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductMassActionRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DeleteMassActionHandlerSpec extends ObjectBehavior
 {
@@ -27,7 +26,6 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         DatasourceInterface $datasource,
         DeleteMassAction $massAction,
         ActionConfiguration $options,
-        ProductRepositoryInterface $repository,
         ProductMassActionRepositoryInterface $massActionRepo
     ) {
         $this->beConstructedWith($hydrator, $translator, $eventDispatcher);

@@ -11,7 +11,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Product Controller
@@ -30,7 +30,7 @@ class ProductController extends AbstractListCategoryController
 
     /** @var SaverInterface */
     protected $productSaver;
-    
+
     public function __construct(
         TranslatorInterface $translator,
         ProductRepositoryInterface $productRepository,

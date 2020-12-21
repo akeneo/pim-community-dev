@@ -2,14 +2,12 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\EventListener;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
-use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository;
 use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -17,13 +15,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 class LocaleSubscriberSpec extends ObjectBehavior
 {
-    function let(RequestStack $requestStack, TranslatorInterface $translator, EntityManager $em)
+    function let(RequestStack $requestStack, LocaleAwareInterface $localeAware, EntityManager $em)
     {
-        $this->beConstructedWith($requestStack, $translator, $em);
+        $this->beConstructedWith($requestStack, $localeAware, $em);
+        $this->beConstructedWith($requestStack, $localeAware, $em);
     }
 
     function it_implements_an_event_listener_interface()
@@ -89,7 +88,7 @@ class LocaleSubscriberSpec extends ObjectBehavior
     }
 
     function it_sets_locale_on_post_update_when_user_locale_is_set(
-        $translator,
+        LocaleAwareInterface $localeAware,
         GenericEvent $event,
         UserInterface $user,
         RequestStack $requestStack,
@@ -106,23 +105,20 @@ class LocaleSubscriberSpec extends ObjectBehavior
         $user->getUiLocale()->willReturn($locale);
         $locale->getCode()->willReturn('fr_FR');
 
-        $translator->setLocale('fr_FR')->shouldBeCalled();
+        $localeAware->setLocale('fr_FR')->shouldBeCalled();
 
         $this->onPostUpdate($event);
     }
 
     function it_does_not_set_locale_on_post_update_when_event_subject_is_different_from_current_user(
-        $translator,
+        LocaleAwareInterface $localeAware,
         GenericEvent $event,
-        UserInterface $user,
-        RequestStack $requestStack,
-        Request $request,
-        LocaleInterface $locale
+        UserInterface $user
     ) {
         $event->getSubject()->willReturn($user);
         $event->getArgument('current_user')->willReturn(null);
 
-        $translator->setLocale('fr_FR')->shouldNotBeCalled();
+        $localeAware->setLocale('fr_FR')->shouldNotBeCalled();
 
         $this->onPostUpdate($event);
     }

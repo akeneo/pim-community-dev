@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Component\Localization;
 
 use Akeneo\Tool\Component\Localization\TranslatorProxy;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TranslatorProxySpec extends ObjectBehavior
 {
@@ -18,7 +18,7 @@ class TranslatorProxySpec extends ObjectBehavior
         $this->shouldHaveType(TranslatorProxy::class);
     }
 
-    function it_presents_translated_metric_unit($translator)
+    function it_presents_translated_metric_unit(TranslatorInterface $translator)
     {
         $translator->trans('INCH', [], 'measures')->willReturn('Inch');
 
