@@ -23,16 +23,18 @@ const TableCellContainer = styled.td<{rowTitle: boolean} & AkeneoThemedProps>`
 
 const TableCellInnerContainer = styled.div`
   display: flex;
+  align-items: center;
   min-height: 24px;
 `;
 
 type TableCellProps = {
   /**
-   * Content of the cell
+   * Content of the cell.
    */
   children?: ReactNode;
+
   /**
-   * Define the content as title for the row
+   * Define the content as title for the row.
    */
   rowTitle?: boolean;
 };
