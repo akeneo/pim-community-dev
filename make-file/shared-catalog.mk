@@ -1,3 +1,5 @@
+include make-file/test.mk
+
 .PHONY: pim-shared-catalog
 pim-shared-catalog: #Doc: run docker-compose up, clean symfony cache, reinstall assets, build PIM CSS, run webpack dev & install shared_catalog_fixtures database
 	APP_ENV=dev $(MAKE) up

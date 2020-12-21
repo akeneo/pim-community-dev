@@ -52,6 +52,8 @@
 # Make sure the tests run by the targets defined here does not run by the main targets too
 #
 
+include make-file/test.mk
+
 .PHONY: reference-entity-coupling-back
 reference-entity-coupling-back: #Doc: launch PHP coupling detector for reference-entity
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/ReferenceEntity/tests/back/.php_cd.php src/Akeneo/ReferenceEntity/back

@@ -11,14 +11,14 @@ helm-prepare:
 	helm repo add $(HELM_REPO_PROD) gs://$(HELM_REPO_PROD)/
 	helm repo update
 
-PHONY: create-main-tf-for-pim3-with-last-tag
+.PHONY: create-main-tf-for-pim3-with-last-tag
 create-main-tf-for-pim3-with-last-tag:
 	export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes' && \
 	RELEASE_TO_DEPLOY=$$(git ls-remote --tags --sort="version:refname" git@github.com:akeneo/pim-enterprise-cloud | grep -oE 'v3\.2\.[0-9]+-[0-9]{2}$$' | tail -n1); \
 	echo $${RELEASE_TO_DEPLOY}; \
 	PEC_TAG=$${RELEASE_TO_DEPLOY} make create-main-tf-for-pim3
 
-PHONY: create-main-tf-for-pim3
+.PHONY: create-main-tf-for-pim3
 create-main-tf-for-pim3:
 	@echo $(PEC_TAG);
 	mkdir -p $(DEPLOYMENTS_INSTANCES_DIR)/3.2/
@@ -32,7 +32,7 @@ create-main-tf-for-pim3:
 	PFID=$(PFID) \
 	envsubst < $(PWD)/deployments/config/serenity_32_instance.tpl.tf > $(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf
 
-PHONY: create-pimyaml-for-pim3
+.PHONY: create-pimyaml-for-pim3
 create-pimyaml-for-pim3:
 	cp deployments/config/ci-values_32.yaml $(DEPLOYMENTS_INSTANCES_DIR)/3.2/values.yaml
 	yq w -i $(DEPLOYMENTS_INSTANCES_DIR)/3.2/values.yaml pim.defaultCatalog icecat

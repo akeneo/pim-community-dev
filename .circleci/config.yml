@@ -127,25 +127,25 @@ jobs:
                 command: sudo chown -R 1000:1000 ../project
           - run:
                 name: No legacy translation format
-                command: make find-legacy-translations
+                command: PIM_CONTEXT=test make find-legacy-translations
           - run:
                 name: Load archived docker image
                 command: docker load -i php-pim-image.tar
           - run:
                 name: Static tests
-                command: make static-back
+                command: PIM_CONTEXT=test make static-back
           - run:
                 name: Analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs
-                command: make lint-back
+                command: PIM_CONTEXT=test make lint-back
           - run:
                 name: Code Coupling Detection
-                command: make coupling-back
+                command: PIM_CONTEXT=test make coupling-back
           - run:
                 name: Unit tests
-                command: make unit-back
+                command: PIM_CONTEXT=test make unit-back
           - run:
                 name: Acceptance tests
-                command: make acceptance-back
+                command: PIM_CONTEXT=test make acceptance-back
           - store_test_results:
                 path: var/tests
           - store_artifacts:
@@ -173,13 +173,13 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: Data Quality
-                command: make data-quality-insights-integration-back
+                command: PIM_CONTEXT=data-quality-insights make data-quality-insights-integration-back
           - run:
                 name: Asset Manager
-                command: make asset-manager-integration-back
+                command: PIM_CONTEXT=asset-manager make asset-manager-integration-back
           - run:
                 name: Rules Engine
-                command: make rule-engine-integration-back
+                command: PIM_CONTEXT=rule-engine make rule-engine-integration-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -207,7 +207,7 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: Reference Entities
-                command: make reference-entity-integration-back
+                command: PIM_CONTEXT=reference-entity make reference-entity-integration-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -236,10 +236,10 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: PhpUnit Integration
-                command: make pim-integration-back
+                command: PIM_CONTEXT=test make pim-integration-back
           - run:
                 name: PhpUnit End to end
-                command: make end-to-end-back
+                command: PIM_CONTEXT=test make end-to-end-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -277,7 +277,7 @@ jobs:
           command: APP_ENV=behat make database
       - run:
           name: End to end Behat tests
-          command: make end-to-end-legacy SUITE=$TESTSUITE
+          command: PIM_CONTEXT=test SUITE=$TESTSUITE make end-to-end-legacy
       - run:
           name: Gather Junit test result files in the same directory to improve the render of failing tests
           command: |
@@ -320,7 +320,7 @@ jobs:
             command: make javascript-dev-strict
         - run:
             name: Front linter
-            command: make lint-front
+            command: PIM_CONTEXT=test make lint-front
 
   test_front_static_acceptance_and_integration:
       machine:
@@ -336,7 +336,7 @@ jobs:
               command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
         - run:
             name: Front unit tests
-            command: make unit-front
+            command: PIM_CONTEXT=test make unit-front
 
   test_back_performance:
     machine:
@@ -390,10 +390,10 @@ jobs:
                               echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
           - run:
               name: Build PROD PIM docker image
-              command: IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
+              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
           - run:
               name: Push PROD PIM image on docker registry
-              command: make push-php-image-prod
+              command: PIM_CONTEXT=deployment make push-php-image-prod
 
   test_deploy:
       environment:
@@ -406,55 +406,19 @@ jobs:
           - restore_persisted_env_vars
           - run:
               name: Deploy PIM on kubernetes
-              command: make deploy-serenity
+              command: PIM_CONTEXT=deployment make deploy-serenity
           - run:
               name: Test PIM connexion on kubernetes
-              command: make test-prod
+              command: PIM_CONTEXT=deployment make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
+              command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: make delete
-              when: always
-
-  test_upgrade_from_32:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Oldest SaaS prod (PIM v3) deployment on kubernetes
-              command: |
-                ssh-keyscan github.com >> ~/.ssh/known_hosts
-                INSTANCE_NAME_PREFIX=pimup32 make helm-prepare
-                INSTANCE_NAME_PREFIX=pimup32 make deploy-pim3
-          - run:
-              name: Upgrade intermediate version SaaS to master
-              command: |
-                INSTANCE_NAME_PREFIX=pimup32 make create-ci-release-files
-                INSTANCE_NAME_PREFIX=pimup32 make terraform-pre-upgrade
-                INSTANCE_NAME_PREFIX=pimup32 make deploy
-          - run:
-              name: Production tests on upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup32 make test-prod
-          - run:
-              name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME_PREFIX=pimup32 make prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - run:
-              name: Remove upgraded env
-              command: INSTANCE_NAME_PREFIX=pimup32 make delete
+              command: PIM_CONTEXT=deployment make delete
               when: always
 
   test_upgrade_from_last_release:
@@ -472,6 +436,7 @@ jobs:
                 command: |
                     git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
                     LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
+                    echo $LATEST_RELEASE
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     echo export IMAGE_TAG=${LATEST_RELEASE} >> $BASH_ENV
                     echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
@@ -480,27 +445,27 @@ jobs:
           - run:
                 name: Deploy instance with latest release
                 command: |
-                    make create-ci-release-files
-                    make change-terraform-source-version
-                    make deploy
+                    PIM_CONTEXT=deployment make create-ci-release-files
+                    PIM_CONTEXT=deployment make change-terraform-source-version
+                    PIM_CONTEXT=deployment make deploy
           - run:
                 name: Upgrade
-                command: IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
+                command: PIM_CONTEXT=deployment IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
           - run:
                 name: Production tests on upgraded env
-                command: make test-prod
+                command: PIM_CONTEXT=deployment make test-prod
           - run:
                 name: Check that upgrader pod ran
                 command: kubectl get pods --namespace=srnt-pimup-$CIRCLE_SHA1 | grep pim-upgrader
           - run:
                 name: Prepare infrastructure artifacts
-                command: make prepare-infrastructure-artifacts
+                command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: IMAGE_TAG=$CIRCLE_SHA1 make delete
+                command: IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment make delete
                 when: always
 
   release:
@@ -514,22 +479,8 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-              name: make release
-              command: OLD_IMAGE_TAG=$IMAGE_TAG make release
-
-  release-beta:
-      environment:
-          <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-1604:201903-01
-      steps:
-          - attach_workspace:
-                  at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: make release-beta
-              command: OLD_IMAGE_TAG=$IMAGE_TAG echo "The beta release went successfully with $OLD_IMAGE_TAG"
+              name: PIM_CONTEXT=deployment make release
+              command: OLD_IMAGE_TAG=$IMAGE_TAG PIM_CONTEXT=deployment make release
 
   deploy_helpdesk_environment:
       environment:
@@ -550,19 +501,20 @@ jobs:
                     echo export IMAGE_TAG=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                     echo export ENV_NAME=preprod >> $BASH_ENV
                     echo export INSTANCE_NAME=pimci-helpdesk >> $BASH_ENV
+                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
             - run:
                 name: Generate config files and deploy
                 command: |
-                    make create-ci-release-files
-                    make change-terraform-source-version
+                    PIM_CONTEXT=deployment make create-ci-release-files
+                    PIM_CONTEXT=deployment make change-terraform-source-version
             - run:
                 name: Deploy
                 command: |
-                    make deploy
+                    PIM_CONTEXT=deployment make deploy
             - run:
                 name: Communicate
                 command: |
-                    make slack_helpdesk
+                    PIM_CONTEXT=deployment make slack_helpdesk
 
   deploy_pm_environment:
       environment:
@@ -577,7 +529,7 @@ jobs:
           - run:
                 name: Latest master version for PMs
                 command: |
-                    INSTANCE_NAME=pimci-pm make deploy-serenity
+                    INSTANCE_NAME=pimci-pm PIM_CONTEXT=deployment make deploy-serenity
 
   deploy_pr_environment:
       environment:
@@ -595,16 +547,16 @@ jobs:
                     echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
           - run:
                 name: Deploy PR environment
-                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false make deploy-serenity
+                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false PIM_CONTEXT=deployment make deploy-serenity
           - run:
               name: Prepare infrastructure artifacts
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make prepare-infrastructure-artifacts
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete
+              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
 
   test_upgrade_from_serenity_customer_db:
@@ -626,10 +578,10 @@ jobs:
                     SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
                     SOURCE_PED_TAG=$(cd /root/project; git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt; head -n 1 /tmp/pim-tags.txt )
                     INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40)
-                    ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} make test_upgrade_from_serenity_customer_db
+                    ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} SOURCE_PED_TAG=${SOURCE_PED_TAG} INSTANCE_NAME=${INSTANCE_NAME} PIM_CONTEXT=deployment make test_upgrade_from_serenity_customer_db
           - run:
               name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) make prepare-infrastructure-artifacts
+              command: INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
@@ -645,7 +597,7 @@ jobs:
           - run:
                 name: delete PR environment
                 command: |
-                    make delete_pr_environments_hourly
+                    PIM_CONTEXT=deployment make delete_pr_environments_hourly
 
 
   delete_pr_environment:
@@ -661,7 +613,7 @@ jobs:
                 command: |
                     if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
                     echo "remove env from 'deploy_pr_environment'"
-                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} make delete-serenity
+                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete-serenity
 
 
   test_back_missing_structure_migrations:
@@ -717,7 +669,7 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: PhpUnit Migration
-                command: make migration-back
+                command: PIM_CONTEXT=test make migration-back
           - store_test_results:
                 path: var/tests/phpunit
           - store_artifacts:
@@ -754,42 +706,42 @@ jobs:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
                     rm -f docker-compose.override.yml
-                    PIM_VERSION=master SETUP_FOR_CI=1 make setup-onboarder-parameters
-                    PIM_VERSION=master make setup-onboarder-tests
+                    PIM_VERSION=master SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
+                    PIM_VERSION=master PIM_CONTEXT=onboarder make setup-onboarder-tests
                     docker-compose run --rm php php /usr/local/bin/composer dumpautoload
           - run:
                 name: Change owner of PIM as some files have been created with wrong owner
                 command: sudo chown -R 1000:1000 ~/project
           - run:
                 name: Execute static analysis
-                command: make test-static-analysis
+                command: PIM_CONTEXT=onboarder make test-static-analysis
           - run:
                 name: PHP coupling detector
-                command: make test-coupling-detector
+                command: PIM_CONTEXT=onboarder make test-coupling-detector
           - run:
                 name: Execute specifications
-                command: make test-spec
+                command: PIM_CONTEXT=onboarder make test-spec
           - run:
                 name: Install Akeneo PIM with Onboarder specific configuration (channel, attribute, ...)
-                command: ENVIRONMENT=test SETUP_FOR_CI=1 make onboarder-install
+                command: PIM_CONTEXT=onboarder ENVIRONMENT=test SETUP_FOR_CI=1 make onboarder-install
           - run:
                 name: Execute acceptance tests
-                command: make test-acceptance
+                command: PIM_CONTEXT=onboarder make test-acceptance
           - run:
                 name: Execute PHPUnit integration tests
-                command: make test-integration
+                command: PIM_CONTEXT=onboarder make test-integration
           - run:
                 name: Start Apache/FPM and Selenium for End to End tests
                 command: make up APP_ENV=behat C='fpm httpd selenium'
           - run:
                 name: Execute end-to-end tests
-                command: make test-end-to-end
+                command: PIM_CONTEXT=onboarder make test-end-to-end
           - run:
               name: Restart FPM with Onboarder feature turned off
               command: make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
           - run:
               name: Execute end-to-end "Onboarder feature disabled" tests
-              command: make test-end-to-end-onboarder-disabled
+              command: PIM_CONTEXT=onboarder make test-end-to-end-onboarder-disabled
           - store_test_results:
                 path: ~/project/pim/var/tests
           - store_artifacts:

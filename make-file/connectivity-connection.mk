@@ -1,3 +1,5 @@
+include make-file/test.mk
+
 _CONNECTIVITY_CONNECTION_YARN_RUN = $(YARN_RUN) run --cwd=vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front/
 
 # Tests Back

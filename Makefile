@@ -5,6 +5,7 @@ PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
 IMAGE_TAG ?= master
 CI ?= 0
+PIM_CONTEXT ?=0
 
 .DEFAULT_GOAL := help
 
@@ -13,7 +14,9 @@ help: #Doc: display this help
 	@echo "$$(grep -hE '^\S+:.*#Doc:' $(MAKEFILE_LIST) | sed -e 's/:.*#Doc:\s*/:/' -e 's/^\(.\+\):\(.*\)/\1:-\ \2/' | column -c2 -t -s :)"
 
 ## Include all *.mk files
-include make-file/*.mk
+ifneq ($(PIM_CONTEXT),0)
+include make-file/$(PIM_CONTEXT).mk
+endif
 
 ##
 ## Front
@@ -182,26 +185,6 @@ down-pim-saas-like: #Doc: shutdown all docker containers
 .PHONY: php-image-dev
 php-image-dev: #Doc: pull docker image for pim-enterprise-dev with the dev tag
 	DOCKER_BUILDKIT=1 docker build --progress=plain --pull --tag akeneo/pim-dev/php:7.4 --target dev .
-
-.PHONY: php-image-prod
-php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
-ifeq ($(CI),true)
-	git config user.name "Michel Tag"
-	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
-endif
-	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE}';/g" src/Akeneo/Platform/EnterpriseVersion.php
-	git add src/Akeneo/Platform/EnterpriseVersion.php
-	git commit -m "Prepare SaaS ${IMAGE_TAG}"
-
-ifeq ($(CI),true)
-	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' .
-else
-	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod .
-endif
-
-.PHONY: push-php-image-prod
-push-php-image-prod: #Doc: push docker image to docker hub
-	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
 
 .PHONY: up
 up: #Doc: run docker-compose up

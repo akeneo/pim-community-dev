@@ -1,4 +1,4 @@
-var/tests/%:
+var/tests/%: #Doc: run the selected test
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
 
 .PHONY: find-legacy-translations
@@ -6,11 +6,20 @@ find-legacy-translations: #Doc: run find_legacy_translations.sh script
 	vendor/akeneo/pim-community-dev/.circleci/find_legacy_translations.sh
 
 .PHONY: coupling-back
-coupling-back: twa-coupling-back data-quality-insights-coupling-back reference-entity-coupling-back asset-manager-coupling-back rule-engine-coupling-back workflow-coupling-back permission-coupling-back connectivity-connection-coupling-back communication-channel-coupling-back
 coupling-back: #Doc: launch all coupling detector tests
+	PIM_CONTEXT=twa $(MAKE) twa-coupling-back
+	PIM_CONTEXT=data-quality-insights $(MAKE) data-quality-insights-coupling-back
+	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-coupling-back
+	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-coupling-back
+	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-coupling-back
+	PIM_CONTEXT=workflow $(MAKE) workflow-coupling-back
+	PIM_CONTEXT=permission $(MAKE) permission-coupling-back
+	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-coupling-back
+	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-coupling-back
 
 ### Static tests
-static-back: asset-manager-static-back check-pullup check-sf-services #Doc: launch PHP static analyzer asset-manager & check Sf services
+static-back: check-pullup check-sf-services #Doc: launch PHP static analyzer asset-manager & check Sf services
+	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-static-back
 	echo "Job done! Nothing more to do here..."
 
 .PHONY: check-pullup
@@ -30,21 +39,26 @@ lint-back: #Doc: launch all PHP linter tests
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Automation --level 3
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Permission --level 3
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Structure --level 8
-	$(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan reference-entity-lint-back asset-manager-lint-back connectivity-connection-lint-back communication-channel-lint-back
+	PIM_CONTEXT=data-quality-insights $(MAKE) data-quality-insights-lint-back data-quality-insights-phpstan
+	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-lint-back
+	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-lint-back
+	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-lint-back
+	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-lint-back
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs_ce.php
 
 .PHONY: lint-front
-lint-front: connectivity-connection-lint-front #Doc: launch all YARN linter tests
+lint-front: #Doc: launch all YARN linter tests
 	$(YARN_RUN) lint
-	$(MAKE) rule-engine-lint-front
-	$(MAKE) rule-engine-types-check-front
-	$(MAKE) rule-engine-prettier-check-front
+	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-lint-front rule-engine-types-check-front rule-engine-prettier-check-front
+	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-lint-front
 
 ### Unit tests
 .PHONY: unit-back
-unit-back: var/tests/phpspec community-unit-back reference-entity-unit-back asset-manager-unit-back #Doc: launch all PHPSec unit tests
+unit-back: var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit tests
+	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-unit-back 
+	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
@@ -63,11 +77,15 @@ endif
 .PHONY: unit-front
 unit-front: #Doc: launch all JS unit tests
 	$(YARN_RUN) unit
-	$(MAKE) rule-engine-unit-front
+	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-unit-front
 
 ### Acceptance tests
 .PHONY: acceptance-back
-acceptance-back: var/tests/behat reference-entity-acceptance-back asset-manager-acceptance-back rule-engine-acceptance-back connectivity-connection-acceptance-back #Doc: launch Behat acceptance tests
+acceptance-back: var/tests/behat #Doc: launch Behat acceptance tests
+	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-acceptance-back
+	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-acceptance-back
+	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-acceptance-back
+	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/behat.yml -p acceptance --no-interaction --format=progress --strict
 
@@ -80,8 +98,11 @@ integration-front: #Doc: run YARN integration
 	$(YARN_RUN) integration
 
 .PHONY: integration-back
-integration-back: var/tests/phpunit data-quality-insights-integration-back reference-entity-integration-back asset-manager-integration-back rule-engine-integration-back pim-integration-back
-integration-back: #Doc: launch all integration back tests
+integration-back: var/tests/phpunit pim-integration-back #Doc: launch all integration back tests
+	PIM_CONTEXT=data-quality-insights $(MAKE) data-quality-insights-integration-back
+	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-integration-back
+	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-integration-back
+	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-integration-back
 
 .PHONY: pim-integration-back
 pim-integration-back: #Doc: launch all PHPUnit integration tests
