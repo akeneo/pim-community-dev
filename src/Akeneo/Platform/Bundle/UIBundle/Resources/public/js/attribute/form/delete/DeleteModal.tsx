@@ -61,6 +61,10 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   const [attributeCodeConfirm, setAttributeCodeConfirm] = useState<string>('');
   const isValid = attributeCodeConfirm === attributeCode;
 
+  const handleAttributeCodeInputChange = (value: string) => {
+    setAttributeCodeConfirm(value);
+  };
+
   const handleConfirm = () => {
     fetch(removeRoute, {
       method: 'DELETE',
@@ -128,7 +132,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         </Link>
       </SpacedHelper>
       <Field label={translate('pim_enrich.entity.attribute.module.delete.type', {attributeCode})}>
-        <TextInput value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
+        <TextInput value={attributeCodeConfirm} onChange={handleAttributeCodeInputChange} />
       </Field>
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel}>
