@@ -1,3 +1,5 @@
+TEST, DO NOT MERGE
+
 # Akeneo PIM Development Repository
 Welcome to Akeneo PIM Product.
 
