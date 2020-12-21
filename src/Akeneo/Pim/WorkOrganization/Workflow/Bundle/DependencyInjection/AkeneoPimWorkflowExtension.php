@@ -28,7 +28,7 @@ class AkeneoPimWorkflowExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('adapters.yml');
         $loader->load('analytics.yml');
         $loader->load('api.yml');
@@ -36,6 +36,7 @@ class AkeneoPimWorkflowExtension extends Extension
         $loader->load('associations.yml');
         $loader->load('builder.yml');
         $loader->load('category_counters.yml');
+        $loader->load('cleaner.yml');
         $loader->load('configurators.yml');
         $loader->load('connector/array_converters.yml');
         $loader->load('connector/flat_translators.yml');

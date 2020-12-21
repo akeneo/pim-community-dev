@@ -1,0 +1,19 @@
+services:
+    # CE overrides
+    pim_catalog.product_values.remove_values_from_products:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProducts
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@database_connection'
+            - '@event_dispatcher'
+            - '@pim_connector.doctrine.cache_clearer'
+
+    pim_catalog.product_values.remove_values_from_product_models:
+        class: Akeneo\Pim\Enrichment\Bundle\Product\RemoveValuesFromProductModels
+        public: true
+        arguments:
+            - '@pim_catalog.repository.product_model_without_permission'
+            - '@database_connection'
+            - '@event_dispatcher'
+            - '@pim_connector.doctrine.cache_clearer'

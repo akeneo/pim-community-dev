@@ -1,0 +1,11 @@
+services:
+    pimee_workflow.cleaner.removed_attribute:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Cleaner\RemovedAttributeCleaner'
+        arguments:
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.saver.product_draft'
+            - '@pimee_workflow.saver.product_model_draft'
+            - '@pimee_workflow.remover.product_draft'
+            - '@pimee_workflow.remover.product_model_draft'
+            - '@pimee_workflow.query.find_draft_ids_concerning_removed_attributes'

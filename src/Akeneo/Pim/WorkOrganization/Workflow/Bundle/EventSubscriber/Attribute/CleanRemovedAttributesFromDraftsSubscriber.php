@@ -14,10 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\Attribute;
 
 use Akeneo\Pim\Structure\Bundle\Event\AttributeEvents;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\FindDraftIdsConcerningRemovedAttributesQueryInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Cleaner\RemovedAttributeCleaner;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -25,43 +22,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class CleanRemovedAttributesFromDraftsSubscriber implements EventSubscriberInterface
 {
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    private $productDraftRepository;
+    private RemovedAttributeCleaner $removedAttributeCleaner;
 
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    private $productModelDraftRepository;
-
-    /** @var SaverInterface */
-    private $productDraftSaver;
-
-    /** @var SaverInterface */
-    private $productModelDraftSaver;
-
-    /** @var RemoverInterface */
-    private $productDraftRemover;
-
-    /** @var RemoverInterface */
-    private $productModelDraftRemover;
-
-    /** @var FindDraftIdsConcerningRemovedAttributesQueryInterface */
-    private $findDraftIdsConcerningRemovedAttributesQuery;
-
-    public function __construct(
-        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
-        SaverInterface $productDraftSaver,
-        SaverInterface $productModelDraftSaver,
-        RemoverInterface $productDraftRemover,
-        RemoverInterface $productModelDraftRemover,
-        FindDraftIdsConcerningRemovedAttributesQueryInterface $findDraftIdsConcerningRemovedAttributesQuery
-    ) {
-        $this->productDraftRepository = $productDraftRepository;
-        $this->productModelDraftRepository = $productModelDraftRepository;
-        $this->productDraftSaver = $productDraftSaver;
-        $this->productModelDraftSaver = $productModelDraftSaver;
-        $this->productDraftRemover = $productDraftRemover;
-        $this->productModelDraftRemover = $productModelDraftRemover;
-        $this->findDraftIdsConcerningRemovedAttributesQuery = $findDraftIdsConcerningRemovedAttributesQuery;
+    public function __construct(RemovedAttributeCleaner $removedAttributeCleaner)
+    {
+        $this->removedAttributeCleaner = $removedAttributeCleaner;
     }
 
     /**
@@ -79,48 +44,6 @@ final class CleanRemovedAttributesFromDraftsSubscriber implements EventSubscribe
      */
     public function saveAffectedDrafts(): void
     {
-        $productDraftIds = $this->findDraftIdsConcerningRemovedAttributesQuery->forProducts();
-        $productModelDraftIds = $this->findDraftIdsConcerningRemovedAttributesQuery->forProductModels();
-
-        $this->saveProductDrafts($productDraftIds);
-        $this->saveProductModelDrafts($productModelDraftIds);
-    }
-
-    private function saveProductDrafts(\Iterator $productDraftIds): void
-    {
-        foreach ($productDraftIds as $productDraftIdBatch) {
-            $productDrafts = $this->productDraftRepository->findByIds($productDraftIdBatch);
-
-            if (null === $productDrafts) {
-                return;
-            }
-
-            foreach ($productDrafts as $productDraft) {
-                $this->productDraftSaver->save($productDraft);
-
-                if (!$productDraft->hasChanges()) {
-                    $this->productDraftRemover->remove($productDraft);
-                }
-            }
-        }
-    }
-
-    private function saveProductModelDrafts(\Iterator $productModelDraftIds): void
-    {
-        foreach ($productModelDraftIds as $productModelDraftIdBatch) {
-            $productModelDrafts = $this->productModelDraftRepository->findByIds($productModelDraftIdBatch);
-
-            if (null === $productModelDrafts) {
-                return;
-            }
-
-            foreach ($productModelDrafts as $productModelDraft) {
-                $this->productModelDraftSaver->save($productModelDraft);
-
-                if (!$productModelDraft->hasChanges()) {
-                    $this->productModelDraftRemover->remove($productModelDraft);
-                }
-            }
-        }
+        $this->removedAttributeCleaner->cleanAffectedDrafts();
     }
 }

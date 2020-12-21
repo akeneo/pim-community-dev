@@ -36,14 +36,16 @@ Feature: Ensure that a published product is safe
   Scenario: Fail to remove an attribute that is linked to a published product
     Given I am on the "handmade" attribute page
     And I press the secondary action "Delete"
-    And I confirm the removal
+    And I fill the input labelled 'Please type "handmade"' with 'handmade'
+    And I press the "Delete" button
     Then I am on the attributes page
     And I should see attribute Handmade
 
   Scenario: Successfully remove an attribute that is not linked to a published product
     Given I am on the "comment" attribute page
     And I press the secondary action "Delete"
-    And I confirm the removal
+    And I fill the input labelled 'Please type "comment"' with 'comment'
+    And I press the "Delete" button
     Then I am on the attributes page
     And I should not see attribute Comment
 
