@@ -28,4 +28,5 @@ const DependenciesProvider: FC = ({children}) => {
   return <DependenciesContext.Provider value={value}>{children}</DependenciesContext.Provider>;
 };
 
-export {DependenciesProvider, DependenciesContextProps, DependenciesContext};
+export {DependenciesProvider, DependenciesContext};
+export type {DependenciesContextProps};
