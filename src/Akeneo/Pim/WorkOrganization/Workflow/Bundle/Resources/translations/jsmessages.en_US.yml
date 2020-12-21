@@ -92,7 +92,7 @@ batch_jobs:
         perform.label: Publish products
     default_steps:
         clean_attribute:
-            clean_draft: Clean proposals
+            clean_draft: Cleaning proposals
 
 pim_notification:
     types:
