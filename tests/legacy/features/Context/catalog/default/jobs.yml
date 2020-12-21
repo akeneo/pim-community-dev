@@ -134,5 +134,5 @@ jobs:
     clean_removed_attribute_job:
         connector: internal
         alias:     clean_removed_attribute_job
-        label:     Clean removed attribute job
+        label:     Cleaning removed attribute job
         type:      clean_removed_attribute_job
