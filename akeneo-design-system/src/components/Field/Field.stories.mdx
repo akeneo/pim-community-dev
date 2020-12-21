@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Field} from './Field.tsx';
-import {Helper, Link, Locale, TextInput} from '../../components';
+import {Helper, Link, Locale, TextInput, Skeleton, BooleanInput} from '../../components';
 
 <Meta
   title="Components/Field"
@@ -108,6 +108,28 @@ The Field component is used to display information around an Input component.
             </Helper>
           </Field>
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <Field {...args} channel="mobile" locale="fr_FR">
+            <TextInput placeholder="Type your text here" characterLeftLabel="250 characters left" />
+            <Helper level="info">
+              This is just an info. <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Don't click here</Link>
+            </Helper>
+          </Field>
+          <Field {...args} label="Another one" incomplete={true}>
+            <BooleanInput value={false} clearable={true} />
+          </Field>
+        </Skeleton>
       );
     }}
   </Story>

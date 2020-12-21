@@ -1,10 +1,11 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Image} from './Image.tsx';
+import {Skeleton} from '../../components';
 
 <Meta
   title="Components/Image"
   component={Image}
-  args={{src: 'https://picsum.photos/seed/akeneo/200/140', 'alt': 'Image alt'}}
+  args={{src: 'https://picsum.photos/seed/akeneo/200/140', alt: 'Image alt'}}
 />
 
 # Image
@@ -26,13 +27,14 @@ Image allow to embed an image in a page
 <ArgsTable story="Standard" />
 
 ## Variation on fit
+
 <Canvas>
   <Story name="Fit">
     {args => {
       return (
         <>
-          <Image {...args} fit='contain' />
-          <Image {...args} fit='cover' />
+          <Image {...args} fit="contain" />
+          <Image {...args} fit="cover" />
         </>
       );
     }}
@@ -40,15 +42,31 @@ Image allow to embed an image in a page
 </Canvas>
 
 ## Variation on stacked
+
 <Canvas>
-    <Story name="Stack">
-        {args => {
-            return (
-                <>
-                    <Image {...args} />
-                    <Image {...args} isStacked />
-                </>
-            );
-        }}
-    </Story>
+  <Story name="Stack">
+    {args => {
+      return (
+        <>
+          <Image {...args} />
+          <Image {...args} isStacked />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <Image {...args} />
+          <Image {...args} isStacked />
+        </Skeleton>
+      );
+    }}
+  </Story>
 </Canvas>

@@ -1,0 +1,38 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Skeleton} from './Skeleton.tsx';
+import {Card, CardGrid} from '../../components';
+
+<Meta title="Components/Skeleton" component={Skeleton} args={{skeleton: true}} />
+
+# Skeleton
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <Skeleton {...args}>
+          <CardGrid>
+            <Card src="https://picsum.photos/seed/akened/200" onSelect={() => {}}>
+              Selectable card
+            </Card>
+            <Card src="https://picsum.photos/seed/akenee/200" onSelect={() => {}}>
+              Another one
+            </Card>
+          </CardGrid>
+        </Skeleton>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />

@@ -1,5 +1,6 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Breadcrumb} from './Breadcrumb.tsx';
+import {Skeleton} from '../../components';
 
 <Meta
   title="Components/Breadcrumb"
@@ -48,6 +49,24 @@ Breadcrumbs are very effective for products and experience with a large amount o
             <Breadcrumb.Step>Only one</Breadcrumb.Step>
           </Breadcrumb>
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <Breadcrumb {...args}>
+            <Breadcrumb.Step href="#">first</Breadcrumb.Step>
+            <Breadcrumb.Step href="#">second</Breadcrumb.Step>
+            <Breadcrumb.Step>third</Breadcrumb.Step>
+          </Breadcrumb>
+        </Skeleton>
       );
     }}
   </Story>

@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Link} from './Link';
 import LinkTo from '@storybook/addon-links/react';
+import {Skeleton} from '../../components';
 
 <Meta
   title="Components/Link"
@@ -57,6 +58,21 @@ To make your Link look like a `Button`, you can follow <LinkTo kind="Components/
             Disabled
           </Link>
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <Link {...args}>Small</Link>
+          <Link {...args}>Long link</Link>
+        </Skeleton>
       );
     }}
   </Story>

@@ -4,6 +4,8 @@ import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
 import {EraseIcon, LockIcon} from '../../../icons';
 import {InputProps} from '../InputProps';
 import {Override} from '../../../shared';
+import {useSkeleton} from '../../../hooks';
+import {applySkeletonStyle, SkeletonProps} from '../../Skeleton/Skeleton';
 
 const BooleanInputContainer = styled.div``;
 
@@ -50,6 +52,8 @@ const NoButton = styled(BooleanButton)`
       : css`
           border-right-width: 0;
         `}
+
+  ${applySkeletonStyle()}
 `;
 
 const YesButton = styled(BooleanButton)`
@@ -71,9 +75,11 @@ const YesButton = styled(BooleanButton)`
         return '';
     }
   }}
+
+  ${applySkeletonStyle()}
 `;
 
-const ClearButton = styled.button`
+const ClearButton = styled.button<AkeneoThemedProps & SkeletonProps>`
   ${CommonStyle}
   border: 0;
   margin-left: 5px;
@@ -82,6 +88,7 @@ const ClearButton = styled.button`
   background: ${getColor('white')};
   color: ${getColor('grey', 100)};
   ${({readOnly}) => !readOnly && 'cursor: pointer'};
+  ${applySkeletonStyle()}
 `;
 
 const BooleanInputEraseIcon = styled(EraseIcon)`
@@ -136,6 +143,8 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
       [onChange, readOnly]
     );
 
+    const skeleton = useSkeleton();
+
     return (
       <BooleanInputContainer
         role="switch"
@@ -148,6 +157,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
           readOnly={readOnly}
           aria-readonly={readOnly}
           disabled={readOnly}
+          skeleton={skeleton}
           onClick={() => {
             handleChange(false);
           }}
@@ -161,6 +171,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
           readOnly={readOnly}
           aria-readonly={readOnly}
           disabled={readOnly}
+          skeleton={skeleton}
           onClick={() => {
             handleChange(true);
           }}
@@ -174,6 +185,7 @@ const BooleanInput = React.forwardRef<HTMLDivElement, BooleanInputProps>(
             onClick={() => {
               handleChange(null);
             }}
+            skeleton={skeleton}
           >
             <BooleanInputEraseIcon size={16} />
             {clearLabel}

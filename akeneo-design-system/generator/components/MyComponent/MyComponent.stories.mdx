@@ -1,5 +1,6 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {MyComponent} from './MyComponent.tsx';
+import {Skeleton} from '../../components';
 
 <Meta
   title="Components/MyComponent"
@@ -49,6 +50,22 @@ TODO
             Danger
           </MyComponent>
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <MyComponent {...args} level="primary">
+            Primary
+          </MyComponent>
+        </Skeleton>
       );
     }}
   </Story>

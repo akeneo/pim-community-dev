@@ -1,5 +1,6 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {ProgressBar} from './ProgressBar.tsx';
+import {Skeleton} from '../../components';
 
 <Meta
   title="Components/ProgressBar"
@@ -11,16 +12,18 @@ import {ProgressBar} from './ProgressBar.tsx';
     level: 'primary',
     title: 'Lorem Ipsum is simply dummy text',
     progressLabel: '30 minutes left',
-    percent: 50
+    percent: 50,
   }}
 />
 
 # ProgressBar
 
 ## Usage
+
 One of the most important rules in UI / UX design is visibility of system state. The goal behind this rule is pretty obvious: To minimize user stress, you need to provide them with feedback on what is going on with the app within a reasonable amount of time. Don't let users guess, tell them what's going on. And one of the most common forms of this type of feedback is a progress indicator.
 
 ### Types of Progress bars
+
 **Determinate:** when indicators are determinate they indicate how long an operation will take when the percentage complete is detectable.
 
 **Indeterminate**: when indicators are indeterminate they request that the user waits while something finishes when it’s not necessary to indicate how long it will take.
@@ -48,7 +51,7 @@ One of the most important rules in UI / UX design is visibility of system state.
           <ProgressBar {...args} progressLabel="25%" percent={25} />
           <ProgressBar {...args} progressLabel="50%" percent={50} />
           <ProgressBar {...args} progressLabel="100%" percent={100} />
-          <ProgressBar {...args} progressLabel="indeterminate" percent='indeterminate' />
+          <ProgressBar {...args} progressLabel="indeterminate" percent="indeterminate" />
         </>
       );
     }}
@@ -111,12 +114,31 @@ One of the most important rules in UI / UX design is visibility of system state.
       return (
         <>
           <div>
-            <ProgressBar {...args}/>
+            <ProgressBar {...args} />
           </div>
           <div style={{width: '300px'}}>
-            <ProgressBar {...args}/>
+            <ProgressBar {...args} />
           </div>
         </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <div>
+            <ProgressBar {...args} />
+          </div>
+          <div style={{width: '300px'}}>
+            <ProgressBar {...args} size="large" />
+          </div>
+        </Skeleton>
       );
     }}
   </Story>

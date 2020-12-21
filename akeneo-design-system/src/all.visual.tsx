@@ -22,7 +22,7 @@ const stories = Object.values(storiesDump.stories);
 
 describe('Visual tests', () => {
   stories.map(story => {
-    if (story.id.indexOf('components') !== 0 || EXCLUDE.includes(story.kind)) {
+    if (story.id.indexOf('components') !== 0 || EXCLUDE.includes(story.kind) || story.id.indexOf('skeleton') !== -1) {
       return;
     }
 

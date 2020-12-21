@@ -2,7 +2,8 @@ import React, {Ref, ReactElement} from 'react';
 import styled from 'styled-components';
 import {Helper, HelperProps, InputProps, Locale, LocaleProps} from '../../components';
 import {getColor} from '../../theme';
-import {useId} from '../../hooks';
+import {useId, useSkeleton} from '../../hooks';
+import {applySkeletonStyle, SkeletonProps} from '../Skeleton/Skeleton';
 
 const FieldContainer = styled.div`
   display: flex;
@@ -18,16 +19,22 @@ const LabelContainer = styled.div`
   max-width: 460px;
 `;
 
-const Label = styled.label`
+const Label = styled.label<SkeletonProps>`
   flex: 1;
+
+  & > span {
+    ${applySkeletonStyle()}
+  }
 `;
 
-const Channel = styled.span`
+const Channel = styled.span<SkeletonProps>`
   text-transform: capitalize;
 
   :not(:last-child) {
     margin-right: 5px;
   }
+
+  ${applySkeletonStyle()}
 `;
 
 const HelperContainer = styled.div`
@@ -92,14 +99,16 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
       return null;
     });
 
+    const skeleton = useSkeleton();
+
     return (
       <FieldContainer ref={forwardedRef} {...rest}>
         <LabelContainer>
-          {incomplete && <IncompleteBadge />}
-          <Label htmlFor={inputId} id={labelId}>
-            {label}
+          {incomplete && !skeleton && <IncompleteBadge />}
+          <Label htmlFor={inputId} id={labelId} skeleton={skeleton}>
+            <span>{label}</span>
           </Label>
-          {channel && <Channel>{channel}</Channel>}
+          {channel && <Channel skeleton={skeleton}>{channel}</Channel>}
           {locale && ('string' === typeof locale ? <Locale code={locale} /> : locale)}
         </LabelContainer>
         {decoratedChildren}

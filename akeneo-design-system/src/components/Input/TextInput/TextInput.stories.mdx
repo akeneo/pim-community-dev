@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {TextInput} from './TextInput.tsx';
+import {Skeleton} from '../../../components';
 
 <Meta
   title="Components/Inputs/TextInput"
@@ -91,6 +92,24 @@ The placeholder text provides tips or examples of items to enter. Placeholder te
           onChange={handleChange}
           characterLeftLabel={`${250 - value.length} characters left`}
         />
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <TextInput
+            placeholder="Type here to update the character left label"
+            {...args}
+            characterLeftLabel="250 characters left"
+          />
+        </Skeleton>
       );
     }}
   </Story>

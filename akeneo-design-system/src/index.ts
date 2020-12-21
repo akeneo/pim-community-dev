@@ -3,6 +3,7 @@ export * from './hooks';
 export * from './icons';
 export * from './illustrations';
 export * from './shared';
+export * from './context/Skeleton';
 export * from './theme';
 export * from './theme/onboarder';
 export * from './theme/pim';

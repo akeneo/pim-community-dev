@@ -2,7 +2,7 @@ import {useState} from 'react';
 import styled from 'styled-components';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Card, CardGrid} from './Card.tsx';
-import {Badge} from '../../components';
+import {Badge, Skeleton} from '../../components';
 
 <Meta
   title="Components/Card"
@@ -152,6 +152,30 @@ Here the `fit` prop is also set to `contain`.
             Badge &amp; selectable 🤩
           </Card>
         </CardGrid>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Skeleton
+
+<Canvas>
+  <Story name="Skeleton">
+    {args => {
+      return (
+        <Skeleton skeleton={true}>
+          <CardGrid>
+            <Card {...args} src="https://picsum.photos/seed/akenea/200" onSelect={() => {}}>
+              Card
+            </Card>
+            <Card {...args} src="https://picsum.photos/seed/akeneb/200">
+              Card
+            </Card>
+            <Card {...args} src="https://picsum.photos/seed/akenec/200">
+              Another Card
+            </Card>
+          </CardGrid>
+        </Skeleton>
       );
     }}
   </Story>
