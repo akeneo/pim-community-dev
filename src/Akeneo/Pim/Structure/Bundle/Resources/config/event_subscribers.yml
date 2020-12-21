@@ -21,6 +21,16 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_catalog.event_subscriber.attribute_removal:
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\AttributeRemovalSubscriber'
+        arguments:
+            - '@pim_catalog.manager.attribute_code_blacklister'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.save_family_variants_on_family_update:
         class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber'
         arguments:

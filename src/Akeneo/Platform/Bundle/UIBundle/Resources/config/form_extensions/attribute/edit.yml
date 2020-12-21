@@ -41,14 +41,6 @@ extensions:
         position: 100
         targetZone: secondary-actions
         aclResourceId: pim_enrich_attribute_remove
-        config:
-            trans:
-                title: pim_enrich.entity.attribute.module.delete.confirm
-                subTitle: pim_enrich.entity.attribute.plural_label
-                content: pim_common.confirm_deletion
-                success: pim_enrich.entity.attribute.flash.delete.success
-                fail: pim_enrich.entity.attribute.flash.delete.fail
-            redirect: pim_enrich_attribute_index
 
     pim-attribute-edit-form-save-buttons:
         module: pim/form/common/save-buttons

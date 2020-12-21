@@ -723,6 +723,7 @@ config:
     oro/datagrid/navigate-product-and-product-model-action: pimui/js/datagrid/action/navigate-product-and-product-model-action
     oro/datagrid/edit-in-modal-action:                      pimui/js/datagrid/action/edit-in-modal-action
     oro/datagrid/delete-product-action:                     pimui/js/datagrid/action/delete-product-action
+    oro/datagrid/delete-attribute-action:                   pimui/js/datagrid/action/delete-attribute-action
     oro/datagrid/toggle-product-action:                     pimui/js/datagrid/action/toggle-product-action
     oro/datagrid/react-cell:                                pimui/js/datagrid/reactCell
 

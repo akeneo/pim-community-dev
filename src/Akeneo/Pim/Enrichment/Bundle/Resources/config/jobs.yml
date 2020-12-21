@@ -685,3 +685,89 @@ services:
                 connector: '%pim_catalog.job.remove_non_existing_product_values.connector_name%'
                 type: '%pim_catalog.job.remove_non_existing_product_values.job_type%'
             - { name: akeneo_batch.job.not_visible }
+
+    # Clean removed attribute
+    pim_catalog.job.clean_removed_attribute:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'clean_removed_attribute_job'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.clean_attribute.register_clean_job'
+                - '@pim_catalog.step.clean_attribute.clean_product_model'
+                - '@pim_catalog.step.clean_attribute.clean_product'
+                - '@pim_catalog.step.clean_attribute.remove_attribute_codes_from_blacklist'
+            - false
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: 'Clean removed attribute'
+                type: 'clean_removed_attribute_job'
+
+    pim_catalog.step.clean_attribute.register_clean_job:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_attribute.register_clean_job'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.register_clean_job'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.register_clean_job:
+        class: 'Akeneo\Pim\Structure\Bundle\Job\CleanRemovedAttribute\RegisterCleanJobTasklet'
+        arguments:
+            - '@pim_catalog.manager.attribute_code_blacklister'
+        public: false
+
+    pim_catalog.step.clean_attribute.remove_attribute_codes_from_blacklist:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_attribute.remove_attribute_codes_from_blacklist'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.remove_attribute_codes_from_blacklist'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.remove_attribute_codes_from_blacklist:
+        class: 'Akeneo\Pim\Structure\Bundle\Job\CleanRemovedAttribute\RemoveAttributeCodesFromBlacklistTasklet'
+        arguments:
+            - '@pim_catalog.manager.attribute_code_blacklister'
+        public: false
+
+    pim_catalog.step.clean_attribute.clean_product:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_attribute.clean_product'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.clean_product'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.clean_product:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\CleanProductTasklet'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_identifiers_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
+            - '@pim_catalog.product_values.remove_values_from_products'
+            - '@akeneo_batch.job_repository'
+        public: false
+
+    pim_catalog.step.clean_attribute.clean_product_model:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'clean_attribute.clean_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.tasklet.clean_attribute.clean_product_model'
+        public: false
+
+    pim_connector.tasklet.clean_attribute.clean_product_model:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Job\CleanRemovedAttribute\CleanProductModelTasklet'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_model_identifiers_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
+            - '@pim_catalog.product_values.remove_values_from_product_models'
+            - '@akeneo_batch.job_repository'
+        public: false

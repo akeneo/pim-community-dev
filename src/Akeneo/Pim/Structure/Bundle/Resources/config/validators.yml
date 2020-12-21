@@ -91,6 +91,9 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCodeValidator'
         arguments:
             - '@akeneo.pim.structure.query.is_attribute_code_blacklisted'
+            - '@akeneo.pim.structure.query.get_blacklisted_attribute_job_execution_id'
+            - '@translator.default'
+            - '@router'
         tags:
             - { name: validator.constraint_validator, alias: pim_blacklisted_attribute_code_validator }
 
