@@ -152,6 +152,8 @@ const getFileMetrics = async filePath => {
           -1 !== fileContent.indexOf(`className='Akn`) ||
           -1 !== fileContent.indexOf(`className="Akn`) ||
           -1 !== fileContent.indexOf(`className={\`Akn`);
+        const usesDSMAndStyledComponents = usesDSM && usesStyledComponents
+        const usesDSMAndBEM = usesDSM && usesBEM
 
         resolve({
           isSVG,
@@ -163,6 +165,8 @@ const getFileMetrics = async filePath => {
           usesLegacyBridge,
           usesDSM,
           usesBEM,
+          usesDSMAndStyledComponents,
+          usesDSMAndBEM
         });
       }
     });
@@ -191,6 +195,8 @@ const compileMetrics = metrics => {
       usesLegacyBridge: 0,
       usesBEM: 0,
       usesDSM: 0,
+      usesDSMAndBEM: 0,
+      usesDSMAndStyledComponents: 0
     }
   );
 };
@@ -215,10 +221,13 @@ const compileMetrics = metrics => {
 
         console.log({
           ...compiledMetrics,
-          usesDSMOverStyledComponents: `${Math.round(
-            (compiledMetrics.usesDSM / compiledMetrics.usesStyledComponents) * 100
+          usesDSMPercent: `${Math.round(
+            (compiledMetrics.usesDSM / (compiledMetrics.isComponent)) * 100
           )}%`,
-          usesDSMOverBEM: `${Math.round((compiledMetrics.usesDSM / compiledMetrics.usesBEM) * 100)}%`,
+          usesDSMOverStyledComponents: `${Math.round(
+            (compiledMetrics.usesDSM / (compiledMetrics.usesStyledComponents + compiledMetrics.usesDSM - compiledMetrics.usesDSMAndStyledComponents)) * 100
+          )}%`,
+          usesDSMOverBEM: `${Math.round((compiledMetrics.usesDSM / (compiledMetrics.usesBEM + compiledMetrics.usesDSM - compiledMetrics.usesDSMAndBEM)) * 100)}%`,
         });
 
         break;
