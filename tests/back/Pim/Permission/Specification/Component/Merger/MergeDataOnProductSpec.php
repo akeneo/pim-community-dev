@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Permission\Component\Merger;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -17,6 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
@@ -30,12 +32,14 @@ class MergeDataOnProductSpec extends ObjectBehavior
         NotGrantedDataMergerInterface $categoryMerger,
         AttributeRepositoryInterface $attributeRepository,
         AddParent $addParent,
+        RemoveParentInterface $removeParent,
         ProductModelRepositoryInterface $productModelRepository
     ) {
         $this->beConstructedWith(
             [$valuesMerger, $associationMerger, $categoryMerger],
             $attributeRepository,
             $addParent,
+            $removeParent,
             $productModelRepository
         );
     }
@@ -76,6 +80,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullProduct->setFamily($family)->shouldBeCalled();
         $fullProduct->addValue(Argument::type(ScalarValue::class))->shouldBeCalled();
         $fullProduct->setIdentifier('my_sku')->shouldBeCalled();
+        $fullProduct->isVariant()->willReturn(false);
         $fullProduct->setGroups($groups)->shouldBeCalled();
         $fullProduct->setUniqueData($uniqueData)->shouldBeCalled();
 
@@ -208,7 +213,53 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $associationMerger->merge($filteredVariantProduct, $fullVariantProduct)->willReturn($fullVariantProduct);
         $categoryMerger->merge($filteredVariantProduct, $fullVariantProduct)->willReturn($fullVariantProduct);
 
-         $this->merge($filteredVariantProduct, $fullVariantProduct);
+        $this->merge($filteredVariantProduct, $fullVariantProduct);
+    }
+
+    function it_removes_the_parent_of_a_variant_product(
+        NotGrantedDataMergerInterface $valuesMerger,
+        NotGrantedDataMergerInterface $associationMerger,
+        NotGrantedDataMergerInterface $categoryMerger,
+        AttributeRepositoryInterface $attributeRepository,
+        RemoveParentInterface $removeParent,
+        ProductInterface $filteredSimpleProduct,
+        ProductInterface $fullVariantProduct,
+        FamilyInterface $family,
+        ArrayCollection $groups,
+        ArrayCollection $uniqueData,
+        WriteValueCollection $variantProductValues,
+        ValueInterface $identifierValue
+    ) {
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
+        $filteredSimpleProduct->getParent()->willReturn(null);
+        $filteredSimpleProduct->getId()->willReturn(1);
+        $filteredSimpleProduct->isEnabled()->willReturn(true);
+        $filteredSimpleProduct->getFamily()->willReturn($family);
+        $filteredSimpleProduct->getIdentifier()->willReturn('my_sku');
+        $filteredSimpleProduct->getGroups()->willReturn($groups);
+        $filteredSimpleProduct->getUniqueData()->willReturn($uniqueData);
+        $filteredSimpleProduct->isVariant()->willReturn(false);
+
+        $fullVariantProduct->getValues()->willReturn($variantProductValues);
+        $variantProductValues->getSame(Argument::type(ScalarValue::class))->willReturn($identifierValue);
+        $identifierValue->isEqual(Argument::type(ScalarValue::class))->willReturn(true);
+        $fullVariantProduct->isVariant()->willReturn(true);
+
+        $fullVariantProduct->setEnabled(true)->shouldBeCalled();
+        $fullVariantProduct->setFamily($family)->shouldBeCalled();
+        $fullVariantProduct->setGroups($groups)->shouldBeCalled();
+        $fullVariantProduct->setUniqueData($uniqueData)->shouldBeCalled();
+        $fullVariantProduct->addValue(Argument::type(ValueInterface::class))->shouldBeCalled();
+        $fullVariantProduct->setIdentifier('my_sku')->shouldBeCalled();
+
+        $removeParent->from($fullVariantProduct)->shouldBeCalled();
+
+        $valuesMerger->merge($filteredSimpleProduct, $fullVariantProduct)->shouldBeCalled()->willReturn($fullVariantProduct);
+        $associationMerger->merge($filteredSimpleProduct, $fullVariantProduct)->shouldBeCalled()->willReturn($fullVariantProduct);
+        $categoryMerger->merge($filteredSimpleProduct, $fullVariantProduct)->shouldBeCalled()->willReturn($fullVariantProduct);
+
+        $this->merge($filteredSimpleProduct, $fullVariantProduct);
     }
 
     function it_throws_an_exception_if_filtered_subject_is_not_a_product()

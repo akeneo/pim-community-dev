@@ -216,6 +216,7 @@ $rules = [
         // TIP-1003: Do not override Community services
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent',
+        'Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Manager\AttributeValuesResolverInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface',

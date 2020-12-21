@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Component\Merger;
 
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
@@ -37,24 +38,23 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
     /** @var AddParent */
     private $addParent;
 
+    /** @var RemoveParentInterface */
+    private $removeParent;
+
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /**
-     * @param NotGrantedDataMergerInterface[] $mergers
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param AddParent                       $addParent
-     * @param ProductModelRepositoryInterface $productModelRepository
-     */
     public function __construct(
         array $mergers,
         AttributeRepositoryInterface $attributeRepository,
         AddParent $addParent,
+        RemoveParentInterface $removeParent,
         ProductModelRepositoryInterface $productModelRepository
     ) {
         $this->mergers = $mergers;
         $this->attributeRepository = $attributeRepository;
         $this->addParent = $addParent;
+        $this->removeParent = $removeParent;
         $this->productModelRepository = $productModelRepository;
     }
 
@@ -70,9 +70,7 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
             );
         }
 
-        if ($filteredProduct instanceof EntityWithFamilyVariantInterface) {
-            $this->setParent($filteredProduct);
-        }
+        $this->setParent($filteredProduct);
 
         if (null === $fullProduct) {
             return $filteredProduct;
@@ -104,6 +102,8 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
                 $fullProduct = $this->addParent->to($fullProduct, $filteredProduct->getParent()->getCode());
                 $this->setParent($fullProduct);
             }
+        } elseif ($fullProduct->isVariant()) {
+            $this->removeParent->from($fullProduct);
         }
 
         foreach ($this->mergers as $merger) {

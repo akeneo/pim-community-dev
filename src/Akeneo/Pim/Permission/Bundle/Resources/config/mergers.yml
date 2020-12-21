@@ -39,6 +39,7 @@ services:
                 - '@pimee_catalog.security.merger.not_granted_quantified_associations'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@pim_catalog.repository.product_model_without_permission'
 
     pimee_catalog.security.merger.merge_data_on_product_model:
@@ -50,3 +51,11 @@ services:
                 - '@pimee_catalog.security.merger.not_granted_category'
                 - '@pimee_catalog.security.merger.not_granted_quantified_associations'
             - '@pim_catalog.repository.product_model_without_permission'
+
+    pimee_catalog.security.entity_with_family_variant.remove_parent_from_product:
+        class: 'Akeneo\Pim\Permission\Component\EntityWithFamilyVariant\GrantedRemoveParent'
+        decorates: pim_catalog.entity_with_family_variant.remove_parent_from_product
+        decoration_inner_name: base_remove_from_parent
+        arguments:
+            - '@base_remove_from_parent'
+            - '@security.authorization_checker'

@@ -28,3 +28,4 @@ compute_family_variant_structure_changes;All
 remove_non_existing_product_values;All
 change_parent_product;All
 asset_manager_compute_transformations;All
+convert_to_simple_products;All

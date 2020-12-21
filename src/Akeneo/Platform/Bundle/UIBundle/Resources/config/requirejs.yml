@@ -82,6 +82,7 @@ config:
         pimee/product-edit-form/associations:                         pimenterpriseui/js/product/form/associations
         pimee/product-edit-form/meta/status-switcher:                 pimenterpriseui/js/product/form/meta/status-switcher
         pimee/product-edit-form/variant-navigation:                   pimenterpriseui/js/product/form/variant-navigation
+        pimee/product-edit-form/convert-to-simple-product:            pimenterpriseui/js/product/form/convert-to-simple-product.ts
         pimee/product-edit-form/duplicate:                            pimenterpriseui/js/product/form/duplicate.ts
         pimee/product-edit-form/duplicate/modal:                      pimenterpriseui/js/product/form/duplicate/modal.ts
 
