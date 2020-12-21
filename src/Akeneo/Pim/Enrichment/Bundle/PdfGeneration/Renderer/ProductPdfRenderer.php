@@ -12,8 +12,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
  * PDF renderer used to render PDF for a Product
@@ -27,8 +27,7 @@ class ProductPdfRenderer implements RendererInterface
     const PDF_FORMAT = 'pdf';
     const THUMBNAIL_FILTER = 'pdf_thumbnail';
 
-    protected EngineInterface $templating;
-
+    protected Environment $templating;
     protected PdfBuilderInterface $pdfBuilder;
     protected DataManager $dataManager;
     protected CacheManager $cacheManager;
@@ -39,7 +38,7 @@ class ProductPdfRenderer implements RendererInterface
     private IdentifiableObjectRepositoryInterface $attributeOptionRepository;
 
     public function __construct(
-        EngineInterface $templating,
+        Environment $templating,
         PdfBuilderInterface $pdfBuilder,
         DataManager $dataManager,
         CacheManager $cacheManager,

@@ -16,6 +16,8 @@
 
 ### Codebase
 
+- Change constructor of `Oro\Bundle\PimDataGridBundle\Controller\DatagridController` to remove `Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating`
+
 ### CLI commands
 
 ### Services

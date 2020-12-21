@@ -10,7 +10,7 @@ services:
         public: true
         class: '%pim_datagrid.controller.datagrid.class%'
         arguments:
-            - '@templating'
+            - '@twig'
             - '@oro_datagrid.datagrid.metadata_parser'
 
     pim_datagrid.controller.export:

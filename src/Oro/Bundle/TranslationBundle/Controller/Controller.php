@@ -1,24 +1,17 @@
 <?php
 namespace Oro\Bundle\TranslationBundle\Controller;
 
-use Oro\Bundle\TranslationBundle\Translation\Translator;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class Controller
 {
-    /**
-     * @var Translator
-     */
-    protected $translator;
-
-    /**
-     * @var EngineInterface
-     */
-    protected $templating;
+    protected TranslatorInterface $translator;
+    protected Environment $templating;
+    protected array $options;
 
     /**
      * @var string|TemplateReferenceInterface
@@ -26,18 +19,10 @@ class Controller
     protected $template;
 
     /**
-     * @var array
-     */
-    protected $options;
-
-    /**
-     * @param TranslatorInterface $translator
-     * @param EngineInterface $templating
      * @param string|TemplateReferenceInterface $template a template name or a TemplateReferenceInterface instance
-     * @param array $options array('domains' => array(), 'debug' => true|false)
      * @throws \InvalidArgumentException
      */
-    public function __construct(TranslatorInterface $translator, EngineInterface $templating, $template, $options)
+    public function __construct(TranslatorInterface $translator, Environment $templating, $template, $options)
     {
         $this->translator = $translator;
         $this->templating = $templating;
