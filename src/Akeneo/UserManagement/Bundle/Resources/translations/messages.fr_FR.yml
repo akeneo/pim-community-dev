@@ -67,11 +67,13 @@ pim_user:
       username_or_email: Nom d'utilisateur ou Email
       remember_me: Mémoriser mes informations sur cet ordinateur
       password_forgotten: Mot de passe oublié ?
+      log_in: Connexion
       forgot_password: Mot de passe oublié
       request: Demande
       password_reset: Réinitialisation de mot de passe
       reset: Réinitialiser
       password_reset_email_sent: Un email vous a été envoyé. Il contient un lien pour réinitialiser votre mot de passe.
+      homepage: Retour à la page d’accueil
   group:
     tab:
       general.title: Général
