@@ -143,6 +143,7 @@ SQL;
                         'groupsColumn' => 'groups',
                         'enabledComparison' => true,
                         'realTimeVersioning' => true,
+                        'convertVariantToSimple' => false,
                     ],
             ],
             'tracking' => [

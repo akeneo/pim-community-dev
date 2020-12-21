@@ -773,6 +773,9 @@ abstract class AbstractProduct implements ProductInterface
         if ($formerParentCode !== $newParentCode) {
             $this->dirty = true;
         }
+        if (null === $parent) {
+            $this->familyVariant = null;
+        }
         $this->parent = $parent;
     }
 

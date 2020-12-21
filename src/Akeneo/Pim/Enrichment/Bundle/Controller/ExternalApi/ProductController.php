@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductsQueryValidator;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -164,6 +165,8 @@ class ProductController
 
     private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
 
+    private RemoveParentInterface $removeParent;
+
     public function __construct(
         NormalizerInterface $normalizer,
         IdentifiableObjectRepositoryInterface $channelRepository,
@@ -196,7 +199,8 @@ class ProductController
         EventDispatcherInterface $eventDispatcher,
         DuplicateValueChecker $duplicateValueChecker,
         LoggerInterface $logger,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        RemoveParentInterface $removeParent
     ) {
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
@@ -230,6 +234,7 @@ class ProductController
         $this->duplicateValueChecker = $duplicateValueChecker;
         $this->logger = $logger;
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;
+        $this->removeParent = $removeParent;
     }
 
     /**
@@ -521,6 +526,10 @@ class ProductController
         }
 
         try {
+            if ($this->needUpdateFromVariantToSimple($product, $data)) {
+                $this->removeParent->from($product);
+            }
+
             if (isset($data['parent']) || $product->isVariant()) {
                 $data = $this->productAttributeFilter->filter($data);
             }
@@ -740,6 +749,23 @@ class ProductController
     {
         return !$isCreation && !$product->isVariant() &&
             isset($data['parent']) && '' !== $data['parent'];
+    }
+
+    /**
+     * It is a conversion from variant product to simple product if
+     * - the product already exists
+     * - it is a variant product
+     * - and 'parent' is explicitly null
+     *
+     * @param ProductInterface $product
+     * @param array $data
+     *
+     * @return bool
+     */
+    protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data): bool
+    {
+        return null !== $product->getId() && $product->isVariant() &&
+            array_key_exists('parent', $data) && null === $data['parent'];
     }
 
     private function normalizeProductsList(ConnectorProductList $connectorProductList, ListProductsQuery $query): array

@@ -262,6 +262,11 @@ jobs:
         alias:     add_to_existing_product_model
         label:     Add to existing product model
         type:      mass_edit
+    convert_to_simple_products:
+        connector: Akeneo Mass Edit Connector
+        alias:     convert_to_simple_products
+        label:     Convert to simple products
+        type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector
         alias:     set_attribute_requirements

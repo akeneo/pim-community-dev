@@ -83,6 +83,10 @@ pim_enrich:
             success_flash: Attribute requirements were applied to the selected families
             launched_flash: The bulk action "set attribute requirements" is launched. You will be notified when it will be done.
 
+        convert_to_simple_products:
+            warning:
+                non_variant_product: The "{{ identifier }}" product is already a simple product, no need to convert it.
+
         mass_action:
             quick_export:
                 launched_flash: The job exporting products is currently running

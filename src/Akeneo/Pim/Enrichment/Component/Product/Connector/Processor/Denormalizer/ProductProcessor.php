@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormaliz
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
@@ -59,6 +60,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var MediaStorer */
     private $mediaStorer;
 
+    /** @var RemoveParentInterface */
+    private $removeParent;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         FindProductToImport $findProductToImport,
@@ -68,7 +72,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         ObjectDetacherInterface $detacher,
         FilterInterface $productFilter,
         AttributeFilterInterface $productAttributeFilter,
-        MediaStorer $mediaStorer
+        MediaStorer $mediaStorer,
+        RemoveParentInterface $removeParent
     ) {
         parent::__construct($repository);
 
@@ -81,6 +86,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->productAttributeFilter = $productAttributeFilter;
         $this->repository = $repository;
         $this->mediaStorer = $mediaStorer;
+        $this->removeParent = $removeParent;
     }
 
     /**
@@ -100,6 +106,11 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
 
         $parentProductModelCode = $item['parent'] ?? '';
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $convertVariantToSimple = $jobParameters->get('convertVariantToSimple');
+        if (true !== $convertVariantToSimple && '' === $parentProductModelCode) {
+            unset($item['parent']);
+        }
 
         try {
             $familyCode = $this->getFamilyCode($item);
@@ -117,7 +128,6 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             unset($filteredItem['enabled']);
         }
 
-        $jobParameters = $this->stepExecution->getJobParameters();
         $enabledComparison = $jobParameters->get('enabledComparison');
         if ($enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
@@ -127,6 +137,15 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
                 return null;
+            }
+        }
+
+        if ($convertVariantToSimple && $product->isVariant() && '' === $filteredItem['parent'] ?? null) {
+            try {
+                $this->removeParent->from($product);
+            } catch (InvalidArgumentException $e) {
+                $this->detachProduct($product);
+                $this->skipItemWithMessage($item, $e->getMessage(), $e);
             }
         }
 
@@ -275,7 +294,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
         $itemPosition = null !== $this->stepExecution ? $this->stepExecution->getSummaryInfo('item_position') : 0;
         $invalidItem = new FileInvalidItem($item, $itemPosition);
-        
+
         return new InvalidItemException($message, $invalidItem, [], 0, $previousException);
     }
 }

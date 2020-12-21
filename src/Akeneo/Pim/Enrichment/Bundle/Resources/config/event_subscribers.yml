@@ -226,3 +226,10 @@ services:
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ReindexFormerAncestorsSubscriber:
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+        tags:
+            - { name: kernel.event_subscriber }

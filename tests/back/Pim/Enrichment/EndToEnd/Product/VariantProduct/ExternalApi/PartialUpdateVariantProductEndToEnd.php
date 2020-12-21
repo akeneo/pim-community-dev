@@ -1424,32 +1424,6 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
     }
 
-    public function testProductVariantPartialUpdateSetParentToNull(): void
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "apollon_optionb_false",
-        "parent": null
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Property "parent" cannot be modified, "NULL" given. Check the expected format on the API documentation.',
-            '_links'  => ["documentation" => ["href" => "http://api.akeneo.com/api-reference.html#patch_products__code_"]]
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
     public function testProductVariantCannotUpdateCommonAttribute(): void
     {
         $client = $this->createAuthenticatedClient();
