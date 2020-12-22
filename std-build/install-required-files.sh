@@ -67,3 +67,8 @@ cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Skeleton .env file
 cp $DEV_DISTRIB_DIR/.gitignore $STANDARD_DISTRIB_DIR/
+
+# Database migrations
+mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
+cp -R $DEV_DISTRIB_DIR/../pim-community-dev/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
+cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
