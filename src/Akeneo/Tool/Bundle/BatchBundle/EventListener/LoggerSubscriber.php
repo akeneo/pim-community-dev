@@ -115,7 +115,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->debug(sprintf('Job execution was stopped: %s', $jobExecution));
+        $this->logger->info(sprintf('Job execution was stopped: %s', $jobExecution));
     }
 
     /**
@@ -238,7 +238,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     {
         $stepExecution = $event->getStepExecution();
 
-        $this->logger->debug(sprintf('Step execution complete: %s', $stepExecution));
+        $this->logger->info(sprintf('Step execution complete: %s', $stepExecution));
     }
 
     /**

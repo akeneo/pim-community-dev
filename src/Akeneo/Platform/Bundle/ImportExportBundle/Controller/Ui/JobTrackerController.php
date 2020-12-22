@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Query\SqlUpdateJobExecutionStatus;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -35,6 +36,7 @@ class JobTrackerController extends Controller
     protected array $jobSecurityMapping;
     private SqlUpdateJobExecutionStatus $updateJobExecutionStatus;
     private JobRegistry $jobRegistry;
+    private LoggerInterface $logger;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -43,7 +45,8 @@ class JobTrackerController extends Controller
         SecurityFacade $securityFacade,
         array $jobSecurityMapping,
         SqlUpdateJobExecutionStatus $updateJobExecutionStatus,
-        JobRegistry $jobRegistry
+        JobRegistry $jobRegistry,
+        LoggerInterface $logger
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->jobExecutionRepo = $jobExecutionRepo;
@@ -52,6 +55,7 @@ class JobTrackerController extends Controller
         $this->jobSecurityMapping = $jobSecurityMapping;
         $this->updateJobExecutionStatus = $updateJobExecutionStatus;
         $this->jobRegistry = $jobRegistry;
+        $this->logger = $logger;
     }
 
     /**
@@ -107,6 +111,7 @@ class JobTrackerController extends Controller
         $isGranted = $this->securityFacade->isGranted('pim_importexport_stop_job');
 
         if ($isStoppable && $isGranted) {
+            $this->logger->info('Stop job was requested', ['job_execution_id' => $id]);
             $this->updateJobExecutionStatus->updateByJobExecutionId($id, new BatchStatus(BatchStatus::STOPPING));
         }
 
