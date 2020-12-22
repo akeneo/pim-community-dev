@@ -108,6 +108,9 @@ pimee_catalog_rule:
       add_to_category: Add to category
       add_conditions: Add conditions
       products_count:
+        products: "]-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} products"
+        product_models: "]-Inf, 1]{{ count }} product model|]1, +Inf[{{ count }} product models"
+        products_and_product_models: "{{ products }} and {{ product_models }}"
         pending: Calculating products and product models
         error: Impossible to calculate products and product models
       product_selection: Product selection
@@ -267,6 +270,7 @@ pimee_catalog_rule:
           line_break: Line break
           date_format: Select a date format
           label_locale: Label locale
+          unit_label_locale: Unit locale
           remove_new_line_confirm:
             label: Remove line break from operation list
             description: The new target attribute does not accept line breaks. This change will remove all line breaks.
@@ -345,6 +349,7 @@ pimee_catalog_rule:
         date_to: Choose an ending date
         date_past: Date in the past
         date_future: Date in the future
+        date_present: Now
       day: "]-Inf, 1] Day|]1, +Inf[ Days"
       week: "]-Inf, 1] Week|]1, +Inf[ Weeks"
       month: "]-Inf, 1] Month|]1, +Inf[ Months"
