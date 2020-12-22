@@ -39,6 +39,17 @@ elasticsearch:
       tags.akeneo.com/instance_dns_record: ${instanceName}
       tags.akeneo.com/papo_project_code: ${papoProjectCode}
 
+memcached:
+  podAnnotations:
+    tags.akeneo.com/pfid: ${pfid}
+    # app.kubernetes.io/name: # already set by default by Memcached chart. Cf  https://github.com/helm/charts/blob/09324a8a8fdc9b9261ce829486421c345109475b/stable/memcached/templates/_helpers.tpl#L30
+    app.kubernetes.io/component: memcached
+    tags.akeneo.com/product_reference: serenity
+    # helm.sh/chart: # already set by default by Memcached chart. Cf https://github.com/helm/charts/blob/09324a8a8fdc9b9261ce829486421c345109475b/stable/memcached/templates/_helpers.tpl#L31
+    tags.akeneo.com/instance_dns_zone: ${dnsZone}
+    tags.akeneo.com/instance_dns_record: ${instanceName}
+    tags.akeneo.com/papo_project_code: ${papoProjectCode}
+
 global:
   extraLabels:
     instanceName: ${instanceName}
@@ -81,4 +92,3 @@ mysql:
     persistentDisks:
     - ${mysql_disk_name}
     class: ${mysql_disk_storage_class}
-
