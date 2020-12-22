@@ -201,6 +201,7 @@ pim_enrich.entity.attribute:
       regexp: Regulärer Ausdruck
       url: URL
     wysiwyg_enabled: Rich-Text-Editor aktiviert
+    default_value: Standardwert
   module:
     add_attribute:
       no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen

@@ -64,6 +64,15 @@ pim_enrich.entity.locale:
   label: Gebietsschema
   uppercase_label: Gebietsschema
   plural_label: Gebietsschemata
+  page_title:
+    index: "]-Inf, 1]{{ count }} aktivierte locale|]1, Inf[{{ count }} aktivierte Gebietsschemata"
+  helper: "Um ein Gebietsschema zu aktivieren oder zu deaktivieren, gehen Sie zu einem von <a href={{ href }}>Ihren Kanälen</a> und fügen oder entfernen Sie eine Gebietsschema."
+  grid:
+    columns:
+      code: Aktivierte Gebietsschemata
+    filters:
+      search_placeholder: Ein aktiviertes Gebietsschema suchen
+    no_search_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
 pim_enrich.entity.currency:
   plural_label: Währungen
   page_title:

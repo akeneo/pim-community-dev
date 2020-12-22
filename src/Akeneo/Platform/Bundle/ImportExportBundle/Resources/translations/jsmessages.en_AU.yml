@@ -99,6 +99,9 @@ pim_import_export:
           with_header:
             title: With header
             help: Whether or not to print the column name
+          with_media:
+            title: Export media
+            help: Whether or not to export media
           lines_per_file:
             title: Number of lines per file
             help: Define the limit number of lines per file
@@ -174,6 +177,12 @@ pim_import_export:
     FAILED: Failed
     ABANDONED: Abandoned
     UNKNOWN: Unknown
+  tracking:
+    completed: "Time spent: {{ duration }}"
+    in_progress: "Estimated time left: {{ duration }}"
+    not_started: "Pending"
+    untrackable: Untrackable step
+    estimating: "Estimating time remaining..."
 confirmation:
   remove:
     import_profile: Are you sure you want to delete this import profile?
