@@ -544,3 +544,9 @@ job_tracker:
     title: Prozess-Tracker
   filter:
     started_at: Gestartet am
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Powered by
+    powered_image_title: logo Akeneo
+    baseline: Erschließen von Wachstum durch Produkterfahrungen

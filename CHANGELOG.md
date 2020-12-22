@@ -67,6 +67,7 @@
 - PIM-9590: Fix "Default product grid view" multiple times on user settings page
 - CPM-86: Fix undefined tab on job profile edit
 - PIM-9596: Fix attribute options manual sorting
+- PIM-9598: Fix quick export when the bs_Cyrl_BA locale is used.
 - RAC-435: Fix fatal error for user that migrate from 4.0 with product values format that doesn't correspond to expected format
 
 ## New features
@@ -78,6 +79,8 @@
 - RAC-123: Add possibility to export product/product model with labels instead of code
 - RAC-271: Add possibility to declare jobs as stoppable and stop them from the UI
 - RAC-277: Add job progress and remaining time in the UI
+- CPM-93: Add a default value for Yes/No attributes; this default value is applied when creating a new product or product model
+- PM2020-9: Convert a variant to a simple product
 
 ## Improvements
 
@@ -92,17 +95,19 @@
 - RAC-178: When launching a job, the notification contains a link to the job status
 - PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
 - BH-138: clear Locale cache on save
+- RAC-393: Improve attribute removal management
 - CXP-493: Do not save products when they were not actually updated. In order to do so, the product now returns copies of
-  its collections (values, categories, groups and associations). Practically, this means that such a collection cannot be directly
+  its collections (values, categories, groups, associations and quantified associations). Practically, this means that such a collection cannot be directly
   updated "from outside" anymore (e.g: `$product->getCategories()->add($category)` **won't update the product anymore**,
   you should now use `$product->addCategory($category)` to achieve it)  
 - CXP-544: Do not save product models when they were not actually updated. As for products, the product model
-  will now return copies of its collections (values, categories and associations)
+  will now return copies of its collections (values, categories, associations and quantified associations)
 
 # Technical Improvements
 
 - TIP-1233: Upgrade to php7.4
 - CPM-38: Upgrade Symfony to 4.4.15
+- TIP-152: Upgrade ElasticSearch to 7.10.0
 - CPM-33: Upgrade node to 12.19
 - CPM-33: Upgrade npm to 6.14
 - PIM-9452: Add a command to update the ElasticSearch indexes max fields limit
@@ -120,8 +125,14 @@
     - add `Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController` to
     - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
+- Change constructor of `\Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController` to
+    - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts $getConnectorProductsWithOptions`
+    - add `Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
+    - add `GetProductsWithQualityScoresInterface $getProductsWithQualityScores`  
+    - add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController` to
     - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
+    - add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
 - Change constructor of `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator` to
     - remove `array $measures`
     - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $provider`
@@ -234,6 +245,15 @@
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand` to
     - add `\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
+    - remove `\Akeneo\Pim\Enrichment\Component\Product\ValuesRemover\CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes`
+    - add `\Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface $jobLauncher`
+    - add `\Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $jobInstanceRepository`
+    - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute`
+    - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute`
+    - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute`
+    - add `\Symfony\Component\Routing\RouterInterface $router`
+    - add `string $pimUrl`
+
 - Change the `Oro\Bundle\PimDataGridBundle\Controller\ProductExportController` class to remove the `getRequest()` method
 - Change signature of `createInversedAssociation()` from `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface`
     - remove `AssociationInterface $association`
@@ -262,6 +282,10 @@
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter`: add argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory` to
     - add `Psr\Log\LoggerInterface $logger`
+- Move `Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface` to `Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface`
+- Remove `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues`
+- Remove `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValuesValidator`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor` to add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
 
 ### CLI commands
 

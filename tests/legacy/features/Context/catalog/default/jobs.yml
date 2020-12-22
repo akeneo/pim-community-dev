@@ -131,3 +131,8 @@ jobs:
         alias:     remove_non_existing_product_values
         label:     Remove non existing product values
         type:      remove_non_existing_product_values
+    clean_removed_attribute_job:
+        connector: internal
+        alias:     clean_removed_attribute_job
+        label:     Clean removed attribute job
+        type:      clean_removed_attribute_job

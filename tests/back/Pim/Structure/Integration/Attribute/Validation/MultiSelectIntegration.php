@@ -93,4 +93,9 @@ class MultiSelectIntegration extends AbstractAttributeTestCase
     {
         $this->assertDoesNotHaveAMaxFileSize('pim_catalog_multiselect');
     }
+
+    public function testMultiSelectShouldNotHaveDefaultValue()
+    {
+        $this->assertDoesNotHaveDefaultValue('pim_catalog_multiselect');
+    }
 }

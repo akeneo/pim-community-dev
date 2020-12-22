@@ -201,6 +201,7 @@ pim_enrich.entity.attribute:
       regexp: Expression régulière
       url: URL
     wysiwyg_enabled: Éditeur de texte enrichi activé
+    default_value: Valeur par défaut
   module:
     add_attribute:
       no_available_attributes: Il n'y a plus d'attributs disponibles

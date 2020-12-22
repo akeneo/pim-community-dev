@@ -1,25 +1,42 @@
 import React, {ReactNode, Ref} from 'react';
+import styled, {css} from 'styled-components';
 import {SelectableContext} from '../SelectableContext';
+
+const TableHead = styled.thead<{sticky?: number}>`
+  ${({sticky}) =>
+    undefined !== sticky &&
+    css`
+      th {
+        position: sticky;
+        top: ${sticky}px;
+      }
+    `}
+`;
 
 type TableHeaderProps = {
   /**
-   * Header cells
+   * When set, defines the top position of the Header cells.
+   */
+  sticky?: number;
+
+  /**
+   * Header cells.
    */
   children?: ReactNode;
 };
 
 const TableHeader = React.forwardRef<HTMLTableSectionElement, TableHeaderProps>(
-  ({children, ...rest}: TableHeaderProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
+  ({children, sticky, ...rest}: TableHeaderProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
     const {isSelectable} = React.useContext(SelectableContext);
 
     return (
-      <thead ref={forwardedRef}>
+      <TableHead sticky={sticky} ref={forwardedRef}>
         <tr {...rest}>
           {/* Add new column for checkbox to be displayed properly in the tbody */}
           {isSelectable && <th />}
           {children}
         </tr>
-      </thead>
+      </TableHead>
     );
   }
 );

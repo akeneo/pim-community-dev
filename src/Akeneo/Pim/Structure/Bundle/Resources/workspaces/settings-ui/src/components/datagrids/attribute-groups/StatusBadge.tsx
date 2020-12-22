@@ -18,7 +18,7 @@ const disabledMixin = css`
 
 const Badge = styled.div<Props>`
   border-radius: 2px;
-  padding: 0px 6px;
+  padding: 0 6px;
   display: inline-block;
   line-height: 18px;
   text-transform: uppercase;

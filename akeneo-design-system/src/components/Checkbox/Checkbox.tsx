@@ -1,9 +1,9 @@
-import React, {ReactNode, Ref, SyntheticEvent, useState} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {CheckIcon, CheckPartialIcon} from '../../icons';
-import {useShortcut} from '../../hooks';
-import {Key, Override, uuid} from '../../shared';
+import {useId, useShortcut} from '../../hooks';
+import {Key, Override} from '../../shared';
 
 const checkTick = keyframes`
   to {
@@ -122,8 +122,8 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
     {checked, onChange, readOnly = false, children, title, ...rest}: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
-    const [checkboxId] = useState<string>(`checkbox_${uuid()}`);
-    const [labelId] = useState<string>(`label_${uuid()}`);
+    const checkboxId = useId('checkbox_');
+    const labelId = useId('label_');
 
     const isChecked = true === checked;
     const isMixed = 'mixed' === checked;

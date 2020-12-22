@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Bundle\Query\Sql;
 
-use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Doctrine\DBAL\Connection;
 
 /**

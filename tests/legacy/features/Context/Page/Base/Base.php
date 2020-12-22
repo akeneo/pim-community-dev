@@ -28,7 +28,7 @@ class Base extends Page
 
     protected $elements = [
         'Body'                   => ['css' => 'body'],
-        'Dialog'                 => ['css' => 'div.modal'],
+        'Dialog'                 => ['css' => 'div.modal, div[role="dialog"]'],
         'Title'                  => ['css' => '.AknTitleContainer-title'],
         'Product title'          => ['css' => '.entity-title'],
         'HeadTitle'              => ['css' => 'title'],

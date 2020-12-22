@@ -35,6 +35,7 @@ akeneo_data_quality_insights:
       add_families: Ajouter des familles
       add_categories: Ajouter des catégories
       title: Titre
+      score: Score
       no_family_helper_msg: Choisissez les familles à ajouter à votre tableau de bord
       no_category_helper_msg: Choisissez les catégories à ajouter à votre tableau de bord
       see_in_grid: Voir dans la grille
@@ -66,6 +67,7 @@ akeneo_data_quality_insights:
               message3: C'est parfait.
         good_enrichment:
           title: Produits avec un bon taux d'enrichissement
+          no_data: Vos produits ne peuvent pas être enrichis. En ajoutant des attributs, cet indicateur vous permettra de suivre la qualité de vos produits.
           messages:
             first_step:
               message1: Pour améliorer ce point, faites en sorte de sélectionner les attributs les plus pertinents avec soin. <a href="{{ link }}" target="_blank">Consultez notre help center pour retrouver des conseils</a>.
@@ -89,6 +91,13 @@ akeneo_data_quality_insights:
               message4: Félicitations, rien à redire !
       no_data: Désolé, nous n'avons pas encore assez de données pour afficher les indicateurs clés.
       no_data_subtitle: Merci de revenir plus tard.
+    score_distribution:
+      title: Distribution du score de qualité
+    quality_score_evolution:
+      title: Evolution du score de qualité
+      current_score: est le score de qualité pour votre sélection.
+      current_month_label: Ce mois
+      no_catalog_score: Votre score de qualité n'a pas pu être calculé.
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
@@ -117,6 +126,9 @@ akeneo_data_quality_insights:
         help_center_link: Découvrez comment améliorer la qualité de vos données dans notre centre d'aide.
       add_image_attribute_recommendation: Une image vaut mille mots. Vous devriez ajouter un attribut image pour améliorer la qualité des données de ce produit.
       fill_image_attribute_recommendation: Nous avons observé que les images font une vraie différence. Il vous faut peut être consacrer plus de temps à vos médias.
+      not_applicable:
+        message: Ce critère n'est pas applicable.
+        help_center_link: Découvrez pourquoi dans notre Help Center.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Tous les attributs manquants
@@ -132,6 +144,7 @@ akeneo_data_quality_insights:
     all_groups_evaluated: Tous les groupes d'attributs de ce produit sont pris en compte pour le calcul du score de qualité. Pour obtenir un score de qualité le plus pertinent possible, <a href="{{ link }}" target="_blank">apprenez comment désactiver les groupes d'attributs dans notre centre d'aide.</a>
   product_grid:
     filter_label:
+      quality_score: Score de qualité
       enrichment_quality: Qualité sur l'enrichissement
       images_quality: Qualité sur les images
     filter_value:

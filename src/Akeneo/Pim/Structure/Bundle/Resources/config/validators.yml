@@ -91,6 +91,9 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCodeValidator'
         arguments:
             - '@akeneo.pim.structure.query.is_attribute_code_blacklisted'
+            - '@akeneo.pim.structure.query.get_blacklisted_attribute_job_execution_id'
+            - '@translator.default'
+            - '@router'
         tags:
             - { name: validator.constraint_validator, alias: pim_blacklisted_attribute_code_validator }
 
@@ -98,3 +101,8 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\AssociationType\ShouldNotBeTwoWayAndQuantifiedValidator'
         tags:
             - { name: 'validator.constraint_validator', alias: 'pim_structure.validator.constraint.association_type.should_not_be_two_way_and_quantified' }
+
+    pim_structure.validator.constraint.property_type:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\AttributePropertyTypeValidator'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'pim_structure_attribute_property_type_validator' }

@@ -15,30 +15,20 @@ class BlackListedAttributeCodeIntegration extends AbstractAttributeTestCase
 
         $this->assertCount(0, $violations);
     }
-    public function test_i_cannot_update_an_blacklisted_attribute()
-    {
-        $this->blacklistAttributeCode('new_blacklisted_attribute');
-        $attribute = $this->createAttributeByCode('new_blacklisted_attribute');
 
-        $violations = $this->validateAttribute($attribute);
+    public function test_i_cannot_create_a_blacklisted_attribute()
+    {
+        $attribute = $this->createAttributeByCode('new_blacklisted_attribute');
+        $this->deleteAttribute($attribute);
+
+        $secondAttribute = $this->createAttributeByCode('new_blacklisted_attribute');
+        $violations = $this->validateAttribute($secondAttribute);
 
         $this->assertCount(1, $violations);
-        $this->assertSame('The attribute code "new_blacklisted_attribute" was previously existing and is currently being cleaned up', $violations->get(0)->getMessage());
-    }
-
-    private function blacklistAttributeCode(string $attributeCode)
-    {
-        $blacklistAttributeCodeSql = <<<SQL
-        INSERT INTO `pim_catalog_attribute_blacklist` (`attribute_code`)
-        VALUES
-            (:attribute_code);
-        SQL;
-
-        /** @var Connection $connection */
-        $connection = $this->get('database_connection');
-        $connection->executeUpdate($blacklistAttributeCodeSql, [
-            ':attribute_code' => $attributeCode
-        ]);
+        $this->assertSame(
+            'Code temporarily blocked until the ongoing cleanup job is complete.',
+            $violations->get(0)->getMessage()
+        );
     }
 
     private function createAttributeByCode(string $attributeCode): AttributeInterface
@@ -53,6 +43,7 @@ class BlackListedAttributeCodeIntegration extends AbstractAttributeTestCase
                 'group'            => 'attributeGroupA'
             ]
         );
+        $this->saveAttribute($attribute);
 
         return $attribute;
     }

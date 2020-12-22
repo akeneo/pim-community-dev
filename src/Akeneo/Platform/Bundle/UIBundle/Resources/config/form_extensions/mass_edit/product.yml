@@ -185,11 +185,26 @@ extensions:
             icon: icon-model
             illustration: product-models
 
+    pim-mass-product-edit-convert-to-simple-product:
+        module: pim/mass-edit-form/product/convert-to-simple-product
+        parent: pim-mass-product-edit
+        aclResourceId: pim_enrich_product_convert_variant_to_simple
+        position: 210
+        config:
+            title: pim_enrich.mass_edit.product.title
+            label: pim_enrich.mass_edit.product.operation.convert_to_simple_products.label
+            labelCount: pim_enrich.mass_edit.product.operation.convert_to_simple_products.label_count
+            description: pim_enrich.mass_edit.product.operation.convert_to_simple_products.description
+            code: convert_to_simple_products
+            jobInstanceCode: convert_to_simple_products
+            icon: icon-model
+            illustration: products
+
     pim-mass-product-edit-configure-associate:
         module: pim/mass-edit-form/product/associate
         parent: pim-mass-product-edit
         aclResourceId: pim_enrich_associations_edit
-        position: 210
+        position: 220
         config:
             title: pim_enrich.mass_edit.product.title
             label: pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.label

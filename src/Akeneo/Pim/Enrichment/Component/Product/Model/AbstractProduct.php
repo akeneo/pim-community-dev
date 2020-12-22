@@ -773,6 +773,9 @@ abstract class AbstractProduct implements ProductInterface
         if ($formerParentCode !== $newParentCode) {
             $this->dirty = true;
         }
+        if (null === $parent) {
+            $this->familyVariant = null;
+        }
         $this->parent = $parent;
     }
 
@@ -832,16 +835,27 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getQuantifiedAssociations(): QuantifiedAssociationCollection
+    {
+        return clone $this->quantifiedAssociationCollection;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function filterQuantifiedAssociations(array $productIdentifiersToKeep, array $productModelCodesToKeep): void
     {
         if (null === $this->quantifiedAssociationCollection) {
             return;
         }
 
+        $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection
             ->filterProductIdentifiers($productIdentifiersToKeep)
             ->filterProductModelCodes($productModelCodesToKeep);
-        $this->dirty = true;
+        if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
+            $this->dirty = true;
+        }
     }
 
     /**
@@ -852,8 +866,12 @@ abstract class AbstractProduct implements ProductInterface
         if ($this->quantifiedAssociationCollection === null) {
             return;
         }
+
+        $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->merge($quantifiedAssociations);
-        $this->dirty = true;
+        if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
+            $this->dirty = true;
+        }
     }
 
     /**
@@ -865,10 +883,13 @@ abstract class AbstractProduct implements ProductInterface
             return;
         }
 
+        $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->patchQuantifiedAssociations(
             $submittedQuantifiedAssociations
         );
-        $this->dirty = true;
+        if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
+            $this->dirty = true;
+        }
     }
 
     /**
@@ -880,8 +901,11 @@ abstract class AbstractProduct implements ProductInterface
             return;
         }
 
+        $initialCollection = $this->getQuantifiedAssociations();
         $this->quantifiedAssociationCollection = $this->quantifiedAssociationCollection->clearQuantifiedAssociations();
-        $this->dirty = true;
+        if (!$this->quantifiedAssociationCollection->equals($initialCollection)) {
+            $this->dirty = true;
+        }
     }
 
     /**

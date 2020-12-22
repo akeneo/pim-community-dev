@@ -99,6 +99,9 @@ pim_import_export:
           with_header:
             title: Avec en-tête
             help: Définit si la première ligne du fichier contient les libellés des colonnes
+          with_media:
+            title: Exporter les média
+            help: Exportation ou non des média
           lines_per_file:
             title: Nombre de lignes par fichier
             help: Définit la limite de nombre de lignes par fichier
@@ -177,6 +180,7 @@ pim_import_export:
   tracking:
     completed: "Temps écoulé : {{ duration }}"
     in_progress: "Temps restant estimé : {{ duration }}"
+    not_started: "En cours"
     untrackable: Temps restant inconnu
     estimating: "Estimation du temps restant..."
 confirmation:

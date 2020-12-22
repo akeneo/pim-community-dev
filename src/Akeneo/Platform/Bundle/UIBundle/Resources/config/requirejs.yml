@@ -334,10 +334,8 @@ config:
           module: pim/controller/redirect
           aclResourceId: pim_importexport_export_profile_remove
         pim_enrich_locale_index:
-          module: pim/controller/common/index
+          module: pim/controller/locales/index
           aclResourceId: pim_enrich_locale_index
-          config:
-            entity: locale
         pim_enrich_attribute_index:
           module: pim/controller/common/index
           aclResourceId: pim_enrich_attribute_index
@@ -530,6 +528,7 @@ config:
     pim/controller/attribute/create:       pimui/js/controller/attribute/create
     pim/controller/mass-edit:              pimui/js/controller/mass-edit
     pim/controller/logout:                 pimui/js/controller/logout
+    pim/controller/locales/index:          akeneopimstructure/js/controller/LocalesSettings
 
     jstree/jquery.jstree.tree_selector: pimui/js/jstree/jquery.jstree.tree_selector
     jstree/nested_switch:               pimui/js/jstree/jquery.jstree.nested_switch
@@ -703,6 +702,7 @@ config:
     pim/product-edit-form/attributes:                        pimui/js/product/form/attributes
     pim/product-edit-form/creation/identifier:               pimui/js/product/form/creation/identifier
     pim/product-edit-form/start-copy:                        pimui/js/product/form/start-copy
+    pim/product-edit-form/convert-to-simple-product:         pimui/js/product/form/convert-to-simple-product.ts
     pim/product-edit-form/variant-navigation:                pimui/js/product/form/variant-navigation
     pim/product-edit-form/attributes/variant-axes:           pimui/js/product/form/attributes/variant-axes
     pim/product-edit-form/product-and-product-model-picker:  pimui/js/product/form/product-and-product-model-picker
@@ -723,6 +723,7 @@ config:
     oro/datagrid/navigate-product-and-product-model-action: pimui/js/datagrid/action/navigate-product-and-product-model-action
     oro/datagrid/edit-in-modal-action:                      pimui/js/datagrid/action/edit-in-modal-action
     oro/datagrid/delete-product-action:                     pimui/js/datagrid/action/delete-product-action
+    oro/datagrid/delete-attribute-action:                   pimui/js/datagrid/action/delete-attribute-action
     oro/datagrid/toggle-product-action:                     pimui/js/datagrid/action/toggle-product-action
     oro/datagrid/react-cell:                                pimui/js/datagrid/reactCell
 
@@ -799,6 +800,7 @@ config:
     pim/mass-edit-form/product/edit-common-attributes:                   pimui/js/mass-edit/form/product/edit-common-attributes
     pim/mass-edit-form/product/add-attribute-values:                     pimui/js/mass-edit/form/product/edit-common-attributes
     pim/mass-edit-form/product/update-entity-with-family-variant-parent: pimui/js/mass-edit/form/product/update-entity-with-family-variant-parent
+    pim/mass-edit-form/product/convert-to-simple-product:                pimui/js/mass-edit/form/product/convert-to-simple-product.ts
     pim/mass-edit-form/product/change-family:                            pimui/js/mass-edit/form/product/change-family
     pim/mass-edit-form/product/add-to-group:                             pimui/js/mass-edit/form/product/add-to-group
     pim/mass-edit-form/product/category:                                 pimui/js/mass-edit/form/product/category
@@ -838,6 +840,7 @@ config:
     pim/attribute-edit-form/save-form:                      pimui/js/attribute/form/save
     pim/attribute-edit-form/delete:                         pimui/js/attribute/form/delete
     pim/attribute-edit-form/properties/available-locales:   pimui/js/attribute/form/properties/available-locales
+    pim/attribute-edit-form/properties/default-bool-value:  pimui/js/attribute/form/properties/default-bool-value.ts
     pim/attribute-edit-form/properties/default-metric-unit: pimui/js/attribute/form/properties/default-metric-unit
     pim/attribute-edit-form/properties/group:               pimui/js/attribute/form/properties/group
     pim/attribute-edit-form/properties/is-locale-specific:  pimui/js/attribute/form/properties/is-locale-specific

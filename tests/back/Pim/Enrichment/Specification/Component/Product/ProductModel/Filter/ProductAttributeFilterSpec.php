@@ -189,7 +189,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         )->shouldReturn($expected);
     }
 
-    function it_filters_the_attributes_that_does_not_belong_to_a_family_variant(
+    function it_filters_the_attributes_that_do_not_belong_to_a_family_variant(
         $productModelRepository,
         $productRepository,
         $attributeRepository,
@@ -415,7 +415,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws_an_exception_when_an_attribute_does_not_exists() {
+    function it_throws_an_exception_when_an_attribute_does_not_exist() {
         $this->shouldThrow(
             UnknownPropertyException::class
         )->during(

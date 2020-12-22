@@ -211,7 +211,7 @@ describe('measurement family', () => {
   it('should sort two measurement families', () => {
     expect(
       sortMeasurementFamily(
-        'Ascending',
+        'ascending',
         'en_US',
         'label'
       )(
@@ -232,7 +232,7 @@ describe('measurement family', () => {
 
     expect(
       sortMeasurementFamily(
-        'Descending',
+        'descending',
         'en_US',
         'label'
       )(
@@ -253,7 +253,7 @@ describe('measurement family', () => {
 
     expect(
       sortMeasurementFamily(
-        'Ascending',
+        'ascending',
         'en_US',
         'code'
       )(
@@ -274,7 +274,7 @@ describe('measurement family', () => {
 
     expect(
       sortMeasurementFamily(
-        'Ascending',
+        'ascending',
         'en_US',
         'standard_unit'
       )(
@@ -315,7 +315,7 @@ describe('measurement family', () => {
 
     expect(
       sortMeasurementFamily(
-        'Ascending',
+        'ascending',
         'en_US',
         'unit_count'
       )(
@@ -347,6 +347,6 @@ describe('measurement family', () => {
       )
     ).toEqual(1);
 
-    expect(sortMeasurementFamily('Ascending', 'en_US', 'yolo')({}, {})).toEqual(0);
+    expect(sortMeasurementFamily('ascending', 'en_US', 'yolo')({}, {})).toEqual(0);
   });
 });
