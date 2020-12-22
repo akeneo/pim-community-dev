@@ -47,11 +47,11 @@ abstract class ApiTestCase extends WebTestCase
         static::bootKernel(['debug' => false]);
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
 
-        $authenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
-        $authenticator->createSystemUser();
-
         $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load($this->getConfiguration());
+
+        $authenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
+        $authenticator->createSystemUser();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
