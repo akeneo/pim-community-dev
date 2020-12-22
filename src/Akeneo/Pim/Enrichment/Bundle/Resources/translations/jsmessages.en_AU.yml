@@ -375,6 +375,10 @@ pim_datagrid:
         all_attributes: All attributes
         with_codes: With codes
         with_labels: With labels
+        without_media: Without media
+        with_media: With media
+      flash:
+        message: "You can follow the progression of your export here."
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
     mass_delete: Mass delete
