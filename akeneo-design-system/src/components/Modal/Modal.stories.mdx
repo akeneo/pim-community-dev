@@ -34,9 +34,9 @@ It can be used with or without an Illustration and adapts its content accordingl
 <Canvas>
   <Story name="Standard">
     {args => {
-      const [{isOpen}, updateArgs] = useArgs();
-      const open = () => updateArgs({isOpen: true});
-      const close = () => updateArgs({isOpen: false});
+      const [isOpen, setOpen] = useState(false);
+      const open = () => setOpen(true);
+      const close = () => setOpen(false);
       return (
         <>
           {isOpen ? (
@@ -71,7 +71,11 @@ It can be used with or without an Illustration and adapts its content accordingl
       return (
         <>
           {isOpen && (
-            <Modal {...args} isOpen={isOpen} onClose={close} illustration={<Illustrations.ChannelsIllustration />}>
+            <Modal
+              {...args}
+              onClose={close}
+              illustration={<Illustrations.ChannelsIllustration />}
+            >
               Such nice Illustration
               <Modal.BottomButtons>
                 <Button onClick={close}>Close</Button>

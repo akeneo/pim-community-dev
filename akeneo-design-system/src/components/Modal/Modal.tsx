@@ -5,7 +5,8 @@ import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme
 import {IconButton} from '../../components';
 import {CloseIcon} from '../../icons';
 import {IllustrationProps} from '../../illustrations/IllustrationProps';
-import {Override} from '../../shared';
+import {useShortcut} from '../../hooks';
+import {Key, Override} from '../../shared';
 
 const ModalContainer = styled.div`
   ${CommonStyle}
@@ -117,6 +118,8 @@ const Modal: React.FC<ModalProps> & {
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'modal-root');
   const containerRef = useRef(portalNode);
+
+  useShortcut(Key.Escape, onClose);
 
   useEffect(() => {
     document.body.appendChild(containerRef.current);
