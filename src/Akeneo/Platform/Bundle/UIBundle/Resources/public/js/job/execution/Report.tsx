@@ -1,13 +1,14 @@
-import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {useMountedRef} from '@akeneo-pim-community/settings-ui';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
-import {Breadcrumb, Link} from 'akeneo-design-system';
+import {Breadcrumb, Button, IconButton, Link, MoreIcon} from 'akeneo-design-system';
 import {Status} from './Status';
 import {StopJobAction} from './StopJobAction';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {JobExecutionProgress} from './Progress';
-import {SecondaryActions} from './SecondaryActions';
+import {Dropdown} from './Dropdown';
+import {ShowProfile} from "./ShowProfile";
 
 type StepExecutionStatus =
   | 'COMPLETED'
@@ -18,6 +19,7 @@ type StepExecutionStatus =
   | 'FAILED'
   | 'ABANDONED'
   | 'UNKNOWN';
+
 type StepExecutionTracking = {
   hasError: boolean;
   hasWarning: boolean;
@@ -29,7 +31,9 @@ type StepExecutionTracking = {
   processedItems: number;
   totalItems: number;
 };
+
 type JobStatus = 'COMPLETED' | 'STARTING' | 'STARTED' | 'STOPPING' | 'STOPPED' | 'FAILED' | 'ABANDONED' | 'UNKNOWN';
+
 type JobExecutionTracking = {
   error: boolean;
   warning: boolean;
@@ -39,14 +43,24 @@ type JobExecutionTracking = {
   steps: StepExecutionTracking[];
 };
 
+type JobInstance = {
+  label: string;
+  code: string;
+  type: string;
+};
+
 type JobExecution = {
-  jobInstance: {
-    label: string;
-    code: string;
-    type: string;
-  };
+  jobInstance: JobInstance;
   tracking: JobExecutionTracking;
   isStoppable: boolean;
+  meta: {
+    id: string;
+    logExists: boolean;
+    archives: Record<string, {
+      label: string;
+      files: Record<string, string>;
+    }>
+  }
 };
 
 const useJobExecution = (jobExecutionId: string): JobExecution | null => {
@@ -70,25 +84,84 @@ const useJobExecution = (jobExecutionId: string): JobExecution | null => {
   return jobExecution;
 };
 
-const ShowProfile = ({code, type}: {code: string; type: string}) => {
-  const router = useRouter();
-  var route = 'pim_importexport_%type%_profile_show'.replace('%type%', type);
+const canDownloadLog = (jobExecution: JobExecution) => {
+  if (!jobExecution.meta.logExists) {
+    return false;
+  }
 
-  const href = `#/${router.generate(route, {code})}`;
+  const {isGranted} = useSecurity();
+  if (jobExecution.jobInstance.type === 'export') {
+    return isGranted('pim_importexport_export_execution_download_log');
+  } else if (jobExecution.jobInstance.type === 'import') {
+    return isGranted('pim_importexport_import_execution_download_log');
+  }
+
+  return true;
+}
+
+const canDownloadArchive = (jobExecution: JobExecution) => {
+  const {isGranted} = useSecurity();
+  if (jobExecution.jobInstance.type === 'export') {
+    return isGranted('pim_importexport_export_execution_download_files');
+  } else if (jobExecution.jobInstance.type === 'import') {
+    return isGranted('pim_importexport_import_execution_download_files');
+  }
+
+  return true;
+}
+
+type DownloadLink = {
+  label: string;
+  url: string;
+}
+
+const getDownloadLinks = (jobExecution: JobExecution):DownloadLink[] => {
+  if (!jobExecution.meta.archives) {
+    return [];
+  }
+
+  let downloadLinks: DownloadLink[] = [];
   const translate = useTranslate();
+  const router = useRouter();
+  const archives = jobExecution.meta.archives;
+  Object.keys(archives).forEach(archiver => {
+    const archive = archives[archiver];
+    let label: string | null = null;
+    if (Object.keys(archive.files).length === 1) {
+      label = translate(archive.label);
+    }
 
-  if (!['import', 'export'].includes(type)) return null;
+    Object.keys(archive.files).forEach(fileName => {
+      downloadLinks.push({
+        label: null === label ? fileName : label,
+        url: router.generate('pim_enrich_job_tracker_download_file', {
+          id: jobExecution.meta.id,
+          archiver: archiver,
+          key: fileName
+        })
+      });
+    });
+  });
 
-  return <Link href={href}>{translate('pim_import_export.form.job_execution.button.show_profile.title')}</Link>;
-};
+  return downloadLinks;
+}
 
 const Report = () => {
+  const jobTypeWithProfile = ['import', 'export'];
   const {jobExecutionId} = useParams() as {jobExecutionId: string};
   const translate = useTranslate();
   const router = useRouter();
   const jobExecution = useJobExecution(jobExecutionId);
 
   if (null === jobExecution) return null;
+
+  const downloadLogIsVisible = canDownloadLog(jobExecution);
+  const downloadArchiveLinks = getDownloadLinks(jobExecution);
+  const downloadArchiveLinkIsVisible = downloadArchiveLinks.length > 0 && canDownloadArchive(jobExecution);
+  const downloadArchiveTitle = translate('pim_enrich.entity.job_execution.module.download.output');
+
+  const showProfileIsVisible = jobTypeWithProfile.includes(jobExecution.jobInstance.type);
+  const downloadLogHref = router.generate('pim_importexport_export_execution_download_log', {id: jobExecution.meta.id});
 
   return (
     <>
@@ -106,16 +179,42 @@ const Report = () => {
             viewName="pim-menu-user-navigation"
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
-          <SecondaryActions title={translate('pim_common.other_actions')}>
-            <ShowProfile code={jobExecution.jobInstance.code} type={jobExecution.jobInstance.type} />
-          </SecondaryActions>
+        </PageHeader.UserActions>
+        <PageHeader.Actions>
+          {(showProfileIsVisible || downloadLogIsVisible) && (
+            <Dropdown title={translate('pim_common.other_actions')} actionButton={<IconButton title={translate('pim_common.other_actions')} icon={<MoreIcon />} onClick={open} ghost={'borderless'} />}>
+              {showProfileIsVisible && (
+                <ShowProfile jobInstance={jobExecution.jobInstance} />
+              )}
+              {downloadLogIsVisible && (
+                <Link href={downloadLogHref}>
+                  {translate('pim_import_export.form.job_execution.button.download_log.title')}
+                </Link>
+              )}
+            </Dropdown>
+          )}
           <StopJobAction
             id={jobExecutionId}
             jobLabel={jobExecution.jobInstance.label}
             isStoppable={jobExecution.isStoppable}
             onStop={() => {}}
           />
-        </PageHeader.UserActions>
+          {downloadArchiveLinkIsVisible && downloadArchiveLinks.length === 1 &&
+            (<Button level="secondary" href={downloadArchiveLinks[0].url}>{downloadArchiveTitle}</Button>)
+          }
+          {downloadArchiveLinkIsVisible && downloadArchiveLinks.length > 1 &&
+          (<Dropdown
+            title={downloadArchiveTitle}
+            actionButton={<Button level="secondary">{downloadArchiveTitle}</Button>}
+          >
+            {downloadArchiveLinks.map((link, index) => (
+              <Link key={index} href={link.url}>
+                {link.label}
+              </Link>
+            ))}
+          </Dropdown>)
+          }
+        </PageHeader.Actions>
         <PageHeader.Title>{jobExecution.jobInstance.label}</PageHeader.Title>
         <PageHeader.Content>
           <Status tracking={jobExecution.tracking} />
@@ -128,4 +227,4 @@ const Report = () => {
 };
 
 export {Report};
-export type {JobExecutionTracking, StepExecutionTracking};
+export type {JobExecutionTracking, JobInstance, StepExecutionTracking};

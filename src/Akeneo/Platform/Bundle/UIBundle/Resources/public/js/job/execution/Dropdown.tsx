@@ -1,7 +1,8 @@
 import React, {ReactNode, SyntheticEvent} from 'react';
 import styled from 'styled-components';
-import {getColor, IconButton, MoreIcon} from 'akeneo-design-system';
+import {getColor, IconButton, Button} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
+import {ButtonProps} from "reakit";
 
 const Container = styled.div`
   position: relative;
@@ -69,7 +70,7 @@ const Backdrop = styled.div`
   bottom: 0;
 `;
 
-const SecondaryActions = ({title, children}: {title: string; children: ReactNode}) => {
+const Dropdown = ({title, actionButton, children}: {title: string; actionButton: ReactNode; children: ReactNode}) => {
   const [isOpen, open, close] = useToggleState(false);
   const decoratedChildren = React.Children.map(children, child => {
     if (!React.isValidElement(child)) return null;
@@ -84,11 +85,21 @@ const SecondaryActions = ({title, children}: {title: string; children: ReactNode
   });
 
   if (!decoratedChildren) return null;
+  if (
+    !React.isValidElement<ButtonProps>(actionButton) ||
+    (actionButton.type !== Button && actionButton.type !== IconButton)
+  ) {
+    return null;
+  }
+
+  const actionButtonDecorated = React.cloneElement(actionButton, {
+    onClick: open
+  });
 
   return (
     <Container>
       <Action>
-        <IconButton title={title} icon={<MoreIcon />} onClick={open} ghost={'borderless'} />
+        {actionButtonDecorated}
       </Action>
       {isOpen && (
         <>
@@ -98,8 +109,8 @@ const SecondaryActions = ({title, children}: {title: string; children: ReactNode
               <Title>{title}</Title>
             </Header>
             <ItemCollection>
-              {decoratedChildren.map(item => (
-                <Item>{item}</Item>
+              {decoratedChildren.map((item, index) => (
+                <Item key={index}>{item}</Item>
               ))}
             </ItemCollection>
           </Overlay>
@@ -109,4 +120,4 @@ const SecondaryActions = ({title, children}: {title: string; children: ReactNode
   );
 };
 
-export {SecondaryActions};
+export {Dropdown};
