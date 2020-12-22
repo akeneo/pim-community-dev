@@ -39,7 +39,7 @@ It can be used with or without an Illustration and adapts its content accordingl
       const close = () => setOpen(false);
       return (
         <>
-          {isOpen ? (
+          {isOpen && (
             <Modal
               {...args}
               onClose={close}
