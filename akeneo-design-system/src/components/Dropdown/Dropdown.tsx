@@ -1,9 +1,13 @@
+import {useToggleState} from 'hooks';
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import {getColor} from '../../theme';
+import {AkeneoThemedProps, getColor} from '../../theme';
 
 //TODO be sure to select the appropriate container element here
-const DropdownContainer = styled.div``;
+const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
 
 type DropdownProps = {
   /**
@@ -12,15 +16,21 @@ type DropdownProps = {
   children?: ReactNode;
 };
 
-const Action = styled.div``;
+const Action = styled.div`
+  cursor: pointer;
+  display: inline-block;
+`;
 
-const Overlay = styled.div`
+const Overlay = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   background: ${getColor('white')};
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
   padding: 0 0 10px 0;
   max-width: 320px;
   min-width: 150px;
   position: absolute;
+  top: 0;
+  left: 0;
+  display: ${({isOpen}) => (isOpen ? 'block' : 'none')};
 `;
 
 const Header = styled.div`
@@ -65,28 +75,67 @@ const Item = styled.div`
   }
 `;
 
+const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: ${({isOpen}) => (isOpen ? 'block' : 'none')};
+`;
+
 const Title = styled.div`
   font-size: 11px;
   text-transform: uppercase;
   color: ${getColor('brand', 100)};
 `;
 
-const Button = styled.div``;
-
 /**
  * TODO.
  */
 const Dropdown = ({children, ...rest}: DropdownProps) => {
-  return <DropdownContainer {...rest}>{children}</DropdownContainer>;
+  const [isOpen, open, close] = useToggleState(false);
+
+  const decoratedChildren = React.Children.map(children, child => {
+    if (React.isValidElement(child) && Action === child.type) {
+      return React.cloneElement(child, {onClick: open});
+    }
+
+    if (React.isValidElement(child) && Overlay === child.type) {
+      return React.cloneElement(child, {isOpen});
+    }
+
+    if (React.isValidElement(child)) {
+      console.error(`Dropdown only accept Dropdown.Action or Dropdown.Overlay as children. ${child.type} given.`);
+    }
+
+    return child;
+  });
+
+  return (
+    <DropdownContainer {...rest}>
+      <Backdrop onClick={close} isOpen={isOpen} />
+      {decoratedChildren}
+    </DropdownContainer>
+  );
 };
+
+Action.displayName = 'Dropdown.Action';
+Overlay.displayName = 'Dropdown.Overlay';
+Header.displayName = 'Dropdown.Header';
+Item.displayName = 'Dropdown.Item';
+Title.displayName = 'Dropdown.Title';
+ItemCollection.displayName = 'Dropdown.ItemCollection';
+Content.displayName = 'Dropdown.Content';
+Backdrop.displayName = 'Dropdown.Backdrop';
 
 Dropdown.Action = Action;
 Dropdown.Overlay = Overlay;
 Dropdown.Header = Header;
 Dropdown.Item = Item;
-Dropdown.Button = Button;
 Dropdown.Title = Title;
 Dropdown.ItemCollection = ItemCollection;
 Dropdown.Content = Content;
+Dropdown.Backdrop = Backdrop;
 
 export {Dropdown};
