@@ -286,4 +286,48 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
 
         $this->execute();
     }
+
+    function it_can_be_stopped(
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
+        RunnerInterface $ruleRunner,
+        DryRunnerInterface $dryRuleRunner,
+        RuleSubjectSetInterface $ruleSubjectSet1,
+        RuleSubjectSetInterface $ruleSubjectSet2,
+        CursorInterface $dryRunCursor1,
+        CursorInterface $dryRunCursor2,
+        JobParameters $jobParameters,
+        StepExecution $stepExecution,
+        JobStopper $jobStopper
+    ) {
+        $jobParameters->get('rule_codes')->willReturn(['rule1', 'rule2']);
+        $jobParameters->get('dry_run')->willReturn(false);
+
+        $rule1 = (new RuleDefinition())->setCode('rule1');
+        $rule2 = (new RuleDefinition())->setCode('rule2');
+
+        $ruleDefinitionRepository->findBy(['code' => ['rule1', 'rule2']], ['priority' => 'DESC'])
+                                 ->willReturn([$rule1, $rule2]);
+
+        $dryRuleRunner
+            ->dryRun(Argument::type(RuleDefinition::class))
+            ->shouldBeCalledTimes(2)
+            ->willReturn($ruleSubjectSet1, $ruleSubjectSet2);
+
+        $ruleSubjectSet1->getSubjectsCursor()->willReturn($dryRunCursor1);
+        $ruleSubjectSet2->getSubjectsCursor()->willReturn($dryRunCursor2);
+
+        $dryRunCursor1->count()->willReturn(1);
+        $dryRunCursor2->count()->willReturn(2);
+
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
+        $stepExecution->setSummary(Argument::type('array'))->shouldBeCalled();
+
+        $jobStopper->isStopping($stepExecution)->shouldBeCalledTimes(3)->willReturn(false, true, false);
+
+        $ruleRunner->run($rule1)->shouldBeCalled();
+        $jobStopper->stop($stepExecution)->shouldBeCalled();
+        $ruleRunner->run($rule2)->shouldNotBeCalled();
+
+        $this->execute();
+    }
 }
