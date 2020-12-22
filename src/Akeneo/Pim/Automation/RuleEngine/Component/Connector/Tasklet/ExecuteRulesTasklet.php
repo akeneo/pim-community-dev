@@ -107,6 +107,10 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
                 }
             }
         }
+        if ($this->jobStopper->isStopping($this->stepExecution)) {
+            $this->jobStopper->stop($this->stepExecution);
+        }
+
         $this->eventDispatcher->removeSubscriber($subscriber);
     }
 
