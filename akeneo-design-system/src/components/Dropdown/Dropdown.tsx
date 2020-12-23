@@ -1,6 +1,5 @@
-import {useToggleState} from 'hooks';
-import React, {ReactNode} from 'react';
-import styled from 'styled-components';
+import React, {ReactNode, useEffect, useRef, useState} from 'react';
+import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
 //TODO be sure to select the appropriate container element here
@@ -21,17 +20,80 @@ const Action = styled.div`
   display: inline-block;
 `;
 
-const Overlay = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
+const OverlayContainer = styled.div<
+  {
+    visible: boolean;
+    verticalPosition: 'up' | 'down';
+    horizontalPosition: 'left' | 'right';
+  } & AkeneoThemedProps
+>`
   background: ${getColor('white')};
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
   padding: 0 0 10px 0;
   max-width: 320px;
   min-width: 150px;
   position: absolute;
-  top: 0;
-  left: 0;
-  display: ${({isOpen}) => (isOpen ? 'block' : 'none')};
+  opacity: ${({visible}) => (visible ? 1 : 0)};
+  transition: opacity 0.15s ease-in-out;
+
+  ${({verticalPosition}) =>
+    'up' === verticalPosition
+      ? css`
+          bottom: -1px;
+        `
+      : css`
+          top: -1px;
+        `}
+  ${({horizontalPosition}) =>
+    'left' === horizontalPosition
+      ? css`
+          right: -1px;
+        `
+      : css`
+          left: -1px;
+        `};
 `;
+
+const Overlay = ({position, children}: {position?: 'up' | 'down'; children: ReactNode}) => {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const [verticalPosition, setVerticalPosition] = useState<'up' | 'down'>(position ?? 'down');
+  const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'right'>('right');
+  const [visible, setVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (null === overlayRef.current) return;
+
+    if (undefined === position) {
+      const elementHeight = overlayRef.current.getBoundingClientRect().height;
+      const windowHeight = window.innerHeight;
+      const distanceToTop = overlayRef.current.getBoundingClientRect().top;
+      const distanceToBottom = windowHeight - (elementHeight + distanceToTop);
+
+      setVerticalPosition(distanceToTop > distanceToBottom ? 'up' : 'down');
+    }
+
+    if (null !== overlayRef.current) {
+      const elementWidth = overlayRef.current.getBoundingClientRect().width;
+      const windowWidth = window.innerWidth;
+      const distanceToLeft = overlayRef.current.getBoundingClientRect().left;
+      const distanceToRight = windowWidth - (elementWidth + distanceToLeft);
+
+      setHorizontalPosition(distanceToLeft > distanceToRight ? 'left' : 'right');
+    }
+    setVisible(true);
+  }, []);
+
+  return (
+    <OverlayContainer
+      ref={overlayRef}
+      visible={visible}
+      horizontalPosition={horizontalPosition}
+      verticalPosition={verticalPosition}
+    >
+      {children}
+    </OverlayContainer>
+  );
+};
 
 const Header = styled.div`
   box-sizing: border-box;
@@ -81,7 +143,6 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   left: 0;
   right: 0;
   bottom: 0;
-  display: ${({isOpen}) => (isOpen ? 'block' : 'none')};
 `;
 
 const Title = styled.div`
@@ -94,30 +155,25 @@ const Title = styled.div`
  * TODO.
  */
 const Dropdown = ({children, ...rest}: DropdownProps) => {
-  const [isOpen, open, close] = useToggleState(false);
+  // const [isOpen, open, close] = useToggleState(false);
 
-  const decoratedChildren = React.Children.map(children, child => {
-    if (React.isValidElement(child) && Action === child.type) {
-      return React.cloneElement(child, {onClick: open});
-    }
+  // const decoratedChildren = React.Children.map(children, child => {
+  //   if (React.isValidElement(child) && Action === child.type) {
+  //     return React.cloneElement(child, {onClick: open});
+  //   }
 
-    if (React.isValidElement(child) && Overlay === child.type) {
-      return React.cloneElement(child, {isOpen});
-    }
+  //   if (React.isValidElement(child) && Overlay === child.type) {
+  //     return React.cloneElement(child, {isOpen});
+  //   }
 
-    if (React.isValidElement(child)) {
-      console.error(`Dropdown only accept Dropdown.Action or Dropdown.Overlay as children. ${child.type} given.`);
-    }
+  //   if (React.isValidElement(child)) {
+  //     console.error(`Dropdown only accept Dropdown.Action or Dropdown.Overlay as children. ${child.type} given.`);
+  //   }
 
-    return child;
-  });
+  //   return child;
+  // });
 
-  return (
-    <DropdownContainer {...rest}>
-      <Backdrop onClick={close} isOpen={isOpen} />
-      {decoratedChildren}
-    </DropdownContainer>
-  );
+  return <DropdownContainer {...rest}>{children}</DropdownContainer>;
 };
 
 Action.displayName = 'Dropdown.Action';

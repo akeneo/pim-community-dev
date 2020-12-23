@@ -1,6 +1,7 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown.tsx';
 import {Button} from '../../components';
+import {useState} from 'react';
 import {SpaceContainer} from '../../storybook/PreviewGallery.tsx';
 
 <Meta
@@ -27,29 +28,36 @@ TODO
 <Canvas>
   <Story name="Standard">
     {args => {
+      const [isOpen, setOpen] = useState(false);
+      const open = () => setOpen(true);
+      const close = () => setOpen(false);
       return (
         <SpaceContainer height={200}>
-          <Dropdown {...args}>
-            <Dropdown.Action>
+          <Dropdown {...args} style={{left: '800px', position: 'absolute'}}>
+            <Dropdown.Action onClick={open}>
               <Button>yolo</Button>
             </Dropdown.Action>
-            <Dropdown.Overlay isOpen={true}>
-              <Dropdown.Header>
-                <Dropdown.Title>Elements</Dropdown.Title>
-                <Something />
-              </Dropdown.Header>
-              <Dropdown.ItemCollection>
-                <Dropdown.Item>Item 1</Dropdown.Item>
-                <Dropdown.Item>Item 2</Dropdown.Item>
-                <Dropdown.Item>Item 3</Dropdown.Item>
-                <Dropdown.Item>Item 4</Dropdown.Item>
-              </Dropdown.ItemCollection>
-            </Dropdown.Overlay>
+            {isOpen && (
+              <>
+                <Dropdown.Backdrop onClick={close} />
+                <Dropdown.Overlay>
+                  <Dropdown.Header>
+                    <Dropdown.Title>Elements</Dropdown.Title>
+                    <Something />
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item>Item 1</Dropdown.Item>
+                    <Dropdown.Item>Item 2</Dropdown.Item>
+                    <Dropdown.Item>Item 3</Dropdown.Item>
+                    <Dropdown.Item>Item 4</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              </>
+            )}
           </Dropdown>
         </SpaceContainer>
       );
     }}
-
   </Story>
 </Canvas>
 
