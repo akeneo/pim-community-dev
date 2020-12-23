@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\CategoryLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\FamilyVariantLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductModelLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\AttributeLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
@@ -28,11 +24,6 @@ use GuzzleHttp\Psr7\Response;
 
 class ConsumeProductModelEventEndToEnd extends ApiTestCase
 {
-    private ProductModelLoader $productModelLoader;
-    private FamilyVariantLoader $familyVariantLoader;
-    private FamilyLoader $familyLoader;
-    private AttributeLoader $attributeLoader;
-    private CategoryLoader $categoryLoader;
     private ProductModelInterface $referenceProductModel;
     private Author $referenceAuthor;
 
@@ -40,21 +31,9 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
     {
         parent::setUp();
 
-        $this->attributeLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.attribute');
-        $this->productModelLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.product_model');
-        $this->familyLoader = $this->get('akeneo_connectivity.connection.fixtures.structure.family');
-        $this->familyVariantLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.family_variant');
-        $this->categoryLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.category');
-
         $this->referenceProductModel = $this->loadReferenceProductModel();
         $this->referenceAuthor = Author::fromNameAndType('julia', Author::TYPE_UI);
-
-        $connection = $this->get('akeneo_connectivity.connection.fixtures.connection_loader')->createConnection(
-            'ecommerce',
-            'Ecommerce',
-            FlowType::DATA_DESTINATION,
-            false,
-        );
+        $connection = $this->loadConnection();
 
         $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());
     }
@@ -87,7 +66,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         /** @var Request $request */
         $request = $container[0]['request'];
         $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
-        NormalizedProductCleaner::clean($requestContent['data']['resource']);
+        $requestContent = $this->cleanRequestContent($requestContent);
 
         $this->assertEquals($this->expectedProductModelCreatedPayload(), $requestContent);
     }
@@ -120,7 +99,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         /** @var Request $request */
         $request = $container[0]['request'];
         $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
-        NormalizedProductCleaner::clean($requestContent['data']['resource']);
+        $requestContent = $this->cleanRequestContent($requestContent);
 
         $this->assertEquals($this->expectedProductModelUpdatedPayload(), $requestContent);
     }
@@ -171,40 +150,78 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
      */
     private function loadReferenceProductModel(): ProductModelInterface
     {
-        $this->categoryLoader->create(['code' => 'category']);
-        $this->attributeLoader->create(['code' => 'variant_attribute', 'type' => 'pim_catalog_boolean']);
-        $this->attributeLoader->create(['code' => 'text_attribute', 'type' => 'pim_catalog_text']);
-        $this->attributeLoader->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
-        $this->familyLoader->create(
-            ['code' => 'family', 'attributes' => ['variant_attribute', 'text_attribute', 'another_text_attribute']]
+        $this->get('akeneo_connectivity.connection.fixtures.enrichment.category')
+            ->create(['code' => 'category']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
+            ->create(['code' => 'variant_attribute', 'type' => 'pim_catalog_boolean']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
+            ->create(['code' => 'text_attribute', 'type' => 'pim_catalog_text']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.attribute')
+            ->create(['code' => 'another_text_attribute', 'type' => 'pim_catalog_text']);
+        $this->get('akeneo_connectivity.connection.fixtures.structure.family')
+            ->create(['code' => 'family', 'attributes' => ['variant_attribute', 'text_attribute', 'another_text_attribute']]);
+        $familyVariant = $this->get('akeneo_connectivity.connection.fixtures.enrichment.family_variant')
+            ->create([
+                    'code' => 'family_variant',
+                    'family' => 'family',
+                    'variant_attribute_sets' => [
+                        [
+                            'axes' => ['variant_attribute'],
+                            'attributes' => [],
+                            'level' => 1,
+                        ],
+                    ],
+                ]
+            );
+
+        return $this->get('akeneo_connectivity.connection.fixtures.enrichment.product_model')
+            ->create(
+                [
+                    'code' => 'product_model',
+                    'categories' => ['category'],
+                    'family_variant' => $familyVariant->getCode(),
+                    'values' => [
+                        'another_text_attribute' => [
+                            ['data' => 'text attribute', 'locale' => null, 'scope' => null],
+                        ],
+                    ],
+                ]
+            );
+    }
+
+    private function loadConnection(): ConnectionWithCredentials
+    {
+        $connection = $this->get('akeneo_connectivity.connection.fixtures.connection_loader')
+            ->createConnection(
+                'ecommerce',
+                'Ecommerce',
+                FlowType::DATA_DESTINATION,
+                false
+            );
+
+        $this->get('akeneo_connectivity.connection.fixtures.connection_loader')->update(
+            $connection->code(),
+            $connection->label(),
+            $connection->flowType(),
+            $connection->image(),
+            $connection->userRoleId(),
+            (string) $this->get('pim_user.repository.group')->findOneByIdentifier('IT support')->getId(),
+            $connection->auditable(),
         );
 
-        $familyVariant = $this->familyVariantLoader->create(
-            [
-                'code' => 'family_variant',
-                'family' => 'family',
-                'variant_attribute_sets' => [
-                    [
-                        'axes' => ['variant_attribute'],
-                        'attributes' => [],
-                        'level' => 1,
-                    ],
-                ],
-            ]
-        );
+        return $connection;
+    }
 
-        return $this->productModelLoader->create(
-            [
-                'code' => 'product_model',
-                'categories' => ['category'],
-                'family_variant' => $familyVariant->getCode(),
-                'values' => [
-                    'another_text_attribute' => [
-                        ['data' => 'text attribute', 'locale' => null, 'scope' => null],
-                    ],
-                ],
-            ]
-        );
+    private function cleanRequestContent(array $requestContent): array
+    {
+        NormalizedProductCleaner::clean($requestContent['data']['resource']);
+
+        // We remove metadata since it only exists in EE
+        if (isset($requestContent['data']['resource']['metadata'])) {
+            unset($requestContent['data']['resource']['metadata']);
+        }
+
+        return $requestContent;
     }
 
     private function expectedProductModelUpdatedPayload(): array
