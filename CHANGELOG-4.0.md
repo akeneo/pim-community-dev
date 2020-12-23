@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.81 (2020-12-23)
+
 ## Bug fixes
 
 - PIM-9605: Display the unit label instead of its code in the variant navigation component
