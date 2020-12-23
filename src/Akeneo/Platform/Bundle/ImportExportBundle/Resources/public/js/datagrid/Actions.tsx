@@ -17,9 +17,10 @@ type ActionsProps = {
   showLink: string;
   refreshCollection: () => void;
   isVisible: boolean;
+  type: string;
 };
 
-const Actions = ({id, jobLabel, isStoppable, showLink, refreshCollection}: ActionsProps) => {
+const Actions = ({id, jobLabel, isStoppable, showLink, refreshCollection, type}: ActionsProps) => {
   const translate = useTranslate();
   const security = useSecurity();
 
