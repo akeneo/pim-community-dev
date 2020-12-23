@@ -23,14 +23,16 @@ GOOGLE_CLUSTER_ZONE="${GOOGLE_CLUSTER_ZONE:-europe-west3-a}"
 NAMESPACE_PATH=$(pwd)
 #
 
+TF_INPUT_FALSE="-input=false"
+TF_AUTO_APPROVE="-auto-approve"
+
 echo "1 - initializing terraform in $(pwd)"
 terraform init
-# for mysql disk deletion, we must desactivate prevent_destroy in tf file
+
 find ${NAMESPACE_PATH}/../../  -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
 yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
 terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_file.kubeconfig
 terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.google_storage_bucket.srnt_bucket
-
 
 echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig
@@ -44,12 +46,6 @@ if [[ $GOOGLE_PROJECT_ID == "akecld-saas-dev" || $GOOGLE_PROJECT_ID == "akecld-o
 fi
 echo gsutil -m rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}
 
-echo "4 - Purging snapshots : [NOT ACTIVATED]"
-#SNAP_LIST=$(gcloud compute snapshots list --project ${GOOGLE_PROJECT_ID} --filter="labels.backup-ns=${PFID}" --uri)
-#for item in $SNAP_LIST
-#do
-#        gcloud compute snapshots delete --project ${GOOGLE_PROJECT_ID} "${item}" --quiet
-#done
 
 echo "5 - Delete disks"
 PV_NAME=$(kubectl get -n ${PFID} pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}')
@@ -65,12 +61,15 @@ if [ -n "${PD_NAME}" ]; then
 	done
 fi
 
-if [[ $GOOGLE_PROJECT_ID != "akecld-saas-dev" && $GOOGLE_PROJECT_ID != "akecld-onboarder-dev" ]]; then
-        echo "6 - Git persist"
-        rm -rf ${NAMESPACE_PATH}
-        git rm -rf --ignore-unmatch ${NAMESPACE_PATH}
-        git rm --ignore-unmatch delete_me.yaml
-        git commit -m "Remove terraform resources for ${PFID}"
-        git pull
-        git push
+echo "- Delete disk ES disk (not managed by terraform)"
+ES_DISK_NAME=${PFID}-es
+
+if [[ $( gcloud compute disks describe ${ES_DISK_NAME} --zone=${GOOGLE_CLUSTER_ZONE} --project=${GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
+      gcloud compute disks delete ${ES_DISK_NAME} --zone=${GOOGLE_CLUSTER_ZONE} --project=${GOOGLE_PROJECT_ID} --quiet
+fi
+
+MIGRATION_NAME=${PFID}-migration
+
+if [[ $( gcloud compute disks describe ${MIGRATION_NAME} --zone=${GOOGLE_CLUSTER_ZONE} --project=${GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
+      gcloud compute disks delete ${MIGRATION_NAME} --zone=${GOOGLE_CLUSTER_ZONE} --project=${GOOGLE_PROJECT_ID} --quiet
 fi

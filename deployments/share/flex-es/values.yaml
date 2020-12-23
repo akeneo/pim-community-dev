@@ -1,0 +1,79 @@
+image:
+  es:
+    repository: docker.elastic.co/elasticsearch/elasticsearch-oss
+    tag: 7.4.1
+    pullPolicy: Always
+  init:
+    repository: busybox
+    tag: latest
+    pullPolicy: IfNotPresent  
+
+global:
+  # Be careful when setting global values
+  extraLabels:
+    # key: "value"
+
+    # Add extra labels to monitoring metadata
+    extraLabels:
+      # key: "value"
+cluster:
+  name: "pim-es"
+common:
+  command: null
+  service:
+    name: elasticsearch-client
+    type: ClusterIP
+    httpPort: 9200
+    transportPort: 9300
+
+  env:
+    # ES_PLUGINS_INSTALL: "repository-gcs"
+    cluster.name: "es-cluster"
+    node.max_local_storage_nodes: "1"
+    network.host: "_site_"
+    bootstrap.memory_lock: "false"
+    http.compression: "true"
+    http.cors.enabled: "true"
+    http.cors.allow-origin: "*"
+
+    # The PVC storage class that backs the persistent volume claims. On AWS
+    # "gp2" would be appropriate.
+    # class: "gce-ssd"
+
+  # Mount path of data
+  dataDir: "/data/var/lib/elasticsearch"
+
+  # If enabled, an init-container will increase vm.max_map_count
+  busybox:
+    increaseMaxMapCount: false
+
+  # Add extra labels to metadata
+  extraLabels:
+    # key: "value"
+
+
+single:
+
+  # Max 50% of requests.memory to let the rest for Lucene engine (Indexation & Aggregation)
+  heapMemory: 512m
+
+  resources:
+    requests:
+      memory: 1024Mi
+
+  env:
+    node.data: "true"
+    node.master: "true"
+    node.ingest: "true"
+    http.max_content_length: "200mb"
+    cluster.routing.allocation.disk.threshold_enabled: "false"
+    discovery.type: single-node
+
+  
+  # Add extra labels to metadata
+  extraLabels:
+    # key: "value"
+  persistentDisk:
+    size: "10G"
+    name: null
+

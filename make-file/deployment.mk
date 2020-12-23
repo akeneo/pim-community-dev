@@ -128,6 +128,14 @@ delete:
 		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
 	fi
 
+.PHONY: delete_clone_flexibility
+delete_clone_flexibility:
+	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
+		cd $(INSTANCE_DIR) ;\
+		echo "Destroying $(INSTANCE_DIR) ..." ;\
+		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_clone_flexibility.sh ;\
+	fi
+
 .PHONY: create-ci-release-files
 create-ci-release-files: create-ci-values create-pim-main-tf
 
@@ -255,6 +263,12 @@ delete_pr_environments_hourly:
 clone_serenity:
 	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
 	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh
+
+.PHONY: clone_flexibility
+clone_flexibility:
+	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimflex  make create-ci-release-files && \
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_flexibility.sh
+
 
 .PHONY: test_upgrade_from_serenity_customer_db
 test_upgrade_from_serenity_customer_db:
