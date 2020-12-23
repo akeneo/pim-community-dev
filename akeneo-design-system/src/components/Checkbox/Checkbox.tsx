@@ -119,7 +119,7 @@ type CheckboxProps = Override<
  */
 const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
-    {checked, onChange, readOnly = false, children, title, ...rest}: CheckboxProps,
+    {checked = false, onChange, readOnly = false, children, title, ...rest}: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     const checkboxId = useId('checkbox_');
@@ -177,3 +177,4 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
 );
 
 export {Checkbox};
+export type {CheckboxChecked};
