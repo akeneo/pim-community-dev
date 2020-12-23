@@ -62,7 +62,7 @@ final class GetProductModelIdentifiersWithRemovedAttribute implements GetProduct
                 return $product['_source']['identifier'];
             }, $rows['hits']['hits']);
             yield $identifiers;
-            $body['search_after'] = [end($identifiers)];
+            $body['search_after'] = end($rows['hits']['hits'])['sort'];
             $rows = $this->elasticsearchClient->search($body);
         }
     }
