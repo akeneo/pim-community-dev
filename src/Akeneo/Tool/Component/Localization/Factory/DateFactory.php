@@ -27,14 +27,15 @@ class DateFactory
 
     /**
      * @param array $options
+     * @param bool $fourDigitYear replace 2-digit year by 4-digit year format unless the format is explicitly specified
      *
      * @return \IntlDateFormatter
      */
-    public function create(array $options = [])
+    public function create(array $options = [], bool $fourDigitYear = true)
     {
         $options = $this->resolveOptions($options);
 
-        return new \IntlDateFormatter(
+        $formatter = new \IntlDateFormatter(
             $options['locale'],
             $options['datetype'],
             $options['timetype'],
@@ -42,6 +43,12 @@ class DateFactory
             $options['calendar'],
             $options['date_format']
         );
+
+        if ($fourDigitYear && null === $options['date_format']) {
+            $formatter->setPattern(preg_replace('/(^|[^y])yy([^y]|$)/', '$1yyyy$2', $formatter->getPattern()));
+        }
+
+        return $formatter;
     }
 
     /**
