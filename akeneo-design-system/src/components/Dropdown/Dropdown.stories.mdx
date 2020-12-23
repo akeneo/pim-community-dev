@@ -1,8 +1,8 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown.tsx';
-import {Button} from '../../components';
+import {Button, Image, Badge, Link} from '../../components';
 import {useState} from 'react';
-import {SpaceContainer} from '../../storybook/PreviewGallery.tsx';
+import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery.tsx';
 
 <Meta
   title="Components/Dropdown"
@@ -17,11 +17,25 @@ import {SpaceContainer} from '../../storybook/PreviewGallery.tsx';
 
 ## Usage
 
-TODO
+The dropdown shows a list of options that can be used to select, filter or sort content.
 
-### TODO
+### Dropdown options
 
-TODO
+The dropdown option should fit in one single line. If there are several lines, limit it by adding an ellipsis for the overflowing content. We display the full text in the hover state. We recommend that you present the options by alphabetical order.
+
+### Interaction
+
+By default, the dropdown list displays a label on closing. An open dropdown menu appears on the click. The open dropdown should appear above all other elements of the user interface. They can be close by clicking outside the dropdown element.
+
+Selecting an item close the dropdown and the selected option will replace the placeholder.
+
+### Microcopy
+
+**Ellipsis:** If the text is too long, we use an ellipsis.
+
+For accessibility reasons, we must put the full text in an HTML title attribute.
+
+**Punctuation:** Never use punctuation in a dropdown list.
 
 ## Playground
 
@@ -33,17 +47,16 @@ TODO
       const close = () => setOpen(false);
       return (
         <SpaceContainer height={200}>
-          <Dropdown {...args} style={{left: '800px', position: 'absolute'}}>
+          <Dropdown {...args}>
             <Dropdown.Action onClick={open}>
               <Button>yolo</Button>
             </Dropdown.Action>
             {isOpen && (
               <>
                 <Dropdown.Backdrop onClick={close} />
-                <Dropdown.Overlay>
+                <Dropdown.Overlay position="down">
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
-                    <Something />
                   </Dropdown.Header>
                   <Dropdown.ItemCollection>
                     <Dropdown.Item>Item 1</Dropdown.Item>
@@ -62,3 +75,97 @@ TODO
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## Simple Item
+
+<Canvas>
+  <Story name="SimpleItem">
+    {args => {
+      return (
+        <SpaceContainer height={200} style={{display: 'flex', justifyContent: 'space-between'}}>
+          <Dropdown>
+            <Dropdown.Overlay position="down">
+              <Dropdown.Header>
+                <Dropdown.Title>Elements</Dropdown.Title>
+              </Dropdown.Header>
+              <Dropdown.ItemCollection>
+                <Dropdown.Item>First item</Dropdown.Item>
+                <Dropdown.Item>A very long item</Dropdown.Item>
+                <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                  <Dropdown.Item>Item with a link</Dropdown.Item>
+                </Link>
+              </Dropdown.ItemCollection>
+            </Dropdown.Overlay>
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Selectable Item
+
+<Canvas>
+  <Story name="SelectableItem">
+    {args => {
+      return (
+        <SpaceContainer height={200}>
+          <Dropdown>
+            <Dropdown.Overlay position="down">
+              <Dropdown.Header>
+                <Dropdown.Title>Elements</Dropdown.Title>
+              </Dropdown.Header>
+              <Dropdown.ItemCollection>
+                <Dropdown.SelectableItem {...useSelection()}>Item 1</Dropdown.SelectableItem>
+                <Dropdown.SelectableItem {...useSelection()}>Item 2</Dropdown.SelectableItem>
+                <Dropdown.SelectableItem {...useSelection()}>Item 3</Dropdown.SelectableItem>
+                <Dropdown.SelectableItem {...useSelection()}>Item 4</Dropdown.SelectableItem>
+              </Dropdown.ItemCollection>
+            </Dropdown.Overlay>
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Image Item
+
+<Canvas>
+  <Story name="ImageItem">
+    {args => {
+      return (
+        <SpaceContainer height={300}>
+          <Dropdown>
+            <Dropdown.Overlay position="down">
+              <Dropdown.Header>
+                <Dropdown.Title>Elements</Dropdown.Title>
+              </Dropdown.Header>
+              <Dropdown.ItemCollection>
+                <Dropdown.ImageItem>
+                  <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
+                  Item 1<Badge>100%</Badge>
+                </Dropdown.ImageItem>
+                <Dropdown.ImageItem>
+                  <Image src="https://picsum.photos/seed/akenep/200/140" alt="The alt" />
+                  Item 2<Badge level="warning">80%</Badge>
+                </Dropdown.ImageItem>
+                <Dropdown.ImageItem>
+                  <Image src="https://picsum.photos/seed/akeneq/200/140" alt="The alt" />A very long item Name that will
+                  be truncated
+                  <Badge>100%</Badge>
+                </Dropdown.ImageItem>
+                <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                  <Dropdown.ImageItem>
+                    <Image src="https://picsum.photos/seed/akener/200/140" alt="The alt" />
+                    Item 4<Badge>100%</Badge>
+                  </Dropdown.ImageItem>
+                </Link>
+              </Dropdown.ItemCollection>
+            </Dropdown.Overlay>
+          </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
