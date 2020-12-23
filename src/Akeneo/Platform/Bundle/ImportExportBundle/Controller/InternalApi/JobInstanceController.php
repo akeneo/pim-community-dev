@@ -471,7 +471,7 @@ class JobInstanceController
 
         $jobExecution = $this->launchJob($jobInstance);
 
-        if (!$this->securityFacade->isGranted('pim_importexport_import_execution_show')) {
+        if (!$this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()))) {
             return new JsonResponse('', 200);
         }
 

@@ -5,6 +5,9 @@ datagrid:
             acl_resource: pim_importexport_export_execution_index
         options:
             entityHint: export report
+        actions:
+            view:
+                acl_resource: pim_importexport_export_execution_show
         properties:
             showLink:
                 route: pim_importexport_export_execution_show
