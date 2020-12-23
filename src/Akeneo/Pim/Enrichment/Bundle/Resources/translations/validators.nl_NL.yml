@@ -70,7 +70,6 @@ pim_catalog:
     family_variant_maximum_number_of_level: Familie variant kan niet meer dan "%level%" niveau hebben
     family_variant_unique_attributes_in_last_level: Het unieke attribuut "%attribute%" moet worden ingesteld op productniveau
     product_identifier: Deze id's "%s" bestaan niet.
-    blacklisted_attribute_code: De attribuut code "%attribute_code%" was eerder al aanwezig en wordt momenteel opgeruimd
     0: Er is een onverwachte fout opgetreden.
     100: Onverwachte waarde
     101: Dit veld verwacht een Boolean invoer (ja- of nee-waarde).

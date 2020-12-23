@@ -70,7 +70,6 @@ pim_catalog:
     family_variant_maximum_number_of_level: Die Variantenfamilie kann nicht mehr als "%level%" Ebene haben
     family_variant_unique_attributes_in_last_level: Eindeutiges Attribut "%attribute%" muss auf Produktebene gesetzt sein
     product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
-    blacklisted_attribute_code: Der Attributcode "%attribute_code%" ist bereits vorhanden und wird gerade bereinigt
     0: Es ist ein unerwarteter Fehler aufgetreten.
     100: Unerwarteter Wert
     101: Dieses Feld erwartet Werte vom Typ Boolean.
