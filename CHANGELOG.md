@@ -111,6 +111,7 @@
 - CPM-33: Upgrade node to 12.19
 - CPM-33: Upgrade npm to 6.14
 - PIM-9452: Add a command to update the ElasticSearch indexes max fields limit
+- RAC-444: Improve jobs logs
 
 ## Classes
 
@@ -286,6 +287,8 @@
 - Remove `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues`
 - Remove `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValuesValidator`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor` to add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
+- Change constructor of `Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController` to
+    - add `Psr\Log\LoggerInterface $logger`
 
 ### CLI commands
 
