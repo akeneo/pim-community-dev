@@ -65,7 +65,11 @@ define([
       loadingMask.render().$el.appendTo(this.getRoot().$el).show();
       $.post(this.getUrl())
         .then(function (response) {
-          router.redirect(response.redirectUrl);
+          if (response.redirectUrl) {
+            router.redirect(response.redirectUrl);
+          } else {
+            router.reloadPage();
+          }
         })
         .fail(function () {
           messenger.notify('error', __('pim_import_export.form.job_instance.fail.launch'));
