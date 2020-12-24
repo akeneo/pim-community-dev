@@ -108,7 +108,8 @@
 
 - TIP-1233: Upgrade to php7.4
 - CPM-38: Upgrade Symfony to 4.4.15
-- TIP-152: Upgrade ElasticSearch to 7.10.0
+- TIP-152: Upgrade Mysql to 8.0.22
+- BH-286: Up ElasticSearch to 7.10.1
 - CPM-33: Upgrade node to 12.19
 - CPM-33: Upgrade npm to 6.14
 - PIM-9452: Add a command to update the ElasticSearch indexes max fields limit
