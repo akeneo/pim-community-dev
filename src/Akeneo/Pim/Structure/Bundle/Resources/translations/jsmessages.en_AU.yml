@@ -214,6 +214,13 @@ pim_enrich.entity.attribute:
       validation: Validation parameters
     delete:
       confirm: Are you sure you want to delete this attribute?
+      product_count: '{0}0 products|{1}1 product|]1, Inf[{{ count }} products'
+      product_model_count: '{0}0 product models|{1}1 product model|]1, Inf[{{ count }} product models'
+      used: currently have values set for this attribute, they will be removed.
+      helper:
+        content: If you need to change your attribute type, to make it localizable or scopable, while keeping access to your existing attribute values,
+        link: we walk you through the different steps here.
+      type: Please type "{{ attributeCode }}"
       confirm_from_family: Are you sure you want to delete this attribute from the family?
       confirm_from_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
       confirm_from_product: Are you sure you want to delete this attribute from the product?

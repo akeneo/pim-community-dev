@@ -52,6 +52,9 @@ pim_enrich.entity.product:
       select: Sélectionner
       all_visible: Tous les éléments visibles
       copy: Copier
+    convert_variant_to_simple:
+      dialog:
+        title: Confirmer la conversion
     history:
       version: Version
       author: Auteur
