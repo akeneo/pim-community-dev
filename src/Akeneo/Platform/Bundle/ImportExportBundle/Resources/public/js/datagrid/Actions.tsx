@@ -17,13 +17,14 @@ type ActionsProps = {
   showLink: string;
   refreshCollection: () => void;
   isVisible: boolean;
+  type: string;
 };
 
-const Actions = ({id, jobLabel, isStoppable, showLink, refreshCollection}: ActionsProps) => {
+const Actions = ({id, jobLabel, isStoppable, showLink, refreshCollection, type}: ActionsProps) => {
   const translate = useTranslate();
   const security = useSecurity();
 
-  const isAllowedToViewJobDetails = security.isGranted('pim_importexport_import_execution_show');
+  const isAllowedToViewJobDetails = security.isGranted('pim_importexport_' + type + '_execution_show');
 
     return (
     <ActionsContainer className="AknGrid-onHoverElement">
