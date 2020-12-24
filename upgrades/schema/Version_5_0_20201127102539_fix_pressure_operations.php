@@ -40,7 +40,11 @@ SET m.units = :units
 WHERE m.code = 'Pressure';
 SQL;
 
-        $units = json_decode($this->connection->executeQuery($selectPressureUnitsSql)->fetchColumn(), true);
+        $result = $this->connection->executeQuery($selectPressureUnitsSql)->fetchColumn();
+        if (is_bool($result)) { // the query has no results, do nothing
+            return;
+        }
+        $units = json_decode($result, true);
         $units = array_map('self::getCorrectedUnit', $units);
 
         $this->addSql($updatePressureUnitsSql, ['units' => json_encode($units)]);
