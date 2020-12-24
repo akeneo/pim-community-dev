@@ -70,7 +70,6 @@
 - PIM-9598: Fix quick export when the bs_Cyrl_BA locale is used.
 - RAC-435: Fix fatal error for user that migrate from 4.0 with product values format that doesn't correspond to expected format
 - RAC-449: Fix invalid processed item when remove attribute
-- PIM-9595: Avoid 403 error when launching import with no view rights on import details
 
 ## New features
 
