@@ -1,4 +1,6 @@
+import {useShortcut} from 'hooks';
 import React, {ReactNode, useRef, useState, useEffect} from 'react';
+import {Key} from '../../../shared/key';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from 'theme';
 
@@ -36,11 +38,18 @@ const Container = styled.div<
         `};
 `;
 
-const Overlay = ({position, children}: {position?: 'up' | 'down'; children: ReactNode}) => {
+type OverlayProps = {
+  position?: 'up' | 'down';
+  onClose: () => void;
+  children: ReactNode;
+};
+
+const Overlay = ({position, onClose, children}: OverlayProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const [verticalPosition, setVerticalPosition] = useState<'up' | 'down'>(position ?? 'down');
   const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'right'>('right');
   const [visible, setVisible] = useState<boolean>(false);
+  useShortcut(Key.Escape, onClose);
 
   useEffect(() => {
     if (null === overlayRef.current) return;
