@@ -99,6 +99,7 @@ pim_enrich:
       comment: Produkte kommentieren
       download: Produkt als PDF herunterladen
       history: Produkthistorie ansehen
+      convert_variant_to_simple: Ein Variantenprodukt in ein einfaches Produkt umwandeln
     product_model:
       create: Produktmodell erstellen
       edit_attributes: Attribute eines Produktmodells bearbeiten

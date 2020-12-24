@@ -52,6 +52,11 @@ pim_enrich.entity.product:
       select: Select
       all_visible: All visible
       copy: Copy
+    convert_variant_to_simple:
+      label: Convert to a simple product
+      dialog:
+        title: Confirm conversion
+        content: "Are you sure you want to convert this variant product to a simple product? All of its former values, categories and associations will be saved."
     history:
       version: Version
       author: Author
@@ -340,6 +345,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to an existing product model|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
       description: The product model selected will gather the products and allows the enrichment of their common properties.
       no_update: Please select a product model before to continue
+    convert_to_simple_products:
+      label: Convert to simple products
+      label_count: "{0}Convert some <span class=\"AknFullPage-title--highlight\">products</span> to simple products|{1}Convert <span class=\"AknFullPage-title--highlight\">1 product</span> to a simple product|]1, Inf[Convert <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to simple products"
+      description: All of the former values, categories and associations will be saved.
     associate_to_product_and_product_model:
       label: Associate
       label_count: "{0}Associate some <span class=\"AknFullPage-title--highlight\">products</span> to products or product models|{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
@@ -446,6 +455,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Add to an existing product model
     perform.label: Add to an existing product model
+  convert_to_simple_products:
+    label: Convert to simple products
+    perform.label: Convert to simple products
   csv_product_grid_context_quick_export:
     quick_export.label: Csv product grid context quick export
     quick_export_product_model.label: CSV product model grid context quick export

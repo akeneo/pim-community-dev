@@ -12,6 +12,11 @@ batch_jobs:
     compute_family_variant_structure_changes: Änderungen in der Struktur von Varianten der Produktfamilie berechnen
     compute_completeness_of_products_family: Vollständigkeit der Produktfamilie berechnen
     delete_products_and_product_models: Massenlöschung von Produkten
+    clean_attribute:
+      register_clean_job: Bereinigungsauftrag registrieren
+      clean_product_model: Entfernte Attributwerte in Produktmodellen bereinigen
+      clean_product: Entfernte Attributwerte in Produkten bereinigen
+      remove_attribute_codes_from_blacklist: Attributcodes von Blacklist entfernen
   csv_product_export:
     label: Produkt-Export als CSV-Datei
     export.label: Produkt-Export

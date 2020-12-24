@@ -70,6 +70,8 @@ pim_catalog:
     family_variant_maximum_number_of_level: Family variant cannot have more than "%level%" level
     family_variant_unique_attributes_in_last_level: Unique attribute "%attribute%" must be set at the product level
     product_identifier: These identifiers "%s" don't exist.
+    blacklisted_attribute_code: Code temporarily blocked until the ongoing cleanup job is complete.
+    blacklisted_attribute_code_with_link: "Code temporarily blocked until the ongoing cleanup job is complete. To find out more, please check the <a href='{{ link }}' target='_blank'>job detail</a>."
     0: An unexpected error occurred.
     100: Non-expected value
     101: This field expects a boolean value.
