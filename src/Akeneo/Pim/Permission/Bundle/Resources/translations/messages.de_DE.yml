@@ -75,6 +75,7 @@ pim_enrich:
     edit_common_attributes:
       message:
         error: Sie sind nicht der Eigentümer dieses Produkts und können es deshalb nicht bearbeiten.
+To be able to convert this variant product you need to have the 'Own' permission on its categories.: "Um diese Variante des Produkts konvertieren zu können, benötigen Sie die 'Eigentümer'-Berechtigung für diese Kategorien."
 pimee_enrich:
   attribute_group:
     tab:
