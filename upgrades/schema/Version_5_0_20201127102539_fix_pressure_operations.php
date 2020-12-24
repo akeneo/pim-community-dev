@@ -40,11 +40,11 @@ SET m.units = :units
 WHERE m.code = 'Pressure';
 SQL;
 
-        $result = $this->connection->executeQuery($selectPressureUnitsSql)->fetchColumn();
-        if (is_bool($result)) { // the query has no results, do nothing
+        $existingUnits = $this->connection->executeQuery($selectPressureUnitsSql)->fetchColumn();
+        if (false === $existingUnits) { // The "Pressure" family has been remove before migration
             return;
         }
-        $units = json_decode($result, true);
+        $units = json_decode($existingUnits, true);
         $units = array_map('self::getCorrectedUnit', $units);
 
         $this->addSql($updatePressureUnitsSql, ['units' => json_encode($units)]);
