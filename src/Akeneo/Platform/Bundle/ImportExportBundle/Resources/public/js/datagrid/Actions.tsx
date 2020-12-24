@@ -24,7 +24,7 @@ const Actions = ({id, jobLabel, isStoppable, showLink, refreshCollection, type}:
   const translate = useTranslate();
   const security = useSecurity();
 
-  const isAllowedToViewJobDetails = security.isGranted('pim_importexport_' + type + '_execution_show');
+  const isAllowedToViewJobDetails = security.isGranted(`pim_importexport_${type}_execution_show`);
 
     return (
     <ActionsContainer className="AknGrid-onHoverElement">
