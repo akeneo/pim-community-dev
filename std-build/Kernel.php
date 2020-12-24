@@ -27,6 +27,8 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
+    protected static $supportedEnvs = ['dev', 'test', 'test_fake', 'behat', 'prod'];
+
     public function registerBundles(): iterable
     {
         $bundles = require $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config/bundles.php';
@@ -45,37 +47,40 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
+        if (!in_array($this->environment, $supportedEnvs)) {
+            throw new \IllegalArgumentException(
+                sprintf(
+                    'Unsupported environment:%s. The supported environments are:%s',
+                    $this->environment,
+                    implode(' ', $this->$supportedEnvs)
+                )
+            );
+        }
+
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
 
-        $ceEnv = $this->environment;
-        $eeEnv = $this->environment;
+        $baseEnv = $this->getBaseEnv($this->environment);
 
         $ceConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config';
         $eeConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config';
         $projectConfDir = $this->getProjectDir() . '/config';
 
-        $this->loadPackagesConfigurationExceptSecurity($loader, $ceConfDir, $ceEnv);
-        $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $eeEnv);
+        $this->loadPackagesConfigurationExceptSecurity($loader, $ceConfDir, $baseEnv);
+        $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $baseEnv);
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
 
-        $this->loadContainerConfiguration($loader, $ceConfDir, $ceEnv);
-        $this->loadContainerConfiguration($loader, $eeConfDir, $eeEnv);
+        $this->loadContainerConfiguration($loader, $ceConfDir, $baseEnv);
+        $this->loadContainerConfiguration($loader, $eeConfDir, $baseEnv);
         $this->loadContainerConfiguration($loader, $projectConfDir, $this->environment);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $ceEnv = $this->environment;
-        $eeEnv = $this->environment;
+        $baseEnv = $this->getBaseEnv($this->environment);
 
-        if ('prod' === $this->environment) {
-            $ceEnv = 'prod_onprem_paas';
-            $eeEnv = 'prod_onprem_paas';
-        }
-
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config', $ceEnv);
-        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config', $eeEnv);
+        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-community-dev/config', $baseEnv);
+        $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config', $baseEnv);
         $this->loadRoutesConfiguration($routes, $this->getProjectDir() . '/config', $this->environment);
     }
 
@@ -134,5 +139,30 @@ class Kernel extends BaseKernel
     {
         $loader->load($confDir . '/{services}/*.yml', 'glob');
         $loader->load($confDir . '/{services}/' . $environment . '/**/*.yml', 'glob');
+    }
+
+    protected function isFlexibility(): bool
+    {
+        return (getenv('PAPO_PROJECT_CODE_HASHED') !== false);
+    }
+
+    /**
+     * Return the base env matching the project env.
+     * The base env is configured at the level of pim-enterprise-dev
+     *
+     * The base env is the same as thr project env,
+     * except for prod environment, where it depends
+     * if it's on premise or on Flexibility
+     */
+    protected function getBaseEnv(string $projectEnv): string
+    {
+        if ('prod' === $projectEnv) {
+            if ($this->isFlexibility()) {
+                return 'prod_flex',
+            } else {
+                return 'prod_onprem';
+        }
+
+        return $projectEnv;
     }
 }
