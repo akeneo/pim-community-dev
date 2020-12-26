@@ -165,6 +165,7 @@ pim_enrich:
       associations_view: View the associations of a product
       associations_edit: Add associations to a product
       change_family: Change product family
+      change_state: Change the status of a product
       add_to_groups: Add product to groups
       mass_edit: Product mass edit actions
       comment: Comment products
@@ -282,8 +283,10 @@ category:
   edit: edit category
   suggest selection: Please select a category on the left
   or: or
+  create new: Create a new category tree
 tree:
   title: tree
+  create: create category tree
   edit: edit tree
 channel:
   title: channel
@@ -324,6 +327,7 @@ btn:
     attribute: create attribute
     attribute group: create attribute group
     category: create category
+    tree: create category tree
     channel: create channel
     currency: create currency
     family: create family
@@ -380,6 +384,7 @@ flash:
     updated: Attribute successfully updated
     removed: Attribute successfully removed
     identifier_not_removable: Identifier attribute can not be removed
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   attribute group:
     created: Attribute group successfully created
     updated: Attribute group successfully updated

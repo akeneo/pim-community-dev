@@ -402,6 +402,7 @@ pim_enrich:
         update_successful: Attributet har uppdaterats.
         update_failed: Attributet kunde inte uppdateras.
         create_successful: Attributet har skapats.
+        create_failed: Attributet kunde inte skapas.
       scopable: Omfattningbar
       type:
         pim_catalog_identifier: Identifierare
@@ -941,6 +942,7 @@ pim_enrich:
     channel:
       create_btn: Skapa kanal
     attribute:
+      create_btn: Skapa attribut
       modal_title: Välj attributtyp
     attribute_group:
       title: Attributgrupper
@@ -973,7 +975,10 @@ pim_enrich:
           label: Lägg till i grupp
           description: Markera de grupper som du vill lägga till de valda produkterna
           field: Grupper
+        move_to_category:
+          label: Flytta mellan kategorier
         remove_from_category:
+          label: Ta bort från kategorier
           description: Produkterna kommer att tas bort från följande kategorier.
     family:
       step:
