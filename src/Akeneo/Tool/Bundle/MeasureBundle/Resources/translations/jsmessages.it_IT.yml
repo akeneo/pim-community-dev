@@ -18,6 +18,7 @@ pim_measure:
     Pressure: Pressione
     Energy: Energia
     CaseBox: Imballo
+    Brightness: Luminosità
   units:
     #Area
     ACRE: Acri
