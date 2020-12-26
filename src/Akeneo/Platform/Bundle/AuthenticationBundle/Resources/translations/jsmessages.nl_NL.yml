@@ -1,0 +1,20 @@
+authentication:
+  sso:
+    configuration:
+      info:
+        update_successful: De instellingen zijn opgeslagen
+        update_failed: Fout bij het opslaan van de configuratie
+      section:
+        activation:
+          title: SSO activatie
+      field:
+        entity_id:
+          label: Entiteit-ID
+        certificate:
+          label: Certificaat
+        private_key:
+          label: Privésleutel
+        metadata_url:
+          tooltip_label: URL kopiëren
+        acs_url:
+          tooltip_label: URL kopiëren

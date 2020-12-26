@@ -13,6 +13,13 @@ pim_reference_entity:
         remove: Remove
         download: Download
         upload: Drag and drop to upload
+  editor:
+    embedded:
+      invalid_link:
+        title: Suspicious embedded link
+        message: Sorry, we do not display this embed item but it will be correctly saved
+  grid:
+    counter: '{{ count }} result|{{ count }} results'
   reference_entity:
     validation:
       code:
@@ -23,7 +30,10 @@ pim_reference_entity:
       save: Save
       save_permission: Save
       create: Create
+    permission:
+      title: Entity permissions
     title: Entities
+    breadcrumb: Reference Entities
     img: The main image of the reference entity named "{{ label }}"
     tab:
       records: Records
@@ -37,13 +47,28 @@ pim_reference_entity:
       image: Image
     attribute:
       title: Record attributes
+      attribute:
+        error:
+          render_list: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute'
+          render_edit: 'An error occurred during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
     module:
       delete:
         button: Delete entity
         confirm: Are you sure you want to delete this entity?
+    index:
+      grid:
+        count: '{0} No Reference Entity|{1} {{ count }} Reference Entity|]1,Inf] {{ count }} Reference Entities'
+        help:
+          title: 'Welcome to the Reference Entities!'
+          description_part_one: Enrich relevant information related to products (e.g. brands, manufacturers, colors, materials, ingredients...).
+          description_part_two: It will enable you to provide a better Product Experience to your customers.
+          description_part_three: Click on the “Create” button to create your 1st reference entity, set its attributes and records.
+          description_part_four: Then, to link to products, create a product attribute type related to this reference entity.
+          description_part_five: For more details, we invite you to browse this article.
     create:
       header:
         title: Create
+      subtitle: Reference Entities
       title: Create a new entity
       input:
         label: Label
@@ -59,6 +84,15 @@ pim_reference_entity:
         success: Reference entity successfully created.
       delete:
         success: Reference entity successfully deleted.
+  permission:
+    notification:
+      save:
+        success: Reference entity permissions successfully updated.
+        fail: At least one user group should have edit permission on this entity
+    no_data:
+      title: You have no user group
+      subtitle: To manage permission on reference entity you need to have at least one user group.
+      link: Clic here to add your first user group
   record:
     validation:
       limit_reached: 'You cannot create the record "{{ %record_label% }}" because you have reached the limit of {{ %limit% }} records for this reference entity'
@@ -82,7 +116,24 @@ pim_reference_entity:
       delete_all: Delete all records
       back: Back to list
     product:
+      attribute: Product attribute
+      counter: '{{ totalCount }} result|{{ totalCount }} results'
+      dropdown:
+        attribute: Product attribute
       title: Products
+      no_attribute:
+        title: There is no product attribute linked to the reference entity "{{ entityLabel }}"
+        subtitle: "To start linking products to this reference entity you can create a new one: "
+        link: Create a new product attribute
+      not_enough_items:
+        title: It's a bit crowded around here, we show you {{ productCount }}/{{ totalCount }} products.
+        subtitle:
+          usable_in_grid: To discover all the products linked, just click below!
+          not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
+        button: View all products
+      no_product:
+        title: There are no products linked for the product attribute "{{ entityLabel }}"
+        subtitle: "Start linking products to this attribute to see them here"
     enrich:
       title: Record attributes
       code: Code
@@ -91,12 +142,15 @@ pim_reference_entity:
     create:
       header:
         title: Create
+      subtitle: Reference Entities
       title: Add new {{ entityLabel }}
       input:
         label: Label
         code: Code (required)
+        create_another: Create another record
       confirm: Save
     delete:
+      message: Are you sure you want to delete the record "{{ recordLabel }}"? If it's linked to products or records, the links will be removed.
       title: Record
     delete_all:
       confirm: Are you sure you want to delete all "{{ entityIdentifier }}" records? If they are linked to products, the links to the products will be removed.
@@ -110,6 +164,7 @@ pim_reference_entity:
           'no': 'No'
         option:
           all: All
+          no_value: Select an option to filter
           operator:
             in: In list
       column:
@@ -121,6 +176,11 @@ pim_reference_entity:
       more_result:
         title: That's not it!
         description: You just scrolled through the first 500 results out of {{ total }} records. To see more, try with more specific search criteria.
+      completeness:
+        title_no_required: No attribute required
+        title_non_complete: 0 out of {{ required }} attributes complete
+        title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
+        title_complete: All {{ required }} attributes complete
     tab:
       enrich: Enrich
       product: Products
@@ -146,6 +206,11 @@ pim_reference_entity:
     type:
       text: Text
       image: Image
+      record: Reference entity single link
+      record_collection: Reference entity multiple links
+      option: Single option
+      option_collection: Multiple options
+      number: Number
     is_required: required for completeness
     no_data:
       title: There are no custom attributes for {{ entityLabel }}
@@ -155,12 +220,18 @@ pim_reference_entity:
     create:
       header:
         title: Create
+      subtitle: Reference Entities
+      title: Add new record attribute
+      description: The following parameters, except the label, cannot be updated after the attribute creation
       input:
         code: Code (required)
         label: Label
         type: Attribute type
+        record_type: Reference entity to link (required)
         value_per_locale: Value per locale
         value_per_channel: Value per channel
+      placeholder:
+        record_type: Select your linked reference entity
       confirm: Save
     edit:
       delete: Delete the attribute
@@ -171,6 +242,7 @@ pim_reference_entity:
         code: Code (required)
         label: Label
         type: Attribute type
+        record_type: Related reference entity (required)
         value_per_locale: Value per locale
         value_per_channel: Value per channel
         is_required: Required for completeness
@@ -181,12 +253,23 @@ pim_reference_entity:
         allowed_extensions: Allowed extensions
         validation_rule: Validation rule
         regular_expression: Regular expression
+        min_value: Min value
+        max_value: Max value
+        manage_options:
+          confirmation:
+            discard_changes: You will lose changes made to the list of options if you leave the page
+          quick_edit:
+            label: Manage options
+          option:
+            label:
+              placeholder: Write you new option label here
         options:
           validation_rule:
             none: None
             email: E-mail
             regular_expression: Regular expression
             url: URL
+        decimals_allowed: Decimal values allowed
     delete:
       message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
       title: Attribute
@@ -200,6 +283,8 @@ pim_reference_entity:
       delete:
         success: Attribute successfully deleted.
     options:
+      no_value: Click here to select an option.
+      sub_title: Reference Entities
       helper:
         title: Label translations
   modal:
@@ -214,11 +299,23 @@ pim_enrich:
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Reference entity multiple links
+          akeneo_reference_entity: Reference entity single link
         section:
           type_specific: Type specific parameters
         reference_entity:
+          identifier: Related reference entity (required)
           default_label: Please select a reference entity
+permission:
+  mass_action: Apply {{ rightLevel }} right on all groups
 #Analytics
 pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Axes on reference entities
+      hint: If you are using the reference entities, here are the axes to help you monitor your volume.
   axis:
     count_reference_entity: Reference entities
+    average_max_records_per_reference_entity: Records per reference entity
+    average_max_attributes_per_reference_entity: Attributes per reference entity

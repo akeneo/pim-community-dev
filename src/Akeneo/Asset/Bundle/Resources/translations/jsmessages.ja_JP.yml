@@ -158,6 +158,10 @@ asset_grid:
 create_asset:
   title: アセットを作成
 pim_datagrid:
+  display_selector:
+    label: 表示
+    gallery: ギャラリー
+    list: リスト
   mass_action:
     mass_edit:
       asset_edit: アセット一括編集

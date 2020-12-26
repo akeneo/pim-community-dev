@@ -1,0 +1,44 @@
+pim_menu.item.sso: SAML-based Single Sign-On
+pim_title:
+  authentication_sso_configuration_edit: SAML-based Single Sign-On configuration
+authentication:
+  sso:
+    configuration:
+      download_logs_button: Download logs
+      info:
+        update_successful: The configuration has been saved
+        update_failed: The configuration could not be saved
+        fields_not_ready: "The configuration cannot be saved right now. The following fields are not ready: {{ fields }}"
+      section:
+        activation:
+          title: SSO activation
+          info:
+            description: If you're going to enable the SSO authentication your current session will be invalid. You will be logged out and redirected to your Identity Provider after saving the configuration.
+        identity_provider:
+          title: Identity provider (IdP)
+          info:
+            description: You can set here all the parameters required to communicate with your IdP. Those information must be provided by your IdP. Please contact your SSO administrator to get them.
+        service_provider:
+          title: Service provider (SP)
+          info:
+            description: You can find below the information concerning the Service Provider. This is auto-generated values. You can edit them if you need. Those information will have to be provided to your SSO administrator in order to configure the IdP.
+      field:
+        activation:
+          label: SSO enabled
+        entity_id:
+          label: Entity ID
+        sign_on_url:
+          label: Sign-on URL
+        logout_url:
+          label: Logout URL
+        certificate:
+          label: Certificate
+          expiration_warning: This certificate expires on {{date}}.
+        private_key:
+          label: Private key
+        metadata_url:
+          label: Metadata URL
+          tooltip_label: Copy URL
+        acs_url:
+          label: ACS URL
+          tooltip_label: Copy URL
