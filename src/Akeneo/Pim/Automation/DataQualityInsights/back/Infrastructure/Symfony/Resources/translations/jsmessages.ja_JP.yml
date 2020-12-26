@@ -38,6 +38,8 @@ akeneo_data_quality_insights:
       no_family_helper_msg: データ品質を測定したいファミリーを選択してください
       no_category_helper_msg: データ品質を測定したいカテゴリを選択してください
       see_in_grid: 一覧表で表示
+    time_axis:
+      day: 日
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
@@ -53,6 +55,7 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: 充実
+        attributes_link: 不足しているすべての属性を表示
         success: 商品データは完璧です。おめでとうございます！
       consistency:
         title: 一貫性

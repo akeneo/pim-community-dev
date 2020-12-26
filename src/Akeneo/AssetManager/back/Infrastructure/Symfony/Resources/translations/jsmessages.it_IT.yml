@@ -116,6 +116,8 @@ pim_asset_manager:
         description: 'È possibile definire qui fino a 2 regole di collegamento dei prodotti per famiglia di asset.'
         link: 'Se vuoi andare più a fondo della funzionalità di regole di collegamento prodotto, clicca qui'
       execute_rules:
+        confirm_title: Conferma esecuzione
+        confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
         cancel: Annulla
     properties:
       title: Proprietà famiglia asset

@@ -2,7 +2,12 @@ akeneo_referenceentity:
   acl:
     reference_entity:
       create: Een entiteit aanmaken
+      edit: De entity eigenschappen aanpassen
+      delete: Verwijder een entiteit
     record:
       create: Een record aanmaken
+    option:
+      edit: Opties bewerken
+      delete: Een optie verwijderen
 akeneo_reference_entity: Referentie entiteit enkele link
 akeneo_reference_entity_collection: Referentie entiteit meerdere links

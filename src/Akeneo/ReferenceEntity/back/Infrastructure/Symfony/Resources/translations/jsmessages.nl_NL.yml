@@ -173,6 +173,8 @@ pim_reference_entity:
         label: Label
         complete: Voltooien
         action: Acties
+      more_result:
+        title: Dit is het niet!
     tab:
       enrich: Verrijken
       product: Producten
@@ -195,36 +197,67 @@ pim_reference_entity:
     type:
       text: Tekst
       image: Afbeelding
+      record: Referentie entiteit enkele link
+      record_collection: Referentie entiteit meerdere links
+      option: Enkele optie
+      option_collection: Meerdere opties
+      number: Nummer
+    is_required: vereist voor volledigheid
+    no_data:
+      title: Er zijn geen aangepaste attributen voor {{ entityLabel }}
+      subtitle: Klik op de knop "Voeg een attribuut toe" om uw eerste aangepaste attribuut te configureren
+    button:
+      add: Voeg een attribuut toe
     create:
       header:
         title: Aanmaken
+      subtitle: Referentie-entiteiten
+      description: De volgende parameters, behalve het label, kunnen niet worden bijgewerkt na het aanmaken van het attribuut
       input:
+        code: Code (verplicht)
         label: Label
         type: Attribuuttype
         value_per_locale: Waarde per taal
         value_per_channel: Waarde per kanaal
       confirm: Opslaan
     edit:
+      delete: Verwijder het attribuut
+      title: Attribuut {{ code }} bewerken
       save: Opslaan
       cancel: Annuleer
       input:
+        code: Code (verplicht)
         label: Label
         type: Attribuuttype
         value_per_locale: Waarde per taal
         value_per_channel: Waarde per kanaal
+        is_required: Vereist voor compleetheid
         max_length: Max tekens
         textarea: Tekstblok
+        is_rich_text_editor: Opgemaakte tekst-editor
         max_file_size: Max bestandsgrootte (MB)
         allowed_extensions: Toegestane extensies
         validation_rule: Validatieregel
         regular_expression: Reguliere expressie
+        min_value: Minimumwaarde
+        max_value: Maximumwaarde
+        manage_options:
+          confirmation:
+            discard_changes: Als u de pagina verlaat worden de wijzigingen niet opgeslagen
+          quick_edit:
+            label: Opties beheren
+          option:
+            label:
+              placeholder: Schrijf je nieuwe optielabel hier
         options:
           validation_rule:
             none: Geen
             email: E-mail
             regular_expression: Reguliere expressie
             url: URL
+        decimals_allowed: Decimale waarden toegestaan
     delete:
+      message: Weet u zeker dat u het attribuut "{{ attributeLabel }}" wilt verwijderen?
       title: Attribuut
     notification:
       list:
@@ -232,13 +265,16 @@ pim_reference_entity:
       save:
         success: Attribuut met succes bijgewerkt.
         fail: Er deed zich een fout voor tijdens het opslaan van het attribuut
+        validation_error: Het attribuut kon niet worden bijgewerkt
       create:
         success: Attribuut met succes aangemaakt.
         fail: Er deed zich een fout voor tijdens het aanmaken van het attribuut
+        validation_error: Het attribuut kon niet aangemaakt worden
       delete:
         success: Attribuut succesvol verwijderd.
         fail: Er deed zich een fout voor tijdens het verwijderen van het attribuut
     options:
+      no_value: Klik hier om een optie te selecteren.
       helper:
         title: Labelvertalingen
   modal:
@@ -248,8 +284,13 @@ pim_reference_entity:
         cancel: Annuleer
         confirm: Verwijderen
 pim_enrich:
+  confirmation:
+    discard_changes: 'Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.'
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Referentie entiteit meerdere links
+          akeneo_reference_entity: Referentie entiteit enkele link
         section:
           type_specific: Type specifieke parameters
