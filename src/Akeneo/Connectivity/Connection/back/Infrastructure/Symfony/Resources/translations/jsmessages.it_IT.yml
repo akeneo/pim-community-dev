@@ -139,6 +139,8 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: Negli ultimi sette giorni
         today: Oggi
     no_connection:
+      message_with_permission:
+        link: qui.
       message_without_permission:
         message: Chiedi all'amministratore di crearne una.
         link: Maggiori informazioni sulle connessioni qui...
