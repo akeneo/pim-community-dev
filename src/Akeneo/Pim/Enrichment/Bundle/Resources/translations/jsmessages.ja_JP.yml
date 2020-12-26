@@ -334,6 +334,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">１商品</span>の上位商品モデルを変更|]1、Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}商品</span>の上位商品モデルを変更"
       description: この一覧表で選択されたバリエーション商品の上位もしくはサブ商品モデルの上位は選択された商品モデルに変更されます
 pim_datagrid:
+  search: "{{ label }} で検索"
   no_entities: "{{ entityHint }} は見つかりませんでした。"
   mass_action_group:
     bulk_actions:

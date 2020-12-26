@@ -28,6 +28,8 @@ pim_import_export:
       flash:
         create:
           success: Import profile successfully created
+        upload:
+          error: Unable to upload the file. Its size may exceed the configured maximum upload size on your PHP or HTTP server configuration
       page_title:
         index: "]-Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
       module:
@@ -87,6 +89,7 @@ pim_import_export:
           file_path:
             title: File path
             help: Where to write the generated file on the file system
+            help_import: The directory of the file to be used for the import
           delimiter:
             title: Delimiter
             help: One character used to set the field delimiter
@@ -140,6 +143,7 @@ pim_import_export:
         import: Import
         export: Export
         mass_edit: Mass edit
+        mass_edit_rule: Rules Settings
         quick_export: Quick export
         compute_family_variant_structure_changes: Compute family variant structure changes
         compute_completeness_of_products_family: Compute completeness of products family
