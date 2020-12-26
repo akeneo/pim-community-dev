@@ -3,6 +3,7 @@
 "Yes, do it": "Yes, do it"
 "Ok, got it.": "Ok, got it."
 "Edit": "Edit"
+"Unexpected error occurred. Please contact system administrator.": "Unexpected error occurred. Please contact system administrator."
 "Yes, revoke": "Yes, Revoke"
 "Revoke Confirmation": "Revoke Confirmation"
 Prev: Prev
@@ -156,6 +157,7 @@ pim_common:
   code: Code
   confirm: Confirm
   confirm_deletion: Confirm deletion
+  confirm_revocation: Confirm revocation
   create: Create
   created: Created
   delete: Delete
@@ -167,6 +169,7 @@ pim_common:
   history: History
   label: Label
   label_translations: Label translations
+  Label or identifier: label or identifier
   less_than: Less than
   loading: Loading...
   media_upload: Drag and drop to upload or click here
@@ -208,14 +211,17 @@ pim_common:
     STARTS WITH: Starts with
     ENDS WITH: Ends with
 error:
+  exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
 alert:
   attribute_option:
+    error_occurred_during_submission: An error occurred during the form submission on the server
     save_before_edit_other: Please register your modifications on other rows before editing this one
   session_storage:
     not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 pim_enrich.entity.fallback:
   flash:
+    generic_error: An error occurred
     update:
       fail: Update failed
       success: Successfully updated
@@ -241,6 +247,9 @@ pim_enrich.entity.api_connection:
       fail: Cannot revoke this API connection
   page_title:
     index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
+  module:
+    revoke:
+      confirm: Are you sure you want to revoke this API connection?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"
@@ -340,3 +349,11 @@ pim_notification:
     export: Export
     quick_export: Quick Export
     mass_edit: Mass Edit
+akeneo_communication_channel:
+  link:
+    title: Announcements
+  panel:
+    title: Announcements
+    list:
+      empty: There is no news for the moment. Stay tuned!
+      error: We couldn't retrieve the news. Please retry later.

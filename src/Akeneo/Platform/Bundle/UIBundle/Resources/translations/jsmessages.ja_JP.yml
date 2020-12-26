@@ -210,6 +210,7 @@ pim_common:
     DOES NOT CONTAIN: '次を含まない:'
     STARTS WITH: で始まる
     ENDS WITH: 終了部分：
+  read_more: 続きを読む
 error:
   exception: 申し訳ありません！ エラー{{ status_code }} が発生しました
   forbidden: このページにアクセスすることはできません
@@ -349,3 +350,8 @@ pim_notification:
     export: エクスポート
     quick_export: クイック エクスポート
     mass_edit: 一括編集
+akeneo_communication_channel:
+  link:
+    title: お知らせ
+  panel:
+    title: お知らせ

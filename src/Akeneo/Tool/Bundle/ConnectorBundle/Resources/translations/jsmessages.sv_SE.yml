@@ -3,6 +3,9 @@ batch_jobs:
   default_steps:
     validation: Filvalidering
     import_associations: Importera associationer
+    import_root_product_model: Import av grundproduktmodell
+    import_sub_product_model: Import av underliggande produktmodeller
+    compute_data_related_to_family_root_product_models: Beräkna data för grundproduktmodeller
     compute_product_models_descendants: Beräkna produktmodellers ättlingar
     compute_family_variant_structure_changes: Beräkna variantfamiljers strukturförändringar
     compute_completeness_of_products_family: Beräkna fullständighet av produktfamilj
@@ -45,6 +48,9 @@ batch_jobs:
   csv_family_import:
     label: Importera familjer från CSV
     import.label: Importera familj
+  csv_family_variant_import:
+    label: Import av familjevariant i CSV
+    import.label: Import av familjevariant
   csv_group_import:
     label: Importera grupper från CSV
     import.label: Importera grupper
@@ -75,12 +81,21 @@ batch_jobs:
   xlsx_family_import:
     label: Importera familjer från XLSX
     import.label: Importera familj
+  xlsx_family_variant_import:
+    label: Import av familjevariant i XSLX
+    import.label: Import av familjevariant
   xlsx_product_export:
     label: Exportera produkt till XLSX
     export.label: Exportera produkt
+  xlsx_product_model_export:
+    label: Export av produktmodell i XSLX
+    export.label: Export av produktmodell
   xlsx_product_import:
     label: Importera produkter från XLSX
     import.label: Importera produkter
+  xlsx_product_model_import:
+    label: Import av produktmodell i XSLX
+    import_product_model_descendants.label: Beräkna produktens underliggande modeller
   xlsx_group_export:
     label: Exportera grupper till XLSX
     export.label: Exportera grupper
@@ -90,6 +105,9 @@ batch_jobs:
   xlsx_family_export:
     label: Exportera familjer till XLSX
     export.label: Exportera familj
+  xlsx_family_variant_export:
+    label: Export av familjevariant i XLSX
+    export.label: Export av familjevariant
   xlsx_category_export:
     label: Exportera kategorier till XLSX
     export.label: Exportera kategorier
