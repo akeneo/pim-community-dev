@@ -37,6 +37,7 @@ Most Viewed: Most Viewed
 "Yes": "Yes"
 "No": "No"
 required: (required)
+The element could not be deleted: The element could not be deleted
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Enable loading messages
@@ -58,7 +59,10 @@ pim_common:
   create: Create
   permissions: Permissions
   properties: Properties
+  name: Name
+  remove: Remove
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: List locales
@@ -76,7 +80,7 @@ pim_enrich:
       associations_view: View the associations of a product
       associations_edit: Add associations to a product
       change_family: Change product family
-      change_state: Change state of product
+      change_state: Change the status of a product
       add_to_groups: Add product to groups
       mass_edit: Product mass edit actions
       comment: Comment products
@@ -184,6 +188,7 @@ pim_enrich:
     association type: create association type
     group type: create group type
     drag_or_upload: Drag and drop to upload or click here
+#Confirmation messages
 confirmation:
   delete: Confirm deletion
   leave: Are you sure you want to leave this page?
@@ -191,11 +196,13 @@ confirmation:
   remove:
     category: Are you sure you want to delete the category %name%?
     user: Are you sure you want to delete the user %name%?
+#Flash messages
 flash:
   entity:
     removed: Item was deleted
   attribute:
     identifier_not_removable: Identifier attribute can not be removed
+    used_as_conversion_unit: This attribute can not be removed because it is used as conversion unit in the channel(s) %channelCodes%.
   category:
     removed: Category successfully removed
   tree:
@@ -212,6 +219,7 @@ flash:
   user:
     removed: User successfully removed
   error occurred: Action failed. Please retry.
+#Info messages
 info:
   updated: There are unsaved changes.
   category:
@@ -246,6 +254,7 @@ info:
     auto option sorting: If enabled, options will be sorted automatically by their localized labels
   completeness:
     not calculated: Not yet calculated
+#Form elements
 Created: Created
 Updated: Updated
 Last update: Last update
@@ -267,7 +276,6 @@ Unique value: Unique value
 Attribute group: Attribute group
 Other: Other
 Variants behavior when edited: Variants behavior when edited
-Edit: Edit
 Remove: Remove
 Parameters: Parameters
 System: System
@@ -292,7 +300,6 @@ Locale specific: Locale specific
 default: Default
 Axis: Axis
 Add attributes: Add attributes
-Translate from: Translate from
 switch_on: "Yes"
 switch_off: "No"
 Close: Close
@@ -315,17 +322,21 @@ Category tree: Category tree
 Completeness: Completeness
 Attribute used as label: Attribute used as label
 Credentials: Credentials
+#Scopes
 Global: Global
 Channel: Channel
 Expand all channels: Expand all channels
 Collapse all channels: Collapse all channels
+#Variants
 Always override: Always override
 Ask: Ask
+#Attribute group
 General Properties: General Properties
 Group values: Group values
 New group: New group
 Groups overview: Groups overview
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
 Max characters: Max characters
 Validation rule: Validation rule
 Validation regexp: Validation regexp
@@ -346,8 +357,11 @@ URL: URL
 Regular expression: Regular expression
 Minimum input length: Minimum input length
 Default: Default
+#Family
 Attributes: Attributes
+#Category
 Title: Title
+#Page titles
 pim_catalog_identifier: Identifier
 pim_catalog_text: Text
 pim_catalog_textarea: Text Area
@@ -362,17 +376,22 @@ pim_catalog_date: Date
 pim_catalog_metric: Metric
 pim_reference_data_simpleselect: Reference data simple select
 pim_reference_data_multiselect: Reference data multi select
+#Locales
 Activated: Activated
+Edit: Edit
 Disable: Disable
 To enable: To enable
 Select attributes: Select attributes
 Select: Select
 Remove this attribute: Remove this attribute
 Copy: Copy
+Translate from: Translate from
 Current tab: Current tab
+#Product view
 Group: Group
 View group: View group
 Products: Products
+#Tabs
 Properties: Properties
 History: History
 pane.accordion:
@@ -385,11 +404,13 @@ pane.accordion:
   label_translations: Label translations
   options: Options
   group_values: Group values
+#Popin titles
 popin.create:
   association_type.title: Create a new association type
   group.title: Create a new group
   product.title: Create a new product
   option.title: Create a new option
+#Datagrid contents
 In group: In group
 Attribute as label: Attribute as label
 Is associated: Is associated
@@ -399,6 +420,7 @@ Updated At: Updated at
 Enabled: Enabled
 Disabled: Disabled
 Status: Status
+#Versioning / history
 Change History: Change history
 Data Audit: Data audit
 Data Audit - System: 'Data audit - system'
@@ -413,6 +435,7 @@ Logged at: Logged at
 Deleted: Deleted
 Old values: Old values
 New values: New values
+#Configuration
 System configuration: System configuration
 General setup: General setup
 Localization: Localization
@@ -443,6 +466,7 @@ oro.locale:
       language: "Select the system language you wish to use"
       timezone: "Select the timezone for displaying date and time"
       currency: "Select the default currency"
+#Datagrid
 Selected products successfully deleted: Selected products successfully deleted
 pim_mass_edit:
   notification:
@@ -481,5 +505,3 @@ job_tracker:
     title: Process tracker
   filter:
     started_at: Started at
-
-

@@ -1,3 +1,4 @@
+#ORO messages
 "Yes, I Agree": "Yes, I Agree"
 "Yes, do it": "Yes, do it"
 "Ok, got it.": "Ok, got it."
@@ -20,9 +21,11 @@ Second: Second
 Millisecond: Millisecond
 Microsecond: Microsecond
 "Time Zone": "Time Zone"
+#PIM messages
 Localized value: Localized value
 Columns: Columns
 Datagrid Configuration: Datagrid Configuration
+#Filters
 Action: Action
 Unit: Unit
 Currency: Currency
@@ -34,6 +37,7 @@ jstree:
     unclassified: Unclassified products
   no_tree: No tree available
   include_sub: Include sub-categories
+#Datetimepicker
 datetimepicker:
   days:
     Sunday: Sunday
@@ -85,6 +89,7 @@ datetimepicker:
     Oct: Oct
     Nov: Nov
     Dec: Dec
+#ORO
 oro_config:
   form:
     config:
@@ -111,6 +116,33 @@ pim_ui:
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Your local changes will be lost. Are you sure you want to refresh the page?"
 "navigation.message.content.outdated": "Content of {{ title }} page is outdated, please <a href='#' data-action='page-refresh'>refresh the page</a>"
 "Content of pinned page is outdated": "Content of pinned page is outdated"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
 pim_common:
   actions: Actions
   add: Add
@@ -125,6 +157,7 @@ pim_common:
   code: Code
   confirm: Confirm
   confirm_deletion: Confirm deletion
+  confirm_revocation: Confirm revocation
   create: Create
   created: Created
   delete: Delete
@@ -136,8 +169,10 @@ pim_common:
   history: History
   label: Label
   label_translations: Label translations
+  Label or identifier: label or identifier
   less_than: Less than
   loading: Loading...
+  media_upload: Drag and drop to upload or click here
   more_than: More than
   next: Next
   "no": "No"
@@ -148,8 +183,10 @@ pim_common:
   permissions: Permissions
   previous: Previous
   properties: Properties
+  remove: Remove
   required_label: (required)
   save: Save
+  search: Search
   select2:
     search: Search...
     no_match: No matches found
@@ -210,6 +247,9 @@ pim_enrich.entity.api_connection:
       fail: Cannot revoke this API connection
   page_title:
     index: "]-Inf, 1]{{ count }} API connection|]1, Inf[{{ count }} API connections"
+  module:
+    revoke:
+      confirm: Are you sure you want to revoke this API connection?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operation|]1, Inf[{{ count }} operations"

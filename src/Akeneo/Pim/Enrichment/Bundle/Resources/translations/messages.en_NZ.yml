@@ -2,6 +2,7 @@ No products to remove: No products to remove
 "dot (.)": dot (.)
 "comma (,)": comma (,)
 pim_enrich:
+  #Category
   category:
     tab:
       property.title: Properties
@@ -9,6 +10,7 @@ pim_enrich:
     suggest_selection: Please select a category on the left
     or: or
     create_new: Create a new category
+  #Mass edit operations
   mass_edit_action:
     limit_exceeded: Please choose less than %limit% items to edit
     product:
@@ -76,3 +78,5 @@ category:
   overview: Categories
 tree:
   edit: Edit tree
+  remove:
+    error_linked: This category tree cannot be deleted, it is linked to a channel

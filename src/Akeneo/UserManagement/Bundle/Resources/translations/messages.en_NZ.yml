@@ -40,6 +40,13 @@ pim_user:
       has_group: Has group
       active: Active
       inactive: Inactive
+    fields_errors:
+      new_password:
+        minimum_length: Password must contains at least 2 characters
+      new_password_repeat:
+        not_match: Password does not match
+      current_password:
+        wrong: Wrong password
     tabs:
       general:
         title: General
@@ -126,6 +133,7 @@ oro_security:
       create: Create a user group
       edit: Edit user groups
       delete: Remove a user group
+#Security
 (default): Default permission on entities
 VIEW: View
 CREATE: Create

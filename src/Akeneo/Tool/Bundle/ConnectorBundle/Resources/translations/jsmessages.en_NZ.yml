@@ -1,3 +1,4 @@
+#Job labels
 batch_jobs:
   default_steps:
     validation: File validation
@@ -7,6 +8,9 @@ batch_jobs:
     compute_data_related_to_family_root_product_models: Compute root product models data
     compute_data_related_to_family_sub_product_models: Compute sub product models data
     compute_data_related_to_family_products: Compute products data
+    compute_product_models_descendants: Compute product models descendants
+    compute_family_variant_structure_changes: Compute family variant structure changes
+    compute_completeness_of_products_family: Compute completeness of products family
   csv_product_export:
     label: Product export in CSV
     export.label: Product export
