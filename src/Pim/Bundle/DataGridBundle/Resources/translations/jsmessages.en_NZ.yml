@@ -40,6 +40,8 @@ oro.datagrid.nocolumns: No columns configured for this grid
 oro.datagrid.pagination.label: "Page"
 oro.datagrid.pagination.totalPages: "of {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} records"
+#TODO @merge 3.0: move this key under 'pim.datagrid.limit_warning'
+oro.datagrid.pagination.limit_warning: "The grid cannot display more than {{ limit }} results, try to filter on additional search criteria."
 oro.datagrid.action.reset: "Reset"
 oro.datagrid.action.refresh: "Refresh"
 oro_datagrid.select.all: "All"
