@@ -12,6 +12,10 @@ akeneo_data_quality_insights:
       below_average: Sotto la media
       to_improve: Da migliorare
     widgets:
+      family_modal:
+        subtitle: Aggiungi famiglie
+      add_families: Aggiungi famiglie
+      add_categories: Aggiungi categorie
       title: Titolo
     time_axis:
       day: giorno
@@ -44,6 +48,7 @@ akeneo_data_quality_insights:
       suggestions_title: Proposte
       ignore_all_suggestions_button_label: Ignora
     title_suggestion_popover:
+      title: Suggerimenti
       ignore_all_suggestions_button_label: Ignora
 pim_title:
   akeneo_data_quality_insights_dashboard: Approfondimenti sulla qualità dei dati

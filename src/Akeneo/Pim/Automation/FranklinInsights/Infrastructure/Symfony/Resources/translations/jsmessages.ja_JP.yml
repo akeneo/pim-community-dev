@@ -157,6 +157,8 @@ akeneo_franklin_insights:
           title: '{{ familyLabel }}－{{ franklinAttributeLabel }}属性オプション'
           sub_title: 'あなたの<span class="AknDescriptionHeader-title--highlight">商品情報AIアシスタント</span>、フランクリンに会いましょう！'
           description: 'カタログを充実するために、フランクリンは適合するカタログの属性オプションについて知る必要があります。<a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">より詳しく</a>'
+      flash:
+        load_failed: '更新に失敗しました'
   product:
     edit:
       btn.push: データを提案する
