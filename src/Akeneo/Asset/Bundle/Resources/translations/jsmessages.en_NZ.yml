@@ -56,6 +56,7 @@ pimee_product_asset:
       error: Error
       success: Success
     drag_and_drop: Drag and drop your assets or click here
+    tabsection_title: Assets uploaded
   datagrid:
     mass_action:
       delete:
@@ -68,12 +69,19 @@ pim_enrich:
       property:
         type:
           pim_assets_collection: Assets collection
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Mass upload
 pim_title:
   pimee_product_asset_mass_upload: Upload assets
   pimee_product_asset_index: Assets
   pimee_product_asset_edit: Asset {{ asset.label }} | Edit
+  pimee_product_asset_view: Asset {{ asset.label }} | View
   pimee_asset_categorytree_index: Categories
   pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
+  pimee_asset_categorytree_create: Category | Create
 batch_jobs:
   apply_assets_mass_upload:
     label: Assets mass upload
@@ -144,6 +152,10 @@ asset_grid:
 create_asset:
   title: Create an asset
 pim_datagrid:
+  display_selector:
+    label: Display
+    gallery: Gallery
+    list: List
   mass_action:
     mass_edit:
       asset_edit: Mass edit assets
@@ -207,6 +219,7 @@ pim_catalog_volume:
   section:
     assets:
       title: Axes on assets
+      hint: You can follow the volume regarding the assets right here.
   axis:
     count_assets: Assets
     count_asset_categories: Asset categories

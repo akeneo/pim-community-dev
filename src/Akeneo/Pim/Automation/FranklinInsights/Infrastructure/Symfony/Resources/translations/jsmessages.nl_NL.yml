@@ -1,7 +1,25 @@
 akeneo_franklin_insights:
   entity:
+    franklin_attribute:
+      type:
+        boolean: Boolean
+        metric: Meeteenheid
+        multiselect: 'Meervoudige selectie'
+        number: Nummer
+        select: Selecteer
+        text: Tekst
+    data_provider:
+      ask_franklin_down: "Er ging iets mis. Probeer het later opnieuw."
+      authentication_error: "Het is niet gelukt om te verifiëren bij Franklin Insights, uw token is ongeldig. Voer een geldig token in of neem contact met ons op voor hulp."
+      bad_request_error: "Sorry, er is een probleem opgetreden bij het communiceren met Franklin Insights. Neem contact op met uw beheerder."
     identifier_mapping:
+      plural_label: Identificaties
       fields:
+        identifier_label:
+          values:
+            asin: ASIN
+            mpn: MPN
+            upc: UPC
         status:
           active: Actief
           inactive: Inactief
