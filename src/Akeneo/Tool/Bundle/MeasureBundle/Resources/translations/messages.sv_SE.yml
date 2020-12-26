@@ -170,7 +170,10 @@ pim_measure:
     PSI: Pund per kvadrattum
     TORR: Torr
     MMHG: millimeter kvicksilver
+    #Energy
+    CALORIE: kalori
     KILOCALORIE: kilokalori
+    JOULE: joule
     KILOJOULE: kilojoule
     #CaseBox
     PIECE: Stycke
