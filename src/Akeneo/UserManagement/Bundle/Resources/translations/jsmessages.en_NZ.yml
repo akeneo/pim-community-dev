@@ -3,6 +3,7 @@ pim_title:
   pim_user_role_index: Roles
   pim_user_group_index: User groups
   oro_config_configuration_system: Configuration
+  pim_user_edit: 'User {{ username }} | Edit'
   pim_user_create: 'Users | Create'
   pim_user_role_update: 'Role {{ role }} | Edit'
   pim_user_role_create: 'Role | Create'
@@ -12,19 +13,77 @@ pim_title:
   pim_user_reset_check_email: Password Reset | Check Email
   pim_user_group_create: 'Groups | Create'
   pim_user_group_update: 'Group {{ group }} | Edit'
+confirmation:
+  remove:
+    user: Are you sure you want to delete this user?
+    group: Are you sure you want to delete this group?
+pim_enrich:
+  entity:
+    user:
+      flash:
+        delete:
+          fail: The user can not be deleted
+          success: The user has been deleted
+      module:
+        delete:
+          confirm: Are you sure you want to delete this user?
 pim_user_management:
   entity:
     user:
+      label: user
+      flash:
+        update:
+          success: User successfully updated.
+          fail: The user could not be updated.
+          fields_not_ready: "The user cannot be saved right now. The following fields are not ready: {{ fields }}"
+        create:
+          success: User successfully created.
       page_title:
         index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
       properties:
+        username: Username
+        name_prefix: Name prefix
+        first_name: First name
+        middle_name: Middle name
+        last_name: Last name
+        name_suffix: Name suffix
         phone: Phone
+        avatar: Avatar
+        email: Email
+        catalog_locale: Catalog locale
+        catalog_scope: Catalog scope
+        default_tree: Default tree
+        default_asset_tree: Default asset tree
+        product_grid_filters: Product grid filters
+        current_password: Current password
+        new_password: New password
+        new_password_repeat: New password (repeat)
+        password: Password
+        password_repeat: Password (repeat)
+        last_logged_in: Last logged in
+        login_count: Login count
+        ui_locale: UI locale
+        timezone: Timezone
+        default_product_grid_view: Default product grid view
+        default_published_product_grid_view: Default published product grid view #EE Only
+        proposals_to_review_notification: When new proposal to review #EE Only
+        proposals_state_notifications: When proposal is accepted or rejected #EE Only
+      meta:
+        created: Created
+        updated: Updated
       module:
         create:
           button: Create user
         delete:
           confirm: Are you sure you want to delete this user?
+        update:
+          additional: Additional
+          groups_and_roles: Groups and roles
+          password: Password
+          interfaces: Interfaces
+          notifications: Notifications #TODO EE Only
     role:
+      plural_label: Roles
       page_title:
         index: "]-Inf, 1] {{ count }} role|]1, Inf [{{ count }} roles"
       module:
@@ -33,6 +92,7 @@ pim_user_management:
         delete:
           confirm: Are you sure you want to delete this role?
     group:
+      plural_label: User groups
       page_title:
         index: "]-Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
       module:

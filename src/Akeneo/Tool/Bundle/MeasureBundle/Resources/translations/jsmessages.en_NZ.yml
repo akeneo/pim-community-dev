@@ -19,6 +19,7 @@ pim_measure:
     Energy: Energy
     CaseBox: Packaging
   units:
+    #Area
     ACRE: Acre
     ARE: Are
     ARPENT: Arpent
@@ -37,18 +38,22 @@ pim_measure:
     SQUARE_MILE: Square mile
     SQUARE_MILLIMETER: Square millimetre
     SQUARE_YARD: Square yard
+    #Binary
     BIT: Bit
     BYTE: Byte
     KILOBYTE: Kilobyte
     MEGABYTE: Megabyte
     GIGABYTE: Gigabyte
     TERABYTE: Terabyte
+    #Decibel
     DECIBEL: Decibel
+    #Frequency
     GIGAHERTZ: Gigahertz
     KILOHERTZ: Kilohertz
     MEGAHERTZ: Megahertz
     TERAHERTZ: Terahertz
     HERTZ: Hertz
+    #Length
     CENTIMETER: Centimetre
     CHAIN: Chain
     DECIMETER: Decimetre
@@ -63,11 +68,13 @@ pim_measure:
     MILE: Mile
     MILLIMETER: Millimetre
     YARD: Yard
+    #Power
     GIGAWATT: Gigawatt
     KILOWATT: Kilowatt
     MEGAWATT: Megawatt
     TERAWATT: Terawatt
     WATT: Watt
+    #Resistance
     MILLIOHM: Milliohm
     CENTIOHM: Centiohm
     DECIOHM: Deciohm
@@ -76,6 +83,7 @@ pim_measure:
     HECTOHM: Hectohm
     KILOHM: Kilohm
     MEGOHM: Megohm
+    #Voltage
     MILLIVOLT: Millivolt
     CENTIVOLT: Centivolt
     DECIVOLT: Decivolt
@@ -83,6 +91,7 @@ pim_measure:
     DEKAVOLT: Dekavolt
     HECTOVOLT: Hectovolt
     KILOVOLT: Kilovolt
+    #Intensity
     MILLIAMPERE: Milliampere
     CENTIAMPERE: Centiampere
     DECIAMPERE: Deciampere
@@ -91,6 +100,7 @@ pim_measure:
     HECTOAMPERE: Hectoampere
     KILOAMPERE: Kiloampere
     MEGAAMPERE: Megaampere
+    #ElectricCharge
     MILLIAMPEREHOUR: Milliampere hour
     AMPEREHOUR: Ampere hour
     MILLICOULOMB: Millicoulomb
@@ -100,6 +110,7 @@ pim_measure:
     DEKACOULOMB: Dekacoulomb
     HECTOCOULOMB: Hectocoulomb
     KILOCOULOMB: Kilocoulomb
+    #Duration
     MILLISECOND: Millisecond
     SECOND: Second
     MINUTE: Minute
@@ -108,6 +119,7 @@ pim_measure:
     WEEK: Week
     MONTH: Month
     YEAR: Year
+    #Speed
     FOOT_PER_SECOND: Foot per second
     FOOT_PER_HOUR: Foot per hour
     KILOMETER_PER_HOUR: Kilometre per hour
@@ -116,11 +128,13 @@ pim_measure:
     METER_PER_SECOND: Metre per second
     MILE_PER_HOUR: Mile per hour
     YARD_PER_HOUR: Yard per hour
+    #Temperature
     CELSIUS: Celsius
     FAHRENHEIT: Fahrenheit
     KELVIN: Kelvin
     RANKINE: Rankine
     REAUMUR: Reaumur
+    #Volume
     BARREL: Barrel
     CENTILITER: Centilitre
     CUBIC_CENTIMETER: Cubic centimetre
@@ -136,6 +150,7 @@ pim_measure:
     MILLILITER: Millilitre
     OUNCE: Ounce
     PINT: Pint
+    #Weight
     DENIER: Denier
     GRAIN: Grain
     GRAM: Gram
@@ -146,6 +161,7 @@ pim_measure:
     ONCE: Once
     POUND: Pound
     TON: Ton
+    #Pressure
     BAR: Bar
     PASCAL: Pascal
     HECTOPASCAL: hecto Pascal
@@ -154,7 +170,9 @@ pim_measure:
     PSI: Pound per square inch
     TORR: Torr
     MMHG: millimetre of Mercury
+    #Energy
     KILOCALORIE: kilocalorie
     KILOJOULE: kilojoule
+    #CaseBox
     PIECE: Piece
     DOZEN: Dozen
