@@ -285,7 +285,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $data = '{ "currencies": ["ADP"] }';
+        $data = '{ "currencies": ["AED"] }';
 
         $expectedContent =
 <<<JSON
@@ -295,7 +295,7 @@ JSON;
     "errors": [
         {
             "property": "currencies",
-            "message": "The currency \"ADP\" has to be activated."
+            "message": "The currency \"AED\" has to be activated."
         }
     ]
 }

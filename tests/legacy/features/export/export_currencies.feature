@@ -19,7 +19,6 @@ Feature: Export currencies
     code;activated
     USD;1
     EUR;1
-    ADP;0
     AED;0
     AFA;0
     AFN;0
