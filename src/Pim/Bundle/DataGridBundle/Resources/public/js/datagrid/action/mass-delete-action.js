@@ -5,12 +5,12 @@ define([
         'oro/translator',
         'routing',
         'oro/datagrid/mass-action',
-        'pim/router',
+        'oro/datagrid/back_router',
         'oro/messenger',
         'oro/loading-mask',
         'pim/dialog'
     ],
-    function($, _, __, Routing, MassAction, router, messenger, LoadingMask, Dialog) {
+    function($, _, __, Routing, MassAction, backRouter, messenger, LoadingMask, Dialog) {
         'use strict';
 
         /**
@@ -106,7 +106,7 @@ define([
                     data: JSON.stringify(data)
                 })
                 .then(() => {
-                    router.redirectToRoute(this.config.backRoute);
+                    backRouter.redirectToBackRoute();
 
                     const translatedAction = __('mass_delete');
                     messenger.notify(

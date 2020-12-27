@@ -1,9 +1,10 @@
 config:
     config:
+        oro/datagrid/back_router:
+            backRoute: pim_enrich_product_index
         oro/datagrid/mass_delete-action:
             jobInstanceCode: delete_products_and_product_models
             route: pim_enrich_mass_edit_rest_launch
-            backRoute: pim_enrich_product_index
             launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             confirmLabel: confirmation.remove.products_and_product_models
@@ -45,6 +46,7 @@ config:
         pim/datagrid/state-listener:            pimdatagrid/js/datagrid/state-listener
         pim/datagrid/column-form-listener:      pimdatagrid/js/datagrid/listener/column-form-listener
 
+        oro/datagrid/back_router:               pimdatagrid/js/datagrid/back_router
         oro/datagrid/action-launcher:           pimdatagrid/js/datagrid/action-launcher
         oro/datagrid/abstract-action:           pimdatagrid/js/datagrid/action/abstract-action
         oro/datagrid/delete-action:             pimdatagrid/js/datagrid/action/delete-action
