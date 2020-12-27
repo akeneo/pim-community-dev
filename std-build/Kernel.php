@@ -158,7 +158,7 @@ class Kernel extends BaseKernel
     {
         if ('prod' === $projectEnv) {
             if ($this->isFlexibility()) {
-                return 'prod_flex',
+                return 'prod_flex';
             } else {
                 return 'prod_onprem';
         }
