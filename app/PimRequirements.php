@@ -241,12 +241,15 @@ class PimRequirements extends SymfonyRequirements
      */
     protected function getConnection(array $parameters)
     {
+        $dsn = 'mysql:';
+        $dsnParams[] = 'host=' . $parameters['parameters']['database_host'];
+        if(isset($parameters['parameters']['database_port'])) {
+            $dsnParams[] = 'port=' . $parameters['parameters']['database_port'];
+        }
+        $dsn .= implode(";", $dsnParams);
+
         return new PDO(
-            sprintf(
-                'mysql:port=%s;host=%s',
-                $parameters['parameters']['database_port'],
-                $parameters['parameters']['database_host']
-            ),
+            $dsn,
             $parameters['parameters']['database_user'],
             $parameters['parameters']['database_password']
         );
