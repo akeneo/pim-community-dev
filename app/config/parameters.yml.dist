@@ -10,4 +10,4 @@ parameters:
     product_index_name:                   akeneo_pim_product
     product_model_index_name:             akeneo_pim_product_model
     product_and_product_model_index_name: akeneo_pim_product_and_product_model
-    index_hosts:                          'localhost: 9200'
+    index_hosts:                          'elastic:changeme@localhost: 9200'
