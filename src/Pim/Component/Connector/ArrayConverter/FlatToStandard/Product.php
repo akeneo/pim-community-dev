@@ -315,7 +315,7 @@ class Product implements ArrayConverterInterface
         }
 
         $nonLocalizableOrScopableFields = $this->filterNonLocalizableOrScopableFields($unknownFields);
-        $unknownFields = array_diff($unknownFields, $nonLocalizableOrScopableFields);
+        $unknownFields = array_values(array_diff($unknownFields, $nonLocalizableOrScopableFields));
 
         $messages = [];
         if (0 < count($unknownFields)) {
