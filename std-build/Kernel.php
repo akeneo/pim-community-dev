@@ -162,7 +162,7 @@ class Kernel extends BaseKernel
             } else {
                 return 'prod_onprem';
         }
-
+    }
         return $projectEnv;
     }
 }
