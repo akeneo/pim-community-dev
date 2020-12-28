@@ -1,6 +1,7 @@
 pimee_workflow:
   product_draft:
     author: Auteur
+    source: Bron
     created: Voorgesteld op
     changes: Wijzigingen
     locale: Context vertaling

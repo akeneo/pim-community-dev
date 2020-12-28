@@ -277,7 +277,6 @@ pim_asset_manager:
         subtitle: '要开始将产品链接到该资产品类，可新建一个： '
         link: 创建新的产品属性
       not_enough_items:
-        title: 糟糕！您只能查看 {{ productCount }}/{{ totalCount }} 产品。
         subtitle:
           usable_in_grid: 要发现所有链接的产品，请点击下方！
           not_usable_in_grid: 要发现所有链接的产品，产品属性必须设置为“在网格中可用”。

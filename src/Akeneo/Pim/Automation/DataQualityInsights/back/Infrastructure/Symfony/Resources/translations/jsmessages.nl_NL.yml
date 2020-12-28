@@ -1,0 +1,81 @@
+akeneo_data_quality_insights:
+  title: Datakwaliteit inzichten
+  dqi_dashboard:
+    menu: Datakwaliteit inzichten
+    title: Datakwaliteit overzicht
+    helper:
+      title: Introductie van datakwaliteit in Akeneo
+      description: Met het dashboard voor datakwaliteit kunt u de datakwaliteit van uw productdata meten. U kunt ook inzoomen op categorieën of families.
+      help_center: Kijk in ons helpcenter voor meer informatie.
+    no_data_title: Sorry, we hebben onvoldoende gegevens om datakwaliteit inzichten te tonen.
+    no_data_subtitle: Kom later terug alstublieft.
+    time_period:
+      label: Tijdsperiode
+      daily: Dagelijks
+      weekly: Wekelijks
+      monthly: Maandelijks
+    legend:
+      excellent: Uitstekend
+      good: Goed
+      average: Gemiddeld
+      below_average: Matig
+      to_improve: Te verbeteren
+    category_modal_filter:
+      subtitle: Filteren op categorie
+      message: Selecteer de categorie om op je dashboard weer te geven.
+    widgets:
+      family_modal:
+        subtitle: Families toevoegen
+        message: Selecteer de families om op het dashboard te tonen.
+        max_families_msg: Sorry, u kunt niet meer dan {{ count }} families toevoegen om te volgen op uw dashboard
+      category_modal:
+        subtitle: Categorieën toevoegen
+        message: Selecteer de categorieën om op je dashboard weer te geven.
+        max_categories_msg: Sorry, u kunt niet meer dan {{ count }} categorieën toevoegen om te volgen op uw dashboard
+      add_families: Families toevoegen
+      add_categories: Categorieën toevoegen
+      title: Titel
+      no_family_helper_msg: Selecteer de families waarvoor u de gegevenskwaliteit wilt meten
+      no_category_helper_msg: Selecteer de categorieën waarvoor je de gegevenskwaliteit wilt meten
+      see_in_grid: In kolomoverzicht weergeven
+    time_axis:
+      day: dag
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Vereiste attributen met ontbrekende waarden
+      completeness_of_non_required_attributes:
+        recommendation: Niet-vereiste attributen met ontbrekende waarden
+      consistency_spelling:
+        recommendation: Attributen met spellingsproblemen
+    axis:
+      enrichment:
+        title: Verrijking
+        attributes_link: Alle ontbrekende attributen weergeven
+        success: Uw productgegevens zijn volledig verrijkt. Gefeliciteerd!
+      consistency:
+        title: Consistentie
+        attributes_link: Alle te verrijken attributen weergeven
+        success: Uw productgegevens zijn volledig consistent. Gefeliciteerd!
+    messages:
+      error:
+        axis_error: Door een fout kon de kwaliteitsscore niet volledig worden berekend. Probeer het later opnieuw.
+        criterion_error: Score kon niet worden berekend.
+      success:
+        criterion: Alles is goed.
+      grading_in_progress: Kwaliteitsscore wordt berekend.
+      axis_grading_in_progress: Kwaliteitsscore wordt berekend. Kom later terug aub.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Alle ontbrekende attributen
+      all_improvable_attributes: Alle verbeterbare attributen
+    spellcheck_popover:
+      title: Correcties
+      original_text_title: Origineel
+      suggestions_title: Voorstellen
+      ignore_all_suggestions_button_label: Negeren
+    title_suggestion_popover:
+      title: Suggesties
+      ignore_all_suggestions_button_label: Negeren
+pim_title:
+  akeneo_data_quality_insights_dashboard: Datakwaliteit inzichten

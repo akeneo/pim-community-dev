@@ -157,7 +157,7 @@ services:
             - '@pimee_workflow.datagrid.oro_to_pim_grid_filter'
             - '@pim_enrich.mass_edit_action.operation_authenticated_job_launcher'
             - '@pim_enrich.converter.mass_operation'
-            - '@pim_datagrid.adapter.items_counter'
+            - '@pim_datagrid.adapter.published_product_items_counter'
 
     pim_enrich.controller.rest.product:
         public: true
