@@ -13,10 +13,12 @@ export type CategoryResponse = {
 
 export const parseResponse: (
   json: CategoryResponse,
+  readOnly: boolean,
   lockedCategoryIds: number[]
 ) => TreeModel = (
   json,
-  lockedCategoryIds
+  readOnly,
+  lockedCategoryIds = []
 ) => {
   const getChildren: () => TreeModel[] | undefined = () => {
     if (json.state.includes('closed')) {
@@ -26,7 +28,7 @@ export const parseResponse: (
       return [];
     }
     if (json.children) {
-      return json.children.map(child => parseResponse(child, lockedCategoryIds));
+      return json.children.map(child => parseResponse(child, readOnly, lockedCategoryIds));
     }
     return undefined;
   }
@@ -38,6 +40,6 @@ export const parseResponse: (
     label: json.data,
     children: getChildren(),
     selected: json.state.includes('jstree-checked'),
-    readOnly: lockedCategoryIds.indexOf(categoryId) >= 0,
+    readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
   }
 }

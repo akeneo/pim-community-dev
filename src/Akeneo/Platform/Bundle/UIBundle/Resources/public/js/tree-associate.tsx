@@ -14,6 +14,7 @@ class TreeAssociate {
   private listCategoriesRoute: string;
   private childrenRoute: string;
   private dataLocale: string;
+  private readOnly: boolean;
   private lockedCategoryIds: number[];
 
   constructor(
@@ -23,6 +24,7 @@ class TreeAssociate {
       list_categories: string,
       children: string,
     },
+    readOnly: boolean,
     lockedCategoryIds: number[] = []
   ) {
     const elementIdWithoutSharp = elementId.replace(/^#(.*)$/, '$1');
@@ -46,6 +48,7 @@ class TreeAssociate {
     this.dataLocale = dataLocale;
     this.productId = Number(this.container.dataset.id);
     this.lockedCategoryIds = lockedCategoryIds;
+    this.readOnly = readOnly;
 
     if (selectedTree) {
       this.switchTree(selectedTree);
@@ -134,6 +137,7 @@ class TreeAssociate {
           childrenRoute={childrenRoute}
           selectable={!this.locked}
           lockedCategoryIds={this.lockedCategoryIds}
+          readOnly={this.readOnly}
         />
       </ThemeProvider>
     </DependenciesProvider>, tree);
