@@ -112,6 +112,7 @@ type TreeProps = {
   selected?: boolean;
   isLoading?: boolean;
   selectable?: boolean;
+  readOnly?: boolean;
   onOpen?: (value: string) => void;
   onClose?: (value: string) => void;
   onSelect?: (value: boolean, event: SyntheticEvent) => void;
@@ -132,6 +133,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       selected = false,
       isLoading = false,
       selectable = false,
+      readOnly = false,
       onSelect,
       onOpen,
       onClose,
@@ -199,7 +201,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
             {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
           </ArrowButton>
 
-          {selectable && <NodeCheckbox checked={selected} onChange={handleSelect} />}
+          {selectable && <NodeCheckbox checked={selected} onChange={handleSelect} readOnly={readOnly} />}
 
           <LabelWithFolder onClick={handleClick} $selected={selected}>
             {isLoading ? (

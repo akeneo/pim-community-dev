@@ -4,4 +4,5 @@ export type TreeModel = {
   children?: TreeModel[];
   loading?: boolean;
   selected?: boolean;
+  readOnly?: boolean;
 }
