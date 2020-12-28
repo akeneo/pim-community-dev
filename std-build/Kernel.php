@@ -47,16 +47,16 @@ class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        if (!in_array($this->environment, $supportedEnvs)) {
-            throw new \IllegalArgumentException(
+        if (!in_array($this->environment,self::$supportedEnvs)) {
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Unsupported environment:%s. The supported environments are:%s',
                     $this->environment,
-                    implode(' ', $this->$supportedEnvs)
+                    implode(' ', self::$supportedEnvs)
                 )
             );
         }
-
+        
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
 
@@ -66,12 +66,14 @@ class Kernel extends BaseKernel
         $eeConfDir = $this->getProjectDir() . '/vendor/akeneo/pim-enterprise-dev/config';
         $projectConfDir = $this->getProjectDir() . '/config';
 
-        $this->loadPackagesConfigurationExceptSecurity($loader, $ceConfDir, $baseEnv);
-        $this->loadPackagesConfigurationExceptSecurity($loader, $eeConfDir, $baseEnv);
+        $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $ceConfDir);
+        $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $eeConfDir);
+        $this->loadPackagesConfigurationExceptSecurity($loader, $projectConfDir, $baseEnv);       
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
 
         $this->loadContainerConfiguration($loader, $ceConfDir, $baseEnv);
         $this->loadContainerConfiguration($loader, $eeConfDir, $baseEnv);
+        $this->loadContainerConfiguration($loader, $projectConfDir, $baseEnv);
         $this->loadContainerConfiguration($loader, $projectConfDir, $this->environment);
     }
 
@@ -109,15 +111,15 @@ class Kernel extends BaseKernel
     private function loadPackagesConfiguration(LoaderInterface $loader, string $confDir, string $environment): void
     {
         $loader->load($confDir . '/{packages}/*.yml', 'glob');
+        $loader->load($confDir . '/{packages}/' . $environment . '/*.yml', 'glob');
         $loader->load($confDir . '/{packages}/' . $environment . '/**/*.yml', 'glob');
     }
 
     /**
      * "security.yml" is the only configuration file that can not be override
-     * Thus, we don't load it from the Community Edition.
-     * We copied/pasted its content into Enterprise Edition and added what was missing.
+     * And load default package configuration from EE and CE
      */
-    private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir, string $environment): void
+    private function loadPackagesConfigurationFromDependencyExceptSecurity(LoaderInterface $loader, string $confDir): void
     {
         $files = array_merge(
             glob($confDir . '/packages/*.yml'),
@@ -135,6 +137,29 @@ class Kernel extends BaseKernel
         }
     }
 
+    /**
+     * Load Packages Configuration from this project except security.yml
+     * security configuration doesn't support multiple loads
+     */
+    private function loadPackagesConfigurationExceptSecurity(LoaderInterface $loader, string $confDir, string $environment): void
+    {
+        $files = array_merge(
+            glob($confDir . '/packages/*.yml'),
+            glob($confDir . '/packages/' . $environment . '/*.yml'),
+            glob($confDir . '/packages/' . $environment . '/**/*.yml')
+        );
+
+        $files = array_filter(
+            $files,
+            function ($file) {
+                return 'security.yml' !== basename($file);
+            }
+        );
+
+        foreach ($files as $file) {
+            $loader->load($file, 'yaml');
+        }
+    }
     private function loadContainerConfiguration(LoaderInterface $loader, string $confDir, string $environment): void
     {
         $loader->load($confDir . '/{services}/*.yml', 'glob');
@@ -161,8 +186,8 @@ class Kernel extends BaseKernel
                 return 'prod_flex';
             } else {
                 return 'prod_onprem';
+            }
         }
-    }
         return $projectEnv;
     }
 }
