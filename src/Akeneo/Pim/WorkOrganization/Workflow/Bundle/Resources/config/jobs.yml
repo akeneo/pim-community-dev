@@ -236,7 +236,7 @@ services:
         tags:
             -
                 name: akeneo_batch.job
-                connector: 'Clean removed attribute'
+                connector: 'Cleaning removed attribute values'
                 type: 'clean_removed_attribute_job'
 
     pim_catalog.step.clean_attribute.clean_draft:
