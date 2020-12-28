@@ -117,13 +117,16 @@ define([
             })
           );
 
+          const lockedCategoryIds = this.getFormData().meta.ascendant_category_ids;
+
           this.treeAssociate = new TreeAssociate(
             '#trees',
             '#hidden-tree-input',
             {
               list_categories: this.config.itemCategoryListRoute,
               children: 'pim_enrich_categorytree_children',
-            }
+            },
+            lockedCategoryIds,
           );
 
           if (this.isReadOnly()) {

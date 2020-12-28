@@ -11,7 +11,13 @@ export type CategoryResponse = {
   selectedChildrenCount?: number;
 }
 
-export const parseResponse: (json: CategoryResponse) => TreeModel = (json) => {
+export const parseResponse: (
+  json: CategoryResponse,
+  lockedCategoryIds: number[]
+) => TreeModel = (
+  json,
+  lockedCategoryIds
+) => {
   const getChildren: () => TreeModel[] | undefined = () => {
     if (json.state.includes('closed')) {
       return undefined;
@@ -20,15 +26,18 @@ export const parseResponse: (json: CategoryResponse) => TreeModel = (json) => {
       return [];
     }
     if (json.children) {
-      return json.children.map(child => parseResponse(child));
+      return json.children.map(child => parseResponse(child, lockedCategoryIds));
     }
     return undefined;
   }
+
+  const categoryId = Number(json.attr.id.replace(/^node_(\d+)$/, '$1'));
 
   return {
     value: json.attr['data-code'],
     label: json.data,
     children: getChildren(),
     selected: json.state.includes('jstree-checked'),
+    readOnly: lockedCategoryIds.indexOf(categoryId) >= 0,
   }
 }

@@ -14,6 +14,7 @@ class TreeAssociate {
   private listCategoriesRoute: string;
   private childrenRoute: string;
   private dataLocale: string;
+  private lockedCategoryIds: number[];
 
   constructor(
     elementId: string,
@@ -22,6 +23,7 @@ class TreeAssociate {
       list_categories: string,
       children: string,
     },
+    lockedCategoryIds: number[] = []
   ) {
     const elementIdWithoutSharp = elementId.replace(/^#(.*)$/, '$1');
     this.container = document.getElementById(elementIdWithoutSharp) as HTMLDivElement;
@@ -43,6 +45,7 @@ class TreeAssociate {
     }
     this.dataLocale = dataLocale;
     this.productId = Number(this.container.dataset.id);
+    this.lockedCategoryIds = lockedCategoryIds;
 
     if (selectedTree) {
       this.switchTree(selectedTree);
@@ -130,6 +133,7 @@ class TreeAssociate {
           initRoute={initRoute}
           childrenRoute={childrenRoute}
           selectable={!this.locked}
+          lockedCategoryIds={this.lockedCategoryIds}
         />
       </ThemeProvider>
     </DependenciesProvider>, tree);
