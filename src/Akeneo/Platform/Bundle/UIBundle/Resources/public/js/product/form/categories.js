@@ -49,7 +49,6 @@ define([
     treeAssociate: null,
     cache: {},
     trees: [],
-    onLoadedEvent: null,
 
     /**
      * Associates the tree code to the number of selected categories
@@ -126,17 +125,9 @@ define([
               list_categories: this.config.itemCategoryListRoute,
               children: 'pim_enrich_categorytree_children',
             },
+            this.isReadOnly(),
             lockedCategoryIds,
           );
-
-          if (this.isReadOnly()) {
-            this.treeAssociate.lock(false);
-          }
-
-          this.delegateEvents();
-
-          this.onLoadedEvent = this.lockCategories.bind(this);
-          mediator.on('jstree:loaded', this.onLoadedEvent);
 
           this.initCategoryCount();
           this.renderCategorySwitcher();
@@ -144,34 +135,6 @@ define([
       );
 
       return this;
-    },
-
-    /**
-     * {@inheritdoc}
-     */
-    shutdown: function () {
-      mediator.off('jstree:loaded', this.onLoadedEvent);
-
-      BaseForm.prototype.shutdown.apply(this, arguments);
-    },
-
-    /**
-     * Locks a set of categories
-     */
-    lockCategories: function () {
-      if (this.isReadOnly()) {
-        return;
-      }
-
-      const lockedCategoryIds = this.getFormData().meta.ascendant_category_ids;
-      lockedCategoryIds.forEach(categoryId => {
-        const node = $('#node_' + categoryId);
-        node.find('> a').replaceWith(
-          this.lockedTemplate({
-            label: node.find('> a').text().trim(),
-          })
-        );
-      });
     },
 
     /**

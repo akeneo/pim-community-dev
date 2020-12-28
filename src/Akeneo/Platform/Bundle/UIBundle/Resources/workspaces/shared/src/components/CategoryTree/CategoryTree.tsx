@@ -11,6 +11,7 @@ type CategoryTreeProps = {
   onUnselect?: (value: string) => void;
   selectable?: boolean;
   lockedCategoryIds?: number[];
+  readOnly?: boolean;
 };
 
 const CategoryTree: React.FC<CategoryTreeProps> = ({
@@ -20,6 +21,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   onUnselect,
   selectable,
   lockedCategoryIds = [],
+  readOnly = false,
   ...rest
 }) => {
   const [treeState, setTreeState] = React.useState<TreeModel>();
@@ -28,7 +30,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
     fetch(initRoute).then((response) => {
       response.json().then((json: CategoryResponse[]) => {
         setTreeState(
-          Array.isArray(json) ? parseResponse(json[0], lockedCategoryIds) : parseResponse(json, lockedCategoryIds)
+          Array.isArray(json) ? parseResponse(json[0], readOnly, lockedCategoryIds) : parseResponse(json, readOnly, lockedCategoryIds)
         );
       });
     });
@@ -47,6 +49,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
     childrenRoute={childrenRoute}
     selectable={selectable}
     lockedCategoryIds={lockedCategoryIds}
+    readOnly={readOnly}
     {...rest}
   />;
 }
