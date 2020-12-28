@@ -105,12 +105,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   }${productModelText}`;
 
   return (
-    <Modal
-      isOpen={true}
-      onClose={onCancel}
-      closeTitle={translate('pim_common.close')}
-      illustration={<DeleteIllustration />}
-    >
+    <Modal onClose={onCancel} closeTitle={translate('pim_common.close')} illustration={<DeleteIllustration />}>
       <SectionTitle color="brand">{translate('pim_enrich.entity.attribute.plural_label')}</SectionTitle>
       <Title>{translate('pim_common.confirm_deletion')}</Title>
       {translate('pim_enrich.entity.attribute.module.delete.confirm')}
