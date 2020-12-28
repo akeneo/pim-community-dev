@@ -2,6 +2,7 @@ import {useRoute} from '@akeneo-pim-community/legacy-bridge';
 import {Product} from '../models';
 
 const PLACEHOLDER_PATH = '/bundles/pimui/img/image_default.png';
+const isAssetManagerImagePath = (path: string): boolean => path.includes('rest/asset_manager/image_preview');
 
 const useProductThumbnail = (product: Product | null) => {
   const thumbnailUrl = useRoute(
@@ -14,7 +15,15 @@ const useProductThumbnail = (product: Product | null) => {
       : undefined
   );
 
-  return product?.image ? thumbnailUrl : PLACEHOLDER_PATH;
+  if (!product?.image) {
+    return PLACEHOLDER_PATH;
+  }
+
+  if (isAssetManagerImagePath(product.image.filePath)) {
+    return product.image.filePath;
+  }
+
+  return thumbnailUrl;
 };
 
 export {useProductThumbnail};

@@ -68,6 +68,7 @@
 - CPM-86: Fix undefined tab on job profile edit
 - PIM-9596: Fix attribute options manual sorting
 - PIM-9598: Fix quick export when the bs_Cyrl_BA locale is used.
+- PIM-9612: Fix no image preview for Association with quantities when the image is an asset collection
 - RAC-435: Fix fatal error for user that migrate from 4.0 with product values format that doesn't correspond to expected format
 - RAC-449: Fix invalid processed item when remove attribute
 
