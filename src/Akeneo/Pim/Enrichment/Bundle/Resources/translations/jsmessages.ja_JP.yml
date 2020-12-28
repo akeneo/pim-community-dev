@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: 設定
+    mass_delete: 削除
 flash:
   comment:
     create:
@@ -401,6 +402,7 @@ pim_datagrid:
       label: 完了
     identifier:
       label: 識別子
+  search: '{{ label }} で検索'
 batch_jobs:
   add_association:
     label: 関連付ける

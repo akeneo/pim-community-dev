@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Настройки
+    mass_delete: Удаление
 flash:
   comment:
     create:
@@ -280,6 +281,7 @@ pim_datagrid:
   filters:
     label: Фильтры
     system: Система
+  search: Поиск по {{ label }}
 batch_jobs:
   add_association:
     label: Связать
@@ -317,3 +319,8 @@ batch_jobs:
   remove_from_category:
     label: Удалить из категории
     perform.label: Удалить из категории
+  set_attribute_requirements:
+    label: Установить обязательность/ необязательность атрибутов
+    perform.label: Установить обязательность/ необязательность атрибутов
+  default_steps:
+    delete_products_and_product_models: Удалить продукты и модели продуктов

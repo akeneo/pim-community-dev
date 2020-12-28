@@ -106,6 +106,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product.metric'
             - '@pim_catalog.localization.localizer.metric'
+            - '@translator'
         tags:
             - { name: pim_axis_value_label_normalizer }
 

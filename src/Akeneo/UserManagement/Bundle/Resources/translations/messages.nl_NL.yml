@@ -67,11 +67,13 @@ pim_user:
       username_or_email: Gebruikersnaam of E-mail
       remember_me: Onthoud mijn gegevens op deze computer
       password_forgotten: Uw wachtwoord vergeten?
+      log_in: Login
       forgot_password: Wachtwoord vergeten
       request: Aanvragen
       password_reset: Wachtwoord resetten
       reset: Resetten
       password_reset_email_sent: Er is een e-mail verzonden naar de gebruiker. Deze mail bevat een wachtwoord-reset link.
+      homepage: Ga naar de homepage
   group:
     tab:
       general.title: Algemeen
