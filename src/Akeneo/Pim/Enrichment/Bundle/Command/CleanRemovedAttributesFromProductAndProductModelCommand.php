@@ -196,7 +196,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     }
 
     /**
-     * Launches the clean removed attribute job and display a link to its execution in the process tracker
+     * Launches the Cleaning removed attribute values and display a link to its execution in the process tracker
      */
     private function launchCleanRemovedAttributeJob(SymfonyStyle $io, array $attributeCodes): void
     {
@@ -237,7 +237,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         );
 
         $io->text(sprintf(
-            'The clean removed attribute job has been launched, you can follow its progression here: %s',
+            'The cleaning removed attribute values job has been launched, you can follow its progression here: %s',
             $jobUrl
         ));
     }

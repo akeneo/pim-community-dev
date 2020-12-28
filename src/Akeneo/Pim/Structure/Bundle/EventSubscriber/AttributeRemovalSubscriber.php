@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 /**
  * This subscriber listens on attribute removals, blacklists the removed attribute code
- * and launches the clean removed attribute job
+ * and launches the cleaning removed attribute values job
  */
 class AttributeRemovalSubscriber implements EventSubscriberInterface
 {
