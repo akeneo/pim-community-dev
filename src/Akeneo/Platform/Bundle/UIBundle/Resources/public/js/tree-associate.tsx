@@ -7,7 +7,6 @@ import { CategoryTree } from "@akeneo-pim-community/shared/src/components/Catego
 const Router = require('pim/router');
 
 class TreeAssociate {
-  private locked = false;
   private container: HTMLDivElement;
   private productId: number;
   private selectedCategoryCodesByTreeIdInput: HTMLInputElement;
@@ -122,7 +121,7 @@ class TreeAssociate {
       return Router.generate('pim_enrich_categorytree_children', {
         _format: 'json',
         context: 'associate',
-        dataLocale: 'en_US',
+        dataLocale: this.dataLocale,
         code: value,
         include_parent: false,
       });
@@ -135,8 +134,8 @@ class TreeAssociate {
           onUnselect={handleUnselect}
           initRoute={initRoute}
           childrenRoute={childrenRoute}
-          selectable={!this.locked}
           lockedCategoryIds={this.lockedCategoryIds}
+          selectable={true}
           readOnly={this.readOnly}
         />
       </ThemeProvider>
