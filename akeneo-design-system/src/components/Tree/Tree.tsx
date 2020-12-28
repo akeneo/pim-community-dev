@@ -223,7 +223,6 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
         {isOpen && !isLeaf && subTrees.length > 0 && (
           <SubTreesContainer role={'group'}>
             {subTrees.map(subTree => React.cloneElement(subTree, {
-              selectable,
               key: subTree.props.value,
               _isRoot: false
             }))}

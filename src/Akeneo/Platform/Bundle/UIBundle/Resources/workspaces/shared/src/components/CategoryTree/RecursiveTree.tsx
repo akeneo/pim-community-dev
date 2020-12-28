@@ -13,6 +13,7 @@ type RecursiveTreeProps = {
   selectable?: boolean;
   lockedCategoryIds?: number[];
   readOnly?: boolean;
+  _isRoot?: boolean;
 }
 
 const RecursiveTree: React.FC<RecursiveTreeProps> = ({
@@ -25,6 +26,7 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
   selectable,
   lockedCategoryIds = [],
   readOnly = false,
+  _isRoot = true,
   ...rest
 }) => {
   const recursiveSet: (node: TreeModel, value: string, f: (node: TreeModel) => TreeModel) => TreeModel = (node, value, f) => {
@@ -104,7 +106,7 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
       onOpen={handleOpen}
       isLoading={!!tree.loading}
       isLeaf={Array.isArray(tree.children) && tree.children.length == 0}
-      selectable={selectable}
+      selectable={selectable && !_isRoot}
       // TODO Rename this on onSelect/onUnselect
       onSelect={selected => handleCheck(tree.value, selected)}
       selected={!!tree.selected}
@@ -124,6 +126,8 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
             childrenRoute={childrenRoute}
             lockedCategoryIds={lockedCategoryIds}
             readOnly={tree.readOnly}
+            selectable={selectable}
+            _isRoot={false}
           />
         );
       })}
