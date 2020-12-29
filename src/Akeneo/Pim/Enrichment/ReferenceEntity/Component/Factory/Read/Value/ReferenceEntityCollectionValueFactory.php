@@ -31,7 +31,7 @@ final class ReferenceEntityCollectionValueFactory implements ValueFactory
         $attributeCode = $attribute->code();
         $recordCodes = array_map(function (string $recordCode): RecordCode {
             return RecordCode::fromString($recordCode);
-        }, $data);
+        }, $data ?: []);
 
         if ($attribute->isLocalizableAndScopable()) {
             return ReferenceEntityCollectionValue::scopableLocalizableValue($attributeCode, $recordCodes, $channelCode, $localeCode);
