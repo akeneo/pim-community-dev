@@ -180,8 +180,8 @@ define([
           const tree = _.findWhere(elements.trees, {code: this.currentTree});
 
           elements.treeAssociate.switchTree(tree.id);
-          $('.tree-selector').removeClass('active');
-          $(`.tree-selector[data-tree=${this.tree.code}]`).addClass('active');
+          $('.tree-selector').removeClass('active').removeClass('AknHorizontalNavtab-item--active');
+          $(`.tree-selector[data-tree=${tree.code}]`).addClass('active').addClass('AknHorizontalNavtab-item--active');
 
           this.delegateEvents();
         }.bind(this)
