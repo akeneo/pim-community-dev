@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import { ThemeProvider } from "styled-components";
-import { pimTheme } from 'akeneo-design-system';
-import { CategoryTree } from "@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree";
+import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
+import {CategoryTree} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree';
 const Router = require('pim/router');
 
 class TreeAssociate {
@@ -20,8 +20,8 @@ class TreeAssociate {
     elementId: string,
     hiddenCategoryId: string,
     routes: {
-      list_categories: string,
-      children: string,
+      list_categories: string;
+      children: string;
     },
     readOnly: boolean,
     lockedCategoryIds: number[] = []
@@ -40,7 +40,7 @@ class TreeAssociate {
     this.listCategoriesRoute = routes.list_categories;
     this.childrenRoute = routes.children;
     const selectedTree = this.container.dataset.selectedTree;
-    const dataLocale = this.container.dataset.datalocale
+    const dataLocale = this.container.dataset.datalocale;
     if (!dataLocale) {
       throw new Error(`The container should provide a dataLocale`);
     }
@@ -82,9 +82,9 @@ class TreeAssociate {
       if (index <= -1) {
         selectedCategoryCodesByTreeId[treeId].push(value);
         this.selectedCategoryCodesByTreeIdInput.value = JSON.stringify(selectedCategoryCodesByTreeId);
-        this.selectedCategoryCodesByTreeIdInput.dispatchEvent(new Event('change', { bubbles: true }));
+        this.selectedCategoryCodesByTreeIdInput.dispatchEvent(new Event('change', {bubbles: true}));
       }
-    }
+    };
 
     const handleUnselect = (value: string) => {
       const selectedCategoryCodesByTreeId = JSON.parse(this.selectedCategoryCodesByTreeIdInput.value);
@@ -95,29 +95,29 @@ class TreeAssociate {
       if (index > -1) {
         selectedCategoryCodesByTreeId[treeId].splice(index, 1);
         this.selectedCategoryCodesByTreeIdInput.value = JSON.stringify(selectedCategoryCodesByTreeId);
-        this.selectedCategoryCodesByTreeIdInput.dispatchEvent(new Event('change', { bubbles: true }));
+        this.selectedCategoryCodesByTreeIdInput.dispatchEvent(new Event('change', {bubbles: true}));
       }
-    }
+    };
 
     const initRoute =
       JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId] &&
-      JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId].length ?
-      Router.generate(this.listCategoriesRoute, {
-        id: this.productId,
-        categoryId: treeId,
-        _format: 'json',
-        context: 'associate',
-        dataLocale: this.dataLocale,
-      }) :
-      Router.generate(this.childrenRoute, {
-        _format: 'json',
-        context: 'associate',
-        dataLocale: this.dataLocale,
-        id: treeId,
-        include_parent: true,
-      });
+      JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId].length
+        ? Router.generate(this.listCategoriesRoute, {
+            id: this.productId,
+            categoryId: treeId,
+            _format: 'json',
+            context: 'associate',
+            dataLocale: this.dataLocale,
+          })
+        : Router.generate(this.childrenRoute, {
+            _format: 'json',
+            context: 'associate',
+            dataLocale: this.dataLocale,
+            id: treeId,
+            include_parent: true,
+          });
 
-    const childrenRoute: (value: string) => string = (value) => {
+    const childrenRoute: (value: string) => string = value => {
       return Router.generate('pim_enrich_categorytree_children', {
         _format: 'json',
         context: 'associate',
@@ -125,21 +125,24 @@ class TreeAssociate {
         code: value,
         include_parent: false,
       });
-    }
+    };
 
-    ReactDOM.render(<DependenciesProvider>
-      <ThemeProvider theme={pimTheme}>
-        <CategoryTree
-          onSelect={handleSelect}
-          onUnselect={handleUnselect}
-          initRoute={initRoute}
-          childrenRoute={childrenRoute}
-          lockedCategoryIds={this.lockedCategoryIds}
-          selectable={true}
-          readOnly={this.readOnly}
-        />
-      </ThemeProvider>
-    </DependenciesProvider>, tree);
+    ReactDOM.render(
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <CategoryTree
+            onSelect={handleSelect}
+            onUnselect={handleUnselect}
+            initRoute={initRoute}
+            childrenRoute={childrenRoute}
+            lockedCategoryIds={this.lockedCategoryIds}
+            selectable={true}
+            readOnly={this.readOnly}
+          />
+        </ThemeProvider>
+      </DependenciesProvider>,
+      tree
+    );
   }
 }
 

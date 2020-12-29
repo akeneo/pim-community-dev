@@ -126,7 +126,7 @@ define([
               children: 'pim_enrich_categorytree_children',
             },
             this.isReadOnly(),
-            lockedCategoryIds,
+            lockedCategoryIds
           );
 
           this.initCategoryCount();
@@ -166,7 +166,7 @@ define([
               if (!selectedCategories[category.rootId]) {
                 selectedCategories[category.rootId] = [];
               }
-              selectedCategories[category.rootId].push(category.code)
+              selectedCategories[category.rootId].push(category.code);
             }.bind(this)
           );
 
@@ -202,7 +202,7 @@ define([
       this.renderCategorySwitcher();
 
       var allTreesCategoryCodes = [];
-      Object.values(selectedCategoryCodesByTreeId).forEach((categoryCodes) => {
+      Object.values(selectedCategoryCodesByTreeId).forEach(categoryCodes => {
         allTreesCategoryCodes = allTreesCategoryCodes.concat(categoryCodes);
       });
       this.getFormModel().set('categories', allTreesCategoryCodes);
@@ -214,7 +214,7 @@ define([
      */
     initCategoryCount: function () {
       this.categoriesCount = {};
-      Object.keys(this.state.get('selectedCategories')).forEach((treeId) => {
+      Object.keys(this.state.get('selectedCategories')).forEach(treeId => {
         this.categoriesCount[treeId] = this.state.get('selectedCategories')[treeId].length;
       });
     },

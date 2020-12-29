@@ -1,21 +1,17 @@
-import { TreeModel } from "./CategoryTreeModel";
+import {TreeModel} from './CategoryTreeModel';
 
 export type CategoryResponse = {
   attr: {
     id: string;
-    'data-code': string
-  },
-  children?: CategoryResponse[],
+    'data-code': string;
+  };
+  children?: CategoryResponse[];
   data: string;
   state: string; // 'closed jstree-root' | 'leaf' | 'closed' | 'leaf toselect jstree-checked';
   selectedChildrenCount?: number;
-}
+};
 
-export const parseResponse: (
-  json: CategoryResponse,
-  readOnly: boolean,
-  lockedCategoryIds: number[]
-) => TreeModel = (
+export const parseResponse: (json: CategoryResponse, readOnly: boolean, lockedCategoryIds: number[]) => TreeModel = (
   json,
   readOnly,
   lockedCategoryIds = []
@@ -31,7 +27,7 @@ export const parseResponse: (
       return json.children.map(child => parseResponse(child, readOnly, lockedCategoryIds));
     }
     return undefined;
-  }
+  };
 
   const categoryId = Number(json.attr.id.replace(/^node_(\d+)$/, '$1'));
 
@@ -41,5 +37,5 @@ export const parseResponse: (
     children: getChildren(),
     selected: json.state.includes('jstree-checked'),
     readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
-  }
-}
+  };
+};

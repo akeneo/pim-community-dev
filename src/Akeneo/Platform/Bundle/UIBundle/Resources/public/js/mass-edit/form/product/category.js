@@ -132,7 +132,7 @@ define([
     updateModel: function (event) {
       var selectedCategoryCodesByTreeId = JSON.parse(event.currentTarget.value);
       var allTreesCategoryCodes = [];
-      Object.values(selectedCategoryCodesByTreeId).forEach((categoryCodes) => {
+      Object.values(selectedCategoryCodesByTreeId).forEach(categoryCodes => {
         allTreesCategoryCodes = allTreesCategoryCodes.concat(categoryCodes);
       });
       this.setValue(allTreesCategoryCodes);
