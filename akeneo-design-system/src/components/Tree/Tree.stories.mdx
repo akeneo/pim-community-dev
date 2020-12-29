@@ -1,6 +1,5 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Tree} from './Tree.tsx';
-import {RecursiveTree} from './AsynchronousTreeSimulator';
 
 <Meta
   title="Components/Tree"
@@ -72,17 +71,6 @@ Tree structures are flexible. A default tree provides a structure with named nod
 </Canvas>
 
 <ArgsTable story="Standard" />
-
-## Asynchronous simulation
-
-<Canvas>
-  <Story name="AsynchronousSimulation">
-    {args => {
-      const [tree, setTree] = React.useState({ value: 'master', label: 'Master' });
-      return <RecursiveTree tree={tree} treeState={tree} setTreeState={setTree}/>;
-    }}
-  </Story>
-</Canvas>
 
 ## Variation on selected
 

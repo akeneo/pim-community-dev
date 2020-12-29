@@ -182,15 +182,8 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
         <TreeLine $selected={selected}>
           <ArrowButton
             disabled={isLeaf}
-            onClick={
-              isLeaf
-                ? () => {
-                    // Do nothing
-                  }
-                : isOpen
-                ? handleClose
-                : handleOpen
-            }
+            role={'button'}
+            onClick={isLeaf ? undefined : isOpen ? handleClose : handleOpen}
           >
             {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
           </ArrowButton>
