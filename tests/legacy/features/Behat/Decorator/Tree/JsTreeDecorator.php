@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Decorator\Tree;
 
+use Behat\Mink\Element\NodeElement;
 use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
 
