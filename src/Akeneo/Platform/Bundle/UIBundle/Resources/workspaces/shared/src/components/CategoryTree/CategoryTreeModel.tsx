@@ -5,4 +5,4 @@ export type TreeModel = {
   loading?: boolean;
   selected?: boolean;
   readOnly?: boolean;
-}
+};
