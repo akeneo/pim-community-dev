@@ -28,14 +28,14 @@ jobs:
               export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
               git clone git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
       - run:
-          name: Checkout EE branch if it exists, or master otherwise
+          name: Checkout EE branch if it exists, or 5.0 otherwise
           command: |
             cd /home/circleci/project
-            git checkout ${CIRCLE_BRANCH} || git checkout master
+            git checkout ${CIRCLE_BRANCH} || git checkout 5.0
       - run:
           name: Require proper dev CE branch
           command: |
-            sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
+            sed -i "s|\"akeneo/pim-community-dev\": \"5.0.x-dev|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
           command: echo export IMAGE_TAG=$CIRCLE_SHA1 >> persisted_env_vars
@@ -84,8 +84,8 @@ jobs:
               - run:
                   name: Save the CE image as a tar
                   command: |
-                      docker pull akeneo/pim-php-dev:master
-                      docker save -o php-pim-image.tar akeneo/pim-php-dev:master
+                      docker pull akeneodockerhub/pim-php-dev:5.0
+                      docker save -o php-pim-image.tar akeneodockerhub/pim-php-dev:5.0
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
@@ -605,7 +605,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "5.0"
                 requires:
                     - build_prod
           - delete_pr_environment:
@@ -616,7 +616,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "5.0"
                 requires:
                     - deploy_pr_environment
           - deploy_pr_environment:
@@ -664,7 +664,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "5.0"
           - checkout_ce:
                 requires:
                     - ready_to_build_only_ce?
