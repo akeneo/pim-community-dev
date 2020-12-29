@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   php:
-    image: 'akeneo/pim-php-dev:master'
+    image: 'akeneo/pim-php-dev:5.0'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
@@ -20,7 +20,7 @@ services:
       - 'pim'
 
   fpm:
-    image: 'akeneo/pim-php-dev:master'
+    image: 'akeneo/pim-php-dev:5.0'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'

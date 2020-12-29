@@ -583,7 +583,7 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - master
+                            - "5.0"
           - checkout_ee:
                 requires:
                     - ready_to_build?
@@ -699,13 +699,48 @@ workflows:
   nightly:
       triggers:
           - schedule:
-                cron: "0 2 * * *"
+                cron: "0 23 * * *"
                 filters:
                     branches:
                         only:
-                            - master
+                            - "5.0"
 
       jobs:
+          - checkout_ce
+          - checkout_ee
+          - build_dev:
+                is_ee_built: false
+                requires:
+                    - checkout_ce
+          - build_prod:
+                requires:
+                    - checkout_ee
+          - test_back_static_and_acceptance:
+                requires:
+                    - build_dev
+          - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_dev
+          - test_back_phpunit:
+                requires:
+                    - build_dev
+          - test_back_behat_legacy:
+                requires:
+                    - build_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_dev
+          - test_upgrade_from_last_release:
+                requires:
+                    - build_prod
+
+  on_demand:
+        jobs:
+          - ready_to_build?:
+                type: approval
+                filters:
+                    branches:
+                        only: "5.0"
           - checkout_ce
           - checkout_ee
           - build_dev:
