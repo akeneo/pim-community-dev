@@ -71,6 +71,7 @@
 - PIM-9612: Fix no image preview for Association with quantities when the image is an asset collection
 - RAC-435: Fix fatal error for user that migrate from 4.0 with product values format that doesn't correspond to expected format
 - RAC-449: Fix invalid processed item when remove attribute
+- PIM-9610: Force displaying years with 4 digits in dates for every locale
 
 ## New features
 
