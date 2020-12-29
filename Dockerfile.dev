@@ -1,4 +1,4 @@
-FROM akeneodockerhub/pim-php-base:5.0
+FROM akeneo/pim-php-base:5.0
 
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
 

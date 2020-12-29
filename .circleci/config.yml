@@ -84,8 +84,8 @@ jobs:
               - run:
                   name: Save the CE image as a tar
                   command: |
-                      docker pull akeneodockerhub/pim-php-dev:5.0
-                      docker save -o php-pim-image.tar akeneodockerhub/pim-php-dev:5.0
+                      docker pull akeneo/pim-php-dev:5.0
+                      docker save -o php-pim-image.tar akeneo/pim-php-dev:5.0
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
