@@ -1,3 +1,6 @@
+# 5.0.x
+
+# 5.0.0
 ## Bug fixes
 
 - PIM-9560: Reference entities are blocked after using the filter.

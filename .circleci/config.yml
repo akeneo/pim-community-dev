@@ -839,17 +839,21 @@ workflows:
                 filters:
                     branches:
                         ignore:
-                            - "master"
+                            - "5.0"
           - checkout:
                 requires:
                     - ready_to_build?
           - build_dev:
                 requires:
                     - checkout
+          - ready_to_build_pr_environment:
+                type: approval
+                requires:
+                    - ready_to_build?
           - build_prod:
                 requires:
                     - checkout
-
+                    - ready_to_build_pr_environment?
           - test_deploy:
                 requires:
                     - build_prod
@@ -937,67 +941,15 @@ workflows:
                     - test_back_missing_structure_migrations
                     - test_back_data_migrations
 
-  growth_edition_release:
-      triggers:
-          - schedule:
-                cron: "0 4 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-      jobs:
-           - checkout
-           - prepare_growth_edition:
-                requires:
-                    - checkout
-           - test_deploy:
-                requires:
-                    - prepare_growth_edition
-           - release_growth_edition:
-                    requires:
-                        - test_deploy
-
-  nightly_deployments:
-      triggers:
-          - schedule:
-                cron: "30 4 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
-      jobs:
-          - checkout
-          - deploy_helpdesk_environment:
-                requires:
-                    - checkout
-          - deploy_pm_environment:
-                requires:
-                    - checkout
-
-  hourly_cleanup:
-      triggers:
-          - schedule:
-                cron: "0 * * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-
-      jobs:
-          - checkout
-          - delete_pr_environments_hourly:
-                requires:
-                    - checkout
 
   nightly:
       triggers:
           - schedule:
-                cron: "0 2 * * *"
+                cron: "30 2 * * *"
                 filters:
                     branches:
                         only:
-                            - master
+                            - "5.0"
 
       jobs:
           - checkout
@@ -1005,16 +957,6 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - build_prod:
-                is_pull_request: false
-                requires:
-                    - checkout
-          - test_deploy:
-                requires:
-                    - build_prod
-          - test_upgrade_from_last_release:
-                requires:
-                    - build_prod
           - test_front_code_style:
                 requires:
                     - build_dev
@@ -1068,7 +1010,7 @@ workflows:
                 type: approval
                 filters:
                     branches:
-                        only: master
+                        only: "5.0"
           - checkout:
                 requires:
                     - ready_to_build?
