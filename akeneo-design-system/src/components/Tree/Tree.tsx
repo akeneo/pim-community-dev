@@ -105,7 +105,6 @@ const LabelWithFolder = styled.button<{$selected: boolean} & AkeneoThemedProps>`
 `;
 
 type TreeProps = {
-  children?: ReactNode;
   value: string;
   label: string;
   isLeaf?: boolean;
@@ -116,8 +115,8 @@ type TreeProps = {
   onOpen?: (value: string) => void;
   onClose?: (value: string) => void;
   onSelect?: (value: boolean, event: SyntheticEvent) => void;
-  onClick?: (value: string) => void;
   _isRoot?: boolean;
+  children?: ReactNode;
 };
 
 /**
@@ -137,7 +136,6 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       onSelect,
       onOpen,
       onClose,
-      onClick,
       _isRoot = true,
       ...rest
     }: TreeProps,
@@ -170,11 +168,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
     };
 
     const handleClick = () => {
-      if (onClick) {
-        onClick(value);
-      } else {
-        isOpen ? handleClose() : handleOpen();
-      }
+      isOpen ? handleClose() : handleOpen();
     };
 
     const handleSelect = (checked: CheckboxChecked, event: SyntheticEvent) => {
@@ -188,15 +182,8 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
         <TreeLine $selected={selected}>
           <ArrowButton
             disabled={isLeaf}
-            onClick={
-              isLeaf
-                ? () => {
-                    // Do nothing
-                  }
-                : isOpen
-                ? handleClose
-                : handleOpen
-            }
+            role={'button'}
+            onClick={isLeaf ? undefined : isOpen ? handleClose : handleOpen}
           >
             {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
           </ArrowButton>
@@ -222,19 +209,19 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
         </TreeLine>
         {isOpen && !isLeaf && subTrees.length > 0 && (
           <SubTreesContainer role={'group'}>
-            {subTrees.map(subTree => React.cloneElement(subTree, {
-              key: subTree.props.value,
-              _isRoot: false
-            }))}
+            {subTrees.map(subTree =>
+              React.cloneElement(subTree, {
+                key: subTree.props.value,
+                _isRoot: false,
+              })
+            )}
           </SubTreesContainer>
         )}
       </TreeContainer>
     );
 
     // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
-    return _isRoot ?
-      <ul role={'tree'}>{result}</ul> :
-      result;
+    return _isRoot ? <ul role={'tree'}>{result}</ul> : result;
   }
 );
 

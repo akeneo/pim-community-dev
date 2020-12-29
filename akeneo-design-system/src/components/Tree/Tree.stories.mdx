@@ -1,11 +1,45 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Tree} from './Tree.tsx';
-import {RecursiveTree} from './AsynchronousTreeSimulator';
 
 <Meta
   title="Components/Tree"
   component={Tree}
   argTypes={{
+    value: {
+      description: 'Value of the element that is used during callback events'
+    },
+    label: {
+      description: 'Label of the tree element'
+    },
+    isLeaf: {
+      description: 'A leaf is the deepest element of a tree and does not have children'
+    },
+    selected: {
+      description: 'Highlight the current element of the tree'
+    },
+    isLoading: {
+      description: 'Displays the loading animation'
+    },
+    selectable: {
+      description: 'Displays a checkbox that allows to select the element of the tree'
+    },
+    readOnly: {
+      description: 'Does not allow checking/unchecking the box (Can only be used with `selectable`)'
+    },
+    onOpen:{
+      description: 'Triggered when the user opens a node'
+    },
+    onClose:{
+      description: 'Triggered when the user closes a node'
+    },
+    onSelect:{
+      description: 'Triggered when the user selects a node'
+    },
+    _isRoot:{
+        table:{
+          disable: true
+        }
+    },
   }}
   args={{}}
 />
@@ -14,11 +48,11 @@ import {RecursiveTree} from './AsynchronousTreeSimulator';
 
 ## Usage
 
-TODO
+A tree is a hierarchical component that displays the visual representation of the parent-child relationship between nodes (such as categories, families, etc...). There are different variations that allow to select only one and/or multiple node at the same time.
 
-### TODO
+## General guidance
 
-TODO
+Tree structures are flexible. A default tree provides a structure with named nodes and arrows to expand/collapse child nodes, whereas a selectable tree features checkboxes allowing the user to select nodes and/or children nodes.
 
 ## Playground
 
@@ -27,12 +61,9 @@ TODO
     {args => {
       return (
         <Tree value={'master'} label={'Master'} {...args}>
-          <Tree value={'tvs'} label={'TVs and projectors'} isLeaf={true}/>
-          <Tree value={'cameras'} label={'Cameras'}>
-            <Tree value={'digital'} label={'Digital cameras'} isLeaf={true}/>
-            <Tree value={'camcorders'} label={'Camcorders'} isLeaf={true} selected={true}/>
-          </Tree>
-          <Tree value={'audio'} label={'Audio and Video'} selected={true} isLeaf={true}/>
+          <Tree value={'tvs'} label={'TVs and projectors'} {...args}/>
+          <Tree value={'cameras'} label={'Cameras'} {...args}/>
+          <Tree value={'audio'} label={'Audio and Video'} {...args}/>
         </Tree>
       );
     }}
@@ -41,13 +72,80 @@ TODO
 
 <ArgsTable story="Standard" />
 
-## Asynchronous simulation
+## Variation on selected
 
 <Canvas>
-  <Story name="AsynchronousSimulation">
+  <Story name="Selected">
     {args => {
-      const [tree, setTree] = React.useState({ value: 'master', label: 'Master' });
-      return <RecursiveTree tree={tree} treeState={tree} setTreeState={setTree}/>;
+      return (
+        <>
+          <Tree {...args} label='default' selected={false} />
+          <Tree {...args} label='selected' selected={true} />
+        </>
+      );
     }}
   </Story>
 </Canvas>
+
+## Variation on isLoading
+
+<Canvas>
+  <Story name="IsLoading">
+    {args => {
+      return (
+        <>
+          <Tree {...args} label='default' isLoading={false} />
+          <Tree {...args} label='isLoading' isLoading={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on isLeaf
+
+<Canvas>
+  <Story name="IsLeaf">
+    {args => {
+      return (
+        <>
+          <Tree {...args} label='default' isLeaf={false} />
+          <Tree {...args} label='isLeaf' isLeaf={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on selectable
+
+<Canvas>
+  <Story name="Selectable">
+    {args => {
+      const [value, setValue] = React.useState(false);
+      return (
+        <>
+          <Tree {...args} label='default' selectable={false}/>
+          <Tree {...args} label='selectable' selectable={true} selected={value} onSelect={setValue}/>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="ReadOnly">
+    {args => {
+      return (
+        <>
+          <Tree {...args} label='default' selectable={true} readOnly={false} />
+          <Tree {...args} label='readOnly' selectable={true} readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+
