@@ -741,8 +741,12 @@ workflows:
                 filters:
                     branches:
                         only: "5.0"
-          - checkout_ce
-          - checkout_ee
+          - checkout_ce:
+                requires:
+                    - ready_to_build?
+          - checkout_ee:
+                requires:
+                    - ready_to_build?          
           - build_dev:
                 is_ee_built: false
                 requires:
