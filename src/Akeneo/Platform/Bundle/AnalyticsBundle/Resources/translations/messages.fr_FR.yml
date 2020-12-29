@@ -52,6 +52,9 @@ pim_analytics:
     php_extensions: Extensions PHP
     email_domains: Domaine associé
     api_connection: Connexions API
+    nb_media_files_in_products: Nombre de fichiers multimédias dans les produits
+    nb_media_images_in_products: Nombre d'images dans les produits
+    is_demo_catalog: Catalogue de démonstration installé
     data_source.tracked: Nombre de connexions de type "source" monitorées
     data_source.untracked: Nombre de connexions de type "source" non monitorées
     data_destination.tracked: Nombre de connexions de type "destination" monitorées
