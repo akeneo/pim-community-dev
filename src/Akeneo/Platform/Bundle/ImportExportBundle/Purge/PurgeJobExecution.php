@@ -24,15 +24,14 @@ final class PurgeJobExecution
     /** @var DeleteOrphanJobExecutionDirectories */
     private $deleteOrphansJobExecutionDirectories;
 
-    // @todo merge master: remove null
-    /** @var DeleteJobExecutionLogs|null */
+    /** @var DeleteJobExecutionLogs */
     private $deleteJobExecutionLogs;
 
     public function __construct(
         DeleteJobExecution $deleteJobExecution,
         DeleteJobExecutionMessageOrphansQueryInterface $deleteOrphanJobExecutionMessages,
         DeleteOrphanJobExecutionDirectories $deleteOrphansJobExecutionDirectories,
-        DeleteJobExecutionLogs $deleteJobExecutionLogs = null // @todo merge master: remove null
+        DeleteJobExecutionLogs $deleteJobExecutionLogs
     ) {
         $this->deleteJobExecution = $deleteJobExecution;
         $this->deleteOrphanJobExecutionMessages = $deleteOrphanJobExecutionMessages;
@@ -42,10 +41,7 @@ final class PurgeJobExecution
 
     public function olderThanDays(int $days): int
     {
-        // @todo merge master: remove null check
-        if (null !== $this->deleteJobExecutionLogs) {
-            $this->deleteJobExecutionLogs->olderThanDays($days);
-        }
+        $this->deleteJobExecutionLogs->olderThanDays($days);
         $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanDays($days);
         $this->deleteOrphanJobExecutionMessages->execute();
         $this->deleteOrphansJobExecutionDirectories->execute();
@@ -55,10 +51,7 @@ final class PurgeJobExecution
 
     public function all(): void
     {
-        // @todo merge master: remove null check
-        if (null !== $this->deleteJobExecutionLogs) {
-            $this->deleteJobExecutionLogs->all();
-        }
+        $this->deleteJobExecutionLogs->all();
         $this->deleteJobExecution->all();
         $this->deleteOrphanJobExecutionMessages->execute();
         $this->deleteOrphansJobExecutionDirectories->execute();
