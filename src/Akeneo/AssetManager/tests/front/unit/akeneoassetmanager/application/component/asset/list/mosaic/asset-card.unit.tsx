@@ -174,12 +174,13 @@ describe('Test Asset create modal component', () => {
       await flushPromises();
     });
 
-    expect(screen.queryByTestId('asset-card-image')).not.toBeInTheDocument();
-    expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
-    expect(container.querySelector('img')?.src).toEqual(
-      'http://localhost/akeneo_asset_manager_image_preview?type=thumbnail&attributeIdentifier=UNKNOWN&data='
+    const image = screen.queryByTestId('asset-card-image');
+
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute(
+      'src',
+      'akeneo_asset_manager_image_preview?type=thumbnail&attributeIdentifier=UNKNOWN&data='
     );
-    expect(container.querySelector('[data-checked="true"]')).toBeInTheDocument();
-    expect(getByText(container, asset.labels.en_US)).toBeInTheDocument();
+    expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
   });
 });
