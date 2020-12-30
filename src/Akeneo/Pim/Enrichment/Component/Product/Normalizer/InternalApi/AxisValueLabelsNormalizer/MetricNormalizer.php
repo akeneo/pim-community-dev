@@ -11,7 +11,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use Webmozart\Assert\Assert;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
