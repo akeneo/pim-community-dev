@@ -114,14 +114,11 @@ type TreeProps = {
   readOnly?: boolean;
   onOpen?: (value: string) => void;
   onClose?: (value: string) => void;
-  onSelect?: (value: boolean, event: SyntheticEvent) => void;
+  onChange?: (value: string, checked: boolean, event: SyntheticEvent) => void;
   _isRoot?: boolean;
   children?: ReactNode;
 };
 
-/**
- * TODO.
- */
 const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
   (
     {
@@ -133,7 +130,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       isLoading = false,
       selectable = false,
       readOnly = false,
-      onSelect,
+      onChange,
       onOpen,
       onClose,
       _isRoot = true,
@@ -172,8 +169,8 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
     };
 
     const handleSelect = (checked: CheckboxChecked, event: SyntheticEvent) => {
-      if (onSelect) {
-        onSelect(checked as boolean, event);
+      if (onChange) {
+        onChange(value, checked as boolean, event);
       }
     };
 
@@ -221,9 +218,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       </TreeContainer>
     );
 
-    return _isRoot ?
-      <ul role={'tree'}>{result}</ul> :
-      result;
+    return _isRoot ? <ul role={'tree'}>{result}</ul> : result;
   }
 );
 

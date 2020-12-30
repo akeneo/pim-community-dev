@@ -32,8 +32,8 @@ import {Tree} from './Tree.tsx';
     onClose:{
       description: 'Triggered when the user closes a node'
     },
-    onSelect:{
-      description: 'Triggered when the user selects a node'
+    onChange:{
+      description: 'Triggered when the user selects or unselects a node'
     },
     _isRoot:{
         table:{
@@ -122,11 +122,17 @@ Tree structures are flexible. A default tree provides a structure with named nod
 <Canvas>
   <Story name="Selectable">
     {args => {
-      const [value, setValue] = React.useState(false);
+      const [selected, setSelected] = React.useState(false);
       return (
         <>
           <Tree {...args} label='default' selectable={false}/>
-          <Tree {...args} label='selectable' selectable={true} selected={value} onSelect={setValue}/>
+          <Tree
+            {...args}
+            label='selectable'
+            selectable={true}
+            selected={selected}
+            onChange={(_value, checked) => setSelected(checked)}
+          />
         </>
       );
     }}
