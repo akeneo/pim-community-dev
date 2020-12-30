@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9614: Fix missing overlay when the announcements panel is open
+
 # 3.2.79 (2020-12-17)
 
 ## Improvement

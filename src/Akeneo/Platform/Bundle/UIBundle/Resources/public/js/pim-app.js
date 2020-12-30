@@ -1,3 +1,5 @@
+const mediator = require('oro/mediator');
+
 /**
  * Akeneo app
  *
@@ -47,6 +49,9 @@ define(
             className: 'app',
             template: _.template(template),
             flashTemplate: _.template(flashTemplate),
+            events: {
+              'click #overlay': 'onClickToCollapsePanel',
+            },
 
             /**
              * {@inheritdoc}
@@ -54,6 +59,9 @@ define(
             initialize: function () {
                 initLayout();
                 initSignin();
+
+                this.listenTo(mediator, 'pim-app:overlay:show', this.showOverlay);
+                this.listenTo(mediator, 'pim-app:overlay:hide', this.hideOverlay);
 
                 return BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -91,6 +99,18 @@ define(
                 }
 
                 return BaseForm.prototype.render.apply(this, arguments);
+            },
+
+            showOverlay: function () {
+                $('#overlay').addClass('AknOverlay--show');
+            },
+
+            hideOverlay: function () {
+                $('#overlay').removeClass('AknOverlay--show');
+            },
+
+            onClickToCollapsePanel: function() {
+                mediator.trigger('pim-app:panel:close');
             }
         });
     });
