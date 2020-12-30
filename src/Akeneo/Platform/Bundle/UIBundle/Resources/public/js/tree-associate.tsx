@@ -73,29 +73,25 @@ class TreeAssociate {
   private initTree(treeId: number) {
     const tree: HTMLDivElement = document.getElementById(`tree-${treeId}`) as HTMLDivElement;
 
-    const handleSelect = (value: string) => {
+    const handleChange = (value: string, checked: boolean) => {
       const selectedCategoryCodesByTreeId = JSON.parse(this.selectedCategoryCodesByTreeIdInput.value);
       if (!selectedCategoryCodesByTreeId[treeId]) {
         selectedCategoryCodesByTreeId[treeId] = [];
       }
       const index = selectedCategoryCodesByTreeId[treeId].indexOf(value, 0);
-      if (index <= -1) {
-        selectedCategoryCodesByTreeId[treeId].push(value);
-        this.selectedCategoryCodesByTreeIdInput.value = JSON.stringify(selectedCategoryCodesByTreeId);
-        this.selectedCategoryCodesByTreeIdInput.dispatchEvent(new Event('change', {bubbles: true}));
-      }
-    };
 
-    const handleUnselect = (value: string) => {
-      const selectedCategoryCodesByTreeId = JSON.parse(this.selectedCategoryCodesByTreeIdInput.value);
-      if (!selectedCategoryCodesByTreeId[treeId]) {
-        selectedCategoryCodesByTreeId[treeId] = [];
-      }
-      const index = selectedCategoryCodesByTreeId[treeId].indexOf(value, 0);
-      if (index > -1) {
-        selectedCategoryCodesByTreeId[treeId].splice(index, 1);
-        this.selectedCategoryCodesByTreeIdInput.value = JSON.stringify(selectedCategoryCodesByTreeId);
-        this.selectedCategoryCodesByTreeIdInput.dispatchEvent(new Event('change', {bubbles: true}));
+      if (checked) {
+        if (index <= -1) {
+          selectedCategoryCodesByTreeId[treeId].push(value);
+          this.selectedCategoryCodesByTreeIdInput.value = JSON.stringify(selectedCategoryCodesByTreeId);
+          this.selectedCategoryCodesByTreeIdInput.dispatchEvent(new Event('change', {bubbles: true}));
+        }
+      } else {
+        if (index > -1) {
+          selectedCategoryCodesByTreeId[treeId].splice(index, 1);
+          this.selectedCategoryCodesByTreeIdInput.value = JSON.stringify(selectedCategoryCodesByTreeId);
+          this.selectedCategoryCodesByTreeIdInput.dispatchEvent(new Event('change', {bubbles: true}));
+        }
       }
     };
 
@@ -131,8 +127,7 @@ class TreeAssociate {
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
           <CategoryTree
-            onSelect={handleSelect}
-            onUnselect={handleUnselect}
+            onChange={handleChange}
             initRoute={initRoute}
             childrenRoute={childrenRoute}
             lockedCategoryIds={this.lockedCategoryIds}

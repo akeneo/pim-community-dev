@@ -7,8 +7,7 @@ type RecursiveTreeProps = {
   tree: TreeModel;
   treeState: TreeModel;
   setTreeState: (tree: TreeModel) => void;
-  onSelect?: (value: string) => void;
-  onUnselect?: (value: string) => void;
+  onChange?: (value: string, checked: boolean) => void;
   childrenRoute: (value: string) => string;
   selectable?: boolean;
   lockedCategoryIds?: number[];
@@ -20,8 +19,7 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
   tree,
   treeState,
   setTreeState,
-  onSelect,
-  onUnselect,
+  onChange,
   childrenRoute,
   selectable,
   lockedCategoryIds = [],
@@ -100,17 +98,14 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
     });
   };
 
-  const handleCheck = (value: string, selected: boolean) => {
+  const handleChange = (value: string, selected: boolean) => {
     setTreeState(
       recursiveSet(treeState, value, node => {
         return {...node, selected};
       })
     );
-    if (onSelect && selected) {
-      onSelect(value);
-    }
-    if (onUnselect && !selected) {
-      onUnselect(value);
+    if (onChange) {
+      onChange(value, selected);
     }
   };
 
@@ -122,8 +117,7 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
       isLoading={!!tree.loading}
       isLeaf={Array.isArray(tree.children) && tree.children.length == 0}
       selectable={selectable && !_isRoot}
-      // TODO Rename this on onSelect/onUnselect
-      onSelect={selected => handleCheck(tree.value, selected)}
+      onChange={handleChange}
       selected={!!tree.selected}
       readOnly={!!tree.readOnly}
       {...rest}
@@ -136,8 +130,7 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
               treeState={treeState}
               setTreeState={setTreeState}
               key={childNode.value}
-              onSelect={onSelect}
-              onUnselect={onUnselect}
+              onChange={onChange}
               childrenRoute={childrenRoute}
               lockedCategoryIds={lockedCategoryIds}
               readOnly={tree.readOnly}

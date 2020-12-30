@@ -7,8 +7,7 @@ import {Tree} from 'akeneo-design-system/lib/components/Tree/Tree';
 type CategoryTreeProps = {
   initRoute: string;
   childrenRoute: (value: string) => string;
-  onSelect?: (value: string) => void;
-  onUnselect?: (value: string) => void;
+  onChange?: (value: string, checked: boolean) => void;
   selectable?: boolean;
   lockedCategoryIds?: number[];
   readOnly?: boolean;
@@ -17,8 +16,7 @@ type CategoryTreeProps = {
 const CategoryTree: React.FC<CategoryTreeProps> = ({
   initRoute,
   childrenRoute,
-  onSelect,
-  onUnselect,
+  onChange,
   selectable,
   lockedCategoryIds = [],
   readOnly = false,
@@ -47,8 +45,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       tree={treeState}
       treeState={treeState}
       setTreeState={setTreeState}
-      onSelect={onSelect}
-      onUnselect={onUnselect}
+      onChange={onChange}
       childrenRoute={childrenRoute}
       selectable={selectable}
       lockedCategoryIds={lockedCategoryIds}
