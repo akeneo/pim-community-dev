@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps} from '../../../shared/src/theme';
 
-type Tag = 'new' | 'updates';
+type Tag = 'new' | 'update' | 'announcement';
 type TagProps = {
   tag: Tag;
 };
@@ -26,15 +26,24 @@ const StyledTag = styled.div`
           color: #5da8a6;
           border: 1px solid #81cccc;
         `;
-      case 'updates':
+      case 'update':
         return `
           background-color: #f3eef9;
           color: #763e9e;
           border: 1px solid #9452ba;
         `;
-
+      case 'announcement':
+        return `
+          background-color: #f0f7fc;
+          color: #3278b7;
+          border: 1px solid #4ca8e0;
+        `;
       default:
-        return;
+        return `
+          background-color: #efeff8;
+          color: #3b438c;
+          border: 1px solid #5e63b6;
+        `;
     }
   }}
 `;
