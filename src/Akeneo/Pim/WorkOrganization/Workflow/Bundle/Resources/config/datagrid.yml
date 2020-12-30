@@ -330,3 +330,9 @@ services:
             - '@pim_user.context.user'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: draft_status }
+
+    pim_datagrid.adapter.published_product_items_counter:
+        class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Counter\PublishedProductItemsCounter
+        arguments:
+            - '@pim_enrich.doctrine.query.count_impacted_products'
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'

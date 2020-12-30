@@ -1,5 +1,30 @@
 # 4.0.x
 
+# 4.0.81 (2020-12-23)
+
+# 4.0.80 (2020-12-21)
+
+## Bug fixes
+
+- PIM-9604: Reference entities are blocked after using the filter.
+
+# 4.0.79 (2020-12-18)
+
+# 4.0.78 (2020-12-08)
+
+# 4.0.77 (2020-12-07)
+
+## Improvements
+
+- PIM-9558: Remove the word "Damn" from the PIM
+
+# 4.0.76 (2020-12-02)
+
+## Bug fixes
+
+- PIM-9563: Fix default asset preview on asset family grid when cannot generate thumbnail
+- PIM-9557: Fix invalid impacted products count on published product grid
+
 # 4.0.75 (2020-11-27)
 
 ## Bug fixes
