@@ -177,6 +177,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       }
     };
 
+    // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
     const result = (
       <TreeContainer role={'treeitem'} aria-expanded={isOpen} ref={forwardedRef} {...rest}>
         <TreeLine $selected={selected}>
@@ -220,8 +221,9 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       </TreeContainer>
     );
 
-    // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
-    return _isRoot ? <ul role={'tree'}>{result}</ul> : result;
+    return _isRoot ?
+      <ul role={'tree'}>{result}</ul> :
+      result;
   }
 );
 

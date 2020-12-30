@@ -184,7 +184,7 @@ class CategoryTreeController extends Controller
             if ($request->request->has('code')) {
                 $parent = $this->categoryRepository->getCategoriesByCodes([$request->get('code')])[0];
             } else {
-                // Deprecated ; please use code!
+                // @deprecated Please use the code to use this method. Request with id will be removed in CPM-102
                 $parent = $this->findCategory($request->get('id'));
             }
         } catch (\Exception $e) {
