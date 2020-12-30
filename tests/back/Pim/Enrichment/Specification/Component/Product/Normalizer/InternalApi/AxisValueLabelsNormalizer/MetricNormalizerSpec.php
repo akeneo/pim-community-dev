@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer as StandardMetricNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -15,15 +16,15 @@ class MetricNormalizerSpec extends ObjectBehavior
     function let(
         StandardMetricNormalizer $metricNormalizer,
         MetricLocalizer $metricLocalizer,
-        TranslatorInterface $translator
+        GetUnitTranslations $getUnitTranslations
     ) {
-        $this->beConstructedWith($metricNormalizer, $metricLocalizer, $translator);
+        $this->beConstructedWith($metricNormalizer, $metricLocalizer, $getUnitTranslations);
     }
 
     function it_normalizes_a_metric_product_value(
         StandardMetricNormalizer $metricNormalizer,
         MetricLocalizer $metricLocalizer,
-        TranslatorInterface $translator,
+        GetUnitTranslations $getUnitTranslations,
         MetricValue $value
     ) {
         $metricNormalizer->normalize($value, 'standard', ['locale' => 'en_US'])->willReturn(
@@ -39,7 +40,7 @@ class MetricNormalizerSpec extends ObjectBehavior
 
         $metricLocalizer->localize($metric, ['locale' => 'en_US'])->willReturn($metric);
 
-        $translator->trans('pim_measure.units.KILOGRAM', [], 'messages', 'en_US')->willReturn('Kilogram');
+        $getUnitTranslations->byMeasurementFamilyCodeAndLocale('weight', 'en_US')->willReturn(['KILOGRAM' => 'Kilogram']);
 
         $value->getAmount()->willReturn(10);
         $value->getUnit()->willReturn('KILOGRAM');
