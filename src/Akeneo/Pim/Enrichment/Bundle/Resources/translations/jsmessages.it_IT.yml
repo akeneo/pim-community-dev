@@ -333,7 +333,6 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Modifica il modello di prodotto padre di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|]1, Inf[Modifica il modello di prodotto padre di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
       description: Il padre dei prodotti varianti o sotto-modelli di prodotto selezionati nella griglia saranno modificati al modello di prodotto scelto.
 pim_datagrid:
-  search: "Cerca su {{ label }}"
   mass_action_group:
     bulk_actions:
       label: Azioni Massive
