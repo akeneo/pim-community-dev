@@ -85,9 +85,6 @@ batch_jobs:
     perform.label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
   publish_product:
     perform.label: Produkte veröffentlichen
-  default_steps:
-    clean_attribute:
-      clean_draft: Bereinigungsvorschläge
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Neuer Vorschlag
