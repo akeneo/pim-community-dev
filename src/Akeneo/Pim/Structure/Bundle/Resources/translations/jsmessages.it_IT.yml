@@ -200,6 +200,8 @@ pim_enrich.entity.attribute_group:
   label: Attributi di gruppo
   uppercase_label: Gruppo attributi
   plural_label: Gruppi di attributi
+  show_more_attribute:
+    button: Visualizza tutti gli attributi
   flash:
     update:
       success: Gruppo di attributi aggiornato con successo

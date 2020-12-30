@@ -1,5 +1,34 @@
 # 4.0.x
 
+# 4.0.81 (2020-12-23)
+
+## Bug fixes
+
+- PIM-9605: Display the unit label instead of its code in the variant navigation component
+
+# 4.0.80 (2020-12-21)
+
+## Bug fixes
+
+- PIM-9601: Fix compute completeness memory usage
+
+# 4.0.79 (2020-12-18)
+
+## Bug fixes
+
+- PIM-9551: Purge logs when calling the command akeneo:batch:purge-job-execution
+- PIM-9602: Fix family dropdown on product model creation modal
+
+# 4.0.78 (2020-12-08)
+
+# 4.0.77 (2020-12-07)
+
+## Bug fixes
+
+- PIM-9513: Fix the use of an unexisting filter on the API so that it does not return an error 500
+- PIM-9586: [Backport] PIM-9571 Fix missing items on the invalid data file when importing product models
+- PIM-9592: Fix month to seconds conversion
+
 # 4.0.76 (2020-12-02)
 
 # 4.0.75 (2020-11-27)
