@@ -141,10 +141,25 @@ extensions:
         config:
             gridName: product-grid
 
+    pim-product-index-pagination-bottom:
+        module: oro/datagrid/pagination-input
+        parent: pim-product-index-grid-container
+        targetZone: toolbar-bottom
+        config:
+            gridName: product-grid
+
     pim-product-index-columns:
         module: pim/datagrid/column-selector
         parent: pim-product-index-grid-container
         targetZone: toolbar
+        position: 10
+        config:
+            route: pim_datagrid_productgrid_available_columns
+
+    pim-product-index-columns-bottom:
+        module: pim/datagrid/column-selector
+        parent: pim-product-index-grid-container
+        targetZone: toolbar-bottom
         position: 10
         config:
             route: pim_datagrid_productgrid_available_columns
