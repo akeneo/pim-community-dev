@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer as StandardMetricNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use Webmozart\Assert\Assert;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -17,27 +18,18 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class MetricNormalizer implements AxisValueLabelsNormalizer
 {
-    /** @var StandardMetricNormalizer */
-    private $metricNormalizer;
+    private StandardMetricNormalizer $metricNormalizer;
+    private MetricLocalizer $metricLocalizer;
+    private GetUnitTranslations $getUnitTranslations;
 
-    /** @var MetricLocalizer */
-    private $metricLocalizer;
-
-    /** @var TranslatorInterface */
-    private $translator;
-
-    /**
-     * @todo @merge master/5.0: replace translator argument by the adequate service
-     * (probably Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface)
-     */
     public function __construct(
         StandardMetricNormalizer $metricNormalizer,
         MetricLocalizer $metricLocalizer,
-        ?TranslatorInterface $translator = null
+        GetUnitTranslations $getUnitTranslations
     ) {
         $this->metricNormalizer = $metricNormalizer;
         $this->metricLocalizer = $metricLocalizer;
-        $this->translator = $translator;
+        $this->getUnitTranslations = $getUnitTranslations;
     }
 
     /**
@@ -53,9 +45,12 @@ class MetricNormalizer implements AxisValueLabelsNormalizer
 
         $normalizedMetric = $this->metricNormalizer->normalize($value, 'standard', $context);
 
+        $amount = $normalizedMetric['amount'];
+        $measurementFamilyCode = $amount->getFamily();
+
         $metric = [
-            'amount' => $normalizedMetric['amount']->getData(),
-            'unit' => $value->getUnit(),
+            'amount' => $amount->getData(),
+            'unit' => $amount->getUnit(),
         ];
 
         $localizedMetric = $this->metricLocalizer->localize($metric, $context);
@@ -63,7 +58,7 @@ class MetricNormalizer implements AxisValueLabelsNormalizer
         return sprintf(
             '%s %s',
             $localizedMetric['amount'],
-            $this->localizeUnit($localizedMetric['unit'], $locale)
+            $this->localizeUnit($measurementFamilyCode, $localizedMetric['unit'], $locale)
         );
     }
 
@@ -72,19 +67,14 @@ class MetricNormalizer implements AxisValueLabelsNormalizer
         return AttributeTypes::METRIC === $attributeType;
     }
 
-    /**
-     * @todo @merge master/5.0: rework this method
-     * it should probably use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface
-     */
-    private function localizeUnit(string $unit, string $locale): string
+    private function localizeUnit(string $measurementFamilyCode, string $unitCode, string $locale): string
     {
-        if (null === $this->translator) {
-            return $unit;
+        $unitTranslations = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale($measurementFamilyCode, $locale);
+
+        if (!isset($unitTranslations[$unitCode])) {
+            return $unitCode;
         }
 
-        $translationKey = sprintf('pim_measure.units.%s', $unit);
-        $translation = $this->translator->trans($translationKey, [], 'messages', $locale);
-
-        return ($translation === $translationKey) ? $unit : $translation;
+        return $unitTranslations[$unitCode];
     }
 }
