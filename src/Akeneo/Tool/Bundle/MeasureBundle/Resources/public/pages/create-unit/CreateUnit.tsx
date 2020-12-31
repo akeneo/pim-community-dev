@@ -1,7 +1,16 @@
-import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
-import {Helper, MeasurementIllustration, Button, SectionTitle, Title, Modal} from 'akeneo-design-system';
+import React, {useCallback, useContext, useRef, useState} from 'react';
+import {
+  Helper,
+  MeasurementIllustration,
+  Button,
+  SectionTitle,
+  Title,
+  Modal,
+  TextInput,
+  Field,
+  Checkbox,
+} from 'akeneo-design-system';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
-import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {useForm} from 'akeneomeasure/hooks/use-form';
 import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
@@ -13,12 +22,19 @@ import {
   validateCreateUnitForm,
 } from 'akeneomeasure/pages/create-unit/form/create-unit-form';
 import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
-import {CheckboxField} from 'akeneomeasure/shared/components/CheckboxField';
 import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {useAutoFocus, filterErrors, ValidationError, useShortcut, Key} from '@akeneo-pim-community/shared';
+import {
+  useAutoFocus,
+  filterErrors,
+  ValidationError,
+  useShortcut,
+  Key,
+  inputErrors,
+  getErrorsForPath,
+} from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;
@@ -104,41 +120,43 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
           <Helper level="warning">{translate('measurements.unit.will_be_read_only')}</Helper>
         )}
         <FormGroup>
-          <TextField
-            ref={firstFieldRef}
-            id="measurements.unit.create.code"
-            label={translate('pim_common.code')}
-            value={form.code}
-            onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('code', e.currentTarget.value)}
-            required={true}
-            errors={errors.filter(error => error.propertyPath === 'code')}
-          />
-          <TextField
-            id="measurements.unit.create.label"
-            label={translate('pim_common.label')}
-            value={form.label}
-            onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('label', e.currentTarget.value)}
-            flag={locale}
-            errors={errors.filter(error => error.propertyPath === 'label')}
-          />
-          <TextField
-            id="measurements.unit.create.symbol"
-            label={translate('measurements.form.input.symbol')}
-            value={form.symbol}
-            onChange={(e: FormEvent<HTMLInputElement>) => setFormValue('symbol', e.currentTarget.value)}
-            errors={errors.filter(error => error.propertyPath === 'symbol')}
-          />
+          <Field label={`${translate('pim_common.code')} ${translate('pim_common.required_label')}`}>
+            <TextInput
+              ref={firstFieldRef}
+              id="measurements.unit.create.code"
+              value={form.code}
+              onChange={(value: string) => setFormValue('code', value)}
+            />
+            {inputErrors(translate, getErrorsForPath(errors, 'code'))}
+          </Field>
+          <Field label={translate('pim_common.label')} locale={locale}>
+            <TextInput
+              id="measurements.unit.create.label"
+              value={form.label}
+              onChange={(value: string) => setFormValue('label', value)}
+            />
+            {inputErrors(translate, getErrorsForPath(errors, 'label'))}
+          </Field>
+          <Field label={translate('measurements.form.input.symbol')}>
+            <TextInput
+              id="measurements.unit.create.symbol"
+              value={form.symbol}
+              onChange={(value: string) => setFormValue('symbol', value)}
+            />
+            {inputErrors(translate, getErrorsForPath(errors, 'symbol'))}
+          </Field>
           <OperationCollection
             operations={form.operations}
             onOperationsChange={(operations: Operation[]) => setFormValue('operations', operations)}
             errors={filterErrors(errors, `convert_from_standard`)}
           />
-          <CheckboxField
+          <Checkbox
             id="measurements.unit.create_another"
-            label={translate('measurements.unit.create_another')}
-            value={createAnotherUnit}
+            checked={createAnotherUnit}
             onChange={(checked: boolean) => setCreateAnotherUnit(checked)}
-          />
+          >
+            {translate('measurements.unit.create_another')}
+          </Checkbox>
         </FormGroup>
       </Subsection>
       <Modal.BottomButtons>

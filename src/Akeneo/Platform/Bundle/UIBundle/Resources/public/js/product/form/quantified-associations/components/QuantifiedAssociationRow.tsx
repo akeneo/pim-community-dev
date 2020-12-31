@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, InputErrors} from '@akeneo-pim-community/shared';
+import {filterErrors, inputErrors} from '@akeneo-pim-community/shared';
 import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme} from 'akeneo-design-system';
 import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
 import {useProductThumbnail} from '../hooks';
@@ -200,7 +200,7 @@ const QuantifiedAssociationRow = ({
               }}
             />
           </InputCellContainer>
-          <InputErrors errors={row.errors} />
+          {inputErrors(translate, row.errors)}
         </Cell>
         {!isCompact ? (
           <Cell>

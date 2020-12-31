@@ -1,8 +1,7 @@
-import React, {FormEvent, useCallback} from 'react';
+import React, {useCallback} from 'react';
 import styled from 'styled-components';
 import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {TextField} from 'akeneomeasure/shared/components/TextField';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {
   setUnitSymbol,
@@ -17,8 +16,8 @@ import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, ValidationError, useToggleState} from '@akeneo-pim-community/shared';
-import {Button} from 'akeneo-design-system';
+import {filterErrors, ValidationError, useToggleState, inputErrors} from '@akeneo-pim-community/shared';
+import {Button, Field, TextInput} from 'akeneo-design-system';
 
 const Container = styled.div`
   margin-left: 40px;
@@ -52,7 +51,7 @@ const UnitDetails = ({
   selectUnitCode,
   errors,
 }: UnitDetailsProps) => {
-  const __ = useTranslate();
+  const translate = useTranslate();
   const {isGranted} = useSecurity();
   const locales = useUiLocales();
   const locale = useUserContext().get('uiLocale');
@@ -71,35 +70,30 @@ const UnitDetails = ({
     <>
       <ConfirmDeleteModal
         isOpen={isConfirmDeleteUnitModalOpen}
-        description={__('measurements.unit.delete.confirm')}
+        description={translate('measurements.unit.delete.confirm')}
         onConfirm={handleRemoveUnit}
         onCancel={closeConfirmDeleteUnitModal}
       />
       <Container>
         <SubsectionHeader top={0}>
-          {__('measurements.unit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}
+          {translate('measurements.unit.title', {unitLabel: getUnitLabel(selectedUnit, locale)})}
         </SubsectionHeader>
         <FormGroup>
-          <TextField
-            id="measurements.unit.properties.code"
-            role="unit-code-input"
-            label={__('pim_common.code')}
-            value={selectedUnit.code}
-            required={true}
-            readOnly={true}
-            errors={filterErrors(errors, '[code]')}
-          />
-          <TextField
-            id="measurements.unit.properties.symbol"
-            role="unit-symbol-input"
-            label={__('measurements.unit.symbol')}
-            value={selectedUnit.symbol}
-            readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
-            onChange={(event: FormEvent<HTMLInputElement>) =>
-              onMeasurementFamilyChange(setUnitSymbol(measurementFamily, selectedUnit.code, event.currentTarget.value))
-            }
-            errors={filterErrors(errors, '[symbol]')}
-          />
+          <Field label={`${translate('pim_common.code')} ${translate('pim_common.required_label')}`}>
+            <TextInput id="measurements.unit.properties.code" value={selectedUnit.code} readOnly={true} />
+            {inputErrors(translate, filterErrors(errors, '[code]'))}
+          </Field>
+          <Field label={translate('measurements.unit.symbol')}>
+            <TextInput
+              id="measurements.unit.properties.symbol"
+              value={selectedUnit.symbol}
+              readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
+              onChange={(value: string) =>
+                onMeasurementFamilyChange(setUnitSymbol(measurementFamily, selectedUnit.code, value))
+              }
+            />
+            {inputErrors(translate, filterErrors(errors, '[symbol]'))}
+          </Field>
           <OperationCollection
             operations={selectedUnit.convert_from_standard}
             readOnly={
@@ -113,35 +107,29 @@ const UnitDetails = ({
             errors={filterErrors(errors, '[convert_from_standard]')}
           />
         </FormGroup>
+        <SubsectionHeader top={0}>{translate('measurements.label_translations')}</SubsectionHeader>
         <FormGroup>
-          <SubsectionHeader top={0}>{__('measurements.label_translations')}</SubsectionHeader>
-          <FormGroup>
-            {null !== locales &&
-              locales.map(locale => (
-                <TextField
+          {null !== locales &&
+            locales.map(locale => (
+              <Field key={locale.code} label={locale.label} locale={locale.code}>
+                <TextInput
                   id={`measurements.family.properties.label.${locale.code}`}
-                  role={`unit-label-input-${locale.code}`}
-                  label={locale.label}
-                  key={locale.code}
-                  flag={locale.code}
                   readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
                   value={selectedUnit.labels[locale.code] || ''}
-                  onChange={(event: FormEvent<HTMLInputElement>) =>
-                    onMeasurementFamilyChange(
-                      setUnitLabel(measurementFamily, selectedUnitCode, locale.code, event.currentTarget.value)
-                    )
+                  onChange={(value: string) =>
+                    onMeasurementFamilyChange(setUnitLabel(measurementFamily, selectedUnitCode, locale.code, value))
                   }
-                  errors={filterErrors(errors, `[labels][${locale.code}]`)}
                 />
-              ))}
-          </FormGroup>
+                {inputErrors(translate, filterErrors(errors, `[labels][${locale.code}]`))}
+              </Field>
+            ))}
         </FormGroup>
         {isGranted('akeneo_measurements_measurement_unit_delete') &&
           !measurementFamily.is_locked &&
           selectedUnitCode !== measurementFamily.standard_unit_code && (
             <Footer>
               <Button level="danger" ghost={true} onClick={openConfirmDeleteUnitModal}>
-                {__('measurements.unit.delete.button')}
+                {translate('measurements.unit.delete.button')}
               </Button>
             </Footer>
           )}

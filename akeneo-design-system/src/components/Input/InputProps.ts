@@ -1,7 +1,7 @@
 type InputProps = {
   id?: string;
   value: unknown;
-  onChange: (newValue: unknown) => void;
+  onChange?: (newValue: unknown) => void;
   'aria-labelledby'?: string;
 };
 

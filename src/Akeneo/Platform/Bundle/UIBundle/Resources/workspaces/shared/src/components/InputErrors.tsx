@@ -1,26 +1,13 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {ValidationError, formatParameters} from '@akeneo-pim-community/shared';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {Helper} from 'akeneo-design-system';
+import {Translate} from '@akeneo-pim-community/legacy-bridge';
+import {Helper, HelperProps} from 'akeneo-design-system';
 
-type InputErrorsProps = {
-  errors?: ValidationError[];
-};
+const inputErrors = (translate: Translate, errors: ValidationError[] = []): ReactElement<HelperProps>[] =>
+  formatParameters(errors).map((error, key) => (
+    <Helper key={key} level='error' inline={true}>
+      {translate(error.messageTemplate, error.parameters, error.plural)}
+    </Helper>
+  ));
 
-const InputErrors = ({errors = []}: InputErrorsProps) => {
-  const translate = useTranslate();
-
-  if (0 === errors.length) return null;
-
-  return (
-    <>
-      {formatParameters(errors).map((error, key) => (
-        <Helper inline={true} level="error" key={key}>
-          {translate(error.messageTemplate, error.parameters, error.plural)}
-        </Helper>
-      ))}
-    </>
-  );
-};
-
-export {InputErrors};
+export {inputErrors};
