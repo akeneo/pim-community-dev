@@ -50,6 +50,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Product proposal import in CSV
     import.label: Product proposal import
+  csv_product_model_proposal_import:
+    label: Product model proposal import in CSV
+    import.label: Product model proposal import in CSV
   approve_product_draft:
     label: Approve proposal
     perform.label: Approve proposal
@@ -62,6 +65,9 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Product proposal import in XLSX
     import.label: Product proposal import in XLSX
+  xlsx_product_model_proposal_import:
+    label: Product model proposal import in XLSX
+    import.label: Product model proposal import in XLSX
   csv_published_product_quick_export:
     export.label: Csv published products quick export
     perform.label: Csv published products quick export
@@ -86,6 +92,7 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Proposal approved
     pimee_workflow_product_draft_notification_refuse: Proposal rejected
     pimee_workflow_product_draft_notification_remove: Proposal deleted
+    pimee_workflow_product_draft_notification_sent: Proposals sent
 pimee_dashboard:
   widget:
     product_drafts:
@@ -127,6 +134,8 @@ pimee_enrich.entity.product:
     approval:
       send: Send for approval
       sent: Sent for approval
+      send_and_next: Send and next
+      send_and_finish: Send and finish
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -160,6 +169,7 @@ pimee_enrich.entity.product_draft:
     create:
       success: Product draft sent for approval
       fail: You cannot send this draft for approval
+      skip: Product draft hasn't been sent for approval as no value has been edited
   module:
     proposal:
       accept: Accept proposal
