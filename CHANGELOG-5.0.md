@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.0 (2020-12-31)
+
 ## Bug fixes
 
 - PIM-9554: Discrepancy on the user dashboard due to difference between UI locale and catalog locale
