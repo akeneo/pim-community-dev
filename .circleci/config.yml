@@ -846,7 +846,7 @@ workflows:
           - build_dev:
                 requires:
                     - checkout
-          - ready_to_build_pr_environment:
+          - ready_to_build_pr_environment?:
                 type: approval
                 requires:
                     - ready_to_build?
