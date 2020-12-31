@@ -7,12 +7,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Oro\Bundle\PimDataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
 use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
 use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product datasource dedicated to the product association datagrid.
@@ -25,6 +29,21 @@ class AssociatedProductDatasource extends ProductDatasource
 {
     /** @var string */
     protected $sortOrder;
+
+    // todo merge remove null
+    /** @var NormalizerInterface|null */
+    private $internalApiNormalizer;
+
+    public function __construct(
+        ObjectManager $om,
+        ProductQueryBuilderFactoryInterface $factory,
+        NormalizerInterface $serializer,
+        FilterEntityWithValuesSubscriber $filterEntityWithValuesSubscriber,
+        NormalizerInterface $internalApiNormalizer = null // todo merge remove null
+    ) {
+        parent::__construct($om, $factory, $serializer, $filterEntityWithValuesSubscriber);
+        $this->internalApiNormalizer = $internalApiNormalizer;
+    }
 
     /**
      * Sets the sort order passed to the "is associated" datagrid sorter.
@@ -117,8 +136,27 @@ class AssociatedProductDatasource extends ProductDatasource
 
         $rows = ['totalRecords' => count($associatedProductsIds) + count($associatedProductModelsIds)];
         $rows['data'] = array_merge($normalizedAssociatedProducts, $normalizedAssociatedProductModels);
+        $rows['meta']['source'] = $this->getNormalizedSource($sourceProduct, $locale, $scope);
 
         return $rows;
+    }
+
+    protected function getNormalizedSource(ProductInterface $product, string $locale, string $scope): ?array
+    {
+        // todo merge remove null check
+        if (null === $this->internalApiNormalizer) {
+            return null;
+        }
+
+        $dataLocale = $this->getParameters()['dataLocale'];
+
+        $context = [
+            'locales'       => [$locale],
+            'channels'      => [$scope],
+            'data_locale'   => $dataLocale,
+        ];
+
+        return $this->internalApiNormalizer->normalize($product, 'internal_api', $context);
     }
 
     /**

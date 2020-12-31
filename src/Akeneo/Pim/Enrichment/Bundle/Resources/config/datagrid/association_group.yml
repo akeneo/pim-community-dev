@@ -7,6 +7,7 @@ datagrid:
             columnListener:
                 dataField: id
                 columnName: is_checked
+                acl_resource: pim_enrich_product_add_to_groups
         source:
             type: pim_datasource_default
             entity: '%pim_catalog.entity.group.class%'
@@ -16,6 +17,7 @@ datagrid:
                 frontend_type: boolean
                 data_name:     is_checked
                 editable:      true
+                editable_acl:  pim_enrich_product_add_to_groups
             is_associated:
                 label:         Is associated
                 data_name:     is_associated

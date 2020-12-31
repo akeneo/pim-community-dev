@@ -73,6 +73,11 @@ function(_, Backbone, BackbonePageableCollection, app) {
         multipleSorting: true,
 
         /**
+         * @property {Object}
+         */
+        meta: {},
+
+        /**
          * Initialize basic parameters from source options
          *
          * @param models
@@ -101,6 +106,9 @@ function(_, Backbone, BackbonePageableCollection, app) {
             }
             if (options.inputName) {
                 this.inputName = options.inputName;
+            }
+            if (models?.meta) {
+                this.meta = models.meta;
             }
 
             _.extend(this.queryParams, {
