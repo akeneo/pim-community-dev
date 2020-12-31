@@ -42,7 +42,6 @@ lint-front:
 .PHONY: unit-back
 unit-back: var/tests/phpspec
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php mkdir var/logs
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 else
