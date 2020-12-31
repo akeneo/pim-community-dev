@@ -121,7 +121,7 @@
             "php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --no-interaction --ansi"
         ]
     },
-    "scripts-description": {
+    "scripts-descriptions": {
         "before-commit-re": "Run all the checks on the Reference Entity Bounded Context",
         "before-commit-am": "Run all the checks on the Asset Manager Bounded Context"
     },
