@@ -679,6 +679,7 @@ config:
     pim/product-edit-form/categories:                        pimui/js/product/form/categories
     pim/product-edit-form/associations:                      pimui/js/product/form/associations
     pim/product-edit-form/associated-product-row:            pimui/js/product/form/associated-product-row
+    pim/product-edit-form/associated-product-row-view:       pimui/js/product/form/associated-product-row-view
     pim/product-edit-form/locale-switcher:                   pimui/js/product/form/locale-switcher
     pim/product-edit-form/scope-switcher:                    pimui/js/product/form/scope-switcher
     pim/product-edit-form/completeness:                      pimui/js/product/form/completeness
