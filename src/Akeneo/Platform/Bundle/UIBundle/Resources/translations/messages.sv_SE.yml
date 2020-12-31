@@ -81,6 +81,8 @@ pim_enrich:
       comment: Kommentera produkter
       download: Ladda ner produkten som PDF
       history: Visa produkten historik
+    product_model:
+      create: Skapa en produktmodell
     category:
       list: Lista Kategorier
       create: Skapa en kategori
@@ -272,6 +274,7 @@ Useable as grid column: Kan användas som rutnätskolumn
 Useable as grid filter: Användbara i rutnät
 Family: Familj
 Image: Bild
+Variant products: Variantprodukter
 Available locales: Tillgängliga språk
 Locale specific: Specifik språk
 default: Standard
@@ -298,6 +301,7 @@ No matches found: Inga träffar hittades
 Category tree: Kategoriträd
 Completeness: Fullständighet
 Attribute used as label: Attribut används som etikett
+Credentials: Referenser
 #Scopes
 Global: Global
 Channel: Kanal

@@ -1,6 +1,10 @@
 # 3.2.x
 
-## Improvements:
+## Bug fixes
+
+- PIM-9614: Fix missing overlay when the announcements panel is open
+
+## Improvement:
 
 - PIM-9483: Users with the ACL "View the associations of a product" can view associations of products, even if they are not owner
 

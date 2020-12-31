@@ -210,6 +210,7 @@ pim_common:
     DOES NOT CONTAIN: 포함하지 않음
     STARTS WITH: 다음으로 시작
     ENDS WITH: 다음으로 끝남
+  read_more: 더보기
 error:
   exception: 죄송합니다! {{ status_code }} 오류가 발생했습니다...
   forbidden: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
@@ -349,3 +350,8 @@ pim_notification:
     export: 내보내기
     quick_export: 빠른 내보내기
     mass_edit: 대량 편집
+akeneo_communication_channel:
+  link:
+    title: 공지사항
+  panel:
+    title: 공지사항
