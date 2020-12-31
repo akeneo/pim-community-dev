@@ -20,6 +20,10 @@ yarn.lock: package.json
 node_modules: yarn.lock
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) install
 
+.PHONY: javascript-extensions
+javascript-extensions:
+	$(YARN_RUN) run update-extensions
+
 .PHONY: dsm
 dsm:
 	$(YARN_RUN) --cwd=vendor/akeneo/pim-community-dev/akeneo-design-system install --frozen-lockfile
@@ -105,3 +109,12 @@ up:
 .PHONY: down
 down:
 	docker-compose down -v
+
+.PHONY: upgrade
+upgrade-front:
+	$(MAKE) node_modules
+	$(MAKE) cache
+	$(MAKE) assets
+	$(MAKE) javascript-prod
+	$(MAKE) css
+	$(MAKE) javascript-extensions
