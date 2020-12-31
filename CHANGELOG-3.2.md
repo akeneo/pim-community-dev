@@ -1,5 +1,11 @@
 # 3.2.x
 
+# 3.2.79 (2020-12-17)
+
+## Improvement
+
+- PIM-9599: Fix @babel/types dependency to ^7.11.5
+
 # 3.2.78 (2020-12-02)
 
 ## Bug fixes

@@ -10521,16 +10521,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.171.8",
+            "version": "3.171.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "1f7f7c1db844f6c988c93008f902b352c7616da8"
+                "reference": "687cff8a0aa0ed3fd71eb4ef3f8d2b39136949d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/1f7f7c1db844f6c988c93008f902b352c7616da8",
-                "reference": "1f7f7c1db844f6c988c93008f902b352c7616da8",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/687cff8a0aa0ed3fd71eb4ef3f8d2b39136949d0",
+                "reference": "687cff8a0aa0ed3fd71eb4ef3f8d2b39136949d0",
                 "shasum": ""
             },
             "require": {
@@ -10605,9 +10605,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.171.8"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.171.9"
             },
-            "time": "2020-12-29T19:11:15+00:00"
+            "time": "2020-12-30T19:11:22+00:00"
         },
         {
             "name": "behat/behat",
