@@ -4,11 +4,30 @@ akeneo_referenceentity:
   acl:
     reference_entity:
       create: Create an entity
+      edit: Edit the entity properties
       delete: Delete an entity
+      manage_permission: Manage reference entity permissions
     record:
       create: Create a record
+      edit: Edit the records
       delete: Delete a record
       delete_all: Delete all entity records
+      list_product: List linked products to record
     attribute:
       create: Add an attribute to a reference entity
       edit: Edit an attribute of a reference entity
+      delete: Delete an attribute of a reference entity
+    option:
+      edit: Edit options
+      delete: Remove an option
+pim_analytics:
+  info_type:
+    nb_reference_entities: Number of reference entities
+    max_number_of_records_per_reference_entity: Max number of records per reference entity
+    average_number_of_values_per_records: Average number of values per record on all reference entities
+    average_number_of_records_per_reference_entity: Average number of records per reference entity
+    max_number_of_attributes_per_reference_entity: Max number of attributes per reference entity
+    average_number_of_attributes_per_reference_entity: Average number of attributes per reference entity
+    average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per reference entity
+    average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per reference entity
+    average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per reference entity

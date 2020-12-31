@@ -1,0 +1,235 @@
+user:
+  asset_delay_reminder: Asset delay reminder (in days)
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Manage assets
+        manage_asset:
+          title: Manage assets
+          cancel: Cancel
+          confirm: Confirm
+        title: Manage assets
+        description: Choose the assets you want to attach to your product
+        preview_title: Asset collection preview
+        download: Download
+        remove: Remove
+        upload: Upload
+        assetRemoveConfirmationLabel: Are you sure you want to remove this asset?
+    asset:
+      not_empty: Code is required. It can not be empty.
+      alpha_numeric_plus_underscore: The code should be only alphanumeric or underscore.
+      unique: Code must be unique. We generated a new one for you.
+  enrich_asset:
+    grid:
+      edit: Edit properties of the asset
+  enrich_variation:
+    popin:
+      reset:
+        title: Reset variations
+        message: Are you sure you want to reset all the variations?
+  mass_upload:
+    menu: Upload assets
+    btn:
+      remove_all_files: Remove all files
+      import: Import
+      upload: Upload assets
+    success:
+      new: A new asset will be created
+      imported: Files imported for asset processing
+      canceled: Upload successfully canceled
+      deleted: Uploaded file successfully deleted
+      need_refresh: <b>Asset import has been launched</b><br> To see imported assets in the product form, please refresh the product page as soon as you receive the import notification.
+    error:
+      list: Cannot read already uploaded files
+      delete: Cannot delete file from server
+      filename: Invalid file name for asset
+      code: Invalid code format for asset
+      locale: An asset exists but is not localizable
+      invalid_locale: The locale is disabled or invalid
+      exists: A file with the same name is already imported
+      conflicts: File names conflict
+    status:
+      added: Added
+      queued: Queued
+      uploading: Uploading
+      error: Error
+      success: Success
+    drag_and_drop: Drag and drop your assets or click here
+    tabsection_title: Assets uploaded
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Are you sure you want to delete the selected assets?
+        success: Selected assets successfully deleted.
+        empty_selection: No asset selected
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Assets collection
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Mass upload
+pim_title:
+  pimee_product_asset_mass_upload: Upload assets
+  pimee_product_asset_index: Assets
+  pimee_product_asset_edit: Asset {{ asset.label }} | Edit
+  pimee_product_asset_view: Asset {{ asset.label }} | View
+  pimee_asset_categorytree_index: Categories
+  pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
+  pimee_asset_categorytree_create: Category | Create
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Assets mass upload
+    perform.label: Mass upload
+  apply_assets_mass_upload_into_asset_collection:
+    label: Assets mass upload and add to product
+    perform.label: Mass upload assets and add to product
+  yml_asset_channel_configuration_import:
+    import.label: Asset channel configuration import
+    label: Asset channel configuration import in Yaml
+    import_asset.label: Asset channel configuration import in Yaml
+  yml_asset_channel_configuration_export:
+    label: Asset channel configuration export in Yaml
+    export.label: Asset channel configuration export in Yaml
+  csv_asset_import:
+    label: Asset import in CSV
+    import_tags.label: Tag import in CSV
+    import_asset.label: Asset import in CSV
+  csv_asset_export:
+    label: Asset export in CSV
+    export.label: Asset export in CSV
+  csv_asset_variation_export:
+    label: Asset variations export in CSV
+    export.label: Asset variations export in CSV
+  csv_tag_import:
+    label: Tag import in CSV
+    import.label: Tag import in CSV
+  csv_asset_category_import:
+    label: Asset category import in CSV
+    import_asset_category.label: Asset category import in CSV
+  csv_asset_configuration_import:
+    label: Asset channel configuration import in CSV
+    import_asset.label: Asset channel configuration import in CSV
+  csv_asset_category_export:
+    label: Asset category export in CSV
+    export.label: Asset category export in CSV
+  xlsx_tag_import:
+    label: Tag import in XLSX
+    import.label: Tag import in XLSX
+  xlsx_asset_import:
+    label: Asset import in XLSX
+    import_tags.label: Tag import in XLSX
+    import_asset.label: Asset import in XLSX
+  xlsx_asset_category_import:
+    label: Asset category import in XLSX
+    import_asset_category.label: Asset category import in XLSX
+  xlsx_asset_export:
+    label: Asset export in XLSX
+    export.label: Asset export in XLSX
+  xlsx_asset_category_export:
+    label: Asset category export in XLSX
+    export.label: Asset category export in XLSX
+  xlsx_asset_variation_export:
+    label: Asset variation export in XLSX
+    export.label: Asset variation export in XLSX
+  classify_assets:
+    perform.label: Move assets to categories
+  add_tags_to_assets:
+    perform.label: Add tags to assets
+jstree:
+  asset:
+    all: All assets
+    unclassified: Unclassified assets
+asset_grid:
+  title: "]-Inf, 1]{{ count }} Product asset|]1, Inf[{{ count }} Product assets"
+  selected: selected assets
+  label: Product assets
+create_asset:
+  title: Create an asset
+pim_datagrid:
+  display_selector:
+    label: Display
+    gallery: Gallery
+    list: List
+  mass_action:
+    mass_edit:
+      asset_edit: Mass edit assets
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Asset transformations
+      not_found: No transformation found
+      transformation: Transformation
+      options: Options
+      colorspace:
+        title: Colorspace
+        options:
+          colorspace: '%value% colorspace'
+      resize:
+        title: Resize
+        options:
+          width: '%value%px width'
+          height: '%value%px height'
+      resolution:
+        title: Resolution
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Scale
+        options:
+          width: '%value%px width'
+          height: '%value%px height'
+          ratio: '%value%% ratio'
+      thumbnail:
+        title: Thumbnail
+        options:
+          width: '%value%px width'
+          height: '%value%px height'
+pimee_enrich.mass_edit.asset:
+  title: Assets bulk action
+  confirm: "{1}You are about to update an asset with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} assets with the following information, please confirm."
+  step:
+    select:
+      label: Choose assets
+    choose:
+      title: Assets bulk actions
+      label_count: "]0, Inf[Select your action"
+    configure:
+      label: Configure
+    confirm:
+      label: Confirm
+  operation:
+    add_tag:
+      label: Add tags to assets
+      description: Tags will be added to the assets.
+      label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf[Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
+      field: Tags
+      empty_selection: Please choose tags
+    add_to_category:
+      label: Classify assets in categories
+      description: The assets will be positioned into following categories, the existing placement will be lost.
+      label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|]1, Inf[Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
+pim_catalog_volume:
+  section:
+    assets:
+      title: Axes on assets
+      hint: You can follow the volume regarding the assets right here.
+  axis:
+    count_assets: Assets
+    count_asset_categories: Asset categories
+    count_asset_category_trees: Asset category trees
+pim_menu:
+  tab:
+    asset: Assets
+  item:
+    asset_category: Asset categories
+    upload_asset: Upload Assets
+pim_notification:
+  types:
+    mass_upload: Mass upload
