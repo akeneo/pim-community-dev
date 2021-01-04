@@ -1,5 +1,14 @@
 import React, {useCallback, useContext, useRef, useState} from 'react';
-import {Helper, MeasurementIllustration, Button, SectionTitle, Title, Modal, Checkbox} from 'akeneo-design-system';
+import {
+  Helper,
+  MeasurementIllustration,
+  Button,
+  SectionTitle,
+  Title,
+  Modal,
+  Checkbox,
+  useAutoFocus,
+} from 'akeneo-design-system';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {useForm} from 'akeneomeasure/hooks/use-form';
@@ -17,7 +26,6 @@ import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollectio
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
 import {
-  useAutoFocus,
   filterErrors,
   ValidationError,
   useShortcut,
@@ -28,12 +36,11 @@ import {
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;
-  isOpen: boolean;
   onClose: () => void;
   onNewUnit: (unit: Unit) => void;
 };
 
-const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitProps) => {
+const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) => {
   const translate = useTranslate();
   const notify = useNotify();
   const locale = useUserContext().get('uiLocale');
@@ -97,8 +104,6 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
   useShortcut(Key.Enter, handleAdd);
   useShortcut(Key.NumpadEnter, handleAdd);
 
-  if (!isOpen) return null;
-
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={handleClose} illustration={<MeasurementIllustration />}>
       <SectionTitle color="brand">
@@ -123,7 +128,7 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
             value={form.label}
             onChange={value => setFormValue('label', value)}
             locale={locale}
-            errors={getErrorsForPath(errors, 'label')}
+            errors={getErrorsForPath(errors, `labels[${locale}]`)}
           />
           <TextField
             label={translate('measurements.form.input.symbol')}

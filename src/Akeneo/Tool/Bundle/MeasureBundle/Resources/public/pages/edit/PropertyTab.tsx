@@ -1,10 +1,10 @@
-import React, {useRef} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {MeasurementFamily, setMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
 import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {useAutoFocus, ValidationError, filterErrors, TextField} from '@akeneo-pim-community/shared';
+import {ValidationError, filterErrors, TextField} from '@akeneo-pim-community/shared';
 import {useTranslate, useSecurity} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
@@ -27,9 +27,6 @@ const PropertyTab = ({
   const locales = useUiLocales();
   const {isGranted} = useSecurity();
 
-  const firstFieldRef = useRef<HTMLInputElement | null>(null);
-  useAutoFocus(firstFieldRef);
-
   return (
     <Container>
       <SubsectionHeader top={0}>{translate('pim_common.general_properties')}</SubsectionHeader>
@@ -47,7 +44,7 @@ const PropertyTab = ({
         {null !== locales &&
           locales.map((locale, index) => (
             <TextField
-              ref={0 === index ? firstFieldRef : undefined}
+              autoFocus={0 === index}
               label={locale.label}
               errors={filterErrors(errors, `labels[${locale.code}]`)}
               key={locale.code}
