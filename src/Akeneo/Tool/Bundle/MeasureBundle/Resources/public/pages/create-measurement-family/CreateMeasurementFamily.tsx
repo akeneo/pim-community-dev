@@ -64,16 +64,16 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
         <FormGroup>
           <TextField
             label={translate('pim_common.code')}
-            required={true}
             value={form.family_code}
             onChange={value => setFormValue('family_code', value)}
+            required={true}
             errors={getErrorsForPath(errors, 'code')}
           />
           <TextField
             label={translate('pim_common.label')}
-            locale={locale}
             value={form.family_label}
             onChange={value => setFormValue('family_label', value)}
+            locale={locale}
             errors={getErrorsForPath(errors, `labels[${locale}]`)}
           />
         </FormGroup>
@@ -86,13 +86,14 @@ const CreateMeasurementFamily = ({isOpen, onClose}: CreateMeasurementFamilyProps
             label={translate('pim_common.code')}
             value={form.standard_unit_code}
             onChange={value => setFormValue('standard_unit_code', value)}
+            required={true}
             errors={getErrorsForPath(errors, 'units[0][code]')}
           />
           <TextField
             label={translate('pim_common.label')}
-            locale={locale}
             value={form.standard_unit_label}
             onChange={value => setFormValue('standard_unit_label', value)}
+            locale={locale}
             errors={getErrorsForPath(errors, `units[0][labels][${locale}]`)}
           />
           <TextField

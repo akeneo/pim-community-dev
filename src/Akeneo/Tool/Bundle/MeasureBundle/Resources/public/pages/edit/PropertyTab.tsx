@@ -36,10 +36,10 @@ const PropertyTab = ({
       <FormGroup>
         <TextField
           label={translate('pim_common.code')}
-          required={true}
           value={measurementFamily.code}
-          readOnly={true}
           errors={filterErrors(errors, 'code')}
+          required={true}
+          readOnly={true}
         />
       </FormGroup>
       <SubsectionHeader top={0}>{translate('measurements.label_translations')}</SubsectionHeader>
@@ -47,16 +47,16 @@ const PropertyTab = ({
         {null !== locales &&
           locales.map((locale, index) => (
             <TextField
-              key={locale.code}
-              label={locale.label}
-              locale={locale.code}
               ref={0 === index ? firstFieldRef : undefined}
+              label={locale.label}
+              errors={filterErrors(errors, `labels[${locale.code}]`)}
+              key={locale.code}
+              locale={locale.code}
               readOnly={!isGranted('akeneo_measurements_measurement_family_edit_properties')}
               value={measurementFamily.labels[locale.code] || ''}
               onChange={value =>
                 onMeasurementFamilyChange(setMeasurementFamilyLabel(measurementFamily, locale.code, value))
               }
-              errors={filterErrors(errors, `labels[${locale.code}]`)}
             />
           ))}
       </FormGroup>

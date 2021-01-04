@@ -111,18 +111,18 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
         )}
         <FormGroup>
           <TextField
-            label={translate('pim_common.code')}
-            required={true}
             ref={firstFieldRef}
+            label={translate('pim_common.code')}
             value={form.code}
             onChange={value => setFormValue('code', value)}
+            required={true}
             errors={getErrorsForPath(errors, 'code')}
           />
           <TextField
             label={translate('pim_common.label')}
-            locale={locale}
             value={form.label}
             onChange={value => setFormValue('label', value)}
+            locale={locale}
             errors={getErrorsForPath(errors, 'label')}
           />
           <TextField

@@ -81,8 +81,8 @@ const UnitDetails = ({
         <FormGroup>
           <TextField
             label={translate('pim_common.code')}
-            required={true}
             value={selectedUnit.code}
+            required={true}
             readOnly={true}
             errors={filterErrors(errors, '[code]')}
           />
@@ -111,8 +111,8 @@ const UnitDetails = ({
           {null !== locales &&
             locales.map(locale => (
               <TextField
-                key={locale.code}
                 label={locale.label}
+                key={locale.code}
                 locale={locale.code}
                 readOnly={!isGranted('akeneo_measurements_measurement_unit_edit')}
                 value={selectedUnit.labels[locale.code] || ''}
