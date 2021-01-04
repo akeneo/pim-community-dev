@@ -1,6 +1,7 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown.tsx';
-import {Button, Image, Badge, Link} from '../../components';
+import {Button, Image, Badge, Link, Checkbox} from '../../components';
+import {useBooleanState} from '../../hooks';
 import {useState} from 'react';
 import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery.tsx';
 
@@ -42,15 +43,11 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 <Canvas>
   <Story name="Standard">
     {args => {
-      const [isOpen, setOpen] = useState(false);
-      const open = () => setOpen(true);
-      const close = () => setOpen(false);
+      const [isOpen, open, close] = useBooleanState();
       return (
         <SpaceContainer height={200}>
           <Dropdown {...args}>
-            <Dropdown.Action onClick={open}>
-              <Button>Dropdown</Button>
-            </Dropdown.Action>
+            <Button onClick={open}>Dropdown</Button>
             {isOpen && (
               <>
                 <Dropdown.Backdrop onClick={close} />
@@ -81,18 +78,13 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 <Canvas>
   <Story name="SimpleItem">
     {args => {
-      const [isOpen, setOpen] = useState(false);
-      const open = () => setOpen(true);
-      const close = () => setOpen(false);
+      const [isOpen, open, close] = useBooleanState(true);
       return (
         <SpaceContainer height={200}>
           <Dropdown>
-            <Dropdown.Action onClick={open}>
-              <Button>Simple Item Dropdown</Button>
-            </Dropdown.Action>
+            <Button onClick={open}>Simple Item Dropdown</Button>
             {isOpen && (
               <>
-                <Dropdown.Backdrop onClick={close} />
                 <Dropdown.Overlay position="down" onClose={close}>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
@@ -100,9 +92,9 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                   <Dropdown.ItemCollection>
                     <Dropdown.Item>First item</Dropdown.Item>
                     <Dropdown.Item>A very long item</Dropdown.Item>
-                    <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                      <Dropdown.Item>Item with a link</Dropdown.Item>
-                    </Link>
+                    <Dropdown.Item>
+                      <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Item with a link</Link>
+                    </Dropdown.Item>
                   </Dropdown.ItemCollection>
                 </Dropdown.Overlay>
               </>
@@ -119,9 +111,7 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 <Canvas>
   <Story name="SelectableItem">
     {args => {
-      const [isOpen, setOpen] = useState(false);
-      const open = () => setOpen(true);
-      const close = () => setOpen(false);
+      const [isOpen, open, close] = useBooleanState(true);
       const firstSelection = useSelection();
       const secondSelection = useSelection();
       const thirdSelection = useSelection();
@@ -129,21 +119,26 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
       return (
         <SpaceContainer height={200}>
           <Dropdown>
-            <Dropdown.Action onClick={open}>
-              <Button>Selectable Item Dropdown</Button>
-            </Dropdown.Action>
+            <Button onClick={open}>Selectable Item Dropdown</Button>
             {isOpen && (
               <>
-                <Dropdown.Backdrop onClick={close} />
                 <Dropdown.Overlay position="down" onClose={close}>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
                   <Dropdown.ItemCollection>
-                    <Dropdown.SelectableItem {...firstSelection}>Item 1</Dropdown.SelectableItem>
-                    <Dropdown.SelectableItem {...secondSelection}>Item 2</Dropdown.SelectableItem>
-                    <Dropdown.SelectableItem {...thirdSelection}>Item 3</Dropdown.SelectableItem>
-                    <Dropdown.SelectableItem {...fourthSelection}>Item 4</Dropdown.SelectableItem>
+                    <Dropdown.Item>
+                      <Checkbox {...firstSelection} /> Item 1
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Checkbox {...secondSelection} /> Item 2
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Checkbox {...thirdSelection} /> Item 3
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Checkbox {...fourthSelection} /> Item 4
+                    </Dropdown.Item>
                   </Dropdown.ItemCollection>
                 </Dropdown.Overlay>
               </>
@@ -160,42 +155,36 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 <Canvas>
   <Story name="ImageItem">
     {args => {
-      const [isOpen, setOpen] = useState(false);
-      const open = () => setOpen(true);
-      const close = () => setOpen(false);
+      const [isOpen, open, close] = useBooleanState(true);
       return (
         <SpaceContainer height={300}>
           <Dropdown>
-            <Dropdown.Action onClick={open}>
-              <Button>Image Item Dropdown</Button>
-            </Dropdown.Action>
+            <Button onClick={open}>Image Item Dropdown</Button>
             {isOpen && (
               <>
-                <Dropdown.Backdrop onClick={close} />
                 <Dropdown.Overlay position="down" onClose={close}>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
                   <Dropdown.ItemCollection>
-                    <Dropdown.ImageItem>
+                    <Dropdown.Item>
                       <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
                       Item 1<Badge>100%</Badge>
-                    </Dropdown.ImageItem>
-                    <Dropdown.ImageItem>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
                       <Image src="https://picsum.photos/seed/akenep/200/140" alt="The alt" />
                       Item 2<Badge level="warning">80%</Badge>
-                    </Dropdown.ImageItem>
-                    <Dropdown.ImageItem>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
                       <Image src="https://picsum.photos/seed/akeneq/200/140" alt="The alt" />A very long item Name that
                       will be truncated
                       <Badge>100%</Badge>
-                    </Dropdown.ImageItem>
-                    <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
-                      <Dropdown.ImageItem>
-                        <Image src="https://picsum.photos/seed/akener/200/140" alt="The alt" />
-                        Item 4<Badge>100%</Badge>
-                      </Dropdown.ImageItem>
-                    </Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item>
+                      <Image src="https://picsum.photos/seed/akener/200/140" alt="The alt" />
+                      <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Item 4</Link>
+                      <Badge>100%</Badge>
+                    </Dropdown.Item>
                   </Dropdown.ItemCollection>
                 </Dropdown.Overlay>
               </>

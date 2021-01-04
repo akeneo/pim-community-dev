@@ -1,9 +1,8 @@
-import React, {ReactNode, SyntheticEvent, Ref, useCallback} from 'react';
+import React, {ReactNode, Ref, useCallback, useRef} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {Checkbox, Image} from '../../../components';
-import {CheckboxChecked} from 'components/Checkbox/Checkbox';
-import {Override} from '../../../shared';
+import {Checkbox, Image, Link} from '../../../components';
+import {Key, Override} from '../../../shared';
 
 const ItemLabel = styled.span`
   white-space: nowrap;
@@ -14,14 +13,18 @@ const ItemLabel = styled.span`
   line-height: 34px;
 `;
 
-const ItemContainer = styled.div<AkeneoThemedProps>`
+const ItemContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
   background: ${getColor('white')};
-  height: 34px;
+  height: ${({tall}) => (tall ? '44px' : '34px')};
   padding: 0 20px;
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
+
+  a {
+    color: ${getColor('grey', 120)};
+  }
 
   &:hover {
     background: ${getColor('grey', 20)};
@@ -29,16 +32,13 @@ const ItemContainer = styled.div<AkeneoThemedProps>`
   &:hover ${ItemLabel} {
     color: ${getColor('brand', 140)};
   }
-
   &:active ${ItemLabel} {
     color: ${getColor('brand', 100)};
     font-style: italic;
   }
-
   &:disabled ${ItemLabel} {
     color: ${getColor('grey', 100)};
   }
-
   &:focus ${ItemLabel} {
     color: ${getColor('grey', 120)};
   }
@@ -52,76 +52,77 @@ type ItemProps = Override<
 >;
 
 const Item = React.forwardRef<HTMLDivElement, ItemProps>(
-  ({children, ...rest}: ItemProps, forwardedRef: Ref<HTMLDivElement>): React.ReactElement => {
+  ({children, onKeyDown, ...rest}: ItemProps, forwardedRef: Ref<HTMLDivElement>): React.ReactElement => {
+    let tall = false;
+    const actionableRef = useRef<HTMLAnchorElement>(null);
+    const handleClick = useCallback(() => {
+      if (actionableRef.current !== null) {
+        actionableRef.current.click();
+      }
+    }, []);
+    const handleKeyDown = useCallback(event => {
+      if (Key.Enter === event.key || Key.Space === event.key) {
+        event.preventDefault();
+        handleClick();
+        return;
+      }
+
+      onKeyDown && onKeyDown(event);
+    }, []);
+
     const decoratedChildren = React.Children.map(children, child => {
       if (typeof child === 'string') {
         return <ItemLabel>{child}</ItemLabel>;
+      }
+
+      // Change size of Image children
+      if (React.isValidElement(child) && child.type === Image) {
+        tall = true;
+
+        return React.cloneElement(child, {
+          width: 34,
+          height: 34,
+        });
+      }
+
+      // Transmit onclick and space and enter to Link children
+      if (React.isValidElement(child) && child.type === Link) {
+        return (
+          <ItemLabel>
+            {React.cloneElement(child, {
+              ref: actionableRef,
+              decorated: false,
+            })}
+          </ItemLabel>
+        );
+      }
+
+      // Same for checkboxes
+      if (React.isValidElement(child) && child.type === Checkbox) {
+        return React.cloneElement(child, {
+          ref: actionableRef,
+        });
       }
 
       return child;
     });
 
     return (
-      <ItemContainer tabIndex={0} {...rest} ref={forwardedRef}>
+      <ItemContainer
+        tall={tall}
+        tabIndex={actionableRef.current === null ? 0 : -1}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        {...rest}
+        ref={forwardedRef}
+      >
         {decoratedChildren}
       </ItemContainer>
     );
   }
 );
 
-type SelectableItemProps = {
-  children: ReactNode;
-  selected?: boolean;
-  onChange: (value: CheckboxChecked, event: SyntheticEvent) => void;
-};
+Item.displayName = 'Dropdown.Item';
+ItemLabel.displayName = 'Dropdown.ItemLabel';
 
-const SelectableItem = React.forwardRef<HTMLDivElement, SelectableItemProps>(
-  (
-    {children, selected = false, onChange, ...rest}: SelectableItemProps,
-    forwardedRef: Ref<HTMLDivElement>
-  ): React.ReactElement => {
-    const handleChange = useCallback(
-      event => {
-        onChange(!selected, event);
-        event.stopPropagation();
-      },
-      [selected]
-    );
-
-    return (
-      <Item ref={forwardedRef} tabIndex={-1} onClick={handleChange} {...rest}>
-        <Checkbox checked={selected} onChange={onChange}></Checkbox>
-        {children}
-      </Item>
-    );
-  }
-);
-
-const ImageItemContainer = styled(Item)`
-  height: 44px;
-`;
-
-type ImageItemProps = {
-  children: ReactNode;
-};
-
-const ImageItem = React.forwardRef<HTMLDivElement, ImageItemProps>(
-  ({children, ...rest}: ImageItemProps, forwardedRef: Ref<HTMLDivElement>) => {
-    const decoratedChildren = React.Children.map(children, child => {
-      if (!React.isValidElement(child) || child.type !== Image) return child;
-
-      return React.cloneElement(child, {
-        width: 34,
-        height: 34,
-      });
-    });
-
-    return (
-      <ImageItemContainer ref={forwardedRef} {...rest}>
-        {decoratedChildren}
-      </ImageItemContainer>
-    );
-  }
-);
-
-export {Item, SelectableItem, ImageItem, ItemLabel};
+export {Item, ItemLabel};

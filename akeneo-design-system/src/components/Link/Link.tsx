@@ -1,5 +1,5 @@
 import styled, {css} from 'styled-components';
-import React, {isValidElement, ReactNode, Ref} from 'react';
+import React, {ReactNode, Ref} from 'react';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
 const LinkContainer = styled.a<{disabled: boolean; decorated: boolean} & AkeneoThemedProps>`
@@ -69,12 +69,6 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     {disabled = false, decorated = true, target = '_self', href, children, ...rest}: LinkProps,
     forwardedRef: Ref<HTMLAnchorElement>
   ): React.ReactElement => {
-    const decoratedChildren = React.Children.map(children, child => {
-      if (!isValidElement(child)) return child;
-
-      return React.cloneElement(child, {tabIndex: -1});
-    });
-
     return (
       <LinkContainer
         disabled={disabled}
@@ -85,7 +79,7 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         {...(!disabled ? {href: href} : {})}
         {...rest}
       >
-        {decoratedChildren}
+        {children}
       </LinkContainer>
     );
   }

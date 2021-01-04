@@ -2,30 +2,30 @@ import {Key, Override} from '../../../shared';
 import React, {ReactNode, useRef, Ref, useCallback} from 'react';
 import styled from 'styled-components';
 import {useAutoFocus} from 'hooks';
-import {Link} from '../../../components';
 
 const decorateChildren = (children: ReactNode) => {
   const firstItemRef = useRef<HTMLDivElement>(null);
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (null === event.currentTarget) return;
-
-    if (event.key === Key.ArrowDown) {
-      (event.currentTarget as any)?.nextSibling.focus();
-      event.preventDefault();
-    }
-    if (event.key === Key.ArrowUp) {
-      (event.currentTarget as any)?.previousSibling.focus();
-      event.preventDefault();
+    if (null !== event.currentTarget) {
+      if (event.key === Key.ArrowDown) {
+        (event.currentTarget as any)?.nextSibling.focus();
+        event.preventDefault();
+      }
+      if (event.key === Key.ArrowUp) {
+        (event.currentTarget as any)?.previousSibling.focus();
+        event.preventDefault();
+      }
     }
   }, []);
   const decoratedChildren = React.Children.map(children, (child, index) => {
-    if (!React.isValidElement(child)) return child;
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, {
+        ref: 0 === index ? firstItemRef : undefined,
+        onKeyDown: handleKeyDown,
+      });
+    }
 
-    return React.cloneElement(child, {
-      decorated: child.type === Link ? false : undefined,
-      ref: 0 === index ? firstItemRef : undefined,
-      onKeyDown: handleKeyDown,
-    });
+    return child;
   });
   useAutoFocus(firstItemRef);
 

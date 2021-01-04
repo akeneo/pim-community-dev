@@ -89,7 +89,6 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
   ]);
 
   useShortcut(Key.Enter, handleAdd);
-  useShortcut(Key.NumpadEnter, handleAdd);
 
   if (!isOpen) return null;
 

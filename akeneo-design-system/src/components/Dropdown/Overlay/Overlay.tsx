@@ -52,26 +52,26 @@ const Overlay = ({position, onClose, children}: OverlayProps) => {
   useShortcut(Key.Escape, onClose);
 
   useEffect(() => {
-    if (null === overlayRef.current) return;
-
-    if (undefined === position) {
-      const elementHeight = overlayRef.current.getBoundingClientRect().height;
-      const windowHeight = window.innerHeight;
-      const distanceToTop = overlayRef.current.getBoundingClientRect().top;
-      const distanceToBottom = windowHeight - (elementHeight + distanceToTop);
-
-      setVerticalPosition(distanceToTop > distanceToBottom ? 'up' : 'down');
-    }
-
     if (null !== overlayRef.current) {
-      const elementWidth = overlayRef.current.getBoundingClientRect().width;
-      const windowWidth = window.innerWidth;
-      const distanceToLeft = overlayRef.current.getBoundingClientRect().left;
-      const distanceToRight = windowWidth - (elementWidth + distanceToLeft);
+      if (undefined === position) {
+        const elementHeight = overlayRef.current.getBoundingClientRect().height;
+        const windowHeight = window.innerHeight;
+        const distanceToTop = overlayRef.current.getBoundingClientRect().top;
+        const distanceToBottom = windowHeight - (elementHeight + distanceToTop);
 
-      setHorizontalPosition(distanceToLeft > distanceToRight ? 'left' : 'right');
+        setVerticalPosition(distanceToTop > distanceToBottom ? 'up' : 'down');
+      }
+
+      if (null !== overlayRef.current) {
+        const elementWidth = overlayRef.current.getBoundingClientRect().width;
+        const windowWidth = window.innerWidth;
+        const distanceToLeft = overlayRef.current.getBoundingClientRect().left;
+        const distanceToRight = windowWidth - (elementWidth + distanceToLeft);
+
+        setHorizontalPosition(distanceToLeft > distanceToRight ? 'left' : 'right');
+      }
+      setVisible(true);
     }
-    setVisible(true);
   }, []);
 
   return (

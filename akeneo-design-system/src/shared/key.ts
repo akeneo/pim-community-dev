@@ -1,7 +1,6 @@
 enum Key {
-  Space = 'Space',
+  Space = ' ',
   Enter = 'Enter',
-  NumpadEnter = 'NumpadEnter',
   Backspace = 'Backspace',
   Escape = 'Escape',
   ArrowLeft = 'ArrowLeft',

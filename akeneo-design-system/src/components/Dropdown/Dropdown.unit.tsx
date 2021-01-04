@@ -1,20 +1,21 @@
 import React from 'react';
 import {Dropdown} from './Dropdown';
-import {Link, Image} from '../../components';
+import {Link, Image, Button} from '../../components';
 import {render, screen, fireEvent} from '../../storybook/test-util';
+import {Checkbox} from 'components/Checkbox/Checkbox';
 
 test('it renders its children properly', () => {
   render(
     <Dropdown>
-      <Dropdown.Action>Dropdown</Dropdown.Action>
+      <Button>Dropdown</Button>
       <Dropdown.Overlay position="down" onClose={() => {}}>
         <Dropdown.Header>
           <Dropdown.Title>Elements</Dropdown.Title>
         </Dropdown.Header>
         <Dropdown.ItemCollection>
-          <Link>
-            <Dropdown.Item>Item 1</Dropdown.Item>
-          </Link>
+          <Dropdown.Item>
+            <Link>Item 1</Link>
+          </Dropdown.Item>
           <Dropdown.Item>Item 2</Dropdown.Item>
           <Dropdown.Item>Item 3</Dropdown.Item>
           <Dropdown.Item>Item 4</Dropdown.Item>
@@ -32,15 +33,16 @@ test('it renders selectable item', () => {
 
   render(
     <Dropdown>
-      <Dropdown.Action>Dropdown</Dropdown.Action>
+      <Button>Dropdown</Button>
       <Dropdown.Overlay position="down" onClose={() => {}}>
         <Dropdown.Header>
           <Dropdown.Title>Elements</Dropdown.Title>
         </Dropdown.Header>
         <Dropdown.ItemCollection>
-          <Dropdown.SelectableItem selected={false} onChange={onChange}>
+          <Dropdown.Item>
+            <Checkbox checked={false} onChange={onChange} />
             Selectable Item
-          </Dropdown.SelectableItem>
+          </Dropdown.Item>
         </Dropdown.ItemCollection>
       </Dropdown.Overlay>
     </Dropdown>
@@ -52,16 +54,16 @@ test('it renders selectable item', () => {
 test('it renders Image item', () => {
   render(
     <Dropdown>
-      <Dropdown.Action>Dropdown</Dropdown.Action>
+      <Button>Dropdown</Button>
       <Dropdown.Overlay position="down" onClose={() => {}}>
         <Dropdown.Header>
           <Dropdown.Title>Elements</Dropdown.Title>
         </Dropdown.Header>
         <Dropdown.ItemCollection>
-          <Dropdown.ImageItem>
+          <Dropdown.Item>
             <Image src="https://picsum.photos/seed/akeneo/200/140" alt="An image" />
             Item with Image
-          </Dropdown.ImageItem>
+          </Dropdown.Item>
           <Dropdown.Item>Simple Item</Dropdown.Item>
         </Dropdown.ItemCollection>
       </Dropdown.Overlay>

@@ -2,7 +2,7 @@ import {useCallback, useEffect} from 'react';
 import {Key} from '../tools';
 
 const useShortcut = (key: Key, callback: Function) => {
-  const memoizedCallback = useCallback((event: KeyboardEvent) => (key === event.code ? callback(event) : null), [
+  const memoizedCallback = useCallback((event: KeyboardEvent) => (key === event.key ? callback(event) : null), [
     key,
     callback,
   ]);
