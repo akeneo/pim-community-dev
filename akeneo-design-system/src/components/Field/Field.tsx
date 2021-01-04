@@ -43,7 +43,7 @@ const IncompleteBadge = styled.div`
   margin-right: 4px;
 `;
 
-type FieldChild = ReactElement<InputProps> | ReactElement<HelperProps> | FieldChild[];
+type FieldChild = ReactElement<InputProps<unknown>> | ReactElement<HelperProps> | FieldChild[];
 
 type FieldProps = {
   /**
@@ -85,7 +85,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
         return <HelperContainer>{React.cloneElement(child, {inline: true})}</HelperContainer>;
       }
 
-      if (React.isValidElement<InputProps>(child)) {
+      if (React.isValidElement<InputProps<unknown>>(child)) {
         return React.cloneElement(child, {id: inputId, 'aria-labelledby': labelId});
       }
 
@@ -109,3 +109,4 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 );
 
 export {Field};
+export type {FieldProps};

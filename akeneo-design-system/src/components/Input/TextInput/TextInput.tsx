@@ -48,7 +48,7 @@ const CharacterLeftLabel = styled.div`
 `;
 
 type TextInputProps = Override<
-  Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps>,
+  Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<string>>,
   (
     | {
         readOnly: true;
@@ -115,3 +115,4 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
 );
 
 export {TextInput};
+export type {TextInputProps};

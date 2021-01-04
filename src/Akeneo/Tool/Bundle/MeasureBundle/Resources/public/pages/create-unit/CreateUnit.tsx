@@ -1,15 +1,5 @@
 import React, {useCallback, useContext, useRef, useState} from 'react';
-import {
-  Helper,
-  MeasurementIllustration,
-  Button,
-  SectionTitle,
-  Title,
-  Modal,
-  TextInput,
-  Field,
-  Checkbox,
-} from 'akeneo-design-system';
+import {Helper, MeasurementIllustration, Button, SectionTitle, Title, Modal, Checkbox} from 'akeneo-design-system';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
 import {useForm} from 'akeneomeasure/hooks/use-form';
@@ -32,8 +22,8 @@ import {
   ValidationError,
   useShortcut,
   Key,
-  inputErrors,
   getErrorsForPath,
+  TextField,
 } from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {
@@ -120,31 +110,27 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
           <Helper level="warning">{translate('measurements.unit.will_be_read_only')}</Helper>
         )}
         <FormGroup>
-          <Field label={`${translate('pim_common.code')} ${translate('pim_common.required_label')}`}>
-            <TextInput
-              ref={firstFieldRef}
-              id="measurements.unit.create.code"
-              value={form.code}
-              onChange={(value: string) => setFormValue('code', value)}
-            />
-            {inputErrors(translate, getErrorsForPath(errors, 'code'))}
-          </Field>
-          <Field label={translate('pim_common.label')} locale={locale}>
-            <TextInput
-              id="measurements.unit.create.label"
-              value={form.label}
-              onChange={(value: string) => setFormValue('label', value)}
-            />
-            {inputErrors(translate, getErrorsForPath(errors, 'label'))}
-          </Field>
-          <Field label={translate('measurements.form.input.symbol')}>
-            <TextInput
-              id="measurements.unit.create.symbol"
-              value={form.symbol}
-              onChange={(value: string) => setFormValue('symbol', value)}
-            />
-            {inputErrors(translate, getErrorsForPath(errors, 'symbol'))}
-          </Field>
+          <TextField
+            label={translate('pim_common.code')}
+            required={true}
+            ref={firstFieldRef}
+            value={form.code}
+            onChange={value => setFormValue('code', value)}
+            errors={getErrorsForPath(errors, 'code')}
+          />
+          <TextField
+            label={translate('pim_common.label')}
+            locale={locale}
+            value={form.label}
+            onChange={value => setFormValue('label', value)}
+            errors={getErrorsForPath(errors, 'label')}
+          />
+          <TextField
+            label={translate('measurements.form.input.symbol')}
+            value={form.symbol}
+            onChange={value => setFormValue('symbol', value)}
+            errors={getErrorsForPath(errors, 'symbol')}
+          />
           <OperationCollection
             operations={form.operations}
             onOperationsChange={(operations: Operation[]) => setFormValue('operations', operations)}

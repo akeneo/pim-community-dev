@@ -4,9 +4,8 @@ import {MeasurementFamily, setMeasurementFamilyLabel} from 'akeneomeasure/model/
 import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
 import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {useAutoFocus, ValidationError, filterErrors, inputErrors} from '@akeneo-pim-community/shared';
+import {useAutoFocus, ValidationError, filterErrors, TextField} from '@akeneo-pim-community/shared';
 import {useTranslate, useSecurity} from '@akeneo-pim-community/legacy-bridge';
-import {Field, TextInput} from 'akeneo-design-system';
 
 const Container = styled.div`
   display: flex;
@@ -35,27 +34,30 @@ const PropertyTab = ({
     <Container>
       <SubsectionHeader top={0}>{translate('pim_common.general_properties')}</SubsectionHeader>
       <FormGroup>
-        <Field label={`${translate('pim_common.code')} ${translate('pim_common.required_label')}`}>
-          <TextInput id="measurements.family.properties.code" value={measurementFamily.code} readOnly={true} />
-          {inputErrors(translate, filterErrors(errors, 'code'))}
-        </Field>
+        <TextField
+          label={translate('pim_common.code')}
+          required={true}
+          value={measurementFamily.code}
+          readOnly={true}
+          errors={filterErrors(errors, 'code')}
+        />
       </FormGroup>
       <SubsectionHeader top={0}>{translate('measurements.label_translations')}</SubsectionHeader>
       <FormGroup>
         {null !== locales &&
           locales.map((locale, index) => (
-            <Field key={locale.code} label={locale.label} locale={locale.code}>
-              <TextInput
-                id={`measurements.family.properties.label.${locale.code}`}
-                ref={0 === index ? firstFieldRef : undefined}
-                readOnly={!isGranted('akeneo_measurements_measurement_family_edit_properties')}
-                value={measurementFamily.labels[locale.code] || ''}
-                onChange={(value: string) =>
-                  onMeasurementFamilyChange(setMeasurementFamilyLabel(measurementFamily, locale.code, value))
-                }
-              />
-              {inputErrors(translate, filterErrors(errors, `labels[${locale.code}]`))}
-            </Field>
+            <TextField
+              key={locale.code}
+              label={locale.label}
+              locale={locale.code}
+              ref={0 === index ? firstFieldRef : undefined}
+              readOnly={!isGranted('akeneo_measurements_measurement_family_edit_properties')}
+              value={measurementFamily.labels[locale.code] || ''}
+              onChange={value =>
+                onMeasurementFamilyChange(setMeasurementFamilyLabel(measurementFamily, locale.code, value))
+              }
+              errors={filterErrors(errors, `labels[${locale.code}]`)}
+            />
           ))}
       </FormGroup>
     </Container>
