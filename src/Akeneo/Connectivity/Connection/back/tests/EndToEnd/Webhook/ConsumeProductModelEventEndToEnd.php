@@ -229,7 +229,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         return [
             'action' => 'product_model.updated',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_date' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T16:02:47+01:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
@@ -242,7 +242,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         return [
             'action' => 'product_model.created',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_date' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T16:02:47+01:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
@@ -255,7 +255,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
         return [
             'action' => 'product_model.removed',
             'event_id' => '0d931d13-8eae-4f4a-bf37-33d3a932b8c9',
-            'event_date' => '2020-12-04T16:02:47+01:00',
+            'event_datetime' => '2020-12-04T16:02:47+01:00',
             'author' => 'julia',
             'author_type' => 'ui',
             'pim_source' => 'http://localhost:8080',
