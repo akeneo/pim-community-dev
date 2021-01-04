@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import {Overlay} from './Overlay/Overlay';
-import {Item, SelectableItem, ImageItem, ItemLabel} from './Item/Item';
+import {Item, ItemLabel} from './Item/Item';
 import {ItemCollection} from './ItemCollection/ItemCollection';
 import {AkeneoThemedProps, getColor} from '../../theme';
 
@@ -16,11 +16,6 @@ type DropdownProps = {
    */
   children?: ReactNode;
 };
-
-const Action = styled.div`
-  cursor: pointer;
-  display: inline-block;
-`;
 
 const Header = styled.div`
   box-sizing: border-box;
@@ -53,23 +48,15 @@ const Dropdown = ({children, ...rest}: DropdownProps) => {
   return <DropdownContainer {...rest}>{children}</DropdownContainer>;
 };
 
-Action.displayName = 'Dropdown.Action';
 Header.displayName = 'Dropdown.Header';
-Item.displayName = 'Dropdown.Item';
-SelectableItem.displayName = 'Dropdown.SelectableItem';
-ImageItem.displayName = 'Dropdown.ImageItem';
-ItemLabel.displayName = 'Dropdown.ItemLabel';
 Title.displayName = 'Dropdown.Title';
 ItemCollection.displayName = 'Dropdown.ItemCollection';
 Content.displayName = 'Dropdown.Content';
 Backdrop.displayName = 'Dropdown.Backdrop';
 
-Dropdown.Action = Action;
 Dropdown.Overlay = Overlay;
 Dropdown.Header = Header;
 Dropdown.Item = Item;
-Dropdown.SelectableItem = SelectableItem;
-Dropdown.ImageItem = ImageItem;
 Dropdown.ItemLabel = ItemLabel;
 Dropdown.Title = Title;
 Dropdown.ItemCollection = ItemCollection;

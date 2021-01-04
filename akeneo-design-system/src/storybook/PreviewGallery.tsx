@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../theme';
 
 const useSelection = () => {
-  const [selected, setSelected] = useState(false);
+  const [checked, setChecked] = useState(false);
 
-  return {selected, onChange: () => setSelected(!selected)};
+  return {checked, onChange: () => setChecked(!checked)};
 };
 
 const StoryStyle = styled.div`

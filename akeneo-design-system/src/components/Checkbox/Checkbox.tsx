@@ -143,7 +143,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
 
       event.stopPropagation();
     };
-    const ref = useShortcut(Key.Space, handleChange);
+    const ref = useShortcut(Key.Space, handleChange, forwardedRef);
     const forProps = children
       ? {
           'aria-labelledby': labelId,
@@ -152,7 +152,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
       : {};
 
     return (
-      <Container ref={forwardedRef} {...rest}>
+      <Container {...rest}>
         <CheckboxContainer
           checked={isChecked || isMixed}
           readOnly={readOnly}
