@@ -1,4 +1,4 @@
-import React, {ReactNode, Ref, useCallback, useRef} from 'react';
+import React, {KeyboardEvent, ReactNode, Ref, useCallback, useRef} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox, Image, Link} from '../../../components';
@@ -60,7 +60,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         actionableRef.current.click();
       }
     }, []);
-    const handleKeyDown = useCallback(event => {
+    const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
       if (Key.Enter === event.key || Key.Space === event.key) {
         event.preventDefault();
         handleClick();
