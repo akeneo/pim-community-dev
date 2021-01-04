@@ -136,7 +136,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                                     [
                                         'action' => 'product.created',
                                         'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                        'event_date' => '2020-01-01T00:00:00+00:00',
+                                        'event_datetime' => '2020-01-01T00:00:00+00:00',
                                         'author' => 'julia',
                                         'author_type' => 'ui',
                                         'pim_source' => 'staging.akeneo.com',
@@ -231,7 +231,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
                                     [
                                         'action' => 'product.created',
                                         'event_id' => '5d30d0f6-87a6-45ad-ba6b-3a302b0d328c',
-                                        'event_date' => '2020-01-01T00:00:00+00:00',
+                                        'event_datetime' => '2020-01-01T00:00:00+00:00',
                                         'author' => 'erp_452',
                                         'author_type' => 'api',
                                         'pim_source' => 'staging.akeneo.com',

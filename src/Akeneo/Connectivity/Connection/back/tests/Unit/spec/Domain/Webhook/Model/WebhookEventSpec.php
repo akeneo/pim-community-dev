@@ -48,9 +48,9 @@ class WebhookEventSpec extends ObjectBehavior
         $this->eventId()->shouldReturn('21f7f779-f094-4305-8ee4-65fdddd5a418');
     }
 
-    public function it_returns_an_event_date(): void
+    public function it_returns_an_event_date_time(): void
     {
-        $this->eventDate()->shouldReturn('2020-01-01T00:00:00+00:00');
+        $this->eventDateTime()->shouldReturn('2020-01-01T00:00:00+00:00');
     }
 
     public function it_returns_an_author_name(): void

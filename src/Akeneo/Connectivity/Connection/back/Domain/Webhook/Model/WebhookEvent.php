@@ -60,7 +60,7 @@ class WebhookEvent
         return $this->eventId;
     }
 
-    public function eventDate(): string
+    public function eventDateTime(): string
     {
         return $this->eventDate;
     }
