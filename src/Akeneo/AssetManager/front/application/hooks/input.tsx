@@ -15,7 +15,7 @@ export const useFocus = (): [React.RefObject<HTMLInputElement>, () => void] => {
 };
 
 export const useShortcut = (key: Key, callback: () => void) => {
-  const memoizedCallback = React.useCallback((event: KeyboardEvent) => (key === event.code ? callback() : null), [
+  const memoizedCallback = React.useCallback((event: KeyboardEvent) => (key === event.key ? callback() : null), [
     key,
     callback,
   ]);

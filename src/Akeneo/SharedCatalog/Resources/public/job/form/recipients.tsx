@@ -208,7 +208,6 @@ const Recipients = ({recipients, validationErrors, onRecipientsChange}: Recipien
 
   useAutoFocus(inputRef);
   useShortcut(Key.Enter, handleAddNewRecipient);
-  useShortcut(Key.NumpadEnter, handleAddNewRecipient);
 
   useEffect(() => {
     setEmailIsDuplicated(currentRecipients.map(recipient => recipient.email).includes(recipientToAdd));
