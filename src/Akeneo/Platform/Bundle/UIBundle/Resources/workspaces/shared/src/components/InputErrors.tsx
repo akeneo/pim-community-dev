@@ -5,7 +5,7 @@ import {Helper, HelperProps} from 'akeneo-design-system';
 
 const inputErrors = (translate: Translate, errors: ValidationError[] = []): ReactElement<HelperProps>[] =>
   formatParameters(errors).map((error, key) => (
-    <Helper key={key} level='error' inline={true}>
+    <Helper key={key} level="error" inline={true}>
       {translate(error.messageTemplate, error.parameters, error.plural)}
     </Helper>
   ));

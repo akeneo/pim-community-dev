@@ -1,7 +1,5 @@
-'use strict';
-
 import React from 'react';
-import {fireEvent} from '@testing-library/react';
+import {fireEvent, screen} from '@testing-library/react';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
@@ -21,15 +19,13 @@ test('It renders the given operations', () => {
     },
   ];
 
-  const {getByText, getAllByRole} = renderWithProviders(
-    <OperationCollection operations={operations} onOperationsChange={() => {}} />
-  );
+  renderWithProviders(<OperationCollection operations={operations} onOperationsChange={() => {}} />);
 
-  const valueInputs = getAllByRole('operation-value-input') as HTMLInputElement[];
+  const valueInputs = screen.getAllByPlaceholderText('measurements.unit.operation.placeholder') as HTMLInputElement[];
 
-  expect(getByText('measurements.unit.operator.mul')).toBeInTheDocument();
-  expect(getByText('measurements.unit.operator.div')).toBeInTheDocument();
-  expect(getByText('measurements.unit.operator.add')).toBeInTheDocument();
+  expect(screen.getByText('measurements.unit.operator.mul')).toBeInTheDocument();
+  expect(screen.getByText('measurements.unit.operator.div')).toBeInTheDocument();
+  expect(screen.getByText('measurements.unit.operator.add')).toBeInTheDocument();
   expect(valueInputs[0].value).toEqual('12');
   expect(valueInputs[1].value).toEqual('25');
   expect(valueInputs[2].value).toEqual('54');
@@ -48,7 +44,7 @@ test('I can add an operation', () => {
   ];
   let newOperations = [];
 
-  const {getByText} = renderWithProviders(
+  renderWithProviders(
     <OperationCollection
       operations={operations}
       onOperationsChange={updatedOperations => {
@@ -59,7 +55,7 @@ test('I can add an operation', () => {
 
   expect(newOperations).toEqual([]);
 
-  fireEvent.click(getByText('measurements.unit.operation.add'));
+  fireEvent.click(screen.getByText('measurements.unit.operation.add'));
 
   expect(newOperations).toEqual([
     {
@@ -121,7 +117,7 @@ test('I can edit the value of an operation', () => {
   ];
   let newOperations = [];
 
-  const {getAllByRole} = renderWithProviders(
+  renderWithProviders(
     <OperationCollection
       operations={operations}
       onOperationsChange={updatedOperations => {
@@ -132,7 +128,9 @@ test('I can edit the value of an operation', () => {
 
   expect(newOperations).toEqual([]);
 
-  fireEvent.change(getAllByRole('operation-value-input')[0], {target: {value: '23'}});
+  fireEvent.change(screen.getAllByPlaceholderText('measurements.unit.operation.placeholder')[0], {
+    target: {value: '23'},
+  });
 
   expect(newOperations).toEqual([
     {
@@ -159,7 +157,7 @@ test('I can edit the operator of an operation', () => {
   ];
   let newOperations = [];
 
-  const {getByText} = renderWithProviders(
+  renderWithProviders(
     <OperationCollection
       operations={operations}
       onOperationsChange={updatedOperations => {
@@ -170,8 +168,8 @@ test('I can edit the operator of an operation', () => {
 
   expect(newOperations).toEqual([]);
 
-  fireEvent.click(getByText('measurements.unit.operator.div'));
-  fireEvent.click(getByText('measurements.unit.operator.sub'));
+  fireEvent.click(screen.getByText('measurements.unit.operator.div'));
+  fireEvent.click(screen.getByText('measurements.unit.operator.sub'));
 
   expect(newOperations).toEqual([
     {
@@ -201,7 +199,7 @@ test('It renders the given operations errors', () => {
     },
   ];
 
-  const {getByText} = renderWithProviders(
+  renderWithProviders(
     <OperationCollection
       operations={operations}
       onOperationsChange={() => {}}
@@ -209,5 +207,5 @@ test('It renders the given operations errors', () => {
     />
   );
 
-  expect(getByText('message')).toBeInTheDocument();
+  expect(screen.getByText('message')).toBeInTheDocument();
 });
