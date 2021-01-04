@@ -14,11 +14,6 @@ import {
   Key,
 } from '@akeneo-pim-community/shared';
 
-const AknFieldContainer = styled.div`
-  margin-bottom: 20px;
-  position: relative;
-`;
-
 const Container = styled.div<{level: number}>`
   position: relative;
   margin-left: ${({level}) => (level > 1 ? 24 * (level - 1) : 0)}px;
@@ -39,8 +34,8 @@ const OperationInput = styled.div`
   position: relative;
 `;
 
-const OperationCollectionLabel = styled.div`
-  margin-bottom: 10px;
+const OperationCollectionLabel = styled.label`
+  margin-bottom: 8px;
 `;
 
 const StyledArrow = styled(ArrowIcon)`
@@ -123,6 +118,11 @@ const Footer = styled.div`
   margin-top: 10px;
 `;
 
+const HelperContainer = styled.div<{hasOffset: boolean}>`
+  margin-top: 5px;
+  margin-left: ${({hasOffset}) => (hasOffset ? 24 : 0)}px;
+`;
+
 type OperationCollectionProps = {
   operations: Operation[];
   errors?: ValidationError[];
@@ -153,7 +153,7 @@ const OperationCollection = ({
   }, [JSON.stringify(errors)]);
 
   return (
-    <AknFieldContainer>
+    <div>
       <OperationCollectionLabel>
         {translate('measurements.unit.convert_from_standard')} {translate('pim_common.required_label')}
       </OperationCollectionLabel>
@@ -222,7 +222,11 @@ const OperationCollection = ({
                 </OperatorSelector>
               </>
             )}
-            {inputErrors(translate, shouldHideErrors ? [] : operationErrors)}
+            {inputErrors(translate, shouldHideErrors ? [] : operationErrors).map((helper, errorIndex) => (
+              <HelperContainer key={errorIndex} hasOffset={0 < index}>
+                {helper}
+              </HelperContainer>
+            ))}
           </Container>
         );
       })}
@@ -239,7 +243,7 @@ const OperationCollection = ({
         </Footer>
       )}
       {inputErrors(translate, shouldHideErrors ? [] : getErrorsForPath(errors, ''))}
-    </AknFieldContainer>
+    </div>
   );
 };
 

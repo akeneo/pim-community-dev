@@ -24,7 +24,7 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         locale={locale}
         channel={channel}
       >
-        <TextInput ref={forwardedRef} {...inputProps} invalid={0 < errors.length} />
+        <TextInput {...inputProps} ref={forwardedRef} invalid={0 < errors.length} />
         {inputErrors(translate, errors)}
       </Field>
     );
