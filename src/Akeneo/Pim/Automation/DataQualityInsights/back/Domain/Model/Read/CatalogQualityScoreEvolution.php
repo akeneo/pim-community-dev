@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistribution;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 
 final class CatalogQualityScoreEvolution
 {
     private const NUMBER_OF_PAST_MONTHS_TO_RETURN = 5;
+
+    private \DateTimeImmutable $today;
 
     private array $scores;
 
@@ -18,8 +19,9 @@ final class CatalogQualityScoreEvolution
 
     private string $locale;
 
-    public function __construct(array $scores, string $channel, string $locale)
+    public function __construct(\DateTimeImmutable $today, array $scores, string $channel, string $locale)
     {
+        $this->today = $today;
         $this->scores = $scores;
         $this->channel = $channel;
         $this->locale = $locale;
@@ -48,13 +50,11 @@ final class CatalogQualityScoreEvolution
 
     private function initLastMonthsWithEmptyData(): array
     {
-        $monthlyTimePeriodDateFormat = (new ConsolidationDate(new \DateTimeImmutable()))->isLastDayOfMonth() ?
-            new \DateTimeImmutable() :
-            (new \DateTimeImmutable())->setTimestamp(strtotime(date('Y-m-t')));
+        $lastDayThisMonth = $this->today->modify('last day of this month');
 
         $data = [];
         for ($i = self::NUMBER_OF_PAST_MONTHS_TO_RETURN; $i >= 0; $i--) {
-            $newDate = $monthlyTimePeriodDateFormat->modify('last day of ' . $i . ' month ago');
+            $newDate = $lastDayThisMonth->modify('last day of ' . $i . ' month ago');
             $data[$newDate->format('Y-m-d')] = null;
         }
 
