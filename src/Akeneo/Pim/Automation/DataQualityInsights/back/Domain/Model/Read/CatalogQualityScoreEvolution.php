@@ -11,7 +11,7 @@ final class CatalogQualityScoreEvolution
 {
     private const NUMBER_OF_PAST_MONTHS_TO_RETURN = 5;
 
-    private \DateTimeImmutable $today;
+    private \DateTimeImmutable $referenceDate;
 
     private array $scores;
 
@@ -19,9 +19,9 @@ final class CatalogQualityScoreEvolution
 
     private string $locale;
 
-    public function __construct(\DateTimeImmutable $today, array $scores, string $channel, string $locale)
+    public function __construct(\DateTimeImmutable $referenceDate, array $scores, string $channel, string $locale)
     {
-        $this->today = $today;
+        $this->referenceDate = $referenceDate;
         $this->scores = $scores;
         $this->channel = $channel;
         $this->locale = $locale;
@@ -50,11 +50,9 @@ final class CatalogQualityScoreEvolution
 
     private function initLastMonthsWithEmptyData(): array
     {
-        $lastDayThisMonth = $this->today->modify('last day of this month');
-
         $data = [];
         for ($i = self::NUMBER_OF_PAST_MONTHS_TO_RETURN; $i >= 0; $i--) {
-            $newDate = $lastDayThisMonth->modify('last day of ' . $i . ' month ago');
+            $newDate = $this->referenceDate->modify('last day of ' . $i . ' month ago');
             $data[$newDate->format('Y-m-d')] = null;
         }
 
