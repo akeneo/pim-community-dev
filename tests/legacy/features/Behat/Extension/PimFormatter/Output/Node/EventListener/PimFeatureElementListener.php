@@ -20,7 +20,7 @@ use Behat\Testwork\Output\Formatter;
 use Behat\Testwork\Output\Node\EventListener\EventListener;
 use Behat\Testwork\Tester\Result\TestResult;
 use Pim\Behat\Extension\PimFormatter\Output\Node\Printer\PimScenarioPrinter;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Listens to feature, scenario and step events and calls appropriate printers.

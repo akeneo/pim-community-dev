@@ -14,7 +14,7 @@ use Behat\Gherkin\Node\ScenarioLikeInterface;
 use Behat\Testwork\Counter\Timer;
 use Behat\Testwork\Output\Formatter;
 use Behat\Testwork\Output\Node\EventListener\EventListener;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Allows to display duration in Junit scenario results.
