@@ -52,8 +52,8 @@ class ListChildrenCategoriesWithCountHandler
      */
     public function handle(ListChildrenCategoriesWithCount $query): array
     {
-        $categoryToExpand = -1 !== $query->childrenCategoryIdToExpand() ?
-            $this->categoryRepository->find($query->childrenCategoryIdToExpand()) : null;
+        $categoryToExpand = null !== $query->childrenCategoryCodeToExpand() ?
+            $this->categoryRepository->getCategoriesByCodes([$query->childrenCategoryCodeToExpand()])[0] : null;
 
         if (null === $categoryToExpand) {
             $categoryToExpand = $this->userContext->getUserProductCategoryTree();

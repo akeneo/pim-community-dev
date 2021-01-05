@@ -120,7 +120,7 @@ class ProductGridCategoryTreeController
         $translationLocale = $this->userContext->getCurrentLocale();
 
         $query = new ListChildrenCategoriesWithCount(
-            $request->query->getInt('id', -1),
+            $request->query->get('code', null),
             $request->query->getInt('select_node_id', -1),
             $request->query->getBoolean('include_sub', false),
             $user->getId(),

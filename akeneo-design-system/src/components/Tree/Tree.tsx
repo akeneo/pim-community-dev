@@ -1,4 +1,4 @@
-import React, {Ref, SyntheticEvent, isValidElement, ReactElement, ReactNode} from 'react';
+import React, { SyntheticEvent, isValidElement, ReactElement, ReactNode, PropsWithChildren } from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../theme';
 import {Checkbox, CheckboxChecked} from '../Checkbox/Checkbox';
@@ -104,43 +104,43 @@ const LabelWithFolder = styled.button<{$selected: boolean} & AkeneoThemedProps>`
   }
 `;
 
-type TreeProps = {
-  value: string;
+type TreeProps<T = string> = {
+  value: T;
   label: string;
   isLeaf?: boolean;
   selected?: boolean;
   isLoading?: boolean;
   selectable?: boolean;
   readOnly?: boolean;
-  onOpen?: (value: string) => void;
-  onClose?: (value: string) => void;
-  onChange?: (value: string, checked: boolean, event: SyntheticEvent) => void;
+  onOpen?: (value: T) => void;
+  onClose?: (value: T) => void;
+  onChange?: (value: T, checked: boolean, event: SyntheticEvent) => void;
+  onClick?: (value: T) => void;
   _isRoot?: boolean;
   children?: ReactNode;
 };
 
-const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
-  (
-    {
-      label,
-      value,
-      children,
-      isLeaf = false,
-      selected = false,
-      isLoading = false,
-      selectable = false,
-      readOnly = false,
-      onChange,
-      onOpen,
-      onClose,
-      _isRoot = true,
-      ...rest
-    }: TreeProps,
-    forwardedRef: Ref<HTMLDivElement>
-  ) => {
-    const subTrees: ReactElement<TreeProps>[] = [];
+const Tree = <T, >(
+  {
+    label,
+    value,
+    children,
+    isLeaf = false,
+    selected = false,
+    isLoading = false,
+    selectable = false,
+    readOnly = false,
+    onChange,
+    onOpen,
+    onClose,
+    onClick,
+    _isRoot = true,
+    ...rest
+  }: PropsWithChildren<TreeProps<T>>
+) => {
+    const subTrees: ReactElement<TreeProps<T>>[] = [];
     React.Children.forEach(children, child => {
-      if (!isValidElement<TreeProps>(child)) {
+      if (!isValidElement<TreeProps<T>>(child)) {
         throw new Error(
           `${Tree.displayName || 'Tree'} component only accepts ${Tree.displayName || 'Tree'} as children`
         );
@@ -165,7 +165,11 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
     };
 
     const handleClick = () => {
-      isOpen ? handleClose() : handleOpen();
+      if (onClick) {
+        onClick(value);
+      } else {
+        isOpen ? handleClose() : handleOpen();
+      }
     };
 
     const handleSelect = (checked: CheckboxChecked, event: SyntheticEvent) => {
@@ -176,7 +180,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
 
     // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
     const result = (
-      <TreeContainer role={'treeitem'} aria-expanded={isOpen} ref={forwardedRef} {...rest}>
+      <TreeContainer role={'treeitem'} aria-expanded={isOpen} {...rest}>
         <TreeLine $selected={selected}>
           <ArrowButton
             disabled={isLeaf}
@@ -209,7 +213,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
           <SubTreesContainer role={'group'}>
             {subTrees.map(subTree =>
               React.cloneElement(subTree, {
-                key: subTree.props.value,
+                key: JSON.stringify(subTree.props.value),
                 _isRoot: false,
               })
             )}
@@ -220,6 +224,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
 
     return _isRoot ? <ul role={'tree'}>{result}</ul> : result;
   }
-);
+
+  Tree.displayName = 'Tree';
 
 export {Tree};

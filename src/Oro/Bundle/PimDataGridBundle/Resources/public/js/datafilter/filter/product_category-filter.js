@@ -35,6 +35,8 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
      */
     value: {},
 
+    treeView: null,
+
     /**
      * @inheritDoc
      */
@@ -55,7 +57,12 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
 
       this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
 
-      TreeView.init(this.$el, this._getInitialState(), categoryBaseRoute);
+      this.treeView = new TreeView(
+        this.$el[0],
+        this._getInitialState(),
+        categoryBaseRoute,
+        this.handleClick,
+      );
 
       this.listenTo(mediator, 'datagrid_filters:build.post', function (filtersManager) {
         this.listenTo(filtersManager, 'collection-filters:createState.post', function (filtersState) {
@@ -73,7 +80,7 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
       });
 
       mediator.on('grid_action_execute:product-grid:delete', function () {
-        TreeView.refresh();
+        this.treeView.refresh();
       });
 
       if (undefined !== updateCallback) {
@@ -89,7 +96,7 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
         return this.emptyValue;
       }
 
-      var state = TreeView.getState();
+      var state = this.treeView.getState();
 
       return {
         value: {
@@ -122,8 +129,17 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
     /**
      * Sync the tree state with the filter value
      */
-    _updateState: function () {
-      this.value = this._getTreeState();
+    _updateState: function (treeState) {
+      this.value = this.treeState;
+    },
+
+    handleClick: function (treeState) {
+      if (!_.isEqual(this.value, treeState)) {
+        this._updateState();
+        this._triggerUpdate();
+      }
+
+      this.trigger('update_label', this.value);
     },
 
     /**
@@ -156,7 +172,7 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
      * @inheritDoc
      */
     reset: function () {
-      TreeView.reset();
+      this.treeView.reset();
       NumberFilter.prototype.reset.apply(this, arguments);
     },
   });

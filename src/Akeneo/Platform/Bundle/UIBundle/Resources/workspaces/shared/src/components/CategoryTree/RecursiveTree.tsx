@@ -12,6 +12,7 @@ type RecursiveTreeProps = {
   selectable?: boolean;
   lockedCategoryIds?: number[];
   readOnly?: boolean;
+  onClick?: (value: string) => void;
   _isRoot?: boolean;
 };
 
@@ -24,6 +25,7 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
   selectable,
   lockedCategoryIds = [],
   readOnly = false,
+  onClick,
   _isRoot = true,
   ...rest
 }) => {
@@ -87,7 +89,11 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
           ? json.children.map(child => {
               return parseResponse(child, readOnly, lockedCategoryIds);
             })
-          : [];
+          : Array.isArray(json) ?
+            json.map(child => {
+              return parseResponse(child, readOnly, lockedCategoryIds);
+            }) : []
+        ;
 
         setTreeState(
           recursiveSet(treeState, value, node => {
@@ -120,6 +126,7 @@ const RecursiveTree: React.FC<RecursiveTreeProps> = ({
       onChange={handleChange}
       selected={!!tree.selected}
       readOnly={!!tree.readOnly}
+      onClick={onClick}
       {...rest}
     >
       {tree.children &&

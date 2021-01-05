@@ -4,6 +4,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {CategoryTree} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree';
+import { parseResponse } from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTreeRouting';
 const Router = require('pim/router');
 
 class TreeAssociate {
@@ -123,21 +124,29 @@ class TreeAssociate {
       });
     };
 
-    ReactDOM.render(
-      <DependenciesProvider>
-        <ThemeProvider theme={pimTheme}>
-          <CategoryTree
-            onChange={handleChange}
-            initRoute={initRoute}
-            childrenRoute={childrenRoute}
-            lockedCategoryIds={this.lockedCategoryIds}
-            selectable={true}
-            readOnly={this.readOnly}
-          />
-        </ThemeProvider>
-      </DependenciesProvider>,
-      tree
-    );
+    fetch(initRoute).then(response => {
+      response.json().then((json: any) => {
+        const initialTree = Array.isArray(json)
+          ? parseResponse(json[0], this.readOnly, this.lockedCategoryIds)
+          : parseResponse(json, this.readOnly, this.lockedCategoryIds)
+
+        ReactDOM.render(
+          <DependenciesProvider>
+            <ThemeProvider theme={pimTheme}>
+              <CategoryTree
+                onChange={handleChange}
+                initialTree={initialTree}
+                childrenRoute={childrenRoute}
+                lockedCategoryIds={this.lockedCategoryIds}
+                selectable={true}
+                readOnly={this.readOnly}
+              />
+            </ThemeProvider>
+          </DependenciesProvider>,
+          tree
+        );
+      })
+    });
   }
 }
 

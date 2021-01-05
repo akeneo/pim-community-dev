@@ -58,6 +58,30 @@ test('it triggers onOpen/onClose/onSelect callback', () => {
   expect(handleChange).toBeCalledWith('master', true, expect.anything());
 });
 
+test('it triggers onSelect callback', () => {
+  const handleOpen = jest.fn();
+  const handleClose = jest.fn();
+  const handleClick = jest.fn();
+
+  render(
+    <Tree
+      value={'master'}
+      label={'Master'}
+      selectable={true}
+      onOpen={handleOpen}
+      onClose={handleClose}
+      onClick={handleClick}
+    />
+  );
+
+  fireEvent.click(screen.getAllByRole('button')[1]);
+
+  expect(handleOpen).toBeCalledTimes(0);
+  expect(handleClose).toBeCalledTimes(0);
+  expect(handleClick).toBeCalledTimes(1);
+  expect(handleClick).toBeCalledWith('master');
+});
+
 test('it does not trigger any callback when its a leaf', () => {
   const handleOpen = jest.fn();
 
@@ -69,6 +93,8 @@ test('it does not trigger any callback when its a leaf', () => {
 });
 
 test('It throws with an unknown status', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
   expect(() => {
     render(
       <Tree value={'master'} label={'Master'}>
@@ -76,4 +102,6 @@ test('It throws with an unknown status', () => {
       </Tree>
     );
   }).toThrow();
+
+  mockConsole.mockRestore();
 });

@@ -107,6 +107,7 @@ define(['underscore', 'jquery', 'pim/form-builder', 'pim/form', 'oro/datafilter/
      * @returns {String}
      */
     getTreeLabel() {
+      return 'FOOBAR'; // TODO
       return this.trimCount($('#tree_toolbar .select2-chosen').text().trim());
     },
 

@@ -35,6 +35,9 @@ import {Tree} from './Tree.tsx';
     onChange:{
       description: 'Triggered when the user selects or unselects a node'
     },
+    onClick:{
+      description: 'Triggered when the user clicks on a node. If not specified, a click opens or closes the node.'
+    },
     _isRoot:{
         table:{
           disable: true
@@ -53,6 +56,10 @@ A tree is a hierarchical component that displays the visual representation of th
 ## General guidance
 
 Tree structures are flexible. A default tree provides a structure with named nodes and arrows to expand/collapse child nodes, whereas a selectable tree features checkboxes allowing the user to select nodes and/or children nodes.
+
+## Technical note
+
+The Tree component uses its value to trigger onOpen, onClose and other events. By default, the value is typehinted as a string. You can set a different type by using generic type <Tree<number> {...}/> for example.
 
 ## Playground
 

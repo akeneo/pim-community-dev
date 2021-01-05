@@ -10,8 +10,8 @@ namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
  */
 class ListChildrenCategoriesWithCount
 {
-    /** @var int */
-    private $categoryIdToExpand;
+    /** @var string */
+    private $categoryCodeToExpand;
 
     /** @var int */
     private $categoryIdSelectedAsFilter;
@@ -25,21 +25,14 @@ class ListChildrenCategoriesWithCount
     /** @var string */
     private $translationLocaleCode;
 
-    /**
-     * @param int    $categoryIdToExpand
-     * @param int    $categoryIdSelectedAsFilter
-     * @param bool   $countByIncludingSubCategories
-     * @param int    $userId
-     * @param string $translationLocaleCode
-     */
     public function __construct(
-        int $categoryIdToExpand,
+        string $categoryCodeToExpand,
         int $categoryIdSelectedAsFilter,
         bool $countByIncludingSubCategories,
         int $userId,
         string $translationLocaleCode
     ) {
-        $this->categoryIdToExpand = $categoryIdToExpand;
+        $this->categoryCodeToExpand = $categoryCodeToExpand;
         $this->categoryIdSelectedAsFilter = $categoryIdSelectedAsFilter;
         $this->countIncludingSubCategories = $countByIncludingSubCategories;
         $this->userId = $userId;
@@ -52,11 +45,11 @@ class ListChildrenCategoriesWithCount
      * Do note that the user can expand a category without selecting it as a filter.
      * Therefore, the category to expand can be different from the selected category.
      *
-     * @return int
+     * @return string
      */
-    public function childrenCategoryIdToExpand(): int
+    public function childrenCategoryCodeToExpand(): string
     {
-        return $this->categoryIdToExpand;
+        return $this->categoryCodeToExpand;
     }
 
     /**
