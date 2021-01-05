@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - DAPI-1470: Fix DateTime bad usage
+- DAPI-1469: Fix the size issue with the logo on login page
 
 # 5.0.0 (2020-12-31)
 
