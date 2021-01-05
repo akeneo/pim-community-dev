@@ -51,7 +51,7 @@ test('it triggers onOpen/onClose/onSelect callback', () => {
   expect(handleChange).toBeCalledWith('master', true, expect.anything());
 });
 
-test('it triggers onSelect callback', () => {
+test('it triggers onClick callback', () => {
   const handleOpen = jest.fn();
   const handleClose = jest.fn();
   const handleClick = jest.fn();
@@ -81,6 +81,7 @@ test('it does not trigger any callback when its a leaf', () => {
   render(<Tree value={'master'} label={'Master'} isLeaf={true} onOpen={handleOpen} />);
 
   fireEvent.click(screen.getAllByRole('button')[0]);
+  fireEvent.click(screen.getAllByRole('button')[1]);
 
   expect(handleOpen).toBeCalledTimes(0);
 });

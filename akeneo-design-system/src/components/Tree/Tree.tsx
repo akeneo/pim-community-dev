@@ -28,21 +28,21 @@ const TreeArrowIcon = styled(ArrowRightIcon)<{$isFolderOpen: boolean} & AkeneoTh
   cursor: pointer;
 `;
 
-const TreeFolderIcon = styled(FolderIcon)`
+const TreeLeafNotSelectedIcon = styled(FolderIcon)`
   ${folderIconCss}
 `;
 
-const TreeFoldersPlainIcon = styled(FoldersPlainIcon)`
-  ${folderIconCss}
-  color: ${getColor('blue100')};
-`;
-
-const TreeFolderPlainIcon = styled(FolderPlainIcon)`
+const TreeFolderSelectedIcon = styled(FoldersPlainIcon)`
   ${folderIconCss}
   color: ${getColor('blue100')};
 `;
 
-const TreeFoldersIcon = styled(FoldersIcon)`
+const TreeLeafSelectedIcon = styled(FolderPlainIcon)`
+  ${folderIconCss}
+  color: ${getColor('blue100')};
+`;
+
+const TreeFolderNotSelectedIcon = styled(FoldersIcon)`
   ${folderIconCss}
 `;
 
@@ -55,11 +55,10 @@ const TreeLine = styled.div<{$selected: boolean} & AkeneoThemedProps>`
   height: 40px;
   line-height: 40px;
   ${({$selected}) =>
-    $selected
-      ? css`
-          color: ${getColor('blue100')};
-        `
-      : ''}
+    $selected &&
+    css`
+      color: ${getColor('blue100')};
+    `}
 `;
 
 const NodeCheckbox = styled(Checkbox)`
@@ -68,20 +67,22 @@ const NodeCheckbox = styled(Checkbox)`
   margin-right: 8px;
 `;
 
-const boxSize = 30;
 const ArrowButton = styled.button`
-  height: ${boxSize}px;
-  width: ${boxSize}px;
+  height: 30px;
+  width: 30px;
   vertical-align: middle;
-  margin-right: ${(14 - boxSize) / 2 + 10}px;
+  margin-right: 2px;
   padding: 0;
   border: none;
   background: none;
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 `;
 
 const LabelWithFolder = styled.button<{$selected: boolean} & AkeneoThemedProps>`
   ${CommonStyle}
-  height: ${boxSize}px;
+  height: 30px;
   vertical-align: middle;
   background: none;
   border: none;
@@ -89,20 +90,34 @@ const LabelWithFolder = styled.button<{$selected: boolean} & AkeneoThemedProps>`
   padding: 0 5px 0 0;
   cursor: pointer;
   ${({$selected}) =>
-    $selected
-      ? css`
-          color: ${getColor('blue100')};
-        `
-      : ''}
+    $selected &&
+    css`
+      color: ${getColor('blue100')};
+    `}
   &:hover {
     ${({$selected}) =>
-      !$selected
-        ? css`
-            color: ${getColor('grey140')};
-          `
-        : ''}
+      !$selected &&
+      css`
+        color: ${getColor('grey140')};
+      `}
   }
 `;
+
+const TreeIcon: React.FC<{
+  isLoading: boolean;
+  isLeaf: boolean;
+  selected: boolean;
+}> = ({isLoading, isLeaf, selected}) => {
+  if (isLoading) {
+    return <TreeLoaderIcon size={24} />;
+  }
+
+  if (isLeaf) {
+    return selected ? <TreeLeafSelectedIcon size={24} /> : <TreeLeafNotSelectedIcon size={24} />;
+  }
+
+  return selected ? <TreeFolderSelectedIcon size={24} /> : <TreeFolderNotSelectedIcon size={24} />;
+};
 
 type TreeProps<T = string> = {
   value: T;
@@ -139,70 +154,66 @@ const Tree = <T,>({
   const subTrees: ReactElement<TreeProps<T>>[] = [];
   React.Children.forEach(children, child => {
     if (!isValidElement<TreeProps<T>>(child)) {
-      throw new Error(`${Tree.displayName || 'Tree'} component only accepts ${Tree.displayName || 'Tree'} as children`);
+      throw new Error('Tree component only accepts Tree as children');
     }
     subTrees.push(child);
   });
 
   const [isOpen, setOpen] = React.useState<boolean>(subTrees.length > 0);
 
-  const handleOpen = () => {
+  const handleOpen = React.useCallback(() => {
     setOpen(true);
     if (onOpen) {
       onOpen(value);
     }
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = React.useCallback(() => {
     setOpen(false);
     if (onClose) {
       onClose(value);
     }
-  };
+  }, []);
 
-  const handleClick = () => {
+  const handleClick = React.useCallback(() => {
     if (onClick) {
       onClick(value);
     } else {
-      isOpen ? handleClose() : handleOpen();
+      handleArrowClick();
     }
-  };
+  }, [isOpen]);
 
-  const handleSelect = (checked: CheckboxChecked, event: SyntheticEvent) => {
+  const handleSelect = React.useCallback((checked: CheckboxChecked, event: SyntheticEvent) => {
     if (onChange) {
       onChange(value, checked as boolean, event);
     }
-  };
+  }, []);
+
+  const handleArrowClick = React.useCallback(() => {
+    if (isLeaf) {
+      return;
+    }
+
+    isOpen ? handleClose() : handleOpen();
+  }, [isOpen]);
 
   // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
   const result = (
-    <TreeContainer role={'treeitem'} aria-expanded={isOpen} {...rest}>
+    <TreeContainer role="treeitem" aria-expanded={isOpen} {...rest}>
       <TreeLine $selected={selected}>
-        <ArrowButton disabled={isLeaf} role={'button'} onClick={isLeaf ? undefined : isOpen ? handleClose : handleOpen}>
+        <ArrowButton disabled={isLeaf} role="button" onClick={handleArrowClick}>
           {!isLeaf && <TreeArrowIcon $isFolderOpen={isOpen} size={14} />}
         </ArrowButton>
 
         {selectable && <NodeCheckbox checked={selected} onChange={handleSelect} readOnly={readOnly} />}
 
         <LabelWithFolder onClick={handleClick} $selected={selected}>
-          {isLoading ? (
-            <TreeLoaderIcon size={24} />
-          ) : isLeaf ? (
-            selected ? (
-              <TreeFolderPlainIcon size={24} />
-            ) : (
-              <TreeFolderIcon size={24} />
-            )
-          ) : selected ? (
-            <TreeFoldersPlainIcon size={24} />
-          ) : (
-            <TreeFoldersIcon size={24} />
-          )}
+          <TreeIcon isLoading={isLoading} isLeaf={isLeaf} selected={selected} />
           {label}
         </LabelWithFolder>
       </TreeLine>
       {isOpen && !isLeaf && subTrees.length > 0 && (
-        <SubTreesContainer role={'group'}>
+        <SubTreesContainer role="group">
           {subTrees.map(subTree =>
             React.cloneElement(subTree, {
               key: JSON.stringify(subTree.props.value),
@@ -214,7 +225,7 @@ const Tree = <T,>({
     </TreeContainer>
   );
 
-  return _isRoot ? <ul role={'tree'}>{result}</ul> : result;
+  return _isRoot ? <ul role="tree">{result}</ul> : result;
 };
 
 Tree.displayName = 'Tree';
