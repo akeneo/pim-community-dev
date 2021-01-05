@@ -8,7 +8,7 @@ test('it renders its children properly', () => {
   render(
     <Dropdown>
       <Button>Dropdown</Button>
-      <Dropdown.Overlay position="down" onClose={jest.fn()}>
+      <Dropdown.Overlay verticalPosition="down" onClose={jest.fn()}>
         <Dropdown.Header>
           <Dropdown.Title>Elements</Dropdown.Title>
         </Dropdown.Header>
@@ -34,7 +34,7 @@ test('it renders selectable item', () => {
   render(
     <Dropdown>
       <Button>Dropdown</Button>
-      <Dropdown.Overlay position="down" onClose={jest.fn()}>
+      <Dropdown.Overlay verticalPosition="down" onClose={jest.fn()}>
         <Dropdown.Header>
           <Dropdown.Title>Elements</Dropdown.Title>
         </Dropdown.Header>
@@ -55,7 +55,7 @@ test('it renders Image item', () => {
   render(
     <Dropdown>
       <Button>Dropdown</Button>
-      <Dropdown.Overlay position="down" onClose={jest.fn()}>
+      <Dropdown.Overlay verticalPosition="down" onClose={jest.fn()}>
         <Dropdown.Header>
           <Dropdown.Title>Elements</Dropdown.Title>
         </Dropdown.Header>

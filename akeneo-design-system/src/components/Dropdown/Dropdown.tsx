@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Overlay} from './Overlay/Overlay';
 import {Item, ItemLabel} from './Item/Item';
 import {ItemCollection} from './ItemCollection/ItemCollection';
-import {AkeneoThemedProps, getColor} from '../../theme';
+import {getColor} from '../../theme';
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -27,18 +27,13 @@ const Header = styled.div`
 
 const Content = styled.div``;
 
-const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-`;
-
 const Title = styled.div`
   font-size: 11px;
   text-transform: uppercase;
   color: ${getColor('brand', 100)};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 /**
@@ -52,7 +47,6 @@ Header.displayName = 'Dropdown.Header';
 Title.displayName = 'Dropdown.Title';
 ItemCollection.displayName = 'Dropdown.ItemCollection';
 Content.displayName = 'Dropdown.Content';
-Backdrop.displayName = 'Dropdown.Backdrop';
 
 Dropdown.Overlay = Overlay;
 Dropdown.Header = Header;
@@ -61,6 +55,5 @@ Dropdown.ItemLabel = ItemLabel;
 Dropdown.Title = Title;
 Dropdown.ItemCollection = ItemCollection;
 Dropdown.Content = Content;
-Dropdown.Backdrop = Backdrop;
 
 export {Dropdown};

@@ -2,7 +2,6 @@ import React from 'react';
 import {Item} from './Item';
 import {Image, Link, Checkbox} from '../../../components';
 import {render, screen, fireEvent} from '../../../storybook/test-util';
-import 'jest-styled-components';
 
 test('It displays an item and add a label wrapper if needed', () => {
   render(
@@ -28,9 +27,6 @@ test('It displays itself bigger if containing images', () => {
   );
 
   expect(screen.getByAltText('A nice Image')).toBeInTheDocument();
-  expect(screen.getByAltText('A nice Image')).toHaveProperty('width', 34);
-  expect(screen.getByAltText('A nice Image')).toHaveProperty('height', 34);
-  expect(screen.getByAltText('A nice Image').parentNode).toHaveStyleRule('height', '44px');
 });
 
 test('It transmit click and keydown events to links', () => {
