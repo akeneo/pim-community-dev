@@ -78,23 +78,19 @@ class VersionPurger implements VersionPurgerInterface
         }
 
         $versionsToPurge = $this->getVersionsToPurge($resourceName, $options);
-        $progressBar = new ProgressBar($output, $versionsToPurgeCount);
-        $progressBar->start();
         $purgedVersionsCount = 0;
 
         foreach ($versionsToPurge as $purgeableVersionList) {
             $purgeableVersionList = $this->filterPurgeableVersionList($purgeableVersionList);
-
             if (!empty($purgeableVersionList)) {
                 $this->deleteVersionsByIdsQuery->execute($purgeableVersionList->getVersionIds());
                 $purgedVersionsCount += count($purgeableVersionList);
             }
 
-            $progressBar->advance($options['batch_size']);
+            $output->write('.');
         }
 
-        $progressBar->finish();
-        $progressBar->clear();
+        $output->writeln('');
 
         return $purgedVersionsCount;
     }

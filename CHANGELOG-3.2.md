@@ -1,5 +1,9 @@
 # 3.2.x
 
+## Bug fixes
+
+- PIM-9150: Remove progressbar for pim:versioning:purge command
+
 # 3.2.80 (2021-01-04)
 
 ## Bug fixes
