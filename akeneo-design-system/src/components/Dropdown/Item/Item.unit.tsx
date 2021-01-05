@@ -28,9 +28,6 @@ test('It displays itself bigger if containing images', () => {
   );
 
   expect(screen.getByAltText('A nice Image')).toBeInTheDocument();
-  expect(screen.getByAltText('A nice Image')).toHaveProperty('width', 34);
-  expect(screen.getByAltText('A nice Image')).toHaveProperty('height', 34);
-  expect(screen.getByAltText('A nice Image').parentNode).toHaveStyleRule('height', '44px');
 });
 
 test('It transmit click and keydown events to links', () => {

@@ -60,19 +60,22 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         actionableRef.current.click();
       }
     }, []);
-    const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
-      if (Key.Enter === event.key || Key.Space === event.key) {
-        event.preventDefault();
-        handleClick();
-        return;
-      }
+    const handleKeyDown = useCallback(
+      (event: KeyboardEvent<HTMLDivElement>) => {
+        if (Key.Enter === event.key || Key.Space === event.key) {
+          event.preventDefault();
+          handleClick();
+          return;
+        }
 
-      onKeyDown && onKeyDown(event);
-    }, []);
+        onKeyDown && onKeyDown(event);
+      },
+      [onKeyDown, handleClick]
+    );
 
     const decoratedChildren = React.Children.map(children, child => {
       if (typeof child === 'string') {
-        return <ItemLabel>{child}</ItemLabel>;
+        return <ItemLabel title={child}>{child}</ItemLabel>;
       }
 
       // Change size of Image children
