@@ -1,0 +1,164 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Tree} from './Tree.tsx';
+
+<Meta
+  title="Components/Tree"
+  component={Tree}
+  argTypes={{
+    value: {
+      description: 'Value of the element that is used during callback events'
+    },
+    label: {
+      description: 'Label of the tree element'
+    },
+    isLeaf: {
+      description: 'A leaf is the deepest element of a tree and does not have children'
+    },
+    selected: {
+      description: 'Highlight the current element of the tree'
+    },
+    isLoading: {
+      description: 'Displays the loading animation'
+    },
+    selectable: {
+      description: 'Displays a checkbox that allows to select the element of the tree'
+    },
+    readOnly: {
+      description: 'Does not allow checking/unchecking the box (Can only be used with `selectable`)'
+    },
+    onOpen:{
+      description: 'Triggered when the user opens a node'
+    },
+    onClose:{
+      description: 'Triggered when the user closes a node'
+    },
+    onChange:{
+      description: 'Triggered when the user selects or unselects a node'
+    },
+    onClick:{
+      description: 'Triggered when the user clicks on a node. If not specified, a click opens or closes the node.'
+    },
+    _isRoot:{
+        table:{
+          disable: true
+        }
+    },
+  }}
+  args={{}}
+/>
+
+# Tree
+
+## Usage
+
+A tree is a hierarchical component that displays the visual representation of the parent-child relationship between nodes (such as categories, families, etc...). There are different variations that allow to select only one and/or multiple node at the same time.
+
+## General guidance
+
+Tree structures are flexible. A default tree provides a structure with named nodes and arrows to expand/collapse child nodes, whereas a selectable tree features checkboxes allowing the user to select nodes and/or children nodes.
+
+## Technical note
+
+The Tree component uses its value to trigger onOpen, onClose and other events. By default, the value is typehinted as a string. You can set a different type by using generic type `<Tree<number> {...}/>` for example.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <Tree value={'master'} label={'Master'} {...args}>
+          <Tree value={'tvs'} label={'TVs and projectors'} {...args}/>
+          <Tree value={'cameras'} label={'Cameras'} {...args}/>
+          <Tree value={'audio'} label={'Audio and Video'} {...args}/>
+        </Tree>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on selected
+
+<Canvas>
+  <Story name="Selected">
+    {args => {
+      return (
+        <>
+          <Tree {...args} label='default' selected={false} />
+          <Tree {...args} label='selected' selected={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on isLoading
+
+<Canvas>
+  <Story name="IsLoading">
+    {args => {
+      return (
+        <>
+          <Tree {...args} label='default' isLoading={false} />
+          <Tree {...args} label='isLoading' isLoading={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on isLeaf
+
+<Canvas>
+  <Story name="IsLeaf">
+    {args => {
+      return (
+        <>
+          <Tree {...args} label='default' isLeaf={false} />
+          <Tree {...args} label='isLeaf' isLeaf={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on selectable
+
+<Canvas>
+  <Story name="Selectable">
+    {args => {
+      const [selected, setSelected] = React.useState(false);
+      return (
+        <>
+          <Tree {...args} label='default' selectable={false}/>
+          <Tree
+            {...args}
+            label='selectable'
+            selectable={true}
+            selected={selected}
+            onChange={(_value, checked) => setSelected(checked)}
+          />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="ReadOnly">
+    {args => {
+      return (
+        <>
+          <Tree {...args} label='default' selectable={true} readOnly={false} />
+          <Tree {...args} label='readOnly' selectable={true} readOnly={true} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+
