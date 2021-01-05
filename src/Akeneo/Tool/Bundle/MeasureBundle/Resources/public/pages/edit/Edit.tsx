@@ -24,7 +24,6 @@ import {
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
 import {
   useTranslate,
   useNotify,
@@ -36,6 +35,7 @@ import {
 } from '@akeneo-pim-community/legacy-bridge';
 import {filterErrors, ValidationError, partitionErrors, useToggleState} from '@akeneo-pim-community/shared';
 import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
+import {PageErrorBlock} from '@akeneo-pim-community/shared/src';
 
 enum Tab {
   Units = 'units',
@@ -191,7 +191,7 @@ const Edit = () => {
 
   if (undefined === measurementFamily) {
     return (
-      <ErrorBlock
+      <PageErrorBlock
         title={__('error.exception', {status_code: '404'})}
         message={__('measurements.family.not_found')}
         code={404}
