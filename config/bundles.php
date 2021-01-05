@@ -53,4 +53,6 @@ return [
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebServerBundle\WebServerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
+    // TODO: replace by ['all' => true]
+    Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Symfony\AkeneoTaskSchedulingBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
 ];

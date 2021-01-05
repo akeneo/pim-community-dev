@@ -53,6 +53,13 @@ suites:
         src_path: src/Akeneo/Pim/Automation/DataQualityInsights
         spec_prefix: Specification
 
+    TaskScheduling:
+        namespace: Akeneo\Pim\Automation\TaskScheduling
+        psr4_prefix: Akeneo\Pim\Automation\TaskScheduling
+        spec_path: src/Akeneo/Pim/Automation/TaskScheduling/tests/back/
+        src_path: src/Akeneo/Pim/Automation/TaskScheduling/back
+        spec_prefix: Specification
+
     ## Akeneo Components
     Connector:
         namespace: Akeneo\Tool\Component\Connector

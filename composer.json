@@ -17,7 +17,7 @@
             "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back",
-            "Akeneo\\Pim\\Automation\\TaskSchedunling\\": "src/Akeneo/Pim/Automation/TaskScheduling"
+            "Akeneo\\Pim\\Automation\\TaskScheduling\\": "src/Akeneo/Pim/Automation/TaskScheduling/back"
         }
     },
     "autoload-dev": {
@@ -34,7 +34,8 @@
             "Akeneo\\Test\\": "tests/back/",
             "Pim\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
-            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"
+            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
+            "Akeneo\\Test\\Pim\\Automation\\TaskScheduling\\": "src/Akeneo/Pim/Automation/TaskScheduling/tests/back"
         }
     },
     "require": {

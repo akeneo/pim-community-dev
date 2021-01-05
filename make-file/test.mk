@@ -32,6 +32,8 @@ lint-back:
 	$(MAKE) communication-channel-lint-back
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
+	$(MAKE) task-scheduling-lint-back
+	$(MAKE) task-scheduling-phpstan
 
 .PHONY: lint-front
 lint-front:
