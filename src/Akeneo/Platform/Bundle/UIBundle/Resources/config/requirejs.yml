@@ -760,7 +760,6 @@ config:
     pim/job/common/edit/upload:                                  pimui/js/job/common/edit/upload
     pim/job/common/edit/upload-launch:                           pimui/js/job/common/edit/upload-launch
     pim/job/common/file-path:                                    pimui/js/job/common/file-path
-    pim/job/common/label:                                        pimui/js/job/common/label
     pim/job/common/grid:                                         pimui/js/job/common/grid
     pim/job/product/edit/content:                                pimui/js/job/product/edit/content
 
