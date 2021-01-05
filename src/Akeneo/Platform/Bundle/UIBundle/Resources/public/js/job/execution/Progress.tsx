@@ -71,6 +71,7 @@ const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): str
       const percentProcessed = (step.processedItems * 100) / step.totalItems;
       const durationProjection = Math.round((step.duration * 100) / percentProcessed);
       const durationLeft = durationProjection - step.duration;
+
       return translate('pim_import_export.tracking.in_progress', {duration: formatSecondsIntl(durationLeft)});
     case 'ABANDONED':
     case 'COMPLETED':

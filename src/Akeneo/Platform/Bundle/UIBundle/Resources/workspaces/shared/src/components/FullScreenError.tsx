@@ -1,21 +1,21 @@
 import React from 'react';
 import {ClientErrorIllustration, ServerErrorIllustration} from 'akeneo-design-system';
 
-type PageErrorBlockProps = {
+type FullScreenErrorProps = {
   title: string;
   message: string;
   code: number;
 };
 
-const PageErrorBlock = ({title, message, code}: PageErrorBlockProps) => {
+const FullScreenError = ({title, message, code}: FullScreenErrorProps) => {
   const isClientError = code >= 400 && code < 500;
 
   return (
     <div className="AknInfoBlock AknInfoBlock--error">
       {isClientError ? (
-        <ClientErrorIllustration width="100%" height="100%" />
+        <ClientErrorIllustration width="auto" height="auto" />
       ) : (
-        <ServerErrorIllustration width="100%" height="100%" />
+        <ServerErrorIllustration width="auto" height="auto" />
       )}
       <span className={`AknInfoBlock-errorNumber AknInfoBlock-errorNumber--${isClientError ? '400' : '500'}`}>
         {code}
@@ -26,4 +26,4 @@ const PageErrorBlock = ({title, message, code}: PageErrorBlockProps) => {
   );
 };
 
-export {PageErrorBlock};
+export {FullScreenError};
