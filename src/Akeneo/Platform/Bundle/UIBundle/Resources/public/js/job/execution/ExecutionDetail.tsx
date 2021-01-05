@@ -1,7 +1,7 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
-import {Breadcrumb, Button, getColor, IconButton, Link, MoreIcon} from 'akeneo-design-system';
+import {Breadcrumb, Button, IconButton, Link, MoreIcon} from 'akeneo-design-system';
 import {Status} from './Status';
 import {StopJobAction} from './StopJobAction';
 import {JobExecutionProgress} from './Progress';
@@ -125,7 +125,7 @@ const getDownloadLinks = (jobExecution: JobExecution | null): DownloadLink[] => 
   return downloadLinks;
 };
 
-const Report = () => {
+const ExecutionDetail = () => {
   const translate = useTranslate();
   const router = useRouter();
   const akeneoTheme = useContext(ThemeContext);
@@ -232,4 +232,4 @@ const Report = () => {
   );
 };
 
-export {Report};
+export {ExecutionDetail};

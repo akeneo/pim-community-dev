@@ -2,7 +2,7 @@ import React from 'react';
 import {formatSecondsIntl} from 'pimui/js/intl-duration';
 import styled from 'styled-components';
 import {Level, ProgressBar} from 'akeneo-design-system';
-import {StepExecutionTracking} from './Report';
+import {StepExecutionTracking} from './model/job-execution';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const Container = styled.div`
