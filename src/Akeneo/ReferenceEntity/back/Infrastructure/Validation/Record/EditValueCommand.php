@@ -22,6 +22,8 @@ class EditValueCommand extends Constraint
     public const LOCALE_IS_NOT_ACTIVATED = 'pim_reference_entity.record.validation.locale.is_not_activated';
     public const LOCALE_IS_NOT_ACTIVATED_FOR_CHANNEL = 'pim_reference_entity.record.validation.locale.is_not_activated_for_channel';
 
+    public const CHANNEL_AND_LOCALE_ARE_EXPECTED = 'pim_reference_entity.record.validation.channel_and_locale.are_expected';
+
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

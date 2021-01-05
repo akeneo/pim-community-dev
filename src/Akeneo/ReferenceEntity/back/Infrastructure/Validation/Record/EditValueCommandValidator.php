@@ -13,6 +13,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiers
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -24,14 +25,9 @@ use Symfony\Component\Validator\Validation;
  */
 class EditValueCommandValidator extends ConstraintValidator
 {
-    /** @var ChannelExistsInterface */
-    private $channelExists;
-
-    /** @var FindActivatedLocalesPerChannelsInterface */
-    private $findActivatedLocalesPerChannels;
-
-    /** @var FindActivatedLocalesByIdentifiersInterface */
-    private $findActivatedLocalesByIdentifiers;
+    private ChannelExistsInterface $channelExists;
+    private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
+    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocalesByIdentifiers;
 
     public function __construct(
         ChannelExistsInterface $channelExists,
@@ -48,13 +44,29 @@ class EditValueCommandValidator extends ConstraintValidator
         $this->checkCommandType($command);
         $this->checkConstraintType($constraint);
 
-        $violations = $this->checkChannelType($command);
-        $violations->addAll($this->checkLocaleType($command));
+        $attribute = $command->attribute;
+        if ($attribute->hasValuePerChannel() && $attribute->hasValuePerLocale()) {
+            if (null === $command->locale || null === $command->channel) {
+                $attributeCode = (string) $command->attribute->getCode();
+                $referenceEntityIdentifier = (string) $command->attribute->getReferenceEntityIdentifier();
+                $this->context->buildViolation(EditValueCommand::CHANNEL_AND_LOCALE_ARE_EXPECTED)
+                    ->setParameter('%attribute_code%', $attributeCode)
+                    ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
+                    ->atPath($attributeCode)
+                    ->setInvalidValue($command)
+                    ->addViolation();
 
-        if ($violations->count() > 0) {
-            $this->addViolations($command, $violations);
+                return;
+            }
+        } else {
+            $violations = new ConstraintViolationList();
+            $violations->addAll($this->checkChannelType($command));
+            $violations->addAll($this->checkLocaleType($command));
+            if ($violations->count() > 0) {
+                $this->addViolations($command, $violations);
 
-            return;
+                return;
+            }
         }
 
         if ($command->attribute->hasValuePerChannel()) {
@@ -171,9 +183,11 @@ class EditValueCommandValidator extends ConstraintValidator
     private function addViolations(AbstractEditValueCommand $command, ConstraintViolationListInterface $violations): void
     {
         $attributeCode = (string) $command->attribute->getCode();
+        $referenceEntityIdentifier = (string) $command->attribute->getReferenceEntityIdentifier();
         foreach ($violations as $violation) {
             $this->context->buildViolation($violation->getMessage())
                 ->setParameter('%attribute_code%', $attributeCode)
+                ->setParameter('%reference_entity_identifier%', $referenceEntityIdentifier)
                 ->atPath($attributeCode)
                 ->setCode($violation->getCode())
                 ->setPlural($violation->getPlural())
