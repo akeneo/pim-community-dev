@@ -26,6 +26,9 @@ const ItemContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
     color: ${getColor('grey', 120)};
   }
 
+  &:focus ${ItemLabel} {
+    color: ${getColor('grey', 120)};
+  }
   &:hover {
     background: ${getColor('grey', 20)};
   }
@@ -35,12 +38,10 @@ const ItemContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
   &:active ${ItemLabel} {
     color: ${getColor('brand', 100)};
     font-style: italic;
+    font-weight: 700;
   }
   &:disabled ${ItemLabel} {
     color: ${getColor('grey', 100)};
-  }
-  &:focus ${ItemLabel} {
-    color: ${getColor('grey', 120)};
   }
 `;
 
@@ -60,19 +61,22 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
         actionableRef.current.click();
       }
     }, []);
-    const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
-      if (Key.Enter === event.key || Key.Space === event.key) {
-        event.preventDefault();
-        handleClick();
-        return;
-      }
+    const handleKeyDown = useCallback(
+      (event: KeyboardEvent<HTMLDivElement>) => {
+        if (Key.Enter === event.key || Key.Space === event.key) {
+          event.preventDefault();
+          handleClick();
+          return;
+        }
 
-      onKeyDown && onKeyDown(event);
-    }, []);
+        onKeyDown && onKeyDown(event);
+      },
+      [onKeyDown, handleClick]
+    );
 
     const decoratedChildren = React.Children.map(children, child => {
       if (typeof child === 'string') {
-        return <ItemLabel>{child}</ItemLabel>;
+        return <ItemLabel title={child}>{child}</ItemLabel>;
       }
 
       // Change size of Image children

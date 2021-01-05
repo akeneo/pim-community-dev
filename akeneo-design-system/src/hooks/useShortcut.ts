@@ -16,7 +16,6 @@ const useShortcut = <NodeType extends HTMLElement>(
   const memoizedCallback = useCallback(
     (event: KeyboardEvent) => {
       if (key === event.key) {
-        event.stopImmediatePropagation();
         callback(event);
 
         return true;

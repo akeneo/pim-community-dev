@@ -1,7 +1,6 @@
 import React from 'react';
 import {ItemCollection} from './ItemCollection';
 import {render, screen, fireEvent} from '../../../storybook/test-util';
-import 'jest-styled-components';
 import {Item} from '../Item/Item';
 
 test('it handles arrow navigation', () => {
