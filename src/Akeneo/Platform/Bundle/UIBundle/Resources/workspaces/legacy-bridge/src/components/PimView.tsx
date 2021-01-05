@@ -2,6 +2,7 @@ import React, {useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {View} from 'backbone';
 import {useViewBuilder} from '../hooks';
+import {useIsMounted} from '@akeneo-pim-community/shared/src';
 
 type Props = {
   viewName: string;
@@ -19,13 +20,17 @@ const PimView = ({viewName, className}: Props) => {
   const [view, setView] = useState<View | null>(null);
 
   const viewBuilder = useViewBuilder();
+  const isMounted = useIsMounted();
   useEffect(() => {
     if (!viewBuilder) {
       return;
     }
+
     viewBuilder.build(viewName).then((view: View) => {
-      view.setElement(el.current).render();
-      setView(view);
+      if (isMounted()) {
+        view.setElement(el.current).render();
+        setView(view);
+      }
     });
   }, [viewBuilder, viewName]);
 

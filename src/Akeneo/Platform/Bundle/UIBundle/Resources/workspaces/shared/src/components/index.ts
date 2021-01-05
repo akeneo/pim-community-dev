@@ -1,3 +1,4 @@
+export * from './PageErrorBlock';
 export * from './LoadingPlaceholder';
 export * from './NoData';
 export * from './page';

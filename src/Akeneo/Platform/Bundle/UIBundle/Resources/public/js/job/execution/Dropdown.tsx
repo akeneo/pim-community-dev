@@ -1,8 +1,7 @@
 import React, {ReactNode, SyntheticEvent} from 'react';
 import styled from 'styled-components';
-import {getColor, IconButton, Button} from 'akeneo-design-system';
+import {getColor, ButtonProps} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
-import {ButtonProps} from "reakit";
 
 const Container = styled.div`
   position: relative;
@@ -85,22 +84,17 @@ const Dropdown = ({title, actionButton, children}: {title: string; actionButton:
   });
 
   if (!decoratedChildren) return null;
-  if (
-    !React.isValidElement<ButtonProps>(actionButton) ||
-    (actionButton.type !== Button && actionButton.type !== IconButton)
-  ) {
+  if (!React.isValidElement<ButtonProps>(actionButton)) {
     return null;
   }
 
   const actionButtonDecorated = React.cloneElement(actionButton, {
-    onClick: open
+    onClick: open,
   });
 
   return (
     <Container>
-      <Action>
-        {actionButtonDecorated}
-      </Action>
+      <Action>{actionButtonDecorated}</Action>
       {isOpen && (
         <>
           <Backdrop onClick={close} />
