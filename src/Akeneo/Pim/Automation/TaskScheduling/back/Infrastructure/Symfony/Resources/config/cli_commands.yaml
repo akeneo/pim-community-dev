@@ -1,0 +1,4 @@
+services:
+  Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Cli\GetTasksToExecuteCommand:
+    tags:
+      - { name: 'console.command' }
