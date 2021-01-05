@@ -61,19 +61,21 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   const removeRoute = useRoute('pim_enrich_attribute_rest_remove', {code: attributeCode});
   const [productCount, productModelCount] = useImpactedItemCount(attributeCode);
   const [attributeCodeConfirm, setAttributeCodeConfirm] = useState<string>('');
+  const [isLoading, setLoading] = useState<boolean>(false);
   const isValid = attributeCodeConfirm === attributeCode;
 
   const handleConfirm = async () => {
-    if (!isValid) return;
+    if (!isValid || isLoading) return;
 
     try {
-      setAttributeCodeConfirm('');
+      setLoading(true);
       const response = await fetch(removeRoute, {
         method: 'DELETE',
         headers: new Headers({
           'X-Requested-With': 'XMLHttpRequest',
         }),
       });
+      setLoading(false);
 
       if (response.ok) {
         notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.attribute.flash.delete.success'));
@@ -83,6 +85,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         notify(NotificationLevel.ERROR, message ?? translate('pim_enrich.entity.attribute.flash.delete.fail'));
       }
     } catch (error) {
+      setLoading(false);
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.attribute.flash.delete.fail'));
     }
   };
@@ -128,7 +131,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         </Link>
       </SpacedHelper>
       <Field label={translate('pim_enrich.entity.attribute.module.delete.type', {attributeCode})}>
-        <TextInput value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
+        <TextInput readOnly={isLoading} value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
       </Field>
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel}>
