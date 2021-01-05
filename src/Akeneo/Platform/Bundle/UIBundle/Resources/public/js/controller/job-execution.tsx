@@ -1,7 +1,7 @@
 import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
-import {JobExecution} from '../job/execution/JobExecution';
+import {Index} from '../job/execution';
 
 const mediator = require('oro/mediator');
 
@@ -9,7 +9,7 @@ class JobExecutionController extends ReactController {
   reactElementToMount() {
     return (
       <DependenciesProvider>
-        <JobExecution />
+        <Index />
       </DependenciesProvider>
     );
   }

@@ -35,7 +35,7 @@ import {
 } from '@akeneo-pim-community/legacy-bridge';
 import {filterErrors, ValidationError, partitionErrors, useToggleState} from '@akeneo-pim-community/shared';
 import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
-import {PageErrorBlock} from '@akeneo-pim-community/shared/src';
+import {FullScreenError} from '@akeneo-pim-community/shared';
 
 enum Tab {
   Units = 'units',
@@ -191,7 +191,7 @@ const Edit = () => {
 
   if (undefined === measurementFamily) {
     return (
-      <PageErrorBlock
+      <FullScreenError
         title={__('error.exception', {status_code: '404'})}
         message={__('measurements.family.not_found')}
         code={404}

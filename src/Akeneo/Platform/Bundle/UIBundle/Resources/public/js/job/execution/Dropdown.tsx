@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {getColor, ButtonProps} from 'akeneo-design-system';
 import {useToggleState} from '@akeneo-pim-community/shared';
 
+// TODO: Replace by https://github.com/akeneo/pim-community-dev/pull/13606 when PR is merged
+
 const Container = styled.div`
   position: relative;
 `;

@@ -10,7 +10,7 @@ import {ShowProfile} from './ShowProfile';
 import styled, {ThemeContext} from 'styled-components';
 import {JobExecution} from './model/job-execution';
 import {useParams} from 'react-router-dom';
-import {PageErrorBlock} from '@akeneo-pim-community/shared';
+import {FullScreenError} from '@akeneo-pim-community/shared';
 import {useJobExecution} from "./hook/use-job-execution";
 
 const SecondaryActionsButton = styled(IconButton)`
@@ -114,7 +114,7 @@ const ExecutionDetail = () => {
 
   if (error) {
     return (
-      <PageErrorBlock
+      <FullScreenError
         title={translate('error.exception', {status_code: error.statusCode.toString()})}
         message={error.statusMessage}
         code={error.statusCode}
