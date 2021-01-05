@@ -18,7 +18,7 @@ require __DIR__ . '/RelocateException.php';
 
 $envFile = __DIR__ . '/../.env';
 if (file_exists($envFile)) {
-    (new Symfony\Component\Dotenv\Dotenv(true))->load($envFile);
+    (new Symfony\Component\Dotenv\Dotenv(false))->load($envFile);
 }
 
 $kernel = new AppKernel('prod', false);
