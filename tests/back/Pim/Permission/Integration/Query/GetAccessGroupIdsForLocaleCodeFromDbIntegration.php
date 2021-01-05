@@ -27,28 +27,28 @@ class GetAccessGroupIdsForLocaleCodeFromDbIntegration extends TestCase
     {
         $groupIds = $this->getQuery()->getGrantedUserGroupIdsForLocaleCode('fr_FR', Attributes::EDIT_ITEMS);
         Assert::assertCount(2, $groupIds);
-        Assert::assertContains(1, $groupIds);
-        Assert::assertContains(2, $groupIds);
+        Assert::assertContains('1', $groupIds);
+        Assert::assertContains('2', $groupIds);
 
         $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier('fr_fr');
         $this->get('pimee_security.repository.locale_access')->revokeAccess($locale, [2]);
         $groupIds = $this->getQuery()->getGrantedUserGroupIdsForLocaleCode('fr_FR', Attributes::EDIT_ITEMS);
         Assert::assertCount(1, $groupIds);
-        Assert::assertContains(2, $groupIds);
+        Assert::assertContains('2', $groupIds);
 
 
         $groupIds = $this->getQuery()->getGrantedUserGroupIdsForLocaleCode('en_US', Attributes::VIEW_ITEMS);
         Assert::assertCount(3, $groupIds);
-        Assert::assertContains(1, $groupIds);
-        Assert::assertContains(2, $groupIds);
-        Assert::assertContains(3, $groupIds);
+        Assert::assertContains('1', $groupIds);
+        Assert::assertContains('2', $groupIds);
+        Assert::assertContains('3', $groupIds);
 
         $locale = $this->get('pim_api.repository.locale')->findOneByIdentifier('en_US');
         $this->get('pimee_security.repository.locale_access')->revokeAccess($locale, [1, 2]);
         $groupIds = $this->getQuery()->getGrantedUserGroupIdsForLocaleCode('en_US', Attributes::VIEW_ITEMS);
         Assert::assertCount(2, $groupIds);
-        Assert::assertContains(1, $groupIds);
-        Assert::assertContains(2, $groupIds);
+        Assert::assertContains('1', $groupIds);
+        Assert::assertContains('2', $groupIds);
     }
 
     protected function getQuery(): GetAccessGroupIdsForLocaleCodeFromDb

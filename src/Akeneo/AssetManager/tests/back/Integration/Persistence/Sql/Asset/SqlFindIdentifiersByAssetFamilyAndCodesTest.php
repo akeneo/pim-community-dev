@@ -49,8 +49,8 @@ class SqlFindIdentifiersByAssetFamilyAndCodesTest extends SqlIntegrationTestCase
         );
 
         $this->assertCount(2, $identifiers);
-        $this->assertContains($this->starckIdentifier->normalize(), $identifiers);
-        $this->assertContains($this->cocoIdentifier->normalize(), $identifiers);
+        $this->assertContainsEquals($this->starckIdentifier->normalize(), $identifiers);
+        $this->assertContainsEquals($this->cocoIdentifier->normalize(), $identifiers);
 
         $identifiers = $this->findIdentifiersByAssetFamilyAndCodes->find(
             AssetFamilyIdentifier::fromString('designer'),
@@ -60,8 +60,8 @@ class SqlFindIdentifiersByAssetFamilyAndCodesTest extends SqlIntegrationTestCase
         );
 
         $this->assertCount(1, $identifiers);
-        $this->assertContains($this->cocoIdentifier->normalize(), $identifiers);
-        $this->assertNotContains($this->starckIdentifier->normalize(), $identifiers);
+        $this->assertContainsEquals($this->cocoIdentifier->normalize(), $identifiers);
+        $this->assertNotContainsEquals($this->starckIdentifier->normalize(), $identifiers);
     }
 
     private function resetDB(): void

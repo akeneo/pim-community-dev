@@ -48,8 +48,8 @@ class SqlFindIdentifiersByReferenceEntityAndCodesTest extends SqlIntegrationTest
         );
 
         $this->assertCount(2, $identifiers);
-        $this->assertContains($this->starckIdentifier->normalize(), $identifiers);
-        $this->assertContains($this->cocoIdentifier->normalize(), $identifiers);
+        $this->assertContainsEquals($this->starckIdentifier->normalize(), $identifiers);
+        $this->assertContainsEquals($this->cocoIdentifier->normalize(), $identifiers);
 
         $identifiers = $this->findIdentifiersByReferenceEntityAndCodes->find(
             ReferenceEntityIdentifier::fromString('designer'),
@@ -59,8 +59,8 @@ class SqlFindIdentifiersByReferenceEntityAndCodesTest extends SqlIntegrationTest
         );
 
         $this->assertCount(1, $identifiers);
-        $this->assertContains($this->cocoIdentifier->normalize(), $identifiers);
-        $this->assertNotContains($this->starckIdentifier->normalize(), $identifiers);
+        $this->assertContainsEquals($this->cocoIdentifier->normalize(), $identifiers);
+        $this->assertNotContainsEquals($this->starckIdentifier->normalize(), $identifiers);
     }
 
     private function resetDB(): void

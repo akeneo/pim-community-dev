@@ -9,7 +9,7 @@ use \Doctrine\DBAL\Connection;
 /**
  * Asset manager migration.
  */
-final class Version_4_0_20191206083026_transform_image_attributes_to_media_file_attributes extends TestCase
+final class Version_4_0_20191206083026_transform_image_attributes_to_media_file_attributes_Integration extends TestCase
 {
     private const ASSET_FAMILY = 'packshot';
     private const ATTRIBUTE_IMAGE_1_IDENTIFIER = 'image1_packshot_d05292f9-2e09-401d-b306-c5ae8321e51b';
