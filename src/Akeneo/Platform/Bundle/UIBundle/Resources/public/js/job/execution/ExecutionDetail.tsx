@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {Breadcrumb, Button, IconButton, Link, MoreIcon} from 'akeneo-design-system';
@@ -11,7 +11,7 @@ import styled, {ThemeContext} from 'styled-components';
 import {JobExecution} from './model/job-execution';
 import {useParams} from 'react-router-dom';
 import {PageErrorBlock} from '@akeneo-pim-community/shared';
-import {useIsMounted} from '@akeneo-pim-community/shared/src';
+import {useJobExecution} from "./hook/use-job-execution";
 
 const SecondaryActionsButton = styled(IconButton)`
   opacity: 0.5;
@@ -20,41 +20,9 @@ const SecondaryActionsButton = styled(IconButton)`
   }
 `;
 
-type Error = {
-  statusMessage: any;
-  statusCode: number;
-};
-
-const useJobExecution = (jobExecutionId: string) => {
-  const router = useRouter();
-  const isMounted = useIsMounted();
-  const [jobExecution, setJobExecution] = useState<JobExecution | null>(null);
-  const [error, setError] = useState<Error | null>();
-
-  const fetchJobExecution = useCallback(async (identifier: string) => {
-    const response = await fetch(router.generate('pim_enrich_job_execution_rest_get', {identifier}));
-    if (!response.ok) {
-      setError({
-        statusMessage: response.statusText,
-        statusCode: response.status,
-      });
-
-      return null;
-    }
-
-    return response.json();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const jobExecution = await fetchJobExecution(jobExecutionId);
-      if (isMounted()) {
-        setJobExecution(jobExecution);
-      }
-    })();
-  }, [jobExecutionId]);
-
-  return {jobExecution, error};
+type DownloadLink = {
+  label: string;
+  url: string;
 };
 
 const canDownloadLog = (jobExecution: JobExecution | null) => {
@@ -85,11 +53,6 @@ const canDownloadArchive = (jobExecution: JobExecution | null) => {
   }
 
   return true;
-};
-
-type DownloadLink = {
-  label: string;
-  url: string;
 };
 
 const getDownloadLinks = (jobExecution: JobExecution | null): DownloadLink[] => {
@@ -132,7 +95,11 @@ const ExecutionDetail = () => {
 
   const jobTypeWithProfile = ['import', 'export'];
   const {jobExecutionId} = useParams() as {jobExecutionId: string};
-  const {jobExecution, error} = useJobExecution(jobExecutionId);
+  const {jobExecution, error, reloadJobExecution} = useJobExecution(jobExecutionId);
+
+  const handleStop = async () => {
+    await reloadJobExecution();
+  }
 
   const downloadLogIsVisible = canDownloadLog(jobExecution);
   const downloadArchiveLinks = getDownloadLinks(jobExecution);
@@ -200,7 +167,7 @@ const ExecutionDetail = () => {
               id={jobExecution.meta.id}
               jobLabel={jobExecution.jobInstance.label}
               isStoppable={jobExecution.isStoppable}
-              onStop={() => {}}
+              onStop={handleStop}
             />
           )}
           {downloadArchiveLinkIsVisible &&
