@@ -26,13 +26,13 @@ const Actions = ({id, jobLabel, isStoppable, showLink, refreshCollection, type}:
 
   const isAllowedToViewJobDetails = security.isGranted('pim_importexport_' + type + '_execution_show');
 
-    return (
+  return (
     <ActionsContainer className="AknGrid-onHoverElement">
-      {isAllowedToViewJobDetails &&
+      {isAllowedToViewJobDetails && (
         <Button size="small" ghost={true} level="tertiary" href={`#${showLink}`}>
           {translate('pim_datagrid.action.show.title')}
         </Button>
-      }
+      )}
       <StopJobAction
         id={id}
         jobLabel={jobLabel}
