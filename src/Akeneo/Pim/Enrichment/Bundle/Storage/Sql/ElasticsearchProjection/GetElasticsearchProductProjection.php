@@ -208,7 +208,7 @@ WITH
                 channel.code as channel_code
             FROM
                 product
-                JOIN pim_catalog_completeness completeness ON completeness.product_id = product.id
+                STRAIGHT_JOIN pim_catalog_completeness completeness ON completeness.product_id = product.id
                 JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
                 JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
             GROUP BY product_id, channel_code 
