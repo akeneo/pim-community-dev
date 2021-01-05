@@ -88,7 +88,7 @@ const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
     `}
 `;
 
-type CheckboxChecked = boolean | 'mixed';
+export type CheckboxChecked = boolean | 'mixed';
 
 type CheckboxProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
