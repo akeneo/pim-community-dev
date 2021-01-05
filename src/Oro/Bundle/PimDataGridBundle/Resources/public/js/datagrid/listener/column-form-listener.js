@@ -1,7 +1,11 @@
-define(
-    ['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listener', 'pim/security-context'],
-    function ($, _, mediator, OroColumnFormListener, SecurityContext) {
-      'use strict';
+define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listener', 'pim/security-context'], function (
+  $,
+  _,
+  mediator,
+  OroColumnFormListener,
+  SecurityContext
+) {
+  'use strict';
 
   /**
    * Column form listener based on oro implementation that allows
@@ -27,15 +31,24 @@ define(
             if (this.isEnabled()) {
               this.$el.html(this.$checkbox);
 
-              this.$checkbox.on('click', _.bind(function () {
-                var state = this.$checkbox.is(':checked');
-                _.each(collection.models, function (model) {
-                  model.set(this.columnName, state);
-                }, this);
-              }, this));
+              this.$checkbox.on(
+                'click',
+                _.bind(function () {
+                  var state = this.$checkbox.is(':checked');
+                  _.each(
+                    collection.models,
+                    function (model) {
+                      model.set(this.columnName, state);
+                    },
+                    this
+                  );
+                }, this)
+              );
             }
           }
-        }, this);
+        },
+        this
+      );
 
       mediator.on(
         'grid_load:complete',
@@ -62,7 +75,7 @@ define(
     },
 
     isEnabled: function () {
-      if (undefined === this.attributes?.acl_resource){
+      if (undefined === this.attributes?.acl_resource) {
         return true;
       }
 
