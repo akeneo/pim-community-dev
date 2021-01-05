@@ -8,6 +8,8 @@ import {
   Modal,
   Checkbox,
   useAutoFocus,
+  useShortcut,
+  Key,
 } from 'akeneo-design-system';
 import {Subsection} from 'akeneomeasure/shared/components/Subsection';
 import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
@@ -25,14 +27,7 @@ import {Operation} from 'akeneomeasure/model/operation';
 import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
 import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
-import {
-  filterErrors,
-  ValidationError,
-  useShortcut,
-  Key,
-  getErrorsForPath,
-  TextField,
-} from '@akeneo-pim-community/shared';
+import {filterErrors, ValidationError, getErrorsForPath, TextField} from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {
   measurementFamily: MeasurementFamily;

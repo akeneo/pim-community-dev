@@ -1,8 +1,8 @@
 import React, {Ref} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {FieldProps, TextInputProps, Field, TextInput} from 'akeneo-design-system';
+import {formatParameters} from '@akeneo-pim-community/shared';
+import {FieldProps, TextInputProps, Field, TextInput, Helper} from 'akeneo-design-system';
 import {ValidationError} from '../models';
-import {inputErrors} from './InputErrors';
 
 type TextFieldProps = Omit<FieldProps, 'children'> &
   TextInputProps & {
@@ -25,7 +25,11 @@ const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
         channel={channel}
       >
         <TextInput {...inputProps} ref={forwardedRef} invalid={0 < errors.length} />
-        {inputErrors(translate, errors)}
+        {formatParameters(errors).map((error, key) => (
+          <Helper key={key} level="error" inline={true}>
+            {translate(error.messageTemplate, error.parameters, error.plural)}
+          </Helper>
+        ))}
       </Field>
     );
   }

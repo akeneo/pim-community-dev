@@ -1,18 +1,22 @@
 import React, {useState, useContext, useCallback, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {ArrowDownIcon, ArrowIcon, CloseIcon, Button, TextInput, getColor, getFontSize} from 'akeneo-design-system';
+import {
+  ArrowDownIcon,
+  ArrowIcon,
+  CloseIcon,
+  Button,
+  TextInput,
+  getColor,
+  getFontSize,
+  useShortcut,
+  Key,
+  Helper,
+} from 'akeneo-design-system';
 import {Operation, Operator, emptyOperation} from 'akeneomeasure/model/operation';
 import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {
-  ValidationError,
-  filterErrors,
-  getErrorsForPath,
-  inputErrors,
-  useShortcut,
-  Key,
-} from '@akeneo-pim-community/shared';
+import {ValidationError, filterErrors, getErrorsForPath, formatParameters} from '@akeneo-pim-community/shared';
 
 const Container = styled.div<{level: number}>`
   position: relative;
@@ -118,7 +122,7 @@ const Footer = styled.div`
   margin-top: 10px;
 `;
 
-const HelperContainer = styled.div<{hasOffset: boolean}>`
+const SpacedHelper = styled(Helper)<{hasOffset?: boolean}>`
   margin-top: 5px;
   margin-left: ${({hasOffset}) => (hasOffset ? 24 : 0)}px;
 `;
@@ -169,7 +173,7 @@ const OperationCollection = ({
                   placeholder={translate('measurements.unit.operation.placeholder')}
                   value={formatNumber(operation.value)}
                   readOnly={readOnly}
-                  invalid={0 < operationErrors.length}
+                  invalid={!shouldHideErrors && 0 < operationErrors.length}
                   onChange={(value: string) =>
                     onOperationsChange(
                       operations.map((operation: Operation, currentIndex: number) =>
@@ -222,10 +226,10 @@ const OperationCollection = ({
                 </OperatorSelector>
               </>
             )}
-            {inputErrors(translate, shouldHideErrors ? [] : operationErrors).map((helper, errorIndex) => (
-              <HelperContainer key={errorIndex} hasOffset={0 < index}>
-                {helper}
-              </HelperContainer>
+            {formatParameters(shouldHideErrors ? [] : operationErrors).map((error, key) => (
+              <SpacedHelper key={key} hasOffset={0 < index} level="error" inline={true}>
+                {translate(error.messageTemplate, error.parameters, error.plural)}
+              </SpacedHelper>
             ))}
           </Container>
         );
@@ -242,7 +246,11 @@ const OperationCollection = ({
           </Button>
         </Footer>
       )}
-      {inputErrors(translate, shouldHideErrors ? [] : getErrorsForPath(errors, ''))}
+      {formatParameters(shouldHideErrors ? [] : getErrorsForPath(errors, '')).map((error, key) => (
+        <SpacedHelper key={key} level="error" inline={true}>
+          {translate(error.messageTemplate, error.parameters, error.plural)}
+        </SpacedHelper>
+      ))}
     </div>
   );
 };
