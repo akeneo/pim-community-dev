@@ -2,7 +2,7 @@ import React from 'react';
 import {pimTheme} from 'akeneo-design-system';
 import {Route, HashRouter as Router, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
-import {Report} from './Report';
+import {ExecutionDetail} from './ExecutionDetail';
 
 const JobExecution = () => {
   return (
@@ -10,7 +10,7 @@ const JobExecution = () => {
       <Router basename="/job/show">
         <Switch>
           <Route path="/:jobExecutionId">
-            <Report />
+            <ExecutionDetail />
           </Route>
         </Switch>
       </Router>

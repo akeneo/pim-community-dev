@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {default as JobExecutionStatusBadge} from 'pimimportexport/js/JobExecutionStatus';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge/src';
-import {JobExecutionTracking} from './Report';
+import {JobExecutionTracking} from './model/job-execution';
 
 const Label = styled.span`
   display: inline-block;

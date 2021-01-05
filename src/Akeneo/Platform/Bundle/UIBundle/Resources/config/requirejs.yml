@@ -762,13 +762,6 @@ config:
     pim/job/common/file-path:                                    pimui/js/job/common/file-path
     pim/job/common/label:                                        pimui/js/job/common/label
     pim/job/common/grid:                                         pimui/js/job/common/grid
-    pim/job/execution/summary-table:                             pimui/js/job/execution/summary-table
-    pim/job/execution/auto-refresh:                              pimui/js/job/execution/auto-refresh
-    pim/job/execution/show-profile:                              pimui/js/job/execution/ShowProfile
-    pim/job/execution/download-archives-buttons:                 pimui/js/job/execution/download-archives-buttons
-    pim/job/execution/download-log:                              pimui/js/job/execution/download-log
-    pim/job/execution/progress:                                  pimui/js/job/execution/Progress
-    pim/job/execution/status:                                    pimui/js/job/execution/Status
     pim/job/product/edit/content:                                pimui/js/job/product/edit/content
 
     # Filters
@@ -1232,7 +1225,6 @@ config:
     # Job execution
     pim/template/job-execution/summary-table:             pimui/templates/job-execution/summary-table.html
     pim/template/job-execution/auto-refresh:              pimui/templates/job-execution/auto-refresh.html
-    pim/template/job-execution/download-archives-buttons: pimui/templates/job-execution/download-archives-buttons.html
 
     # Attribute
     pim/template/attribute/tab/properties/group:        pimui/templates/attribute/tab/properties/group.html
