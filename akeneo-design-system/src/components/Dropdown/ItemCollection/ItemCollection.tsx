@@ -1,7 +1,7 @@
 import {Key, Override} from '../../../shared';
 import React, {ReactNode, useRef, Ref, useCallback, KeyboardEvent} from 'react';
 import styled from 'styled-components';
-import {useAutoFocus} from 'hooks';
+import {useAutoFocus} from '../../../hooks';
 
 const ItemCollectionContainer = styled.div`
   max-height: 320px;

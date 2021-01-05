@@ -72,7 +72,7 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
 
     const decoratedChildren = React.Children.map(children, child => {
       if (typeof child === 'string') {
-        return <ItemLabel>{child}</ItemLabel>;
+        return <ItemLabel title={child}>{child}</ItemLabel>;
       }
 
       // Change size of Image children

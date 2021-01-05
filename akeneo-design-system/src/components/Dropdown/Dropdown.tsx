@@ -39,6 +39,9 @@ const Title = styled.div`
   font-size: 11px;
   text-transform: uppercase;
   color: ${getColor('brand', 100)};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 /**

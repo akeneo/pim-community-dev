@@ -16,18 +16,18 @@ test('It manages true default value', () => {
   expect(isOpen).toEqual(false);
 });
 
-test('It manages opening and closing', async () => {
+test('It manages opening and closing', () => {
   const {result} = renderHook(() => useBooleanState());
 
   let [isOpen] = result.current;
   const [, open, close] = result.current;
   expect(isOpen).toEqual(false);
-  await act(() => {
+  void act(() => {
     open();
   });
   [isOpen] = result.current;
   expect(isOpen).toEqual(true);
-  await act(() => {
+  void act(() => {
     close();
   });
   [isOpen] = result.current;

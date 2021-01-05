@@ -1,14 +1,17 @@
-import {useShortcut} from 'hooks';
 import React, {ReactNode, useRef, useState, useEffect} from 'react';
-import {Key} from '../../../shared/key';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor} from 'theme';
+import {Key} from '../../../shared/key';
+import {useShortcut} from '../../../hooks';
+import {AkeneoThemedProps, getColor} from '../../../theme';
+
+type VerticalPosition = 'up' | 'down';
+type HorizontalPosition = 'left' | 'right';
 
 const Container = styled.div<
   {
     visible: boolean;
-    verticalPosition: 'up' | 'down';
-    horizontalPosition: 'left' | 'right';
+    verticalPosition: VerticalPosition;
+    horizontalPosition: HorizontalPosition;
   } & AkeneoThemedProps
 >`
   background: ${getColor('white')};
@@ -39,15 +42,23 @@ const Container = styled.div<
 `;
 
 type OverlayProps = {
-  position?: 'up' | 'down';
+  /**
+   * Vertical position of the overlay (forced)
+   */
+  position?: VerticalPosition;
+
+  /**
+   * What to do on overlay closing
+   */
   onClose: () => void;
+
   children: ReactNode;
 };
 
 const Overlay = ({position, onClose, children}: OverlayProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
-  const [verticalPosition, setVerticalPosition] = useState<'up' | 'down'>(position ?? 'down');
-  const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'right'>('right');
+  const [verticalPosition, setVerticalPosition] = useState<VerticalPosition>(position ?? 'down');
+  const [horizontalPosition, setHorizontalPosition] = useState<HorizontalPosition>('right');
   const [visible, setVisible] = useState<boolean>(false);
   useShortcut(Key.Escape, onClose);
 
