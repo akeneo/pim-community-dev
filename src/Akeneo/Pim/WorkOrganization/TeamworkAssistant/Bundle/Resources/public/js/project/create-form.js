@@ -193,9 +193,12 @@ define([
               this.validationErrors.push(response.responseJSON);
             }
 
-            this.validationErrors.forEach(error => {
+            this.validationErrors.forEach((error, index) => {
               if (500 === error.status_code) {
                 messenger.notify('error', error.status_text);
+              }
+              if ('label' === error.field) {
+                this.validationErrors[index].message = __(this.validationErrors[index].message);
               }
             });
 
