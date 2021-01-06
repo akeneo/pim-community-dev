@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.83 (2021-01-06)
+
 # 4.0.82 (2021-01-05)
 
 - AOB-1258: Fix array_map call with null value
