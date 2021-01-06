@@ -539,7 +539,7 @@ config:
     pim/scopable:                       pimui/js/pim-scopable
     pim/currencyfield:                  pimui/js/pim-currencyfield
     pim/tree/view:                      pimui/js/tree-view.jstree
-    pim/tree/associate:                 pimui/js/tree-associate.jstree
+    pim/tree/associate:                 pimui/js/TreeAssociate.tsx
     pim/tree/manage:                    pimui/js/tree-manage.jstree
     pim/attributeoptionview:            pimui/js/pim-attributeoptionview
     pim/i18n:                           pimui/js/i18n
