@@ -87,7 +87,7 @@ class VersionPurger implements VersionPurgerInterface
                 $purgedVersionsCount += count($purgeableVersionList);
             }
 
-            $output->write('.');
+            $output->writeln(sprintf('%d versions purged', purgedVersionsCount));
         }
 
         $output->writeln('');
