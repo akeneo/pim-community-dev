@@ -5,14 +5,14 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ReferenceDataRepositoryResolver;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ReferenceDataRepositoryResolverSpec extends ObjectBehavior
 {
-    function let(ConfigurationRegistryInterface $configurationRegistry, RegistryInterface $doctrine)
+    function let(ConfigurationRegistryInterface $configurationRegistry, ManagerRegistry $doctrine)
     {
         $this->beConstructedWith($configurationRegistry, $doctrine);
     }
@@ -23,8 +23,8 @@ class ReferenceDataRepositoryResolverSpec extends ObjectBehavior
     }
 
     function it_resolves_the_repository_of_a_reference_data(
-        $configurationRegistry,
-        $doctrine,
+        ConfigurationRegistryInterface $configurationRegistry,
+        ManagerRegistry $doctrine,
         ReferenceDataConfigurationInterface $configuration,
         ObjectRepository $repository
     ) {

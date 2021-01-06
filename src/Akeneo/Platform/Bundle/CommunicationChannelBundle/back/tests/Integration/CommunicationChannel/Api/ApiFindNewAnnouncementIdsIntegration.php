@@ -24,7 +24,7 @@ class ApiFindNewAnnouncementIdsIntegration extends KernelTestCase
         static::bootKernel(['debug' => false]);
 
         $configDir = __DIR__;
-        $this->process = new Process("./vendor/bin/phiremock --config-path '$configDir'");
+        $this->process = Process::fromShellCommandline("./vendor/bin/phiremock --config-path '$configDir'");
         $this->process->start();
         $this->waitServerUp();
     }

@@ -2,15 +2,15 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version_2_0_20170821122627_add_client_in_access_token_table extends AbstractMigration
 {
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE pim_api_access_token ADD client INT DEFAULT NULL');
         $this->addSql('ALTER TABLE pim_api_access_token ADD CONSTRAINT FK_BD5E4023C7440455 ' +
@@ -21,7 +21,7 @@ class Version_2_0_20170821122627_add_client_in_access_token_table extends Abstra
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

@@ -10,8 +10,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Filesystem\Filesystem;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
 
@@ -206,7 +205,7 @@ class HookContext extends PimContext
      */
     public function clearUOW()
     {
-        foreach ($this->getDoctrine()->getEntityManagers() as $manager) {
+        foreach ($this->getDoctrine()->getManagers() as $manager) {
             $manager->clear();
         }
     }
@@ -232,10 +231,7 @@ class HookContext extends PimContext
         $this->currentPage = null;
     }
 
-    /**
-     * @return RegistryInterface
-     */
-    private function getDoctrine()
+    private function getDoctrine(): ManagerRegistry
     {
         return $this->getService('doctrine');
     }

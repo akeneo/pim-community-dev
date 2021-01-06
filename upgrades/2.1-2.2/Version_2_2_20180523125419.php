@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Add CASCADE DELETE on pim_catalog_family_variant_attribute_set related foreign keys
@@ -13,7 +13,7 @@ class Version_2_2_20180523125419 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE pim_catalog_family_variant_has_variant_attribute_sets DROP FOREIGN KEY FK_1F4DC7028A37AD0');
         $this->addSql('ALTER TABLE pim_catalog_family_variant_has_variant_attribute_sets DROP FOREIGN KEY FK_1F4DC702D8404D');
@@ -38,7 +38,7 @@ SQL;
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

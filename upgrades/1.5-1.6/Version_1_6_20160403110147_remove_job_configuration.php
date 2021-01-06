@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Remove job configuration
@@ -17,7 +17,7 @@ class Version_1_6_20160403110147_remove_job_configuration extends AbstractMigrat
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('DROP TABLE pim_job_configuration');
     }
@@ -25,7 +25,7 @@ class Version_1_6_20160403110147_remove_job_configuration extends AbstractMigrat
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('CREATE TABLE pim_job_configuration (id INT AUTO_INCREMENT NOT NULL, job_execution_id INT DEFAULT NULL, configuration LONGTEXT NOT NULL, UNIQUE INDEX UNIQ_47542A125871C06B (job_execution_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE pim_job_configuration ADD CONSTRAINT FK_47542A125871C06B FOREIGN KEY (job_execution_id) REFERENCES akeneo_batch_job_execution (id) ON DELETE CASCADE');

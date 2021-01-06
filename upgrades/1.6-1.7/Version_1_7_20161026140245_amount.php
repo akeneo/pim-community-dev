@@ -3,8 +3,8 @@
 namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Pim\Component\Catalog\AttributeTypes;
 
 /**
@@ -18,7 +18,7 @@ class Version_1_7_20161026140245_amount extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $attributeTypes = $this->getAttributeByTypes();
         $stmt = $this->connection->prepare(sprintf(
@@ -53,7 +53,7 @@ class Version_1_7_20161026140245_amount extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

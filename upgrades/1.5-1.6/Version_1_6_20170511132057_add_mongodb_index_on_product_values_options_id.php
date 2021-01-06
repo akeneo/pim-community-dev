@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Pim\Upgrade\SchemaHelper;
 use Pim\Upgrade\UpgradeHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -24,7 +24,7 @@ class Version_1_6_20170511132057_add_mongodb_index_on_product_values_options_id 
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $upgradeHelper = new UpgradeHelper($this->container);
 
@@ -40,7 +40,7 @@ class Version_1_6_20170511132057_add_mongodb_index_on_product_values_options_id 
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

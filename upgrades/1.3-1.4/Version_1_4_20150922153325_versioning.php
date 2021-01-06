@@ -3,8 +3,8 @@
 namespace Pim\Upgrade\Schema;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,7 +31,7 @@ class Version_1_4_20150922153325_versioning extends AbstractMigration implements
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         if (AkeneoStorageUtilsExtension::DOCTRINE_ORM ===
             $this->container->getParameter('pim_catalog_product_storage_driver')
@@ -43,7 +43,7 @@ class Version_1_4_20150922153325_versioning extends AbstractMigration implements
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

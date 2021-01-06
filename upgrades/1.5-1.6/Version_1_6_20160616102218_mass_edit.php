@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Add mass edit remove product value
@@ -17,7 +17,7 @@ class Version_1_6_20160616102218_mass_edit extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql(<<<SQL
             INSERT INTO akeneo_batch_job_instance
@@ -32,7 +32,7 @@ SQL
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

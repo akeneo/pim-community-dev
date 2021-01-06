@@ -3,25 +3,25 @@
 namespace Specification\Akeneo\Platform\Bundle\UIBundle\Controller;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class AjaxOptionControllerSpec extends ObjectBehavior
 {
-    function let(RegistryInterface $doctrine, ConfigurationRegistryInterface $registry)
+    function let(ManagerRegistry $doctrine, ConfigurationRegistryInterface $registry)
     {
         $this->beConstructedWith($doctrine, $registry);
     }
 
     function it_returns_options_with_option_repository(
-        $doctrine,
+        ManagerRegistry $doctrine,
         Request $request,
         ParameterBag $query,
         AttributeOptionRepository $repository
@@ -44,8 +44,8 @@ class AjaxOptionControllerSpec extends ObjectBehavior
     }
 
     function it_returns_options_with_reference_data_repository(
-        $doctrine,
-        $registry,
+        ManagerRegistry $doctrine,
+        ConfigurationRegistryInterface $registry,
         ReferenceDataConfigurationInterface $configuration,
         Request $request,
         ParameterBag $query,
@@ -68,7 +68,7 @@ class AjaxOptionControllerSpec extends ObjectBehavior
     }
 
     function it_returns_options_with_searchable_repository(
-        $doctrine,
+        ManagerRegistry $doctrine,
         Request $request,
         ParameterBag $query,
         SearchableRepositoryInterface $repository
@@ -89,7 +89,7 @@ class AjaxOptionControllerSpec extends ObjectBehavior
     }
 
     function it_returns_options_with_other_repository(
-        $doctrine,
+        ManagerRegistry $doctrine,
         Request $request,
         ParameterBag $query,
         GroupRepositoryInterface $repository
@@ -112,7 +112,7 @@ class AjaxOptionControllerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_repository_can_be_found(
-        $doctrine,
+        ManagerRegistry $doctrine,
         Request $request,
         ParameterBag $query,
         \stdClass $repository

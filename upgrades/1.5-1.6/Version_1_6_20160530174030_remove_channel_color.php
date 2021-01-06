@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Remove channel's color
@@ -17,7 +17,7 @@ class Version_1_6_20160530174030_remove_channel_color extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE pim_catalog_channel DROP color');
     }
@@ -25,7 +25,7 @@ class Version_1_6_20160530174030_remove_channel_color extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE pim_catalog_channel ADD color VARCHAR(15) DEFAULT NULL');
     }

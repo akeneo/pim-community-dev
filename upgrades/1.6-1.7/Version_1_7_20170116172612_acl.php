@@ -3,8 +3,8 @@
 namespace Pim\Upgrade\Schema;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
@@ -31,7 +31,7 @@ class Version_1_7_20170116172612_acl extends AbstractMigration implements Contai
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $acls = [
             'pim_api_attribute_edit',
@@ -67,7 +67,7 @@ class Version_1_7_20170116172612_acl extends AbstractMigration implements Contai
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

@@ -3,8 +3,8 @@
 namespace Pim\Upgrade\Schema;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -30,7 +30,7 @@ class Version_2_3_20180716135306_update_job_instances extends AbstractMigration 
      *
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $jobInstanceRepository = $this->container->get('pim_enrich.repository.job_instance');
         $entityManager = $this->container->get('doctrine.orm.entity_manager');
@@ -52,7 +52,7 @@ class Version_2_3_20180716135306_update_job_instances extends AbstractMigration 
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

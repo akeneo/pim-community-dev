@@ -2,9 +2,9 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
-use Doctrine\DBAL\Migrations\IrreversibleMigrationException;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+use Doctrine\Migrations\Exception\IrreversibleMigration;
 
 /**
  * Create if needed the ROLE_USER which is mandatory
@@ -14,7 +14,7 @@ class Version_3_0_20180131154710_add_role_user_if_needed extends AbstractMigrati
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $roles = $this->connection->fetchArray("SELECT role FROM oro_access_role WHERE role = 'ROLE_USER'");
 
@@ -30,8 +30,8 @@ class Version_3_0_20180131154710_add_role_user_if_needed extends AbstractMigrati
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
-        throw new IrreversibleMigrationException();
+        $this->throwIrreversibleMigrationException();
     }
 }

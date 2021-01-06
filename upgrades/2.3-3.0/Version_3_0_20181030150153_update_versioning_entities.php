@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -13,7 +13,7 @@ class Version_3_0_20181030150153_update_versioning_entities extends AbstractMigr
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $versionEntitiesNameFromTo = [
             'Pim\\Bundle\\CatalogBundle\\Entity\\Locale' => 'Akeneo\\Channel\\Component\\Model\\Locale',
@@ -57,7 +57,7 @@ class Version_3_0_20181030150153_update_versioning_entities extends AbstractMigr
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }
