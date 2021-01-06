@@ -189,6 +189,10 @@ pim:
       enabled: true
       pimCommand: "pimee:data-quality-insights:migrate-product-criterion-evaluation"
       schedule: "*/10 * * * *"
+    asset-manager-update-mapping:
+      enabled: true
+      pimCommand: "akeneo:asset-manager:index-all-assets-on-temporary-index --no-interaction"
+      schedule: "*/30 * * * *"
 
 # Onboarder
 onboarder:

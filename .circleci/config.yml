@@ -907,13 +907,6 @@ workflows:
                 requires:
                     - build_dev
 
-          - test_back_missing_structure_migrations:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - test_back_integration_bounded_contexts
-                    - test_back_integration_reference_entities
           - test_back_data_migrations:
                 requires:
                     - test_back_static_and_acceptance
@@ -934,7 +927,6 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_onboarder_bundle
-                    - test_back_missing_structure_migrations
                     - test_back_data_migrations
 
   growth_edition_release:
@@ -1022,9 +1014,6 @@ workflows:
                 requires:
                     - build_dev
           - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - test_back_missing_structure_migrations:
                 requires:
                     - build_dev
           - test_back_phpunit:

@@ -9,8 +9,10 @@ mappings:
             type: 'keyword'
         asset_family_code:
             type: 'keyword'
+            normalizer: 'text_normalizer'
         code:
             type: 'keyword'
+            normalizer: 'text_normalizer'
         updated_at:
             type: 'date'
     dynamic_templates:

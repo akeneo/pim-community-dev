@@ -84,7 +84,7 @@ final class NonExistingAssetFamiliesMultiSelectFilter implements NonExistentValu
                 foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
-                            $multiSelectValues[$channel][$locale] = array_values(array_intersect($value, $assetCodes[$assetFamilyIdentifier] ?? []));
+                            $multiSelectValues[$channel][$locale] = array_values(array_uintersect($value, $assetCodes[$assetFamilyIdentifier] ?? [], 'strcasecmp'));
                         }
                     }
                 }

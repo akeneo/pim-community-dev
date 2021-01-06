@@ -34,6 +34,8 @@ $rules = [
         'Akeneo\Tool\Bundle\RuleEngineBundle\Model',
         'Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface',
         'Akeneo\Tool\Bundle\ElasticsearchBundle',
+        'Elasticsearch\Client',
+        'Elasticsearch\ClientBuilder',
         'Doctrine',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Platform\Bundle\InstallerBundle',

@@ -28,6 +28,17 @@ services:
             - { name: kernel.event_subscriber }
             - { name: 'console.command'}
 
+    Akeneo\AssetManager\Infrastructure\Symfony\Command\IndexAllAssetsOnTemporaryIndexCommand:
+        arguments:
+            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset_family'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer_temporary'
+            - '@akeneo_assetmanager.client.asset_temporary'
+            - '@akeneo_elasticsearch.client_builder'
+            - '%index_hosts%'
+        tags:
+            - {name: console.command}
+
     akeneo_assetmanager.command.refresh_assets:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\CLI\RefreshAssetsCommand
         arguments:
