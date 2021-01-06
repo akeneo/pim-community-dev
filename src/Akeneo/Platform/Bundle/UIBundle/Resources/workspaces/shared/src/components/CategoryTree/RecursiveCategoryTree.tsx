@@ -21,7 +21,6 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
   const [treeState, setTreeState] = React.useState<CategoryTreeModel>(tree);
 
   const handleOpen = () => {
-    console.log(treeState.children);
     if (typeof treeState.children === 'undefined') {
       setTreeState({...treeState, loading: true});
       childrenCallback(treeState.id).then((children) => {
