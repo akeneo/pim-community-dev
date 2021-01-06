@@ -21,7 +21,7 @@ final class InitDataQualityInsightsSchema
 {
     const QUERY = <<<'SQL'
 CREATE TABLE pimee_data_quality_insights_text_checker_dictionary (
-    id int auto_increment,
+    id INT AUTO_INCREMENT NOT NULL,
     locale_code VARCHAR(20) NOT NULL,
     word VARCHAR(250) NOT NULL,
     PRIMARY KEY (id),
