@@ -549,7 +549,7 @@ JSON;
     {
       "code": "MONTH",
       "convert": {
-        "mul": "18748800"
+        "mul": "2628000"
       },
       "symbol": "month"
     },
