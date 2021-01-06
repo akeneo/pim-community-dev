@@ -10,9 +10,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\Products
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\ResultStatement;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -26,16 +27,20 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 
     private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
 
-    private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds;
+    private Channels $channels;
+
+    private Locales $locales;
 
     public function __construct(
         Connection $db,
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds
+        Channels $channels,
+        Locales $locales
     ) {
         $this->db = $db;
         $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
-        $this->transformCriterionEvaluationResultIds = $transformCriterionEvaluationResultIds;
+        $this->channels = $channels;
+        $this->locales = $locales;
     }
 
     public function getName(): string
@@ -46,62 +51,47 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     public function compute(array $productIds): array
     {
         $productIds = array_map(fn (ProductId $productId) => $productId->toInt(), $productIds);
-
         $localesByChannel = $this->getLocalesByChannelQuery->getArray();
+        $productsEvaluations = $this->getProductsEvaluations($productIds);
 
         $productsEnrichmentStatus = [];
         foreach ($productIds as $productId) {
             foreach ($localesByChannel as $channel => $locales) {
+                $channelId = $this->channels->getIdByCode($channel);
                 foreach ($locales as $locale) {
-                    $productsEnrichmentStatus[$productId][$channel][$locale] = null;
+                    $localeId = $this->locales->getIdByCode($locale);
+                    $productsEnrichmentStatus[$productId][$channel][$locale] = isset($productsEvaluations[$productId])
+                        ? $this->computeProductEnrichmentStatus($productsEvaluations[$productId], $channelId, $localeId)
+                        : null;
                 }
             }
-        }
-
-        $stmt = $this->getProductsEvaluations($productIds);
-
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $evaluationResults = json_decode($row['results'], true);
-            $evaluationResults = array_map(
-                fn ($results) => is_array($results) ? $this->transformCriterionEvaluationResultIds->transformToCodes($results) : null,
-                $evaluationResults
-            );
-            $productsEnrichmentStatus[$row['product_id']] = $this->computeProductEnrichmentStatus($evaluationResults, $localesByChannel);
         }
 
         return $productsEnrichmentStatus;
     }
 
-    private function computeProductEnrichmentStatus(array $evaluations, $localesByChannel): array
+    private function computeProductEnrichmentStatus(array $evaluations, int $channelId, int $localeId): ?bool
     {
         $nonRequiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE] ?? [];
         $requiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE] ?? [];
 
-        $result = [];
-        foreach ($localesByChannel as $channel => $locales) {
-            foreach ($locales as $locale) {
-                //Handle the products without family (so the completeness couldn't be calculated)
-                if (
-                    !isset($nonRequiredAttributesEvaluation['data']['attributes_with_rates'][$channel][$locale]) ||
-                    !isset($requiredAttributesEvaluation['data']['attributes_with_rates'][$channel][$locale]) ||
-                    !isset($nonRequiredAttributesEvaluation['data']['total_number_of_attributes'][$channel][$locale]) ||
-                    !isset($requiredAttributesEvaluation['data']['total_number_of_attributes'][$channel][$locale])
-                ) {
-                    $result[$channel][$locale] = null;
-                    continue;
-                }
-
-                $missingNonRequiredAttributesNumber = count($nonRequiredAttributesEvaluation['data']['attributes_with_rates'][$channel][$locale]);
-                $missingRequiredAttributesNumber = count($requiredAttributesEvaluation['data']['attributes_with_rates'][$channel][$locale]);
-
-                $numberOfNonRequiredAttributes = $nonRequiredAttributesEvaluation['data']['total_number_of_attributes'][$channel][$locale];
-                $numberOfRequiredAttributes = $requiredAttributesEvaluation['data']['total_number_of_attributes'][$channel][$locale];
-
-                $result[$channel][$locale] = $this->computeEnrichmentRatioStatus($numberOfNonRequiredAttributes + $numberOfRequiredAttributes, $missingNonRequiredAttributesNumber + $missingRequiredAttributesNumber);
-            }
+        //Handle the products without family (so the completeness couldn't be calculated)
+        if (
+            !isset($nonRequiredAttributesEvaluation['attributes_with_rates'][$channelId][$localeId]) ||
+            !isset($requiredAttributesEvaluation['attributes_with_rates'][$channelId][$localeId]) ||
+            !isset($nonRequiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId]) ||
+            !isset($requiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId])
+        ) {
+            return null;
         }
 
-        return $result;
+        $missingNonRequiredAttributesNumber = count($nonRequiredAttributesEvaluation['attributes_with_rates'][$channelId][$localeId]);
+        $missingRequiredAttributesNumber = count($requiredAttributesEvaluation['attributes_with_rates'][$channelId][$localeId]);
+
+        $numberOfNonRequiredAttributes = $nonRequiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId];
+        $numberOfRequiredAttributes = $requiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId];
+
+        return $this->computeEnrichmentRatioStatus($numberOfNonRequiredAttributes + $numberOfRequiredAttributes, $missingNonRequiredAttributesNumber + $missingRequiredAttributesNumber);
     }
 
     private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, $numberOfMissingAttributes): bool
@@ -113,28 +103,52 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         return ($familyNumberOfAttributes - $numberOfMissingAttributes) / $familyNumberOfAttributes * 100 >= self::GOOD_ENRICHMENT_RATIO;
     }
 
-    private function getProductsEvaluations(array $productIds): ResultStatement
+    private function getProductsEvaluations(array $productIds): array
+    {
+        $requiredAttributesEvaluations = $this->getProductsEvaluationsByCriterion(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE, $productIds);
+        $nonRequiredAttributesEvaluations = $this->getProductsEvaluationsByCriterion(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE, $productIds);
+
+        $productsEvaluations = [];
+        foreach ($productIds as $productId) {
+            $productsEvaluations[$productId] = [
+                EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE => $requiredAttributesEvaluations[$productId] ?? null,
+                EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE => $nonRequiredAttributesEvaluations[$productId] ?? null,
+            ];
+        }
+
+        return $productsEvaluations;
+    }
+
+    private function getProductsEvaluationsByCriterion(string $criterionCode, array $productIds): array
     {
         $query = <<<SQL
-SELECT product_id, JSON_OBJECTAGG(criterion_code, result) as results
+SELECT product_id, result
 FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_id IN(:productIds) AND criterion_code IN(:criterionCodes)
-GROUP BY product_id
+WHERE product_id IN(:productIds) AND criterion_code = :criterionCode
 SQL;
 
-        return $this->db->executeQuery(
+        $stmt = $this->db->executeQuery(
             $query,
             [
                 'productIds' => $productIds,
-                'criterionCodes' => [
-                    EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
-                    EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
-                ]
+                'criterionCode' => $criterionCode,
             ],
             [
                 'productIds' => Connection::PARAM_INT_ARRAY,
-                'criterionCodes' => Connection::PARAM_STR_ARRAY,
             ]
         );
+
+        $evaluations = [];
+        while ($evaluation = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $evaluationResult = isset($evaluation['result']) ? json_decode($evaluation['result'], true) : null;
+            $evaluations[$evaluation['product_id']] = is_array($evaluation)
+                ? [
+                    'attributes_with_rates' => $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']][TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']] ?? [],
+                    'total_number_of_attributes' => $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']][TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes']] ?? 0
+                ]
+                : null;
+        }
+
+        return $evaluations;
     }
 }
