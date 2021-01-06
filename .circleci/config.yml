@@ -680,16 +680,6 @@ workflows:
                 name: test_back_phpunit_ce
                 requires:
                     - build_dev_ce
-          - test_back_data_migrations:
-                name: test_back_data_migrations_ce
-                requires:
-                    - test_back_phpunit_ce
-          - test_back_behat_legacy:
-                name: test_back_behat_legacy_ce
-                requires:
-                    - test_back_static_and_acceptance_ce
-                    - test_front_static_acceptance_and_integration_ce
-                    - test_back_phpunit_ce
 
   nightly:
       triggers:
