@@ -64,8 +64,8 @@ class TreeAssociate {
       list_categories: string;
       children: string;
     },
-    readOnly: boolean,
-    lockedCategoryIds: number[],
+    readOnly: boolean = false,
+    lockedCategoryIds: number[] = [],
   ) {
     this.container = document.getElementById('trees') as HTMLDivElement;
     this.selectedCategoryCodesByTreeIdInput = document.getElementById('hidden-tree-input') as HTMLInputElement;
