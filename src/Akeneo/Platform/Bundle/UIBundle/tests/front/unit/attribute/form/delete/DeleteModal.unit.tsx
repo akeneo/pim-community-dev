@@ -74,6 +74,34 @@ test('it does not allow confirmation until the attributeCodeConfirm field is val
   expect(dependencies.notify).toHaveBeenCalledWith('success', 'pim_enrich.entity.attribute.flash.delete.success');
 });
 
+test('it is submitable using the Enter key (when the confirm is valid)', async () => {
+  const onSuccess = jest.fn();
+
+  renderWithProviders(<DeleteModal onCancel={jest.fn()} onSuccess={onSuccess} attributeCode="nice_attribute" />);
+
+  const input = screen.getByLabelText('pim_enrich.entity.attribute.module.delete.type') as HTMLInputElement;
+
+  await act(async () => {
+    fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
+  });
+
+  expect(screen.getByText('pim_common.delete')).toHaveAttribute('disabled');
+  expect(onSuccess).not.toHaveBeenCalled();
+
+  fireEvent.change(input, {target: {value: 'nice_attribute'}});
+
+  await act(async () => {
+    fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
+  });
+
+  expect(global.fetch).toHaveBeenCalledWith('pim_enrich_attribute_rest_remove', {
+    method: 'DELETE',
+    headers: new Headers({'X-Requested-With': 'XMLHttpRequest'}),
+  });
+  expect(onSuccess).toHaveBeenCalled();
+  expect(dependencies.notify).toHaveBeenCalledWith('success', 'pim_enrich.entity.attribute.flash.delete.success');
+});
+
 test('it displays an error when the delete failed', async () => {
   global.fetch.mockImplementation(async (url: string) => {
     switch (url) {
