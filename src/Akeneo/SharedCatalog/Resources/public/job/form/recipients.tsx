@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef, useCallback, ChangeEvent, SyntheticEvent} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
-import {Key, useAutoFocus, useShortcut, SearchBar} from '@akeneo-pim-community/shared';
+import {SearchBar} from '@akeneo-pim-community/shared';
 import {DependenciesProvider, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {HeaderCell, LabelCell, Row, Table} from 'akeneosharedcatalog/common/Table';
 import {
@@ -12,6 +12,9 @@ import {
   NoResultsIllustration,
   pimTheme,
   SurveyIllustration,
+  Key,
+  useAutoFocus,
+  useShortcut,
 } from 'akeneo-design-system';
 
 const MAX_RECIPIENT_COUNT = 500;
