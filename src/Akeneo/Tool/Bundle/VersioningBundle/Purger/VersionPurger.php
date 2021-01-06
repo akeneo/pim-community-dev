@@ -71,12 +71,6 @@ class VersionPurger implements VersionPurgerInterface
 
     private function purgeVersionsByResourceName($resourceName, array $options, OutputInterface $output): int
     {
-        $versionsToPurgeCount = $this->countVersionsToPurge($resourceName, $options);
-
-        if (0 === $versionsToPurgeCount) {
-            return 0;
-        }
-
         $versionsToPurge = $this->getVersionsToPurge($resourceName, $options);
         $purgedVersionsCount = 0;
 
@@ -87,7 +81,7 @@ class VersionPurger implements VersionPurgerInterface
                 $purgedVersionsCount += count($purgeableVersionList);
             }
 
-            $output->writeln(sprintf('%d versions purged', purgedVersionsCount));
+            $output->writeln(sprintf('%d versions purged', $purgedVersionsCount));
         }
 
         $output->writeln('');
