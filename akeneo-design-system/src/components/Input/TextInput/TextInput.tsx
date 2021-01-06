@@ -84,10 +84,7 @@ type TextInputProps = Override<
  * The TextInput component allows the user to enter content and data when the expected input is a single line of text.
  */
 const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
-  (
-    {invalid, onChange, readOnly, characterLeftLabel, className, ...rest}: TextInputProps,
-    forwardedRef: Ref<HTMLInputElement>
-  ) => {
+  ({invalid, onChange, readOnly, characterLeftLabel, ...rest}: TextInputProps, forwardedRef: Ref<HTMLInputElement>) => {
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {
         if (!readOnly && onChange) onChange(event.currentTarget.value);
@@ -96,7 +93,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
     );
 
     return (
-      <TextInputContainer className={className}>
+      <TextInputContainer>
         <Input
           ref={forwardedRef}
           onChange={handleChange}

@@ -12,6 +12,8 @@ import {
   useShortcut,
   Key,
   Helper,
+  AkeneoThemedProps,
+  LockIcon,
 } from 'akeneo-design-system';
 import {Operation, Operator, emptyOperation} from 'akeneomeasure/model/operation';
 import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
@@ -46,11 +48,13 @@ const StyledArrow = styled(ArrowIcon)`
   margin: 0 4px 10px 2px;
 `;
 
-const OperationOperator = styled.span`
+const OperationOperator = styled.span<{readOnly: boolean} & AkeneoThemedProps>`
   position: absolute;
-  top: 0;
-  right: 15px;
-  height: 40px;
+  top: 1px;
+  right: 1px;
+  padding: 0 10px;
+  height: 38px;
+  background-color: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   text-transform: uppercase;
   display: flex;
   align-items: center;
@@ -182,9 +186,12 @@ const OperationCollection = ({
                     )
                   }
                 />
-                <OperationOperator onClick={readOnly ? undefined : () => setOpenOperatorSelector(index)}>
+                <OperationOperator
+                  readOnly={readOnly}
+                  onClick={readOnly ? undefined : () => setOpenOperatorSelector(index)}
+                >
                   {translate(`measurements.unit.operator.${operation.operator}`)}
-                  <ArrowDownIcon color={readOnly ? 'transparent' : 'currentColor'} size={18} />
+                  {readOnly ? <LockIcon size={18} /> : <ArrowDownIcon size={18} />}
                 </OperationOperator>
               </OperationInput>
               {!readOnly && 1 < operations.length && (
