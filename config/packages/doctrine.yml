@@ -31,18 +31,40 @@ doctrine:
                 alias: Gedmo
                 prefix: Gedmo\Tree\Entity
                 dir: '%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
+        metadata_cache_driver:
+            type: service
+            id: doctrine.system_cache_provider
+        query_cache_driver:
+            type: service
+            id: doctrine.system_cache_provider
+        result_cache_driver:
+            type: service
+            id: doctrine.result_cache_provider
+
+services:
+    doctrine.result_cache_provider:
+        class: Symfony\Component\Cache\DoctrineProvider
+        public: false
+        arguments:
+            - '@doctrine.result_cache_pool'
+    doctrine.system_cache_provider:
+        class: Symfony\Component\Cache\DoctrineProvider
+        public: false
+        arguments:
+            - '@doctrine.system_cache_pool'
+
+framework:
+    cache:
+        pools:
+            doctrine.result_cache_pool:
+                adapters:
+                    - cache.adapter.apcu
+                    - cache.adapter.array
+            doctrine.system_cache_pool:
+                adapter: cache.system
 
 doctrine_migrations:
     dir_name: '%doctrine_migrations_dir%'
     namespace: Pim\Upgrade\Schema
     name: PIM Migrations
-
-doctrine_cache:
-    providers:
-        pim_apcu:
-            apcu: ~
-        pim_array:
-            array: ~
-        pim:
-            chain:
-                providers: [doctrine_cache.providers.pim_apcu, doctrine_cache.providers.pim_array]
+    column_length: 255
