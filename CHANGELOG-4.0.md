@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.83 (2021-01-06)
+
 ## Bug fixes
 
 - PIM-9611: Improve performance of product indexation by forcing a join due to statistics bias for low cardinality
