@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
 import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, InputErrors} from '@akeneo-pim-community/shared';
-import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme} from 'akeneo-design-system';
+import {filterErrors, formatParameters} from '@akeneo-pim-community/shared';
+import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme, Helper} from 'akeneo-design-system';
 import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
 import {useProductThumbnail} from '../hooks';
 
@@ -200,7 +200,11 @@ const QuantifiedAssociationRow = ({
               }}
             />
           </InputCellContainer>
-          <InputErrors errors={row.errors} />
+          {formatParameters(row.errors).map((error, key) => (
+            <Helper key={key} level="error" inline={true}>
+              {translate(error.messageTemplate, error.parameters, error.plural)}
+            </Helper>
+          ))}
         </Cell>
         {!isCompact ? (
           <Cell>

@@ -97,7 +97,7 @@ const IconContainer = styled.span`
 const BooleanInputLockIcon = styled(LockIcon)``;
 
 type BooleanInputProps = Override<
-  InputProps,
+  InputProps<boolean>,
   (
     | {
         clearable?: true;

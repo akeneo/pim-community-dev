@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent} from '@testing-library/react';
+import {fireEvent, screen} from '@testing-library/react';
 import {QuantifiedAssociationRow} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociationRow';
 import {Product, ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
@@ -31,7 +31,7 @@ test('It displays a quantified association row for a product', () => {
   const onChange = jest.fn();
   const onRemove = jest.fn();
 
-  const {getByTitle, getByText, queryByText} = renderWithProviders(
+  renderWithProviders(
     <table>
       <tbody>
         <QuantifiedAssociationRow
@@ -49,20 +49,52 @@ test('It displays a quantified association row for a product', () => {
     </table>
   );
 
-  const quantityInput = getByTitle(
+  const quantityInput = screen.getByTitle(
     'pim_enrich.entity.product.module.associations.quantified.quantity'
   ) as HTMLInputElement;
 
-  expect(getByText('Nice bag')).toBeInTheDocument();
+  expect(screen.getByText('Nice bag')).toBeInTheDocument();
   expect(quantityInput.value).toBe('3');
-  expect(queryByText('Braided hat')).not.toBeInTheDocument();
+  expect(screen.queryByText('Braided hat')).not.toBeInTheDocument();
+});
+
+test('It displays errors for a quantified association row', () => {
+  const error = {
+    messageTemplate: 'An error occured',
+    parameters: {},
+    message: 'An error occured',
+    propertyPath: 'quantity',
+    invalidValue: 'NaN',
+  };
+
+  renderWithProviders(
+    <table>
+      <tbody>
+        <QuantifiedAssociationRow
+          row={{
+            productType: ProductType.Product,
+            quantifiedLink: {quantity: 3, identifier: 'bag'},
+            product: product,
+            errors: [error, {...error, messageTemplate: 'Another one'}],
+          }}
+          parentQuantifiedLink={undefined}
+          onChange={jest.fn()}
+          onRemove={jest.fn()}
+        />
+      </tbody>
+    </table>
+  );
+
+  expect(screen.getByText('Nice bag')).toBeInTheDocument();
+  expect(screen.getByText('An error occured')).toBeInTheDocument();
+  expect(screen.getByText('Another one')).toBeInTheDocument();
 });
 
 test('It displays a quantified association row for a product model', () => {
   const onChange = jest.fn();
   const onRemove = jest.fn();
 
-  const {getByTitle, getByText, queryByText} = renderWithProviders(
+  renderWithProviders(
     <table>
       <tbody>
         <QuantifiedAssociationRow
@@ -80,20 +112,20 @@ test('It displays a quantified association row for a product model', () => {
     </table>
   );
 
-  const quantityInput = getByTitle(
+  const quantityInput = screen.getByTitle(
     'pim_enrich.entity.product.module.associations.quantified.quantity'
   ) as HTMLInputElement;
 
-  expect(getByText('Braided hat')).toBeInTheDocument();
+  expect(screen.getByText('Braided hat')).toBeInTheDocument();
   expect(quantityInput.value).toBe('15');
-  expect(queryByText('Nice bag')).not.toBeInTheDocument();
+  expect(screen.queryByText('Nice bag')).not.toBeInTheDocument();
 });
 
 test('It triggers the onChange event when updating the quantity', () => {
   const onChange = jest.fn();
   const onRemove = jest.fn();
 
-  const {getByTitle} = renderWithProviders(
+  renderWithProviders(
     <table>
       <tbody>
         <QuantifiedAssociationRow
@@ -111,7 +143,7 @@ test('It triggers the onChange event when updating the quantity', () => {
     </table>
   );
 
-  const quantityInput = getByTitle(
+  const quantityInput = screen.getByTitle(
     'pim_enrich.entity.product.module.associations.quantified.quantity'
   ) as HTMLInputElement;
 
@@ -147,7 +179,7 @@ test('It triggers the onRemove event when the remove button is clicked', () => {
   const onChange = jest.fn();
   const onRemove = jest.fn();
 
-  const {getByTitle} = renderWithProviders(
+  renderWithProviders(
     <table>
       <tbody>
         <QuantifiedAssociationRow
@@ -165,7 +197,7 @@ test('It triggers the onRemove event when the remove button is clicked', () => {
     </table>
   );
 
-  const removeButton = getByTitle('pim_enrich.entity.product.module.associations.remove');
+  const removeButton = screen.getByTitle('pim_enrich.entity.product.module.associations.remove');
   fireEvent.click(removeButton);
 
   expect(onChange).not.toBeCalled();
@@ -176,7 +208,7 @@ test('It triggers the onRemove event when the remove button is clicked in compac
   const onChange = jest.fn();
   const onRemove = jest.fn();
 
-  const {getByTitle} = renderWithProviders(
+  renderWithProviders(
     <table>
       <tbody>
         <QuantifiedAssociationRow
@@ -195,7 +227,7 @@ test('It triggers the onRemove event when the remove button is clicked in compac
     </table>
   );
 
-  const removeButton = getByTitle('pim_enrich.entity.product.module.associations.remove');
+  const removeButton = screen.getByTitle('pim_enrich.entity.product.module.associations.remove');
   fireEvent.click(removeButton);
 
   expect(onChange).not.toBeCalled();
