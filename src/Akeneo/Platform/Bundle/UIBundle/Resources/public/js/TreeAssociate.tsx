@@ -56,12 +56,16 @@ class TreeAssociate {
   private productId: number;
   private dataLocale?: string;
   private container: HTMLDivElement;
+  private readOnly: boolean;
+  private lockedCategoryIds: number[];
 
   constructor(
     routes: {
       list_categories: string;
       children: string;
-    }
+    },
+    readOnly: boolean,
+    lockedCategoryIds: number[],
   ) {
     this.container = document.getElementById('trees') as HTMLDivElement;
     this.selectedCategoryCodesByTreeIdInput = document.getElementById('hidden-tree-input') as HTMLInputElement;
@@ -72,6 +76,8 @@ class TreeAssociate {
       throw new Error('The container must have dataLocale data');
     }
     this.dataLocale = this.container.dataset.datalocale;
+    this.readOnly = readOnly;
+    this.lockedCategoryIds = lockedCategoryIds;
 
     const selectedTreeId = Number(this.container.dataset.selectedTree);
 
@@ -109,7 +115,7 @@ class TreeAssociate {
         const response = await fetch(route);
         const json: CategoryResponse[] = await response.json();
 
-        return parseResponse(json[0], false, [], true);
+        return parseResponse(json[0], this.readOnly, this.lockedCategoryIds, true);
       } else {
         const route = Router.generate(this.childrenRoute, {
           _format: 'json',
@@ -123,7 +129,7 @@ class TreeAssociate {
         const json: CategoryResponse = await response.json();
 
         console.log(json);
-        return parseResponse(json, false, [], true);
+        return parseResponse(json, this.readOnly, this.lockedCategoryIds, true);
       }
     }
 
