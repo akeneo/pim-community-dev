@@ -1,6 +1,8 @@
 Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\Project:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: ['label', 'channel', 'locale']
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: ['label', 'channel', 'locale']
+            message: 'This value is already used for a project.'
         - Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraints\ProjectLocale: ~
         - Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraints\ProjectDueDate: ~
     properties:
