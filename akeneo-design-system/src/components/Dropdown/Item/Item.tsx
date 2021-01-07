@@ -48,6 +48,9 @@ const ItemContainer = styled.div<{tall: boolean} & AkeneoThemedProps>`
 type ItemProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
+    /**
+     * The content of the item
+     */
     children: ReactNode;
   }
 >;
@@ -125,8 +128,5 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
     );
   }
 );
-
-Item.displayName = 'Dropdown.Item';
-ItemLabel.displayName = 'Dropdown.ItemLabel';
 
 export {Item, ItemLabel};
