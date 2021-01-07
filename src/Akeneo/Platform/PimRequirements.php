@@ -214,15 +214,24 @@ class PimRequirements
      */
     protected function getConnection() : PDO
     {
-        return new PDO(
-            sprintf(
-                'mysql:port=%s;host=%s',
-                getenv('APP_DATABASE_PORT'),
-                getenv('APP_DATABASE_HOST')
-            ),
-            getenv('APP_DATABASE_USER'),
-            getenv('APP_DATABASE_PASSWORD')
+        $dsn = sprintf(
+            'mysql:port=%s;host=%s',
+            getenv('APP_DATABASE_PORT'),
+            getenv('APP_DATABASE_HOST')
         );
+        $username = getenv('APP_DATABASE_USER');
+        $passwd = getenv('APP_DATABASE_PASSWORD');
+        $sslCa = getenv('APP_DATABASE_SSL_CA');
+        $sslVerifyServerCert = getenv('APP_DATABASE_SSL_VERIFY_SERVER_CERT');
+        if (isset($sslCa) && isset($sslVerifyServerCert)) {
+            $options = array(
+                PDO::MYSQL_ATTR_SSL_CA => $sslCa,
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => $sslVerifyServerCert
+            );
+            return new PDO($dsn, $username, $passwd, $options);
+        } else {
+            return new PDO($dsn, $username, $passwd);
+        }
     }
 
     protected function getBytes(string $val): float
