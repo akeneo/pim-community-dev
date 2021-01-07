@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listener','pim/security-context'], function (
+define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listener', 'pim/security-context'], function (
   $,
   _,
   mediator,
@@ -32,17 +32,17 @@ define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listen
               this.$el.html(this.$checkbox);
 
               this.$checkbox.on(
-                  'click',
-                  _.bind(function () {
-                    var state = this.$checkbox.is(':checked');
-                    _.each(
-                        collection.models,
-                        function (model) {
-                          model.set(this.columnName, state);
-                        },
-                        this
-                    );
-                  }, this)
+                'click',
+                _.bind(function () {
+                  var state = this.$checkbox.is(':checked');
+                  _.each(
+                    collection.models,
+                    function (model) {
+                      model.set(this.columnName, state);
+                    },
+                    this
+                  );
+                }, this)
               );
             }
           }
