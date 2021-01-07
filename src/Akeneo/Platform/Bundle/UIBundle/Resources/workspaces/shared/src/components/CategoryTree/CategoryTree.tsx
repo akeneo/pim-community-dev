@@ -1,5 +1,5 @@
 import React from 'react';
-import { RecursiveCategoryTree } from "./RecursiveCategoryTree";
+import {RecursiveCategoryTree} from './RecursiveCategoryTree';
 import {Tree} from 'akeneo-design-system/lib/components/Tree/Tree';
 
 type CategoryTreeModel = {
@@ -11,7 +11,7 @@ type CategoryTreeModel = {
   loading?: boolean;
   selected?: boolean;
   readOnly?: boolean;
-}
+};
 
 type CategoryTreeProps = {
   init: () => Promise<CategoryTreeModel>;
@@ -19,12 +19,7 @@ type CategoryTreeProps = {
   onChange: (value: string, checked: boolean) => void;
 };
 
-const CategoryTree: React.FC<CategoryTreeProps> = ({
-  init,
-  childrenCallback,
-  onChange,
-  ...rest
-}) => {
+const CategoryTree: React.FC<CategoryTreeProps> = ({init, childrenCallback, onChange, ...rest}) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
   React.useEffect(() => {
@@ -32,17 +27,10 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   }, []);
 
   if (!tree) {
-    return <Tree value='' label='' isLoading={true} {...rest} />;
+    return <Tree value="" label="" isLoading={true} {...rest} />;
   }
 
-  return (
-    <RecursiveCategoryTree
-      tree={tree}
-      childrenCallback={childrenCallback}
-      onChange={onChange}
-      {...rest}
-    />
-  );
+  return <RecursiveCategoryTree tree={tree} childrenCallback={childrenCallback} onChange={onChange} {...rest} />;
 };
 
 export type {CategoryTreeModel};
