@@ -20,8 +20,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     if (isset($GLOBALS['argv'][4]) && preg_match("/test-src\$/", $GLOBALS['argv'][4])) { //Hack for enabling test mode...
         echo "Test mode";
+        $testSrc = $GLOBALS['argv'][4];
         $parameters = $containerConfigurator->parameters();
-        $parameters->set(Option::AUTOLOAD_PATHS, [$GLOBALS['argv'][4], "./src"]);
+        $parameters->set(Option::AUTOLOAD_PATHS, [$testSrc]);
     }
     $services->set(RenameClassRector::class)
         ->call('configure', [[

@@ -3,6 +3,10 @@
 use Akeneo\Connectivity\Connection\Application\Audit\Query\CountDailyEventsByConnectionQuery;
 use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
 
+/*
+ *  !!!!!!! THIS IS NOT PRODUCTIVE PHP CODE: IT IS JUST TO TEST THE ABILITY OF RECTOR TO MIGRATE CODE !!!!!!!
+ */
+
 class TestUsedClassRenaming
 {
     private CountDailyEventsByConnectionQuery $getErrorCountPerConnectionQuery;
