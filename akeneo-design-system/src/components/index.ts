@@ -16,3 +16,4 @@ export * from './Modal/Modal';
 export * from './ProgressBar/ProgressBar';
 export * from './Table/Table';
 export * from './Dropdown/Dropdown';
+export * from './Pagination/Pagination';
