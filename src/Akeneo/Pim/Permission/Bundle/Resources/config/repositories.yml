@@ -12,28 +12,28 @@ parameters:
 services:
     pimee_security.repository.attribute_group_access:
         class: '%pimee_security.repository.attribute_group_access.class%'
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['%pimee_security.entity.attribute_group_access.class%']
         tags:
             - { name: 'pim_repository' }
 
     pimee_security.repository.category_access:
         class: '%pimee_security.repository.category_access.class%'
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['%pimee_security.entity.product_category_access.class%']
         tags:
             - { name: 'pim_repository' }
 
     pimee_security.repository.job_profile_access:
         class: '%pimee_security.repository.job_profile_access.class%'
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['%pimee_security.entity.job_profile_access.class%']
         tags:
             - { name: 'pim_repository' }
 
     pimee_security.repository.locale_access:
         class: '%pimee_security.repository.locale_access.class%'
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['%pimee_security.entity.locale_access.class%']
         tags:
             - { name: 'pim_repository' }

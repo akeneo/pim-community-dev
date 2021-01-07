@@ -18,14 +18,14 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 class ProductPdfRendererSpec extends ObjectBehavior
 {
     const TEMPLATE_NAME = 'template.html.twig';
 
     function let(
-        EngineInterface $templating,
+        Environment $templating,
         PdfBuilderInterface $pdfBuilder,
         DataManager $dataManager,
         CacheManager $cacheManager,

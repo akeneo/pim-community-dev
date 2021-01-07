@@ -13,9 +13,9 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Cons
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Validate the project's locale, it must belong to the project's channel
@@ -24,12 +24,8 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ProjectLocaleValidator extends ConstraintValidator
 {
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;

@@ -61,8 +61,8 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $pqb->addFilter('field', 'operator', 'value', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
         $pqb->execute()->shouldBeCalled()->willReturn($cursor);
 
-        $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch(RuleEvents::POST_SELECT, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), RuleEvents::PRE_SELECT)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), RuleEvents::POST_SELECT)->shouldBeCalled();
 
         $this->select($rule)->shouldHaveType(RuleSubjectSet::class);
     }
@@ -84,8 +84,8 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $condition->getScope()->willReturn('ecommerce');
 
         $queryBuilderFactory->create(['with_document_type_facet' => true])->shouldBeCalled()->willReturn($pqb);
-        $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch(RuleEvents::POST_SELECT, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), RuleEvents::PRE_SELECT)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), RuleEvents::POST_SELECT)->shouldBeCalled();
         $pqb->addFilter('field', 'operator', 'value', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
         $pqb->execute()->shouldBeCalled()->willReturn($cursor);
 

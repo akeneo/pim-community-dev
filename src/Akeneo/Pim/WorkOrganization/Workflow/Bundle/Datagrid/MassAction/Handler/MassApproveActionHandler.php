@@ -51,7 +51,7 @@ class MassApproveActionHandler implements MassActionHandlerInterface
     {
         // dispatch pre handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_APPROVE_PRE_HANDLER, $massActionEvent);
+        $this->eventDispatcher->dispatch($massActionEvent, MassActionEvents::MASS_APPROVE_PRE_HANDLER);
 
         $datasource = $datagrid->getDatasource();
 
@@ -74,7 +74,7 @@ class MassApproveActionHandler implements MassActionHandlerInterface
 
         // dispatch post handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, $objectIds);
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_APPROVE_POST_HANDLER, $massActionEvent);
+        $this->eventDispatcher->dispatch($massActionEvent, MassActionEvents::MASS_APPROVE_POST_HANDLER);
 
         return $objectIds;
     }

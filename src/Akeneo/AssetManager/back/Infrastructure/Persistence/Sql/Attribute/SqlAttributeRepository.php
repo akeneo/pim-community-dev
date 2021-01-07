@@ -316,8 +316,8 @@ SQL;
         $assetFamilyIdentifier = $this->getAssetFamilyIdentifier($attributeIdentifier);
 
         $this->eventDispatcher->dispatch(
-            BeforeAttributeDeletedEvent::class,
-            new BeforeAttributeDeletedEvent($assetFamilyIdentifier, $attributeIdentifier)
+            new BeforeAttributeDeletedEvent($assetFamilyIdentifier, $attributeIdentifier),
+            BeforeAttributeDeletedEvent::class
         );
 
         $sql = <<<SQL
@@ -335,8 +335,8 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
-            AttributeDeletedEvent::class,
-            new AttributeDeletedEvent($assetFamilyIdentifier, $attributeIdentifier)
+            new AttributeDeletedEvent($assetFamilyIdentifier, $attributeIdentifier),
+            AttributeDeletedEvent::class
         );
     }
 

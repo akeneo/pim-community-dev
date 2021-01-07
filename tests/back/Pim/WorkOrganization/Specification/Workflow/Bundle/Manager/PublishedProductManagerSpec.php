@@ -72,8 +72,8 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $repositoryWithPermission->findOneByOriginalProduct(Argument::any())->willReturn(null);
         $publisher->publish($product, [])->willReturn($published);
 
-        $eventDispatcher->dispatch(PublishedProductEvents::PRE_PUBLISH, Argument::any(), null)->shouldBeCalled();
-        $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::PRE_PUBLISH, null)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::POST_PUBLISH)->shouldBeCalled();
 
         $publishedProductSaver->save($published, ['add_default_values' => false])->shouldBeCalled();
 
@@ -143,8 +143,8 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $publisher->publish($fullProduct, [])->willReturn($published);
         $filteredProduct->getId()->willReturn(1);
 
-        $eventDispatcher->dispatch(PublishedProductEvents::PRE_PUBLISH, Argument::any(), null)->shouldBeCalled();
-        $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::PRE_PUBLISH, null)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::POST_PUBLISH)->shouldBeCalled();
 
         $unpublisher->unpublish($alreadyPublished)->shouldBeCalled();
         $remover->remove($alreadyPublished)->shouldBeCalled();
@@ -169,8 +169,8 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $fullPublished->getOriginalProduct()->willReturn($product);
         $unpublisher->unpublish($fullPublished)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(PublishedProductEvents::POST_UNPUBLISH, Argument::any(), null)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::PRE_UNPUBLISH)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::POST_UNPUBLISH, null)->shouldBeCalled();
 
         $remover->remove($fullPublished)->shouldBeCalled();
 
@@ -199,8 +199,8 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $unpublisher->unpublish($fullPublished1)->shouldBeCalled();
         $unpublisher->unpublish($fullPublished2)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(PublishedProductEvents::POST_UNPUBLISH, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::PRE_UNPUBLISH)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), PublishedProductEvents::POST_UNPUBLISH)->shouldBeCalled();
 
         $bulkRemover->removeAll([$fullPublished1, $fullPublished2])->shouldBeCalled();
 

@@ -17,7 +17,6 @@ services:
             - '@request_stack'
             - '@router'
             - '@security.token_storage'
-            - '@translator'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
             - '@pim_user.context.user'
@@ -35,7 +34,7 @@ services:
         arguments:
             - '@request_stack'
             - '@router'
-            - '@templating'
+            - '@twig'
             - '@translator'
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'

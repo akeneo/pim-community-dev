@@ -23,7 +23,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolverInterface;
 use Oro\Bundle\PimDataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -31,20 +31,11 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class FilterExtension extends BaseFilterExtension
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var AttributeGroupAccessRepository */
-    protected $accessRepository;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var ObjectRepository */
-    protected $datagridViewRepository;
-
-    /** @var ObjectRepository */
-    protected $projectRepository;
+    protected AttributeRepositoryInterface $attributeRepository;
+    protected AttributeGroupAccessRepository $accessRepository;
+    protected UserContext $userContext;
+    protected ObjectRepository $datagridViewRepository;
+    protected ObjectRepository $projectRepository;
 
     public function __construct(
         RequestParameters $requestParams,

@@ -44,7 +44,7 @@ class ProductsValidatorSpec extends ObjectBehavior
         $productValidator->validate($validProduct)->shouldBeCalled()->willReturn($emptyViolationList);
         $emptyViolationList->count()->willReturn(0);
         $objectDetacher->detach($validProduct)->shouldNotBeCalled();
-        $eventDispatcher->dispatch(RuleEvents::SKIP, Argument::any())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), RuleEvents::SKIP)->shouldNotBeCalled();
 
         $this->validate($rule, [$validProduct]);
     }
@@ -62,7 +62,7 @@ class ProductsValidatorSpec extends ObjectBehavior
         $notEmptyViolationList->count()->willReturn(1);
         $notEmptyViolationList->getIterator()->willReturn(new \ArrayIterator([]));
         $objectDetacher->detach($invalidProduct)->shouldBeCalled();
-        $eventDispatcher->dispatch(RuleEvents::SKIP, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), RuleEvents::SKIP)->shouldBeCalled();
 
         $this->validate($rule, [$invalidProduct]);
     }

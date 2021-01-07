@@ -67,7 +67,7 @@ class ProductRuleSelector implements SelectorInterface
      */
     public function select(RuleInterface $rule): RuleSubjectSetInterface
     {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
+        $this->eventDispatcher->dispatch(new RuleEvent($rule), RuleEvents::PRE_SELECT);
 
         $subjectSet = new $this->subjectSetClass();
         $pqb = $this->queryBuilderFactory->create([
@@ -89,7 +89,7 @@ class ProductRuleSelector implements SelectorInterface
         $subjectSet->setType('product');
         $subjectSet->setSubjectsCursor($productsCursor);
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_SELECT, new SelectedRuleEvent($rule, $subjectSet));
+        $this->eventDispatcher->dispatch(new SelectedRuleEvent($rule, $subjectSet), RuleEvents::POST_SELECT);
 
         return $subjectSet;
     }

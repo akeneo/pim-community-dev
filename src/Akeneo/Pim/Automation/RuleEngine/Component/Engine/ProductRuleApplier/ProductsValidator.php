@@ -74,8 +74,8 @@ class ProductsValidator
                     );
                 }
                 $this->eventDispatcher->dispatch(
-                    RuleEvents::SKIP,
-                    new SkippedSubjectRuleEvent($rule, $product, $reasons)
+                    new SkippedSubjectRuleEvent($rule, $product, $reasons),
+                    RuleEvents::SKIP
                 );
             }
         }

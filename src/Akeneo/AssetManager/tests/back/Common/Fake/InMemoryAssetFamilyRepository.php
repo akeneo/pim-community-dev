@@ -45,8 +45,8 @@ class InMemoryAssetFamilyRepository implements AssetFamilyRepositoryInterface
         $this->assetFamilies[(string) $assetFamily->getIdentifier()] = $assetFamily;
 
         $this->eventDispatcher->dispatch(
-            AssetFamilyCreatedEvent::class,
-            new AssetFamilyCreatedEvent($assetFamily->getIdentifier())
+            new AssetFamilyCreatedEvent($assetFamily->getIdentifier()),
+            AssetFamilyCreatedEvent::class
         );
     }
 

@@ -29,12 +29,12 @@ class RuleImpactedProductCountActionHandlerSpec extends ObjectBehavior
         $objectIds = ['foo', 'bar', 'baz'];
 
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_PRE_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_PRE_HANDLER
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_POST_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_POST_HANDLER
         )->shouldBeCalled();
 
         $datagrid->getDatasource()->willReturn($datasource);

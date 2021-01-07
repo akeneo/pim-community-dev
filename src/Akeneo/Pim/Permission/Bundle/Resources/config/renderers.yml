@@ -10,7 +10,7 @@ services:
     pimee_security.renderer.product_pdf:
         class: '%pimee_security.renderer.product_pdf.class%'
         arguments:
-            - '@templating'
+            - '@twig'
             - '@pim_pdf_generator.builder.dompdf'
             - '@pimee_workflow.helper.filter_product_values'
             - '@liip_imagine.data.manager'

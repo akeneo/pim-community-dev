@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Provide translation capability default implementation
@@ -20,13 +20,10 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 trait TranslatorAware
 {
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
     /**
      * Set the translator
-     *
-     * @param TranslatorInterface $translator
      */
     public function setTranslator(TranslatorInterface $translator)
     {

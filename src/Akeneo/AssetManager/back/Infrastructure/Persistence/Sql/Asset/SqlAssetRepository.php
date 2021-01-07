@@ -217,8 +217,8 @@ SQL;
         );
 
         $this->eventDispatcher->dispatch(
-            AssetFamilyAssetsDeletedEvent::class,
-            new AssetFamilyAssetsDeletedEvent($assetFamilyIdentifier)
+            new AssetFamilyAssetsDeletedEvent($assetFamilyIdentifier),
+            AssetFamilyAssetsDeletedEvent::class
         );
     }
 
@@ -245,12 +245,12 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
-            AssetDeletedEvent::class,
             new AssetDeletedEvent(
                 $identifiers[$code->normalize()],
                 $code,
                 $assetFamilyIdentifier
-            )
+            ),
+            AssetDeletedEvent::class
         );
     }
 
@@ -314,7 +314,7 @@ SQL;
                 continue;
             }
 
-            $this->eventDispatcher->dispatch(get_class($event), $event);
+            $this->eventDispatcher->dispatch($event, get_class($event));
         }
 
         $asset->clearRecordedEvents();

@@ -3,10 +3,9 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use PhpSpec\ObjectBehavior;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BooleanPresenterSpec extends ObjectBehavior
 {

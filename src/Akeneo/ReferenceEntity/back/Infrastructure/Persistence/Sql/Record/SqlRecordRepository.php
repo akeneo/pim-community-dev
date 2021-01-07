@@ -124,12 +124,12 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
-            RecordUpdatedEvent::class,
             new RecordUpdatedEvent(
                 $record->getIdentifier(),
                 $record->getCode(),
                 $record->getReferenceEntityIdentifier()
-            )
+            ),
+            RecordUpdatedEvent::class
         );
     }
 
@@ -165,12 +165,12 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
-            RecordUpdatedEvent::class,
             new RecordUpdatedEvent(
                 $record->getIdentifier(),
                 $record->getCode(),
                 $record->getReferenceEntityIdentifier()
-            )
+            ),
+            RecordUpdatedEvent::class
         );
     }
 
@@ -246,8 +246,8 @@ SQL;
         );
 
         $this->eventDispatcher->dispatch(
-            ReferenceEntityRecordsDeletedEvent::class,
-            new ReferenceEntityRecordsDeletedEvent($referenceEntityIdentifier)
+            new ReferenceEntityRecordsDeletedEvent($referenceEntityIdentifier),
+            ReferenceEntityRecordsDeletedEvent::class
         );
     }
 
@@ -274,12 +274,12 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
-            RecordDeletedEvent::class,
             new RecordDeletedEvent(
                 $identifiers[$code->normalize()],
                 $code,
                 $referenceEntityIdentifier
-            )
+            ),
+            RecordDeletedEvent::class
         );
     }
 

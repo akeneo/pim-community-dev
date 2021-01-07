@@ -76,6 +76,7 @@ $rules = [
     ])->in('Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Symfony\Contracts',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
         'Gedmo\Sluggable\Util\Urlizer', // used to format the project identifier

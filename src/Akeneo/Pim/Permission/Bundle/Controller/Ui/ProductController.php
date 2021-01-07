@@ -19,7 +19,7 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Product Controller
@@ -28,8 +28,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ProductController extends BaseProductController
 {
-    /** @var CategoryManager */
-    protected $categoryManager;
+    protected CategoryManager $categoryManager;
 
     public function __construct(
         TranslatorInterface $translator,

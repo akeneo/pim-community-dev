@@ -12,26 +12,19 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraints;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
 class ProjectIdentifierValidator extends ConstraintValidator
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $projectRepository;
+    protected IdentifiableObjectRepositoryInterface $projectRepository;
+    protected TranslatorInterface $translator;
 
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $projectRepository
-     * @param TranslatorInterface                   $translator
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $projectRepository,
         TranslatorInterface $translator

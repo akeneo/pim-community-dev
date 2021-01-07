@@ -56,7 +56,7 @@ class Kernel extends BaseKernel
                 )
             );
         }
-        
+
         $container->addResource(new FileResource($this->getProjectDir() . '/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
 
@@ -68,7 +68,7 @@ class Kernel extends BaseKernel
 
         $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $ceConfDir);
         $this->loadPackagesConfigurationFromDependencyExceptSecurity($loader, $eeConfDir);
-        $this->loadPackagesConfigurationExceptSecurity($loader, $projectConfDir, $baseEnv);       
+        $this->loadPackagesConfigurationExceptSecurity($loader, $projectConfDir, $baseEnv);
         $this->loadPackagesConfiguration($loader, $projectConfDir, $this->environment);
 
         $this->loadContainerConfiguration($loader, $ceConfDir, $baseEnv);
@@ -168,7 +168,7 @@ class Kernel extends BaseKernel
 
     protected function isFlexibility(): bool
     {
-        return (getenv('PAPO_PROJECT_CODE_HASHED') !== false);
+        return isset($_ENV['PAPO_PROJECT_CODE_HASHED']);
     }
 
     /**

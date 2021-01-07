@@ -54,7 +54,7 @@ class DraftApplier implements DraftApplierInterface
         EntityWithValuesInterface $entityWithValues,
         EntityWithValuesDraftInterface $entityWithValuesDraft
     ): void {
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_APPLY, new GenericEvent($entityWithValuesDraft));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft), EntityWithValuesDraftEvents::PRE_APPLY);
 
         $changes = $entityWithValuesDraft->getChanges();
         if (!isset($changes['values'])) {
@@ -63,7 +63,7 @@ class DraftApplier implements DraftApplierInterface
 
         $this->applyValues($entityWithValues, $changes['values']);
 
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::POST_APPLY, new GenericEvent($entityWithValuesDraft));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft), EntityWithValuesDraftEvents::POST_APPLY);
     }
 
     /**
@@ -73,7 +73,7 @@ class DraftApplier implements DraftApplierInterface
         EntityWithValuesInterface $entityWithValues,
         EntityWithValuesDraftInterface $entityWithValuesDraft
     ): void {
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_APPLY, new GenericEvent($entityWithValuesDraft));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft), EntityWithValuesDraftEvents::PRE_APPLY);
 
         $changes = $entityWithValuesDraft->getChangesToReview();
         if (!isset($changes['values'])) {
@@ -82,7 +82,7 @@ class DraftApplier implements DraftApplierInterface
 
         $this->applyValues($entityWithValues, $changes['values']);
 
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::POST_APPLY, new GenericEvent($entityWithValuesDraft));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft), EntityWithValuesDraftEvents::POST_APPLY);
     }
 
     protected function applyValues(EntityWithValuesInterface $entityWithValues, array $changesValues): void

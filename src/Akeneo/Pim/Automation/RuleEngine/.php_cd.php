@@ -12,6 +12,7 @@ $rules = [
     $builder->only([
         'Doctrine',
         'Symfony\Component',
+        'Symfony\Contracts',
         'Akeneo\Tool',
         'Akeneo\Pim\Automation\RuleEngine\Component',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
@@ -58,6 +59,7 @@ $rules = [
     ])->in('Akeneo\Pim\Automation\RuleEngine\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Symfony\Contracts',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
         'Akeneo\Pim\Enrichment\Component\FileStorage',

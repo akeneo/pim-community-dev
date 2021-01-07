@@ -11,9 +11,9 @@
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Twig\Environment;
 
 /**
  * Displays an error page when an unknown user exception is thrown.
@@ -22,17 +22,16 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
  */
 final class UnknownUserExceptionListener
 {
-    /** @var EngineInterface */
-    private $templating;
+    private Environment $templating;
 
-    public function __construct(EngineInterface $templating)
+    public function __construct(Environment $templating)
     {
         $this->templating = $templating;
     }
 
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event)
     {
-        if (!$event->getException() instanceof UnknownUserException) {
+        if (!$event->getThrowable() instanceof UnknownUserException) {
             return;
         }
 

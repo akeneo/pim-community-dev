@@ -20,7 +20,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Saves products when apply a rule
@@ -29,28 +29,12 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ProductsSaver
 {
-    /** @var BulkSaverInterface */
-    protected $productSaver;
+    protected BulkSaverInterface $productSaver;
+    protected BulkSaverInterface $productModelSaver;
+    protected VersionManager $versionManager;
+    protected TranslatorInterface $translator;
+    protected VersionContext $versionContext;
 
-    /** @var BulkSaverInterface */
-    protected $productModelSaver;
-
-    /** @var VersionManager */
-    protected $versionManager;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var VersionContext */
-    protected $versionContext;
-
-    /**
-     * @param BulkSaverInterface $productSaver
-     * @param BulkSaverInterface $productModelSaver
-     * @param VersionManager $versionManager
-     * @param VersionContext $versionContext
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         BulkSaverInterface $productSaver,
         BulkSaverInterface $productModelSaver,

@@ -43,12 +43,12 @@ class MassApproveActionHandlerSpec extends ObjectBehavior
         ];
 
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_APPROVE_PRE_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_APPROVE_PRE_HANDLER
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
-            MassActionEvents::MASS_APPROVE_POST_HANDLER,
-            Argument::type(MassActionEvent::class)
+            Argument::type(MassActionEvent::class),
+            MassActionEvents::MASS_APPROVE_POST_HANDLER
         )->shouldBeCalled();
 
         $datagrid->getDatasource()->willReturn($datasource);

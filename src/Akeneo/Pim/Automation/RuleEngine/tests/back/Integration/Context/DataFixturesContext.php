@@ -576,7 +576,7 @@ final class DataFixturesContext implements Context
         $kernelRootDir = $this->getContainer()->getParameter('kernel.root_dir');
 
         return strtr($string, [
-            '%tmp%' => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
+            '%tmp%' => !empty($_ENV['BEHAT_TMPDIR'] ?? '') ? $_ENV['BEHAT_TMPDIR'] : '/tmp/pim-behat',
             '%fixtures%' => $kernelRootDir . '/../tests/legacy/features/Context/fixtures',
             '%web%' => $kernelRootDir . '/../public/',
         ]);

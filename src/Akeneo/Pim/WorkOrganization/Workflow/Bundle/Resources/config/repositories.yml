@@ -15,7 +15,7 @@ services:
 
     pimee_workflow.repository.published_product:
         class: '%pimee_workflow.repository.published_product.class%'
-        factory: 'pim_catalog.object_manager.product:getRepository'
+        factory: ['@pim_catalog.object_manager.product', 'getRepository']
         arguments: ['%pimee_workflow.entity.published_product.class%']
         tags:
             - { name: 'pim_repository' }
@@ -40,7 +40,7 @@ services:
 
     pimee_workflow.repository.published_association:
         class: '%pimee_workflow.repository.published_association.class%'
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments:
             - '%pimee_workflow.entity.published_product_association.class%'
         tags:
@@ -48,14 +48,14 @@ services:
 
     pimee_workflow.repository.product_draft:
         class: '%pimee_workflow.repository.entity_with_values_draft.class%'
-        factory: 'pimee_workflow.object_manager.product_draft:getRepository'
+        factory: ['@pimee_workflow.object_manager.product_draft', 'getRepository']
         arguments: ['%pimee_workflow.model.product_draft.class%']
         tags:
             - { name: 'pim_repository' }
 
     pimee_workflow.repository.product_model_draft:
         class: '%pimee_workflow.repository.entity_with_values_draft.class%'
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['%pimee_workflow.model.product_model_draft.class%']
         tags:
             - { name: 'pim_repository' }

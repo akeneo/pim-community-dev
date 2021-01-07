@@ -62,8 +62,8 @@ class EventTranslationSubscriberSpec extends ObjectBehavior
         $projectRepository->findOneByIdentifier('code')->willReturn($project);
 
         $eventDispatcher->dispatch(
-            ProjectEvents::PROJECT_CALCULATED,
-            Argument::type(ProjectEvent::class)
+            Argument::type(ProjectEvent::class),
+            ProjectEvents::PROJECT_CALCULATED
         )->shouldBeCalled();
 
         $this->projectCalculated($jobExecutionEvent)->shouldReturn(null);

@@ -116,18 +116,18 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         }
 
         $this->eventDispatcher->dispatch(
-            BeforeAttributeDeletedEvent::class,
             new BeforeAttributeDeletedEvent(
                 $this->getReferenceEntityIdentifier($attributeIdentifier),
                 $attributeIdentifier
-            )
+            ),
+            BeforeAttributeDeletedEvent::class
         );
 
         unset($this->attributes[(string) $attributeIdentifier]);
 
         $this->eventDispatcher->dispatch(
-            AttributeDeletedEvent::class,
-            new AttributeDeletedEvent($attribute->getReferenceEntityIdentifier(), $attributeIdentifier)
+            new AttributeDeletedEvent($attribute->getReferenceEntityIdentifier(), $attributeIdentifier),
+            AttributeDeletedEvent::class
         );
     }
 

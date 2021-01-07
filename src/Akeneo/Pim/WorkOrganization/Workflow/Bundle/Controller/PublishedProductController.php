@@ -18,7 +18,6 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Published product controller
@@ -35,44 +35,19 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class PublishedProductController
 {
-    /** @var RequestStack */
-    protected $requestStack;
+    protected RequestStack $requestStack;
+    protected RouterInterface $router;
+    protected Environment $templating;
+    protected TranslatorInterface $translator;
+    protected UserContext $userContext;
+    protected PublishedProductManager $manager;
+    protected ChannelRepositoryInterface $channelRepository;
+    protected AuthorizationCheckerInterface $authorizationChecker;
 
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var EngineInterface */
-    protected $templating;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var PublishedProductManager */
-    protected $manager;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
-    /**
-     * @param RequestStack                  $requestStack
-     * @param RouterInterface               $router
-     * @param EngineInterface               $templating
-     * @param TranslatorInterface           $translator
-     * @param UserContext                   $userContext
-     * @param PublishedProductManager       $manager
-     * @param ChannelRepositoryInterface    $channelRepository
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     */
     public function __construct(
         RequestStack $requestStack,
         RouterInterface $router,
-        EngineInterface $templating,
+        Environment $templating,
         TranslatorInterface $translator,
         UserContext $userContext,
         PublishedProductManager $manager,
@@ -128,10 +103,10 @@ class PublishedProductController
      */
     public function viewAction($id): Response
     {
-        return $this->templating->renderResponse(
+        return (new Response())->setContent($this->templating->render(
             'AkeneoPimWorkflowBundle:PublishedProduct:view.html.twig',
             ['productId' => $id]
-        );
+        ));
     }
 
     /**

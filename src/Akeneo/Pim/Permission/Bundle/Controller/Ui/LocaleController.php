@@ -19,8 +19,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use Webmozart\Assert\Assert;
 
 /**
@@ -30,16 +30,11 @@ use Webmozart\Assert\Assert;
  */
 class LocaleController
 {
-    /** @var FormFactoryInterface */
     protected $formFactory;
-
-    /** @var EngineInterface */
     private $templating;
-
-    /** @var TranslatorInterface */
     private $translator;
 
-    public function __construct(FormFactoryInterface $formFactory, EngineInterface $engine, TranslatorInterface $translator)
+    public function __construct(FormFactoryInterface $formFactory, Environment $engine, TranslatorInterface $translator)
     {
         $this->formFactory = $formFactory;
         $this->templating = $engine;

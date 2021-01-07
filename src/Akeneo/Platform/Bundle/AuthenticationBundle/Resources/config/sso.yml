@@ -30,7 +30,7 @@ services:
 
     onelogin_auth:
         class: 'OneLogin\Saml2\Auth'
-        factory: 'onelogin_auth.factory:create'
+        factory: ['@onelogin_auth.factory', 'create']
         public: true
 
     onelogin_auth.factory:
@@ -53,7 +53,7 @@ services:
     akeneo_authentication.sso.user.unknown_user_exception_listener:
         class: 'Akeneo\Platform\Bundle\AuthenticationBundle\Sso\User\UnknownUserExceptionListener'
         arguments:
-            - '@templating'
+            - '@twig'
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 

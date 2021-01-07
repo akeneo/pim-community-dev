@@ -45,7 +45,7 @@ services:
     ### Repository
     pimee_teamwork_assistant.repository.project:
         class: '%pimee_teamwork_assistant.repository.project.class%'
-        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments:
             - '%pimee_teamwork_assistant.model.project.class%'
         calls:

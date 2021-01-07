@@ -107,7 +107,7 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Controller\Ui\LocaleController'
         arguments:
             - '@form.factory'
-            - '@templating'
+            - '@twig'
             - '@translator'
 
     pim_enrich.controller.rest.job_instance:

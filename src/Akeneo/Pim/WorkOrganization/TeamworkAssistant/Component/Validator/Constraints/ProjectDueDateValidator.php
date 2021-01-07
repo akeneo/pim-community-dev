@@ -12,10 +12,10 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraints;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Validate that the due date is not in the past for a creation.
@@ -25,12 +25,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ProjectDueDateValidator extends ConstraintValidator
 {
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;

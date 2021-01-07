@@ -269,13 +269,9 @@ class PublishedProductManager
 
     /**
      * Dispatch a published product event
-     *
-     * @param string                    $name
-     * @param ProductInterface          $product
-     * @param PublishedProductInterface $published
      */
-    protected function dispatchEvent($name, ProductInterface $product, PublishedProductInterface $published = null)
+    protected function dispatchEvent(string $name, ProductInterface $product, PublishedProductInterface $published = null)
     {
-        $this->eventDispatcher->dispatch($name, new PublishedProductEvent($product, $published));
+        $this->eventDispatcher->dispatch(new PublishedProductEvent($product, $published), $name);
     }
 }

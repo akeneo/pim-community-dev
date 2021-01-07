@@ -193,7 +193,7 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
                 continue;
             }
 
-            $this->eventDispatcher->dispatch(get_class($event), $event);
+            $this->eventDispatcher->dispatch($event, get_class($event));
         }
 
         $asset->clearRecordedEvents();

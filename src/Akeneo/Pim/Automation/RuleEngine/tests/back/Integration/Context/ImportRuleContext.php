@@ -181,7 +181,7 @@ final class ImportRuleContext implements Context
     private function replacePlaceholders(string $string): string
     {
         return strtr($string, [
-            '%tmp%' => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
+            '%tmp%' => !empty($_ENV['BEHAT_TMPDIR'] ?? '') ? $_ENV['BEHAT_TMPDIR'] : '/tmp/pim-behat',
             '%fixtures%' => $this->kernelRootDir . '/../tests/legacy/features/Context/fixtures/',
             '%web%' => $this->kernelRootDir . '/../public/',
         ]);

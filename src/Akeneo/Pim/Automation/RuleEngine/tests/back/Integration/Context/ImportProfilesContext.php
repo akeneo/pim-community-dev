@@ -201,6 +201,6 @@ final class ImportProfilesContext implements Context
 
     private function getTmpDirectory(): string
     {
-        return getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat';
+        return !empty($_ENV['BEHAT_TMPDIR'] ?? '') ? $_ENV['BEHAT_TMPDIR'] : '/tmp/pim-behat';
     }
 }

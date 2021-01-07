@@ -51,7 +51,7 @@ class RuleImpactedProductCountActionHandler implements MassActionHandlerInterfac
     {
         // dispatch pre handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_PRE_HANDLER, $massActionEvent);
+        $this->eventDispatcher->dispatch($massActionEvent, MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_PRE_HANDLER);
 
         $datasource = $datagrid->getDatasource();
         Assert::implementsInterface($datasource, DatasourceInterface::class);
@@ -61,7 +61,7 @@ class RuleImpactedProductCountActionHandler implements MassActionHandlerInterfac
 
         // dispatch post handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, $results);
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_POST_HANDLER, $massActionEvent);
+        $this->eventDispatcher->dispatch($massActionEvent, MassActionEvents::MASS_RULE_IMPACTED_PRODUCT_COUNT_POST_HANDLER);
 
         return $results;
     }

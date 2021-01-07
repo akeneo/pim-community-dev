@@ -50,8 +50,8 @@ class ChainedRunnerSpec extends ObjectBehavior
         $this->addRunner($runner1);
         $this->addRunner($runner2);
 
-        $eventDispatcher->dispatch('pim_rule_engine.rule.pre_execute', Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_rule_engine.rule.post_execute', Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), 'pim_rule_engine.rule.pre_execute')->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), 'pim_rule_engine.rule.post_execute')->shouldBeCalled();
 
         $this->run($rule)->shouldReturn('Runner 2 launched');
     }
@@ -76,10 +76,10 @@ class ChainedRunnerSpec extends ObjectBehavior
         $this->addRunner($runner1);
         $this->addRunner($runner2);
 
-        $eventDispatcher->dispatch('pim_rule_engine.rule.pre_execute', Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_rule_engine.rule.post_execute', Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_rule_engine.rule.pre_execute_all', Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch('pim_rule_engine.rule.post_execute_all', Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), 'pim_rule_engine.rule.pre_execute')->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), 'pim_rule_engine.rule.post_execute')->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), 'pim_rule_engine.rule.pre_execute_all')->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), 'pim_rule_engine.rule.post_execute_all')->shouldBeCalled();
 
         $this->runAll([$rule1, $rule2], ['username' => Argument::cetera()])->shouldReturn([
             'rule1' => 'Runner 1 launched',

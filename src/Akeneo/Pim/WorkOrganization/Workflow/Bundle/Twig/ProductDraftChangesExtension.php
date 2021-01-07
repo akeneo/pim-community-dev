@@ -18,7 +18,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterfa
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Twig extension to present product draft changes
@@ -33,8 +33,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /** @var \Diff_Renderer_Html_Array */
     protected $renderer;
 
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
     /** @var PresenterInterface[] */
     protected $presenters = [];
@@ -45,12 +44,6 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /** @var ValueFactory */
     protected $valueFactory;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     * @param RendererInterface                     $renderer
-     * @param TranslatorInterface                   $translator
-     * @param ValueFactory                          $valueFactory
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,

@@ -55,7 +55,7 @@ class ProductRuleBuilder implements BuilderInterface
      */
     public function build(RuleDefinitionInterface $definition)
     {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_BUILD, new RuleEvent($definition));
+        $this->eventDispatcher->dispatch(new RuleEvent($definition), RuleEvents::PRE_BUILD);
 
         $rule = new $this->ruleClass($definition);
 
@@ -74,7 +74,7 @@ class ProductRuleBuilder implements BuilderInterface
         $rule->setConditions($content['conditions']);
         $rule->setActions($content['actions']);
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_BUILD, new RuleEvent($definition));
+        $this->eventDispatcher->dispatch(new RuleEvent($definition), RuleEvents::POST_BUILD);
 
         return $rule;
     }

@@ -59,10 +59,10 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
     public function save($ruleDefinition, array $options = [])
     {
         $this->validateRuleDefinition($ruleDefinition);
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($ruleDefinition));
+        $this->eventDispatcher->dispatch(new RuleEvent($ruleDefinition), RuleEvents::PRE_SAVE);
         $this->objectManager->persist($ruleDefinition);
         $this->objectManager->flush();
-        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($ruleDefinition));
+        $this->eventDispatcher->dispatch(new RuleEvent($ruleDefinition), RuleEvents::POST_SAVE);
     }
 
     /**
@@ -70,17 +70,17 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
      */
     public function saveAll(array $ruleDefinitions, array $options = [])
     {
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE_ALL, new BulkRuleEvent($ruleDefinitions));
+        $this->eventDispatcher->dispatch(new BulkRuleEvent($ruleDefinitions), RuleEvents::PRE_SAVE_ALL);
         foreach ($ruleDefinitions as $ruleDefinition) {
             $this->validateRuleDefinition($ruleDefinition);
-            $this->eventDispatcher->dispatch(RuleEvents::PRE_SAVE, new RuleEvent($ruleDefinition));
+            $this->eventDispatcher->dispatch(new RuleEvent($ruleDefinition), RuleEvents::PRE_SAVE);
             $this->objectManager->persist($ruleDefinition);
         }
         $this->objectManager->flush();
         foreach ($ruleDefinitions as $ruleDefinition) {
-            $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE, new RuleEvent($ruleDefinition));
+            $this->eventDispatcher->dispatch(new RuleEvent($ruleDefinition), RuleEvents::POST_SAVE);
         }
-        $this->eventDispatcher->dispatch(RuleEvents::POST_SAVE_ALL, new BulkRuleEvent($ruleDefinitions));
+        $this->eventDispatcher->dispatch(new BulkRuleEvent($ruleDefinitions), RuleEvents::POST_SAVE_ALL);
     }
 
     /**

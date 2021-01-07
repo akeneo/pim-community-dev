@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -31,14 +31,9 @@ final class GetAvailableFieldsController
     private const FIELD_TRANSLATION_BASE = 'pimee_catalog_rule.condition.fields.';
     private const SYSTEM_GROUP_TRANSLATION_KEY = 'pimee_catalog_rule.condition.field_groups.system';
 
-    /** @var GetGroupedAttributes */
-    private $getGroupedAttributes;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var TranslatorInterface */
-    protected $translator;
+    private GetGroupedAttributes $getGroupedAttributes;
+    protected UserContext $userContext;
+    protected TranslatorInterface $translator;
 
     public function __construct(
         GetGroupedAttributes $getGroupedAttributes,

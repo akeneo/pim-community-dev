@@ -10,7 +10,7 @@ require __DIR__ . '/CleanIndex.php';
 
 $envFile = __DIR__ . '/../.env';
 if (file_exists($envFile)) {
-    (new Symfony\Component\Dotenv\Dotenv())->load($envFile);
+    (new Symfony\Component\Dotenv\Dotenv(true))->load($envFile);
 }
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;

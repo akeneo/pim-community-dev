@@ -8,12 +8,12 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterfa
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraints\ProjectIdentifier;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraints\ProjectIdentifierValidator;
 use Prophecy\Argument;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectIdentifierValidatorSpec extends ObjectBehavior
 {

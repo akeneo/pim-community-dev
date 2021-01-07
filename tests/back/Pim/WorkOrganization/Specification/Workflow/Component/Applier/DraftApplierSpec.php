@@ -37,16 +37,16 @@ class DraftApplierSpec extends ObjectBehavior
     ) {
         $dispatcher
             ->dispatch(
-                EntityWithValuesDraftEvents::PRE_APPLY,
-                Argument::type(GenericEvent::class)
+                Argument::type(GenericEvent::class),
+                EntityWithValuesDraftEvents::PRE_APPLY
             )
             ->shouldBeCalled();
 
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
         $dispatcher
             ->dispatch(
-                EntityWithValuesDraftEvents::POST_APPLY,
-                Argument::type(GenericEvent::class)
+                Argument::type(GenericEvent::class),
+                EntityWithValuesDraftEvents::POST_APPLY
             )
             ->shouldNotBeCalled();
 
@@ -88,8 +88,8 @@ class DraftApplierSpec extends ObjectBehavior
         ]);
         $dispatcher
             ->dispatch(
-                EntityWithValuesDraftEvents::PRE_APPLY,
-                Argument::type(GenericEvent::class)
+                Argument::type(GenericEvent::class),
+                EntityWithValuesDraftEvents::PRE_APPLY
             )
             ->shouldBeCalled();
 
@@ -111,8 +111,8 @@ class DraftApplierSpec extends ObjectBehavior
 
         $dispatcher
             ->dispatch(
-                EntityWithValuesDraftEvents::POST_APPLY,
-                Argument::type(GenericEvent::class)
+                Argument::type(GenericEvent::class),
+                EntityWithValuesDraftEvents::POST_APPLY
             )
             ->shouldBeCalled();
 
@@ -155,8 +155,8 @@ class DraftApplierSpec extends ObjectBehavior
         ]);
         $dispatcher
             ->dispatch(
-                EntityWithValuesDraftEvents::PRE_APPLY,
-                Argument::type(GenericEvent::class)
+                Argument::type(GenericEvent::class),
+                EntityWithValuesDraftEvents::PRE_APPLY
             )
             ->shouldBeCalled();
 
@@ -178,8 +178,8 @@ class DraftApplierSpec extends ObjectBehavior
 
         $dispatcher
             ->dispatch(
-                EntityWithValuesDraftEvents::POST_APPLY,
-                Argument::type(GenericEvent::class)
+                Argument::type(GenericEvent::class),
+                EntityWithValuesDraftEvents::POST_APPLY
             )
             ->shouldBeCalled();
 

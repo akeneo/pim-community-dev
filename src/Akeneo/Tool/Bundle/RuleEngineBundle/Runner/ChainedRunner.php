@@ -78,7 +78,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
     {
         $result = null;
 
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_EXECUTE, new GenericEvent($definition));
+        $this->eventDispatcher->dispatch(new GenericEvent($definition), RuleEvents::PRE_EXECUTE);
 
         try {
             $runner = $this->getRunner($definition);
@@ -89,7 +89,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
             $this->handleException($e);
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_EXECUTE, new GenericEvent($definition));
+        $this->eventDispatcher->dispatch(new GenericEvent($definition), RuleEvents::POST_EXECUTE);
 
         return $result;
     }
@@ -101,15 +101,15 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
     {
         $results = [];
 
-        $this->eventDispatcher->dispatch(RuleEvents::PRE_EXECUTE_ALL, new GenericEvent($definitions));
+        $this->eventDispatcher->dispatch(new GenericEvent($definitions), RuleEvents::PRE_EXECUTE_ALL);
 
         foreach ($definitions as $definition) {
             $results[$definition->getCode()] = $this->run($definition, $options);
         }
 
         $this->eventDispatcher->dispatch(
-            RuleEvents::POST_EXECUTE_ALL,
-            new GenericEvent($definitions, $options)
+            new GenericEvent($definitions, $options),
+            RuleEvents::POST_EXECUTE_ALL
         );
 
         return $results;

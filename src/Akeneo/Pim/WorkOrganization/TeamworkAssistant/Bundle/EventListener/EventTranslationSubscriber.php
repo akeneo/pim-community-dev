@@ -79,7 +79,7 @@ class EventTranslationSubscriber implements EventSubscriberInterface
         $project = $this->projectRepository->findOneByIdentifier($projectCode);
 
         if (null !== $project) {
-            $this->eventDispatcher->dispatch(ProjectEvents::PROJECT_CALCULATED, new ProjectEvent($project));
+            $this->eventDispatcher->dispatch(new ProjectEvent($project), ProjectEvents::PROJECT_CALCULATED);
         }
     }
 }

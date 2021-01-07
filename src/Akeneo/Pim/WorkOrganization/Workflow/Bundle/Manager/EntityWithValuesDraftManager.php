@@ -116,7 +116,7 @@ class EntityWithValuesDraftManager
         ChannelInterface $channel = null,
         array $context = []
     ): void {
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_PARTIAL_APPROVE, new GenericEvent($entityWithValuesDraft, $context));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft, $context), EntityWithValuesDraftEvents::PRE_PARTIAL_APPROVE);
 
         if (EntityWithValuesDraftInterface::READY !== $entityWithValuesDraft->getStatus()) {
             throw new DraftNotReviewableException('A draft not in ready state can not be partially approved');
@@ -144,8 +144,8 @@ class EntityWithValuesDraftManager
         $context['updatedValues'] = $filteredValues;
 
         $this->dispatcher->dispatch(
-            EntityWithValuesDraftEvents::POST_PARTIAL_APPROVE,
-            new GenericEvent($entityWithValuesDraft, $context)
+            new GenericEvent($entityWithValuesDraft, $context),
+            EntityWithValuesDraftEvents::POST_PARTIAL_APPROVE
         );
     }
 
@@ -161,7 +161,7 @@ class EntityWithValuesDraftManager
      */
     public function approve(EntityWithValuesDraftInterface $entityWithValuesDraft, array $context = []): void
     {
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_APPROVE, new GenericEvent($entityWithValuesDraft, $context));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft, $context), EntityWithValuesDraftEvents::PRE_APPROVE);
 
         if (EntityWithValuesDraftInterface::READY !== $entityWithValuesDraft->getStatus()) {
             throw new DraftNotReviewableException('A draft not in ready state can not be approved');
@@ -186,7 +186,7 @@ class EntityWithValuesDraftManager
         $context['originalValues'] = $draftChanges['values'];
         $context['isPartial'] = $isPartial;
 
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::POST_APPROVE, new GenericEvent($entityWithValuesDraft, $context));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft, $context), EntityWithValuesDraftEvents::POST_APPROVE);
     }
 
     /**
@@ -209,7 +209,7 @@ class EntityWithValuesDraftManager
         ChannelInterface $channel = null,
         array $context = []
     ): void {
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_PARTIAL_REFUSE, new GenericEvent($entityWithValuesDraft, $context));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft, $context), EntityWithValuesDraftEvents::PRE_PARTIAL_REFUSE);
 
         if (EntityWithValuesDraftInterface::READY !== $entityWithValuesDraft->getStatus()) {
             throw new DraftNotReviewableException('A draft not in ready state can not be partially rejected');
@@ -234,8 +234,8 @@ class EntityWithValuesDraftManager
         $context['updatedValues'] = $filteredValues;
 
         $this->dispatcher->dispatch(
-            EntityWithValuesDraftEvents::POST_PARTIAL_REFUSE,
-            new GenericEvent($entityWithValuesDraft, $context)
+            new GenericEvent($entityWithValuesDraft, $context),
+            EntityWithValuesDraftEvents::POST_PARTIAL_REFUSE
         );
     }
 
@@ -251,7 +251,7 @@ class EntityWithValuesDraftManager
      */
     public function refuse(EntityWithValuesDraftInterface $entityWithValuesDraft, array $context = []): void
     {
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_REFUSE, new GenericEvent($entityWithValuesDraft, $context));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft, $context), EntityWithValuesDraftEvents::PRE_REFUSE);
 
         if (EntityWithValuesDraftInterface::READY !== $entityWithValuesDraft->getStatus()) {
             throw new DraftNotReviewableException('A draft not in ready state can not be rejected');
@@ -271,7 +271,7 @@ class EntityWithValuesDraftManager
         $context['originalValues'] = $draftChanges['values'];
         $context['isPartial'] = ($filteredValues != $draftChanges['values']);
 
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::POST_REFUSE, new GenericEvent($entityWithValuesDraft, $context));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft, $context), EntityWithValuesDraftEvents::POST_REFUSE);
     }
 
     /**
@@ -286,7 +286,7 @@ class EntityWithValuesDraftManager
      */
     public function remove(EntityWithValuesDraftInterface $entityWithValuesDraft, array $context = []): void
     {
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_REMOVE, new GenericEvent($entityWithValuesDraft, $context));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft, $context), EntityWithValuesDraftEvents::PRE_REMOVE);
 
         if (EntityWithValuesDraftInterface::READY === $entityWithValuesDraft->getStatus()) {
             throw new DraftNotReviewableException('A draft in ready state can not be removed');
@@ -314,7 +314,7 @@ class EntityWithValuesDraftManager
         $context['originalValues'] = $draftChanges['values'];
         $context['isPartial'] = $isPartial;
 
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::POST_REMOVE, new GenericEvent($entityWithValuesDraft, $context));
+        $this->dispatcher->dispatch(new GenericEvent($entityWithValuesDraft, $context), EntityWithValuesDraftEvents::POST_REMOVE);
     }
 
     /**
@@ -352,14 +352,14 @@ class EntityWithValuesDraftManager
      */
     public function markAsReady(EntityWithValuesDraftInterface $draft, $comment = null): void
     {
-        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_READY, new GenericEvent($draft));
+        $this->dispatcher->dispatch(new GenericEvent($draft), EntityWithValuesDraftEvents::PRE_READY);
 
         $draft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
         $this->draftSaver->save($draft);
 
         $this->dispatcher->dispatch(
-            EntityWithValuesDraftEvents::POST_READY,
-            new GenericEvent($draft, ['comment' => $comment])
+            new GenericEvent($draft, ['comment' => $comment]),
+            EntityWithValuesDraftEvents::POST_READY
         );
     }
 

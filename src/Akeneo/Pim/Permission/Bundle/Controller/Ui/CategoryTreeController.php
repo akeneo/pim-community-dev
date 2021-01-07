@@ -21,7 +21,6 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,7 +29,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Overridden category controller
@@ -48,14 +48,8 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @staticvar string */
     const CONTEXT_ASSOCIATE = 'associate';
 
-    /** @var CategoryAccessRepository */
-    protected $categoryAccessRepo;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var UserContext */
-    protected $userContext;
+    protected CategoryAccessRepository $categoryAccessRepo;
+    protected TokenStorageInterface $tokenStorage;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -102,6 +96,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             try {
                 $selectNode = $this->findCategory($selectNodeId);
             } catch (NotFoundHttpException $e) {
+                Assert::isInstanceOf($this->userContext, UserContext::class);
                 $selectNode = $this->userContext->getDefaultTree();
             }
             $grantedTrees = $this->categoryRepository->getTrees();

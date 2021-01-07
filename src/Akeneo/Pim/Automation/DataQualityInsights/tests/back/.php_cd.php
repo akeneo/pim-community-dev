@@ -149,7 +149,7 @@ $rules = [
             'Symfony\Component\Validator\Constraints',
             'Symfony\Contracts\EventDispatcher',
             'Symfony\Component\Form\FormFactoryInterface',
-            'Symfony\Component\Translation\TranslatorInterface',
+            'Symfony\Contracts\Translation',
             'GuzzleHttp\ClientInterface',
             'GuzzleHttp\Exception',
             'Mekras\Speller',

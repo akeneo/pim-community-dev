@@ -11,11 +11,11 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraint
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraints\ProjectLocaleValidator;
 use Prophecy\Argument;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProjectLocaleValidatorSpec extends ObjectBehavior
 {

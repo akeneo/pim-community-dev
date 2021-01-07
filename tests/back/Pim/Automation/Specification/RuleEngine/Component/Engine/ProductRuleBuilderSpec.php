@@ -44,8 +44,8 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $definition->getContent()->shouldBeCalled()->willReturn($content);
         $ruleContentDenormalizer->denormalize(Argument::cetera())->shouldBeCalled()->willReturn($content);
 
-        $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
-        $eventDispatcher->dispatch(RuleEvents::POST_BUILD, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), RuleEvents::PRE_BUILD)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), RuleEvents::POST_BUILD)->shouldBeCalled();
 
         $this->build($definition)->shouldHaveType(RuleInterface::class);
     }
@@ -59,7 +59,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $definition->getContent()->shouldBeCalled()->willReturn([]);
         $ruleContentDenormalizer->denormalize(Argument::cetera())->willThrow(new \LogicException('Bad content!'));
 
-        $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::any(), RuleEvents::PRE_BUILD)->shouldBeCalled();
 
         $this
             ->shouldThrow(new BuilderException('Impossible to build the rule "rule1". Bad content!'))

@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * ProductDraft controller
@@ -48,9 +47,6 @@ class ProductDraftController
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
-
-    /** @var TranslatorInterface */
-    protected $translator;
 
     /** @var ObjectRepository */
     protected $repository;
@@ -82,27 +78,10 @@ class ProductDraftController
     /** @var MassActionParametersParser */
     protected $parameterParser;
 
-    /**
-     * @param RequestStack                          $requestStack
-     * @param RouterInterface                       $router
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param TranslatorInterface                   $translator
-     * @param ObjectRepository                      $repository
-     * @param EntityWithValuesDraftManager          $manager
-     * @param UserContext                           $userContext
-     * @param JobLauncherInterface                  $simpleJobLauncher
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param MassActionParametersParser            $gridParameterParser
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param OroToPimGridFilterAdapter             $gridFilterAdapter
-     * @param CollectionFilterInterface             $collectionFilter
-     * @param MassActionParametersParser            $parameterParser
-     */
     public function __construct(
         RequestStack $requestStack,
         RouterInterface $router,
         TokenStorageInterface $tokenStorage,
-        TranslatorInterface $translator,
         ObjectRepository $repository,
         EntityWithValuesDraftManager $manager,
         UserContext $userContext,
@@ -117,7 +96,6 @@ class ProductDraftController
         $this->requestStack = $requestStack;
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
-        $this->translator = $translator;
         $this->repository = $repository;
         $this->manager = $manager;
         $this->userContext = $userContext;

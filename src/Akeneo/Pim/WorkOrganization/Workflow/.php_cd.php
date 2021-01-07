@@ -11,12 +11,14 @@ $rules = [
     $builder->only([
         'Doctrine',
         'Symfony\Component',
+        'Symfony\Contracts',
         'Akeneo\Tool',
         'Symfony\Bundle',
         'Psr\Log\LoggerInterface',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
+        'Twig\Environment',
 
         // TIP-979: Remove ServerErrorResponseException
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',

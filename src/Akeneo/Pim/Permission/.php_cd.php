@@ -12,11 +12,12 @@ $rules = [
     $builder->only([
         'Doctrine',
         'Symfony\Component',
+        'Symfony\Contracts',
+        'Twig\Environment',
         'Akeneo\Tool',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Akeneo\Pim\Permission\Component',
-        'Symfony\Bundle\FrameworkBundle\Templating\EngineInterface',
         'Webmozart\Assert\Assert',
         // it implements a CE query differently for permissions
         'Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query',

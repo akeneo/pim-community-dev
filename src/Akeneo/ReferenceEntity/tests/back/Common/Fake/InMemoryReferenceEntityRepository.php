@@ -45,8 +45,8 @@ class InMemoryReferenceEntityRepository implements ReferenceEntityRepositoryInte
         $this->referenceEntities[(string) $referenceEntity->getIdentifier()] = $referenceEntity;
 
         $this->eventDispatcher->dispatch(
-            ReferenceEntityCreatedEvent::class,
-            new ReferenceEntityCreatedEvent($referenceEntity->getIdentifier())
+            new ReferenceEntityCreatedEvent($referenceEntity->getIdentifier()),
+            ReferenceEntityCreatedEvent::class
         );
     }
 

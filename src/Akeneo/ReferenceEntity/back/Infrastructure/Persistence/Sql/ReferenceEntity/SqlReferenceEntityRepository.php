@@ -79,8 +79,8 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
-            ReferenceEntityCreatedEvent::class,
-            new ReferenceEntityCreatedEvent($referenceEntity->getIdentifier())
+            new ReferenceEntityCreatedEvent($referenceEntity->getIdentifier()),
+            ReferenceEntityCreatedEvent::class
         );
     }
 

@@ -267,8 +267,8 @@ SQL;
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifier($attributeIdentifier);
 
         $this->eventDispatcher->dispatch(
-            BeforeAttributeDeletedEvent::class,
-            new BeforeAttributeDeletedEvent($referenceEntityIdentifier, $attributeIdentifier)
+            new BeforeAttributeDeletedEvent($referenceEntityIdentifier, $attributeIdentifier),
+            BeforeAttributeDeletedEvent::class
         );
 
         $sql = <<<SQL
@@ -286,8 +286,8 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
-            AttributeDeletedEvent::class,
-            new AttributeDeletedEvent($referenceEntityIdentifier, $attributeIdentifier)
+            new AttributeDeletedEvent($referenceEntityIdentifier, $attributeIdentifier),
+            AttributeDeletedEvent::class
         );
     }
 

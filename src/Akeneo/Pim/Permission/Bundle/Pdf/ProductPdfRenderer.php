@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 /**
  * PDF renderer used to render PDF for a Product
@@ -33,17 +33,12 @@ class ProductPdfRenderer extends PimProductPdfRenderer
 {
     private const IMAGE_MIME_TYPE_PREFIX = 'image/';
 
-    /** @var FilterProductValuesHelper */
-    protected $filterHelper;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
+    protected FilterProductValuesHelper $filterHelper;
+    protected ChannelRepositoryInterface $channelRepository;
+    protected LocaleRepositoryInterface $localeRepository;
 
     public function __construct(
-        EngineInterface $templating,
+        Environment $templating,
         PdfBuilderInterface $pdfBuilder,
         FilterProductValuesHelper $filterHelper,
         DataManager $dataManager,
