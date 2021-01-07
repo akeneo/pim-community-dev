@@ -109,7 +109,7 @@ Feature: Create enrichment project
       | project-label    | Star Wars Collection |
       | project-due-date | 01/31/2051           |
     And I press the "Save" button
-    Then I should see the text "This value is already used."
+    Then I should see the text "This value is already used for a project."
     And I reload the page
     When I am on the products grid
     And I switch the scope to "Mobile"
@@ -149,7 +149,7 @@ Feature: Create enrichment project
         | project-label    | Star Wars Collection |
         | project-due-date | 01/31/2051           |
       And I press the "Save" button
-      Then I should see the text "This value is already used."
+      Then I should see the text "This value is already used for a project."
       And the "project-due-date" field should contain "01/31/2051"
       When I fill in the following information in the popin:
         | project-label    | Star Wars  |

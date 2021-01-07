@@ -84,7 +84,7 @@ Feature: Edit basic project informations
       | project-due-date    | 05/20/2051                |
       | project-description | A rebellion built on hope |
     And I press the "Save" button
-    Then I should see a project validation error "This value is already used."
+    Then I should see a project validation error "This value is already used for a project."
     When I fill in the following information in the popin:
       | project-label       | Star Wars: Rogue One Collection |
       | project-due-date    | 12/30/1990                      |
