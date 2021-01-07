@@ -628,9 +628,6 @@ workflows:
           - test_front_static_acceptance_and_integration:
                 requires:
                     - build_dev
-          - test_back_missing_structure_migrations:
-                requires:
-                    - build_dev
           - test_back_phpunit:
                 requires:
                     - build_dev
@@ -644,13 +641,11 @@ workflows:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
-                    - test_back_missing_structure_migrations
                     - test_back_phpunit
           - test_back_behat_legacy:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
-                    - test_back_missing_structure_migrations
                     - test_back_phpunit
           - pull_request_success:
                 requires:
@@ -746,7 +741,7 @@ workflows:
                     - ready_to_build?
           - checkout_ee:
                 requires:
-                    - ready_to_build?          
+                    - ready_to_build?
           - build_dev:
                 is_ee_built: false
                 requires:
