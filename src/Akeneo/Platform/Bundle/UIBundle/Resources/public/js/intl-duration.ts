@@ -1,4 +1,4 @@
-const __ = require('oro/translator');
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type IntlDuration = {
   translationKey: string;
@@ -6,6 +6,7 @@ type IntlDuration = {
 };
 
 const translateDuration = (...args: IntlDuration[]): string => {
+  const translate = useTranslate();
   let values = args.filter((duration: IntlDuration) => duration.value > 0);
 
   if (values.length === 0 && args.length > 0) {
@@ -13,7 +14,9 @@ const translateDuration = (...args: IntlDuration[]): string => {
   }
 
   return values
-    .map((duration: IntlDuration) => __(duration.translationKey, {count: duration.value}, duration.value))
+    .map((duration: IntlDuration) =>
+      translate(duration.translationKey, {count: duration.value.toString()}, duration.value)
+    )
     .join(' ');
 };
 

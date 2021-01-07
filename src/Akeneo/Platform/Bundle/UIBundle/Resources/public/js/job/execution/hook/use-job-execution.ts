@@ -12,8 +12,8 @@ const useJobExecution = (jobExecutionId: string) => {
   const router = useRouter();
   const isMounted = useIsMounted();
   const [jobExecution, setJobExecution] = useState<JobExecution | null>(null);
-  const [error, setError] = useState<Error | null>();
-  const route = router.generate('pim_enrich_job_execution_rest_get', {'identifier': jobExecutionId});
+  const [error, setError] = useState<Error | null>(null);
+  const route = router.generate('pim_enrich_job_execution_rest_get', {identifier: jobExecutionId});
 
   const fetchJobExecution = useCallback(async () => {
     const response = await fetch(route);
