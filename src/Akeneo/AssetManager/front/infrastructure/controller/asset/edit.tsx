@@ -25,9 +25,8 @@ import {denormalizeAssetCode} from 'akeneoassetmanager/domain/model/asset/code';
 import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
 import {updateAttributeList} from 'akeneoassetmanager/application/action/product/attribute';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import Key from 'akeneoassetmanager/tools/key';
 import {ThemeProvider} from 'styled-components';
-import {pimTheme} from 'akeneo-design-system';
+import {pimTheme, Key} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const BaseController = require('pim/controller/base');

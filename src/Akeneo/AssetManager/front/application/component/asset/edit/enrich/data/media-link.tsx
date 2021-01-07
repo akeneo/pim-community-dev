@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
-import Key from 'akeneoassetmanager/tools/key';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {
   isMediaLinkData,
@@ -31,7 +30,7 @@ import {connect} from 'react-redux';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset/edit';
 import {doReloadAllPreviews} from 'akeneoassetmanager/application/action/asset/reloadPreview';
 import {ViewGenerator} from 'akeneoassetmanager/application/configuration/value';
-import {FullscreenIcon} from 'akeneo-design-system';
+import {FullscreenIcon, Key} from 'akeneo-design-system';
 
 const MediaLinkInput = styled.input`
   ::placeholder {

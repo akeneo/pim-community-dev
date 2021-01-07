@@ -12,7 +12,7 @@ import {
   maxValueStringValue,
   createMaxValueFromString,
 } from 'akeneoassetmanager/domain/model/attribute/type/number/max-value';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import {unformatNumber, formatNumberForUILocale} from 'akeneoassetmanager/tools/format-number';
 
 const NumberView = ({

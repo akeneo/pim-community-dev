@@ -2,9 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {Button, ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
-import Key from 'akeneoassetmanager/tools/key';
-import {AssetCategoriesIllustration} from 'akeneo-design-system';
+import {AssetCategoriesIllustration, Key, useShortcut} from 'akeneo-design-system';
 
 export const Modal = styled.div`
   display: flex;

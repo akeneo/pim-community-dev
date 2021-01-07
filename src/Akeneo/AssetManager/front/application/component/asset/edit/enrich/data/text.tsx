@@ -8,7 +8,7 @@ import {
 } from 'akeneoassetmanager/domain/model/asset/data/text';
 import {isTextAttribute} from 'akeneoassetmanager/domain/model/attribute/type/text';
 import RichTextEditor from 'akeneoassetmanager/application/component/app/rich-text-editor';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import {setValueData} from 'akeneoassetmanager/domain/model/asset/value';
 
 const View = ({

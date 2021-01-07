@@ -7,7 +7,6 @@ import {CloseButton} from 'akeneoassetmanager/application/component/app/close-bu
 import {Modal, SubTitle, Title} from 'akeneoassetmanager/application/component/app/modal';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Carousel} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/carousel';
-import Key from 'akeneoassetmanager/tools/key';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
 import {getAttributeAsMainMedia} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
 import ListAsset, {
@@ -21,7 +20,6 @@ import ListAsset, {
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
-import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {Border, PreviewContainer} from 'akeneoassetmanager/application/component/asset/edit/preview/fullscreen-preview';
@@ -32,7 +30,7 @@ import {
   DownloadAction,
   CopyUrlAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
-import {ArrowLeftIcon, ArrowRightIcon, EditIcon, getColor} from 'akeneo-design-system';
+import {ArrowLeftIcon, ArrowRightIcon, EditIcon, getColor, Key, useShortcut} from 'akeneo-design-system';
 
 const Container = styled.div`
   position: relative;

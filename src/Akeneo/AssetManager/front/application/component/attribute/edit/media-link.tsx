@@ -3,7 +3,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {MediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-link';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import {
   createPrefixFromString,
   isValidPrefix,

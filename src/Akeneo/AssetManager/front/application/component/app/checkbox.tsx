@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import {CheckIcon, AkeneoThemedProps, getColor} from 'akeneo-design-system';
 
 class InvalidArgumentError extends Error {}

@@ -13,7 +13,7 @@ import {
   optionEditionStart,
   optionEditionSubmission,
 } from 'akeneoassetmanager/domain/event/attribute/option';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import {Option, createEmptyOption} from 'akeneoassetmanager/domain/model/attribute/type/option/option';
 import hydrateAttribute from 'akeneoassetmanager/application/hydrator/attribute';
 import {AttributeWithOptions} from 'akeneoassetmanager/domain/model/attribute/type/option';

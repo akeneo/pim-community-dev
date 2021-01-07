@@ -25,11 +25,9 @@ import {hasAnUnsavedLine, getCreatedAssetCodes} from 'akeneoassetmanager/applica
 import limitFileUpload from 'akeneoassetmanager/application/asset-upload/utils/upload-limit';
 import Locale, {LocaleCode} from 'akeneoassetmanager/domain/model/locale';
 import Channel from 'akeneoassetmanager/domain/model/channel';
-import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
 import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-closing';
-import Key from 'akeneoassetmanager/tools/key';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import {getColor, getFontSize} from 'akeneo-design-system';
+import {getColor, getFontSize, Key, useShortcut} from 'akeneo-design-system';
 
 const Header = styled.div`
   background: ${getColor('white')};
