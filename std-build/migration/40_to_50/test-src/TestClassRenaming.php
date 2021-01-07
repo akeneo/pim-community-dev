@@ -5,8 +5,7 @@ use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
 
 class TestUsedClassRenaming
 {
-    /** @var CountDailyEventsByConnectionQuery $getErrorCountPerConnectionQuery */
-    private $getErrorCountPerConnectionQuery;
+    private CountDailyEventsByConnectionQuery $getErrorCountPerConnectionQuery;
 
     /**
      * TestUsedClassRenaming constructor.
@@ -46,4 +45,3 @@ class TestUsedInterfaceRenaming
 //        // TODO: Implement findAll() method.
 //    }
 //}
-
