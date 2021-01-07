@@ -33,7 +33,7 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
         FilterEntityWithValuesSubscriber $subscriber,
         NormalizerInterface $internalApiNormalizer
     ) {
-        $this->beConstructedWith($objectManager, $pqbFactory, $productNormalizer, $subscriber);
+        $this->beConstructedWith($objectManager, $pqbFactory, $productNormalizer, $subscriber, $internalApiNormalizer);
 
         $this->setSortOrder(Directions::DESCENDING);
         $this->setParameters(['dataLocale' => 'a_locale']);
