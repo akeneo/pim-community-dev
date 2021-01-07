@@ -1329,7 +1329,7 @@
                 "convert_from_standard": [
                     {
                         "operator": "mul",
-                        "value": "18748800"
+                        "value": "2628000"
                     }
                 ],
                 "symbol": "month"

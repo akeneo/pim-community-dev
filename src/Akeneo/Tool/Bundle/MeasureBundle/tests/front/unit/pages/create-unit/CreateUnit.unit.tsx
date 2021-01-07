@@ -20,7 +20,7 @@ const changeTextInputValue = (label: string, value: string) => {
 };
 
 const changeOperationValue = (index: number, value: string) => {
-  const inputs = screen.getAllByRole('operation-value-input') as HTMLInputElement[];
+  const inputs = screen.getAllByPlaceholderText('measurements.unit.operation.placeholder') as HTMLInputElement[];
   fireEvent.change(inputs[index], {target: {value: value}});
 };
 

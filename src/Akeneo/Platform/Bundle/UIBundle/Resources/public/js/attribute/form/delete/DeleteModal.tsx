@@ -6,11 +6,13 @@ import {
   Field,
   getColor,
   Helper,
+  Key,
   Link,
   Modal,
   SectionTitle,
   TextInput,
   Title,
+  useShortcut,
 } from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
 import {useIsMounted} from '@akeneo-pim-community/shared';
@@ -59,30 +61,36 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
   const removeRoute = useRoute('pim_enrich_attribute_rest_remove', {code: attributeCode});
   const [productCount, productModelCount] = useImpactedItemCount(attributeCode);
   const [attributeCodeConfirm, setAttributeCodeConfirm] = useState<string>('');
+  const [isLoading, setLoading] = useState<boolean>(false);
   const isValid = attributeCodeConfirm === attributeCode;
 
-  const handleConfirm = () => {
-    fetch(removeRoute, {
-      method: 'DELETE',
-      headers: new Headers({
-        'X-Requested-With': 'XMLHttpRequest',
-      }),
-    })
-      .then(async (response: Response) => {
-        if (response.ok) {
-          notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.attribute.flash.delete.success'));
-          onSuccess();
-        } else {
-          notify(
-            NotificationLevel.ERROR,
-            (await response.json()).message ?? translate('pim_enrich.entity.attribute.flash.delete.fail')
-          );
-        }
-      })
-      .catch(() => {
-        notify(NotificationLevel.ERROR, translate('pim_enrich.entity.attribute.flash.delete.fail'));
+  const handleConfirm = async () => {
+    if (!isValid || isLoading) return;
+
+    try {
+      setLoading(true);
+      const response = await fetch(removeRoute, {
+        method: 'DELETE',
+        headers: new Headers({
+          'X-Requested-With': 'XMLHttpRequest',
+        }),
       });
+      setLoading(false);
+
+      if (response.ok) {
+        notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.attribute.flash.delete.success'));
+        onSuccess();
+      } else {
+        const {message} = await response.json();
+        notify(NotificationLevel.ERROR, message ?? translate('pim_enrich.entity.attribute.flash.delete.fail'));
+      }
+    } catch (error) {
+      setLoading(false);
+      notify(NotificationLevel.ERROR, translate('pim_enrich.entity.attribute.flash.delete.fail'));
+    }
   };
+
+  useShortcut(Key.Enter, handleConfirm);
 
   const productText =
     0 < productCount
@@ -123,7 +131,7 @@ const DeleteModal = ({onCancel, onSuccess, attributeCode}: DeleteModalProps) => 
         </Link>
       </SpacedHelper>
       <Field label={translate('pim_enrich.entity.attribute.module.delete.type', {attributeCode})}>
-        <TextInput value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
+        <TextInput readOnly={isLoading} value={attributeCodeConfirm} onChange={setAttributeCodeConfirm} />
       </Field>
       <Modal.BottomButtons>
         <Button level="tertiary" onClick={onCancel}>

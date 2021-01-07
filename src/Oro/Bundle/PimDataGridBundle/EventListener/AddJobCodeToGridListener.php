@@ -42,6 +42,6 @@ class AddJobCodeToGridListener
 
         $qb = $dataSource->getQueryBuilder();
         $qb->andWhere($qb->expr()->eq('j.code', ':jobCode'));
-        $qb->orderBy('e.startTime', OrmSorterExtension::DIRECTION_DESC);
+        $qb->orderBy('e.createTime', OrmSorterExtension::DIRECTION_DESC);
     }
 }

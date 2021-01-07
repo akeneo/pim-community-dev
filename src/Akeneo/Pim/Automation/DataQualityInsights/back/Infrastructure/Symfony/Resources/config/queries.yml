@@ -177,7 +177,8 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales'
         tags:
             - { name:  akeneo.pim.automation.data_quality_insights.compute_key_indicator_query}
 
@@ -204,6 +205,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetCatalogProductScoreEvolutionQuery:
         arguments:
             - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery:
         arguments:

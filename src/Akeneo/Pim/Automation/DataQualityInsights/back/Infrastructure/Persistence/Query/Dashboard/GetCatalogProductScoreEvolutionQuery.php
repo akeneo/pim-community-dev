@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CatalogQualityScoreEvolution;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetCatalogProductScoreEvolutionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
@@ -18,9 +19,12 @@ final class GetCatalogProductScoreEvolutionQuery implements GetCatalogProductSco
 {
     private Connection $db;
 
-    public function __construct(Connection $db)
+    private Clock $clock;
+
+    public function __construct(Connection $db, Clock $clock)
     {
         $this->db = $db;
+        $this->clock = $clock;
     }
 
     public function byCatalog(ChannelCode $channel, LocaleCode $locale): array
@@ -87,6 +91,6 @@ SQL;
             return $productScoreEvolution;
         }
 
-        return (new CatalogQualityScoreEvolution($scores, $channel, $locale))->toArray();
+        return (new CatalogQualityScoreEvolution($this->clock->getCurrentTime(), $scores, $channel, $locale))->toArray();
     }
 }
