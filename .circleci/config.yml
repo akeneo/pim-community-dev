@@ -648,15 +648,9 @@ workflows:
                     - test_front_static_acceptance_and_integration
                     - test_back_phpunit
 
-          - ready_to_build_only_ce?:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - master
           - checkout_ce:
                 requires:
-                    - ready_to_build_only_ce?
+                    - ready_to_build?
           - build_dev:
                 name: build_dev_ce
                 is_ee_built: false
