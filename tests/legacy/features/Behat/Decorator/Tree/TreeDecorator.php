@@ -38,7 +38,7 @@ class TreeDecorator extends ElementDecorator
         }
     }
 
-    public function expandNode($nodeName)
+    public function expandNode(string $nodeName): void
     {
         $tree = $this->findNodeInTree($nodeName);
         if ($tree->getAttribute('aria-expanded') === 'false') {
