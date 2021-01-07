@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSendApiEventRequestLog;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
@@ -21,9 +22,6 @@ use Symfony\Component\Serializer\Encoder\EncoderInterface;
  */
 class GuzzleWebhookClient implements WebhookClient
 {
-    const HEADER_REQUEST_SIGNATURE = 'X-Akeneo-Request-Signature';
-    const HEADER_REQUEST_TIMESTAMP = 'X-Akeneo-Request-Timestamp';
-
     private ClientInterface $client;
     private EncoderInterface $encoder;
     private LoggerInterface $logger;
@@ -55,12 +53,12 @@ class GuzzleWebhookClient implements WebhookClient
                 $body = $this->encoder->encode($webhookRequest->content(), 'json');
 
                 $timestamp = time();
-                $signature = Signature::createSignature($webhookRequest->secret(), $body, $timestamp);
+                $signature = Signature::createSignature($webhookRequest->secret(), $timestamp, $body);
 
                 $headers = [
                     'Content-Type' => 'application/json',
-                    self::HEADER_REQUEST_SIGNATURE => $signature,
-                    self::HEADER_REQUEST_TIMESTAMP => $timestamp,
+                    RequestHeaders::HEADER_REQUEST_SIGNATURE => $signature,
+                    RequestHeaders::HEADER_REQUEST_TIMESTAMP => $timestamp,
                 ];
 
                 $logs[] = new EventSubscriptionSendApiEventRequestLog($webhookRequest, $headers, microtime(true));
