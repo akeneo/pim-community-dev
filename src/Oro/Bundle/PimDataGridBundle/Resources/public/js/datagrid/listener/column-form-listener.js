@@ -1,8 +1,9 @@
-define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listener'], function (
+define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listener','pim/security-context'], function (
   $,
   _,
   mediator,
-  OroColumnFormListener
+  OroColumnFormListener,
+  SecurityContext
 ) {
   'use strict';
 
@@ -23,23 +24,27 @@ define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listen
           if (collection.inputName === this.gridName) {
             this.$el = $grid.find('table.grid thead th:not([style])').first();
 
-            this.$el.empty().html(this.$checkbox);
+            this.$el.empty();
 
             this.setStateFromCollection(collection);
 
-            this.$checkbox.on(
-              'click',
-              _.bind(function () {
-                var state = this.$checkbox.is(':checked');
-                _.each(
-                  collection.models,
-                  function (model) {
-                    model.set(this.columnName, state);
-                  },
-                  this
-                );
-              }, this)
-            );
+            if (this.isEnabled()) {
+              this.$el.html(this.$checkbox);
+
+              this.$checkbox.on(
+                  'click',
+                  _.bind(function () {
+                    var state = this.$checkbox.is(':checked');
+                    _.each(
+                        collection.models,
+                        function (model) {
+                          model.set(this.columnName, state);
+                        },
+                        this
+                    );
+                  }, this)
+              );
+            }
           }
         },
         this
@@ -69,6 +74,13 @@ define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listen
       mediator.trigger('column_form_listener:initialized', this.gridName);
     },
 
+    isEnabled: function () {
+      if (undefined === this.attributes?.acl_resource) {
+        return true;
+      }
+
+      return SecurityContext.isGranted(this.attributes.acl_resource);
+    },
     _explode: function (string) {
       if (!string) {
         return [];
