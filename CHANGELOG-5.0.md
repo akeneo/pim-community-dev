@@ -15,6 +15,7 @@
 - DAPI-1470: Fix DateTime bad usage
 - DAPI-1469: Fix the size issue with the logo on login page
 - PIM-9622: Fix query that can generate a MySQL memory allocation error
+- PIM-9620: Fix performance issue on API attributes partial update list
 
 # 5.0.0 (2020-12-31)
 
