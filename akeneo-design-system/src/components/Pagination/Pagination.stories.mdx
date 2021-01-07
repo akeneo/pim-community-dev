@@ -1,0 +1,54 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Pagination} from './Pagination.tsx';
+
+<Meta
+    title="Components/Pagination"
+    component={Pagination}
+    argTypes={{
+    }}
+    args={{
+        itemsTotal: 3000,
+        currentPage: 12,
+        itemsPerPage: 25,
+    }}
+/>
+
+# Pagination
+
+## Usage
+
+Pagination is used to divide content or data into multiple pages, with control to navigate to the next or previous page.
+
+The component won't display anything if there is only 1 page or if there are invalid values (such as an items per page or a total items to 0).
+The default number of items per page is 25, but it can be customized via the appropriate prop.
+
+## Playground
+
+Use this playground to test the helper component
+
+<Canvas>
+    <Story name="Standard">
+        {args => {
+            return <Pagination {...args}/>;
+        }}
+    </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Example of render whith only a few pages
+
+When there are 4 pages or less, all pagination items are visible.
+
+<Canvas>
+    <Story name="Small number of pages">
+        {args => {
+            return (
+                <>
+                    <Pagination itemsTotal={8} currentPage={1} itemsPerPage={2} onClick={() => {}}/>
+                    <Pagination itemsTotal={3} currentPage={1} itemsPerPage={2} onClick={() => {}}/>
+                </>
+            )
+        }}
+    </Story>
+</Canvas>
