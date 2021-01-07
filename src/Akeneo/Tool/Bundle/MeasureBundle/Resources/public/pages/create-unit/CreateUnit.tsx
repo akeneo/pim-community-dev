@@ -97,7 +97,6 @@ const CreateUnit = ({onClose, onNewUnit, measurementFamily}: CreateUnitProps) =>
   ]);
 
   useShortcut(Key.Enter, handleAdd);
-  useShortcut(Key.NumpadEnter, handleAdd);
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={handleClose} illustration={<MeasurementIllustration />}>

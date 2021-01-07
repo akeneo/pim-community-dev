@@ -8,7 +8,7 @@ test('It can register listener on keyboard events', () => {
 
   renderHook(() => useShortcut(Key.Space, callback));
 
-  fireEvent.keyDown(document, {key: 'Space', code: 'Space'});
+  fireEvent.keyDown(document, {key: ' ', code: 'Space'});
   expect(callback).toHaveBeenCalled();
 });
 
@@ -17,7 +17,7 @@ test('It listens only on the given Key events', () => {
 
   renderHook(() => useShortcut(Key.Enter, callback));
 
-  fireEvent.keyDown(document, {key: 'Space', code: 'Space'});
+  fireEvent.keyDown(document, {key: ' ', code: 'Space'});
   expect(callback).not.toHaveBeenCalled();
 });
 
@@ -30,7 +30,7 @@ test('It can listen on a provided ref', () => {
 
   renderHook(() => useShortcut(Key.Space, callback, ref));
 
-  fireEvent.keyDown(ref.current, {key: 'Space', code: 'Space'});
+  fireEvent.keyDown(ref.current, {key: ' ', code: 'Space'});
   expect(callback).toHaveBeenCalled();
 });
 
@@ -43,6 +43,6 @@ test('It does not listen on document events when a ref is provided', () => {
 
   renderHook(() => useShortcut(Key.Space, callback, ref));
 
-  fireEvent.keyDown(document, {key: 'Space', code: 'Space'});
+  fireEvent.keyDown(document, {key: ' ', code: 'Space'});
   expect(callback).not.toHaveBeenCalled();
 });

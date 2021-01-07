@@ -119,7 +119,7 @@ type CheckboxProps = Override<
  */
 const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
   (
-    {checked, onChange, readOnly = false, children, title, ...rest}: CheckboxProps,
+    {checked = false, onChange, readOnly = false, children, title, ...rest}: CheckboxProps,
     forwardedRef: Ref<HTMLDivElement>
   ): React.ReactElement => {
     const checkboxId = useId('checkbox_');
@@ -143,7 +143,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
 
       event.stopPropagation();
     };
-    const ref = useShortcut(Key.Space, handleChange);
+    const ref = useShortcut(Key.Space, handleChange, forwardedRef);
     const forProps = children
       ? {
           'aria-labelledby': labelId,
@@ -152,7 +152,7 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
       : {};
 
     return (
-      <Container ref={forwardedRef} {...rest}>
+      <Container {...rest}>
         <CheckboxContainer
           checked={isChecked || isMixed}
           readOnly={readOnly}
@@ -177,3 +177,4 @@ const Checkbox = React.forwardRef<HTMLDivElement, CheckboxProps>(
 );
 
 export {Checkbox};
+export type {CheckboxChecked};

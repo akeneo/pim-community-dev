@@ -6,6 +6,7 @@ const CommonStyle = css`
   color: ${getColor('grey', 120)};
   font-size: ${getFontSize('default')};
   line-height: 20px;
+  box-sizing: border-box;
 `;
 
 const color: Color = {

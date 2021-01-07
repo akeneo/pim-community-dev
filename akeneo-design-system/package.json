@@ -56,6 +56,7 @@
     "jest": "^26.3.0",
     "jest-image-snapshot": "^4.1.0",
     "jest-puppeteer": "^4.4.0",
+    "jest-styled-components": "^7.0.3",
     "prettier": "^2.1.1",
     "puppeteer": "^5.2.1",
     "react-is": "^16.13.1",
