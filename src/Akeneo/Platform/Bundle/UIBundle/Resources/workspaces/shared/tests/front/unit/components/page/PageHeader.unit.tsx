@@ -98,4 +98,10 @@ describe('PageHeader', () => {
     const {queryByText} = renderWithContext(state);
     expect(queryByText('DUMMY_BREADCRUMB')).toBeInTheDocument();
   });
+
+  test('it shows content', () => {
+    const state = <PageHeader.Content>My header content</PageHeader.Content>;
+    const {queryByText} = renderWithContext(state);
+    expect(queryByText('My header content')).toBeInTheDocument();
+  });
 });
