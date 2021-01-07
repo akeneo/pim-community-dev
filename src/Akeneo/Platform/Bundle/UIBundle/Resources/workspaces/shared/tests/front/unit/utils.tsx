@@ -18,12 +18,11 @@ const renderWithProviders = (ui: React.ReactElement) => render(ui, {wrapper: Def
 const renderDOMWithProviders = (ui: React.ReactElement, container: HTMLElement) =>
   ReactDOM.render(<DefaultProviders>{ui}</DefaultProviders>, container);
 
-const renderHookWithProviders = (hook: () => any) =>
-  renderHook(() => hook(), {wrapper: ({children}) => <DefaultProviders>{children}</DefaultProviders>});
+const renderHookWithProviders = (hook: () => any) => renderHook(hook, {wrapper: DefaultProviders});
 
 const fetchMockResponseOnce = (requestUrl: string, responseBody: string) =>
   fetchMock.mockResponseOnce(request =>
     request.url === requestUrl ? Promise.resolve(responseBody) : Promise.reject()
   );
 
-export {renderWithProviders, renderDOMWithProviders, renderHookWithProviders, fetchMockResponseOnce, DefaultProviders};
+export {renderWithProviders, renderDOMWithProviders, renderHookWithProviders, fetchMockResponseOnce};

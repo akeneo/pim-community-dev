@@ -1,4 +1,11 @@
-# master
+# 5.0.x
+
+## Bug fixes
+
+- DAPI-1470: Fix DateTime bad usage
+- DAPI-1469: Fix the size issue with the logo on login page
+
+# 5.0.0 (2020-12-31)
 
 ## Bug fixes
 
@@ -68,8 +75,10 @@
 - CPM-86: Fix undefined tab on job profile edit
 - PIM-9596: Fix attribute options manual sorting
 - PIM-9598: Fix quick export when the bs_Cyrl_BA locale is used.
+- PIM-9612: Fix no image preview for Association with quantities when the image is an asset collection
 - RAC-435: Fix fatal error for user that migrate from 4.0 with product values format that doesn't correspond to expected format
 - RAC-449: Fix invalid processed item when remove attribute
+- PIM-9610: Force displaying years with 4 digits in dates for every locale
 
 ## New features
 
@@ -108,7 +117,8 @@
 
 - TIP-1233: Upgrade to php7.4
 - CPM-38: Upgrade Symfony to 4.4.15
-- TIP-152: Upgrade ElasticSearch to 7.10.0
+- TIP-152: Upgrade Mysql to 8.0.22
+- BH-286: Up ElasticSearch to 7.10.1
 - CPM-33: Upgrade node to 12.19
 - CPM-33: Upgrade npm to 6.14
 - PIM-9452: Add a command to update the ElasticSearch indexes max fields limit

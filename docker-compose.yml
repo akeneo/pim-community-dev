@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   php:
-    image: 'akeneo/pim-php-dev:master'
+    image: 'akeneo/pim-php-dev:5.0'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
@@ -20,7 +20,7 @@ services:
       - 'pim'
 
   fpm:
-    image: 'akeneo/pim-php-dev:master'
+    image: 'akeneo/pim-php-dev:5.0'
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
@@ -89,7 +89,7 @@ services:
       - 'pim'
 
   elasticsearch:
-    image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.0'
+    image: 'docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.1'
     environment:
       ES_JAVA_OPTS: '${ES_JAVA_OPTS:--Xms512m -Xmx512m}'
       discovery.type: 'single-node'

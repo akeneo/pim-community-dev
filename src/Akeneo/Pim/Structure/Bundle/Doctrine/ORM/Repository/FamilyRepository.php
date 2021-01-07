@@ -65,7 +65,11 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
 
         if ($limit) {
             $qb->setMaxResults((int) $limit);
+            if (isset($options['page'])) {
+                $qb->setFirstResult((int) $limit * ((int) $options['page'] - 1));
+            }
         }
+        $qb->orderBy('f.code');
 
         return $qb->getQuery()->getResult();
     }

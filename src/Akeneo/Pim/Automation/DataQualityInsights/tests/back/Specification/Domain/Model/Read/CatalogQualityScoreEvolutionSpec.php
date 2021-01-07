@@ -10,13 +10,14 @@ final class CatalogQualityScoreEvolutionSpec extends ObjectBehavior
 {
     public function it_returns_catalog_score_evolution()
     {
-        $currentMonth = (new \DateTime())->format('Y-m-t');
-        $lastMonth = (new \DateTime('-1 MONTH'))->format('Y-m-t');
-        $twoMonthsAgo = (new \DateTime('-2 MONTH'))->format('Y-m-t');
-        $threeMonthsAgo = (new \DateTime('-3 MONTH'))->format('Y-m-t');
-        $fourMonthsAgo = (new \DateTime('-4 MONTH'))->format('Y-m-t');
-        $fiveMonthsAgo = (new \DateTime('-5 MONTH'))->format('Y-m-t');
-        $sixMonthsAgo = (new \DateTime('-6 MONTH'))->format('Y-m-t');
+        $today = new \DateTimeImmutable('2020-12-05');
+        $currentMonth = $today->format('Y-m-t');
+        $lastMonth = $today->modify('last day of 1 month ago')->format('Y-m-t');
+        $twoMonthsAgo = $today->modify('last day of 2 month ago')->format('Y-m-t');
+        $threeMonthsAgo = $today->modify('last day of 3 month ago')->format('Y-m-t');
+        $fourMonthsAgo = $today->modify('last day of 4 month ago')->format('Y-m-t');
+        $fiveMonthsAgo = $today->modify('last day of 5 month ago')->format('Y-m-t');
+        $sixMonthsAgo = $today->modify('last day of 6 month ago')->format('Y-m-t');
 
         $scores = [
             'average_ranks' => [
@@ -94,7 +95,7 @@ final class CatalogQualityScoreEvolutionSpec extends ObjectBehavior
             ],
         ];
 
-        $this->beConstructedWith($scores, 'print', 'en_US');
+        $this->beConstructedWith($today, $scores, 'print', 'en_US');
 
         $this->toArray()->shouldBeLike([
             'average_rank' => 'C',

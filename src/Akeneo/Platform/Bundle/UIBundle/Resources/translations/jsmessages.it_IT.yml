@@ -209,6 +209,7 @@ pim_common:
     DOES NOT CONTAIN: Non contiene
     STARTS WITH: Inizia con
     ENDS WITH: Termina con
+  read_more: Maggiori informazioni
 error:
   exception: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
@@ -348,3 +349,8 @@ pim_notification:
     export: Esportazioni
     quick_export: Esportazione rapida
     mass_edit: Modifica di massa
+akeneo_communication_channel:
+  link:
+    title: Annunci
+  panel:
+    title: Annunci
