@@ -538,7 +538,7 @@ config:
     pim/form-modal:                     pimui/js/form/form-modal
     pim/scopable:                       pimui/js/pim-scopable
     pim/currencyfield:                  pimui/js/pim-currencyfield
-    pim/tree/view:                      pimui/js/tree-view.jstree
+    pim/tree/view:                      pimui/js/TreeView.tsx
     pim/tree/associate:                 pimui/js/TreeAssociate.tsx
     pim/tree/manage:                    pimui/js/tree-manage.jstree
     pim/attributeoptionview:            pimui/js/pim-attributeoptionview
