@@ -14,6 +14,7 @@ import {
 import {CriterionEvaluationResult, ProductEvaluation} from './domain';
 
 import {DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID} from '@akeneo-pim-community/data-quality-insights/src';
+import {Dictionary} from './application/component/Locale/Dictionary';
 
 export {
   ProductEditFormApp,
@@ -31,4 +32,5 @@ export {
   AttributeEditFormApp,
   AttributeCreateFormApp,
   BACK_LINK_SESSION_STORAGE_KEY,
+  Dictionary,
 };

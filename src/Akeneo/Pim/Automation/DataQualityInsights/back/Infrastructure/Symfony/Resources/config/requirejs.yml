@@ -8,6 +8,7 @@ config:
         akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/app: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/app.tsx
         akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/create-app: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/create-app.tsx
         akeneo/data-quality-insights/infrastructure/pim-view/attribute-edit-form/quality-summary-header: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/attribute-edit-form/quality-summary-header.ts
+        akeneo/data-quality-insights/infrastructure/pim-view/locale/dictionary-app: akeneopimenterprisedataqualityinsights/js/infrastructure/pim-view/locale/dictionary-app.tsx
 
         # Components
         ## Product Edit Form

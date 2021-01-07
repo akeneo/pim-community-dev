@@ -58,13 +58,21 @@
         {% if form.permissions is defined %}
             {% set tabs = tabs|merge(['pim_common.permissions']) %}
         {% endif %}
+        {% if dictionaryEnabled is same as(true) %}
+            {% set tabs = ['akeneo_data_quality_insights_dictionary']|merge(tabs) %}
+        {% endif %}
 
         {{ elements.form_navbar(tabs, '') }}
 
         <div class="AknTabContainer-content tab-content">
             {{ elements.form_errors(form) }}
 
-            <div class="tab-pane active" id="pim_common-properties">
+            {% if dictionaryEnabled is same as(true) %}
+                <div class="tab-pane active" id="akeneo_data_quality_insights_dictionary">
+                    <div id="dqi-dictionary-container"></div>
+                </div>
+            {% endif %}
+            <div class="tab-pane {{ dictionaryEnabled is same as(false) ? 'active' : '' }}" id="pim_common-properties">
                 {% set generalProperties %}
                     {{ form_row(form.code) }}
                 {% endset %}
@@ -114,6 +122,14 @@
                         form.render();
                     }.bind(this));
                 });
+
+                if(document.getElementById('dqi-dictionary-container') !== null) {
+                    FormBuilder
+                        .build('akeneo-data-quality-insights-locale-dictionary')
+                        .then((form) => {
+                            form.setLocaleCode("{{ form.vars.value.code }}").render();
+                        });
+                }
             });
         }
     );
