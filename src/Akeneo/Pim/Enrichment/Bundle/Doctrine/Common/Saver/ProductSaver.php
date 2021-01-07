@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Event\SavedProductIdentifier;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Event\SavedProductIdentifierCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -52,7 +54,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $options['unitary'] = true;
         $options['is_new'] = null === $product->getId();
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent(SavedProductIdentifier::fromProduct($product->getIdentifier()), $options));
 
         $this->uniqueDataSynchronizer->synchronize($product);
 
@@ -61,7 +63,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $product->cleanup();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent(SavedProductIdentifier::fromProduct($product->getIdentifier()), $options));
     }
 
     /**
@@ -91,7 +93,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $options['unitary'] = false;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent(SavedProductIdentifierCollection::fromProducts($products), $options));
 
         $areProductsNew = array_map(function ($product) {
             return null === $product->getId();
@@ -112,13 +114,13 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         foreach ($products as $i => $product) {
             $this->eventDispatcher->dispatch(
                 StorageEvents::POST_SAVE,
-                new GenericEvent($product, array_merge($options, ['is_new' => $areProductsNew[$i]]))
+                new GenericEvent(SavedProductIdentifier::fromProduct($product), array_merge($options, ['is_new' => $areProductsNew[$i]]))
             );
         }
 
         $this->eventDispatcher->dispatch(
             StorageEvents::POST_SAVE_ALL,
-            new GenericEvent($products, $options)
+            new GenericEvent(SavedProductIdentifierCollection::fromProducts($products), $options)
         );
 
         foreach ($products as $product) {

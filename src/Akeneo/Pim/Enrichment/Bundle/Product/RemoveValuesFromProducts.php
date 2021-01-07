@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Event\SavedProductIdentifier;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Event\SavedProductIdentifierCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -62,12 +64,10 @@ class RemoveValuesFromProducts
 
     private function dispatchProductSaveEvents(array $productIdentifiers): void
     {
-        $products = $this->productRepository->findBy(['identifier' => $productIdentifiers]);
-
-        foreach ($products as $product) {
+        foreach ($productIdentifiers as $productIdentifier) {
             $this->eventDispatcher->dispatch(
                 StorageEvents::POST_SAVE,
-                new GenericEvent($product, [
+                new GenericEvent(SavedProductIdentifier::fromIdentifier($productIdentifier), [
                     'unitary' => false,
                 ])
             );
@@ -75,7 +75,7 @@ class RemoveValuesFromProducts
 
         $this->eventDispatcher->dispatch(
             StorageEvents::POST_SAVE_ALL,
-            new GenericEvent($products, [
+            new GenericEvent(SavedProductIdentifierCollection::fromIdentifiers($productIdentifiers), [
                 'unitary' => false,
             ])
         );

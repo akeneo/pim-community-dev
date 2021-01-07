@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Event\SavedProductIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
@@ -52,9 +53,9 @@ final class DispatchProductRemovedEventSubscriber implements EventSubscriberInte
 
     public function createAndDispatchProductEvents(GenericEvent $postSaveEvent): void
     {
-        /** @var ProductInterface */
-        $product = $postSaveEvent->getSubject();
-        if (false === $product instanceof ProductInterface) {
+        /** @var SavedProductIdentifier */
+        $productIdentifier = $postSaveEvent->getSubject();
+        if (false === $productIdentifier instanceof SavedProductIdentifier) {
             return;
         }
 
@@ -64,8 +65,9 @@ final class DispatchProductRemovedEventSubscriber implements EventSubscriberInte
 
         $author = Author::fromUser($user);
         $data = [
-            'identifier' => $product->getIdentifier(),
-            'category_codes' => $product->getCategoryCodes(),
+            'identifier' => $productIdentifier->getIdentifier(),
+            // TODO RAC-428
+            // 'category_codes' => $productIdentifier->getCategoryCodes(),
         ];
 
         $this->events[] = new ProductRemoved($author, $data);
