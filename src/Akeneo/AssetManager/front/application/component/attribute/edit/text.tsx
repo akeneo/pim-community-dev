@@ -14,7 +14,7 @@ import {
   ValidationRuleOption,
 } from 'akeneoassetmanager/domain/model/attribute/type/text';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 
 const AttributeValidationRuleItemView = ({
   isOpen,

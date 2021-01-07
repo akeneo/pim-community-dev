@@ -3,8 +3,6 @@ import __ from 'akeneoassetmanager/tools/translator';
 import styled from 'styled-components';
 import {Modal, Title} from 'akeneoassetmanager/application/component/app/modal';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
-import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
-import Key from 'akeneoassetmanager/tools/key';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
@@ -14,6 +12,7 @@ import {
   CopyUrlAction,
 } from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 import {MediaData} from 'akeneoassetmanager/domain/model/asset/data';
+import {Key, useShortcut} from 'akeneo-design-system';
 
 const Container = styled.div`
   position: relative;

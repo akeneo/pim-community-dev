@@ -22,10 +22,9 @@ import DeleteModal from 'akeneoassetmanager/application/component/app/delete-mod
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
-import Key from 'akeneoassetmanager/tools/key';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {DeleteIcon} from 'akeneo-design-system';
+import {DeleteIcon, Key} from 'akeneo-design-system';
 
 interface OwnProps {
   rights: {

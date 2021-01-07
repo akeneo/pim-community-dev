@@ -2,8 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import __ from 'akeneoassetmanager/tools/translator';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
-import Key from 'akeneoassetmanager/tools/key';
-import {MoreIcon, getColor, getFontSize} from 'akeneo-design-system';
+import {MoreIcon, getColor, getFontSize, Key} from 'akeneo-design-system';
 
 const Mask = styled.button`
   position: fixed;

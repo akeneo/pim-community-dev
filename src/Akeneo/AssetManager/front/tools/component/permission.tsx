@@ -5,8 +5,7 @@ import Permission, {
   lowerLevel,
 } from 'akeneoassetmanager/domain/model/asset-family/permission';
 import __ from 'akeneoassetmanager/tools/translator';
-import Key from 'akeneoassetmanager/tools/key';
-import {CheckIcon, pimTheme} from 'akeneo-design-system';
+import {CheckIcon, pimTheme, Key} from 'akeneo-design-system';
 
 type GroupName = string;
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
-import Key from 'akeneoassetmanager/tools/key';
-import {ArrowDownIcon, getColor, AkeneoThemedProps} from 'akeneo-design-system';
+import {ArrowDownIcon, getColor, AkeneoThemedProps, useShortcut, Key} from 'akeneo-design-system';
 
 type ButtonProps = {
   buttonSize?: 'micro' | 'medium' | 'default';

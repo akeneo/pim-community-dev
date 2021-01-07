@@ -15,7 +15,7 @@ import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/ap
 import denormalizeAttribute from 'akeneoassetmanager/application/denormalizer/attribute/attribute';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeIcon} from 'akeneoassetmanager/application/configuration/attribute';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';

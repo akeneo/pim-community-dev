@@ -19,9 +19,8 @@ import {createLocaleFromCode} from 'akeneoassetmanager/domain/model/locale';
 import {getAttributeTypes, AttributeType} from 'akeneoassetmanager/application/configuration/attribute';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import Key from 'akeneoassetmanager/tools/key';
 import Checkbox from 'akeneoassetmanager/application/component/app/checkbox';
-import {AssetsIllustration} from 'akeneo-design-system';
+import {AssetsIllustration, Key} from 'akeneo-design-system';
 
 interface StateProps {
   context: {

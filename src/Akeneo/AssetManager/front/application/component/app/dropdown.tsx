@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 
 export interface DropdownElement {
   identifier: string;

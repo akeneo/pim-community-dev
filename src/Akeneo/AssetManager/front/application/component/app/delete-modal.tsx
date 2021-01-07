@@ -1,6 +1,6 @@
 import * as React from 'react';
 import __ from 'akeneoassetmanager/tools/translator';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 
 interface Props {
   message: string;

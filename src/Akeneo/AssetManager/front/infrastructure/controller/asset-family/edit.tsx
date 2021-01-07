@@ -31,11 +31,10 @@ import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/local
 import {Filter} from 'akeneoassetmanager/application/reducer/grid';
 import {gridStateStoragePath} from 'akeneoassetmanager/infrastructure/middleware/grid';
 import {denormalizeAssetFamilyIdentifier} from 'akeneoassetmanager/domain/model/asset-family/identifier';
-import Key from 'akeneoassetmanager/tools/key';
 import {ThemeProvider} from 'styled-components';
 import {attributeListUpdated} from 'akeneoassetmanager/domain/event/attribute/list';
 import {getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {pimTheme} from 'akeneo-design-system';
+import {pimTheme, Key} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
 const BaseController = require('pim/controller/base');
