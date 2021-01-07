@@ -88,13 +88,13 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($group, $options), StorageEvents::PRE_SAVE);
 
         $this->persistGroupAndSaveAssociatedProducts($group);
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group));
+        $this->eventDispatcher->dispatch(new GenericEvent($group), StorageEvents::POST_SAVE);
     }
 
     /**
@@ -108,12 +108,12 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
         $options = $this->optionsResolver->resolveSaveAllOptions($options);
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($groups, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($groups, $options), StorageEvents::PRE_SAVE_ALL);
 
         foreach ($groups as $group) {
             $this->validateGroup($group);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($group, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($group, $options), StorageEvents::PRE_SAVE);
 
             $this->persistGroupAndSaveAssociatedProducts($group);
         }
@@ -121,10 +121,10 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($groups as $group) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($group, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($group, $options), StorageEvents::POST_SAVE);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($groups, $options), StorageEvents::POST_SAVE_ALL);
     }
 
     /**

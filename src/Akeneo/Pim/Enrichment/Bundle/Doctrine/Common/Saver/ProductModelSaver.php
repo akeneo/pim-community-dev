@@ -43,14 +43,14 @@ class ProductModelSaver implements SaverInterface, BulkSaverInterface
         $options['unitary'] = true;
         $options['is_new'] = null === $productModel->getId();
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($productModel, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($productModel, $options), StorageEvents::PRE_SAVE);
 
         $this->objectManager->persist($productModel);
         $this->objectManager->flush();
 
         $productModel->cleanup();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($productModel, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($productModel, $options), StorageEvents::POST_SAVE);
     }
 
     /**
@@ -80,7 +80,7 @@ class ProductModelSaver implements SaverInterface, BulkSaverInterface
 
         $options['unitary'] = false;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($productModels, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($productModels, $options), StorageEvents::PRE_SAVE_ALL);
 
         $areProductsNew = array_map(
             function ($productModel) {
@@ -91,8 +91,8 @@ class ProductModelSaver implements SaverInterface, BulkSaverInterface
 
         foreach ($productModels as $i => $productModel) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::PRE_SAVE,
-                new GenericEvent($productModel, array_merge($options, ['is_new' => $areProductsNew[$i]]))
+                new GenericEvent($productModel, array_merge($options, ['is_new' => $areProductsNew[$i]])),
+                StorageEvents::PRE_SAVE
             );
 
             $this->objectManager->persist($productModel);
@@ -106,14 +106,14 @@ class ProductModelSaver implements SaverInterface, BulkSaverInterface
 
         foreach ($productModels as $i => $productModel) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::POST_SAVE,
-                new GenericEvent($productModel, array_merge($options, ['is_new' => $areProductsNew[$i]]))
+                new GenericEvent($productModel, array_merge($options, ['is_new' => $areProductsNew[$i]])),
+                StorageEvents::POST_SAVE
             );
         }
 
         $this->eventDispatcher->dispatch(
-            StorageEvents::POST_SAVE_ALL,
-            new GenericEvent($productModels, $options)
+            new GenericEvent($productModels, $options),
+            StorageEvents::POST_SAVE_ALL
         );
     }
 

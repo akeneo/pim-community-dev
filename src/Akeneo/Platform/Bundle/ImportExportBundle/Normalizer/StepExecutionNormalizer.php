@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Normalizer of StepExecution instance
@@ -18,16 +18,9 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
+    protected PresenterInterface $presenter;
 
-    /** @var PresenterInterface */
-    protected $presenter;
-
-    /**
-     * @param TranslatorInterface $translator
-     * @param PresenterInterface  $presenter
-     */
     public function __construct(
         TranslatorInterface $translator,
         PresenterInterface $presenter

@@ -13,5 +13,5 @@ services:
         public: true
         class: '%pim_analytics.controller.system_info.class%'
         arguments:
-            - '@templating'
+            - '@twig'
             - '@pim_analytics.data_collector.chained'

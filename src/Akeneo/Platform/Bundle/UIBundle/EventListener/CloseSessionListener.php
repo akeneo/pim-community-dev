@@ -3,8 +3,7 @@
 namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -27,9 +26,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class CloseSessionListener implements EventSubscriberInterface
 {
-    /** @var NativeSessionHandler */
-    protected $sessionHandler;
-
     /**
      * {@inheritdoc}
      */
@@ -42,10 +38,8 @@ class CloseSessionListener implements EventSubscriberInterface
 
     /**
      * Save and close the session.
-     *
-     * @param GetResponseEvent $event
      */
-    public function closeSession(GetResponseEvent $event) : void
+    public function closeSession(RequestEvent $event) : void
     {
         if (!$event->getRequest()->hasSession()) {
             return;

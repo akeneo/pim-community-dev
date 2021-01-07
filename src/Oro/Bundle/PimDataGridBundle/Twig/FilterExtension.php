@@ -4,9 +4,7 @@ namespace Oro\Bundle\PimDataGridBundle\Twig;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
-use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig_Extension;
 use Twig_SimpleFunction;
 

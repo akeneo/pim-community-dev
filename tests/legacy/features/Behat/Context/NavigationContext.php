@@ -132,7 +132,7 @@ class NavigationContext extends PimContext implements PageObjectAware
 
         // it allows to set the locale in the session
         $event = new InteractiveLoginEvent($request, $token);
-        $this->getMainContext()->getContainer()->get('event_dispatcher')->dispatch("security.interactive_login", $event);
+        $this->getMainContext()->getContainer()->get('event_dispatcher')->dispatch($event, 'security.interactive_login');
         $session->save();
     }
 

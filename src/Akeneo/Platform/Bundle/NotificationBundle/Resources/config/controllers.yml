@@ -6,7 +6,7 @@ services:
         public: true
         class: '%pim_notification.controller.notification.class%'
         arguments:
-            - '@templating'
+            - '@twig'
             - '@pim_user.context.user'
             - '@pim_notification.repository.user_notification'
             - '@pim_notification.remover.user_notification'

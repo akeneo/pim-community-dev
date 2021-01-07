@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChannelRemoverSpec extends ObjectBehavior
 {

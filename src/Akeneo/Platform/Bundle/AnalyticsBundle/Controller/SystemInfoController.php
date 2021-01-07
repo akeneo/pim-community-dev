@@ -4,9 +4,9 @@ namespace Akeneo\Platform\Bundle\AnalyticsBundle\Controller;
 
 use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Twig\Environment;
 
 /**
  * System info controller
@@ -17,11 +17,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  */
 class SystemInfoController
 {
-    /**
-     * @param EngineInterface      $templating
-     * @param ChainedDataCollector $dataCollector
-     */
-    public function __construct(EngineInterface $templating, ChainedDataCollector $dataCollector)
+    private Environment $templating;
+    private ChainedDataCollector $dataCollector;
+
+    public function __construct(Environment $templating, ChainedDataCollector $dataCollector)
     {
         $this->templating = $templating;
         $this->dataCollector = $dataCollector;

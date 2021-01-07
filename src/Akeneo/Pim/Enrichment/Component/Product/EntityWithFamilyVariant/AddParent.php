@@ -66,8 +66,8 @@ class AddParent
         $product->setValues($this->filterNonVariantValues($productModel, $product));
 
         $this->eventDispatcher->dispatch(
-            ParentHasBeenAddedToProduct::EVENT_NAME,
-            new ParentHasBeenAddedToProduct($product, $parentProductModelCode)
+            new ParentHasBeenAddedToProduct($product, $parentProductModelCode),
+            ParentHasBeenAddedToProduct::EVENT_NAME
         );
 
         return $product;

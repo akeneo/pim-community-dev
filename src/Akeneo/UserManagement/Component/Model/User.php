@@ -8,7 +8,8 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\NoopWordInflector;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -1107,7 +1108,7 @@ class User implements UserInterface
      */
     public function addProperty(string $propertyName, $propertyValue): void
     {
-        $propertyName = Inflector::tableize($propertyName);
+        $propertyName = $this->getInflector()->tableize($propertyName);
 
         $this->properties[$propertyName] = $propertyValue;
     }
@@ -1117,8 +1118,13 @@ class User implements UserInterface
      */
     public function getProperty(string $propertyName)
     {
-        $propertyName = Inflector::tableize($propertyName);
+        $propertyName = $this->getInflector()->tableize($propertyName);
 
         return $this->properties[$propertyName] ?? null;
+    }
+
+    private function getInflector(): Inflector
+    {
+        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
     }
 }

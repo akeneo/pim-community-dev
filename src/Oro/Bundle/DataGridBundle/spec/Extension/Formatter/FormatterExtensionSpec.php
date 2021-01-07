@@ -12,7 +12,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormatterExtensionSpec extends ObjectBehavior
 {

@@ -154,7 +154,7 @@ class QueueJobLauncher implements JobLauncherInterface
     private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution)
     {
         $event = new JobExecutionEvent($jobExecution);
-        $this->eventDispatcher->dispatch($eventName, $event);
+        $this->eventDispatcher->dispatch($event, $eventName);
     }
 
     /**

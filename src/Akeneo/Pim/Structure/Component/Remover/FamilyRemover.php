@@ -63,7 +63,7 @@ class FamilyRemover implements RemoverInterface
 
         $this->sendEvent($family, StorageEvents::POST_REMOVE);
     }
-    
+
     private function ensureIsFamily($family): void
     {
         if (! $family instanceof FamilyInterface) {
@@ -113,8 +113,8 @@ class FamilyRemover implements RemoverInterface
     private function sendEvent(FamilyInterface $family, string $event): void
     {
         $this->eventDispatcher->dispatch(
-            $event,
-            new RemoveEvent($family, $family->getId(), ['unitary' => true])
+            new RemoveEvent($family, $family->getId(), ['unitary' => true]),
+            $event
         );
     }
 }

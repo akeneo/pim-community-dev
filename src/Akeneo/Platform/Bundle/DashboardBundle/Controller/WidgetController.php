@@ -4,9 +4,9 @@ namespace Akeneo\Platform\Bundle\DashboardBundle\Controller;
 
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\Registry;
 use Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 /**
  * Widget controller
@@ -17,17 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class WidgetController
 {
-    /** @var Registry */
-    protected $widgetRegistry;
+    protected Registry $widgetRegistry;
+    protected Environment $templating;
 
-    /** @var EngineInterface */
-    protected $templating;
-
-    /**
-     * @param Registry        $widgetRegistry
-     * @param EngineInterface $templating
-     */
-    public function __construct(Registry $widgetRegistry, EngineInterface $templating)
+    public function __construct(Registry $widgetRegistry, Environment $templating)
     {
         $this->widgetRegistry = $widgetRegistry;
         $this->templating = $templating;

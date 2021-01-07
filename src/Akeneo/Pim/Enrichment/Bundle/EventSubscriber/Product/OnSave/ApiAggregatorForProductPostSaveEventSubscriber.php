@@ -83,7 +83,7 @@ final class ApiAggregatorForProductPostSaveEventSubscriber implements EventSubsc
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($this->eventProducts));
+        $this->eventDispatcher->dispatch(new GenericEvent($this->eventProducts), StorageEvents::POST_SAVE_ALL);
         $this->eventProducts = [];
     }
 }

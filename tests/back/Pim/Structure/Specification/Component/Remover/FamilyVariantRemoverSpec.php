@@ -35,10 +35,10 @@ class FamilyVariantRemoverSpec extends ObjectBehavior
     ) {
         $counter->belongingToFamilyVariant($familyVariantToRemove)->willReturn(0);
         $familyVariantToRemove->getId()->willReturn(1);
-        $eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::PRE_REMOVE)->shouldBeCalled();
         $objectManager->remove($familyVariantToRemove)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_REMOVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::cetera(), StorageEvents::POST_REMOVE)->shouldBeCalled();
 
         $this->remove($familyVariantToRemove, []);
     }

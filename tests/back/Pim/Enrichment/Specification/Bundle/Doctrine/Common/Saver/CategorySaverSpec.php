@@ -47,26 +47,26 @@ class CategorySaverSpec extends ObjectBehavior
         $lock->acquire(true)->willReturn(true);
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::PRE_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof CategoryInterface
                         && $event->getArgument('unitary') === true;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::PRE_SAVE)
         )->shouldBeCalled();
 
         $objectManager->persist($category)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::POST_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof CategoryInterface
                         && $event->getArgument('unitary') === true;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::POST_SAVE)
         )->shouldBeCalled();
 
         $lock->release()->shouldBeCalled();

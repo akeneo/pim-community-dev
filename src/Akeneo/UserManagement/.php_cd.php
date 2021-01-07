@@ -12,6 +12,7 @@ $rules = [
     $builder->only([
         'Symfony\Component',
         'Doctrine\Common',
+        'Doctrine\Inflector',
         'Akeneo\Tool',
         // TODO: The feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
@@ -37,6 +38,7 @@ $rules = [
     $builder->only([
         'Doctrine',
         'Symfony\Component',
+        'Symfony\Contracts',
         'Akeneo\Tool',
         'Akeneo\UserManagement',
         'Oro\Bundle\SecurityBundle',
