@@ -1,7 +1,9 @@
 import React, {KeyboardEvent, ReactNode, Ref, useCallback, useRef} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
-import {Checkbox, Image, Link} from '../../../components';
+import {Image} from '../../../components/Image/Image';
+import {Checkbox} from '../../../components/Checkbox/Checkbox';
+import {Link} from '../../../components/Link/Link';
 import {Key, Override} from '../../../shared';
 
 const ItemLabel = styled.span`
