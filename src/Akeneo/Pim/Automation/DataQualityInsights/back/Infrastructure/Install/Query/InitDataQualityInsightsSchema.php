@@ -21,8 +21,10 @@ final class InitDataQualityInsightsSchema
 {
     const QUERY = <<<'SQL'
 CREATE TABLE pimee_data_quality_insights_text_checker_dictionary (
+    id INT AUTO_INCREMENT NOT NULL,
     locale_code VARCHAR(20) NOT NULL,
     word VARCHAR(250) NOT NULL,
+    PRIMARY KEY (id),
     INDEX word_index (word)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
