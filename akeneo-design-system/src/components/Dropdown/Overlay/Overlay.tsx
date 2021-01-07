@@ -110,4 +110,6 @@ const Overlay = ({verticalPosition: defaultVerticalPosition, onClose, children}:
   );
 };
 
+Overlay.displayName = 'Overlay';
+
 export {Overlay};
