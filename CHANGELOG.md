@@ -28,6 +28,10 @@
 - Change constructor of `Akeneo\UserManagement\Bundle\EventListener\LocaleSubscriber` to:
     - remove `Symfony\Component\Translation\TranslatorInterface $translator`
     - add  `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
+- Change `Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\MappingsOverrideConfiguratorInterface::configure()` to replace `Doctrine\Common\Persistence\Mapping\ClassMetadata` first argument by `Doctrine\ORM\Mapping\ClassMetadata`
+- Change `Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\MappingsOverrideConfigurator::configure()` to replace `Doctrine\Common\Persistence\Mapping\ClassMetadata` first argument by `Doctrine\ORM\Mapping\ClassMetadata`
+- Change `Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber\ConfigureMappingsSubscriber::loadClassMetadata()` to replace `Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs` first argument by `Doctrine\ORM\Event\LoadClassMetadataEventArgs`
+- Change `Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber::loadClassMetadata()` to replace `Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs` first argument by `Doctrine\ORM\Event\LoadClassMetadataEventArgs`
 
 ### CLI commands
 

@@ -4,7 +4,7 @@ namespace Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\MappingsOverrideConfiguratorInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 
 /**
  * Configure the mappings of the metadata classes.

@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 
 /**
  * Mechanism to overwrite repository class without redefine class mapping
