@@ -6,20 +6,22 @@ type CategoryTreeModel = {
   id: number;
   code: string;
   label: string;
-  children?: CategoryTreeModel[];
   selectable: boolean;
   loading?: boolean;
   selected?: boolean;
   readOnly?: boolean;
+  children?: CategoryTreeModel[];
 };
 
 type CategoryTreeProps = {
   init: () => Promise<CategoryTreeModel>;
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
-  onChange: (value: string, checked: boolean) => void;
+  onChange?: (value: string, checked: boolean) => void;
+  onClick?: any;
+  selectedTreeId?: number;
 };
 
-const CategoryTree: React.FC<CategoryTreeProps> = ({init, childrenCallback, onChange, ...rest}) => {
+const CategoryTree: React.FC<CategoryTreeProps> = ({init, childrenCallback, onChange, onClick, selectedTreeId, ...rest}) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
   React.useEffect(() => {
@@ -30,7 +32,14 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({init, childrenCallback, onCh
     return <Tree value="" label="" isLoading={true} {...rest} />;
   }
 
-  return <RecursiveCategoryTree tree={tree} childrenCallback={childrenCallback} onChange={onChange} {...rest} />;
+  return <RecursiveCategoryTree
+    tree={tree}
+    childrenCallback={childrenCallback}
+    onChange={onChange}
+    onClick={onClick}
+    selectedTreeId={selectedTreeId}
+    {...rest}
+  />;
 };
 
 export type {CategoryTreeModel};

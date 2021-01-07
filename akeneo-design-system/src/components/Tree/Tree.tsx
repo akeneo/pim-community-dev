@@ -166,28 +166,14 @@ const Tree = <T,>({
     if (onOpen) {
       onOpen(value);
     }
-  }, []);
+  }, [onOpen, value]);
 
   const handleClose = React.useCallback(() => {
     setOpen(false);
     if (onClose) {
       onClose(value);
     }
-  }, []);
-
-  const handleClick = React.useCallback(() => {
-    if (onClick) {
-      onClick(value);
-    } else {
-      handleArrowClick();
-    }
-  }, [isOpen]);
-
-  const handleSelect = React.useCallback((checked: CheckboxChecked, event: SyntheticEvent) => {
-    if (onChange) {
-      onChange(value, checked as boolean, event);
-    }
-  }, []);
+  }, [onClose, value]);
 
   const handleArrowClick = React.useCallback(() => {
     if (isLeaf) {
@@ -195,7 +181,21 @@ const Tree = <T,>({
     }
 
     isOpen ? handleClose() : handleOpen();
-  }, [isOpen]);
+  }, [isOpen, handleClose, handleOpen, isLeaf]);
+
+  const handleClick = React.useCallback(() => {
+    if (onClick) {
+      onClick(value);
+    } else {
+      handleArrowClick();
+    }
+  }, [handleArrowClick, onClick, value]);
+
+  const handleSelect = React.useCallback((checked: CheckboxChecked, event: SyntheticEvent) => {
+    if (onChange) {
+      onChange(value, checked as boolean, event);
+    }
+  }, [onChange, value]);
 
   // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
   const result = (

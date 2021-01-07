@@ -4,50 +4,8 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {CategoryTree, CategoryTreeModel} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree';
+import { CategoryResponse, parseResponse } from "./CategoryTreeFetcher";
 const Router = require('pim/router');
-
-type CategoryResponse = {
-  attr: {
-    id: string;
-    'data-code': string;
-  };
-  children?: CategoryResponse[];
-  data: string;
-  state: string; // 'closed jstree-root' | 'leaf' | 'closed' | 'leaf toselect jstree-checked';
-  selectedChildrenCount?: number;
-};
-
-const parseResponse: (
-  json: CategoryResponse,
-  readOnly: boolean,
-  lockedCategoryIds: number[],
-  isRoot: boolean
-) => CategoryTreeModel = (json, readOnly, lockedCategoryIds = [], isRoot = false) => {
-  const getChildren: () => CategoryTreeModel[] | undefined = () => {
-    if (json.state.includes('closed')) {
-      return undefined;
-    }
-    if (json.state.includes('leaf')) {
-      return [];
-    }
-    if (json.children) {
-      return json.children.map(child => parseResponse(child, readOnly, lockedCategoryIds, false));
-    }
-    return undefined;
-  };
-
-  const categoryId = Number(json.attr.id.replace(/^node_(\d+)$/, '$1'));
-
-  return {
-    id: categoryId,
-    code: json.attr['data-code'],
-    label: json.data,
-    children: getChildren(),
-    selected: json.state.includes('jstree-checked'),
-    readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
-    selectable: !isRoot,
-  };
-};
 
 class TreeAssociate {
   private selectedCategoryCodesByTreeIdInput: HTMLInputElement;
@@ -117,7 +75,7 @@ class TreeAssociate {
         const response = await fetch(url);
         const json: CategoryResponse[] = await response.json();
 
-        return parseResponse(json[0], this.readOnly, this.lockedCategoryIds, true);
+        return parseResponse(json[0], { readOnly: this.readOnly, lockedCategoryIds: this.lockedCategoryIds, isRoot: true, selectable: true });
       } else {
         const url = Router.generate(this.childrenRoute, {
           _format: 'json',
@@ -131,7 +89,7 @@ class TreeAssociate {
         const json: CategoryResponse = await response.json();
 
         console.log(json);
-        return parseResponse(json, this.readOnly, this.lockedCategoryIds, true);
+        return parseResponse(json, { readOnly: this.readOnly, lockedCategoryIds: this.lockedCategoryIds, isRoot: true, selectable: true });
       }
     };
 
@@ -139,7 +97,7 @@ class TreeAssociate {
       const response = await fetch(this.getChildrenUrl(id));
       const json: CategoryResponse = await response.json();
 
-      return (json.children || []).map(child => parseResponse(child, false, [], false));
+      return (json.children || []).map(child => parseResponse(child, { readOnly: this.readOnly, lockedCategoryIds: this.lockedCategoryIds, isRoot: false }));
     };
 
     const tree: HTMLDivElement = document.getElementById(`tree-${treeId}`) as HTMLDivElement;

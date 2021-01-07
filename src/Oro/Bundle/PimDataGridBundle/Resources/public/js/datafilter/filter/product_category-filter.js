@@ -35,6 +35,8 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
      */
     value: {},
 
+    treeView: null,
+
     /**
      * @inheritDoc
      */
@@ -53,9 +55,13 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
         this.value.value.categoryId = parseInt(urlParams[gridName + '[_filter][category][value][categoryId]']);
       }
 
-      this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
+      this.$el[0].addEventListener('tree.updated', event => {
+        this._onTreeUpdated();
+        event.preventDefault();
+      });
 
-      TreeView.init(this.$el, this._getInitialState(), categoryBaseRoute);
+      this.treeView = new TreeView(this.$el[0], this._getInitialState());
+      //TreeView.init(this.$el, this._getInitialState(), categoryBaseRoute);
 
       this.listenTo(mediator, 'datagrid_filters:build.post', function (filtersManager) {
         this.listenTo(filtersManager, 'collection-filters:createState.post', function (filtersState) {
@@ -73,7 +79,8 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
       });
 
       mediator.on('grid_action_execute:product-grid:delete', function () {
-        TreeView.refresh();
+        // TODO
+        this.treeView.refresh();
       });
 
       if (undefined !== updateCallback) {
@@ -89,7 +96,7 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
         return this.emptyValue;
       }
 
-      var state = TreeView.getState();
+      var state = this.treeView.getState();
 
       return {
         value: {
