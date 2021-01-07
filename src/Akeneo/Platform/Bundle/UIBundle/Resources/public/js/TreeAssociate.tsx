@@ -3,7 +3,7 @@ import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import { CategoryTree, CategoryTreeModel } from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree';
+import {CategoryTree, CategoryTreeModel} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree';
 const Router = require('pim/router');
 
 type CategoryResponse = {
@@ -17,12 +17,12 @@ type CategoryResponse = {
   selectedChildrenCount?: number;
 };
 
-const parseResponse: (json: CategoryResponse, readOnly: boolean, lockedCategoryIds: number[], isRoot: boolean) => CategoryTreeModel = (
-  json,
-  readOnly,
-  lockedCategoryIds = [],
-  isRoot = false,
-) => {
+const parseResponse: (
+  json: CategoryResponse,
+  readOnly: boolean,
+  lockedCategoryIds: number[],
+  isRoot: boolean
+) => CategoryTreeModel = (json, readOnly, lockedCategoryIds = [], isRoot = false) => {
   const getChildren: () => CategoryTreeModel[] | undefined = () => {
     if (json.state.includes('closed')) {
       return undefined;
@@ -65,7 +65,7 @@ class TreeAssociate {
       children: string;
     },
     readOnly: boolean = false,
-    lockedCategoryIds: number[] = [],
+    lockedCategoryIds: number[] = []
   ) {
     this.container = document.getElementById('trees') as HTMLDivElement;
     this.selectedCategoryCodesByTreeIdInput = document.getElementById('hidden-tree-input') as HTMLInputElement;
@@ -102,9 +102,11 @@ class TreeAssociate {
 
   private initTree = (treeId: number) => {
     const init: () => Promise<CategoryTreeModel> = async () => {
-      if (JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId] &&
-        JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId].length) {
-        const route = Router.generate(this.listCategoriesRoute, {
+      if (
+        JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId] &&
+        JSON.parse(this.selectedCategoryCodesByTreeIdInput.value)[treeId].length
+      ) {
+        const url = Router.generate(this.listCategoriesRoute, {
           id: this.productId,
           categoryId: treeId,
           _format: 'json',
@@ -112,12 +114,12 @@ class TreeAssociate {
           dataLocale: this.dataLocale,
         });
 
-        const response = await fetch(route);
+        const response = await fetch(url);
         const json: CategoryResponse[] = await response.json();
 
         return parseResponse(json[0], this.readOnly, this.lockedCategoryIds, true);
       } else {
-        const route = Router.generate(this.childrenRoute, {
+        const url = Router.generate(this.childrenRoute, {
           _format: 'json',
           context: 'associate',
           dataLocale: this.dataLocale,
@@ -125,20 +127,20 @@ class TreeAssociate {
           include_parent: true,
         });
 
-        const response = await fetch(route);
+        const response = await fetch(url);
         const json: CategoryResponse = await response.json();
 
         console.log(json);
         return parseResponse(json, this.readOnly, this.lockedCategoryIds, true);
       }
-    }
+    };
 
-    const childrenCallback: (id: number) => Promise<CategoryTreeModel[]> = async (id) => {
-      const response = await fetch(this.getChildrenRoute(id));
+    const childrenCallback: (id: number) => Promise<CategoryTreeModel[]> = async id => {
+      const response = await fetch(this.getChildrenUrl(id));
       const json: CategoryResponse = await response.json();
 
-      return (json.children || []).map((child) => parseResponse(child, false, [], false));
-    }
+      return (json.children || []).map(child => parseResponse(child, false, [], false));
+    };
 
     const tree: HTMLDivElement = document.getElementById(`tree-${treeId}`) as HTMLDivElement;
 
@@ -167,18 +169,14 @@ class TreeAssociate {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <CategoryTree
-            onChange={handleChange}
-            childrenCallback={childrenCallback}
-            init={init}
-          />
+          <CategoryTree onChange={handleChange} childrenCallback={childrenCallback} init={init} />
         </ThemeProvider>
       </DependenciesProvider>,
       tree
     );
-  }
+  };
 
-  private getChildrenRoute = (id: number) => {
+  private getChildrenUrl = (id: number) => {
     return Router.generate(this.childrenRoute, {
       _format: 'json',
       context: 'associate',
