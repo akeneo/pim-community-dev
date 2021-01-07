@@ -3,7 +3,7 @@
 namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -30,7 +30,7 @@ class AddContentSecurityPolicyListener implements EventSubscriberInterface
         ];
     }
 
-    public function addCspHeaders(FilterResponseEvent $event): void
+    public function addCspHeaders(ResponseEvent $event): void
     {
         $policy = sprintf(
             "default-src 'self' *.akeneo.com 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'nonce-%s'; img-src 'self' data: ; frame-src * ; font-src 'self' data:",

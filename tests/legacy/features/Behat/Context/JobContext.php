@@ -301,7 +301,7 @@ class JobContext extends PimContext
      */
     public function copyArchiveLocally(string $archivePath): string
     {
-        $tmpDir =  getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat';
+        $tmpDir = !empty($_ENV['BEHAT_TMPDIR'] ?? '') ?  $_ENV['BEHAT_TMPDIR'] : '/tmp/pim-behat';
 
         if (!is_dir($tmpDir)) {
             mkdir($tmpDir);

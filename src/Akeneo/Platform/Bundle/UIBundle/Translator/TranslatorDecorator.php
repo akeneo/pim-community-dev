@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\UIBundle\Translator;
 
-use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Component\Translation\TranslatorBagInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Decorates the symfony translator to be able to returns translation key instead of error during transchoice.
@@ -14,11 +16,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TranslatorDecorator implements LegacyTranslatorInterface, TranslatorInterface
+class TranslatorDecorator implements TranslatorInterface, LocaleAwareInterface, TranslatorBagInterface
 {
-    private LegacyTranslatorInterface $symfonyTranslator;
+    private TranslatorInterface $symfonyTranslator;
 
-    public function __construct(LegacyTranslatorInterface $symfonyTranslator)
+    public function __construct(TranslatorInterface $symfonyTranslator)
     {
         $this->symfonyTranslator = $symfonyTranslator;
     }
@@ -32,12 +34,15 @@ class TranslatorDecorator implements LegacyTranslatorInterface, TranslatorInterf
     }
 
     /**
-     * {@inheritdoc}
+     * Deprecated since Symfony 4.2, will be removed in Symfony 5.
+     * Use trans instead, see Symfony\Contracts\Translation\TranslatorInterface
      */
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
         try {
-            return $this->symfonyTranslator->transChoice($id, $number, $parameters, $domain, $locale);
+            $parameters['%count%'] = $number;
+
+            return $this->symfonyTranslator->trans($id, $parameters, $domain, $locale);
         } catch (\Exception $exception) {
             return (string) $id . ': ' . (string) $number;
         }
@@ -48,6 +53,8 @@ class TranslatorDecorator implements LegacyTranslatorInterface, TranslatorInterf
      */
     public function setLocale($locale)
     {
+        Assert::implementsInterface($this->symfonyTranslator, LocaleAwareInterface::class);
+
         $this->symfonyTranslator->setLocale($locale);
     }
 
@@ -56,6 +63,8 @@ class TranslatorDecorator implements LegacyTranslatorInterface, TranslatorInterf
      */
     public function getLocale()
     {
+        Assert::implementsInterface($this->symfonyTranslator, LocaleAwareInterface::class);
+
         return $this->symfonyTranslator->getLocale();
     }
 
@@ -80,6 +89,8 @@ class TranslatorDecorator implements LegacyTranslatorInterface, TranslatorInterf
      */
     public function getCatalogue($locale = null)
     {
+        Assert::implementsInterface($this->symfonyTranslator, TranslatorBagInterface::class);
+
         return $this->symfonyTranslator->getCatalogue($locale);
     }
 }

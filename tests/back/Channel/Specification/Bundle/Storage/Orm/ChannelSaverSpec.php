@@ -42,31 +42,31 @@ class ChannelSaverSpec extends ObjectBehavior
         $channel->popEvents()->willReturn([]);
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::PRE_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof ChannelInterface
                         && $event->getArgument('unitary') === true;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::PRE_SAVE)
         )->shouldBeCalled();
 
         $objectManager->persist($channel)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::POST_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof ChannelInterface
                         && $event->getArgument('unitary') === true;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::POST_SAVE)
         )->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(ChannelCategoryHasBeenUpdated::class),
-            Argument::type(ChannelCategoryHasBeenUpdated::class)
+            Argument::type(ChannelCategoryHasBeenUpdated::class),
+            Argument::exact(ChannelCategoryHasBeenUpdated::class)
         )->shouldNotBeCalled();
 
         $this->save($channel);
@@ -84,23 +84,23 @@ class ChannelSaverSpec extends ObjectBehavior
         $channel2->popEvents()->willReturn([]);
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::PRE_SAVE_ALL),
             Argument::that(
                 function (GenericEvent $event) {
-                    return count($event->getSubject()) === 2
+                    return is_countable($event->getSubject()) &&  count($event->getSubject()) === 2
                         && $event->getArgument('unitary') === false;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::PRE_SAVE_ALL)
         )->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::PRE_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof ChannelInterface
                         && $event->getArgument('unitary') === false;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::PRE_SAVE)
         )->shouldBeCalledTimes(2);
 
         $objectManager->persist($channel1)->shouldBeCalled();
@@ -108,28 +108,28 @@ class ChannelSaverSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::POST_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof ChannelInterface
                         && $event->getArgument('unitary') === false;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::POST_SAVE)
         )->shouldBeCalledTimes(2);
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::POST_SAVE_ALL),
             Argument::that(
                 function (GenericEvent $event) {
-                    return count($event->getSubject()) === 2
+                    return is_countable($event->getSubject()) && count($event->getSubject()) === 2
                         && $event->getArgument('unitary') === false;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::POST_SAVE_ALL)
         )->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(ChannelCategoryHasBeenUpdated::class),
-            Argument::type(ChannelCategoryHasBeenUpdated::class)
+            Argument::type(ChannelCategoryHasBeenUpdated::class),
+            Argument::exact(ChannelCategoryHasBeenUpdated::class)
         )->shouldNotBeCalled();
 
         $this->saveAll([$channel1, $channel2]);
@@ -144,23 +144,23 @@ class ChannelSaverSpec extends ObjectBehavior
         $channel->popEvents()->willReturn([]);
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::PRE_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof ChannelInterface
                         && $event->getArgument('is_new') === false;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::PRE_SAVE)
         )->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::POST_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof ChannelInterface
                         && $event->getArgument('is_new') === false;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::POST_SAVE)
         )->shouldBeCalled();
 
         $this->save($channel);
@@ -174,23 +174,23 @@ class ChannelSaverSpec extends ObjectBehavior
         $channel->popEvents()->willReturn([]);
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::PRE_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof ChannelInterface
                         && $event->getArgument('is_new') === true;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::PRE_SAVE)
         )->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::POST_SAVE),
             Argument::that(
                 function (GenericEvent $event) {
                     return $event->getSubject() instanceof ChannelInterface
                         && $event->getArgument('is_new') === true;
                 }
-            )
+            ),
+            Argument::exact(StorageEvents::POST_SAVE)
         )->shouldBeCalled();
 
         $this->save($channel);
@@ -205,24 +205,25 @@ class ChannelSaverSpec extends ObjectBehavior
         $channel->popEvents()->willReturn([$channelCategoryHasBeenUpdated]);
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::PRE_SAVE),
-            Argument::type(GenericEvent::class)
+            Argument::type(GenericEvent::class),
+            Argument::exact(StorageEvents::PRE_SAVE)
         )->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::POST_SAVE),
-            Argument::type(GenericEvent::class)
+            Argument::type(GenericEvent::class),
+            Argument::exact(StorageEvents::POST_SAVE)
         )->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(ChannelCategoryHasBeenUpdated::class),
             Argument::that(
-                function (ChannelCategoryHasBeenUpdated $event) {
-                    return $event->channelCode() === 'channel-code'
+                function ($event) {
+                    return $event instanceof ChannelCategoryHasBeenUpdated
+                        && $event->channelCode() === 'channel-code'
                         && $event->previousCategoryCode() === 'previous-category-code'
                         && $event->newCategoryCode() === 'new-category-code';
                 }
-            )
+            ),
+            Argument::exact(ChannelCategoryHasBeenUpdated::class)
         )->shouldBeCalled();
 
         $this->save($channel);

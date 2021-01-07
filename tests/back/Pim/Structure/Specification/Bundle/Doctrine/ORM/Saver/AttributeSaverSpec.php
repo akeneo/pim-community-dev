@@ -10,6 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AttributeSaverSpec extends ObjectBehavior
 {
@@ -38,16 +39,16 @@ class AttributeSaverSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('my_code');
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::PRE_SAVE),
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Symfony\Component\EventDispatcher\GenericEvent'),
+            Argument::exact(StorageEvents::PRE_SAVE)
         )->shouldBeCalled();
 
         $objectManager->persist($attribute)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            Argument::exact(StorageEvents::POST_SAVE),
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Symfony\Component\EventDispatcher\GenericEvent'),
+            Argument::exact(StorageEvents::POST_SAVE)
         )->shouldBeCalled();
 
         $this->save($attribute);
@@ -72,11 +73,11 @@ class AttributeSaverSpec extends ObjectBehavior
 
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE_ALL)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE)->shouldBeCalledTimes(2);
 
         $this->saveAll($attributes);
 

@@ -41,17 +41,17 @@ class ProductSaverSpec extends ObjectBehavior
     ) {
         $product->isDirty()->willReturn(true);
         $product->getId()->willReturn(null);
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            StorageEvents::POST_SAVE,
             new GenericEvent(
                 $product->getWrappedObject(),
                 ['unitary' => true, 'is_new' => true]
-            )
+            ),
+            StorageEvents::POST_SAVE
         )->shouldBeCalled();
 
         $product->cleanup()->shouldBeCalled();
@@ -67,17 +67,17 @@ class ProductSaverSpec extends ObjectBehavior
     ) {
         $product->isDirty()->willReturn(true);
         $product->getId()->willReturn(1);
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            StorageEvents::POST_SAVE,
             new GenericEvent(
                 $product->getWrappedObject(),
                 ['unitary' => true, 'is_new' => false]
-            )
+            ),
+            StorageEvents::POST_SAVE
         )->shouldBeCalled();
         $product->cleanup()->shouldBeCalled();
 
@@ -111,8 +111,8 @@ class ProductSaverSpec extends ObjectBehavior
         $product2->getId()->willReturn(44);
         $product2->isDirty()->willReturn(true);
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalledTimes(2);
 
         $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalled();
         $objectManager->persist($product1)->shouldBeCalled();
@@ -121,8 +121,8 @@ class ProductSaverSpec extends ObjectBehavior
 
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE)->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE_ALL)->shouldBeCalled();
         $product1->cleanup()->shouldBeCalled();
         $product2->cleanup()->shouldBeCalled();
 
@@ -155,8 +155,8 @@ class ProductSaverSpec extends ObjectBehavior
         $product2->getId()->willReturn(42);
         $product2->isDirty()->willReturn(true);
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE_ALL)->shouldBeCalled();
 
         $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalledTimes(1);
         $uniqueDataSynchronizer->synchronize($product2)->shouldBeCalled();
@@ -165,8 +165,8 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist($product2)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE)->shouldBeCalledTimes(2);
         $product1->cleanup()->shouldBeCalled();
         $product2->cleanup()->shouldBeCalled();
 
@@ -188,8 +188,8 @@ class ProductSaverSpec extends ObjectBehavior
         $product3->getId()->willReturn(3);
         $product3->isDirty()->willReturn(true);
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalledTimes(2);
 
         $uniqueDataSynchronizer->synchronize($product1)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product2)->shouldNotBeCalled();
@@ -201,8 +201,8 @@ class ProductSaverSpec extends ObjectBehavior
 
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalledTimes(2);
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE)->shouldBeCalledTimes(2);
+        $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::POST_SAVE_ALL)->shouldBeCalled();
 
         $product1->cleanup()->shouldBeCalled();
         $product3->cleanup()->shouldBeCalled();

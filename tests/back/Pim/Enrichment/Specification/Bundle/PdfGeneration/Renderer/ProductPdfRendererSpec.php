@@ -24,14 +24,14 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 class ProductPdfRendererSpec extends ObjectBehavior
 {
     const TEMPLATE_NAME = 'template.html.twig';
 
     function let(
-        EngineInterface $templating,
+        Environment $templating,
         PdfBuilderInterface $pdfBuilder,
         DataManager $dataManager,
         CacheManager $cacheManager,
@@ -162,7 +162,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     }
 
     function it_renders_options_labels(
-        EngineInterface $templating,
+        Environment $templating,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository
     ) {
@@ -232,7 +232,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     }
 
     function it_renders_a_simple_select_without_any_option_for_a_given_locale(
-        EngineInterface $templating,
+        Environment $templating,
         IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $colors = new Attribute();

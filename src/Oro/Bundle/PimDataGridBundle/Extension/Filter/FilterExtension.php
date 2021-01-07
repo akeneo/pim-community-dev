@@ -14,7 +14,7 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceAdapterResolverInterface;
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceTypes;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Filter extension, storage agnostic
@@ -33,15 +33,8 @@ class FilterExtension extends AbstractExtension
      */
     protected $filters = [];
 
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @var DatasourceAdapterResolverInterface
-     */
-    protected $adapterResolver;
+    protected TranslatorInterface $translator;
+    protected DatasourceAdapterResolverInterface $adapterResolver;
 
     public function __construct(
         RequestParameters $requestParams,

@@ -4,7 +4,7 @@ namespace Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\Job;
 
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Renders the name of the job

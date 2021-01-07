@@ -67,9 +67,9 @@ class Builder
         $datagrid = new $class($name, $acceptor);
 
         $event = new BuildBefore($datagrid, $config);
-        $this->eventDispatcher->dispatch(BuildBefore::NAME, $event);
+        $this->eventDispatcher->dispatch($event, BuildBefore::NAME);
         // duplicate event dispatch with grid name
-        $this->eventDispatcher->dispatch(BuildBefore::NAME . '.' . $name, $event);
+        $this->eventDispatcher->dispatch($event, BuildBefore::NAME . '.' . $name);
 
         $this->buildDataSource($datagrid, $config);
 
@@ -82,9 +82,9 @@ class Builder
         $acceptor->processConfiguration();
 
         $event = new BuildAfter($datagrid);
-        $this->eventDispatcher->dispatch(BuildAfter::NAME, $event);
+        $this->eventDispatcher->dispatch($event, BuildAfter::NAME);
         // duplicate event dispatch with grid name
-        $this->eventDispatcher->dispatch(BuildAfter::NAME . '.' . $name, $event);
+        $this->eventDispatcher->dispatch($event, BuildAfter::NAME . '.' . $name);
 
         return $datagrid;
     }

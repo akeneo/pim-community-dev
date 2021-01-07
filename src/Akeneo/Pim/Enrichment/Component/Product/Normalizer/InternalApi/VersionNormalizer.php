@@ -11,7 +11,8 @@ use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -23,43 +24,25 @@ use Webmozart\Assert\Assert;
  */
 class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var UserManager */
-    protected $userManager;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var PresenterRegistryInterface */
-    protected $presenterRegistry;
+    protected UserManager $userManager;
+    protected TranslatorInterface $translator;
+    protected LocaleAwareInterface $localeAware;
+    protected PresenterRegistryInterface $presenterRegistry;
 
     /** @var string[] */
-    protected $supportedFormats = ['internal_api'];
+    protected array $supportedFormats = ['internal_api'];
 
-    /** @var array */
-    protected $authorCache = [];
-
-    /** @var PresenterInterface */
-    protected $datetimePresenter;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var UserContext */
-    protected $userContext;
+    protected array $authorCache = [];
+    protected PresenterInterface $datetimePresenter;
+    protected AttributeRepositoryInterface $attributeRepository;
+    protected UserContext $userContext;
 
     const ATTRIBUTE_HEADER_SEPARATOR = "-";
 
-    /**
-     * @param UserManager                  $userManager
-     * @param TranslatorInterface          $translator
-     * @param PresenterInterface           $datetimePresenter
-     * @param PresenterRegistryInterface   $presenterRegistry
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param UserContext                  $userContext
-     */
     public function __construct(
         UserManager $userManager,
         TranslatorInterface $translator,
+        LocaleAwareInterface $localeAware,
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry,
         AttributeRepositoryInterface $attributeRepository,
@@ -67,6 +50,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
     ) {
         $this->userManager = $userManager;
         $this->translator = $translator;
+        $this->localeAware = $localeAware;
         $this->datetimePresenter = $datetimePresenter;
         $this->presenterRegistry = $presenterRegistry;
         $this->attributeRepository = $attributeRepository;
@@ -78,7 +62,7 @@ class VersionNormalizer implements NormalizerInterface, CacheableSupportsMethodI
      */
     public function normalize($version, $format = null, array $context = [])
     {
-        $context = array_merge($context, ['locale' => $this->translator->getLocale()]);
+        $context = array_merge($context, ['locale' => $this->localeAware->getLocale()]);
 
         try {
             $timezone = $this->userContext->getUserTimezone();

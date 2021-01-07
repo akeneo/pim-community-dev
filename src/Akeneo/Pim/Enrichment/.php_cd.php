@@ -13,6 +13,7 @@ $rules = [
         'Doctrine',
         'Symfony\Component',
         'Symfony\Bundle',
+        'Symfony\Contracts',
         'Akeneo\Tool',
         'Akeneo\Channel\Component\Query\PublicApi',
         'Akeneo\Pim\Enrichment\Component',
@@ -31,6 +32,7 @@ $rules = [
         // TODO: dependencies related to the front end, remove twig screens
         'Twig_SimpleFunction', // used by the category tree
         'Twig_Extension', // used by Twig extensions
+        'Twig\Environment', // used by Twig extensions
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
@@ -126,8 +128,10 @@ $rules = [
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Symfony\Contracts',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
+        'Doctrine\Inflector',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',

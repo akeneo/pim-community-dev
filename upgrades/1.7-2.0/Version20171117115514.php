@@ -28,7 +28,7 @@ class Version20171117115514 extends AbstractMigration
 
     public function postUp(Schema $schema)
     {
-        $kernel = new \AppKernel(getenv('SYMFONY_ENV') ?: 'prod', (bool)getenv('SYMFONY_DEBUG'));
+        $kernel = new \AppKernel($_ENV['SYMFONY_ENV'] ?? 'prod', (bool) ($_ENV['SYMFONY_DEBUG'] ?? false));
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $application->run(new ArrayInput([

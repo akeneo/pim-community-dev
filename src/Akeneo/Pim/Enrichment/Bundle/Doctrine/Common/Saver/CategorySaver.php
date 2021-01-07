@@ -46,13 +46,13 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
             $options['unitary'] = true;
             $options['is_new'] = null === $object->getId();
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($object, $options), StorageEvents::PRE_SAVE);
 
             $this->objectManager->persist($object);
 
             $this->objectManager->flush();
 
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($object, $options), StorageEvents::POST_SAVE);
         } finally {
             $lock->release();
         }
@@ -69,7 +69,7 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
 
         $options['unitary'] = false;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($objects, $options), StorageEvents::PRE_SAVE_ALL);
 
         $areObjectsNew = array_map(function ($object) {
             return null === $object->getId();
@@ -79,8 +79,8 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
             $this->validateObject($object);
 
             $this->eventDispatcher->dispatch(
-                StorageEvents::PRE_SAVE,
-                new GenericEvent($object, array_merge($options, ['is_new' => $areObjectsNew[$i]]))
+                new GenericEvent($object, array_merge($options, ['is_new' => $areObjectsNew[$i]])),
+                StorageEvents::PRE_SAVE
             );
 
             $this->objectManager->persist($object);
@@ -90,12 +90,12 @@ class CategorySaver implements SaverInterface, BulkSaverInterface
 
         foreach ($objects as $i => $object) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::POST_SAVE,
-                new GenericEvent($object, array_merge($options, ['is_new' => $areObjectsNew[$i]]))
+                new GenericEvent($object, array_merge($options, ['is_new' => $areObjectsNew[$i]])),
+                StorageEvents::POST_SAVE
             );
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($objects, $options), StorageEvents::POST_SAVE_ALL);
     }
 
     protected function validateObject($object)

@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\ApiBundle\Negotiator\ContentTypeNegotiator;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -19,8 +19,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
 {
     function let(
         FormatNegotiator $formatNegotiator,
-        ContentTypeNegotiator $contentTypeNegotiator,
-        GetResponseEvent $event
+        ContentTypeNegotiator $contentTypeNegotiator
     ) {
         $this->beConstructedWith($formatNegotiator, $contentTypeNegotiator);
     }
@@ -32,7 +31,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_successfully_validates_default_accept_header(
-        $event,
+        RequestEvent $event,
         $formatNegotiator,
         Request $request,
         ParameterBag $headers,
@@ -56,7 +55,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_successfully_validates_json_accept_header(
-        $event,
+        RequestEvent $event,
         $formatNegotiator,
         Request $request,
         ParameterBag $headers,
@@ -80,7 +79,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_when_accept_header_is_xml(
-        $event,
+        RequestEvent $event,
         $formatNegotiator,
         Request $request,
         ParameterBag $headers,
@@ -105,7 +104,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_successfully_validates_json_content_type_header(
-        $event,
+        RequestEvent $event,
         $contentTypeNegotiator,
         Request $request,
         ParameterBag $headers,
@@ -127,7 +126,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_successfully_validates_form_data_content_type_header(
-        $event,
+        RequestEvent $event,
         $contentTypeNegotiator,
         Request $request,
         ParameterBag $headers,
@@ -149,7 +148,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_when_content_type_header_is_xml_instead_of_json(
-        $event,
+        RequestEvent $event,
         $contentTypeNegotiator,
         Request $request,
         ParameterBag $headers,
@@ -172,7 +171,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_throws_an_exception_when_content_type_header_is_xml_instead_of_json_or_form_data(
-        $event,
+        RequestEvent $event,
         $contentTypeNegotiator,
         Request $request,
         ParameterBag $headers,
@@ -196,7 +195,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
 
 
     public function it_throws_an_exception_when_content_type_is_missing(
-        $event,
+        RequestEvent $event,
         $contentTypeNegotiator,
         Request $request,
         ParameterBag $headers,
@@ -219,12 +218,11 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_stops_if_uri_is_not_in_api_with_get_request(
-        $event,
+        RequestEvent $event,
         $formatNegotiator,
         ParameterBag $headers,
         Request $request,
-        ParameterBag $attributes,
-        CustomAcceptHeader $best
+        ParameterBag $attributes
     ) {
         $formatNegotiator->getBest('')->willThrow('FOS\RestBundle\Util\StopFormatListenerException');
         $request->headers = $headers;
@@ -240,7 +238,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_stops_if_uri_is_not_in_api_with_patch_request(
-        $event,
+        RequestEvent $event,
         $contentTypeNegotiator,
         ParameterBag $headers,
         Request $request,
@@ -260,7 +258,7 @@ class CheckHeadersRequestSubscriberSpec extends ObjectBehavior
     }
 
     public function it_returns_null_if_request_is_not_a_master_request(
-        $event,
+        RequestEvent $event,
         $formatNegotiator,
         ParameterBag $headers,
         Request $request,

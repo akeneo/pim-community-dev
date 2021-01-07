@@ -54,12 +54,12 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
 
         $options['unitary'] = true;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $objectId, $options));
+        $this->eventDispatcher->dispatch(new RemoveEvent($object, $objectId, $options), StorageEvents::PRE_REMOVE);
 
         $this->objectManager->remove($object);
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE, new RemoveEvent($object, $objectId, $options));
+        $this->eventDispatcher->dispatch(new RemoveEvent($object, $objectId, $options), StorageEvents::POST_REMOVE);
     }
 
     /**
@@ -73,14 +73,14 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
 
         $options['unitary'] = false;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE_ALL, new RemoveEvent($objects, null));
+        $this->eventDispatcher->dispatch(new RemoveEvent($objects, null), StorageEvents::PRE_REMOVE_ALL);
 
         $removedObjects = [];
         foreach ($objects as $object) {
             $this->validateObject($object);
             $removedObjects[$object->getId()] = $object;
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $object->getId(), $options));
+            $this->eventDispatcher->dispatch(new RemoveEvent($object, $object->getId(), $options), StorageEvents::PRE_REMOVE);
 
             $this->objectManager->remove($object);
         }
@@ -88,12 +88,12 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
         $this->objectManager->flush();
 
         foreach ($removedObjects as $id => $object) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE, new RemoveEvent($object, $id, $options));
+            $this->eventDispatcher->dispatch(new RemoveEvent($object, $id, $options), StorageEvents::POST_REMOVE);
         }
 
         $this->eventDispatcher->dispatch(
-            StorageEvents::POST_REMOVE_ALL,
-            new RemoveEvent($objects, array_keys($removedObjects))
+            new RemoveEvent($objects, array_keys($removedObjects)),
+            StorageEvents::POST_REMOVE_ALL
         );
     }
 

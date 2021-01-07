@@ -67,16 +67,16 @@ class BaseSaverSpec extends ObjectBehavior
         $newObject = new ModelToSave();
         $newObjectEvent = new GenericEvent($newObject, ['unitary' => true, 'is_new' => true]);
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, $newObjectEvent)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, $newObjectEvent)->shouldBeCalled();
+        $eventDispatcher->dispatch($newObjectEvent, StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch($newObjectEvent, StorageEvents::POST_SAVE)->shouldBeCalled();
 
         $this->save($newObject);
 
         $updatedObject = new ModelToSave(42);
         $updatedObjectEvent = new GenericEvent($updatedObject, ['unitary' => true, 'is_new' => false]);
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, $updatedObjectEvent)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, $updatedObjectEvent)->shouldBeCalled();
+        $eventDispatcher->dispatch($updatedObjectEvent, StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch($updatedObjectEvent, StorageEvents::POST_SAVE)->shouldBeCalled();
 
         $this->save($updatedObject);
     }
@@ -90,12 +90,12 @@ class BaseSaverSpec extends ObjectBehavior
         $newObjectEvent = new GenericEvent($newObject, ['unitary' => false, 'is_new' => true]);
         $updatedObjectEvent = new GenericEvent($updatedObject, ['unitary' => false, 'is_new' => false]);
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, $bulkEvent)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, $newObjectEvent)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, $updatedObjectEvent)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, $newObjectEvent)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, $updatedObjectEvent)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, $bulkEvent)->shouldBeCalled();
+        $eventDispatcher->dispatch($bulkEvent, StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
+        $eventDispatcher->dispatch($newObjectEvent, StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch($updatedObjectEvent, StorageEvents::PRE_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch($newObjectEvent, StorageEvents::POST_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch($updatedObjectEvent, StorageEvents::POST_SAVE)->shouldBeCalled();
+        $eventDispatcher->dispatch($bulkEvent, StorageEvents::POST_SAVE_ALL)->shouldBeCalled();
 
         $this->saveAll([$newObject, $updatedObject]);
     }

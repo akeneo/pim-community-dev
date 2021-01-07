@@ -88,7 +88,7 @@ class AssetsCommand extends Command
             'symlink' => $input->getOption('symlink')
         ]);
 
-        $this->eventDispatcher->dispatch(InstallerEvents::PRE_ASSETS_DUMP, $event);
+        $this->eventDispatcher->dispatch($event, InstallerEvents::PRE_ASSETS_DUMP);
 
         $webDir = $this->getWebDir();
 
@@ -107,7 +107,7 @@ class AssetsCommand extends Command
             ->runCommand('fos:js-routing:dump', ['--target' => $webDir.'js/routes.js'])
             ->runCommand('assets:install');
 
-        $this->eventDispatcher->dispatch(InstallerEvents::POST_SYMFONY_ASSETS_DUMP, $event);
+        $this->eventDispatcher->dispatch($event, InstallerEvents::POST_SYMFONY_ASSETS_DUMP);
         $this->commandExecutor
             ->runCommand('pim:installer:dump-require-paths');
         $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => implode(', ', $this->defaultLocales)]);
@@ -116,7 +116,7 @@ class AssetsCommand extends Command
             $this->commandExecutor->runCommand('assets:install', ['--relative' => true, '--symlink' => true]);
         }
 
-        $this->eventDispatcher->dispatch(InstallerEvents::POST_ASSETS_DUMP, $event);
+        $this->eventDispatcher->dispatch($event, InstallerEvents::POST_ASSETS_DUMP);
 
         return $this;
     }

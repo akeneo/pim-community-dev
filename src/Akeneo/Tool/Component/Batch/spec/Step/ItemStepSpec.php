@@ -56,7 +56,7 @@ class ItemStepSpec extends ObjectBehavior
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
 
-        $dispatcher->dispatch(EventInterface::BEFORE_STEP_EXECUTION, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
         $execution->setStartTime(Argument::any())->shouldBeCalled();
         $execution->setStatus(Argument::any())->shouldBeCalled();
 
@@ -68,7 +68,7 @@ class ItemStepSpec extends ObjectBehavior
         $writer->write(['p1', 'p2', 'p3'])->shouldBeCalled();
         $execution->incrementProcessedItems(3)->shouldBeCalledOnce();
 
-        $dispatcher->dispatch(EventInterface::ITEM_STEP_AFTER_BATCH, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
 
         // second batch
@@ -77,7 +77,7 @@ class ItemStepSpec extends ObjectBehavior
         $writer->write(['p4'])->shouldBeCalled();
         $execution->incrementProcessedItems(1)->shouldBeCalledOnce();
 
-        $dispatcher->dispatch(EventInterface::ITEM_STEP_AFTER_BATCH, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
 
         $execution->getExitStatus()->willReturn($exitStatus);
@@ -86,8 +86,8 @@ class ItemStepSpec extends ObjectBehavior
         $execution->isTerminateOnly()->willReturn(false);
 
         $execution->upgradeStatus(Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(EventInterface::STEP_EXECUTION_SUCCEEDED, Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(EventInterface::STEP_EXECUTION_COMPLETED, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_SUCCEEDED)->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_COMPLETED)->shouldBeCalled();
         $execution->setEndTime(Argument::any())->shouldBeCalled();
         $execution->setExitStatus(Argument::any())->shouldBeCalled();
 
@@ -108,7 +108,7 @@ class ItemStepSpec extends ObjectBehavior
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
 
-        $dispatcher->dispatch(EventInterface::BEFORE_STEP_EXECUTION, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
         $execution->setStartTime(Argument::any())->shouldBeCalled();
         $execution->setStatus(Argument::any())->shouldBeCalled();
 
@@ -120,7 +120,7 @@ class ItemStepSpec extends ObjectBehavior
         $writer->write(['p1', 'p2', 'p3'])->shouldBeCalled();
         $execution->incrementProcessedItems(3)->shouldBeCalledOnce();
 
-        $dispatcher->dispatch(EventInterface::ITEM_STEP_AFTER_BATCH, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
 
         // second batch
@@ -144,8 +144,8 @@ class ItemStepSpec extends ObjectBehavior
         $execution->isTerminateOnly()->willReturn(false);
 
         $execution->upgradeStatus(Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(EventInterface::STEP_EXECUTION_SUCCEEDED, Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(EventInterface::STEP_EXECUTION_COMPLETED, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_SUCCEEDED)->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_COMPLETED)->shouldBeCalled();
         $execution->setEndTime(Argument::any())->shouldBeCalled();
         $execution->setExitStatus(Argument::any())->shouldBeCalled();
 
@@ -166,7 +166,7 @@ class ItemStepSpec extends ObjectBehavior
         $execution->getStatus()->willReturn($status);
         $status->getValue()->willReturn(BatchStatus::STARTING);
 
-        $dispatcher->dispatch(EventInterface::BEFORE_STEP_EXECUTION, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::BEFORE_STEP_EXECUTION)->shouldBeCalled();
         $execution->setStartTime(Argument::any())->shouldBeCalled();
         $execution->setStatus(Argument::any())->shouldBeCalled();
         $jobStopper->isStopping($execution)->willReturn(false);
@@ -183,7 +183,7 @@ class ItemStepSpec extends ObjectBehavior
         $processor->process('r4')->shouldBeCalled()->willReturn('p4');
         $execution->incrementProcessedItems(1)->shouldBeCalledOnce();
 
-        $dispatcher->dispatch(EventInterface::ITEM_STEP_AFTER_BATCH, Argument::any())->shouldBeCalledTimes(2);
+        $dispatcher->dispatch(Argument::any(), EventInterface::ITEM_STEP_AFTER_BATCH)->shouldBeCalledTimes(2);
 
         $processor->process(null)->shouldNotBeCalled();
         $writer->write(['p4'])->shouldBeCalled();
@@ -194,8 +194,8 @@ class ItemStepSpec extends ObjectBehavior
         $execution->isTerminateOnly()->willReturn(false);
 
         $execution->upgradeStatus(Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(EventInterface::STEP_EXECUTION_SUCCEEDED, Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(EventInterface::STEP_EXECUTION_COMPLETED, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_SUCCEEDED)->shouldBeCalled();
+        $dispatcher->dispatch(Argument::any(), EventInterface::STEP_EXECUTION_COMPLETED)->shouldBeCalled();
         $execution->setEndTime(Argument::any())->shouldBeCalled();
         $execution->setExitStatus(Argument::any())->shouldBeCalled();
 

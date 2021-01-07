@@ -179,7 +179,7 @@ abstract class AbstractStep implements StepInterface
     protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
     {
         $event = new StepExecutionEvent($stepExecution);
-        $this->dispatch($eventName, $event);
+        $this->dispatch($event, $eventName);
     }
 
     /**
@@ -193,17 +193,11 @@ abstract class AbstractStep implements StepInterface
     protected function dispatchInvalidItemEvent($class, $reason, array $reasonParameters, InvalidItemInterface $item)
     {
         $event = new InvalidItemEvent($item, $class, $reason, $reasonParameters);
-        $this->dispatch(EventInterface::INVALID_ITEM, $event);
+        $this->dispatch($event, EventInterface::INVALID_ITEM);
     }
 
-    /**
-     * Generic batch event dispatcher
-     *
-     * @param string $eventName Name of the event
-     * @param Event  $event     Event object
-     */
-    private function dispatch($eventName, Event $event)
+    private function dispatch(Event $event, $eventName)
     {
-        $this->eventDispatcher->dispatch($eventName, $event);
+        $this->eventDispatcher->dispatch($event, $eventName);
     }
 }

@@ -225,8 +225,8 @@ class AttributeGroupController
         $this->saver->save($attributeGroup);
 
         $this->eventDispatcher->dispatch(
-            AttributeGroupEvents::POST_SAVE,
-            new GenericEvent($attributeGroup, ['data' => $data])
+            new GenericEvent($attributeGroup, ['data' => $data]),
+            AttributeGroupEvents::POST_SAVE
         );
 
         return new JsonResponse(
@@ -290,8 +290,8 @@ class AttributeGroupController
         }
 
         $this->eventDispatcher->dispatch(
-            AttributeGroupEvents::POST_SAVE,
-            new GenericEvent($attributeGroup, ['data' => $data])
+            new GenericEvent($attributeGroup, ['data' => $data]),
+            AttributeGroupEvents::POST_SAVE
         );
 
         return new JsonResponse(
