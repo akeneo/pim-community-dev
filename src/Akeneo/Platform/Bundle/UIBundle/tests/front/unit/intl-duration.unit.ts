@@ -1,19 +1,23 @@
 import {formatSecondsIntl} from 'pimui/js/intl-duration';
 
-jest.mock('oro/translator', () => (key: string, _params: any, count: number): string => {
-  switch (key) {
-    case 'duration.days':
-      return `${count} day(s)`;
-    case 'duration.hours':
-      return `${count} hour(s)`;
-    case 'duration.minutes':
-      return `${count} minute(s)`;
-    case 'duration.seconds':
-      return `${count} second(s)`;
-    default:
-      return key;
-  }
-});
+jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useTranslate', () => ({
+  useTranslate: () => {
+    return jest.fn((key: string, _params: any, count: number) => {
+      switch (key) {
+        case 'duration.days':
+          return `${count} day(s)`;
+        case 'duration.hours':
+          return `${count} hour(s)`;
+        case 'duration.minutes':
+          return `${count} minute(s)`;
+        case 'duration.seconds':
+          return `${count} second(s)`;
+        default:
+          return key;
+      }
+    });
+  },
+}));
 
 const createDuration = (days: number, hours: number, minutes: number, seconds: number): number => {
   return seconds + minutes * 60 + hours * 3600 + days * 86400;

@@ -8,10 +8,10 @@ import {JobExecutionProgress} from './Progress';
 import {Dropdown} from './Dropdown';
 import {ShowProfile} from './ShowProfile';
 import styled, {ThemeContext} from 'styled-components';
-import {JobExecution} from './model/job-execution';
+import {getDownloadLinks, JobExecution} from './model/job-execution';
 import {useParams} from 'react-router-dom';
 import {FullScreenError} from '@akeneo-pim-community/shared';
-import {useJobExecution} from "./hook/use-job-execution";
+import {useJobExecution} from './hook/use-job-execution';
 
 const SecondaryActionsButton = styled(IconButton)`
   opacity: 0.5;
@@ -19,11 +19,6 @@ const SecondaryActionsButton = styled(IconButton)`
     opacity: 1;
   }
 `;
-
-type DownloadLink = {
-  label: string;
-  url: string;
-};
 
 const canDownloadLog = (jobExecution: JobExecution | null) => {
   const {isGranted} = useSecurity();
@@ -55,39 +50,6 @@ const canDownloadArchive = (jobExecution: JobExecution | null) => {
   return true;
 };
 
-const getDownloadLinks = (jobExecution: JobExecution | null): DownloadLink[] => {
-  const translate = useTranslate();
-  const router = useRouter();
-
-  if (!jobExecution || !jobExecution.meta.archives) {
-    return [];
-  }
-
-  let downloadLinks: DownloadLink[] = [];
-  const archives = jobExecution.meta.archives;
-  Object.keys(archives).forEach(archiver => {
-    const archive = archives[archiver];
-    let label: string | null = null;
-    const fileNames = Object.keys(archive.files);
-    if (fileNames.length === 1) {
-      label = translate(archive.label);
-    }
-
-    fileNames.forEach(fileName => {
-      downloadLinks.push({
-        label: null === label ? fileName : label,
-        url: router.generate('pim_enrich_job_tracker_download_file', {
-          id: jobExecution.meta.id,
-          archiver: archiver,
-          key: fileName,
-        }),
-      });
-    });
-  });
-
-  return downloadLinks;
-};
-
 const ExecutionDetail = () => {
   const translate = useTranslate();
   const router = useRouter();
@@ -99,10 +61,10 @@ const ExecutionDetail = () => {
 
   const handleStop = async () => {
     await reloadJobExecution();
-  }
+  };
 
   const downloadLogIsVisible = canDownloadLog(jobExecution);
-  const downloadArchiveLinks = getDownloadLinks(jobExecution);
+  const downloadArchiveLinks = getDownloadLinks(jobExecution?.meta.archives ?? null);
   const downloadArchiveLinkIsVisible = canDownloadArchive(jobExecution) && downloadArchiveLinks.length > 0;
 
   const downloadArchiveTitle = translate('pim_enrich.entity.job_execution.module.download.output');
@@ -170,9 +132,17 @@ const ExecutionDetail = () => {
               onStop={handleStop}
             />
           )}
-          {downloadArchiveLinkIsVisible &&
+          {jobExecution &&
+            downloadArchiveLinkIsVisible &&
             (downloadArchiveLinks.length === 1 ? (
-              <Button level="secondary" href={downloadArchiveLinks[0].url}>
+              <Button
+                level="secondary"
+                href={router.generate('pim_enrich_job_tracker_download_file', {
+                  id: jobExecution.meta.id,
+                  archiver: downloadArchiveLinks[0].archiver,
+                  key: downloadArchiveLinks[0].key,
+                })}
+              >
                 {downloadArchiveTitle}
               </Button>
             ) : (
@@ -181,7 +151,14 @@ const ExecutionDetail = () => {
                 actionButton={<Button level="secondary">{downloadArchiveTitle}</Button>}
               >
                 {downloadArchiveLinks.map((link, index) => (
-                  <Link key={index} href={link.url}>
+                  <Link
+                    key={index}
+                    href={router.generate('pim_enrich_job_tracker_download_file', {
+                      id: jobExecution.meta.id,
+                      archiver: link.archiver,
+                      key: link.key,
+                    })}
+                  >
                     {link.label}
                   </Link>
                 ))}
