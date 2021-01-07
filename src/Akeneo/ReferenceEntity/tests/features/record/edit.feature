@@ -51,7 +51,7 @@ Feature: Edit an record
   Scenario: Record is not valid when enriching a localizable attribute value of a record without specifying the locale in the value
     Given a reference entity with a localizable attribute
     When the user updates the localizable attribute value of the record without specifying the locale
-    Then there should be a validation error on the property text attribute with message "A locale is expected for attribute "name" because it has a value per locale."
+    Then there should be a validation error on the property text attribute with message "The "name" attribute of the "designer" reference entity requires one value per locale."
 
   @acceptance-back
   Scenario: Record is not valid when enriching a not localizable attribute value of a record by specifying the locale in the value
@@ -79,7 +79,7 @@ Feature: Edit an record
     Given a reference entity with a scopable attribute
     And a record belonging to this reference entity with a value for the ecommerce channel
     When the user enriches a scopable attribute value of a record without specifying the channel
-    Then there should be a validation error on the property text attribute with message "A channel is expected for attribute "name" because it has a value per channel."
+    Then there should be a validation error on the property text attribute with message "The "name" attribute of the "designer" reference entity requires one value per channel."
 
   @acceptance-back
   Scenario: Record is not valid when enriching a not scopable attribute value by specifying the channel in the value

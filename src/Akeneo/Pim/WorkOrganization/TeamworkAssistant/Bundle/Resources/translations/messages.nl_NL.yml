@@ -11,6 +11,7 @@ teamwork_assistant:
     project_finished:
       show: Toon
     due_date:
+      owner: 'Het project <strong>%project_label%</strong> gepland voor <strong>%due_date%</strong> is niet 100% klaar.'
       start: Start
   datagrid:
     contributor_in_progress: In uitvoering

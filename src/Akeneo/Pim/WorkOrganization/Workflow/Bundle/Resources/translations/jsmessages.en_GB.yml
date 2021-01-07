@@ -85,9 +85,6 @@ batch_jobs:
     perform.label: Xlsx published products grid context quick export
   publish_product:
     perform.label: Publish products
-  default_steps:
-    clean_attribute:
-      clean_draft: Clean proposals
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: New proposal

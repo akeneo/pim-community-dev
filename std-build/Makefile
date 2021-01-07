@@ -2,7 +2,7 @@
 # This file is a template Makefile. Some targets are presented here as examples.
 # Feel free to customize it to your needs!
 #
-CMD_ON_PROJECT = docker-compose run -u www-data -e COMPOSER_AUTH -e APP_ENV=$(APP_ENV) --rm php
+CMD_ON_PROJECT = docker-compose run -u www-data -e COMPOSER_AUTH --rm php
 PHP_RUN = $(CMD_ON_PROJECT) php
 YARN_RUN = docker-compose run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD node yarn
 
@@ -12,15 +12,17 @@ ifdef NO_DOCKER
   PHP_RUN = php
 endif
 
-APP_ENV := prod_onprem
 .DEFAULT_GOAL := dev
-
 
 yarn.lock: package.json
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) install
 
 node_modules: yarn.lock
 	PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 $(YARN_RUN) install
+
+.PHONY: javascript-extensions
+javascript-extensions:
+	$(YARN_RUN) run update-extensions
 
 .PHONY: dsm
 dsm:
@@ -37,17 +39,15 @@ css:
 	$(CMD_ON_PROJECT) rm -rf public/css
 	$(YARN_RUN) run less
 
-.PHONY: javascript
-javascript: dsm
+.PHONY: javascript-prod
+javascript-prod: dsm
 	$(CMD_ON_PROJECT) rm -rf public/dist
-ifeq "$(APP_ENV)" "dev"
-	$(YARN_RUN) run webpack-dev
-else
 	$(YARN_RUN) run webpack
-endif
 
-.PHONY: front
-front: assets css javascript
+.PHONY: javascript-dev
+javascript-dev: dsm
+	$(CMD_ON_PROJECT) rm -rf public/dist
+	$(YARN_RUN) run webpack-dev
 
 .PHONY: database
 database:
@@ -69,46 +69,53 @@ dependencies: vendor node_modules
 
 .PHONY: dev
 dev:
-	$(MAKE) dependencies APP_ENV=dev
+	$(MAKE) dependencies
 	$(MAKE) pim-dev
 
 .PHONY: prod
 prod:
-	$(MAKE) dependencies APP_ENV=$(APP_ENV)
-	$(MAKE) pim-prod_onprem
+	$(MAKE) dependencies
+	$(MAKE) pim-prod
 
-.PHONY: pim-prod_onprem
-pim-prod_onprem:
-pim-prod_onprem: APP_ENV=prod_onprem
-pim-prod_onprem: CATALOG=--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
-pim-prod_onprem: pim-env
-
-.PHONY: pim-prod_flex
-pim-prod_flex:
-pim-prod_flex: APP_ENV=prod_flex
-pim-prod_flex: CATALOG=--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
-pim-prod_flex: pim-env
-
-.PHONY: pim-dev
-pim-dev: APP_ENV=dev
-pim-dev: CATALOG=--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
-pim-dev: pim-env
-
-.PHONY: pim-env
-pim-env:
-ifndef $(NO_DOCKER)
-	$(MAKE) up
+.PHONY: pim-prod
+pim-prod:
+ifndef NO_DOCKER
+	APP_ENV=prod $(MAKE) up
 	docker/wait_docker_up.sh
 endif
-	$(MAKE) cache APP_ENV=$(APP_ENV)
-	$(MAKE) assets APP_ENV=$(APP_ENV)
-	$(MAKE) javascript APP_ENV=$(APP_ENV)
-	$(MAKE) database O="$(CATALOG)" APP_ENV=$(APP_ENV)
+	$(MAKE) cache
+	$(MAKE) assets
+	$(MAKE) javascript-prod
+	$(MAKE) css
+	$(MAKE) javascript-extensions
+	APP_ENV=prod $(MAKE) database O="--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal"
+
+.PHONY: pim-dev
+pim-dev:
+ifndef NO_DOCKER
+	APP_ENV=dev $(MAKE) up
+	docker/wait_docker_up.sh
+endif
+	$(MAKE) cache
+	$(MAKE) assets
+	$(MAKE) javascript-dev
+	$(MAKE) css
+	$(MAKE) javascript-extensions
+	APP_ENV=dev $(MAKE) database O="--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
 
 .PHONY: up
 up:
-	APP_ENV=$(APP_ENV) docker-compose up -d --remove-orphan
+	docker-compose up -d --remove-orphan
 
 .PHONY: down
 down:
 	docker-compose down -v
+
+.PHONY: upgrade-front
+upgrade-front:
+	$(MAKE) node_modules
+	$(MAKE) cache
+	$(MAKE) assets
+	$(MAKE) javascript-prod
+	$(MAKE) css
+	$(MAKE) javascript-extensions

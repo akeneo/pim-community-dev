@@ -257,10 +257,10 @@ memcached:
   pdbMinAvailable: 0
 
 elasticsearch:
-  appVersion: 7.10.0
+  appVersion: 7.10.1
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch-oss
-    tag: 7.10.0
+    tag: 7.10.1
   fullnameOverride: elasticsearch
   sysctlInitContainer:
     enabled: false

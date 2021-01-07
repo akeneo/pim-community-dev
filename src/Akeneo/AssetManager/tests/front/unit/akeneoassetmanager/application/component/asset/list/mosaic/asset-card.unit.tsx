@@ -5,6 +5,8 @@ import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosai
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 
 const flushPromises = () => new Promise(setImmediate);
+const routing = require('routing');
+jest.mock('routing');
 
 const asset = {
   code: 'iphone',
@@ -148,6 +150,10 @@ describe('Test Asset create modal component', () => {
   });
 
   test('It displays nothing if the asset fetch failed', async () => {
+    routing.generate = jest
+      .fn()
+      .mockImplementation((route: string, parameters: any) => route + '?' + new URLSearchParams(parameters).toString());
+
     loadImage.mockImplementation(
       url =>
         new Promise((resolve, reject) => {
@@ -168,7 +174,13 @@ describe('Test Asset create modal component', () => {
       await flushPromises();
     });
 
-    expect(screen.queryByTestId('asset-card-image')).not.toBeInTheDocument();
+    const image = screen.queryByTestId('asset-card-image');
+
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute(
+      'src',
+      'akeneo_asset_manager_image_preview?type=thumbnail&attributeIdentifier=UNKNOWN&data='
+    );
     expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
   });
 });

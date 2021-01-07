@@ -15,7 +15,6 @@ if [[ ${TYPE} == "" ]]; then
         TYPE="srnt"
 fi
 
-
 #
 PFID="${TYPE}-${INSTANCE_NAME}"
 GOOGLE_PROJECT_ID="${GOOGLE_PROJECT_ID:-akecld-saas-dev}"
@@ -31,7 +30,6 @@ yq w -j -P -i ${PWD}/main.tf.json module.pim.force_destroy_storage true
 terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_file.kubeconfig
 terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.google_storage_bucket.srnt_bucket
 
-
 echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig
 (helm list "${PFID}" | grep "${PFID}") && helm delete --purge ${PFID} || true
@@ -44,33 +42,23 @@ if [[ $GOOGLE_PROJECT_ID == "akecld-saas-dev" || $GOOGLE_PROJECT_ID == "akecld-o
 fi
 echo gsutil -m rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}
 
-echo "4 - Purging snapshots : [NOT ACTIVATED]"
-#SNAP_LIST=$(gcloud compute snapshots list --project ${GOOGLE_PROJECT_ID} --filter="labels.backup-ns=${PFID}" --uri)
-#for item in $SNAP_LIST
-#do
-#        gcloud compute snapshots delete --project ${GOOGLE_PROJECT_ID} "${item}" --quiet
-#done
-
 echo "5 - Delete disks"
-PV_NAME=$(kubectl get -n ${PFID} pvc -l role=mysql-server -o jsonpath='{.items[*].spec.volumeName}')
-if [ -n "${PV_NAME}" ]; then
-        PD_NAME=$(kubectl get pv "${PV_NAME}" -o jsonpath='{..spec.gcePersistentDisk.pdName}')
-        echo "PV/PD ${PV_NAME} / ${PD_NAME} will be deleted"
-fi
-kubectl delete all,pvc --all -n ${PFID} --force --grace-period=0 && echo "kubectl delete all,pvc forced OK" || echo "WARNING: FAILED kubectl delete all,pvc --all -n ${PFID} --force --grace-period=0"
-if [ -n "${PV_NAME}" ]; then kubectl delete pv ${PV_NAME}  && echo "SUCCEED to delete pv ${PV_NAME}" || echo "FAILED to delete pv ${PV_NAME}"; fi
-if [ -n "${PD_NAME}" ]; then
-	for i in {1..6}; do
-		gcloud --quiet compute disks delete ${PD_NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_CLUSTER_ZONE} && break || sleep 10
-	done
-fi
+LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]')
 
-if [[ $GOOGLE_PROJECT_ID != "akecld-saas-dev" && $GOOGLE_PROJECT_ID != "akecld-onboarder-dev" ]]; then
-        echo "6 - Git persist"
-        rm -rf ${NAMESPACE_PATH}
-        git rm -rf --ignore-unmatch ${NAMESPACE_PATH}
-        git rm --ignore-unmatch delete_me.yaml
-        git commit -m "Remove terraform resources for ${PFID}"
-        git pull
-        git push
-fi
+while read PV_NAME; do
+  if [ -n "${PV_NAME}" ]; then
+      PD_NAME=$(kubectl get pv "${PV_NAME}" -o jsonpath='{..spec.gcePersistentDisk.pdName}')
+      echo "PV/PD ${PV_NAME} / ${PD_NAME} will be deleted"
+  fi
+
+  if [ -n "${PV_NAME}" ]; then
+    kubectl delete pv ${PV_NAME} --ignore-not-found=true && echo "SUCCEED to delete pv ${PV_NAME}" || echo "FAILED to delete pv ${PV_NAME}"
+  fi
+  if [ -n "${PD_NAME}" ]; then
+    for i in {1..6}; do
+      DISK_URI=$(gcloud compute disks list --filter="name=(${PD_NAME}) AND zone:(${GOOGLE_CLUSTER_ZONE})" --project ${GOOGLE_PROJECT_ID} --uri --quiet)
+      if [ -z "$DISK_URI" ]; then break; fi
+      gcloud --quiet compute disks delete ${DISK_URI} && break || sleep 30
+    done
+  fi
+done <<< $LIST_PV_NAME
