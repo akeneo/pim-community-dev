@@ -1,6 +1,6 @@
 import React, {ReactNode, useRef, useState, useEffect} from 'react';
 import styled, {css} from 'styled-components';
-import {Key} from '../../../shared/key';
+import {Key} from '../../../shared';
 import {useShortcut} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 
@@ -110,5 +110,4 @@ const Overlay = ({verticalPosition: defaultVerticalPosition, onClose, children}:
   );
 };
 
-Overlay.displayName = 'Dropdown.Overlay';
 export {Overlay};

@@ -12,6 +12,9 @@ const ItemCollectionContainer = styled.div`
 type ItemCollectionProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
+    /**
+     * The list of item
+     */
     children: ReactNode;
   }
 >;
