@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dec3653c0266f7c9c8d556042e8d65b6",
+    "content-hash": "038bef167c1f3a982973e99cc0c70ea2",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -337,20 +337,20 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "1.10.2",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "13e3381b25847283a91948d04640543941309727"
+                "reference": "89a5c76c39c292f7798f964ab3c836c3f8192a55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/13e3381b25847283a91948d04640543941309727",
-                "reference": "13e3381b25847283a91948d04640543941309727",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/89a5c76c39c292f7798f964ab3c836c3f8192a55",
+                "reference": "89a5c76c39c292f7798f964ab3c836c3f8192a55",
                 "shasum": ""
             },
             "require": {
-                "php": "~7.1 || ^8.0"
+                "php": "~7.1"
             },
             "conflict": {
                 "doctrine/common": ">2.2,<2.4"
@@ -413,27 +413,14 @@
                 "memcached",
                 "php",
                 "redis",
+                "riak",
                 "xcache"
             ],
             "support": {
                 "issues": "https://github.com/doctrine/cache/issues",
-                "source": "https://github.com/doctrine/cache/tree/1.10.x"
+                "source": "https://github.com/doctrine/cache/tree/1.9.1"
             },
-            "funding": [
-                {
-                    "url": "https://www.doctrine-project.org/sponsorship.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.patreon.com/phpdoctrine",
-                    "type": "patreon"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/doctrine%2Fcache",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2020-07-07T18:54:01+00:00"
+            "time": "2019-11-15T14:31:57+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -2743,16 +2730,16 @@
         },
         {
             "name": "google/gax",
-            "version": "1.6.1",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/gax-php.git",
-                "reference": "dbf534f579f14148c046c4065b98b7bc377c194a"
+                "reference": "a2d48062b0ac0433da463a1f7c77ab672bbbfa08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/dbf534f579f14148c046c4065b98b7bc377c194a",
-                "reference": "dbf534f579f14148c046c4065b98b7bc377c194a",
+                "url": "https://api.github.com/repos/googleapis/gax-php/zipball/a2d48062b0ac0433da463a1f7c77ab672bbbfa08",
+                "reference": "a2d48062b0ac0433da463a1f7c77ab672bbbfa08",
                 "shasum": ""
             },
             "require": {
@@ -2790,9 +2777,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/gax-php/issues",
-                "source": "https://github.com/googleapis/gax-php/tree/1.6.1"
+                "source": "https://github.com/googleapis/gax-php/tree/1.7.0"
             },
-            "time": "2020-12-15T22:49:17+00:00"
+            "time": "2021-01-06T16:47:47+00:00"
         },
         {
             "name": "google/grpc-gcp",
@@ -10487,16 +10474,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.171.12",
+            "version": "3.171.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "2a575d8336a6005fcd7b8c3d54783ee5ddc3ceac"
+                "reference": "faa2936a85d83e727e18326a0f036f15855f69bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/2a575d8336a6005fcd7b8c3d54783ee5ddc3ceac",
-                "reference": "2a575d8336a6005fcd7b8c3d54783ee5ddc3ceac",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/faa2936a85d83e727e18326a0f036f15855f69bd",
+                "reference": "faa2936a85d83e727e18326a0f036f15855f69bd",
                 "shasum": ""
             },
             "require": {
@@ -10571,9 +10558,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.171.12"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.171.13"
             },
-            "time": "2021-01-05T19:12:58+00:00"
+            "time": "2021-01-06T19:14:50+00:00"
         },
         {
             "name": "behat/behat",
@@ -12678,16 +12665,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.12.64",
+            "version": "0.12.65",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "23eb1cb7ae125f45f1d0e48051bcf67a9a9b08aa"
+                "reference": "1c7658668b28f8d647a8b874372acf14c4352688"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/23eb1cb7ae125f45f1d0e48051bcf67a9a9b08aa",
-                "reference": "23eb1cb7ae125f45f1d0e48051bcf67a9a9b08aa",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1c7658668b28f8d647a8b874372acf14c4352688",
+                "reference": "1c7658668b28f8d647a8b874372acf14c4352688",
                 "shasum": ""
             },
             "require": {
@@ -12718,7 +12705,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/0.12.64"
+                "source": "https://github.com/phpstan/phpstan/tree/0.12.65"
             },
             "funding": [
                 {
@@ -12734,7 +12721,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-12-21T11:59:02+00:00"
+            "time": "2021-01-06T16:51:10+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
