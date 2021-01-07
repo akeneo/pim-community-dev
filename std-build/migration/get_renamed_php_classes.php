@@ -31,22 +31,12 @@ USAGE
 
 $tag = $argv[1];
 
-$filesToAdd = [];
-
 $renamedClassRectors = [];
 
-if (isset($argv[2])) {
-    $filesToAdd = array_slice($argv, 2);
-
-    foreach ($filesToAdd as $fileToAdd) {
-        $lines = explode("\n", file_get_contents($fileToAdd));
-        foreach ($lines as $line) {
-            if (preg_match("/^            ('.+)$/", $line, $matches)) {
-                $renamedClassRectors[] = $matches[1];
-            }
-        }
-
-    }
+foreach (array_slice($argv, 2) as $fileToAdd) {
+    $renamedClassRectors = array_merge(
+            $renamedClassRectors,
+            require_once($fileToAdd));
 }
 
 $process = new Process(['git', '-c', 'diff.renameLimit=10000', 'diff', $tag]);
@@ -124,7 +114,7 @@ while ($line = fgets($stream)) {
 
 file_put_contents(
     "renamed-classes.php",
-    " return ". var_export($renamedClassRectors,true) .";");
+    "<?php \n return " . var_export($renamedClassRectors, true) . ";");
 
 function isRelevantPhpClass(string $filePath): bool
 {
