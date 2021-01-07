@@ -54,6 +54,8 @@ const TreeLoaderIcon = styled(LoaderIcon)`
 const TreeLine = styled.div<{$selected: boolean} & AkeneoThemedProps>`
   height: 40px;
   line-height: 40px;
+  overflow: hidden;
+  width: 100%;
   ${({$selected}) =>
     $selected &&
     css`
@@ -89,6 +91,11 @@ const LabelWithFolder = styled.button<{$selected: boolean} & AkeneoThemedProps>`
   cursor: pointer;
   padding: 0 5px 0 0;
   cursor: pointer;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: calc(100% - 35px);
+  text-align: left;
+  white-space: nowrap;
   ${({$selected}) =>
     $selected &&
     css`
@@ -207,7 +214,7 @@ const Tree = <T,>({
 
         {selectable && <NodeCheckbox checked={selected} onChange={handleSelect} readOnly={readOnly} />}
 
-        <LabelWithFolder onClick={handleClick} $selected={selected}>
+        <LabelWithFolder onClick={handleClick} $selected={selected} title={label}>
           <TreeIcon isLoading={isLoading} isLeaf={isLeaf} selected={selected} />
           {label}
         </LabelWithFolder>
