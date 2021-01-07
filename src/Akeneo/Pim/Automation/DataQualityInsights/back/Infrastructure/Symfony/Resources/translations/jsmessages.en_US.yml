@@ -94,3 +94,11 @@ akeneo_data_quality_insights:
     product_grid:
         filter_label:
             spelling_quality: Spelling quality
+
+pimee_enrich.entity.locale:
+    grid:
+        columns:
+            dictionary_words_count:
+                title: Number of words
+                label: "]-Inf, 1]{{ count }} word|]1, Inf[{{ count }} words"
+                not_available: Not available

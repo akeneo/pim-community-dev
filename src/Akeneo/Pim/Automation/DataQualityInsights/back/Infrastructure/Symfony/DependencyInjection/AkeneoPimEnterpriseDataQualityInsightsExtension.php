@@ -37,5 +37,6 @@ final class AkeneoPimEnterpriseDataQualityInsightsExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('services.yml');
         $loader->load('subscribers.yml');
+        $loader->load('feature_flags.yml');
     }
 }
