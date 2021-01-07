@@ -3,21 +3,35 @@ import {fetchLocaleDictionary} from '../../../fetcher';
 import {Word} from '../../../../domain';
 
 type DictionaryState = {
-  words: Word[],
-  totalWords: number,
+  localeCode: string;
+  dictionary: Word[] | null;
+  totalWords: number;
+  itemsPerPage: number;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
 };
 
-const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: number) => {
-  const [dictionary, setDictionary] = useState<DictionaryState|null>(null);
+const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: number): DictionaryState => {
+  const [dictionary, setDictionary] = useState<Word[]|null>(null);
+  const [totalWords, setTotalWords] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(page);
 
   useEffect(() => {
     (async () => {
-      const data = await fetchLocaleDictionary(localeCode, page, itemsPerPage);
-      setDictionary(data);
+      const data = await fetchLocaleDictionary(localeCode, currentPage, itemsPerPage);
+      setDictionary(data.results);
+      setTotalWords(data.total);
     })();
-  }, [localeCode]);
+  }, [localeCode, currentPage, itemsPerPage]);
 
-  return dictionary;
+  return {
+    localeCode,
+    dictionary,
+    totalWords,
+    itemsPerPage,
+    currentPage,
+    setCurrentPage,
+  };
 };
 
 export {DictionaryState, useLocaleDictionary};

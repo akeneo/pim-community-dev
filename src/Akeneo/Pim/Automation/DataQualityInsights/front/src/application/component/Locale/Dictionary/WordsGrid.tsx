@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {Table, IconButton, CloseIcon, Pagination} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
@@ -6,34 +6,37 @@ import {Word} from '../../../../domain';
 import {SearchBar} from '@akeneo-pim-community/shared';
 import {NoSearchResults} from './NoSearchResults';
 import {NoData} from './NoData';
+import {useDictionaryState} from '../../../../infrastructure';
 
-type WordsGridProps = {
-  words: Word[];
-};
-
-const WordsGrid: FC<WordsGridProps> = ({words}) => {
+const WordsGrid: FC = () => {
   const translate = useTranslate();
-  const [page, setPage] = useState<number>(1);
+  const {dictionary, totalWords, itemsPerPage, setCurrentPage, currentPage} = useDictionaryState();
+
   const searchString = '';
+
+  if (dictionary === null) {
+    return <></>;
+  }
 
   return (
     <>
       <>
-        {words.length && searchString === '' ?
-          <WordsSearchBar
-            count={words.length}
-            searchValue={searchString}
-            placeholder={translate('akeneo_data_quality_insights.dictionary.searchPlaceholder')}
-            onSearchChange={() => console.log('search')}
-          /> :
+        {totalWords > 0 ?
+          <>
+            <WordsSearchBar
+              count={Object.keys(dictionary).length}
+              searchValue={searchString}
+              placeholder={translate('akeneo_data_quality_insights.dictionary.searchPlaceholder')}
+              onSearchChange={() => console.log('search')}
+            />
+            <Pagination onClick={setCurrentPage} currentPage={currentPage} totalItems={totalWords} itemsPerPage={itemsPerPage}/>
+          </>:
           <></>
         }
       </>
 
-      <Pagination onClick={setPage} currentPage={page} itemsTotal={words.length} itemsPerPage={1}/>
-
       <>
-        {words.length === 0 ?
+        {Object.keys(dictionary).length === 0 ?
           (searchString !== '' ? <NoSearchResults/> : <NoData/>) :
           <Table>
             <Table.Header>
@@ -43,7 +46,7 @@ const WordsGrid: FC<WordsGridProps> = ({words}) => {
               <Table.HeaderCell/>
             </Table.Header>
             <Table.Body>
-              {words.map((word: Word) => {
+              {Object.values(dictionary).map((word: Word) => {
                 return (
                   <Table.Row key={`word-${word.id}`} onClick={() => console.log('test')}>
                     <Table.Cell rowTitle={true}>

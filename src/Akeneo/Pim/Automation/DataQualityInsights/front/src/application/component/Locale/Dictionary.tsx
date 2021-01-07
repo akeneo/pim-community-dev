@@ -2,16 +2,12 @@ import React, {FC} from 'react';
 import {Helper} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AddWordsForm} from './Dictionary/AddWordsForm';
-import {useLocaleDictionary} from '../../../infrastructure';
+import {useDictionaryState} from '../../../infrastructure';
 import {WordsGrid} from './Dictionary/WordsGrid';
 
-type DictionaryProps = {
-  localeCode: string;
-};
-
-const Dictionary: FC<DictionaryProps> = ({localeCode}) => {
+const Dictionary: FC = () => {
   const translate = useTranslate();
-  const words = useLocaleDictionary(localeCode);
+  const {dictionary} = useDictionaryState();
 
   return <>
     <Helper>
@@ -22,7 +18,7 @@ const Dictionary: FC<DictionaryProps> = ({localeCode}) => {
 
     <AddWordsForm/>
 
-    {words !== null ? <WordsGrid words={words}/> : <></>}
+    {dictionary !== null ? <WordsGrid/> : <></>}
   </>;
 };
 

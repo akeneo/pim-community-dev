@@ -1,18 +1,22 @@
 import React, {createContext, FC} from 'react';
 import {DictionaryState, useLocaleDictionary} from '../../../infrastructure';
 
-const LocalesIndexContext = createContext<DictionaryState>({
-  words: [],
+const DictionaryContext = createContext<DictionaryState>({
+  localeCode: '',
+  dictionary: [],
   totalWords: 0,
+  itemsPerPage: 1,
+  currentPage: 1,
+  setCurrentPage: (page: number) => page,
 });
 
-type LocalesIndexProviderProps = {
+type DictionaryProviderProps = {
   localeCode: string;
 }
 
-const LocalesIndexProvider: FC<LocalesIndexProviderProps> = ({localeCode, children}) => {
-  const state = useLocaleDictionary();
-  return <LocalesIndexContext.Provider value={state}>{children}</LocalesIndexContext.Provider>;
+const DictionaryProvider: FC<DictionaryProviderProps> = ({localeCode, children}) => {
+  const state = useLocaleDictionary(localeCode, 1, 25);
+  return <DictionaryContext.Provider value={state}>{children}</DictionaryContext.Provider>;
 };
 
-export {LocalesIndexProvider, DictionaryState, LocalesIndexContext};
+export {DictionaryProvider, DictionaryContext};
