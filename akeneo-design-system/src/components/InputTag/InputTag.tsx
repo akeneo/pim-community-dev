@@ -18,6 +18,8 @@ type InputTagProps = {
 const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
     const [tags, setTags] = useState<string[]>(defaultTags);
     const inputRef = useRef();
+    const containerRef = useRef();
+    const inputContainerRef = useRef();
 
     const addTag = (event: ChangeEvent<HTMLInputElement>) => {
         let tagsAsString = event.currentTarget.value;
@@ -43,7 +45,11 @@ const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
         setTags(newTags);
     }
 
-    return <TagContainer>
+    const focusOnInputText = (event: any, ref: any) => {
+        ref.current && ref.current === event.target && inputRef.current ? inputRef.current.focus() : null
+    }
+
+    return <TagContainer ref={containerRef} onClick={(event: any) => focusOnInputText(event, containerRef)}>
         {tags.map((tag, key) => {
             return (
               <Tag key={key} data-testid={'tag'}>
@@ -52,7 +58,7 @@ const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
               </Tag>
             );
         })}
-        <Tag key='inputer'>
+        <Tag key='inputer' ref={inputContainerRef} onClick={(event: any) => focusOnInputText(event, inputContainerRef)}>
             <input type='text' data-testid={'tag-input'} ref={inputRef} onChange={addTag}/>
         </Tag>
     </TagContainer>;
@@ -73,14 +79,15 @@ const RemoveWordIcon = styled(CloseIcon)<AkeneoThemedProps>`
 const TagContainer = styled.ul<AkeneoThemedProps>`
     border: 1px ${getColor('grey', 80)} solid;
     border-radius: 2px;
-    padding: 6px 5px;
+    padding: 5px 5px 0px 5px;
     display: flex;
+    flex-wrap: wrap;
 `;
 
 const Tag = styled.li<AkeneoThemedProps>`
     list-style-type: none;
     padding: 9px 5px;
-    margin-right: 5px;
+    margin: 0 5px 5px 0;
     border: 1px ${getColor('grey', 80)} solid;
     background-color: ${getColor('grey', 20)};
     text-transform: capitalize;
