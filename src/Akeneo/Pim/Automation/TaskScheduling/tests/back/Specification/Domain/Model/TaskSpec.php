@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\TaskScheduling\Domain\Model;
 
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -14,17 +16,29 @@ class TaskSpec extends ObjectBehavior
 {
     function it_can_be_enabled()
     {
-        $this->beConstructedWith('task-code', 'bin/console list', '* * * * *', false);
+        $this->beConstructedThrough('create', [[
+            'id' => TaskId::fromString(Uuid::uuid4()->toString()),
+            'code' => 'task-code',
+            'command' => 'bin/console list',
+            'schedule' => '* * * * *',
+            'enabled' => false,
+        ]]);
         $this->isEnabled()->shouldBe(false);
-        $this->enable();
-        $this->isEnabled()->shouldBe(true);
+        $task = $this->enable();
+        $task->isEnabled()->shouldBe(true);
     }
 
     function it_can_be_disabled()
     {
-        $this->beConstructedWith('task-code', 'bin/console list', '* * * * *', true);
+        $this->beConstructedThrough('create', [[
+            'id' => TaskId::fromString(Uuid::uuid4()->toString()),
+            'code' => 'task-code',
+            'command' => 'bin/console list',
+            'schedule' => '* * * * *',
+            'enabled' => true,
+        ]]);
         $this->isEnabled()->shouldBe(true);
-        $this->disable();
-        $this->isEnabled()->shouldBe(false);
+        $task = $this->disable();
+        $task->isEnabled()->shouldBe(false);
     }
 }
