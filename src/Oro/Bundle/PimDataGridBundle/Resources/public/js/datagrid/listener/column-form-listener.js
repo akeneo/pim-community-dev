@@ -2,8 +2,9 @@ define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listen
   $,
   _,
   mediator,
-  OroColumnFormListener
-, SecurityContext) {
+  OroColumnFormListener,
+  SecurityContext
+) {
   'use strict';
 
   /**
@@ -28,19 +29,21 @@ define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listen
             this.setStateFromCollection(collection);
 
             if (this.isEnabled()) {
-                            this.$el.html(this.$checkbox);this.$checkbox.on(
-              'click',
-              _.bind(function () {
-                var state = this.$checkbox.is(':checked');
-                _.each(
-                  collection.models,
-                  function (model) {
-                    model.set(this.columnName, state);
-                  },
-                  this
-                    );
-              }, this)
-            );
+              this.$el.html(this.$checkbox);
+              this.$checkbox.on(
+                'click',
+                _.bind(function () {
+                  var state = this.$checkbox.is(':checked');
+                  _.each(
+                    collection.models,
+                    function (model) {
+                      model.set(this.columnName, state);
+                    },
+                    this
+                  );
+                }, this)
+              );
+            }
           }
         },
         this
@@ -71,12 +74,13 @@ define(['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listen
     },
 
     isEnabled: function () {
-                if (undefined === this.attributes?.acl_resource){
-                    return true;
-                }
+      if (undefined === this.attributes?.acl_resource) {
+        return true;
+      }
 
-                return SecurityContext.isGranted(this.attributes.acl_resource);
-            },_explode: function (string) {
+      return SecurityContext.isGranted(this.attributes.acl_resource);
+    },
+    _explode: function (string) {
       if (!string) {
         return [];
       }
