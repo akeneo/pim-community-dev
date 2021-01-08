@@ -13,7 +13,7 @@ const DropdownContainer = styled.div`
 
 type DropdownProps = {
   /**
-   * The content of the Dropdown
+   * The content of the Dropdown.
    */
   children?: ReactNode;
 };

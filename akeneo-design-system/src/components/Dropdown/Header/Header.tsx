@@ -15,7 +15,7 @@ type HeaderProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
     /**
-     * The content of the header
+     * The content of the header.
      */
     children: ReactNode;
   }

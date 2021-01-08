@@ -44,12 +44,12 @@ const Container = styled.div<
 
 type OverlayProps = {
   /**
-   * Vertical position of the overlay (forced)
+   * Vertical position of the overlay (forced).
    */
   verticalPosition?: VerticalPosition;
 
   /**
-   * What to do on overlay closing
+   * What to do on overlay closing.
    */
   onClose: () => void;
 

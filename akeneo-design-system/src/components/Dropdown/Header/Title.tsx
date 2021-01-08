@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import {getColor} from '../../../theme';
+import {getColor, getFontSize} from '../../../theme';
 import {Override} from '../../../shared';
 import React, {ReactNode, Ref} from 'react';
 
 const TitleContainer = styled.div`
-  font-size: 11px;
+  font-size: ${getFontSize('small')};
   text-transform: uppercase;
   color: ${getColor('brand', 100)};
   white-space: nowrap;
@@ -16,7 +16,7 @@ type TitleProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
     /**
-     * The title of the dropdown
+     * The title of the dropdown.
      */
     children: ReactNode;
   }

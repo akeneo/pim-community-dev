@@ -13,7 +13,7 @@ type ItemCollectionProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
     /**
-     * The list of item
+     * The list of items.
      */
     children: ReactNode;
   }

@@ -51,7 +51,7 @@ type ItemProps = Override<
   React.HTMLAttributes<HTMLDivElement>,
   {
     /**
-     * The content of the item
+     * The content of the item.
      */
     children: ReactNode;
   }
