@@ -32,6 +32,9 @@ final class Task
         $this->enabled = $enabled;
     }
 
+    /**
+     * @param array<mixed> $data
+     */
     public static function create(array $data): self
     {
         foreach (['id', 'code', 'command', 'schedule', 'enabled'] as $expectedKey) {
@@ -50,6 +53,11 @@ final class Task
     public function id(): TaskId
     {
         return $this->id;
+    }
+
+    public function code(): string
+    {
+        return $this->code;
     }
 
     public function isEnabled(): bool

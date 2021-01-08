@@ -13,3 +13,7 @@ task-scheduling-phpstan: var/cache/dev
 .PHONY: task-scheduling-lint-back
 task-scheduling-lint-back:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/Automation/TaskScheduling/back
+
+.PHONY: task-scheduling-acceptance-back
+task-scheduling-acceptance-back: var/tests/behat/automation/task-scheduling
+	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/Automation/TaskScheduling/tests/back/behat.yaml --format pim --out var/tests/behat/automation/task-scheduling --format progress --out std --colors

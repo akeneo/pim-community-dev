@@ -1,0 +1,4 @@
+services:
+  Akeneo\Pim\Automation\TaskScheduling\Application\Task\CreateTask\CreateTaskHandler:
+    arguments:
+      - '@Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository'

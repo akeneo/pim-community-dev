@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    public: true
+    autoconfigure: false
+    autowire: false
+
+  ## Contexts
+  Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Context\CreateTaskContext:
+    arguments:
+      - '@Akeneo\Pim\Automation\TaskScheduling\Application\Task\CreateTask\CreateTaskHandler'
+      - '@Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository'
+
+  Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Context\ExceptionContext: ~
+
+  ## Repositories
+  Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository:
+    class: 'Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Persistence\InMemoryTaskRepository'
