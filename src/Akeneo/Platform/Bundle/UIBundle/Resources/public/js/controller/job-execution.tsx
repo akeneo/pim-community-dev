@@ -2,6 +2,8 @@ import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 import {Index} from '../job/execution';
+import {ThemeProvider} from 'styled-components';
+import {pimTheme} from 'akeneo-design-system';
 
 const mediator = require('oro/mediator');
 
@@ -9,7 +11,9 @@ class JobExecutionController extends ReactController {
   reactElementToMount() {
     return (
       <DependenciesProvider>
-        <Index />
+        <ThemeProvider theme={pimTheme}>
+          <Index />
+        </ThemeProvider>
       </DependenciesProvider>
     );
   }

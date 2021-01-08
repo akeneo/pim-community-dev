@@ -1,9 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {renderHook} from '@testing-library/react-hooks';
 import {useJobExecution} from '../../../../../../Resources/public/js/job/execution/hook/use-job-execution';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge/src';
 import {act} from 'react-test-renderer';
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
 declare global {
   namespace NodeJS {
@@ -18,7 +17,6 @@ afterEach(() => {
   delete global.fetch;
 });
 
-const wrapper = ({children}) => <DependenciesProvider>{children}</DependenciesProvider>;
 const successResponse = {
   jobInstance: {
     code: 'csv_product_export',
@@ -47,7 +45,6 @@ const successResponse = {
     ],
   },
   meta: {
-    id: '24',
     logExists: false,
     archives: {
       output: {
@@ -74,7 +71,7 @@ test('It returns the fetched job execution', async () => {
     json: async () => successResponse,
   }));
 
-  const {result, waitForNextUpdate} = renderHook(() => useJobExecution('1'), {wrapper});
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecution('1'));
   await act(async () => {
     await waitForNextUpdate;
   });
@@ -92,7 +89,7 @@ test('It returns error when fetch return an error', async () => {
     status: 404,
   }));
 
-  const {result, waitForNextUpdate} = renderHook(() => useJobExecution('1'), {wrapper});
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecution('1'));
   await act(async () => {
     await waitForNextUpdate;
   });
@@ -112,7 +109,7 @@ test('It returns callback to reload job execution information', async () => {
     json: async () => successResponse,
   }));
 
-  const {result, waitForNextUpdate} = renderHook(() => useJobExecution('1'), {wrapper});
+  const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecution('1'));
   await act(async () => {
     await waitForNextUpdate;
   });

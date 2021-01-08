@@ -4,7 +4,7 @@ import {JobExecution} from '../model/job-execution';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge/src';
 
 type Error = {
-  statusMessage: any;
+  statusMessage: string;
   statusCode: number;
 };
 
