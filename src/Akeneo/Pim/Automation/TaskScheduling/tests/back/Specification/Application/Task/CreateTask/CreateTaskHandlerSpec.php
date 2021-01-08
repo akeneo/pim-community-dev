@@ -36,7 +36,7 @@ class CreateTaskHandlerSpec extends ObjectBehavior
             $expectedCommand = TaskCommand::fromString('bin/console list');
 
             return $task->code()->equals($expectedCode) && $task->command()->equals($expectedCommand) &&
-                $task->schedule() === '* * * * *' && true === $task->isEnabled();
+                $task->schedule()->asString() === '* * * * *' && true === $task->isEnabled();
         }))->shouldBeCalled();
 
         $this->__invoke($command);

@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\Task;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCommand;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskSchedule;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
@@ -24,7 +25,7 @@ class InMemoryTaskRepositorySpec extends ObjectBehavior
             'id' => TaskId::fromString($taskId),
             'code' => TaskCode::fromString('task_code'),
             'command' => TaskCommand::fromString('bin/console list'),
-            'schedule' => '* * * * *',
+            'schedule' => TaskSchedule::fromString('* * * * *'),
             'enabled' => true
         ]);
 
@@ -40,7 +41,7 @@ class InMemoryTaskRepositorySpec extends ObjectBehavior
             'id' => TaskId::fromString($taskId),
             'code' => TaskCode::fromString('task_code'),
             'command' => TaskCommand::fromString('bin/console list'),
-            'schedule' => '* * * * *',
+            'schedule' => TaskSchedule::fromString('* * * * *'),
             'enabled' => true
         ]);
         $this->save($task);
@@ -59,7 +60,7 @@ class InMemoryTaskRepositorySpec extends ObjectBehavior
             'id' => TaskId::fromString($taskId),
             'code' => TaskCode::fromString('task_code'),
             'command' => TaskCommand::fromString('bin/console list'),
-            'schedule' => '* * * * *',
+            'schedule' => TaskSchedule::fromString('* * * * *'),
             'enabled' => true
         ]);
         $this->save($task);

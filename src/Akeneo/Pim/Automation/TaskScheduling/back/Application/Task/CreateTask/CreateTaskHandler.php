@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\TaskScheduling\Application\Task\CreateTask;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\Task;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCommand;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskSchedule;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository;
 
 /**
@@ -28,7 +29,7 @@ final class CreateTaskHandler
             'id' => $this->taskRepository->nextIdentity(),
             'code' => TaskCode::fromString($command->code()),
             'command' => TaskCommand::fromString($command->command()),
-            'schedule' => $command->schedule(),
+            'schedule' => TaskSchedule::fromString($command->schedule()),
             'enabled' => $command->enabled(),
         ]);
         $this->taskRepository->save($task);

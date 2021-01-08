@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\TaskScheduling\Domain\Model;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCommand;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskSchedule;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
@@ -22,7 +23,7 @@ class TaskSpec extends ObjectBehavior
             'id' => TaskId::fromString(Uuid::uuid4()->toString()),
             'code' => TaskCode::fromString('task_code'),
             'command' => TaskCommand::fromString('bin/console list'),
-            'schedule' => '* * * * *',
+            'schedule' => TaskSchedule::fromString('* * * * *'),
             'enabled' => false,
         ]]);
         $this->isEnabled()->shouldBe(false);
@@ -36,7 +37,7 @@ class TaskSpec extends ObjectBehavior
             'id' => TaskId::fromString(Uuid::uuid4()->toString()),
             'code' => TaskCode::fromString('task_code'),
             'command' => TaskCommand::fromString('bin/console list'),
-            'schedule' => '* * * * *',
+            'schedule' => TaskSchedule::fromString('* * * * *'),
             'enabled' => true,
         ]]);
         $this->isEnabled()->shouldBe(true);
