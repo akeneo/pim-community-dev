@@ -1,3 +1,5 @@
+import {Router} from '@akeneo-pim-community/legacy-bridge';
+
 type StepExecutionStatus =
   | 'COMPLETED'
   | 'STARTING'
@@ -50,7 +52,6 @@ type JobExecution = {
   tracking: JobExecutionTracking;
   isStoppable: boolean;
   meta: {
-    id: string;
     logExists: boolean;
     archives: JobExecutionArchives;
   };

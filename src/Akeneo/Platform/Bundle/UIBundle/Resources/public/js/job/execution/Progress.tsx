@@ -72,7 +72,9 @@ const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): str
       const durationProjection = Math.round((step.duration * 100) / percentProcessed);
       const durationLeft = durationProjection - step.duration;
 
-      return translate('pim_import_export.tracking.in_progress', {duration: formatSecondsIntl(durationLeft)});
+      return translate('pim_import_export.tracking.in_progress', {
+        duration: formatSecondsIntl(translate, durationLeft),
+      });
     case 'ABANDONED':
     case 'COMPLETED':
     case 'FAILED':
@@ -80,7 +82,7 @@ const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): str
     case 'STOPPING':
     case 'UNKNOWN':
     default:
-      return translate('pim_import_export.tracking.completed', {duration: formatSecondsIntl(step.duration)});
+      return translate('pim_import_export.tracking.completed', {duration: formatSecondsIntl(translate, step.duration)});
   }
 };
 
