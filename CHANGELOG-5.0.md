@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.1 (2021-01-08)
+
 ## Bug fixes
 
 - DAPI-1470: Fix DateTime bad usage
