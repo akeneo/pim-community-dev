@@ -1,0 +1,22 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {InputTag} from './InputTag.tsx';
+
+<Meta
+  title="Components/InputTag"
+  component={InputTag}
+/>
+
+# InputTag
+
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <InputTag {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
