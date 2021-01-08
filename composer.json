@@ -55,7 +55,7 @@
     },
     "require": {
         "ext-json": "*",
-        "akeneo/pim-community-dev": "5.0.1",
+        "akeneo/pim-community-dev": "5.0.x-dev@dev",
         "akeneo/pim-onboarder": "^4.2.1",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
