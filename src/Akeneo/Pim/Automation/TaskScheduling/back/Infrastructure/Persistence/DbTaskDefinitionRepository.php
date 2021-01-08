@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Persistence;
+namespace Akeneo\Pim\Automation\TaskScheduling\Infrastructure\Persistence;
 
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskCode;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskDefinition;

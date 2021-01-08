@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Controller;
+namespace Akeneo\Pim\Automation\TaskScheduling\Infrastructure\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

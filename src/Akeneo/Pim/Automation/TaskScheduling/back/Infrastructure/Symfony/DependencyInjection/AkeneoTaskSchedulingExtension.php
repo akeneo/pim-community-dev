@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Symfony\DependencyInjection;
+namespace Akeneo\Pim\Automation\TaskScheduling\Infrastructure\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;

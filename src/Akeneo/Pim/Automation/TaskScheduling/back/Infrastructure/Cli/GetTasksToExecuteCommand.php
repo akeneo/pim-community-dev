@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Cli;
+namespace Akeneo\Pim\Automation\TaskScheduling\Infrastructure\Cli;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Symfony;
+namespace Akeneo\Pim\Automation\TaskScheduling\Infrastructure\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
