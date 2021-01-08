@@ -2,6 +2,7 @@ import React, {useState, useRef, ChangeEvent, FC} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {CloseIcon} from '../../icons';
+import {Key} from "../../shared";
 
 type InputTagProps = {
     /**
@@ -17,6 +18,7 @@ type InputTagProps = {
 
 const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
     const [tags, setTags] = useState<string[]>(defaultTags);
+    const [isLastTagSelected, selectLastTag] = useState<boolean>(false);
     const inputRef = useRef();
     const containerRef = useRef();
     const inputContainerRef = useRef();
@@ -49,6 +51,19 @@ const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
         ref.current && ref.current === event.target && inputRef.current ? inputRef.current.focus() : null
     }
 
+    const onBackspaceKeyUp = (event: KeyboardEvent) => {
+        if(event.key !== Key.Backspace)
+        {
+            return;
+        }
+
+        if(event.key === Key.Backspace && !isLastTagSelected){
+            selectLastTag(true)
+        }
+
+        //Delete the tag.
+    }
+
     return <TagContainer ref={containerRef} onClick={(event: any) => focusOnInputText(event, containerRef)}>
         {tags.map((tag, key) => {
             return (
@@ -59,7 +74,7 @@ const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
             );
         })}
         <Tag key='inputer' ref={inputContainerRef} onClick={(event: any) => focusOnInputText(event, inputContainerRef)}>
-            <input type='text' data-testid={'tag-input'} ref={inputRef} onChange={addTag}/>
+            <input type='text' data-testid={'tag-input'} ref={inputRef} onChange={addTag} onKeyUp={}/>
         </Tag>
     </TagContainer>;
 }

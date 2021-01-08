@@ -57,6 +57,17 @@ test('it can remove duplicated tags', () => {
     expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple']));
 });
 
+test('it removes the tag on the left of the input on several user events', () => {
+    const result = render(<InputTag defaultTags={['gucci', 'samsung', 'apple']} allowDuplicates={false}/>);
+
+    expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple']));
+    userEvent.type(screen.getByTestId('tag-input'), '{backspace}');
+    expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple']));
+    userEvent.type(screen.getByTestId('tag-input'), '{backspace}');
+    expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung']));
+});
+
+
 const expectedTags = (tags: string[]) => {
     expect(screen.queryAllByTestId('tag')).toHaveLength(tags.length);
 
