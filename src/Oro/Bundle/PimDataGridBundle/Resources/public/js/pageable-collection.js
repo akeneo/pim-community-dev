@@ -77,6 +77,11 @@ define(['underscore', 'backbone', 'backbone/pageable-collection', 'oro/app'], fu
     multipleSorting: true,
 
     /**
+         * @property {Object}
+         */
+        meta: {},
+
+        /**
      * Initialize basic parameters from source options
      *
      * @param models
@@ -110,6 +115,9 @@ define(['underscore', 'backbone', 'backbone/pageable-collection', 'oro/app'], fu
       if (options.inputName) {
         this.inputName = options.inputName;
       }
+            if (models?.meta) {
+                this.meta = models.meta;
+            }
 
       _.extend(this.queryParams, {
         currentPage: this.inputName + '[_pager][_page]',

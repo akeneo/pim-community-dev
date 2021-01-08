@@ -102,6 +102,9 @@ oro_config:
           label: Aktivera hämtning av meddelanden
         loading_messages:
           label: Tillgängliga meddelanden att hämta
+pim_ui:
+  flash:
+    unsaved_changes: 'Du har osparade ändringar, är du säker på att du vill lämna?'
 "Sorry, page was not loaded correctly": "Tyvärr, sidan laddades inte korrekt"
 "Your local changes will be lost. Are you sure you want to refresh the page?": "Dina lokala ändringar går förlorade. Är du säker på att du vill uppdatera sidan?"
 "navigation.message.content.outdated": "Innehållet på sidan {{ title }} är föråldrad. Vänligen <a href='#' data-action='page-refresh'>uppdatera sidan</a>"
@@ -155,6 +158,7 @@ pim_common:
   type: Typ
   update: Uppdatera
   "yes": "Ja"
+  operator: Operatör
   operators:
     "=": Är lika med
     "!=": Är inte lika med
