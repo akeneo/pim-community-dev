@@ -1,19 +1,5 @@
 version: 2.1
 
-aliases:
-  - &envVarsDeployDev
-      ENV_NAME: "dev"
-      GOOGLE_PROJECT_ID: "akecld-saas-dev"
-      GOOGLE_COMPUTE_ZONE: "europe-west3-a"
-      CLUSTER_NAME: "europe-west3-a"
-
-  - &dockerCloudDeployer
-      docker:
-        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.3
-          auth:
-            username: _json_key  # default username when using a JSON key file to authenticate
-            password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
-
 jobs:
   checkout_ee:
     machine:
@@ -321,132 +307,6 @@ jobs:
       - store_artifacts:
           path: var/logs
 
-  build_prod:
-      parameters:
-          is_ee_built:
-              type: boolean
-              default: true
-      environment:
-        <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-1604:201903-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Build PROD PIM docker image
-              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
-          - run:
-              name: Push PROD PIM image on docker registry
-              command: PIM_CONTEXT=deployment make push-php-image-prod
-
-  test_deploy:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Deploy PIM on kubernetes
-              command: PIM_CONTEXT=deployment make deploy-serenity
-          - run:
-              name: Test PIM connexion on kubernetes
-              command: PIM_CONTEXT=deployment make test-prod
-          - run:
-              name: Prepare infrastructure artifacts
-              command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - run:
-              name: Remove env on kubernetes
-              command: PIM_CONTEXT=deployment make delete
-              when: always
-
-  test_upgrade_from_last_release:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-                name: Latest SaaS prod deployment on kubernetes
-                command: |
-                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
-                    LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
-                    echo $LATEST_RELEASE
-                    export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
-                    INSTANCE_NAME=pimup-$IMAGE_TAG IMAGE_TAG=$LATEST_RELEASE PIM_CONTEXT=deployment make deploy-serenity
-          - run:
-                name: Upgrade
-                command: |
-                    INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make deploy-serenity
-          - run:
-                name: Production tests on upgraded env
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make test-prod
-          - run:
-                name: Prepare infrastructure artifacts
-                command: INSTANCE_NAME=pimup-$IMAGE_TAG PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
-                when: on_fail
-          - store_artifacts:
-                path: ~/artifacts/infra
-          - run:
-                name: Remove upgraded env
-                command: INSTANCE_NAME_PREFIX=pimup PIM_CONTEXT=deployment make delete
-                when: always
-
-  deploy_pr_environment:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-                name: Deploy PR environment
-                command: |
-                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                    echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
-          - run:
-                name: Deploy PR environment
-                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} ACTIVATE_MONITORING=false PIM_CONTEXT=deployment make deploy-serenity
-          - run:
-              name: Prepare infrastructure artifacts
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - run:
-              name: Remove env on kubernetes
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
-              when: on_fail
-
-  delete_pr_environment:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: delete environments
-                command: |
-                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                    echo "remove env from 'deploy_pr_environment'"
-                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete-serenity
-
   test_back_missing_structure_migrations:
       machine:
         image: ubuntu-1604:201903-01
@@ -591,37 +451,6 @@ workflows:
                 path_to_dsm: vendor/akeneo/pim-community-dev/akeneo-design-system
                 requires:
                     - checkout_ee
-          - build_prod:
-                requires:
-                    - checkout_ee
-          - test_deploy:
-                requires:
-                    - build_prod
-          - test_upgrade_from_last_release:
-                requires:
-                    - test_deploy
-          - deploy_pr_environment?:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - "5.0"
-                requires:
-                    - build_prod
-          - delete_pr_environment:
-                requires:
-                    - delete_pr_environment?
-          - delete_pr_environment?:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - "5.0"
-                requires:
-                    - deploy_pr_environment
-          - deploy_pr_environment:
-                requires:
-                    - deploy_pr_environment?
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -702,14 +531,10 @@ workflows:
 
       jobs:
           - checkout_ce
-          - checkout_ee
           - build_dev:
                 is_ee_built: false
                 requires:
                     - checkout_ce
-          - build_prod:
-                requires:
-                    - checkout_ee
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -725,75 +550,8 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
-          - test_upgrade_from_last_release:
-                requires:
-                    - build_prod
-
-  on_demand:
-        jobs:
-          - ready_to_build?:
-                type: approval
-                filters:
-                    branches:
-                        only: "5.0"
-          - checkout_ce:
-                requires:
-                    - ready_to_build?
-          - checkout_ee:
-                requires:
-                    - ready_to_build?
-          - build_dev:
-                is_ee_built: false
-                requires:
-                    - checkout_ce
-          - build_prod:
-                requires:
-                    - checkout_ee
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - test_back_phpunit:
-                requires:
-                    - build_dev
-          - test_back_behat_legacy:
-                requires:
-                    - build_dev
-          - test_back_data_migrations:
-                requires:
-                    - build_dev
-          - test_upgrade_from_last_release:
-                requires:
-                    - build_prod
 
 commands:
-  set_gcloud_config_dev:
-    description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
-    steps:
-      - run:
-          name: "Set Gcloud Config."
-          shell: "/bin/bash -eo pipefail"
-          command: |
-            echo ${GCLOUD_SERVICE_KEY_DEV} | gcloud auth activate-service-account --key-file=-
-            gcloud config set project ${GOOGLE_PROJECT_ID}
-            gcloud config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-            gcloud container clusters get-credentials ${GOOGLE_COMPUTE_ZONE} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_COMPUTE_ZONE}
-            echo ${GCLOUD_SERVICE_KEY_DEV} > ${HOME}/gcloud-service-key.json
-            echo 'export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"' >> $BASH_ENV
-            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
-            gcloud auth configure-docker --quiet
-
-  prepare_terraform:
-    description: "Prepare terraform configuration."
-    steps:
-      - run:
-          name: "Prepare terraform configuration."
-          shell: "/bin/bash -eo pipefail"
-          command: |
-            IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment make create-ci-release-files
-
   restore_persisted_env_vars:
     description: "Restore env vars that have been persisted by the previous job."
     steps:
