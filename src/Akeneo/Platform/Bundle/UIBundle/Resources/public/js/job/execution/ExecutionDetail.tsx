@@ -24,8 +24,8 @@ import {useRoute, Security} from '@akeneo-pim-community/legacy-bridge';
 
 const SecondaryActionsButton = styled(IconButton)`
   opacity: 0.5;
-  color: ${getColor('grey', 120)}
-  &:hover {
+  color: ${getColor('grey', 120)};
+  :hover {
     opacity: 1;
   }
 `;
