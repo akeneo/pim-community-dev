@@ -1,5 +1,5 @@
 'use strict';
 
-define(['pimee/product-edit-form/associated-product-row'], function (AssociatedProductRow) {
+define(['pim/product-edit-form/associated-product-row'], function (AssociatedProductRow) {
   return AssociatedProductRow;
 });
