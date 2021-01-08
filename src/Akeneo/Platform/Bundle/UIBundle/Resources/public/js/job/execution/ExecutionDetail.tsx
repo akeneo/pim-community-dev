@@ -16,11 +16,12 @@ import {StopJobAction} from './StopJobAction';
 import {JobExecutionProgress} from './Progress';
 import {ShowProfile} from './ShowProfile';
 import styled from 'styled-components';
-import {getDownloadLinks, JobExecution} from './model/job-execution';
+import {getDownloadLinks, JobExecution} from './models/job-execution';
 import {useParams} from 'react-router-dom';
 import {FullScreenError} from '@akeneo-pim-community/shared';
-import {useJobExecution} from './hook/use-job-execution';
+import {useJobExecution} from './hooks/use-job-execution';
 import {useRoute, Security} from '@akeneo-pim-community/legacy-bridge';
+import {SummaryTable} from './summary/SummaryTable';
 
 const SecondaryActionsButton = styled(IconButton)`
   opacity: 0.5;
@@ -201,7 +202,7 @@ const ExecutionDetail = () => {
           {jobExecution?.tracking && <JobExecutionProgress steps={jobExecution.tracking.steps} />}
         </PageHeader.Content>
       </PageHeader>
-      <PageContent></PageContent>
+      <PageContent>{jobExecution && <SummaryTable jobExecution={jobExecution} />}</PageContent>
     </>
   );
 };

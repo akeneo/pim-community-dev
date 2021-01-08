@@ -1,7 +1,7 @@
-import {useIsMounted} from '@akeneo-pim-community/shared/src';
 import {useCallback, useEffect, useState} from 'react';
-import {JobExecution} from '../model/job-execution';
-import {useRouter} from '@akeneo-pim-community/legacy-bridge/src';
+import {useIsMounted} from '@akeneo-pim-community/shared';
+import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {JobExecution} from '../models';
 
 type Error = {
   statusMessage: string;

@@ -1,6 +1,4 @@
-import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
-import {useJobExecution} from '../../../../../../Resources/public/js/job/execution/hook/use-job-execution';
+import {useJobExecution} from '../../../../../../Resources/public/js/job/execution/hooks/use-job-execution';
 import {act} from 'react-test-renderer';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
