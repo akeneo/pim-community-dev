@@ -1,6 +1,7 @@
 .PHONY: task-scheduling-unit-back
 task-scheduling-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Pim/Automation/TaskScheduling/tests/back/Specification
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Pim/Automation/TaskScheduling/tests/back/Acceptance/Specification
 
 .PHONY: task-scheduling-coupling-back
 task-scheduling-coupling-back:

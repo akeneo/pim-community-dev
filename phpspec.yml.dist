@@ -60,6 +60,13 @@ suites:
         src_path: src/Akeneo/Pim/Automation/TaskScheduling/back
         spec_prefix: Specification
 
+    TaskSchedulingAcceptance:
+        namespace: Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance
+        psr4_prefix: Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance
+        spec_path: src/Akeneo/Pim/Automation/TaskScheduling/tests/back/Acceptance
+        src_path: src/Akeneo/Pim/Automation/TaskScheduling/back/Acceptance
+        spec_prefix: Specification
+
     ## Akeneo Components
     Connector:
         namespace: Akeneo\Tool\Component\Connector

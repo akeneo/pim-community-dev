@@ -4,4 +4,3 @@ parameters:
     level: 8
     paths:
         - %rootDir%/../../../src/Akeneo/Pim/Automation/TaskScheduling/back
-    checkMissingIterableValueType: false
