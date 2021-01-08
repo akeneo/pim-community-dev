@@ -1,11 +1,19 @@
 import React from 'react';
 import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
-import {Breadcrumb, Button, getColor, IconButton, Link, MoreIcon} from 'akeneo-design-system';
+import {
+  Breadcrumb,
+  Button,
+  Dropdown,
+  getColor,
+  IconButton,
+  Link,
+  MoreIcon,
+  useBooleanState,
+} from 'akeneo-design-system';
 import {Status} from './Status';
 import {StopJobAction} from './StopJobAction';
 import {JobExecutionProgress} from './Progress';
-import {Dropdown} from './Dropdown';
 import {ShowProfile} from './ShowProfile';
 import styled from 'styled-components';
 import {getDownloadLinks, JobExecution} from './model/job-execution';
@@ -17,13 +25,12 @@ import {useRoute, Security} from '@akeneo-pim-community/legacy-bridge';
 const SecondaryActionsButton = styled(IconButton)`
   opacity: 0.5;
   color: ${getColor('grey', 120)}
-  :hover {
+  &:hover {
     opacity: 1;
   }
 `;
 
-const canDownloadLog = (security: Security, jobExecution: JobExecution | null) => {
-  const {isGranted} = security;
+const canDownloadLog = ({isGranted}: Security, jobExecution: JobExecution | null) => {
   if (!jobExecution || !jobExecution.meta.logExists) {
     return false;
   }
@@ -37,8 +44,7 @@ const canDownloadLog = (security: Security, jobExecution: JobExecution | null) =
   return true;
 };
 
-const canDownloadArchive = (security: Security, jobExecution: JobExecution | null) => {
-  const {isGranted} = security;
+const canDownloadArchive = ({isGranted}: Security, jobExecution: JobExecution | null) => {
   if (!jobExecution) {
     return false;
   }
@@ -64,6 +70,8 @@ const ExecutionDetail = () => {
   const handleStop = async () => {
     await reloadJobExecution();
   };
+  const [secondaryActionIsOpen, openSecondaryAction, closeSecondaryAction] = useBooleanState(false);
+  const [downloadDropdownIsOpen, openDownloadDropdown, closeDownloadDropdown] = useBooleanState(false);
 
   const downloadLogIsVisible = canDownloadLog(security, jobExecution);
   const downloadArchiveLinks = getDownloadLinks(jobExecution?.meta.archives ?? null);
@@ -106,21 +114,33 @@ const ExecutionDetail = () => {
         </PageHeader.UserActions>
         <PageHeader.Actions>
           {(showProfileIsVisible || downloadLogIsVisible) && (
-            <Dropdown
-              title={translate('pim_common.other_actions')}
-              actionButton={
-                <SecondaryActionsButton
-                  title={translate('pim_common.other_actions')}
-                  icon={<MoreIcon />}
-                  ghost={'borderless'}
-                />
-              }
-            >
-              {showProfileIsVisible && jobExecution && <ShowProfile jobInstance={jobExecution.jobInstance} />}
-              {downloadLogIsVisible && (
-                <Link href={downloadLogHref}>
-                  {translate('pim_import_export.form.job_execution.button.download_log.title')}
-                </Link>
+            <Dropdown>
+              <SecondaryActionsButton
+                title={translate('pim_common.other_actions')}
+                icon={<MoreIcon />}
+                ghost={'borderless'}
+                onClick={openSecondaryAction}
+              />
+              {secondaryActionIsOpen && (
+                <Dropdown.Overlay onClose={closeSecondaryAction}>
+                  <Dropdown.Header>
+                    <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    {showProfileIsVisible && jobExecution && (
+                      <Dropdown.Item>
+                        <ShowProfile jobInstance={jobExecution.jobInstance} />
+                      </Dropdown.Item>
+                    )}
+                    {downloadLogIsVisible && (
+                      <Dropdown.Item>
+                        <Link href={downloadLogHref}>
+                          {translate('pim_import_export.form.job_execution.button.download_log.title')}
+                        </Link>
+                      </Dropdown.Item>
+                    )}
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
               )}
             </Dropdown>
           )}
@@ -146,22 +166,32 @@ const ExecutionDetail = () => {
                 {downloadArchiveTitle}
               </Button>
             ) : (
-              <Dropdown
-                title={downloadArchiveTitle}
-                actionButton={<Button level="secondary">{downloadArchiveTitle}</Button>}
-              >
-                {downloadArchiveLinks.map((link, index) => (
-                  <Link
-                    key={index}
-                    href={router.generate('pim_enrich_job_tracker_download_file', {
-                      id: jobExecutionId,
-                      archiver: link.archiver,
-                      key: link.key,
-                    })}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+              <Dropdown>
+                <Button level="secondary" onClick={openDownloadDropdown}>
+                  {downloadArchiveTitle}
+                </Button>
+                {downloadDropdownIsOpen && (
+                  <Dropdown.Overlay onClose={closeDownloadDropdown}>
+                    <Dropdown.Header>
+                      <Dropdown.Title>{downloadArchiveTitle}</Dropdown.Title>
+                    </Dropdown.Header>
+                    <Dropdown.ItemCollection>
+                      {downloadArchiveLinks.map((link, index) => (
+                        <Dropdown.Item key={index}>
+                          <Link
+                            href={router.generate('pim_enrich_job_tracker_download_file', {
+                              id: jobExecutionId,
+                              archiver: link.archiver,
+                              key: link.key,
+                            })}
+                          >
+                            {translate(link.label)}
+                          </Link>
+                        </Dropdown.Item>
+                      ))}
+                    </Dropdown.ItemCollection>
+                  </Dropdown.Overlay>
+                )}
               </Dropdown>
             ))}
         </PageHeader.Actions>

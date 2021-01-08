@@ -1,5 +1,3 @@
-import {Router} from '@akeneo-pim-community/legacy-bridge';
-
 type StepExecutionStatus =
   | 'COMPLETED'
   | 'STARTING'
