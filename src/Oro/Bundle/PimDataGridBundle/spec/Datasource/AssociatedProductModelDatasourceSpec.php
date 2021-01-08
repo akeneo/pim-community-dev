@@ -30,9 +30,10 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
         ObjectManager $objectManager,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         NormalizerInterface $productNormalizer,
-        FilterEntityWithValuesSubscriber $subscriber
+        FilterEntityWithValuesSubscriber $subscriber,
+        NormalizerInterface $internalApiNormalizer
     ) {
-        $this->beConstructedWith($objectManager, $pqbFactory, $productNormalizer, $subscriber);
+        $this->beConstructedWith($objectManager, $pqbFactory, $productNormalizer, $subscriber, $internalApiNormalizer);
 
         $this->setSortOrder(Directions::DESCENDING);
         $this->setParameters(['dataLocale' => 'a_locale']);
@@ -76,6 +77,7 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
     function it_gets_product_models_sorted_by_association_status(
         $pqbFactory,
         $productNormalizer,
+        NormalizerInterface $internalApiNormalizer,
         Datagrid $datagrid,
         ProductQueryBuilderInterface $pqb,
         ProductQueryBuilderInterface $pqbAsso,
@@ -284,9 +286,16 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
             'completeness'  => null,
         ]);
 
+        $productSourceNormalized = [
+            'identifier' => 'current_product',
+        ];
+
+        $internalApiNormalizer->normalize($currentProduct, Argument::cetera())
+            ->willReturn($productSourceNormalized);
+
         $results = $this->getResults();
         $results->shouldBeArray();
-        $results->shouldHaveCount(2);
+        $results->shouldHaveCount(3);
         $results->shouldHaveKey('data');
         $results->shouldHaveKeyWithValue('totalRecords', 3);
         $results['data']->shouldBeArray();
@@ -295,6 +304,9 @@ class AssociatedProductModelDatasourceSpec extends ObjectBehavior
         $results['data'][0]->getValue('id')->shouldReturn('product-2');
         $results['data'][1]->getValue('id')->shouldReturn('product-3');
         $results['data'][2]->getValue('id')->shouldReturn('product-model-2');
+        $results['meta']->shouldBe([
+            'source' => $productSourceNormalized,
+        ]);
     }
 
     public function getMatchers(): array

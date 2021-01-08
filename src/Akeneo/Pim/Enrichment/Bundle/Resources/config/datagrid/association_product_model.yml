@@ -7,7 +7,7 @@ datagrid:
             columnListener:
                 dataField: id
                 columnName: is_checked
-            rowView: pim/product-edit-form/associated-product-row
+            rowView: pim/product-edit-form/associated-product-row-view
             manageFilters: false
             emptyGridOptions:
                 hint: pim_datagrid.empty_results.associated_product.hint
