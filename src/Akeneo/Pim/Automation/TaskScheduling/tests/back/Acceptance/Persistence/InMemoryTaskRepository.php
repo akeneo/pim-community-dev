@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Persistence;
 
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\Task;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskNotFoundException;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository;
 use Akeneo\Pim\Automation\TaskScheduling\Infrastructure\Persistence\TaskRepositoryTrait;
 
@@ -29,7 +30,7 @@ final class InMemoryTaskRepository implements TaskRepository
     {
         $task = $this->tasks[$id->asString()] ?? null;
         if (null === $task) {
-            throw new \LogicException('Could not find task with id "%s"', $id->asString());
+            throw TaskNotFoundException::withId($id);
         }
 
         return $task;
@@ -43,7 +44,7 @@ final class InMemoryTaskRepository implements TaskRepository
             }
         }
 
-        throw new \Exception();
+        throw TaskNotFoundException::withCode($code);
     }
 
     /**

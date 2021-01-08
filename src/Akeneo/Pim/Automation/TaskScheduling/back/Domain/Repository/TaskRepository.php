@@ -14,7 +14,20 @@ use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
 interface TaskRepository
 {
     public function save(Task $task): void;
+
+    /**
+     * @param TaskId $id
+     * @return Task
+     * @throw TaskNotFoundException
+     */
     public function getById(TaskId $id): Task;
+
+    /**
+     * @param string $code
+     * @return Task
+     * @throw TaskNotFoundException
+     */
     public function getByCode(string $code): Task;
+
     public function nextIdentity(): TaskId;
 }

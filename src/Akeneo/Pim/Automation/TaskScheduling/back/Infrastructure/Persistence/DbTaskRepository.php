@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Persistence;
 
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\Task;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskNotFoundException;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository;
 use Akeneo\Pim\Automation\TaskScheduling\Infrastructure\Persistence\TaskRepositoryTrait;
 use Doctrine\DBAL\Connection;
@@ -32,11 +33,11 @@ class DbTaskRepository implements TaskRepository
 
     public function getById(TaskId $id): Task
     {
-        throw new \Exception('TODO');
+        throw TaskNotFoundException::withId($id);
     }
 
     public function getByCode(string $code): Task
     {
-        throw new \Exception('TODO');
+        throw TaskNotFoundException::withCode($code);
     }
 }
