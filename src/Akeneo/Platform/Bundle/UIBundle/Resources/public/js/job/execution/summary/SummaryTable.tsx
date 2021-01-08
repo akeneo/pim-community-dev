@@ -7,7 +7,7 @@ import {WarningHelper} from './WarningHelper';
 import {JobExecution, StepExecution} from '../models';
 
 const SpacedTable = styled(Table)`
-  margin-top: 20px;
+  margin-bottom: 40px;
 `;
 
 const SummaryCell = styled(Table.Cell)`
@@ -53,7 +53,7 @@ const SummaryTable = ({jobExecution}: SummaryTableProps) => {
 
   return (
     <SpacedTable>
-      <Table.Header>
+      <Table.Header sticky={0}>
         <Table.HeaderCell>{translate('pim_import_export.form.job_execution.summary.header.step')}</Table.HeaderCell>
         <Table.HeaderCell>{translate('pim_common.status')}</Table.HeaderCell>
         <Table.HeaderCell>{translate('pim_import_export.form.job_execution.summary.header.summary')}</Table.HeaderCell>

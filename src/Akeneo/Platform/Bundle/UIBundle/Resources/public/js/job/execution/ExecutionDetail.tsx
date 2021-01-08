@@ -23,6 +23,12 @@ import {useJobExecution} from './hooks/use-job-execution';
 import {useRoute, Security} from '@akeneo-pim-community/legacy-bridge';
 import {SummaryTable} from './summary/SummaryTable';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
 const SecondaryActionsButton = styled(IconButton)`
   opacity: 0.5;
   color: ${getColor('grey', 120)};
@@ -98,7 +104,7 @@ const ExecutionDetail = () => {
   }
 
   return (
-    <>
+    <Container>
       <PageHeader>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
@@ -203,7 +209,7 @@ const ExecutionDetail = () => {
         </PageHeader.Content>
       </PageHeader>
       <PageContent>{jobExecution && <SummaryTable jobExecution={jobExecution} />}</PageContent>
-    </>
+    </Container>
   );
 };
 
