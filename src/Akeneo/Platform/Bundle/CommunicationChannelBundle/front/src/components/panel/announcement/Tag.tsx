@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
-type Tag = 'new' | 'update' | 'announcement' | 'update' | 'announcement';
+type Tag = 'new' | 'update' | 'announcement';
 type TagProps = {
   tag: Tag;
 };
