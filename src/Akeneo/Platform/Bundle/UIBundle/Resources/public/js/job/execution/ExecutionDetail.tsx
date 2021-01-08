@@ -7,7 +7,7 @@ import {
   Dropdown,
   getColor,
   IconButton,
-  Link,
+  Link, LoaderIcon,
   MoreIcon,
   useBooleanState,
 } from 'akeneo-design-system';
@@ -72,7 +72,7 @@ const ExecutionDetail = () => {
 
   const jobTypeWithProfile = ['import', 'export'];
   const {jobExecutionId} = useParams() as {jobExecutionId: string};
-  const {jobExecution, error, reloadJobExecution} = useJobExecution(jobExecutionId);
+  const {jobExecution, error, reloadJobExecution, isFinished} = useJobExecution(jobExecutionId);
 
   const handleStop = async () => {
     await reloadJobExecution();
@@ -114,6 +114,12 @@ const ExecutionDetail = () => {
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
+          {!isFinished && (
+            <>
+              {translate('pim_import_export.form.job_execution.refreshing')}
+              <LoaderIcon />
+            </>
+          )}
           <PimView
             viewName="pim-menu-user-navigation"
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"

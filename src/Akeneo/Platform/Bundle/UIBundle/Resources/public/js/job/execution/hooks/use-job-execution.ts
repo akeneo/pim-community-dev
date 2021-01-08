@@ -8,13 +8,32 @@ type Error = {
   statusCode: number;
 };
 
+const isWindowVisible = () => 'visible' === document.visibilityState;
+const useVisibility = () => {
+  const [isVisible, setVisible] = useState<boolean>(isWindowVisible());
+  const handleVisibilityChange = () => {
+    setVisible(isWindowVisible());
+  };
+
+  useEffect(() => {
+    window.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  });
+
+  return isVisible;
+};
+
 const useJobExecution = (jobExecutionId: string) => {
   const router = useRouter();
   const isMounted = useIsMounted();
   const [jobExecution, setJobExecution] = useState<JobExecution | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const route = router.generate('pim_enrich_job_execution_rest_get', {identifier: jobExecutionId});
-
+  const isVisible = useVisibility();
+  const isFinished = jobExecution !== undefined && ['COMPLETED', 'STOPPED', 'FAILED'].includes(jobExecution?.tracking.status ?? '');
   const fetchJobExecution = useCallback(async () => {
     const response = await fetch(route);
     if (!response.ok) {
@@ -33,12 +52,19 @@ const useJobExecution = (jobExecutionId: string) => {
   }, [route]);
 
   useEffect(() => {
-    (async () => {
-      await fetchJobExecution();
-    })();
-  }, []);
+    if (!isVisible || isFinished) return;
 
-  return {jobExecution, error, reloadJobExecution: fetchJobExecution};
+    const interval = setInterval(() => {
+      fetchJobExecution();
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [isVisible, isFinished]);
+
+
+  return {jobExecution, error, isFinished, reloadJobExecution: fetchJobExecution};
 };
 
 export {useJobExecution};
