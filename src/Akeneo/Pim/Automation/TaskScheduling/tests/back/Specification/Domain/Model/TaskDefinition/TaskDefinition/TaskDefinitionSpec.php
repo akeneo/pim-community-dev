@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\TaskScheduling\Domain\Model;
+namespace Specification\Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition;
 
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCommand;
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskSchedule;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskCode;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskCommand;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskId;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskSchedule;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 
@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TaskSpec extends ObjectBehavior
+class TaskDefinitionSpec extends ObjectBehavior
 {
     function it_can_be_enabled()
     {

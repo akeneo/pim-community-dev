@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\TaskScheduling\Domain\Model;
+namespace Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition;
 
 use Webmozart\Assert\Assert;
 
@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class Task
+final class TaskDefinition
 {
     private TaskId $id;
     private TaskCode $code;

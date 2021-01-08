@@ -5,13 +5,13 @@ services:
     autowire: false
 
   ## Contexts
-  Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Context\CreateTaskContext:
+  Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Context\CreateTaskDefinitionContext:
     arguments:
-      - '@Akeneo\Pim\Automation\TaskScheduling\Application\Task\CreateTask\CreateTaskHandler'
-      - '@Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository'
+      - '@Akeneo\Pim\Automation\TaskScheduling\Application\TaskDefinition\Create\CreateTaskDefinitionHandler'
+      - '@Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskDefinitionRepository'
 
   Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Context\ExceptionContext: ~
 
   ## Repositories
-  Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository:
-    class: 'Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Persistence\InMemoryTaskRepository'
+  Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskDefinitionRepository:
+    class: 'Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Persistence\InMemoryTaskDefinitionRepository'

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Automation\TaskScheduling\Domain\Model;
+namespace Specification\Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition;
 
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskCode;
 use PhpSpec\ObjectBehavior;
 
 /**

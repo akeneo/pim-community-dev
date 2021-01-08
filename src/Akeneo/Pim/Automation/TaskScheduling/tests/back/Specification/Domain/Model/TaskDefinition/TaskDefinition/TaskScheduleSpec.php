@@ -1,8 +1,8 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Automation\TaskScheduling\Domain\Model;
+namespace Specification\Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition;
 
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskSchedule;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskSchedule;
 use PhpSpec\ObjectBehavior;
 
 class TaskScheduleSpec extends ObjectBehavior

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\TaskScheduling\Domain\Model;
+namespace Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition;
 
 use Webmozart\Assert\Assert;
 

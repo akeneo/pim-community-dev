@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Persistence;
 
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\Task;
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskDefinition;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskCode;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskId;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskNotFoundException;
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository;
-use Akeneo\Pim\Automation\TaskScheduling\Infrastructure\Persistence\TaskRepositoryTrait;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskDefinitionRepository;
+use Akeneo\Pim\Automation\TaskScheduling\Infrastructure\Persistence\TaskDefinitionRepositoryTrait;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class InMemoryTaskRepository implements TaskRepository
+final class InMemoryTaskDefinitionRepository implements TaskDefinitionRepository
 {
-    use TaskRepositoryTrait;
+    use TaskDefinitionRepositoryTrait;
 
-    /** @var Task[] */
+    /** @var TaskDefinition[] */
     private array $tasks = [];
 
-    public function save(Task $task): void
+    public function save(TaskDefinition $task): void
     {
         $this->tasks[$task->id()->asString()] = $task;
     }
 
-    public function getById(TaskId $id): Task
+    public function getById(TaskId $id): TaskDefinition
     {
         $task = $this->tasks[$id->asString()] ?? null;
         if (null === $task) {
@@ -37,7 +37,7 @@ final class InMemoryTaskRepository implements TaskRepository
         return $task;
     }
 
-    public function getByCode(TaskCode $code): Task
+    public function getByCode(TaskCode $code): TaskDefinition
     {
         foreach ($this->tasks as $task) {
             if ($task->code()->equals($code)) {
@@ -49,7 +49,7 @@ final class InMemoryTaskRepository implements TaskRepository
     }
 
     /**
-     * @return Task[]
+     * @return TaskDefinition[]
      */
     public function getAll(): array
     {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\TaskScheduling\Domain\Repository;
 
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
-use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskCode;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskDefinition\TaskId;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)

@@ -1,5 +1,5 @@
 services:
-  Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository:
-    class: 'Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Persistence\DbTaskRepository'
+  Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskDefinitionRepository:
+    class: 'Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Persistence\DbTaskDefinitionRepository'
     arguments:
       - '@doctrine.dbal.default_connection'

@@ -11,5 +11,5 @@ default:
       paths:
         - 'src/Akeneo/Pim/Automation/TaskScheduling/tests/back/features'
       contexts:
-        - 'Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Context\CreateTaskContext'
+        - 'Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Context\CreateTaskDefinitionContext'
         - 'Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Context\ExceptionContext'
