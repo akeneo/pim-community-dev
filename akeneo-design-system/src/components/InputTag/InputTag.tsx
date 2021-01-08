@@ -1,22 +1,39 @@
-import React, {KeyboardEvent, useState, useRef} from 'react';
+import React, {useState, useRef, ChangeEvent, FC} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {CloseIcon} from '../../icons';
 
-const InputTag = () => {
-    const [tags, setTags] = useState<string[]>([]);
+type InputTagProps = {
+    /**
+     * Specifies if the component will accept duplicated tags or not
+     */
+    allowDuplicates: boolean;
+
+    /**
+     * Default tags to display
+     */
+    defaultTags?: string[];
+}
+
+const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
+    const [tags, setTags] = useState<string[]>(defaultTags);
     const inputRef = useRef();
 
-    const addWord = (event: KeyboardEvent<HTMLInputElement>) => {
-        if(event.key===' ')
-        {
-            const word = event.currentTarget.value.trim();
-            if (word !== ''){
-                const newWords = [...tags, ...[word]];
-                setTags(arrayUnique(newWords));
-                if (inputRef.current) {
-                    inputRef.current.value = '';
-                }
+    const addTag = (event: ChangeEvent<HTMLInputElement>) => {
+        let tagsAsString = event.currentTarget.value;
+        if (tagsAsString !== '') {
+            let newTags = tagsAsString.split(/[\s]+/);
+            if (newTags.length === 1) {
+                return;
+            }
+            newTags = newTags.filter((word: string) => word.trim() !== '');
+            newTags = [...tags, ...newTags];
+            if (!allowDuplicates) {
+                newTags = arrayUnique(newTags);
+            }
+            setTags(newTags);
+            if (inputRef.current) {
+                inputRef.current.value = '';
             }
         }
     }
@@ -30,13 +47,13 @@ const InputTag = () => {
         {tags.map((tag, key) => {
             return (
               <Tag key={key} data-testid={'tag'}>
-                  <RemoveWordIcon onClick={() => removeWord(tag)} data-testid={'remove-{key}'}/>
+                  <RemoveWordIcon onClick={() => removeWord(tag)} data-testid={`remove-${tag}`}/>
                   {tag}
               </Tag>
             );
         })}
         <Tag key='inputer'>
-            <input type='text' data-testid={'tag-input'} ref={inputRef} onKeyUp={addWord}/>
+            <input type='text' data-testid={'tag-input'} ref={inputRef} onChange={addTag}/>
         </Tag>
     </TagContainer>;
 }
@@ -70,13 +87,13 @@ const Tag = styled.li<AkeneoThemedProps>`
     display: flex;
     align-items: center;
     color: ${getColor('grey', 120)};
-    
+
     :last-child {
         background-color: ${getColor('white')};
         border: 0;
         flex: 1;
     }
-    
+
     > input {
         border: 0;
         outline: 0;
