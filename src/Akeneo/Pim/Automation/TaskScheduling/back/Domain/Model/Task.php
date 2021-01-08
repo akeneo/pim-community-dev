@@ -14,14 +14,14 @@ final class Task
 {
     private TaskId $id;
     private TaskCode $code;
-    private string $command;
+    private TaskCommand $command;
     private string $schedule;
     private bool $enabled;
 
     private function __construct(
         TaskId $id,
         TaskCode $code,
-        string $command,
+        TaskCommand $command,
         string $schedule,
         bool $enabled
     ) {
@@ -43,7 +43,7 @@ final class Task
 
         Assert::isInstanceOf($data['id'], TaskId::class);
         Assert::isInstanceOf($data['code'], TaskCode::class);
-        Assert::stringNotEmpty($data['command']);
+        Assert::isInstanceOf($data['command'], TaskCommand::class);
         Assert::stringNotEmpty($data['schedule']);
         Assert::boolean($data['enabled']);
 
@@ -58,6 +58,16 @@ final class Task
     public function code(): TaskCode
     {
         return $this->code;
+    }
+
+    public function command(): TaskCommand
+    {
+        return $this->command;
+    }
+
+    public function schedule(): string
+    {
+        return $this->schedule;
     }
 
     public function isEnabled(): bool
