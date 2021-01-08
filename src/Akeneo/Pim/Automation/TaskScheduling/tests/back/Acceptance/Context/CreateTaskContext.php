@@ -7,6 +7,7 @@ namespace Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Context;
 use Akeneo\Pim\Automation\TaskScheduling\Application\Task\CreateTask\CreateTaskCommand;
 use Akeneo\Pim\Automation\TaskScheduling\Application\Task\CreateTask\CreateTaskHandler;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\Task;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
@@ -44,6 +45,6 @@ class CreateTaskContext implements Context
      */
     public function theTaskShouldBeCreated(string $code): void
     {
-        Assert::isInstanceOf($this->taskRepository->getByCode($code), Task::class);
+        Assert::isInstanceOf($this->taskRepository->getByCode(TaskCode::fromString($code)), Task::class);
     }
 }

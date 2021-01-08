@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\TaskScheduling\Domain\Repository;
 
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
 
 /**
@@ -22,11 +23,11 @@ class TaskNotFoundException extends \LogicException
         return new self($message);
     }
 
-    public static function withCode(string $code): TaskNotFoundException
+    public static function withCode(TaskCode $code): TaskNotFoundException
     {
         $message = sprintf(
             'The task with \'%s\' code does not exist.',
-            $code
+            $code->asString()
         );
 
         return new self($message);

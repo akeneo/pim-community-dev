@@ -13,14 +13,14 @@ use Webmozart\Assert\Assert;
 final class Task
 {
     private TaskId $id;
-    private string $code;
+    private TaskCode $code;
     private string $command;
     private string $schedule;
     private bool $enabled;
 
     private function __construct(
         TaskId $id,
-        string $code,
+        TaskCode $code,
         string $command,
         string $schedule,
         bool $enabled
@@ -42,7 +42,7 @@ final class Task
         }
 
         Assert::isInstanceOf($data['id'], TaskId::class);
-        Assert::stringNotEmpty($data['code']);
+        Assert::isInstanceOf($data['code'], TaskCode::class);
         Assert::stringNotEmpty($data['command']);
         Assert::stringNotEmpty($data['schedule']);
         Assert::boolean($data['enabled']);
@@ -55,7 +55,7 @@ final class Task
         return $this->id;
     }
 
-    public function code(): string
+    public function code(): TaskCode
     {
         return $this->code;
     }

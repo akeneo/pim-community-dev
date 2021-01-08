@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\TaskScheduling\back\Infrastructure\Persistence;
 
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\Task;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskNotFoundException;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository;
@@ -36,7 +37,7 @@ class DbTaskRepository implements TaskRepository
         throw TaskNotFoundException::withId($id);
     }
 
-    public function getByCode(string $code): Task
+    public function getByCode(TaskCode $code): Task
     {
         throw TaskNotFoundException::withCode($code);
     }

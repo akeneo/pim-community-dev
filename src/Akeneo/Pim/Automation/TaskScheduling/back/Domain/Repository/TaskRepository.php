@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\TaskScheduling\Domain\Repository;
 
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\Task;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
 
 /**
@@ -23,11 +24,11 @@ interface TaskRepository
     public function getById(TaskId $id): Task;
 
     /**
-     * @param string $code
+     * @param TaskCode $code
      * @return Task
      * @throw TaskNotFoundException
      */
-    public function getByCode(string $code): Task;
+    public function getByCode(TaskCode $code): Task;
 
     public function nextIdentity(): TaskId;
 }

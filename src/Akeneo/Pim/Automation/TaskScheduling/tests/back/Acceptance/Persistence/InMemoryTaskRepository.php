@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\TaskScheduling\Acceptance\Persistence;
 
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\Task;
+use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskCode;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Model\TaskId;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskNotFoundException;
 use Akeneo\Pim\Automation\TaskScheduling\Domain\Repository\TaskRepository;
@@ -36,10 +37,10 @@ final class InMemoryTaskRepository implements TaskRepository
         return $task;
     }
 
-    public function getByCode(string $code): Task
+    public function getByCode(TaskCode $code): Task
     {
         foreach ($this->tasks as $task) {
-            if ($task->code() === $code) {
+            if ($task->code()->equals($code)) {
                 return $task;
             }
         }
