@@ -30,13 +30,13 @@ const InputTag = () => {
         {tags.map((tag, key) => {
             return (
               <Tag key={key} data-testid={'tag'}>
-                  <RemoveWordIcon onClick={() => removeWord(tag)} />
+                  <RemoveWordIcon onClick={() => removeWord(tag)} data-testid={'remove-{key}'}/>
                   {tag}
               </Tag>
             );
         })}
         <Tag key='inputer'>
-            <input type="text" data-testid={'tag-input'} ref={inputRef} onKeyUp={addWord}/>
+            <input type='text' data-testid={'tag-input'} ref={inputRef} onKeyUp={addWord}/>
         </Tag>
     </TagContainer>;
 }

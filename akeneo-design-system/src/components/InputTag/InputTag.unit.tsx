@@ -13,13 +13,22 @@ test('it renders an empty input tag', () => {
 test('it renders a list of tags', () => {
     render(<InputTag/>);
 
-    userEvent.type(screen.getByTestId('tag-input'), 'gucci{space}samsung{space}')
+    userEvent.type(screen.getByTestId('tag-input'), 'gucci{space}samsung{space}');
     expect(screen.queryAllByTestId('tag')).toHaveLength(2);
 });
 
 test('it handle a copy pasted input list of tags', () => {
     render(<InputTag/>);
 
-    userEvent.paste(screen.getByTestId('tag-input'), 'gucci samsung')
+    userEvent.paste(screen.getByTestId('tag-input'), 'gucci samsung');
     expect(screen.queryAllByTestId('tag')).toHaveLength(2);
+});
+
+test('it handle a deletion of a tag', () => {
+    render(<InputTag/>);
+
+    userEvent.type(screen.getByTestId('tag-input'), 'gucci{space}samsung{space}');
+    expect(screen.queryAllByTestId('tag')).toHaveLength(2);
+    userEvent.click(screen.getByTestId('remove-1'));
+    expect(screen.queryAllByTestId('tag')).toHaveLength(1);
 });
