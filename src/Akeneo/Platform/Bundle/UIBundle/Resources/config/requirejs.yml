@@ -1222,7 +1222,6 @@ config:
     pim/template/grid/view-selector: pimui/templates/grid/view-selector.html
 
     # Job execution
-    pim/template/job-execution/summary-table:             pimui/templates/job-execution/summary-table.html
     pim/template/job-execution/auto-refresh:              pimui/templates/job-execution/auto-refresh.html
 
     # Attribute

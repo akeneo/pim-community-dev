@@ -1,3 +1,5 @@
+import {Failure, StepExecution} from '../models';
+
 type StepExecutionStatus =
   | 'COMPLETED'
   | 'STARTING'
@@ -46,6 +48,8 @@ type JobExecutionArchives = Record<
 >;
 
 type JobExecution = {
+  stepExecutions?: StepExecution[];
+  failures: Failure[];
   jobInstance: JobInstance;
   tracking: JobExecutionTracking;
   isStoppable: boolean;

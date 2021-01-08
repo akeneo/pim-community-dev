@@ -94,10 +94,10 @@ const IconContainer = styled.span<{level: Level; inline: boolean} & AkeneoThemed
 const TextContainer = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps>`
   padding-left: ${({inline}) => (inline ? '4px' : '10px')};
   white-space: break-spaces;
+  flex: 1;
 
   a {
     color: ${({level, inline}) => getLinkColor(level, inline)};
-    margin: 0 3px;
   }
 
   ${({inline, level}) =>

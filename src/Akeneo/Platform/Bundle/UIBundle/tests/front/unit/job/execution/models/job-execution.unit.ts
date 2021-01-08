@@ -1,7 +1,7 @@
 import {
   getDownloadLinks,
   JobExecutionArchives,
-} from '../../../../../../Resources/public/js/job/execution/model/job-execution';
+} from '../../../../../../Resources/public/js/job/execution/models/job-execution';
 
 describe('job execution', () => {
   it('should provide a array of download link', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge/src';
-import {JobInstance} from './model/job-execution';
+import {useRouter, useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {JobInstance} from './models';
 
 const ShowProfile = ({jobInstance}: {jobInstance: JobInstance}) => {
   const translate = useTranslate();
