@@ -27,38 +27,37 @@ define(['jquery', 'underscore', 'backgrid', 'pim/security-context'], function ($
       return this;
     },
 
-    isEditable: function() {
-            const isEditable = this.column.get('editable');
-            const isEditableAcl = this.column.get('extraOptions')?.editable_acl;
+    isEditable: function () {
+      const isEditable = this.column.get('editable');
+      const isEditableAcl = this.column.get('extraOptions')?.editable_acl;
 
-            if (undefined !== isEditableAcl) {
-                return isEditable && SecurityContext.isGranted(isEditableAcl);
-            }
+      if (undefined !== isEditableAcl) {
+        return isEditable && SecurityContext.isGranted(isEditableAcl);
+      }
 
-            return isEditable;
-        },/**
+      return isEditable;
+    },
+    /**
      * @inheritDoc
-     */
-    enterEditMode: function (e) {if (!this.isEditable()) {
-                return;
-            }
+     */ enterEditMode: function (e) {
+      if (!this.isEditable()) {
+        return;
+      }
       Backgrid.BooleanCell.prototype.enterEditMode.apply(this, arguments);
 
-        var $editor = this.currentEditor.$el;
-        $editor.prop('checked', !$editor.prop('checked')).change();
-      }
-    ,
-
+      var $editor = this.currentEditor.$el;
+      $editor.prop('checked', !$editor.prop('checked')).change();
+    },
     /**
      * @param {Backgrid.Row} row
      * @param {Event} e
      */
     onRowClicked: function (row, e) {
       if (!this.isEditable()) {
-                return;
-            }
+        return;
+      }
 
-            if (!this.$input.is(e.target) && !this.$el.is(e.target) && !this.$el.has(e.target).length) {
+      if (!this.$input.is(e.target) && !this.$el.is(e.target) && !this.$el.has(e.target).length) {
         this.enterEditMode(e);
       }
       this.updateStyle($(e.target).prop('checked'));
