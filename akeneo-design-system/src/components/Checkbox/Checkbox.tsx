@@ -1,6 +1,6 @@
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css, keyframes} from 'styled-components';
-import {AkeneoThemedProps, getColor} from '../../theme';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {CheckIcon, CheckPartialIcon} from '../../icons';
 import {useId, useShortcut} from '../../hooks';
 import {Key, Override} from '../../shared';
@@ -77,7 +77,7 @@ const CheckboxContainer = styled.div<{checked: boolean; readOnly: boolean} & Ake
 const LabelContainer = styled.label<{readOnly: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey140')};
   font-weight: 400;
-  font-size: 15px;
+  font-size: ${getFontSize('big')};
   padding-left: 10px;
 
   ${props =>
