@@ -1,4 +1,4 @@
-import React, {useState, useRef, ChangeEvent, FC, RefObject} from 'react';
+import React, {useState, useRef, ChangeEvent, FC, RefObject, KeyboardEvent} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
 import {CloseIcon} from '../../icons';
@@ -20,8 +20,8 @@ const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
   const [tags, setTags] = useState<string[]>(defaultTags);
   const [isLastTagSelected, selectLastTag] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef();
-  const inputContainerRef = useRef();
+  const containerRef = useRef<HTMLUListElement>(null);
+  const inputContainerRef = useRef<HTMLLIElement>(null);
 
   const addTag = (event: ChangeEvent<HTMLInputElement>) => {
     const tagsAsString = event.currentTarget.value;
@@ -30,7 +30,7 @@ const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
       if (newTags.length === 1) {
         return;
       }
-      newTags = newTags.filter((word: string) => word.trim() !== '');
+      newTags = newTags.filter((tag: string) => tag.trim() !== '');
       newTags = [...tags, ...newTags];
       if (!allowDuplicates) {
         newTags = arrayUnique(newTags);
@@ -42,8 +42,8 @@ const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
     }
   };
 
-  const removeWord = (wordToRemove: string) => {
-    const newTags = tags.filter((word: string) => word !== wordToRemove);
+  const removeTag = (tagToRemove: string) => {
+    const newTags = tags.filter((tag: string) => tag !== tagToRemove);
     setTags(newTags);
   };
 
@@ -54,12 +54,12 @@ const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
   };
 
   const onBackspaceKeyUp = (event: KeyboardEvent) => {
-    if (![Key.Backspace, Key.Delete].includes(event.key)) {
+    if (![Key.Backspace.toString(), Key.Delete.toString()].includes(event.key)) {
       selectLastTag(false);
       return;
     }
 
-    if (tags.length === 0 || inputRef.current.value.trim() !== '') {
+    if (tags.length === 0 || (inputRef && inputRef.current && inputRef.current.value.trim() !== '')) {
       return;
     }
 
@@ -77,7 +77,7 @@ const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
       {tags.map((tag, key) => {
         return (
           <Tag key={key} data-testid={'tag'} isSelected={key === tags.length - 1 && isLastTagSelected}>
-            <RemoveWordIcon onClick={() => removeWord(tag)} data-testid={`remove-${tag}`} />
+            <RemoveTagIcon onClick={() => removeTag(tag)} data-testid={`remove-${tag}`} />
             {tag}
           </Tag>
         );
@@ -99,7 +99,7 @@ const arrayUnique = (array: string[]) => {
   return Array.from(new Set(array));
 };
 
-const RemoveWordIcon = styled(CloseIcon)<AkeneoThemedProps>`
+const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
   width: 15px;
   height: 15px;
   color: ${getColor('grey', 100)};
