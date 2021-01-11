@@ -1,6 +1,6 @@
 const mediator = require('oro/mediator');
 
-const highlightConnectionsMenu = () => {
+const highlightSystemNavigationConnectionsMenuItem = () => {
   // 'System' tab & column
   mediator.trigger('pim_menu:highlight:tab', {
     extension: 'pim-menu-system',
@@ -12,28 +12,38 @@ const highlightConnectionsMenu = () => {
   });
 };
 
-const highlightConnectionSettingsAndMonitoringMenu = (routeName: string) => {
+const highlightConnectionNavigationMenuItems = (routeName: string) => {
   // 'System' tab & 'Connection' column
   mediator.trigger('pim_menu:highlight:tab', {
     extension: 'pim-menu-system',
     columnExtension: 'pim-menu-connection-column',
   });
 
-  if (routeName === 'akeneo_connectivity_connection_error_management_connection_monitoring') {
-    mediator.trigger('pim_menu:highlight:item', {
-      extension: 'pim-menu-connection-monitoring',
-    });
-  } else {
-    mediator.trigger('pim_menu:highlight:item', {
-      extension: 'pim-menu-connection-settings-edit',
-    });
+  switch(routeName) {
+    case 'akeneo_connectivity_connection_error_management_connection_monitoring':
+      mediator.trigger('pim_menu:highlight:item', {
+        extension: 'pim-menu-connection-monitoring',
+      });
+      break;
+    case 'akeneo_connectivity_connection_settings_edit':
+      mediator.trigger('pim_menu:highlight:item', {
+        extension: 'pim-menu-connection-settings-edit',
+      });
+      break;
+    case 'akeneo_connectivity_connection_webhook_edit':
+      mediator.trigger('pim_menu:highlight:item', {
+        extension: 'pim-menu-connection-event-subscriptions',
+      });
+      break;
   }
 };
 
 export default (routeName: string) => {
   if (routeName === 'akeneo_connectivity_connection_settings_index') {
-    highlightConnectionsMenu();
-  } else {
-    highlightConnectionSettingsAndMonitoringMenu(routeName);
+    highlightSystemNavigationConnectionsMenuItem();
+
+    return;
   }
+
+  highlightConnectionNavigationMenuItems(routeName);
 };
