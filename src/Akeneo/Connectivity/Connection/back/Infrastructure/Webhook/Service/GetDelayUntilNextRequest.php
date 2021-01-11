@@ -37,4 +37,3 @@ class GetDelayUntilNextRequest
         return 0;
     }
 }
-
