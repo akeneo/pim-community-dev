@@ -122,14 +122,14 @@ test('It returns callback to reload job execution information', async () => {
       tracking: {
         error: false,
         warning: false,
-        status: 'STARTED',
+        status: 'COMPLETED',
         currentStep: 1,
         totalSteps: 1,
         steps: [
           {
             jobName: 'csv_product_export',
             stepName: 'export',
-            status: 'STARTED',
+            status: 'COMPLETED',
             isTrackable: true,
             hasWarning: false,
             hasError: false,
