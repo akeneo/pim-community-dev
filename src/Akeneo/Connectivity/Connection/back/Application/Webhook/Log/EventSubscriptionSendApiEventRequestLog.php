@@ -85,7 +85,7 @@ class EventSubscriptionSendApiEventRequestLog
             'success' => $this->success,
             'response' => $this->response ? ['status_code' => $this->response->getStatusCode()] : null,
             'events' => array_map(function (WebhookEvent $event) {
-                $date = \DateTime::createFromFormat(\DateTime::ATOM, $event->eventDate());
+                $date = \DateTime::createFromFormat(\DateTime::ATOM, $event->eventDateTime());
                 return [
                     'uuid' => $event->eventId(),
                     'author' => $event->author()->name(),

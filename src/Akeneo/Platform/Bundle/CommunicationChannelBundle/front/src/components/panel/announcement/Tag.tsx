@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps} from 'akeneo-design-system';
 
-type Tag = 'new' | 'updates' | 'update' | 'announcement';
+type Tag = 'new' | 'update' | 'announcement';
 type TagProps = {
   tag: Tag;
 };
@@ -32,7 +32,7 @@ const StyledTag = styled.div`
           color: #763e9e;
           border: 1px solid #9452ba;
         `;
-      case 'updates':
+      case 'update':
         return `
           background-color: #f3eef9;
           color: #763e9e;
