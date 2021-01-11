@@ -72,6 +72,48 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
         $this->assertInstanceOf(Read\TextCheckerDictionaryWord::class, $textCheckerDictionaryWords[0]);
     }
 
+    public function test_it_returns_an_empty_result_on_paginated_search()
+    {
+        $results = $this->repository->paginatedSearch(new LocaleCode('en_US'), 1, 25, '');
+        $this->assertCount(0, $results['results']);
+        $this->assertEquals(0, $results['total']);
+    }
+
+    public function test_it_returns_a_results_with_limit_offest()
+    {
+        $this->createWords();
+
+        $results = $this->repository->paginatedSearch(new LocaleCode('en_US'), 1, 25, '');
+        $this->assertCount(3, $results['results']);
+        $this->assertEquals(3, $results['total']);
+
+        $results = $this->repository->paginatedSearch(new LocaleCode('en_US'), 1, 1, '');
+        $this->assertCount(1, $results['results']);
+        $this->assertEquals(3, $results['total']);
+
+        $results = $this->repository->paginatedSearch(new LocaleCode('en_US'), 2, 1, '');
+        $this->assertCount(1, $results['results']);
+        $this->assertEquals(3, $results['total']);
+    }
+
+    public function test_it_returns_results_on_existing_searched_word()
+    {
+        $this->createWords();
+
+        $results = $this->repository->paginatedSearch(new LocaleCode('en_US'), 1, 25, 'Son');
+        $this->assertCount(1, $results['results']);
+        $this->assertEquals(1, $results['total']);
+    }
+
+    public function test_it_returns_nothing_on_non_existing_searched_word()
+    {
+        $this->createWords();
+
+        $results = $this->repository->paginatedSearch(new LocaleCode('en_US'), 1, 25, 'Aken');
+        $this->assertCount(0, $results['results']);
+        $this->assertEquals(0, $results['total']);
+    }
+
     private function createWords()
     {
         $query = <<<SQL
