@@ -49,6 +49,6 @@ mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
 cp -R $DEV_DISTRIB_DIR/../pim-community-dev/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 
-cp $DEV_DISTRIB_DIR/std-build/upgrade/40_to_50/rector.yaml $STANDARD_DISTRIB_DIR/
+cp $DEV_DISTRIB_DIR/std-build/upgrade/40_to_50/* $STANDARD_DISTRIB_DIR/
 
 printf "Done. \n"
