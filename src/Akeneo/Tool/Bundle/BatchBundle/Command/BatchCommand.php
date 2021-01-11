@@ -17,8 +17,8 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -44,45 +44,23 @@ class BatchCommand extends Command
     const EXIT_ERROR_CODE = 1;
     const EXIT_WARNING_CODE = 2;
 
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var BatchLogHandler */
-    private $batchLogHandler;
-
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
-
-    /** @var RegistryInterface */
-    private $doctrine;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var Notifier */
-    private $notifier;
-
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /** @var JobParametersFactory */
-    private $jobParametersFactory;
-
-    /** @var JobParametersValidator */
-    private $jobParametersValidator;
-
-    /** @var string */
-    private $jobInstanceClass;
-
-    /** @var string */
-    private $jobExecutionClass;
+    private LoggerInterface $logger;
+    private BatchLogHandler $batchLogHandler;
+    private JobRepositoryInterface $jobRepository;
+    private ManagerRegistry $doctrine;
+    private ValidatorInterface $validator;
+    private Notifier $notifier;
+    private JobRegistry $jobRegistry;
+    private JobParametersFactory $jobParametersFactory;
+    private JobParametersValidator $jobParametersValidator;
+    private string $jobInstanceClass;
+    private string $jobExecutionClass;
 
     public function __construct(
         LoggerInterface $logger,
         BatchLogHandler $batchLogHandler,
         JobRepositoryInterface $jobRepository,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         ValidatorInterface $validator,
         Notifier $notifier,
         JobRegistry $jobRegistry,

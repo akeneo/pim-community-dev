@@ -2,15 +2,15 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 class Version_2_1_171220144835_batch_jobs extends AbstractMigration
 {
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $newJobCodes = $this->getNewJobs();
         $jobInstancesToCreate = $this->jobInstancesToCreate($newJobCodes);
@@ -20,7 +20,7 @@ class Version_2_1_171220144835_batch_jobs extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

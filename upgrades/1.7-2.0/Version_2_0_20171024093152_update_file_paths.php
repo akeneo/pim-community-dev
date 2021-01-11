@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Pim\Upgrade\SchemaHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -31,7 +31,7 @@ class Version_2_0_20171024093152_update_file_paths extends AbstractMigration imp
      *
      * @throws \Exception
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $schemaHelper = new SchemaHelper($this->container);
         $jobInstanceTable = $schemaHelper->getTableOrCollection('job_instance');
@@ -81,7 +81,7 @@ class Version_2_0_20171024093152_update_file_paths extends AbstractMigration imp
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

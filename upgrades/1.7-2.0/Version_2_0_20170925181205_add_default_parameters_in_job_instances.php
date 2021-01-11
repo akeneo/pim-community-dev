@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Pim\Upgrade\SchemaHelper;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -86,13 +86,13 @@ class Version_2_0_20170925181205_add_default_parameters_in_job_instances extends
         'xlsx_product_model_import',
         'xlsx_product_quick_export',
     ];
-    
+
     /**
      * @param Schema $schema
      *
      * @throws \Exception
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $schemaHelper = new SchemaHelper($this->container);
         $jobInstanceTable = $schemaHelper->getTableOrCollection('job_instance');
@@ -141,7 +141,7 @@ class Version_2_0_20170925181205_add_default_parameters_in_job_instances extends
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

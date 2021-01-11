@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -26,7 +26,7 @@ class Version_1_6_20160726103445_update_product_export_parameters extends Abstra
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $jobInstanceRepo = $this->container->get('pim_import_export.repository.job_instance');
         $channelRepo = $this->container->get('pim_catalog.repository.channel');
@@ -91,7 +91,7 @@ class Version_1_6_20160726103445_update_product_export_parameters extends Abstra
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

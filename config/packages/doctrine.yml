@@ -36,13 +36,4 @@ doctrine_migrations:
     dir_name: '%doctrine_migrations_dir%'
     namespace: Pim\Upgrade\Schema
     name: PIM Migrations
-
-doctrine_cache:
-    providers:
-        pim_apcu:
-            apcu: ~
-        pim_array:
-            array: ~
-        pim:
-            chain:
-                providers: [doctrine_cache.providers.pim_apcu, doctrine_cache.providers.pim_array]
+    column_length: 255

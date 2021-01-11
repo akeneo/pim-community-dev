@@ -3,7 +3,7 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -15,13 +15,9 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class AjaxCreatableEntityTransformerFactory
 {
-    /** @var RegistryInterface */
-    protected $doctrine;
+    protected ManagerRegistry $doctrine;
 
-    /**
-     * @param RegistryInterface $doctrine
-     */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
     }

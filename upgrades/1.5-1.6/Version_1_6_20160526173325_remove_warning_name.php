@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Remove warning name
@@ -17,7 +17,7 @@ class Version_1_6_20160526173325_remove_warning_name extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE akeneo_batch_warning DROP name');
     }
@@ -25,7 +25,7 @@ class Version_1_6_20160526173325_remove_warning_name extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->addSql('ALTER TABLE akeneo_batch_warning ADD name VARCHAR(100) DEFAULT NULL');
     }

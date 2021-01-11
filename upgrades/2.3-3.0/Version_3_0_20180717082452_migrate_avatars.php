@@ -5,9 +5,9 @@ namespace Pim\Upgrade\Schema;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
-use Doctrine\DBAL\Migrations\AbstractMigration;
-use Doctrine\DBAL\Migrations\IrreversibleMigrationException;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+use Doctrine\Migrations\Exception\IrreversibleMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
@@ -37,7 +37,7 @@ class Version_3_0_20180717082452_migrate_avatars extends AbstractMigration imple
      * @throws FileTransferException
      * @throws \Exception
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->disableMigrationWarning();
 
@@ -101,9 +101,9 @@ class Version_3_0_20180717082452_migrate_avatars extends AbstractMigration imple
     /**
      * {@inheritdoc}
      *
-     * @throws IrreversibleMigrationException
+     * @throws IrreversibleMigration
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

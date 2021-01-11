@@ -2,9 +2,9 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
-use Doctrine\DBAL\Migrations\IrreversibleMigrationException;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
+use Doctrine\Migrations\Exception\IrreversibleMigration;
 
 /**
  * Add file_info_id column to oro_user tables
@@ -14,7 +14,7 @@ class Version_3_0_20180717082451_add_file_info_to_user extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->disableMigrationWarning();
 
@@ -31,9 +31,9 @@ SQL;
     /**
      * {@inheritdoc}
      *
-     * @throws IrreversibleMigrationException
+     * @throws IrreversibleMigration
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

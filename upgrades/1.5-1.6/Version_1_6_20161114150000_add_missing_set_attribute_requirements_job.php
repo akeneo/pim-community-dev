@@ -2,8 +2,8 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Add the missing set_attribute_requirements job
@@ -16,7 +16,7 @@ class Version_1_6_20161114150000_add_missing_set_attribute_requirements_job exte
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->write('(re-)create set_attribute_requirements job');
         $this->addSql("DELETE FROM akeneo_batch_job_instance WHERE code = 'set_attribute_requirements';");
@@ -41,7 +41,7 @@ SQL
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }
