@@ -8,6 +8,7 @@ resource "google_pubsub_topic" "business-event" {
   labels = {
     pfid = local.pfid
     topic_type = "business"
+    topic_update = "test"
   }
 }
 
@@ -37,6 +38,7 @@ resource "google_pubsub_subscription" "webhook" {
   labels = {
     pfid = local.pfid
     subscription_type = "webhook"
+    subscription_update = "test"
   }
 }
 
