@@ -7,11 +7,9 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\CountHourlyEventsApiRequestQuery;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
@@ -42,7 +40,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookClient $client,
         WebhookEventBuilder $builder,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
-        CacheClearerInterface $cacheClearer,
+        CacheClearerInterface $cacheClearer
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -156,7 +154,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $countHourlyEventsApiRequestQuery,
         $cacheClearer,
         $eventsApiRequestRepository
     ): void {
@@ -179,7 +176,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $erpWebhook = new ActiveWebhook('erp_source', 42, 'a_secret', 'http://localhost/');
         $magentoWebhook = new ActiveWebhook('ecommerce_destination', 12, 'a_secret', 'http://localhost/');
 
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(1);
         $selectActiveWebhooksQuery->execute()->willReturn([$erpWebhook, $magentoWebhook]);
         $webhookUserAuthenticator->authenticate(12)->willReturn($magentoUser);
         $webhookUserAuthenticator->authenticate(42)->willReturn($erpUser);
@@ -253,7 +249,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $countHourlyEventsApiRequestQuery,
         $cacheClearer,
         $eventsApiRequestRepository
     ): void {
@@ -268,7 +263,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
 
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(1);
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
         $webhookUserAuthenticator->authenticate(0)->willReturn($user);
         $builder
