@@ -2,28 +2,11 @@ import {useCallback, useEffect, useState} from 'react';
 import {useIsMounted} from '@akeneo-pim-community/shared';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 import {JobExecution} from '../models';
+import {useDocumentVisibility} from '@akeneo-pim-community/shared/src/hooks/useDocumentVisibility';
 
 type Error = {
   statusMessage: string;
   statusCode: number;
-};
-
-const isWindowVisible = () => 'visible' === document.visibilityState;
-const useVisibility = () => {
-  const [isVisible, setVisible] = useState<boolean>(isWindowVisible());
-  const handleVisibilityChange = () => {
-    setVisible(isWindowVisible());
-  };
-
-  useEffect(() => {
-    window.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      window.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  });
-
-  return isVisible;
 };
 
 const useJobExecution = (jobExecutionId: string) => {
@@ -32,7 +15,7 @@ const useJobExecution = (jobExecutionId: string) => {
   const [jobExecution, setJobExecution] = useState<JobExecution | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const route = router.generate('pim_enrich_job_execution_rest_get', {identifier: jobExecutionId});
-  const isVisible = useVisibility();
+  const documentIsVisible = useDocumentVisibility();
   const isFinished = jobExecution !== undefined && ['COMPLETED', 'STOPPED', 'FAILED'].includes(jobExecution?.tracking.status ?? '');
   const fetchJobExecution = useCallback(async () => {
     const response = await fetch(route);
@@ -52,7 +35,7 @@ const useJobExecution = (jobExecutionId: string) => {
   }, [route]);
 
   useEffect(() => {
-    if (!isVisible || isFinished) return;
+    if (!documentIsVisible || isFinished) return;
 
     const interval = setInterval(() => {
       fetchJobExecution();
@@ -61,7 +44,7 @@ const useJobExecution = (jobExecutionId: string) => {
     return () => {
       clearInterval(interval);
     };
-  }, [isVisible, isFinished]);
+  }, [documentIsVisible, isFinished]);
 
 
   return {jobExecution, error, isFinished, reloadJobExecution: fetchJobExecution};
