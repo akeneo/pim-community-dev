@@ -2,7 +2,7 @@ import React from 'react';
 import {Pagination} from './Pagination';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 
-test('it renders nothing if there is no item', () => {
+test('it throws an error if there is no item', () => {
   const mockConsole = jest.spyOn(console, 'error').mockImplementation();
 
   const paginationRender = () => {
@@ -14,7 +14,7 @@ test('it renders nothing if there is no item', () => {
   mockConsole.mockRestore();
 });
 
-test('it renders nothing if current page is out of bound', () => {
+test('it throws an error if the current page is out of bound', () => {
   const mockConsole = jest.spyOn(console, 'error').mockImplementation();
 
   const paginationRender = () => {
