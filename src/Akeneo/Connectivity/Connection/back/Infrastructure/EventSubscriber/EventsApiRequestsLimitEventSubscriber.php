@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\Event\WorkerRunningEvent;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class MessengerEventSubscriber implements EventSubscriberInterface
+final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInterface
 {
     private GetDelayUntilNextRequest $getDelayUntilNextRequest;
     private int $webhookRequestsLimit;
@@ -49,7 +49,7 @@ final class MessengerEventSubscriber implements EventSubscriberInterface
             $this->webhookRequestsLimit
         );
 
-        if (0 <= $delayUntilNextRequest) {
+        if ($delayUntilNextRequest > 0) {
             $this->logger->info(
                 json_encode(
                     (EventSubscriptionRequestsLimitReachedLog::fromLimit(

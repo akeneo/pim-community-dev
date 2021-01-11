@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQuery;
@@ -19,7 +21,13 @@ class GetDelayUntilNextRequest
         $this->selectEventsApiRequestCountWithinLastHourQuery = $selectEventsApiRequestCountWithinLastHourQuery;
     }
 
-    public function execute(\DateTimeImmutable $dateTime, $limit): int
+    /**
+     * We are fetching the count of events api request for each minutes ordered from youngest to oldest, then we are
+     * adding the count together until the limit is reached to finally calculate the number of seconds between the
+     * current time and the time where the limit was reached and adding the remaining time in seconds to "complete"
+     * the 1 hour quota
+     */
+    public function execute(\DateTimeImmutable $dateTime, int $limit): int
     {
         $eventsApiRequestCountWithinLastHour = $this->selectEventsApiRequestCountWithinLastHourQuery->execute($dateTime);
 

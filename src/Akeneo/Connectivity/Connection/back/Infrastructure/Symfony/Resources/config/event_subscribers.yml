@@ -18,7 +18,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\MessengerEventSubscriber:
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitEventSubscriber:
         arguments:
             - '@akeneo_connectivity.connection.webhook.get_delay_until_next_request'
             - '%webhook_requests_limit%'

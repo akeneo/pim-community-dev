@@ -11,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
  */
 class Sleep
 {
-    public function execute(int $second): void
+    public function sleep(int $second): void
     {
         sleep($second);
     }
