@@ -1,11 +1,15 @@
 import {
   getDownloadLinks,
   JobExecutionArchives,
+  isJobFinished,
+  JobExecution,
 } from '../../../../../../Resources/public/js/job/execution/models/job-execution';
 
-describe('job execution', () => {
-  it('should provide a array of download link', () => {
-    const jobExecution: JobExecutionArchives = {
+const jobExecution: JobExecution = {
+  failures: [],
+  meta: {
+    logExists: false,
+    archives: {
       output: {
         label: 'pim_enrich.entity.job_execution.module.download.output',
         files: {
@@ -18,9 +22,23 @@ describe('job execution', () => {
           'export_2021-01-05_10-33-34.zip': 'export/24/archive/export_2021-01-05_10-33-34.zip',
         },
       },
-    };
+    },
+  },
+  isStoppable: true,
+  jobInstance: {label: 'Nice job', code: 'nice_job', type: 'yes'},
+  tracking: {
+    error: false,
+    warning: false,
+    status: 'COMPLETED',
+    currentStep: 1,
+    totalSteps: 1,
+    steps: [],
+  },
+};
 
-    const downloadLinks = getDownloadLinks(jobExecution);
+describe('job execution', () => {
+  it('should provide a array of download link', () => {
+    const downloadLinks = getDownloadLinks(jobExecution.meta.archives);
 
     expect(downloadLinks).toEqual([
       {
@@ -67,5 +85,13 @@ describe('job execution', () => {
         label: 'export_product_model_2021-01-05_10-33-34.csv',
       },
     ]);
+  });
+
+  it('should tell if a job is finished or not based on its status', () => {
+    expect(isJobFinished(jobExecution)).toBe(true);
+    expect(isJobFinished({...jobExecution, tracking: {...jobExecution.tracking, status: 'STOPPED'}})).toBe(true);
+    expect(isJobFinished({...jobExecution, tracking: {...jobExecution.tracking, status: 'FAILED'}})).toBe(true);
+    expect(isJobFinished({...jobExecution, tracking: {...jobExecution.tracking, status: 'ABANDONED'}})).toBe(false);
+    expect(isJobFinished({...jobExecution, tracking: {...jobExecution.tracking, status: 'UNKNOWN'}})).toBe(false);
   });
 });

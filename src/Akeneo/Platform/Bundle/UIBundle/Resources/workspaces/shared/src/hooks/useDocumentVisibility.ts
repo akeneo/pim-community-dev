@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-const isDocumentVisible = () => 'visible' === document.visibilityState;
+const isDocumentVisible = () => 'hidden' !== document.visibilityState;
 
 const useDocumentVisibility = (): boolean => {
   const [isVisible, setVisible] = useState<boolean>(isDocumentVisible());
