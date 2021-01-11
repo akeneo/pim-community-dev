@@ -17,3 +17,12 @@ services:
             - '@akeneo_connectivity.connection.error_management.service.collect_api_error'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\MessengerEventSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.get_delay_until_next_request'
+            - '%webhook_requests_limit%'
+            - '@akeneo_connectivity.connection.webhook.sleep'
+            - '@monolog.logger.event_api'
+        tags:
+            - { name: kernel.event_subscriber }
