@@ -18,7 +18,7 @@ import {Status} from './Status';
 import {StopJobAction} from './StopJobAction';
 import {JobExecutionProgress} from './Progress';
 import {ShowProfile} from './ShowProfile';
-import {getDownloadLinks, JobExecution, isJobFinished} from './models/job-execution';
+import {getDownloadLinks, JobExecution} from './models/job-execution';
 import {useJobExecution} from './hooks/useJobExecution';
 import {SummaryTable} from './summary/SummaryTable';
 
@@ -80,7 +80,7 @@ const ExecutionDetail = () => {
 
   const jobTypeWithProfile = ['import', 'export'];
   const {jobExecutionId} = useParams<{jobExecutionId: string}>();
-  const [jobExecution, error, reloadJobExecution] = useJobExecution(jobExecutionId);
+  const [jobExecution, error, reloadJobExecution, showRefreshing] = useJobExecution(jobExecutionId);
 
   const handleStop = async () => {
     await reloadJobExecution();
@@ -94,7 +94,6 @@ const ExecutionDetail = () => {
 
   const downloadArchiveTitle = translate('pim_enrich.entity.job_execution.module.download.output');
   const showProfileIsVisible = jobTypeWithProfile.includes(jobExecution?.jobInstance.type || '');
-  const isFinished = isJobFinished(jobExecution);
 
   const dashboardHref = useRoute('pim_dashboard_index');
   const jobTrackerHref = useRoute('pim_enrich_job_tracker_index');
@@ -123,7 +122,7 @@ const ExecutionDetail = () => {
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
-          {!isFinished && (
+          {null !== jobExecution && showRefreshing && (
             <Refreshing>
               {translate('pim_import_export.form.job_execution.refreshing')}
               <LoaderIcon />

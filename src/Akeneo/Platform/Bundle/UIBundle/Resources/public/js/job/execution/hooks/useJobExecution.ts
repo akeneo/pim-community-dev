@@ -13,8 +13,8 @@ const useJobExecution = (jobExecutionId: string) => {
   const [jobExecution, setJobExecution] = useState<JobExecution | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const route = useRoute('pim_enrich_job_execution_rest_get', {identifier: jobExecutionId});
-  const documentIsVisible = useDocumentVisibility();
-  const isFinished = isJobFinished(jobExecution);
+  const isDocumentVisible = useDocumentVisibility();
+  const willRefresh = isDocumentVisible && !isJobFinished(jobExecution);
 
   const fetchJobExecution = useCallback(async () => {
     const response = await fetch(route);
@@ -36,16 +36,16 @@ const useJobExecution = (jobExecutionId: string) => {
   }, [route]);
 
   useEffect(() => {
-    if (!documentIsVisible || isFinished) return;
+    if (!willRefresh) return;
 
     const interval = setInterval(fetchJobExecution, 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [documentIsVisible, isFinished]);
+  }, [willRefresh]);
 
-  return [jobExecution, error, fetchJobExecution] as const;
+  return [jobExecution, error, fetchJobExecution, willRefresh] as const;
 };
 
 export {useJobExecution};
