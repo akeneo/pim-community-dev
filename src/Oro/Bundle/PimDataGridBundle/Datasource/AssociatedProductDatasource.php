@@ -30,8 +30,7 @@ class AssociatedProductDatasource extends ProductDatasource
     /** @var string */
     protected $sortOrder;
 
-    // todo merge remove null
-    /** @var NormalizerInterface|null */
+    /** @var NormalizerInterface */
     private $internalApiNormalizer;
 
     public function __construct(
@@ -39,7 +38,7 @@ class AssociatedProductDatasource extends ProductDatasource
         ProductQueryBuilderFactoryInterface $factory,
         NormalizerInterface $serializer,
         FilterEntityWithValuesSubscriber $filterEntityWithValuesSubscriber,
-        NormalizerInterface $internalApiNormalizer = null // todo merge remove null
+        NormalizerInterface $internalApiNormalizer
     ) {
         parent::__construct($om, $factory, $serializer, $filterEntityWithValuesSubscriber);
         $this->internalApiNormalizer = $internalApiNormalizer;
@@ -143,11 +142,6 @@ class AssociatedProductDatasource extends ProductDatasource
 
     protected function getNormalizedSource(ProductInterface $product, string $locale, string $scope): ?array
     {
-        // todo merge remove null check
-        if (null === $this->internalApiNormalizer) {
-            return null;
-        }
-
         $dataLocale = $this->getParameters()['dataLocale'];
 
         $context = [
