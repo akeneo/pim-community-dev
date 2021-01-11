@@ -25,6 +25,7 @@ const PaginationItem: FC<PaginationItemProps> = ({currentPage, page, onClick}) =
       disabled={page === PAGINATION_SEPARATOR}
       currentPage={currentPage}
       page={page}
+      type="button"
     >
       {page}
     </PaginationItemContainer>
