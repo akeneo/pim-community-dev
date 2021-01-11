@@ -4,10 +4,8 @@ import {Pagination} from './Pagination.tsx';
 <Meta
     title="Components/Pagination"
     component={Pagination}
-    argTypes={{
-    }}
     args={{
-        itemsTotal: 3000,
+        totalItems: 3000,
         currentPage: 12,
         itemsPerPage: 25,
     }}
@@ -45,8 +43,8 @@ When there are 4 pages or less, all pagination items are visible.
         {args => {
             return (
                 <>
-                    <Pagination itemsTotal={8} currentPage={1} itemsPerPage={2} onClick={() => {}}/>
-                    <Pagination itemsTotal={3} currentPage={1} itemsPerPage={2} onClick={() => {}}/>
+                    <Pagination totalItems={8} currentPage={1} itemsPerPage={2} onClick={() => {}}/>
+                    <Pagination totalItems={3} currentPage={1} itemsPerPage={2} onClick={() => {}}/>
                 </>
             )
         }}
