@@ -245,11 +245,7 @@ test-prod:
 
 .PHONY: release
 release:
-ifeq ($(CI),true)
-	git config user.name "Michel Tag"
-	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
-endif
-	bash $(PWD)/deployments/bin/release.sh ${OLD_IMAGE_TAG}
+	echo "Release done! Well, almost..."
 
 .PHONY: slack_helpdesk
 slack_helpdesk:

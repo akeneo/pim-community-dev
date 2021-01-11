@@ -19,11 +19,11 @@ namespace Akeneo\Platform;
 class EnterpriseVersion
 {
     /** @staticvar string */
-    const VERSION = '20200214152234';
+    const VERSION = '5.0.1';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Cirrus';
+    const VERSION_CODENAME = 'Buttercup';
 
     /** @staticvar string */
-    const EDITION = 'Serenity';
+    const EDITION = 'EE';
 }

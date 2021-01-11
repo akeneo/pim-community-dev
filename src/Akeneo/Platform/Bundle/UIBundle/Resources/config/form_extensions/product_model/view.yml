@@ -251,3 +251,13 @@ extensions:
         module: pim/product-edit-form/attribute-filter-missing-required
         parent: pimee-product-model-view-form-attribute-filter
         position: 110
+
+    pimee-product-model-view-associations:
+        module: pimee/product-edit-form/associations
+        parent: pimee-product-model-view-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_associations_view
+        position: 110
+        config:
+            aclAddAssociations: pim_enrich_associations_edit
+            datagridName: 'association-product-model-grid'

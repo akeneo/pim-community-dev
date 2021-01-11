@@ -1,6 +1,0 @@
-imports:
-  - { resource: 'vendor/rector/rector/packages/**/config/config.yaml' }
-
-services:
-  Rector\Renaming\Rector\Class_\RenameClassRector:
-    $oldToNewClasses:

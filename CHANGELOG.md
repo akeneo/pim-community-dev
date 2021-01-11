@@ -1,3 +1,9 @@
+# 5.0.x
+
+# 5.0.1 (2021-01-08)
+
+# 5.0.0 (2020-12-31)
+
 ## Bug fixes
 
 - PIM-9617: Configure clean_removed_attribute_job to be run on a single daemon
