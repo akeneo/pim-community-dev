@@ -132,7 +132,7 @@ $rules = [
 
             //External dependencies
             'Doctrine\DBAL',
-            'Doctrine\Common\Persistence\ObjectRepository',
+            'Doctrine\Persistence\ObjectRepository',
             'Doctrine\ORM\Query\Expr',
             'League\Flysystem\MountManager',
             'Psr\Log\LoggerInterface',

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 use Oro\Bundle\ConfigBundle\Entity\Config;
@@ -63,11 +63,11 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp(): void
     {
-        if (!interface_exists('Doctrine\Common\Persistence\ObjectManager')) {
+        if (!interface_exists('Doctrine\Persistence\ObjectManager')) {
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
         }
 
-        $this->om = $this->createMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->om = $this->createMock('Doctrine\Persistence\ObjectManager');
         $this->object = new ConfigManager($this->om, $this->settings);
     }
 

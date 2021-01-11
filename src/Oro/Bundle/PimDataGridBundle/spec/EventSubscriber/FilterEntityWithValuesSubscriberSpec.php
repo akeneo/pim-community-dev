@@ -2,7 +2,7 @@
 
 namespace spec\Oro\Bundle\PimDataGridBundle\EventSubscriber;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;

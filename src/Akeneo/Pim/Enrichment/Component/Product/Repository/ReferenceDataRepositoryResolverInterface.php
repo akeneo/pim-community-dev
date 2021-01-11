@@ -14,7 +14,7 @@ interface ReferenceDataRepositoryResolverInterface
     /**
      * @param string $referenceDataType
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return \Doctrine\Persistence\ObjectRepository
      */
     public function resolve($referenceDataType);
 }

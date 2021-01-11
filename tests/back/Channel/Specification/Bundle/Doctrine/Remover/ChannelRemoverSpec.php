@@ -4,7 +4,7 @@ namespace Specification\Akeneo\Channel\Bundle\Doctrine\Remover;
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

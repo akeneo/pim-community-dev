@@ -6,7 +6,7 @@ namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * Load raw parameters of a job execution in order to inject it as a value object JobParameters,

@@ -18,6 +18,10 @@
 - CPM-101: Remove twig/extensions dependency (abandoned)
 - CPM-100: replace deprecated `Symfony\Component\Translation\TranslatorInterface` by `Symfony\Contracts\Translation\TranslatorInterface`
 - CPM-100: replace deprecated `Symfony\Component\HttpKernel\Event\GetResponseEvent` by `Symfony\Component\HttpKernel\Event\RequestEvent`
+- CPM-99: replace removed `Doctrine\Common\Persistence\ObjectRepository` class by `Doctrine\Persistence\ObjectRepository`
+- CPM-99: replace removed `Doctrine\Common\Persistence\ObjectManager` class by `Doctrine\Persistence\ObjectManager`
+- CPM-99: replace removed `Doctrine\Common\Persistence\ManagerRegistry` class by `Doctrine\Persistence\ManagerRegistry`
+- CPM-99: replace removed `Doctrine\Common\Persistence\Event\LifecycleEventArgs` class by `Doctrine\ORM\Event\LifecycleEventArgs`
 
 ### Codebase
 

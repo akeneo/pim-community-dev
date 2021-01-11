@@ -3,7 +3,7 @@
 namespace spec\Oro\Bundle\PimDataGridBundle\Datasource;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use PhpSpec\ObjectBehavior;

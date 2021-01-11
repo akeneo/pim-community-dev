@@ -146,7 +146,7 @@ class FeatureContext extends MinkContext implements KernelAwareContext
     /**
      * Return doctrine manager instance
      *
-     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @return \Doctrine\Persistence\ObjectManager
      */
     public function getEntityManager()
     {

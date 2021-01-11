@@ -334,7 +334,7 @@ class FixturesContext extends PimContext
     /**
      * @param string $namespace
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return \Doctrine\Persistence\ObjectRepository
      */
     protected function getRepository($namespace)
     {

@@ -3,8 +3,8 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;

@@ -7,7 +7,7 @@ use Akeneo\Platform\Bundle\UIBundle\Form\Exception\FormException;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\ArrayToStringTransformer;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntitiesToIdsTransformer;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdTransformer;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

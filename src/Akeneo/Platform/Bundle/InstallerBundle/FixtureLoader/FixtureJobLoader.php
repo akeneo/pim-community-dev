@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

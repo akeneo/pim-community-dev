@@ -2595,7 +2595,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * Return doctrine manager instance
      *
-     * @return \Doctrine\Common\Persistence\ObjectManager
+     * @return \Doctrine\Persistence\ObjectManager
      */
     protected function getEntityManager()
     {

@@ -5,7 +5,7 @@ namespace spec\Akeneo\Tool\Bundle\BatchBundle\EventListener;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 
 class LoadJobParametersListenerSpec extends ObjectBehavior

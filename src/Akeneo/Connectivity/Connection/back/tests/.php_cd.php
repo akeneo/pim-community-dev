@@ -20,7 +20,7 @@ $rules = [
             'Symfony\Component\Security',
             'Symfony\Component\OptionsResolver\OptionsResolver',
 
-            'Doctrine\Common\Persistence\ObjectRepository',
+            'Doctrine\Persistence\ObjectRepository',
 
             'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',

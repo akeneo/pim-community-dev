@@ -30,7 +30,7 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_is_an_object_repository()
     {
-        $this->shouldImplement('Doctrine\Common\Persistence\ObjectRepository');
+        $this->shouldImplement('Doctrine\Persistence\ObjectRepository');
     }
 
     function it_checks_if_the_product_has_an_attribute_in_its_family(

@@ -88,7 +88,7 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
 
         $container->register(
             'doctrine.orm.entity_manager',
-            $this->getMockClass('Doctrine\Common\Persistence\ObjectManager')
+            $this->getMockClass('Doctrine\Persistence\ObjectManager')
         );
         $container->register(
             'security.token_storage',

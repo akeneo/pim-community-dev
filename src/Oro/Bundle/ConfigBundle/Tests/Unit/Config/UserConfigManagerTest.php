@@ -4,7 +4,7 @@ namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -39,7 +39,7 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp(): void
     {
-        $this->om = $this->createMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->om = $this->createMock('Doctrine\Persistence\ObjectManager');
         $this->object = new UserConfigManager($this->om, $this->settings);
 
         $this->tokenStorage = $this->createMock('Symfony\Component\Security\Core\TokenStorageInterface');
