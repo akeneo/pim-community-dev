@@ -97,5 +97,8 @@ const getDownloadLinks = (jobExecutionArchives: JobExecutionArchives | null): Do
   return downloadLinks;
 };
 
-export {getDownloadLinks};
+const isJobFinished = (jobExecution: JobExecution | null): boolean =>
+  null !== jobExecution && ['COMPLETED', 'STOPPED', 'FAILED'].includes(jobExecution.tracking.status);
+
+export {getDownloadLinks, isJobFinished};
 export type {JobExecution, JobExecutionArchives, JobExecutionTracking, JobInstance, StepExecutionTracking};

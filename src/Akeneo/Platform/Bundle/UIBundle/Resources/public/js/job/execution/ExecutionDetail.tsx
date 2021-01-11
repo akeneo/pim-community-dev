@@ -1,13 +1,16 @@
 import React from 'react';
-import {PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
+import {useParams} from 'react-router-dom';
+import styled from 'styled-components';
+import {PimView, useRouter, useSecurity, useTranslate, useRoute, Security} from '@akeneo-pim-community/legacy-bridge';
+import {PageContent, PageHeader, FullScreenError} from '@akeneo-pim-community/shared';
 import {
   Breadcrumb,
   Button,
   Dropdown,
   getColor,
   IconButton,
-  Link, LoaderIcon,
+  Link,
+  LoaderIcon,
   MoreIcon,
   useBooleanState,
 } from 'akeneo-design-system';
@@ -15,12 +18,8 @@ import {Status} from './Status';
 import {StopJobAction} from './StopJobAction';
 import {JobExecutionProgress} from './Progress';
 import {ShowProfile} from './ShowProfile';
-import styled from 'styled-components';
-import {getDownloadLinks, JobExecution} from './models/job-execution';
-import {useParams} from 'react-router-dom';
-import {FullScreenError} from '@akeneo-pim-community/shared';
-import {useJobExecution} from './hooks/use-job-execution';
-import {useRoute, Security} from '@akeneo-pim-community/legacy-bridge';
+import {getDownloadLinks, JobExecution, isJobFinished} from './models/job-execution';
+import {useJobExecution} from './hooks/useJobExecution';
 import {SummaryTable} from './summary/SummaryTable';
 
 const Container = styled.div`
@@ -32,9 +31,18 @@ const Container = styled.div`
 const SecondaryActionsButton = styled(IconButton)`
   opacity: 0.5;
   color: ${getColor('grey', 120)};
+
   :hover {
     opacity: 1;
   }
+`;
+
+const Refreshing = styled.span`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-style: italic;
+  color: ${getColor('grey', 100)};
 `;
 
 const canDownloadLog = ({isGranted}: Security, jobExecution: JobExecution | null) => {
@@ -71,8 +79,8 @@ const ExecutionDetail = () => {
   const router = useRouter();
 
   const jobTypeWithProfile = ['import', 'export'];
-  const {jobExecutionId} = useParams() as {jobExecutionId: string};
-  const {jobExecution, error, reloadJobExecution, isFinished} = useJobExecution(jobExecutionId);
+  const {jobExecutionId} = useParams<{jobExecutionId: string}>();
+  const [jobExecution, error, reloadJobExecution] = useJobExecution(jobExecutionId);
 
   const handleStop = async () => {
     await reloadJobExecution();
@@ -82,10 +90,11 @@ const ExecutionDetail = () => {
 
   const downloadLogIsVisible = canDownloadLog(security, jobExecution);
   const downloadArchiveLinks = getDownloadLinks(jobExecution?.meta.archives ?? null);
-  const downloadArchiveLinkIsVisible = canDownloadArchive(security, jobExecution) && downloadArchiveLinks.length > 0;
+  const downloadArchiveLinkIsVisible = canDownloadArchive(security, jobExecution) && 0 < downloadArchiveLinks.length;
 
   const downloadArchiveTitle = translate('pim_enrich.entity.job_execution.module.download.output');
   const showProfileIsVisible = jobTypeWithProfile.includes(jobExecution?.jobInstance.type || '');
+  const isFinished = isJobFinished(jobExecution);
 
   const dashboardHref = useRoute('pim_dashboard_index');
   const jobTrackerHref = useRoute('pim_enrich_job_tracker_index');
@@ -115,10 +124,10 @@ const ExecutionDetail = () => {
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
           {!isFinished && (
-            <>
+            <Refreshing>
               {translate('pim_import_export.form.job_execution.refreshing')}
               <LoaderIcon />
-            </>
+            </Refreshing>
           )}
           <PimView
             viewName="pim-menu-user-navigation"
@@ -131,7 +140,7 @@ const ExecutionDetail = () => {
               <SecondaryActionsButton
                 title={translate('pim_common.other_actions')}
                 icon={<MoreIcon />}
-                ghost={'borderless'}
+                ghost="borderless"
                 onClick={openSecondaryAction}
               />
               {secondaryActionIsOpen && (

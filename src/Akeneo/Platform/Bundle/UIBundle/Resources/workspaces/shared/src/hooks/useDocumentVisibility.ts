@@ -1,13 +1,11 @@
 import {useEffect, useState} from 'react';
 
-const documentIsVisible = () => 'visible' === document.visibilityState;
+const isDocumentVisible = () => 'visible' === document.visibilityState;
 
 const useDocumentVisibility = (): boolean => {
-  const [isVisible, setVisible] = useState<boolean>(documentIsVisible());
-  const handleVisibilityChange = () => {
-    console.log(document.visibilityState);
-    setVisible(documentIsVisible());
-  };
+  const [isVisible, setVisible] = useState<boolean>(isDocumentVisible());
+
+  const handleVisibilityChange = () => setVisible(isDocumentVisible());
 
   useEffect(() => {
     window.addEventListener('visibilitychange', handleVisibilityChange);
@@ -15,7 +13,7 @@ const useDocumentVisibility = (): boolean => {
     return () => {
       window.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  });
+  }, []);
 
   return isVisible;
 };
