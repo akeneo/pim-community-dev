@@ -10,5 +10,11 @@ namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query;
  */
 interface SelectEventsApiRequestCountWithinLastHourQuery
 {
+    /**
+     * @return array<array{
+     *  event_count: int,
+     *  updated: string
+     * }>}
+     */
     public function execute(\DateTimeImmutable $eventDateTime): array;
 }
