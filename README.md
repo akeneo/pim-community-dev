@@ -5,7 +5,7 @@ Welcome to Akeneo PIM Enterprise product.
 This repository is used to develop the Akeneo PIM Enterprise product.
 Practically, it means the Akeneo PIM bundles are present in the src/ directory.
 
-Here is [the documentation](https://docs.akeneo.com/5.0/install_pim/docker/installation_docker.html) to install the PIM using Docker & make.
+Here is [the documentation](https://docs.akeneo.com/latest/install_pim/docker/installation_docker.html) to install the PIM using Docker & make.
 
 ## how to bootstrap a PIM
 
