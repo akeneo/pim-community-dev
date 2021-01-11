@@ -11,6 +11,7 @@ use Rector\Renaming\Rector\Name\RenameClassRector;
 
 
 /*
+ * This is not meant to be automated: we want to generated renamed-classes.php and perform tests on rector configuration.
  * Install:  docker-compose run  -u www-data --rm php composer require --dev rector/rector-prefixed
  * Test:  docker-compose run  -u www-data --rm php vendor/bin/rector -c std-build/migration/40_to_50/rector.php process ./std-build/migration/40_to_50/test-src
  */
