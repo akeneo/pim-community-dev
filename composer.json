@@ -37,7 +37,7 @@
         }
     },
     "require": {
-        "php": "7.4.*",
+        "php": "8.0.*",
         "ext-apcu": "*",
         "ext-bcmath": "*",
         "ext-curl": ">=7.0",

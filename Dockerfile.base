@@ -19,31 +19,31 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     apt-get --yes install imagemagick \
         libmagickcore-6.q16-2-extra \
         ghostscript \
-        php7.4-fpm \
-        php7.4-cli \
-        php7.4-intl \
-        php7.4-opcache \
-        php7.4-mysql \
-        php7.4-zip \
-        php7.4-xml \
-        php7.4-gd \
-        php7.4-curl \
-        php7.4-mbstring \
-        php7.4-bcmath \
-        php7.4-imagick \
-        php7.4-apcu \
-        php7.4-exif \
+        php8.0-fpm \
+        php8.0-cli \
+        php8.0-intl \
+        php8.0-opcache \
+        php8.0-mysql \
+        php8.0-zip \
+        php8.0-xml \
+        php8.0-gd \
+        php8.0-curl \
+        php8.0-mbstring \
+        php8.0-bcmath \
+        php8.0-imagick \
+        php8.0-apcu \
+        php8.0-exif \
         openssh-client \
         php-memcached \
         aspell \
         aspell-en aspell-es aspell-de aspell-fr && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    ln -s /usr/sbin/php-fpm7.4 /usr/local/sbin/php-fpm && \
+    ln -s /usr/sbin/php-fpm8.0 /usr/local/sbin/php-fpm && \
     usermod --uid 1000 www-data && groupmod --gid 1000 www-data && \
     mkdir /srv/pim && \
-    sed -i "s#listen = /run/php/php7.4-fpm.sock#listen = 9000#g" /etc/php/7.4/fpm/pool.d/www.conf && \
+    sed -i "s#listen = /run/php/php8.0-fpm.sock#listen = 9000#g" /etc/php/8.0/fpm/pool.d/www.conf && \
     mkdir -p /run/php
 
-COPY docker/build/akeneo.ini /etc/php/7.4/cli/conf.d/99-akeneo.ini
-COPY docker/build/akeneo.ini /etc/php/7.4/fpm/conf.d/99-akeneo.ini
+COPY docker/build/akeneo.ini /etc/php/8.0/cli/conf.d/99-akeneo.ini
+COPY docker/build/akeneo.ini /etc/php/8.0/fpm/conf.d/99-akeneo.ini
