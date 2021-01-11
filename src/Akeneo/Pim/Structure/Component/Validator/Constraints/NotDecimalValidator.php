@@ -26,7 +26,7 @@ class NotDecimalValidator extends ConstraintValidator
         if (null === $value) {
             return;
         }
-        if (is_numeric($value) && floor($value) != $value) {
+        if (is_numeric($value) && floor((int) $value) != $value) {
             $violation = $this->context->buildViolation($constraint->message);
             $violation->addViolation();
         }

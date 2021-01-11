@@ -47,7 +47,8 @@ class FileGuesser implements ConstraintGuesserInterface
         $constraints = [];
         $options = [];
 
-        if ($maxSize = $attribute->getMaxFileSize()) {
+        $maxSize = $attribute->getMaxFileSize();
+        if ($maxSize && is_numeric($maxSize)) {
             if ($maxSize == (int) $maxSize) {
                 $maxSize = (int) $maxSize;
                 $unit = self::MEGABYTE_UNIT;

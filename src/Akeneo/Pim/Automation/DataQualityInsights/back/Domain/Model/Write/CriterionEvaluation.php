@@ -20,7 +20,7 @@ final class CriterionEvaluation
     /** @var ProductId */
     private $productId;
 
-    /** @var \DateTimeImmutable */
+    /** @var \DateTimeImmutable|null */
     private $evaluatedAt;
 
     /** @var CriterionEvaluationStatus */
