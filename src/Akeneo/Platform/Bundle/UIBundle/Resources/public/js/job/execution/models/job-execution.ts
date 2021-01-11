@@ -53,6 +53,7 @@ type JobExecution = {
   jobInstance: JobInstance;
   tracking: JobExecutionTracking;
   isStoppable: boolean;
+  isRunning: boolean;
   meta: {
     logExists: boolean;
     archives: JobExecutionArchives;
@@ -98,7 +99,14 @@ const getDownloadLinks = (jobExecutionArchives: JobExecutionArchives | null): Do
 };
 
 const isJobFinished = (jobExecution: JobExecution | null): boolean =>
-  null !== jobExecution && ['COMPLETED', 'STOPPED', 'FAILED'].includes(jobExecution.tracking.status);
+  null !== jobExecution && !['STARTING', 'STARTED', 'STOPPING'].includes(jobExecution.tracking.status);
 
 export {getDownloadLinks, isJobFinished};
-export type {JobExecution, JobExecutionArchives, JobExecutionTracking, JobInstance, StepExecutionTracking};
+export type {
+  JobExecution,
+  JobExecutionArchives,
+  JobExecutionTracking,
+  JobInstance,
+  StepExecutionStatus,
+  StepExecutionTracking,
+};

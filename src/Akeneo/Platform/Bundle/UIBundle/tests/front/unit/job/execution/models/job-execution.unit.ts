@@ -3,6 +3,7 @@ import {
   JobExecutionArchives,
   isJobFinished,
   JobExecution,
+  StepExecutionStatus,
 } from '../../../../../../Resources/public/js/job/execution/models/job-execution';
 
 const jobExecution: JobExecution = {
@@ -25,6 +26,7 @@ const jobExecution: JobExecution = {
     },
   },
   isStoppable: true,
+  isRunning: true,
   jobInstance: {label: 'Nice job', code: 'nice_job', type: 'yes'},
   tracking: {
     error: false,
@@ -35,6 +37,11 @@ const jobExecution: JobExecution = {
     steps: [],
   },
 };
+
+const getJobWithStatus = (status: StepExecutionStatus): JobExecution => ({
+  ...jobExecution,
+  tracking: {...jobExecution.tracking, status},
+});
 
 describe('job execution', () => {
   it('should provide a array of download link', () => {
@@ -88,10 +95,13 @@ describe('job execution', () => {
   });
 
   it('should tell if a job is finished or not based on its status', () => {
-    expect(isJobFinished(jobExecution)).toBe(true);
-    expect(isJobFinished({...jobExecution, tracking: {...jobExecution.tracking, status: 'STOPPED'}})).toBe(true);
-    expect(isJobFinished({...jobExecution, tracking: {...jobExecution.tracking, status: 'FAILED'}})).toBe(true);
-    expect(isJobFinished({...jobExecution, tracking: {...jobExecution.tracking, status: 'ABANDONED'}})).toBe(false);
-    expect(isJobFinished({...jobExecution, tracking: {...jobExecution.tracking, status: 'UNKNOWN'}})).toBe(false);
+    expect(isJobFinished(getJobWithStatus('COMPLETED'))).toBe(true);
+    expect(isJobFinished(getJobWithStatus('STOPPED'))).toBe(true);
+    expect(isJobFinished(getJobWithStatus('FAILED'))).toBe(true);
+    expect(isJobFinished(getJobWithStatus('ABANDONED'))).toBe(true);
+    expect(isJobFinished(getJobWithStatus('UNKNOWN'))).toBe(true);
+    expect(isJobFinished(getJobWithStatus('STARTING'))).toBe(false);
+    expect(isJobFinished(getJobWithStatus('STARTED'))).toBe(false);
+    expect(isJobFinished(getJobWithStatus('STOPPING'))).toBe(false);
   });
 });

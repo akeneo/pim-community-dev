@@ -1221,9 +1221,6 @@ config:
     pim/template/grid/view-selector/current: pimui/templates/grid/view-selector-current.html
     pim/template/grid/view-selector: pimui/templates/grid/view-selector.html
 
-    # Job execution
-    pim/template/job-execution/auto-refresh:              pimui/templates/job-execution/auto-refresh.html
-
     # Attribute
     pim/template/attribute/tab/properties/group:        pimui/templates/attribute/tab/properties/group.html
     pim/template/attribute/tab/choices/options-grid:    pimui/templates/attribute/tab/choices/options-grid.html
