@@ -27,7 +27,7 @@ class DbalSelectEventsApiRequestCountWithinLastHourQuery implements SelectEvents
         $sql = <<<SQL
  SELECT updated, event_count
  FROM akeneo_connectivity_connection_events_api_request_count
- WHERE updated BETWEEN :from_datetime  AND :to_datetime
+ WHERE updated BETWEEN :from_datetime AND :to_datetime
  ORDER BY updated DESC
 SQL;
 

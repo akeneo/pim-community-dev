@@ -30,7 +30,18 @@ class SelectEventsApiRequestCountWithinLastHourQueryIntegration extends TestCase
         );
     }
 
-    public function test1()
+    public function test_it_returns_an_empty_array_if_there_is_no_events_api_request_count_during_last_hour()
+    {
+        $eventsApiRequestCountWithinLastHour = $this->eventsApiRequestCountWithinLastHour->execute(
+            new \DateTimeImmutable('2021-01-02 12:10:00', new \DateTimeZone('UTC')),
+            60
+        );
+
+        Assert::assertIsArray($eventsApiRequestCountWithinLastHour);
+        Assert::assertCount(0, $eventsApiRequestCountWithinLastHour);
+    }
+
+    public function test_it_selects_only_events_api_request_count_from_last_hour()
     {
         $this->eventsApiRequestCountLoader->createEventsApiRequestCount(
             new \DateTimeImmutable('2021-01-02 10:22:31', new \DateTimeZone('UTC')),

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
-use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\MessengerEventSubscriber;
+use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitEventSubscriber;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
 use PhpSpec\ObjectBehavior;
@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 
-class MessengerEventSubscriberSpec extends ObjectBehavior
+class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
 {
     public function let(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
@@ -38,7 +38,7 @@ class MessengerEventSubscriberSpec extends ObjectBehavior
 
     public function it_is_an_event_subscriber(): void
     {
-        $this->shouldHaveType(MessengerEventSubscriber::class);
+        $this->shouldHaveType(EventsApiRequestsLimitEventSubscriber::class);
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 

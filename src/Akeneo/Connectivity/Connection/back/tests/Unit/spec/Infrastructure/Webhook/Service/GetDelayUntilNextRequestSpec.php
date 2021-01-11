@@ -41,11 +41,11 @@ class GetDelayUntilNextRequestSpec extends ObjectBehavior
                 ],
                 [
                     'event_count' => 90,
-                    'updated' => '2021-01-08 10:11:30',
+                    'updated' => '2021-01-08 10:11:30', // Limit will be reached here, minute xx:11:30 = 690 seconds.
                 ],
             ]);
 
         $this->execute(new \DateTimeImmutable('2021-01-08 11:02:10', new \DateTimeZone('UTC')), 100)
-            ->shouldReturn(560);
+            ->shouldReturn(560); // Current time minute is xx:02:10 = 130 seconds, so 690 - 130 = 560 seconds
     }
 }
