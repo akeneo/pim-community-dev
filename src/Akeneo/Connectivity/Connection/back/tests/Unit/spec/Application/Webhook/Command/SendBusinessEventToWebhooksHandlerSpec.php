@@ -43,7 +43,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookEventBuilder $builder,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
-        CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -53,9 +52,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             new NullLogger(),
             $eventsApiRequestRepository,
             $cacheClearer,
-            $countHourlyEventsApiRequestQuery,
-            'staging.akeneo.com',
-            666
+            'staging.akeneo.com'
         );
     }
 
@@ -70,7 +67,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder,
         $cacheClearer,
-        $countHourlyEventsApiRequestQuery,
         $eventsApiRequestRepository
     ): void {
         $juliaUser = new User();
@@ -89,8 +85,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $businessEvent = $this->createEvent($author, ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
         $webhook = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
-
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(1);
 
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
@@ -308,54 +302,12 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_logs_when_hourly_events_api_request_limit_is_reached(
-        $selectActiveWebhooksQuery,
-        $webhookUserAuthenticator,
-        $client,
-        $builder,
-        $eventsApiRequestRepository,
-        $countHourlyEventsApiRequestQuery,
-        $cacheClearer,
-        LoggerInterface $logger
-    ): void {
-
-        $webhookRequestsLimit = 1;
-
-        $this->beConstructedWith(
-            $selectActiveWebhooksQuery,
-            $webhookUserAuthenticator,
-            $client,
-            $builder,
-            $logger,
-            $eventsApiRequestRepository,
-            $cacheClearer,
-            $countHourlyEventsApiRequestQuery,
-            'staging.akeneo.com',
-            $webhookRequestsLimit,
-        );
-
-        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $bulkEvent = new BulkEvent(
-            [
-                $this->createEvent($author, ['data']),
-            ]
-        );
-
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(2);
-
-        $this->handle(new SendBusinessEventToWebhooksCommand($bulkEvent));
-
-        $log = EventSubscriptionRequestsLimitReachedLog::fromLimit($webhookRequestsLimit);
-        $logger->info(json_encode($log->toLog()))->shouldBeCalled();
-    }
-
     public function it_logs_the_time_it_take_to_build_the_api_events(
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
         $builder,
         $eventsApiRequestRepository,
-        $countHourlyEventsApiRequestQuery,
         $cacheClearer,
         LoggerInterface $logger
     ): void {
@@ -383,9 +335,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $logger,
             $eventsApiRequestRepository,
             $cacheClearer,
-            $countHourlyEventsApiRequestQuery,
             'staging.akeneo.com',
-            666,
             $getTimeCallable,
         );
 
@@ -399,7 +349,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $subscription1 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
         $subscription2 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
 
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(1);
         $selectActiveWebhooksQuery->execute()->willReturn([$subscription1, $subscription2]);
 
         $user = new User();

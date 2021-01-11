@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Command;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionSkipOwnEventLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\CountHourlyEventsApiRequestQuery;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
@@ -36,9 +34,7 @@ final class SendBusinessEventToWebhooksHandler
     private LoggerInterface $logger;
     private EventsApiRequestCountRepository $eventsApiRequestRepository;
     private CacheClearerInterface $cacheClearer;
-    private CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery;
     private string $pimSource;
-    private int $webhookRequestsLimit;
     private ?\Closure $getTimeCallable;
 
     public function __construct(
@@ -49,9 +45,7 @@ final class SendBusinessEventToWebhooksHandler
         LoggerInterface $logger,
         EventsApiRequestCountRepository $eventsApiRequestRepository,
         CacheClearerInterface $cacheClearer,
-        CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery,
         string $pimSource,
-        int $webhookRequestsLimit,
         ?callable $getTimeCallable = null
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
@@ -61,31 +55,12 @@ final class SendBusinessEventToWebhooksHandler
         $this->logger = $logger;
         $this->eventsApiRequestRepository = $eventsApiRequestRepository;
         $this->cacheClearer = $cacheClearer;
-        $this->countHourlyEventsApiRequestQuery = $countHourlyEventsApiRequestQuery;
         $this->pimSource = $pimSource;
-        $this->webhookRequestsLimit = $webhookRequestsLimit;
         $this->getTimeCallable = null !== $getTimeCallable ? \Closure::fromCallable($getTimeCallable) : null;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
     {
-        $hourlyEventsApiRequestCount = $this->countHourlyEventsApiRequestQuery->execute(
-            new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
-        );
-
-        if ($this->webhookRequestsLimit < $hourlyEventsApiRequestCount) {
-            $this->logger->info(
-                json_encode(
-                    (EventSubscriptionRequestsLimitReachedLog::fromLimit(
-                        $this->webhookRequestsLimit
-                    ))->toLog(),
-                    JSON_THROW_ON_ERROR
-                )
-            );
-
-            return;
-        }
-
         $webhooks = $this->selectActiveWebhooksQuery->execute();
 
         if (0 === count($webhooks)) {
