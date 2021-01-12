@@ -1,4 +1,4 @@
-import {useJobExecution} from '../../../../../../Resources/public/js/job/execution/hooks/use-job-execution';
+import {useJobExecution} from '../../../../../../Resources/public/js/job/execution/hooks/useJobExecution';
 import {act} from 'react-test-renderer';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
 
@@ -71,10 +71,10 @@ test('It returns the fetched job execution', async () => {
 
   const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecution('1'));
   await act(async () => {
-    await waitForNextUpdate;
+    await waitForNextUpdate();
   });
 
-  const {jobExecution, error, reloadJobExecution} = result.current;
+  const [jobExecution, error, reloadJobExecution] = result.current;
   expect(jobExecution).toEqual(successResponse);
   expect(error).toBeNull();
   expect(reloadJobExecution).not.toBeNull();
@@ -89,10 +89,10 @@ test('It returns error when fetch return an error', async () => {
 
   const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecution('1'));
   await act(async () => {
-    await waitForNextUpdate;
+    await waitForNextUpdate();
   });
 
-  const {jobExecution, error, reloadJobExecution} = result.current;
+  const [jobExecution, error, reloadJobExecution] = result.current;
   expect(jobExecution).toBeNull();
   expect(reloadJobExecution).not.toBeNull();
   expect(error).toEqual({
@@ -109,10 +109,10 @@ test('It returns callback to reload job execution information', async () => {
 
   const {result, waitForNextUpdate} = renderHookWithProviders(() => useJobExecution('1'));
   await act(async () => {
-    await waitForNextUpdate;
+    await waitForNextUpdate();
   });
 
-  const {jobExecution, error, reloadJobExecution} = result.current;
+  const [jobExecution, error, reloadJobExecution] = result.current;
   expect(jobExecution).toEqual(successResponse);
   expect(error).toBeNull();
 
@@ -122,14 +122,14 @@ test('It returns callback to reload job execution information', async () => {
       tracking: {
         error: false,
         warning: false,
-        status: 'STARTED',
+        status: 'COMPLETED',
         currentStep: 1,
         totalSteps: 1,
         steps: [
           {
             jobName: 'csv_product_export',
             stepName: 'export',
-            status: 'STARTED',
+            status: 'COMPLETED',
             isTrackable: true,
             hasWarning: false,
             hasError: false,
@@ -151,7 +151,7 @@ test('It returns callback to reload job execution information', async () => {
     await reloadJobExecution();
   });
 
-  const {jobExecution: newJobExecution, error: newError} = result.current;
+  const [newJobExecution, newError] = result.current;
 
   expect(newError).toBeNull();
   expect(newJobExecution).toEqual(reloadedResponse);
