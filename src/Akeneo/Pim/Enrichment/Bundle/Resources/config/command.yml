@@ -19,6 +19,7 @@ services:
             - '@akeneo.pim.enrichment.product.query.count_products_and_product_models_with_inherited_removed_attribute'
             - '@router'
             - '%env(AKENEO_PIM_URL)%'
+            - '@akeneo.pim.structure.query.get_all_blacklisted_attribute_codes'
         tags:
             - { name: console.command }
 

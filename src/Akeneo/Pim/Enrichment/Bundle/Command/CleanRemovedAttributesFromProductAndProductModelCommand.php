@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsAndProductModelsW
 use Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeEvents;
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetAllBlacklistedAttributeCodesInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -52,6 +53,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     private CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute;
     private RouterInterface $router;
     private string $pimUrl;
+    private GetAllBlacklistedAttributeCodesInterface $getAllBlacklistedAttributeCodes;
 
     public function __construct(
         EntityManagerClearerInterface $entityManagerClearer,
@@ -65,7 +67,8 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute,
         CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute,
         RouterInterface $router,
-        string $pimUrl
+        string $pimUrl,
+        GetAllBlacklistedAttributeCodesInterface $getAllBlacklistedAttributeCodes
     ) {
         parent::__construct();
 
@@ -81,6 +84,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $this->countProductsAndProductModelsWithInheritedRemovedAttribute = $countProductsAndProductModelsWithInheritedRemovedAttribute;
         $this->router = $router;
         $this->pimUrl = $pimUrl;
+        $this->getAllBlacklistedAttributeCodes = $getAllBlacklistedAttributeCodes;
     }
 
     /**
@@ -90,6 +94,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     {
         $this
             ->setDescription('Removes all values of deleted attributes on all products and product models')
+            ->addOption('all-blacklisted-attributes', InputArgument::OPTIONAL)
             ->addArgument('attributes', InputArgument::OPTIONAL | InputArgument::IS_ARRAY);
     }
 
@@ -105,6 +110,13 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
 
         if (!empty($attributeCodes)) {
             $this->launchCleanRemovedAttributeJob($io, $attributeCodes);
+
+            return 0;
+        }
+
+        $cleanBlacklistedAttributes = $input->getOption('all-blacklisted-attributes');
+        if ($cleanBlacklistedAttributes) {
+            $this->cleanBlacklistedAttributes($io);
 
             return 0;
         }
@@ -193,6 +205,13 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         $process = new Process([sprintf('%s/../bin/console', $rootDir), 'pim:product:refresh', sprintf('--env=%s', $env), implode(',', $productIds)]);
         $process->setTimeout(null);
         $process->run();
+    }
+
+    private function cleanBlacklistedAttributes(SymfonyStyle $io): void
+    {
+        $blacklistedAttributeCodes = $this->getAllBlacklistedAttributeCodes->execute();
+
+        $this->launchCleanRemovedAttributeJob($io, $blacklistedAttributeCodes);
     }
 
     /**
