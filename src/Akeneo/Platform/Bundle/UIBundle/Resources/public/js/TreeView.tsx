@@ -16,13 +16,16 @@ type State = {
 class TreeView {
   private domElement: HTMLElement;
   private state: State;
+  private onTreeUpdated: (treeLabel: string, categoryLabel?: string) => void;
 
   constructor(
     domElement: HTMLElement,
     initialState: State,
+    onTreeUpdated: (treeLabel: string, categoryLabel: string) => void
   ) {
     this.domElement = domElement;
     this.state = initialState;
+    this.onTreeUpdated = onTreeUpdated;
 
     const init = async () => {
       const url = Router.generate('pim_enrich_product_grid_category_tree_listtree', {
@@ -72,7 +75,6 @@ class TreeView {
 
       const response = await fetch(url);
       const json: CategoryResponse[] = await response.json();
-      console.log(json);
 
       return {
         id: treeId,
@@ -89,22 +91,28 @@ class TreeView {
       }
     }
 
-    const handleClick = (selectedTreeId: number, selectedTreeRootId: number) => {
-      console.log(selectedTreeRootId, selectedTreeId);
+    const handleClick = (selectedTreeId: number, selectedTreeRootId: number, selectedCategoryLabel: string, selectedTreeLabel: string) => {
       this.state.selectedNode = selectedTreeId;
       this.state.selectedTree = selectedTreeRootId;
       this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
+      this.onTreeUpdated(selectedTreeLabel, selectedCategoryLabel);
     };
 
-    const handleTreeChange = (treeId: number) => {
+    const handleTreeChange = (treeId: number, treeLabel: string) => {
       this.state.selectedTree = treeId;
-      this.state.selectedNode = 0;
+      this.state.selectedNode = treeId;
       this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
+      this.onTreeUpdated(treeLabel);
     }
 
     const handleIncludeSubCategories = (value: boolean) => {
       this.state.includeSub = value;
       this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
+    }
+
+    const initCallback = (treeLabel: string, categoryLabel: string) => {
+      this.onTreeUpdated(treeLabel, categoryLabel);
+      //this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
     }
 
     ReactDOM.render(
@@ -119,6 +127,7 @@ class TreeView {
             initialIncludeSubCategories={this.state.includeSub}
             onIncludeSubCategoriesChange={handleIncludeSubCategories}
             initialSelectedTreeId={this.state.selectedNode}
+            initCallback={initCallback}
           />
         </ThemeProvider>
       </DependenciesProvider>,
@@ -127,7 +136,6 @@ class TreeView {
   }
 
   public refresh = () => { }
-
 
   public getState: () => State = () => {
     return this.state;
