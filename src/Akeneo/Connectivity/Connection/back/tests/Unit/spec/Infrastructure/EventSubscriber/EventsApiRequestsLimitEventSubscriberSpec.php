@@ -42,7 +42,7 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    public function it_logs_when_hourly_events_api_request_limit_is_reached(
+    public function it_sleeps_until_the_delay_expire_when_limit_is_reached(
         GetDelayUntilNextRequest $getDelayUntilNextRequest,
         Sleep $sleep,
         LoggerInterface $logger
@@ -51,9 +51,7 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
             ->execute(Argument::type(\DateTimeImmutable::class), 10)
             ->willReturn(123);
 
-        $log = EventSubscriptionRequestsLimitReachedLog::fromLimit(10);
-        $logger->info(json_encode($log->toLog()))->shouldBeCalled();
-
+        $logger->info(Argument::any())->shouldBeCalled();
         $sleep->sleep(123)->shouldBeCalled();
 
         $this->checkWebhookRequestLimit();
