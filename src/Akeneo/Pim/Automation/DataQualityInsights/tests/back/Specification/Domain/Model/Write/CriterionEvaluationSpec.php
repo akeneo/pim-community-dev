@@ -34,7 +34,7 @@ final class CriterionEvaluationSpec extends ObjectBehavior
         $this->end($result);
         $this->getStatus()->shouldBeLike(CriterionEvaluationStatus::done());
         $this->getResult()->shouldBe($result);
-        $this->getEvaluatedAt()->shouldNotBeNull();
+        $this->getEvaluatedAt()->shouldNotBe(null);
     }
 
     public function it_changes_it_status_to_done_if_it_is_not_applicable()
@@ -43,7 +43,7 @@ final class CriterionEvaluationSpec extends ObjectBehavior
         $this->applicabilityEvaluated(new CriterionApplicability($result, false));
         $this->getStatus()->shouldBeLike(CriterionEvaluationStatus::done());
         $this->getResult()->shouldBe($result);
-        $this->getEvaluatedAt()->shouldNotBeNull();
+        $this->getEvaluatedAt()->shouldNotBe(null);
     }
 
     public function it_changes_it_status_to_pending_if_it_is_applicable()

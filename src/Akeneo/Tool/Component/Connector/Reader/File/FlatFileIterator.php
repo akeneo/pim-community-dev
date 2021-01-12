@@ -5,6 +5,7 @@ namespace Akeneo\Tool\Component\Connector\Reader\File;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Common\Type;
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Box\Spout\Reader\IteratorInterface;
 use Box\Spout\Reader\ReaderFactory;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -66,7 +67,11 @@ class FlatFileIterator implements FileIteratorInterface
             $this->extractZipArchive();
         }
 
-        $this->reader = ReaderFactory::create($type);
+        $this->reader = match ($type) {
+            Type::CSV => ReaderEntityFactory::createCSVReader(),
+            Type::XLSX => ReaderEntityFactory::createXLSXReader(),
+            default => throw new UnsupportedTypeException(),
+        };
         if (isset($options['reader_options'])) {
             $this->setReaderOptions($options['reader_options']);
         }
@@ -95,7 +100,7 @@ class FlatFileIterator implements FileIteratorInterface
      */
     public function current()
     {
-        $data = $this->rows->current();
+        $data = $this->rows->current()->toArray();
 
         if (!$this->valid() || null === $data || empty($data)) {
             $this->rewind();
