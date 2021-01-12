@@ -716,9 +716,6 @@
     "symfony/polyfill-iconv": {
         "version": "v1.12.0"
     },
-    "symfony/polyfill-intl-grapheme": {
-        "version": "v1.17.1"
-    },
     "symfony/polyfill-intl-icu": {
         "version": "v1.12.0"
     },
@@ -811,9 +808,6 @@
     },
     "symfony/stopwatch": {
         "version": "v4.3.4"
-    },
-    "symfony/string": {
-        "version": "v5.1.2"
     },
     "symfony/swiftmailer-bundle": {
         "version": "2.5",

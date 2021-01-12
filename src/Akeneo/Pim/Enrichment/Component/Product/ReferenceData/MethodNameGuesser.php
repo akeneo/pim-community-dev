@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\ReferenceData;
 
 use Symfony\Component\Inflector\Inflector;
-use Symfony\Component\String\Inflector\EnglishInflector;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -36,15 +35,13 @@ class MethodNameGuesser
         $name = $dataName;
 
         if ($singularify) {
-            $names = (new EnglishInflector())->singularize($dataName);
+            $name = Inflector::singularize($dataName);
 
-            if (1 < count($names)) {
+            if (is_array($name)) {
                 throw new \LogicException(
                     sprintf('Error while guessing the method name for "%s"', $dataName)
                 );
             }
-
-            $name = current($names);
         }
 
         $name = ucfirst($name);

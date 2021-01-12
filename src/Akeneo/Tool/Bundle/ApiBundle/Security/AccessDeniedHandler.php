@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Authorization\AccessDeniedHandlerInterface;
-use Symfony\Component\String\Inflector\EnglishInflector;
 
 /**
  * Handler responsible for returning a response with accurate error message when the user doesn't have the permission
@@ -42,9 +41,8 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
             $actionName = 'GET' === $request->getMethod() ? 'list' : 'create or update';
 
             preg_match('`\\\\(\w+)Controller`', $exception->getControllerClass(), $matches);
-            $englishInflector = new EnglishInflector();
             $entityName = str_replace('_', ' ', $this->getInflector()->tableize(
-                current($englishInflector->pluralize($matches[1]))
+                current(Inflector::pluralize($matches[1]))
             ));
 
             return sprintf('Access forbidden. You are not allowed to %s %s.', $actionName, $entityName);
