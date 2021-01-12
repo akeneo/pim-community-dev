@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckerDictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\TextCheckerDictionaryRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,6 +39,7 @@ final class GetLocaleDictionaryWordsController
         $localeCode = new LocaleCode($localeCode);
 
         $result = $this->dictionaryRepository->paginatedSearch($localeCode, $page, $itemsPerPage, $search);
+
         return new JsonResponse($result);
     }
 }

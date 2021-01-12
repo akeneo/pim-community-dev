@@ -1,12 +1,12 @@
 import React, {FC, ReactElement} from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 type Props = {
   illustration: ReactElement;
   title: string;
   subtitle: string;
-}
+};
 
 const EmptyDataPlaceholder: FC<Props> = ({illustration, title, subtitle}) => {
   const translate = useTranslate();
@@ -18,7 +18,7 @@ const EmptyDataPlaceholder: FC<Props> = ({illustration, title, subtitle}) => {
       <Subtitle>{translate(subtitle)}</Subtitle>
     </Container>
   );
-}
+};
 
 const Container = styled.div`
   text-align: center;

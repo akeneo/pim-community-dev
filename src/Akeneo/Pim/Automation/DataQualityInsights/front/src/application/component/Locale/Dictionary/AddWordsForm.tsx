@@ -12,14 +12,13 @@ const AddWordsForm = () => {
 
       <InputContainer>
         <TextInputContainer>
-          <TextInput value={''} onChange={() => console.log('on change')}/>
+          <TextInput value={''} onChange={() => console.log('on change')} />
         </TextInputContainer>
 
         <Button ghost level="tertiary" onClick={() => console.log('add words')}>
           {translate('pim_common.add')}
         </Button>
       </InputContainer>
-
     </Container>
   );
 };

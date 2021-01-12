@@ -8,9 +8,9 @@ type DictionaryAppProps = {
 
 const DictionaryApp: FC<DictionaryAppProps> = ({localeCode}) => {
   return (
-      <DictionaryProvider localeCode={localeCode}>
-        <Dictionary />
-      </DictionaryProvider>
+    <DictionaryProvider localeCode={localeCode}>
+      <Dictionary />
+    </DictionaryProvider>
   );
 };
 

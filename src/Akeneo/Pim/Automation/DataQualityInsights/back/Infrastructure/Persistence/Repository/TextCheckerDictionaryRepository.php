@@ -119,12 +119,11 @@ SQL;
             ->where(
                 $qb->expr()->eq(
                     'locale_code',
-                    $qb->createPositionalParameter(strval($localeCode),ParameterType::STRING)
+                    $qb->createPositionalParameter(strval($localeCode), ParameterType::STRING)
                 )
             );
 
-        if(!empty($search))
-        {
+        if (!empty($search)) {
             $search = '%' . $search . '%';
             $qb->andWhere(
                 $qb->expr()->like(

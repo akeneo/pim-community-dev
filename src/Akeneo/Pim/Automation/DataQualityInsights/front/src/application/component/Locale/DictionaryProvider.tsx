@@ -12,7 +12,7 @@ const DictionaryContext = createContext<DictionaryState>({
 
 type DictionaryProviderProps = {
   localeCode: string;
-}
+};
 
 const DictionaryProvider: FC<DictionaryProviderProps> = ({localeCode, children}) => {
   const state = useLocaleDictionary(localeCode, 1, 25);

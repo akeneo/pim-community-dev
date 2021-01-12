@@ -9,17 +9,21 @@ const Dictionary: FC = () => {
   const translate = useTranslate();
   const {dictionary} = useDictionaryState();
 
-  return <>
-    <Helper>
-      <span dangerouslySetInnerHTML={{
-        __html: translate('akeneo_data_quality_insights.dictionary.helper', {link: 'https://help.akeneo.com'}),
-      }}/>
-    </Helper>
+  return (
+    <>
+      <Helper>
+        <span
+          dangerouslySetInnerHTML={{
+            __html: translate('akeneo_data_quality_insights.dictionary.helper', {link: 'https://help.akeneo.com'}),
+          }}
+        />
+      </Helper>
 
-    <AddWordsForm/>
+      <AddWordsForm />
 
-    {dictionary !== null ? <WordsGrid/> : <></>}
-  </>;
+      {dictionary !== null ? <WordsGrid /> : <></>}
+    </>
+  );
 };
 
 export {Dictionary};

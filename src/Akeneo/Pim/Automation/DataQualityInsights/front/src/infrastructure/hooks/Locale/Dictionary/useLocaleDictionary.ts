@@ -12,7 +12,7 @@ type DictionaryState = {
 };
 
 const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: number): DictionaryState => {
-  const [dictionary, setDictionary] = useState<Word[]|null>(null);
+  const [dictionary, setDictionary] = useState<Word[] | null>(null);
   const [totalWords, setTotalWords] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(page);
 

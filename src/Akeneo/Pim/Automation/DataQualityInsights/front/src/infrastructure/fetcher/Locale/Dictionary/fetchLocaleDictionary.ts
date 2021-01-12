@@ -11,7 +11,6 @@ const fetchLocaleDictionary = async (localeCode: string, page: number, itemsPerP
 
   const response = await fetch(Routing.generate(ROUTE_NAME, routeParams));
 
-
   return await response.json();
 };
 

@@ -21,7 +21,7 @@ const WordsGrid: FC = () => {
   return (
     <>
       <>
-        {totalWords > 0 ?
+        {totalWords > 0 ? (
           <>
             <WordsSearchBar
               count={Object.keys(dictionary).length}
@@ -29,21 +29,30 @@ const WordsGrid: FC = () => {
               placeholder={translate('akeneo_data_quality_insights.dictionary.searchPlaceholder')}
               onSearchChange={() => console.log('search')}
             />
-            <Pagination onClick={setCurrentPage} currentPage={currentPage} totalItems={totalWords} itemsPerPage={itemsPerPage}/>
-          </>:
+            <Pagination
+              onClick={setCurrentPage}
+              currentPage={currentPage}
+              totalItems={totalWords}
+              itemsPerPage={itemsPerPage}
+            />
+          </>
+        ) : (
           <></>
-        }
+        )}
       </>
 
       <>
-        {Object.keys(dictionary).length === 0 ?
-          (searchString !== '' ? <NoSearchResults/> : <NoData/>) :
+        {Object.keys(dictionary).length === 0 ? (
+          searchString !== '' ? (
+            <NoSearchResults />
+          ) : (
+            <NoData />
+          )
+        ) : (
           <Table>
             <Table.Header>
-              <Table.HeaderCell>
-                {translate('akeneo_data_quality_insights.dictionary.words')}
-              </Table.HeaderCell>
-              <Table.HeaderCell/>
+              <Table.HeaderCell>{translate('akeneo_data_quality_insights.dictionary.words')}</Table.HeaderCell>
+              <Table.HeaderCell />
             </Table.Header>
             <Table.Body>
               {Object.values(dictionary).map((word: Word) => {
@@ -54,15 +63,21 @@ const WordsGrid: FC = () => {
                     </Table.Cell>
                     <Table.ActionCell>
                       <ActionContainer>
-                        <IconButton icon={<CloseIcon/>} title={''} ghost={"borderless"} level="tertiary" size="small"/>
+                        <IconButton
+                          icon={<CloseIcon />}
+                          title={''}
+                          ghost={'borderless'}
+                          level="tertiary"
+                          size="small"
+                        />
                       </ActionContainer>
                     </Table.ActionCell>
                   </Table.Row>
-                )
+                );
               })}
             </Table.Body>
           </Table>
-        }
+        )}
       </>
     </>
   );

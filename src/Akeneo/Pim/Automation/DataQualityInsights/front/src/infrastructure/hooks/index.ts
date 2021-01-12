@@ -33,5 +33,7 @@ export {
   useFetchIgnoreTextIssue,
   useProductEvaluation,
   useGetSpellcheckSupportedLocales,
-  useLocaleDictionary, DictionaryState, useDictionaryState,
+  useLocaleDictionary,
+  DictionaryState,
+  useDictionaryState,
 };
