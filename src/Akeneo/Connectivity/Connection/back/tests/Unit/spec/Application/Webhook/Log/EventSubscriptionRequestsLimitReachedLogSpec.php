@@ -16,7 +16,11 @@ class EventSubscriptionRequestsLimitReachedLogSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedThrough('fromLimit', [666]);
+        $this->beConstructedThrough('create', [
+            666,
+            new \DateTimeImmutable('2021-01-01T00:00:00+00:00'),
+            90
+        ]);
     }
 
     public function it_is_initializable(): void
@@ -31,6 +35,8 @@ class EventSubscriptionRequestsLimitReachedLogSpec extends ObjectBehavior
                 'type' => EventSubscriptionRequestsLimitReachedLog::TYPE,
                 'message' => EventSubscriptionRequestsLimitReachedLog::MESSAGE,
                 'limit' => 666,
+                'retry_after' => 90,
+                'limit_reset' => '2021-01-01T00:01:30+00:00'
             ]
         );
     }

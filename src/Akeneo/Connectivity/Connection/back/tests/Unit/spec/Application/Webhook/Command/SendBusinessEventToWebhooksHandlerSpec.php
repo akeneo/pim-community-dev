@@ -7,11 +7,9 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Command;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksCommand;
 use Akeneo\Connectivity\Connection\Application\Webhook\Command\SendBusinessEventToWebhooksHandler;
 use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionEventBuildLog;
-use Akeneo\Connectivity\Connection\Application\Webhook\Log\EventSubscriptionRequestsLimitReachedLog;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\CacheClearerInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookEventBuilder;
 use Akeneo\Connectivity\Connection\Application\Webhook\WebhookUserAuthenticator;
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\Query\CountHourlyEventsApiRequestQuery;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
@@ -42,8 +40,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         WebhookClient $client,
         WebhookEventBuilder $builder,
         DbalEventsApiRequestCountRepository $eventsApiRequestRepository,
-        CacheClearerInterface $cacheClearer,
-        CountHourlyEventsApiRequestQuery $countHourlyEventsApiRequestQuery
+        CacheClearerInterface $cacheClearer
     ): void {
         $this->beConstructedWith(
             $selectActiveWebhooksQuery,
@@ -53,9 +50,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             new NullLogger(),
             $eventsApiRequestRepository,
             $cacheClearer,
-            $countHourlyEventsApiRequestQuery,
-            'staging.akeneo.com',
-            666
+            'staging.akeneo.com'
         );
     }
 
@@ -70,7 +65,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client,
         $builder,
         $cacheClearer,
-        $countHourlyEventsApiRequestQuery,
         $eventsApiRequestRepository
     ): void {
         $juliaUser = new User();
@@ -89,8 +83,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $businessEvent = $this->createEvent($author, ['data']);
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
         $webhook = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
-
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(1);
 
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
 
@@ -162,7 +154,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $countHourlyEventsApiRequestQuery,
         $cacheClearer,
         $eventsApiRequestRepository
     ): void {
@@ -185,7 +176,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $erpWebhook = new ActiveWebhook('erp_source', 42, 'a_secret', 'http://localhost/');
         $magentoWebhook = new ActiveWebhook('ecommerce_destination', 12, 'a_secret', 'http://localhost/');
 
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(1);
         $selectActiveWebhooksQuery->execute()->willReturn([$erpWebhook, $magentoWebhook]);
         $webhookUserAuthenticator->authenticate(12)->willReturn($magentoUser);
         $webhookUserAuthenticator->authenticate(42)->willReturn($erpUser);
@@ -259,7 +249,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $webhookUserAuthenticator,
         $client,
         $builder,
-        $countHourlyEventsApiRequestQuery,
         $cacheClearer,
         $eventsApiRequestRepository
     ): void {
@@ -274,7 +263,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $command = new SendBusinessEventToWebhooksCommand($businessEvent);
         $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/');
 
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(1);
         $selectActiveWebhooksQuery->execute()->willReturn([$webhook]);
         $webhookUserAuthenticator->authenticate(0)->willReturn($user);
         $builder
@@ -308,54 +296,12 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    public function it_logs_when_hourly_events_api_request_limit_is_reached(
-        $selectActiveWebhooksQuery,
-        $webhookUserAuthenticator,
-        $client,
-        $builder,
-        $eventsApiRequestRepository,
-        $countHourlyEventsApiRequestQuery,
-        $cacheClearer,
-        LoggerInterface $logger
-    ): void {
-
-        $webhookRequestsLimit = 1;
-
-        $this->beConstructedWith(
-            $selectActiveWebhooksQuery,
-            $webhookUserAuthenticator,
-            $client,
-            $builder,
-            $logger,
-            $eventsApiRequestRepository,
-            $cacheClearer,
-            $countHourlyEventsApiRequestQuery,
-            'staging.akeneo.com',
-            $webhookRequestsLimit,
-        );
-
-        $author = Author::fromNameAndType('julia', Author::TYPE_UI);
-        $bulkEvent = new BulkEvent(
-            [
-                $this->createEvent($author, ['data']),
-            ]
-        );
-
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(2);
-
-        $this->handle(new SendBusinessEventToWebhooksCommand($bulkEvent));
-
-        $log = EventSubscriptionRequestsLimitReachedLog::fromLimit($webhookRequestsLimit);
-        $logger->info(json_encode($log->toLog()))->shouldBeCalled();
-    }
-
     public function it_logs_the_time_it_take_to_build_the_api_events(
         $selectActiveWebhooksQuery,
         $webhookUserAuthenticator,
         $client,
         $builder,
         $eventsApiRequestRepository,
-        $countHourlyEventsApiRequestQuery,
         $cacheClearer,
         LoggerInterface $logger
     ): void {
@@ -383,9 +329,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             $logger,
             $eventsApiRequestRepository,
             $cacheClearer,
-            $countHourlyEventsApiRequestQuery,
             'staging.akeneo.com',
-            666,
             $getTimeCallable,
         );
 
@@ -399,7 +343,6 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $subscription1 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
         $subscription2 = new ActiveWebhook('ecommerce', 42, 'a_secret', 'http://localhost/');
 
-        $countHourlyEventsApiRequestQuery->execute(Argument::any())->willReturn(1);
         $selectActiveWebhooksQuery->execute()->willReturn([$subscription1, $subscription2]);
 
         $user = new User();
