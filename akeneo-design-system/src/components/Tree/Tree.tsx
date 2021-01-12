@@ -198,11 +198,14 @@ const Tree = <T,>({
     }
   }, [handleArrowClick, onClick, value]);
 
-  const handleSelect = React.useCallback((checked: CheckboxChecked, event: SyntheticEvent) => {
-    if (onChange) {
-      onChange(value, checked as boolean, event);
-    }
-  }, [onChange, value]);
+  const handleSelect = React.useCallback(
+    (checked: CheckboxChecked, event: SyntheticEvent) => {
+      if (onChange) {
+        onChange(value, checked as boolean, event);
+      }
+    },
+    [onChange, value]
+  );
 
   // https://www.w3.org/WAI/GL/wiki/Using_ARIA_trees
   const result = (

@@ -62,10 +62,10 @@ define(['underscore', 'jquery', 'pim/form-builder', 'pim/form', 'oro/datafilter/
       });
 
       this.listenTo(categoryFilter, 'update_label', function (treeLabel, categoryLabel) {
-          this.getRoot().trigger('pim_enrich:form:category_updated', {
-            categoryLabel: categoryLabel ? this.trimCount(categoryLabel) : '',
-            treeLabel: this.trimCount(treeLabel)
-          });
+        this.getRoot().trigger('pim_enrich:form:category_updated', {
+          categoryLabel: categoryLabel ? this.trimCount(categoryLabel) : '',
+          treeLabel: this.trimCount(treeLabel),
+        });
       });
 
       return categoryFilter;
@@ -91,11 +91,9 @@ define(['underscore', 'jquery', 'pim/form-builder', 'pim/form', 'oro/datafilter/
      * We search the matching DOM element in the JStree plugin directly, because it does not exist any fetcher
      * able to get the label from its id.
      *
-     * @param {integer} id
-     *
      * @returns {String}
      */
-    getCategoryLabel(id) {
+    getCategoryLabel() {
       return this.trimCount($('#tree [aria-selected=true]').text().trim());
     },
 
