@@ -2,7 +2,7 @@ import {SVGProps} from 'react';
 
 type IllustrationProps = {
   title?: string;
-  size?: number;
+  size?: number | string;
   className?: string;
 } & SVGProps<SVGSVGElement>;
 
