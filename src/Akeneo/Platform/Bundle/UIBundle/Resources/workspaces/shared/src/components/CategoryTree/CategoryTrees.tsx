@@ -2,6 +2,7 @@ import React from 'react';
 import { CategoryTree, CategoryTreeModel } from "./CategoryTree";
 import { BooleanInput } from 'akeneo-design-system/lib/components/Input/BooleanInput/BooleanInput';
 import { Tree } from 'akeneo-design-system/lib/components/Tree/Tree';
+const __ = require('oro/translator');
 
 type CategoryTreeRoot = {
   id: number;
@@ -16,7 +17,7 @@ type CategoryTreesProps = {
   initTree: (treeId: number, treeLabel: string, treeCode: string) => Promise<CategoryTreeModel>;
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
   onTreeChange: (treeId: number, treeLabel: string) => void;
-  onClick: (selectedTreeId: number, selectedTreeRootId: number, selectedCategoryLabel: string, selectedTreeLabel: string) => void;
+  onCategoryClick: (selectedTreeId: number, selectedTreeRootId: number, selectedCategoryLabel: string, selectedTreeLabel: string) => void;
   initialIncludeSubCategories: boolean;
   onIncludeSubCategoriesChange: (value: boolean) => void;
   initialSelectedTreeId: number;
@@ -28,7 +29,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
   initTree,
   childrenCallback,
   onTreeChange,
-  onClick,
+  onCategoryClick,
   initialIncludeSubCategories,
   onIncludeSubCategoriesChange,
   initialSelectedTreeId,
@@ -56,7 +57,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
 
   const handleClick = (selectedNode: { id: number, code: string, label: string }) => {
     setSelectedTreeId(selectedNode.id);
-    onClick(
+    onCategoryClick(
       selectedNode.id,
       (trees.find(tree => tree.selected) || trees[0]).id,
       selectedNode.label,
@@ -69,9 +70,17 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
     setIncludeSubCategories(value as boolean);
   }
 
+  const handleInitCallback = (treeLabel: string, categoryLabel: string) => {
+    if (!initCallback) {
+      return undefined;
+    }
+    return initCallback(treeLabel, categoryLabel ? categoryLabel : __('jstree.products.all'));
+  }
+
   return <div>
     <ul>
       {trees.map((tree) => {
+        // These buttons will be updated after @julien's PR
         return <li key={tree.code}><button onClick={() => switchTree(tree.id)}>{tree.label}{tree.selected && ' - current'}</button></li>
       })}
     </ul>
@@ -82,18 +91,15 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
           init={() => initTree(tree.id, tree.label, tree.code)}
           childrenCallback={childrenCallback}
           onClick={handleClick}
-          selectedTreeId={selectedTreeId}
-          initCallback={(treeLabel, categoryLabel) => initCallback ? initCallback(treeLabel, categoryLabel ?? 'All products') : undefined}
+          selectedCategoryId={selectedTreeId}
+          initCallback={handleInitCallback}
         />
     })}
     <Tree
-      value={{
-        id: -2,
-        code: 'TODOCHANGETHISNAME'
-      }}
-      label={'All products'}
+      value={{id: -2, code: 'TODOCHANGETHISNAME'}}
+      label={__('jstree.products.all')}
       isLeaf={true}
-      onClick={() => handleClick( { id: -2, code: 'TODOCHANGETHISNAME', label: 'All products' })}
+      onClick={() => handleClick( { id: -2, code: 'TODOCHANGETHISNAME', label: __('jstree.products.all') })}
       selected={selectedTreeId === -2}
     />
 
