@@ -2,7 +2,8 @@
 
 namespace Akeneo\Tool\Component\Localization;
 
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Currencies;
+use Symfony\Component\Intl\Exception\MissingResourceException;
 
 class CurrencyTranslator implements CurrencyTranslatorInterface
 {
@@ -10,11 +11,10 @@ class CurrencyTranslator implements CurrencyTranslatorInterface
     {
         $language = \Locale::getPrimaryLanguage($locale);
 
-        $currencyTranslated = Intl::getCurrencyBundle()->getCurrencyName($currencyCode, $language);
-        if (null === $currencyTranslated) {
+        try {
+            return Currencies::getName($currencyCode, $language);
+        } catch (MissingResourceException $e) {
             return $fallback;
         }
-
-        return $currencyTranslated;
     }
 }
