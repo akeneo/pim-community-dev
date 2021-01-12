@@ -18,30 +18,38 @@ type CategoryTreeProps = {
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
-  selectedTreeId?: number;
+  selectedCategoryId?: number;
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
 };
 
-const CategoryTree: React.FC<CategoryTreeProps> = ({init, childrenCallback, onChange, onClick, selectedTreeId, initCallback, ...rest}) => {
+const CategoryTree: React.FC<CategoryTreeProps> = ({
+  init,
+  childrenCallback,
+  onChange,
+  onClick,
+  selectedCategoryId,
+  initCallback,
+  ...rest
+}) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
-  React.useEffect(() => {
-    init().then(categoryTree => {
-      const getSelectedCategoryLabel: (categoryTree: CategoryTreeModel) => string|undefined = (categoryTree) => {
-        if (categoryTree.id === selectedTreeId) {
-          return categoryTree.label;
-        }
-        if (categoryTree.children) {
-          return categoryTree.children?.reduce((previous, subCategoryTree) => {
-            return typeof previous !== 'undefined' ? previous : getSelectedCategoryLabel(subCategoryTree);
-          }, undefined);
-        }
-        return undefined;
-      }
+  const recursiveGetSelectedCategoryLabel: (categoryTree: CategoryTreeModel) => string|undefined = (categoryTree) => {
+    if (categoryTree.id === selectedCategoryId) {
+      return categoryTree.label;
+    }
+    if (categoryTree.children) {
+      return categoryTree.children?.reduce((previous, subCategoryTree) => {
+        return typeof previous !== 'undefined' ? previous : recursiveGetSelectedCategoryLabel(subCategoryTree);
+      }, undefined);
+    }
+    return undefined;
+  }
 
-      setTree(categoryTree);
+  React.useEffect(() => {
+    init().then(tree => {
+      setTree(tree);
       if (initCallback) {
-        initCallback(categoryTree.label, getSelectedCategoryLabel(categoryTree));
+        initCallback(tree.label, recursiveGetSelectedCategoryLabel(tree));
       }
     });
   }, []);
@@ -55,7 +63,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({init, childrenCallback, onCh
     childrenCallback={childrenCallback}
     onChange={onChange}
     onClick={onClick}
-    selectedTreeId={selectedTreeId}
+    selectedCategoryId={selectedCategoryId}
     {...rest}
   />;
 };

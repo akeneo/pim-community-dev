@@ -6,6 +6,7 @@ import React from "react";
 import {pimTheme} from 'akeneo-design-system';
 import { CategoryResponse, parseResponse } from "./CategoryTreeFetcher";
 const Router = require('pim/router');
+const __ = require('oro/translator');
 
 type State = {
   selectedNode: number;
@@ -16,16 +17,16 @@ type State = {
 class TreeView {
   private domElement: HTMLElement;
   private state: State;
-  private onTreeUpdated: (treeLabel: string, categoryLabel?: string) => void;
+  private onChange: (treeLabel: string, categoryLabel?: string) => void;
 
   constructor(
     domElement: HTMLElement,
     initialState: State,
-    onTreeUpdated: (treeLabel: string, categoryLabel: string) => void
+    onChange: (treeLabel: string, categoryLabel: string) => void
   ) {
     this.domElement = domElement;
     this.state = initialState;
-    this.onTreeUpdated = onTreeUpdated;
+    this.onChange = onChange;
 
     const init = async () => {
       const url = Router.generate('pim_enrich_product_grid_category_tree_listtree', {
@@ -44,12 +45,12 @@ class TreeView {
       })
     }
 
-    const childrenCallback = async (nodeId: number) => {
+    const childrenCallback = async (categoryId: number) => {
       const url = Router.generate('pim_enrich_product_grid_category_tree_children', {
         _format: 'json',
         dataLocale: undefined,
         context: 'view',
-        id: nodeId,
+        id: categoryId,
         select_node_id: this.state.selectedNode,
         with_items_count: 1,
         include_sub: this.state.includeSub ? 1 : 0,
@@ -57,7 +58,6 @@ class TreeView {
 
       const response = await fetch(url);
       const json: CategoryResponse[] = await response.json();
-      console.log(json);
 
       return json.map(json => parseResponse(json, {}));
     }
@@ -83,7 +83,7 @@ class TreeView {
         children: json.map(tree => parseResponse(tree, {})).concat({
           id: -1,
           code: 'unclassified',
-          label: 'unclassified products',
+          label: __('jstree.unclassified'),
           selectable: false,
           children: [],
         }),
@@ -91,43 +91,42 @@ class TreeView {
       }
     }
 
-    const handleClick = (selectedTreeId: number, selectedTreeRootId: number, selectedCategoryLabel: string, selectedTreeLabel: string) => {
-      this.state.selectedNode = selectedTreeId;
-      this.state.selectedTree = selectedTreeRootId;
+    const handleCategoryClick = (categoryId: number, treeId: number, categoryLabel: string, treeLabel: string) => {
+      this.state.selectedNode = categoryId;
+      this.state.selectedTree = treeId;
       this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
-      this.onTreeUpdated(selectedTreeLabel, selectedCategoryLabel);
+      this.onChange(treeLabel, categoryLabel);
     };
 
     const handleTreeChange = (treeId: number, treeLabel: string) => {
       this.state.selectedTree = treeId;
       this.state.selectedNode = treeId;
       this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
-      this.onTreeUpdated(treeLabel);
+      this.onChange(treeLabel);
     }
 
-    const handleIncludeSubCategories = (value: boolean) => {
-      this.state.includeSub = value;
+    const handleIncludeSubCategoriesChange = (includeSubCategories: boolean) => {
+      this.state.includeSub = includeSubCategories;
       this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
     }
 
     const initCallback = (treeLabel: string, categoryLabel: string) => {
-      this.onTreeUpdated(treeLabel, categoryLabel);
-      //this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
+      this.onChange(treeLabel, categoryLabel);
     }
 
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
           <CategoryTrees
-            init={init}
             childrenCallback={childrenCallback}
+            init={init}
             initTree={initTree}
-            onClick={handleClick}
-            onTreeChange={handleTreeChange}
-            initialIncludeSubCategories={this.state.includeSub}
-            onIncludeSubCategoriesChange={handleIncludeSubCategories}
-            initialSelectedTreeId={this.state.selectedNode}
             initCallback={initCallback}
+            initialIncludeSubCategories={this.state.includeSub}
+            initialSelectedTreeId={this.state.selectedNode}
+            onCategoryClick={handleCategoryClick}
+            onTreeChange={handleTreeChange}
+            onIncludeSubCategoriesChange={handleIncludeSubCategoriesChange}
           />
         </ThemeProvider>
       </DependenciesProvider>,

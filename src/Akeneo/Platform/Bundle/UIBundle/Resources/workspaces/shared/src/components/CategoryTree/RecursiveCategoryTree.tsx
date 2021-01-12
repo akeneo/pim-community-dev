@@ -2,58 +2,64 @@ import React from 'react';
 import {CategoryTreeModel} from './CategoryTree';
 import {Tree} from 'akeneo-design-system/lib/components/Tree/Tree';
 
-type RecursiveCategoryTreeProps = {
-  tree: CategoryTreeModel;
-  childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
-  onChange?: (value: string, checked: boolean) => void;
-  onClick?: any;
-  selectedTreeId?: number;
-};
-
-type CategoryTreeValue = {
+type CategoryValue = {
   id: number;
   code: string;
   label: string;
 };
 
-const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({tree, childrenCallback, onChange, onClick, selectedTreeId}) => {
-  const [treeState, setTreeState] = React.useState<CategoryTreeModel>(tree);
+type RecursiveCategoryTreeProps = {
+  tree: CategoryTreeModel;
+  childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
+  onChange?: (value: string, checked: boolean) => void;
+  onClick?: any;
+  selectedCategoryId?: number;
+};
+
+const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
+  tree,
+  childrenCallback,
+  onChange,
+  onClick,
+  selectedCategoryId
+}) => {
+  const [categoryState, setCategoryState] = React.useState<CategoryTreeModel>(tree);
 
   const handleOpen = React.useCallback(() => {
-    if (typeof treeState.children === 'undefined') {
-      setTreeState(currentTreeState => ({...currentTreeState, loading: true}));
-      childrenCallback(treeState.id).then(children => {
-        setTreeState(currentTreeState => ({...currentTreeState, loading: false, children}));
+    if (typeof categoryState.children === 'undefined') {
+      setCategoryState(currentCategoryState => ({...currentCategoryState, loading: true}));
+      childrenCallback(categoryState.id).then(children => {
+        setCategoryState(currentCategoryState => ({...currentCategoryState, loading: false, children}));
       });
     }
-  }, [treeState, setTreeState, childrenCallback]);
+  }, [categoryState, setCategoryState, childrenCallback]);
 
-  const handleChange = (value: CategoryTreeValue, checked: boolean) => {
-    setTreeState({...treeState, selected: checked});
+  const handleChange = (categoryValue: CategoryValue, checked: boolean) => {
+    setCategoryState({...categoryState, selected: checked});
     if (onChange) {
-      onChange(value.code, checked);
+      onChange(categoryValue.code, checked);
     }
   };
 
   return (
-    <Tree<CategoryTreeValue>
-      label={treeState.label}
+    <Tree<CategoryValue>
+      label={categoryState.label}
       value={{
-        id: treeState.id,
-        code: treeState.code,
-        label: treeState.label,
+        id: categoryState.id,
+        code: categoryState.code,
+        label: categoryState.label,
       }}
-      selected={typeof selectedTreeId === 'undefined' ? treeState.selected : selectedTreeId === treeState.id}
-      isLoading={treeState.loading}
-      readOnly={treeState.readOnly}
-      selectable={treeState.selectable}
-      isLeaf={Array.isArray(treeState.children) && treeState.children.length === 0}
+      selected={typeof selectedCategoryId === 'undefined' ? categoryState.selected : selectedCategoryId === categoryState.id}
+      isLoading={categoryState.loading}
+      readOnly={categoryState.readOnly}
+      selectable={categoryState.selectable}
+      isLeaf={Array.isArray(categoryState.children) && categoryState.children.length === 0}
       onChange={handleChange}
       onOpen={handleOpen}
       onClick={onClick}
     >
-      {treeState.children &&
-      treeState.children.map(childNode => {
+      {categoryState.children &&
+      categoryState.children.map(childNode => {
           return (
             <RecursiveCategoryTree
               key={childNode.id}
@@ -61,7 +67,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({tree, chil
               onChange={onChange}
               childrenCallback={childrenCallback}
               onClick={onClick}
-              selectedTreeId={selectedTreeId}
+              selectedCategoryId={selectedCategoryId}
             />
           );
         })}
