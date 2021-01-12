@@ -54,7 +54,7 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
         $log = EventSubscriptionRequestsLimitReachedLog::fromLimit(10);
         $logger->info(json_encode($log->toLog()))->shouldBeCalled();
 
-        $sleep->execute(123)->shouldBeCalled();
+        $sleep->sleep(123)->shouldBeCalled();
 
         $this->checkWebhookRequestLimit();
     }
