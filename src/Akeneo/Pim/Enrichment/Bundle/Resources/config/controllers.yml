@@ -315,6 +315,7 @@ services:
             - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
+            - '@mime_types'
             - ['catalogStorage']
 
     pim_enrich.controller.product_model:

@@ -6,15 +6,14 @@ use Akeneo\Pim\Enrichment\Bundle\File\DefaultImageProviderInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypeGuesserInterface;
 use Akeneo\Pim\Enrichment\Bundle\File\FileTypes;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Liip\ImagineBundle\Controller\ImagineController;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -40,23 +39,18 @@ class FileController
     /** @var DefaultImageProviderInterface */
     protected $defaultImageProvider;
 
+    protected MimeTypes $mimeTypes;
+
     /** @var array */
     protected $filesystemAliases;
 
-    /**
-     * @param ImagineController             $imagineController
-     * @param FilesystemProvider            $filesystemProvider
-     * @param FileInfoRepositoryInterface   $fileInfoRepository
-     * @param FileTypeGuesserInterface      $fileTypeGuesser
-     * @param DefaultImageProviderInterface $defaultImageProvider
-     * @param array                         $filesystemAliases
-     */
     public function __construct(
         ImagineController $imagineController,
         FilesystemProvider $filesystemProvider,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileTypeGuesserInterface $fileTypeGuesser,
         DefaultImageProviderInterface $defaultImageProvider,
+        MimeTypes $mimeTypes,
         array $filesystemAliases
     ) {
         $this->imagineController = $imagineController;
@@ -64,6 +58,7 @@ class FileController
         $this->fileInfoRepository = $fileInfoRepository;
         $this->fileTypeGuesser = $fileTypeGuesser;
         $this->defaultImageProvider = $defaultImageProvider;
+        $this->mimeTypes = $mimeTypes;
         $this->filesystemAliases = $filesystemAliases;
     }
 
@@ -197,7 +192,7 @@ class FileController
             $mimeType = $file->getMimeType();
         }
         if (null === $mimeType && file_exists($filename)) {
-            $mimeType = MimeTypeGuesser::getInstance()->guess($filename);
+            $mimeType = $this->mimeTypes->guessMimeType($filename);
         }
 
         return $mimeType;

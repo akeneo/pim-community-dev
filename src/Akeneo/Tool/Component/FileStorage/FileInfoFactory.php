@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Component\FileStorage;
 
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * File factory, create a \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface.
@@ -14,20 +14,15 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class FileInfoFactory implements FileInfoFactoryInterface
 {
-    /** @var PathGeneratorInterface */
-    protected $pathGenerator;
+    protected PathGeneratorInterface $pathGenerator;
+    protected string $fileClass;
+    protected MimeTypes $mimeTypes;
 
-    /** @var string */
-    protected $fileClass;
-
-    /**
-     * @param PathGeneratorInterface $pathGenerator
-     * @param string                 $fileClass
-     */
-    public function __construct(PathGeneratorInterface $pathGenerator, $fileClass)
+    public function __construct(PathGeneratorInterface $pathGenerator, string $fileClass, MimeTypes $mimeTypes)
     {
         $this->pathGenerator = $pathGenerator;
         $this->fileClass = $fileClass;
+        $this->mimeTypes = $mimeTypes;
     }
 
     /**
@@ -47,7 +42,7 @@ class FileInfoFactory implements FileInfoFactoryInterface
         }
 
         $size = filesize($rawFile->getPathname());
-        $mimeType = MimeTypeGuesser::getInstance()->guess($rawFile->getPathname());
+        $mimeType = $this->mimeTypes->guessMimeType($rawFile->getPathname());
 
         $file = new $this->fileClass();
         $file->setKey($pathInfo['path'].$pathInfo['file_name']);

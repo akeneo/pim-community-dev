@@ -6,12 +6,13 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Mime\MimeTypes;
 
 class FileInfoFactorySpec extends ObjectBehavior
 {
     function let(PathGeneratorInterface $pathGenerator)
     {
-        $this->beConstructedWith($pathGenerator, FileInfo::class);
+        $this->beConstructedWith($pathGenerator, FileInfo::class, new MimeTypes());
     }
 
     function it_creates_a_file_from_a_raw_file($pathGenerator)
@@ -30,7 +31,7 @@ class FileInfoFactorySpec extends ObjectBehavior
 
     function it_creates_a_file_from_an_uploaded_file($pathGenerator)
     {
-        $rawFile = new UploadedFile(__FILE__, 'FileInfoFactorySpec.php', 'text/x-php', filesize(__FILE__));
+        $rawFile = new UploadedFile(__FILE__, 'FileInfoFactorySpec.php', 'text/x-php');
 
         $pathGenerator->generate($rawFile)->willReturn([
             'uuid'      => '12345',

@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Mime\MimeTypes;
 
 class FlysystemLoaderSpec extends ObjectBehavior
 {
@@ -15,7 +16,7 @@ class FlysystemLoaderSpec extends ObjectBehavior
     {
         $filesystemProvider->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($filesystem);
 
-        $this->beConstructedWith($filesystemProvider, [FileStorage::CATALOG_STORAGE_ALIAS], $fileInfoRepository);
+        $this->beConstructedWith($filesystemProvider, [FileStorage::CATALOG_STORAGE_ALIAS], $fileInfoRepository, new MimeTypes());
     }
 
     function it_is_a_loader()

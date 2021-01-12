@@ -36,6 +36,9 @@
 - Change `Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\MappingsOverrideConfigurator::configure()` to replace `Doctrine\Common\Persistence\Mapping\ClassMetadata` first argument by `Doctrine\ORM\Mapping\ClassMetadata`
 - Change `Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber\ConfigureMappingsSubscriber::loadClassMetadata()` to replace `Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs` first argument by `Doctrine\ORM\Event\LoadClassMetadataEventArgs`
 - Change `Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber\ResolveTargetRepositorySubscriber::loadClassMetadata()` to replace `Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs` first argument by `Doctrine\ORM\Event\LoadClassMetadataEventArgs`
+- Change constructor of `Akeneo\Tool\Component\FileStorage\FileInfoFactory` class to add `Symfony\Component\Mime\MimeTypes $mimeTypes`
+- Change constructor of `Akeneo\Platform\Bundle\UIBundle\Imagine\FlysystemLoader` class to add `Symfony\Component\Mime\MimeTypes $mimeTypes`
+- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\Ui\FileController` class to add `Symfony\Component\Mime\MimeTypes $mimeTypes`
 
 ### CLI commands
 

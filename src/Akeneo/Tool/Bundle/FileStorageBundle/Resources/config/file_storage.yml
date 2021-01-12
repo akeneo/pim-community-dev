@@ -29,6 +29,7 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.path_generator'
             - '%akeneo_file_storage.model.file_info.class%'
+            - '@mime_types'
 
     akeneo_file_storage.file_storage.path_generator:
         class: '%akeneo_file_storage.file_storage.path_generator.class%'
