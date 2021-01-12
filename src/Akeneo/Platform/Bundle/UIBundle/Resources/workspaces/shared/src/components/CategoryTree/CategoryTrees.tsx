@@ -1,8 +1,22 @@
 import React from 'react';
 import {CategoryTree, CategoryTreeModel} from './CategoryTree';
 import {BooleanInput} from 'akeneo-design-system/lib/components/Input/BooleanInput/BooleanInput';
-import {Tree} from 'akeneo-design-system/lib/components/Tree/Tree';
+import {Tree} from 'akeneo-design-system/lib';
 const __ = require('oro/translator');
+import { CategoryTreeSwitcher } from "./CategoryTreeSwitcher";
+import styled from "styled-components";
+import {getColor} from 'akeneo-design-system';
+
+const CategoryTreesContainer = styled.div`
+  height: calc(100vh - 110px);
+  border-bottom: 1px solid ${getColor('grey80')};
+  margin-bottom: 10px;
+`;
+
+const CategoryTreeContainer = styled.div`
+  max-height: calc(100vh - 223px);
+  overflow: hidden auto;
+`
 
 type CategoryTreeRoot = {
   id: number;
@@ -81,55 +95,49 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
     if (!initCallback) {
       return undefined;
     }
-    return initCallback(treeLabel, categoryLabel ? categoryLabel : __('jstree.products.all'));
+    return initCallback(treeLabel, categoryLabel ? categoryLabel : __('jstree.all'));
   };
 
   return (
     <div>
-      <ul>
-        {trees.map(tree => {
-          // These buttons will be updated after @julien's PR
-          return (
-            <li key={tree.code}>
-              <button onClick={() => switchTree(tree.id)}>
-                {tree.label}
-                {tree.selected && ' - current'}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-      {trees.map(tree => {
-        return (
-          tree.selected && (
-            <CategoryTree
-              key={tree.code}
-              init={() => initTree(tree.id, tree.label, tree.code)}
-              childrenCallback={childrenCallback}
-              onClick={handleClick}
-              selectedCategoryId={selectedTreeId}
-              initCallback={handleInitCallback}
-            />
-          )
-        );
-      })}
-      <Tree
-        value={{id: -2, code: 'all_products'}}
-        label={__('jstree.products.all')}
-        isLeaf={true}
-        onClick={() => handleClick({id: -2, code: 'all_products', label: __('jstree.products.all')})}
-        selected={selectedTreeId === -2}
-      />
-      Include sub categories
+      <CategoryTreesContainer>
+        <CategoryTreeSwitcher trees={trees} onClick={switchTree}/>
+        <CategoryTreeContainer>
+          {trees.map(tree => {
+            return (
+              tree.selected && (
+                <CategoryTree
+                  key={tree.code}
+                  init={() => initTree(tree.id, tree.label, tree.code)}
+                  childrenCallback={childrenCallback}
+                  onClick={handleClick}
+                  selectedCategoryId={selectedTreeId}
+                  initCallback={handleInitCallback}
+                />
+              )
+            );
+          })}
+          <Tree
+            value={{id: -2, code: 'all_products'}}
+            label={__('jstree.all')}
+            isLeaf={true}
+            onClick={() => handleClick({id: -2, code: 'all_products', label: __('jstree.all')})}
+            selected={selectedTreeId === -2}
+          />
+        </CategoryTreeContainer>
+      </CategoryTreesContainer>
+      {__('jstree.include_sub')}
+      {/* TODO We have to reload the tree on change */}
       <BooleanInput
         value={includeSubCategories}
         readOnly={false}
-        yesLabel={'Yes'}
-        noLabel={'No'}
+        yesLabel={__('pim_common.yes')}
+        noLabel={__('pim_common.no')}
         onChange={handleIncludeSubCategoriesChange}
       />
     </div>
   );
 };
 
+export type {CategoryTreeRoot}
 export {CategoryTrees};
