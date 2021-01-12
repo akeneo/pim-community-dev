@@ -42,7 +42,7 @@ class Base extends Page
         'Active tab'             => ['css' => '.form-horizontal .tab-pane.active'],
         'Column navigation link' => ['css' => '.column-navigation-link'],
         'Current column link'    => ['css' => '.AknColumn-navigationLink--active'],
-        'Secondary actions'      => ['css' => '.secondary-actions', 'decorators' => [DropdownMenuDecorator::class]],
+        'Secondary actions'      => ['css' => '.secondary-actions, button[title="Other actions"]', 'decorators' => [DropdownMenuDecorator::class]],
     ];
 
     /**
@@ -181,9 +181,9 @@ class Base extends Page
             $url = str_replace(sprintf('{%s}', $parameter), $value, $url);
         }
 
-        $baseUrl = rtrim($this->getParameter('base_url'), '/').'/';
+        $baseUrl = rtrim($this->getParameter('base_url'), '/') . '/';
 
-        return 0 !== strpos($url, 'http') ? $baseUrl.ltrim($url, '/') : $url;
+        return 0 !== strpos($url, 'http') ? $baseUrl . ltrim($url, '/') : $url;
     }
 
     /**
