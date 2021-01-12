@@ -59,7 +59,7 @@ class WebhookRequestSpec extends ObjectBehavior
                         [
                             'action' => 'product.created',
                             'event_id' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
-                            'event_date' => '2020-01-01T00:00:00+00:00',
+                            'event_datetime' => '2020-01-01T00:00:00+00:00',
                             'author' => 'julia',
                             'author_type' => 'ui',
                             'pim_source' => 'staging.akeneo.com',

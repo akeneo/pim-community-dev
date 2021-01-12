@@ -49,7 +49,7 @@ class WebhookRequest
      *  events: array<array{
      *      action: string,
      *      event_id: string,
-     *      event_date: string,
+     *      event_datetime: string,
      *      author: string,
      *      author_type: string,
      *      pim_source: string,
@@ -65,7 +65,7 @@ class WebhookRequest
                     return [
                         'action' => $apiEvent->action(),
                         'event_id' => $apiEvent->eventId(),
-                        'event_date' => $apiEvent->eventDate(),
+                        'event_datetime' => $apiEvent->eventDateTime(),
                         'author' => $apiEvent->author()->name(),
                         'author_type' => $apiEvent->author()->type(),
                         'pim_source' => $apiEvent->pimSource(),

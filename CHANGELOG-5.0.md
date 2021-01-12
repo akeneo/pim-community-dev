@@ -1,5 +1,15 @@
 # 5.0.x
 
+# 5.0.1 (2021-01-08)
+
+## Bug fixes
+
+- DAPI-1470: Fix DateTime bad usage
+- DAPI-1469: Fix the size issue with the logo on login page
+- PIM-9622: Fix query that can generate a MySQL memory allocation error
+
+# 5.0.0 (2020-12-31)
+
 ## Bug fixes
 
 - PIM-9554: Discrepancy on the user dashboard due to difference between UI locale and catalog locale
