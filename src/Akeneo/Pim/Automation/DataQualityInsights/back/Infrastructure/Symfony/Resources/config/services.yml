@@ -2,7 +2,6 @@ parameters:
     env(AKENEO_PIM_URL): ''
     env(PAPO_PROJECT_CODE_TRUNCATED): ''
     env(PAPO_PROJECT_CODE_HASHED): ''
-    env(FLAG_DICTIONARY_ENABLED): 'true'
 
 services:
 

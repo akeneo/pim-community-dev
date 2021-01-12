@@ -28,14 +28,15 @@ const WordsGrid: FC = () => {
       {totalWords > 0 || searchString !== '' ? (
         <>
           <WordsSearchBar
-            count={Object.keys(dictionary).length}
+            count={totalWords}
             searchValue={searchString}
             placeholder={translate('akeneo_data_quality_insights.dictionary.searchPlaceholder')}
             onSearchChange={onSearch}
+            className={'filter-box'}
           />
           <Pagination
             followPage={setCurrentPage}
-            currentPage={currentPage}
+            currentPage={totalWords > 0 ? currentPage : 0}
             totalItems={totalWords}
             itemsPerPage={itemsPerPage}
           />
