@@ -28,17 +28,17 @@ const MAX_PAGINATION_ITEMS_WITHOUT_SEPARATOR = 4;
 
 const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage = 25, onClick}) => {
   if (itemsPerPage <= 0) {
-    return <></>;
+    throw new Error('Number of items per page cannot be lower or equal than 0');
   }
 
   const numberOfPages = Math.ceil(totalItems / itemsPerPage);
 
   if (currentPage > numberOfPages) {
-    throw new Error('');
+    throw new Error('The current page cannot be greater than the total number of pages');
   }
 
   if (numberOfPages <= 1) {
-    return <></>;
+    return null;
   }
 
   const pages = computePages(currentPage, numberOfPages);
