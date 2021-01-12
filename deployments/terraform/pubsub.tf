@@ -7,7 +7,7 @@ resource "google_pubsub_topic" "business-event" {
 
   labels = {
     pfid = local.pfid
-    topic_type = "pim_business"
+    topic_type = "pim_business_event"
   }
 }
 
