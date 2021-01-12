@@ -99,13 +99,13 @@ class ExitStatus
 
     /**
      * Set the current status
-     * @param integer $exitCode
+     * @param integer|string $exitCode
      *
      * @return ExitStatus
      */
     public function setExitCode($exitCode)
     {
-        if ($exitCode > self::UNKNOWN) {
+        if (!is_string($exitCode)) {
             $this->exitCode = self::UNKNOWN;
         } else {
             $this->exitCode = $exitCode;
