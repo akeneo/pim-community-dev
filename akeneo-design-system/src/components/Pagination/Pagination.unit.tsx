@@ -26,6 +26,17 @@ test('it throws an error if the current page is out of bound', () => {
   mockConsole.mockRestore();
 });
 
+test('it throws an error if items per page prop is invalid', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
+  const paginationRender = () => {
+    render(<Pagination currentPage={1} totalItems={50} itemsPerPage={0} onClick={jest.fn()} />);
+  };
+
+  expect(paginationRender).toThrowError();
+  mockConsole.mockRestore();
+});
+
 test('it renders nothing if number of items are less than number of items per page', () => {
   render(<Pagination currentPage={1} totalItems={24} itemsPerPage={25} onClick={jest.fn()} />);
 
@@ -100,11 +111,6 @@ test('it ensures separator click does nothing', () => {
   const separator = screen.getAllByTestId('paginationItem')[1];
   fireEvent.click(separator);
   expect(onClickSeparator).not.toBeCalled();
-});
-
-test('it renders nothing if items per page prop is invalid', () => {
-  render(<Pagination currentPage={1} totalItems={50} itemsPerPage={0} onClick={jest.fn()} />);
-  expect(screen.queryAllByTestId('paginationItem')).toHaveLength(0);
 });
 
 function expectedPagination(expectedPagination: string[]) {
