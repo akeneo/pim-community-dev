@@ -59,7 +59,7 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
                 )
             );
 
-            $this->sleep->execute($delayUntilNextRequest);
+            $this->sleep->sleep($delayUntilNextRequest);
         }
     }
 }
