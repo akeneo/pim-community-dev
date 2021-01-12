@@ -80,6 +80,8 @@ config:
         pimee/product-edit-form/delete:                               pimenterpriseui/js/product/form/delete
         pimee/product-edit-form/categories:                           pimenterpriseui/js/product/form/categories
         pimee/product-edit-form/associations:                         pimenterpriseui/js/product/form/associations
+        pimee/product-edit-form/associated-product-row:               pimenterpriseui/js/product/form/associated-product-row
+        pim/product-edit-form/associated-product-row-view:            pimenterpriseui/js/product/form/associated-product-row-view
         pimee/product-edit-form/meta/status-switcher:                 pimenterpriseui/js/product/form/meta/status-switcher
         pimee/product-edit-form/variant-navigation:                   pimenterpriseui/js/product/form/variant-navigation
         pimee/product-edit-form/convert-to-simple-product:            pimenterpriseui/js/product/form/convert-to-simple-product.ts

@@ -49,7 +49,6 @@ javascript-dev: dsm
 	$(CMD_ON_PROJECT) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
-
 .PHONY: database
 database:
 	$(PHP_RUN) bin/console pim:installer:db ${O}
@@ -88,9 +87,10 @@ endif
 	$(MAKE) assets
 	$(MAKE) javascript-prod
 	$(MAKE) css
+	$(MAKE) javascript-extensions
 	APP_ENV=prod $(MAKE) database O="--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal"
 
-. PHONY: pim-dev
+.PHONY: pim-dev
 pim-dev:
 ifndef NO_DOCKER
 	APP_ENV=dev $(MAKE) up
@@ -100,6 +100,7 @@ endif
 	$(MAKE) assets
 	$(MAKE) javascript-dev
 	$(MAKE) css
+	$(MAKE) javascript-extensions
 	APP_ENV=dev $(MAKE) database O="--catalog vendor/akeneo/pim-enterprise-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev"
 
 .PHONY: up
@@ -110,7 +111,7 @@ up:
 down:
 	docker-compose down -v
 
-.PHONY: upgrade
+.PHONY: upgrade-front
 upgrade-front:
 	$(MAKE) node_modules
 	$(MAKE) cache

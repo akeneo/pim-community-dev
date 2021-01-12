@@ -102,12 +102,7 @@ Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditOptionCo
 
 Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditNumberValueCommand:
     constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
         - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditNumberValueCommand: ~
-
-Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EmptyValueCommand:
-    constraints:
-        - Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommand: ~
 
 Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
     group_sequence:

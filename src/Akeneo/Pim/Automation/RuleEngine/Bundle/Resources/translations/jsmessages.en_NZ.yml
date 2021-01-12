@@ -95,6 +95,7 @@ batch_jobs:
 pim_notification:
   types:
     rule: Rules Settings
+    mass_edit_rule: Mass edit rule
 pim_menu:
   item:
     rule: Rules
