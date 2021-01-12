@@ -32,14 +32,32 @@ class AddContentSecurityPolicyListener implements EventSubscriberInterface
 
     public function addCspHeaders(ResponseEvent $event): void
     {
-        $policy = sprintf(
-            "default-src 'self' *.akeneo.com 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'nonce-%s'; img-src 'self' data: ; frame-src * ; font-src 'self' data:",
+        $policyList = [
+            "default-src 'self' *.akeneo.com 'unsafe-inline';",
+            "script-src 'self' 'unsafe-eval' 'nonce-%s';",
+            "img-src 'self' data: ;",
+            "frame-src * ;",
+            "font-src 'self' data: ;"
+        ];
+
+        $policy =  sprintf(
+            implode(' ', $policyList),
             $this->generatedNonce
         );
 
+        $appcuesCspList = [
+            "frame-src    'self' https://*.appcues.com;",
+            "style-src    'self' https://*.appcues.com https://*.appcues.net https://fonts.googleapis.com 'unsafe-inline';",
+            "script-src   'self' https://*.appcues.com https://*.appcues.net;",
+            "img-src      'self' res.cloudinary.com twemoji.maxcdn.com;",
+            "connect-src  https://*.appcues.com *.appcues.net ws:;"
+        ];
+
+        $policy .= implode(' ', $appcuesCspList);
+/*
         $response = $event->getResponse();
         $response->headers->set('Content-Security-Policy', $policy);
         $response->headers->set('X-Content-Security-Policy', $policy);
-        $response->headers->set('X-WebKit-CSP', $policy);
+        $response->headers->set('X-WebKit-CSP', $policy);*/
     }
 }
