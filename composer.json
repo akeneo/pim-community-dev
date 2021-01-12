@@ -55,7 +55,7 @@
     },
     "require": {
         "ext-json": "*",
-        "akeneo/pim-community-dev": "DAPI-1296-dev@dev",
+        "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^4.2.1",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
