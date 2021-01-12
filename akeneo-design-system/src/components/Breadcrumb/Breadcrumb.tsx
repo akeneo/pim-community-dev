@@ -1,21 +1,19 @@
 import React, {isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
-import {getColor} from '../../theme';
+import {getColor, PlaceholderStyle} from '../../theme';
 import {Link, LinkProps} from '../../components/Link/Link';
 
 const Step = styled(Link)`
   text-transform: uppercase;
   text-decoration: none;
   color: ${getColor('grey', 120)};
-`;
-Step.displayName = 'Breadcrumb.Step';
 
-const BreadcrumbContainer = styled.nav`
-  ${Step}:last-child {
+  :last-child {
     color: ${getColor('grey', 100)};
     cursor: initial;
   }
 `;
+Step.displayName = 'Breadcrumb.Step';
 
 const Separator = styled.span`
   margin: 0 0.5rem;
@@ -36,9 +34,9 @@ const Breadcrumb = ({children, ...rest}: BreadcrumbProps) => {
 
   // https://www.w3.org/TR/wai-aria-practices-1.1/examples/breadcrumb/index.html
   return (
-    <BreadcrumbContainer aria-label="Breadcrumb" {...rest}>
+    <nav aria-label="Breadcrumb" {...rest}>
       {React.Children.map(children, (child, index) => {
-        if (!(isValidElement(child) && child.type === Step)) {
+        if (!isValidElement<LinkProps>(child)) {
           throw new Error('Breadcrumb only accepts `Breacrumb.Step` elements as children');
         }
 
@@ -53,9 +51,15 @@ const Breadcrumb = ({children, ...rest}: BreadcrumbProps) => {
           </>
         );
       })}
-    </BreadcrumbContainer>
+    </nav>
   );
 };
+
+Object.assign(Step, {
+  Skeleton: styled(Step)`
+    ${PlaceholderStyle}
+  `,
+});
 
 Breadcrumb.Step = Step;
 

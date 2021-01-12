@@ -1,7 +1,7 @@
 import React, {Ref, ReactElement} from 'react';
 import styled from 'styled-components';
 import {Helper, HelperProps, InputProps, Locale, LocaleProps} from '../../components';
-import {getColor} from '../../theme';
+import {getColor, PlaceholderStyle} from '../../theme';
 import {useId} from '../../hooks';
 
 const FieldContainer = styled.div`
@@ -107,6 +107,14 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
     );
   }
 );
+
+Object.assign(Field, {
+  Skeleton: styled(Field)`
+    * {
+      ${PlaceholderStyle}
+    }
+  `,
+});
 
 export {Field};
 export type {FieldProps};

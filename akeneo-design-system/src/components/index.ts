@@ -14,6 +14,7 @@ export * from './Locale/Locale';
 export * from './MessageBar/MessageBar';
 export * from './Modal/Modal';
 export * from './ProgressBar/ProgressBar';
+export * from './Skeleton/Skeleton';
 export * from './Table/Table';
 export * from './Dropdown/Dropdown';
 export * from './Pagination/Pagination';

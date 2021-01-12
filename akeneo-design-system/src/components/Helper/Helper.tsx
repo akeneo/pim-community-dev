@@ -1,6 +1,6 @@
 import React, {ReactElement, ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor} from '../../theme';
+import {AkeneoThemedProps, getColor, PlaceholderStyle} from '../../theme';
 import {DangerIcon, IconProps, InfoRoundIcon} from '../../icons';
 
 const getBackgroundColor = (level: Level) => {
@@ -146,6 +146,12 @@ const Helper = React.forwardRef<HTMLDivElement, HelperProps>(
     );
   }
 );
+
+Object.assign(Helper, {
+  Skeleton: styled(Helper)`
+    ${PlaceholderStyle}
+  `,
+});
 
 export {Helper};
 export type {HelperProps};
