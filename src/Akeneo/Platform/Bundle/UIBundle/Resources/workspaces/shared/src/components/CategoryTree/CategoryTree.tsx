@@ -33,7 +33,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
 }) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
-  const recursiveGetSelectedCategoryLabel: (categoryTree: CategoryTreeModel) => string|undefined = (categoryTree) => {
+  const recursiveGetSelectedCategoryLabel: (categoryTree: CategoryTreeModel) => string | undefined = categoryTree => {
     if (categoryTree.id === selectedCategoryId) {
       return categoryTree.label;
     }
@@ -43,7 +43,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       }, undefined);
     }
     return undefined;
-  }
+  };
 
   React.useEffect(() => {
     init().then(tree => {
@@ -58,14 +58,16 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
     return <Tree value="" label="" isLoading={true} {...rest} />;
   }
 
-  return <RecursiveCategoryTree
-    tree={tree}
-    childrenCallback={childrenCallback}
-    onChange={onChange}
-    onClick={onClick}
-    selectedCategoryId={selectedCategoryId}
-    {...rest}
-  />;
+  return (
+    <RecursiveCategoryTree
+      tree={tree}
+      childrenCallback={childrenCallback}
+      onChange={onChange}
+      onClick={onClick}
+      selectedCategoryId={selectedCategoryId}
+      {...rest}
+    />
+  );
 };
 
 export type {CategoryTreeModel};
