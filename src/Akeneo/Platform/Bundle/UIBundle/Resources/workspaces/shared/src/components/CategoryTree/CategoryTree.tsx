@@ -19,13 +19,31 @@ type CategoryTreeProps = {
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
   selectedTreeId?: number;
+  initCallback?: (treeLabel: string, categoryLabel?: string) => void;
 };
 
-const CategoryTree: React.FC<CategoryTreeProps> = ({init, childrenCallback, onChange, onClick, selectedTreeId, ...rest}) => {
+const CategoryTree: React.FC<CategoryTreeProps> = ({init, childrenCallback, onChange, onClick, selectedTreeId, initCallback, ...rest}) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
   React.useEffect(() => {
-    init().then(categoryTree => setTree(categoryTree));
+    init().then(categoryTree => {
+      const getSelectedCategoryLabel: (categoryTree: CategoryTreeModel) => string|undefined = (categoryTree) => {
+        if (categoryTree.id === selectedTreeId) {
+          return categoryTree.label;
+        }
+        if (categoryTree.children) {
+          return categoryTree.children?.reduce((previous, subCategoryTree) => {
+            return typeof previous !== 'undefined' ? previous : getSelectedCategoryLabel(subCategoryTree);
+          }, undefined);
+        }
+        return undefined;
+      }
+
+      setTree(categoryTree);
+      if (initCallback) {
+        initCallback(categoryTree.label, getSelectedCategoryLabel(categoryTree));
+      }
+    });
   }, []);
 
   if (!tree) {

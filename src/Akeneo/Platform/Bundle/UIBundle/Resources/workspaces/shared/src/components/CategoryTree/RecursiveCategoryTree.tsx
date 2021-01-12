@@ -13,6 +13,7 @@ type RecursiveCategoryTreeProps = {
 type CategoryTreeValue = {
   id: number;
   code: string;
+  label: string;
 };
 
 const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({tree, childrenCallback, onChange, onClick, selectedTreeId}) => {
@@ -40,6 +41,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({tree, chil
       value={{
         id: treeState.id,
         code: treeState.code,
+        label: treeState.label,
       }}
       selected={typeof selectedTreeId === 'undefined' ? treeState.selected : selectedTreeId === treeState.id}
       isLoading={treeState.loading}
