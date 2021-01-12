@@ -1,0 +1,44 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Skeleton} from './Skeleton.tsx';
+import {Helper, Link, Breadcrumb, Checkbox, Field, TextInput, Badge} from '../../components';
+
+<Meta title="Components/Skeleton" component={Skeleton} />
+
+# Skeleton
+
+## Usage
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <Skeleton {...args}>
+          <Helper>
+            This is a nice Helper <Link>Don't click here</Link>
+          </Helper>
+          <Breadcrumb>
+            <Breadcrumb.Step href="#">first</Breadcrumb.Step>
+            <Breadcrumb.Step href="#">second</Breadcrumb.Step>
+            <Breadcrumb.Step>third</Breadcrumb.Step>
+          </Breadcrumb>
+          <Checkbox>Nice</Checkbox>
+          <Field label="Nice field" locale="fr_FR">
+            <TextInput placeholder="Type your text here" />
+          </Field>
+          <p>
+            <Badge>Hello</Badge>
+          </p>
+          <p>
+            <Link>Don't click here</Link>
+          </p>
+        </Skeleton>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />

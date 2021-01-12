@@ -1,4 +1,4 @@
-import {css} from 'styled-components';
+import {css, keyframes} from 'styled-components';
 import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
 
 const CommonStyle = css`
@@ -7,6 +7,33 @@ const CommonStyle = css`
   font-size: ${getFontSize('default')};
   line-height: 20px;
   box-sizing: border-box;
+`;
+
+const loadingBreath = keyframes`
+  0% {background-position:0 50%}
+  50% {background-position:100% 50%}
+  100% {background-position:0 50%}
+`;
+
+const PlaceholderStyle = css`
+  animation: ${loadingBreath} 2s infinite;
+  background: linear-gradient(270deg, #fdfdfd, #eee);
+  background-size: 400% 400%;
+  border: none;
+  color: transparent;
+  border-radius: 3px;
+  cursor: default;
+  outline: none;
+
+  :hover,
+  :last-child,
+  ::placeholder {
+    color: transparent;
+  }
+
+  > * {
+    opacity: 0;
+  }
 `;
 
 const color: Color = {
@@ -81,4 +108,4 @@ const palette: Palette = {
   danger: 'red',
 };
 
-export {color, fontSize, palette, CommonStyle};
+export {color, fontSize, palette, CommonStyle, PlaceholderStyle};
