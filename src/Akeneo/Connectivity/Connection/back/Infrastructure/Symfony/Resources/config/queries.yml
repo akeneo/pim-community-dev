@@ -85,7 +85,7 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_connectivity.connection.persistence.query.count_hourly_events_api_request:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalCountHourlyEventsApiRequestQuery
+    akeneo_connectivity.connection.persistence.query.select_events_api_request_count_within_last_hour_query:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalSelectEventsApiRequestCountWithinLastHourQuery
         arguments:
             - '@database_connection'
