@@ -1,10 +1,10 @@
-import ReactDOM from "react-dom";
-import { DependenciesProvider } from "@akeneo-pim-community/legacy-bridge";
-import { ThemeProvider } from "styled-components";
-import { CategoryTrees } from "@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTrees";
-import React from "react";
+import ReactDOM from 'react-dom';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {ThemeProvider} from 'styled-components';
+import {CategoryTrees} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTrees';
+import React from 'react';
 import {pimTheme} from 'akeneo-design-system';
-import { CategoryResponse, parseResponse } from "./CategoryTreeFetcher";
+import {CategoryResponse, parseResponse} from './CategoryTreeFetcher';
 const Router = require('pim/router');
 const __ = require('oro/translator');
 
@@ -41,9 +41,9 @@ class TreeView {
       const json: any = await response.json();
 
       return json.map((tree: any) => {
-        return {...tree, selected: tree.selected === 'true'}
-      })
-    }
+        return {...tree, selected: tree.selected === 'true'};
+      });
+    };
 
     const childrenCallback = async (categoryId: number) => {
       const url = Router.generate('pim_enrich_product_grid_category_tree_children', {
@@ -60,7 +60,7 @@ class TreeView {
       const json: CategoryResponse[] = await response.json();
 
       return json.map(json => parseResponse(json, {}));
-    }
+    };
 
     const initTree = async (treeId: number, treeLabel: string, treeCode: string) => {
       const url = Router.generate('pim_enrich_product_grid_category_tree_children', {
@@ -80,16 +80,18 @@ class TreeView {
         id: treeId,
         label: treeLabel,
         code: treeCode,
-        children: json.map(tree => parseResponse(tree, {})).concat({
-          id: -1,
-          code: 'unclassified',
-          label: __('jstree.unclassified'),
-          selectable: false,
-          children: [],
-        }),
+        children: json
+          .map(tree => parseResponse(tree, {}))
+          .concat({
+            id: -1,
+            code: 'unclassified',
+            label: __('jstree.unclassified'),
+            selectable: false,
+            children: [],
+          }),
         selectable: false,
-      }
-    }
+      };
+    };
 
     const handleCategoryClick = (categoryId: number, treeId: number, categoryLabel: string, treeLabel: string) => {
       this.state.selectedNode = categoryId;
@@ -103,16 +105,16 @@ class TreeView {
       this.state.selectedNode = treeId;
       this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
       this.onChange(treeLabel);
-    }
+    };
 
     const handleIncludeSubCategoriesChange = (includeSubCategories: boolean) => {
       this.state.includeSub = includeSubCategories;
       this.domElement.dispatchEvent(new Event('tree.updated', {bubbles: true}));
-    }
+    };
 
     const initCallback = (treeLabel: string, categoryLabel: string) => {
       this.onChange(treeLabel, categoryLabel);
-    }
+    };
 
     ReactDOM.render(
       <DependenciesProvider>
@@ -134,11 +136,11 @@ class TreeView {
     );
   }
 
-  public refresh = () => { }
+  public refresh = () => {};
 
   public getState: () => State = () => {
     return this.state;
-  }
+  };
 }
 
 export = TreeView;

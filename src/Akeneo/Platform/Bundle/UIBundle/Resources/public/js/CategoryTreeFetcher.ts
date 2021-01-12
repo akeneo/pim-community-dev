@@ -1,4 +1,4 @@
-import { CategoryTreeModel } from "@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree";
+import {CategoryTreeModel} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree';
 
 type CategoryResponse = {
   attr: {
@@ -14,23 +14,18 @@ type CategoryResponse = {
 const parseResponse: (
   json: CategoryResponse,
   options?: {
-    readOnly?: boolean,
-    lockedCategoryIds?: number[],
-    isRoot?: boolean,
-    selectable?: boolean,
+    readOnly?: boolean;
+    lockedCategoryIds?: number[];
+    isRoot?: boolean;
+    selectable?: boolean;
   }
 ) => CategoryTreeModel = (json, options) => {
-  const {
-    readOnly,
-    lockedCategoryIds,
-    isRoot,
-    selectable
-  } = {
+  const {readOnly, lockedCategoryIds, isRoot, selectable} = {
     readOnly: false,
     lockedCategoryIds: [] as number[],
     isRoot: false,
     selectable: false,
-    ...options
+    ...options,
   };
 
   const getChildren: () => CategoryTreeModel[] | undefined = () => {
@@ -41,7 +36,7 @@ const parseResponse: (
       return [];
     }
     if (json.children) {
-      return json.children.map(child => parseResponse(child, { readOnly, lockedCategoryIds, isRoot: false, selectable }));
+      return json.children.map(child => parseResponse(child, {readOnly, lockedCategoryIds, isRoot: false, selectable}));
     }
     return undefined;
   };
@@ -59,4 +54,4 @@ const parseResponse: (
   };
 };
 
-export { CategoryResponse, parseResponse }
+export {CategoryResponse, parseResponse};

@@ -4,7 +4,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {CategoryTree, CategoryTreeModel} from '@akeneo-pim-community/shared/src/components/CategoryTree/CategoryTree';
-import { CategoryResponse, parseResponse } from "./CategoryTreeFetcher";
+import {CategoryResponse, parseResponse} from './CategoryTreeFetcher';
 const Router = require('pim/router');
 
 class TreeAssociate {
@@ -75,7 +75,12 @@ class TreeAssociate {
         const response = await fetch(url);
         const json: CategoryResponse[] = await response.json();
 
-        return parseResponse(json[0], { readOnly: this.readOnly, lockedCategoryIds: this.lockedCategoryIds, isRoot: true, selectable: true });
+        return parseResponse(json[0], {
+          readOnly: this.readOnly,
+          lockedCategoryIds: this.lockedCategoryIds,
+          isRoot: true,
+          selectable: true,
+        });
       } else {
         const url = Router.generate(this.childrenRoute, {
           _format: 'json',
@@ -89,7 +94,12 @@ class TreeAssociate {
         const json: CategoryResponse = await response.json();
 
         console.log(json);
-        return parseResponse(json, { readOnly: this.readOnly, lockedCategoryIds: this.lockedCategoryIds, isRoot: true, selectable: true });
+        return parseResponse(json, {
+          readOnly: this.readOnly,
+          lockedCategoryIds: this.lockedCategoryIds,
+          isRoot: true,
+          selectable: true,
+        });
       }
     };
 
@@ -97,7 +107,9 @@ class TreeAssociate {
       const response = await fetch(this.getChildrenUrl(id));
       const json: CategoryResponse = await response.json();
 
-      return (json.children || []).map(child => parseResponse(child, { readOnly: this.readOnly, lockedCategoryIds: this.lockedCategoryIds, isRoot: false }));
+      return (json.children || []).map(child =>
+        parseResponse(child, {readOnly: this.readOnly, lockedCategoryIds: this.lockedCategoryIds, isRoot: false})
+      );
     };
 
     const tree: HTMLDivElement = document.getElementById(`tree-${treeId}`) as HTMLDivElement;
