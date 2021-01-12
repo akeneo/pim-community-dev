@@ -52,9 +52,11 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
         if ($delayUntilNextRequest > 0) {
             $this->logger->info(
                 json_encode(
-                    (EventSubscriptionRequestsLimitReachedLog::fromLimit(
-                        $this->webhookRequestsLimit
-                    ))->toLog(),
+                    EventSubscriptionRequestsLimitReachedLog::create(
+                        $this->webhookRequestsLimit,
+                        new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
+                        $delayUntilNextRequest,
+                    )->toLog(),
                     JSON_THROW_ON_ERROR
                 )
             );
