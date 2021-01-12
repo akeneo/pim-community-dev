@@ -67,6 +67,22 @@ define([
      * @param {String} path
      */
     defaultRoute: function (path) {
+
+      window.Appcues.page();
+      window.Appcues.identify("testaymeric", {
+
+        // recommended (but optional) properties
+        plan_tier: "Akeneo Trial Edition", // Current user’s plan tier
+        role: "master_of_the_world", // Current user’s role or permissions
+        account_id: "42", // Current user's account ID
+        first_name: "Aymeric",   // Current user's first name
+
+        // additional suggestions
+        company_name: "Akeneo", // Current user’s company
+        email: "aymeric.planche@akeneo.com", // Current user's email
+        language: "en_US", // for multi-language applications
+      });
+
       if (path.indexOf('/') !== 0) {
         path = '/' + path;
       }
