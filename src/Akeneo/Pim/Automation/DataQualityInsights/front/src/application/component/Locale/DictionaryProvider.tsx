@@ -8,6 +8,7 @@ const DictionaryContext = createContext<DictionaryState>({
   itemsPerPage: 1,
   currentPage: 1,
   setCurrentPage: (page: number) => page,
+  search: (searchValue: string) => searchValue,
 });
 
 type DictionaryProviderProps = {

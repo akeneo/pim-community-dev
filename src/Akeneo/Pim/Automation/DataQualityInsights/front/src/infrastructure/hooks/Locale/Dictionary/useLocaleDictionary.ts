@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {fetchLocaleDictionary} from '../../../fetcher';
 import {Word} from '../../../../domain';
 
@@ -9,6 +9,7 @@ type DictionaryState = {
   itemsPerPage: number;
   currentPage: number;
   setCurrentPage: (page: number) => void;
+  search: (searchValue: string) => void;
 };
 
 const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: number): DictionaryState => {
@@ -16,13 +17,18 @@ const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: num
   const [totalWords, setTotalWords] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(page);
 
-  useEffect(() => {
-    (async () => {
-      const data = await fetchLocaleDictionary(localeCode, currentPage, itemsPerPage);
+  const search = useCallback(
+    async (searchValue: string) => {
+      const data = await fetchLocaleDictionary(localeCode, currentPage, itemsPerPage, searchValue);
       setDictionary(data.results);
       setTotalWords(data.total);
-    })();
-  }, [localeCode, currentPage, itemsPerPage]);
+    },
+    [localeCode, currentPage, itemsPerPage]
+  );
+
+  useEffect(() => {
+    search('');
+  }, [currentPage]);
 
   return {
     localeCode,
@@ -31,6 +37,7 @@ const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: num
     itemsPerPage,
     currentPage,
     setCurrentPage,
+    search,
   };
 };
 

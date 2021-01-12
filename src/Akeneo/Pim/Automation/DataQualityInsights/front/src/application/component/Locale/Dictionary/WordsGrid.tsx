@@ -1,18 +1,23 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {Table, IconButton, CloseIcon, Pagination} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
 import {Word} from '../../../../domain';
-import {SearchBar} from '@akeneo-pim-community/shared';
+import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
 import {NoSearchResults} from './NoSearchResults';
 import {NoData} from './NoData';
 import {useDictionaryState} from '../../../../infrastructure';
 
 const WordsGrid: FC = () => {
   const translate = useTranslate();
-  const {dictionary, totalWords, itemsPerPage, setCurrentPage, currentPage} = useDictionaryState();
+  const {dictionary, totalWords, itemsPerPage, setCurrentPage, currentPage, search} = useDictionaryState();
+  const [searchString, setSearchString] = useState('');
+  const debouncedSearch = useDebounceCallback(search, 300);
 
-  const searchString = '';
+  const onSearch = (searchValue: string) => {
+    setSearchString(searchValue);
+    debouncedSearch(searchValue);
+  };
 
   if (dictionary === null) {
     return <></>;
@@ -20,26 +25,24 @@ const WordsGrid: FC = () => {
 
   return (
     <>
-      <>
-        {totalWords > 0 ? (
-          <>
-            <WordsSearchBar
-              count={Object.keys(dictionary).length}
-              searchValue={searchString}
-              placeholder={translate('akeneo_data_quality_insights.dictionary.searchPlaceholder')}
-              onSearchChange={() => console.log('search')}
-            />
-            <Pagination
-              followPage={setCurrentPage}
-              currentPage={currentPage}
-              totalItems={totalWords}
-              itemsPerPage={itemsPerPage}
-            />
-          </>
-        ) : (
-          <></>
-        )}
-      </>
+      {totalWords > 0 || searchString !== '' ? (
+        <>
+          <WordsSearchBar
+            count={Object.keys(dictionary).length}
+            searchValue={searchString}
+            placeholder={translate('akeneo_data_quality_insights.dictionary.searchPlaceholder')}
+            onSearchChange={onSearch}
+          />
+          <Pagination
+            followPage={setCurrentPage}
+            currentPage={currentPage}
+            totalItems={totalWords}
+            itemsPerPage={itemsPerPage}
+          />
+        </>
+      ) : (
+        <></>
+      )}
 
       <>
         {Object.keys(dictionary).length === 0 ? (
