@@ -12,6 +12,7 @@ const SpacedTable = styled(Table)`
 
 const SummaryCell = styled(Table.Cell)`
   padding: 0 10px;
+  max-width: unset;
 `;
 
 const LargeCell = styled.td.attrs({colSpan: 5})`

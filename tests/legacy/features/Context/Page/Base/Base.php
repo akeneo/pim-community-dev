@@ -452,10 +452,10 @@ class Base extends Page
     public function getDropdownButtonItem($item, $button)
     {
         $dropdownToggle = $this->getDropdownButton($button);
-        $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu, .AknDropdown-menu');
+        $dropdownMenu = $dropdownToggle->getParent();
 
         return $this->spin(function () use ($dropdownMenu, $item) {
-            return $dropdownMenu->find('css', sprintf('.AknDropdown-menuLink:contains("%s")', $item));
+            return $dropdownMenu->find('css', sprintf('a:contains("%s")', $item));
         }, sprintf('Item "%s" of dropdown button "%s" not found', $item, $button));
     }
 
