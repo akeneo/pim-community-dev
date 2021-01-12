@@ -80,7 +80,7 @@ const ExecutionDetail = () => {
 
   const jobTypeWithProfile = ['import', 'export'];
   const {jobExecutionId} = useParams<{jobExecutionId: string}>();
-  const [jobExecution, error, reloadJobExecution, showRefreshing] = useJobExecution(jobExecutionId);
+  const [jobExecution, error, reloadJobExecution, isAutoRefreshing] = useJobExecution(jobExecutionId);
 
   const handleStop = async () => {
     await reloadJobExecution();
@@ -122,7 +122,7 @@ const ExecutionDetail = () => {
           </Breadcrumb>
         </PageHeader.Breadcrumb>
         <PageHeader.UserActions>
-          {null !== jobExecution && showRefreshing && (
+          {null !== jobExecution && isAutoRefreshing && (
             <Refreshing>
               {translate('pim_import_export.form.job_execution.refreshing')}
               <LoaderIcon />
