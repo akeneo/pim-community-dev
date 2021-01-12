@@ -208,3 +208,13 @@ extensions:
         position: 900
         config:
             entity: pim_enrich.entity.product.label
+
+    pimee-product-view-associations:
+        module: pimee/product-edit-form/associations
+        parent: pimee-product-view-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_associations_view
+        position: 110
+        config:
+            aclAddAssociations: pim_enrich_associations_edit
+            datagridName: 'association-product-grid'

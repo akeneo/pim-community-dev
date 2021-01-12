@@ -3,6 +3,7 @@ teamwork_assistant:
     required: This value should not be blank.
     label_maxlength: This value is too long. It should have {{ max }} characters or less.
     project_identifier: The project {{ project }} doesn't exist.
+    project_locale: The locale {{ locale }} is not supported by the channel {{ channel }}.
     project_due_date: You can't select a date in the past.
   notification:
     project_calculation:
@@ -37,3 +38,4 @@ pim_datagrid:
   cells:
     type:
       project_calculation: Project calculation
+      refresh_project_completeness_calculation: Refresh project completeness calculation

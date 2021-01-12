@@ -37,6 +37,7 @@ class RecordSpec extends ObjectBehavior
             $this->buildAttributeDetails('records', RecordCollectionAttribute::ATTRIBUTE_TYPE, false, false),
             $this->buildAttributeDetails('options', OptionCollectionAttribute::ATTRIBUTE_TYPE, false, false),
             $this->buildAttributeDetails('picture', ImageAttribute::ATTRIBUTE_TYPE, true, false),
+            $this->buildAttributeDetails('localizable_scopable_attribute', TextAttribute::ATTRIBUTE_TYPE, true, true),
         ]);
     }
 
@@ -87,6 +88,7 @@ class RecordSpec extends ObjectBehavior
             'number-en_US' => 'data2_en',
             'number-fr_FR' => 'data2_fr',
             'option-ecommerce' => 'data3',
+            'option-en_US-ecommerce' => 'conversion should work, the validation will fail later (not localizable)',
             'record-en_US-ecommerce' => 'data41',
             'record-fr_FR-mobile' => 'data42',
             'records' => 'record1,record2',
@@ -95,6 +97,8 @@ class RecordSpec extends ObjectBehavior
             'picture-fr_FR' => '',
             'unknown' => '',
             '' => '',
+            'localizable_scopable_attribute' => '',
+            'localizable_scopable_attribute-fr_FR' => '',
        ];
     }
 
@@ -144,11 +148,18 @@ class RecordSpec extends ObjectBehavior
                 'data' => 'data2_fr',
             ],
         ]);
-        $convertedItem['values']['option']->shouldBeLike([[
-            'channel' => 'ecommerce',
-            'locale' => null,
-            'data' => 'data3',
-        ]]);
+        $convertedItem['values']['option']->shouldBeLike([
+            [
+                'channel' => 'ecommerce',
+                'locale' => null,
+                'data' => 'data3',
+            ],
+            [
+                'channel' => 'ecommerce',
+                'locale' => 'en_US',
+                'data' => 'conversion should work, the validation will fail later (not localizable)',
+            ],
+        ]);
         $convertedItem['values']['record']->shouldBeLike([
             [
                 'channel' => 'ecommerce',
