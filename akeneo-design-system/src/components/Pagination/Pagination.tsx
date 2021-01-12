@@ -21,12 +21,12 @@ type PaginationProps = {
   /**
    * Handler called when a pagination item is clicked.
    */
-  onClick: (page: number) => void;
+  followPage: (page: number) => void;
 };
 
 const MAX_PAGINATION_ITEMS_WITHOUT_SEPARATOR = 4;
 
-const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage = 25, onClick}) => {
+const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage = 25, followPage}) => {
   if (itemsPerPage <= 0) {
     throw new Error('Number of items per page cannot be lower or equal than 0');
   }
@@ -47,7 +47,7 @@ const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage 
     <PaginationContainer>
       {pages.map((page: number | string, index: number) => {
         return (
-          <PaginationItem currentPage={page === currentPage} key={index} onClick={onClick} page={page as string} />
+          <PaginationItem currentPage={page === currentPage} key={index} onClick={followPage} page={page as string} />
         );
       })}
     </PaginationContainer>
