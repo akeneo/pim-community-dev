@@ -30,7 +30,7 @@ const WordsGrid: FC = () => {
               onSearchChange={() => console.log('search')}
             />
             <Pagination
-              onClick={setCurrentPage}
+              followPage={setCurrentPage}
               currentPage={currentPage}
               totalItems={totalWords}
               itemsPerPage={itemsPerPage}
