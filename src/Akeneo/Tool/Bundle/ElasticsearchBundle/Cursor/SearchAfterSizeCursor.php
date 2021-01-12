@@ -46,7 +46,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
-        array $searchAfter = [],
+        array $searchAfter,
         $pageSize,
         $limit,
         $searchAfterUniqueKey = null
