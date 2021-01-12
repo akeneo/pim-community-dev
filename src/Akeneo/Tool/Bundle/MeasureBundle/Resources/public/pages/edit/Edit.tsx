@@ -38,7 +38,7 @@ import {
   partitionErrors,
   useToggleState,
   FullScreenError,
-  PageContent
+  PageContent,
 } from '@akeneo-pim-community/shared';
 import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
 
