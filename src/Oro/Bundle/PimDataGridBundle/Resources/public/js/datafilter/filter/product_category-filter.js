@@ -55,13 +55,20 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
         this.value.value.categoryId = parseInt(urlParams[gridName + '[_filter][category][value][categoryId]']);
       }
 
+      const onTreeUpdated = (treeLabel, categoryLabel) => {
+        this.trigger('update_label', treeLabel, categoryLabel);
+      }
+
       this.$el[0].addEventListener('tree.updated', event => {
         this._onTreeUpdated();
         event.preventDefault();
       });
 
-      this.treeView = new TreeView(this.$el[0], this._getInitialState());
-      //TreeView.init(this.$el, this._getInitialState(), categoryBaseRoute);
+      this.treeView = new TreeView(
+        this.$el[0],
+        this._getInitialState(),
+        onTreeUpdated,
+      );
 
       this.listenTo(mediator, 'datagrid_filters:build.post', function (filtersManager) {
         this.listenTo(filtersManager, 'collection-filters:createState.post', function (filtersState) {
@@ -141,8 +148,6 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
         this._updateState();
         this._triggerUpdate();
       }
-
-      this.trigger('update_label', this.value);
     },
 
     /**

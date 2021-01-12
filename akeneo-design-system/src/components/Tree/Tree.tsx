@@ -214,7 +214,7 @@ const Tree = <T,>({
 
         {selectable && <NodeCheckbox checked={selected} onChange={handleSelect} readOnly={readOnly} />}
 
-        <LabelWithFolder onClick={handleClick} $selected={selected} title={label}>
+        <LabelWithFolder onClick={handleClick} $selected={selected} title={label} aria-selected={selected}>
           <TreeIcon isLoading={isLoading} isLeaf={isLeaf} selected={selected} />
           {label}
         </LabelWithFolder>

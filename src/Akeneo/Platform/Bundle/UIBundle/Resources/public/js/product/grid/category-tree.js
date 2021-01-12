@@ -61,8 +61,11 @@ define(['underscore', 'jquery', 'pim/form-builder', 'pim/form', 'oro/datafilter/
         this.valueUpdated(value);
       });
 
-      this.listenTo(categoryFilter, 'update_label', function (value) {
-        this.valueUpdated(value);
+      this.listenTo(categoryFilter, 'update_label', function (treeLabel, categoryLabel) {
+          this.getRoot().trigger('pim_enrich:form:category_updated', {
+            categoryLabel: categoryLabel ? this.trimCount(categoryLabel) : '',
+            treeLabel: this.trimCount(treeLabel)
+          });
       });
 
       return categoryFilter;
@@ -93,11 +96,7 @@ define(['underscore', 'jquery', 'pim/form-builder', 'pim/form', 'oro/datafilter/
      * @returns {String}
      */
     getCategoryLabel(id) {
-      return this.trimCount(
-        $('#node_' + id + ' > a:first')
-          .text()
-          .trim()
-      );
+      return this.trimCount($('#tree [aria-selected=true]').text().trim());
     },
 
     /**
@@ -107,8 +106,12 @@ define(['underscore', 'jquery', 'pim/form-builder', 'pim/form', 'oro/datafilter/
      * @returns {String}
      */
     getTreeLabel() {
-      return 'FOOBAR // TODO';
-      return this.trimCount($('#tree_toolbar .select2-chosen').text().trim());
+      const button = $('#tree [role=tree] [role=treeitem] button[title]:first');
+      if (button.length) {
+        return this.trimCount(button.text().trim());
+      }
+
+      return '';
     },
 
     /**

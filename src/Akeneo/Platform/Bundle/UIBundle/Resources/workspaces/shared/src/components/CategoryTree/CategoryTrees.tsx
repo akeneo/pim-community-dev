@@ -15,11 +15,12 @@ type CategoryTreesProps = {
   init: () => Promise<CategoryTreeRoot[]>;
   initTree: (treeId: number, treeLabel: string, treeCode: string) => Promise<CategoryTreeModel>;
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
-  onTreeChange: (treeId: number) => void;
-  onClick: (selectedTreeId: number, selectedTreeRootId: number) => void;
+  onTreeChange: (treeId: number, treeLabel: string) => void;
+  onClick: (selectedTreeId: number, selectedTreeRootId: number, selectedCategoryLabel: string, selectedTreeLabel: string) => void;
   initialIncludeSubCategories: boolean;
   onIncludeSubCategoriesChange: (value: boolean) => void;
   initialSelectedTreeId: number;
+  initCallback?: (treeLabel: string, categoryLabel?: string) => void;
 };
 
 const CategoryTrees: React.FC<CategoryTreesProps> = ({
@@ -30,7 +31,8 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
   onClick,
   initialIncludeSubCategories,
   onIncludeSubCategoriesChange,
-  initialSelectedTreeId
+  initialSelectedTreeId,
+  initCallback
 }) => {
   const [trees, setTrees] = React.useState<CategoryTreeRoot[]>();
   const [includeSubCategories, setIncludeSubCategories] = React.useState<boolean>(initialIncludeSubCategories);
@@ -48,12 +50,18 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
     setTrees(trees.map((tree) => {
       return { ...tree, selected: treeId === tree.id };
     }));
-    onTreeChange(treeId);
+    setSelectedTreeId(treeId);
+    onTreeChange(treeId, (trees.find(tree => tree.id === treeId) || trees[0]).label);
   }
 
-  const handleClick = (selectedNode: { id: number, code: string }) => {
+  const handleClick = (selectedNode: { id: number, code: string, label: string }) => {
     setSelectedTreeId(selectedNode.id);
-    onClick(selectedNode.id, (trees.find(tree => tree.selected) || trees[0]).id);
+    onClick(
+      selectedNode.id,
+      (trees.find(tree => tree.selected) || trees[0]).id,
+      selectedNode.label,
+      (trees.find(tree => tree.selected) || trees[0]).label
+    );
   };
 
   const handleIncludeSubCategoriesChange = (value: boolean | null) => {
@@ -75,6 +83,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
           childrenCallback={childrenCallback}
           onClick={handleClick}
           selectedTreeId={selectedTreeId}
+          initCallback={(treeLabel, categoryLabel) => initCallback ? initCallback(treeLabel, categoryLabel ?? 'All products') : undefined}
         />
     })}
     <Tree
@@ -84,7 +93,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
       }}
       label={'All products'}
       isLeaf={true}
-      onClick={() => handleClick( { id: -2, code: 'TODOCHANGETHISNAME' })}
+      onClick={() => handleClick( { id: -2, code: 'TODOCHANGETHISNAME', label: 'All products' })}
       selected={selectedTreeId === -2}
     />
 
