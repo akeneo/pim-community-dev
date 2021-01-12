@@ -7,7 +7,6 @@ import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit, UnitCode} from 'akeneomeasure/model/unit';
-import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {
   DropdownLink,
   SecondaryActionsDropdownButton,
@@ -33,9 +32,15 @@ import {
   useSecurity,
   useRoute,
 } from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, ValidationError, partitionErrors, useToggleState} from '@akeneo-pim-community/shared';
+import {
+  filterErrors,
+  ValidationError,
+  partitionErrors,
+  useToggleState,
+  FullScreenError,
+  PageContent,
+} from '@akeneo-pim-community/shared';
 import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
-import {FullScreenError} from '@akeneo-pim-community/shared';
 
 enum Tab {
   Units = 'units',

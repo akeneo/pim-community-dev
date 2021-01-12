@@ -184,11 +184,11 @@ const ExecutionDetail = () => {
                   key: downloadArchiveLinks[0].key,
                 })}
               >
-                {downloadArchiveTitle}
+                {translate(downloadArchiveLinks[0].label)}
               </Button>
             ) : (
               <Dropdown>
-                <Button level="secondary" onClick={openDownloadDropdown}>
+                <Button level="secondary" data-toggle="dropdown" onClick={openDownloadDropdown}>
                   {downloadArchiveTitle}
                 </Button>
                 {downloadDropdownIsOpen && (

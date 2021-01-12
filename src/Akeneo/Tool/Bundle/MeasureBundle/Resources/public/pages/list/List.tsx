@@ -10,10 +10,16 @@ import {
 } from 'akeneomeasure/model/measurement-family';
 import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
 import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
 import {Direction} from 'akeneomeasure/model/direction';
-import {SearchBar, NoDataSection, NoDataTitle, NoDataText, useToggleState} from '@akeneo-pim-community/shared';
+import {
+  SearchBar,
+  NoDataSection,
+  NoDataTitle,
+  NoDataText,
+  useToggleState,
+  PageContent,
+} from '@akeneo-pim-community/shared';
 import {useTranslate, useUserContext, useSecurity, PimView, useRoute} from '@akeneo-pim-community/legacy-bridge';
 
 const useSorting = (
