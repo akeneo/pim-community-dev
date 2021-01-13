@@ -55,6 +55,23 @@ make vendor
 echo "Copy CE migrations into EE to install 4.0 branch..."
 cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
 
+echo "Enable Onboarder bundle on 4.0 branch..."
+sudo chown 1000:1000 composer.json
+docker-compose run -u www-data --rm php php /usr/local/bin/composer config repositories.onboarder '{ "type": "vcs", "url": "https://github.com/akeneo/pim-onboarder.git", "branch": "master" }'
+docker-compose run -u www-data --rm php php -d memory_limit=5G /usr/local/bin/composer require "akeneo/pim-onboarder:^4.2.1"
+if [ -d "vendor/akeneo/pim-onboarder" ]; then
+    sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
+    # on the branch 4.0, the env var and the emulator are not present
+    echo "PUBSUB_EMULATOR_HOST=pubsub-emulator:8085" >> .env
+    echo "
+    pubsub-emulator:
+        image: 'google/cloud-sdk:latest'
+        command: 'gcloud --user-output-enabled --log-http beta emulators pubsub start --host-port=0.0.0.0:8085'
+        networks:
+            - 'pim'
+" >> docker-compose.override.yml
+fi
+
 echo "Export env vars from .env..."
 export $(cat .env)
 
@@ -85,6 +102,11 @@ make vendor
 
 echo "Copy CE migrations into EE to launch branch migrations..."
 cp -R vendor/akeneo/pim-community-dev/upgrades/schema/* upgrades/schema
+
+echo "Enable Onboarder bundle on PR branch..."
+if [ -d "vendor/akeneo/pim-onboarder" ]; then
+    sed -i "s~];~    Akeneo\\\Onboarder\\\Bundle\\\PimOnboarderBundle::class => ['all' => true],\n];~g" ./config/bundles.php
+fi
 
 echo "Export env vars from .env..."
 export $(cat .env)
