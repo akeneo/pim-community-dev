@@ -9,7 +9,6 @@ Feature: Classify many products and product models at once
     And I am logged in as "Julia"
     And I am on the products grid
 
-  @critical
   Scenario: Add several products and product models to categories at once
     When I sort by "ID" value ascending
     Given I select rows aphrodite, 1111111171 and amor

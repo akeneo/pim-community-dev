@@ -23,7 +23,7 @@ class Grid extends Index
 
     protected $filterDecorators = [
         'tree' => [
-            'Pim\Behat\Decorator\Tree\JsTreeDecorator',
+            'Pim\Behat\Decorator\Tree\TreeDecorator',
             'Pim\Behat\Decorator\Grid\Filter\CategoryDecorator',
         ],
         'boolean' => [

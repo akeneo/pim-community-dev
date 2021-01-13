@@ -33,6 +33,9 @@ class TreeDecorator extends ElementDecorator
     public function select()
     {
         $checkbox = $this->find('css', 'div[role=checkbox]');
+        if (null === $checkbox) {
+            throw new ElementNotFoundException($this->getDriver(), 'div[role=checkbox]');
+        }
         if ($checkbox->getAttribute('aria-checked') === 'false') {
             $checkbox->click();
         }
