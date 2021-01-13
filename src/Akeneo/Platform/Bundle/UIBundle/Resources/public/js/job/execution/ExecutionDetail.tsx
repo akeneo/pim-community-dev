@@ -43,6 +43,7 @@ const Refreshing = styled.span`
   align-items: center;
   font-style: italic;
   color: ${getColor('grey', 100)};
+  text-align: right;
 `;
 
 const canDownloadLog = ({isGranted}: Security, jobExecution: JobExecution | null) => {
