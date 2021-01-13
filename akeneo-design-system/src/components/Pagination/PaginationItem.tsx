@@ -7,15 +7,15 @@ const PAGINATION_SEPARATOR = '…';
 type PaginationItemProps = {
   currentPage: boolean;
   page: string;
-  onClick: (page: number) => void;
+  followPage: (page: number) => void;
 };
 
-const PaginationItem: FC<PaginationItemProps> = ({currentPage, page, onClick}) => {
+const PaginationItem: FC<PaginationItemProps> = ({currentPage, page, followPage}) => {
   const handleClick = useCallback(() => {
     if (page !== PAGINATION_SEPARATOR) {
-      onClick(parseInt(page));
+      followPage(parseInt(page));
     }
-  }, [page]);
+  }, [page, followPage]);
 
   return (
     <PaginationItemContainer
@@ -49,7 +49,7 @@ const disabledMixin = css`
   }
 `;
 
-const PaginationItemContainer = styled.button<AkeneoThemedProps & PaginationItemProps & {disabled: boolean}>`
+const PaginationItemContainer = styled.button<AkeneoThemedProps & {disabled: boolean; currentPage: boolean}>`
   ${({currentPage}) => (currentPage ? currentPaginationItemMixin : otherPaginationItemMixin)}
   display: inline-block;
   border-width: 1px;
@@ -76,7 +76,7 @@ const PaginationItemContainer = styled.button<AkeneoThemedProps & PaginationItem
     outline: 0;
   }
 
-  ${props => (props.disabled ? disabledMixin : null)}
+  ${({disabled}) => (disabled ? disabledMixin : null)}
 `;
 
 export {PaginationItem, PAGINATION_SEPARATOR};

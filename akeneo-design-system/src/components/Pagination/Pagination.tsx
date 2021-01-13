@@ -47,7 +47,12 @@ const Pagination: FC<PaginationProps> = ({currentPage, totalItems, itemsPerPage 
     <PaginationContainer>
       {pages.map((page: number | string, index: number) => {
         return (
-          <PaginationItem currentPage={page === currentPage} key={index} onClick={followPage} page={page as string} />
+          <PaginationItem
+            currentPage={page === currentPage}
+            key={index}
+            followPage={followPage}
+            page={page as string}
+          />
         );
       })}
     </PaginationContainer>
