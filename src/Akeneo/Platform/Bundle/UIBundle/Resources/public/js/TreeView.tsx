@@ -36,6 +36,10 @@ class TreeView {
     this.listTreeRoute = routes.listTree;
     this.childrenRoute = routes.children;
 
+    this.initTreeView();
+  }
+
+  private initTreeView = () => {
     const init = async () => {
       const url = Router.generate(this.listTreeRoute, {
         _format: 'json',
@@ -142,9 +146,12 @@ class TreeView {
       </DependenciesProvider>,
       this.domElement
     );
-  }
+  };
 
-  public refresh = () => {};
+  public refresh = () => {
+    ReactDOM.unmountComponentAtNode(this.domElement);
+    this.initTreeView();
+  };
 
   public getState: () => State = () => {
     return this.state;

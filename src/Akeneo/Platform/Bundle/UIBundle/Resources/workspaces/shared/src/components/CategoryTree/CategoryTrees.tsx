@@ -1,15 +1,14 @@
 import React from 'react';
 import {CategoryTree, CategoryTreeModel} from './CategoryTree';
 import {BooleanInput} from 'akeneo-design-system/lib/components/Input/BooleanInput/BooleanInput';
-import {Tree} from 'akeneo-design-system/lib';
-const __ = require('oro/translator');
+import {Tree, getColor} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CategoryTreeSwitcher} from './CategoryTreeSwitcher';
 import styled from 'styled-components';
-import {getColor} from 'akeneo-design-system';
 
 const CategoryTreesContainer = styled.div`
   height: calc(100vh - 110px);
-  border-bottom: 1px solid ${getColor('grey80')};
+  border-bottom: 1px solid ${getColor('grey', 80)};
   margin-bottom: 10px;
 `;
 
@@ -59,6 +58,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
   initialSelectedTreeId,
   initCallback,
 }) => {
+  const translate = useTranslate();
   const [trees, setTrees] = React.useState<CategoryTreeRoot[]>();
   const [includeSubCategories, setIncludeSubCategories] = React.useState<boolean>(initialIncludeSubCategories);
   const [selectedTreeId, setSelectedTreeId] = React.useState<number>(initialSelectedTreeId);
@@ -110,15 +110,15 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
     if (!initCallback) {
       return undefined;
     }
-    return initCallback(treeLabel, categoryLabel ? categoryLabel : __('jstree.all'));
+    return initCallback(treeLabel, categoryLabel ? categoryLabel : translate('jstree.all'));
   };
 
   const AllProductsTree = (
     <Tree
       value={{id: -2, code: 'all_products'}}
-      label={__('jstree.all')}
+      label={translate('jstree.all')}
       isLeaf={true}
-      onClick={() => handleClick({id: -2, code: 'all_products', label: __('jstree.all')})}
+      onClick={() => handleClick({id: -2, code: 'all_products', label: translate('jstree.all')})}
       selected={selectedTreeId === -2}
     />
   );
@@ -145,12 +145,12 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
           {AllProductsTree}
         </CategoryTreeContainer>
       </CategoryTreesContainer>
-      {__('jstree.include_sub')}
+      {translate('jstree.include_sub')}
       <BooleanInput
         value={includeSubCategories}
         readOnly={false}
-        yesLabel={__('pim_common.yes')}
-        noLabel={__('pim_common.no')}
+        yesLabel={translate('pim_common.yes')}
+        noLabel={translate('pim_common.no')}
         onChange={handleIncludeSubCategoriesChange}
       />
     </div>

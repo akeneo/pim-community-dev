@@ -89,8 +89,7 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
         });
       });
 
-      mediator.on('grid_action_execute:product-grid:delete', function () {
-        // TODO
+      mediator.on('grid_action_execute:product-grid:delete', () => {
         this.treeView.refresh();
       });
 
@@ -172,7 +171,6 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
      * @inheritDoc
      */
     reset: function () {
-      TreeView.reset();
       NumberFilter.prototype.reset.apply(this, arguments);
     },
   });
