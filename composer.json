@@ -49,14 +49,12 @@
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
             "Pimee\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/",
             "Akeneo\\Test\\Pim\\Automation\\RuleEngine\\": "src/Akeneo/Pim/Automation/RuleEngine/tests/back",
-            "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/",
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back"
         }
     },
     "require": {
         "ext-json": "*",
         "akeneo/pim-community-dev": "5.0.x-dev@dev",
-        "akeneo/pim-onboarder": "^4.2.1",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
         "phpspec/php-diff": "1.1.3",
@@ -93,13 +91,6 @@
         "mcustiel/phiremock": "1.12.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.7"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/akeneo/pim-onboarder.git",
-            "branch": "master"
-        }
-    ],
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
     },
