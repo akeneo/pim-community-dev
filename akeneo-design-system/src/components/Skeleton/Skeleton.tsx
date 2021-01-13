@@ -1,16 +1,19 @@
-import React, {isValidElement, ReactNode} from 'react';
+import React, {isValidElement, PropsWithChildren, ReactElement, ReactNode} from 'react';
 
-const recursiveMap = (children: ReactNode, callback: (child: ReactNode) => ReactNode): ReactNode =>
+const recursiveMap = (
+  children: ReactNode,
+  callback: (child: ReactElement<PropsWithChildren<unknown>>) => ReactNode
+): ReactNode =>
   React.Children.map(children, child => {
-    if (!isValidElement<{children?: ReactNode}>(child)) {
+    if (!isValidElement<PropsWithChildren<unknown>>(child)) {
       return child;
     }
 
-    if (undefined !== child.props.children) {
-      child = React.cloneElement(child, {...child.props, children: recursiveMap(child.props.children, callback)});
-    }
-
-    return callback(child);
+    return callback(
+      undefined !== child.props.children
+        ? React.cloneElement(child, child.props, recursiveMap(child.props.children, callback))
+        : child
+    );
   });
 
 type SkeletonProps = {
@@ -29,15 +32,17 @@ type SkeletonProps = {
  * When enabled, this component will return the Skeleton version of its children.
  */
 const Skeleton = ({enabled = false, children}: SkeletonProps) => {
+  const skeleton = 'Skeleton';
+
   return (
     <>
       {enabled
-        ? recursiveMap(children, (child: ReactNode) => {
-            if (isValidElement(child) && 'object' === typeof child.type && 'Skeleton' in child.type) {
-              return React.createElement(child.type.Skeleton, child.props);
+        ? recursiveMap(children, (child: ReactElement<PropsWithChildren<unknown>>) => {
+            if (!('object' === typeof child.type && skeleton in child.type)) {
+              return child;
             }
 
-            return child;
+            return React.createElement(child.type[skeleton], child.props);
           })
         : children}
     </>
