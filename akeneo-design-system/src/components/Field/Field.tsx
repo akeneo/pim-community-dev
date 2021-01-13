@@ -97,7 +97,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
         <LabelContainer>
           {incomplete && <IncompleteBadge />}
           <Label htmlFor={inputId} id={labelId}>
-            {label}
+            <span>{label}</span>
           </Label>
           {channel && <Channel>{channel}</Channel>}
           {locale && ('string' === typeof locale ? <Locale code={locale} /> : locale)}
@@ -110,7 +110,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 
 Object.assign(Field, {
   Skeleton: styled(Field)`
-    * {
+    ${LabelContainer} span {
       ${PlaceholderStyle}
     }
   `,
