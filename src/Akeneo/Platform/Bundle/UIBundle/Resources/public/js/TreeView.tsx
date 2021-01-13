@@ -18,18 +18,26 @@ class TreeView {
   private domElement: HTMLElement;
   private state: State;
   private onChange: (treeLabel: string, categoryLabel?: string) => void;
+  private listTreeRoute: string;
+  private childrenRoute: string;
 
   constructor(
     domElement: HTMLElement,
     initialState: State,
+    routes: {
+      listTree: string;
+      children: string;
+    },
     onChange: (treeLabel: string, categoryLabel: string) => void
   ) {
     this.domElement = domElement;
     this.state = initialState;
     this.onChange = onChange;
+    this.listTreeRoute = routes.listTree;
+    this.childrenRoute = routes.children;
 
     const init = async () => {
-      const url = Router.generate('pim_enrich_product_grid_category_tree_listtree', {
+      const url = Router.generate(this.listTreeRoute, {
         _format: 'json',
         dataLocale: undefined,
         select_node_id: this.state.selectedNode,
@@ -46,7 +54,7 @@ class TreeView {
     };
 
     const childrenCallback = async (categoryId: number) => {
-      const url = Router.generate('pim_enrich_product_grid_category_tree_children', {
+      const url = Router.generate(this.childrenRoute, {
         _format: 'json',
         dataLocale: undefined,
         context: 'view',
@@ -63,7 +71,7 @@ class TreeView {
     };
 
     const initTree = async (treeId: number, treeLabel: string, treeCode: string, includeSub: boolean) => {
-      const url = Router.generate('pim_enrich_product_grid_category_tree_children', {
+      const url = Router.generate(this.childrenRoute, {
         _format: 'json',
         dataLocale: undefined,
         context: 'view',
