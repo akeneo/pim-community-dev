@@ -17,6 +17,11 @@ define(['jquery', 'oro/mediator', 'routing'], function ($, mediator, Routing) {
         data: JSON.stringify(data),
       });
 
+      window.pendo.track("Entity saved", {
+        url: this.getUrl(code),
+        data: JSON.stringify(data),
+      });
+
       return $.ajax({
         /* todo: remove ternary when all instances using this module will provide method parameter */
         type: 'undefined' === typeof method ? 'POST' : method,
