@@ -1,7 +1,7 @@
 import React, {Ref, ReactNode, isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
 import {Badge, BadgeProps, Checkbox} from '../../components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColor, getFontSize, PlaceholderStyle} from '../../theme';
 import {Override} from '../../shared';
 
 type CardGridProps = {
@@ -151,5 +151,13 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     );
   }
 );
+
+Object.assign(Card, {
+  Skeleton: styled(Card)`
+    * {
+      ${PlaceholderStyle}
+    }
+  `,
+});
 
 export {Card, CardGrid};

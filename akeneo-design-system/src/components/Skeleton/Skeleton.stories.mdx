@@ -1,6 +1,19 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Skeleton} from './Skeleton.tsx';
-import {Helper, Link, Breadcrumb, Checkbox, Field, TextInput, Badge} from '../../components';
+import {
+  Helper,
+  Link,
+  Breadcrumb,
+  Checkbox,
+  Field,
+  TextInput,
+  Badge,
+  Button,
+  Card,
+  CardGrid,
+  Information,
+} from '../../components';
+import {AkeneoCloudEditionIllustration} from '../../illustrations';
 
 <Meta title="Components/Skeleton" component={Skeleton} />
 
@@ -17,24 +30,31 @@ TODO
     {args => {
       return (
         <Skeleton {...args}>
-          <Helper>
-            This is a nice Helper <Link>Don't click here</Link>
-          </Helper>
+          <p>
+            <Badge>Hello</Badge>
+          </p>
           <Breadcrumb>
             <Breadcrumb.Step href="#">first</Breadcrumb.Step>
             <Breadcrumb.Step href="#">second</Breadcrumb.Step>
             <Breadcrumb.Step>third</Breadcrumb.Step>
           </Breadcrumb>
+          <Button>Nice button</Button>
+          <CardGrid>
+            <Card src="https://picsum.photos/seed/akeneo/200/140">Card text</Card>
+          </CardGrid>
           <Checkbox>Nice</Checkbox>
           <Field label="Nice field" locale="fr_FR">
             <TextInput placeholder="Type your text here" />
           </Field>
           <p>
-            <Badge>Hello</Badge>
-          </p>
-          <p>
             <Link>Don't click here</Link>
           </p>
+          <Helper>
+            This is a nice Helper <Link>Don't click here</Link>
+          </Helper>
+          <Information title="Nice information" illustration={<AkeneoCloudEditionIllustration />}>
+            Lot ot text here
+          </Information>
         </Skeleton>
       );
     }}
