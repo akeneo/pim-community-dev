@@ -7,6 +7,7 @@ resource "google_pubsub_topic" "business-event" {
 
   labels = {
     pfid = local.pfid
+    topic_type = "pim_business_event"
   }
 }
 
@@ -15,6 +16,7 @@ resource "google_pubsub_topic" "job-queue" {
 
   labels = {
     pfid = local.pfid
+    topic_type = "pim_job"
   }
 }
 
@@ -34,6 +36,7 @@ resource "google_pubsub_subscription" "webhook" {
 
   labels = {
     pfid = local.pfid
+    subscription_type = "pim_webhook"
   }
 }
 
@@ -49,6 +52,7 @@ resource "google_pubsub_subscription" "job-queue" {
 
   labels = {
     pfid = local.pfid
+    subscription_type = "pim_job"
   }
 }
 
