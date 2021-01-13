@@ -324,8 +324,8 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
     {
         $actual = $this->getProductModelProjectionArray($code);
 
-        Assert::assertRegexp('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}/', $actual['created']);
-        Assert::assertRegexp('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}/', $actual['updated']);
+        Assert::assertMatchesRegularExpression('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}/', $actual['created']);
+        Assert::assertMatchesRegularExpression('/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|-)\d{2}:\d{2}/', $actual['updated']);
         unset($actual['created']);
         unset($actual['updated']);
 
