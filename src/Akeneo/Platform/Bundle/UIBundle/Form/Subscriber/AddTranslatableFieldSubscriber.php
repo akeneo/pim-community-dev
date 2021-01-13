@@ -6,7 +6,7 @@ use Akeneo\Platform\Bundle\UIBundle\Exception\MissingOptionException;
 use Akeneo\Tool\Component\Localization\Factory\TranslationFactory;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Inflector\Inflector;
-use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\Inflector\InflectorFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -269,6 +269,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
 
     private function getInflector(): Inflector
     {
-        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
+        return InflectorFactory::create()->build();
     }
 }

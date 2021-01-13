@@ -2,8 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Security;
 
-use Doctrine\Inflector\Inflector;
-use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\Inflector\InflectorFactory;
 use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException as OroAccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,18 +40,12 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
             $actionName = 'GET' === $request->getMethod() ? 'list' : 'create or update';
 
             preg_match('`\\\\(\w+)Controller`', $exception->getControllerClass(), $matches);
-            $entityName = str_replace('_', ' ', $this->getInflector()->tableize(
-                current(Inflector::pluralize($matches[1]))
-            ));
+            $inflector = InflectorFactory::create()->build();
+            $entityName = str_replace('_', ' ', $inflector->tableize($inflector->pluralize($matches[1])));
 
             return sprintf('Access forbidden. You are not allowed to %s %s.', $actionName, $entityName);
         }
 
         return 'You are not allowed to access the web API.';
-    }
-
-    private function getInflector(): Inflector
-    {
-        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
     }
 }

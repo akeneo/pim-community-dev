@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
-use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\Inflector\InflectorFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -1125,6 +1125,6 @@ class User implements UserInterface
 
     private function getInflector(): Inflector
     {
-        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
+        return InflectorFactory::create()->build();
     }
 }

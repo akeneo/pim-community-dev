@@ -9,7 +9,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Inflector\Inflector;
-use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\Inflector\InflectorFactory;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -233,6 +233,6 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
 
     private function getInflector(): Inflector
     {
-        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
+        return InflectorFactory::create()->build();
     }
 }

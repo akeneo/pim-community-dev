@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
 use Doctrine\Inflector\Inflector;
-use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\Inflector\InflectorFactory;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -99,7 +99,7 @@ class ConstraintViolationNormalizer implements NormalizerInterface, CacheableSup
 
     private function getInflector(): Inflector
     {
-        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
+        return InflectorFactory::create()->build();
     }
 
     private function getInternalApiMessage(ConstraintViolation $violation): string
