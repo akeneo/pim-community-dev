@@ -108,7 +108,12 @@ class TreeAssociate {
       const json: CategoryResponse = await response.json();
 
       return (json.children || []).map(child =>
-        parseResponse(child, {readOnly: this.readOnly, lockedCategoryIds: this.lockedCategoryIds, isRoot: false})
+        parseResponse(child, {
+          readOnly: this.readOnly,
+          lockedCategoryIds: this.lockedCategoryIds,
+          isRoot: false,
+          selectable: true,
+        })
       );
     };
 

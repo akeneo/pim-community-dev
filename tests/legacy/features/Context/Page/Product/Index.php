@@ -7,7 +7,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Grid;
 use Pim\Behat\Decorator\ContextSwitcherDecorator;
-use Pim\Behat\Decorator\Tree\JsTreeDecorator;
+use Pim\Behat\Decorator\Tree\TreeDecorator;
 
 /**
  * Product index page
@@ -45,7 +45,7 @@ class Index extends Grid
                 'Manage filters options'  => ['css' => '.filter-list.select-filter-widget .ui-multiselect-checkboxes li label span'],
                 'Category tree'           => [
                     'css'        => '#tree',
-                    'decorators' => [ JsTreeDecorator::class ]
+                    'decorators' => [ TreeDecorator::class ]
                 ]
             ]
         );
