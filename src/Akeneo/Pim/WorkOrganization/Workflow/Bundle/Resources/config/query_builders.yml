@@ -200,11 +200,19 @@ services:
     pimee_workflow.query.elasticsearch.filter.field.identifier_field:
         class: '%pim_catalog.query.elasticsearch.filter.identifier_field.class%'
         arguments:
-            - ['entity_with_values_identifier']
+            - ['identifier']
             - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
             - { name: 'pimee_workflow.elasticsearch.query.published_product_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.field.entity_with_values_identifier_field:
+        class: '%pim_catalog.query.elasticsearch.filter.identifier_field.class%'
+        arguments:
+            - ['entity_with_values_identifier']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
 
     pimee_workflow.query.elasticsearch.filter.label_or_identifier:
         class: '%pimee_workflow.query.elasticsearch.filter.label_or_identifier.class%'
