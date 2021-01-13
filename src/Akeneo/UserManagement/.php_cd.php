@@ -13,6 +13,7 @@ $rules = [
         'Symfony\Component',
         'Doctrine\Common',
         'Doctrine\Inflector',
+        'Doctrine\Persistence',
         'Akeneo\Tool',
         // TODO: The feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',

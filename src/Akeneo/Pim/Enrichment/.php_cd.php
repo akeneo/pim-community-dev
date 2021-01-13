@@ -132,6 +132,7 @@ $rules = [
         'Akeneo\Tool\Component',
         'Doctrine\Common',
         'Doctrine\Inflector',
+        'Doctrine\Persistence',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',
