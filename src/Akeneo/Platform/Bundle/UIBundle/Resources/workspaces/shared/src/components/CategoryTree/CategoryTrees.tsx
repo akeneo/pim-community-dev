@@ -3,8 +3,8 @@ import {CategoryTree, CategoryTreeModel} from './CategoryTree';
 import {BooleanInput} from 'akeneo-design-system/lib/components/Input/BooleanInput/BooleanInput';
 import {Tree} from 'akeneo-design-system/lib';
 const __ = require('oro/translator');
-import { CategoryTreeSwitcher } from "./CategoryTreeSwitcher";
-import styled from "styled-components";
+import {CategoryTreeSwitcher} from './CategoryTreeSwitcher';
+import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
 
 const CategoryTreesContainer = styled.div`
@@ -16,7 +16,7 @@ const CategoryTreesContainer = styled.div`
 const CategoryTreeContainer = styled.div`
   max-height: calc(100vh - 223px);
   overflow: hidden auto;
-`
+`;
 
 type CategoryTreeRoot = {
   id: number;
@@ -28,7 +28,12 @@ type CategoryTreeRoot = {
 
 type CategoryTreesProps = {
   init: () => Promise<CategoryTreeRoot[]>;
-  initTree: (treeId: number, treeLabel: string, treeCode: string) => Promise<CategoryTreeModel>;
+  initTree: (
+    treeId: number,
+    treeLabel: string,
+    treeCode: string,
+    includeSubCategories: boolean
+  ) => Promise<CategoryTreeModel>;
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
   onTreeChange: (treeId: number, treeLabel: string) => void;
   onCategoryClick: (
@@ -58,9 +63,18 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
   const [includeSubCategories, setIncludeSubCategories] = React.useState<boolean>(initialIncludeSubCategories);
   const [selectedTreeId, setSelectedTreeId] = React.useState<number>(initialSelectedTreeId);
 
+  // This will reload the tree when includeSubCategories change.
+  const customInitTree = React.useMemo(
+    () => (tree: CategoryTreeRoot) => {
+      return initTree(tree.id, tree.label, tree.code, includeSubCategories);
+    },
+    [includeSubCategories]
+  );
+
   React.useEffect(() => {
+    setTrees(undefined);
     init().then(categoryTreeRoots => setTrees(categoryTreeRoots));
-  }, []);
+  }, [includeSubCategories]);
 
   if (!trees) {
     return <Tree isLoading={true} label="" value="" />;
@@ -76,13 +90,14 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
     onTreeChange(treeId, (trees.find(tree => tree.id === treeId) || trees[0]).label);
   };
 
-  const handleClick = (selectedNode: {id: number; code: string; label: string}) => {
-    setSelectedTreeId(selectedNode.id);
+  const handleClick = (category: {id: number; code: string; label: string}) => {
+    setSelectedTreeId(category.id);
+    const selectedTree = trees.find(tree => tree.selected) || trees[0];
     onCategoryClick(
-      selectedNode.id,
-      (trees.find(tree => tree.selected) || trees[0]).id,
-      selectedNode.label,
-      (trees.find(tree => tree.selected) || trees[0]).label
+      category.id,
+      selectedTree.id,
+      category.id === selectedTree.id ? '' : category.label,
+      selectedTree.label
     );
   };
 
@@ -98,36 +113,39 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
     return initCallback(treeLabel, categoryLabel ? categoryLabel : __('jstree.all'));
   };
 
+  const AllProductsTree = (
+    <Tree
+      value={{id: -2, code: 'all_products'}}
+      label={__('jstree.all')}
+      isLeaf={true}
+      onClick={() => handleClick({id: -2, code: 'all_products', label: __('jstree.all')})}
+      selected={selectedTreeId === -2}
+    />
+  );
+
   return (
     <div>
       <CategoryTreesContainer>
-        <CategoryTreeSwitcher trees={trees} onClick={switchTree}/>
+        <CategoryTreeSwitcher trees={trees} onClick={switchTree} />
         <CategoryTreeContainer>
           {trees.map(tree => {
             return (
               tree.selected && (
                 <CategoryTree
                   key={tree.code}
-                  init={() => initTree(tree.id, tree.label, tree.code)}
+                  init={() => customInitTree(tree)}
                   childrenCallback={childrenCallback}
                   onClick={handleClick}
-                  selectedCategoryId={selectedTreeId}
+                  categoryId={selectedTreeId}
                   initCallback={handleInitCallback}
                 />
               )
             );
           })}
-          <Tree
-            value={{id: -2, code: 'all_products'}}
-            label={__('jstree.all')}
-            isLeaf={true}
-            onClick={() => handleClick({id: -2, code: 'all_products', label: __('jstree.all')})}
-            selected={selectedTreeId === -2}
-          />
+          {AllProductsTree}
         </CategoryTreeContainer>
       </CategoryTreesContainer>
       {__('jstree.include_sub')}
-      {/* TODO We have to reload the tree on change */}
       <BooleanInput
         value={includeSubCategories}
         readOnly={false}
@@ -139,5 +157,5 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
   );
 };
 
-export type {CategoryTreeRoot}
+export type {CategoryTreeRoot};
 export {CategoryTrees};
