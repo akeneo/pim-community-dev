@@ -15,22 +15,28 @@ class EventSubscriptionRequestsLimitReachedLog
     const MESSAGE = 'event subscription requests limit has been reached';
 
     private int $limit;
+    private \DateTimeImmutable $now;
+    private int $delayUntilNextRequest;
 
-    private function __construct(int $limit)
+    private function __construct(int $limit, \DateTimeImmutable $now, int $delayUntilNextRequest)
     {
         $this->limit = $limit;
+        $this->now = $now;
+        $this->delayUntilNextRequest = $delayUntilNextRequest;
     }
 
-    public static function fromLimit(int $limit): self
+    public static function create(int $limit, \DateTimeImmutable $now, int $delayUntilNextRequest): self
     {
-        return new self($limit);
+        return new self($limit, $now, $delayUntilNextRequest);
     }
 
     /**
      * @return array{
      *  type: string,
      *  message: string,
-     *  limit: int
+     *  limit: int,
+     *  retry_after: int,
+     *  limit_reset: string
      * }
      */
     public function toLog(): array
@@ -39,6 +45,10 @@ class EventSubscriptionRequestsLimitReachedLog
             'type' => self::TYPE,
             'message' => self::MESSAGE,
             'limit' => $this->limit,
+            'retry_after' => $this->delayUntilNextRequest,
+            'limit_reset' => $this->now
+                ->add(new \DateInterval('PT' . $this->delayUntilNextRequest . 'S'))
+                ->format(\DateTimeInterface::ATOM)
         ];
     }
 }
