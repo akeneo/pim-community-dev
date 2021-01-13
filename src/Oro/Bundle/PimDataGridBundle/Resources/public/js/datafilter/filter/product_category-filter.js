@@ -64,7 +64,15 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
         event.preventDefault();
       });
 
-      this.treeView = new TreeView(this.$el[0], this._getInitialState(), onTreeUpdated);
+      this.treeView = new TreeView(
+        this.$el[0],
+        this._getInitialState(),
+        {
+          listTree: `${categoryBaseRoute}_listtree`,
+          children: `${categoryBaseRoute}_children`,
+        },
+        onTreeUpdated
+      );
 
       this.listenTo(mediator, 'datagrid_filters:build.post', function (filtersManager) {
         this.listenTo(filtersManager, 'collection-filters:createState.post', function (filtersState) {
