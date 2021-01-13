@@ -3,9 +3,9 @@
 namespace Oro\Bundle\PimDataGridBundle\Datasource;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Persistence\ObjectRepository;
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;

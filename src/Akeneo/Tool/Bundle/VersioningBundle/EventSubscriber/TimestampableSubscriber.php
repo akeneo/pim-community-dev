@@ -5,8 +5,8 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * Updates the updated date of versioned objects

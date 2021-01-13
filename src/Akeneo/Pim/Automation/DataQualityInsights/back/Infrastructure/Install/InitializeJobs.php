@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install;
 
-use Doctrine\Persistence\ObjectRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
