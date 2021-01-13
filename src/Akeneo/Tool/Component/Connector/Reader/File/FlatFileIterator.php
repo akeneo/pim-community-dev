@@ -81,7 +81,8 @@ class FlatFileIterator implements FileIteratorInterface
         $sheet = $this->reader->getSheetIterator()->current();
         $sheet->getRowIterator()->rewind();
 
-        $this->headers = $sheet->getRowIterator()->current();
+        $rowHeaders = $sheet->getRowIterator()->current();
+        $this->headers = null !== $rowHeaders ? $rowHeaders->toArray() : null;
         $this->rows = $sheet->getRowIterator();
     }
 
@@ -100,7 +101,8 @@ class FlatFileIterator implements FileIteratorInterface
      */
     public function current()
     {
-        $data = $this->rows->current()->toArray();
+        $rowData = $this->rows->current();
+        $data = null !== $rowData ? $rowData->toArray() : null;
 
         if (!$this->valid() || null === $data || empty($data)) {
             $this->rewind();
