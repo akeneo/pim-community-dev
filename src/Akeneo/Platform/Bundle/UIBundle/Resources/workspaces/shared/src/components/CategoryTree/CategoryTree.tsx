@@ -18,7 +18,7 @@ type CategoryTreeProps = {
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
-  selectedCategoryId?: number;
+  categoryId?: number;
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
 };
 
@@ -27,25 +27,24 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   childrenCallback,
   onChange,
   onClick,
-  selectedCategoryId,
+  categoryId,
   initCallback,
   ...rest
 }) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
-  const recursiveGetSelectedCategoryLabel: (categoryTree: CategoryTreeModel) => string | undefined = categoryTree => {
-    if (categoryTree.id === selectedCategoryId) {
-      return categoryTree.label;
+  const recursiveGetSelectedCategoryLabel: (categoryTree: CategoryTreeModel) => string | undefined = category => {
+    if (category.id === categoryId) {
+      return category.label;
     }
-    if (categoryTree.children) {
-      return categoryTree.children?.reduce((previous, subCategoryTree) => {
-        return typeof previous !== 'undefined' ? previous : recursiveGetSelectedCategoryLabel(subCategoryTree);
-      }, undefined);
-    }
-    return undefined;
+    return (category.children || []).reduce(
+      (previous, subCategory) => previous || recursiveGetSelectedCategoryLabel(subCategory),
+      undefined as string | undefined
+    );
   };
 
   React.useEffect(() => {
+    setTree(undefined);
     init().then(tree => {
       setTree(tree);
       if (initCallback) {
@@ -64,7 +63,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       childrenCallback={childrenCallback}
       onChange={onChange}
       onClick={onClick}
-      selectedCategoryId={selectedCategoryId}
+      selectedCategoryId={categoryId}
       {...rest}
     />
   );

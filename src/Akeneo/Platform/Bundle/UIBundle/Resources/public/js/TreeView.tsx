@@ -62,7 +62,7 @@ class TreeView {
       return json.map(json => parseResponse(json, {}));
     };
 
-    const initTree = async (treeId: number, treeLabel: string, treeCode: string) => {
+    const initTree = async (treeId: number, treeLabel: string, treeCode: string, includeSub: boolean) => {
       const url = Router.generate('pim_enrich_product_grid_category_tree_children', {
         _format: 'json',
         dataLocale: undefined,
@@ -70,7 +70,7 @@ class TreeView {
         id: treeId,
         select_node_id: this.state.selectedNode,
         with_items_count: 1,
-        include_sub: this.state.includeSub ? 1 : 0,
+        include_sub: includeSub ? 1 : 0,
       });
 
       const response = await fetch(url);
