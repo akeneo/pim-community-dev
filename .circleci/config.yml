@@ -614,78 +614,6 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-  test_onboarder_bundle:
-      machine:
-          image: ubuntu-1604:201903-01
-      environment:
-          FLAG_ONBOARDER_ENABLED: 1
-      steps:
-          - attach_workspace:
-                at: ~/
-          - run:
-                name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
-          - run:
-                name: Create an empty service account
-                command: |
-                    mkdir secret
-                    echo "{}" > secret/serviceAccount.json
-          - run:
-                name: Start containers
-                command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
-                    docker/wait_docker_up.sh
-          - run:
-                name: Load make commands
-                command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
-          - run:
-                name: Add configuration files to run the bundle tests from the PIM
-                command: |
-                    rm -f docker-compose.override.yml
-                    PIM_VERSION=master SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
-                    PIM_VERSION=master PIM_CONTEXT=onboarder make setup-onboarder-tests
-                    docker-compose run --rm php php /usr/local/bin/composer dumpautoload
-          - run:
-                name: Change owner of PIM as some files have been created with wrong owner
-                command: sudo chown -R 1000:1000 ~/project
-          - run:
-                name: Execute static analysis
-                command: PIM_CONTEXT=onboarder make test-static-analysis
-          - run:
-                name: PHP coupling detector
-                command: PIM_CONTEXT=onboarder make test-coupling-detector
-          - run:
-                name: Execute specifications
-                command: PIM_CONTEXT=onboarder make test-spec
-          - run:
-                name: Install Akeneo PIM with Onboarder specific configuration (channel, attribute, ...)
-                command: PIM_CONTEXT=onboarder ENVIRONMENT=test SETUP_FOR_CI=1 make onboarder-install
-          - run:
-                name: Execute acceptance tests
-                command: PIM_CONTEXT=onboarder make test-acceptance
-          - run:
-                name: Execute PHPUnit integration tests
-                command: PIM_CONTEXT=onboarder make test-integration
-          - run:
-                name: Start Apache/FPM and Selenium for End to End tests
-                command: make up APP_ENV=behat C='fpm httpd selenium'
-          - run:
-                name: Execute end-to-end tests
-                command: PIM_CONTEXT=onboarder make test-end-to-end
-          - run:
-              name: Restart FPM with Onboarder feature turned off
-              command: make up APP_ENV=behat FLAG_ONBOARDER_ENABLED=0 C='fpm'
-          - run:
-              name: Execute end-to-end "Onboarder feature disabled" tests
-              command: PIM_CONTEXT=onboarder make test-end-to-end-onboarder-disabled
-          - store_test_results:
-                path: ~/project/pim/var/tests
-          - store_artifacts:
-                path: ~/project/pim/var/tests
-          - store_artifacts:
-                path: ~/project/pim/var/logs
-
   prepare_growth_edition:
       environment:
         <<: *envVarsDeployDev
@@ -844,10 +772,6 @@ workflows:
                 requires:
                     - build_dev
 
-          - test_onboarder_bundle:
-                requires:
-                    - build_dev
-
           - test_back_missing_structure_migrations:
                 requires:
                     - test_back_static_and_acceptance
@@ -874,7 +798,6 @@ workflows:
                 requires:
                     - test_back_performance
                     - test_back_behat_legacy
-                    - test_onboarder_bundle
                     - test_back_missing_structure_migrations
                     - test_back_data_migrations
 
@@ -916,9 +839,6 @@ workflows:
                 requires:
                     - build_dev
           - test_back_performance:
-                requires:
-                    - build_dev
-          - test_onboarder_bundle:
                 requires:
                     - build_dev
           - test_back_behat_legacy:
@@ -963,9 +883,6 @@ workflows:
                 requires:
                     - build_dev
           - test_back_phpunit:
-                requires:
-                    - build_dev
-          - test_onboarder_bundle:
                 requires:
                     - build_dev
           - test_back_behat_legacy:
