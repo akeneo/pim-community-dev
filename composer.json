@@ -68,7 +68,7 @@
         "doctrine/orm": "2.8.1",
         "doctrine/persistence": "2.1.0",
         "dompdf/dompdf" : "1.0.2",
-        "elasticsearch/elasticsearch": "7.9.1",
+        "elasticsearch/elasticsearch": "7.11.x-dev",
         "friendsofsymfony/jsrouting-bundle": "2.7.0",
         "friendsofsymfony/oauth-server-bundle": "1.6.2",
         "friendsofsymfony/rest-bundle": "2.8.5",
