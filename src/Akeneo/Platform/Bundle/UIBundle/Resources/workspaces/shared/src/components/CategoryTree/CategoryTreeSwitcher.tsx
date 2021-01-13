@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {
   Dropdown,
   useBooleanState,
@@ -8,6 +8,7 @@ import {
   TextInput,
   SearchIcon,
   getColor,
+  AkeneoThemedProps,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CategoryTreeRoot} from './CategoryTrees';
@@ -43,6 +44,14 @@ const InputSearchIcon = styled(SearchIcon)`
 const EmptyResultsContainer = styled.div`
   padding: 15px 40px 30px;
   text-align: center;
+`;
+
+const DropdownItem = styled.span<{$selected: boolean} & AkeneoThemedProps>`
+  ${({$selected}) =>
+    $selected &&
+    css`
+      color: ${getColor('brand', 100)};
+    `}
 `;
 
 type CategoryTreeSwitcherProps = {
@@ -95,7 +104,7 @@ const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onCli
                     close();
                   }}
                 >
-                  {tree.label}
+                  <DropdownItem $selected={tree.selected}>{tree.label}</DropdownItem>
                 </Dropdown.Item>
               ))}
             </Dropdown.ItemCollection>
