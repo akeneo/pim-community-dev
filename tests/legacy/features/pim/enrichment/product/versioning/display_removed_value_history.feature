@@ -41,6 +41,6 @@ Feature: Display the product history
     When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
-      | version | property           | value      | date |
-      | 2       | weather_conditions | snowy,cold | now  |
-      | 2       | name-en_US         | Nice boots | now  |
+      | version | property           | value      |
+      | 2       | weather_conditions | snowy,cold |
+      | 2       | name-en_US         | Nice boots |
