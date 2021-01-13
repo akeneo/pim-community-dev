@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
-use Doctrine\Persistence\ObjectRepository;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,13 +15,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class WebhookUserAuthenticator
 {
-    /** @var ObjectRepository */
+    /** @var UserRepositoryInterface */
     private $userRepository;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
-    public function __construct(ObjectRepository $userRepository, TokenStorageInterface $tokenStorage)
+    public function __construct(UserRepositoryInterface $userRepository, TokenStorageInterface $tokenStorage)
     {
         $this->userRepository = $userRepository;
         $this->tokenStorage = $tokenStorage;
