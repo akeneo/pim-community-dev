@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9629: Fix filtering issue on product value "identifier" via the API for published products
+
 # 5.0.1 (2021-01-08)
 
 # 5.0.0 (2020-12-31)
