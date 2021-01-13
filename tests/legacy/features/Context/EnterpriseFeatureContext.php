@@ -141,15 +141,17 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldNotSeeThatAttributeIsASmartAttribute($attribute)
     {
-        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
+        return $this->spin(function () use ($attribute) {
+            $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
 
-        foreach ($icons as $icon) {
-            if ($icon->getParent()->hasClass('from-smart')) {
-                throw $this->createExpectationException('"Affected by a rule icon" was found');
+            foreach ($icons as $icon) {
+                if ($icon->getParent()->hasClass('from-smart')) {
+                    throw $this->createExpectationException('"Affected by a rule icon" was found');
+                }
             }
-        }
 
-        return true;
+            return true;
+        }, sprintf('Cannot find the smart attribute "%s"', $attribute));
     }
 
     /**

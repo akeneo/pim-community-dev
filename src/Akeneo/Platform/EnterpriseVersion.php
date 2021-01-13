@@ -22,7 +22,7 @@ class EnterpriseVersion
     const VERSION = '20200214152234';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Cirrus';
+    const VERSION_CODENAME = 'Buttercup';
 
     /** @staticvar string */
     const EDITION = 'Serenity';
