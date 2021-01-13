@@ -67,6 +67,16 @@ extensions:
             routeParams:
                 code: '_'
 
+    pim-menu-connection-event-subscriptions:
+        module: pim/menu/item
+        parent: pim-menu-connection-navigation-block
+        position: 2
+        config:
+            title: pim_menu.item.connection_webhook_edit
+            to: akeneo_connectivity_connection_webhook_edit
+            routeParams:
+                code: '_'
+
     # Activity
 
     pim-menu-activity-connection-audit:

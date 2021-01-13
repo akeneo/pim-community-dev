@@ -1,13 +1,22 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {Dropdown} from './Dropdown.tsx';
+import {Dropdown} from './Dropdown';
 import {Button, Image, Badge, Link, Checkbox} from '../../components';
 import {useBooleanState} from '../../hooks';
-import {useState} from 'react';
-import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery.tsx';
+import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery';
 
-<Meta title="Components/Dropdown" component={Dropdown} />
+<Meta
+  title="Components/Dropdown"
+  subcomponents={{
+    Dropdown: Dropdown,
+    'Dropdown.Header': Dropdown.Header,
+    'Dropdown.Title': Dropdown.Title,
+    'Dropdown.Overlay': Dropdown.Overlay,
+    'Dropdown.ItemCollection': Dropdown.ItemCollection,
+    'Dropdown.Item': Dropdown.Item,
+  }}
+/>
 
-# Dropdown
+# Dropdown (Beta)
 
 ## Usage
 
@@ -15,21 +24,21 @@ The dropdown shows a list of options that can be used to select, filter or sort 
 
 ### Dropdown options
 
-The dropdown option should fit in one single line. If there are several lines, limit it by adding an ellipsis for the overflowing content. We display the full text in the hover state. We recommend that you present the options by alphabetical order.
+The dropdown option should fit in one single line. If there are several lines, limit it by adding an ellipsis for the overflowing content. We display the full text on hover. We recommend that you present the options by alphabetical order.
 
 ### Interaction
 
 By default, the dropdown list displays a label on closing. An open dropdown menu appears on the click. The open dropdown should appear above all other elements of the user interface. They can be close by clicking outside the dropdown element.
 
-Selecting an item close the dropdown and the selected option will replace the placeholder.
+Selecting an item close the dropdown, and the selected option will replace the placeholder.
 
 ### Microcopy
 
-**Ellipsis:** If the text is too long, we use an ellipsis.
+**Ellipsis:** If the text is too long, we use an ellipsis.
 
 For accessibility reasons, we must put the full text in an HTML title attribute.
 
-**Punctuation:** Never use punctuation in a dropdown list.
+**Punctuation:** Never use punctuation in a dropdown list.
 
 ## Playground
 

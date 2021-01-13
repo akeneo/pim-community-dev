@@ -1,6 +1,6 @@
 import React, {ReactNode, useRef, useState, useEffect} from 'react';
 import styled, {css} from 'styled-components';
-import {Key} from '../../../shared/key';
+import {Key} from '../../../shared';
 import {useShortcut} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 
@@ -44,12 +44,12 @@ const Container = styled.div<
 
 type OverlayProps = {
   /**
-   * Vertical position of the overlay (forced)
+   * Vertical position of the overlay (forced).
    */
   verticalPosition?: VerticalPosition;
 
   /**
-   * What to do on overlay closing
+   * What to do on overlay closing.
    */
   onClose: () => void;
 
@@ -110,5 +110,6 @@ const Overlay = ({verticalPosition: defaultVerticalPosition, onClose, children}:
   );
 };
 
-Overlay.displayName = 'Dropdown.Overlay';
+Overlay.displayName = 'Overlay';
+
 export {Overlay};

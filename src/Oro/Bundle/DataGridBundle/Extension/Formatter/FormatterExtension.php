@@ -71,6 +71,7 @@ class FormatterExtension extends AbstractExtension
 
         if (isset($rows['totalRecords'])) {
             $result->offsetSet('totalRecords', $rows['totalRecords']);
+            $result->offsetSet('meta', $rows['meta'] ?? []);
             $rows = $rows['data'];
         }
 

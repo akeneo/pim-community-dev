@@ -90,7 +90,7 @@ export const EditForm: FC<Props> = ({webhook, activeEventSubscriptionsLimit}: Pr
                         </Helper>
                     ),
                     true === testUrl?.status?.success && (
-                        <Helper inline level='error'>
+                        <Helper inline level='info'>
                             <Translate id={testUrl.status.message} />
                         </Helper>
                     ),
