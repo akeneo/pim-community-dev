@@ -18,26 +18,22 @@ type StoriesDump = {
 
 const storyFileContent = fs.readFileSync('./stories.json').toString('utf8');
 const storiesDump = JSON.parse(storyFileContent) as StoriesDump;
-const stories = Object.values(storiesDump.stories);
+const stories = Object.values(storiesDump.stories)
+  .filter(story => 0 === story.id.indexOf('components') && !EXCLUDE.includes(story.kind))
+  .map(story => [story.kind, story.name, story.id]);
 
 describe('Visual tests', () => {
-  stories.map(story => {
-    if (story.id.indexOf('components') !== 0 || EXCLUDE.includes(story.kind)) {
-      return;
-    }
+  test.each(stories)('Renders %s/%s correctly', async (_, __, id) => {
+    await page.goto(`http://localhost:6006/iframe.html?id=${id}`);
+    const root = await page.$('#root');
+    if (null === root) return;
 
-    it(`Renders ${story.kind}/${story.name} correctly`, async () => {
-      await page.goto(`http://localhost:6006/iframe.html?id=${story.id}`);
-      const root = await page.$('#root');
-      if (null === root) return;
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const image = await root.screenshot();
 
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const image = await root.screenshot();
-
-      expect(image).toMatchImageSnapshot({
-        failureThreshold: 1,
-        failureThresholdType: 'percent',
-      });
+    expect(image).toMatchImageSnapshot({
+      failureThreshold: 1,
+      failureThresholdType: 'percent',
     });
   });
 });
