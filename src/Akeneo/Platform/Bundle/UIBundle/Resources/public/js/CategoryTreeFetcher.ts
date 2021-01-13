@@ -7,7 +7,12 @@ type CategoryResponse = {
   };
   children?: CategoryResponse[];
   data: string;
-  state: string; // 'closed jstree-root' | 'leaf' | 'closed' | 'leaf toselect jstree-checked';
+  /**
+   * State is a combination of 'closed', 'leaf', 'open', 'toselect', 'jstree-checked', 'jstree-root' separated by
+   * spaces
+   * @see src/Akeneo/Pim/Enrichment/Bundle/Twig/CategoryExtension.php
+   */
+  state: string;
   selectedChildrenCount?: number;
 };
 

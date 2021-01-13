@@ -7,9 +7,9 @@ import {
   ProductCategoryIllustration,
   TextInput,
   SearchIcon,
-} from 'akeneo-design-system/lib';
-const __ = require('oro/translator');
-import {getColor} from 'akeneo-design-system';
+  getColor,
+} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {CategoryTreeRoot} from './CategoryTrees';
 
 const CategoryTreeSwitcherContainer = styled(Dropdown)`
@@ -17,7 +17,7 @@ const CategoryTreeSwitcherContainer = styled(Dropdown)`
 `;
 
 const CategoryTreeSwitcherButton = styled.div`
-  border-bottom: 1px solid ${getColor('purple100')};
+  border-bottom: 1px solid ${getColor('brand', 100)};
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -26,7 +26,7 @@ const CategoryTreeSwitcherButton = styled.div`
 `;
 
 const CategoryTreeSwitcherText = styled.span`
-  color: ${getColor('purple100')};
+  color: ${getColor('brand', 100)};
 `;
 
 const SearchInput = styled(TextInput)`
@@ -40,6 +40,11 @@ const InputSearchIcon = styled(SearchIcon)`
   top: 10px;
 `;
 
+const EmptyResultsContainer = styled.div`
+  padding: 15px 40px 30px;
+  text-align: center;
+`;
+
 type CategoryTreeSwitcherProps = {
   trees: CategoryTreeRoot[];
   onClick: (treeId: number) => void;
@@ -51,6 +56,7 @@ type CategoryTreeSwitcherProps = {
  * This should not be reused as it, and a dedicated component should be designed.
  */
 const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onClick, ...rest}) => {
+  const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
   const selectedTreeLabel = (trees.find(tree => tree.selected) || trees[0]).label;
   const [value, setValue] = React.useState<string>('');
@@ -73,7 +79,7 @@ const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onCli
               <SearchInput
                 type="text"
                 value={value}
-                placeholder={__('pim_common.search')}
+                placeholder={translate('pim_common.search')}
                 onChange={setValue}
                 tabIndex={1}
               />
@@ -94,10 +100,10 @@ const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onCli
               ))}
             </Dropdown.ItemCollection>
           ) : (
-            <div style={{padding: '15px 40px 30px', textAlign: 'center'}}>
+            <EmptyResultsContainer>
               <ProductCategoryIllustration size={'100%'} />
-              No matches found!
-            </div>
+              {translate('pim_common.select2.no_match')}
+            </EmptyResultsContainer>
           )}
         </Dropdown.Overlay>
       )}
