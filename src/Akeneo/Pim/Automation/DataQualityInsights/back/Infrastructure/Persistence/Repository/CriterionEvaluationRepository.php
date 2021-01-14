@@ -190,21 +190,66 @@ SQL;
         }, $results);
     }
 
-    public function purgeUntil(\DateTimeImmutable $date): void
+    public function purgeOutdatedEvaluations(int $batchSize, int $max): void
     {
         $query = <<<SQL
-DELETE old_evaluations
+SELECT old_evaluations.id
 FROM pimee_data_quality_insights_criteria_evaluation AS old_evaluations
 INNER JOIN pimee_data_quality_insights_criteria_evaluation AS younger_evaluations
     ON younger_evaluations.product_id = old_evaluations.product_id
     AND younger_evaluations.criterion_code = old_evaluations.criterion_code
     AND younger_evaluations.created_at > old_evaluations.created_at
-WHERE old_evaluations.created_at < :purge_date
+WHERE old_evaluations.id > :lastPurgedId
+ORDER BY old_evaluations.id
+LIMIT $batchSize
+SQL;
+
+        $purgedEvaluations = 0;
+        $lastPurgedId = '';
+
+        do {
+            $evaluationsToPurge = $this->db
+                ->executeQuery($query, ['lastPurgedId' => $lastPurgedId])
+                ->fetchAll(\PDO::FETCH_COLUMN);
+
+            $this->deleteByIds($evaluationsToPurge);
+            $lastPurgedId = end($evaluationsToPurge);
+            $purgedEvaluations += count($evaluationsToPurge);
+        } while (!empty($evaluationsToPurge) && $purgedEvaluations < $max);
+    }
+
+    public function purgeEvaluationsWithoutProducts(int $batchSize, int $max): void
+    {
+        $query = <<<SQL
+SELECT evaluations.id
+FROM pimee_data_quality_insights_criteria_evaluation AS evaluations
+    LEFT JOIN pim_catalog_product AS product ON product.id = evaluations.product_id
+    WHERE product.id IS NULL
+LIMIT $batchSize
+SQL;
+
+        $purgedEvaluations = 0;
+        do {
+            $evaluationsToPurge = $this->db->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN);
+            $this->deleteByIds($evaluationsToPurge);
+            $purgedEvaluations += count($evaluationsToPurge);
+        } while (!empty($evaluationsToPurge) && $purgedEvaluations < $max);
+    }
+
+    private function deleteByIds(array $ids): void
+    {
+        if (empty($ids)) {
+            return;
+        }
+
+        $query = <<<SQL
+DELETE FROM pimee_data_quality_insights_criteria_evaluation WHERE id IN (:ids)
 SQL;
 
         $this->db->executeQuery(
             $query,
-            ['purge_date' => $date->format('Y-m-d 00:00:00')]
+            ['ids' => $ids],
+            ['ids' => Connection::PARAM_STR_ARRAY]
         );
     }
 }

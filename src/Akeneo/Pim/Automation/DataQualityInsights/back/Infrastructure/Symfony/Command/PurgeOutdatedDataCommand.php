@@ -72,7 +72,7 @@ final class PurgeOutdatedDataCommand extends Command
         }
 
         if (null === $purgeType) {
-            $this->purgeCriterionEvaluations($purgeDate, $output);
+            $this->purgeCriterionEvaluations($output);
             $this->purgeProductAxisRates($purgeDate, $output);
             $this->purgeDashboardProjectionRates($purgeDate, $output);
 
@@ -81,7 +81,7 @@ final class PurgeOutdatedDataCommand extends Command
 
         switch ($purgeType) {
             case self::PURGE_CRITERION_EVALUATIONS:
-                $this->purgeCriterionEvaluations($purgeDate, $output);
+                $this->purgeCriterionEvaluations($output);
                 break;
             case self::PURGE_PRODUCT_AXIS_RATES:
                 $this->purgeProductAxisRates($purgeDate, $output);
@@ -94,10 +94,10 @@ final class PurgeOutdatedDataCommand extends Command
         }
     }
 
-    private function purgeCriterionEvaluations(\DateTimeImmutable $purgeDate, OutputInterface $output): void
+    private function purgeCriterionEvaluations(OutputInterface $output): void
     {
         $output->writeln('Start to purge criterion evaluations.');
-        $this->purgeOutdatedData->purgeCriterionEvaluationsFrom($purgeDate);
+        $this->purgeOutdatedData->purgeOutdatedCriterionEvaluations(-1);
         $output->writeln('Purge done.');
     }
 
