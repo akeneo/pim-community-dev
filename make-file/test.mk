@@ -68,8 +68,8 @@ acceptance-front:
 integration-front:
 	$(YARN_RUN) integration
 
-.PHONY: integration-back
-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back
+.PHONY: pim-integration-back
+pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else
