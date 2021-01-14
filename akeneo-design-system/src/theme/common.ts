@@ -1,4 +1,4 @@
-import {css} from 'styled-components';
+import styled, {css} from 'styled-components';
 import {Color, FontSize, getColor, getFontSize, Palette} from './theme';
 
 const CommonStyle = css`
@@ -81,4 +81,8 @@ const palette: Palette = {
   danger: 'red',
 };
 
-export {color, fontSize, palette, CommonStyle};
+const BrandedPath = styled.path`
+  fill: ${getColor('brand', 100)};
+`;
+
+export {color, fontSize, palette, CommonStyle, BrandedPath};
