@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.84 (2021-01-14)
+
 ## Bug fixes
 
 - PIM-9627: Empty Family field when creating a product model with family not present in first page
