@@ -145,7 +145,7 @@ const CategoryTrees: React.FC<CategoryTreesProps> = ({
           {AllProductsTree}
         </CategoryTreeContainer>
       </CategoryTreesContainer>
-      {translate('jstree.include_sub')}
+      <label>{translate('jstree.include_sub')}</label>
       <BooleanInput
         value={includeSubCategories}
         readOnly={false}
