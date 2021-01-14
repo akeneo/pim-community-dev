@@ -1,7 +1,10 @@
-import {FC} from 'react';
+import {FC, ForwardRefRenderFunction} from 'react';
 
-type Skeletonable<Props> = FC<Props> & {
-  Skeleton?: FC;
+type WithSkeleton = {
+  Skeleton: FC;
 };
 
-export type {Skeletonable};
+type Skeletonable<Props> = FC<Props> & WithSkeleton;
+type SkeletonableForwardRef<Element, Props> = ForwardRefRenderFunction<Element, Props> & WithSkeleton;
+
+export type {Skeletonable, SkeletonableForwardRef};
