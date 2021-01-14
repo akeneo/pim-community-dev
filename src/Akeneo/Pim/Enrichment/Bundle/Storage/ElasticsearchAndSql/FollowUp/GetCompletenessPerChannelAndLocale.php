@@ -122,14 +122,6 @@ SQL;
             $rows[$i]['channel_labels'] = \json_decode($categoriesCodeAndLocalesByChannel['channel_labels'], true);
         }
 
-        return $this->sortCategoriesCodesAndLocalesByChannel($rows);
-    }
-
-    private function sortCategoriesCodesAndLocalesByChannel(array $rows): array {
-        usort($rows, function ($completenessA, $completenessB) {
-            return strcmp($completenessA['channel_code'], $completenessB['channel_code']);
-        });
-
         return $rows;
     }
 
