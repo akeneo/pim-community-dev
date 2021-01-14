@@ -39,15 +39,14 @@ Feature: Classify many products at once for the tree I have access
     Then I should not see the text "Boots"
     And I should not see the text "Master catalog"
     When I select the "Shoes" tree
-    And I expand the "shoes" category
-    And I click on the "vintage" category
-    And I click on the "classy" category
+    And I expand the "Shoes" category
+    And I click on the "Vintage" category
+    And I click on the "Classy" category
     And I confirm mass edit
     And I wait for the "add_to_category" job to finish
     And I am on the products grid
     And I open the category tree
     And I select the "Shoes" tree
-    Then I should see the text "2014 collection (2)"
     Then I should see the text "Vintage (2)"
     And I should see the text "Classy (2)"
 
@@ -58,18 +57,16 @@ Feature: Classify many products at once for the tree I have access
     Then I should not see the text "Boots"
     And I should not see the text "Master catalog"
     When I select the "Shoes" tree
-    And I expand the "shoes" category
-    And I click on the "sandals" category
-    And I click on the "sneakers" category
+    And I expand the "Shoes" category
+    And I click on the "Sandals" category
+    And I click on the "Sneakers" category
     And I confirm mass edit
     And I wait for the "move_to_category" job to finish
     And I am on the products grid
     And I open the category tree
     And I select the "Shoes" tree
-    Then I should see the text "2014 collection (0)"
     Then I should see the text "Sandals (2)"
     And I should see the text "Sneakers (2)"
-
 
   Scenario: Failed to move several products to viewable categories
     Given I select rows rangers and loafer
@@ -78,14 +75,13 @@ Feature: Classify many products at once for the tree I have access
     Then I should not see the text "Boots"
     And I should not see the text "Master catalog"
     When I select the "Shoes" tree
-    And I expand the "shoes" category
-    And I click on the "vintage" category
-    And I click on the "classy" category
+    And I expand the "Shoes" category
+    And I click on the "Vintage" category
+    And I click on the "Classy" category
     And I confirm mass edit
     And I wait for the "move_to_category" job to finish
     And I am on the products grid
     And I open the category tree
     And I select the "Shoes" tree
-    Then I should see the text "2014 collection (2)"
     Then I should see the text "Vintage (0)"
     And I should see the text "Classy (0)"

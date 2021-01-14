@@ -170,7 +170,7 @@ Feature: Products datagrid projects
     Given I am logged in as "Julia"
     And I am on the products grid
     And I open the category tree
-    And I filter by "category" with operator "" and value "clothing"
+    And I filter by "category" with operator "" and value "Clothing"
     And I close the category tree
     Then the grid should contain 3 elements
     When I click on the create project button
@@ -183,7 +183,7 @@ Feature: Products datagrid projects
     And I wait for the "project_calculation" job to finish
     And I am on the products grid
     And I open the category tree
-    And I filter by "category" with operator "" and value "default"
+    And I filter by "category" with operator "" and value "Default"
     And I close the category tree
     And the grid should contain 6 elements
     And I switch the scope to "Mobile"

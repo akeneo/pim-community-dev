@@ -83,7 +83,7 @@ Feature: Filter by project completeness in the product datagrid
     And I am logged in as "Mary"
     And I am on the products grid
     And I open the category tree
-    And I filter by "category" with operator "" and value "clothing"
+    And I filter by "category" with operator "" and value "Clothing"
     And I close the category tree
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"

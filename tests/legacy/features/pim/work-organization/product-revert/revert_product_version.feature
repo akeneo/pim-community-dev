@@ -107,15 +107,15 @@ Feature: Revert a product to a previous version
     And I wait to be on the "sandals" product page
     And I visit the "Categories" column tab
     And I visit the "2014 collection" tab
-    And I expand the "2014_collection" category
-    And I click on the "winter_collection" category
+    And I expand the "2014 collection" category
+    And I click on the "Winter collection" category
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I visit the "Categories" column tab
     And I visit the "2014 collection" tab
-    And I expand the "2014_collection" category
-    And I click on the "winter_collection" category
-    And I click on the "summer_collection" category
+    And I expand the "2014 collection" category
+    And I click on the "Winter collection" category
+    And I click on the "Summer collection" category
     And I press the "Save" button
     And the history of the product "sandals" has been built
     Then I visit the "History" column tab
