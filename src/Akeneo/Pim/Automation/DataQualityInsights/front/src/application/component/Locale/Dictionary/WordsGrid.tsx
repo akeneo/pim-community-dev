@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import {Table, IconButton, CloseIcon, Pagination} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import styled from 'styled-components';
@@ -10,13 +10,28 @@ import {useDictionaryState} from '../../../../infrastructure';
 
 const WordsGrid: FC = () => {
   const translate = useTranslate();
-  const {dictionary, totalWords, itemsPerPage, setCurrentPage, currentPage, search} = useDictionaryState();
+  const {dictionary, totalWords, itemsPerPage, currentPage, search, deleteWord} = useDictionaryState();
   const [searchString, setSearchString] = useState('');
   const debouncedSearch = useDebounceCallback(search, 300);
 
   const onSearch = (searchValue: string) => {
     setSearchString(searchValue);
-    debouncedSearch(searchValue);
+    debouncedSearch(searchValue, 1);
+  };
+
+  const onChangePage = useCallback((pageNumber: number) => {
+    search(searchString, pageNumber);
+  }, [searchString, search]);
+
+  const onDeleteWord = async (wordId: number) => {
+    await deleteWord(wordId);
+    let pageToRedirect = currentPage;
+    if (dictionary !== null) {
+      if (Object.keys(dictionary).length === 1) {
+        pageToRedirect = Math.max(1, currentPage - 1);
+      }
+    }
+    search(searchString, pageToRedirect);
   };
 
   if (dictionary === null) {
@@ -35,7 +50,7 @@ const WordsGrid: FC = () => {
             className={'filter-box'}
           />
           <Pagination
-            followPage={setCurrentPage}
+            followPage={onChangePage}
             currentPage={totalWords > 0 ? currentPage : 0}
             totalItems={totalWords}
             itemsPerPage={itemsPerPage}
@@ -61,7 +76,7 @@ const WordsGrid: FC = () => {
             <Table.Body>
               {Object.values(dictionary).map((word: Word) => {
                 return (
-                  <Table.Row key={`word-${word.id}`} onClick={() => console.log('test')}>
+                  <Table.Row key={`word-${word.id}`}>
                     <Table.Cell rowTitle={true}>
                       <WordLabel>{word.label}</WordLabel>
                     </Table.Cell>
@@ -73,6 +88,7 @@ const WordsGrid: FC = () => {
                           ghost={'borderless'}
                           level="tertiary"
                           size="small"
+                          onClick={() => onDeleteWord(word.id)}
                         />
                       </ActionContainer>
                     </Table.ActionCell>
