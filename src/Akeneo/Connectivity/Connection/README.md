@@ -1,5 +1,6 @@
 # Connectivity / Connection
 
-## Webhook
+## Events API
 
-- [Architecture](./docs/webhook_architecture.md)
+- [Ubiquitous language]('./docs/events_api/ubiquitous_language.md)
+- [Architecture](./docs/events_api/webhook_architecture.md)
