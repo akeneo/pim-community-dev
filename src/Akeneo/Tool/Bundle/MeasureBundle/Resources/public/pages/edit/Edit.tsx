@@ -7,7 +7,6 @@ import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
 import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
 import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
 import {Unit, UnitCode} from 'akeneomeasure/model/unit';
-import {PageContent} from 'akeneomeasure/shared/components/PageContent';
 import {
   DropdownLink,
   SecondaryActionsDropdownButton,
@@ -24,7 +23,6 @@ import {
 } from 'akeneomeasure/hooks/use-measurement-family-remover';
 import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
 import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
 import {
   useTranslate,
   useNotify,
@@ -34,7 +32,14 @@ import {
   useSecurity,
   useRoute,
 } from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, ValidationError, partitionErrors, useToggleState} from '@akeneo-pim-community/shared';
+import {
+  filterErrors,
+  ValidationError,
+  partitionErrors,
+  useToggleState,
+  FullScreenError,
+  PageContent,
+} from '@akeneo-pim-community/shared';
 import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
 
 enum Tab {
@@ -191,7 +196,7 @@ const Edit = () => {
 
   if (undefined === measurementFamily) {
     return (
-      <ErrorBlock
+      <FullScreenError
         title={__('error.exception', {status_code: '404'})}
         message={__('measurements.family.not_found')}
         code={404}

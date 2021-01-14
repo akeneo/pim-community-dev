@@ -1,11 +1,11 @@
-const __ = require('oro/translator');
+import {Translate} from '@akeneo-pim-community/legacy-bridge';
 
 type IntlDuration = {
   translationKey: string;
   value: number;
 };
 
-const translateDuration = (...args: IntlDuration[]): string => {
+const translateDuration = (translate: Translate, ...args: IntlDuration[]): string => {
   let values = args.filter((duration: IntlDuration) => duration.value > 0);
 
   if (values.length === 0 && args.length > 0) {
@@ -13,11 +13,13 @@ const translateDuration = (...args: IntlDuration[]): string => {
   }
 
   return values
-    .map((duration: IntlDuration) => __(duration.translationKey, {count: duration.value}, duration.value))
+    .map((duration: IntlDuration) =>
+      translate(duration.translationKey, {count: duration.value.toString()}, duration.value)
+    )
     .join(' ');
 };
 
-export const formatSecondsIntl = (duration: number): string => {
+export const formatSecondsIntl = (translate: Translate, duration: number): string => {
   const days = Math.floor(duration / 86400);
   duration = duration - days * 86400;
   const hours = Math.floor(duration / 3600);
@@ -27,21 +29,25 @@ export const formatSecondsIntl = (duration: number): string => {
 
   if (days > 0) {
     return translateDuration(
+      translate,
       {translationKey: 'duration.days', value: days},
       {translationKey: 'duration.hours', value: hours}
     );
   }
   if (hours > 0) {
     return translateDuration(
+      translate,
       {translationKey: 'duration.hours', value: hours},
       {translationKey: 'duration.minutes', value: minutes}
     );
   }
   if (minutes > 0) {
     return translateDuration(
+      translate,
       {translationKey: 'duration.minutes', value: minutes},
       {translationKey: 'duration.seconds', value: seconds}
     );
   }
-  return translateDuration({translationKey: 'duration.seconds', value: seconds});
+
+  return translateDuration(translate, {translationKey: 'duration.seconds', value: seconds});
 };

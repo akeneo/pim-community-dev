@@ -53,6 +53,7 @@ pim_import_export:
     form:
         job_execution:
             title.details:    Execution details
+            refreshing: Execution details refreshing
             refreshBtn.title: Refresh
             button:
                 show_profile.title: Show profile

@@ -21,7 +21,7 @@ Feature: Export profiles
     And I launch the export job
     And I wait for the "xlsx_footwear_association_type_export" job to finish
     Then I should see the text "COMPLETED"
-    And I should see the text "Execution details - XLSX footwear association type export [xlsx_footwear_association_type_export]"
+    And I should see the text "XLSX footwear association type export"
     And I should see the secondary action "Download log"
     And I should see the secondary action "Show profile"
     When I press the secondary action "Show profile"

@@ -7,7 +7,7 @@ const LinkContainer = styled.a<{disabled: boolean; decorated: boolean} & AkeneoT
     decorated
       ? css`
           font-weight: 400;
-          text-decoration: 'underline';
+          text-decoration: underline;
           color: ${disabled ? getColor('grey', 100) : getColor('brand', 100)};
 
           ${!disabled &&

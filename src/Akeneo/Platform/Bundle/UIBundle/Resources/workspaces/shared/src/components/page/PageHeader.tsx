@@ -1,6 +1,6 @@
 import React, {Children, cloneElement, FC, isValidElement, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
-import {Actions, Breadcrumb, Illustration, IllustrationProps, State, Title, UserActions} from './header';
+import {Actions, Breadcrumb, Illustration, IllustrationProps, State, Title, UserActions, Content} from './header';
 
 const Header = styled.header`
   position: sticky;
@@ -8,7 +8,6 @@ const Header = styled.header`
   padding: 40px 40px 20px;
   background: white;
   z-index: 10;
-  height: 130px;
 `;
 
 const LineContainer = styled.div`
@@ -27,6 +26,7 @@ const MainContainer = styled.div`
 const ActionsContainer = styled.div`
   display: flex;
   align-content: baseline;
+  gap: 10px;
 `;
 
 type PageHeaderProps = {
@@ -40,6 +40,7 @@ type HeaderElements = {
   state: ReactElement | undefined;
   actions: ReactElement | undefined;
   userActions: ReactElement | undefined;
+  content: ReactElement | undefined;
 };
 
 const buildHeaderElements = (children: ReactNode | undefined, showPlaceholder?: boolean): HeaderElements => {
@@ -50,6 +51,7 @@ const buildHeaderElements = (children: ReactNode | undefined, showPlaceholder?: 
     state: undefined,
     actions: undefined,
     userActions: undefined,
+    content: undefined,
   };
 
   Children.forEach(children, child => {
@@ -59,10 +61,10 @@ const buildHeaderElements = (children: ReactNode | undefined, showPlaceholder?: 
 
     switch (child.type) {
       case Illustration:
-        headerElements.illustration = React.cloneElement(child);
+        headerElements.illustration = child;
         break;
       case Breadcrumb:
-        headerElements.breadcrumb = React.cloneElement(child);
+        headerElements.breadcrumb = child;
         break;
       case Title:
         headerElements.title = React.cloneElement(child, {
@@ -70,13 +72,16 @@ const buildHeaderElements = (children: ReactNode | undefined, showPlaceholder?: 
         });
         break;
       case State:
-        headerElements.state = React.cloneElement(child);
+        headerElements.state = child;
         break;
       case Actions:
-        headerElements.actions = React.cloneElement(child);
+        headerElements.actions = child;
         break;
       case UserActions:
-        headerElements.userActions = React.cloneElement(child);
+        headerElements.userActions = child;
+        break;
+      case Content:
+        headerElements.content = child;
         break;
     }
   });
@@ -97,10 +102,14 @@ interface PageHeaderInterface extends FC<PageHeaderProps> {
   UserActions: FC;
   Title: FC;
   State: FC;
+  Content: FC;
 }
 
 const PageHeader: PageHeaderInterface = ({children, showPlaceholder}) => {
-  const {illustration, breadcrumb, title, state, actions, userActions} = buildHeaderElements(children, showPlaceholder);
+  const {illustration, breadcrumb, title, state, actions, userActions, content} = buildHeaderElements(
+    children,
+    showPlaceholder
+  );
 
   return (
     <Header>
@@ -119,6 +128,7 @@ const PageHeader: PageHeaderInterface = ({children, showPlaceholder}) => {
               {title}
               {state}
             </LineContainer>
+            {content}
           </div>
         </MainContainer>
       </LineContainer>
@@ -132,5 +142,6 @@ PageHeader.Illustration = Illustration;
 PageHeader.UserActions = UserActions;
 PageHeader.Title = Title;
 PageHeader.State = State;
+PageHeader.Content = Content;
 
 export {PageHeader};

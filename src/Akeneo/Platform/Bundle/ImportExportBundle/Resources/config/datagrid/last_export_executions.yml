@@ -10,4 +10,4 @@ datagrid:
                 acl_resource: pim_importexport_export_execution_show
         properties:
             showLink:
-                route: pim_importexport_export_execution_show
+                route: pim_enrich_job_tracker_show
