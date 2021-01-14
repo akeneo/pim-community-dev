@@ -67,7 +67,7 @@ type CategoryTreeSwitcherProps = {
 const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onClick, ...rest}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
-  const selectedTreeLabel = (trees.find(tree => tree.selected) || trees[0]).label;
+  const selectedTreeLabel = (trees.find(tree => tree.selected) || trees[0])?.label;
   const [value, setValue] = React.useState<string>('');
 
   const filteredTrees = trees.filter(tree => {
@@ -76,7 +76,7 @@ const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onCli
 
   return (
     <CategoryTreeSwitcherContainer {...rest}>
-      <CategoryTreeSwitcherButton onClick={open}>
+      <CategoryTreeSwitcherButton onClick={open} aria-haspopup="listbox">
         <CategoryTreeSwitcherText>{selectedTreeLabel}</CategoryTreeSwitcherText>
         <ArrowDownIcon size={20} />
       </CategoryTreeSwitcherButton>
@@ -95,9 +95,9 @@ const CategoryTreeSwitcher: React.FC<CategoryTreeSwitcherProps> = ({trees, onCli
             </Dropdown.Title>
           </Dropdown.Header>
           {filteredTrees.length ? (
-            <Dropdown.ItemCollection>
+            <Dropdown.ItemCollection role="listbox">
               {filteredTrees.map(tree => (
-                <Dropdown.Item
+                <Dropdown.Item role="option"
                   key={tree.code}
                   onClick={() => {
                     onClick(tree.id);

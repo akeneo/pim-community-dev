@@ -38,7 +38,7 @@ class Index extends Grid
                     'css'        => '.AknColumn-innerTop',
                     'decorators' => [ContextSwitcherDecorator::class],
                 ],
-                'Tree select'             => ['css' => '#tree_select'],
+                'Tree select'             => ['css' => '#tree [aria-haspopup="listbox"]'],
                 'Locales dropdown'        => ['css' => '#locale-switcher'],
                 'Sidebar collapse button' => ['css' => '.sidebar .sidebar-controls i.icon-double-angle-left'],
                 'Sidebar expand button'   => ['css' => '.separator.collapsed i.icon-double-angle-right'],
@@ -103,9 +103,34 @@ class Index extends Grid
      */
     public function selectTree($category)
     {
-        $this->getElement('Tree select')->selectOption($category);
+        if (!$this->find('css', '#tree [role="listbox"]')) {
+            $button = $this->getElement('Tree select');
+            $button->click();
+        }
+
+        $matchingCategoryTree = null;
+        foreach ($this->findAll('css', '#tree [role="option"]') as $options) {
+            if (str_starts_with($options->getText(), $category)) {
+                $matchingCategoryTree = $options;
+            }
+        }
+        if (null === $matchingCategoryTree) {
+            throw new ElementNotFoundException($this->getDriver(), sprintf('Category tree %s', $category));
+        }
+        $matchingCategoryTree->click();
 
         return $this;
+    }
+
+    public function findField($locator)
+    {
+        if ($locator === 'Include sub-categories') {
+            return $this->spin(function () {
+                return $this->find('css', '#tree [role="switch"]');
+            }, 'Can not find Include sub-categories switch');
+        }
+
+        return parent::findField($locator);
     }
 
     /**

@@ -33,7 +33,11 @@ class CategoryDecorator extends ElementDecorator
 
             foreach ($values as $value) {
                 $this->spin(function () use ($value) {
-                    $nodeTree = $this->findNodeInTree($value)->find('css', 'button:nth-child(2)');
+                    $node = $this->findNodeInTree($value);
+                    if (null === $node) {
+                        return false;
+                    }
+                    $nodeTree = $node->find('css', 'button:nth-child(2)');
                     if (null === $nodeTree) {
                         return false;
                     }
