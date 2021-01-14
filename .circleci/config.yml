@@ -206,7 +206,7 @@ jobs:
                 command: APP_ENV=test make database
           - run:
                 name: PhpUnit Integration
-                command: PIM_CONTEXT=test make integration-back
+                command: PIM_CONTEXT=test make pim-integration-back
           - run:
                 name: PhpUnit End to end
                 command: PIM_CONTEXT=test make end-to-end-back
