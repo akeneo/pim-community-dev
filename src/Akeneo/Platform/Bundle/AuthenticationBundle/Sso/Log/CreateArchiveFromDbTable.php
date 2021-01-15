@@ -31,7 +31,7 @@ final class CreateArchiveFromDbTable implements CreateArchive
 
     public function create(): \SplFileInfo
     {
-        $zipFilePath = tempnam(sys_get_temp_dir(), 'pim_authentication_logs');
+        $zipFilePath = tempnam(sys_get_temp_dir(), 'pim_authentication_logs') . '.zip';
 
         $archive = new \ZipArchive();
         if (!$archive->open($zipFilePath, \ZipArchive::CREATE)) {

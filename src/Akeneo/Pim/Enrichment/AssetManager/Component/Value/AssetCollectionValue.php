@@ -54,14 +54,14 @@ class AssetCollectionValue extends AbstractValue implements AssetCollectionValue
             return false;
         }
 
-        foreach ($this->getData() as $assetCode) {
-            foreach ($other->getData() as $otherAssetCode) {
-                if ($assetCode->equals($otherAssetCode)) {
-                    continue 2;
-                }
-            }
+        $iterator = new \MultipleIterator();
+        $iterator->attachIterator(new \ArrayIterator($this->getData()));
+        $iterator->attachIterator(new \ArrayIterator($other->getData()));
 
-            return false;
+        foreach ($iterator as $iteratorValue) {
+            if (!$iteratorValue[0]->equals($iteratorValue[1])) {
+                return false;
+            }
         }
 
         return true;

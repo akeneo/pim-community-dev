@@ -111,4 +111,33 @@ class AssetCollectionValueSpec extends ObjectBehavior
         $this->isEqual($sameAssetCollection)->shouldReturn(true);
         $this->isEqual($otherAssetCollection)->shouldReturn(false);
     }
+
+    function it_compares_asset_code_order()
+    {
+        $data = [AssetCode::fromString('paint'), AssetCode::fromString('bike')];
+        $sameDataOrder = [AssetCode::fromString('paint'), AssetCode::fromString('bike')];
+        $otherOrderData = [AssetCode::fromString('bike'), AssetCode::fromString('paint')];
+
+        $this->beConstructedThrough(
+            'scopableLocalizableValue',
+            [self::ATTRIBUTE_CODE, $data, 'ecommerce', 'fr_FR']
+        );
+
+        $sameDataOrderAssetCollection = AssetCollectionValue::scopableLocalizableValue(
+            self::ATTRIBUTE_CODE,
+            $sameDataOrder,
+            'ecommerce',
+            'fr_FR'
+        );
+
+        $otherOrderAssetCollection = AssetCollectionValue::scopableLocalizableValue(
+            self::ATTRIBUTE_CODE,
+            $otherOrderData,
+            'ecommerce',
+            'fr_FR'
+        );
+
+        $this->isEqual($sameDataOrderAssetCollection)->shouldReturn(true);
+        $this->isEqual($otherOrderAssetCollection)->shouldReturn(false);
+    }
 }
