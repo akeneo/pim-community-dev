@@ -32,6 +32,7 @@ const unitConfig = {
     '^react$': '<rootDir>/node_modules/react',
     '^react-dom$': '<rootDir>/node_modules/react-dom',
     '^styled-components$': '<rootDir>/node_modules/styled-components',
+    "\\.(jpg|ico|jpeg|png|gif|svg)$": `${__dirname}/fileMock.js`,
   },
   testRegex: '(tests/front/unit)(.*)(unit).(jsx?|tsx?)$',
   testPathIgnorePatterns: [

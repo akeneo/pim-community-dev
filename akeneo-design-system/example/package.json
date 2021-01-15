@@ -18,6 +18,11 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|ico|jpeg|png|gif|svg)$": "<rootDir>/../__mocks__/fileMock.js"
+    }
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
