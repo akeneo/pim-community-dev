@@ -13,7 +13,7 @@ type RecursiveCategoryTreeProps = {
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
-  selectedCategoryId?: number;
+  isCategorySelected?: (category: CategoryValue) => boolean;
 };
 
 const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
@@ -21,7 +21,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
   childrenCallback,
   onChange,
   onClick,
-  selectedCategoryId,
+  isCategorySelected,
 }) => {
   const [categoryState, setCategoryState] = React.useState<CategoryTreeModel>(tree);
 
@@ -49,9 +49,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
         code: categoryState.code,
         label: categoryState.label,
       }}
-      selected={
-        typeof selectedCategoryId === 'undefined' ? categoryState.selected : selectedCategoryId === categoryState.id
-      }
+      selected={isCategorySelected ? isCategorySelected(categoryState) : categoryState.selected}
       isLoading={categoryState.loading}
       readOnly={categoryState.readOnly}
       selectable={categoryState.selectable}
@@ -69,7 +67,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
               onChange={onChange}
               childrenCallback={childrenCallback}
               onClick={onClick}
-              selectedCategoryId={selectedCategoryId}
+              isCategorySelected={isCategorySelected}
             />
           );
         })}
@@ -77,4 +75,5 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
   );
 };
 
+export type {CategoryValue};
 export {RecursiveCategoryTree};

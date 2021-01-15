@@ -772,7 +772,7 @@ config:
     pim/filter/product/completeness:       pimui/js/filter/product/completeness
     pim/filter/product/quality-score:      pimui/js/filter/product/quality-score
     pim/filter/product/category:           pimui/js/filter/product/category
-    pim/filter/product/category/selector:  pimui/js/filter/product/category/selector
+    pim/filter/product/category/selector:  pimui/js/filter/product/category/Selector.tsx
     pim/filter/attribute/identifier:       pimui/js/filter/attribute/identifier
     pim/filter/attribute/attribute:        pimui/js/filter/attribute/attribute
     pim/filter/attribute/boolean:          pimui/js/filter/attribute/boolean

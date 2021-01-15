@@ -1,5 +1,5 @@
 import React from 'react';
-import {RecursiveCategoryTree} from './RecursiveCategoryTree';
+import {CategoryValue, RecursiveCategoryTree} from './RecursiveCategoryTree';
 import {Tree} from 'akeneo-design-system/lib/components/Tree/Tree';
 
 type CategoryTreeModel = {
@@ -18,8 +18,8 @@ type CategoryTreeProps = {
   childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
-  categoryId?: number;
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
+  isCategorySelected?: (category: CategoryValue) => boolean;
 };
 
 const CategoryTree: React.FC<CategoryTreeProps> = ({
@@ -27,18 +27,25 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   childrenCallback,
   onChange,
   onClick,
-  categoryId,
   initCallback,
+  isCategorySelected,
   ...rest
 }) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
-  const recursiveGetSelectedCategoryLabel: (categoryTree: CategoryTreeModel) => string | undefined = category => {
-    if (category.id === categoryId) {
+  const recursiveGetFirstSelectedCategoryLabel: (category: CategoryTreeModel) => string | undefined = category => {
+    if (
+      isCategorySelected &&
+      isCategorySelected({
+        id: category.id,
+        code: category.code,
+        label: category.label,
+      })
+    ) {
       return category.label;
     }
     return (category.children || []).reduce(
-      (previous, subCategory) => previous || recursiveGetSelectedCategoryLabel(subCategory),
+      (previous, subCategory) => previous || recursiveGetFirstSelectedCategoryLabel(subCategory),
       undefined as string | undefined
     );
   };
@@ -48,7 +55,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
     init().then(tree => {
       setTree(tree);
       if (initCallback) {
-        initCallback(tree.label, recursiveGetSelectedCategoryLabel(tree));
+        initCallback(tree.label, recursiveGetFirstSelectedCategoryLabel(tree));
       }
     });
   }, []);
@@ -63,7 +70,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       childrenCallback={childrenCallback}
       onChange={onChange}
       onClick={onClick}
-      selectedCategoryId={categoryId}
+      isCategorySelected={isCategorySelected}
       {...rest}
     />
   );
