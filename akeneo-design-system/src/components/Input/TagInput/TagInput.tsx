@@ -1,10 +1,10 @@
 import React, {useState, useRef, ChangeEvent, FC, RefObject, KeyboardEvent} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor} from '../../theme';
-import {CloseIcon} from '../../icons';
-import {Key} from '../../shared';
+import {AkeneoThemedProps, getColor} from '../../../theme';
+import {CloseIcon} from '../../../icons';
+import {Key} from '../../../shared';
 
-type InputTagProps = {
+type TagInputProps = {
   /**
    * Specifies if the component will accept duplicated tags or not
    */
@@ -16,7 +16,7 @@ type InputTagProps = {
   defaultTags?: string[];
 };
 
-const InputTag: FC<InputTagProps> = ({allowDuplicates, defaultTags = []}) => {
+const TagInput: FC<TagInputProps> = ({allowDuplicates, defaultTags = []}) => {
   const [tags, setTags] = useState<string[]>(defaultTags);
   const [isLastTagSelected, selectLastTag] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -139,4 +139,4 @@ const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean}>`
   }
 `;
 
-export {InputTag};
+export {TagInput};
