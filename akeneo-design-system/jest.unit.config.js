@@ -2,6 +2,9 @@ module.exports = {
   clearMocks: true,
   moduleFileExtensions: ['js', 'ts', 'tsx'],
   moduleDirectories: ['node_modules', 'src'],
+  moduleNameMapper: {
+    "\\.(jpg|ico|jpeg|png|gif|svg)$": "<rootDir>/__mocks__/fileMock.js"
+  },
   roots: ['<rootDir>'],
   setupFilesAfterEnv: ['@testing-library/jest-dom/extend-expect'],
   testMatch: ['**/?(*.)+(unit).ts?(x)'],
@@ -9,7 +12,6 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.mdx$': '@storybook/addon-docs/jest-transform-mdx',
-    "^.+\\.svg$": "jest-svg-transformer"
   },
   transformIgnorePatterns: ['/node_modules/'],
   collectCoverage: true,
