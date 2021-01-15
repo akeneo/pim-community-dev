@@ -23,6 +23,13 @@ test('it renders a list of tags', () => {
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung']));
 });
 
+test('it split tags for several characters', () => {
+  const result = render(<TagInput allowDuplicates={true} />);
+
+  userEvent.paste(screen.getByTestId('tag-input'), 'gucci{space}samsung\tapple\ndior,renault;porsche');
+  expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple', 'dior', 'renault', 'porsche']));
+});
+
 test('it handle a copy pasted input list of tags', () => {
   const result = render(<TagInput allowDuplicates={true} />);
 
@@ -35,12 +42,17 @@ test('it handle a deletion of a tag', () => {
 
   userEvent.paste(screen.getByTestId('tag-input'), 'gucci samsung apple');
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple']));
-  userEvent.click(screen.getByTestId('remove-samsung'));
+  userEvent.click(screen.getByTestId('remove-1'));
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'apple']));
-  userEvent.click(screen.getByTestId('remove-apple'));
+  userEvent.click(screen.getByTestId('remove-1'));
   expect(result.container.textContent).toBe(expectedTags(['gucci']));
-  userEvent.click(screen.getByTestId('remove-gucci'));
+  userEvent.click(screen.getByTestId('remove-0'));
   expect(result.container.textContent).toBe(expectedTags([]));
+
+
+  userEvent.paste(screen.getByTestId('tag-input'), 'gucci samsung gucci gucci');
+  userEvent.click(screen.getByTestId('remove-2'));
+  expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'gucci']));
 });
 
 test('it can keep duplicated tags', () => {

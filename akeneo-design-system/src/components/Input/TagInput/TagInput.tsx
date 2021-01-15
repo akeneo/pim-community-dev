@@ -26,7 +26,7 @@ const TagInput: FC<TagInputProps> = ({allowDuplicates, defaultTags = []}) => {
   const addTag = (event: ChangeEvent<HTMLInputElement>) => {
     const tagsAsString = event.currentTarget.value;
     if (tagsAsString !== '') {
-      let newTags = tagsAsString.split(/[\s]+/);
+      let newTags = tagsAsString.split(/[\s,;]+/);
       if (newTags.length === 1) {
         return;
       }
@@ -42,9 +42,10 @@ const TagInput: FC<TagInputProps> = ({allowDuplicates, defaultTags = []}) => {
     }
   };
 
-  const removeTag = (tagToRemove: string) => {
-    const newTags = tags.filter((tag: string) => tag !== tagToRemove);
-    setTags(newTags);
+  const removeTag = (tagIdToRemove: number) => {
+    const clonedTags = [...tags];
+    clonedTags.splice(tagIdToRemove, 1);
+    setTags(clonedTags);
   };
 
   const focusOnInputText = (event: MouseEvent, ref: RefObject<HTMLElement>) => {
@@ -77,7 +78,7 @@ const TagInput: FC<TagInputProps> = ({allowDuplicates, defaultTags = []}) => {
       {tags.map((tag, key) => {
         return (
           <Tag key={key} data-testid={'tag'} isSelected={key === tags.length - 1 && isLastTagSelected}>
-            <RemoveTagIcon onClick={() => removeTag(tag)} data-testid={`remove-${tag}`} />
+            <RemoveTagIcon onClick={() => removeTag(key)} data-testid={`remove-${key}`} />
             {tag}
           </Tag>
         );
