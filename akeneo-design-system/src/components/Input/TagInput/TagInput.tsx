@@ -54,7 +54,7 @@ const TagInput: FC<TagInputProps> = ({allowDuplicates, defaultTags = []}) => {
     }
   };
 
-  const onBackspaceKeyUp = (event: KeyboardEvent) => {
+  const handleTagDeletionUsingKeyboard = (event: KeyboardEvent) => {
     if (![Key.Backspace.toString(), Key.Delete.toString()].includes(event.key)) {
       selectLastTag(false);
       return;
@@ -88,7 +88,7 @@ const TagInput: FC<TagInputProps> = ({allowDuplicates, defaultTags = []}) => {
           type="text"
           data-testid={'tag-input'}
           ref={inputRef}
-          onKeyDownCapture={onBackspaceKeyUp}
+          onKeyDownCapture={handleTagDeletionUsingKeyboard}
           onChange={addTag}
         />
       </Tag>
@@ -111,7 +111,7 @@ const RemoveTagIcon = styled(CloseIcon)<AkeneoThemedProps>`
 const TagContainer = styled.ul<AkeneoThemedProps>`
   border: 1px ${getColor('grey', 80)} solid;
   border-radius: 2px;
-  padding: 5px 5px 0px 5px;
+  padding: 5px 5px 0 5px;
   display: flex;
   flex-wrap: wrap;
 `;
