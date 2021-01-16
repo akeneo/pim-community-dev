@@ -8,6 +8,7 @@ pim_menu:
     connection_settings: Connexions
     connection_settings_edit: Paramètres de connexion
     connection_monitoring: Supervision
+    connection_webhook_edit: Souscription aux événements
 pim_title:
   akeneo_connectivity_connection_settings_index: Connexions
   akeneo_connectivity_connection_settings_edit: Paramètres de connexion
@@ -16,8 +17,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_dashboard: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_connection_monitoring: Supervision
-  akeneo_connectivity_connection_webhook_edit: Souscription aux événements (BETA)
-  akeneo_connectivity_connection_webhook_regenerate_secret: Souscription aux événements (BETA)
+  akeneo_connectivity_connection_webhook_edit: Souscription aux événements
+  akeneo_connectivity_connection_webhook_regenerate_secret: Souscription aux événements
 akeneo_connectivity.connection:
   connections: Connexions
   secondary_actions:
@@ -192,8 +193,8 @@ akeneo_connectivity.connection:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
   webhook:
-    title: Souscription aux événements (BETA)
-    event_subscription: Souscription aux événements (BETA)
+    title: Souscription aux événements
+    event_subscription: Souscription aux événements
     helper:
       message: L'application connectée grâce à la connexion courante peut recevoir des événements grâce à l'Events API du PIM. Pour cela, merci de remplir l'URL ci-dessous. 
       link: En savoir plus sur la configuration de la souscription aux événements...
