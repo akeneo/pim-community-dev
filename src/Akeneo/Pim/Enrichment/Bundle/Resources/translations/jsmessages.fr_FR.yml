@@ -244,7 +244,7 @@ pim_enrich.export.product:
         ALL: Pas de condition de date
         "SINCE LAST N DAYS": Produits mis à jour durant les n derniers jours (par ex. 6)
         ">": Produits mis à jours depuis cette date
-        "SINCE LAST JOB": Produits mis à jour depuis le dernier export
+        "SINCE LAST JOB": Produits mis à jour depuis le dernière export
     enabled:
       title: État
       help: "Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut."

@@ -158,6 +158,7 @@ pim_import_export:
         compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes
         compute_completeness_of_products_family: Calcul de la complétude des familles variantes
         mass_delete: Suppression massive de produits
+        clean_removed_attribute_job: Traitement des valeurs de l'attribut supprimé
       header.view_all: Afficher tout
   batch_status:
     1: Terminé
