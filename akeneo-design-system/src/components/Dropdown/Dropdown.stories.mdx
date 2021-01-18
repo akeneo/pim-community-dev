@@ -2,7 +2,7 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown';
 import {Button, Image, Badge, Link, Checkbox} from '../../components';
 import {useBooleanState} from '../../hooks';
-import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery';
+import {useSelection} from '../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Dropdown"
@@ -14,6 +14,7 @@ import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery';
     'Dropdown.ItemCollection': Dropdown.ItemCollection,
     'Dropdown.Item': Dropdown.Item,
   }}
+  parameters={{docs: { inlineStories: false }}}
 />
 
 # Dropdown (Beta)
@@ -43,28 +44,26 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Playground
 
 <Canvas>
-  <Story name="Standard">
+  <Story name="Standard" height={220}>
     {args => {
-      const [isOpen, open, close] = useBooleanState();
+      const [isOpen, open, close] = useBooleanState(true);
       return (
-        <SpaceContainer height={200}>
-          <Dropdown {...args}>
-            <Button onClick={open}>Dropdown</Button>
-            {isOpen && (
-              <Dropdown.Overlay verticalPosition="down" onClose={close}>
-                <Dropdown.Header>
-                  <Dropdown.Title>Elements</Dropdown.Title>
-                </Dropdown.Header>
-                <Dropdown.ItemCollection>
-                  <Dropdown.Item>Item 1</Dropdown.Item>
-                  <Dropdown.Item>Item 2</Dropdown.Item>
-                  <Dropdown.Item>Item 3</Dropdown.Item>
-                  <Dropdown.Item>Item 4</Dropdown.Item>
-                </Dropdown.ItemCollection>
-              </Dropdown.Overlay>
-            )}
-          </Dropdown>
-        </SpaceContainer>
+        <Dropdown {...args}>
+          <Button onClick={open}>Dropdown</Button>
+          {isOpen && (
+            <Dropdown.Overlay verticalPosition="down" onClose={close}>
+              <Dropdown.Header>
+                <Dropdown.Title>Elements</Dropdown.Title>
+              </Dropdown.Header>
+              <Dropdown.ItemCollection>
+                <Dropdown.Item>Item 1</Dropdown.Item>
+                <Dropdown.Item>Item 2</Dropdown.Item>
+                <Dropdown.Item>Item 3</Dropdown.Item>
+                <Dropdown.Item>Item 4</Dropdown.Item>
+              </Dropdown.ItemCollection>
+            </Dropdown.Overlay>
+          )}
+        </Dropdown>
       );
     }}
   </Story>
@@ -75,29 +74,27 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Simple Item
 
 <Canvas>
-  <Story name="Simple Item">
-    {args => {
-      const [isOpen, open, close] = useBooleanState();
+  <Story name="Simple Item" height={220}>
+    {() => {
+      const [isOpen, open, close] = useBooleanState(true);
       return (
-        <SpaceContainer height={200}>
-          <Dropdown>
-            <Button onClick={open}>Simple</Button>
-            {isOpen && (
-              <Dropdown.Overlay verticalPosition="down" onClose={close}>
-                <Dropdown.Header>
-                  <Dropdown.Title>Elements</Dropdown.Title>
-                </Dropdown.Header>
-                <Dropdown.ItemCollection>
-                  <Dropdown.Item>First item</Dropdown.Item>
-                  <Dropdown.Item>A very long item</Dropdown.Item>
-                  <Dropdown.Item>
-                    <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Item with a link</Link>
-                  </Dropdown.Item>
-                </Dropdown.ItemCollection>
-              </Dropdown.Overlay>
-            )}
-          </Dropdown>
-        </SpaceContainer>
+        <Dropdown>
+          <Button onClick={open}>Simple</Button>
+          {isOpen && (
+            <Dropdown.Overlay verticalPosition="down" onClose={close}>
+              <Dropdown.Header>
+                <Dropdown.Title>Elements</Dropdown.Title>
+              </Dropdown.Header>
+              <Dropdown.ItemCollection>
+                <Dropdown.Item>First item</Dropdown.Item>
+                <Dropdown.Item>A very long item</Dropdown.Item>
+                <Dropdown.Item>
+                  <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Item with a link</Link>
+                </Dropdown.Item>
+              </Dropdown.ItemCollection>
+            </Dropdown.Overlay>
+          )}
+        </Dropdown>
       );
     }}
   </Story>
@@ -106,40 +103,38 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Selectable Item
 
 <Canvas>
-  <Story name="Item with selection">
-    {args => {
-      const [isOpen, open, close] = useBooleanState();
+  <Story name="Item with selection" height={220}>
+    {() => {
+      const [isOpen, open, close] = useBooleanState(true);
       const firstSelection = useSelection();
       const secondSelection = useSelection();
       const thirdSelection = useSelection();
       const fourthSelection = useSelection();
       return (
-        <SpaceContainer height={200}>
-          <Dropdown>
-            <Button onClick={open}>Selectable</Button>
-            {isOpen && (
-              <Dropdown.Overlay verticalPosition="down" onClose={close}>
-                <Dropdown.Header>
-                  <Dropdown.Title>Elements</Dropdown.Title>
-                </Dropdown.Header>
-                <Dropdown.ItemCollection>
-                  <Dropdown.Item>
-                    <Checkbox {...firstSelection} /> Item 1
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Checkbox {...secondSelection} /> Item 2
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Checkbox {...thirdSelection} /> Item 3
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Checkbox {...fourthSelection} /> Item 4
-                  </Dropdown.Item>
-                </Dropdown.ItemCollection>
-              </Dropdown.Overlay>
-            )}
-          </Dropdown>
-        </SpaceContainer>
+        <Dropdown>
+          <Button onClick={open}>Selectable</Button>
+          {isOpen && (
+            <Dropdown.Overlay verticalPosition="down" onClose={close}>
+              <Dropdown.Header>
+                <Dropdown.Title>Elements</Dropdown.Title>
+              </Dropdown.Header>
+              <Dropdown.ItemCollection>
+                <Dropdown.Item>
+                  <Checkbox {...firstSelection} /> Item 1
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Checkbox {...secondSelection} /> Item 2
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Checkbox {...thirdSelection} /> Item 3
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Checkbox {...fourthSelection} /> Item 4
+                </Dropdown.Item>
+              </Dropdown.ItemCollection>
+            </Dropdown.Overlay>
+          )}
+        </Dropdown>
       );
     }}
   </Story>
@@ -148,42 +143,40 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Image Item
 
 <Canvas>
-  <Story name="Item with image">
-    {args => {
-      const [isOpen, open, close] = useBooleanState();
+  <Story name="Item with image" height={330}>
+    {() => {
+      const [isOpen, open, close] = useBooleanState(true);
       return (
-        <SpaceContainer height={300}>
-          <Dropdown>
-            <Button onClick={open}>With image</Button>
-            {isOpen && (
-              <Dropdown.Overlay verticalPosition="down" onClose={close}>
-                <Dropdown.Header>
-                  <Dropdown.Title>Elements</Dropdown.Title>
-                </Dropdown.Header>
-                <Dropdown.ItemCollection>
-                  <Dropdown.Item>
-                    <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
-                    Item 1<Badge>100%</Badge>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Image src="https://picsum.photos/seed/akenep/200/140" alt="The alt" />
-                    Item 2<Badge level="warning">80%</Badge>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Image src="https://picsum.photos/seed/akeneq/200/140" alt="The alt" />A very long item Name that
-                    will be truncated
-                    <Badge>100%</Badge>
-                  </Dropdown.Item>
-                  <Dropdown.Item>
-                    <Image src="https://picsum.photos/seed/akener/200/140" alt="The alt" />
-                    <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Item 4</Link>
-                    <Badge>100%</Badge>
-                  </Dropdown.Item>
-                </Dropdown.ItemCollection>
-              </Dropdown.Overlay>
-            )}
-          </Dropdown>
-        </SpaceContainer>
+        <Dropdown>
+          <Button onClick={open}>With image</Button>
+          {isOpen && (
+            <Dropdown.Overlay verticalPosition="down" onClose={close}>
+              <Dropdown.Header>
+                <Dropdown.Title>Elements</Dropdown.Title>
+              </Dropdown.Header>
+              <Dropdown.ItemCollection>
+                <Dropdown.Item>
+                  <Image src="https://picsum.photos/seed/akeneo/200/140" alt="The alt" />
+                  Item 1<Badge>100%</Badge>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Image src="https://picsum.photos/seed/akenep/200/140" alt="The alt" />
+                  Item 2<Badge level="warning">80%</Badge>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Image src="https://picsum.photos/seed/akeneq/200/140" alt="The alt" />A very long item Name that
+                  will be truncated
+                  <Badge>100%</Badge>
+                </Dropdown.Item>
+                <Dropdown.Item>
+                  <Image src="https://picsum.photos/seed/akener/200/140" alt="The alt" />
+                  <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Item 4</Link>
+                  <Badge>100%</Badge>
+                </Dropdown.Item>
+              </Dropdown.ItemCollection>
+            </Dropdown.Overlay>
+          )}
+        </Dropdown>
       );
     }}
   </Story>
