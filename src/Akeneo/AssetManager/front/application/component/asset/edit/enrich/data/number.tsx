@@ -5,7 +5,7 @@ import {
   numberDataFromString,
   areNumberDataEqual,
 } from 'akeneoassetmanager/domain/model/asset/data/number';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import {unformatNumber, formatNumberForUILocale} from 'akeneoassetmanager/tools/format-number';
 import {isNumberData} from 'akeneoassetmanager/domain/model/asset/data/number';
 import {isNumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';

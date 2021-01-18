@@ -14,6 +14,8 @@ import useGetPopover from './EditorHighlight/useGetPopover';
 import useGetWidget from './EditorHighlight/useGetWidget';
 import useFetchIgnoreTextIssue from './EditorHighlight/Spellcheck/useFetchIgnoreTextIssue';
 import {useGetSpellcheckSupportedLocales} from './Common/useGetSpellcheckSupportedLocales';
+import {useLocaleDictionary, DictionaryState} from './Locale/Dictionary/useLocaleDictionary';
+import {useDictionaryState} from './Locale/Dictionary/useDictionaryState';
 
 export {
   useFetchProductDataQualityEvaluation,
@@ -31,4 +33,7 @@ export {
   useFetchIgnoreTextIssue,
   useProductEvaluation,
   useGetSpellcheckSupportedLocales,
+  useLocaleDictionary,
+  DictionaryState,
+  useDictionaryState,
 };

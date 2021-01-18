@@ -8,7 +8,7 @@ pim_asset_manager:
       assets:
         should_have_no_asset: 'Vous ne pouvez pas supprimer cette famille car elle comporte des ressources numériques'
       asset_family_attributes:
-        should_not_be_linked: 'Vous ne pouvez pas supprimer cette famille car elle contient des attributs.'
+        should_not_be_linked: 'Vous ne pouvez pas supprimer cette famille parce qu''un attribut produit de type "collection de ressources" est lié à cette famille.'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Au moins un groupe d''utilisateurs doit avoir les droits d''édition sur cette famille'
       product_attributes:

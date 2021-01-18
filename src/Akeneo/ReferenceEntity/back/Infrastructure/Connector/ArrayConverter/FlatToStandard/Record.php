@@ -181,28 +181,41 @@ final class Record implements ArrayConverterInterface
                 ));
             }
 
-            if (!array_key_exists($tokens[0], $convertedItem['values'])) {
-                $convertedItem['values'][$tokens[0]] = [];
-            }
-
-            $convertedItem['values'][$tokens[0]][] = $this->convertValue(
+            $convertedValue = $this->convertValue(
                 $directoryPath,
                 $attributeDetails,
                 $field,
                 $data
             );
+
+            if (null !== $convertedValue) {
+                if (!array_key_exists($tokens[0], $convertedItem['values'])) {
+                    $convertedItem['values'][$tokens[0]] = [];
+                }
+
+                $convertedItem['values'][$tokens[0]][] = $convertedValue;
+            }
         }
 
         return $convertedItem;
     }
 
+    /**
+     * Convert value from flat to standard.
+     * If the channel and/or scope are not specified while the attribute needs them, AND the value is empty,
+     * then we skip the conversion by returning null. This behavior is needed because we can import some records
+     * with several reference entities, so if an attribute code is localizable in a ref entity and not in another then
+     * the user can just let the column empty for attributes that do not belong to the reference entity and
+     * the import will not return errors.
+     */
     private function convertValue(
         string $directoryPath,
         AttributeDetails $attributeDetails,
         string $field,
         string $data
-    ): array {
+    ): ?array {
         $tokens = explode('-', $field);
+        $dataIsEmpty = '' === $data;
         if (in_array($attributeDetails->type, [
             RecordCollectionAttribute::ATTRIBUTE_TYPE,
             OptionCollectionAttribute::ATTRIBUTE_TYPE,
@@ -213,14 +226,28 @@ final class Record implements ArrayConverterInterface
         }
 
         $convertedValue = ['locale' => null, 'channel' => null, 'data' => $data];
+        if (3 === count($tokens)) {
+            if ($dataIsEmpty && (!$attributeDetails->valuePerChannel || !$attributeDetails->valuePerLocale)) {
+                return null;
+            }
 
-        if ($attributeDetails->valuePerChannel && $attributeDetails->valuePerLocale) {
-            $convertedValue['locale'] = $tokens[1] ?? null;
-            $convertedValue['channel'] = $tokens[2] ?? null;
-        } elseif ($attributeDetails->valuePerLocale) {
-            $convertedValue['locale'] = $tokens[1] ?? null;
-        } elseif ($attributeDetails->valuePerChannel) {
-            $convertedValue['channel'] = $tokens[1] ?? null;
+            $convertedValue['locale'] = $tokens[1];
+            $convertedValue['channel'] = $tokens[2];
+        } elseif (2 === count($tokens)) {
+            if ($attributeDetails->valuePerChannel && !$attributeDetails->valuePerLocale) {
+                $convertedValue['channel'] = $tokens[1];
+            } elseif (!$attributeDetails->valuePerChannel && $attributeDetails->valuePerLocale) {
+                $convertedValue['locale'] = $tokens[1];
+            } elseif ($dataIsEmpty) {
+                return null;
+            } else {
+                // The validation will trigger an error
+                $convertedValue['locale'] = $tokens[1];
+            }
+        } else {
+            if ($dataIsEmpty && ($attributeDetails->valuePerChannel || $attributeDetails->valuePerLocale)) {
+                return null;
+            }
         }
 
         return $convertedValue;

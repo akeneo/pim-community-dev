@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 
 type Props = {

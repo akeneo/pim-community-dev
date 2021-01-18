@@ -20,6 +20,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\ParameterType;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
@@ -107,5 +108,43 @@ SQL;
                 'word' => \PDO::PARAM_STR,
             ]
         );
+    }
+
+    public function paginatedSearch(LocaleCode $localeCode, int $page, int $itemsPerPage, string $search): array
+    {
+        $qb = $this->db->createQueryBuilder();
+
+        $qb->select('count(word) as nb_results')
+            ->from('pimee_data_quality_insights_text_checker_dictionary')
+            ->where(
+                $qb->expr()->eq(
+                    'locale_code',
+                    $qb->createPositionalParameter(strval($localeCode), ParameterType::STRING)
+                )
+            );
+
+        if (!empty($search)) {
+            $search = '%' . $search . '%';
+            $qb->andWhere(
+                $qb->expr()->like(
+                    'word',
+                    $qb->createPositionalParameter($search, ParameterType::STRING)
+                )
+            );
+        }
+
+        $totalNumberOfWords = $qb->execute()->fetchColumn();
+
+        $qb->select('id, word as label')
+            ->orderBy('word', 'ASC')
+            ->setFirstResult(($page-1) * $itemsPerPage)
+            ->setMaxResults($itemsPerPage);
+
+        $words = $qb->execute()->fetchAll(FetchMode::ASSOCIATIVE);
+
+        return [
+            'results' => $words,
+            'total' => intval($totalNumberOfWords),
+        ];
     }
 }

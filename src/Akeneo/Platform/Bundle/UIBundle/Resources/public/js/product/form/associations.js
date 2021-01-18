@@ -4,13 +4,23 @@
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-define(['underscore', 'pim/product-edit-form/associations'], function(_, Associations) {
+define(['pim/product-edit-form/associations', 'pim/security-context'], function(Associations, SecurityContext) {
   return Associations.extend({
     /**
      * {@inheritdoc}
      */
     isVisible: function() {
-      return _.result(_.result(this.getFormData(), 'meta', {}), 'is_owner', false);
+      return true;
+    },
+
+    /**
+     * {@inheritdoc}
+     */
+    isAddAssociationsVisible: function() {
+      const isProductOwner = this.getFormData().meta.is_owner;
+      const isAddAssociationsAclGranted = SecurityContext.isGranted(this.config.aclAddAssociations);
+
+      return isProductOwner && isAddAssociationsAclGranted;
     },
   });
 });

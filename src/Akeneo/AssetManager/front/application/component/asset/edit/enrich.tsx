@@ -6,7 +6,7 @@ import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset/edi
 import {denormalizeChannelReference} from 'akeneoassetmanager/domain/model/channel-reference';
 import renderValues from 'akeneoassetmanager/application/component/asset/edit/enrich/value';
 import EditionValue from 'akeneoassetmanager/domain/model/asset/edition-value';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 import {denormalizeLocaleReference} from 'akeneoassetmanager/domain/model/locale-reference';
 import styled from 'styled-components';

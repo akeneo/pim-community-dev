@@ -9,4 +9,8 @@ akeneo_data_quality_insights:
         filter_label:
             spelling_quality: Spelling quality
 
+    dictionary:
+        title: Dictionary
+
 Consistency: Consistency
+akeneo_data_quality_insights_dictionary: Dictionary

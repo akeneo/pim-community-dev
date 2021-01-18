@@ -39,11 +39,9 @@ pim_reference_entity:
         should_exist: 'Les enregistrements "%record_codes%" n''ont pas été trouvés.'
       limit_reached: 'Vous ne pouvez pas créer l''enregistrement "%record_label%" parce que vous avez atteint la limite de "%limit%" enregistrements pour cette entité référentielle'
       channel:
-        is_expected: 'Un canal est nécessaire pour l''attribut "%attribute_code%" car il a une valeur par canal.'
         is_not_expected: 'Un canal n''est pas nécessaire pour l''attribut "%attribute_code%" car il n''a pas de valeur par canal.'
         should_exist: 'Le canal "%channel_identifier%" n''existe pas.'
       locale:
-        is_expected: 'Une locale est nécessaire pour l''attribut "%attribute_code%" car il a une valeur par locale.'
         is_not_expected: 'Une locale n''est pas nécessaire pour l''attribut "%attribute_code%" car il n''a pas de valeur par locale.'
         is_not_activated: 'La locale "%locale_identifier%" n''est pas activée.'
         is_not_activated_for_channel: 'La locale "%locale_identifier%" n''est pas activée pour le canal "%channel_identifier%".'

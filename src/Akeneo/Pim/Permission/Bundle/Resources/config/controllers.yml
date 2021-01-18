@@ -109,6 +109,7 @@ services:
             - '@form.factory'
             - '@twig'
             - '@translator'
+            - '@akeneo.pim.automation.dictionary.feature'
 
     pim_enrich.controller.rest.job_instance:
         public: true

@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,11 +35,14 @@ class LocaleController
     private $templating;
     private $translator;
 
-    public function __construct(FormFactoryInterface $formFactory, Environment $engine, TranslatorInterface $translator)
+    private FeatureFlag $dictionaryFeatureFlag;
+
+    public function __construct(FormFactoryInterface $formFactory, Environment $engine, TranslatorInterface $translator, FeatureFlag $dictionaryFeatureFlag)
     {
         $this->formFactory = $formFactory;
         $this->templating = $engine;
         $this->translator = $translator;
+        $this->dictionaryFeatureFlag = $dictionaryFeatureFlag;
     }
 
     /**
@@ -70,7 +74,10 @@ class LocaleController
         }
 
         return new Response(
-            $this->templating->render('AkeneoPimPermissionBundle:Locale:edit.html.twig', ['form' => $form->createView()])
+            $this->templating->render('AkeneoPimPermissionBundle:Locale:edit.html.twig', [
+                'form' => $form->createView(),
+                'dictionaryEnabled' => $this->dictionaryFeatureFlag->isEnabled(),
+            ])
         );
     }
 }

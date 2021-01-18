@@ -2,6 +2,14 @@
 
 ## Bug fixes
 
+- PIM-9629: Fix filtering issue on product value "identifier" via the API for published products
+
+# 5.0.1 (2021-01-08)
+
+# 5.0.0 (2020-12-31)
+
+## Bug fixes
+
 - PIM-9560: Reference entities are blocked after using the filter.
 - PIM-9332: Bump resource's memory limits for flexibility environments
 - PIM-9388: Fix product link rules for scopable/localizable asset collection attributes
@@ -64,6 +72,7 @@
 - PIM-9594: Fix project completeness when at least 1 attribute group have the "All" group in its permissions but the project's locale permissions does not
 - PIM-9600: Fix rules that use string concatenation with measurement ending by zero
 - PIM-9606: Fix rule execution job status when stopping the job during the last rule
+- PIM-9625: Order of the assets is not kept
 
 ## Improvements
 

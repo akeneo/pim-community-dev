@@ -24,6 +24,8 @@ interface TextCheckerDictionaryRepositoryInterface
 {
     public function findByLocaleCode(LocaleCode $localeCode): array;
 
+    public function paginatedSearch(LocaleCode $localeCode, int $page, int $itemsPerPage, string $search): array;
+
     public function exists(LocaleCode $localeCode, DictionaryWord $word): bool;
 
     public function save(Write\TextCheckerDictionaryWord $dictionaryWord): void;

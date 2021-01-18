@@ -2,7 +2,7 @@ import * as React from 'react';
 import Channel, {getChannelLabel} from 'akeneoassetmanager/domain/model/channel';
 import __ from 'akeneoassetmanager/tools/translator';
 import Dropdown, {DropdownElement} from 'akeneoassetmanager/application/component/app/dropdown';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 
 const ChannelItemView = ({
   isOpen,

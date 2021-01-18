@@ -4,7 +4,7 @@ import __ from 'akeneoassetmanager/tools/translator';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {toggleSidebar, updateCurrentTab} from 'akeneoassetmanager/application/event/sidebar';
 import {Tab} from 'akeneoassetmanager/application/reducer/sidebar';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import DropdownMenu from 'akeneoassetmanager/application/component/app/dropdown-menu';
 
 interface SidebarOwnProps {

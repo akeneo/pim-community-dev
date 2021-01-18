@@ -9,7 +9,6 @@ import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/re
 import {Thumbnail} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-collection/thumbnail';
 import {AssetPreview} from 'akeneopimenrichmentassetmanager/assets-collection/infrastructure/component/asset-preview';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
-import Key from 'akeneoassetmanager/tools/key';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import ListAsset, {
   getAssetCodes,
@@ -26,8 +25,7 @@ import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import assetFamilyFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset-family';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
-import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
-import {AssetsIllustration, Helper} from 'akeneo-design-system';
+import {AssetsIllustration, Helper, Key, useShortcut} from 'akeneo-design-system';
 
 const AssetCard = styled.div`
   display: flex;

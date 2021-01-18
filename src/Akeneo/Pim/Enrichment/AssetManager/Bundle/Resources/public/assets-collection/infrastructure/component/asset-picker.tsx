@@ -14,7 +14,6 @@ import {ChannelCode} from 'akeneoassetmanager/domain/model/channel';
 import {Query, SearchResult} from 'akeneoassetmanager/domain/fetcher/fetcher';
 import attributeFetcher from 'akeneoassetmanager/infrastructure/fetcher/attribute';
 import {CloseButton} from 'akeneoassetmanager/application/component/app/close-button';
-import Key from 'akeneoassetmanager/tools/key';
 import {LabelCollection} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {getLabel} from 'pimui/js/i18n';
 import {getAttributeLabel, Attribute as ProductAttribute} from 'akeneoassetmanager/platform/model/structure/attribute';
@@ -33,7 +32,7 @@ import assetFetcher from 'akeneoassetmanager/infrastructure/fetcher/asset';
 import MosaicResult from 'akeneoassetmanager/application/component/asset/list/mosaic';
 import {useFetchResult} from 'akeneoassetmanager/application/hooks/grid';
 import {ThemedProps} from 'akeneoassetmanager/application/component/app/theme';
-import {useShortcut} from 'akeneoassetmanager/application/hooks/input';
+import {useShortcut, Key} from 'akeneo-design-system';
 
 type AssetFamilyIdentifier = string;
 type AssetPickerProps = {

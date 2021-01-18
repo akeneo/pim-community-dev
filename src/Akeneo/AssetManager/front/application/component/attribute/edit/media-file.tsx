@@ -16,7 +16,7 @@ import {
   isValidMaxFileSize,
   createMaxFileSizeFromString,
 } from 'akeneoassetmanager/domain/model/attribute/type/media-file/max-file-size';
-import Key from 'akeneoassetmanager/tools/key';
+import {Key} from 'akeneo-design-system';
 import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-file/media-type';
 import {
   normalizeMediaType,
