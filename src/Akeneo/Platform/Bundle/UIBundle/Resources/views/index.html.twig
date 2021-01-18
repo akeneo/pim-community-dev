@@ -20,7 +20,7 @@
 
                 // Call this whenever information about your visitors becomes available
                 // Please use Strings, Numbers, or Bools for value types.
-                pendo.initialize({
+               /* pendo.initialize({
                     visitor: {
                         id:              'testaymeric'   // Required if user is logged in
                         // email:        // Recommended if using Pendo Feedback, or NPS Email
@@ -44,6 +44,7 @@
                         // as long as it's not one of the above reserved names.
                     }
                 });
+                */
             })('a37dbc7a-345f-4359-419c-f892ef31558a');
         </script>
 
@@ -51,7 +52,7 @@
             window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=document.createElement("script");r.type="text/javascript",r.async=!0,r.src="https://cdn.heapanalytics.com/js/heap-"+e+".js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(r,a);for(var n=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],o=0;o<p.length;o++)heap[p[o]]=n(p[o])};
             heap.load("2875170433");
 
-            heap.identify('testaymeric');
+            // heap.identify('testaymeric');
         </script>
 
     </head>
