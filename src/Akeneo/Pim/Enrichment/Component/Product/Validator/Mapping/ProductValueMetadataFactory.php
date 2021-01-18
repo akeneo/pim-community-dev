@@ -104,13 +104,17 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
      */
     protected function addConstraint(ClassMetadata $metadata, Constraint $constraint, AttributeInterface $attribute)
     {
-        $target = $constraint->getTargets();
-        if (is_array($target)) {
-            throw new \LogicException('No support provided for constraint on many targets');
-        } elseif (Constraint::PROPERTY_CONSTRAINT === $target) {
-            $metadata->addPropertyConstraint('data', $constraint);
-        } elseif (Constraint::CLASS_CONSTRAINT === $target) {
-            $metadata->addConstraint($constraint);
+        $targets = $constraint->getTargets();
+        if (!is_array($targets)) {
+            $targets = [$targets];
+        }
+
+        foreach ($targets as $target) {
+            if (Constraint::PROPERTY_CONSTRAINT === $target) {
+                $metadata->addPropertyConstraint('data', $constraint);
+            } elseif (Constraint::CLASS_CONSTRAINT === $target) {
+                $metadata->addConstraint($constraint);
+            }
         }
     }
 }
