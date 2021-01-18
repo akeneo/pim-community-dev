@@ -163,6 +163,8 @@ $rules = [
         //CXP-567
         'Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes',
 
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',

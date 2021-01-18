@@ -94,3 +94,15 @@ akeneo_data_quality_insights:
     product_grid:
         filter_label:
             spelling_quality: Spelling quality
+
+    dictionary:
+        helper: The dictionary allows you to register words that will be ignored by Data Quality Insight. <a href="{{ link }}" target="_blank">More info on our helpcenter</a>.
+        words: Words
+        searchPlaceholder: Search a word
+        add_words: Add words here
+        no_search_results:
+            title: No results for your search
+            subtitle: Try again with new search criteria.
+        no_data:
+            title: No words yet
+            subtitle: Add the first one above, click on "Add" or press Enter.
