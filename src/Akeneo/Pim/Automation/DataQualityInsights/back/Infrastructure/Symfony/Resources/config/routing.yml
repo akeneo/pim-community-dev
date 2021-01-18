@@ -67,3 +67,10 @@ akeneo_data_quality_insights_get_spellcheck_supported_locales:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetSpellcheckSupportedLocalesController
         _feature: data_quality_insights
     methods: [ GET ]
+
+akeneo_data_quality_insights_get_locales_dictionary_info:
+    path: /data-quality-insights/locales-dictionary-info
+    defaults:
+        _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetLocalesDictionaryInfoController
+        _feature: dictionary
+    methods: [ POST ]

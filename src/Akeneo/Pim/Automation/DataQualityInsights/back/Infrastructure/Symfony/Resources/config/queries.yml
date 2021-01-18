@@ -148,3 +148,7 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations.community'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dictionary\GetNumberOfWordsQuery:
+        arguments:
+            $connection: '@database_connection'

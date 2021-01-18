@@ -4,6 +4,7 @@ import {FollowLocaleHandler, Locale, NoResults, useFilteredLocales} from '@akene
 import {SearchBar, useDebounceCallback} from '@akeneo-pim-community/shared';
 import {Badge, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
+import {useLocalesDictionaryInfo} from '../../hooks';
 
 const FeatureFlags = require('pim/feature-flags');
 
@@ -20,6 +21,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale}) => {
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
   const {filteredLocales, search} = useFilteredLocales(locales);
+  const {getDictionaryTotalWords} = useLocalesDictionaryInfo(locales);
 
   const debouncedSearch = useDebounceCallback(search, 300);
 
@@ -29,21 +31,6 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale}) => {
   };
 
   const localeColumnWidth = FeatureFlags.isEnabled('dictionary') ? '380px' : undefined;
-
-  // @todo[DAPI-1276] replace it by a real function
-  const getLocaleDictionaryWordsCount = (locale: string): number | undefined => {
-    if (locale === 'fr_FR') {
-      return 3;
-    }
-    if (locale === 'en_US') {
-      return 1291;
-    }
-    if (locale === 'de_DE') {
-      return 0;
-    }
-
-    return undefined;
-  };
 
   return (
     <>
@@ -73,7 +60,7 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale}) => {
           </Table.Header>
           <Table.Body>
             {filteredLocales.map(locale => {
-              const countWords = getLocaleDictionaryWordsCount(locale.code);
+              const totalWords = getDictionaryTotalWords(locale);
 
               return (
                 <Table.Row
@@ -86,15 +73,15 @@ const LocalesEEDataGrid: FC<Props> = ({locales, followLocale}) => {
                   </Table.Cell>
                   {FeatureFlags.isEnabled('dictionary') && (
                     <Table.Cell>
-                      {countWords === undefined ? (
+                      {totalWords === undefined ? (
                         <Badge level={'tertiary'}>
                           {translate('pimee_enrich.entity.locale.grid.columns.dictionary_words_count.not_available')}
                         </Badge>
                       ) : (
                         translate(
                           'pimee_enrich.entity.locale.grid.columns.dictionary_words_count.label',
-                          {count: `${countWords}`},
-                          countWords
+                          {count: `${totalWords}`},
+                          totalWords
                         )
                       )}
                     </Table.Cell>
