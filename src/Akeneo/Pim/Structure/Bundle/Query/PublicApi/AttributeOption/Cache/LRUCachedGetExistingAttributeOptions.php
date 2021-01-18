@@ -43,36 +43,38 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
             $existingAttributeOptionCodes = $this->getExistingOptionCodes->fromOptionCodesByAttributeCode(
                 $this->fromCacheKeys($nonCachedAttributeOptionKeys)
             );
-            $newCacheKeys = $this->toCacheKeys($existingAttributeOptionCodes);
-
-            $existingKeys = array_combine(array_map('strtolower', $newCacheKeys), $newCacheKeys);
+            $existingKeys = array_combine(
+                $this->toCacheKeys($existingAttributeOptionCodes),
+                $this->normalizeExistingAttributeOptionsResults($existingAttributeOptionCodes)
+            );
 
             return array_replace($results, $existingKeys);
         };
 
         $values = $this->cache->getForKeys(
-            array_map('strtolower', $this->toCacheKeys($optionCodesIndexedByAttributeCodes)),
+            $this->toCacheKeys($optionCodesIndexedByAttributeCodes),
             $fetchNonCachedAttributeOptions
         );
 
-        return $this->fromCacheKeys(array_unique(array_values(array_filter($values))));
+        return $this->denormalizeExistingAttributeOptionsResults(array_unique(array_values(array_filter($values))));
     }
 
     /**
      * Converts an array of option codes indexed by attribute code to an array of keys usable by the LRUCache
      * e.g:
      * [
-     *    'color' => ['blue', 'green'],
+     *    'color' => ['blue', 'GREEN'],
      *    'size' => ['xs'],
      * ]
      * will be converted to ['color.blue', 'color.green', 'size.xs']
+     * The keys are always in lowercase.
      */
     private function toCacheKeys(array $optionCodesIndexedByAttributeCode): array
     {
         $keys = [];
         foreach ($optionCodesIndexedByAttributeCode as $attributeCode => $optionCodes) {
             foreach ($optionCodes as $optionCode) {
-                $keys[] = sprintf('%s.%s', $attributeCode, $optionCode);
+                $keys[] = strtolower(sprintf('%s.%s', $attributeCode, $optionCode));
             }
         }
 
@@ -91,5 +93,40 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
         }
 
         return $optionsIndexedByAttributeCode;
+    }
+
+    /**
+     * e.g:
+     * [
+     *    'color' => ['blue', 'GREEN'],
+     *    'size' => ['xs'],
+     * ]
+     * will be converted to ['color.blue', 'color.GREEN', 'size.xs']
+     * This method keeps the original cases.
+     */
+    private function normalizeExistingAttributeOptionsResults(array $optionCodesIndexedByAttributeCode): array
+    {
+        $results = [];
+        foreach ($optionCodesIndexedByAttributeCode as $attributeCode => $optionCodes) {
+            foreach ($optionCodes as $optionCode) {
+                $results[] = sprintf('%s.%s', $attributeCode, $optionCode);
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Performs the reverse operation from `normalizeExistingAttributeOptionsResults()` method
+     */
+    private function denormalizeExistingAttributeOptionsResults(array $normalizedResults): array
+    {
+        $results = [];
+        foreach ($normalizedResults as $normalizedResult) {
+            [$attributeCode, $optionCode] = explode('.', $normalizedResult);
+            $results[$attributeCode][] = $optionCode;
+        }
+
+        return $results;
     }
 }
