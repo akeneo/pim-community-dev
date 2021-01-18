@@ -39,7 +39,7 @@ class PimOnBoarding {
 
       this.heap.track('Page', {page});
       this.appcues.page();
-    }, 200);
+    }, 500);
   }
 
   public async registerUser() {
@@ -54,7 +54,7 @@ class PimOnBoarding {
       this.registerUserWithHeap();
       this.registerUserWithPendo();
       this.registerUserWithAppcues();
-    }, 200);
+    }, 500);
   }
 
   private registerUserWithHeap() {
