@@ -8,6 +8,7 @@ pim_menu:
     connection_settings: Connections
     connection_settings_edit: Connection settings
     connection_monitoring: Monitoring
+    connection_webhook_edit: Event subscriptions
 pim_title:
   akeneo_connectivity_connection_settings_index: Connections
   akeneo_connectivity_connection_settings_edit: Connection settings
