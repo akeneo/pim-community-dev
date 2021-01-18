@@ -11,6 +11,7 @@ export const SpellcheckAnalysisContext = createContext<SpellcheckAnalysisContext
   analysis: [],
   isLoading: false,
   analyze: () => {},
+  refreshAnalysis: () => {},
 });
 
 SpellcheckAnalysisContext.displayName = 'SpellcheckAnalysisContext';
