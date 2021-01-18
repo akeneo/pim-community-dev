@@ -89,19 +89,15 @@ SQL;
 
     public function save(Write\TextCheckerDictionaryWord $dictionaryWord): void
     {
-        if ($this->exists($dictionaryWord->getLocaleCode(), $dictionaryWord->getWord())) {
-            return;
-        }
-
         $query = <<<SQL
-INSERT INTO  pimee_data_quality_insights_text_checker_dictionary (locale_code, word)
+INSERT IGNORE INTO  pimee_data_quality_insights_text_checker_dictionary (locale_code, word)
 VALUES (:localeCode, :word)
 SQL;
 
         $this->db->executeUpdate($query,
             [
                 'localeCode' => strval($dictionaryWord->getLocaleCode()),
-                'word' => strval($dictionaryWord->getWord()),
+                'word' => strtolower(strval($dictionaryWord->getWord())),
             ],
             [
                 'localeCode' => \PDO::PARAM_STR,

@@ -52,20 +52,18 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
         $this->assertFalse($this->repository->exists(new LocaleCode('fr_FR'), new DictionaryWord('Sony')));
     }
 
-    public function test_it_does_not_saves_words_with_same_case()
+    public function test_it_does_not_saves_the_same_word_several_times()
     {
         $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')));
         $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('Samsung')));
         $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')));
 
-        $this->assertCount(2, $this->repository->findByLocaleCode(new LocaleCode('en_US')));
+        $this->assertCount(1, $this->repository->findByLocaleCode(new LocaleCode('en_US')));
     }
 
     public function test_it_returns_an_array_of_words_for_a_locale()
     {
-        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')));
-        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('Samsung')));
-        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('SamSung')));
+        $this->createWords();
 
         $textCheckerDictionaryWords = $this->repository->findByLocaleCode(new LocaleCode('en_US'));
         $this->assertCount(3, $textCheckerDictionaryWords);

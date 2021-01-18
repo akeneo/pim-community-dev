@@ -88,7 +88,7 @@ class AspellChecker implements TextChecker
         $userGeneratedDictionary = $this->getUserGeneratedDictionary($localeCode);
 
         foreach ($issues as $issue) {
-            if (in_array($issue->word, $userGeneratedDictionary)) {
+            if (in_array(strtolower($issue->word), $userGeneratedDictionary)) {
                 continue;
             }
 

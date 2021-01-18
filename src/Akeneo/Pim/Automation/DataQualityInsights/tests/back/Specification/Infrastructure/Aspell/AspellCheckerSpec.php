@@ -117,7 +117,7 @@ class AspellCheckerSpec extends ObjectBehavior
         $textCheckerDictionaryRepository->findByLocaleCode($localeCode)->willReturn([
             new TextCheckerDictionaryWord(
                 new LocaleCode('en_US'),
-                new DictionaryWord('Dior')
+                new DictionaryWord('dior')
             )
         ]);
 
