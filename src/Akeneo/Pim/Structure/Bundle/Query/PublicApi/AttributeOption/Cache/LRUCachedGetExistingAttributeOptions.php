@@ -39,21 +39,37 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
                 return [];
             }
 
-            $results = array_fill_keys($nonCachedAttributeOptionKeys, false);
             $existingAttributeOptionCodes = $this->getExistingOptionCodes->fromOptionCodesByAttributeCode(
                 $this->fromCacheKeys($nonCachedAttributeOptionKeys)
             );
-            $existingKeys = array_fill_keys($this->toCacheKeys($existingAttributeOptionCodes), true);
 
-            return array_replace($results, $existingKeys);
+            $newCacheKeys = $this->toCacheKeys($existingAttributeOptionCodes);
+
+            // We build the cache as:
+            //  - the key represents the attribute option code that can be asked
+            //  - the value represents the real attribute option code
+            // The key and the value can be different because the search is case insensitive. So we could have
+            // in cache:
+            // {
+            //      "simple_attribute.yes": "simple_attribute.yes",
+            //      "simple_attribute.YES": "simple_attribute.yes",
+            // }
+            $results = array_combine($newCacheKeys, $newCacheKeys); // Add in cache real attribute option code
+            // Add in cache attribute option code specified by the user
+            $indexedNewCacheKeys = array_combine(array_map('strtolower', $newCacheKeys), $newCacheKeys);
+            foreach ($nonCachedAttributeOptionKeys as $nonCachedAttributeOptionKey) {
+                $results[$nonCachedAttributeOptionKey] = $indexedNewCacheKeys[strtolower($nonCachedAttributeOptionKey)] ?? '';
+            }
+
+            return $results;
         };
 
-        $keys = $this->cache->getForKeys(
+        $values = $this->cache->getForKeys(
             $this->toCacheKeys($optionCodesIndexedByAttributeCodes),
             $fetchNonCachedAttributeOptions
         );
 
-        return $this->fromCacheKeys(array_keys(array_filter($keys)));
+        return $this->fromCacheKeys(array_unique(array_values(array_filter($values))));
     }
 
     /**
