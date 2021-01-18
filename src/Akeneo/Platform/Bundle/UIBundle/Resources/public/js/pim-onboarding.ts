@@ -22,6 +22,15 @@ class PimOnBoarding {
   private pendo: PendoAgent;
   private appcues: AppcuesAgent;
 
+  public constructor() {
+    // @ts-ignore
+    this.heap = window.heap;
+    // @ts-ignore
+    this.pendo = window.pendo;
+    // @ts-ignore
+    this.appcues = window.Appcues;
+  }
+
   public initialize() {
     mediator.on('route_complete', async (name: string) => {
       this.registerPage(name);
@@ -30,31 +39,18 @@ class PimOnBoarding {
 
   public async registerPage(page: string) {
     setTimeout(() => {
-      // @ts-ignore
-      this.heap = window.heap;
-      // @ts-ignore
-      this.pendo = window.pendo;
-      // @ts-ignore
-      this.appcues = window.appcues;
-
       this.heap.track('Page', {page});
+      //pendo is already initialized after the pendo library is loaded
       this.appcues.page();
-    }, 500);
+    }, 100);
   }
 
   public async registerUser() {
     setTimeout(() => {
-      // @ts-ignore
-      this.heap = window.heap;
-      // @ts-ignore
-      this.pendo = window.pendo;
-      // @ts-ignore
-      this.appcues = window.appcues;
-
       this.registerUserWithHeap();
       this.registerUserWithPendo();
       this.registerUserWithAppcues();
-    }, 500);
+    }, 100);
   }
 
   private registerUserWithHeap() {

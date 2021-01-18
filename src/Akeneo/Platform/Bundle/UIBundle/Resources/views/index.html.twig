@@ -7,8 +7,6 @@
 
         <link rel="stylesheet" href="{{asset('css/pim.css', 'frontend')}}"/>
 
-        <script type="text/javascript" src="{{asset('dist/vendor.min.js', 'frontend')}} "></script>
-        <script type="text/javascript" src="{{asset('dist/main.min.js', 'frontend')}} "></script>
         <script src="//fast.appcues.com/86340.js"></script>
         <script>
             (function(apiKey){
@@ -20,17 +18,7 @@
 
                 // Call this whenever information about your visitors becomes available
                 // Please use Strings, Numbers, or Bools for value types.
-               /* pendo.initialize({
-                    visitor: {
-                        id:              'testaymeric'   // Required if user is logged in
-                        // email:        // Recommended if using Pendo Feedback, or NPS Email
-                        // full_name:    // Recommended if using Pendo Feedback
-                        // role:         // Optional
-
-                        // You can add any additional visitor level key-values here,
-                        // as long as it's not one of the above reserved names.
-                    },
-
+                pendo.initialize({
                     account: {
                         id:           'testaymeric1234' // Highly recommended
                         // name:         // Optional
@@ -44,7 +32,6 @@
                         // as long as it's not one of the above reserved names.
                     }
                 });
-                */
             })('a37dbc7a-345f-4359-419c-f892ef31558a');
         </script>
 
@@ -54,6 +41,9 @@
 
             // heap.identify('testaymeric');
         </script>
+
+        <script type="text/javascript" src="{{asset('dist/vendor.min.js', 'frontend')}} "></script>
+        <script type="text/javascript" src="{{asset('dist/main.min.js', 'frontend')}} "></script>
 
     </head>
     <body>
