@@ -30,7 +30,7 @@ class GetLocalesDictionaryInfoController
     public function __invoke(Request $request): Response
     {
         $locales = $request->get('locales', []);
-        $numberOfWords = $this->getNumberOfWordsQuery->execute($locales);
+        $numberOfWords = $this->getNumberOfWordsQuery->byLocales($locales);
 
         $infos = [];
         foreach ($locales as $locale) {
