@@ -1,0 +1,30 @@
+name: Cleanup unused staging envs
+on:
+  push:
+    paths:
+      - '.github/workflows/cleanup-staging.*'
+  schedule:
+    - cron: '0 0 * * 0'  # every sunday at midnight
+
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v2
+        with:
+            ref: gh-pages
+      - name: Prepare node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 13.13
+      - name: Remove old staging folders
+        run:
+          CLEANUP_TOKEN=${{ secrets.CLEANUP_TOKEN }} node .github/workflows/cleanup-staging.js
+      - name: Commit changes
+        run:  |
+          git config --global user.email "contact@akeneo.com" && \
+          git config --global user.name "Github Actions" && \
+          git commit -m "Cleanup staging envs"
+      - name: Push tag
+        run: git push origin gh-pages
