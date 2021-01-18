@@ -39,33 +39,19 @@ class LRUCachedGetExistingAttributeOptions implements GetExistingAttributeOption
                 return [];
             }
 
+            $results = array_fill_keys($nonCachedAttributeOptionKeys, '');
             $existingAttributeOptionCodes = $this->getExistingOptionCodes->fromOptionCodesByAttributeCode(
                 $this->fromCacheKeys($nonCachedAttributeOptionKeys)
             );
-
             $newCacheKeys = $this->toCacheKeys($existingAttributeOptionCodes);
 
-            // We build the cache as:
-            //  - the key represents the attribute option code that can be asked
-            //  - the value represents the real attribute option code
-            // The key and the value can be different because the search is case insensitive. So we could have
-            // in cache:
-            // {
-            //      "simple_attribute.yes": "simple_attribute.yes",
-            //      "simple_attribute.YES": "simple_attribute.yes",
-            // }
-            $results = array_combine($newCacheKeys, $newCacheKeys); // Add in cache real attribute option code
-            // Add in cache attribute option code specified by the user
-            $indexedNewCacheKeys = array_combine(array_map('strtolower', $newCacheKeys), $newCacheKeys);
-            foreach ($nonCachedAttributeOptionKeys as $nonCachedAttributeOptionKey) {
-                $results[$nonCachedAttributeOptionKey] = $indexedNewCacheKeys[strtolower($nonCachedAttributeOptionKey)] ?? '';
-            }
+            $existingKeys = array_combine(array_map('strtolower', $newCacheKeys), $newCacheKeys);
 
-            return $results;
+            return array_replace($results, $existingKeys);
         };
 
         $values = $this->cache->getForKeys(
-            $this->toCacheKeys($optionCodesIndexedByAttributeCodes),
+            array_map('strtolower', $this->toCacheKeys($optionCodesIndexedByAttributeCodes)),
             $fetchNonCachedAttributeOptions
         );
 
