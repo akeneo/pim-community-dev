@@ -1,6 +1,7 @@
 ## Bug fixes
 
 - PIM-9617: Configure clean_removed_attribute_job to be run on a single daemon
+- PIM-9629: Fix filtering issue on product value "identifier" via the API for published products
 
 ## Improvements
 
