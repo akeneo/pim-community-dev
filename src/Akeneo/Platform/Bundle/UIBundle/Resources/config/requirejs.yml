@@ -1264,3 +1264,6 @@ config:
     pim/edition: pimui/js/pim-edition.ts
     pim/job/common/edit/field/file-path: pimui/js/job/common/edit/field/file-path.ts
     pim/job/common/edit/field/allow-file-upload: pimui/js/job/common/edit/field/allow-file-upload.ts
+
+    # PLG
+    pim/onboarding: pimui/js/pim-onboarding.ts
