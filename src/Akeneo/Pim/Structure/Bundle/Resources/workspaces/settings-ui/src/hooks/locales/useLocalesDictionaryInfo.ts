@@ -1,7 +1,7 @@
-import { Locale, useMountedRef } from "@akeneo-pim-community/settings-ui";
-import { useCallback, useEffect, useState } from "react";
-import { fetchLocalesDictionaryInfo } from "../../infrastructure";
-import { LocalesDictionaryInfoCollection } from "../../domain";
+import {Locale, useMountedRef} from '@akeneo-pim-community/settings-ui';
+import {useCallback, useEffect, useState} from 'react';
+import {fetchLocalesDictionaryInfo} from '../../infrastructure';
+import {LocalesDictionaryInfoCollection} from '../../domain';
 
 export type GetDictionaryTotalWords = (locale: Locale) => number | undefined;
 
@@ -10,25 +10,19 @@ export type LocalesDictionaryInfoState = {
   getDictionaryTotalWords: GetDictionaryTotalWords;
 };
 
-const FeatureFlags = require("pim/feature-flags");
+const FeatureFlags = require('pim/feature-flags');
 
-const useLocalesDictionaryInfo = (
-  locales: Locale[]
-): LocalesDictionaryInfoState => {
-  const [localesDictionaryInfo, setLocalesDictionaryInfo] = useState<
-    LocalesDictionaryInfoCollection
-  >({});
+const useLocalesDictionaryInfo = (locales: Locale[]): LocalesDictionaryInfoState => {
+  const [localesDictionaryInfo, setLocalesDictionaryInfo] = useState<LocalesDictionaryInfoCollection>({});
   const mountedRef = useMountedRef();
 
   const load = useCallback(
     async (localesList: Locale[]) => {
-      if (!FeatureFlags.isEnabled("dictionary")) {
+      if (!FeatureFlags.isEnabled('dictionary')) {
         setLocalesDictionaryInfo({});
         return;
       }
-      const infos = await fetchLocalesDictionaryInfo(
-        localesList.map((locale) => locale.code)
-      );
+      const infos = await fetchLocalesDictionaryInfo(localesList.map(locale => locale.code));
 
       if (mountedRef.current) {
         setLocalesDictionaryInfo(infos);
@@ -39,10 +33,7 @@ const useLocalesDictionaryInfo = (
 
   const getDictionaryTotalWords: GetDictionaryTotalWords = useCallback(
     (locale: Locale): number | undefined => {
-      if (
-        !localesDictionaryInfo.hasOwnProperty(locale.code) ||
-        localesDictionaryInfo[locale.code] === null
-      ) {
+      if (!localesDictionaryInfo.hasOwnProperty(locale.code) || localesDictionaryInfo[locale.code] === null) {
         return undefined;
       }
 
@@ -61,4 +52,4 @@ const useLocalesDictionaryInfo = (
   };
 };
 
-export { useLocalesDictionaryInfo };
+export {useLocalesDictionaryInfo};

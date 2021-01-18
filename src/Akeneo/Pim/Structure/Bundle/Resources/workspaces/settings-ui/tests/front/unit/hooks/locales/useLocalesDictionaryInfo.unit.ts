@@ -1,10 +1,10 @@
-import { renderHookWithProviders } from "@akeneo-pim-community/shared/tests/front/unit/utils";
-import { Locale } from "@akeneo-pim-community/settings-ui";
-import { aLocale } from "@akeneo-pim-community/settings-ui/tests/front/utils/provideLocaleHelper";
-import { useLocalesDictionaryInfo } from "@akeneo-pim-enterprise/settings-ui";
-import { fetchLocalesDictionaryInfo } from "@akeneo-pim-enterprise/settings-ui/src/infrastructure/fetchers/fetchLocalesDictionaryInfo";
+import {renderHookWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
+import {Locale} from '@akeneo-pim-community/settings-ui';
+import {aLocale} from '@akeneo-pim-community/settings-ui/tests/front/utils/provideLocaleHelper';
+import {useLocalesDictionaryInfo} from '@akeneo-pim-enterprise/settings-ui';
+import {fetchLocalesDictionaryInfo} from '@akeneo-pim-enterprise/settings-ui/src/infrastructure/fetchers/fetchLocalesDictionaryInfo';
 
-const FeatureFlags = require("pim/feature-flags");
+const FeatureFlags = require('pim/feature-flags');
 FeatureFlags.isEnabled.mockImplementation((feature: string) => false);
 
 jest.mock('@akeneo-pim-enterprise/settings-ui/src/infrastructure/fetchers/fetchLocalesDictionaryInfo');
