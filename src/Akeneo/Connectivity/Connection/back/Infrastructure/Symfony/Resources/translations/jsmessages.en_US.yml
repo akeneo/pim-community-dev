@@ -227,7 +227,7 @@ akeneo_connectivity.connection:
                 error: Sorry, an error occurred while regenerating the webhook secret.
         active_event_subscriptions_limit_reached:
             message: You can connect up to {{ limit }} connections to the Event subscription feature. You have reached this limit.
-            link: Learn more about event subscriptions configuration.
+            link: Learn more about event subscription configuration.
     error_management:
         connection_monitoring:
             title: Monitoring
