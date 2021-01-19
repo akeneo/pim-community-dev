@@ -16,8 +16,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Connection dashboard
   akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
   akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
-  akeneo_connectivity_connection_webhook_edit: Event subscription (BETA)
-  akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription (BETA)
+  akeneo_connectivity_connection_webhook_edit: Event subscription
+  akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
 akeneo_connectivity.connection:
   connections: Connections
   secondary_actions:
