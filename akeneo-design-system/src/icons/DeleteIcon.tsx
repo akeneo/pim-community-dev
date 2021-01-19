@@ -2,9 +2,14 @@ import React from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {IconProps} from './IconProps';
 
-const anim = keyframes`
+const deleteInAnimation = keyframes`
   from {transform: rotate(0) translate(0, 0)}
   to {transform: rotate(15deg) translate(-3px, -2px)}
+`;
+
+const deleteOutAnimation = keyframes`
+  from {transform: rotate(15deg) translate(-3px, -2px)}
+  to {transform: rotate(0) translate(0, 0)}
 `;
 
 const Lid = styled.path`
@@ -19,12 +24,12 @@ const Container = styled.svg<{animateOnHover: boolean}>(
   ({animateOnHover}) =>
     animateOnHover &&
     css`
-      animation-name: ${anim};
+      animation-name: ${deleteInAnimation};
       g, ${Lid} {
         animation-name: inherit;
       }
       &:not(:hover) {
-        animation-name: unset;
+        animation-name: ${deleteOutAnimation};
       }
     `
 );
@@ -39,6 +44,6 @@ const DeleteIcon = ({title, size = 24, color = 'currentColor', animateOnHover = 
   </Container>
 );
 
-DeleteIcon.Animation = anim;
+DeleteIcon.Animation = deleteInAnimation;
 
 export {DeleteIcon};

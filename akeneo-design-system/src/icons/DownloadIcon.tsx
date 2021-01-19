@@ -2,7 +2,7 @@ import React from 'react';
 import styled, {keyframes} from 'styled-components';
 import {IconProps} from './IconProps';
 
-const downloadPop = keyframes`
+const downloadAnimation = keyframes`
   0%   {transform: translateY(0)}
   25%  {transform: translateY(2px)}
   50%  {transform: translateY(-2px)}
@@ -16,13 +16,13 @@ const Arrow = styled.path`
 `;
 
 const Container = styled.svg<{animateOnHover: boolean}>`
-  animation-name: ${downloadPop};
+  animation-name: ${downloadAnimation};
   g,
   path {
     animation-name: inherit;
   }
   :not(:hover) {
-    animation-name: unset;
+    animation-name: reverse;
   }
 `;
 
@@ -36,6 +36,6 @@ const DownloadIcon = ({title, size = 24, color = 'currentColor', animateOnHover 
   </Container>
 );
 
-DownloadIcon.Animation = downloadPop;
+DownloadIcon.Animation = downloadAnimation;
 
 export {DownloadIcon};

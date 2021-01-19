@@ -3,14 +3,24 @@ import styled, {css, keyframes} from 'styled-components';
 import {IllustrationProps} from './IllustrationProps';
 import Import from '../../static/illustrations/Import.svg';
 
-const arrowAnimation = keyframes`
+const arrowInAnimation = keyframes`
   0%   {transform: rotate(0deg)}
   100% {transform: rotate(180deg)}
 `;
 
-const starsAnimation = keyframes`
+const arrowOutAnimation = keyframes`
+  0%   {transform: rotate(180deg)}
+  100% {transform: rotate(0deg)}
+`;
+
+const starsInAnimation = keyframes`
   0%   {transform: scale(1)}
   100% {transform: scale(1.2)}
+`;
+
+const starsOutAnimation = keyframes`
+  0%   {transform: scale(1.2)}
+  100% {transform: scale(1)}
 `;
 
 const Stars = styled.g`
@@ -19,7 +29,7 @@ const Stars = styled.g`
   animation-duration: 0.2s;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
-  animation-name: ${arrowAnimation};
+  animation-name: ${starsInAnimation};
 `;
 
 const Arrow = styled.g`
@@ -28,7 +38,7 @@ const Arrow = styled.g`
   animation-duration: 0.3s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
-  animation-name: ${starsAnimation};
+  animation-name: ${arrowInAnimation};
 `;
 
 const Container = styled.svg<{animateOnHover: boolean}>(
@@ -36,11 +46,11 @@ const Container = styled.svg<{animateOnHover: boolean}>(
     animateOnHover &&
     css`
       &:not(:hover) ${Stars} {
-        animation-name: unset;
+        animation-name: ${starsOutAnimation};
       }
 
       &:not(:hover) ${Arrow} {
-        animation-name: unset;
+        animation-name: ${arrowOutAnimation};
       }
     `
 );
@@ -66,7 +76,7 @@ const ImportIllustration = ({title, size = 256, animateOnHover = true, ...props}
   </Container>
 );
 
-ImportIllustration.StarsAnimation = starsAnimation;
-ImportIllustration.ArrowAnimation = arrowAnimation;
+ImportIllustration.StarsAnimation = arrowInAnimation;
+ImportIllustration.ArrowAnimation = arrowInAnimation;
 
 export {ImportIllustration};
