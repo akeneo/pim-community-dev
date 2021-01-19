@@ -5,10 +5,12 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\UrlReachabilityCheckerInterface;
 use Akeneo\Connectivity\Connection\Domain\Webhook\DTO\UrlReachabilityStatus;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
 use PhpSpec\ObjectBehavior;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -40,12 +42,19 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
     public function it_checks_url_is_good_and_reachable($client, $validator): void
     {
         $validUrl = 'http://172.17.0.1:8000/webhook';
-        $request = new Request($this->getWrappedObject()::POST, $validUrl);
+        $secret = '1234';
 
-        $client->send($request)->willReturn(new Response(200, [], null, '1.1', 'OK'));
+        $client->send(Argument::that(function ($object) use ($validUrl) {
+            return $object instanceof Request &&
+                $object->hasHeader('Content-Type') &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $this->getWrappedObject()::POST === $object->getMethod() &&
+                $validUrl === (string) $object->getUri();
+        }))->willReturn(new Response(200, [], null, '1.1', 'OK'));
         $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
 
-        $resultUrlReachabilityStatus = $this->check($validUrl);
+        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
@@ -58,6 +67,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         ConstraintViolationInterface $violation
     ): void {
         $notValidUrl = 'I_AM_NOT_A_VALID_URL';
+        $secret = '1234';
         $violationList = new ConstraintViolationList([$violation->getWrappedObject()]);
 
         $violation->getMessage()->willReturn($notValidUrl);
@@ -67,7 +77,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
             [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),]
         )->willReturn($violationList);
 
-        $resultUrlReachabilityStatus = $this->check($notValidUrl);
+        $resultUrlReachabilityStatus = $this->check($notValidUrl, $secret);
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
@@ -80,6 +90,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
         ConstraintViolationInterface $violation
     ): void {
         $emptyUrl = '';
+        $secret = '1234';
         $violationList = new ConstraintViolationList([$violation->getWrappedObject()]);
 
         $violation->getMessage()->willReturn($emptyUrl);
@@ -89,7 +100,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
             [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),]
         )->willReturn($violationList);
 
-        $resultUrlReachabilityStatus = $this->check($emptyUrl);
+        $resultUrlReachabilityStatus = $this->check($emptyUrl, $secret);
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
@@ -100,14 +111,23 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
     public function it_checks_url_is_not_reachable_and_has_response($client, $validator): void
     {
         $validUrl = 'http://172.17.0.1:8000/webhook';
-        $request = new Request($this->getWrappedObject()::POST, $validUrl);
+        $secret = '1234';
+
+        $request = new Request($this->getWrappedObject()::POST, $validUrl, []);
         $response = new Response(451, [], null, '1.1', 'Unavailable For Legal Reasons');
         $requestException = new RequestException('RequestException message', $request, $response);
 
-        $client->send($request)->willThrow($requestException);
+        $client->send(Argument::that(function ($object) use ($validUrl) {
+            return $object instanceof Request &&
+                $object->hasHeader('Content-Type') &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $this->getWrappedObject()::POST === $object->getMethod() &&
+                $validUrl === (string) $object->getUri();
+        }))->willThrow($requestException);
         $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
 
-        $resultUrlReachabilityStatus = $this->check($validUrl);
+        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
@@ -118,13 +138,21 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
     public function it_checks_url_is_not_reachable_and_has_no_response($client, $validator): void
     {
         $validUrl = 'http://172.17.0.1:8000/webhook';
-        $request = new Request($this->getWrappedObject()::POST, $validUrl);
+        $secret = '1234';
+        $request = new Request($this->getWrappedObject()::POST, $validUrl, []);
         $connectException = new ConnectException('ConnectException message', $request);
 
-        $client->send($request)->willThrow($connectException);
+        $client->send(Argument::that(function ($object) use ($validUrl) {
+            return $object instanceof Request &&
+                $object->hasHeader('Content-Type') &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $this->getWrappedObject()::POST === $object->getMethod() &&
+                $validUrl === (string) $object->getUri();
+        }))->willThrow($connectException);
         $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
 
-        $resultUrlReachabilityStatus = $this->check($validUrl);
+        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),
@@ -135,13 +163,20 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
     public function it_checks_url_is_not_reachable_and_no_request_exception_has_been_raised($client, $validator): void
     {
         $validUrl = 'http://172.17.0.1:8000/webhook';
-        $request = new Request($this->getWrappedObject()::POST, $validUrl);
+        $secret = '1234';
         $transferException = new TransferException('TransferException message');
 
-        $client->send($request)->willThrow($transferException);
+        $client->send(Argument::that(function ($object) use ($validUrl) {
+            return $object instanceof Request &&
+                $object->hasHeader('Content-Type') &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE) &&
+                $object->hasHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP) &&
+                $this->getWrappedObject()::POST === $object->getMethod() &&
+                $validUrl === (string) $object->getUri();
+        }))->willThrow($transferException);
         $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
 
-        $resultUrlReachabilityStatus = $this->check($validUrl);
+        $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
 
         Assert::assertEquals(
             $resultUrlReachabilityStatus->getWrappedObject(),

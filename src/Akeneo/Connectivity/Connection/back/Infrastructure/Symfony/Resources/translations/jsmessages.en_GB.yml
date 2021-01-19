@@ -193,8 +193,8 @@ akeneo_connectivity.connection:
         message: Ask your administrator to create one.
         link: Learn more about connections here...
   webhook:
-    title: Event subscriptions
-    event_subscription: Event subscriptions
+    title: Event subscription (BETA)
+    event_subscription: Event subscription (bêta)
     helper:
       message: You can be notified of events happening in the PIM for products synchronized with this connected app. You just need to define a URL and the event type(s) you want to keep track of.
       link: Learn more about event subscription configuration...

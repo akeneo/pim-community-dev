@@ -202,6 +202,7 @@ akeneo_connectivity.connection:
         helper:
             message: You can be notified of events happening in the PIM for products synchronized with this connected app. You just need to define a URL and the event type(s) you want to keep track of.
             link: Learn more about event subscription configuration...
+            url.test_disabled: Please, click on the Save button to be able to test the URL.
         form:
             url: URL
             secret: Secret
