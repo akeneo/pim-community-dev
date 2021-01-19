@@ -4,6 +4,10 @@
 
 - PIM-9624: Improve DQI evaluations purge
 
+## Bug fixes
+
+- PIM-9638: Fix security issue in Symfony < 4.4.13 (see https://symfony.com/blog/cve-2020-15094-prevent-rce-when-calling-untrusted-remote-with-cachinghttpclient)
+
 # 4.0.84 (2021-01-14)
 
 # 4.0.83 (2021-01-06)
