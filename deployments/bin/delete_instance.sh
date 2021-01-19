@@ -23,6 +23,7 @@ NAMESPACE_PATH=$(pwd)
 #
 
 echo "1 - initializing terraform in $(pwd)"
+cat ${PWD}/main.tf.json
 terraform init
 # for mysql disk deletion, we must desactivate prevent_destroy in tf file
 find ${NAMESPACE_PATH}/../../  -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
@@ -40,7 +41,7 @@ echo "3 - Removing shared state files"
 if [[ $GOOGLE_PROJECT_ID == "akecld-saas-dev" || $GOOGLE_PROJECT_ID == "akecld-onboarder-dev" ]]; then
         TF_BUCKET="-dev"
 fi
-echo gsutil -m rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}
+gsutil -m rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}
 
 echo "5 - Delete disks"
 LIST_PV_NAME=$(kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]')

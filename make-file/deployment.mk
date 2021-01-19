@@ -10,6 +10,8 @@ PFID ?= $(TYPE)-$(INSTANCE_NAME)
 CI ?= false
 ACTIVATE_MONITORING ?= true
 
+PRODUCT_REFERENCE_TYPE ?= serenity_instance
+PRODUCT_REFERENCE_CODE ?= serenity_dev
 TEST_AUTO ?= false
 ENV_NAME ?= dev
 GOOGLE_PROJECT_ID ?= akecld-saas-$(ENV_NAME)
@@ -220,10 +222,21 @@ endif
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
 	PIM_SRC_DIR=$(PIM_SRC_DIR) \
+	TYPE=$(TYPE) \
+	PRODUCT_REFERENCE_TYPE=$(PRODUCT_REFERENCE_TYPE) \
+	PRODUCT_REFERENCE_CODE=$(PRODUCT_REFERENCE_CODE) \
 	MYSQL_DISK_SIZE=$(MYSQL_DISK_SIZE) \
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+	echo "REMOVE THESES LINES BELOW AFTER MERGING & RELEASING BRANCH 'BH6118'"
+	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim.product_reference_code'
+	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.product_reference_code'
+	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim.product_reference_type'
+	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.product_reference_type'
+	echo "REMOVE THESES LINES AFTER MERGING & RELEASING BRANCH 'BH6118' IN PRODUCTION"
+endif
 
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version
@@ -261,7 +274,7 @@ delete_pr_environments_hourly:
 
 .PHONY: clone_serenity
 clone_serenity:
-	INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
+	PRODUCT_REFERENCE_TYPE=serenity_instance_clone INSTANCE_NAME=${INSTANCE_NAME}  IMAGE_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files && \
 	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PED_TAG=$(SOURCE_PED_TAG) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh
 
 .PHONY: clone_flexibility
@@ -288,4 +301,3 @@ php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
 .PHONY: push-php-image-prod
 push-php-image-prod: #Doc: push docker image to docker hub
 	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
-

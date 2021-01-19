@@ -10,7 +10,7 @@ resource "google_compute_disk" "mysql-disk" {
     pfid        = local.pfid
     pim_version = lower(var.pim_version)
     app         = "mysql"
-    type        = "srnt"
+    type        = local.type
   }
 
   lifecycle {
