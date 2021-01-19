@@ -16,13 +16,12 @@ const Arrow = styled.path`
 `;
 
 const Container = styled.svg<{animateOnHover: boolean}>`
-  animation-name: ${downloadAnimation};
   g,
   path {
     animation-name: inherit;
   }
-  :not(:hover) {
-    animation-name: reverse;
+  :hover {
+    animation-name: ${downloadAnimation};
   }
 `;
 

@@ -29,7 +29,6 @@ const Stars = styled.g`
   animation-duration: 0.2s;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
-  animation-name: ${starsInAnimation};
 `;
 
 const Arrow = styled.g`
@@ -38,22 +37,26 @@ const Arrow = styled.g`
   animation-duration: 0.3s;
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
-  animation-name: ${arrowInAnimation};
 `;
 
-const Container = styled.svg<{animateOnHover: boolean}>(
-  ({animateOnHover}) =>
-    animateOnHover &&
-    css`
-      &:not(:hover) ${Stars} {
-        animation-name: ${starsOutAnimation};
-      }
+const Animation = css`
+  ${Stars} {
+    animation-name: ${starsInAnimation};
+  }
+  ${Arrow} {
+    animation-name: ${arrowInAnimation};
+  }
+  &:not(:hover) ${Stars} {
+    animation-name: ${starsOutAnimation};
+  }
+  &:not(:hover) ${Arrow} {
+    animation-name: ${arrowOutAnimation};
+  }
+`;
 
-      &:not(:hover) ${Arrow} {
-        animation-name: ${arrowOutAnimation};
-      }
-    `
-);
+const Container = styled.svg<{animateOnHover: boolean}>`
+  ${({animateOnHover}) => animateOnHover && Animation}
+`;
 
 const ImportIllustration = ({title, size = 256, animateOnHover = true, ...props}: IllustrationProps) => (
   <Container width={size} height={size} viewBox="0 0 256 256" animateOnHover={animateOnHover} {...props}>
@@ -76,7 +79,6 @@ const ImportIllustration = ({title, size = 256, animateOnHover = true, ...props}
   </Container>
 );
 
-ImportIllustration.StarsAnimation = arrowInAnimation;
-ImportIllustration.ArrowAnimation = arrowInAnimation;
+ImportIllustration.Animation = Animation;
 
 export {ImportIllustration};
