@@ -85,6 +85,9 @@ batch_jobs:
     perform.label: Export rapide CSV des produits publiés dans le contexte de grille
   publish_product:
     perform.label: Publier les produits
+  default_steps:
+    clean_attribute:
+      clean_draft: Traitement des propositions
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nouvelle proposition
