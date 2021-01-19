@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, {keyframes} from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
 import {IconProps} from './IconProps';
 
 const downloadAnimation = keyframes`
@@ -12,16 +12,17 @@ const downloadAnimation = keyframes`
 const Arrow = styled.path`
   animation-duration: 0.5s;
   animation-iteration-count: 1;
-  animation-fill-mode: forwards;
+`;
+
+const animatedMixin = css`
+  ${Arrow} {
+    animation-name: ${downloadAnimation};
+  }
 `;
 
 const Container = styled.svg<{animateOnHover: boolean}>`
-  g,
-  path {
-    animation-name: inherit;
-  }
   :hover {
-    animation-name: ${downloadAnimation};
+    ${({animateOnHover}) => animateOnHover && animatedMixin}
   }
 `;
 
@@ -35,6 +36,6 @@ const DownloadIcon = ({title, size = 24, color = 'currentColor', animateOnHover 
   </Container>
 );
 
-DownloadIcon.Animation = downloadAnimation;
+DownloadIcon.animatedMixin = animatedMixin;
 
 export {DownloadIcon};

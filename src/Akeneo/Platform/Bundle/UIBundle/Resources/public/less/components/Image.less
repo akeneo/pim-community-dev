@@ -1,5 +1,4 @@
 @import '../base/variables';
-@import '../base/animations';
 
 .AknImage {
   @imageWidth: 140px;
@@ -29,19 +28,12 @@
     }
   }
 
-  &--dropping, &:hover {
-    .AknImage-uploaderIllustration {
-      .svgAnimation();
-    }
-  }
-
   &-uploader {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
     width: 100%;
-    .svgAnimation();
 
     &Helper {
       margin-bottom: 24px;
@@ -88,8 +80,6 @@
       &:hover {
         cursor: pointer;
       }
-
-      .svgAnimation();
     }
 
     .AknImage-actionItemIcon {
