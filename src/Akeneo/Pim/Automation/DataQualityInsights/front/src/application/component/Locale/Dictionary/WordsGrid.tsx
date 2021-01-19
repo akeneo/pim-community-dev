@@ -19,9 +19,12 @@ const WordsGrid: FC = () => {
     debouncedSearch(searchValue, 1);
   };
 
-  const onChangePage = useCallback((pageNumber: number) => {
-    search(searchString, pageNumber);
-  }, [searchString, search]);
+  const onChangePage = useCallback(
+    (pageNumber: number) => {
+      search(searchString, pageNumber);
+    },
+    [searchString, search]
+  );
 
   const onDeleteWord = async (wordId: number) => {
     await deleteWord(wordId);

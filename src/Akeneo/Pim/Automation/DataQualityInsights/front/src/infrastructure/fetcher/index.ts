@@ -9,5 +9,5 @@ export {
   fetchTextAnalysis,
   fetchSpellcheckSupportedLocales,
   fetchLocaleDictionary,
-  deleteWordFromLocaleDictionary
+  deleteWordFromLocaleDictionary,
 };
