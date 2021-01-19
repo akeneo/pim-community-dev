@@ -1,31 +1,46 @@
 import React from 'react';
-import styled, {css} from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
 import {IllustrationProps} from './IllustrationProps';
 import Import from '../../static/illustrations/Import.svg';
+
+const arrowAnimation = keyframes`
+  0%   {transform: rotate(0deg)}
+  100% {transform: rotate(180deg)}
+`;
+
+const starsAnimation = keyframes`
+  0%   {transform: scale(1)}
+  100% {transform: scale(1.2)}
+`;
 
 const Stars = styled.g`
   fill: #5e63b6;
   transform-origin: 50% 50%;
-  transition: transform 0.2s linear;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-name: ${arrowAnimation};
 `;
 
 const Arrow = styled.g`
   fill: #9452ba;
   transform-origin: 51% 32%;
-  transition: transform 0.3s ease-in-out;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+  animation-name: ${starsAnimation};
 `;
 
 const Container = styled.svg<{animateOnHover: boolean}>(
   ({animateOnHover}) =>
     animateOnHover &&
     css`
-      :hover {
-        ${Arrow} {
-          transform: rotate(180deg);
-        }
-        ${Stars} {
-          transform: scale(1.2);
-        }
+      &:not(:hover) ${Stars} {
+        animation-name: unset;
+      }
+
+      &:not(:hover) ${Arrow} {
+        animation-name: unset;
       }
     `
 );
@@ -50,5 +65,8 @@ const ImportIllustration = ({title, size = 256, animateOnHover = true, ...props}
     </Arrow>
   </Container>
 );
+
+ImportIllustration.StarsAnimation = starsAnimation;
+ImportIllustration.ArrowAnimation = arrowAnimation;
 
 export {ImportIllustration};
