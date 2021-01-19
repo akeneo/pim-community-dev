@@ -4,6 +4,7 @@
 
 - PIM-9595: Avoid 403 error when launching import with no view rights on import details
 - PIM-9622: Fix query that can generate a MySQL memory allocation error
+- PIM-9636: Fix add posibility to contextualize translation when create a variant depending on number of axes
 - PIM-9631: fix attribute groups not displayed in family due to JS error
 
 ## New features

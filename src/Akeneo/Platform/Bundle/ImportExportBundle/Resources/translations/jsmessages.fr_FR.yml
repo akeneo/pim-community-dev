@@ -129,6 +129,9 @@ pim_import_export:
           real_time_versioning:
             title: Mise à jour de l'historique en temps réel
             help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
+          convert_variant_to_simple:
+            title: Convertir des produits variants en produits simples
+            help: Essayer de convertir des produits variants en produits simples lorsque la colonne "parent" est vide. Si réglé sur "Non", la colonne "parent" sera ignorée si elle est vide.
           family_variant_column:
             title: Colonne variante de famille
           with_label:
