@@ -11,15 +11,18 @@ import {MistakeElement} from '../../../../application/helper';
 import ignoreSpellingIssueInterface from '../../../../application/helper/Spellcheck/ignoreSpellingIssue.interface';
 import applySpellingSuggestionInterface from '../../../../application/helper/Spellcheck/applySpellingSuggestion.interface';
 import analyzeSpellingInterface from '../../../../application/helper/Spellcheck/analyzeSpelling.interface';
+import refreshSpellingInterface from '../../../../application/helper/Spellcheck/refreshSpelling.interface';
 
 export type SpellcheckPopoverActionState = HighlightPopoverActionState & {
   apply: applySpellingSuggestionInterface;
   ignore: ignoreSpellingIssueInterface;
   analyze: analyzeSpellingInterface;
+  refreshAnalysis: refreshSpellingInterface;
   setMistake: (mistake: MistakeElement | null) => void;
   setLocale: (locale: string | null) => void;
   setContent: (content: string | null) => void;
   setAnalyze: (analyze: analyzeSpellingInterface) => void;
+  setRefreshAnalysis: (refreshAnalysis: refreshSpellingInterface) => void;
 };
 
 export type SpellcheckPopoverState = HighlightPopoverState &
@@ -46,6 +49,8 @@ export const useSpellcheckPopoverProps = (state: SpellcheckPopoverState): Spellc
     setContent,
     analyze,
     setAnalyze,
+    refreshAnalysis,
+    setRefreshAnalysis,
     ...highlightPopoverState
   } = state;
   const highlightPopoverProps = useHighlightPopoverProps(highlightPopoverState);
@@ -55,6 +60,7 @@ export const useSpellcheckPopoverProps = (state: SpellcheckPopoverState): Spellc
     apply,
     ignore,
     analyze,
+    refreshAnalysis,
     locale,
     content,
     mistake,
@@ -66,6 +72,7 @@ const useSpellcheckPopoverState = (initialPopoverState?: SpellcheckPopoverInitia
   const [content, setContent] = useState<string | null>(null);
   const [mistake, setMistake] = useState<MistakeElement | null>(null);
   const [analyze, setAnalyze] = useState<analyzeSpellingInterface>(() => () => {});
+  const [refreshAnalysis, setRefreshAnalysis] = useState<() => void>(() => () => {});
 
   const {apply, ignore, ...initialHighlightPopoverState} = initialPopoverState || {};
   const popoverState = useHighlightPopoverState({
@@ -84,6 +91,8 @@ const useSpellcheckPopoverState = (initialPopoverState?: SpellcheckPopoverInitia
     setMistake,
     analyze,
     setAnalyze,
+    refreshAnalysis,
+    setRefreshAnalysis,
   };
 };
 
