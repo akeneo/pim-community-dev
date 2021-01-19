@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.85 (2021-01-19)
+
 ## Bug fixes
 
 - PIM-9638: Fix security issue in Symfony < 4.4.13 (see https://symfony.com/blog/cve-2020-15094-prevent-rce-when-calling-untrusted-remote-with-cachinghttpclient)
