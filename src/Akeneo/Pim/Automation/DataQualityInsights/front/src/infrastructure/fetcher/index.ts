@@ -2,5 +2,12 @@ import fetchIgnoreTextIssue from './ProductEditForm/Spellcheck/fetchIgnoreTextIs
 import fetchTextAnalysis from './Spellcheck/fetchTextAnalysis';
 import {fetchSpellcheckSupportedLocales} from './ProductEditForm/Spellcheck/fetchSpellcheckSupportedLocales';
 import {fetchLocaleDictionary} from './Locale/Dictionary/fetchLocaleDictionary';
+import {deleteWordFromLocaleDictionary} from './Locale/Dictionary/deleteWordFromLocaleDictionary';
 
-export {fetchIgnoreTextIssue, fetchTextAnalysis, fetchSpellcheckSupportedLocales, fetchLocaleDictionary};
+export {
+  fetchIgnoreTextIssue,
+  fetchTextAnalysis,
+  fetchSpellcheckSupportedLocales,
+  fetchLocaleDictionary,
+  deleteWordFromLocaleDictionary
+};

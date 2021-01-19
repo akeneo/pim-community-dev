@@ -147,4 +147,9 @@ SQL;
             'total' => intval($totalNumberOfWords),
         ];
     }
+
+    public function deleteWord(int $wordId): void
+    {
+        $this->db->delete('pimee_data_quality_insights_text_checker_dictionary', ['id' => $wordId]);
+    }
 }

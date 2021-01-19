@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from 'react';
-import {fetchLocaleDictionary} from '../../../fetcher';
+import {deleteWordFromLocaleDictionary, fetchLocaleDictionary} from '../../../fetcher';
 import {Word} from '../../../../domain';
 
 type DictionaryState = {
@@ -8,8 +8,8 @@ type DictionaryState = {
   totalWords: number;
   itemsPerPage: number;
   currentPage: number;
-  setCurrentPage: (page: number) => void;
-  search: (searchValue: string) => void;
+  search: (searchValue: string, pageNumber: number) => void;
+  deleteWord: (wordId: number) => void;
 };
 
 const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: number): DictionaryState => {
@@ -18,17 +18,22 @@ const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: num
   const [currentPage, setCurrentPage] = useState<number>(page);
 
   const search = useCallback(
-    async (searchValue: string) => {
-      const data = await fetchLocaleDictionary(localeCode, currentPage, itemsPerPage, searchValue);
+    async (searchValue: string, pageNumber: number) => {
+      const data = await fetchLocaleDictionary(localeCode, pageNumber, itemsPerPage, searchValue);
+      setCurrentPage(pageNumber);
       setDictionary(data.results);
       setTotalWords(data.total);
     },
     [localeCode, currentPage, itemsPerPage]
   );
 
+  const deleteWord = async (wordId: number) => {
+    await deleteWordFromLocaleDictionary(wordId);
+  };
+
   useEffect(() => {
-    search('');
-  }, [currentPage]);
+    search('', 1);
+  }, []);
 
   return {
     localeCode,
@@ -36,8 +41,8 @@ const useLocaleDictionary = (localeCode: string, page: number, itemsPerPage: num
     totalWords,
     itemsPerPage,
     currentPage,
-    setCurrentPage,
     search,
+    deleteWord,
   };
 };
 
