@@ -22,7 +22,7 @@ const useDebounce = (value: any, delay: number) => {
  * @param callback
  * @param delay
  */
-const useDebounceCallback = (callback: (args: any) => any, delay: number) => {
+const useDebounceCallback = (callback: (...args: any) => any, delay: number) => {
   return useCallback(debounceCallback(callback, delay), [callback, delay]);
 };
 
