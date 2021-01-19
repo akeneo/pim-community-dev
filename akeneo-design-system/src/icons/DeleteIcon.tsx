@@ -2,23 +2,34 @@ import React from 'react';
 import styled, {css, keyframes} from 'styled-components';
 import {IconProps} from './IconProps';
 
-const anim = keyframes`
+const deleteInAnimation = keyframes`
   from {transform: rotate(0) translate(0, 0)}
   to {transform: rotate(15deg) translate(-3px, -2px)}
 `;
 
+const deleteOutAnimation = keyframes`
+  from {transform: rotate(15deg) translate(-3px, -2px)}
+  to {transform: rotate(0) translate(0, 0)}
+`;
+
 const Lid = styled.path`
   transform-origin: 60% 90%;
-  animation: ${anim} 0.5s linear;
-  animation-play-state: paused;
+  animation-iteration-count: 1;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 `;
 
 const Container = styled.svg<{animateOnHover: boolean}>(
   ({animateOnHover}) =>
     animateOnHover &&
     css`
-      :hover ${Lid} {
-        animation-play-state: running;
+      animation-name: ${deleteInAnimation};
+      g, ${Lid} {
+        animation-name: inherit;
+      }
+      &:not(:hover) {
+        animation-name: ${deleteOutAnimation};
       }
     `
 );
@@ -32,5 +43,7 @@ const DeleteIcon = ({title, size = 24, color = 'currentColor', animateOnHover = 
     </g>
   </Container>
 );
+
+DeleteIcon.Animation = deleteInAnimation;
 
 export {DeleteIcon};

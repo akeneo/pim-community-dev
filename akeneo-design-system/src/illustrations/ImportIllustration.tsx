@@ -1,34 +1,62 @@
 import React from 'react';
-import styled, {css} from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
 import {IllustrationProps} from './IllustrationProps';
 import Import from '../../static/illustrations/Import.svg';
+
+const arrowInAnimation = keyframes`
+  0%   {transform: rotate(0deg)}
+  100% {transform: rotate(180deg)}
+`;
+
+const arrowOutAnimation = keyframes`
+  0%   {transform: rotate(180deg)}
+  100% {transform: rotate(0deg)}
+`;
+
+const starsInAnimation = keyframes`
+  0%   {transform: scale(1)}
+  100% {transform: scale(1.2)}
+`;
+
+const starsOutAnimation = keyframes`
+  0%   {transform: scale(1.2)}
+  100% {transform: scale(1)}
+`;
 
 const Stars = styled.g`
   fill: #5e63b6;
   transform-origin: 50% 50%;
-  transition: transform 0.2s linear;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
 `;
 
 const Arrow = styled.g`
   fill: #9452ba;
   transform-origin: 51% 32%;
-  transition: transform 0.3s ease-in-out;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
 `;
 
-const Container = styled.svg<{animateOnHover: boolean}>(
-  ({animateOnHover}) =>
-    animateOnHover &&
-    css`
-      :hover {
-        ${Arrow} {
-          transform: rotate(180deg);
-        }
-        ${Stars} {
-          transform: scale(1.2);
-        }
-      }
-    `
-);
+const Animation = css`
+  ${Stars} {
+    animation-name: ${starsInAnimation};
+  }
+  ${Arrow} {
+    animation-name: ${arrowInAnimation};
+  }
+  &:not(:hover) ${Stars} {
+    animation-name: ${starsOutAnimation};
+  }
+  &:not(:hover) ${Arrow} {
+    animation-name: ${arrowOutAnimation};
+  }
+`;
+
+const Container = styled.svg<{animateOnHover: boolean}>`
+  ${({animateOnHover}) => animateOnHover && Animation}
+`;
 
 const ImportIllustration = ({title, size = 256, animateOnHover = true, ...props}: IllustrationProps) => (
   <Container width={size} height={size} viewBox="0 0 256 256" animateOnHover={animateOnHover} {...props}>
@@ -50,5 +78,7 @@ const ImportIllustration = ({title, size = 256, animateOnHover = true, ...props}
     </Arrow>
   </Container>
 );
+
+ImportIllustration.Animation = Animation;
 
 export {ImportIllustration};
