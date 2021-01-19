@@ -99,6 +99,7 @@ pim_enrich:
       comment: Commenter les produits
       download: Télécharger le produit en PDF
       history: Afficher l'historique du produit
+      convert_variant_to_simple: Convertir un produit variant en produit simple
     product_model:
       create: Créer un modèle de produit
       edit_attributes: Modifier les attributs du modèle de produit

@@ -70,6 +70,8 @@ pim_catalog:
     family_variant_maximum_number_of_level: La variante de famille ne peut pas avoir plus de "%level%" niveaux
     family_variant_unique_attributes_in_last_level: L’attribut unique "%attribute%" doit être défini au niveau du produit
     product_identifier: Ces identifiants "%s" n’existent pas.
+    blacklisted_attribute_code: Code temporairement bloqué jusqu'à la fin du traitement des valeurs de l'attribut supprimé.
+    blacklisted_attribute_code_with_link: "Code temporairement bloqué jusqu'à la fin du traitement des valeurs de l'attribut supprimé. Pour en savoir plus, rendez-vous sur <a href='{{ link }}' target='_blank'>la tâche en cours</a>."
     0: Une erreur inattendue s'est produite.
     100: Valeur non prévue
     101: Ce champ attend une valeur booléenne.
