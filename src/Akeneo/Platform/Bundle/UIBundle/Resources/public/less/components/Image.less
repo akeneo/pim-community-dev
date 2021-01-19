@@ -31,13 +31,7 @@
 
   &--dropping, &:hover {
     .AknImage-uploaderIllustration {
-      .arrow {
-        transform: rotate(180deg);
-      }
-
-      .stars {
-        transform: scale(1.2);
-      }
+      .svgAnimation();
     }
   }
 
@@ -47,7 +41,7 @@
     align-items: center;
     justify-content: flex-end;
     width: 100%;
-    .uploadAnimation();
+    .svgAnimation();
 
     &Helper {
       margin-bottom: 24px;
@@ -91,12 +85,11 @@
       align-items: end;
       color: white;
 
-      .trashAnimation;
-      .downloadAnimation;
-
       &:hover {
         cursor: pointer;
       }
+
+      .svgAnimation();
     }
 
     .AknImage-actionItemIcon {
