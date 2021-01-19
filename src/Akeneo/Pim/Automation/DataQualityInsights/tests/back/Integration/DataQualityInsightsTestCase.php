@@ -326,9 +326,18 @@ SQL;
         $errors = $this->get('validator')->validate($channel);
         Assert::count($errors, 0, $this->formatValidationErrorMessage('Invalid channel', $errors));
 
-        $this->get('pim_catalog.saver.channel')->save($channel);
+        $this->saveChannels([$channel]);
 
         return $channel;
+    }
+
+    protected function saveChannels(array $channels): void
+    {
+        $this->get('pim_catalog.saver.channel')->saveAll($channels);
+
+        // Kill background process to avoid a race condition during loading fixtures for the next integration test.
+        // @see DAPI-1477
+        exec('pkill -f "pim:catalog:remove-completeness-for-channel-and-locale"');
     }
 
     protected function getLocaleId(string $code): int

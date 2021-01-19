@@ -23,6 +23,6 @@ final class CheckWebhookReachabilityHandler
 
     public function handle(CheckWebhookReachabilityCommand $command): UrlReachabilityStatus
     {
-        return $this->reachabilityChecker->check($command->webhookUrl());
+        return $this->reachabilityChecker->check($command->webhookUrl(), $command->secret());
     }
 }

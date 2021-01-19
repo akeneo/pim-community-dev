@@ -13,13 +13,22 @@ class CheckWebhookReachabilityCommand
     /** @var string */
     private $webhookUrl;
 
-    public function __construct(string $webhookUrl)
+    /** @var string */
+    private $secret;
+
+    public function __construct(string $webhookUrl, string $secret)
     {
         $this->webhookUrl = $webhookUrl;
+        $this->secret = $secret;
     }
 
     public function webhookUrl(): string
     {
         return $this->webhookUrl;
+    }
+
+    public function secret(): string
+    {
+        return $this->secret;
     }
 }
