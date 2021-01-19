@@ -4,10 +4,7 @@ import {BreadcrumbBh, PathItem, Separator} from './BreadcrumbBh.tsx';
 <Meta
   title="Components/BreadcrumbBh"
   component={BreadcrumbBh}
-  argTypes={{
-    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
-  }}
-  args={{level: 'primary', children: 'BreadcrumbBh text'}}
+  args={{children: 'BreadcrumbBh text'}}
 />
 
 # BreadcrumbBh
@@ -24,12 +21,10 @@ Breadcrumbs are very effective for products and experience with a large amount o
   <Story name="Standard">
     {args => {
       return (
-        <BreadcrumbBh>
-            <PathItem href="http://www.akeneo.com/settings">Settings</PathItem>
-            <Separator>/</Separator>
-            <PathItem href="http://www.akeneo.com/attributes">Attributes</PathItem>
-            <Separator>/</Separator>
-            <PathItem href="http://www.akeneo.com/brand">Brand</PathItem>
+        <BreadcrumbBh {...args}>
+            <BreadcrumbBh.Item href="http://www.akeneo.com/settings">Settings</BreadcrumbBh.Item>
+            <BreadcrumbBh.Item href="http://www.akeneo.com/attributes">Attributes</BreadcrumbBh.Item>
+            <BreadcrumbBh.Item href="http://www.akeneo.com/brand">Brand</BreadcrumbBh.Item>
         </BreadcrumbBh>
       );
     }}
