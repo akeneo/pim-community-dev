@@ -9,16 +9,21 @@ const anim = keyframes`
 
 const Lid = styled.path`
   transform-origin: 60% 90%;
-  animation: ${anim} 0.5s linear;
-  animation-play-state: paused;
+  animation-iteration-count: 1;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
 `;
 
 const Container = styled.svg<{animateOnHover: boolean}>(
   ({animateOnHover}) =>
     animateOnHover &&
     css`
-      :hover ${Lid} {
-        animation-play-state: running;
+      animation-name: ${anim};
+      g, ${Lid} {
+        animation-name: inherit;
+      }
+      &:not(:hover) {
+        animation-name: unset;
       }
     `
 );
@@ -32,5 +37,7 @@ const DeleteIcon = ({title, size = 24, color = 'currentColor', animateOnHover = 
     </g>
   </Container>
 );
+
+DeleteIcon.Animation = anim;
 
 export {DeleteIcon};

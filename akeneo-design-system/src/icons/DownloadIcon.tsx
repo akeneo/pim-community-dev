@@ -35,4 +35,6 @@ const DownloadIcon = ({title, size = 24, color = 'currentColor', animateOnHover 
   </Container>
 );
 
+DownloadIcon.Animation = downloadPop;
+
 export {DownloadIcon};
