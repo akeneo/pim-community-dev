@@ -28,6 +28,9 @@ final class PurgeOutdatedData
     public const CONSOLIDATION_RETENTION_MONTHS = 15;
     public const CONSOLIDATION_RETENTION_YEARS = 3;
 
+    public const PURGE_BATCH_SIZE = 1000;
+    public const DEFAULT_MAX_PURGE = 1000000;
+
     /** @var DashboardRatesProjectionRepositoryInterface */
     private $dashboardRatesProjectionRepository;
 
@@ -78,10 +81,10 @@ final class PurgeOutdatedData
         }
     }
 
-    public function purgeCriterionEvaluationsFrom(\DateTimeImmutable $date): void
+    public function purgeOutdatedCriterionEvaluations(?int $max = null): void
     {
-        $purgeDate = $date->modify(sprintf('-%d DAY', self::EVALUATIONS_RETENTION_DAYS));
-        $this->criterionEvaluationRepository->purgeUntil($purgeDate);
+        $this->criterionEvaluationRepository->purgeEvaluationsWithoutProducts(self::PURGE_BATCH_SIZE, $max ?? self::DEFAULT_MAX_PURGE);
+        $this->criterionEvaluationRepository->purgeOutdatedEvaluations(self::PURGE_BATCH_SIZE, $max ?? self::DEFAULT_MAX_PURGE);
     }
 
     public function purgeProductAxisRatesFrom(\DateTimeImmutable $date): void

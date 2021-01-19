@@ -117,13 +117,9 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
 
     public function it_purges_outdated_criterion_evaluations(CriterionEvaluationRepositoryInterface $criterionEvaluationRepository)
     {
-        $purgeDate = new \DateTimeImmutable('2019-12-31');
+        $criterionEvaluationRepository->purgeEvaluationsWithoutProducts(PurgeOutdatedData::PURGE_BATCH_SIZE, 100)->shouldBeCalled();
+        $criterionEvaluationRepository->purgeOutdatedEvaluations(PurgeOutdatedData::PURGE_BATCH_SIZE, 100)->shouldBeCalled();
 
-        $criterionEvaluationRepository->purgeUntil(Argument::that(function ($date) use ($purgeDate) {
-            $purgeDate = $purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::EVALUATIONS_RETENTION_DAYS));
-            return $purgeDate->format('Y-m-d') === $date->format('Y-m-d');
-        }));
-
-        $this->purgeCriterionEvaluationsFrom($purgeDate);
+        $this->purgeOutdatedCriterionEvaluations(100);
     }
 }

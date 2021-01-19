@@ -53,7 +53,7 @@ final class PurgeOutdatedDataTasklet implements TaskletInterface
             $jobParameters = $this->stepExecution->getJobParameters();
             $purgeDate = \DateTimeImmutable::createFromFormat(PeriodicTasksParameters::DATE_FORMAT, $jobParameters->get(PeriodicTasksParameters::DATE_FIELD));
 
-            $this->purgeOutdatedData->purgeCriterionEvaluationsFrom($purgeDate);
+            $this->purgeOutdatedData->purgeOutdatedCriterionEvaluations();
             $this->purgeOutdatedData->purgeProductAxisRatesFrom($purgeDate);
             $this->purgeOutdatedData->purgeDashboardProjectionRatesFrom($purgeDate);
         } catch (\Exception $exception) {

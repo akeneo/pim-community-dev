@@ -150,7 +150,7 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         $this->assertEmpty($this->repository->findPendingByProductIds([456789]));
     }
 
-    public function test_it_purges_evaluations_older_than_a_given_date()
+    public function test_it_purges_outdated_evaluations()
     {
         $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
             new CriterionEvaluationId('42_completeness_last_evaluation'),
@@ -160,14 +160,14 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
             CriterionEvaluationStatus::pending()
         ));
         $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
-            new CriterionEvaluationId('42_completeness_young_evaluation'),
+            new CriterionEvaluationId('42_completeness_previous_evaluation'),
             new CriterionCode('completeness'),
             new ProductId(42),
-            new \DateTimeImmutable('2019-10-28 10:41:57.123'),
+            new \DateTimeImmutable('2019-10-28 10:41:56.122'),
             CriterionEvaluationStatus::pending()
         ));
         $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
-            new CriterionEvaluationId('42_completeness_old_evaluation'),
+            new CriterionEvaluationId('42_completeness_oldest_evaluation'),
             new CriterionCode('completeness'),
             new ProductId(42),
             new \DateTimeImmutable('2019-10-27 10:41:56.123'),
@@ -188,19 +188,69 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
             CriterionEvaluationStatus::pending()
         ));
         $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
-            new CriterionEvaluationId('123_spelling_last_but_old_evaluation'),
-            new CriterionCode('spelling'),
-            new ProductId(123),
-            new \DateTimeImmutable('2019-09-03 10:41:57.987'),
+            new CriterionEvaluationId('42_lowercase_single_evaluation'),
+            new CriterionCode('lowercase'),
+            new ProductId(42),
+            new \DateTimeImmutable('2019-10-25 11:41:56.123'),
             CriterionEvaluationStatus::pending()
         ));
-        $this->repository->purgeUntil(new \DateTimeImmutable('2019-10-28 23:41:56'));
 
-        $this->assertCountCriterionEvaluations(4);
+        $this->repository->purgeOutdatedEvaluations(2, 100);
+
+        $this->assertCountCriterionEvaluations(3);
         $this->assertCriterionEvaluationExists('42_completeness_last_evaluation');
-        $this->assertCriterionEvaluationExists('42_completeness_young_evaluation');
         $this->assertCriterionEvaluationExists('42_spelling_last_evaluation');
-        $this->assertCriterionEvaluationExists('123_spelling_last_but_old_evaluation');
+        $this->assertCriterionEvaluationExists('42_lowercase_single_evaluation');
+    }
+
+    public function test_it_purges_evaluations_without_products()
+    {
+        $productIdA = $this->createProduct('product_A');
+        $productIdB = $this->createProduct('product_B');
+
+        $this->db->executeQuery('TRUNCATE TABLE pimee_data_quality_insights_criteria_evaluation;');
+
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
+            new CriterionEvaluationId('deleted_product_42_completeness'),
+            new CriterionCode('completeness'),
+            new ProductId(42),
+            new \DateTimeImmutable('2019-10-28 10:41:56.123'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
+            new CriterionEvaluationId('deleted_product_42_spelling'),
+            new CriterionCode('spelling'),
+            new ProductId(42),
+            new \DateTimeImmutable('2019-10-28 10:41:56.123'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
+            new CriterionEvaluationId('deleted_product_123_completeness'),
+            new CriterionCode('completeness'),
+            new ProductId(123),
+            new \DateTimeImmutable('2019-10-28 10:41:56.123'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
+            new CriterionEvaluationId('existing_product_A'),
+            new CriterionCode('completeness'),
+            new ProductId($productIdA),
+            new \DateTimeImmutable('2019-10-28 10:41:56.123'),
+            CriterionEvaluationStatus::pending()
+        ));
+        $this->createEndedCriterionEvaluation(new Write\CriterionEvaluation(
+            new CriterionEvaluationId('existing_product_B'),
+            new CriterionCode('completeness'),
+            new ProductId($productIdB),
+            new \DateTimeImmutable('2019-10-28 10:41:56.123'),
+            CriterionEvaluationStatus::pending()
+        ));
+
+        $this->repository->purgeEvaluationsWithoutProducts(2, 100);
+
+        $this->assertCountCriterionEvaluations(2);
+        $this->assertCriterionEvaluationExists('existing_product_A');
+        $this->assertCriterionEvaluationExists('existing_product_B');
     }
 
     private function buildCollection(): Write\CriterionEvaluationCollection
@@ -275,5 +325,16 @@ final class CriterionEvaluationRepositoryIntegration extends TestCase
         );
 
         $this->assertTrue((bool) $stmt->fetchColumn());
+    }
+
+    private function createProduct(string $identifier): int
+    {
+        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
+            ->withIdentifier($identifier)
+            ->build();
+
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        return $product->getId();
     }
 }

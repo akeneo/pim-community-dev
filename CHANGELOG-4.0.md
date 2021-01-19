@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Improvements
+
+- PIM-9624: Improve DQI evaluations purge
+
 # 4.0.84 (2021-01-14)
 
 # 4.0.83 (2021-01-06)

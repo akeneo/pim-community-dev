@@ -28,5 +28,7 @@ interface CriterionEvaluationRepositoryInterface
      */
     public function findPendingByProductIds(array $productIds): ?array;
 
-    public function purgeUntil(\DateTimeImmutable $date): void;
+    public function purgeOutdatedEvaluations(int $batchSize, int $max): void;
+
+    public function purgeEvaluationsWithoutProducts(int $batchSize, int $max): void;
 }
