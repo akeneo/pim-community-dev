@@ -130,6 +130,9 @@ $rules = [
             'Akeneo\Tool\Component\Classification\Model\CategoryInterface',
             'Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface',
 
+            //Necessary for the dictionary
+            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
+
             //External dependencies
             'Doctrine\DBAL',
             'Doctrine\Common\Persistence\ObjectRepository',
