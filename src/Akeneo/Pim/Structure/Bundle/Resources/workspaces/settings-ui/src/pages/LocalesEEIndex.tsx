@@ -1,10 +1,11 @@
 import React, {FC, useEffect} from 'react';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {PimView, useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
-import {LocalesDataGrid, useLocalesIndexState} from '@akeneo-pim-community/settings-ui';
+import {useLocalesIndexState} from '@akeneo-pim-community/settings-ui';
 import styled from 'styled-components';
 import {Breadcrumb, getColor, Helper as BaseHelper} from 'akeneo-design-system';
 import {followEditLocale} from '../user-actions';
+import {LocalesEEDataGrid} from '../components';
 
 const Helper = styled(BaseHelper)`
   margin-bottom: 20px;
@@ -62,7 +63,7 @@ const LocalesEEIndex: FC = () => {
             }}
           />
         </Helper>
-        <LocalesDataGrid
+        <LocalesEEDataGrid
           locales={locales}
           followLocale={isGranted('pimee_enrich_locale_edit_permissions') ? followEditLocale : undefined}
         />

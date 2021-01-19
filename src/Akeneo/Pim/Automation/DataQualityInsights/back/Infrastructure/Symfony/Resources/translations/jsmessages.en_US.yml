@@ -106,3 +106,11 @@ akeneo_data_quality_insights:
         no_data:
             title: No words yet
             subtitle: Add the first one above, click on "Add" or press Enter.
+
+pimee_enrich.entity.locale:
+    grid:
+        columns:
+            dictionary_words_count:
+                title: Number of words
+                label: "]-Inf, 1]{{ count }} word|]1, Inf[{{ count }} words"
+                not_available: Not available

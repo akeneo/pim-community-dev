@@ -1,2 +1,3 @@
 akeneo_feature_flag:
-    feature_flags: []
+    feature_flags:
+        - { feature: 'dictionary', service: 'akeneo.pim.automation.dictionary.feature' }
