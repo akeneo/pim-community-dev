@@ -61,6 +61,20 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
         $this->assertCount(1, $this->repository->findByLocaleCode(new LocaleCode('en_US')));
     }
 
+    public function test_it_saves_several_words_at_once_in_the_dictionary()
+    {
+        $this->createWords();
+        $this->repository->saveAll([
+            new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('samsung')),
+            new Write\TextCheckerDictionaryWord(new LocaleCode('en_US'), new DictionaryWord('Panasonic')),
+            new Write\TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('samsung')),
+        ]);
+
+        $this->assertDictionaryWordExists('en_US', 'samsung');
+        $this->assertDictionaryWordExists('en_US', 'panasonic');
+        $this->assertDictionaryWordExists('fr_FR', 'samsung');
+    }
+
     public function test_it_returns_an_array_of_words_for_a_locale()
     {
         $this->createWords();
@@ -123,5 +137,17 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
 ;
 SQL;
         $this->get('database_connection')->executeQuery($query);
+    }
+
+    private function assertDictionaryWordExists(string $locale, string $word): void
+    {
+        $wordExists = $this->get('database_connection')->executeQuery(<<<SQL
+SELECT 1 FROM pimee_data_quality_insights_text_checker_dictionary 
+WHERE locale_code = :locale AND word = :word;
+SQL
+            ,['locale' => $locale, 'word' => $word]
+        )->fetchColumn();
+
+        $this->assertTrue(boolval($wordExists));
     }
 }

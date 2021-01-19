@@ -29,5 +29,10 @@ interface TextCheckerDictionaryRepositoryInterface
 
     public function save(Write\TextCheckerDictionaryWord $dictionaryWord): void;
 
+    /**
+     * @param Write\TextCheckerDictionaryWord[] $dictionaryWords
+     */
+    public function saveAll(array $dictionaryWords): void;
+
     public function deleteWord(int $wordId): void;
 }

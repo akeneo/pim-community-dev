@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\ParameterType;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Olivier Pontier <olivier.pontier@akeneo.com>
@@ -104,6 +105,31 @@ SQL;
                 'word' => \PDO::PARAM_STR,
             ]
         );
+    }
+
+    public function saveAll(array $dictionaryWords): void
+    {
+        if (empty($dictionaryWords)) {
+            return;
+        }
+
+        $values = [];
+        $queryParameters = [];
+        foreach ($dictionaryWords as $index => $dictionaryWord) {
+            Assert::isInstanceOf($dictionaryWord, Write\TextCheckerDictionaryWord::class);
+            $locale = sprintf('locale_%s', $index);
+            $word = sprintf('word_%s', $index);
+            $values[] = sprintf('(:%s, :%s)', $locale, $word);
+            $queryParameters[$locale] = $dictionaryWord->getLocaleCode();
+            $queryParameters[$word] = strtolower(strval($dictionaryWord->getWord()));
+        }
+
+        $values = implode(',', $values);
+
+        $query = <<<SQL
+INSERT IGNORE INTO pimee_data_quality_insights_text_checker_dictionary (locale_code, word) VALUES $values;
+SQL;
+        $this->db->executeQuery($query, $queryParameters);
     }
 
     public function paginatedSearch(LocaleCode $localeCode, int $page, int $itemsPerPage, string $search): array
