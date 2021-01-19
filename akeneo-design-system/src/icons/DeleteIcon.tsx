@@ -12,6 +12,7 @@ const Lid = styled.path`
   animation-iteration-count: 1;
   animation-duration: 0.5s;
   animation-timing-function: linear;
+  animation-fill-mode: forwards;
 `;
 
 const Container = styled.svg<{animateOnHover: boolean}>(

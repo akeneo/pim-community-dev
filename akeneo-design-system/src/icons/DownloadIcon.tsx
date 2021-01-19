@@ -12,6 +12,7 @@ const downloadPop = keyframes`
 const Arrow = styled.path`
   animation-duration: 0.5s;
   animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 `;
 
 const Container = styled.svg<{animateOnHover: boolean}>`
