@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- DAPI-1477: Fix unstable DQI integration tests
+
 # 5.0.1 (2021-01-08)
 
 ## Bug fixes
