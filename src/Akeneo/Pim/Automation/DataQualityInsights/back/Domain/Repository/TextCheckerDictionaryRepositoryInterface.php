@@ -11,7 +11,6 @@
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
@@ -29,4 +28,6 @@ interface TextCheckerDictionaryRepositoryInterface
     public function exists(LocaleCode $localeCode, DictionaryWord $word): bool;
 
     public function save(Write\TextCheckerDictionaryWord $dictionaryWord): void;
+
+    public function deleteWord(int $wordId): void;
 }

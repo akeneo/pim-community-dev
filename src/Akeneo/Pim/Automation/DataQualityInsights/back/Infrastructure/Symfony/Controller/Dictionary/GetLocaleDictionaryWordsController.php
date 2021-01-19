@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dictionary;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\TextCheckerDictionaryRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
