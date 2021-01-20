@@ -136,7 +136,7 @@
     "summernote": "0.6.16",
     "underscore": "1.8.3",
     "victory": "^33.1.6",
-    "@akeneo-pim-community/raccoon": "link:new-feature",
+    "@akeneo-pim-community/raccoon": "link:measurements",
     "@akeneo-pim-community/legacy": "link:legacy"
   },
   "resolutions": {

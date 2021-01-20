@@ -1,1 +1,2 @@
-export { useTranslate, TranslateContext, TranslateProvider } from './context/TranslateContext';
+export * from './hooks';
+export * from './provider';
