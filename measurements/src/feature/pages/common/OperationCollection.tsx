@@ -1,11 +1,11 @@
 import React, {useState, useContext, useCallback, useEffect, ChangeEvent} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
-import {ConfigContext} from 'akeneomeasure/context/config-context';
+import {ConfigContext} from '../../context/config-context';
 import {ArrowDownIcon, LockIcon, ArrowIcon, CloseIcon, Button} from 'akeneo-design-system';
-import {Operation, Operator, emptyOperation} from 'akeneomeasure/model/operation';
-import {Input, InputContainer} from 'akeneomeasure/shared/components/TextField';
-import {useLocalizedNumber} from 'akeneomeasure/shared/hooks/use-localized-number';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {Operation, Operator, emptyOperation} from '../../model/operation';
+import {Input, InputContainer} from '../../shared/components/TextField';
+import {useLocalizedNumber} from '../../shared/hooks/use-localized-number';
+import {useTranslate} from '@akeneo-pim-community/legacy';
 import {
   ValidationError,
   filterErrors,

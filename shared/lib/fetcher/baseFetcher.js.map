@@ -1,0 +1,1 @@
+{"version":3,"file":"baseFetcher.js","sourceRoot":"","sources":["../../src/fetcher/baseFetcher.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA,IAAM,WAAW,GAAG,UAAO,KAAa;;;;oBACrB,WAAM,KAAK,CAAC,KAAK,CAAC,EAAA;;gBAA7B,QAAQ,GAAG,SAAkB;gBAE5B,WAAM,QAAQ,CAAC,IAAI,EAAE,EAAA;oBAA5B,WAAO,SAAqB,EAAC;;;KAC9B,CAAC;AAEF,OAAO,EAAC,WAAW,EAAC,CAAC"}

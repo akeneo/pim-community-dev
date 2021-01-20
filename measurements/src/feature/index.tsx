@@ -1,13 +1,19 @@
 import React, {useEffect} from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
-import {List} from 'akeneomeasure/pages/list';
-import {Edit} from 'akeneomeasure/pages/edit';
-import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
+import {List} from './pages/list';
+import {Edit} from './pages/edit';
+import {ConfigContext} from './context/config-context';
+import {UnsavedChangesContext} from './context/unsaved-changes-context';
+import {useDependenciesContext} from '@akeneo-pim-community/legacy';
 
 // TODO: we should remove this and provide proper dependencies provider for config and unsavedChanges
-import {measurementsDependencies} from 'akeneomeasure/bridge/dependencies';
-import {useDependenciesContext} from '@akeneo-pim-community/legacy-bridge';
+
+const value = {
+  hasUnsavedChanges: false,
+  setHasUnsavedChanges: (newValue: boolean) => {
+    value.hasUnsavedChanges = newValue;
+  },
+};
 
 const Index = () => {
   const {mediator} = useDependenciesContext();
@@ -20,20 +26,21 @@ const Index = () => {
   }, [mediator]);
 
   return (
-  <ConfigContext.Provider value={measurementsDependencies.config}>
-    <UnsavedChangesContext.Provider value={measurementsDependencies.unsavedChanges}>
-      <Router basename="/configuration/measurement">
-        <Switch>
-          <Route path="/:measurementFamilyCode">
-            <Edit />
-          </Route>
-          <Route path="/">
-            <List />
-          </Route>
-        </Switch>
-      </Router>
-    </UnsavedChangesContext.Provider>
-  </ConfigContext.Provider>
-)};
+    <ConfigContext.Provider value={{operations_max: 5, units_max: 50, families_max: 300}}>
+      <UnsavedChangesContext.Provider value={value}>
+        <Router basename="/configuration/measurement">
+          <Switch>
+            <Route path="/:measurementFamilyCode">
+              <Edit />
+            </Route>
+            <Route path="/">
+              <List />
+            </Route>
+          </Switch>
+        </Router>
+      </UnsavedChangesContext.Provider>
+    </ConfigContext.Provider>
+  );
+};
 
 export {Index};

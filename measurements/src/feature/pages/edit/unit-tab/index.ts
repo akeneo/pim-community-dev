@@ -1,1 +1,1 @@
-export {UnitTab} from 'akeneomeasure/pages/edit/unit-tab/UnitTab';
+export {UnitTab} from '../../../pages/edit/unit-tab/UnitTab';

@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from 'akeneomeasure/model/measurement-family';
+import {MeasurementFamily, filterOnLabelOrCode, getUnitIndex} from '../../../model/measurement-family';
 import {MeasurementIllustration} from 'akeneo-design-system';
-import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
-import {UnitCode} from 'akeneomeasure/model/unit';
-import {UnitDetails} from 'akeneomeasure/pages/edit/unit-tab/UnitDetails';
-import {UnitRow} from 'akeneomeasure/pages/edit/unit-tab/UnitRow';
+import {Table, HeaderCell} from '../../../pages/common/Table';
+import {UnitCode} from '../../../model/unit';
+import {UnitDetails} from '../../../pages/edit/unit-tab/UnitDetails';
+import {UnitRow} from '../../../pages/edit/unit-tab/UnitRow';
 import {SearchBar, NoDataSection, NoDataTitle, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy';
 
 const TabContainer = styled.div`
   display: flex;

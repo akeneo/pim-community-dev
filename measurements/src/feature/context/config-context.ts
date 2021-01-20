@@ -14,4 +14,5 @@ const defaultConfigContextValue = {
 
 const ConfigContext = createContext<ConfigContextValue>(defaultConfigContextValue);
 
-export {ConfigContextValue, ConfigContext};
+export {ConfigContext};
+export type {ConfigContextValue};

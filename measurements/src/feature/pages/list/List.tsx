@@ -1,20 +1,16 @@
 import React, {useCallback, useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
+import {PageHeader, PageHeaderPlaceholder} from '../../shared/components/PageHeader';
 import {MeasurementIllustration, Link, Button, Information, Breadcrumb} from 'akeneo-design-system';
-import {useMeasurementFamilies} from 'akeneomeasure/hooks/use-measurement-families';
-import {
-  sortMeasurementFamily,
-  filterOnLabelOrCode,
-  MeasurementFamilyCode,
-} from 'akeneomeasure/model/measurement-family';
-import {MeasurementFamilyTable} from 'akeneomeasure/pages/list/MeasurementFamilyTable';
-import {CreateMeasurementFamily} from 'akeneomeasure/pages/create-measurement-family/CreateMeasurementFamily';
-import {PageContent} from 'akeneomeasure/shared/components/PageContent';
-import {TablePlaceholder} from 'akeneomeasure/pages/common/Table';
-import {Direction} from 'akeneomeasure/model/direction';
+import {useMeasurementFamilies} from '../../hooks/use-measurement-families';
+import {sortMeasurementFamily, filterOnLabelOrCode, MeasurementFamilyCode} from '../../model/measurement-family';
+import {MeasurementFamilyTable} from '../../pages/list/MeasurementFamilyTable';
+import {CreateMeasurementFamily} from '../../pages/create-measurement-family/CreateMeasurementFamily';
+import {PageContent} from '../../shared/components/PageContent';
+import {TablePlaceholder} from '../../pages/common/Table';
+import {Direction} from '../../model/direction';
 import {SearchBar, NoDataSection, NoDataTitle, NoDataText, useToggleState} from '@akeneo-pim-community/shared';
-import {useTranslate, useUserContext, useSecurity, PimView, useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useUserContext, useSecurity, useRoute} from '@akeneo-pim-community/legacy';
 
 const useSorting = (
   defaultColumn: string
@@ -70,12 +66,7 @@ const List = () => {
     <>
       <CreateMeasurementFamily isOpen={isCreateModalOpen} onClose={handleModalClose} />
       <PageHeader
-        userButtons={
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-measurements-user-navigation"
-          />
-        }
+        userButtons={undefined}
         buttons={
           isGranted('akeneo_measurements_measurement_family_create')
             ? [<Button onClick={openCreateModal}>{__('pim_common.create')}</Button>]

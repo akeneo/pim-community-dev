@@ -1,5 +1,5 @@
 import React from 'react';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/legacy';
 
 const UnsavedChanges = () => {
   const __ = useTranslate();

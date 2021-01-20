@@ -1,17 +1,17 @@
 import React, {FormEvent, useCallback, useState} from 'react';
 import {Helper, MeasurementIllustration, Button, Modal, Title, SectionTitle} from 'akeneo-design-system';
-import {Subsection, SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {TextField} from 'akeneomeasure/shared/components/TextField';
-import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {useCreateMeasurementFamilySaver} from 'akeneomeasure/pages/create-measurement-family/hooks/use-create-measurement-family-saver';
+import {Subsection, SubsectionHeader} from '../../shared/components/Subsection';
+import {TextField} from '../../shared/components/TextField';
+import {FormGroup} from '../../shared/components/FormGroup';
+import {useCreateMeasurementFamilySaver} from '../../pages/create-measurement-family/hooks/use-create-measurement-family-saver';
 import {
   CreateMeasurementFamilyForm,
   initializeCreateMeasurementFamilyForm,
   createMeasurementFamilyFromForm,
-} from 'akeneomeasure/pages/create-measurement-family/form/create-measurement-family-form';
-import {useForm} from 'akeneomeasure/hooks/use-form';
-import {MeasurementFamilyCode} from 'akeneomeasure/model/measurement-family';
-import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+} from '../../pages/create-measurement-family/form/create-measurement-family-form';
+import {useForm} from '../../hooks/use-form';
+import {MeasurementFamilyCode} from '../../model/measurement-family';
+import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy';
 import {ValidationError, getErrorsForPath} from '@akeneo-pim-community/shared';
 
 type CreateMeasurementFamilyProps = {

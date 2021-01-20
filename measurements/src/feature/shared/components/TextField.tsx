@@ -1,8 +1,8 @@
-import React, {ChangeEventHandler, InputHTMLAttributes, RefObject, useContext} from 'react';
+import React, {ChangeEventHandler, InputHTMLAttributes, Ref, RefObject, useContext} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
-import {Flag} from 'akeneomeasure/shared/components/Flag';
+import {Flag} from '../../shared/components/Flag';
 import {LockIcon} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/legacy';
 import {ValidationError, InputErrors} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
@@ -66,7 +66,7 @@ const TextField = React.forwardRef(
       flag,
       ...props
     }: TextFieldProps & InputHTMLAttributes<HTMLInputElement>,
-    ref: RefObject<HTMLInputElement>
+    ref: Ref<HTMLInputElement>
   ) => {
     const __ = useTranslate();
     const akeneoTheme = useContext(ThemeContext);

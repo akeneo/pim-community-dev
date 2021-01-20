@@ -10,4 +10,5 @@ const UnsavedChangesContext = createContext<UnsavedChangesContextValue>({
   setHasUnsavedChanges: () => {},
 });
 
-export {UnsavedChangesContextValue, UnsavedChangesContext};
+export {UnsavedChangesContext};
+export type {UnsavedChangesContextValue};

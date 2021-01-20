@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
-import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
-import {Row, LabelCell} from 'akeneomeasure/pages/common/Table';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+import {ErrorBadge} from '../../../shared/components/ErrorBadge';
+import {Unit, UnitCode, getUnitLabel} from '../../../model/unit';
+import {Row, LabelCell} from '../../../pages/common/Table';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/legacy';
 
 const CodeCell = styled.td`
   padding-right: 15px;

@@ -15,4 +15,5 @@ const emptyOperation = (): Operation => ({
   value: '',
 });
 
-export {Operation, Operator, emptyOperation};
+export type {Operation};
+export {emptyOperation, Operator};
