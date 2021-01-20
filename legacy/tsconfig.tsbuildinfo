@@ -81,14 +81,74 @@
         "signature": "277e380acf34d4f66398100a66ac29213ea43674f114906f007204f29cc9a8b7",
         "affectsGlobalScope": true
       },
-      "./src/context/translatecontext.tsx": {
-        "version": "19270464fcd7504763f601bdfb178acfdf5e0b02ad838ea330696c118055e0fe",
-        "signature": "d8a1ab6f6cd81eec298a27176bd7bba2acb647e9c77925dc039e3b7f5f7ffed8",
+      "./src/provider/dependenciesprovider.type.ts": {
+        "version": "211b4784f6204fa5144ea74883c614a89ab2f8b930665c0042970cbe7b939b59",
+        "signature": "afbaf4e3583cb1755f556b5fc787af03329f62348b16706b5cc47483f6d66ae8",
+        "affectsGlobalScope": false
+      },
+      "./src/provider/dependenciesprovider.tsx": {
+        "version": "94c0db91182ceee92ddbf5b390d899d342f0ceb56cbb2032605210e87e3a65c9",
+        "signature": "1fa05d57f8998fa5e26d6c0feda11da4ed0e42807be18e51968d86f5787d4f25",
+        "affectsGlobalScope": false
+      },
+      "./src/provider/index.ts": {
+        "version": "5f4e6bc0ab450849b1121873f1819aa9f4d9dc99002d6691c4d1333f7ad410f3",
+        "signature": "5f4e6bc0ab450849b1121873f1819aa9f4d9dc99002d6691c4d1333f7ad410f3",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/usedependenciescontext.ts": {
+        "version": "8f04f8f017ba103e03d86e4722243ad3f52464aca153db09b6c7543ec07d5d2f",
+        "signature": "c9cfa6ce6c49abbe1db44ccb1e91d78190243680b87d52501a00883b14def5cb",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/usenotify.ts": {
+        "version": "5196a71fb72df5222e376789c9cd6ce83dd2fc46fd2592ef65ac3a94537addd9",
+        "signature": "036e6fa7038978b81aa97b0b0f179eab577514595803aa4819b22a7a3f93fa56",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/userouter.ts": {
+        "version": "eb8fa0bb2d46312badbc7505358f6038c0761d60c6226cb71357354db784ef99",
+        "signature": "a01a0588f5fd1a27a321a5bb361d90a84ca2ce3ee28965ac1735ff4b32652a93",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/useroute.ts": {
+        "version": "d7af3569ebf1e01eae05b76b2baab3b8989bc13200e3a1cb5de379614e33365b",
+        "signature": "e9f643127fa113a1ddcdf691e29f2402b90062df9ba4d44edd1de219388c4034",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/usesecurity.ts": {
+        "version": "bf9370ac53b402250a4be92b243fc778d8c6673833524fdb0a73979130a68a70",
+        "signature": "042c5987b1878381f7367cb19469929aa78331afbd0b25bed1f6703fe236644e",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/usetranslate.ts": {
+        "version": "9e4b310efa750e3f4130fc864024d695352f7c791a69d7d5a2bc19efcc0394b6",
+        "signature": "544b83100f74b7c1bde8fa77c69393a001b9538b37b7e9a74d32e8f180fa78e5",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/useusercontext.ts": {
+        "version": "97bd60936ecc1a9e253bc84bcf2a96d27a93d89ca8823e9965539b9e0da32ddf",
+        "signature": "01d946d166edc2f9ce33e3da8d51eb109129af6ab8cf7356affb29f26f8fa578",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/useviewbuilder.ts": {
+        "version": "c0faa731d64365a9f4c604b7d3e146f5a5725eba35fd7b260f40a0126004032c",
+        "signature": "a63d9399acf54dad142094190a14683d3ce1a47e46ad73f3bc45d814b242e944",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/usemediator.ts": {
+        "version": "3e2a6070f79d555c3957a68e367fc06e779a8ef0c5016392ce82e3c7fbf94c0f",
+        "signature": "8f9d12844f10d8e3459bde8ff2ac83d2276f1120ff1785c4edb57e3e6671410a",
+        "affectsGlobalScope": false
+      },
+      "./src/hooks/index.ts": {
+        "version": "d19282a670be8eafb1b947064e04d1a0f6e8b405fabc0e4d3f132da2f286a6f2",
+        "signature": "d19282a670be8eafb1b947064e04d1a0f6e8b405fabc0e4d3f132da2f286a6f2",
         "affectsGlobalScope": false
       },
       "./src/index.ts": {
-        "version": "665a3d6cbf705cdaea87f46a041bdb2498cafd9965ca9dee7ef2484fac67fda5",
-        "signature": "e6b72ce3b298ddbed6576af290302bf347b81d770869757a3f84eb057df3b959",
+        "version": "c712885d18211e625f2d30bf6968698418fc207312ef3d719ce5921d8079d54f",
+        "signature": "c712885d18211e625f2d30bf6968698418fc207312ef3d719ce5921d8079d54f",
         "affectsGlobalScope": false
       }
     },
@@ -134,11 +194,64 @@
         "./node_modules/@types/react/global.d.ts",
         "./node_modules/csstype/index.d.ts"
       ],
-      "./src/context/translatecontext.tsx": [
-        "./node_modules/@types/react/index.d.ts"
+      "./src/hooks/index.ts": [
+        "./src/hooks/usedependenciescontext.ts",
+        "./src/hooks/usemediator.ts",
+        "./src/hooks/usenotify.ts",
+        "./src/hooks/useroute.ts",
+        "./src/hooks/userouter.ts",
+        "./src/hooks/usesecurity.ts",
+        "./src/hooks/usetranslate.ts",
+        "./src/hooks/useusercontext.ts",
+        "./src/hooks/useviewbuilder.ts"
+      ],
+      "./src/hooks/usedependenciescontext.ts": [
+        "./node_modules/@types/react/index.d.ts",
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/usemediator.ts": [
+        "./src/hooks/usedependenciescontext.ts",
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/usenotify.ts": [
+        "./src/hooks/usedependenciescontext.ts",
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/useroute.ts": [
+        "./node_modules/@types/react/index.d.ts",
+        "./src/hooks/userouter.ts"
+      ],
+      "./src/hooks/userouter.ts": [
+        "./src/hooks/usedependenciescontext.ts",
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/usesecurity.ts": [
+        "./src/hooks/usedependenciescontext.ts",
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/usetranslate.ts": [
+        "./src/hooks/usedependenciescontext.ts",
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/useusercontext.ts": [
+        "./src/hooks/usedependenciescontext.ts",
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/useviewbuilder.ts": [
+        "./src/hooks/usedependenciescontext.ts",
+        "./src/provider/index.ts"
       ],
       "./src/index.ts": [
-        "./src/context/translatecontext.tsx"
+        "./src/hooks/index.ts",
+        "./src/provider/index.ts"
+      ],
+      "./src/provider/dependenciesprovider.tsx": [
+        "./node_modules/@types/react/index.d.ts",
+        "./src/provider/dependenciesprovider.type.ts"
+      ],
+      "./src/provider/index.ts": [
+        "./src/provider/dependenciesprovider.tsx",
+        "./src/provider/dependenciesprovider.type.ts"
       ]
     },
     "exportedModulesMap": {
@@ -147,11 +260,52 @@
         "./node_modules/@types/react/global.d.ts",
         "./node_modules/csstype/index.d.ts"
       ],
-      "./src/context/translatecontext.tsx": [
-        "./node_modules/@types/react/index.d.ts"
+      "./src/hooks/index.ts": [
+        "./src/hooks/usedependenciescontext.ts",
+        "./src/hooks/usemediator.ts",
+        "./src/hooks/usenotify.ts",
+        "./src/hooks/useroute.ts",
+        "./src/hooks/userouter.ts",
+        "./src/hooks/usesecurity.ts",
+        "./src/hooks/usetranslate.ts",
+        "./src/hooks/useusercontext.ts",
+        "./src/hooks/useviewbuilder.ts"
+      ],
+      "./src/hooks/usedependenciescontext.ts": [
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/usemediator.ts": [
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/usenotify.ts": [
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/userouter.ts": [
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/usesecurity.ts": [
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/usetranslate.ts": [
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/useusercontext.ts": [
+        "./src/provider/index.ts"
+      ],
+      "./src/hooks/useviewbuilder.ts": [
+        "./src/provider/index.ts"
       ],
       "./src/index.ts": [
-        "./src/context/translatecontext.tsx"
+        "./src/hooks/index.ts",
+        "./src/provider/index.ts"
+      ],
+      "./src/provider/dependenciesprovider.tsx": [
+        "./node_modules/@types/react/index.d.ts",
+        "./src/provider/dependenciesprovider.type.ts"
+      ],
+      "./src/provider/index.ts": [
+        "./src/provider/dependenciesprovider.tsx",
+        "./src/provider/dependenciesprovider.type.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -171,8 +325,20 @@
       "./node_modules/typescript/lib/lib.es2015.symbol.d.ts",
       "./node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts",
       "./node_modules/typescript/lib/lib.es5.d.ts",
-      "./src/context/translatecontext.tsx",
-      "./src/index.ts"
+      "./src/hooks/index.ts",
+      "./src/hooks/usedependenciescontext.ts",
+      "./src/hooks/usemediator.ts",
+      "./src/hooks/usenotify.ts",
+      "./src/hooks/useroute.ts",
+      "./src/hooks/userouter.ts",
+      "./src/hooks/usesecurity.ts",
+      "./src/hooks/usetranslate.ts",
+      "./src/hooks/useusercontext.ts",
+      "./src/hooks/useviewbuilder.ts",
+      "./src/index.ts",
+      "./src/provider/dependenciesprovider.tsx",
+      "./src/provider/dependenciesprovider.type.ts",
+      "./src/provider/index.ts"
     ]
   },
   "version": "4.1.3"
