@@ -43,6 +43,7 @@ define([
                   this.template({
                     __: __,
                     axes: axesLabels.sort().join(', '),
+                    axesCount: axesLabels.length,
                   })
                 );
               });
