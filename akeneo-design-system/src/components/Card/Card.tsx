@@ -1,6 +1,6 @@
-import React, {Ref, ReactNode, isValidElement, ReactElement} from 'react';
+import React, {ReactNode, isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
-import {Badge, BadgeProps, Checkbox} from '../../components';
+import {Checkbox} from '../../components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 
@@ -37,7 +37,7 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   line-height: 20px;
   font-size: ${getFontSize('default')};
   color: ${getColor('grey120')};
-  cursor: ${({onClick}) => (undefined !== onClick ? 'pointer' : 'default')};
+  cursor: ${({onClick, disabled}) => (disabled ? 'not-allowed' : undefined !== onClick ? 'pointer' : 'auto')};
 
   img {
     position: absolute;
@@ -76,6 +76,12 @@ const CardLabel = styled.div`
   }
 `;
 
+const CardText = styled.span`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
 const BadgeContainer = styled.div`
   position: absolute;
   z-index: 5;
@@ -102,6 +108,11 @@ type CardProps = Override<
     isSelected?: boolean;
 
     /**
+     * Wether or not the Card is selectable and clickable.
+     */
+    disabled?: boolean;
+
+    /**
      * Handler called when the Card is selected. When provided, the Card will display a Checkbox and become selectable.
      */
     onSelect?: (isSelected: boolean) => void;
@@ -117,40 +128,46 @@ type CardProps = Override<
  * Cards are used to have a good visual representation of the items to display.
  * Cards can be used in a grid or in a collection.
  */
-const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  (
-    {src, fit = 'cover', isSelected = false, onSelect, children, onClick, ...rest}: CardProps,
-    forwardedRef: Ref<HTMLDivElement>
-  ) => {
-    const badges: ReactElement<BadgeProps>[] = [];
-    const texts: string[] = [];
+const Card = ({
+  src,
+  fit = 'cover',
+  isSelected = false,
+  onSelect,
+  disabled = false,
+  children,
+  onClick,
+  ...rest
+}: CardProps) => {
+  const nonLabelChildren: ReactElement[] = [];
+  const texts: string[] = [];
 
-    React.Children.forEach(children, child => {
-      if (isValidElement<BadgeProps>(child) && child.type === Badge) {
-        badges.push(child);
-      } else if (typeof child === 'string') {
-        texts.push(child);
-      } else {
-        throw new Error('Card component only accepts string or Badge as children');
-      }
-    });
+  React.Children.forEach(children, child => {
+    if (typeof child === 'string') {
+      texts.push(child);
+    } else if (isValidElement(child)) {
+      nonLabelChildren.push(child);
+    } else {
+      throw new Error('Card component only accepts string or Badge as children');
+    }
+  });
 
-    const toggleSelect = undefined !== onSelect ? () => onSelect(!isSelected) : undefined;
+  const toggleSelect = undefined !== onSelect && !disabled ? () => onSelect(!isSelected) : undefined;
 
-    return (
-      <CardContainer ref={forwardedRef} fit={fit} isSelected={isSelected} onClick={onClick || toggleSelect} {...rest}>
-        {0 < badges.length && <BadgeContainer>{badges[0]}</BadgeContainer>}
-        <ImageContainer>
-          <Overlay />
-          <img src={src} alt={texts[0]} />
-        </ImageContainer>
-        <CardLabel>
-          {undefined !== onSelect && <Checkbox checked={isSelected} onChange={toggleSelect} />}
-          {texts}
-        </CardLabel>
-      </CardContainer>
-    );
-  }
-);
+  return (
+    <CardContainer fit={fit} isSelected={isSelected} onClick={onClick || toggleSelect} disabled={disabled} {...rest}>
+      <ImageContainer>
+        <Overlay />
+        <img src={src} alt={texts[0]} />
+      </ImageContainer>
+      <CardLabel>
+        {undefined !== onSelect && <Checkbox checked={isSelected} readOnly={disabled} onChange={toggleSelect} />}
+        <CardText title={texts.join(' ')}>{texts}</CardText>
+      </CardLabel>
+      {nonLabelChildren}
+    </CardContainer>
+  );
+};
+
+Card.BadgeContainer = BadgeContainer;
 
 export {Card, CardGrid};

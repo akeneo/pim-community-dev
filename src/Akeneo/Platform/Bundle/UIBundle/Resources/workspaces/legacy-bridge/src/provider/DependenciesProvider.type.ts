@@ -18,7 +18,7 @@ type Router = {
 
 type Security = {isGranted: (acl: string) => boolean};
 
-type Translate = (id: string, placeholders?: {[name: string]: string}, count?: number) => string;
+type Translate = (id: string, placeholders?: {[name: string]: string|number}, count?: number) => string;
 
 type UserContext = {
   get: (data: string) => string;
