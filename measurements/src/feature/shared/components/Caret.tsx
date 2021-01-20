@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Direction} from 'akeneomeasure/model/direction';
+import {Direction} from '../../model/direction';
 
 const CaretContainer = styled.span`
   display: inline-block;

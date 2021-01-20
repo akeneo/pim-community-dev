@@ -1,12 +1,12 @@
 import React, {FormEvent, useRef} from 'react';
 import styled from 'styled-components';
-import {MeasurementFamily, setMeasurementFamilyLabel} from 'akeneomeasure/model/measurement-family';
-import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {TextField} from 'akeneomeasure/shared/components/TextField';
-import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
-import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
+import {MeasurementFamily, setMeasurementFamilyLabel} from '../../model/measurement-family';
+import {SubsectionHeader} from '../../shared/components/Subsection';
+import {TextField} from '../../shared/components/TextField';
+import {useUiLocales} from '../../shared/hooks/use-ui-locales';
+import {FormGroup} from '../../shared/components/FormGroup';
 import {useAutoFocus, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
-import {useTranslate, useSecurity} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useSecurity} from '@akeneo-pim-community/legacy';
 
 const Container = styled.div`
   display: flex;

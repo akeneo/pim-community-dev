@@ -1,39 +1,32 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {useHistory, useParams, Prompt} from 'react-router-dom';
 import styled from 'styled-components';
-import {useMeasurementFamily} from 'akeneomeasure/hooks/use-measurement-family';
-import {UnitTab} from 'akeneomeasure/pages/edit/unit-tab';
-import {PropertyTab} from 'akeneomeasure/pages/edit/PropertyTab';
-import {PageHeader, PageHeaderPlaceholder} from 'akeneomeasure/shared/components/PageHeader';
-import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Unit, UnitCode} from 'akeneomeasure/model/unit';
-import {PageContent} from 'akeneomeasure/shared/components/PageContent';
-import {
-  DropdownLink,
-  SecondaryActionsDropdownButton,
-} from 'akeneomeasure/shared/components/SecondaryActionsDropdownButton';
-import {useSaveMeasurementFamilySaver} from 'akeneomeasure/pages/edit/hooks/use-save-measurement-family-saver';
-import {ErrorBadge} from 'akeneomeasure/shared/components/ErrorBadge';
-import {CreateUnit} from 'akeneomeasure/pages/create-unit/CreateUnit';
-import {useUnsavedChanges} from 'akeneomeasure/shared/hooks/use-unsaved-changes';
-import {UnsavedChanges} from 'akeneomeasure/shared/components/UnsavedChanges';
-import {UnsavedChangesContext} from 'akeneomeasure/context/unsaved-changes-context';
-import {
-  useMeasurementFamilyRemover,
-  MeasurementFamilyRemoverResult,
-} from 'akeneomeasure/hooks/use-measurement-family-remover';
-import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
-import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {ErrorBlock} from 'akeneomeasure/shared/components/ErrorBlock';
+import {useMeasurementFamily} from '../../hooks/use-measurement-family';
+import {UnitTab} from '../../pages/edit/unit-tab';
+import {PropertyTab} from '../../pages/edit/PropertyTab';
+import {PageHeader, PageHeaderPlaceholder} from '../../shared/components/PageHeader';
+import {addUnit, getMeasurementFamilyLabel, MeasurementFamily} from '../../model/measurement-family';
+import {Unit, UnitCode} from '../../model/unit';
+import {PageContent} from '../../shared/components/PageContent';
+import {DropdownLink, SecondaryActionsDropdownButton} from '../../shared/components/SecondaryActionsDropdownButton';
+import {useSaveMeasurementFamilySaver} from '../../pages/edit/hooks/use-save-measurement-family-saver';
+import {ErrorBadge} from '../../shared/components/ErrorBadge';
+import {CreateUnit} from '../../pages/create-unit/CreateUnit';
+import {useUnsavedChanges} from '../../shared/hooks/use-unsaved-changes';
+import {UnsavedChanges} from '../../shared/components/UnsavedChanges';
+import {UnsavedChangesContext} from '../../context/unsaved-changes-context';
+import {useMeasurementFamilyRemover, MeasurementFamilyRemoverResult} from '../../hooks/use-measurement-family-remover';
+import {ConfirmDeleteModal} from '../../shared/components/ConfirmDeleteModal';
+import {ConfigContext} from '../../context/config-context';
+import {ErrorBlock} from '../../shared/components/ErrorBlock';
 import {
   useTranslate,
   useNotify,
   NotificationLevel,
   useUserContext,
-  PimView,
   useSecurity,
   useRoute,
-} from '@akeneo-pim-community/legacy-bridge';
+} from '@akeneo-pim-community/legacy';
 import {filterErrors, ValidationError, partitionErrors, useToggleState} from '@akeneo-pim-community/shared';
 import {Helper, Button, Breadcrumb} from 'akeneo-design-system';
 
@@ -253,12 +246,7 @@ const Edit = () => {
         onCancel={closeConfirmDeleteMeasurementFamilyModal}
       />
       <PageHeader
-        userButtons={
-          <PimView
-            className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
-            viewName="pim-measurements-user-navigation"
-          />
-        }
+        userButtons={undefined}
         buttons={buttons}
         breadcrumb={
           <Breadcrumb>

@@ -1,4 +1,4 @@
-import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter} from '@akeneo-pim-community/legacy';
 
 enum MeasurementFamilyRemoverResult {
   Success = 'Success',

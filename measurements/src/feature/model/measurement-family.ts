@@ -1,9 +1,9 @@
-import {getLabel} from 'pimui/js/i18n';
-import {LocaleCode} from 'akeneomeasure/model/locale';
-import {LabelCollection} from 'akeneomeasure/model/label-collection';
-import {Unit, UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
-import {Operation} from 'akeneomeasure/model/operation';
-import {Direction} from 'akeneomeasure/model/direction';
+import {LocaleCode} from '../model/locale';
+import {LabelCollection} from '../model/label-collection';
+import {Unit, UnitCode, getUnitLabel} from '../model/unit';
+import {Operation} from '../model/operation';
+import {Direction} from '../model/direction';
+import {getLabel} from '../shared/tools/i18n';
 
 type MeasurementFamilyCode = string;
 
@@ -140,8 +140,6 @@ const sortMeasurementFamily = (sortDirection: Direction, locale: LocaleCode, sor
 };
 
 export {
-  MeasurementFamily,
-  MeasurementFamilyCode,
   getMeasurementFamilyLabel,
   setMeasurementFamilyLabel,
   getUnit,
@@ -156,3 +154,4 @@ export {
   filterOnLabelOrCode,
   sortMeasurementFamily,
 };
+export type {MeasurementFamily, MeasurementFamilyCode};

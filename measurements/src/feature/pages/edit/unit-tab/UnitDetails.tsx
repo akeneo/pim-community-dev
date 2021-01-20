@@ -1,9 +1,9 @@
 import React, {FormEvent, useCallback} from 'react';
 import styled from 'styled-components';
-import {SubsectionHeader} from 'akeneomeasure/shared/components/Subsection';
-import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {TextField} from 'akeneomeasure/shared/components/TextField';
-import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
+import {SubsectionHeader} from '../../../shared/components/Subsection';
+import {FormGroup} from '../../../shared/components/FormGroup';
+import {TextField} from '../../../shared/components/TextField';
+import {OperationCollection} from '../../../pages/common/OperationCollection';
 import {
   setUnitSymbol,
   setUnitLabel,
@@ -11,12 +11,12 @@ import {
   MeasurementFamily,
   getUnit,
   removeUnit,
-} from 'akeneomeasure/model/measurement-family';
-import {Operation} from 'akeneomeasure/model/operation';
-import {useUiLocales} from 'akeneomeasure/shared/hooks/use-ui-locales';
-import {UnitCode, getUnitLabel} from 'akeneomeasure/model/unit';
-import {ConfirmDeleteModal} from 'akeneomeasure/shared/components/ConfirmDeleteModal';
-import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy-bridge';
+} from '../../../model/measurement-family';
+import {Operation} from '../../../model/operation';
+import {useUiLocales} from '../../../shared/hooks/use-ui-locales';
+import {UnitCode, getUnitLabel} from '../../../model/unit';
+import {ConfirmDeleteModal} from '../../../shared/components/ConfirmDeleteModal';
+import {useTranslate, useUserContext, useSecurity} from '@akeneo-pim-community/legacy';
 import {filterErrors, ValidationError, useToggleState} from '@akeneo-pim-community/shared';
 import {Button} from 'akeneo-design-system';
 

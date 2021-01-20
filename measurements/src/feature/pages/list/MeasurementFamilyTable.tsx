@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import {MeasurementFamilyRow} from 'akeneomeasure/pages/list/MeasurementFamilyRow';
-import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Caret} from 'akeneomeasure/shared/components/Caret';
-import {Table, HeaderCell} from 'akeneomeasure/pages/common/Table';
-import {Direction} from 'akeneomeasure/model/direction';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {MeasurementFamilyRow} from '../../pages/list/MeasurementFamilyRow';
+import {MeasurementFamily} from '../../model/measurement-family';
+import {Caret} from '../../shared/components/Caret';
+import {Table, HeaderCell} from '../../pages/common/Table';
+import {Direction} from '../../model/direction';
+import {useTranslate} from '@akeneo-pim-community/legacy';
 
 const SortableHeaderCell = styled(HeaderCell)`
   &:hover {

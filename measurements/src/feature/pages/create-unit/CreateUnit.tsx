@@ -1,23 +1,23 @@
 import React, {FormEvent, useCallback, useContext, useRef, useState} from 'react';
 import {Helper, MeasurementIllustration, Button, SectionTitle, Title, Modal} from 'akeneo-design-system';
-import {Subsection} from 'akeneomeasure/shared/components/Subsection';
-import {TextField} from 'akeneomeasure/shared/components/TextField';
-import {FormGroup} from 'akeneomeasure/shared/components/FormGroup';
-import {useForm} from 'akeneomeasure/hooks/use-form';
-import {getMeasurementFamilyLabel, MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Unit} from 'akeneomeasure/model/unit';
+import {Subsection} from '../../shared/components/Subsection';
+import {TextField} from '../../shared/components/TextField';
+import {FormGroup} from '../../shared/components/FormGroup';
+import {useForm} from '../../hooks/use-form';
+import {getMeasurementFamilyLabel, MeasurementFamily} from '../../model/measurement-family';
+import {Unit} from '../../model/unit';
 import {
   CreateUnitForm,
   createUnitFromForm,
   initializeCreateUnitForm,
   validateCreateUnitForm,
-} from 'akeneomeasure/pages/create-unit/form/create-unit-form';
-import {useCreateUnitValidator} from 'akeneomeasure/pages/create-unit/hooks/use-create-unit-validator';
-import {CheckboxField} from 'akeneomeasure/shared/components/CheckboxField';
-import {Operation} from 'akeneomeasure/model/operation';
-import {OperationCollection} from 'akeneomeasure/pages/common/OperationCollection';
-import {ConfigContext} from 'akeneomeasure/context/config-context';
-import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy-bridge';
+} from '../../pages/create-unit/form/create-unit-form';
+import {useCreateUnitValidator} from '../../pages/create-unit/hooks/use-create-unit-validator';
+import {CheckboxField} from '../../shared/components/CheckboxField';
+import {Operation} from '../../model/operation';
+import {OperationCollection} from '../../pages/common/OperationCollection';
+import {ConfigContext} from '../../context/config-context';
+import {useTranslate, useNotify, NotificationLevel, useUserContext} from '@akeneo-pim-community/legacy';
 import {useAutoFocus, filterErrors, ValidationError, useShortcut, Key} from '@akeneo-pim-community/shared';
 
 type CreateUnitProps = {

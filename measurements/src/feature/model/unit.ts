@@ -1,7 +1,7 @@
-import {LocaleCode} from 'akeneomeasure/model/locale';
-import {LabelCollection} from 'akeneomeasure/model/label-collection';
-import {Operation} from 'akeneomeasure/model/operation';
-import {getLabel} from 'pimui/js/i18n';
+import {LocaleCode} from '../model/locale';
+import {LabelCollection} from '../model/label-collection';
+import {Operation} from '../model/operation';
+import {getLabel} from '../shared/tools/i18n';
 
 type UnitCode = string;
 
@@ -14,4 +14,5 @@ type Unit = {
 
 const getUnitLabel = (unit: Unit, locale: LocaleCode) => getLabel(unit.labels, locale, unit.code);
 
-export {Unit, UnitCode, getUnitLabel};
+export {getUnitLabel};
+export type {Unit, UnitCode};

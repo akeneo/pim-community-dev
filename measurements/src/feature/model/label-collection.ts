@@ -2,4 +2,4 @@ type LabelCollection = {
   [locale: string]: string;
 };
 
-export {LabelCollection};
+export type {LabelCollection};

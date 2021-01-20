@@ -1,6 +1,6 @@
-import {MeasurementFamily} from 'akeneomeasure/model/measurement-family';
-import {Operator} from 'akeneomeasure/model/operation';
-import {LocaleCode} from 'akeneomeasure/model/locale';
+import {MeasurementFamily} from '../../../model/measurement-family';
+import {Operator} from '../../../model/operation';
+import {LocaleCode} from '../../../model/locale';
 
 type CreateMeasurementFamilyForm = {
   family_code: string;
@@ -46,4 +46,5 @@ const createMeasurementFamilyFromForm = (data: CreateMeasurementFamilyForm, loca
   };
 };
 
-export {CreateMeasurementFamilyForm, initializeCreateMeasurementFamilyForm, createMeasurementFamilyFromForm};
+export {initializeCreateMeasurementFamilyForm, createMeasurementFamilyFromForm};
+export type {CreateMeasurementFamilyForm};
