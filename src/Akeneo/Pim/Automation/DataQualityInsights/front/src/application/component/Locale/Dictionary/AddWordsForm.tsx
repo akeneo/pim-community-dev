@@ -1,10 +1,22 @@
-import React from 'react';
-import {Button, TextInput} from 'akeneo-design-system';
+import React, {useState} from 'react';
+import {Button} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {TagInput} from '../TagInput';
+import {useDictionaryState} from '../../../../infrastructure';
 
 const AddWordsForm = () => {
   const translate = useTranslate();
+  const [words, setWords] = useState<string[]>([]);
+  const {addWords, search} = useDictionaryState();
+
+  const onAddWords = async () => {
+    if (words.length > 0) {
+      await addWords(words);
+      setWords([]);
+      search('', 1);
+    }
+  }
 
   return (
     <Container>
@@ -12,10 +24,10 @@ const AddWordsForm = () => {
 
       <InputContainer>
         <TextInputContainer>
-          <TextInput value={''} onChange={() => console.log('on change')} />
+          <TagInput allowDuplicates={false} defaultTags={words} onTagsUpdate={(words: string[]) => setWords(words)}/>
         </TextInputContainer>
 
-        <Button ghost level="tertiary" onClick={() => console.log('add words')}>
+        <Button ghost level="tertiary" onClick={onAddWords}>
           {translate('pim_common.add')}
         </Button>
       </InputContainer>

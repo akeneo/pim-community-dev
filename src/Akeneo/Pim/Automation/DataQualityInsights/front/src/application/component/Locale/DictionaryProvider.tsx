@@ -9,6 +9,7 @@ const DictionaryContext = createContext<DictionaryState>({
   currentPage: 1,
   search: () => {},
   deleteWord: () => {},
+  addWords: () => {},
 });
 
 type DictionaryProviderProps = {
