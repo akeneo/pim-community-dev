@@ -1,0 +1,97 @@
+pim_title:
+  akeneo_asset_manager_asset_family_edit: Edit an asset family
+  akeneo_asset_manager_asset_edit: Edit an asset
+pim_asset_manager:
+  result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
+  asset_counter: '{0} No asset|{1} {{ count }} asset|]1,Inf] {{ count }} assets'
+  asset_collection:
+    remove_asset: Remove asset
+  asset_preview:
+    empty_main_media: This asset has no media.
+    error: An error occurred during the rendering of the preview
+  app:
+    image:
+      wide:
+        remove: Remove the file
+        download: Download the file
+        upload: Drag and drop to upload or click here
+      small:
+        remove: Remove
+        upload: Drag and drop to upload
+  asset_family:
+    column:
+      title: Asset navigation
+      selector:
+        title: Asset families
+        no_data: No asset family available
+    validation:
+      code:
+        pattern: 'This field can only contain letters, numbers, and underscores.'
+        should_be_unique: 'An asset family already exists with code "{{ %asset_family_identifier% }}"'
+        limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
+      transformation:
+        limit_reached: 'You have reached the limit of {{ %limit% }} transformations'
+        same_operation_twice: 'The operation "{{ %operation_type% }}" cannot be defined twice in a single transformation'
+        source_can_not_be_a_target: 'The attribute source "{{ %attribute_code% }}" cannot be a target attribute of a transformation.'
+        attribute_reference_should_exist: 'The attribute "{{ %attribute_code% }}" does not exist for this asset family'
+        filename_is_not_unique: 'A transformation with the filename''s prefix "{{ %filename_prefix% }}" and suffix "{{ %filename_suffix% }}" already exists for attribute source "{{ %attribute_code% }}"'
+        code_is_not_unique: 'You cannot define two transformations with the same code "{{ %transformation_code% }}"'
+      rule_template:
+        extrapolated_attribute_should_exist: 'The attribute "{{ %attribute_code% }}" does not exist for this asset family'
+    button:
+      save: Save
+      save_permission: Save
+      create: Create an asset family
+      edit: Edit family
+      view: View family
+    permission:
+      title: Asset family permissions
+    breadcrumb: Asset families
+    img: The main media of the asset family named "{{ label }}"
+    tab:
+      attribute: Attributes
+      properties: Properties
+      permission: Permissions
+      transformations: Transformations
+    transformations:
+      help:
+        title: 'Welcome to your new asset management area!'
+  asset:
+    validation:
+      limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
+      code:
+        pattern: 'This field can only contain letters, numbers, and underscores.'
+        should_be_unique: 'This code already exists for another asset.'
+    no_data:
+      subtitle: Click on the button "Add new" to create the first asset
+    no_result:
+      subtitle: Try again with new search criteria.
+    selector:
+      error:
+        value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
+    button:
+      save: Save
+      create: Create an asset
+      mass_upload: Mass upload
+      delete: Delete
+      delete_all: Delete all assets
+      back: Back to list
+      launch_transformations: Launch transformations
+      fullscreen: Fullscreen
+    product:
+      attribute: Product attribute
+      counter: '{{ totalCount }} result|{{ totalCount }} results'
+      dropdown:
+        attribute: Product attribute
+      no_attribute:
+        title: There is no product attribute linked to the asset family "{{ entityLabel }}"
+        subtitle: 'To start linking products to this asset family you can create a new one: '
+        link: Create a new product attribute
+      not_enough_items:
+        button: View all products
+      no_product:
+        title: This asset is not linked to any product via the "{{ entityLabel }}" product attribute
+        subtitle: 'Start linking products to this attribute to see them here'
+    enrich:
+      title: Asset attributes
+      code: Code
