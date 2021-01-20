@@ -119,11 +119,12 @@ type CardProps = Override<
  */
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   (
-    {src, fit = 'cover', isSelected = false, onSelect, children, ...rest}: CardProps,
+    {src, fit = 'cover', isSelected = false, onSelect, children, onClick, ...rest}: CardProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const badges: ReactElement<BadgeProps>[] = [];
     const texts: string[] = [];
+
     React.Children.forEach(children, child => {
       if (isValidElement<BadgeProps>(child) && child.type === Badge) {
         badges.push(child);
@@ -137,7 +138,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     const toggleSelect = undefined !== onSelect ? () => onSelect(!isSelected) : undefined;
 
     return (
-      <CardContainer ref={forwardedRef} fit={fit} isSelected={isSelected} onClick={toggleSelect} {...rest}>
+      <CardContainer ref={forwardedRef} fit={fit} isSelected={isSelected} onClick={onClick || toggleSelect} {...rest}>
         {0 < badges.length && <BadgeContainer>{badges[0]}</BadgeContainer>}
         <ImageContainer>
           <Overlay />
