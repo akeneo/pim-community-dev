@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9639: Fix sequential edit when selecting All with a filter on parent
+
 # 4.0.85 (2021-01-19)
 
 ## Bug fixes
