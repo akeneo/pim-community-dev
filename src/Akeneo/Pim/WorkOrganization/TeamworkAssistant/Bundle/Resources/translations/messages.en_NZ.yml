@@ -14,11 +14,9 @@ teamwork_assistant:
     message: You have new products to enrich for "%project_label%". Due date is "%due_date%".
     project_finished:
       contributor: Congrats! You're 100% of done product done with %project_label%.
-      owner: '%project_label% for the %due_date% is finished.'
       show: Show
     due_date:
       contributor: You're %percent%% of product done with %project_label%. Don't forget, to fill in the last products for the %due_date%.
-      owner: '%project_label% for the %due_date% is not 100% done.'
       start: Start
   datagrid:
     project_completeness: Project progress
