@@ -1,7 +1,7 @@
 import React, {ReactElement, ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import {DangerIcon, IconProps, InfoRoundIcon} from '../../icons';
+import {CheckIcon, DangerIcon, IconProps, InfoRoundIcon} from '../../icons';
 
 const getBackgroundColor = (level: Level) => {
   switch (level) {
@@ -11,6 +11,8 @@ const getBackgroundColor = (level: Level) => {
       return getColor('yellow', 10);
     case 'error':
       return getColor('red', 10);
+    case 'success':
+      return getColor('green', 10);
   }
 };
 
@@ -22,6 +24,8 @@ const getFontColor = (level: Level, inline: boolean) => {
       return getColor(inline ? 'grey' : 'yellow', 120);
     case 'error':
       return getColor('red', inline ? 100 : 120);
+    case 'success':
+      return getColor('grey', 120);
   }
 };
 
@@ -33,6 +37,8 @@ const getIconColor = (level: Level, inline: boolean) => {
       return getColor('yellow', inline ? 100 : 120);
     case 'error':
       return getColor('red', inline ? 100 : 120);
+    case 'success':
+      return getColor('green', inline ? 100 : 120);
   }
 };
 
@@ -44,6 +50,8 @@ const getIcon = (level: Level): JSX.Element => {
       return <DangerIcon />;
     case 'error':
       return <DangerIcon />;
+    case 'success':
+      return <CheckIcon />;
   }
 };
 
@@ -55,6 +63,8 @@ const getSeparatorColor = (level: Level) => {
       return getColor('yellow', 120);
     case 'error':
       return getColor('red', 120);
+    case 'success':
+      return getColor('green', 120);
   }
 };
 
@@ -66,6 +76,8 @@ const getLinkColor = (level: Level, inline: boolean) => {
       return getColor('yellow', 120);
     case 'error':
       return getColor('red', inline ? 100 : 120);
+    case 'success':
+      return getColor('green', inline ? 100 : 120);
   }
 };
 
@@ -83,7 +95,7 @@ const Container = styled.div<{level: Level; inline: boolean} & AkeneoThemedProps
     `}
 `;
 
-type Level = 'info' | 'warning' | 'error';
+type Level = 'info' | 'warning' | 'error' | 'success';
 
 const IconContainer = styled.span<{level: Level; inline: boolean} & AkeneoThemedProps>`
   height: ${({inline}) => (inline ? '16px' : '20px')};
