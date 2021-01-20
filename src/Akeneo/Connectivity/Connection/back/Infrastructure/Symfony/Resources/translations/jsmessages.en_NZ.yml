@@ -1,0 +1,85 @@
+pim_menu:
+  item:
+    connection_audit: Connection dashboard
+    connection_settings: Connections
+    connection_webhook_edit: Event subscription
+pim_title:
+  akeneo_connectivity_connection_settings_index: Connections
+  akeneo_connectivity_connection_audit_index: Connection dashboard
+  akeneo_connectivity_connection_audit_any: Connection dashboard
+  akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
+  akeneo_connectivity_connection_webhook_edit: Event subscription
+  akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
+akeneo_connectivity.connection:
+  connections: Connections
+  secondary_actions:
+    title: Other actions
+  connection:
+    code: Code
+    label: Label
+    flow_type: Flow type
+    image: Image
+    client_id: Client ID
+    secret: Secret
+    username: Username
+    password: Password
+    user_role_id: Role
+    user_group_id: Group
+    constraint:
+      code:
+        required: A connection code is required.
+        invalid: A connection code can contain only letters, numbers and underscores.
+        too_short: 'This connection code is too short: it must contain at least 3 characters.'
+        too_long: 'This connection code is too long: it must be less than or equal to 100 characters.'
+        must_be_unique: A connection code must be unique.
+      label:
+        required: A connection label is required.
+        too_short: 'This connection label is too short: it must contain at least 3 characters.'
+        too_long: "This connection label is too long. It should have 100 characters or less.\n"
+      flow_type:
+        invalid: A connection flow type can only be 'data_source', 'data_destination' or 'other'.
+      image:
+        must_exist: The image was not found. Please try again.
+  flow_type:
+    data_source: Data source | Data sources
+    data_destination: Data destination | Data destinations
+    other: Other | Others
+  connection_count: '{{ count }} connection | {{ count }} connections'
+  no_connection:
+    title: No connection declared yet.
+    message: Add your first one by clicking on the “Create” button above or
+    message_link: click here.
+  create_connection:
+    title: Create a new connection
+    description: You can create up to 50 connections.
+    flash:
+      success: Connection successfully created.
+      error: Sorry, an error occurred while creating the connection.
+  edit_connection:
+    subtitle: Settings
+    flash:
+      success: Connection successfully updated.
+      error: Sorry, an error occurred while editing the connection.
+    image_uploader:
+      extension_not_allowed: The extension of the file you are trying to upload is not allowed.
+  dashboard:
+    charts:
+      legend:
+        today: Today
+    no_connection:
+      title:
+        default: Want to see some fancy charts about your connections?
+      message_with_permission:
+        link: here.
+      message_without_permission:
+        message: Ask your administrator to create one.
+        link: Learn more about connections here...
+  webhook:
+    title: Event subscription
+    event_subscription: Event subscription
+    form:
+      secret: Secret
+  runtime_error:
+    error_message: Oh, snap! An error occurred...
+    reload_helper: Please reload the page and try again.
+    reload_button: Reload
