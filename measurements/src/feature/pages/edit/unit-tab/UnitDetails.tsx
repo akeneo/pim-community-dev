@@ -63,7 +63,7 @@ const UnitDetails = ({
     onMeasurementFamilyChange(removeUnit(measurementFamily, selectedUnitCode));
     selectUnitCode(measurementFamily.standard_unit_code);
     closeConfirmDeleteUnitModal();
-  }, [measurementFamily, selectedUnitCode, onMeasurementFamilyChange, selectUnitCode, removeUnit]);
+  }, [measurementFamily, selectedUnitCode, onMeasurementFamilyChange, selectUnitCode, closeConfirmDeleteUnitModal]);
 
   if (undefined === selectedUnit) return null;
 

@@ -1,4 +1,4 @@
-import React, {ReactElement, ReactNode, useEffect, useRef} from 'react';
+import React, {FC, ReactElement, ReactNode, useEffect, useRef} from 'react';
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
 import {AkeneoThemedProps, CommonStyle, getColor, getFontSize} from '../../theme';
@@ -98,7 +98,10 @@ type ModalProps = {
 /**
  * The Modal Component is used to display a secondary window over the content.
  */
-const Modal = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
+const Modal: FC<ModalProps> & {
+  BottomButtons: any;
+  TopRightButtons: any;
+} = ({isOpen, onClose, illustration, closeTitle, children, ...rest}: ModalProps) => {
   useShortcut(Key.Escape, onClose);
 
   const portalNode = document.createElement('div');

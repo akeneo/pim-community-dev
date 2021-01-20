@@ -13,7 +13,7 @@ const useMeasurementFamilies = (): [MeasurementFamily[] | null, () => Promise<vo
 
   useEffect(() => {
     (async () => fetchMeasurementFamilies())();
-  }, []);
+  }, [fetchMeasurementFamilies]);
 
   return [measurementFamilies, fetchMeasurementFamilies];
 };

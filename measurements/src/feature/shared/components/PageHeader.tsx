@@ -41,7 +41,7 @@ const PageHeader = ({
     <div className="AknTitleContainer-line">
       {imageSrc && (
         <div className="AknImage AknImage--readOnly">
-          <img className="AknImage-display" src={imageSrc} />
+          <img className="AknImage-display" src={imageSrc} alt="read only" />
         </div>
       )}
 

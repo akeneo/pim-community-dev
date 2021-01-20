@@ -86,6 +86,7 @@ const CreateUnit = ({isOpen, onClose, onNewUnit, measurementFamily}: CreateUnitP
     handleClose,
     setErrors,
     translate,
+    focusFirstField,
   ]);
 
   useShortcut(Key.Enter, handleAdd);

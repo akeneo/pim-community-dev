@@ -20,7 +20,7 @@ const useUiLocales = (): Locale[] | null => {
 
   useEffect(() => {
     (async () => fetchLocales())();
-  }, []);
+  }, [fetchLocales]);
 
   return locales;
 };

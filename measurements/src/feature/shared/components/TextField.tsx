@@ -1,4 +1,4 @@
-import React, {ChangeEventHandler, InputHTMLAttributes, Ref, RefObject, useContext} from 'react';
+import React, {ChangeEventHandler, InputHTMLAttributes, Ref, useContext} from 'react';
 import styled, {css, ThemeContext} from 'styled-components';
 import {Flag} from '../../shared/components/Flag';
 import {LockIcon} from 'akeneo-design-system';

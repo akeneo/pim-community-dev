@@ -58,7 +58,7 @@ const ProgressBarFill = styled.div.attrs<{width: number; level: Level; indetermi
   props => ({
     style: {width: `${props.width}%`},
   })
-)<{level: Level; light: boolean} & AkeneoThemedProps>`
+)<{width: number; level: Level; indeterminate: boolean; light: boolean} & AkeneoThemedProps>`
   ${({level, light}: {level: Level; light: boolean} & AkeneoThemedProps) => css`
     background: ${getColorForLevel(level, light ? 60 : 100)};
   `}
