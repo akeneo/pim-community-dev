@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\TextCheckFailedException;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckerDictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\TextCheckResultCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -63,7 +62,7 @@ class AspellCheckerSpec extends ObjectBehavior
 
         $speller->checkText($source, ['en_US'])->willReturn($aspellCheckResult);
 
-        $textCheckerDictionaryRepository->findByLocaleCode($localeCode)->willReturn([]);
+        $textCheckerDictionaryRepository->filterExistingWords($localeCode, [new DictionaryWord('hapen')])->willReturn([]);
 
         $globalOffsetCalculator->compute(Argument::cetera())->shouldBeCalled();
         $lineNumberCalculator->compute(Argument::cetera())->shouldBeCalled();
@@ -76,7 +75,6 @@ class AspellCheckerSpec extends ObjectBehavior
 
     public function it_checks_test_without_issue(
         $speller,
-        $textCheckerDictionaryRepository,
         $globalOffsetCalculator,
         $lineNumberCalculator
     ) {
@@ -85,8 +83,6 @@ class AspellCheckerSpec extends ObjectBehavior
         $localeCode = new LocaleCode('en_US');
 
         $speller->checkText($source, ['en_US'])->willReturn([]);
-
-        $textCheckerDictionaryRepository->findByLocaleCode($localeCode)->willReturn([]);
 
         $globalOffsetCalculator->compute(Argument::cetera())->shouldNotBeCalled();
         $lineNumberCalculator->compute(Argument::cetera())->shouldNotBeCalled();
@@ -97,7 +93,7 @@ class AspellCheckerSpec extends ObjectBehavior
         $result->count()->shouldBe(0);
     }
 
-    public function it_checks_test_without_issue_with_user_generated_dictionary(
+    public function it_checks_test_with_issue_on_an_ignored_word(
         $speller,
         $textCheckerDictionaryRepository,
         $globalOffsetCalculator,
@@ -114,12 +110,8 @@ class AspellCheckerSpec extends ObjectBehavior
 
         $speller->checkText($source, ['en_US'])->willReturn($aspellCheckResult);
 
-        $textCheckerDictionaryRepository->findByLocaleCode($localeCode)->willReturn([
-            new TextCheckerDictionaryWord(
-                new LocaleCode('en_US'),
-                new DictionaryWord('dior')
-            )
-        ]);
+        $dior = new DictionaryWord('Dior');
+        $textCheckerDictionaryRepository->filterExistingWords($localeCode, [$dior])->willReturn([$dior]);
 
         $globalOffsetCalculator->compute(Argument::cetera())->shouldNotBeCalled();
         $lineNumberCalculator->compute(Argument::cetera())->shouldNotBeCalled();

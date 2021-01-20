@@ -36,6 +36,7 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
 
         $this->db = $this->get('database_connection');
         $this->repository = $this->get(TextCheckerDictionaryRepository::class);
+        $this->resetDictionary();
     }
 
     protected function getConfiguration(): Configuration
@@ -43,13 +44,22 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_exists()
+    public function test_it_filters_words_that_are_the_dictionary()
     {
-        $this->createWords();
-        $this->assertTrue($this->repository->exists(new LocaleCode('en_US'), new DictionaryWord('samsung')));
-        $this->assertFalse($this->repository->exists(new LocaleCode('en_US'), new DictionaryWord('Samsung')));
-        $this->assertFalse($this->repository->exists(new LocaleCode('en_GB'), new DictionaryWord('samsung')));
-        $this->assertFalse($this->repository->exists(new LocaleCode('fr_FR'), new DictionaryWord('Sony')));
+        $enUS = new LocaleCode('en_US');
+        $sony = new DictionaryWord('sony');
+        $samsung = new DictionaryWord('samsung');
+        $panasonic = new DictionaryWord('panasonic');
+
+        $this->repository->save(new Write\TextCheckerDictionaryWord($enUS, new DictionaryWord('sony')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord($enUS, new DictionaryWord('lg')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord($enUS, new DictionaryWord('samsung')));
+        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('panasonic')));
+
+
+        $filteredWords = $this->repository->filterExistingWords($enUS, [$sony, $samsung, $panasonic]);
+
+        $this->assertEquals([$sony, $samsung], $filteredWords);
     }
 
     public function test_it_does_not_saves_the_same_word_several_times()
@@ -149,5 +159,13 @@ SQL
         )->fetchColumn();
 
         $this->assertTrue(boolval($wordExists));
+    }
+
+    private function resetDictionary(): void
+    {
+        $this->get('database_connection')->executeQuery(<<<SQL
+TRUNCATE TABLE pimee_data_quality_insights_text_checker_dictionary;
+SQL
+        );
     }
 }
