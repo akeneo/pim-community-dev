@@ -17,7 +17,12 @@ const CheckboxField = ({id, label, readOnly, value, onChange, errors}: CheckboxF
     <div className="AknFieldContainer">
       <div className="AknFieldContainer-inputContainer">
         <label className="AknFieldContainer-label" htmlFor={id}>
-          <Checkbox id={id} checked={value} onChange={value => onChange(true === value)} readOnly={readOnly}>
+          <Checkbox
+            id={id}
+            checked={value}
+            onChange={(value: boolean | 'mixed') => onChange(true === value)}
+            readOnly={readOnly}
+          >
             {label}
           </Checkbox>
         </label>

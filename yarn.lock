@@ -9,9 +9,14 @@
   version "0.0.0"
   uid ""
 
-"@akeneo-pim-community/raccoon@link:new-feature":
+"@akeneo-pim-community/raccoon@link:measurements":
   version "0.0.0"
   uid ""
+
+"@akeneo-pim-community/shared@file:shared":
+  version "1.0.0"
+  dependencies:
+    "@akeneo-pim-community/legacy" "file:../../../../../../Library/Caches/Yarn/v6/npm-@akeneo-pim-community-shared-1.0.0-50975251-c34c-46da-a514-cce7fcbae3f8-1611762040704/node_modules/@akeneo-pim-community/legacy"
 
 "@babel/code-frame@7.10.4":
   version "7.10.4"
@@ -1950,7 +1955,7 @@
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
 
-"@types/react-router-dom@^5.1.0":
+"@types/react-router-dom@^5.1.0", "@types/react-router-dom@^5.1.7":
   version "5.1.7"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-5.1.7.tgz#a126d9ea76079ffbbdb0d9225073eb5797ab7271"
   integrity sha512-D5mHD6TbdV/DNHYsnwBTv+y73ei+mMjrkGrla86HthE4/PVvL1J94Bu3qABU+COXzpL23T1EZapVVpwHuBXiUg==
@@ -2482,6 +2487,13 @@ ajv@^7.0.2:
     json-schema-traverse "^1.0.0"
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
+
+"akeneo-design-system@file:akeneo-design-system":
+  version "0.0.0"
+  dependencies:
+    react "^16.13.1"
+    react-dom "^16.13.1"
+    styled-components "^5.1.1"
 
 "akeneo-design-system@link:akeneo-design-system":
   version "0.0.0"
@@ -11178,7 +11190,7 @@ react-refresh@^0.8.3:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
-react-router-dom@^5.1.0:
+react-router-dom@^5.1.0, react-router-dom@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.2.0.tgz#9e65a4d0c45e13289e66c7b17c7e175d0ea15662"
   integrity sha512-gxAmfylo2QUjcwxI63RhQ5G85Qqt4voZpUXSEqCwykV0baaOTQDR1f0PmY8AELqIyVc0NEZUj0Gov5lNGcXgsA==

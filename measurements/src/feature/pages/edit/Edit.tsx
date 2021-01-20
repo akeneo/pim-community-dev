@@ -108,7 +108,7 @@ const Edit = () => {
     measurementFamily,
     __('pim_ui.flash.unsaved_changes')
   );
-  useEffect(() => setHasUnsavedChanges(isModified), [isModified]);
+  useEffect(() => setHasUnsavedChanges(isModified), [isModified, setHasUnsavedChanges]);
 
   // If the measurement family code changes, we select the standard unit code by default
   useEffect(() => {
@@ -117,7 +117,7 @@ const Edit = () => {
     }
 
     selectUnitCode(measurementFamily.standard_unit_code);
-  }, [measurementFamily?.code]);
+  }, [measurementFamily]);
 
   const saveMeasurementFamily = useSaveMeasurementFamilySaver();
   const handleSaveMeasurementFamily = useCallback(async () => {
@@ -144,7 +144,7 @@ const Edit = () => {
       console.error(error);
       notify(NotificationLevel.ERROR, __('measurements.family.save.flash.error'));
     }
-  }, [measurementFamily, locale, saveMeasurementFamily, notify, __, setErrors, resetState]);
+  }, [measurementFamily, saveMeasurementFamily, notify, __, setErrors, resetState]);
 
   const removeMeasurementFamily = useMeasurementFamilyRemover();
   const handleRemoveMeasurementFamily = useCallback(async () => {

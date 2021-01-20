@@ -22,7 +22,7 @@ const useForm = <T>(defaultValues: T): [T, SetValue, ClearValues] => {
 
   const clear = useCallback(() => {
     setState(defaultValues);
-  }, [setState]);
+  }, [setState, defaultValues]);
 
   return [state, setValue, clear];
 };

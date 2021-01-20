@@ -149,9 +149,10 @@ const OperationCollection = ({
   // As the operations are not indexed, we need to hide the errors as soon as the user removes an operation
   // To avoid to display an error on a previous operation
   const [shouldHideErrors, setShouldHideErrors] = useState(false);
+  const normalizedErrors = JSON.stringify(errors);
   useEffect(() => {
     setShouldHideErrors(false);
-  }, [JSON.stringify(errors)]);
+  }, [normalizedErrors]);
 
   return (
     <AknFieldContainer>
