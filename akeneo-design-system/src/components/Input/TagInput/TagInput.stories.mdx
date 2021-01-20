@@ -27,7 +27,7 @@ Tags can be separated thanks to the following characters:
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <TagInput {...args} />;
+      return <TagInput onTagsUpdate={() => {}} allowDuplicates={false}/>;
     }}
   </Story>
 </Canvas>
@@ -41,7 +41,7 @@ Tags can be separated thanks to the following characters:
     {args => {
       return (
         <>
-          <TagInput defaultTags={['batman', 'superman', 'catwoman', 'joker']} />
+          <TagInput defaultTags={['batman', 'superman', 'catwoman', 'joker']} allowDuplicates={false} onTagsUpdate={() => {}}/>
         </>
       );
     }}
@@ -55,7 +55,7 @@ Tags can be separated thanks to the following characters:
     {args => {
       return (
         <>
-          <TagInput defaultTags={['gucci', 'gucci', 'dior', 'dior']} allowDuplicates={true}/>
+          <TagInput defaultTags={['gucci', 'gucci', 'dior', 'dior']} allowDuplicates={false} onTagsUpdate={() => {}}/>
         </>
       );
     }}
