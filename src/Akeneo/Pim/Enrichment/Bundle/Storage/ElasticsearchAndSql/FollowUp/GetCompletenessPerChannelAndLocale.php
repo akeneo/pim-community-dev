@@ -69,7 +69,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
             SELECT
                 channel.code as channel_code,
                 channel_translation.labels as channel_labels,
-                JSON_ARRAY_APPEND(COALESCE(child.children_codes, "[]"), '$', root.code) as category_codes_in_channel,
+                JSON_ARRAY_APPEND(COALESCE(child.children_codes, '[]'), '$', root.code) as category_codes_in_channel,
                 pim_locales.json_locales as locales
             FROM
                 pim_catalog_category AS root
@@ -111,9 +111,7 @@ class GetCompletenessPerChannelAndLocale implements GetCompletenessPerChannelAnd
                         channel.code
                 ) AS pim_locales on pim_locales.channel_code = channel.code
             WHERE
-                root.parent_id IS NULL 
-            ORDER BY
-                channel.code, root.code
+                root.parent_id IS NULL
 SQL;
 
         $rows = $this->connection->executeQuery($sql)->fetchAll();
@@ -138,7 +136,7 @@ SQL;
     private function countTotalProductsInCategoriesByChannel(array $categoriesCodeAndLocalesByChannels): array
     {
         if (empty($categoriesCodeAndLocalesByChannels)) {
-            return null;
+            return [];
         }
 
         $body = [];
@@ -199,7 +197,7 @@ SQL;
     private function countTotalProductInCategoriesByChannelAndLocale(array $categoriesCodeAndLocalesByChannels): array
     {
         if (empty($categoriesCodeAndLocalesByChannels)) {
-            return null;
+            return [];
         }
 
         $body = [];
