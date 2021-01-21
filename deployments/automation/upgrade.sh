@@ -10,7 +10,7 @@ else
 fi
 
 if [ ${STEP} == "PRE_INIT" ]; then
-  echo "Nothing to do in PRE-INIT step"
+  echo "[INFO] Nothing to do in PRE-INIT step"
 fi
 
 if [ ${STEP} == "PRE_APPLY" ]; then
@@ -56,4 +56,16 @@ if [ ${STEP} == "PRE_APPLY" ]; then
   else
     echo "[INFO] mysql disk already managed by terraform"
   fi
+
+  # Add product_reference_code and product_reference_type if not exist
+  if [ -z $(yq r -j -P "${PWD}/main.tf.json" 'module.pim.product_reference_code') ]; then
+    yq w -j -P -i ${PWD}/main.tf.json 'module.pim.product_reference_code' "FillMePlease"
+    yq w -j -P -i ${PWD}/main.tf.json 'module.pim-monitoring.product_reference_code' "FillMePlease"
+    yq w -j -P -i ${PWD}/main.tf.json 'module.pim.product_reference_type' "FillMePlease"
+    yq w -j -P -i ${PWD}/main.tf.json 'module.pim-monitoring.product_reference_type' "FillMePlease"
+
+  else
+    echo "[INFO] product type & code already managed by terraform"
+  fi
+
 fi

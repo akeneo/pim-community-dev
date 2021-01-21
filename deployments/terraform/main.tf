@@ -17,7 +17,8 @@ provider "helm" {
 }
 
 locals {
-  pfid                = "srnt-${var.instance_name}"
+  type                = "${replace(var.product_reference_type, "growth_", "") != var.product_reference_type}" ? "grth" : "srnt"
+  pfid                = "${local.type}-${var.instance_name}"
   mailgun_login_name  = format("%s-%s", local.pfid, var.google_project_id)
   mailgun_login_email = "${local.mailgun_login_name}@${var.mailgun_domain}"
 }

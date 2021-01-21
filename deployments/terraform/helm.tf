@@ -8,6 +8,7 @@ data "template_file" "helm_pim_config" {
 
   vars = {
     instanceName        = var.instance_name
+    type                = local.type
     pfid                = local.pfid
     projectId           = var.google_project_id
     googleZone          = var.google_project_zone

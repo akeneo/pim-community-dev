@@ -1,20 +1,16 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} rule|]1, Inf[{{ count }} rules"
   execution_button: Execute rules
-  selected: 'rules selected'
   popin:
     execute_rules:
       confirm_title: Confirm execution
-      confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
   notification:
-    fail: The action could not be performed
     launched: The rules execution has been launched. You will be notified when it is done.
   attribute:
     list:
       code.label: Code
       condition.label: Condition
       action.label: Action
-      no_rule_yet.label: No rule for now
   rule:
     condition:
       if.label: if
@@ -34,12 +30,10 @@ pimee_catalog_rule:
           confirm_content: Are you sure you want to execute the rule?
       mass_edit_action:
         confirm_title: Confirm calculation
-        confirm_content: Are you sure you want to calculate the affected products for the rules?
       mass_action:
         execute:
           confirm_title: Confirm execution
-          confirm_content: Are you sure you want to execute the selected rules?
-          success: The bulk action to execute the selected rules has been launched. You will be notified when it is done
+          success: The rules execution has been launched. You will be notified when it is done.
           empty_selection: No rules selected.
         delete:
           confirm_title: Confirm execution
@@ -57,30 +51,16 @@ pim_enrich:
       module:
         delete:
           confirm: Are you sure you want to delete this rule? It is not possible to undo this action
-pim_datagrid:
-  entity:
-    rule:
-      flash:
-        delete:
-          success: Rule successfully removed
 flash:
   rule:
-    impacted_product_count: The bulk action to calculate the affected products for the rules has been launched. You will be notified when it is done.
-    executed: The rule execution has been launched. You will be notified when it is done.
+    executed: The rules execution has been launched. You will be notified when it is done.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Rules settings
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Rules execution
   default_steps:
     execute_rules: Rules execution
-  yml_rule_import:
-    label: Rule import in YAML
-    import.label: Rule import
-  yml_rule_export:
-    label: Rule export in YAML
-    export.label: Rule export
   rule_impacted_product_count:
-    label: Affected products for the rules
     perform.label: Count impacted products
   csv_product_import_with_rules:
     label: Product import in CSV with rules
@@ -96,8 +76,15 @@ pim_notification:
   types:
     rule: Rules Settings
     mass_edit_rule: Mass edit rule
+    execute_rules: Rules execution
 pim_menu:
   item:
     rule: Rules
 pim_title:
   pimee_catalog_rule_rule_index: Rules
+  pimee_catalog_rule_new: Rules
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Rules execution
