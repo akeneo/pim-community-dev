@@ -8,6 +8,7 @@ pim_menu:
     connection_settings: Verbindungen
     connection_settings_edit: Verbindungseinstellungen
     connection_monitoring: Überwachung
+    connection_webhook_edit: Ereignisabonnements
 pim_title:
   akeneo_connectivity_connection_settings_index: Verbindungen
   akeneo_connectivity_connection_settings_edit: Verbindungseinstellungen
@@ -16,8 +17,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Verbindungs-Dashboard
   akeneo_connectivity_connection_error_management_dashboard: Verbindungs-Dashboard
   akeneo_connectivity_connection_error_management_connection_monitoring: Verbindungsüberwachung
-  akeneo_connectivity_connection_webhook_edit: Ereignisabonnement (BETA)
-  akeneo_connectivity_connection_webhook_regenerate_secret: Ereignisabonnement (BETA)
+  akeneo_connectivity_connection_webhook_edit: Ereignisabonnements
+  akeneo_connectivity_connection_webhook_regenerate_secret: Ereignisabonnements
 akeneo_connectivity.connection:
   connections: Verbindungen
   secondary_actions:
@@ -192,11 +193,12 @@ akeneo_connectivity.connection:
         message: Bitten Sie Ihren Administrator, einen zu erstellen.
         link: Erfahren Sie hier mehr über Verbindungen...
   webhook:
-    title: Ereignisabonnement (BETA)
-    event_subscription: Ereignisabonnement (BETA)
+    title: Ereignisabonnements
+    event_subscription: Ereignisabonnements
     helper:
       message: Sie können über Ereignisse im PIM für Produkte, die mit dieser verbundenen App synchronisiert werden, benachrichtigt werden. Sie müssen nur eine URL und den Ereignistyp(en) definieren, über den Sie den Überblick behalten möchten.
       link: Erfahren Sie mehr über Eventabonnement-Konfiguration...
+      url.test_disabled: Bitte klicken Sie auf Speichern, um die URL testen zu können.
     form:
       url: URL
       secret: Passwort (Secret)
