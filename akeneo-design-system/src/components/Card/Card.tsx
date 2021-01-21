@@ -148,8 +148,6 @@ const Card = ({
       texts.push(child);
     } else if (isValidElement(child)) {
       nonLabelChildren.push(child);
-    } else {
-      throw new Error('Card component only accepts string or Card.BadgeContainer as children');
     }
   });
 

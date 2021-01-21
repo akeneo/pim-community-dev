@@ -96,26 +96,11 @@ test('it displays a Checkbox if a handler is provided', () => {
   expect(queryByRole('checkbox')).toBeInTheDocument();
 });
 
-test('it throws when trying to pass unsupported elements as children', () => {
-  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
-
-  const cardRender = () =>
-    render(
-      <Card src="some.jpg">
-        <div>Bad div</div>
-      </Card>
-    );
-
-  expect(cardRender).toThrowError();
-
-  mockConsole.mockRestore();
-});
-
 describe('Card supports ...rest props', () => {
-  const {container} = render(
-    <Card src="some.jpg" data-my-attribute="my_value">
+  render(
+    <Card src="some.jpg" data-testid="my_value">
       My card
     </Card>
   );
-  expect(container.querySelector('[data-my-attribute="my_value"]')).toBeInTheDocument();
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
