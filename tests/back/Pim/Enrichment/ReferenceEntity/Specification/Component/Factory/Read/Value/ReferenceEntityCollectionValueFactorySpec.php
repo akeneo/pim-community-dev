@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntit
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -52,6 +53,17 @@ final class ReferenceEntityCollectionValueFactorySpec extends ObjectBehavior
         $attribute = $this->getAttribute(false, false);
         $value = $this->createWithoutCheckingData($attribute, null, null, ['blue', 'green']);
         $value->shouldBeLike(ReferenceEntityCollectionValue::value('an_attribute', [RecordCode::fromString('blue'), RecordCode::fromString('green')]));
+    }
+
+    public function it_throws_an_exception_when_a_record_code_is_invalid()
+    {
+        $this->shouldThrow(PropertyException::class)
+            ->during('createByCheckingData', [
+                $this->getAttribute(true, true),
+                null,
+                null,
+                ['green', 'an invalid record code']
+            ]);
     }
 
     private function getAttribute(bool $isLocalizable, bool $isScopable): Attribute

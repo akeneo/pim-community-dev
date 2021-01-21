@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntit
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
@@ -53,6 +54,20 @@ final class ReferenceEntityValueFactory implements ValueFactory
                 $attribute->code(),
                 static::class,
                 $data
+            );
+        }
+
+        try {
+            RecordCode::fromString($data);
+        } catch (\InvalidArgumentException $e) {
+            $message = 'Property "%s" expects a valid %s. %s.';
+
+            throw new InvalidPropertyException(
+                $attribute->code(),
+                $data,
+                static::class,
+                sprintf($message, $attribute->code(), 'code', $e->getMessage()),
+                InvalidPropertyException::VALID_ENTITY_CODE_EXPECTED_CODE
             );
         }
 
