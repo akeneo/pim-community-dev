@@ -48,6 +48,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: Ausführungsdetails
+      refreshing: Ausführungsdetails aktualisieren
       refreshBtn.title: Aktualisieren
       button:
         show_profile.title: Profil anzeigen
@@ -161,6 +162,7 @@ pim_import_export:
         compute_family_variant_structure_changes: Änderungen in der Struktur von Varianten der Produktfamilie berechnen
         compute_completeness_of_products_family: Vollständigkeit der Produktfamilie berechnen
         mass_delete: Massenlöschung von Produkten
+        clean_removed_attribute_job: Entfernte Attributwerte werden bereinigt
       header.view_all: Alle anzeigen
   batch_status:
     1: Vollständig
