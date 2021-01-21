@@ -112,7 +112,6 @@ const WordsSearchBar = styled(SearchBar)`
 
 const WordLabel = styled.span`
   text-transform: capitalize;
-  font-weight: bold;
 `;
 
 const ActionContainer = styled.div`
