@@ -108,3 +108,4 @@ export * from './UploadIcon';
 export * from './ValueIcon';
 export * from './ViewIcon';
 export * from './WaveIcon';
+export * from './SuccessIcon';
