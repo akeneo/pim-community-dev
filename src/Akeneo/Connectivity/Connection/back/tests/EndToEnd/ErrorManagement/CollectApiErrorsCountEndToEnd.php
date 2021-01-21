@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\ErrorManagement;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Enrichment\ProductLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\Structure\FamilyLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyLoader;
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Test\Integration\Configuration;

@@ -26,7 +26,7 @@
         },
         "psr-4": {
             "Pim\\Behat\\": "tests/legacy/features/Behat",
-            "Akeneo\\Connectivity\\Connection\\Tests\\Acceptance\\": "src/Akeneo/Connectivity/Connection/back/tests/Acceptance",
+            "Akeneo\\Connectivity\\Connection\\Tests\\": "src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "src/Akeneo/Connectivity/Connection/tests/",
             "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
