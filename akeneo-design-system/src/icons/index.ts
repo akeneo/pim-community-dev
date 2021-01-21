@@ -29,6 +29,7 @@ export * from './CardIcon';
 export * from './CategoryIcon';
 export * from './CheckIcon';
 export * from './CheckPartialIcon';
+export * from './CheckRoundIcon';
 export * from './ClockIcon';
 export * from './CloseIcon';
 export * from './CodeIcon';

@@ -18,6 +18,7 @@ const color: Color = {
   blue120: '#47749f',
   blue140: '#355777',
   green20: '#e1f0e3',
+  green10: '#f0f7f1',
   green40: '#c2e1c7',
   green60: '#a3d1ab',
   green80: '#85c28f',
