@@ -110,6 +110,7 @@ services:
             - '@twig'
             - '@translator'
             - '@akeneo.pim.automation.dictionary.feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
 
     pim_enrich.controller.rest.job_instance:
         public: true
