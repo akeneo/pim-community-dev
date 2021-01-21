@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dictionary\GetNumberOfWordsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +24,14 @@ class GetLocalesDictionaryInfoController
 {
     private GetNumberOfWordsQueryInterface $getNumberOfWordsQuery;
 
-    public function __construct(GetNumberOfWordsQueryInterface $getNumberOfWordsQuery)
-    {
+    private SupportedLocaleValidator $supportedLocaleValidator;
+
+    public function __construct(
+        GetNumberOfWordsQueryInterface $getNumberOfWordsQuery,
+        SupportedLocaleValidator $supportedLocaleValidator
+    ) {
         $this->getNumberOfWordsQuery = $getNumberOfWordsQuery;
+        $this->supportedLocaleValidator = $supportedLocaleValidator;
     }
 
     public function __invoke(Request $request): Response
@@ -34,6 +41,11 @@ class GetLocalesDictionaryInfoController
 
         $infos = [];
         foreach ($locales as $locale) {
+            if (!$this->supportedLocaleValidator->isSupported(new LocaleCode($locale))) {
+                $infos[$locale] = null;
+                continue;
+            }
+
             $infos[$locale] = $numberOfWords[$locale] ?? 0;
         }
 
