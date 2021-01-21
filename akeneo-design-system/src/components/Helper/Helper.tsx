@@ -1,7 +1,7 @@
 import React, {ReactElement, ReactNode, Ref} from 'react';
 import styled, {css} from 'styled-components';
+import {CheckRoundIcon, DangerIcon, IconProps, InfoRoundIcon} from '../../icons';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import {DangerIcon, IconProps, InfoRoundIcon, SuccessIcon} from '../../icons';
 
 const getBackgroundColor = (level: Level) => {
   switch (level) {
@@ -51,7 +51,7 @@ const getIcon = (level: Level): JSX.Element => {
     case 'error':
       return <DangerIcon />;
     case 'success':
-      return <SuccessIcon />;
+      return <CheckRoundIcon />;
   }
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {IconProps} from './IconProps';
 
-const SuccessIcon = ({title, size = 24, color = 'currentColor', ...props}: IconProps) => (
+const CheckRoundIcon = ({title, size = 24, color = 'currentColor', ...props}: IconProps) => (
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <g
@@ -19,4 +19,4 @@ const SuccessIcon = ({title, size = 24, color = 'currentColor', ...props}: IconP
   </svg>
 );
 
-export {SuccessIcon};
+export {CheckRoundIcon};
