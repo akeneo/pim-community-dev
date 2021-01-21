@@ -702,14 +702,10 @@ workflows:
 
       jobs:
           - checkout_ce
-          - checkout_ee
           - build_dev:
                 is_ee_built: false
                 requires:
                     - checkout_ce
-          - build_prod:
-                requires:
-                    - checkout_ee
           - test_back_static_and_acceptance:
                 requires:
                     - build_dev
@@ -725,9 +721,6 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
-          - test_upgrade_from_last_release:
-                requires:
-                    - build_prod
 
 commands:
   set_gcloud_config_dev:
