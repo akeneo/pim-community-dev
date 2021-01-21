@@ -5,13 +5,12 @@ type Selection<Type = string> = {
   collection: Type[];
 };
 
-const selectAll = <Type>(selection: Selection<Type>): Selection<Type> => ({
-  ...selection,
+const selectAll = <Type>(): Selection<Type> => ({
   mode: 'not_in',
   collection: [],
 });
-const unselectAll = <Type>(selection: Selection<Type>): Selection<Type> => ({
-  ...selection,
+
+const unselectAll = <Type>(): Selection<Type> => ({
   mode: 'in',
   collection: [],
 });
@@ -23,6 +22,7 @@ const select = <Type>(selection: Selection<Type>, elementToSelect: Type): Select
       ? [...selection.collection, elementToSelect]
       : selection.collection.filter(element => element !== elementToSelect),
 });
+
 const unselect = <Type>(selection: Selection<Type>, elementToUnselect: Type): Selection<Type> => ({
   ...selection,
   collection:
@@ -30,6 +30,7 @@ const unselect = <Type>(selection: Selection<Type>, elementToUnselect: Type): Se
       ? selection.collection.filter(element => element !== elementToUnselect)
       : [...selection.collection, elementToUnselect],
 });
+
 const currentSelectionState = <Type>(selection: Selection<Type>, totalCount: number): 'mixed' | boolean => {
   if (selection.collection.length === totalCount) {
     return selection.mode === 'in';
@@ -58,8 +59,11 @@ const useSelection = <Type = string>(totalCount: number) => {
   }, []);
 
   const onSelectAllChange = useCallback((newValue: boolean) => {
-    setSelection(selection => (newValue ? selectAll<Type>(selection) : unselectAll<Type>(selection)));
+    setSelection(newValue ? selectAll<Type>() : unselectAll<Type>());
   }, []);
+
+  const selectedCount =
+    'in' === selection.mode ? selection.collection.length : totalCount - selection.collection.length;
 
   return [
     selection.collection,
@@ -67,6 +71,7 @@ const useSelection = <Type = string>(totalCount: number) => {
     isSelected,
     onSelectionChange,
     onSelectAllChange,
+    selectedCount,
   ] as const;
 };
 

@@ -1,5 +1,5 @@
 import {renderHook, act} from '@testing-library/react-hooks';
-import {useSelection} from '../../../../src/hooks/useSelection';
+import {useSelection} from './useSelection';
 
 test('It can generate a basic selection', () => {
   const {result} = renderHook(() => useSelection<string>(2));
@@ -10,7 +10,7 @@ test('It can generate a basic selection', () => {
   expect(isItemSelected('donald')).toBe(false);
   expect(isItemSelected('melania')).toBe(false);
 
-  act(() => {
+  void act(() => {
     onSelectionChange('donald', true);
   });
 
@@ -20,7 +20,7 @@ test('It can generate a basic selection', () => {
   expect(isHalfItemSelected('melania')).toBe(false);
   expect(halfSelectionState).toBe('mixed');
 
-  act(() => {
+  void act(() => {
     onSelectionChange('melania', true);
   });
 
@@ -39,7 +39,7 @@ test('It can handle unselection all', () => {
   expect(selectionState).toBe(false);
   expect(isItemSelected('nice')).toBe(false);
 
-  act(() => {
+  void act(() => {
     onSelectionChange('nice', true);
     onSelectAllChange(false);
   });
@@ -58,7 +58,7 @@ test('It can handle selection all', () => {
   expect(selectionState).toBe(false);
   expect(isItemSelected('nice')).toBe(false);
 
-  act(() => {
+  void act(() => {
     onSelectionChange('nice', true);
     onSelectAllChange(true);
   });
@@ -70,7 +70,7 @@ test('It can handle selection all', () => {
   expect(isEmptyItemSelected('melania')).toBe(true);
   expect(emptySelectionState).toBe(true);
 
-  act(() => {
+  void act(() => {
     onSelectionChange('donald', false);
   });
 
@@ -87,7 +87,7 @@ test('It can handle selection after selection all', () => {
   expect(selectionState).toBe(false);
   expect(isItemSelected('nice')).toBe(false);
 
-  act(() => {
+  void act(() => {
     onSelectAllChange(true);
     onSelectionChange('nice', false);
     onSelectionChange('nice', true);
@@ -108,7 +108,7 @@ test('It can handle unselection after unselect all', () => {
   expect(selectionState).toBe(false);
   expect(isItemSelected('nice')).toBe(false);
 
-  act(() => {
+  void act(() => {
     onSelectAllChange(false);
     onSelectionChange('nice', true);
     onSelectionChange('nice', false);

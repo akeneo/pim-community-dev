@@ -111,17 +111,6 @@ test('it throws when trying to pass unsupported elements as children', () => {
   mockConsole.mockRestore();
 });
 
-describe('Card supports forwardRef', () => {
-  const ref = {current: null};
-
-  render(
-    <Card src="some.jpg" ref={ref}>
-      My card
-    </Card>
-  );
-  expect(ref.current).not.toBe(null);
-});
-
 describe('Card supports ...rest props', () => {
   const {container} = render(
     <Card src="some.jpg" data-my-attribute="my_value">
