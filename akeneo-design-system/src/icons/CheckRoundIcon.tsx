@@ -5,7 +5,6 @@ const CheckRoundIcon = ({title, size = 24, color = 'currentColor', ...props}: Ic
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <g
-      id="Icons-/-success"
       stroke="none"
       strokeWidth="1"
       fill="none"
