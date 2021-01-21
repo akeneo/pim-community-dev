@@ -39,14 +39,16 @@ pim_reference_entity:
         should_exist: 'Die Einträge "%record_codes%" wurden nicht gefunden.'
       limit_reached: 'Sie können den Datensatz "{{ %record_label%}}" nicht erstellen, da Sie die Grenze von {{ %limit%}} Datensätzen für diese Referenzentität erreicht haben'
       channel:
-        is_expected: 'Ein Kanal wird für Attribut "%attribute_code%" erwartet, da er einen Wert pro Kanal hat.'
+        is_expected: 'Das "%attribute_code%" Attribut der "%reference_entity_identifier%" Referenz-Entität benötigt einen Wert pro Kanal.'
         is_not_expected: 'Ein Kanal wird für Attribut "%attribute_code%" nicht erwartet, da er keinen Wert pro Kanal hat.'
         should_exist: 'Der Kanal "%channel_identifier%" existiert nicht.'
       locale:
-        is_expected: 'Für Attribut "%attribute_code%" wird eine Locale erwartet, da sie einen Wert pro Gebietsschema hat.'
+        is_expected: 'Das "%attribute_code%" Attribut der "%reference_entity_identifier%" Referenz-Entität erfordert einen Wert pro Gebietsschema.'
         is_not_expected: 'Für Attribut "%attribute_code%" wird keine Locale erwartet, da sie keinen Wert pro Gebietsschema hat.'
         is_not_activated: 'Das Gebietsschema "%locale_identifier%" ist nicht aktiviert.'
         is_not_activated_for_channel: 'Das Gebietsschema "%locale_identifier%" ist nicht für den Kanal "%channel_identifier% " aktiviert.'
+      channel_and_locale:
+        are_expected: 'Das "%attribute_code%" Attribut der "%reference_entity_identifier%" Referenz-Entität erfordert einen Wert pro Kanal und einen pro Gebietsschema'
       number:
         should_be_string: 'Dieses Feld sollte eine Zeichenfolge sein'
         should_be_integer: 'Dieses Feld sollte eine Ganzzahl sein'
