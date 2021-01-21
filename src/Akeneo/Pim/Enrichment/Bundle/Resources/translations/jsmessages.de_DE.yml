@@ -170,7 +170,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'Variantenachse'
       create: Hinzufügen
-      create_label: "{{ axes }} hinzufügen"
+      title_create_label: "]-Inf, 1]Neuen {{ axes }} hinzufügen|]1, Inf[Neues {{ axes }} hinzufügen"
       required_label: '(variantenachse(n))'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} Produktvariante|]1, Inf[{{ complete }} / {{ total }} Produktvariante"
