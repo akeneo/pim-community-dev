@@ -1,7 +1,7 @@
 import React from 'react';
 import {Toolbar} from './Toolbar';
 import {render, screen} from '../../storybook/test-util';
-import {Button, Checkbox} from '..';
+import {Button, Checkbox} from '../../components';
 
 test('it renders its children properly', () => {
   render(
