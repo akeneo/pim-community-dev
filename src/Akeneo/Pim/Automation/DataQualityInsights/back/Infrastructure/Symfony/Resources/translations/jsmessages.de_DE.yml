@@ -85,3 +85,14 @@ akeneo_data_quality_insights:
   product_grid:
     filter_label:
       spelling_quality: Rechtschreibqualität
+  dictionary:
+    helper: Im Wörterbuch können Sie Wörter registrieren, die von den Qualitätsansichten ignoriert werden. <a href="{{ link }}" target="_blank">Weitere Informationen finden Sie in unserem Hilfecenter</a>.
+    words: Wörter
+    searchPlaceholder: Ein Wort suchen
+    add_words: Wörter hier hinzufügen
+    no_search_results:
+      title: Keine Ergebnisse zu deiner Suche
+      subtitle: Wiederholen Sie Ihre Suche mit anderen Suchkriterien.
+    no_data:
+      title: Noch keine Wörter
+      subtitle: Fügen Sie das erste oben hinzu, klicken Sie auf "Hinzufügen" oder drücken Sie die Eingabe-Taste.
