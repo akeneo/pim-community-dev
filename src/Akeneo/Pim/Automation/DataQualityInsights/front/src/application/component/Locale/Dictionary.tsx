@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Helper} from 'akeneo-design-system';
+import {Helper, Link} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AddWordsForm} from './Dictionary/AddWordsForm';
 import {useDictionaryState} from '../../../infrastructure';
@@ -11,12 +11,12 @@ const Dictionary: FC = () => {
 
   return (
     <>
-      <Helper>
-        <span
-          dangerouslySetInnerHTML={{
-            __html: translate('akeneo_data_quality_insights.dictionary.helper', {link: 'https://help.akeneo.com'}),
-          }}
-        />
+      <Helper level="info">
+        {translate('akeneo_data_quality_insights.dictionary.helper.content')}
+        <> </>
+        <Link href="https://help.akeneo.com'" target="_blank">
+          {translate('akeneo_data_quality_insights.dictionary.helper.link_label')}
+        </Link>
       </Helper>
 
       <AddWordsForm />
