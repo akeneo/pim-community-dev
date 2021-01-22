@@ -3,5 +3,4 @@ export type Webhook = {
     url: string | null;
     secret: string | null;
     enabled: boolean;
-    connectionImage: string | null;
 };
