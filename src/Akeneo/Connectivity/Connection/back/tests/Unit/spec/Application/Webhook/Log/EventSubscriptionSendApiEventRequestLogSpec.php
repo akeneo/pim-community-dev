@@ -29,7 +29,7 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
             new WebhookEvent(
                 'product.updated',
                 '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
-                '2020-01-01T00:00:00+00:00',
+                '2020-01-01T00:00:11+00:00',
                 Author::fromNameAndType('julia', Author::TYPE_UI),
                 'staging.akeneo.com',
                 ['data']
@@ -80,9 +80,11 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
                     'author' => 'julia',
                     'author_type' => 'ui',
                     'name' => 'product.updated',
-                    'timestamp' => 1577836800,
+                    'timestamp' => 1577836811,
                 ],
-            ]
+            ],
+            'max_propagation_seconds' => 26098229,
+            'min_propagation_seconds' => 26098218,
         ]);
     }
 
@@ -115,9 +117,11 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
                     'author' => 'julia',
                     'author_type' => 'ui',
                     'name' => 'product.updated',
-                    'timestamp' => 1577836800,
+                    'timestamp' => 1577836811,
                 ],
-            ]
+            ],
+            'max_propagation_seconds' => 26098229,
+            'min_propagation_seconds' => 26098218,
         ]);
     }
 
