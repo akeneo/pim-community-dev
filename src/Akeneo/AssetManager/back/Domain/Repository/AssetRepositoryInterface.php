@@ -29,10 +29,13 @@ interface AssetRepositoryInterface
      */
     public function getByIdentifier(AssetIdentifier $identifier): Asset;
 
+
     /**
      * @throws AssetNotFoundException
      */
     public function getByAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): Asset;
+
+    public function deleteByAssetFamilyAndCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void;
 
     /**
      * @throws AssetNotFoundException
@@ -45,5 +48,5 @@ interface AssetRepositoryInterface
 
     public function countByAssetFamily(AssetFamilyIdentifier $assetFamilyIdentifier): int;
 
-    public function nextIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code):  AssetIdentifier;
+    public function nextIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): AssetIdentifier;
 }

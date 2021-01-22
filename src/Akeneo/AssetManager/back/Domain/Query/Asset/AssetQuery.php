@@ -78,11 +78,9 @@ class AssetQuery
         ?AssetCode $searchAfterCode
     ) {
         foreach ($filters as $filter) {
-            if (!(
-                key_exists('field', $filter) &&
+            if (!(key_exists('field', $filter) &&
                 key_exists('operator', $filter) &&
-                key_exists('value', $filter)
-            )) {
+                key_exists('value', $filter))) {
                 throw new \InvalidArgumentException('AssetQuery expect an array of filters with a field, value, operator and context');
             }
         }
@@ -106,13 +104,11 @@ class AssetQuery
 
     public static function createFromNormalized(array $normalizedQuery): AssetQuery
     {
-        if (!(
-            key_exists('channel', $normalizedQuery) &&
+        if (!(key_exists('channel', $normalizedQuery) &&
             key_exists('locale', $normalizedQuery) &&
             key_exists('filters', $normalizedQuery) &&
             key_exists('page', $normalizedQuery) &&
-            key_exists('size', $normalizedQuery)
-        )) {
+            key_exists('size', $normalizedQuery))) {
             throw new \InvalidArgumentException('AssetQuery expect a channel, a locale, filters, a page and a size');
         }
 
@@ -140,7 +136,7 @@ class AssetQuery
         $filters[] = [
             'field'    => 'asset_family',
             'operator' => '=',
-            'value'    => (string)$assetFamilyIdentifier
+            'value'    => (string) $assetFamilyIdentifier
         ];
 
         return new AssetQuery(

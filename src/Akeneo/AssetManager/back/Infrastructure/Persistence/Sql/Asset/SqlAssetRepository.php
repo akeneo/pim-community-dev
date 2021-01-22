@@ -202,6 +202,38 @@ SQL;
         return $this->hydrateAsset($result);
     }
 
+
+    public function deleteByAssetFamilyAndCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void
+    {
+        $identifiers = $this->findIdentifiersByAssetFamilyAndCodes->find($assetFamilyIdentifier, $assetCodes);
+
+        $sql = <<<SQL
+        DELETE FROM akeneo_asset_manager_asset
+        WHERE codes IN (:codes) AND asset_family_identifier = :asset_family_identifier;
+SQL;
+        $this->sqlConnection->executeUpdate(
+            $sql,
+            [
+                'codes' => $assetCodes,
+                'asset_family_identifier' => (string) $assetFamilyIdentifier,
+            ],
+            [
+                'codes' => Connection::PARAM_STR_ARRAY
+            ]
+        );
+
+        foreach ($assetCodes as $assetCode) {
+            $this->eventDispatcher->dispatch(
+                new AssetDeletedEvent(
+                    $identifiers[$assetCode->normalize()],
+                    $assetCode,
+                    $assetFamilyIdentifier
+                ),
+                AssetDeletedEvent::class
+            );
+        }
+    }
+
     public function deleteByAssetFamily(
         AssetFamilyIdentifier $assetFamilyIdentifier
     ): void {
@@ -232,7 +264,7 @@ SQL;
         DELETE FROM akeneo_asset_manager_asset
         WHERE code = :code AND asset_family_identifier = :asset_family_identifier;
 SQL;
-        $affectedRows = $this->sqlConnection->executeUpdate(
+        $affectedRowsCount = $this->sqlConnection->executeUpdate(
             $sql,
             [
                 'code' => (string) $code,
@@ -240,7 +272,7 @@ SQL;
             ]
         );
 
-        if (0 === $affectedRows) {
+        if (0 === $affectedRowsCount) {
             throw new AssetNotFoundException();
         }
 

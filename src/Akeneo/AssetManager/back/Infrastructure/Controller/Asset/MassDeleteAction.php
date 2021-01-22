@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Controller\Asset;
 
-use Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAssetsCommand;
-use Akeneo\AssetManager\Application\Asset\DeleteAllAssets\DeleteAllAssetFamilyAssetsHandler;
+use Akeneo\AssetManager\Application\Asset\MassDeleteAssets\MassDeleteAssetFamilyAssetsCommand;
+use Akeneo\AssetManager\Application\Asset\MassDeleteAssets\MassDeleteAssetFamilyAssetsHandler;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQuery;
 use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\CanEditAssetFamilyQueryHandler;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,9 +34,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class DeleteAllAction
+class MassDeleteAction
 {
-    /** @var DeleteAllAssetFamilyAssetsHandler */
+    /** @var MassDeleteAssetFamilyAssetsHandler */
     private $deleteAllAssetsHandler;
 
     /** @var SecurityFacade */
@@ -47,7 +49,7 @@ class DeleteAllAction
     private $assetIndexer;
 
     public function __construct(
-        DeleteAllAssetFamilyAssetsHandler $deleteAllAssetsHandler,
+        MassDeleteAssetFamilyAssetsHandler $deleteAllAssetsHandler,
         SecurityFacade $securityFacade,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
         TokenStorageInterface $tokenStorage,
@@ -65,11 +67,22 @@ class DeleteAllAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        if (!$this->isUserAllowedToDeleteAllAssets($request->get('assetFamilyIdentifier'))) {
+        if (!$this->isUserAllowedToMassDeleteAssets($request->get('assetFamilyIdentifier'))) {
             throw new AccessDeniedException();
         }
 
-        $command = new DeleteAllAssetFamilyAssetsCommand($assetFamilyIdentifier);
+        $normalizedQuery = json_decode($request->getContent(), true);
+        $query = AssetQuery::createFromNormalized($normalizedQuery);
+        $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($assetFamilyIdentifier);
+
+        if ($this->hasDesynchronizedIdentifiers($assetFamilyIdentifier, $query)) {
+            return new JsonResponse(
+                'The asset family identifier provided in the route and the one given in the request body are different',
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $command = new MassDeleteAssetFamilyAssetsCommand($assetFamilyIdentifier, $query);
 
         ($this->deleteAllAssetsHandler)($command);
 
@@ -78,7 +91,7 @@ class DeleteAllAction
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function isUserAllowedToDeleteAllAssets(string $assetFamilyIdentifier): bool
+    private function isUserAllowedToMassDeleteAssets(string $assetFamilyIdentifier): bool
     {
         $query = new CanEditAssetFamilyQuery(
             $assetFamilyIdentifier,
@@ -87,5 +100,27 @@ class DeleteAllAction
 
         return $this->securityFacade->isGranted('akeneo_assetmanager_assets_delete_all')
             && ($this->canEditAssetFamilyQueryHandler)($query);
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    private function getAssetFamilyIdentifierOr404(string $identifier): AssetFamilyIdentifier
+    {
+        try {
+            return AssetFamilyIdentifier::fromString($identifier);
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        }
+    }
+
+    /**
+     * Checks whether the identifier given in the url parameter and in the body are the same or not.
+     */
+    private function hasDesynchronizedIdentifiers(
+        AssetFamilyIdentifier $routeAssetFamilyIdentifier,
+        AssetQuery $query
+    ): bool {
+        return (string) $routeAssetFamilyIdentifier !== $query->getFilter('asset_family')['value'];
     }
 }

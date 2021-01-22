@@ -112,6 +112,16 @@ services:
             - 100
         public: false
 
+    akeneo_assetmanager.tasklet.mass_delete_assets_tasklet:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\MassDeleteAssetsTasklet'
+        arguments:
+            - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor'
+            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetCodesByAssetFamily'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
+            - '@akeneo_batch.job_repository'
+            - 100
+        public: false
+
     akeneo_assetmanager.tasklet.execute_naming_convention:
         class: Akeneo\AssetManager\Infrastructure\Job\NamingConventionTasklet
         arguments:
