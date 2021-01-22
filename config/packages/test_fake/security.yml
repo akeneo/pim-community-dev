@@ -1,0 +1,3 @@
+security:
+  encoders:
+    Akeneo\UserManagement\Component\Model\User: plaintext
