@@ -28,6 +28,12 @@ services:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
+    akeneo_assetmanager.infrastructure.job.provider.mass_delete_assets:
+        class: 'Akeneo\AssetManager\Infrastructure\Job\Provider\MassDeleteAssets'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
     akeneo_assetmanager.infrastructure.job.provider.execute_naming_convention:
         class: Akeneo\AssetManager\Infrastructure\Job\Provider\ExecuteNamingConvention
         tags:
@@ -73,6 +79,16 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_assetmanager.compute_transformations' }
 
+    akeneo_assetmanager.job.mass_delete_assets:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'asset_manager_mass_delete_assets'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - [ '@akeneo_assetmanager.step.mass_delete_assets' ]
+        tags:
+            - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_assetmanager.mass_delete_assets' }
+
     # STEPS
     akeneo_assetmanager.step.link_assets_to_products:
         class: '%pim_connector.step.tasklet.class%'
@@ -101,6 +117,15 @@ services:
             - '@akeneo_assetmanager.tasklet.compute_transformations'
         public: false
 
+    akeneo_assetmanager.step.mass_delete_assets:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'mass_delete_assets'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_assetmanager.tasklet.mass_delete_assets_tasklet'
+        public: false
+
     # TASKLETS
     akeneo_assetmanager.tasklet.link_assets_to_products:
         class: 'Akeneo\AssetManager\Infrastructure\Job\LinkAssetsToProductsTasklet'
@@ -115,9 +140,9 @@ services:
     akeneo_assetmanager.tasklet.mass_delete_assets_tasklet:
         class: 'Akeneo\AssetManager\Infrastructure\Job\MassDeleteAssetsTasklet'
         arguments:
-            - '@akeneo_assetmanager.application.asset.execute_rule_templates.rule_template_executor'
-            - '@Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetCodesByAssetFamily'
-            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
+            - '@akeneo_assetmanager.application.asset.delete_assets_handler'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.query_builder'
+            - '@akeneo_assetmanager.client.asset'
             - '@akeneo_batch.job_repository'
             - 100
         public: false

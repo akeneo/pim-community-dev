@@ -152,6 +152,23 @@ class AssetQuery
         );
     }
 
+    public static function createWithSearchAfter(
+        AssetQuery $assetQuery,
+        AssetCode $searchAfterCode
+    ): AssetQuery {
+        return new AssetQuery(
+            $assetQuery->channel,
+            $assetQuery->locale,
+            $assetQuery->filters,
+            $assetQuery->channelReferenceValuesFilter,
+            $assetQuery->localeIdentifiersValuesFilter,
+            self::PAGINATE_USING_SEARCH_AFTER,
+            $assetQuery->size,
+            null,
+            $searchAfterCode
+        );
+    }
+
     public function getFilters(): array
     {
         return $this->filters;

@@ -232,6 +232,11 @@ jobs:
         alias:     asset_manager_compute_transformations
         label:     Computation of asset transformations
         type:      asset_manager_compute_transformations
+    asset_manager_mass_delete_assets:
+        connector: internal
+        alias: asset_manager_mass_delete_assets
+        label: Mass delete assets
+        type: asset_manager_mass_delete_assets
     clean_removed_attribute_job:
         connector: internal
         alias:     clean_removed_attribute_job

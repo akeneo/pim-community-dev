@@ -43,14 +43,12 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         DeleteAssetsHandler $deleteAssetsHandler,
         AssetQueryBuilderInterface $assetQueryBuilder,
         Client $assetClient,
-        CountAssetsInterface $countAssets,
         JobRepositoryInterface $jobRepository,
         int $batchSize
     ) {
         $this->deleteAssetsHandler = $deleteAssetsHandler;
         $this->assetQueryBuilder = $assetQueryBuilder;
         $this->assetClient = $assetClient;
-        $this->countAssets = $countAssets;
         $this->jobRepository = $jobRepository;
         $this->batchSize = $batchSize;
     }
@@ -64,6 +62,11 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
     {
         return true;
     }
+
+
+    /**
+     * @TODO make this tasklet stoppable
+     */
 
     public function execute(): void
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -19,7 +20,7 @@ class AssetCursor implements CursorInterface
     private int $pageSize;
 
     private int $count;
-    private array $items;
+    private ?array $items = null;
     private array $searchAfter;
 
     public function __construct(
@@ -89,7 +90,6 @@ class AssetCursor implements CursorInterface
     {
         if (false === next($this->items)) {
             $this->nextPage();
-
             $this->items = $this->getNextItems($this->assetQuery);
             reset($this->items);
         }
@@ -105,19 +105,8 @@ class AssetCursor implements CursorInterface
         reset($this->items);
     }
 
-    /**
-     * Get the next asset codes.
-     *
-     * @param array $esQuery
-     *
-     * @return array
-     */
     private function getNextItems(AssetQuery $assetQuery): array
     {
-        if (!empty($this->items)) {
-            return [];
-        }
-
         $elasticSearchQuery = $this->queryBuilder->buildFromQuery($assetQuery, 'code');
         $matches = $this->assetClient->search($elasticSearchQuery);
 
@@ -128,15 +117,14 @@ class AssetCursor implements CursorInterface
 
     private function getCodes(array $matches): array
     {
-        $codes = array_map(function (array $hit) {
-            return $hit['code'];
+        return array_map(function (array $hit) {
+            return $hit['_source']['code'];
         }, $matches['hits']['hits']);
-
-        return $codes;
     }
 
     private function nextPage()
     {
-        // TODO
+        $searchAfterCode = AssetCode::fromString($this->items[count($this->items) - 1]);
+        $this->assetQuery = AssetQuery::createWithSearchAfter($this->assetQuery, $searchAfterCode);
     }
 }

@@ -79,6 +79,11 @@ services:
                 - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
                 - '@akeneo_file_storage.file_storage.file.file_storer'
 
+    akeneo_assetmanager.application.asset.delete_assets_handler:
+        class: Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsHandler
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.repository.asset'
+
     akeneo_assetmanager.application.asset.delete_asset_handler:
         class: Akeneo\AssetManager\Application\Asset\DeleteAsset\DeleteAssetHandler
         arguments:

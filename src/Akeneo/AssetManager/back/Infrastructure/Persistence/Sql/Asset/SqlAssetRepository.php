@@ -209,7 +209,7 @@ SQL;
 
         $sql = <<<SQL
         DELETE FROM akeneo_asset_manager_asset
-        WHERE codes IN (:codes) AND asset_family_identifier = :asset_family_identifier;
+        WHERE code IN (:codes) AND asset_family_identifier = :asset_family_identifier;
 SQL;
         $this->sqlConnection->executeUpdate(
             $sql,
