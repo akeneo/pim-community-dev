@@ -73,8 +73,8 @@ class EventSubscriptionSendApiEventRequestLog
      *      name: string,
      *      timestamp: int|null,
      *  }>,
-     *  max_propagation_seconds: int,
-     *  min_propagation_seconds: int,
+     *  ?max_propagation_seconds: int,
+     *  ?min_propagation_seconds: int,
      * }
      */
     public function toLog(): array
@@ -122,10 +122,10 @@ class EventSubscriptionSendApiEventRequestLog
             }
         }
         
-        return [ 
+        return null !== $olderEventTimestamp && null !== $youngerEventTimestamp ? [ 
             'max_propagation_seconds' => (int) $this->endTime - $olderEventTimestamp,
             'min_propagation_seconds' => (int) $this->endTime - $youngerEventTimestamp,
-        ];
+        ] : [];
     }
     
     private function getDuration(): int

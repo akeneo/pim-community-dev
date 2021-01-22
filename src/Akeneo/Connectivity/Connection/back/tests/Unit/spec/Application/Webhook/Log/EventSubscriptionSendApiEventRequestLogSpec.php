@@ -125,6 +125,70 @@ class EventSubscriptionSendApiEventRequestLogSpec extends ObjectBehavior
         ]);
     }
 
+    public function it_returns_the_log_without_propagation_times()
+    {
+        $webhook = new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook');
+        $events = [
+            new WebhookEvent(
+                'product.created',
+                '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                'NOT_WELL_FORMED',
+                Author::fromNameAndType('julia', Author::TYPE_UI),
+                'staging.akeneo.com',
+                ['data']
+            ),
+            new WebhookEvent(
+                'product.updated',
+                '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
+                'NOT_WELL_FORMED',
+                Author::fromNameAndType('julia', Author::TYPE_UI),
+                'staging.akeneo.com',
+                ['data']
+            )
+        ];
+
+        $webhookRequest = new WebhookRequest($webhook, $events);
+
+        $this->beConstructedWith(
+            $webhookRequest,
+            ['Content-Type' => 'application/json'],
+            1603935007.832
+        );
+
+        $this->setSuccess(true);
+        $this->setEndTime(1603935029.121);
+        $this->setResponse(new Response());
+
+        $this->toLog()->shouldReturn([
+            'type' => EventSubscriptionSendApiEventRequestLog::TYPE,
+            'duration' => 21289,
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'message' => '',
+            'success' => true,
+            'response' => [
+                'status_code' => 200,
+            ],
+            'events' => [
+                [
+                    'uuid' => '79fc4791-86d6-4d3b-93c5-76b787af9497',
+                    'author' => 'julia',
+                    'author_type' => 'ui',
+                    'name' => 'product.created',
+                    'timestamp' => null,
+                ],
+                [
+                    'uuid' => '8bdfe74c-da2e-4bda-a2b1-b5e2a3006ea3',
+                    'author' => 'julia',
+                    'author_type' => 'ui',
+                    'name' => 'product.updated',
+                    'timestamp' => null,
+                ],
+            ],
+        ]);
+    }
+
     public function it_throw_an_exception_when_end_time_is_null()
     {
         $this->shouldThrow(\RuntimeException::class)->during('toLog');
