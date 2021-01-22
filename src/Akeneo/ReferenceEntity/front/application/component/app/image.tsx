@@ -1,12 +1,31 @@
 import React from 'react';
+import styled, {FlattenSimpleInterpolation} from 'styled-components';
+import {DeleteIcon, DownloadIcon, ImportIllustration, pimTheme, Key} from 'akeneo-design-system';
 import FileModel from 'akeneoreferenceentity/domain/model/file';
 import {getImageShowUrl, getImageDownloadUrl} from 'akeneoreferenceentity/tools/media-url-generator';
 import imageUploader from 'akeneoreferenceentity/infrastructure/uploader/image';
 import loadImage from 'akeneoreferenceentity/tools/image-loader';
 import __ from 'akeneoreferenceentity/tools/translator';
-import Key from 'akeneoreferenceentity/tools/key';
-import {DeleteIcon, DownloadIcon, ImportIllustration, pimTheme} from 'akeneo-design-system';
+
 const Messenger = require('oro/messenger');
+
+const DownloadContainer = styled.a`
+  :hover {
+    ${DownloadIcon.animatedMixin as FlattenSimpleInterpolation};
+  }
+`;
+
+const DeleteContainer = styled.span`
+  :hover {
+    ${DeleteIcon.animatedMixin as FlattenSimpleInterpolation};
+  }
+`;
+
+const ImageContainer = styled.div`
+  :hover {
+    ${ImportIllustration.animatedMixin as FlattenSimpleInterpolation};
+  }
+`;
 
 class Image extends React.Component<
   {
@@ -136,7 +155,7 @@ class Image extends React.Component<
         ? {width: `${this.state.ratio * 100}%`, transition: 'width 0s'}
         : {width: `${this.state.ratio * 100}%`};
     return (
-      <div className={className}>
+      <ImageContainer className={className}>
         {true === this.props.wide && !this.props.image.isEmpty() ? (
           <div className="AknImage-drop" style={{backgroundImage: `url("${imageUrl}")`}} />
         ) : null}
@@ -159,16 +178,20 @@ class Image extends React.Component<
         {!this.props.image.isEmpty() ? (
           <div className="AknImage-action">
             {!this.props.readOnly ? (
-              <span className="AknImage-actionItem" onClick={this.remove.bind(this)}>
+              <DeleteContainer className="AknImage-actionItem" onClick={this.remove.bind(this)}>
                 <DeleteIcon color={pimTheme.color.white} className="AknImage-actionItemIcon" />{' '}
                 {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.remove`)}
-              </span>
+              </DeleteContainer>
             ) : null}
             {this.props.image.isInStorage() ? (
-              <a className="AknImage-actionItem" href={getImageDownloadUrl(this.props.image)} tabIndex={-1}>
+              <DownloadContainer
+                className="AknImage-actionItem"
+                href={getImageDownloadUrl(this.props.image)}
+                tabIndex={-1}
+              >
                 <DownloadIcon color={pimTheme.color.white} className="AknImage-actionItemIcon" />{' '}
                 {__(`pim_reference_entity.app.image.${this.props.wide ? 'wide' : 'small'}.download`)}
-              </a>
+              </DownloadContainer>
             ) : null}
           </div>
         ) : null}
@@ -195,7 +218,7 @@ class Image extends React.Component<
             </span>
           </div>
         ) : null}
-      </div>
+      </ImageContainer>
     );
   }
 }
