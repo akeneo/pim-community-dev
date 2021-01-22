@@ -16,7 +16,9 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
@@ -27,9 +29,10 @@ final class AddDefaultDictionaryWordsSubscriberSpec extends ObjectBehavior
 {
     public function let(
         FeatureFlag $dataQualityInsightsFeature,
-        TextCheckerDictionaryRepository $textCheckerDictionaryRepository
+        TextCheckerDictionaryRepository $textCheckerDictionaryRepository,
+        SupportedLocaleValidator $supportedLocaleValidator
     ) {
-        $this->beConstructedWith($dataQualityInsightsFeature, $textCheckerDictionaryRepository);
+        $this->beConstructedWith($dataQualityInsightsFeature, $textCheckerDictionaryRepository, $supportedLocaleValidator);
     }
 
     public function it_does_nothing_if_the_subject_is_not_a_locale($textCheckerDictionaryRepository)
@@ -60,12 +63,29 @@ final class AddDefaultDictionaryWordsSubscriberSpec extends ObjectBehavior
         $this->onSaveLocale(new GenericEvent($locale));
     }
 
+    public function it_does_nothing_if_the_locale_is_not_supported(
+        $textCheckerDictionaryRepository,
+        $dataQualityInsightsFeature,
+        $supportedLocaleValidator
+    ) {
+        $locale = $this->givenAnActivatedLocale();
+
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $supportedLocaleValidator->isSupported(new LocaleCode($locale->getCode()))->willReturn(false);
+
+        $textCheckerDictionaryRepository->save(Argument::any())->shouldNotBeCalled();
+
+        $this->onSaveLocale(new GenericEvent($locale));
+    }
+
     public function it_saves_default_words_in_the_dictionary_when_a_locales_is_activated(
         $textCheckerDictionaryRepository,
-        $dataQualityInsightsFeature
+        $dataQualityInsightsFeature,
+        $supportedLocaleValidator
     ) {
         $locale = $this->givenAnActivatedLocale();
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $supportedLocaleValidator->isSupported(new LocaleCode($locale->getCode()))->willReturn(true);
 
         $textCheckerDictionaryRepository->saveAll(Argument::that(function (array $words) {
             foreach ($words as $word) {
