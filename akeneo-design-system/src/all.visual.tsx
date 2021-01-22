@@ -30,7 +30,7 @@ describe('Visual tests', () => {
     await page.goto(`http://localhost:6006/iframe.html?id=${id}`);
     const root = await page.$('#root');
     if (null === root) return;
-q
+
     await new Promise(resolve => setTimeout(resolve, 500));
     const image = await root.screenshot();
 
