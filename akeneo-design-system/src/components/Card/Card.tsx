@@ -1,7 +1,7 @@
 import React, {ReactNode, isValidElement, ReactElement} from 'react';
 import styled from 'styled-components';
 import {Checkbox} from '../../components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColor, getFontSize, placeholderStyle} from '../../theme';
 import {Override} from '../../shared';
 
 type CardGridProps = {
@@ -52,7 +52,9 @@ const CardContainer = styled.div<CardProps & AkeneoThemedProps>`
   }
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<{isLoading: boolean}>`
+  ${({isLoading}) => isLoading && placeholderStyle}
+
   position: relative;
 
   ::before {
@@ -95,7 +97,7 @@ type CardProps = Override<
     /**
      * Source URL of the image to display in the Card.
      */
-    src: string;
+    src: string | null;
 
     /**
      * Should the image cover all the Card container or be contained in it.
@@ -146,8 +148,6 @@ const Card = ({
       texts.push(child);
     } else if (isValidElement(child)) {
       nonLabelChildren.push(child);
-    } else {
-      throw new Error('Card component only accepts string or Card.BadgeContainer as children');
     }
   });
 
@@ -155,13 +155,15 @@ const Card = ({
 
   return (
     <CardContainer fit={fit} isSelected={isSelected} onClick={onClick || toggleSelect} disabled={disabled} {...rest}>
-      <ImageContainer>
+      <ImageContainer isLoading={null === src}>
         <Overlay />
-        <img src={src} alt={texts[0]} />
+        <img src={src ?? ''} alt={texts[0]} />
       </ImageContainer>
       <CardLabel>
-        {undefined !== onSelect && <Checkbox checked={isSelected} readOnly={disabled} onChange={toggleSelect} />}
-        <CardText title={texts.join(' ')}>{texts}</CardText>
+        {undefined !== onSelect && (
+          <Checkbox aria-label={texts[0]} checked={isSelected} readOnly={disabled} onChange={toggleSelect} />
+        )}
+        <CardText title={texts[0]}>{texts}</CardText>
       </CardLabel>
       {nonLabelChildren}
     </CardContainer>

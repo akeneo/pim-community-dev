@@ -1,4 +1,4 @@
-import React, {Ref} from 'react';
+import React, {ReactNode, Ref} from 'react';
 import {Override} from '../../shared';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getColorForLevel, getFontSize, Level} from '../../theme';
@@ -34,9 +34,9 @@ type BadgeProps = Override<
     level?: Level;
 
     /**
-     * Children of the Badge, can only be string for a Badge.
+     * Children of the Badge.
      */
-    children?: string;
+    children?: ReactNode;
   }
 >;
 
