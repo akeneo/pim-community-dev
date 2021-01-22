@@ -39,4 +39,6 @@ interface TextCheckerDictionaryRepositoryInterface
     public function saveAll(array $dictionaryWords): void;
 
     public function deleteWord(int $wordId): void;
+
+    public function isEmptyForLocale(LocaleCode $localeCode): bool;
 }

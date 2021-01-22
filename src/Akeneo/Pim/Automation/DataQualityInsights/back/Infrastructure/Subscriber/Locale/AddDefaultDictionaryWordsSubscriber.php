@@ -68,6 +68,11 @@ final class AddDefaultDictionaryWordsSubscriber implements EventSubscriberInterf
             return;
         }
 
+        // If the dictionary is not empty for the locale, we consider that the locale has already been activated.
+        if (!$this->textCheckerDictionaryRepository->isEmptyForLocale($localeCode)) {
+            return;
+        }
+
         $defaultWords = array_map(fn (string $word) => new TextCheckerDictionaryWord($localeCode, new DictionaryWord($word)), self::DEFAULT_WORDS);
 
         $this->textCheckerDictionaryRepository->saveAll($defaultWords);

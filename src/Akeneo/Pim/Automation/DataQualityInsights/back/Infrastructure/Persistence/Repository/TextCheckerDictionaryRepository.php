@@ -173,4 +173,17 @@ SQL;
     {
         $this->db->delete('pimee_data_quality_insights_text_checker_dictionary', ['id' => $wordId]);
     }
+
+    public function isEmptyForLocale(LocaleCode $localeCode): bool
+    {
+        $query = <<<SQL
+SELECT 1 FROM pimee_data_quality_insights_text_checker_dictionary
+WHERE locale_code = :locale
+LIMIT 1;
+SQL;
+
+        $localeHasAtLeastOneWord = $this->db->executeQuery($query, ['locale' => $localeCode])->fetchColumn();
+
+        return !boolval($localeHasAtLeastOneWord);
+    }
 }

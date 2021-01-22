@@ -78,14 +78,34 @@ final class AddDefaultDictionaryWordsSubscriberSpec extends ObjectBehavior
         $this->onSaveLocale(new GenericEvent($locale));
     }
 
+    public function it_does_nothing_if_the_dictionary_is_not_empty_for_the_locale(
+        $textCheckerDictionaryRepository,
+        $dataQualityInsightsFeature,
+        $supportedLocaleValidator
+    ) {
+        $locale = $this->givenAnActivatedLocale();
+        $localeCode = new LocaleCode($locale->getCode());
+
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $supportedLocaleValidator->isSupported($localeCode)->willReturn(true);
+        $textCheckerDictionaryRepository->isEmptyForLocale($localeCode)->willReturn(false);
+
+        $textCheckerDictionaryRepository->save(Argument::any())->shouldNotBeCalled();
+
+        $this->onSaveLocale(new GenericEvent($locale));
+    }
+
     public function it_saves_default_words_in_the_dictionary_when_a_locales_is_activated(
         $textCheckerDictionaryRepository,
         $dataQualityInsightsFeature,
         $supportedLocaleValidator
     ) {
         $locale = $this->givenAnActivatedLocale();
+        $localeCode = new LocaleCode($locale->getCode());
+
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $supportedLocaleValidator->isSupported(new LocaleCode($locale->getCode()))->willReturn(true);
+        $supportedLocaleValidator->isSupported($localeCode)->willReturn(true);
+        $textCheckerDictionaryRepository->isEmptyForLocale($localeCode)->willReturn(true);
 
         $textCheckerDictionaryRepository->saveAll(Argument::that(function (array $words) {
             foreach ($words as $word) {

@@ -136,6 +136,18 @@ final class TextCheckerDictionaryRepositoryIntegration extends TestCase
         $this->assertEquals(0, $results['total']);
     }
 
+    public function test_it_retrieves_if_the_dictionary_is_empty_for_a_given_locale()
+    {
+        $this->repository->save(new Write\TextCheckerDictionaryWord(new LocaleCode('fr_FR'), new DictionaryWord('samsung')));
+        $enUS = new LocaleCode('en_US');
+
+        $this->assertTrue($this->repository->isEmptyForLocale($enUS));
+
+        $this->repository->save(new Write\TextCheckerDictionaryWord($enUS, new DictionaryWord('samsung')));
+
+        $this->assertFalse($this->repository->isEmptyForLocale($enUS));
+    }
+
     private function createWords()
     {
         $query = <<<SQL
