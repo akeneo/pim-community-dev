@@ -44,7 +44,7 @@ test('it calls onSelect handler only once when clicking on the Checkbox', () => 
   expect(onSelect).toBeCalledTimes(1);
 });
 
-test('it does not call onSelect handler only if onClick is defined', () => {
+test('it does not call onSelect handler if onClick is defined when clicking on the label or the image', () => {
   const onSelect = jest.fn();
   const onClick = jest.fn();
   render(
@@ -54,10 +54,10 @@ test('it does not call onSelect handler only if onClick is defined', () => {
   );
 
   fireEvent.click(screen.getByText('Card text'));
+  fireEvent.click(screen.getByRole('img'));
 
   expect(onSelect).not.toBeCalled();
-  expect(onClick).toBeCalled();
-  expect(onClick).toBeCalledTimes(1);
+  expect(onClick).toBeCalledTimes(2);
 });
 
 test('it calls onSelect handler if onClick is defined but checkbox is clicked', () => {
@@ -72,28 +72,27 @@ test('it calls onSelect handler if onClick is defined but checkbox is clicked', 
   fireEvent.click(screen.getByRole('checkbox'));
 
   expect(onClick).not.toBeCalled();
-  expect(onSelect).toBeCalled();
   expect(onSelect).toBeCalledTimes(1);
 });
 
 test('it does not display a Checkbox if no handler is provided', () => {
-  const {queryByRole} = render(
+  render(
     <Card src="some.jpg">
       <Badge>100%</Badge>Card text
     </Card>
   );
 
-  expect(queryByRole('checkbox')).not.toBeInTheDocument();
+  expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
 });
 
 test('it displays a Checkbox if a handler is provided', () => {
-  const {queryByRole} = render(
+  render(
     <Card src="some.jpg" onSelect={jest.fn()}>
       <Badge>100%</Badge>Card text
     </Card>
   );
 
-  expect(queryByRole('checkbox')).toBeInTheDocument();
+  expect(screen.queryByRole('checkbox')).toBeInTheDocument();
 });
 
 describe('Card supports ...rest props', () => {
@@ -102,5 +101,6 @@ describe('Card supports ...rest props', () => {
       My card
     </Card>
   );
+
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
