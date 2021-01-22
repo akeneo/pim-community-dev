@@ -107,7 +107,9 @@ const ContainerStyle = css<
     size: ButtonSize;
   } & AkeneoThemedProps
 >`
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   border-width: 1px;
   font-size: ${getFontSize('default')};
   font-weight: 400;
@@ -116,7 +118,6 @@ const ContainerStyle = css<
   border-style: ${({ghost}) => (ghost ? 'solid' : 'none')};
   padding: ${({size}) => (size === 'small' ? '0 10px' : '0 15px')};
   height: ${({size}) => (size === 'small' ? '24px' : '32px')};
-  line-height: ${({size}) => (size === 'small' ? 24 : 32) - 2}px;
   outline-color: ${({level}) => getColorForLevel(level, 100)};
   cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
   font-family: inherit;

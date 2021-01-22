@@ -3,6 +3,7 @@ import {Dropdown} from './Dropdown';
 import {Button, Image, Badge, Link, Checkbox} from '../../components';
 import {useBooleanState} from '../../hooks';
 import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery';
+import {ArrowDownIcon} from '../../icons';
 
 <Meta
   title="Components/Dropdown"
@@ -14,7 +15,7 @@ import {SpaceContainer, useSelection} from '../../storybook/PreviewGallery';
     'Dropdown.ItemCollection': Dropdown.ItemCollection,
     'Dropdown.Item': Dropdown.Item,
   }}
-  parameters={{docs: { inlineStories: false }}}
+  parameters={{docs: {inlineStories: false}}}
 />
 
 # Dropdown (Beta)
@@ -50,7 +51,9 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
       return (
         <SpaceContainer height={200}>
           <Dropdown {...args}>
-            <Button onClick={open}>Dropdown</Button>
+            <Button onClick={open}>
+              Dropdown <ArrowDownIcon size={18} />
+            </Button>
             {isOpen && (
               <Dropdown.Overlay verticalPosition="down" onClose={close}>
                 <Dropdown.Header>
@@ -82,7 +85,9 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
       return (
         <SpaceContainer height={170}>
           <Dropdown>
-            <Button onClick={open}>Simple</Button>
+            <Button onClick={open}>
+              Simple <ArrowDownIcon size={18} />
+            </Button>
             {isOpen && (
               <Dropdown.Overlay verticalPosition="down" onClose={close}>
                 <Dropdown.Header>
@@ -117,7 +122,9 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
       return (
         <SpaceContainer height={200}>
           <Dropdown>
-            <Button onClick={open}>Selectable</Button>
+            <Button onClick={open}>
+              Selectable <ArrowDownIcon size={18} />
+            </Button>
             {isOpen && (
               <Dropdown.Overlay verticalPosition="down" onClose={close}>
                 <Dropdown.Header>
@@ -155,7 +162,9 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
       return (
         <SpaceContainer height={250}>
           <Dropdown>
-            <Button onClick={open}>With image</Button>
+            <Button onClick={open}>
+              With image <ArrowDownIcon size={18} />
+            </Button>
             {isOpen && (
               <Dropdown.Overlay verticalPosition="down" onClose={close}>
                 <Dropdown.Header>
