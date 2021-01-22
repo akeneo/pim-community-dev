@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
-import {Button} from './Button.tsx';
-import {Link} from '../Link/Link.tsx';
+import {Button} from './Button';
+import {Link} from '../../components';
+import {ArrowDownIcon} from '../../icons';
 import LinkTo from '@storybook/addon-links/react';
 
 <Meta
@@ -157,6 +158,28 @@ If you want your button to act like a <LinkTo kind="Components/Link" story="Stan
           </Button>
           <Button {...args} disabled={true} href="https://google.com" target="_blank">
             I am a disabled Link
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With an Icon
+
+<Canvas>
+  <Story name="With an Icon">
+    {() => {
+      return (
+        <>
+          <Button ghost={false}>
+            Dropdown button <ArrowDownIcon size={18} />
+          </Button>
+          <Button ghost={true}>
+            Ghost <ArrowDownIcon size={18} />
+          </Button>
+          <Button level="secondary" size="small">
+            Small <ArrowDownIcon size={18} />
           </Button>
         </>
       );
