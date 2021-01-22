@@ -1,5 +1,5 @@
 import {Meta, Story, Canvas} from '@storybook/addon-docs/blocks';
-import {Badge, Button, Checkbox, Dropdown, IconButton, Image, Table, Toolbar} from '../../components';
+import {Badge, Button, Checkbox, Dropdown, IconButton, Image, Table, Toolbar, Card, CardGrid} from '../../components';
 import {rows} from '../../components/Table/shared-stories-data';
 import {SpaceContainer} from '../../storybook/PreviewGallery';
 import {useBooleanState, useSelection} from '../../hooks';
@@ -9,10 +9,10 @@ import {ArrowDownIcon} from '../../icons';
 
 # Bulk actions
 
-### Big table
+## Big Table
 
 <Canvas>
-  <Story name="Big table">
+  <Story name="Big Table">
     {() => {
       const [isOpen, open, close] = useBooleanState();
       const manyRows = [...rows, ...rows, ...rows, ...rows, ...rows, ...rows];
@@ -119,10 +119,10 @@ import {ArrowDownIcon} from '../../icons';
   </Story>
 </Canvas>
 
-### Small table
+## Small Table
 
 <Canvas>
-  <Story name="Small table">
+  <Story name="Small Table">
     {() => {
       const [, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection(
         rows.length
@@ -168,6 +168,90 @@ import {ArrowDownIcon} from '../../icons';
               </Table.Body>
             </Table>
           </div>
+          <Toolbar isVisible={!!selectionState}>
+            <Toolbar.SelectionContainer>
+              <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value)} />
+              <Dropdown>
+                <IconButton
+                  size="small"
+                  level="tertiary"
+                  ghost="borderless"
+                  icon={<ArrowDownIcon />}
+                  title="Select"
+                  onClick={open}
+                />
+                {isOpen && (
+                  <Dropdown.Overlay onClose={close}>
+                    <Dropdown.Header>
+                      <Dropdown.Title>Select</Dropdown.Title>
+                    </Dropdown.Header>
+                    <Dropdown.ItemCollection>
+                      <Dropdown.Item
+                        onClick={() => {
+                          onSelectAllChange(true);
+                          close();
+                        }}
+                      >
+                        Select all
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => {
+                          onSelectAllChange(true);
+                          close();
+                        }}
+                      >
+                        Select all visible
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={() => {
+                          onSelectAllChange(false);
+                          close();
+                        }}
+                      >
+                        Select none
+                      </Dropdown.Item>
+                    </Dropdown.ItemCollection>
+                  </Dropdown.Overlay>
+                )}
+              </Dropdown>
+            </Toolbar.SelectionContainer>
+            <Toolbar.LabelContainer>{selectedCount} Selected</Toolbar.LabelContainer>
+            <Toolbar.ActionsContainer>
+              <Button level="secondary">Button 1</Button>
+              <Button level="tertiary">Button 2</Button>
+              <Button level="danger">Button 3</Button>
+            </Toolbar.ActionsContainer>
+          </Toolbar>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With Cards
+
+<Canvas>
+  <Story name="With Cards">
+    {() => {
+      const [isOpen, open, close] = useBooleanState();
+      const manyRows = [...rows, ...rows, ...rows, ...rows, ...rows, ...rows];
+      const [, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection(
+        manyRows.length
+      );
+      return (
+        <SpaceContainer height={500} style={{overflow: 'hidden'}}>
+          <CardGrid style={{overflowY: 'auto'}}>
+            {manyRows.map((row, index) => (
+              <Card
+                key={index}
+                src={`https://picsum.photos/seed/akeneo${index}/140/140`}
+                onSelect={value => onSelectionChange(index, value)}
+                isSelected={isItemSelected(index)}
+              >
+                {row.name}
+              </Card>
+            ))}
+          </CardGrid>
           <Toolbar isVisible={!!selectionState}>
             <Toolbar.SelectionContainer>
               <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value)} />
