@@ -160,8 +160,10 @@ const Card = ({
         <img src={src ?? ''} alt={texts[0]} />
       </ImageContainer>
       <CardLabel>
-        {undefined !== onSelect && <Checkbox checked={isSelected} readOnly={disabled} onChange={toggleSelect} />}
-        <CardText title={texts.join(' ')}>{texts}</CardText>
+        {undefined !== onSelect && (
+          <Checkbox aria-label={texts[0]} checked={isSelected} readOnly={disabled} onChange={toggleSelect} />
+        )}
+        <CardText title={texts[0]}>{texts}</CardText>
       </CardLabel>
       {nonLabelChildren}
     </CardContainer>

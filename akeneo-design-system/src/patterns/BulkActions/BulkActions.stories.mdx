@@ -63,7 +63,14 @@ import {ArrowDownIcon} from '../../icons';
             <Toolbar.SelectionContainer>
               <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value)} />
               <Dropdown>
-                <IconButton size="small" ghost="borderless" icon={<ArrowDownIcon />} title="Select" onClick={open} />
+                <IconButton
+                  size="small"
+                  level="tertiary"
+                  ghost="borderless"
+                  icon={<ArrowDownIcon />}
+                  title="Select"
+                  onClick={open}
+                />
                 {isOpen && (
                   <Dropdown.Overlay onClose={close}>
                     <Dropdown.Header>
@@ -165,7 +172,14 @@ import {ArrowDownIcon} from '../../icons';
             <Toolbar.SelectionContainer>
               <Checkbox checked={selectionState} onChange={value => onSelectAllChange(value)} />
               <Dropdown>
-                <IconButton size="small" ghost="borderless" icon={<ArrowDownIcon />} title="Select" onClick={open} />
+                <IconButton
+                  size="small"
+                  level="tertiary"
+                  ghost="borderless"
+                  icon={<ArrowDownIcon />}
+                  title="Select"
+                  onClick={open}
+                />
                 {isOpen && (
                   <Dropdown.Overlay onClose={close}>
                     <Dropdown.Header>
