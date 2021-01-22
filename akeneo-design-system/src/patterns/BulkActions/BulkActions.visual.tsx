@@ -4,16 +4,16 @@ expect.extend({toMatchImageSnapshot});
 
 const storyIds = ['big-table', 'small-table'];
 
-test.each(storyIds)('Test overlay %s is displayed correctly', async storyId => {
+test.each(storyIds)('Test Bulk Actions %s is displayed correctly', async storyId => {
   await page.goto(`http://localhost:6006/iframe.html?id=patterns-bulk-actions--${storyId}`);
   const root = await page.waitFor('#root');
   if (null === root) throw new Error('Cannot find root element');
 
-  await new Promise(resolve => setTimeout(resolve, 500));
-
   const firstCheckbox = await page.$('tbody tr:first-child div[role="checkbox"]');
   if (null === firstCheckbox) throw new Error('Cannot find first checkbox');
   await firstCheckbox.click();
+
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   const image = await root.screenshot();
 

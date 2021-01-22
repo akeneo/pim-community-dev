@@ -3,7 +3,8 @@ import {toMatchImageSnapshot} from 'jest-image-snapshot';
 expect.extend({toMatchImageSnapshot});
 
 const storyIds = ['confirm-modal', 'fullscreen-overlay', 'split-screen-overlay'];
-test.each(storyIds)('Test overlay %s is displayed correctly', async storyId => {
+
+test.each(storyIds)('Test Overlay %s is displayed correctly', async storyId => {
   await page.goto(`http://localhost:6006/iframe.html?id=patterns-overlays--${storyId}`);
   const root = await page.waitFor('#root');
   if (null === root) throw new Error('Cannot find root element');
