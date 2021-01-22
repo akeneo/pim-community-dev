@@ -1,7 +1,8 @@
-import React, {ReactNode, Ref, SyntheticEvent} from 'react';
+import React, {isValidElement, ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColorForLevel, getFontSize, Level} from '../../theme';
 import {Override} from '../../shared';
+import {IconProps} from '../../icons';
 
 type ButtonSize = 'small' | 'default';
 
@@ -186,7 +187,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         href={disabled ? undefined : href}
         {...rest}
       >
-        {children}
+        {React.Children.map(children, child => {
+          if (!isValidElement<IconProps>(child)) {
+            return child;
+          }
+
+          return React.cloneElement(child, {size: child.props.size ?? 18});
+        })}
       </Component>
     );
   }
