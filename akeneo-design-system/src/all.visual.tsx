@@ -4,7 +4,7 @@ import {toMatchImageSnapshot} from 'jest-image-snapshot';
 
 expect.extend({toMatchImageSnapshot});
 
-const EXCLUDE = ['Components/Modal', 'Components/Dropdown', 'Patterns/Overlays'];
+const EXCLUDE = ['Components/Modal', 'Components/Dropdown'];
 
 type StoriesDump = {
   stories: {
@@ -19,10 +19,7 @@ type StoriesDump = {
 const storyFileContent = fs.readFileSync('./stories.json').toString('utf8');
 const storiesDump = JSON.parse(storyFileContent) as StoriesDump;
 const stories = Object.values(storiesDump.stories)
-  .filter(
-    story =>
-      (0 === story.id.indexOf('components') || 0 === story.id.indexOf('patterns')) && !EXCLUDE.includes(story.kind)
-  )
+  .filter(story => 0 === story.id.indexOf('components') && !EXCLUDE.includes(story.kind))
   .map(story => [story.kind, story.name, story.id]);
 
 describe('Visual tests', () => {
