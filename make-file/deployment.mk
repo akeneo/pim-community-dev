@@ -229,14 +229,7 @@ endif
 	MYSQL_DISK_NAME=$(PFID)-mysql \
 	envsubst < $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/serenity_instance.tpl.tf.json.tmp
-ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-	echo "REMOVE THESES LINES BELOW AFTER MERGING & RELEASING BRANCH 'BH6118'"
-	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim.product_reference_code'
-	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.product_reference_code'
-	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim.product_reference_type'
-	yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.product_reference_type'
-	echo "REMOVE THESES LINES AFTER MERGING & RELEASING BRANCH 'BH6118' IN PRODUCTION"
-endif
+
 
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version
