@@ -73,6 +73,8 @@ class EventSubscriptionSendApiEventRequestLog
      *      name: string,
      *      timestamp: int|null,
      *  }>,
+     *  max_propagation_seconds: int,
+     *  min_propagation_seconds: int,
      * }
      */
     public function toLog(): array
