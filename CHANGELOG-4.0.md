@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.86 (2021-01-22)
+
 ## Bug fixes
 
 - PIM-9641: Return a proper error when the asset or record code are not well formatted in product update API
