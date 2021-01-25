@@ -77,6 +77,7 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
 
         $normalizedQuery = $this->stepExecution->getJobParameters()->get('query');
         $normalizedQuery['size'] = $this->batchSize;
+        $normalizedQuery['page'] = 0;
         $assetQuery = AssetQuery::createFromNormalized($normalizedQuery);
 
         $cursor = new AssetCursor($this->assetQueryBuilder, $this->assetClient, $assetQuery);
@@ -85,7 +86,6 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
         $assetCodesToDelete = [];
         foreach ($cursor as $assetIdentifier) {
             $assetCodesToDelete[] = $assetIdentifier;
-            sleep(10);
 
             if ($this->batchSize === count($assetCodesToDelete)) {
                 if ($this->jobStopper->isStopping($this->stepExecution)) {
