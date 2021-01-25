@@ -158,10 +158,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }: ButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
-    if (undefined !== href && undefined !== onClick) {
-      throw new Error('Button cannot have both `href` and `onClick` props');
-    }
-
     const handleAction = (event: SyntheticEvent) => {
       if (disabled || undefined === onClick) return;
 
