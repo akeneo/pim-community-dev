@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Improvements
+
+- PIM-9623: String filter is now able to filter on codes with spaces
+
 # 4.0.86 (2021-01-22)
 
 ## Bug fixes
