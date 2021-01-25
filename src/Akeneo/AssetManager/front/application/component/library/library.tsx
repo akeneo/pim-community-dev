@@ -40,6 +40,7 @@ import notify from 'akeneoassetmanager/tools/notify';
 import {useRouter} from '@akeneo-pim-community/legacy-bridge';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {AssetsIllustration, Checkbox, Information, Link, Toolbar, Button, useSelection} from 'akeneo-design-system';
+import {MassDeleteModal} from "./MassDeleteModal";
 
 const Header = styled.div`
   padding-left: 40px;
@@ -168,8 +169,9 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [context, setContext] = useStoredState<Context>('akeneo.asset_manager.grid.context', initialContext);
   const [isCreateAssetModalOpen, setCreateAssetModalOpen] = useState<boolean>(false);
   const [isUploadModalOpen, setUploadModalOpen] = useState<boolean>(false);
+  const [isMassDeleteModalOpen, setMassDeleteModalOpen] = useState<boolean>(false);
   const [isCreateAssetFamilyModalOpen, setCreateAssetFamilyModalOpen] = useState<boolean>(false);
-  const [isDeleteAllAssetsModalOpen, setDeleteAllAssetsModalOpen] = useState<boolean>(false);
+  const [, setDeleteAllAssetsModalOpen] = useState<boolean>(false);
 
   const [, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection<
     AssetCode
@@ -412,8 +414,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             {__('pim_asset_manager.asset_selected', {assetCount: selectedCount}, selectedCount)}
           </Toolbar.LabelContainer>
           <Toolbar.ActionsContainer>
-            <Button>Click</Button>
-            <Button level="danger">Click again</Button>
+            <Button level="danger" onClick={() => setMassDeleteModalOpen(true)}>{__('pim_common.delete')}</Button>
           </Toolbar.ActionsContainer>
         </Toolbar>
       </Content>
@@ -460,26 +461,14 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           }}
         />
       )}
-      {isDeleteAllAssetsModalOpen && null !== currentAssetFamily && (
-        <DeleteModal
-          message={__('pim_asset_manager.asset.delete_all.confirm', {
-            entityIdentifier: currentAssetFamilyIdentifier,
-          })}
-          title={__('pim_asset_manager.asset.delete.title')}
-          onConfirm={() =>
-            deleteAllAssetFamilyAssets(
-              currentAssetFamily,
-              () => {
-                notify('success', 'pim_asset_manager.asset.notification.delete_all.success', {
-                  entityIdentifier: currentAssetFamilyIdentifier,
-                });
-                setDeleteAllAssetsModalOpen(false);
-                updateResults();
-              },
-              () => notify('error', 'pim_asset_manager.asset.notification.delete.fail')
-            )
-          }
-          onCancel={() => setDeleteAllAssetsModalOpen(false)}
+      {isMassDeleteModalOpen && null !== currentAssetFamily && null !== currentAssetFamilyIdentifier && (
+        <MassDeleteModal
+          assetFamilyIdentifier={currentAssetFamilyIdentifier}
+          selectedAssetCount={selectedCount}
+          onConfirm={() => {
+            /* TODO */
+          }}
+          onCancel={() => setMassDeleteModalOpen(false)}
         />
       )}
     </Container>
