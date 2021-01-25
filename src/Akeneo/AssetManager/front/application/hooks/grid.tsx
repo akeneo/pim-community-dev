@@ -57,9 +57,9 @@ export const addSelection = (query: Query, selection: Selection): Query => ({
       field: 'code',
       operator: selection.mode === 'in' ? 'IN' : 'NOT IN',
       value: selection.collection,
-      context: {}
-    }
-  ]
+      context: {},
+    },
+  ],
 });
 
 let totalRequestCount = 0;
