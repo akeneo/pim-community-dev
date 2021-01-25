@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Process\Process;
 
 /**
@@ -46,7 +46,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
     /** @var CleanValuesOfRemovedAttributesInterface|null */
     private $cleanValuesOfRemovedAttributes;
 
-    /** @var EventDispatcher|null */
+    /** @var EventDispatcherInterface|null */
     private $eventDispatcher;
 
     public function __construct(
@@ -55,7 +55,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends Command
         string $kernelRootDir,
         int $productBatchSize,
         CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes = null,
-        EventDispatcher $eventDispatcher = null
+        EventDispatcherInterface $eventDispatcher = null
     ) {
         parent::__construct();
 
