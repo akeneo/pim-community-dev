@@ -10,7 +10,6 @@ import {SearchResult, emptySearchResult} from 'akeneoassetmanager/domain/fetcher
 import ListAsset from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {useFetchResult, createQuery, addSelection} from 'akeneoassetmanager/application/hooks/grid';
 import FilterCollection, {useFilterViews} from 'akeneoassetmanager/application/component/asset/list/filter-collection';
-import __ from 'akeneoassetmanager/tools/translator';
 import {AssetFamilySelector} from 'akeneoassetmanager/application/component/library/asset-family-selector';
 import {HeaderView} from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {getLabel} from 'pimui/js/i18n';
@@ -34,8 +33,7 @@ import {isMediaLinkAttribute} from 'akeneoassetmanager/domain/model/attribute/ty
 import {useScroll} from 'akeneoassetmanager/application/hooks/scroll';
 import {CompletenessValue} from 'akeneoassetmanager/application/component/asset/list/completeness-filter';
 import {getCompletenessFilter, updateCompletenessFilter} from 'akeneoassetmanager/tools/filters/completeness';
-import notify from 'akeneoassetmanager/tools/notify';
-import {useRouter} from '@akeneo-pim-community/legacy-bridge';
+import {useRouter, useNotify, NotificationLevel, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import {
   AssetsIllustration,
@@ -45,9 +43,9 @@ import {
   Toolbar,
   Button,
   useSelection,
-  useBooleanState
+  useBooleanState,
 } from 'akeneo-design-system';
-import {MassDeleteModal} from "./MassDeleteModal";
+import {MassDeleteModal} from './MassDeleteModal';
 import assetRemover from 'akeneoassetmanager/infrastructure/remover/asset';
 
 const Header = styled.div`
@@ -103,16 +101,17 @@ const SecondaryActions = ({
   onOpenDeleteAllAssetsModal: () => void;
   canDeleteAllAssets: boolean;
 }) => {
+  const translate = useTranslate();
   if (!canDeleteAllAssets) return null;
 
   return (
     <div className="AknSecondaryActions AknDropdown AknButtonList-item">
       <div className="AknSecondaryActions-button dropdown-button" data-toggle="dropdown" />
       <div className="AknDropdown-menu AknDropdown-menu--right">
-        <div className="AknDropdown-menuTitle">{__('pim_datagrid.actions.other')}</div>
+        <div className="AknDropdown-menuTitle">{translate('pim_datagrid.actions.other')}</div>
         <div>
           <button tabIndex={-1} className="AknDropdown-menuLink" onClick={onOpenDeleteAllAssetsModal}>
-            {__('pim_asset_manager.asset.button.delete_all')}
+            {translate('pim_asset_manager.asset.button.delete_all')}
           </button>
         </div>
       </div>
@@ -178,8 +177,12 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
   const [isCreateAssetModalOpen, openCreateAssetModalOpen, closeCreateAssetModalOpen] = useBooleanState(false);
   const [isUploadModalOpen, openUploadModal, closeUploadModal] = useBooleanState(false);
   const [isMassDeleteModalOpen, openMassDeleteModal, closeMassDeleteModal] = useBooleanState(false);
-  const [isCreateAssetFamilyModalOpen, openCreateAssetFamilyModal, closeCreateAssetFamilyModal] = useBooleanState(false);
+  const [isCreateAssetFamilyModalOpen, openCreateAssetFamilyModal, closeCreateAssetFamilyModal] = useBooleanState(
+    false
+  );
   const [, setDeleteAllAssetsModalOpen] = useState<boolean>(false);
+  const notify = useNotify();
+  const translate = useTranslate();
 
   const [selection, selectionState, isItemSelected, onSelectionChange, onSelectAllChange, selectedCount] = useSelection<
     AssetCode
@@ -216,10 +219,23 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
     );
 
     const queryWithSelection = addSelection(query, selection);
-    assetRemover.removeFromQuery(currentAssetFamilyIdentifier, queryWithSelection);
-
-    closeMassDeleteModal();
-  }, []);
+    try {
+      assetRemover.removeFromQuery(currentAssetFamilyIdentifier, queryWithSelection);
+      notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset.notification.mass_delete.success'));
+      onSelectAllChange(false);
+      closeMassDeleteModal();
+    } catch (error) {
+      notify(NotificationLevel.ERROR, translate('pim_asset_manager.asset.notification.mass_delete.fail', {error}));
+    }
+  }, [
+    selection,
+    onSelectAllChange,
+    closeMassDeleteModal,
+    currentAssetFamilyIdentifier,
+    filterCollection,
+    searchValue,
+    context,
+  ]);
 
   const updateResults = useFetchResult(createQuery)(
     true,
@@ -258,7 +274,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
 
   return (
     <Container>
-      <Column title={__('pim_asset_manager.asset_family.column.title')}>
+      <Column title={translate('pim_asset_manager.asset_family.column.title')}>
         <AssetFamilySelector
           assetFamilyIdentifier={currentAssetFamilyIdentifier}
           locale={context.locale}
@@ -277,7 +293,11 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           <HeaderView
             label={
               isInitialized
-                ? __('pim_asset_manager.result_counter', {count: searchResult.matchesCount}, searchResult.matchesCount)
+                ? translate(
+                    'pim_asset_manager.result_counter',
+                    {count: searchResult.matchesCount},
+                    searchResult.matchesCount
+                  )
                 : ''
             }
             image={null}
@@ -290,7 +310,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                       level="tertiary"
                       onClick={() => redirectToAssetFamily(currentAssetFamilyIdentifier)}
                     >
-                      {__(`pim_asset_manager.asset_family.button.${rights.assetFamily.edit ? 'edit' : 'view'}`)}
+                      {translate(`pim_asset_manager.asset_family.button.${rights.assetFamily.edit ? 'edit' : 'view'}`)}
                     </Button>
                     <MultipleButton
                       color="green"
@@ -298,7 +318,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                         ...(rights.asset.create
                           ? [
                               {
-                                label: __('pim_asset_manager.asset.button.create'),
+                                label: translate('pim_asset_manager.asset.button.create'),
                                 action: () => openCreateAssetModalOpen,
                               },
                             ]
@@ -306,8 +326,8 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                         ...(rights.asset.upload || hasMediaLinkAsMainMedia
                           ? [
                               {
-                                label: __('pim_asset_manager.asset.upload.title'),
-                                title: __(
+                                label: translate('pim_asset_manager.asset.upload.title'),
+                                title: translate(
                                   `pim_asset_manager.asset.upload.${
                                     hasMediaLinkAsMainMedia ? 'disabled_for_media_link' : 'title'
                                   }`
@@ -320,19 +340,19 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
                         ...(rights.assetFamily.create
                           ? [
                               {
-                                label: __('pim_asset_manager.asset_family.button.create'),
+                                label: translate('pim_asset_manager.asset_family.button.create'),
                                 action: openCreateAssetFamilyModal,
                               },
                             ]
                           : []),
                       ]}
                     >
-                      {__('pim_common.create')}
+                      {translate('pim_common.create')}
                     </MultipleButton>
                   </>
                 ) : (
                   <Button level="primary" onClick={openCreateAssetFamilyModal}>
-                    {__('pim_asset_manager.asset_family.button.create')}
+                    {translate('pim_asset_manager.asset_family.button.create')}
                   </Button>
                 )}
               </ButtonContainer>
@@ -369,19 +389,19 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             <>
               <Information
                 illustration={<AssetsIllustration />}
-                title={`👋 ${__('pim_asset_manager.asset_family.helper.title')}`}
+                title={`👋 ${translate('pim_asset_manager.asset_family.helper.title')}`}
               >
-                <p>{__('pim_asset_manager.asset_family.helper.no_asset_family.text')}</p>
+                <p>{translate('pim_asset_manager.asset_family.helper.no_asset_family.text')}</p>
                 <Link href="https://help.akeneo.com/pim/v4/articles/what-about-assets.html" target="_blank">
-                  {__('pim_asset_manager.asset_family.helper.no_asset_family.link')}
+                  {translate('pim_asset_manager.asset_family.helper.no_asset_family.link')}
                 </Link>
               </Information>
               <NoDataSection>
                 <AssetsIllustration size={256} />
-                <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset_family.title')}</NoDataTitle>
+                <NoDataTitle>{translate('pim_asset_manager.asset_family.no_data.no_asset_family.title')}</NoDataTitle>
                 <NoDataText>
                   <Link onClick={openCreateAssetFamilyModal}>
-                    {__('pim_asset_manager.asset_family.no_data.no_asset_family.link')}
+                    {translate('pim_asset_manager.asset_family.no_data.no_asset_family.link')}
                   </Link>
                 </NoDataText>
               </NoDataSection>
@@ -390,16 +410,16 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             <>
               <Information
                 illustration={<AssetsIllustration />}
-                title={`👋 ${__('pim_asset_manager.asset_family.helper.title')}`}
+                title={`👋 ${translate('pim_asset_manager.asset_family.helper.title')}`}
               >
-                {__('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
+                {translate('pim_asset_manager.asset_family.helper.no_asset.text', {family: currentAssetFamilyLabel})}
               </Information>
               <NoDataSection>
                 <AssetsIllustration size={256} />
-                <NoDataTitle>{__('pim_asset_manager.asset_family.no_data.no_asset.title')}</NoDataTitle>
+                <NoDataTitle>{translate('pim_asset_manager.asset_family.no_data.no_asset.title')}</NoDataTitle>
                 <NoDataText>
                   <Link onClick={() => openCreateAssetModalOpen}>
-                    {__('pim_asset_manager.asset_family.no_data.no_asset.link')}
+                    {translate('pim_asset_manager.asset_family.no_data.no_asset.link')}
                   </Link>
                 </NoDataText>
               </NoDataSection>
@@ -439,11 +459,13 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             <Checkbox checked={selectionState} onChange={onSelectAllChange} />
           </Toolbar.SelectionContainer>
           <Toolbar.LabelContainer>
-            {__('pim_asset_manager.asset_selected', {assetCount: selectedCount}, selectedCount)}
+            {translate('pim_asset_manager.asset_selected', {assetCount: selectedCount}, selectedCount)}
           </Toolbar.LabelContainer>
           <Toolbar.ActionsContainer>
-            { rights.asset.delete && (
-              <Button level="danger" onClick={openMassDeleteModal}>{__('pim_common.delete')}</Button>
+            {rights.asset.delete && (
+              <Button level="danger" onClick={openMassDeleteModal}>
+                {translate('pim_common.delete')}
+              </Button>
             )}
           </Toolbar.ActionsContainer>
         </Toolbar>
@@ -454,7 +476,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           assetFamily={currentAssetFamily}
           onClose={closeCreateAssetModalOpen}
           onAssetCreated={(assetCode: AssetCode, createAnother: boolean) => {
-            notify('success', 'pim_asset_manager.asset.notification.create.success');
+            notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset.notification.create.success'));
             if (createAnother) {
               updateResults();
             } else {
@@ -465,7 +487,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
       )}
       {isUploadModalOpen && null !== currentAssetFamily && (
         <UploadModal
-          confirmLabel={__('pim_asset_manager.asset.upload.confirm')}
+          confirmLabel={translate('pim_asset_manager.asset.upload.confirm')}
           locale={context.locale}
           channels={channels}
           locales={locales}
@@ -485,7 +507,7 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
           locale={context.locale}
           onClose={closeCreateAssetFamilyModal}
           onAssetFamilyCreated={(assetFamilyIdentifier: AssetFamilyIdentifier) => {
-            notify('success', 'pim_asset_manager.asset_family.notification.create.success');
+            notify(NotificationLevel.SUCCESS, translate('pim_asset_manager.asset_family.notification.create.success'));
             handleAssetFamilyChange(assetFamilyIdentifier);
             redirectToAssetFamily(assetFamilyIdentifier);
           }}
