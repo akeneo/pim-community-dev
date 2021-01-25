@@ -50,6 +50,17 @@ final class Rank implements \JsonSerializable
         return new self($value, sprintf('rank_%d', $value));
     }
 
+    public static function fromLetter(string $letter): self
+    {
+        $ranksByLetter = array_flip(self::LETTERS_MAPPING);
+
+        if (!isset($ranksByLetter[$letter])) {
+            throw new \InvalidArgumentException(sprintf('The letter "%s" does not correspond to any rank.', $letter));
+        }
+
+        return self::fromInt($ranksByLetter[$letter]);
+    }
+
     public static function fromRate(Rate $rate): self
     {
         $rate = $rate->toInt();
