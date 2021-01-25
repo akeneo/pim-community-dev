@@ -1,0 +1,67 @@
+services:
+    pim_connector.job.csv_user_group_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_group_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_user_group_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_user_group_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_group_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_user_group_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    # Job defaults
+    pim_user.job.job_parameters.default_values_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_user_group_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_user.job.job_parameters.default_values_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'xlsx_user_group_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Job constraints
+    pim_user.job.job_parameters.constraint_collection_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_user_group_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_user.job.job_parameters.constraint_collection_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'xlsx_user_group_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    # Providers
+    pim_user.provider.form.job_instance:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
+        arguments:
+            -   csv_user_group_export: pim-job-instance-csv-base-export
+                xlsx_user_group_export: pim-job-instance-csv-base-export
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }

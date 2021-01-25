@@ -1,0 +1,51 @@
+services:
+    pim_connector.step.csv_user_group_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.user_group'
+            - '@pim_connector.processor.normalization.user_group'
+            - '@pim_connector.writer.file.csv_user_group'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_connector.step.xlsx_user_group_export.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.user_group'
+            - '@pim_connector.processor.normalization.user_group'
+            - '@pim_connector.writer.file.xlsx_user_group'
+            - 100
+            - '@akeneo_batch.job.job_stopper'
+
+    # Readers
+    pim_connector.reader.database.user_group:
+        class: 'Akeneo\Tool\Component\Connector\Reader\Database\Reader'
+        arguments:
+            - '@pim_user.repository.group'
+
+    pim_connector.processor.normalization.user_group:
+        class: '%pim_connector.processor.normalization.class%'
+        arguments:
+            - '@pim_user.normalizer.user_group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    # Writers
+    pim_connector.writer.file.csv_user_group:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.user_group'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.xlsx_user_group:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.user_group'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'

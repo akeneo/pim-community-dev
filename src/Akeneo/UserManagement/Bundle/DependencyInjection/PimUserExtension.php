@@ -32,6 +32,7 @@ class PimUserExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('form.yml');
         $loader->load('form_types.yml');
+        $loader->load('jobs.yml');
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');
         $loader->load('queries.yml');
@@ -45,6 +46,7 @@ class PimUserExtension extends Extension
         $loader->load('view_elements/user.yml');
         $loader->load('view_elements/group.yml');
         $loader->load('services.yml');
+        $loader->load('steps.yml');
         $loader->load('array_converters.yml');
         $loader->load('commands.yml');
 

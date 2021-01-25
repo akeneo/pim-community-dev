@@ -108,3 +108,11 @@ pim_user_management:
             module:
                 create:
                     button: Create group
+
+batch_jobs:
+    csv_user_group_export:
+        label: User group export in CSV
+        export.label: User group export
+    xlsx_user_group_export:
+        label: User group export in XLSX
+        export.label: User group export
