@@ -414,7 +414,9 @@ const Library = ({dataProvider, initialContext}: LibraryProps) => {
             {__('pim_asset_manager.asset_selected', {assetCount: selectedCount}, selectedCount)}
           </Toolbar.LabelContainer>
           <Toolbar.ActionsContainer>
-            <Button level="danger" onClick={() => setMassDeleteModalOpen(true)}>{__('pim_common.delete')}</Button>
+            { rights.asset.delete && (
+              <Button level="danger" onClick={() => setMassDeleteModalOpen(true)}>{__('pim_common.delete')}</Button>
+            )}
           </Toolbar.ActionsContainer>
         </Toolbar>
       </Content>
