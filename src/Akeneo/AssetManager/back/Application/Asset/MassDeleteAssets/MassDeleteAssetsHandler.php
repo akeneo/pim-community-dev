@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\MassDeleteAssets;
 
-use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 
 /**
  * Handler to mass delete belonging to an asset family
@@ -23,15 +24,18 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
  */
 class MassDeleteAssetsHandler
 {
-    private AssetRepositoryInterface $assetRepository;
+    private MassDeleteAssetsLauncherInterface $massDeleteAssetLauncher;
 
-    public function __construct(AssetRepositoryInterface $assetRepository)
+    public function __construct(MassDeleteAssetsLauncherInterface $massDeleteAssetLauncher)
     {
-        $this->assetRepository = $assetRepository;
+        $this->massDeleteAssetLauncher = $massDeleteAssetLauncher;
     }
 
     public function __invoke(MassDeleteAssetsCommand $massDeleteAssetsCommand): void
     {
-
+        $this->massDeleteAssetLauncher->launchForAssetFamilyAndQuery(
+            AssetFamilyIdentifier::fromString($massDeleteAssetsCommand->assetFamilyIdentifier),
+            AssetQuery::createFromNormalized($massDeleteAssetsCommand->query)
+        );
     }
 }

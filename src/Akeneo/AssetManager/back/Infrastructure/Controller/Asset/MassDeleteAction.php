@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2020 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -30,36 +30,27 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Delete all assets belonging to an asset family
+ * Delete assets for a given selection
  *
- * @author    JM Leroux <jean-marie.leroux@akeneo.com>
- * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  */
 class MassDeleteAction
 {
-    /** @var MassDeleteAssetsHandler */
-    private $massDeleteAssetsHandler;
-    /** @var SecurityFacade */
-    private $securityFacade;
-    /** @var CanEditAssetFamilyQueryHandler */
-    private $canEditAssetFamilyQueryHandler;
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-    /** @var AssetIndexerInterface */
-    private $assetIndexer;
+    private MassDeleteAssetsHandler $massDeleteAssetsHandler;
+    private SecurityFacade $securityFacade;
+    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         MassDeleteAssetsHandler $massDeleteAssetsHandler,
         SecurityFacade $securityFacade,
         CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler,
-        TokenStorageInterface $tokenStorage,
-        AssetIndexerInterface $assetIndexer
+        TokenStorageInterface $tokenStorage
     ) {
         $this->massDeleteAssetsHandler = $massDeleteAssetsHandler;
         $this->securityFacade = $securityFacade;
         $this->canEditAssetFamilyQueryHandler = $canEditAssetFamilyQueryHandler;
         $this->tokenStorage = $tokenStorage;
-        $this->assetIndexer = $assetIndexer;
     }
 
     public function __invoke(Request $request, string $assetFamilyIdentifier): Response
@@ -72,8 +63,7 @@ class MassDeleteAction
             throw new AccessDeniedException();
         }
 
-        $normalizedQuery = json_decode($request->getContent(), true);
-        $query = AssetQuery::createFromNormalized($normalizedQuery);
+        $query = AssetQuery::createFromNormalized(json_decode($request->getContent(), true));
         $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($assetFamilyIdentifier);
 
         if ($this->hasDesynchronizedIdentifiers($assetFamilyIdentifier, $query)) {
@@ -83,11 +73,9 @@ class MassDeleteAction
             );
         }
 
-        $command = new MassDeleteAssetsCommand((string) $assetFamilyIdentifier, $query);
+        $command = new MassDeleteAssetsCommand((string) $assetFamilyIdentifier, $query->normalize());
 
         ($this->massDeleteAssetsHandler)($command);
-
-        $this->assetIndexer->refresh();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }

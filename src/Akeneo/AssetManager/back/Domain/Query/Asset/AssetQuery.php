@@ -169,6 +169,17 @@ class AssetQuery
         );
     }
 
+    public function normalize(): array
+    {
+        return [
+            'channel' => $this->channel->normalize(),
+            'locale' => $this->locale->normalize(),
+            'filters' => $this->filters,
+            'page' => $this->page,
+            'size' => $this->size
+        ];
+    }
+
     public function getFilters(): array
     {
         return $this->filters;

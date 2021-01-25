@@ -10,6 +10,11 @@ services:
             - '@akeneo_batch_queue.queue.publish_job_to_queue'
             - '@security.token_storage'
 
+    akeneo_assetmanager.infrastructure.job.mass_delete_launcher:
+        class: Akeneo\AssetManager\Infrastructure\Job\MassDeleteAssetsLauncher
+        arguments:
+            - '@akeneo_batch_queue.queue.publish_job_to_queue'
+
     akeneo_assetmanager.infrastructure.job.compute_transformations_from_asset_identifiers_launcher:
         class: Akeneo\AssetManager\Infrastructure\Job\ComputeTransformationFromAssetIdentifiersLauncher
         arguments:
@@ -144,6 +149,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.query_builder'
             - '@akeneo_assetmanager.client.asset'
             - '@akeneo_batch.job_repository'
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset_indexer'
             - 100
         public: false
 

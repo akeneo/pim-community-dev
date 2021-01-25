@@ -13,21 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Application\Asset\MassDeleteAssets;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 
 /**
- * Command to mass delete assets from a family
- * @author Julien Sanchez <julien@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
  */
-class MassDeleteAssetsCommand
+interface MassDeleteAssetsLauncherInterface
 {
-    public string $assetFamilyIdentifier;
-    public array $query;
-
-    public function __construct(string $assetFamilyIdentifier, array $query)
-    {
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
-        $this->query = $query;
-    }
+    public function launchForAssetFamilyAndQuery(AssetFamilyIdentifier $assetFamilyIdentifier, AssetQuery $assetQuery): void;
 }

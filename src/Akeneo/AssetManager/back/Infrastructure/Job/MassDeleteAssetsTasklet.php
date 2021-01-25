@@ -17,7 +17,7 @@ use Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsCommand;
 use Akeneo\AssetManager\Application\Asset\DeleteAssets\DeleteAssetsHandler;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
-use Akeneo\AssetManager\Domain\Query\Asset\CountAssetsInterface;
+use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetCursor;
 use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\AssetQueryBuilderInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -38,18 +38,21 @@ class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInter
     private DeleteAssetsHandler $deleteAssetsHandler;
     private JobRepositoryInterface $jobRepository;
     private int $batchSize;
+    private AssetIndexerInterface $assetIndexer;
 
     public function __construct(
         DeleteAssetsHandler $deleteAssetsHandler,
         AssetQueryBuilderInterface $assetQueryBuilder,
         Client $assetClient,
         JobRepositoryInterface $jobRepository,
+        AssetIndexerInterface $assetIndexer,
         int $batchSize
     ) {
         $this->deleteAssetsHandler = $deleteAssetsHandler;
         $this->assetQueryBuilder = $assetQueryBuilder;
         $this->assetClient = $assetClient;
         $this->jobRepository = $jobRepository;
+        $this->assetIndexer = $assetIndexer;
         $this->batchSize = $batchSize;
     }
 

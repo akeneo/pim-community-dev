@@ -77,9 +77,14 @@ akeneo_asset_manager_asset_family_execute_naming_convention:
     defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset_family.execute_naming_convention }
     methods: [POST]
 
-akeneo_asset_manager_asset_delete_all_rest:
+# akeneo_asset_manager_asset_delete_all_rest:
+#     path: '/rest/asset_manager/{assetFamilyIdentifier}/assets'
+#     defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.delete_all }
+#     methods: [DELETE]
+
+akeneo_asset_manager_asset_mass_delete_rest:
     path: '/rest/asset_manager/{assetFamilyIdentifier}/assets'
-    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.delete_all }
+    defaults: { _controller: akeneo_assetmanager.infrastructure.action.asset.mass_delete }
     methods: [DELETE]
 
 akeneo_asset_manager_attribute_index_rest:
