@@ -55,3 +55,6 @@ services:
             - '%env(APP_DATABASE_PASSWORD)%'
             - '%kernel.cache_dir%/sql-dump/'
             - '%index_hosts%'
+            -
+                - '%product_and_product_model_index_name%'
+                - '%connection_error_index_name%'
