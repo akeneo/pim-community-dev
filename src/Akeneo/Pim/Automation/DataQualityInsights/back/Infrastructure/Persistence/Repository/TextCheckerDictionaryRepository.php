@@ -52,40 +52,39 @@ SQL;
         $statement = $this->db->executeQuery($query, [
             'localeCode' => strval($localeCode),
         ]);
-        return array_map(function ($row) {
+        return array_map(function ($row) use ($localeCode) {
             return new Read\TextCheckerDictionaryWord(
-                new LocaleCode($row['locale_code']),
+                $localeCode,
                 new DictionaryWord($row['word'])
             );
         }, $statement->fetchAll(FetchMode::ASSOCIATIVE));
     }
 
-    public function exists(LocaleCode $localeCode, DictionaryWord $word): bool
+    public function filterExistingWords(LocaleCode $localeCode, array $words): array
     {
+        if (empty($words)) {
+            return [];
+        }
+
         $query = <<<SQL
 SELECT word
 FROM pimee_data_quality_insights_text_checker_dictionary
-WHERE locale_code = :localeCode AND word = :word
+WHERE locale_code = :localeCode AND word IN (:words)
 SQL;
 
-        $statement = $this->db->executeQuery($query, [
-            'localeCode' => strval($localeCode),
-            'word' => strval($word),
-        ]);
+        $dictionaryWords = $this->db->executeQuery(
+            $query,
+            [
+                'localeCode' => $localeCode,
+                'words' => $words,
+            ],
+            [
+                'localeCode' => \PDO::PARAM_STR,
+                'words' => Connection::PARAM_STR_ARRAY,
+            ],
+        )->fetchAll(\PDO::FETCH_COLUMN);
 
-        $results = $statement->fetchAll(FetchMode::ASSOCIATIVE);
-
-        if (empty($results)) {
-            return false;
-        }
-
-        foreach ($results as $result) {
-            if ($result['word'] === strval($word)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_filter($words, fn ($word) => in_array(mb_strtolower(strval($word)), $dictionaryWords));
     }
 
     public function save(Write\TextCheckerDictionaryWord $dictionaryWord): void
@@ -98,7 +97,7 @@ SQL;
         $this->db->executeUpdate($query,
             [
                 'localeCode' => strval($dictionaryWord->getLocaleCode()),
-                'word' => strtolower(strval($dictionaryWord->getWord())),
+                'word' => mb_strtolower(strval($dictionaryWord->getWord())),
             ],
             [
                 'localeCode' => \PDO::PARAM_STR,
@@ -121,7 +120,7 @@ SQL;
             $word = sprintf('word_%s', $index);
             $values[] = sprintf('(:%s, :%s)', $locale, $word);
             $queryParameters[$locale] = $dictionaryWord->getLocaleCode();
-            $queryParameters[$word] = strtolower(strval($dictionaryWord->getWord()));
+            $queryParameters[$word] = mb_strtolower(strval($dictionaryWord->getWord()));
         }
 
         $values = implode(',', $values);
@@ -173,5 +172,18 @@ SQL;
     public function deleteWord(int $wordId): void
     {
         $this->db->delete('pimee_data_quality_insights_text_checker_dictionary', ['id' => $wordId]);
+    }
+
+    public function isEmptyForLocale(LocaleCode $localeCode): bool
+    {
+        $query = <<<SQL
+SELECT 1 FROM pimee_data_quality_insights_text_checker_dictionary
+WHERE locale_code = :locale
+LIMIT 1;
+SQL;
+
+        $localeHasAtLeastOneWord = $this->db->executeQuery($query, ['locale' => $localeCode])->fetchColumn();
+
+        return !boolval($localeHasAtLeastOneWord);
     }
 }

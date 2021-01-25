@@ -106,6 +106,9 @@ function buildFamilyWithAttributes(attributes: Attribute[]): Family {
     code: 'laptops',
     attribute_as_label: 'title',
     labels: {},
+    meta: {
+      id: 1234,
+    },
   };
 }
 

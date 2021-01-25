@@ -1,5 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import styled, {FlattenSimpleInterpolation} from 'styled-components';
+import {DeleteIcon, Key} from 'akeneo-design-system';
 import __ from 'akeneoassetmanager/tools/translator';
 import {ValidationError} from 'akeneoassetmanager/domain/model/validation-error';
 import Flag from 'akeneoassetmanager/tools/component/flag';
@@ -24,7 +26,14 @@ import {Attribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoassetmanager/application/configuration/attribute';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {AssetFamily} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
-import {DeleteIcon, Key} from 'akeneo-design-system';
+
+const DeleteButton = styled.span`
+  flex: 1;
+
+  :hover {
+    ${DeleteIcon.animatedMixin as FlattenSimpleInterpolation}
+  }
+`;
 
 interface OwnProps {
   rights: {
@@ -286,18 +295,17 @@ class Edit extends React.Component<EditProps> {
             </div>
             <footer className="AknSubsection-footer AknSubsection-footer--sticky">
               {displayDeleteButton ? (
-                <span
+                <DeleteButton
                   className="AknButton AknButton--delete"
                   tabIndex={0}
                   onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
                     if (Key.Space === event.key) this.setState({isDeleteModalOpen: true});
                   }}
                   onClick={() => this.setState({isDeleteModalOpen: true})}
-                  style={{flex: 1}}
                 >
                   <DeleteIcon className="AknButton-animatedIcon" />
                   {__('pim_asset_manager.attribute.edit.delete')}
-                </span>
+                </DeleteButton>
               ) : (
                 <span style={{flex: 1}} />
               )}

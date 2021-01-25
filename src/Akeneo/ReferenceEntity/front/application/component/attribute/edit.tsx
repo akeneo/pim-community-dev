@@ -1,5 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import styled, {FlattenSimpleInterpolation} from 'styled-components';
+import {DeleteIcon, Key} from 'akeneo-design-system';
 import __ from 'akeneoreferenceentity/tools/translator';
 import ValidationError from 'akeneoreferenceentity/domain/model/validation-error';
 import Flag from 'akeneoreferenceentity/tools/component/flag';
@@ -22,12 +24,18 @@ import {cancelDeleteModal, openDeleteModal} from 'akeneoreferenceentity/applicat
 import denormalizeAttribute from 'akeneoreferenceentity/application/denormalizer/attribute/attribute';
 import {Attribute} from 'akeneoreferenceentity/domain/model/attribute/attribute';
 import {getAttributeView} from 'akeneoreferenceentity/application/configuration/attribute';
-import Key from 'akeneoreferenceentity/tools/key';
 import ErrorBoundary from 'akeneoreferenceentity/application/component/app/error-boundary';
 import ReferenceEntity, {
   denormalizeReferenceEntity,
 } from 'akeneoreferenceentity/domain/model/reference-entity/reference-entity';
-import {DeleteIcon, pimTheme} from 'akeneo-design-system';
+
+const DeleteButton = styled.span`
+  flex: 1;
+
+  :hover {
+    ${DeleteIcon.animatedMixin as FlattenSimpleInterpolation}
+  }
+`;
 
 interface OwnProps {
   rights: {
@@ -265,18 +273,17 @@ class Edit extends React.Component<EditProps> {
             </div>
             <footer className="AknSubsection-footer AknSubsection-footer--sticky">
               {displayDeleteButton ? (
-                <span
+                <DeleteButton
                   className="AknButton AknButton--delete"
                   tabIndex={0}
                   onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>) => {
                     if (Key.Space === event.key) this.props.events.onOpenDeleteModal();
                   }}
                   onClick={() => this.props.events.onOpenDeleteModal()}
-                  style={{flex: 1}}
                 >
-                  <DeleteIcon color={pimTheme.color.red100} className="AknButton-animatedIcon" />
+                  <DeleteIcon className="AknButton-animatedIcon" />
                   {__('pim_reference_entity.attribute.edit.delete')}
-                </span>
+                </DeleteButton>
               ) : (
                 <span style={{flex: 1}} />
               )}

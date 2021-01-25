@@ -274,7 +274,7 @@ SQL;
      * @param int $fromCategoryId
      * @param int $toCategoryId
      *
-     * @return string[]
+     * @return int[]
      */
     private function fetchCategoriesBetween(int $userId, int $fromCategoryId, int $toCategoryId): array
     {
@@ -309,10 +309,8 @@ SQL;
             ]
         )->fetchAll();
 
-        $ids = array_map(function ($row) {
+        return array_map(function ($row) {
             return (int) $row['id'];
         }, $rows);
-
-        return $ids;
     }
 }

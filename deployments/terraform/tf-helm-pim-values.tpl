@@ -52,6 +52,7 @@ memcached:
 
 global:
   extraLabels:
+    type: ${type}
     instanceName: ${instanceName}
     pfid: ${pfid}
     instance_dns_record: ${instanceName}

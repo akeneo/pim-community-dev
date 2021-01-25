@@ -2,6 +2,7 @@
 
 - PIM-9617: Configure clean_removed_attribute_job to be run on a single daemon
 - PIM-9629: Fix filtering issue on product value "identifier" via the API for published products
+- PIM-9640: Fix asset and record imports in XLSX when sone cells contain only numeric characters
 
 ## Improvements
 

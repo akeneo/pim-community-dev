@@ -1,7 +1,5 @@
 import React, {FunctionComponent, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import WidgetsList from './Attributes/EditorHighlight/WidgetsList';
-import Popover from './Attributes/EditorHighlight/Popover';
 import {TextAttributesContextListener} from '../../../listener';
 import {Product} from '../../../../domain';
 import {
@@ -13,6 +11,7 @@ import {AttributeToImproveContextListener} from '@akeneo-pim-community/data-qual
 import {showDataQualityInsightsAttributeToImproveAction} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer';
 import TabContentWithPortalDecorator from '@akeneo-pim-community/data-quality-insights/src/application/component/TabContentWithPortalDecorator';
 import {usePageContext} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
+import SpellcheckProductValuesList from './SpellcheckProductValuesList';
 
 export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
 
@@ -26,8 +25,7 @@ const BaseAttributesTabContent: FunctionComponent<AttributesTabContentProps> = (
       <TextAttributesContextListener />
       <AttributeToImproveContextListener />
 
-      <WidgetsList />
-      <Popover />
+      <SpellcheckProductValuesList />
     </>
   );
 };
